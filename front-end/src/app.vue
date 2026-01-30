@@ -2,7 +2,13 @@
 import { appName } from "~/constants";
 
 useHead({
-	title: appName
+	title: appName,
+	link: [
+		{
+			rel: "stylesheet",
+			href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		}
+	]
 });
 </script>
 
@@ -14,17 +20,30 @@ useHead({
 </template>
 
 <style>
+:root {
+	color-scheme: light;
+	--consensus-ink: #15110d;
+	--consensus-muted: #514742;
+	--consensus-cream: #f6f1e8;
+	--consensus-sand: #e7d6c4;
+	--consensus-ember: #d36b38;
+	--consensus-moss: #35524a;
+	--consensus-mist: #f8f6f2;
+}
+
 /*noinspection CssUnusedSymbol*/
 html,
 body,
 #__nuxt {
-	height: 100vh;
+	min-height: 100%;
 	margin: 0;
 	padding: 0;
+	background: var(--consensus-mist);
+	color: var(--consensus-ink);
+	font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
-/*noinspection CssUnusedSymbol*/
-html.dark {
-	color-scheme: dark;
+* {
+	box-sizing: border-box;
 }
 </style>

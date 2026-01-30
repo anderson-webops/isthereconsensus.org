@@ -151,6 +151,11 @@ export default defineNuxtConfig({
 				"~": srcPath,
 				"@": srcPath
 			}
+		},
+		server: {
+			fs: {
+				allow: [path.resolve(__dirname, "..", "..")]
+			}
 		}
 	}
 } as ExtendedNuxtConfig) as ExtendedNuxtConfig;

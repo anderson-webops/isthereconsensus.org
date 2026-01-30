@@ -1,15 +1,10 @@
 describe("Homepage", () => {
-	it("shows the name input and action button", () => {
+	it("shows the hero prompt and routes", () => {
 		cy.visit("/");
 
-		cy.get("#input").should("be.visible").and("have.attr", "placeholder", "What's your name?");
-		cy.contains("button", "GO").should("be.visible");
-	});
-
-	it("renders the primary logos", () => {
-		cy.visit("/");
-
-		cy.contains("span", "Nuxt 4").should("be.visible");
-		cy.contains("span", "Vitesse").should("be.visible");
+		cy.contains("h1", "Is there consensus?").should("be.visible");
+		cy.contains("button", "Summarize the video").should("be.visible");
+		cy.contains("a", "Start a consensus check").should("have.attr", "href", "/ask");
+		cy.contains("a", "See how it works").should("have.attr", "href", "/how");
 	});
 });
