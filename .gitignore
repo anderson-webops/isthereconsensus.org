@@ -1,4 +1,4 @@
-.DS_Store
+**/.DS_Store
 node_modules
 *.log
 dist
@@ -7,3 +7,4 @@ dist
 .env
 .idea/
 public/assets/fonts
+ops

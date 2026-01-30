@@ -1,46 +1,44 @@
 {
-  "type": "module",
-  "private": true,
-  "packageManager": "pnpm@10.19.0",
-  "scripts": {
-    "build": "nuxt build",
-    "dev:pwa": "VITE_PLUGIN_PWA=true nuxt dev",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "prepare": "nuxt prepare",
-    "preview": "nuxt preview",
-    "start": "node .output/server/index.mjs",
-    "start:generate": "npx serve .output/public",
-    "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "catalog:dev",
-    "@iconify-json/carbon": "catalog:icons",
-    "@iconify-json/twemoji": "catalog:icons",
-    "@nuxt/devtools": "catalog:build",
-    "@nuxt/eslint": "catalog:build",
-    "@nuxtjs/color-mode": "catalog:build",
-    "@pinia/nuxt": "catalog:build",
-    "@unocss/eslint-config": "catalog:build",
-    "@unocss/nuxt": "catalog:build",
-    "@vite-pwa/nuxt": "catalog:build",
-    "@vueuse/core": "catalog:frontend",
-    "@vueuse/nuxt": "catalog:build",
-    "eslint": "catalog:dev",
-    "eslint-plugin-format": "catalog:dev",
-    "nuxt": "catalog:build",
-    "pinia": "catalog:frontend",
-    "typescript": "catalog:dev",
-    "unocss": "catalog:build",
-    "vue": "catalog:frontend",
-    "vue-tsc": "catalog:dev"
-  },
-  "resolutions": {
-    "@nuxt/devtools": "catalog:build",
-    "@nuxt/kit": "catalog:build",
-    "nuxt": "catalog:build",
-    "unplugin": "catalog:build",
-    "vite": "catalog:build"
-  }
+	"name": "isthereconsensus-monorepo",
+	"type": "module",
+	"version": "1.0.0",
+	"private": true,
+	"packageManager": "npm@11.8.0",
+	"description": "Monorepo for isthereconsensus.org",
+	"author": "Jacob Anderson",
+	"license": "ISC",
+	"workspaces": [
+		"front-end",
+		"back-end"
+	],
+	"scripts": {
+		"build": "npm run -w front-end build && npm run -w back-end build",
+		"dev": "npm run -w front-end dev",
+		"server": "npm run -w back-end server",
+		"serve": "npm run -w front-end serve",
+		"lint-server": "npm run -w back-end lint-fix && npm run -w back-end server",
+		"lint-serve": "npm run -w front-end lint-fix && npm run -w front-end serve",
+		"lint": "npm run -w front-end lint && npm run -w back-end lint",
+		"lint-fix": "npm run -w front-end lint-fix && npm run -w back-end lint-fix",
+		"typecheck": "npm run -w front-end typecheck && npm run -w back-end typecheck",
+		"clean": "sudo rm -rf node_modules dist package-lock.json **/node_modules **/dist **/package-lock.json **/.nuxt **/.output",
+		"up": "taze major -I && npm run -w front-end up && npm run -w back-end up"
+	},
+	"devDependencies": {
+		"@antfu/eslint-config": "^7.2.0",
+		"@typescript-eslint/eslint-plugin": "^8.54.0",
+		"@typescript-eslint/parser": "^8.54.0",
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-prettier": "^5.5.5",
+		"eslint-plugin-vue": "^10.7.0",
+		"globals": "^17.2.0",
+		"prettier": "^3.8.1",
+		"taze": "^19.9.2",
+		"typescript": "^5.9.3"
+	},
+	"overrides": {
+		"qs": "6.14.1"
+	},
+	"dependencies": {}
 }
