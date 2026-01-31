@@ -27,6 +27,7 @@
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
+		"server/**/*.ts",
 		"test/**/*.ts",
 		"types/**/*.d.ts",
 		"nuxt.config.ts",

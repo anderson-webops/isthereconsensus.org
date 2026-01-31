@@ -22,6 +22,13 @@ const steps = [
 	}
 ];
 
+const process = [
+	{ title: "Question", body: "A claim or curiosity worth testing." },
+	{ title: "Research", body: "Studies, methods, and competing explanations." },
+	{ title: "Evidence", body: "Replication, criticism, and refinement." },
+	{ title: "Consensus", body: "Agreement earned over time and results." }
+];
+
 const signals = [
 	{
 		title: "Constructed knowledge",
@@ -36,6 +43,13 @@ const signals = [
 		body: "We call out the kind of new data that could actually shift the field."
 	}
 ];
+
+const mindChangers = [
+	"Multiple independent replications across methods",
+	"Large evidence base with consistent results",
+	"New tools that measure what we could not measure before",
+	"A model that predicts better than the old one"
+];
 </script>
 
 <template>
@@ -48,6 +62,19 @@ const signals = [
 				help you see both—and keep the scale honest.
 			</p>
 		</header>
+
+		<section class="how__process">
+			<div class="how__process-header">
+				<h2>From question to consensus</h2>
+				<p>Most ideas earn trust slowly. Here is the path we keep visible.</p>
+			</div>
+			<div class="how__process-grid">
+				<article v-for="step in process" :key="step.title" class="how__process-card">
+					<h3>{{ step.title }}</h3>
+					<p>{{ step.body }}</p>
+				</article>
+			</div>
+		</section>
 
 		<section class="how__grid">
 			<article v-for="step in steps" :key="step.title" class="how__card">
@@ -67,6 +94,17 @@ const signals = [
 					<p>{{ signal.body }}</p>
 				</article>
 			</div>
+		</section>
+
+		<section class="how__mind-changers">
+			<h2>What changes minds</h2>
+			<p>
+				Consensus shifts when evidence grows too strong to ignore. We highlight the signals that actually move
+				people.
+			</p>
+			<ul>
+				<li v-for="item in mindChangers" :key="item">{{ item }}</li>
+			</ul>
 		</section>
 
 		<section class="how__cta">
@@ -119,6 +157,45 @@ const signals = [
 	line-height: 1.55;
 }
 
+.how__process {
+	display: grid;
+	gap: 18px;
+}
+
+.how__process-header h2 {
+	font-family: "Fraunces", serif;
+	margin-bottom: 6px;
+}
+
+.how__process-header p {
+	color: var(--consensus-muted);
+	max-width: 640px;
+}
+
+.how__process-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.how__process-card {
+	background: #fff;
+	border-radius: 18px;
+	padding: 18px;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+}
+
+.how__process-card h3 {
+	font-family: "Fraunces", serif;
+	margin-bottom: 8px;
+}
+
+.how__process-card p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
 .how__signals {
 	display: grid;
 	gap: 20px;
@@ -156,6 +233,30 @@ const signals = [
 .how__signal p {
 	color: var(--consensus-muted);
 	line-height: 1.55;
+}
+
+.how__mind-changers {
+	background: rgba(21, 17, 13, 0.06);
+	border-radius: 22px;
+	padding: 22px;
+	display: grid;
+	gap: 10px;
+}
+
+.how__mind-changers h2 {
+	font-family: "Fraunces", serif;
+}
+
+.how__mind-changers p {
+	color: var(--consensus-muted);
+	max-width: 640px;
+}
+
+.how__mind-changers ul {
+	margin: 0;
+	padding-left: 18px;
+	color: var(--consensus-muted);
+	line-height: 1.6;
 }
 
 .how__cta {

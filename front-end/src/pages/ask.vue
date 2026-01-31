@@ -5,6 +5,7 @@ const router = useRouter();
 const prompts = [
 	"Did we invent math or discover it?",
 	"What does consensus mean in climate science?",
+	"Do we really only use 10% of our brains?",
 	"Is this headline a bump on the basketball?",
 	"How strong is the evidence for this claim?",
 	"Relative vs absolute risk: what actually changed?"
@@ -83,6 +84,7 @@ function backHome() {
 			<section class="ask__panel">
 				<label class="ask-label" for="question">Your question</label>
 				<textarea id="question" v-model="question" rows="4" placeholder="What is the video claiming?" />
+				<p class="ask-helper">Too broad? That is fine. We will help you narrow it to something testable.</p>
 
 				<label class="ask-label" for="claim">Optional: the specific claim</label>
 				<input id="claim" v-model="claim" type="text" placeholder="Short, exact phrasing helps." />
@@ -208,6 +210,13 @@ function backHome() {
 	letter-spacing: 0.12em;
 	font-size: 0.7rem;
 	color: var(--consensus-muted);
+}
+
+.ask-helper {
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+	line-height: 1.5;
 }
 
 .ask__panel textarea,

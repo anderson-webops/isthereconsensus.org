@@ -56,6 +56,7 @@
 	font-size: 0.95rem;
 }
 
+/*noinspection CssUnusedSymbol*/
 .site__nav a.router-link-active {
 	color: var(--consensus-ink);
 }

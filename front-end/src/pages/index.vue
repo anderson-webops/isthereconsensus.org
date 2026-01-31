@@ -8,6 +8,7 @@ const router = useRouter();
 const prompts = [
 	"Did we invent math or discover it?",
 	"What does consensus mean in climate science?",
+	"Do we really only use 10% of our brains?",
 	"Is this headline a bump on the basketball?",
 	"How strong is the evidence for this claim?",
 	"Relative vs absolute risk: what actually changed?"
@@ -161,7 +162,7 @@ function goToAsk() {
 				<p class="eyebrow">isthereconsensus.org</p>
 				<h1>Is there consensus?</h1>
 				<p class="lead">
-					A calm guide to how knowledge gets built: what experts agree on, what’s still debated, and how to
+					A calm guide to how knowledge gets built: what experts agree on, what is still debated, and how to
 					read claims without panic.
 				</p>
 
@@ -248,6 +249,24 @@ function goToAsk() {
 			</div>
 		</section>
 
+		<section class="section reveal" style="animation-delay: 0.32s">
+			<div class="section__header">
+				<h2>Consensus at a glance</h2>
+				<p>Use a quick meter to see how settled a topic is before diving deeper.</p>
+			</div>
+			<div class="meter-grid">
+				<article v-for="sample in meterSamples" :key="sample.topic" class="meter-card">
+					<h3>{{ sample.topic }}</h3>
+					<div class="meter" role="img" :aria-label="`${sample.topic} consensus level ${sample.level}%`">
+						<span class="meter__track" />
+						<span class="meter__fill" :style="{ width: `${sample.level}%` }" />
+						<span class="meter__dot" :style="{ left: `${sample.level}%` }" />
+					</div>
+					<p class="meter__label">{{ sample.label }}</p>
+				</article>
+			</div>
+		</section>
+
 		<section class="section section--wide reveal" style="animation-delay: 0.35s">
 			<div class="basketball">
 				<div class="basketball__copy">
@@ -299,7 +318,33 @@ function goToAsk() {
 			</div>
 		</section>
 
-		<section class="section section--wide reveal" style="animation-delay: 0.55s">
+		<section class="section reveal" style="animation-delay: 0.5s">
+			<div class="section__header">
+				<h2>Mini explainers</h2>
+				<p>Short reads that show how consensus forms, shifts, and stays stable.</p>
+			</div>
+			<div class="card-grid">
+				<article v-for="explainer in explainers" :key="explainer.title" class="card">
+					<h3>{{ explainer.title }}</h3>
+					<p>{{ explainer.body }}</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section reveal" style="animation-delay: 0.55s">
+			<div class="section__header">
+				<h2>Headline reality check</h2>
+				<p>Tap a headline to see the scale behind it.</p>
+			</div>
+			<div class="headline-grid">
+				<details v-for="card in headlineReality" :key="card.headline" class="headline-card">
+					<summary>{{ card.headline }}</summary>
+					<p>{{ card.reality }}</p>
+				</details>
+			</div>
+		</section>
+
+		<section class="section section--wide reveal" style="animation-delay: 0.6s">
 			<div class="story">
 				<div>
 					<h2>Bring a claim. Leave with context.</h2>
@@ -609,6 +654,65 @@ function goToAsk() {
 	line-height: 1.55;
 }
 
+.meter-grid {
+	display: grid;
+	gap: 18px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.meter-card {
+	padding: 20px;
+	border-radius: 20px;
+	background: #fff;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+	display: grid;
+	gap: 12px;
+}
+
+.meter-card h3 {
+	font-family: "Fraunces", serif;
+	margin: 0;
+}
+
+.meter {
+	position: relative;
+	height: 12px;
+	border-radius: 999px;
+	background: rgba(21, 17, 13, 0.08);
+	overflow: hidden;
+}
+
+.meter__track {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, #f0d3bf 0%, #d36b38 60%, #35524a 100%);
+	opacity: 0.25;
+}
+
+.meter__fill {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, #f0d3bf 0%, #d36b38 60%, #35524a 100%);
+}
+
+.meter__dot {
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid var(--consensus-ink);
+	box-shadow: 0 6px 12px rgba(21, 17, 13, 0.2);
+}
+
+.meter__label {
+	color: var(--consensus-muted);
+	line-height: 1.5;
+}
+
 .basketball {
 	display: grid;
 	gap: 24px;
@@ -707,6 +811,35 @@ function goToAsk() {
 }
 
 .lens-card p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.headline-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.headline-card {
+	background: #fff;
+	border-radius: 18px;
+	padding: 16px 18px;
+	border: 1px solid rgba(21, 17, 13, 0.1);
+	box-shadow: 0 12px 24px rgba(21, 17, 13, 0.08);
+}
+
+.headline-card summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.headline-card summary::-webkit-details-marker {
+	display: none;
+}
+
+.headline-card p {
+	margin-top: 10px;
 	color: var(--consensus-muted);
 	line-height: 1.55;
 }
