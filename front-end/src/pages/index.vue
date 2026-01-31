@@ -6,12 +6,11 @@ definePageMeta({
 const router = useRouter();
 
 const prompts = [
-	"Did we invent math or discover it?",
-	"What does consensus mean in climate science?",
-	"Do we really only use 10% of our brains?",
-	"Is this headline a bump on the basketball?",
-	"How strong is the evidence for this claim?",
-	"Relative vs absolute risk: what actually changed?"
+	"Summarize the video",
+	"Recommend related content",
+	"Why does science face bias?",
+	"How does Crash Course balance education and engagement?",
+	'What is the "scandal hypothesis"?'
 ];
 
 const consensusPillars = [

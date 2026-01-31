@@ -14,6 +14,7 @@ export default base
 		plugins: { prettier },
 		rules: {
 			"prettier/prettier": "error",
+			"antfu/consistent-list-newline": "off",
 			"vue/multi-word-component-names": "off",
 			"ts/no-explicit-any": "off",
 			"no-undef": "off" // Nuxt auto-imported globals

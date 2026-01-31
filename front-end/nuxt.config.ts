@@ -107,7 +107,9 @@ export default defineNuxtConfig({
 			to: process.env.RESEND_TO
 		},
 		public: {
-			pwaDevSw: devSwEnabled
+			pwaDevSw: devSwEnabled,
+			apiBase: process.env.PUBLIC_API_BASE || "http://127.0.0.1:3011",
+			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || ""
 		}
 	},
 

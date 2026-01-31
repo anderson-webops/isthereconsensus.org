@@ -5,6 +5,7 @@
 			<nav class="site__nav">
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
+				<NuxtLink to="/account">Account</NuxtLink>
 			</nav>
 		</header>
 		<slot />
@@ -56,6 +57,7 @@
 	font-size: 0.95rem;
 }
 
+/*noinspection CssUnusedSymbol*/
 .site__nav a.router-link-active {
 	color: var(--consensus-ink);
 }
