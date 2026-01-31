@@ -115,6 +115,7 @@ function backHome() {
 				Paste a claim, summarize the video, or pick a starter prompt. We will map consensus and surface the real
 				questions.
 			</p>
+			<p class="muted">Posts appear in the community lane. Expert consensus summaries are curated separately.</p>
 		</header>
 
 		<div class="ask__grid">
