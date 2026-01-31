@@ -110,7 +110,10 @@ const mindChangers = [
 		<section class="how__cta">
 			<h2>Ready to try it?</h2>
 			<p>Start a consensus check and we will guide you from claim to evidence.</p>
-			<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
+			<div class="cta-row">
+				<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
+				<NuxtLink class="cta ghost" to="/consensus">Browse the board</NuxtLink>
+			</div>
 		</section>
 	</div>
 </template>
@@ -295,5 +298,17 @@ const mindChangers = [
 	background: var(--consensus-ember);
 	color: #fff;
 	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
+}
+
+.cta-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.cta.ghost {
+	background: transparent;
+	border: 1px solid rgba(21, 17, 13, 0.2);
+	color: var(--consensus-ink);
 }
 </style>

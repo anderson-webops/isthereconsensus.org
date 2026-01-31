@@ -46,4 +46,12 @@ body,
 * {
 	box-sizing: border-box;
 }
+
+/*noinspection CssUnusedSymbol*/
+.eyebrow {
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	font-size: 0.75rem;
+	color: var(--consensus-muted);
+}
 </style>

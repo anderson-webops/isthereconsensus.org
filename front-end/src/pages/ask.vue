@@ -1,49 +1,51 @@
 <script setup lang="ts">
+import type { QuestionResponse, Topic, TopicResponse } from "~/types/board";
+import AuthPanel from "~/components/AuthPanel.vue";
+import CaptchaWidget from "~/components/CaptchaWidget.vue";
+
 const route = useRoute();
 const router = useRouter();
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase as string;
+const { isLoggedIn, currentAccount } = useAuth();
+const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
 const prompts = [
-	"Did we invent math or discover it?",
-	"What does consensus mean in climate science?",
-	"Do we really only use 10% of our brains?",
-	"Is this headline a bump on the basketball?",
-	"How strong is the evidence for this claim?",
-	"Relative vs absolute risk: what actually changed?"
-];
-
-const scaffolds = [
-	{
-		title: "Consensus check",
-		template: "Is there scientific consensus that [claim]?"
-	},
-	{
-		title: "Mechanism question",
-		template: "What mechanism would have to be true for [claim] to work?"
-	},
-	{
-		title: "Scope & limits",
-		template: "Where does [claim] hold up, and where does it fail?"
-	},
-	{
-		title: "Risk lens",
-		template: "What is the absolute risk change in [claim], not just the relative risk?"
-	}
-];
-
-const lenses = [
-	"Consensus is earned through evidence, not a vote.",
-	"Separate the stable core from the new bumps.",
-	"Ask what would change minds."
+	"Summarize the video",
+	"Recommend related content",
+	"Why does science face bias?",
+	"How does Crash Course balance education and engagement?",
+	'What is the "scandal hypothesis"?'
 ];
 
 const question = ref("");
 const claim = ref("");
-const hasPreview = ref(false);
+const selectedTopic = ref("");
+const submitting = ref(false);
+const errorMessage = ref("");
+const captchaToken = ref("");
+const captchaRef = ref<{ reset: () => void } | null>(null);
+
+const { data: topicsData, pending: topicsPending } = await useAsyncData("topics", () =>
+	$fetch<TopicResponse>(`${apiBase}/api/topics?includeCounts=true`)
+);
+
+const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 
 watchEffect(() => {
 	const incoming = route.query.question;
 	if (typeof incoming === "string") {
 		question.value = incoming;
+	}
+
+	const incomingTopic = route.query.topic;
+	if (typeof incomingTopic === "string" && incomingTopic) {
+		selectedTopic.value = incomingTopic;
+	}
+
+	if (topics.value.length) {
+		const hasMatch = topics.value.some((topic) => topic.slug === selectedTopic.value);
+		if (!hasMatch) selectedTopic.value = topics.value[0].slug;
 	}
 });
 
@@ -51,17 +53,52 @@ function choosePrompt(prompt: string) {
 	question.value = prompt;
 }
 
-function applyScaffold(template: string) {
-	question.value = template;
-}
+async function submitQuestion() {
+	errorMessage.value = "";
+	if (!isLoggedIn.value) {
+		errorMessage.value = "Please sign in before posting.";
+		return;
+	}
+	const title = question.value.trim();
+	if (!title) {
+		errorMessage.value = "Please add a question so we can post it.";
+		return;
+	}
+	if (!selectedTopic.value) {
+		errorMessage.value = "Pick a main concept so we can organize your question.";
+		return;
+	}
+	if (captchaRequired.value && !captchaToken.value) {
+		errorMessage.value = "Please complete the captcha.";
+		return;
+	}
 
-function runPreview() {
-	if (!question.value.trim() && !claim.value.trim()) return;
-	hasPreview.value = true;
-}
-
-function resetPreview() {
-	hasPreview.value = false;
+	submitting.value = true;
+	try {
+		const payload = {
+			topic: selectedTopic.value,
+			title,
+			body: claim.value.trim(),
+			captchaToken: captchaToken.value
+		};
+		const response = await $fetch<QuestionResponse>(`${apiBase}/api/questions`, {
+			method: "POST",
+			credentials: "include",
+			body: payload
+		});
+		captchaRef.value?.reset();
+		captchaToken.value = "";
+		const slug = response.question.topic.slug || selectedTopic.value;
+		router.push({
+			path: `/consensus/${slug}`,
+			query: { highlight: response.question._id }
+		});
+	} catch (error) {
+		errorMessage.value = "We couldn't post that just yet. Please try again.";
+		console.error(error);
+	} finally {
+		submitting.value = false;
+	}
 }
 
 function backHome() {
@@ -73,30 +110,65 @@ function backHome() {
 	<div class="ask">
 		<header class="ask__header">
 			<p class="eyebrow">Consensus check</p>
-			<h1>Ask about a claim.</h1>
+			<h1>Ask about what you watched.</h1>
 			<p>
-				Paste a claim, summarize the video, or use a scaffold. We will map consensus, show the real debates, and
-				keep the scale honest.
+				Paste a claim, summarize the video, or pick a starter prompt. We will map consensus and surface the real
+				questions.
 			</p>
 		</header>
 
 		<div class="ask__grid">
 			<section class="ask__panel">
+				<AuthPanel
+					v-if="!isLoggedIn"
+					title="Sign in to post"
+					hint="Only logged-in members can post to the board."
+				/>
+				<div v-else class="muted">Signed in as {{ currentAccount?.name }}</div>
+				<label class="ask-label" for="topic">Main concept</label>
+				<div v-if="topicsPending" class="muted">Loading topics...</div>
+				<div v-else-if="!topics.length" class="muted">No topics available yet.</div>
+				<div v-else class="topic-grid">
+					<button
+						v-for="topic in topics"
+						:key="topic.slug"
+						class="topic-chip"
+						:class="{ active: selectedTopic === topic.slug }"
+						type="button"
+						@click="selectedTopic = topic.slug"
+					>
+						<span>{{ topic.title }}</span>
+						<small>{{ topic.questionCount ?? 0 }} questions</small>
+					</button>
+				</div>
+
 				<label class="ask-label" for="question">Your question</label>
 				<textarea id="question" v-model="question" rows="4" placeholder="What is the video claiming?" />
-				<p class="ask-helper">Too broad? That is fine. We will help you narrow it to something testable.</p>
 
 				<label class="ask-label" for="claim">Optional: the specific claim</label>
 				<input id="claim" v-model="claim" type="text" placeholder="Short, exact phrasing helps." />
 
+				<div v-if="isLoggedIn" class="captcha-block">
+					<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
+				</div>
+
+				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
 				<div class="ask__actions">
-					<button class="cta primary" type="button" @click="runPreview">Preview consensus</button>
+					<button
+						class="cta primary"
+						type="button"
+						:disabled="submitting || !isLoggedIn"
+						@click="submitQuestion"
+					>
+						{{ submitting ? "Posting..." : "Post to the board" }}
+					</button>
 					<button class="cta ghost" type="button" @click="backHome">Back home</button>
 				</div>
 			</section>
 
 			<section class="ask__panel">
-				<p class="prompt-title">Starter prompts</p>
+				<p class="prompt-title">Not sure what to ask?</p>
 				<div class="prompt-grid">
 					<button
 						v-for="prompt in prompts"
@@ -108,66 +180,9 @@ function backHome() {
 						{{ prompt }}
 					</button>
 				</div>
+				<p class="muted">You can edit the prompt after clicking it.</p>
 			</section>
 		</div>
-
-		<section class="ask__extras">
-			<div class="extras-card">
-				<h3>Question scaffolds</h3>
-				<p class="muted">
-					These templates turn a vague curiosity into a precise, testable question. Replace the brackets with
-					your topic.
-				</p>
-				<div class="scaffold-grid">
-					<button
-						v-for="scaffold in scaffolds"
-						:key="scaffold.title"
-						class="scaffold-chip"
-						type="button"
-						@click="applyScaffold(scaffold.template)"
-					>
-						<span>{{ scaffold.title }}</span>
-						<small>{{ scaffold.template }}</small>
-					</button>
-				</div>
-			</div>
-			<div class="extras-card">
-				<h3>Consensus lenses</h3>
-				<ul class="lens-list">
-					<li v-for="lens in lenses" :key="lens">{{ lens }}</li>
-				</ul>
-			</div>
-		</section>
-
-		<section v-if="hasPreview" class="preview">
-			<div class="preview__header">
-				<h2>Preview (coming soon)</h2>
-				<p>
-					This is where the consensus snapshot, debate map, and evidence trail will appear. For now, your
-					prompt is saved below.
-				</p>
-			</div>
-			<div class="preview__cards">
-				<div class="preview__card">
-					<h3>Consensus snapshot</h3>
-					<p>We will summarize where expert agreement sits on the spectrum.</p>
-				</div>
-				<div class="preview__card">
-					<h3>Your prompt</h3>
-					<p>{{ question || "(none)" }}</p>
-					<p v-if="claim" class="muted">Claim: {{ claim }}</p>
-				</div>
-				<div class="preview__card">
-					<h3>Debate map</h3>
-					<p>We will show the real open questions that scientists are discussing.</p>
-				</div>
-				<div class="preview__card">
-					<h3>Scale check</h3>
-					<p>We highlight absolute vs relative risk so bumps don’t feel like earthquakes.</p>
-				</div>
-			</div>
-			<button class="cta ghost" type="button" @click="resetPreview">Clear preview</button>
-		</section>
 	</div>
 </template>
 
@@ -212,13 +227,6 @@ function backHome() {
 	color: var(--consensus-muted);
 }
 
-.ask-helper {
-	margin: 0;
-	color: var(--consensus-muted);
-	font-size: 0.9rem;
-	line-height: 1.5;
-}
-
 .ask__panel textarea,
 .ask__panel input {
 	border-radius: 14px;
@@ -228,10 +236,47 @@ function backHome() {
 	font-size: 0.95rem;
 }
 
+.topic-grid {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.topic-chip {
+	border-radius: 16px;
+	border: 1px solid rgba(21, 17, 13, 0.1);
+	padding: 12px 14px;
+	text-align: left;
+	background: var(--consensus-cream);
+	font-family: inherit;
+	cursor: pointer;
+	display: grid;
+	gap: 4px;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.topic-chip.active {
+	border-color: var(--consensus-ember);
+	box-shadow: 0 12px 24px rgba(211, 107, 56, 0.2);
+	transform: translateY(-1px);
+}
+
+.topic-chip small {
+	color: var(--consensus-muted);
+	font-size: 0.75rem;
+}
+
 .ask__actions {
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
+}
+
+.captcha-block {
+	display: grid;
+	gap: 8px;
 }
 
 .cta {
@@ -252,6 +297,11 @@ function backHome() {
 	background: var(--consensus-ember);
 	color: #fff;
 	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
+}
+
+.cta.primary:disabled {
+	opacity: 0.6;
+	cursor: wait;
 }
 
 .cta.ghost {
@@ -291,109 +341,13 @@ function backHome() {
 	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
 }
 
-.ask__extras {
-	display: grid;
-	gap: 20px;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.extras-card {
-	background: var(--consensus-cream);
-	border-radius: 20px;
-	padding: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-	display: grid;
-	gap: 12px;
-}
-
-.extras-card h3 {
-	font-family: "Fraunces", serif;
-}
-
-.extras-card .muted {
+.muted {
 	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.scaffold-grid {
-	display: grid;
-	gap: 10px;
-}
-
-.scaffold-chip {
-	text-align: left;
-	padding: 12px 14px;
-	border-radius: 16px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	background: #fff;
-	font-family: inherit;
-	display: grid;
-	gap: 4px;
-	cursor: pointer;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
-}
-
-.scaffold-chip span {
-	font-weight: 600;
-}
-
-.scaffold-chip small {
-	color: var(--consensus-muted);
-	font-size: 0.8rem;
-}
-
-.scaffold-chip:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
-}
-
-.lens-list {
-	margin: 0;
-	padding-left: 18px;
-	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.preview {
-	margin-top: 12px;
-	display: grid;
-	gap: 16px;
-}
-
-.preview__header h2 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 6px;
-}
-
-.preview__header p {
-	color: var(--consensus-muted);
-	max-width: 680px;
-}
-
-.preview__cards {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.preview__card {
-	background: rgba(21, 17, 13, 0.9);
-	color: #fdf8f2;
-	border-radius: 18px;
-	padding: 18px;
-}
-
-.preview__card h3 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 8px;
-}
-
-.preview__card .muted {
-	color: rgba(253, 248, 242, 0.75);
-	margin-top: 8px;
 	font-size: 0.9rem;
+}
+
+.error {
+	color: #b83d2e;
+	font-weight: 600;
 }
 </style>
