@@ -45,3 +45,33 @@ npm run -w front-end build
 npm run -w front-end serve
 npm run -w back-end server
 ```
+
+## Deployment note: static vs SSR and /var/www
+
+The deploy script treats static and SSR Nuxt sites differently:
+
+- Static mode (`FE_MODE="static"`):
+  - Build output is `front-end/dist/` (copied from `.output/public` during build).
+  - Deploy step rsyncs `front-end/dist/` into `/var/www/<site>/`.
+  - Nginx serves files directly from `/var/www/<site>/`.
+
+- SSR mode (`FE_MODE="nuxt-ssr"`):
+  - Build output is the Nitro server plus public assets under `front-end/.output/`.
+  - Deploy step rsyncs `front-end/.output/` into `/srv/<site>/front-end/.output/`.
+  - The systemd frontend service serves the site; `/var/www/<site>/` is not used and remains empty.
+
+Why this matters: if you see `/var/www/stridewithus.co` populated but `/var/www/isthereconsensus.org` empty, that is expected for SSR sites unless `/var/www` was filled manually or via a custom step. Dates on `/var/www` files often reveal that they were copied long ago and are not part of the current SSR deploy path.
+
+Options if you want `/var/www/<site>/` populated for an SSR site:
+
+1) Keep SSR and leave `/var/www/<site>/` empty (recommended).
+   - Most correct for SSR: Nginx should proxy to the frontend service.
+2) Keep SSR and mirror public assets into `/var/www/<site>/`.
+   - Add a deploy step to rsync `front-end/.output/public/` into `/var/www/<site>/`.
+   - Useful if you want Nginx to serve static assets directly.
+3) Keep SSR and make `/var/www/<site>/` a symlink or bind mount.
+   - Point it at `/srv/<site>/front-end/.output/public/`.
+   - Keeps a single source of truth for public assets.
+4) Switch the site to static (`FE_MODE="static"`).
+   - `/var/www/<site>/` will be populated from `front-end/dist/`.
+   - Loses server-side rendering; SSR-only routes or APIs must move to the backend.

@@ -6,40 +6,128 @@ definePageMeta({
 const router = useRouter();
 
 const prompts = [
-	"Summarize the video",
-	"Recommend related content",
-	"Why does science face bias?",
-	"How does Crash Course balance education and engagement?",
-	'What is the "scandal hypothesis"?'
+	"Did we invent math or discover it?",
+	"What does consensus mean in climate science?",
+	"Is this headline a bump on the basketball?",
+	"How strong is the evidence for this claim?",
+	"Relative vs absolute risk: what actually changed?"
 ];
 
 const consensusPillars = [
 	{
-		title: "What science agrees on",
-		body: "Consensus is real on the foundations: evolution, climate, vaccines, and how evidence is weighed. The site foregrounds that stability."
+		title: "Knowledge is built, not given",
+		body: "Math and science are human inventions: symbols, models, and tools made to solve problems over time."
 	},
 	{
-		title: "Where the debate actually lives",
-		body: "The loudest disagreements are rarely the real ones. Researchers often debate niche questions—like a new signaling pathway or a frog’s feeding strategy."
+		title: "Consensus through evidence",
+		body: "Agreement comes from data, debate, and replication, not a show of hands."
 	},
 	{
-		title: "Why this matters",
-		body: "Pseudoscience thrives on sensationalism. This project redirects attention to what’s settled, what’s open, and why that distinction matters."
+		title: "Stable core vs new bumps",
+		body: "Most new studies add a small bump to a stable core, not a total rewrite."
+	},
+	{
+		title: "Make sense of science news",
+		body: "We translate headlines into scale, especially relative vs absolute risk."
+	},
+	{
+		title: "What changes minds",
+		body: "We ask what evidence would actually overturn a claim and why that bar exists."
 	}
 ];
 
 const signals = [
 	{
-		title: "Consensus Check",
-		body: "A plain-language summary of where expert agreement stands and why it’s strong."
+		title: "Consensus Snapshot",
+		body: "Plain-language clarity on where expert agreement stands and what anchors it."
 	},
 	{
 		title: "Debate Map",
-		body: "A snapshot of the real open questions—often small, specific, and fascinating."
+		body: "The actual unresolved questions—often narrow, technical, and interesting."
 	},
 	{
-		title: "Source Trail",
-		body: "Primary papers, review articles, and the key voices shaping the discussion."
+		title: "Evidence Trail",
+		body: "Primary papers, reviews, and the voices shaping the field."
+	}
+];
+
+const consensusSpectrum = [
+	{
+		tag: "Speculative",
+		title: "Interesting idea",
+		body: "A hypothesis with limited evidence or early signals."
+	},
+	{
+		tag: "Emerging",
+		title: "Evidence building",
+		body: "Multiple studies, still uneven or small in scope."
+	},
+	{
+		tag: "Active debate",
+		title: "Competing models",
+		body: "Serious disagreement on mechanisms, timelines, or effect size."
+	},
+	{
+		tag: "Strong consensus",
+		title: "Stable foundations",
+		body: "Decades of converging evidence and broad agreement."
+	}
+];
+
+const lenses = [
+	{
+		title: "An equal sign is a claim",
+		body: "Equations aren’t magic. They’re statements that must be justified."
+	},
+	{
+		title: "Relative vs absolute risk",
+		body: "A big percentage can still mean a tiny real-world change."
+	},
+	{
+		title: "What would change minds?",
+		body: "Consensus shifts when new evidence or methods clearly outperform the old."
+	}
+];
+
+const bumps = ["New study", "Methods debate", "Edge cases", "Effect size", "Alternate model"];
+
+const meterSamples = [
+	{ topic: "Vaccines and autism", level: 92, label: "Strong consensus (no link)" },
+	{ topic: "Cell phones and cancer", level: 38, label: "Mixed evidence, active research" },
+	{ topic: "Climate change cause", level: 88, label: "Strong consensus (human-driven)" }
+];
+
+const explainers = [
+	{
+		title: "Inventing Zero",
+		body: "A short story about how humans created the idea of zero and why it changed everything."
+	},
+	{
+		title: "Ulcers: From lone idea to consensus",
+		body: "How H. pylori moved from fringe to fact after evidence and replication piled up."
+	},
+	{
+		title: "Consensus spectrum",
+		body: "Why some questions are settled, some debated, and others still speculative."
+	},
+	{
+		title: "Basketball vs bumps in action",
+		body: "A headline looks huge until you see it in the context of decades of data."
+	}
+];
+
+const headlineReality = [
+	{
+		headline: "New pill cuts risk in half!",
+		reality: "In the study, risk dropped from 4% to 2%. Big relative change, small absolute change."
+	},
+	{
+		headline: "Coffee causes cancer (again)!",
+		reality: "One study found a small signal, but the broader evidence still shows no clear causal link."
+	},
+	{
+		headline: "Breakthrough proves cold fusion",
+		reality: "A single result without replication is a bump, not a new core."
 	}
 ];
 
@@ -73,8 +161,8 @@ function goToAsk() {
 				<p class="eyebrow">isthereconsensus.org</p>
 				<h1>Is there consensus?</h1>
 				<p class="lead">
-					Hello! Curious about what you’re watching? I’m here to help you separate reliable consensus from
-					noisy disagreement.
+					A calm guide to how knowledge gets built: what experts agree on, what’s still debated, and how to
+					read claims without panic.
 				</p>
 
 				<div class="prompt-card">
@@ -101,23 +189,23 @@ function goToAsk() {
 			<div class="hero__panel reveal" style="animation-delay: 0.15s">
 				<div class="panel">
 					<div class="panel__tag">Idea behind the site</div>
-					<h3>Most scientific debates aren’t about the sensational stuff.</h3>
+					<h3>Knowledge is made by people, not dropped from the sky.</h3>
 					<p>
-						While there are legitimate disputes in science, they’re usually about specialized, “boring”
-						questions—not the headline-grabbing claims that pseudoscience leans on.
+						Math and science are constructed: tools, arguments, and methods built over time. When we hide
+						the human effort, learning turns into memorizing artifacts.
 					</p>
 					<ul>
-						<li>New cell signaling pathways</li>
-						<li>Feeding strategies of a specific frog species</li>
-						<li>How to interpret a thin slice of data</li>
+						<li>An equal sign is a claim to be justified</li>
+						<li>Consensus is the result of real disagreement</li>
+						<li>Evidence beats vibes, but it takes time</li>
 					</ul>
 				</div>
 				<div class="panel panel--accent">
 					<div class="panel__tag">The goal</div>
-					<h3>Show the real consensus—and the real questions.</h3>
+					<h3>Separate the basketball from the bumps.</h3>
 					<p>
-						This project highlights where expert agreement is strong and contrasts it with the quieter, more
-						technical debates that actually drive science forward.
+						We highlight the stable core of consensus while surfacing the smaller, technical questions that
+						headlines often exaggerate.
 					</p>
 					<div class="signal-row">
 						<span>Consensus &uarr;</span>
@@ -131,8 +219,8 @@ function goToAsk() {
 			<div class="section__header">
 				<h2>The guiding idea</h2>
 				<p>
-					Scientific consensus isn’t the enemy of curiosity—it’s the launchpad. We spotlight the foundations,
-					then map the smaller debates that matter.
+					Consensus isn’t the end of curiosity—it’s the launchpad. We show the foundations, then map the
+					smaller debates that give science its texture.
 				</p>
 			</div>
 			<div class="card-grid">
@@ -143,10 +231,65 @@ function goToAsk() {
 			</div>
 		</section>
 
-		<section class="section reveal" style="animation-delay: 0.35s">
+		<section class="section reveal" style="animation-delay: 0.3s">
+			<div class="section__header">
+				<h2>Consensus is a spectrum</h2>
+				<p>
+					There isn’t just “known” and “unknown.” Most ideas live on a continuum—some are stable foundations,
+					others are still being argued, tested, or refined.
+				</p>
+			</div>
+			<div class="spectrum-grid">
+				<article v-for="stage in consensusSpectrum" :key="stage.title" class="spectrum-card">
+					<span class="spectrum-tag">{{ stage.tag }}</span>
+					<h3>{{ stage.title }}</h3>
+					<p>{{ stage.body }}</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section section--wide reveal" style="animation-delay: 0.35s">
+			<div class="basketball">
+				<div class="basketball__copy">
+					<h2>The basketball vs the bumps</h2>
+					<p>
+						Consensus is the ball: shape, size, and weight are well known. New studies add
+						bumps—interesting, but not always world-changing. We keep that scale clear.
+					</p>
+					<ul>
+						<li>Basketball = the stable core of evidence.</li>
+						<li>Bumps = fresh studies, methods, or edge cases.</li>
+						<li>Big news ≠ big change.</li>
+					</ul>
+				</div>
+				<div class="basketball__visual">
+					<div class="ball">
+						<span v-for="bump in bumps" :key="bump" class="ball__bump">{{ bump }}</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section reveal" style="animation-delay: 0.4s">
+			<div class="section__header">
+				<h2>Small lenses that change everything</h2>
+				<p>A few framing tools make scientific stories easier to understand—and harder to manipulate.</p>
+			</div>
+			<div class="lens-grid">
+				<article v-for="lens in lenses" :key="lens.title" class="lens-card">
+					<h3>{{ lens.title }}</h3>
+					<p>{{ lens.body }}</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section reveal" style="animation-delay: 0.45s">
 			<div class="section__header">
 				<h2>What you’ll get</h2>
-				<p>From any video or claim, you get a calm answer: what’s settled, what’s open, and why.</p>
+				<p>
+					From any video or claim, you get a calm answer: what’s settled, what’s open, and how big the change
+					is.
+				</p>
 			</div>
 			<div class="signal-grid">
 				<div v-for="signal in signals" :key="signal.title" class="signal">
@@ -156,13 +299,13 @@ function goToAsk() {
 			</div>
 		</section>
 
-		<section class="section section--wide reveal" style="animation-delay: 0.45s">
+		<section class="section section--wide reveal" style="animation-delay: 0.55s">
 			<div class="story">
 				<div>
-					<h2>Curious about what you’re watching?</h2>
+					<h2>Bring a claim. Leave with context.</h2>
 					<p>
-						Ask in plain language. We translate the science and point to the sources—so you can spend more
-						time learning and less time sorting noise.
+						Ask in plain language. We translate the evidence, the consensus level, and the open questions—so
+						you can spend more time learning and less time sorting noise.
 					</p>
 					<div class="ask-card">
 						<label class="ask-label" for="ask">Ask a question</label>
@@ -182,11 +325,11 @@ function goToAsk() {
 					</div>
 					<div>
 						<span>02</span>
-						<p>See consensus vs active debate.</p>
+						<p>See where the consensus sits on the spectrum.</p>
 					</div>
 					<div>
 						<span>03</span>
-						<p>Get sources and next questions.</p>
+						<p>Get sources, open questions, and what would change minds.</p>
 					</div>
 				</div>
 			</div>
@@ -430,6 +573,140 @@ function goToAsk() {
 }
 
 .card p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.spectrum-grid {
+	display: grid;
+	gap: 18px;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.spectrum-card {
+	padding: 20px;
+	border-radius: 20px;
+	background: #fff;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+	display: grid;
+	gap: 8px;
+}
+
+.spectrum-tag {
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--consensus-muted);
+}
+
+.spectrum-card h3 {
+	font-family: "Fraunces", serif;
+}
+
+.spectrum-card p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.basketball {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	align-items: center;
+}
+
+.basketball__copy h2 {
+	font-family: "Fraunces", serif;
+	font-size: clamp(2rem, 4vw, 3rem);
+	margin-bottom: 12px;
+}
+
+.basketball__copy p {
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.basketball__copy ul {
+	margin: 14px 0 0 18px;
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.basketball__visual {
+	display: grid;
+	place-items: center;
+}
+
+.ball {
+	width: min(260px, 70vw);
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 25%, #ffe3c9 0%, #d6895f 55%, #9b4b2b 100%);
+	position: relative;
+	box-shadow:
+		0 24px 50px rgba(21, 17, 13, 0.25),
+		inset 0 16px 30px rgba(255, 255, 255, 0.3);
+	display: grid;
+	place-items: center;
+}
+
+.ball__bump {
+	position: absolute;
+	background: rgba(255, 255, 255, 0.92);
+	border: 1px solid rgba(21, 17, 13, 0.12);
+	border-radius: 999px;
+	padding: 6px 10px;
+	font-size: 0.7rem;
+	white-space: nowrap;
+	box-shadow: 0 8px 18px rgba(21, 17, 13, 0.18);
+}
+
+.ball__bump:nth-child(1) {
+	top: 12%;
+	left: 18%;
+}
+
+.ball__bump:nth-child(2) {
+	top: 20%;
+	right: 8%;
+}
+
+.ball__bump:nth-child(3) {
+	bottom: 18%;
+	left: 10%;
+}
+
+.ball__bump:nth-child(4) {
+	bottom: 8%;
+	right: 22%;
+}
+
+.ball__bump:nth-child(5) {
+	top: 55%;
+	left: 42%;
+}
+
+.lens-grid {
+	display: grid;
+	gap: 18px;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.lens-card {
+	padding: 20px;
+	border-radius: 20px;
+	background: var(--consensus-cream);
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+}
+
+.lens-card h3 {
+	font-family: "Fraunces", serif;
+	margin-bottom: 8px;
+}
+
+.lens-card p {
 	color: var(--consensus-muted);
 	line-height: 1.55;
 }

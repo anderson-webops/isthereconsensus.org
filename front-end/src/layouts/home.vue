@@ -1,10 +1,17 @@
 <template>
 	<div class="site">
+		<header class="site__header">
+			<NuxtLink class="site__brand" to="/">Is There Consensus?</NuxtLink>
+			<nav class="site__nav">
+				<NuxtLink to="/how">How it works</NuxtLink>
+				<NuxtLink to="/ask">Ask</NuxtLink>
+			</nav>
+		</header>
 		<slot />
 		<footer class="site__footer">
 			<div class="footer__brand">Is There Consensus?</div>
 			<p>
-				A calm place for the curious: find what science agrees on, where the real debates are, and what to ask
+				A calm place for the curious: see how knowledge is built, where the consensus sits, and what to ask
 				next.
 			</p>
 			<div class="footer__meta">
@@ -19,6 +26,38 @@
 .site {
 	min-height: 100vh;
 	padding: 32px clamp(24px, 6vw, 96px) 72px;
+}
+
+.site__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 18px;
+	padding-bottom: 24px;
+}
+
+.site__brand {
+	font-family: "Fraunces", serif;
+	font-size: 1.25rem;
+	color: var(--consensus-ink);
+	text-decoration: none;
+}
+
+.site__nav {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.site__nav a {
+	text-decoration: none;
+	color: var(--consensus-muted);
+	font-weight: 600;
+	font-size: 0.95rem;
+}
+
+.site__nav a.router-link-active {
+	color: var(--consensus-ink);
 }
 
 .site__footer {

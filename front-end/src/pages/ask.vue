@@ -3,11 +3,36 @@ const route = useRoute();
 const router = useRouter();
 
 const prompts = [
-	"Summarize the video",
-	"Recommend related content",
-	"Why does science face bias?",
-	"How does Crash Course balance education and engagement?",
-	'What is the "scandal hypothesis"?'
+	"Did we invent math or discover it?",
+	"What does consensus mean in climate science?",
+	"Is this headline a bump on the basketball?",
+	"How strong is the evidence for this claim?",
+	"Relative vs absolute risk: what actually changed?"
+];
+
+const scaffolds = [
+	{
+		title: "Consensus check",
+		template: "Is there scientific consensus that [claim]?"
+	},
+	{
+		title: "Mechanism question",
+		template: "What mechanism would have to be true for [claim] to work?"
+	},
+	{
+		title: "Scope & limits",
+		template: "Where does [claim] hold up, and where does it fail?"
+	},
+	{
+		title: "Risk lens",
+		template: "What is the absolute risk change in [claim], not just the relative risk?"
+	}
+];
+
+const lenses = [
+	"Consensus is earned through evidence, not a vote.",
+	"Separate the stable core from the new bumps.",
+	"Ask what would change minds."
 ];
 
 const question = ref("");
@@ -23,6 +48,10 @@ watchEffect(() => {
 
 function choosePrompt(prompt: string) {
 	question.value = prompt;
+}
+
+function applyScaffold(template: string) {
+	question.value = template;
 }
 
 function runPreview() {
@@ -43,10 +72,10 @@ function backHome() {
 	<div class="ask">
 		<header class="ask__header">
 			<p class="eyebrow">Consensus check</p>
-			<h1>Ask about what you watched.</h1>
+			<h1>Ask about a claim.</h1>
 			<p>
-				Paste a claim, summarize the video, or pick a starter prompt. We will map consensus and surface the real
-				questions.
+				Paste a claim, summarize the video, or use a scaffold. We will map consensus, show the real debates, and
+				keep the scale honest.
 			</p>
 		</header>
 
@@ -65,7 +94,7 @@ function backHome() {
 			</section>
 
 			<section class="ask__panel">
-				<p class="prompt-title">Not sure what to ask?</p>
+				<p class="prompt-title">Starter prompts</p>
 				<div class="prompt-grid">
 					<button
 						v-for="prompt in prompts"
@@ -80,18 +109,46 @@ function backHome() {
 			</section>
 		</div>
 
+		<section class="ask__extras">
+			<div class="extras-card">
+				<h3>Question scaffolds</h3>
+				<p class="muted">
+					These templates turn a vague curiosity into a precise, testable question. Replace the brackets with
+					your topic.
+				</p>
+				<div class="scaffold-grid">
+					<button
+						v-for="scaffold in scaffolds"
+						:key="scaffold.title"
+						class="scaffold-chip"
+						type="button"
+						@click="applyScaffold(scaffold.template)"
+					>
+						<span>{{ scaffold.title }}</span>
+						<small>{{ scaffold.template }}</small>
+					</button>
+				</div>
+			</div>
+			<div class="extras-card">
+				<h3>Consensus lenses</h3>
+				<ul class="lens-list">
+					<li v-for="lens in lenses" :key="lens">{{ lens }}</li>
+				</ul>
+			</div>
+		</section>
+
 		<section v-if="hasPreview" class="preview">
 			<div class="preview__header">
 				<h2>Preview (coming soon)</h2>
 				<p>
-					This is where the consensus snapshot, debate map, and source trail will appear. For now, your prompt
-					is saved below.
+					This is where the consensus snapshot, debate map, and evidence trail will appear. For now, your
+					prompt is saved below.
 				</p>
 			</div>
 			<div class="preview__cards">
 				<div class="preview__card">
 					<h3>Consensus snapshot</h3>
-					<p>We will summarize where expert agreement stands for this claim.</p>
+					<p>We will summarize where expert agreement sits on the spectrum.</p>
 				</div>
 				<div class="preview__card">
 					<h3>Your prompt</h3>
@@ -101,6 +158,10 @@ function backHome() {
 				<div class="preview__card">
 					<h3>Debate map</h3>
 					<p>We will show the real open questions that scientists are discussing.</p>
+				</div>
+				<div class="preview__card">
+					<h3>Scale check</h3>
+					<p>We highlight absolute vs relative risk so bumps don’t feel like earthquakes.</p>
 				</div>
 			</div>
 			<button class="cta ghost" type="button" @click="resetPreview">Clear preview</button>
@@ -219,6 +280,72 @@ function backHome() {
 .prompt-chip:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
+}
+
+.ask__extras {
+	display: grid;
+	gap: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.extras-card {
+	background: var(--consensus-cream);
+	border-radius: 20px;
+	padding: 20px;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+	display: grid;
+	gap: 12px;
+}
+
+.extras-card h3 {
+	font-family: "Fraunces", serif;
+}
+
+.extras-card .muted {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.scaffold-grid {
+	display: grid;
+	gap: 10px;
+}
+
+.scaffold-chip {
+	text-align: left;
+	padding: 12px 14px;
+	border-radius: 16px;
+	border: 1px solid rgba(21, 17, 13, 0.12);
+	background: #fff;
+	font-family: inherit;
+	display: grid;
+	gap: 4px;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.scaffold-chip span {
+	font-weight: 600;
+}
+
+.scaffold-chip small {
+	color: var(--consensus-muted);
+	font-size: 0.8rem;
+}
+
+.scaffold-chip:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
+}
+
+.lens-list {
+	margin: 0;
+	padding-left: 18px;
+	color: var(--consensus-muted);
+	line-height: 1.6;
 }
 
 .preview {
