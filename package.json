@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "1.0.0",
 	"private": true,
-	"packageManager": "npm@11.10.1",
+	"packageManager": "npm@11.12.0",
 	"description": "Monorepo for isthereconsensus.org",
 	"author": "Jacob Anderson",
 	"license": "ISC",
@@ -25,21 +25,21 @@
 		"up": "node ./scripts/up.mjs"
 	},
 	"devDependencies": {
-		"@antfu/eslint-config": "^7.4.3",
-		"@typescript-eslint/eslint-plugin": "^8.56.1",
-		"@typescript-eslint/parser": "^8.56.1",
-		"eslint": "^9.39.3",
+		"@antfu/eslint-config": "^7.7.3",
+		"@typescript-eslint/eslint-plugin": "^8.57.1",
+		"@typescript-eslint/parser": "^8.57.1",
+		"eslint": "^10.1.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-prettier": "^5.5.5",
 		"eslint-plugin-vue": "^10.8.0",
-		"globals": "^17.3.0",
+		"globals": "^17.4.0",
 		"prettier": "^3.8.1",
-		"taze": "^19.9.2",
+		"taze": "^19.10.0",
 		"typescript": "^5.9.3"
 	},
 	"overrides": {
 		"readdir-glob": {
-			"minimatch": "^10.2.2"
+			"minimatch": "^10.2.4"
 		},
 		"qs": "6.14.1"
 	},
