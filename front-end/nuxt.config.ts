@@ -96,7 +96,16 @@ export default defineNuxtConfig({
 				{ name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
 				{ name: "theme-color", media: "(prefers-color-scheme: light)", content: "white" },
 				{ name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#222222" }
-			]
+			],
+			script: isDev
+				? []
+				: [
+						{
+							defer: true,
+							src: "https://analytics.isthereconsensus.org/script.js",
+							"data-website-id": "6a5e2165-ed75-4c43-9640-b19128069984"
+						}
+					]
 		}
 	},
 
