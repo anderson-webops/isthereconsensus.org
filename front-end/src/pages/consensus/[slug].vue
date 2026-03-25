@@ -203,19 +203,17 @@ async function flagQuestion(questionId: string) {
 
 		<section class="topic__tabs">
 			<button class="tab" :class="{ active: activeTab === 'community' }" @click="activeTab = 'community'">
-				Community lane
+				Questions
 			</button>
 			<button class="tab" :class="{ active: activeTab === 'consensus' }" @click="activeTab = 'consensus'">
-				Consensus map
+				Consensus
 			</button>
-			<button class="tab" :class="{ active: activeTab === 'gap' }" @click="activeTab = 'gap'">
-				Gap + sentiment
-			</button>
+			<button class="tab" :class="{ active: activeTab === 'gap' }" @click="activeTab = 'gap'">Sentiment</button>
 		</section>
 
 		<section v-if="activeTab === 'community'" class="topic__panel topic__panel--community">
 			<div class="topic__post">
-				<h2>Post a question in this lane</h2>
+				<h2>Post a question</h2>
 				<p class="muted">Ask the focused version of the question, not the biggest version of the fear.</p>
 
 				<div class="starter-row">
@@ -269,13 +267,11 @@ async function flagQuestion(questionId: string) {
 			<div class="topic__list">
 				<div class="topic__list-header">
 					<div>
-						<h2>Questions in this lane</h2>
-						<p class="muted">
-							{{ questions.length }} questions so far, organized against the same consensus frame.
-						</p>
+						<h2>Questions</h2>
+						<p class="muted">{{ questions.length }} questions so far, all tied to the same topic.</p>
 					</div>
 					<div class="topic__search">
-						<label class="ask-label" for="question-search">Search this lane</label>
+						<label class="ask-label" for="question-search">Search questions</label>
 						<input
 							id="question-search"
 							v-model="questionSearch"
@@ -408,11 +404,10 @@ async function flagQuestion(questionId: string) {
 			<CommunitySentimentPanel :topic-slug="slug" />
 
 			<article class="info-card info-card--wide">
-				<h2>How to use this gap map</h2>
+				<h2>How to use this view</h2>
 				<p>
-					The “gap” is the distance between what a headline or casual conversation suggests and what the
-					evidence base actually supports. This lane keeps that gap visible so curiosity does not get hijacked
-					by hype.
+					The point of this view is to show the distance between public impression and the evidence base. That
+					keeps curiosity from getting hijacked by hype.
 				</p>
 			</article>
 		</section>

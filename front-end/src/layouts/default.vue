@@ -3,9 +3,9 @@
 		<header class="site__header">
 			<NuxtLink class="site__brand" to="/">Is There Consensus?</NuxtLink>
 			<nav class="site__nav">
-				<NuxtLink to="/how">How it works</NuxtLink>
+				<NuxtLink to="/consensus">Browse</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
-				<NuxtLink to="/setup">Setup</NuxtLink>
+				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/account">Account</NuxtLink>
 			</nav>
 		</header>

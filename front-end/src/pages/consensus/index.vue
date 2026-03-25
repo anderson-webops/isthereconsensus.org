@@ -9,7 +9,7 @@ const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
 );
 const { data: questionsData } = await useAsyncData("recent-questions", () =>
-	$fetch<QuestionsResponse>(apiUrl("/questions?limit=18"))
+	$fetch<QuestionsResponse>(apiUrl("/questions?limit=9"))
 );
 
 const search = ref("");
@@ -66,33 +66,33 @@ const debatedTopics = computed(
 <template>
 	<div class="board">
 		<header class="board__header">
-			<p class="eyebrow">Consensus board</p>
-			<h1>Browse questions by topic, consensus strength, and confusion pattern.</h1>
+			<p class="eyebrow">Browse topics</p>
+			<h1>Start with the topic, then drill into the question.</h1>
 			<p>
-				Use the board as a map, not just a feed. Each lane shows what is stable, where the debate really is, and
-				what kinds of questions belong there.
+				Each topic bundles three things in one place: a short consensus summary, the public question board, and
+				a sentiment view showing where crowd opinion differs from the evidence.
 			</p>
 			<div class="board__actions">
 				<NuxtLink class="cta primary" to="/ask">Post a question</NuxtLink>
-				<NuxtLink class="cta ghost" to="/setup">Open setup hub</NuxtLink>
+				<NuxtLink class="cta ghost" to="/how">How it works</NuxtLink>
 			</div>
 		</header>
 
 		<section class="stats">
 			<article class="stat-card">
-				<p>Topic lanes</p>
+				<p>Topics</p>
 				<h2>{{ enrichedTopics.length }}</h2>
-				<span>Curated consensus maps</span>
+				<span>Organized entry points</span>
 			</article>
 			<article class="stat-card">
 				<p>Average consensus</p>
 				<h2>{{ averageConsensus }}%</h2>
-				<span>Across current topic lanes</span>
+				<span>Across current topics</span>
 			</article>
 			<article class="stat-card">
-				<p>Active debate lanes</p>
+				<p>Active debates</p>
 				<h2>{{ debatedTopics }}</h2>
-				<span>Where mechanism and magnitude are still contested</span>
+				<span>Topics with meaningful open questions</span>
 			</article>
 		</section>
 
@@ -103,7 +103,7 @@ const debatedTopics = computed(
 					id="board-search"
 					v-model="search"
 					type="text"
-					placeholder="Try bias, misinformation, replication, communication..."
+					placeholder="Search by topic, question, or keyword..."
 				/>
 			</div>
 			<div class="controls__filters">
@@ -122,13 +122,10 @@ const debatedTopics = computed(
 
 		<section class="topics">
 			<div class="section-head">
-				<h2>Topic lanes</h2>
-				<p>
-					Each lane carries a different kind of consensus work: stable core, real debate, or translation
-					problems.
-				</p>
+				<h2>Topics</h2>
+				<p>Open a topic when you want the short version first and the full discussion after that.</p>
 			</div>
-			<div v-if="!filteredTopics.length" class="muted">No topic lanes match that filter yet.</div>
+			<div v-if="!filteredTopics.length" class="muted">No topics match that filter yet.</div>
 			<div v-else class="topics__grid">
 				<NuxtLink
 					v-for="topic in filteredTopics"
@@ -154,7 +151,7 @@ const debatedTopics = computed(
 						<span>{{ topic.guide.openQuestions.length }} open edges</span>
 						<span>{{ topic.guide.commonMisreads.length }} common misreads</span>
 					</div>
-					<span class="topic-card__cta">Open lane →</span>
+					<span class="topic-card__cta">Open topic →</span>
 				</NuxtLink>
 			</div>
 		</section>
@@ -162,10 +159,7 @@ const debatedTopics = computed(
 		<section class="recent">
 			<div class="section-head">
 				<h2>Recent questions</h2>
-				<p>
-					Recent posts stay grounded by their lane’s consensus framing instead of floating as isolated hot
-					takes.
-				</p>
+				<p>A small sample from the board. If a thread looks useful, open the topic and read it in context.</p>
 			</div>
 			<div v-if="!filteredQuestions.length" class="muted">No recent questions match that filter yet.</div>
 			<div v-else class="recent__list">
