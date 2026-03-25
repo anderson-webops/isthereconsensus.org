@@ -1,7 +1,6 @@
 // noinspection ES6PreferShortImport
 
 import type { ModuleOptions as ColorModeOptions } from "@nuxtjs/color-mode";
-import type { ModuleOptions as PwaModuleOptions } from "@vite-pwa/nuxt";
 import type { NuxtConfig } from "nuxt/schema";
 import { existsSync } from "node:fs";
 import path from "node:path";
@@ -9,7 +8,6 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { config as loadEnv } from "dotenv";
 import { defineNuxtConfig } from "nuxt/config";
-import { devSwEnabled, pwa } from "./src/config/pwa";
 import { appDescription } from "./src/constants";
 import { normalizeInternalApiBase, normalizePublicApiBase } from "./src/utils/api";
 
@@ -31,11 +29,8 @@ for (const envPath of envPathCandidates) {
 }
 
 const isDev = process.env.NODE_ENV === "development";
-const enablePwaEnv = process.env.ENABLE_PWA === "true" || process.env.VITE_PLUGIN_PWA === "true";
-const enablePwa = enablePwaEnv && (!isDev || devSwEnabled);
 const publicApiBase = normalizePublicApiBase(process.env.PUBLIC_API_BASE, isDev);
 const internalApiBase = normalizeInternalApiBase(process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE);
-const manifestLinks = enablePwa ? [{ rel: "manifest", href: "/manifest.webmanifest" }] : [];
 const faviconLinks = [
 	{
 		rel: "icon",
@@ -62,13 +57,11 @@ const faviconLinks = [
 		rel: "apple-touch-icon",
 		sizes: "180x180",
 		href: "/apple-touch-icon.png"
-	},
-	...manifestLinks
+	}
 ];
 
 type ExtendedNuxtConfig = NuxtConfig & {
 	colorMode?: Partial<ColorModeOptions>;
-	pwa?: PwaModuleOptions | false;
 };
 
 type ColorModePreference = "light" | "dark" | "system";
@@ -81,7 +74,7 @@ export default defineNuxtConfig({
 		"@": srcAlias
 	},
 
-	modules: ["@vueuse/nuxt", "@unocss/nuxt", "@pinia/nuxt", "@nuxtjs/color-mode", "@vite-pwa/nuxt", "@nuxt/eslint"],
+	modules: ["@vueuse/nuxt", "@unocss/nuxt", "@pinia/nuxt", "@nuxtjs/color-mode", "@nuxt/eslint"],
 
 	srcDir: "src",
 
@@ -120,7 +113,6 @@ export default defineNuxtConfig({
 			to: process.env.RESEND_TO
 		},
 		public: {
-			pwaDevSw: devSwEnabled,
 			apiBase: publicApiBase,
 			siteUrl: process.env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
 			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || ""
@@ -168,8 +160,6 @@ export default defineNuxtConfig({
 			}
 		}
 	},
-
-	pwa: { ...pwa, disable: !enablePwa },
 	vite: {
 		resolve: {
 			alias: {

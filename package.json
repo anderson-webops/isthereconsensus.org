@@ -41,7 +41,9 @@
 		"readdir-glob": {
 			"minimatch": "^10.2.4"
 		},
-		"qs": "6.14.1"
+		"qs": "6.14.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"qs": "6.14.2"
+	}
 }
