@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import { getTopicGuide } from "~/data/topicGuides";
+
 definePageMeta({
 	layout: "home"
 });
@@ -114,6 +117,33 @@ const explainers = [
 		title: "Basketball vs bumps in action",
 		body: "A headline looks huge until you see it in the context of decades of data."
 	}
+];
+
+const featuredTopics = [
+	{
+		title: "Consensus foundations",
+		slug: "consensus-foundations",
+		description: "Why stable claims stay stable, and what it actually takes to move a field."
+	},
+	{
+		title: "Active scientific debates",
+		slug: "active-debates",
+		description: "Where the real disagreement is often narrower and more technical than the headlines suggest."
+	},
+	{
+		title: "Media & misinformation",
+		slug: "media-misinformation",
+		description: "How framing, false balance, and risk language distort public understanding."
+	}
+].map((topic) => ({
+	...topic,
+	guide: getTopicGuide(topic.slug)
+}));
+
+const launchSignals = [
+	"Live readiness checks for frontend, backend, Mongo, cookies, captcha, and API origin",
+	"A copyable server-agent prompt tailored to this repo’s Nuxt SSR plus Express architecture",
+	"A production checklist covering services, reverse proxy, TLS, environment, and go-live validation"
 ];
 
 const headlineReality = [
@@ -317,6 +347,32 @@ function goToAsk() {
 			</div>
 		</section>
 
+		<section class="section reveal" style="animation-delay: 0.48s">
+			<div class="section__header">
+				<h2>Featured topic lanes</h2>
+				<p>
+					Each lane has its own consensus profile, open questions, and common framing mistakes so the board
+					feels like a map instead of a pile.
+				</p>
+			</div>
+			<div class="feature-grid">
+				<NuxtLink
+					v-for="topic in featuredTopics"
+					:key="topic.slug"
+					class="feature-card"
+					:to="`/consensus/${topic.slug}`"
+				>
+					<h3>{{ topic.title }}</h3>
+					<p>{{ topic.description }}</p>
+					<ConsensusMeter
+						:level="topic.guide.consensusScore"
+						:label="topic.guide.consensusLabel"
+						:caption="topic.guide.snapshot"
+					/>
+				</NuxtLink>
+			</div>
+		</section>
+
 		<section class="section reveal" style="animation-delay: 0.5s">
 			<div class="section__header">
 				<h2>Mini explainers</h2>
@@ -340,6 +396,25 @@ function goToAsk() {
 					<summary>{{ card.headline }}</summary>
 					<p>{{ card.reality }}</p>
 				</details>
+			</div>
+		</section>
+
+		<section class="section section--wide reveal" style="animation-delay: 0.58s">
+			<div class="launch-panel">
+				<div>
+					<h2>Need to finish the deployment?</h2>
+					<p>
+						The site now includes a setup hub with live readiness checks and a server-agent prompt written
+						for this exact stack.
+					</p>
+					<ul>
+						<li v-for="signal in launchSignals" :key="signal">{{ signal }}</li>
+					</ul>
+				</div>
+				<div class="launch-panel__cta">
+					<NuxtLink class="cta primary" to="/setup">Open setup hub</NuxtLink>
+					<p class="muted">Use it to line up services, nginx, env vars, Mongo, and posting safeguards.</p>
+				</div>
 			</div>
 		</section>
 
@@ -843,6 +918,34 @@ function goToAsk() {
 	line-height: 1.55;
 }
 
+.feature-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.feature-card {
+	background: #fff;
+	border-radius: 22px;
+	padding: 20px;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+	text-decoration: none;
+	color: var(--consensus-ink);
+	display: grid;
+	gap: 12px;
+}
+
+.feature-card h3 {
+	font-family: "Fraunces", serif;
+	margin: 0;
+}
+
+.feature-card p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
 .signal-grid {
 	display: grid;
 	gap: 18px;
@@ -871,6 +974,37 @@ function goToAsk() {
 	background: rgba(21, 17, 13, 0.06);
 	border-radius: 28px;
 	padding: clamp(24px, 4vw, 40px);
+}
+
+.launch-panel {
+	display: grid;
+	gap: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.launch-panel h2 {
+	font-family: "Fraunces", serif;
+	margin-bottom: 10px;
+}
+
+.launch-panel p,
+.launch-panel li,
+.muted {
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.launch-panel ul {
+	margin: 12px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
+}
+
+.launch-panel__cta {
+	display: grid;
+	gap: 12px;
+	align-content: center;
 }
 
 .story {

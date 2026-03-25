@@ -5,6 +5,7 @@
 			<nav class="site__nav">
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
+				<NuxtLink to="/setup">Setup</NuxtLink>
 			</nav>
 		</header>
 		<slot />

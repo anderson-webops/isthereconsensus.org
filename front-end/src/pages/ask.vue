@@ -2,6 +2,8 @@
 import type { QuestionResponse, Topic, TopicResponse } from "~/types/board";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import { getTopicGuide } from "~/data/topicGuides";
 
 const route = useRoute();
 const router = useRouter();
@@ -11,15 +13,16 @@ const { isLoggedIn, currentAccount } = useAuth();
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
 const prompts = [
-	"Summarize the video",
-	"Recommend related content",
-	"Why does science face bias?",
-	"How does Crash Course balance education and engagement?",
-	'What is the "scandal hypothesis"?'
+	"Where does the consensus actually sit on this claim?",
+	"What part of this headline is the stable core and what part is just a bump?",
+	"Is this disagreement about whether the effect exists or only how big it is?",
+	"What would experts need to see before changing their minds?",
+	"Does this video keep the scale of the evidence honest?"
 ];
 
 const question = ref("");
 const claim = ref("");
+const sourceUrl = ref("");
 const selectedTopic = ref("");
 const submitting = ref(false);
 const errorMessage = ref("");
@@ -31,6 +34,7 @@ const { data: topicsData, pending: topicsPending } = await useAsyncData("topics"
 );
 
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
+const selectedGuide = computed(() => getTopicGuide(selectedTopic.value));
 
 watchEffect(() => {
 	const incoming = route.query.question;
@@ -65,7 +69,7 @@ async function submitQuestion() {
 		return;
 	}
 	if (!selectedTopic.value) {
-		errorMessage.value = "Pick a main concept so we can organize your question.";
+		errorMessage.value = "Pick a topic lane so we can organize your question.";
 		return;
 	}
 	if (captchaRequired.value && !captchaToken.value) {
@@ -79,6 +83,7 @@ async function submitQuestion() {
 			topic: selectedTopic.value,
 			title,
 			body: claim.value.trim(),
+			sourceUrl: sourceUrl.value.trim(),
 			captchaToken: captchaToken.value
 		};
 		const response = await $fetch<QuestionResponse>(`${apiBase}/api/questions`, {
@@ -100,22 +105,20 @@ async function submitQuestion() {
 		submitting.value = false;
 	}
 }
-
-function backHome() {
-	router.push("/");
-}
 </script>
 
 <template>
 	<div class="ask">
 		<header class="ask__header">
 			<p class="eyebrow">Consensus check</p>
-			<h1>Ask about what you watched.</h1>
+			<h1>Bring the claim, keep the scale honest.</h1>
 			<p>
-				Paste a claim, summarize the video, or pick a starter prompt. We will map consensus and surface the real
-				questions.
+				Paste the claim, link the source when you have it, and place the question in the lane where it actually
+				belongs. That keeps the later conversation sharper.
 			</p>
-			<p class="muted">Posts appear in the community lane. Expert consensus summaries are curated separately.</p>
+			<p class="muted">
+				Posts go to the community lane first. Curated consensus maps stay separate from the feed.
+			</p>
 		</header>
 
 		<div class="ask__grid">
@@ -126,7 +129,8 @@ function backHome() {
 					hint="Only logged-in members can post to the board."
 				/>
 				<div v-else class="muted">Signed in as {{ currentAccount?.name }}</div>
-				<label class="ask-label" for="topic">Main concept</label>
+
+				<label class="ask-label" for="topic">Topic lane</label>
 				<div v-if="topicsPending" class="muted">Loading topics...</div>
 				<div v-else-if="!topics.length" class="muted">No topics available yet.</div>
 				<div v-else class="topic-grid">
@@ -144,10 +148,28 @@ function backHome() {
 				</div>
 
 				<label class="ask-label" for="question">Your question</label>
-				<textarea id="question" v-model="question" rows="4" placeholder="What is the video claiming?" />
+				<textarea
+					id="question"
+					v-model="question"
+					rows="4"
+					placeholder="What are you actually trying to check?"
+				/>
 
-				<label class="ask-label" for="claim">Optional: the specific claim</label>
-				<input id="claim" v-model="claim" type="text" placeholder="Short, exact phrasing helps." />
+				<label class="ask-label" for="claim">Context or quoted claim</label>
+				<textarea
+					id="claim"
+					v-model="claim"
+					rows="4"
+					placeholder="Paste the quote, summarize the argument, or explain what felt off."
+				/>
+
+				<label class="ask-label" for="source">Source URL</label>
+				<input
+					id="source"
+					v-model="sourceUrl"
+					type="url"
+					placeholder="Optional, but useful when you can point to the original source."
+				/>
 
 				<div v-if="isLoggedIn" class="captcha-block">
 					<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
@@ -164,24 +186,46 @@ function backHome() {
 					>
 						{{ submitting ? "Posting..." : "Post to the board" }}
 					</button>
-					<button class="cta ghost" type="button" @click="backHome">Back home</button>
+					<NuxtLink class="cta ghost" to="/consensus">Browse the board</NuxtLink>
 				</div>
 			</section>
 
-			<section class="ask__panel">
-				<p class="prompt-title">Not sure what to ask?</p>
-				<div class="prompt-grid">
-					<button
-						v-for="prompt in prompts"
-						:key="prompt"
-						class="prompt-chip"
-						type="button"
-						@click="choosePrompt(prompt)"
-					>
-						{{ prompt }}
-					</button>
+			<section class="ask__panel ask__panel--context">
+				<div>
+					<p class="prompt-title">Starter prompts</p>
+					<div class="prompt-grid">
+						<button
+							v-for="prompt in prompts"
+							:key="prompt"
+							class="prompt-chip"
+							type="button"
+							@click="choosePrompt(prompt)"
+						>
+							{{ prompt }}
+						</button>
+					</div>
 				</div>
-				<p class="muted">You can edit the prompt after clicking it.</p>
+
+				<div v-if="selectedTopic" class="guide">
+					<h2>{{ topics.find((topic) => topic.slug === selectedTopic)?.title || "Selected lane" }}</h2>
+					<ConsensusMeter
+						:level="selectedGuide.consensusScore"
+						:label="selectedGuide.consensusLabel"
+						:caption="selectedGuide.snapshot"
+					/>
+					<div class="guide__section">
+						<h3>Common misreads</h3>
+						<ul>
+							<li v-for="item in selectedGuide.commonMisreads" :key="item">{{ item }}</li>
+						</ul>
+					</div>
+					<div class="guide__section">
+						<h3>What moves this lane forward</h3>
+						<ul>
+							<li v-for="item in selectedGuide.whatWouldChangeMinds" :key="item">{{ item }}</li>
+						</ul>
+					</div>
+				</div>
 			</section>
 		</div>
 	</div>
@@ -195,12 +239,12 @@ function backHome() {
 
 .ask__header h1 {
 	font-family: "Fraunces", serif;
-	font-size: clamp(2.4rem, 4vw, 3.6rem);
+	font-size: clamp(2.5rem, 4.4vw, 3.8rem);
 	margin-bottom: 12px;
 }
 
 .ask__header p {
-	max-width: 640px;
+	max-width: 720px;
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
@@ -208,7 +252,7 @@ function backHome() {
 .ask__grid {
 	display: grid;
 	gap: 20px;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .ask__panel {
@@ -218,10 +262,15 @@ function backHome() {
 	border: 1px solid rgba(21, 17, 13, 0.08);
 	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
 	display: grid;
-	gap: 12px;
+	gap: 14px;
 }
 
-.ask-label {
+.ask__panel--context {
+	align-content: start;
+}
+
+.ask-label,
+.prompt-title {
 	text-transform: uppercase;
 	letter-spacing: 0.12em;
 	font-size: 0.7rem;
@@ -253,20 +302,11 @@ function backHome() {
 	cursor: pointer;
 	display: grid;
 	gap: 4px;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
 }
 
 .topic-chip.active {
-	border-color: var(--consensus-ember);
-	box-shadow: 0 12px 24px rgba(211, 107, 56, 0.2);
-	transform: translateY(-1px);
-}
-
-.topic-chip small {
-	color: var(--consensus-muted);
-	font-size: 0.75rem;
+	border-color: rgba(211, 107, 56, 0.28);
+	box-shadow: 0 12px 24px rgba(211, 107, 56, 0.15);
 }
 
 .ask__actions {
@@ -275,18 +315,13 @@ function backHome() {
 	flex-wrap: wrap;
 }
 
-.captcha-block {
-	display: grid;
-	gap: 8px;
-}
-
 .cta {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 999px;
 	padding: 12px 22px;
-	border: none;
+	border: 1px solid rgba(21, 17, 13, 0.12);
 	font-size: 0.95rem;
 	font-weight: 600;
 	cursor: pointer;
@@ -297,28 +332,17 @@ function backHome() {
 .cta.primary {
 	background: var(--consensus-ember);
 	color: #fff;
+	border-color: transparent;
 	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
 }
 
-.cta.primary:disabled {
-	opacity: 0.6;
-	cursor: wait;
-}
-
 .cta.ghost {
-	background: transparent;
-	border: 1px solid rgba(21, 17, 13, 0.2);
+	background: var(--consensus-mist);
 	color: var(--consensus-ink);
 }
 
-.prompt-title {
-	font-size: 0.95rem;
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
-	color: var(--consensus-muted);
-}
-
-.prompt-grid {
+.prompt-grid,
+.guide__section ul {
 	display: grid;
 	gap: 10px;
 }
@@ -326,29 +350,44 @@ function backHome() {
 .prompt-chip {
 	text-align: left;
 	padding: 12px 16px;
-	border-radius: 999px;
+	border-radius: 16px;
 	border: 1px solid rgba(21, 17, 13, 0.1);
-	background: var(--consensus-cream);
+	background: var(--consensus-mist);
 	font-family: inherit;
 	font-size: 0.95rem;
-	color: var(--consensus-ink);
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
+	cursor: pointer;
 }
 
-.prompt-chip:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
+.guide {
+	display: grid;
+	gap: 14px;
+	padding: 18px;
+	border-radius: 18px;
+	background: rgba(21, 17, 13, 0.04);
+}
+
+.guide h2,
+.guide h3 {
+	font-family: "Fraunces", serif;
+}
+
+.guide h2 {
+	margin: 0;
+}
+
+.guide__section ul {
+	margin: 0;
+	padding-left: 18px;
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
 .muted {
 	color: var(--consensus-muted);
-	font-size: 0.9rem;
 }
 
 .error {
-	color: #b83d2e;
-	font-weight: 600;
+	color: #b33a1b;
+	margin: 0;
 }
 </style>

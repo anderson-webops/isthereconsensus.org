@@ -1,8 +1,12 @@
+const quotePattern = /['"]/g;
+const nonAlphaNumericPattern = /[^a-z0-9]+/g;
+const edgeDashPattern = /^-+|-+$/g;
+
 export function slugify(value: string): string {
 	return value
 		.toLowerCase()
 		.trim()
-		.replace(/['"]/g, "")
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-+|-+$/g, "");
+		.replace(quotePattern, "")
+		.replace(nonAlphaNumericPattern, "-")
+		.replace(edgeDashPattern, "");
 }

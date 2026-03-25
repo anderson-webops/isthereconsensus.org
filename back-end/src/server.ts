@@ -10,6 +10,7 @@ import { requireAuth } from "./middleware/auth.js";
 import { Question } from "./models/schemas/Question.js";
 import { Topic } from "./models/schemas/Topic.js";
 import { authRoutes } from "./routes/authRoutes.js";
+import { buildSetupStatus } from "./setup/buildSetupStatus.js";
 import { verifyCaptcha } from "./utils/captcha.js";
 import { readMongoSecret } from "./vaultClient.js";
 import "dotenv/config";
@@ -91,9 +92,11 @@ async function main() {
 
 	// --- Get Mongo URI from Vault (preferred), else env fallback ---
 	let mongoUri: string | undefined;
+	let mongoSource: "vault" | "env" | "missing" = "missing";
 	try {
 		const { uri } = await readMongoSecret(); // your Vault client should read from KV v2
 		mongoUri = uri;
+		mongoSource = uri ? "vault" : "missing";
 	}
 	catch (e) {
 		// Fail silently if Vault is not available, then probably local test (Had to do this to avoid weird requirements
@@ -104,6 +107,7 @@ async function main() {
 		}
 
 		mongoUri = env.MONGODB_URI;
+		mongoSource = mongoUri ? "env" : "missing";
 	}
 
 	if (!mongoUri) {
@@ -121,6 +125,16 @@ async function main() {
 			name: c.name,
 			usingVault: !!env.VAULT_ROLE_ID && !!env.VAULT_SECRET_ID
 		});
+	});
+	app.get("/api/setup/status", (_req, res) => {
+		res.json(
+			buildSetupStatus({
+				isProd,
+				isCrossSite,
+				corsOrigin,
+				mongoSource
+			})
+		);
 	});
 	await seedTopics();
 

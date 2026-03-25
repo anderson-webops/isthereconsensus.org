@@ -3,6 +3,8 @@ import type { Question, QuestionsResponse, SingleTopicResponse } from "~/types/b
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import { getTopicGuide } from "~/data/topicGuides";
 
 const route = useRoute();
 const router = useRouter();
@@ -31,14 +33,27 @@ const { data: questionsData, refresh } = await useAsyncData(`questions-${slug.va
 
 const questionText = ref("");
 const questionDetails = ref("");
+const questionSourceUrl = ref("");
+const questionSearch = ref("");
 const submitting = ref(false);
 const errorMessage = ref("");
 const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
 
 const topic = computed(() => topicData.value?.topic);
+const guide = computed(() => getTopicGuide(slug.value));
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
-const activeTab = ref<"community" | "consensus" | "sentiment">("community");
+const filteredQuestions = computed(() => {
+	const query = questionSearch.value.trim().toLowerCase();
+	if (!query) return questions.value;
+	return questions.value.filter((question) =>
+		[question.title, question.body, question.authorName, question.displayName, question.sourceUrl]
+			.join(" ")
+			.toLowerCase()
+			.includes(query)
+	);
+});
+const activeTab = ref<"community" | "consensus" | "gap">("community");
 
 watch(
 	() => highlightId.value,
@@ -48,6 +63,11 @@ watch(
 		document.getElementById(value)?.scrollIntoView({ behavior: "smooth", block: "center" });
 	}
 );
+
+function chooseStarter(prompt: string) {
+	questionText.value = prompt;
+	activeTab.value = "community";
+}
 
 async function postQuestion() {
 	errorMessage.value = "";
@@ -73,11 +93,13 @@ async function postQuestion() {
 				topic: slug.value,
 				title,
 				body: questionDetails.value.trim(),
+				sourceUrl: questionSourceUrl.value.trim(),
 				captchaToken: captchaToken.value
 			}
 		});
 		questionText.value = "";
 		questionDetails.value = "";
+		questionSourceUrl.value = "";
 		captchaRef.value?.reset();
 		captchaToken.value = "";
 		await refresh();
@@ -95,25 +117,63 @@ async function postQuestion() {
 	<div class="topic">
 		<header class="topic__header">
 			<NuxtLink class="back" to="/consensus">← Back to board</NuxtLink>
-			<h1>{{ topic?.title || "Main concept" }}</h1>
-			<p>{{ topic?.description }}</p>
+			<div class="topic__header-grid">
+				<div>
+					<h1>{{ topic?.title || "Topic lane" }}</h1>
+					<p>{{ topic?.description }}</p>
+				</div>
+				<div class="topic__summary">
+					<ConsensusMeter
+						:level="guide.consensusScore"
+						:label="guide.consensusLabel"
+						:caption="guide.snapshot"
+					/>
+				</div>
+			</div>
 		</header>
+
+		<section class="topic__hero">
+			<article class="hero-card">
+				<p class="hero-card__eyebrow">Stable core</p>
+				<ul>
+					<li v-for="item in guide.stableCore" :key="item">{{ item }}</li>
+				</ul>
+			</article>
+			<article class="hero-card">
+				<p class="hero-card__eyebrow">Open edges</p>
+				<ul>
+					<li v-for="item in guide.openQuestions" :key="item">{{ item }}</li>
+				</ul>
+			</article>
+		</section>
 
 		<section class="topic__tabs">
 			<button class="tab" :class="{ active: activeTab === 'community' }" @click="activeTab = 'community'">
-				Community questions
+				Community lane
 			</button>
 			<button class="tab" :class="{ active: activeTab === 'consensus' }" @click="activeTab = 'consensus'">
-				Expert consensus
+				Consensus map
 			</button>
-			<button class="tab" :class="{ active: activeTab === 'sentiment' }" @click="activeTab = 'sentiment'">
-				Community sentiment
-			</button>
+			<button class="tab" :class="{ active: activeTab === 'gap' }" @click="activeTab = 'gap'">Gap map</button>
 		</section>
 
-		<section v-if="activeTab === 'community'" class="topic__panel">
+		<section v-if="activeTab === 'community'" class="topic__panel topic__panel--community">
 			<div class="topic__post">
-				<h2>Post a question in this category</h2>
+				<h2>Post a question in this lane</h2>
+				<p class="muted">Ask the focused version of the question, not the biggest version of the fear.</p>
+
+				<div class="starter-row">
+					<button
+						v-for="prompt in guide.starterQuestions"
+						:key="prompt"
+						class="starter-chip"
+						type="button"
+						@click="chooseStarter(prompt)"
+					>
+						{{ prompt }}
+					</button>
+				</div>
+
 				<AuthPanel
 					v-if="!isLoggedIn"
 					title="Sign in to post"
@@ -127,28 +187,51 @@ async function postQuestion() {
 					type="text"
 					placeholder="Ask a clear, focused question."
 				/>
-				<label class="ask-label" for="topic-details">Optional details</label>
+				<label class="ask-label" for="topic-details">Context or quoted claim</label>
 				<textarea
 					id="topic-details"
 					v-model="questionDetails"
-					rows="3"
-					placeholder="Add context, quotes, or why you're asking."
+					rows="4"
+					placeholder="Add context, quote the source, or explain what confused you."
+				/>
+				<label class="ask-label" for="topic-source">Source URL</label>
+				<input
+					id="topic-source"
+					v-model="questionSourceUrl"
+					type="url"
+					placeholder="Optional, but useful when you have the original source."
 				/>
 				<div v-if="isLoggedIn" class="captcha-block">
 					<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
 				</div>
 				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 				<button class="cta primary" type="button" :disabled="submitting || !isLoggedIn" @click="postQuestion">
-					{{ submitting ? "Posting..." : "Post to this topic" }}
+					{{ submitting ? "Posting..." : "Post to this lane" }}
 				</button>
 			</div>
 
 			<div class="topic__list">
-				<h2>Questions in this topic</h2>
-				<div v-if="!questions.length" class="muted">No questions here yet. Start the conversation.</div>
+				<div class="topic__list-header">
+					<div>
+						<h2>Questions in this lane</h2>
+						<p class="muted">
+							{{ questions.length }} questions so far, organized against the same consensus frame.
+						</p>
+					</div>
+					<div class="topic__search">
+						<label class="ask-label" for="question-search">Search this lane</label>
+						<input
+							id="question-search"
+							v-model="questionSearch"
+							type="text"
+							placeholder="Filter by title, author, context, or source"
+						/>
+					</div>
+				</div>
+				<div v-if="!filteredQuestions.length" class="muted">No questions here yet. Start the conversation.</div>
 				<div v-else class="question-grid">
 					<article
-						v-for="question in questions"
+						v-for="question in filteredQuestions"
 						:id="question._id"
 						:key="question._id"
 						class="question-card"
@@ -163,58 +246,77 @@ async function postQuestion() {
 							Asked by {{ question.authorName || question.displayName }}
 						</p>
 						<p v-if="question.body">{{ question.body }}</p>
+						<a
+							v-if="question.sourceUrl"
+							class="question-link"
+							:href="question.sourceUrl"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Open source ↗
+						</a>
 					</article>
 				</div>
 			</div>
 		</section>
 
 		<section v-else-if="activeTab === 'consensus'" class="topic__panel">
-			<div class="consensus-card">
-				<h2>Expert consensus (curated)</h2>
-				<p>
-					This lane is reserved for verified experts and trusted contributors. It will host a short, sourced
-					summary that reflects the current consensus and notes what would change minds.
-				</p>
-				<div class="consensus-grid">
-					<div class="consensus-item">
-						<h3>Consensus snapshot</h3>
-						<p>Consensus level: <strong>Pending review</strong></p>
-						<p class="muted">We surface the stable core, plus the open questions.</p>
+			<div class="info-grid">
+				<article class="info-card">
+					<h2>Consensus snapshot</h2>
+					<p>{{ guide.snapshot }}</p>
+				</article>
+				<article class="info-card">
+					<h2>What would change minds</h2>
+					<ul>
+						<li v-for="item in guide.whatWouldChangeMinds" :key="item">{{ item }}</li>
+					</ul>
+				</article>
+			</div>
+
+			<div class="info-grid">
+				<article class="info-card">
+					<h2>Stable core</h2>
+					<ul>
+						<li v-for="item in guide.stableCore" :key="item">{{ item }}</li>
+					</ul>
+				</article>
+				<article class="info-card">
+					<h2>Evidence trail to follow</h2>
+					<div class="resource-list">
+						<div v-for="resource in guide.evidenceTrail" :key="resource.title" class="resource">
+							<h3>{{ resource.title }}</h3>
+							<p>{{ resource.note }}</p>
+						</div>
 					</div>
-					<div class="consensus-item">
-						<h3>Evidence map</h3>
-						<p>Key studies, reviews, and reference statements will be linked here.</p>
-						<p class="muted">We prioritize meta-analyses, systematic reviews, and major statements.</p>
-					</div>
-					<div class="consensus-item">
-						<h3>Who can contribute</h3>
-						<p>Verified experts, vetted community contributors, and invited reviewers.</p>
-						<NuxtLink class="cta ghost" to="/account">Apply for verification</NuxtLink>
-					</div>
-				</div>
+				</article>
 			</div>
 		</section>
 
 		<section v-else class="topic__panel">
-			<div class="sentiment-card">
-				<h2>Community sentiment (polls)</h2>
-				<p>
-					This section will show how the public sentiment compares with expert consensus. It is intentionally
-					separate from the expert lane.
-				</p>
-				<div class="sentiment-grid">
-					<div class="sentiment-option">
-						<h3>Quick pulse</h3>
-						<p>Polls will open once expert summaries are live.</p>
-						<p class="muted">We want to avoid confusing opinion with evidence.</p>
-					</div>
-					<div class="sentiment-option">
-						<h3>Gap view</h3>
-						<p>We’ll show where public belief diverges from consensus.</p>
-						<p class="muted">Helpful for spotting misunderstanding and needed explainers.</p>
-					</div>
-				</div>
+			<div class="info-grid">
+				<article class="info-card">
+					<h2>What people often get wrong</h2>
+					<ul>
+						<li v-for="item in guide.commonMisreads" :key="item">{{ item }}</li>
+					</ul>
+				</article>
+				<article class="info-card">
+					<h2>Good next questions</h2>
+					<ul>
+						<li v-for="item in guide.starterQuestions" :key="item">{{ item }}</li>
+					</ul>
+				</article>
 			</div>
+
+			<article class="info-card info-card--wide">
+				<h2>How to use this gap map</h2>
+				<p>
+					The “gap” is the distance between what a headline or casual conversation suggests and what the
+					evidence base actually supports. This lane keeps that gap visible so curiosity does not get hijacked
+					by hype.
+				</p>
+			</article>
 		</section>
 	</div>
 </template>
@@ -222,17 +324,32 @@ async function postQuestion() {
 <style scoped>
 .topic {
 	display: grid;
-	gap: 32px;
+	gap: 28px;
+}
+
+.topic__header-grid,
+.topic__hero,
+.info-grid,
+.question-grid {
+	display: grid;
+	gap: 16px;
+}
+
+.topic__header-grid,
+.topic__panel--community {
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .topic__header h1 {
 	font-family: "Fraunces", serif;
-	font-size: clamp(2.4rem, 4vw, 3.6rem);
-	margin-bottom: 8px;
+	font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+	margin: 8px 0 10px;
 }
 
-.topic__header p {
-	max-width: 640px;
+.topic__header p,
+.muted,
+.info-card p,
+.question-card p {
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
@@ -240,7 +357,41 @@ async function postQuestion() {
 .back {
 	text-decoration: none;
 	color: var(--consensus-muted);
-	font-size: 0.9rem;
+	font-size: 0.92rem;
+}
+
+.topic__summary,
+.hero-card,
+.topic__post,
+.topic__list,
+.info-card,
+.question-card {
+	background: #fff;
+	border-radius: 20px;
+	padding: 20px;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+}
+
+.topic__hero,
+.info-grid {
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.hero-card__eyebrow,
+.ask-label {
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 0.72rem;
+	color: var(--consensus-muted);
+}
+
+.hero-card ul,
+.info-card ul {
+	margin: 12px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
 }
 
 .topic__tabs {
@@ -251,8 +402,8 @@ async function postQuestion() {
 
 .tab {
 	border-radius: 999px;
-	border: 1px solid rgba(21, 17, 13, 0.2);
-	padding: 8px 16px;
+	border: 1px solid rgba(21, 17, 13, 0.16);
+	padding: 10px 16px;
 	background: transparent;
 	cursor: pointer;
 	font-family: inherit;
@@ -261,45 +412,46 @@ async function postQuestion() {
 }
 
 .tab.active {
-	border-color: var(--consensus-ember);
+	border-color: rgba(211, 107, 56, 0.3);
+	background: rgba(211, 107, 56, 0.12);
 	color: var(--consensus-ink);
-	box-shadow: 0 8px 16px rgba(211, 107, 56, 0.2);
 }
 
 .topic__panel {
 	display: grid;
-	gap: 20px;
+	gap: 16px;
 }
 
-.topic__post {
-	background: #fff;
-	border-radius: 18px;
-	padding: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+.topic__post,
+.topic__list {
 	display: grid;
 	gap: 12px;
+	align-content: start;
 }
 
-.ask-label {
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.7rem;
-	color: var(--consensus-muted);
+.starter-row {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.starter-chip {
+	border-radius: 999px;
+	border: 1px solid rgba(21, 17, 13, 0.12);
+	padding: 10px 14px;
+	background: var(--consensus-mist);
+	font: inherit;
+	cursor: pointer;
 }
 
 .topic__post input,
-.topic__post textarea {
+.topic__post textarea,
+.topic__search input {
 	border-radius: 14px;
 	border: 1px solid rgba(21, 17, 13, 0.12);
 	padding: 12px 14px;
 	font-family: inherit;
 	font-size: 0.95rem;
-}
-
-.captcha-block {
-	display: grid;
-	gap: 8px;
 }
 
 .cta {
@@ -313,7 +465,6 @@ async function postQuestion() {
 	font-weight: 600;
 	cursor: pointer;
 	font-family: inherit;
-	text-decoration: none;
 	width: fit-content;
 }
 
@@ -323,101 +474,84 @@ async function postQuestion() {
 	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
 }
 
-.cta.primary:disabled {
-	opacity: 0.6;
-	cursor: wait;
+.topic__list-header {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: end;
 }
 
-.topic__list {
+.topic__search {
 	display: grid;
-	gap: 16px;
+	gap: 8px;
+	min-width: min(100%, 320px);
 }
 
 .question-grid {
-	display: grid;
-	gap: 16px;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .question-card {
-	background: #fff;
-	border-radius: 18px;
-	padding: 18px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 12px 24px rgba(21, 17, 13, 0.08);
 	display: grid;
-	gap: 8px;
+	gap: 10px;
 }
 
 .question-card.highlight {
-	border-color: var(--consensus-ember);
-	box-shadow: 0 16px 32px rgba(211, 107, 56, 0.25);
+	border-color: rgba(211, 107, 56, 0.35);
+	box-shadow: 0 20px 40px rgba(211, 107, 56, 0.18);
 }
 
 .question-meta {
 	display: flex;
 	justify-content: space-between;
-	font-size: 0.8rem;
+	gap: 12px;
+	font-size: 0.82rem;
 	color: var(--consensus-muted);
 }
 
-.question-card h3 {
+.question-card h3,
+.info-card h2,
+.resource h3 {
 	font-family: "Fraunces", serif;
 }
 
-.question-card p {
-	color: var(--consensus-muted);
-	line-height: 1.5;
+.question-byline,
+.question-link {
+	font-size: 0.9rem;
 }
 
-.consensus-card,
-.sentiment-card {
-	background: #fff;
-	border-radius: 18px;
-	padding: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+.question-link {
+	color: var(--consensus-ember);
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.resource-list {
 	display: grid;
-	gap: 16px;
+	gap: 12px;
 }
 
-.consensus-grid,
-.sentiment-grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.consensus-item,
-.sentiment-option {
+.resource {
 	border-radius: 16px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	padding: 16px;
-	background: var(--consensus-cream);
-	display: grid;
-	gap: 8px;
+	padding: 14px;
+	background: var(--consensus-mist);
 }
 
-.consensus-item h3,
-.sentiment-option h3 {
+.resource h3 {
+	margin: 0 0 6px;
+}
+
+.resource p,
+.error {
 	margin: 0;
-	font-family: "Fraunces", serif;
 }
 
-.question-byline {
-	font-size: 0.85rem;
-	margin: 0;
-	color: var(--consensus-muted);
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-}
-
-.muted {
-	color: var(--consensus-muted);
+.info-card--wide {
+	max-width: 760px;
 }
 
 .error {
-	color: #b83d2e;
-	font-weight: 600;
+	color: #b33a1b;
 }
 </style>

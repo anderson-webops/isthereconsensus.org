@@ -118,6 +118,7 @@ export default defineNuxtConfig({
 		public: {
 			pwaDevSw: devSwEnabled,
 			apiBase: process.env.PUBLIC_API_BASE || "http://127.0.0.1:3011",
+			siteUrl: process.env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
 			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || ""
 		}
 	},

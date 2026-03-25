@@ -1,0 +1,58 @@
+# Production Deployment
+
+`isthereconsensus.org` is a two-service deployment:
+
+- `front-end/`: Nuxt 4 SSR app
+- `back-end/`: Express API with MongoDB-backed auth and questions
+
+## Recommended topology
+
+- Run the Nuxt SSR server as one systemd service.
+- Run the Express API as a separate systemd service on port `3011`.
+- Terminate TLS in nginx.
+- Serve the public site at the main origin.
+- Proxy `/api/`, `/healthz`, `/readyz`, and `/_dbinfo` from nginx to the backend.
+- Prefer same-origin API access by setting `PUBLIC_API_BASE` to the public site origin.
+
+## Required environment
+
+Backend/runtime:
+
+- `NODE_ENV=production`
+- `SESSION_SECRET`
+- `PUBLIC_API_BASE`
+- `CAPTCHA_SECRET`
+- `PUBLIC_CAPTCHA_SITEKEY`
+- `VAULT_ADDR`, `VAULT_ROLE_ID`, `VAULT_SECRET_ID`
+
+If Vault is not being used:
+
+- `MONGODB_URI`
+
+Optional:
+
+- `CORS_ORIGIN`
+- `CROSS_SITE=true`
+- `ENABLE_TOPIC_CREATION=true`
+
+## Build and start
+
+```bash
+npm install
+npm run build
+npm run -w front-end start
+npm run -w back-end start
+```
+
+## Health checks
+
+- Frontend readiness: load the homepage over HTTPS.
+- Backend liveness: `GET /healthz`
+- Backend readiness: `GET /readyz`
+- Setup diagnostics: `GET /api/setup/status`
+
+## Deployment notes
+
+- Cookie auth expects HTTPS in production.
+- If frontend and backend live on different public origins, configure `CORS_ORIGIN` precisely and keep secure cookie settings aligned.
+- The frontend setup page at `/setup` now exposes live readiness data plus a launch prompt tailored to this stack.

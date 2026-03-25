@@ -75,3 +75,8 @@ Options if you want `/var/www/<site>/` populated for an SSR site:
 4) Switch the site to static (`FE_MODE="static"`).
    - `/var/www/<site>/` will be populated from `front-end/dist/`.
    - Loses server-side rendering; SSR-only routes or APIs must move to the backend.
+
+## Launch coordination
+
+- `/setup` in the frontend now surfaces live readiness checks plus a copyable server-agent prompt.
+- [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
