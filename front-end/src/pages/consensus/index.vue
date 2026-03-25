@@ -15,13 +15,28 @@ const { data: questionsData } = await useAsyncData("recent-questions", () =>
 const search = ref("");
 const filter = ref<"all" | "settled" | "debated" | "exploratory">("all");
 
+const browseSteps = [
+	"Pick one topic instead of skimming every card.",
+	"Inside that topic, read the Consensus view first.",
+	"Only then open Sentiment or Questions for more context."
+];
+
+const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const enrichedTopics = computed(() =>
-	topics.value.map((topic) => ({
-		...topic,
-		guide: getTopicGuide(topic.slug)
-	}))
+	topics.value
+		.map((topic) => ({
+			...topic,
+			guide: getTopicGuide(topic.slug)
+		}))
+		.sort((left, right) => {
+			const leftIndex = starterOrder.indexOf(left.slug);
+			const rightIndex = starterOrder.indexOf(right.slug);
+			const leftRank = leftIndex === -1 ? starterOrder.length : leftIndex;
+			const rightRank = rightIndex === -1 ? starterOrder.length : rightIndex;
+			return leftRank - rightRank || left.title.localeCompare(right.title);
+		})
 );
 
 function matchesFilter(score: number) {
@@ -49,51 +64,38 @@ const filteredQuestions = computed(() =>
 		return matchesFilter(guide.consensusScore) && (!query.value || haystack.includes(query.value));
 	})
 );
-
-const averageConsensus = computed(() => {
-	if (!enrichedTopics.value.length) return 0;
-	const total = enrichedTopics.value.reduce((sum, topic) => sum + topic.guide.consensusScore, 0);
-	return Math.round(total / enrichedTopics.value.length);
-});
-
-const debatedTopics = computed(
-	() =>
-		enrichedTopics.value.filter((topic) => topic.guide.consensusScore >= 45 && topic.guide.consensusScore < 75)
-			.length
-);
 </script>
 
 <template>
 	<div class="board">
 		<header class="board__header">
 			<p class="eyebrow">Browse topics</p>
-			<h1>Start with the topic, then drill into the question.</h1>
+			<h1>Pick a topic. Read the summary first. Use the board after that.</h1>
 			<p>
-				Each topic bundles three things in one place: a short consensus summary, the public question board, and
-				a sentiment view showing where crowd opinion differs from the evidence.
+				This page works best when it acts like a directory, not a feed. Choose one topic, open its Consensus
+				view, and treat the rest as optional depth.
 			</p>
 			<div class="board__actions">
-				<NuxtLink class="cta primary" to="/ask">Post a question</NuxtLink>
+				<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
 				<NuxtLink class="cta ghost" to="/how">How it works</NuxtLink>
 			</div>
 		</header>
 
-		<section class="stats">
-			<article class="stat-card">
-				<p>Topics</p>
-				<h2>{{ enrichedTopics.length }}</h2>
-				<span>Organized entry points</span>
+		<section class="guide">
+			<article class="guide__lead">
+				<p class="guide__tag">Recommended reading order</p>
+				<h2>If you are not sure where to start, follow this.</h2>
+				<p>
+					The site is easier to read when community discussion comes after the consensus frame instead of
+					before it.
+				</p>
 			</article>
-			<article class="stat-card">
-				<p>Average consensus</p>
-				<h2>{{ averageConsensus }}%</h2>
-				<span>Across current topics</span>
-			</article>
-			<article class="stat-card">
-				<p>Active debates</p>
-				<h2>{{ debatedTopics }}</h2>
-				<span>Topics with meaningful open questions</span>
-			</article>
+			<div class="guide__steps">
+				<article v-for="(step, index) in browseSteps" :key="step" class="guide-step">
+					<span>{{ index + 1 }}</span>
+					<p>{{ step }}</p>
+				</article>
+			</div>
 		</section>
 
 		<section class="controls">
@@ -123,7 +125,7 @@ const debatedTopics = computed(
 		<section class="topics">
 			<div class="section-head">
 				<h2>Topics</h2>
-				<p>Open a topic when you want the short version first and the full discussion after that.</p>
+				<p>Every topic starts with its own consensus summary so you do not have to infer the frame yourself.</p>
 			</div>
 			<div v-if="!filteredTopics.length" class="muted">No topics match that filter yet.</div>
 			<div v-else class="topics__grid">
@@ -147,58 +149,73 @@ const debatedTopics = computed(
 						:caption="topic.guide.snapshot"
 						:label="topic.guide.consensusLabel"
 					/>
-					<div class="topic-card__meta">
-						<span>{{ topic.guide.openQuestions.length }} open edges</span>
-						<span>{{ topic.guide.commonMisreads.length }} common misreads</span>
-					</div>
+					<p class="topic-card__next">Open this topic and start with the Consensus view.</p>
 					<span class="topic-card__cta">Open topic →</span>
 				</NuxtLink>
 			</div>
 		</section>
 
-		<section class="recent">
-			<div class="section-head">
-				<h2>Recent questions</h2>
-				<p>A small sample from the board. If a thread looks useful, open the topic and read it in context.</p>
-			</div>
-			<div v-if="!filteredQuestions.length" class="muted">No recent questions match that filter yet.</div>
-			<div v-else class="recent__list">
-				<div v-for="question in filteredQuestions" :key="question._id" class="recent__card">
-					<div class="recent__meta">
-						<span>{{ question.topic.title }}</span>
-						<span>{{ new Date(question.createdAt || "").toLocaleDateString() }}</span>
-					</div>
-					<h3>{{ question.title }}</h3>
-					<p class="recent__snapshot">{{ getTopicGuide(question.topic.slug).snapshot }}</p>
-					<p v-if="question.body">{{ question.body }}</p>
-					<div class="recent__footer">
-						<span v-if="question.sourceUrl">Source linked</span>
-						<span v-if="question.authorName || question.displayName"
-							>By {{ question.authorName || question.displayName }}</span
+		<details class="recent-panel">
+			<summary>See recent community questions</summary>
+			<div class="recent-panel__body">
+				<p class="recent-panel__intro">
+					These are useful once you already know the topic frame. If a thread looks relevant, open the topic
+					first and read the summary before the thread.
+				</p>
+				<div v-if="!filteredQuestions.length" class="muted">No recent questions match that filter yet.</div>
+				<div v-else class="recent__list">
+					<div v-for="question in filteredQuestions" :key="question._id" class="recent__card">
+						<div class="recent__meta">
+							<span>{{ question.topic.title }}</span>
+							<span>{{ new Date(question.createdAt || "").toLocaleDateString() }}</span>
+						</div>
+						<h3>{{ question.title }}</h3>
+						<p class="recent__snapshot">{{ getTopicGuide(question.topic.slug).snapshot }}</p>
+						<p v-if="question.body">{{ question.body }}</p>
+						<div class="recent__footer">
+							<span v-if="question.sourceUrl">Source linked</span>
+							<span v-if="question.authorName || question.displayName"
+								>By {{ question.authorName || question.displayName }}</span
+							>
+						</div>
+						<NuxtLink :to="`/consensus/${question.topic.slug}?highlight=${question._id}`"
+							>Open thread</NuxtLink
 						>
 					</div>
-					<NuxtLink :to="`/consensus/${question.topic.slug}?highlight=${question._id}`">Open thread</NuxtLink>
 				</div>
 			</div>
-		</section>
+		</details>
 	</div>
 </template>
 
 <style scoped>
 .board {
 	display: grid;
-	gap: 32px;
+	gap: 28px;
+}
+
+.board__header h1,
+.guide__lead h2,
+.section-head h2,
+.topic-card h3,
+.recent__card h3 {
+	font-family: "Fraunces", serif;
 }
 
 .board__header h1 {
-	font-family: "Fraunces", serif;
 	font-size: clamp(2.5rem, 4.6vw, 3.8rem);
 	margin: 10px 0 12px;
-	max-width: 900px;
+	max-width: 920px;
 }
 
-.board__header p {
-	max-width: 700px;
+.board__header p,
+.guide__lead p,
+.topic-card__description,
+.topic-card__next,
+.recent__card p,
+.recent-panel__intro,
+.muted,
+.section-head p {
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
@@ -207,7 +224,7 @@ const debatedTopics = computed(
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
-	margin-top: 20px;
+	margin-top: 18px;
 }
 
 .cta {
@@ -234,7 +251,32 @@ const debatedTopics = computed(
 	color: var(--consensus-ink);
 }
 
-.stats,
+.guide,
+.controls,
+.topic-card,
+.recent-panel,
+.recent__card {
+	background: #fff;
+	border-radius: 22px;
+	border: 1px solid rgba(21, 17, 13, 0.08);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+}
+
+.guide {
+	padding: 20px;
+	display: grid;
+	gap: 18px;
+}
+
+.guide__tag,
+.ask-label {
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 0.7rem;
+	color: var(--consensus-muted);
+}
+
+.guide__steps,
 .topics__grid,
 .recent__list {
 	display: grid;
@@ -242,46 +284,25 @@ const debatedTopics = computed(
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.stat-card,
-.controls,
-.topic-card,
-.recent__card {
-	background: #fff;
-	border-radius: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+.guide-step {
+	padding: 16px 18px;
+	border-radius: 18px;
+	background: rgba(21, 17, 13, 0.05);
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 12px;
+	align-items: start;
 }
 
-.stat-card {
-	padding: 18px;
-}
-
-.stat-card p,
-.stat-card span,
-.topic-card__description,
-.recent__card p,
-.muted,
-.section-head p {
-	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.stat-card p {
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.72rem;
-}
-
-.stat-card h2,
-.section-head h2,
-.topic-card h3,
-.recent__card h3 {
-	font-family: "Fraunces", serif;
-}
-
-.stat-card h2 {
-	font-size: 2rem;
-	margin: 10px 0 8px;
+.guide-step span {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: inline-grid;
+	place-items: center;
+	background: rgba(211, 107, 56, 0.14);
+	color: var(--consensus-ember);
+	font-weight: 700;
 }
 
 .controls {
@@ -293,13 +314,6 @@ const debatedTopics = computed(
 .controls__search {
 	display: grid;
 	gap: 8px;
-}
-
-.ask-label {
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.7rem;
-	color: var(--consensus-muted);
 }
 
 .controls input {
@@ -384,17 +398,34 @@ const debatedTopics = computed(
 	text-align: right;
 }
 
-.topic-card__meta {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-	font-size: 0.82rem;
-	color: var(--consensus-muted);
+.topic-card__next {
+	font-weight: 600;
+	margin: 0;
 }
 
 .topic-card__cta {
 	font-weight: 700;
 	color: var(--consensus-ember);
+}
+
+.recent-panel {
+	padding: 18px 20px;
+}
+
+.recent-panel summary {
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-size: 1.3rem;
+}
+
+.recent-panel summary::-webkit-details-marker {
+	display: none;
+}
+
+.recent-panel__body {
+	display: grid;
+	gap: 16px;
+	margin-top: 16px;
 }
 
 .recent__snapshot {

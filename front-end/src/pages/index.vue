@@ -9,6 +9,36 @@ definePageMeta({
 const router = useRouter();
 const question = ref("");
 
+const startingPaths = [
+	{
+		step: "01",
+		title: "I have a question",
+		body: "Use this when a claim, article, or video is bothering you and you want a clean place to start.",
+		to: "/ask",
+		cta: "Ask a question"
+	},
+	{
+		step: "02",
+		title: "I want to browse",
+		body: "Open a topic, read the consensus summary first, and only then move into public questions or sentiment.",
+		to: "/consensus",
+		cta: "Browse topics"
+	},
+	{
+		step: "03",
+		title: "I want the short explanation",
+		body: "Read the quick guide to how this site separates settled knowledge, live debate, and public confusion.",
+		to: "/how",
+		cta: "Read how it works"
+	}
+];
+
+const firstVisitSteps = [
+	"Pick one topic instead of trying to read the whole site at once.",
+	"Inside a topic, start with the Consensus view before opening Questions or Sentiment.",
+	"Use the community board after you know the frame, not before."
+];
+
 const promptChips = [
 	"Is there a scientific consensus on climate change?",
 	"Does one new study actually change the picture?",
@@ -16,18 +46,18 @@ const promptChips = [
 	"How should I read a scary health headline?"
 ];
 
-const quickStart = [
+const detailCards = [
 	{
-		title: "Start with what is settled",
-		body: "See the stable core before you get pulled into edge cases, headlines, or culture-war framing."
+		title: "Basketball vs bumps",
+		body: "The stable consensus is the basketball. Most new studies add a bump to the surface, not a whole new shape."
 	},
 	{
-		title: "Then look at the real debate",
-		body: "Most live disagreements are narrower than the public version of the question."
+		title: "Relative vs absolute risk",
+		body: "A headline can describe a large percentage increase while the actual real-world change remains small."
 	},
 	{
-		title: "Ask what would change minds",
-		body: "Consensus moves when better evidence, better tools, or repeated results outperform the old view."
+		title: "Constructed knowledge",
+		body: "Math and science are built by people using tools, symbols, and methods that were developed over time."
 	}
 ];
 
@@ -35,41 +65,24 @@ const featuredTopics = [
 	{
 		title: "Consensus foundations",
 		slug: "consensus-foundations",
-		description: "How stable claims get built, and why they usually move slowly."
-	},
-	{
-		title: "Active scientific debates",
-		slug: "active-debates",
-		description: "Where the real disagreement is often technical, narrow, and still worth following."
+		description:
+			"Start here if you want to understand how stable claims get built and why they usually move slowly."
 	},
 	{
 		title: "Media & misinformation",
 		slug: "media-misinformation",
-		description: "How headlines, framing, and bad risk language distort what people think science says."
+		description:
+			"Start here if you want help translating headlines, hype, and misleading framing into clearer questions."
+	},
+	{
+		title: "Active scientific debates",
+		slug: "active-debates",
+		description: "Start here if you want to see what real scientific disagreement usually looks like."
 	}
 ].map((topic) => ({
 	...topic,
 	guide: getTopicGuide(topic.slug)
 }));
-
-const detailCards = [
-	{
-		title: "Basketball vs bumps",
-		body: "The stable consensus is the basketball. Most new studies add a bump to the surface, not a new shape."
-	},
-	{
-		title: "Relative vs absolute risk",
-		body: "A headline can describe a large percentage increase while the real-world change stays small."
-	},
-	{
-		title: "Constructed knowledge",
-		body: "Math and science are built by people using symbols, methods, and arguments developed over time."
-	},
-	{
-		title: "Consensus is earned",
-		body: "It is not a vote. It is what remains after criticism, replication, and repeated attempts to prove an idea wrong."
-	}
-];
 
 function toAskWithQuestion(prompt: string) {
 	question.value = prompt;
@@ -97,72 +110,70 @@ function goToAsk() {
 		<header class="hero">
 			<div class="hero__copy reveal" style="animation-delay: 0.05s">
 				<p class="eyebrow">isthereconsensus.org</p>
-				<h1>A simple way to check what experts actually agree on.</h1>
+				<h1>Start with the short answer. Open the deeper context only when you need it.</h1>
 				<p class="lead">
-					Start with the short answer, open more context only when you need it, and keep the difference
-					between settled knowledge and live debate clear.
+					This site is built to help you find one clear path: what experts agree on, what is still genuinely
+					open, and what headlines or public opinion tend to get wrong.
 				</p>
 
 				<div class="cta-row">
-					<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
-					<NuxtLink class="cta ghost" to="/consensus">Browse topics</NuxtLink>
+					<NuxtLink class="cta primary" to="/consensus">Browse topics</NuxtLink>
+					<NuxtLink class="cta ghost" to="/ask">Ask a question</NuxtLink>
 					<NuxtLink class="cta ghost" to="/how">How it works</NuxtLink>
-				</div>
-
-				<div class="prompt-card">
-					<p class="prompt-title">Try a question</p>
-					<div class="prompt-grid">
-						<button
-							v-for="prompt in promptChips"
-							:key="prompt"
-							class="prompt-chip"
-							type="button"
-							@click="toAskWithQuestion(prompt)"
-						>
-							{{ prompt }}
-						</button>
-					</div>
 				</div>
 			</div>
 
 			<div class="hero__aside reveal" style="animation-delay: 0.15s">
-				<article class="panel">
-					<p class="panel__tag">What this site does</p>
-					<h2>Keep the answer readable without flattening the truth.</h2>
-					<ul>
-						<li>Show the consensus snapshot first</li>
-						<li>Keep open questions and public sentiment separate</li>
-						<li>Make it obvious what would really change minds</li>
-					</ul>
-				</article>
-				<article class="panel panel--light">
-					<p class="panel__tag">One rule of thumb</p>
-					<h3>Most headlines describe a bump, not a collapse.</h3>
+				<article class="panel panel--accent">
+					<p class="panel__tag">First visit?</p>
+					<h2>Do not try to read everything.</h2>
 					<p>
-						If a claim sounds dramatic, check whether it changes the stable core of evidence or just adds a
-						new wrinkle at the edge.
+						Pick one topic, read its Consensus view first, and treat the rest of the page as optional depth.
 					</p>
+				</article>
+				<article class="panel">
+					<p class="panel__tag">What this site tries to prevent</p>
+					<ul>
+						<li>Getting lost in community discussion before you know the frame</li>
+						<li>Mistaking one new study for a collapse of the whole picture</li>
+						<li>Treating crowd opinion like expert consensus</li>
+					</ul>
 				</article>
 			</div>
 		</header>
 
 		<section class="section reveal" style="animation-delay: 0.25s">
 			<div class="section__header">
-				<h2>Start here</h2>
-				<p>These three questions do most of the work.</p>
+				<h2>Choose your path</h2>
+				<p>Most people only need one of these.</p>
 			</div>
-			<div class="card-grid">
-				<article v-for="item in quickStart" :key="item.title" class="card">
-					<h3>{{ item.title }}</h3>
-					<p>{{ item.body }}</p>
+			<div class="path-grid">
+				<NuxtLink v-for="path in startingPaths" :key="path.title" class="path-card" :to="path.to">
+					<span class="path-card__step">{{ path.step }}</span>
+					<h3>{{ path.title }}</h3>
+					<p>{{ path.body }}</p>
+					<span class="path-card__cta">{{ path.cta }} →</span>
+				</NuxtLink>
+			</div>
+		</section>
+
+		<section class="section section--soft reveal" style="animation-delay: 0.35s">
+			<div class="section__header">
+				<h2>If you are new, read in this order</h2>
+				<p>This is the intended path through the site.</p>
+			</div>
+			<div class="visit-grid">
+				<article v-for="(step, index) in firstVisitSteps" :key="step" class="visit-step">
+					<span>{{ index + 1 }}</span>
+					<p>{{ step }}</p>
 				</article>
 			</div>
 		</section>
 
-		<section class="section reveal" style="animation-delay: 0.35s">
+		<section class="section reveal" style="animation-delay: 0.45s">
 			<div class="section__header">
-				<h2>Browse by topic</h2>
-				<p>Open a topic when you want a clean summary first and the deeper discussion after that.</p>
+				<h2>Start with one topic</h2>
+				<p>These are good entry points because each one teaches a different part of the site’s logic.</p>
 			</div>
 			<div class="feature-grid">
 				<NuxtLink
@@ -178,20 +189,35 @@ function goToAsk() {
 						:label="topic.guide.consensusLabel"
 						:caption="topic.guide.snapshot"
 					/>
-					<div class="feature-meta">
-						<span>{{ topic.guide.openQuestions.length }} open questions</span>
-						<span>{{ topic.guide.commonMisreads.length }} common misreads</span>
-					</div>
+					<span class="feature-card__cta">Open topic →</span>
 				</NuxtLink>
 			</div>
 		</section>
 
-		<section class="section section--soft reveal" style="animation-delay: 0.45s">
+		<section class="section reveal" style="animation-delay: 0.55s">
 			<div class="section__header">
-				<h2>Open more context only if you need it</h2>
-				<p>
-					The site works best when the first screen is calm and the deeper framing stays available on demand.
-				</p>
+				<h2>Try a question</h2>
+				<p>If you want to feel the site quickly, start with one example instead of reading every explainer.</p>
+			</div>
+			<div class="prompt-card">
+				<div class="prompt-grid">
+					<button
+						v-for="prompt in promptChips"
+						:key="prompt"
+						class="prompt-chip"
+						type="button"
+						@click="toAskWithQuestion(prompt)"
+					>
+						{{ prompt }}
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--soft reveal" style="animation-delay: 0.65s">
+			<div class="section__header">
+				<h2>Only open these if you want more context</h2>
+				<p>These ideas matter, but they do not need to hit all at once on the first screen.</p>
 			</div>
 			<div class="detail-grid">
 				<details v-for="item in detailCards" :key="item.title" class="detail-card">
@@ -201,38 +227,24 @@ function goToAsk() {
 			</div>
 		</section>
 
-		<section class="section section--soft reveal" style="animation-delay: 0.55s">
+		<section class="section section--soft reveal" style="animation-delay: 0.75s">
 			<div class="story">
 				<div class="story__copy">
-					<h2>Bring a claim. Leave with context.</h2>
+					<h2>Bring a claim. Leave with a better reading order.</h2>
 					<p>
-						Paste a link, quote a headline, or write the question in plain language. The goal is to help you
-						see what is settled, what is still open, and what deserves caution.
+						Paste the claim, choose the topic where it belongs, and let the site sort the conversation into
+						consensus first, questions second, and public sentiment separately.
 					</p>
-					<div class="ask-card">
-						<label class="ask-label" for="ask">Ask a question</label>
-						<textarea
-							id="ask"
-							v-model="question"
-							rows="3"
-							placeholder="Paste a claim, a quote, or the question you want checked..."
-						/>
-						<button class="cta primary" type="button" @click="goToAsk">Continue to ask</button>
-					</div>
 				</div>
-				<div class="story__steps">
-					<div class="step">
-						<span>1</span>
-						<p>Ask the narrow version of the question.</p>
-					</div>
-					<div class="step">
-						<span>2</span>
-						<p>Read the consensus summary before the argument.</p>
-					</div>
-					<div class="step">
-						<span>3</span>
-						<p>Open evidence, sentiment, or discussion only when you want more depth.</p>
-					</div>
+				<div class="ask-card">
+					<label class="ask-label" for="ask">Ask a question</label>
+					<textarea
+						id="ask"
+						v-model="question"
+						rows="3"
+						placeholder="Paste a claim, a quote, or the question you want checked..."
+					/>
+					<button class="cta primary" type="button" @click="goToAsk">Continue to ask</button>
 				</div>
 			</div>
 		</section>
@@ -243,7 +255,7 @@ function goToAsk() {
 .page {
 	position: relative;
 	display: grid;
-	gap: 72px;
+	gap: 64px;
 }
 
 .orb {
@@ -289,15 +301,19 @@ function goToAsk() {
 	align-items: start;
 }
 
-.hero__copy {
-	max-width: 620px;
+.hero__copy,
+.hero__aside,
+.story__copy {
 	display: grid;
-	gap: 22px;
+	gap: 18px;
+}
+
+.hero__copy {
+	max-width: 680px;
 }
 
 .eyebrow,
 .panel__tag,
-.prompt-title,
 .ask-label {
 	text-transform: uppercase;
 	letter-spacing: 0.14em;
@@ -307,29 +323,39 @@ function goToAsk() {
 
 .hero__copy h1,
 .section__header h2,
+.path-card h3,
+.feature-card h3,
 .story__copy h2,
 .panel h2,
-.panel h3,
-.card h3,
-.feature-card h3 {
+.detail-card summary {
 	font-family: "Fraunces", serif;
 }
 
 .hero__copy h1 {
-	font-size: clamp(2.8rem, 5vw, 4.5rem);
+	font-size: clamp(2.8rem, 5vw, 4.4rem);
 	line-height: 1.05;
 }
 
 .lead,
 .section__header p,
-.card p,
+.path-card p,
 .feature-card p,
-.detail-card p,
 .panel p,
-.story__copy p,
-.step p {
+.panel li,
+.visit-step p,
+.detail-card p,
+.story__copy p {
 	color: var(--consensus-muted);
 	line-height: 1.6;
+}
+
+.cta-row,
+.feature-grid,
+.path-grid,
+.visit-grid,
+.detail-grid {
+	display: grid;
+	gap: 16px;
 }
 
 .cta-row {
@@ -364,104 +390,115 @@ function goToAsk() {
 	color: var(--consensus-ink);
 }
 
-.prompt-card,
 .panel,
-.card,
+.path-card,
 .feature-card,
+.prompt-card,
+.visit-step,
 .detail-card,
-.ask-card,
-.step {
-	background: rgba(255, 255, 255, 0.86);
+.ask-card {
+	background: rgba(255, 255, 255, 0.88);
 	border: 1px solid rgba(21, 17, 13, 0.08);
 	border-radius: 22px;
 	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
 	backdrop-filter: blur(6px);
 }
 
-.prompt-card {
-	padding: 20px 22px;
-}
-
-.prompt-grid {
-	display: grid;
-	gap: 10px;
-	margin-top: 12px;
-}
-
-.prompt-chip {
-	text-align: left;
-	padding: 12px 16px;
-	border-radius: 999px;
-	border: 1px solid rgba(21, 17, 13, 0.1);
-	background: var(--consensus-cream);
-	font-family: inherit;
-	font-size: 0.95rem;
-	color: var(--consensus-ink);
-	cursor: pointer;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
-}
-
-.prompt-chip:hover {
-	transform: translateY(-1px);
-	box-shadow: 0 10px 20px rgba(21, 17, 13, 0.12);
-}
-
-.hero__aside {
-	display: grid;
-	gap: 16px;
-}
-
-.panel {
+.panel,
+.path-card,
+.feature-card,
+.visit-step,
+.ask-card {
 	padding: 22px;
 }
 
 .panel ul {
-	margin: 12px 0 0 18px;
+	margin: 0;
+	padding-left: 18px;
 	display: grid;
 	gap: 8px;
-	color: var(--consensus-muted);
 }
 
-.panel--light {
+.panel--accent {
 	background: linear-gradient(135deg, #f7ebde, #f4e1cf);
 }
 
 .section {
 	display: grid;
-	gap: 24px;
+	gap: 20px;
 }
 
-.card-grid,
+.path-grid,
 .feature-grid,
+.visit-grid,
 .detail-grid {
-	display: grid;
-	gap: 16px;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.card,
+.path-card,
 .feature-card {
-	padding: 20px;
 	text-decoration: none;
 	color: var(--consensus-ink);
 	display: grid;
 	gap: 12px;
 }
 
-.feature-meta {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-	font-size: 0.82rem;
+.path-card__step {
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
 	color: var(--consensus-muted);
+}
+
+.path-card__cta,
+.feature-card__cta {
+	font-weight: 700;
+	color: var(--consensus-ember);
 }
 
 .section--soft {
 	background: rgba(21, 17, 13, 0.05);
 	border-radius: 28px;
 	padding: clamp(24px, 4vw, 36px);
+}
+
+.visit-step {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 12px;
+	align-items: start;
+}
+
+.visit-step span {
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	display: inline-grid;
+	place-items: center;
+	background: rgba(211, 107, 56, 0.14);
+	color: var(--consensus-ember);
+	font-weight: 700;
+}
+
+.prompt-card {
+	padding: 18px;
+}
+
+.prompt-grid {
+	display: grid;
+	gap: 10px;
+}
+
+.prompt-chip {
+	text-align: left;
+	padding: 12px 16px;
+	border-radius: 16px;
+	border: 1px solid rgba(21, 17, 13, 0.1);
+	background: var(--consensus-cream);
+	font-family: inherit;
+	font-size: 0.95rem;
+	color: var(--consensus-ink);
+	cursor: pointer;
 }
 
 .detail-card {
@@ -471,7 +508,6 @@ function goToAsk() {
 .detail-card summary {
 	cursor: pointer;
 	font-weight: 700;
-	font-family: "Fraunces", serif;
 }
 
 .detail-card summary::-webkit-details-marker {
@@ -489,37 +525,7 @@ function goToAsk() {
 	align-items: start;
 }
 
-.story__copy {
-	display: grid;
-	gap: 14px;
-}
-
-.story__steps {
-	display: grid;
-	gap: 12px;
-}
-
-.step {
-	padding: 18px;
-	display: grid;
-	grid-template-columns: auto 1fr;
-	gap: 12px;
-	align-items: start;
-}
-
-.step span {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	display: inline-grid;
-	place-items: center;
-	background: rgba(211, 107, 56, 0.14);
-	color: var(--consensus-ember);
-	font-weight: 700;
-}
-
 .ask-card {
-	padding: 18px;
 	display: grid;
 	gap: 10px;
 }
@@ -531,7 +537,7 @@ function goToAsk() {
 	font-family: inherit;
 	font-size: 0.95rem;
 	resize: vertical;
-	min-height: 96px;
+	min-height: 100px;
 	background: rgba(255, 255, 255, 0.92);
 }
 
@@ -547,7 +553,7 @@ function goToAsk() {
 
 @media (max-width: 720px) {
 	.page {
-		gap: 56px;
+		gap: 52px;
 	}
 
 	.cta-row {
