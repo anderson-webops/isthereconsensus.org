@@ -3,14 +3,13 @@ import type { Question, QuestionsResponse, Topic, TopicResponse } from "~/types/
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 
-const config = useRuntimeConfig();
-const apiBase = config.public.apiBase as string;
+const { apiUrl } = useApi();
 
 const { data: topicsData } = await useAsyncData("topics", () =>
-	$fetch<TopicResponse>(`${apiBase}/api/topics?includeCounts=true`)
+	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
 );
 const { data: questionsData } = await useAsyncData("recent-questions", () =>
-	$fetch<QuestionsResponse>(`${apiBase}/api/questions?limit=18`)
+	$fetch<QuestionsResponse>(apiUrl("/questions?limit=18"))
 );
 
 const search = ref("");

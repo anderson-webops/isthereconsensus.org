@@ -80,3 +80,4 @@ Options if you want `/var/www/<site>/` populated for an SSR site:
 
 - `/setup` in the frontend now surfaces live readiness checks plus a copyable server-agent prompt.
 - [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
+- In production same-origin mode, set `PUBLIC_API_BASE=/api` so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.

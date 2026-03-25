@@ -11,6 +11,7 @@ import { config as loadEnv } from "dotenv";
 import { defineNuxtConfig } from "nuxt/config";
 import { devSwEnabled, pwa } from "./src/config/pwa";
 import { appDescription } from "./src/constants";
+import { normalizeInternalApiBase, normalizePublicApiBase } from "./src/utils/api";
 
 const __dirname: string = path.dirname(fileURLToPath(import.meta.url));
 const srcPath: string = path.resolve(__dirname, "src");
@@ -32,6 +33,8 @@ for (const envPath of envPathCandidates) {
 const isDev = process.env.NODE_ENV === "development";
 const enablePwaEnv = process.env.ENABLE_PWA === "true" || process.env.VITE_PLUGIN_PWA === "true";
 const enablePwa = enablePwaEnv && (!isDev || devSwEnabled);
+const publicApiBase = normalizePublicApiBase(process.env.PUBLIC_API_BASE, isDev);
+const internalApiBase = normalizeInternalApiBase(process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE);
 const manifestLinks = enablePwa ? [{ rel: "manifest", href: "/manifest.webmanifest" }] : [];
 const faviconLinks = [
 	{
@@ -110,6 +113,7 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
+		apiInternalBase: internalApiBase,
 		resend: {
 			apiKey: process.env.RESEND_API_KEY,
 			from: process.env.RESEND_FROM,
@@ -117,7 +121,7 @@ export default defineNuxtConfig({
 		},
 		public: {
 			pwaDevSw: devSwEnabled,
-			apiBase: process.env.PUBLIC_API_BASE || "http://127.0.0.1:3011",
+			apiBase: publicApiBase,
 			siteUrl: process.env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
 			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || ""
 		}

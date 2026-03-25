@@ -8,7 +8,7 @@ import { getTopicGuide } from "~/data/topicGuides";
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
-const apiBase = config.public.apiBase as string;
+const { apiUrl } = useApi();
 const { isLoggedIn, currentAccount } = useAuth();
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
@@ -30,7 +30,7 @@ const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
 
 const { data: topicsData, pending: topicsPending } = await useAsyncData("topics", () =>
-	$fetch<TopicResponse>(`${apiBase}/api/topics?includeCounts=true`)
+	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
 );
 
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
@@ -86,7 +86,7 @@ async function submitQuestion() {
 			sourceUrl: sourceUrl.value.trim(),
 			captchaToken: captchaToken.value
 		};
-		const response = await $fetch<QuestionResponse>(`${apiBase}/api/questions`, {
+		const response = await $fetch<QuestionResponse>(apiUrl("/questions"), {
 			method: "POST",
 			credentials: "include",
 			body: payload

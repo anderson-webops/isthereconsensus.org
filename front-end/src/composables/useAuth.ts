@@ -1,5 +1,4 @@
 import type { AuthResponse, AuthUser } from "~/types/auth";
-import process from "node:process";
 
 interface LoginPayload {
 	email: string;
@@ -26,8 +25,7 @@ interface ChangePasswordPayload {
 }
 
 export function useAuth() {
-	const config = useRuntimeConfig();
-	const apiBase = config.public.apiBase as string;
+	const { apiUrl } = useApi();
 
 	const user = useState<AuthUser | null>("auth-user", () => null);
 	const admin = useState<AuthUser | null>("auth-admin", () => null);
@@ -42,8 +40,8 @@ export function useAuth() {
 		if (refreshing.value) return;
 		refreshing.value = true;
 		try {
-			const headers = process.server ? useRequestHeaders(["cookie"]) : undefined;
-			const response = await $fetch<AuthResponse>(`${apiBase}/api/auth/me`, {
+			const headers = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const response = await $fetch<AuthResponse>(apiUrl("/auth/me"), {
 				credentials: "include",
 				headers
 			});
@@ -59,12 +57,12 @@ export function useAuth() {
 		}
 	}
 
-	if (process.client && !ready.value && !refreshing.value) {
+	if (import.meta.client && !ready.value && !refreshing.value) {
 		refreshAuth();
 	}
 
 	async function login(payload: LoginPayload) {
-		const response = await $fetch<AuthResponse>(`${apiBase}/api/auth/login`, {
+		const response = await $fetch<AuthResponse>(apiUrl("/auth/login"), {
 			method: "POST",
 			credentials: "include",
 			body: payload
@@ -76,7 +74,7 @@ export function useAuth() {
 	}
 
 	async function register(payload: RegisterPayload) {
-		const response = await $fetch<AuthResponse>(`${apiBase}/api/auth/register`, {
+		const response = await $fetch<AuthResponse>(apiUrl("/auth/register"), {
 			method: "POST",
 			credentials: "include",
 			body: payload
@@ -88,7 +86,7 @@ export function useAuth() {
 	}
 
 	async function logout() {
-		await $fetch(`${apiBase}/api/auth/logout`, {
+		await $fetch(apiUrl("/auth/logout"), {
 			method: "DELETE",
 			credentials: "include"
 		});
@@ -98,7 +96,7 @@ export function useAuth() {
 	}
 
 	async function changeEmail(payload: ChangeEmailPayload) {
-		return $fetch(`${apiBase}/api/auth/change-email/${payload.id}`, {
+		return $fetch(apiUrl(`/auth/change-email/${payload.id}`), {
 			method: "POST",
 			credentials: "include",
 			body: { email: payload.email }
@@ -106,7 +104,7 @@ export function useAuth() {
 	}
 
 	async function changePassword(payload: ChangePasswordPayload) {
-		return $fetch(`${apiBase}/api/auth/change-password/${payload.id}`, {
+		return $fetch(apiUrl(`/auth/change-password/${payload.id}`), {
 			method: "POST",
 			credentials: "include",
 			body: {

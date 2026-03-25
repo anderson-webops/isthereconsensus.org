@@ -103,7 +103,7 @@ export function buildSetupStatus({
 			detail: publicApiBase
 				? `PUBLIC_API_BASE is set to ${publicApiBase}.`
 				: "PUBLIC_API_BASE is not set.",
-			action: "Point PUBLIC_API_BASE at the public site origin or a same-origin reverse proxy."
+			action: "Point PUBLIC_API_BASE at /api for same-origin proxying, or at an intentional absolute public origin."
 		},
 		{
 			id: "cors",

@@ -9,7 +9,7 @@ import { getTopicGuide } from "~/data/topicGuides";
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
-const apiBase = config.public.apiBase as string;
+const { apiUrl } = useApi();
 const { isLoggedIn, currentAccount } = useAuth();
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
@@ -24,11 +24,11 @@ const slug = computed(() => {
 const highlightId = computed(() => (typeof route.query.highlight === "string" ? route.query.highlight : ""));
 
 const { data: topicData } = await useAsyncData(`topic-${slug.value}`, () =>
-	$fetch<SingleTopicResponse>(`${apiBase}/api/topics/${slug.value}`)
+	$fetch<SingleTopicResponse>(apiUrl(`/topics/${slug.value}`))
 );
 
 const { data: questionsData, refresh } = await useAsyncData(`questions-${slug.value}`, () =>
-	$fetch<QuestionsResponse>(`${apiBase}/api/questions?topic=${slug.value}&limit=100`)
+	$fetch<QuestionsResponse>(apiUrl(`/questions?topic=${slug.value}&limit=100`))
 );
 
 const questionText = ref("");
@@ -86,7 +86,7 @@ async function postQuestion() {
 	}
 	submitting.value = true;
 	try {
-		const response = await $fetch<{ question: Question }>(`${apiBase}/api/questions`, {
+		const response = await $fetch<{ question: Question }>(apiUrl("/questions"), {
 			method: "POST",
 			credentials: "include",
 			body: {

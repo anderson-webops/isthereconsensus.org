@@ -7,11 +7,11 @@ describe("buildServerAgentPrompt", () => {
 	it("includes the public site origin and api base", () => {
 		const prompt = buildServerAgentPrompt({
 			siteUrl: "https://isthereconsensus.org/",
-			apiBase: "https://isthereconsensus.org/"
+			apiBase: "/api"
 		});
 
 		assert.match(prompt, /https:\/\/isthereconsensus\.org/);
-		assert.match(prompt, /PUBLIC_API_BASE=https:\/\/isthereconsensus\.org/);
+		assert.match(prompt, /PUBLIC_API_BASE=\/api/);
 	});
 });
 

@@ -12,7 +12,8 @@
 - Terminate TLS in nginx.
 - Serve the public site at the main origin.
 - Proxy `/api/`, `/healthz`, `/readyz`, and `/_dbinfo` from nginx to the backend.
-- Prefer same-origin API access by setting `PUBLIC_API_BASE` to the public site origin.
+- Prefer same-origin API access by setting `PUBLIC_API_BASE=/api`.
+- If the backend is only reachable on an internal address, keep that value private by setting `INTERNAL_API_BASE` or `API_INTERNAL_BASE` instead of exposing it to the browser.
 
 ## Required environment
 
@@ -21,6 +22,7 @@ Backend/runtime:
 - `NODE_ENV=production`
 - `SESSION_SECRET`
 - `PUBLIC_API_BASE`
+- `INTERNAL_API_BASE` or `API_INTERNAL_BASE` if the frontend should reach the backend through a private server-side origin
 - `CAPTCHA_SECRET`
 - `PUBLIC_CAPTCHA_SITEKEY`
 - `VAULT_ADDR`, `VAULT_ROLE_ID`, `VAULT_SECRET_ID`

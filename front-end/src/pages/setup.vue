@@ -23,7 +23,7 @@ const passCount = computed(() => allChecks.value.filter((check) => check.ok).len
 const serverAgentPrompt = computed(() =>
 	buildServerAgentPrompt({
 		siteUrl: dashboard.value?.siteUrl || "https://isthereconsensus.org",
-		apiBase: dashboard.value?.apiBase || "http://127.0.0.1:3011"
+		apiBase: dashboard.value?.apiBase || "/api"
 	})
 );
 const lastUpdated = computed(() =>

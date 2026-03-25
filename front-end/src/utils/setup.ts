@@ -39,7 +39,7 @@ Your job:
    - isthereconsensus-frontend: runs the Nuxt SSR server from front-end/.output/server/index.mjs
    - isthereconsensus-backend: runs the compiled backend from back-end/dist/server.js
 4. Configure nginx and TLS so the public site serves the Nuxt frontend and proxies /api/, /healthz, /readyz, and /_dbinfo to the backend.
-5. Prefer same-origin deployment. If possible, set PUBLIC_API_BASE=${normalizedSiteUrl} so browser requests do not depend on a separate public API origin.
+5. Prefer same-origin deployment. Set PUBLIC_API_BASE=/api unless you intentionally want an absolute public API origin instead.
 6. Verify secure cookies, CORS behavior, Mongo connectivity, captcha configuration, and health endpoints.
 7. Enable automatic restart on failure and restart on boot for both services.
 8. Leave the server in a working, verified state and report the exact files changed plus the final validation output.
@@ -47,7 +47,7 @@ Your job:
 Required environment/config checks:
 - NODE_ENV=production
 - SESSION_SECRET set to a long random value
-- PUBLIC_API_BASE set to the public site origin or an intentional public API origin
+- PUBLIC_API_BASE set to /api for same-origin proxying, or to an intentional absolute public API origin
 - CAPTCHA_SECRET and PUBLIC_CAPTCHA_SITEKEY configured for production posting
 - VAULT_ADDR / VAULT_ROLE_ID / VAULT_SECRET_ID or MONGODB_URI configured
 - Any frontend env needed by Nuxt must be available at build time
@@ -77,7 +77,7 @@ export const serverPreparationTasks: LaunchTask[] = [
 	},
 	{
 		title: "Environment",
-		body: "Set NODE_ENV, SESSION_SECRET, PUBLIC_API_BASE, Mongo/Vault credentials, and Turnstile keys before opening the site."
+		body: "Set NODE_ENV, SESSION_SECRET, PUBLIC_API_BASE, any private internal API base, Mongo/Vault credentials, and Turnstile keys before opening the site."
 	},
 	{
 		title: "Observability",
@@ -106,6 +106,7 @@ export const launchValidationTasks: LaunchTask[] = [
 
 export function buildFrontendSetupChecks(dashboard: SetupDashboardResponse): SetupCheck[] {
 	const siteAndApiMatch = trimTrailingSlash(dashboard.siteUrl) === trimTrailingSlash(dashboard.apiBase);
+	const sameOriginApiPath = dashboard.apiBase === "/api";
 
 	return [
 		{
@@ -135,12 +136,14 @@ export function buildFrontendSetupChecks(dashboard: SetupDashboardResponse): Set
 		{
 			id: "origin-alignment",
 			label: "Public origin alignment",
-			ok: siteAndApiMatch || !isLocalUrl(dashboard.apiBase),
+			ok: sameOriginApiPath || siteAndApiMatch || !isLocalUrl(dashboard.apiBase),
 			severity: "warning",
-			detail: siteAndApiMatch
-				? "The frontend is pointing at the same public origin."
-				: `The frontend is targeting ${dashboard.apiBase}; make sure proxy and CORS settings match that choice.`,
-			action: "For the simplest production setup, proxy the API through the site origin and set PUBLIC_API_BASE to that origin."
+			detail: sameOriginApiPath
+				? "The frontend is pointing at /api, which is the preferred same-origin production setup."
+				: siteAndApiMatch
+					? "The frontend is pointing at the same public origin."
+					: `The frontend is targeting ${dashboard.apiBase}; make sure proxy and CORS settings match that choice.`,
+			action: "For the simplest production setup, proxy the API through the site origin and set PUBLIC_API_BASE=/api."
 		}
 	];
 }
