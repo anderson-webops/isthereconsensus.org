@@ -14,6 +14,7 @@ export interface Question {
 	body?: string;
 	sourceUrl?: string;
 	displayName?: string;
+	author?: string;
 	authorName?: string;
 	authorModel?: "User" | "Admin";
 	status?: "open" | "flagged" | "archived";

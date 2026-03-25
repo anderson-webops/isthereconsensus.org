@@ -7,6 +7,11 @@ export interface IBaseUser extends Document {
 	email: string;
 	password: string;
 	saveEdit: string; // the “Save” / “Edit” toggle text
+	trustScore?: number;
+	trustLevel?: number;
+	expertiseStatus?: "none" | "pending" | "verified" | "rejected";
+	affiliation?: string;
+	expertiseAreas?: string[];
 
 	comparePassword: (password: string) => Promise<boolean>;
 

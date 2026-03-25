@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
+import ExpertApplicationPanel from "~/components/ExpertApplicationPanel.vue";
+
+const { currentAccount } = useAuth();
 
 const contributorLanes = [
 	{
@@ -38,6 +42,24 @@ const reviewPrinciples = [
 			title="Account access"
 			hint="Your account controls posting now and moderation or review roles later."
 		/>
+
+		<section class="status-strip">
+			<article class="info-card">
+				<h2>Trust score</h2>
+				<p>{{ currentAccount?.trustScore ?? 0 }}</p>
+			</article>
+			<article class="info-card">
+				<h2>Trust level</h2>
+				<p>{{ currentAccount?.trustLevel ?? 0 }}</p>
+			</article>
+			<article class="info-card">
+				<h2>Expertise status</h2>
+				<p>{{ currentAccount?.expertiseStatus || "none" }}</p>
+			</article>
+		</section>
+
+		<ExpertApplicationPanel />
+		<AdminReviewPanel />
 
 		<section class="account-page__grid">
 			<article v-for="lane in contributorLanes" :key="lane.title" class="info-card">
@@ -83,6 +105,12 @@ const reviewPrinciples = [
 	display: grid;
 	gap: 16px;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.status-strip {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .info-card,

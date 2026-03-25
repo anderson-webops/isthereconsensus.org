@@ -52,6 +52,7 @@ export function buildSetupStatus({
 	const hasSessionSecret = !!env.SESSION_SECRET;
 	const hasCaptchaSecret = !!env.CAPTCHA_SECRET;
 	const hasCaptchaSiteKey = !!env.PUBLIC_CAPTCHA_SITEKEY;
+	const hasOpenAlexConfig = !!env.OPENALEX_EMAIL || !!env.OPENALEX_API_KEY;
 	const topicCreationEnabled = env.ENABLE_TOPIC_CREATION === "true";
 	const databaseName = mongoose.connection.db?.databaseName || mongoose.connection.name || "";
 	const mongoConnected = mongoose.connection.readyState === 1;
@@ -131,6 +132,16 @@ export function buildSetupStatus({
 						? "Captcha is only partially configured."
 						: "Captcha is disabled; posting is open without challenge protection.",
 			action: "Set both CAPTCHA_SECRET and PUBLIC_CAPTCHA_SITEKEY for production posting."
+		},
+		{
+			id: "evidence-provider",
+			label: "Scholarly evidence provider",
+			ok: hasOpenAlexConfig,
+			severity: "warning",
+			detail: hasOpenAlexConfig
+				? "OpenAlex is configured for live literature search."
+				: "Live literature search will run in anonymous/public mode or may hit tighter rate limits.",
+			action: "Set OPENALEX_EMAIL at minimum, and optionally OPENALEX_API_KEY, for better rate limits and attribution."
 		},
 		{
 			id: "cookies",

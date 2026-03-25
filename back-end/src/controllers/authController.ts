@@ -57,6 +57,7 @@ export const registerUser: RequestHandler = async (req, res) => {
 
 	const user = await User.create({ name: trimmedName, email: trimmedEmail, password });
 	const session = req.session as CustomSession;
+	session.adminID = undefined;
 	session.userID = user._id.toString();
 
 	return res.status(201).json({ currentUser: user });
@@ -97,9 +98,11 @@ export const login: RequestHandler = async (req, res) => {
 	let responseKey: "currentAdmin" | "currentUser";
 	if (entity instanceof Admin) {
 		session.adminID = entity._id.toString();
+		session.userID = undefined;
 		responseKey = "currentAdmin";
 	}
 	else {
+		session.adminID = undefined;
 		session.userID = entity._id.toString();
 		responseKey = "currentUser";
 	}

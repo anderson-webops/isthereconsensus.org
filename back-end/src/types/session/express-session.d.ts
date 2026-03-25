@@ -1,25 +1,18 @@
-// src/types/session/express-session.d.ts
+import type { IAdmin } from "../entities/IAdmin.js";
+import type { IUser } from "../entities/IUser.js";
 
-// noinspection JSUnusedGlobalSymbols // These are used/included by tsconfig.json
-import type { IAdmin } from "./IAdmin.js";
-
-
-/**
- * Extend express-session's SessionData interface
- */
 declare module "express-session" {
-  interface SessionData {
-    adminID?: string;
-  }
+	interface SessionData {
+		adminID?: string;
+		userID?: string;
+	}
 }
 
-/**
- * Extend Express's Request interface to include currentAdmin, etc.
- */
 declare global {
-  namespace Express {
-    interface Request {
-      currentAdmin?: IAdmin;
-    }
-  }
+	namespace Express {
+		interface Request {
+			currentAdmin?: IAdmin;
+			currentUser?: IUser;
+		}
+	}
 }

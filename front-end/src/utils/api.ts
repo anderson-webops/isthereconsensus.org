@@ -1,7 +1,9 @@
 const LOCAL_URL_PATTERN = /localhost|127\.0\.0\.1|0\.0\.0\.0/i;
+const TRAILING_SLASH_PATTERN = /\/+$/;
+const API_SUFFIX_PATTERN = /\/api$/;
 
 function trimTrailingSlash(value: string) {
-	return value.replace(/\/+$/, "");
+	return value.replace(TRAILING_SLASH_PATTERN, "");
 }
 
 function ensureLeadingSlash(value: string) {
@@ -32,7 +34,7 @@ export function normalizePublicApiBase(value: string | undefined, isDev: boolean
 
 export function normalizeInternalApiBase(value: string | undefined) {
 	const candidate = (value || "").trim();
-	return trimTrailingSlash(candidate || "http://127.0.0.1:3011").replace(/\/api$/, "");
+	return trimTrailingSlash(candidate || "http://127.0.0.1:3011").replace(API_SUFFIX_PATTERN, "");
 }
 
 export function joinBaseUrl(base: string, path: string) {

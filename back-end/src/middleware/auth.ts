@@ -10,7 +10,7 @@ export const requireUser: RequestHandler = async (req, res, next) => {
 	try {
 		const user = await User.findById(session.userID);
 		if (!user) return res.status(403).json({ error: "User not found" });
-		(req as any).currentUser = user;
+		req.currentUser = user;
 		return next();
 	}
 	catch (error) {
@@ -27,7 +27,7 @@ export const requireAdmin: RequestHandler = async (req, res, next) => {
 	try {
 		const admin = await Admin.findById(session.adminID);
 		if (!admin) return res.status(403).json({ error: "Admin not found" });
-		(req as any).currentAdmin = admin;
+		req.currentAdmin = admin;
 		return next();
 	}
 	catch (error) {

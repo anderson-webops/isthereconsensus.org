@@ -30,7 +30,10 @@ export default defineEventHandler(async (event): Promise<SetupDashboardResponse>
 	};
 
 	const [backendHealth, backendReady, backendSetup] = await Promise.all([
-		probeJson<{ ok: boolean }>(joinBaseUrl(internalApiBase, "/healthz"), () => "Backend /healthz responded successfully."),
+		probeJson<{ ok: boolean }>(
+			joinBaseUrl(internalApiBase, "/healthz"),
+			() => "Backend /healthz responded successfully."
+		),
 		probeJson<{ ready: boolean; state?: number }>(joinBaseUrl(internalApiBase, "/readyz"), (data) =>
 			data.ready
 				? "Backend /readyz reports MongoDB is ready."

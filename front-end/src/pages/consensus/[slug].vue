@@ -3,14 +3,16 @@ import type { Question, QuestionsResponse, SingleTopicResponse } from "~/types/b
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import CommunitySentimentPanel from "~/components/CommunitySentimentPanel.vue";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import EvidenceExplorer from "~/components/EvidenceExplorer.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
 const { apiUrl } = useApi();
-const { isLoggedIn, currentAccount } = useAuth();
+const { isLoggedIn, currentAccount, role } = useAuth();
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
 interface ConsensusRouteParams {
@@ -37,12 +39,18 @@ const questionSourceUrl = ref("");
 const questionSearch = ref("");
 const submitting = ref(false);
 const errorMessage = ref("");
+const moderationMessage = ref("");
 const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
+const flaggingId = ref("");
+const deletingId = ref("");
+const flagReason = ref<Record<string, string>>({});
+const flagNote = ref<Record<string, string>>({});
 
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
+const isAdmin = computed(() => role.value === "admin");
 const filteredQuestions = computed(() => {
 	const query = questionSearch.value.trim().toLowerCase();
 	if (!query) return questions.value;
@@ -54,6 +62,7 @@ const filteredQuestions = computed(() => {
 	);
 });
 const activeTab = ref<"community" | "consensus" | "gap">("community");
+const flagOptions = ["off-topic", "duplicate", "misleading", "low-quality", "needs-sources", "abusive"];
 
 watch(
 	() => highlightId.value,
@@ -111,6 +120,51 @@ async function postQuestion() {
 		submitting.value = false;
 	}
 }
+
+function canDeleteQuestion(question: Question) {
+	if (isAdmin.value) return true;
+	return question.author === currentAccount.value?._id && question.authorModel === "User";
+}
+
+async function deleteQuestion(questionId: string) {
+	moderationMessage.value = "";
+	deletingId.value = questionId;
+	try {
+		await $fetch(apiUrl(`/questions/${questionId}`), {
+			method: "DELETE",
+			credentials: "include"
+		});
+		await refresh();
+		moderationMessage.value = "Question removed.";
+	} catch (error) {
+		moderationMessage.value = "Unable to delete that question.";
+		console.error(error);
+	} finally {
+		deletingId.value = "";
+	}
+}
+
+async function flagQuestion(questionId: string) {
+	moderationMessage.value = "";
+	flaggingId.value = questionId;
+	try {
+		await $fetch(apiUrl(`/questions/${questionId}/flags`), {
+			method: "POST",
+			credentials: "include",
+			body: {
+				reason: flagReason.value[questionId] || "low-quality",
+				note: flagNote.value[questionId] || ""
+			}
+		});
+		moderationMessage.value = "Flag submitted for review.";
+		flagNote.value[questionId] = "";
+	} catch (error) {
+		moderationMessage.value = "Unable to submit that flag.";
+		console.error(error);
+	} finally {
+		flaggingId.value = "";
+	}
+}
 </script>
 
 <template>
@@ -154,7 +208,9 @@ async function postQuestion() {
 			<button class="tab" :class="{ active: activeTab === 'consensus' }" @click="activeTab = 'consensus'">
 				Consensus map
 			</button>
-			<button class="tab" :class="{ active: activeTab === 'gap' }" @click="activeTab = 'gap'">Gap map</button>
+			<button class="tab" :class="{ active: activeTab === 'gap' }" @click="activeTab = 'gap'">
+				Gap + sentiment
+			</button>
 		</section>
 
 		<section v-if="activeTab === 'community'" class="topic__panel topic__panel--community">
@@ -228,6 +284,7 @@ async function postQuestion() {
 						/>
 					</div>
 				</div>
+				<p v-if="moderationMessage" class="success">{{ moderationMessage }}</p>
 				<div v-if="!filteredQuestions.length" class="muted">No questions here yet. Start the conversation.</div>
 				<div v-else class="question-grid">
 					<article
@@ -255,6 +312,43 @@ async function postQuestion() {
 						>
 							Open source ↗
 						</a>
+						<div v-if="isLoggedIn" class="question-actions">
+							<details class="flag-box">
+								<summary>Report</summary>
+								<div class="flag-box__body">
+									<label class="ask-label" :for="`flag-reason-${question._id}`">Reason</label>
+									<select :id="`flag-reason-${question._id}`" v-model="flagReason[question._id]">
+										<option v-for="reason in flagOptions" :key="reason" :value="reason">
+											{{ reason }}
+										</option>
+									</select>
+									<label class="ask-label" :for="`flag-note-${question._id}`">Note</label>
+									<textarea
+										:id="`flag-note-${question._id}`"
+										v-model="flagNote[question._id]"
+										rows="2"
+										placeholder="Optional context for moderators"
+									/>
+									<button
+										class="mini"
+										type="button"
+										:disabled="flaggingId === question._id"
+										@click="flagQuestion(question._id)"
+									>
+										{{ flaggingId === question._id ? "Submitting..." : "Submit flag" }}
+									</button>
+								</div>
+							</details>
+							<button
+								v-if="canDeleteQuestion(question)"
+								class="mini danger"
+								type="button"
+								:disabled="deletingId === question._id"
+								@click="deleteQuestion(question._id)"
+							>
+								{{ deletingId === question._id ? "Deleting..." : "Delete" }}
+							</button>
+						</div>
 					</article>
 				</div>
 			</div>
@@ -291,6 +385,8 @@ async function postQuestion() {
 					</div>
 				</article>
 			</div>
+
+			<EvidenceExplorer :topic-slug="slug" :default-query="topic?.title || guide.slug" />
 		</section>
 
 		<section v-else class="topic__panel">
@@ -308,6 +404,8 @@ async function postQuestion() {
 					</ul>
 				</article>
 			</div>
+
+			<CommunitySentimentPanel :topic-slug="slug" />
 
 			<article class="info-card info-card--wide">
 				<h2>How to use this gap map</h2>
@@ -446,7 +544,9 @@ async function postQuestion() {
 
 .topic__post input,
 .topic__post textarea,
-.topic__search input {
+.topic__search input,
+.flag-box__body textarea,
+.flag-box__body select {
 	border-radius: 14px;
 	border: 1px solid rgba(21, 17, 13, 0.12);
 	padding: 12px 14px;
@@ -527,6 +627,49 @@ async function postQuestion() {
 	font-weight: 700;
 }
 
+.question-actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: start;
+}
+
+.flag-box {
+	width: 100%;
+}
+
+.flag-box summary {
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--consensus-muted);
+}
+
+.flag-box__body {
+	display: grid;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.mini {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	padding: 8px 14px;
+	border: 1px solid rgba(21, 17, 13, 0.12);
+	background: #fff;
+	font-size: 0.85rem;
+	font-weight: 600;
+	font-family: inherit;
+	cursor: pointer;
+	width: fit-content;
+}
+
+.mini.danger {
+	border-color: rgba(184, 61, 46, 0.35);
+}
+
 .resource-list {
 	display: grid;
 	gap: 12px;
@@ -553,5 +696,11 @@ async function postQuestion() {
 
 .error {
 	color: #b33a1b;
+}
+
+.success {
+	color: #2f6b4e;
+	font-weight: 600;
+	margin: 0;
 }
 </style>
