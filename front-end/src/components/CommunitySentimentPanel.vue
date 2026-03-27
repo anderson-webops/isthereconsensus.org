@@ -19,15 +19,15 @@ const sentiment = ref<TopicSentimentResponse | null>(null);
 const stanceMeta = {
 	aligns: {
 		label: "Mostly aligns with the evidence",
-		description: "The public reading is roughly tracking the consensus."
+		description: "Public reading is roughly tracking the consensus."
 	},
 	uncertain: {
 		label: "Unsure or split",
-		description: "The public picture looks mixed or not well calibrated yet."
+		description: "Public reading looks mixed or poorly calibrated."
 	},
 	skeptical: {
 		label: "Drifting away from the evidence",
-		description: "The public reading seems to diverge from the consensus lane."
+		description: "Public reading seems to diverge from the consensus lane."
 	}
 } as const;
 
@@ -60,7 +60,7 @@ async function refreshSentiment() {
 
 async function submitVote() {
 	if (!isLoggedIn.value) {
-		errorMessage.value = "Sign in to add your community reading.";
+		errorMessage.value = "Sign in to add your reading.";
 		return;
 	}
 
@@ -95,20 +95,20 @@ watch(
 </script>
 
 <template>
-	<div class="sentiment-panel">
-		<div class="sentiment-panel__header">
+	<div class="sentiment">
+		<div class="sentiment__header">
 			<div>
 				<h2>Community sentiment</h2>
-				<p>Keep public sentiment visible, but clearly separate it from the curated consensus lane.</p>
+				<p>Visible, but intentionally separate from the consensus summary above.</p>
 			</div>
-			<div class="sentiment-total">
+			<div class="sentiment__total">
 				<span>Total votes</span>
 				<strong>{{ sentiment?.totalVotes || 0 }}</strong>
 			</div>
 		</div>
 
 		<div v-if="loading" class="muted">Loading sentiment...</div>
-		<div v-else class="sentiment-grid">
+		<div v-else class="sentiment__grid">
 			<article v-for="meta in stanceCards" :key="meta.key" class="sentiment-card">
 				<div class="sentiment-card__top">
 					<h3>{{ meta.label }}</h3>
@@ -143,10 +143,10 @@ watch(
 				id="sentiment-note"
 				v-model="note"
 				rows="3"
-				placeholder="What is the public confusion pattern you’re seeing?"
+				placeholder="What public confusion pattern are you seeing?"
 			/>
 			<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-			<button class="cta primary" type="button" :disabled="saving" @click="submitVote">
+			<button class="button button--primary" type="button" :disabled="saving" @click="submitVote">
 				{{ saving ? "Saving..." : "Save sentiment vote" }}
 			</button>
 		</div>
@@ -154,65 +154,70 @@ watch(
 </template>
 
 <style scoped>
-.sentiment-panel,
-.vote-panel,
-.sentiment-card {
-	background: #fff;
-	border-radius: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-}
-
-.sentiment-panel {
-	padding: 20px;
+.sentiment {
 	display: grid;
-	gap: 18px;
+	gap: 16px;
 }
 
-.sentiment-panel__header {
+.sentiment__header,
+.sentiment-card,
+.vote-panel {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 20px;
+}
+
+.sentiment__header,
+.vote-panel {
+	padding: 18px;
+}
+
+.sentiment__header {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
 }
 
-.sentiment-panel__header h2,
+.sentiment__header h2,
 .sentiment-card h3,
 .vote-panel h3 {
 	margin: 0;
 	font-family: "Fraunces", serif;
 }
 
-.sentiment-panel__header p,
-.sentiment-card p {
+.sentiment__header p,
+.sentiment-card p,
+.muted {
+	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
 
-.sentiment-total {
-	min-width: 120px;
-	display: grid;
-	gap: 4px;
-	align-content: start;
-}
-
-.sentiment-total span,
+.sentiment__total,
 .sentiment-card span,
 .field-label {
+	font-size: 0.82rem;
+	font-weight: 600;
 	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.72rem;
+	letter-spacing: 0.08em;
 	color: var(--consensus-muted);
 }
 
-.sentiment-total strong,
-.sentiment-card strong {
-	font-size: 1.5rem;
+.sentiment__total {
+	display: grid;
+	gap: 4px;
 }
 
-.sentiment-grid {
+.sentiment__total strong,
+.sentiment-card strong {
+	font-size: 1.35rem;
+	color: var(--consensus-ink);
+}
+
+.sentiment__grid {
 	display: grid;
-	gap: 16px;
+	gap: 12px;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
@@ -220,7 +225,7 @@ watch(
 	padding: 16px;
 	display: grid;
 	gap: 10px;
-	background: var(--consensus-cream);
+	background: rgba(255, 255, 255, 0.78);
 }
 
 .sentiment-card__top {
@@ -240,11 +245,10 @@ watch(
 .bar__fill {
 	height: 100%;
 	border-radius: inherit;
-	background: linear-gradient(90deg, var(--consensus-ember), #e8a26a);
+	background: linear-gradient(90deg, var(--consensus-ember), #e3a36d);
 }
 
 .vote-panel {
-	padding: 18px;
 	display: grid;
 	gap: 12px;
 }
@@ -256,17 +260,16 @@ watch(
 }
 
 .vote-option {
-	border-radius: 999px;
-	border: 1px solid rgba(21, 17, 13, 0.14);
-	background: transparent;
 	padding: 10px 14px;
-	font-family: inherit;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	background: transparent;
 	cursor: pointer;
 }
 
 .vote-option.active {
-	border-color: var(--consensus-ember);
-	box-shadow: 0 10px 20px rgba(211, 107, 56, 0.18);
+	background: var(--consensus-soft-accent);
+	border-color: rgba(211, 107, 56, 0.3);
 }
 
 textarea,
@@ -275,37 +278,31 @@ input[type="range"] {
 }
 
 textarea {
-	border-radius: 14px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
 	padding: 12px 14px;
-	font-family: inherit;
+	border-radius: 14px;
+	border: 1px solid var(--consensus-line);
+	background: #fff;
 }
 
-.cta {
+.button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	padding: 12px 18px;
 	border-radius: 999px;
-	padding: 12px 20px;
-	border: none;
-	font-size: 0.95rem;
+	border: 1px solid var(--consensus-line);
 	font-weight: 600;
-	font-family: inherit;
 	cursor: pointer;
-	width: fit-content;
 }
 
-.cta.primary {
+.button--primary {
 	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
 	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
-}
-
-.muted {
-	color: var(--consensus-muted);
 }
 
 .error {
+	margin: 0;
 	color: #b83d2e;
 	font-weight: 600;
 }

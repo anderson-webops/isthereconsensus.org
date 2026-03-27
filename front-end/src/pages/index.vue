@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 
@@ -7,244 +8,193 @@ definePageMeta({
 });
 
 const router = useRouter();
-const question = ref("");
+const { apiUrl } = useApi();
 
-const startingPaths = [
+const { data: topicsData } = await useAsyncData("home-topics", () =>
+	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
+);
+
+const search = ref("");
+
+const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
+const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
+const enrichedTopics = computed(() =>
+	topics.value
+		.map((topic) => ({
+			...topic,
+			guide: getTopicGuide(topic.slug)
+		}))
+		.sort((left, right) => {
+			const leftIndex = starterOrder.indexOf(left.slug);
+			const rightIndex = starterOrder.indexOf(right.slug);
+			const leftRank = leftIndex === -1 ? starterOrder.length : leftIndex;
+			const rightRank = rightIndex === -1 ? starterOrder.length : rightIndex;
+			return (
+				leftRank - rightRank ||
+				(right.questionCount ?? 0) - (left.questionCount ?? 0) ||
+				left.title.localeCompare(right.title)
+			);
+		})
+);
+
+const searchQuery = computed(() => search.value.trim().toLowerCase());
+const suggestedTopics = computed(() => {
+	if (!searchQuery.value) return [];
+	return enrichedTopics.value
+		.filter((topic) => {
+			const haystack = [
+				topic.title,
+				topic.description,
+				topic.guide.snapshot,
+				topic.guide.consensusLabel,
+				...topic.guide.starterQuestions
+			]
+				.join(" ")
+				.toLowerCase();
+			return haystack.includes(searchQuery.value);
+		})
+		.slice(0, 5);
+});
+
+const trendingTopics = computed(() => enrichedTopics.value.slice(0, 5));
+const quickPrinciples = [
 	{
-		step: "01",
-		title: "I have a question",
-		body: "Use this when a claim, article, or video is bothering you and you want a clean place to start.",
-		to: "/ask",
-		cta: "Ask a question"
+		title: "Start with the bottom line",
+		body: "Each topic page opens with the short answer before the debate, sentiment, or community lane."
 	},
 	{
-		step: "02",
-		title: "I want to browse",
-		body: "Open a topic, read the consensus summary first, and only then move into public questions or sentiment.",
-		to: "/consensus",
-		cta: "Browse topics"
+		title: "Treat new studies as updates, not instant reversals",
+		body: "Most new papers add detail around the edges. They do not usually rewrite the center all at once."
 	},
 	{
-		step: "03",
-		title: "I want the short explanation",
-		body: "Read the quick guide to how this site separates settled knowledge, live debate, and public confusion.",
-		to: "/how",
-		cta: "Read how it works"
+		title: "Keep expert consensus separate from public opinion",
+		body: "The site shows both, but it does not present them as the same kind of signal."
 	}
 ];
 
-const firstVisitSteps = [
-	"Pick one topic instead of trying to read the whole site at once.",
-	"Inside a topic, start with the Consensus view before opening Questions or Sentiment.",
-	"Use the community board after you know the frame, not before."
-];
-
-const promptChips = [
-	"Is there a scientific consensus on climate change?",
-	"Does one new study actually change the picture?",
-	"What would need to happen for experts to change their minds?",
-	"How should I read a scary health headline?"
-];
-
-const detailCards = [
-	{
-		title: "Basketball vs bumps",
-		body: "The stable consensus is the basketball. Most new studies add a bump to the surface, not a whole new shape."
-	},
-	{
-		title: "Relative vs absolute risk",
-		body: "A headline can describe a large percentage increase while the actual real-world change remains small."
-	},
-	{
-		title: "Constructed knowledge",
-		body: "Math and science are built by people using tools, symbols, and methods that were developed over time."
+function submitSearch() {
+	const query = search.value.trim();
+	if (!query) {
+		router.push("/consensus");
+		return;
 	}
-];
-
-const featuredTopics = [
-	{
-		title: "Consensus foundations",
-		slug: "consensus-foundations",
-		description:
-			"Start here if you want to understand how stable claims get built and why they usually move slowly."
-	},
-	{
-		title: "Media & misinformation",
-		slug: "media-misinformation",
-		description:
-			"Start here if you want help translating headlines, hype, and misleading framing into clearer questions."
-	},
-	{
-		title: "Active scientific debates",
-		slug: "active-debates",
-		description: "Start here if you want to see what real scientific disagreement usually looks like."
+	if (suggestedTopics.value.length === 1) {
+		router.push(`/consensus/${suggestedTopics.value[0].slug}`);
+		return;
 	}
-].map((topic) => ({
-	...topic,
-	guide: getTopicGuide(topic.slug)
-}));
-
-function toAskWithQuestion(prompt: string) {
-	question.value = prompt;
 	router.push({
-		path: "/ask",
-		query: { question: prompt }
-	});
-}
-
-function goToAsk() {
-	const trimmed = question.value.trim();
-	router.push({
-		path: "/ask",
-		query: trimmed ? { question: trimmed } : undefined
+		path: "/consensus",
+		query: { q: query }
 	});
 }
 </script>
 
 <template>
-	<div class="page">
-		<div class="orb orb--peach" />
-		<div class="orb orb--sage" />
-		<div class="orb orb--ember" />
-
-		<header class="hero">
-			<div class="hero__copy reveal" style="animation-delay: 0.05s">
-				<p class="eyebrow">isthereconsensus.org</p>
-				<h1>Start with the short answer. Open the deeper context only when you need it.</h1>
-				<p class="lead">
-					This site is built to help you find one clear path: what experts agree on, what is still genuinely
-					open, and what headlines or public opinion tend to get wrong.
+	<div class="home">
+		<section class="hero">
+			<div class="hero__copy">
+				<p class="eyebrow">Find out where the science stands</p>
+				<h1>Understand the science. Skip the noise.</h1>
+				<p class="hero__lead">
+					Search a topic, read the short answer first, and only then decide whether you need the debate,
+					literature, or community questions.
 				</p>
 
-				<div class="cta-row">
-					<NuxtLink class="cta primary" to="/consensus">Browse topics</NuxtLink>
-					<NuxtLink class="cta ghost" to="/ask">Ask a question</NuxtLink>
-					<NuxtLink class="cta ghost" to="/how">How it works</NuxtLink>
-				</div>
-			</div>
-
-			<div class="hero__aside reveal" style="animation-delay: 0.15s">
-				<article class="panel panel--accent">
-					<p class="panel__tag">First visit?</p>
-					<h2>Do not try to read everything.</h2>
-					<p>
-						Pick one topic, read its Consensus view first, and treat the rest of the page as optional depth.
+				<form class="search-panel" @submit.prevent="submitSearch">
+					<label class="search-panel__label" for="home-search">Search a topic or claim</label>
+					<div class="search-panel__row">
+						<input
+							id="home-search"
+							v-model="search"
+							type="text"
+							placeholder="Try climate change, sweeteners, or media misinformation"
+						/>
+						<button class="button button--primary" type="submit">Search</button>
+					</div>
+					<p class="search-panel__hint">
+						If a topic already exists, open it first. If not, the site will send you to the topic browser.
 					</p>
-				</article>
-				<article class="panel">
-					<p class="panel__tag">What this site tries to prevent</p>
-					<ul>
-						<li>Getting lost in community discussion before you know the frame</li>
-						<li>Mistaking one new study for a collapse of the whole picture</li>
-						<li>Treating crowd opinion like expert consensus</li>
+					<ul v-if="suggestedTopics.length" class="suggestion-list">
+						<li v-for="topic in suggestedTopics" :key="topic.slug">
+							<NuxtLink :to="`/consensus/${topic.slug}`">
+								<strong>{{ topic.title }}</strong>
+								<span>{{ topic.guide.snapshot }}</span>
+							</NuxtLink>
+						</li>
 					</ul>
-				</article>
+				</form>
 			</div>
-		</header>
 
-		<section class="section reveal" style="animation-delay: 0.25s">
-			<div class="section__header">
-				<h2>Choose your path</h2>
-				<p>Most people only need one of these.</p>
-			</div>
-			<div class="path-grid">
-				<NuxtLink v-for="path in startingPaths" :key="path.title" class="path-card" :to="path.to">
-					<span class="path-card__step">{{ path.step }}</span>
-					<h3>{{ path.title }}</h3>
-					<p>{{ path.body }}</p>
-					<span class="path-card__cta">{{ path.cta }} →</span>
-				</NuxtLink>
-			</div>
+			<aside class="hero__aside">
+				<p class="eyebrow">What you get on each topic page</p>
+				<ol>
+					<li>A plain-language bottom line.</li>
+					<li>The stable core of the evidence.</li>
+					<li>Open questions and public misunderstandings, clearly separated.</li>
+				</ol>
+			</aside>
 		</section>
 
-		<section class="section section--soft reveal" style="animation-delay: 0.35s">
-			<div class="section__header">
-				<h2>If you are new, read in this order</h2>
-				<p>This is the intended path through the site.</p>
+		<section class="home-section">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Trending consensus</p>
+					<h2>Good places to start</h2>
+				</div>
+				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
 			</div>
-			<div class="visit-grid">
-				<article v-for="(step, index) in firstVisitSteps" :key="step" class="visit-step">
-					<span>{{ index + 1 }}</span>
-					<p>{{ step }}</p>
-				</article>
-			</div>
-		</section>
 
-		<section class="section reveal" style="animation-delay: 0.45s">
-			<div class="section__header">
-				<h2>Start with one topic</h2>
-				<p>These are good entry points because each one teaches a different part of the site’s logic.</p>
-			</div>
-			<div class="feature-grid">
+			<div class="topic-list">
 				<NuxtLink
-					v-for="topic in featuredTopics"
+					v-for="topic in trendingTopics"
 					:key="topic.slug"
-					class="feature-card"
+					class="topic-row"
 					:to="`/consensus/${topic.slug}`"
 				>
-					<h3>{{ topic.title }}</h3>
-					<p>{{ topic.description }}</p>
-					<ConsensusMeter
-						:level="topic.guide.consensusScore"
-						:label="topic.guide.consensusLabel"
-						:caption="topic.guide.snapshot"
-					/>
-					<span class="feature-card__cta">Open topic →</span>
+					<div class="topic-row__main">
+						<h3>{{ topic.title }}</h3>
+						<p>{{ topic.guide.snapshot }}</p>
+						<div class="topic-row__meta">
+							<span>{{ topic.guide.consensusLabel }}</span>
+							<span>{{ topic.questionCount ?? 0 }} community threads</span>
+						</div>
+					</div>
+					<div class="topic-row__meter">
+						<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
+					</div>
 				</NuxtLink>
 			</div>
 		</section>
 
-		<section class="section reveal" style="animation-delay: 0.55s">
-			<div class="section__header">
-				<h2>Try a question</h2>
-				<p>If you want to feel the site quickly, start with one example instead of reading every explainer.</p>
-			</div>
-			<div class="prompt-card">
-				<div class="prompt-grid">
-					<button
-						v-for="prompt in promptChips"
-						:key="prompt"
-						class="prompt-chip"
-						type="button"
-						@click="toAskWithQuestion(prompt)"
-					>
-						{{ prompt }}
-					</button>
+		<section class="home-section home-section--soft">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">How to read the site</p>
+					<h2>Keep the reading order simple</h2>
 				</div>
 			</div>
-		</section>
 
-		<section class="section section--soft reveal" style="animation-delay: 0.65s">
-			<div class="section__header">
-				<h2>Only open these if you want more context</h2>
-				<p>These ideas matter, but they do not need to hit all at once on the first screen.</p>
-			</div>
-			<div class="detail-grid">
-				<details v-for="item in detailCards" :key="item.title" class="detail-card">
-					<summary>{{ item.title }}</summary>
+			<div class="principles">
+				<article v-for="item in quickPrinciples" :key="item.title" class="principle">
+					<h3>{{ item.title }}</h3>
 					<p>{{ item.body }}</p>
-				</details>
+				</article>
 			</div>
 		</section>
 
-		<section class="section section--soft reveal" style="animation-delay: 0.75s">
-			<div class="story">
-				<div class="story__copy">
-					<h2>Bring a claim. Leave with a better reading order.</h2>
+		<section class="home-section home-section--compact">
+			<div class="closing-callout">
+				<div>
+					<p class="eyebrow">Still do not see your topic?</p>
+					<h2>Check the browser first, then ask.</h2>
 					<p>
-						Paste the claim, choose the topic where it belongs, and let the site sort the conversation into
-						consensus first, questions second, and public sentiment separately.
+						The site works best when new questions land under the closest existing topic, so readers hit the
+						consensus summary before the thread.
 					</p>
 				</div>
-				<div class="ask-card">
-					<label class="ask-label" for="ask">Ask a question</label>
-					<textarea
-						id="ask"
-						v-model="question"
-						rows="3"
-						placeholder="Paste a claim, a quote, or the question you want checked..."
-					/>
-					<button class="cta primary" type="button" @click="goToAsk">Continue to ask</button>
+				<div class="closing-callout__actions">
+					<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
+					<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 				</div>
 			</div>
 		</section>
@@ -252,316 +202,284 @@ function goToAsk() {
 </template>
 
 <style scoped>
-.page {
-	position: relative;
+.home {
 	display: grid;
-	gap: 64px;
-}
-
-.orb {
-	position: absolute;
-	border-radius: 999px;
-	opacity: 0.6;
-	pointer-events: none;
-	mix-blend-mode: multiply;
-	animation: float 10s ease-in-out infinite;
-}
-
-.orb--peach {
-	width: 320px;
-	height: 320px;
-	background: radial-gradient(circle at top, #ffd7b0, #eaa07a 70%);
-	top: -80px;
-	right: 12%;
-	animation-delay: -2s;
-}
-
-.orb--sage {
-	width: 260px;
-	height: 260px;
-	background: radial-gradient(circle at top, #d5e5d5, #8ab59f 70%);
-	top: 38%;
-	left: -40px;
-	animation-delay: -5s;
-}
-
-.orb--ember {
-	width: 220px;
-	height: 220px;
-	background: radial-gradient(circle at top, #ffd1c2, #cf6b49 70%);
-	bottom: 8%;
-	right: -40px;
-	animation-delay: -8s;
+	gap: 40px;
 }
 
 .hero {
 	display: grid;
-	gap: 28px;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 24px;
+	grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.8fr);
 	align-items: start;
 }
 
 .hero__copy,
 .hero__aside,
-.story__copy {
+.search-panel,
+.topic-row,
+.principle,
+.closing-callout {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 24px;
+}
+
+.hero__copy {
+	padding: 28px;
+	display: grid;
+	gap: 20px;
+}
+
+.hero h1,
+.section-heading h2,
+.topic-row h3,
+.principle h3,
+.closing-callout h2 {
+	font-family: "Fraunces", serif;
+}
+
+.hero h1 {
+	font-size: clamp(2.7rem, 5vw, 4.4rem);
+	line-height: 0.98;
+	margin: 0;
+	max-width: 12ch;
+}
+
+.hero__lead,
+.topic-row p,
+.principle p,
+.closing-callout p,
+.search-panel__hint,
+.hero__aside {
+	color: var(--consensus-muted);
+}
+
+.hero__lead {
+	font-size: 1.05rem;
+	line-height: 1.7;
+	max-width: 58ch;
+	margin: 0;
+}
+
+.hero__aside {
+	padding: 24px;
+}
+
+.hero__aside ol {
+	margin: 12px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 12px;
+	line-height: 1.6;
+}
+
+.search-panel {
+	padding: 18px;
+	display: grid;
+	gap: 12px;
+}
+
+.search-panel__label,
+.topic-row__meta,
+.text-link,
+.suggestion-list strong,
+.button {
+	font-weight: 600;
+}
+
+.search-panel__label {
+	font-size: 0.95rem;
+}
+
+.search-panel__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 12px;
+}
+
+.search-panel input {
+	width: 100%;
+	padding: 14px 16px;
+	border-radius: 16px;
+	border: 1px solid var(--consensus-line);
+	background: #fff;
+}
+
+.search-panel__hint {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.suggestion-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 10px;
+}
+
+.suggestion-list a {
+	display: grid;
+	gap: 4px;
+	padding: 12px 14px;
+	border-radius: 16px;
+	background: var(--consensus-mist);
+	text-decoration: none;
+}
+
+.suggestion-list span {
+	font-size: 0.94rem;
+	line-height: 1.5;
+	color: var(--consensus-muted);
+}
+
+.home-section {
 	display: grid;
 	gap: 18px;
 }
 
-.hero__copy {
-	max-width: 680px;
+.home-section--soft {
+	padding: 24px;
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.65);
+	border: 1px solid var(--consensus-soft-line);
 }
 
-.eyebrow,
-.panel__tag,
-.ask-label {
-	text-transform: uppercase;
-	letter-spacing: 0.14em;
-	font-size: 0.72rem;
-	color: var(--consensus-muted);
+.home-section--compact {
+	gap: 0;
 }
 
-.hero__copy h1,
-.section__header h2,
-.path-card h3,
-.feature-card h3,
-.story__copy h2,
-.panel h2,
-.detail-card summary {
-	font-family: "Fraunces", serif;
-}
-
-.hero__copy h1 {
-	font-size: clamp(2.8rem, 5vw, 4.4rem);
-	line-height: 1.05;
-}
-
-.lead,
-.section__header p,
-.path-card p,
-.feature-card p,
-.panel p,
-.panel li,
-.visit-step p,
-.detail-card p,
-.story__copy p {
-	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.cta-row,
-.feature-grid,
-.path-grid,
-.visit-grid,
-.detail-grid {
-	display: grid;
+.section-heading {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
 	gap: 16px;
+	flex-wrap: wrap;
 }
 
-.cta-row {
+.section-heading h2,
+.topic-row h3,
+.principle h3,
+.closing-callout h2 {
+	margin: 6px 0 0;
+}
+
+.topic-list,
+.principles {
+	display: grid;
+	gap: 14px;
+}
+
+.topic-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+	gap: 18px;
+	padding: 18px 20px;
+	text-decoration: none;
+}
+
+.topic-row__main {
+	display: grid;
+	gap: 10px;
+}
+
+.topic-row__main p {
+	margin: 0;
+	line-height: 1.65;
+}
+
+.topic-row__meta {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	font-size: 0.88rem;
+	color: var(--consensus-muted);
+}
+
+.topic-row__meter {
+	display: grid;
+	align-content: center;
+}
+
+.principles {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.principle {
+	padding: 20px;
+}
+
+.principle p,
+.closing-callout p {
+	margin: 10px 0 0;
+	line-height: 1.65;
+}
+
+.closing-callout {
+	padding: 24px 26px;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	align-items: end;
+}
+
+.closing-callout__actions {
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
 }
 
-.cta {
+.button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	padding: 12px 20px;
 	border-radius: 999px;
-	padding: 12px 22px;
-	border: 1px solid rgba(21, 17, 13, 0.14);
-	font-size: 0.95rem;
-	font-weight: 600;
-	cursor: pointer;
-	font-family: inherit;
 	text-decoration: none;
+	border: 1px solid var(--consensus-line);
 }
 
-.cta.primary {
+.button--primary {
 	background: var(--consensus-ember);
-	border-color: transparent;
+	border-color: var(--consensus-ember);
 	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
 }
 
-.cta.ghost {
-	background: rgba(255, 255, 255, 0.72);
-	color: var(--consensus-ink);
+.button--ghost {
+	background: transparent;
 }
 
-.panel,
-.path-card,
-.feature-card,
-.prompt-card,
-.visit-step,
-.detail-card,
-.ask-card {
-	background: rgba(255, 255, 255, 0.88);
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	border-radius: 22px;
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-	backdrop-filter: blur(6px);
-}
-
-.panel,
-.path-card,
-.feature-card,
-.visit-step,
-.ask-card {
-	padding: 22px;
-}
-
-.panel ul {
-	margin: 0;
-	padding-left: 18px;
-	display: grid;
-	gap: 8px;
-}
-
-.panel--accent {
-	background: linear-gradient(135deg, #f7ebde, #f4e1cf);
-}
-
-.section {
-	display: grid;
-	gap: 20px;
-}
-
-.path-grid,
-.feature-grid,
-.visit-grid,
-.detail-grid {
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.path-card,
-.feature-card {
+.text-link {
 	text-decoration: none;
-	color: var(--consensus-ink);
-	display: grid;
-	gap: 12px;
 }
 
-.path-card__step {
-	font-size: 0.78rem;
-	font-weight: 700;
-	letter-spacing: 0.14em;
-	color: var(--consensus-muted);
-}
-
-.path-card__cta,
-.feature-card__cta {
-	font-weight: 700;
-	color: var(--consensus-ember);
-}
-
-.section--soft {
-	background: rgba(21, 17, 13, 0.05);
-	border-radius: 28px;
-	padding: clamp(24px, 4vw, 36px);
-}
-
-.visit-step {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	gap: 12px;
-	align-items: start;
-}
-
-.visit-step span {
-	width: 34px;
-	height: 34px;
-	border-radius: 50%;
-	display: inline-grid;
-	place-items: center;
-	background: rgba(211, 107, 56, 0.14);
-	color: var(--consensus-ember);
-	font-weight: 700;
-}
-
-.prompt-card {
-	padding: 18px;
-}
-
-.prompt-grid {
-	display: grid;
-	gap: 10px;
-}
-
-.prompt-chip {
-	text-align: left;
-	padding: 12px 16px;
-	border-radius: 16px;
-	border: 1px solid rgba(21, 17, 13, 0.1);
-	background: var(--consensus-cream);
-	font-family: inherit;
-	font-size: 0.95rem;
-	color: var(--consensus-ink);
-	cursor: pointer;
-}
-
-.detail-card {
-	padding: 16px 18px;
-}
-
-.detail-card summary {
-	cursor: pointer;
-	font-weight: 700;
-}
-
-.detail-card summary::-webkit-details-marker {
-	display: none;
-}
-
-.detail-card p {
-	margin-top: 10px;
-}
-
-.story {
-	display: grid;
-	gap: 20px;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	align-items: start;
-}
-
-.ask-card {
-	display: grid;
-	gap: 10px;
-}
-
-.ask-card textarea {
-	border-radius: 16px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	padding: 12px 14px;
-	font-family: inherit;
-	font-size: 0.95rem;
-	resize: vertical;
-	min-height: 100px;
-	background: rgba(255, 255, 255, 0.92);
-}
-
-@keyframes float {
-	0%,
-	100% {
-		transform: translateY(0);
+@media (max-width: 920px) {
+	.hero,
+	.topic-row,
+	.principles {
+		grid-template-columns: 1fr;
 	}
-	50% {
-		transform: translateY(-10px);
+
+	.hero h1 {
+		max-width: none;
 	}
 }
 
-@media (max-width: 720px) {
-	.page {
-		gap: 52px;
+@media (max-width: 640px) {
+	.hero__copy,
+	.hero__aside,
+	.search-panel,
+	.topic-row,
+	.principle,
+	.closing-callout {
+		border-radius: 20px;
 	}
 
-	.cta-row {
-		flex-direction: column;
-	}
-
-	.cta {
-		width: 100%;
+	.search-panel__row {
+		grid-template-columns: 1fr;
 	}
 }
 </style>

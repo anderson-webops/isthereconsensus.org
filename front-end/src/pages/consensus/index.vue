@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Question, QuestionsResponse, Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 
+const route = useRoute();
+const router = useRouter();
 const { apiUrl } = useApi();
 
 const { data: topicsData } = await useAsyncData("topics", () =>
@@ -12,14 +15,8 @@ const { data: questionsData } = await useAsyncData("recent-questions", () =>
 	$fetch<QuestionsResponse>(apiUrl("/questions?limit=9"))
 );
 
-const search = ref("");
+const search = ref(typeof route.query.q === "string" ? route.query.q : "");
 const filter = ref<"all" | "settled" | "debated" | "exploratory">("all");
-
-const browseSteps = [
-	"Pick one topic instead of skimming every card.",
-	"Inside that topic, read the Consensus view first.",
-	"Only then open Sentiment or Questions for more context."
-];
 
 const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
@@ -39,6 +36,12 @@ const enrichedTopics = computed(() =>
 		})
 );
 
+watch(search, (value) => {
+	router.replace({
+		query: value.trim() ? { q: value.trim() } : undefined
+	});
+});
+
 function matchesFilter(score: number) {
 	if (filter.value === "settled") return score >= 75;
 	if (filter.value === "debated") return score >= 45 && score < 75;
@@ -47,7 +50,6 @@ function matchesFilter(score: number) {
 }
 
 const query = computed(() => search.value.trim().toLowerCase());
-
 const filteredTopics = computed(() =>
 	enrichedTopics.value.filter((topic) => {
 		const haystack = [topic.title, topic.description, topic.guide.snapshot, topic.guide.consensusLabel]
@@ -56,7 +58,9 @@ const filteredTopics = computed(() =>
 		return matchesFilter(topic.guide.consensusScore) && (!query.value || haystack.includes(query.value));
 	})
 );
-
+const starterTopics = computed(() =>
+	filteredTopics.value.filter((topic) => starterOrder.includes(topic.slug)).slice(0, 3)
+);
 const filteredQuestions = computed(() =>
 	questions.value.filter((question) => {
 		const guide = getTopicGuide(question.topic.slug);
@@ -67,372 +71,395 @@ const filteredQuestions = computed(() =>
 </script>
 
 <template>
-	<div class="board">
-		<header class="board__header">
+	<div class="directory">
+		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Browse topics' }]" />
+
+		<header class="directory__header">
 			<p class="eyebrow">Browse topics</p>
-			<h1>Pick a topic. Read the summary first. Use the board after that.</h1>
+			<h1>Pick one topic. Read the bottom line first.</h1>
 			<p>
-				This page works best when it acts like a directory, not a feed. Choose one topic, open its Consensus
-				view, and treat the rest as optional depth.
+				This page is a directory, not a feed. Search first, filter if you need to, and open one topic at a time.
 			</p>
-			<div class="board__actions">
-				<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
-				<NuxtLink class="cta ghost" to="/how">How it works</NuxtLink>
-			</div>
 		</header>
 
-		<section class="guide">
-			<article class="guide__lead">
-				<p class="guide__tag">Recommended reading order</p>
-				<h2>If you are not sure where to start, follow this.</h2>
-				<p>
-					The site is easier to read when community discussion comes after the consensus frame instead of
-					before it.
-				</p>
-			</article>
-			<div class="guide__steps">
-				<article v-for="(step, index) in browseSteps" :key="step" class="guide-step">
-					<span>{{ index + 1 }}</span>
-					<p>{{ step }}</p>
-				</article>
-			</div>
-		</section>
+		<div class="directory__layout">
+			<aside class="directory__sidebar">
+				<section class="sidebar-block">
+					<p class="eyebrow">Start here</p>
+					<h2>Recommended reading order</h2>
+					<ol>
+						<li>Search or pick one topic.</li>
+						<li>Open the bottom line on that page.</li>
+						<li>Only then move into debate, sentiment, or community threads.</li>
+					</ol>
+				</section>
 
-		<section class="controls">
-			<div class="controls__search">
-				<label class="ask-label" for="board-search">Search topics or recent questions</label>
-				<input
-					id="board-search"
-					v-model="search"
-					type="text"
-					placeholder="Search by topic, question, or keyword..."
-				/>
-			</div>
-			<div class="controls__filters">
-				<button class="filter" :class="{ active: filter === 'all' }" @click="filter = 'all'">All</button>
-				<button class="filter" :class="{ active: filter === 'settled' }" @click="filter = 'settled'">
-					Settled core
-				</button>
-				<button class="filter" :class="{ active: filter === 'debated' }" @click="filter = 'debated'">
-					Active debates
-				</button>
-				<button class="filter" :class="{ active: filter === 'exploratory' }" @click="filter = 'exploratory'">
-					Exploratory
-				</button>
-			</div>
-		</section>
-
-		<section class="topics">
-			<div class="section-head">
-				<h2>Topics</h2>
-				<p>Every topic starts with its own consensus summary so you do not have to infer the frame yourself.</p>
-			</div>
-			<div v-if="!filteredTopics.length" class="muted">No topics match that filter yet.</div>
-			<div v-else class="topics__grid">
-				<NuxtLink
-					v-for="topic in filteredTopics"
-					:key="topic.slug"
-					class="topic-card"
-					:to="`/consensus/${topic.slug}`"
-					:style="{ '--accent': topic.accent || '#d36b38' }"
-				>
-					<div class="topic-card__header">
-						<div>
-							<h3>{{ topic.title }}</h3>
-							<p class="topic-card__count">{{ topic.questionCount ?? 0 }} community questions</p>
-						</div>
-						<span class="topic-card__tag">{{ topic.guide.consensusLabel }}</span>
-					</div>
-					<p class="topic-card__description">{{ topic.description }}</p>
-					<ConsensusMeter
-						:level="topic.guide.consensusScore"
-						:caption="topic.guide.snapshot"
-						:label="topic.guide.consensusLabel"
-					/>
-					<p class="topic-card__next">Open this topic and start with the Consensus view.</p>
-					<span class="topic-card__cta">Open topic →</span>
-				</NuxtLink>
-			</div>
-		</section>
-
-		<details class="recent-panel">
-			<summary>See recent community questions</summary>
-			<div class="recent-panel__body">
-				<p class="recent-panel__intro">
-					These are useful once you already know the topic frame. If a thread looks relevant, open the topic
-					first and read the summary before the thread.
-				</p>
-				<div v-if="!filteredQuestions.length" class="muted">No recent questions match that filter yet.</div>
-				<div v-else class="recent__list">
-					<div v-for="question in filteredQuestions" :key="question._id" class="recent__card">
-						<div class="recent__meta">
-							<span>{{ question.topic.title }}</span>
-							<span>{{ new Date(question.createdAt || "").toLocaleDateString() }}</span>
-						</div>
-						<h3>{{ question.title }}</h3>
-						<p class="recent__snapshot">{{ getTopicGuide(question.topic.slug).snapshot }}</p>
-						<p v-if="question.body">{{ question.body }}</p>
-						<div class="recent__footer">
-							<span v-if="question.sourceUrl">Source linked</span>
-							<span v-if="question.authorName || question.displayName"
-								>By {{ question.authorName || question.displayName }}</span
-							>
-						</div>
-						<NuxtLink :to="`/consensus/${question.topic.slug}?highlight=${question._id}`"
-							>Open thread</NuxtLink
+				<section class="sidebar-block">
+					<p class="eyebrow">Filter topics</p>
+					<div class="filter-stack">
+						<button class="filter" :class="{ active: filter === 'all' }" @click="filter = 'all'">
+							All topics
+						</button>
+						<button class="filter" :class="{ active: filter === 'settled' }" @click="filter = 'settled'">
+							Strong consensus
+						</button>
+						<button class="filter" :class="{ active: filter === 'debated' }" @click="filter = 'debated'">
+							Active debate
+						</button>
+						<button
+							class="filter"
+							:class="{ active: filter === 'exploratory' }"
+							@click="filter = 'exploratory'"
 						>
+							Exploratory
+						</button>
 					</div>
+				</section>
+
+				<section class="sidebar-block">
+					<p class="eyebrow">When to use Ask</p>
+					<p>
+						Use Ask when you cannot find the topic yet. The site works best when new threads sit under an
+						existing topic page.
+					</p>
+					<NuxtLink class="text-link" to="/ask">Go to Ask</NuxtLink>
+				</section>
+			</aside>
+
+			<section class="directory__results">
+				<div class="results-toolbar">
+					<div class="results-search">
+						<label class="results-search__label" for="directory-search">Search topics</label>
+						<input
+							id="directory-search"
+							v-model="search"
+							type="text"
+							placeholder="Search by topic, question, or keyword"
+						/>
+					</div>
+					<p class="results-count">{{ filteredTopics.length }} topics</p>
 				</div>
-			</div>
-		</details>
+
+				<section v-if="!query && filter === 'all' && starterTopics.length" class="starter-block">
+					<div class="section-heading">
+						<h2>Good starting points</h2>
+						<p>These are the easiest topic pages for understanding how the site is structured.</p>
+					</div>
+					<div class="starter-list">
+						<NuxtLink
+							v-for="topic in starterTopics"
+							:key="topic.slug"
+							class="starter-row"
+							:to="`/consensus/${topic.slug}`"
+						>
+							<strong>{{ topic.title }}</strong>
+							<span>{{ topic.guide.snapshot }}</span>
+						</NuxtLink>
+					</div>
+				</section>
+
+				<section class="results-block">
+					<div class="section-heading section-heading--tight">
+						<h2>Topic directory</h2>
+						<p>Each topic page starts with a short answer and moves to deeper context only after that.</p>
+					</div>
+
+					<div v-if="!filteredTopics.length" class="empty-state">No topics match that search yet.</div>
+					<div v-else class="topic-list">
+						<NuxtLink
+							v-for="topic in filteredTopics"
+							:key="topic.slug"
+							class="topic-row"
+							:to="`/consensus/${topic.slug}`"
+						>
+							<div class="topic-row__main">
+								<h3>{{ topic.title }}</h3>
+								<p>{{ topic.description || topic.guide.snapshot }}</p>
+								<div class="topic-row__meta">
+									<span>{{ topic.guide.consensusLabel }}</span>
+									<span>{{ topic.questionCount ?? 0 }} community threads</span>
+								</div>
+							</div>
+							<div class="topic-row__side">
+								<ConsensusMeter
+									:level="topic.guide.consensusScore"
+									:label="topic.guide.consensusLabel"
+								/>
+							</div>
+						</NuxtLink>
+					</div>
+				</section>
+
+				<details class="recent-panel">
+					<summary>Recent community questions</summary>
+					<div class="recent-panel__body">
+						<p>
+							Use these after you know the topic frame. If a thread looks relevant, open the topic page
+							first.
+						</p>
+						<div v-if="!filteredQuestions.length" class="empty-state">
+							No recent questions match that filter.
+						</div>
+						<div v-else class="recent-list">
+							<article v-for="question in filteredQuestions" :key="question._id" class="recent-row">
+								<div>
+									<p class="recent-row__meta">
+										<span>{{ question.topic.title }}</span>
+										<span>{{ new Date(question.createdAt || "").toLocaleDateString() }}</span>
+									</p>
+									<h3>{{ question.title }}</h3>
+									<p>{{ question.body || getTopicGuide(question.topic.slug).snapshot }}</p>
+								</div>
+								<NuxtLink :to="`/consensus/${question.topic.slug}?highlight=${question._id}`"
+									>Open thread</NuxtLink
+								>
+							</article>
+						</div>
+					</div>
+				</details>
+			</section>
+		</div>
 	</div>
 </template>
 
 <style scoped>
-.board {
+.directory {
 	display: grid;
-	gap: 28px;
+	gap: 24px;
 }
 
-.board__header h1,
-.guide__lead h2,
-.section-head h2,
-.topic-card h3,
-.recent__card h3 {
+.directory__header h1,
+.sidebar-block h2,
+.section-heading h2,
+.topic-row h3,
+.recent-row h3 {
 	font-family: "Fraunces", serif;
 }
 
-.board__header h1 {
-	font-size: clamp(2.5rem, 4.6vw, 3.8rem);
-	margin: 10px 0 12px;
-	max-width: 920px;
+.directory__header h1 {
+	font-size: clamp(2.5rem, 4.8vw, 4rem);
+	margin: 8px 0 10px;
 }
 
-.board__header p,
-.guide__lead p,
-.topic-card__description,
-.topic-card__next,
-.recent__card p,
-.recent-panel__intro,
-.muted,
-.section-head p {
+.directory__header p,
+.sidebar-block p,
+.sidebar-block ol,
+.section-heading p,
+.topic-row p,
+.recent-panel__body p,
+.empty-state,
+.results-count {
 	color: var(--consensus-muted);
-	line-height: 1.6;
+	line-height: 1.65;
 }
 
-.board__actions {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-	margin-top: 18px;
-}
-
-.cta {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 999px;
-	padding: 12px 22px;
-	font-size: 0.95rem;
-	font-weight: 600;
-	text-decoration: none;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-}
-
-.cta.primary {
-	background: var(--consensus-ember);
-	border-color: transparent;
-	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
-}
-
-.cta.ghost {
-	background: rgba(255, 255, 255, 0.76);
-	color: var(--consensus-ink);
-}
-
-.guide,
-.controls,
-.topic-card,
-.recent-panel,
-.recent__card {
-	background: #fff;
-	border-radius: 22px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-}
-
-.guide {
-	padding: 20px;
+.directory__layout {
 	display: grid;
-	gap: 18px;
-}
-
-.guide__tag,
-.ask-label {
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.7rem;
-	color: var(--consensus-muted);
-}
-
-.guide__steps,
-.topics__grid,
-.recent__list {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.guide-step {
-	padding: 16px 18px;
-	border-radius: 18px;
-	background: rgba(21, 17, 13, 0.05);
-	display: grid;
-	grid-template-columns: auto 1fr;
-	gap: 12px;
+	grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+	gap: 24px;
 	align-items: start;
 }
 
-.guide-step span {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	display: inline-grid;
-	place-items: center;
-	background: rgba(211, 107, 56, 0.14);
-	color: var(--consensus-ember);
-	font-weight: 700;
-}
-
-.controls {
-	padding: 18px;
+.directory__sidebar,
+.directory__results {
 	display: grid;
 	gap: 16px;
 }
 
-.controls__search {
+.sidebar-block,
+.results-toolbar,
+.starter-block,
+.results-block,
+.topic-row,
+.recent-panel,
+.recent-row {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 20px;
+}
+
+.sidebar-block,
+.starter-block,
+.results-block,
+.recent-panel {
+	padding: 18px;
+}
+
+.sidebar-block ol {
+	margin: 12px 0 0;
+	padding-left: 18px;
 	display: grid;
-	gap: 8px;
-}
-
-.controls input {
-	border-radius: 14px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	padding: 12px 14px;
-	font-family: inherit;
-	font-size: 0.95rem;
-}
-
-.controls__filters {
-	display: flex;
 	gap: 10px;
-	flex-wrap: wrap;
+}
+
+.filter-stack {
+	display: grid;
+	gap: 10px;
+}
+
+.filter,
+.text-link {
+	font-weight: 600;
 }
 
 .filter {
-	border-radius: 999px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	background: var(--consensus-mist);
-	padding: 10px 16px;
-	font: inherit;
-	font-weight: 600;
+	padding: 12px 14px;
+	border-radius: 14px;
+	border: 1px solid var(--consensus-line);
+	background: transparent;
+	text-align: left;
 	cursor: pointer;
-	color: var(--consensus-muted);
 }
 
 .filter.active {
-	background: rgba(211, 107, 56, 0.12);
+	background: var(--consensus-soft-accent);
 	border-color: rgba(211, 107, 56, 0.3);
-	color: var(--consensus-ink);
 }
 
-.section-head h2 {
-	margin-bottom: 6px;
-}
-
-.topic-card,
-.recent__card {
-	padding: 20px;
+.text-link {
 	text-decoration: none;
-	color: var(--consensus-ink);
+}
+
+.results-toolbar {
+	padding: 16px 18px;
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: end;
+}
+
+.results-search {
+	display: grid;
+	gap: 8px;
+	flex: 1;
+	min-width: min(100%, 360px);
+}
+
+.results-search__label,
+.topic-row__meta,
+.recent-row__meta,
+.results-count {
+	font-size: 0.86rem;
+	font-weight: 600;
+}
+
+.results-search input {
+	padding: 13px 15px;
+	border-radius: 14px;
+	border: 1px solid var(--consensus-line);
+	background: #fff;
+}
+
+.section-heading {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+.section-heading--tight h2,
+.section-heading--tight p {
+	margin: 0;
+}
+
+.starter-list,
+.topic-list,
+.recent-list {
 	display: grid;
 	gap: 12px;
 }
 
-.topic-card {
-	position: relative;
-	overflow: hidden;
+.starter-row,
+.topic-row,
+.recent-row {
+	text-decoration: none;
 }
 
-.topic-card::after {
-	content: "";
-	position: absolute;
-	inset: auto -15% -25% auto;
-	width: 160px;
-	height: 160px;
-	border-radius: 50%;
-	background: color-mix(in srgb, var(--accent) 80%, transparent);
-	opacity: 0.18;
+.starter-row {
+	display: grid;
+	gap: 4px;
+	padding: 14px 16px;
+	border-radius: 16px;
+	background: var(--consensus-mist);
 }
 
-.topic-card__header,
-.recent__meta,
-.recent__footer {
-	display: flex;
-	justify-content: space-between;
-	gap: 12px;
-	flex-wrap: wrap;
+.starter-row span {
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
-.topic-card__count,
-.recent__meta,
-.recent__footer {
-	font-size: 0.82rem;
+.topic-row {
+	padding: 18px;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+	gap: 18px;
 }
 
-.topic-card__tag {
-	font-size: 0.82rem;
-	font-weight: 700;
-	max-width: 180px;
-	text-align: right;
+.topic-row__main {
+	display: grid;
+	gap: 10px;
 }
 
-.topic-card__next {
-	font-weight: 600;
+.topic-row__main h3,
+.recent-row h3 {
 	margin: 0;
 }
 
-.topic-card__cta {
-	font-weight: 700;
-	color: var(--consensus-ember);
+.topic-row__main p,
+.recent-row p {
+	margin: 0;
 }
 
-.recent-panel {
-	padding: 18px 20px;
+.topic-row__meta,
+.recent-row__meta {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	color: var(--consensus-muted);
+}
+
+.topic-row__side {
+	display: grid;
+	align-content: center;
 }
 
 .recent-panel summary {
 	cursor: pointer;
-	font-family: "Fraunces", serif;
-	font-size: 1.3rem;
-}
-
-.recent-panel summary::-webkit-details-marker {
-	display: none;
-}
-
-.recent-panel__body {
-	display: grid;
-	gap: 16px;
-	margin-top: 16px;
-}
-
-.recent__snapshot {
 	font-weight: 600;
 }
 
-.recent__footer {
-	color: var(--consensus-muted);
+.recent-panel__body {
+	margin-top: 14px;
+	display: grid;
+	gap: 14px;
+}
+
+.recent-row {
+	padding: 16px;
+	display: flex;
+	justify-content: space-between;
+	gap: 18px;
+	align-items: start;
+}
+
+.recent-row a {
+	white-space: nowrap;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+@media (max-width: 920px) {
+	.directory__layout,
+	.topic-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 640px) {
+	.recent-row {
+		flex-direction: column;
+	}
 }
 </style>

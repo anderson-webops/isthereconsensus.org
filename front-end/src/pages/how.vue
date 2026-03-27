@@ -1,314 +1,236 @@
 <script setup lang="ts">
+import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+
 const steps = [
 	{
-		title: "Name the claim",
-		body: "Share the video, pull a quote, or describe the idea in your own words."
+		title: "Start with the claim",
+		body: "Frame the question in plain language before opening up methods, edge cases, or community debate."
 	},
 	{
-		title: "Place it on the spectrum",
-		body: "We assess whether it’s speculative, emerging, debated, or strongly settled."
+		title: "Look for the stable core",
+		body: "Ask what experts broadly agree on before treating a new paper or headline as a reversal."
 	},
 	{
-		title: "Separate core vs bumps",
-		body: "We flag what’s stable and what’s just a new wrinkle."
-	},
-	{
-		title: "Check the scale",
-		body: "We translate relative risk into absolute impact so small effects stay small."
-	},
-	{
-		title: "Trace the sources",
-		body: "Primary papers, reviews, and trusted voices so you can keep learning."
+		title: "Separate the bumps from the ball",
+		body: "Real debates often live in effect size, mechanism, or scope rather than in the existence of the overall effect."
 	}
-];
-
-const process = [
-	{ title: "Question", body: "A claim or curiosity worth testing." },
-	{ title: "Research", body: "Studies, methods, and competing explanations." },
-	{ title: "Evidence", body: "Replication, criticism, and refinement." },
-	{ title: "Consensus", body: "Agreement earned over time and results." }
 ];
 
 const signals = [
-	{
-		title: "Constructed knowledge",
-		body: "We show the human effort behind the tools, models, and claims."
-	},
-	{
-		title: "Consensus as process",
-		body: "Agreement is built through evidence, argument, and replication—not vibes."
-	},
-	{
-		title: "What changes minds",
-		body: "We call out the kind of new data that could actually shift the field."
-	}
+	"Consensus is earned through criticism, replication, and converging evidence.",
+	"Public opinion and expert consensus are different signals and should stay separate.",
+	"Uncertainty is part of honest explanation, not a reason to flatten everything into confusion.",
+	"A good topic page makes the bottom line easy to find before it asks you to read the nuance."
 ];
 
 const mindChangers = [
-	"Multiple independent replications across methods",
-	"Large evidence base with consistent results",
-	"New tools that measure what we could not measure before",
-	"A model that predicts better than the old one"
+	"Independent replications across methods or labs",
+	"Evidence that changes the size, direction, or mechanism of the effect",
+	"Better measurements than the older literature had access to",
+	"A model that predicts reality better than the current one"
 ];
 </script>
 
 <template>
-	<div class="how">
-		<header class="how__header">
+	<div class="how-page">
+		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'How it works' }]" />
+
+		<header class="how-page__header">
 			<p class="eyebrow">How it works</p>
-			<h1>Consensus without the noise.</h1>
+			<h1>Read the stable core first. Open the nuance second.</h1>
 			<p>
-				Science isn’t a shouting match. It’s a set of careful agreements plus a list of remaining questions. We
-				help you see both—and keep the scale honest.
+				This site is built around one idea: expert consensus, active debate, and public confusion are not the
+				same thing, so the interface should not treat them as the same thing.
 			</p>
 		</header>
 
-		<section class="how__process">
-			<div class="how__process-header">
-				<h2>From question to consensus</h2>
-				<p>Most ideas earn trust slowly. Here is the path we keep visible.</p>
+		<section class="how-page__panel">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">The reading order</p>
+					<h2>The basic sequence</h2>
+				</div>
+				<p>Keep this order in mind whenever you open a topic page.</p>
 			</div>
-			<div class="how__process-grid">
-				<article v-for="step in process" :key="step.title" class="how__process-card">
-					<h3>{{ step.title }}</h3>
-					<p>{{ step.body }}</p>
+			<div class="step-list">
+				<article v-for="(step, index) in steps" :key="step.title" class="step-row">
+					<span>{{ index + 1 }}</span>
+					<div>
+						<h3>{{ step.title }}</h3>
+						<p>{{ step.body }}</p>
+					</div>
 				</article>
 			</div>
 		</section>
 
-		<section class="how__grid">
-			<article v-for="step in steps" :key="step.title" class="how__card">
-				<h3>{{ step.title }}</h3>
-				<p>{{ step.body }}</p>
-			</article>
+		<section class="how-page__panel">
+			<div class="section-heading section-heading--tight">
+				<h2>What the site tries to keep visible</h2>
+				<p>These are the rules behind the structure.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in signals" :key="item">{{ item }}</li>
+			</ul>
 		</section>
 
-		<section class="how__signals">
-			<div class="how__signals-header">
-				<h2>What we surface</h2>
-				<p>These themes keep the consensus story grounded in real human effort.</p>
+		<section class="how-page__panel how-page__panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>What would actually change minds?</h2>
+				<p>Consensus shifts when better evidence survives challenge.</p>
 			</div>
-			<div class="how__signals-grid">
-				<article v-for="signal in signals" :key="signal.title" class="how__signal">
-					<h3>{{ signal.title }}</h3>
-					<p>{{ signal.body }}</p>
-				</article>
-			</div>
-		</section>
-
-		<section class="how__mind-changers">
-			<h2>What changes minds</h2>
-			<p>
-				Consensus shifts when evidence grows too strong to ignore. We highlight the signals that actually move
-				people.
-			</p>
-			<ul>
+			<ul class="plain-list">
 				<li v-for="item in mindChangers" :key="item">{{ item }}</li>
 			</ul>
 		</section>
 
-		<section class="how__cta">
-			<h2>Ready to try it?</h2>
-			<p>Start a consensus check and we will guide you from claim to evidence.</p>
-			<div class="cta-row">
-				<NuxtLink class="cta primary" to="/ask">Ask a question</NuxtLink>
-				<NuxtLink class="cta ghost" to="/consensus">Browse the board</NuxtLink>
+		<section class="how-page__cta">
+			<div>
+				<p class="eyebrow">Ready to use it?</p>
+				<h2>Pick a topic or search a claim.</h2>
+			</div>
+			<div class="how-page__cta-actions">
+				<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 			</div>
 		</section>
 	</div>
 </template>
 
 <style scoped>
-.how {
+.how-page {
 	display: grid;
-	gap: 36px;
+	gap: 24px;
 }
 
-.how__header h1 {
+.how-page__header h1,
+.section-heading h2,
+.step-row h3,
+.how-page__cta h2 {
 	font-family: "Fraunces", serif;
-	font-size: clamp(2.4rem, 4vw, 3.6rem);
-	margin-bottom: 12px;
 }
 
-.how__header p {
-	max-width: 640px;
+.how-page__header h1 {
+	font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+	margin: 8px 0 10px;
+}
+
+.how-page__header p,
+.section-heading p,
+.step-row p,
+.plain-list,
+.how-page__cta p {
 	color: var(--consensus-muted);
-	line-height: 1.6;
+	line-height: 1.65;
 }
 
-.how__grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.how__card {
-	background: #fff;
-	border-radius: 18px;
-	padding: 18px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-}
-
-.how__card h3 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 8px;
-}
-
-.how__card p {
-	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.how__process {
-	display: grid;
-	gap: 18px;
-}
-
-.how__process-header h2 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 6px;
-}
-
-.how__process-header p {
-	color: var(--consensus-muted);
-	max-width: 640px;
-}
-
-.how__process-grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.how__process-card {
-	background: #fff;
-	border-radius: 18px;
-	padding: 18px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-}
-
-.how__process-card h3 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 8px;
-}
-
-.how__process-card p {
-	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.how__signals {
-	display: grid;
-	gap: 20px;
-}
-
-.how__signals-header h2 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 6px;
-}
-
-.how__signals-header p {
-	color: var(--consensus-muted);
-	max-width: 640px;
-}
-
-.how__signals-grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.how__signal {
-	background: var(--consensus-cream);
-	border-radius: 18px;
-	padding: 18px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
-}
-
-.how__signal h3 {
-	font-family: "Fraunces", serif;
-	margin-bottom: 8px;
-}
-
-.how__signal p {
-	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.how__mind-changers {
-	background: rgba(21, 17, 13, 0.06);
+.how-page__panel,
+.step-row,
+.how-page__cta {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
+}
+
+.how-page__panel,
+.how-page__cta {
 	padding: 22px;
+	display: grid;
+	gap: 16px;
+}
+
+.how-page__panel--soft {
+	background: rgba(255, 255, 255, 0.7);
+}
+
+.section-heading {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: end;
+}
+
+.section-heading--tight h2,
+.section-heading--tight p {
+	margin: 0;
+}
+
+.step-list {
+	display: grid;
+	gap: 12px;
+}
+
+.step-row {
+	padding: 16px 18px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 14px;
+}
+
+.step-row span {
+	width: 34px;
+	height: 34px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--consensus-soft-accent);
+	font-weight: 700;
+	color: var(--consensus-ember);
+}
+
+.step-row h3 {
+	margin: 0 0 4px;
+}
+
+.step-row p,
+.plain-list,
+.how-page__cta p {
+	margin: 0;
+}
+
+.plain-list {
+	padding-left: 20px;
 	display: grid;
 	gap: 10px;
 }
 
-.how__mind-changers h2 {
-	font-family: "Fraunces", serif;
+.how-page__cta {
+	display: flex;
+	justify-content: space-between;
+	gap: 18px;
+	flex-wrap: wrap;
+	align-items: end;
 }
 
-.how__mind-changers p {
-	color: var(--consensus-muted);
-	max-width: 640px;
+.how-page__cta h2 {
+	margin: 6px 0 0;
 }
 
-.how__mind-changers ul {
-	margin: 0;
-	padding-left: 18px;
-	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.how__cta {
-	background: linear-gradient(135deg, #f4e6d5, #f0d3bf);
-	border-radius: 22px;
-	padding: 24px;
-	display: grid;
+.how-page__cta-actions {
+	display: flex;
 	gap: 12px;
+	flex-wrap: wrap;
 }
 
-.how__cta h2 {
-	font-family: "Fraunces", serif;
-}
-
-.how__cta p {
-	color: var(--consensus-muted);
-	max-width: 520px;
-}
-
-.cta {
+.button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	padding: 12px 20px;
 	border-radius: 999px;
-	padding: 12px 22px;
-	border: none;
-	font-size: 0.95rem;
-	font-weight: 600;
-	cursor: pointer;
-	font-family: inherit;
+	border: 1px solid var(--consensus-line);
 	text-decoration: none;
-	width: fit-content;
+	font-weight: 600;
 }
 
-.cta.primary {
+.button--primary {
 	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
 	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
 }
 
-.cta-row {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
-}
-
-.cta.ghost {
+.button--ghost {
 	background: transparent;
-	border: 1px solid rgba(21, 17, 13, 0.2);
-	color: var(--consensus-ink);
 }
 </style>

@@ -51,9 +51,9 @@ watch(
 		<div class="evidence__header">
 			<div>
 				<h2>Evidence explorer</h2>
-				<p>Pull in live literature so the consensus lane can point to actual papers, not just summaries.</p>
+				<p>Search live literature when you want to go beyond the summary.</p>
 			</div>
-			<button class="cta primary" type="button" :disabled="loading" @click="search">
+			<button class="button button--primary" type="button" :disabled="loading" @click="search">
 				{{ loading ? "Searching..." : "Search literature" }}
 			</button>
 		</div>
@@ -64,13 +64,12 @@ watch(
 				id="evidence-query"
 				v-model="query"
 				type="text"
-				placeholder="Try climate attribution, replication bias, consensus formation..."
+				placeholder="Try climate attribution, replication bias, or consensus formation"
 			/>
 		</div>
 
 		<p v-if="response" class="muted">
-			Provider: {{ response.provider
-			}}{{ response.configured ? " (configured key/email present)" : " (public mode)" }}
+			Provider: {{ response.provider }}{{ response.configured ? " (configured)" : " (public mode)" }}
 		</p>
 		<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
@@ -83,7 +82,7 @@ watch(
 				<h3>{{ result.title }}</h3>
 				<p v-if="result.journal" class="result-meta">{{ result.journal }}</p>
 				<p v-if="result.authors.length" class="result-meta">{{ result.authors.join(", ") }}</p>
-				<a v-if="result.url" :href="result.url" target="_blank" rel="noreferrer">Open source ↗</a>
+				<a v-if="result.url" :href="result.url" target="_blank" rel="noreferrer">Open source</a>
 			</article>
 		</div>
 		<div v-else-if="response && !response.results.length" class="muted">
@@ -94,16 +93,19 @@ watch(
 
 <style scoped>
 .evidence {
-	background: #fff;
-	border-radius: 20px;
-	padding: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
 	display: grid;
 	gap: 16px;
 }
 
+.evidence__header,
+.result-card {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 20px;
+}
+
 .evidence__header {
+	padding: 18px;
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
@@ -117,15 +119,19 @@ watch(
 }
 
 .evidence__header p,
-.result-meta {
+.result-meta,
+.muted {
+	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
 
-.field-label {
+.field-label,
+.result-card__top {
+	font-size: 0.82rem;
+	font-weight: 600;
 	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.72rem;
+	letter-spacing: 0.08em;
 	color: var(--consensus-muted);
 }
 
@@ -134,61 +140,55 @@ watch(
 	gap: 8px;
 }
 
-input {
+.evidence__controls input {
+	padding: 13px 15px;
 	border-radius: 14px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	padding: 12px 14px;
-	font-family: inherit;
+	border: 1px solid var(--consensus-line);
+	background: #fff;
 }
 
 .result-grid {
 	display: grid;
-	gap: 16px;
+	gap: 12px;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .result-card {
+	padding: 16px;
 	display: grid;
 	gap: 8px;
-	padding: 16px;
-	border-radius: 18px;
-	background: var(--consensus-cream);
-	border: 1px solid rgba(21, 17, 13, 0.08);
 }
 
 .result-card__top {
 	display: flex;
 	justify-content: space-between;
 	gap: 12px;
-	font-size: 0.8rem;
-	color: var(--consensus-muted);
 }
 
-.cta {
+.result-card a {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	padding: 12px 18px;
 	border-radius: 999px;
-	padding: 12px 20px;
-	border: none;
-	font-size: 0.95rem;
+	border: 1px solid var(--consensus-line);
 	font-weight: 600;
-	font-family: inherit;
 	cursor: pointer;
-	width: fit-content;
 }
 
-.cta.primary {
+.button--primary {
 	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
 	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
-}
-
-.muted {
-	color: var(--consensus-muted);
 }
 
 .error {
+	margin: 0;
 	color: #b83d2e;
 	font-weight: 600;
 }

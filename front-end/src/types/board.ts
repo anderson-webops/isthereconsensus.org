@@ -6,6 +6,8 @@ export interface Topic {
 	order?: number;
 	accent?: string;
 	questionCount?: number;
+	createdAt?: string;
+	updatedAt?: string;
 }
 
 export interface Question {
