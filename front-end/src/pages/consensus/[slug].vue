@@ -60,9 +60,15 @@ const formattedUpdated = computed(() => {
 		year: "numeric"
 	}).format(new Date(topic.value.updatedAt));
 });
+const provenanceLabel = computed(() =>
+	topic.value?.updatedAt
+		? "Editorial summary with tracked evidence routes"
+		: "Seeded topic summary awaiting first dated review"
+);
 const trustFacts = computed(() => [
 	{ label: "Consensus level", value: guide.value.consensusLabel },
 	{ label: "Last updated", value: formattedUpdated.value },
+	{ label: "Evidence routes listed", value: String(guide.value.evidenceTrail.length) },
 	{ label: "Open questions tracked", value: String(guide.value.openQuestions.length) },
 	{ label: "Community threads", value: String(questions.value.length) }
 ]);
@@ -232,6 +238,17 @@ async function flagQuestion(questionId: string) {
 					:caption="guide.consensusLabel"
 				/>
 			</div>
+		</section>
+
+		<section class="provenance-panel">
+			<div>
+				<p class="eyebrow">Why trust this page</p>
+				<h2>Provenance and maintenance</h2>
+			</div>
+			<p>
+				{{ provenanceLabel }}. The public sentiment and community lanes stay below on purpose so they do not
+				compete with the summary.
+			</p>
 		</section>
 
 		<section class="core-section">
@@ -459,6 +476,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__header,
 .bottom-line,
+.provenance-panel,
 .core-section,
 .disclosure,
 .lane,
@@ -479,6 +497,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__header h1,
 .bottom-line h2,
+.provenance-panel h2,
 .core-section h2,
 .lane h2,
 .disclosure summary,
@@ -496,6 +515,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__description,
 .bottom-line p,
+.provenance-panel p,
 .section-heading p,
 .plain-list,
 .resource-row p,
@@ -547,6 +567,7 @@ async function flagQuestion(questionId: string) {
 }
 
 .bottom-line__copy h2,
+.provenance-panel h2,
 .core-section h2,
 .lane h2,
 .composer h3 {
@@ -554,6 +575,7 @@ async function flagQuestion(questionId: string) {
 }
 
 .bottom-line__copy p,
+.provenance-panel p,
 .section-heading p,
 .resource-row p,
 .composer__intro p,
@@ -573,6 +595,13 @@ async function flagQuestion(questionId: string) {
 	padding: 22px;
 	display: grid;
 	gap: 16px;
+}
+
+.provenance-panel {
+	padding: 20px 22px;
+	display: grid;
+	gap: 8px;
+	background: rgba(255, 255, 255, 0.72);
 }
 
 .section-heading {

@@ -17,6 +17,12 @@ const evidenceLinks = ref("");
 const statement = ref("");
 
 const isEligible = computed(() => isLoggedIn.value && role.value === "user");
+const expertiseTier = computed(() => {
+	if (currentAccount.value?.expertiseStatus === "verified") return "Verified expert";
+	if (application.value?.status === "pending") return "Application pending";
+	if (application.value?.status === "needs-info") return "Needs more information";
+	return "Community member";
+});
 
 function hydrateForm(record: ExpertApplication | null) {
 	if (!record) return;
@@ -28,8 +34,7 @@ function hydrateForm(record: ExpertApplication | null) {
 }
 
 async function refreshApplication() {
-	if (import.meta.server) return;
-	if (!isEligible.value) return;
+	if (import.meta.server || !isEligible.value) return;
 	loading.value = true;
 	errorMessage.value = "";
 	try {
@@ -90,74 +95,91 @@ watch(
 
 <template>
 	<section class="expert-panel">
-		<header>
-			<h2>Expert reviewer path</h2>
-			<p>
-				Verified reviewers help shape the curated consensus lane. This is intentionally slower and more manual
-				than ordinary posting.
-			</p>
+		<header class="expert-panel__header">
+			<div>
+				<h2>Expert review</h2>
+				<p>
+					Verified reviewers help shape the curated consensus lane. This is slower and more manual than
+					posting.
+				</p>
+			</div>
 		</header>
 
-		<div v-if="!isLoggedIn" class="muted">Sign in with a user account to apply for expert review.</div>
+		<div v-if="!isLoggedIn" class="muted">Sign in with a member account to apply.</div>
 		<div v-else-if="role !== 'user'" class="muted">
-			Admin accounts can review applications but do not need to apply.
+			Admin accounts review applications and do not need to apply.
 		</div>
 		<div v-else-if="loading" class="muted">Loading your application...</div>
-		<div v-else class="expert-panel__grid">
-			<div class="status-card">
-				<p class="label">Current tier</p>
-				<h3>{{ currentAccount?.expertiseStatus === "verified" ? "Verified expert" : "Community member" }}</h3>
-				<p v-if="application" class="muted">Application status: {{ application.status }}</p>
-				<p v-if="application?.reviewNotes" class="review-note">{{ application.reviewNotes }}</p>
+		<div v-else class="expert-panel__body">
+			<div class="status-strip">
+				<article class="status-card">
+					<span>Current tier</span>
+					<strong>{{ expertiseTier }}</strong>
+				</article>
+				<article class="status-card">
+					<span>Application status</span>
+					<strong>{{ application?.status || "not started" }}</strong>
+				</article>
+				<article class="status-card">
+					<span>Expertise areas</span>
+					<strong>{{
+						currentAccount?.expertiseAreas?.length || application?.expertiseAreas.length || 0
+					}}</strong>
+				</article>
 			</div>
 
-			<form class="application-form" @submit.prevent="submitApplication">
-				<label class="field-label" for="credential-label">Credentials</label>
-				<input
-					id="credential-label"
-					v-model="credentialLabel"
-					type="text"
-					placeholder="PhD in Biology, climate researcher, science journalist..."
-				/>
+			<p v-if="application?.reviewNotes" class="review-note">{{ application.reviewNotes }}</p>
 
-				<label class="field-label" for="affiliation">Affiliation</label>
-				<input
-					id="affiliation"
-					v-model="affiliation"
-					type="text"
-					placeholder="University, lab, institution..."
-				/>
+			<details class="application-details" :open="!application">
+				<summary>{{ application ? "Update application" : "Apply for expert review" }}</summary>
+				<form class="application-form" @submit.prevent="submitApplication">
+					<label class="field-label" for="credential-label">Credentials</label>
+					<input
+						id="credential-label"
+						v-model="credentialLabel"
+						type="text"
+						placeholder="PhD in biology, climate researcher, science journalist"
+					/>
 
-				<label class="field-label" for="expertise-areas">Expertise areas</label>
-				<input
-					id="expertise-areas"
-					v-model="expertiseAreas"
-					type="text"
-					placeholder="Comma-separated: epidemiology, climate modeling, statistics"
-				/>
+					<label class="field-label" for="affiliation">Affiliation</label>
+					<input
+						id="affiliation"
+						v-model="affiliation"
+						type="text"
+						placeholder="University, lab, institution"
+					/>
 
-				<label class="field-label" for="evidence-links">Evidence links</label>
-				<textarea
-					id="evidence-links"
-					v-model="evidenceLinks"
-					rows="3"
-					placeholder="One link per line: profile page, ORCID, lab page, publications"
-				/>
+					<label class="field-label" for="expertise-areas">Expertise areas</label>
+					<input
+						id="expertise-areas"
+						v-model="expertiseAreas"
+						type="text"
+						placeholder="Comma-separated: epidemiology, climate modeling, statistics"
+					/>
 
-				<label class="field-label" for="statement">Why you should review this lane</label>
-				<textarea
-					id="statement"
-					v-model="statement"
-					rows="5"
-					placeholder="Describe the domain you work in and the kinds of questions you can help review."
-				/>
+					<label class="field-label" for="evidence-links">Evidence links</label>
+					<textarea
+						id="evidence-links"
+						v-model="evidenceLinks"
+						rows="3"
+						placeholder="One link per line: profile page, ORCID, lab page, publications"
+					/>
 
-				<p v-if="successMessage" class="success">{{ successMessage }}</p>
-				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-				<button class="cta primary" type="submit" :disabled="saving">
-					{{ saving ? "Submitting..." : application ? "Update application" : "Apply for review" }}
-				</button>
-			</form>
+					<label class="field-label" for="statement">Why you should review this lane</label>
+					<textarea
+						id="statement"
+						v-model="statement"
+						rows="5"
+						placeholder="Describe the domain you work in and the kinds of questions you can help review."
+					/>
+
+					<p v-if="successMessage" class="success">{{ successMessage }}</p>
+					<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+					<button class="button button--primary" type="submit" :disabled="saving">
+						{{ saving ? "Submitting..." : application ? "Update application" : "Apply for review" }}
+					</button>
+				</form>
+			</details>
 		</div>
 	</section>
 </template>
@@ -165,84 +187,102 @@ watch(
 <style scoped>
 .expert-panel,
 .status-card,
-.application-form {
-	background: #fff;
+.application-details {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
 	border-radius: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
 }
 
 .expert-panel {
 	padding: 20px;
 	display: grid;
-	gap: 18px;
+	gap: 16px;
 }
 
-.expert-panel h2,
-.status-card h3 {
+.expert-panel__header h2,
+.application-details summary {
 	margin: 0;
 	font-family: "Fraunces", serif;
 }
 
-.expert-panel header p,
+.expert-panel__header p,
 .muted,
-.review-note {
+.review-note,
+.error,
+.success {
+	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
 
-.expert-panel__grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
-}
-
-.status-card,
+.expert-panel__body,
 .application-form {
-	padding: 18px;
 	display: grid;
-	gap: 10px;
+	gap: 14px;
 }
 
-.label,
+.status-strip {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.status-card {
+	padding: 14px 16px;
+	display: grid;
+	gap: 6px;
+}
+
+.status-card span,
 .field-label {
+	font-size: 0.82rem;
+	font-weight: 600;
 	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	font-size: 0.72rem;
+	letter-spacing: 0.08em;
 	color: var(--consensus-muted);
+}
+
+.status-card strong {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
+.application-details {
+	padding: 16px 18px;
+}
+
+.application-details summary {
+	cursor: pointer;
+	font-size: 1.05rem;
+}
+
+.application-form {
+	margin-top: 14px;
 }
 
 input,
 textarea {
-	border-radius: 14px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
 	padding: 12px 14px;
-	font-family: inherit;
+	border-radius: 14px;
+	border: 1px solid var(--consensus-line);
+	background: #fff;
 }
 
-.cta {
+.button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	padding: 12px 18px;
 	border-radius: 999px;
-	padding: 12px 20px;
-	border: none;
-	font-size: 0.95rem;
+	border: 1px solid var(--consensus-line);
 	font-weight: 600;
-	font-family: inherit;
 	cursor: pointer;
-	width: fit-content;
 }
 
-.cta.primary {
+.button--primary {
 	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
 	color: #fff;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
-}
-
-.success {
-	color: #2f6b4e;
-	font-weight: 600;
 }
 
 .error {
@@ -250,9 +290,8 @@ textarea {
 	font-weight: 600;
 }
 
-@media (max-width: 860px) {
-	.expert-panel__grid {
-		grid-template-columns: 1fr;
-	}
+.success {
+	color: #2f6b4e;
+	font-weight: 600;
 }
 </style>

@@ -13,8 +13,7 @@ const errorMessage = ref("");
 const isAdmin = computed(() => role.value === "admin");
 
 async function refreshQueues() {
-	if (import.meta.server) return;
-	if (!isAdmin.value) return;
+	if (import.meta.server || !isAdmin.value) return;
 	loading.value = true;
 	errorMessage.value = "";
 	try {
@@ -42,9 +41,7 @@ async function reviewApplication(id: string, decision: "approved" | "rejected" |
 		await $fetch(apiUrl(`/admin/expert-applications/${id}/review`), {
 			method: "POST",
 			credentials: "include",
-			body: {
-				decision
-			}
+			body: { decision }
 		});
 		await refreshQueues();
 	} catch (error) {
@@ -61,9 +58,7 @@ async function reviewFlag(id: string, decision: "reviewed" | "dismissed") {
 		await $fetch(apiUrl(`/admin/question-flags/${id}/review`), {
 			method: "POST",
 			credentials: "include",
-			body: {
-				decision
-			}
+			body: { decision }
 		});
 		await refreshQueues();
 	} catch (error) {
@@ -87,28 +82,41 @@ watch(
 	<section v-if="isAdmin" class="admin-panel">
 		<header class="admin-panel__header">
 			<div>
-				<h2>Admin review queues</h2>
-				<p>Review expert applications and moderation reports from one place.</p>
+				<h2>Admin review</h2>
+				<p>Moderation and expert-review queues, in one place.</p>
 			</div>
-			<button class="cta ghost" type="button" :disabled="loading" @click="refreshQueues">
+			<button class="button button--ghost" type="button" :disabled="loading" @click="refreshQueues">
 				{{ loading ? "Refreshing..." : "Refresh queues" }}
 			</button>
 		</header>
 
 		<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
-		<div class="admin-panel__grid">
-			<div class="queue">
-				<h3>Expert applications</h3>
+		<div class="admin-summary">
+			<article class="summary-card">
+				<span>Expert applications</span>
+				<strong>{{ applicationQueue.length }}</strong>
+			</article>
+			<article class="summary-card">
+				<span>Question flags</span>
+				<strong>{{ flagQueue.length }}</strong>
+			</article>
+		</div>
+
+		<details class="queue-panel" :open="applicationQueue.length > 0">
+			<summary>Expert applications</summary>
+			<div class="queue-panel__body">
 				<div v-if="!applicationQueue.length" class="muted">No expert applications waiting.</div>
 				<div v-else class="queue-list">
 					<article v-for="application in applicationQueue" :key="application._id" class="queue-card">
-						<h4>{{ application.name }}</h4>
-						<p>{{ application.credentialLabel }}</p>
-						<p class="muted">{{ application.expertiseAreas.join(", ") }}</p>
+						<div>
+							<h3>{{ application.name }}</h3>
+							<p>{{ application.credentialLabel }}</p>
+							<p class="muted">{{ application.expertiseAreas.join(", ") }}</p>
+						</div>
 						<div class="queue-actions">
 							<button
-								class="mini approve"
+								class="mini-button mini-button--approve"
 								type="button"
 								:disabled="actionState === application._id"
 								@click="reviewApplication(application._id, 'approved')"
@@ -116,7 +124,7 @@ watch(
 								Approve
 							</button>
 							<button
-								class="mini"
+								class="mini-button"
 								type="button"
 								:disabled="actionState === application._id"
 								@click="reviewApplication(application._id, 'needs-info')"
@@ -124,7 +132,7 @@ watch(
 								Needs info
 							</button>
 							<button
-								class="mini reject"
+								class="mini-button mini-button--danger"
 								type="button"
 								:disabled="actionState === application._id"
 								@click="reviewApplication(application._id, 'rejected')"
@@ -135,18 +143,22 @@ watch(
 					</article>
 				</div>
 			</div>
+		</details>
 
-			<div class="queue">
-				<h3>Question flags</h3>
+		<details class="queue-panel" :open="flagQueue.length > 0">
+			<summary>Question flags</summary>
+			<div class="queue-panel__body">
 				<div v-if="!flagQueue.length" class="muted">No flagged questions waiting.</div>
 				<div v-else class="queue-list">
 					<article v-for="flag in flagQueue" :key="flag._id" class="queue-card">
-						<h4>{{ flag.question?.title || "Flagged question" }}</h4>
-						<p>{{ flag.reason }}</p>
-						<p class="muted">{{ flag.reporterName }}</p>
+						<div>
+							<h3>{{ flag.question?.title || "Flagged question" }}</h3>
+							<p>{{ flag.reason }}</p>
+							<p class="muted">{{ flag.reporterName || "Unknown reporter" }}</p>
+						</div>
 						<div class="queue-actions">
 							<button
-								class="mini approve"
+								class="mini-button mini-button--approve"
 								type="button"
 								:disabled="actionState === flag._id"
 								@click="reviewFlag(flag._id, 'reviewed')"
@@ -154,7 +166,7 @@ watch(
 								Reviewed
 							</button>
 							<button
-								class="mini"
+								class="mini-button"
 								type="button"
 								:disabled="actionState === flag._id"
 								@click="reviewFlag(flag._id, 'dismissed')"
@@ -165,24 +177,24 @@ watch(
 					</article>
 				</div>
 			</div>
-		</div>
+		</details>
 	</section>
 </template>
 
 <style scoped>
 .admin-panel,
-.queue,
+.summary-card,
+.queue-panel,
 .queue-card {
-	background: #fff;
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
 	border-radius: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
 }
 
 .admin-panel {
 	padding: 20px;
 	display: grid;
-	gap: 18px;
+	gap: 16px;
 }
 
 .admin-panel__header {
@@ -193,69 +205,95 @@ watch(
 }
 
 .admin-panel__header h2,
-.queue h3,
-.queue-card h4 {
+.queue-card h3,
+.queue-panel summary {
 	margin: 0;
 	font-family: "Fraunces", serif;
 }
 
 .admin-panel__header p,
 .queue-card p,
-.muted {
+.muted,
+.error {
+	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.6;
 }
 
-.admin-panel__grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.queue {
-	padding: 18px;
+.admin-summary {
 	display: grid;
 	gap: 12px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+.summary-card {
+	padding: 14px 16px;
+	display: grid;
+	gap: 6px;
+}
+
+.summary-card span {
+	font-size: 0.82rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
+}
+
+.summary-card strong {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
+.queue-panel {
+	padding: 16px 18px;
+}
+
+.queue-panel summary {
+	cursor: pointer;
+	font-size: 1.05rem;
+}
+
+.queue-panel__body,
 .queue-list {
+	margin-top: 14px;
 	display: grid;
 	gap: 12px;
 }
 
 .queue-card {
-	padding: 14px;
-	display: grid;
-	gap: 8px;
-	background: var(--consensus-cream);
+	padding: 14px 16px;
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
 }
 
 .queue-actions {
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;
+	align-items: start;
 }
 
-.cta,
-.mini {
+.button,
+.mini-button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 999px;
 	padding: 10px 16px;
-	border: 1px solid rgba(21, 17, 13, 0.12);
-	font-size: 0.9rem;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
 	font-weight: 600;
-	font-family: inherit;
 	cursor: pointer;
-	background: #fff;
+	background: transparent;
 }
 
-.mini.approve {
+.mini-button--approve {
 	border-color: rgba(47, 107, 78, 0.35);
 }
 
-.mini.reject {
+.mini-button--danger {
 	border-color: rgba(184, 61, 46, 0.35);
 }
 

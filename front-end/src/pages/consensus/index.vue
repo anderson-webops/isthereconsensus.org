@@ -36,6 +36,15 @@ const enrichedTopics = computed(() =>
 		})
 );
 
+function formatTopicDate(value?: string) {
+	if (!value) return "Update pending";
+	return new Intl.DateTimeFormat("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric"
+	}).format(new Date(value));
+}
+
 watch(search, (value) => {
 	router.replace({
 		query: value.trim() ? { q: value.trim() } : undefined
@@ -177,6 +186,8 @@ const filteredQuestions = computed(() =>
 								<p>{{ topic.description || topic.guide.snapshot }}</p>
 								<div class="topic-row__meta">
 									<span>{{ topic.guide.consensusLabel }}</span>
+									<span>{{ topic.guide.evidenceTrail.length }} evidence routes</span>
+									<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
 									<span>{{ topic.questionCount ?? 0 }} community threads</span>
 								</div>
 							</div>

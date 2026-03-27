@@ -2,76 +2,74 @@
 import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import ExpertApplicationPanel from "~/components/ExpertApplicationPanel.vue";
+import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
-const { currentAccount } = useAuth();
+const { currentAccount, isLoggedIn, role } = useAuth();
 
-const contributorLanes = [
-	{
-		title: "Member",
-		body: "Ask questions, post source links, and help surface where the public framing is drifting away from the evidence."
-	},
-	{
-		title: "Trusted contributor",
-		body: "Contributors who consistently ask focused, source-backed questions can help sharpen topic lanes and explainers."
-	},
-	{
-		title: "Expert reviewer",
-		body: "Verified domain experts and invited reviewers help keep the consensus maps grounded in real disciplinary norms."
+const roleCopy = computed(() => {
+	if (!isLoggedIn.value) {
+		return "Sign in to post questions, track trust, and apply for expert review.";
 	}
-];
+	if (role.value === "admin") {
+		return "You are reviewing moderation and expert queues for the public-facing consensus lanes.";
+	}
+	if (currentAccount.value?.expertiseStatus === "verified") {
+		return "You can post as a member and take part in the expert review path.";
+	}
+	return "You can post questions now and apply for expert review when you are ready.";
+});
 
-const reviewPrinciples = [
-	"Keep the stable core visible even when the frontier is interesting.",
-	"Separate curiosity, opinion, and evidence instead of blending them together.",
-	"Favor precise claims and original sources over vague summaries."
+const accountFacts = computed(() => {
+	if (!isLoggedIn.value || !currentAccount.value) return [];
+	return [
+		{ label: "Role", value: role.value === "admin" ? "Admin" : "Member" },
+		{ label: "Trust score", value: String(currentAccount.value.trustScore ?? 0) },
+		{ label: "Trust level", value: String(currentAccount.value.trustLevel ?? 0) },
+		{ label: "Expert status", value: currentAccount.value.expertiseStatus || "none" }
+	];
+});
+
+const principles = [
+	"Read the bottom line before joining a thread.",
+	"Keep claims specific enough to evaluate with evidence.",
+	"Use the community lane for questions and the expert lane for review."
 ];
 </script>
 
 <template>
 	<div class="account-page">
-		<header class="account-page__header">
-			<p class="eyebrow">Account</p>
-			<h1>Manage access and contributor roles.</h1>
-			<p>
-				Accounts unlock posting today. Over time this area also supports trusted contributors and expert review
-				paths for the curated consensus lane.
-			</p>
+		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Account' }]" />
+
+		<header class="account-header">
+			<div>
+				<p class="eyebrow">Account</p>
+				<h1>Manage access without leaving the public workflow.</h1>
+				<p>{{ roleCopy }}</p>
+			</div>
 		</header>
+
+		<section v-if="accountFacts.length" class="status-strip">
+			<article v-for="fact in accountFacts" :key="fact.label" class="status-card">
+				<span>{{ fact.label }}</span>
+				<strong>{{ fact.value }}</strong>
+			</article>
+		</section>
 
 		<AuthPanel
 			title="Account access"
-			hint="Your account controls posting now and moderation or review roles later."
+			hint="Posting requires a member account. Admin review and expert verification live below."
 		/>
-
-		<section class="status-strip">
-			<article class="info-card">
-				<h2>Trust score</h2>
-				<p>{{ currentAccount?.trustScore ?? 0 }}</p>
-			</article>
-			<article class="info-card">
-				<h2>Trust level</h2>
-				<p>{{ currentAccount?.trustLevel ?? 0 }}</p>
-			</article>
-			<article class="info-card">
-				<h2>Expertise status</h2>
-				<p>{{ currentAccount?.expertiseStatus || "none" }}</p>
-			</article>
-		</section>
 
 		<ExpertApplicationPanel />
 		<AdminReviewPanel />
 
-		<section class="account-page__grid">
-			<article v-for="lane in contributorLanes" :key="lane.title" class="info-card">
-				<h2>{{ lane.title }}</h2>
-				<p>{{ lane.body }}</p>
-			</article>
-		</section>
-
 		<section class="principles">
-			<h2>Contributor principles</h2>
+			<div>
+				<p class="eyebrow">How this area works</p>
+				<h2>Access supports the public reading path.</h2>
+			</div>
 			<ul>
-				<li v-for="item in reviewPrinciples" :key="item">{{ item }}</li>
+				<li v-for="item in principles" :key="item">{{ item }}</li>
 			</ul>
 		</section>
 	</div>
@@ -80,54 +78,74 @@ const reviewPrinciples = [
 <style scoped>
 .account-page {
 	display: grid;
-	gap: 28px;
+	gap: 24px;
 }
 
-.account-page__header h1,
-.info-card h2,
+.account-header,
+.status-card,
+.principles {
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 22px;
+}
+
+.account-header,
+.principles {
+	padding: 22px;
+}
+
+.account-header h1,
 .principles h2 {
+	margin: 8px 0 10px;
 	font-family: "Fraunces", serif;
 }
 
-.account-page__header h1 {
-	font-size: clamp(2.3rem, 4vw, 3.4rem);
-	margin-bottom: 8px;
+.account-header h1 {
+	font-size: clamp(2.4rem, 5vw, 4rem);
+	line-height: 1;
 }
 
-.account-page__header p,
-.info-card p {
-	max-width: 720px;
+.account-header p,
+.principles ul {
+	margin: 0;
+	max-width: 48rem;
 	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.account-page__grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	line-height: 1.7;
 }
 
 .status-strip {
 	display: grid;
-	gap: 16px;
+	gap: 12px;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-.info-card,
+.status-card {
+	padding: 16px 18px;
+	display: grid;
+	gap: 6px;
+}
+
+.status-card span {
+	font-size: 0.82rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
+}
+
+.status-card strong {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
 .principles {
-	background: #fff;
-	border-radius: 20px;
-	padding: 20px;
-	border: 1px solid rgba(21, 17, 13, 0.08);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.08);
+	display: grid;
+	gap: 14px;
 }
 
 .principles ul {
-	margin: 12px 0 0;
 	padding-left: 18px;
 	display: grid;
 	gap: 8px;
-	color: var(--consensus-muted);
-	line-height: 1.55;
 }
 </style>

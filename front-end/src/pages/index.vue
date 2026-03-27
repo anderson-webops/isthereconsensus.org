@@ -87,6 +87,15 @@ function submitSearch() {
 		query: { q: query }
 	});
 }
+
+function formatTopicDate(value?: string) {
+	if (!value) return "Update pending";
+	return new Intl.DateTimeFormat("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric"
+	}).format(new Date(value));
+}
 </script>
 
 <template>
@@ -156,6 +165,8 @@ function submitSearch() {
 						<p>{{ topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
+							<span>{{ topic.guide.evidenceTrail.length }} evidence routes</span>
+							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
 							<span>{{ topic.questionCount ?? 0 }} community threads</span>
 						</div>
 					</div>
