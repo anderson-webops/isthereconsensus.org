@@ -125,6 +125,13 @@ export default defineNuxtConfig({
 		classSuffix: ""
 	},
 
+	// Production source maps are not part of the deployment output and they currently
+	// trigger noisy Vite warnings from Nuxt's module preload polyfill transform.
+	sourcemap: {
+		client: false,
+		server: false
+	},
+
 	future: {
 		compatibilityVersion: 4
 	},
@@ -161,6 +168,11 @@ export default defineNuxtConfig({
 		}
 	},
 	vite: {
+		build: {
+			modulePreload: {
+				polyfill: false
+			}
+		},
 		resolve: {
 			alias: {
 				"~": srcPath,

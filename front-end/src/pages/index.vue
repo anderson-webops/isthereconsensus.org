@@ -10,13 +10,54 @@ definePageMeta({
 const router = useRouter();
 const { apiUrl } = useApi();
 
-const { data: topicsData } = await useAsyncData("home-topics", () =>
-	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
-);
-
 const search = ref("");
-
 const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
+const fallbackTopics: Topic[] = [
+	{
+		_id: "fallback-consensus-foundations",
+		title: "Consensus foundations",
+		slug: "consensus-foundations",
+		description: "Core scientific principles with strong, long-standing agreement.",
+		questionCount: 0
+	},
+	{
+		_id: "fallback-media-misinformation",
+		title: "Media & misinformation",
+		slug: "media-misinformation",
+		description: "How narratives drift from evidence, and how to spot the gaps.",
+		questionCount: 0
+	},
+	{
+		_id: "fallback-active-debates",
+		title: "Active scientific debates",
+		slug: "active-debates",
+		description: "The smaller, technical questions researchers are actively exploring.",
+		questionCount: 0
+	},
+	{
+		_id: "fallback-bias-incentives",
+		title: "Bias & incentives",
+		slug: "bias-incentives",
+		description: "Funding, publication pressure, and why bias shows up in science.",
+		questionCount: 0
+	},
+	{
+		_id: "fallback-science-communication",
+		title: "Science communication",
+		slug: "science-communication",
+		description: "How educators balance accuracy, narrative, and engagement.",
+		questionCount: 0
+	}
+];
+
+const { data: topicsData } = await useAsyncData("home-topics", async () => {
+	try {
+		return await $fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"));
+	} catch {
+		return { topics: fallbackTopics };
+	}
+});
+
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const enrichedTopics = computed(() =>
 	topics.value
