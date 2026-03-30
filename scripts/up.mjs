@@ -10,7 +10,7 @@ const tazeBin = join(rootDir, "node_modules", ".bin", process.platform === "win3
 const dryRun = process.argv.includes("--dry-run");
 
 if (!existsSync(tazeBin)) {
-	console.error("taze binary was not found. Run `npm install` first.");
+	console.error("taze binary was not found. Run `npm ci` first.");
 	process.exit(1);
 }
 

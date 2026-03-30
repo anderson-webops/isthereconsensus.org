@@ -16,7 +16,7 @@ Marketing site for isthereconsensus.org. This repo is a small monorepo with a Nu
 ## Getting started
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 

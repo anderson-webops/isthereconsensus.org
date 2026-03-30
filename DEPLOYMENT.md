@@ -40,7 +40,7 @@ Optional:
 ## Build and start
 
 ```bash
-npm install
+npm ci --ignore-scripts
 npm run build
 npm run -w front-end start
 npm run -w back-end start
