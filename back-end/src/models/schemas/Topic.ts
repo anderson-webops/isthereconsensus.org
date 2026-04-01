@@ -3,11 +3,14 @@ import mongoose, { Schema } from "mongoose";
 import { slugify } from "../../utils/slugify.js";
 
 export interface ITopic {
+	_id?: mongoose.Types.ObjectId;
 	title: string;
 	slug: string;
 	description?: string;
 	order?: number;
 	accent?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 const topicSchema: Schema<ITopic> = new Schema(
