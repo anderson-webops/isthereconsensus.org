@@ -279,6 +279,406 @@ export const defaultClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does antibiotic overuse drive antibiotic resistance?",
+		slug: "does-antibiotic-overuse-drive-antibiotic-resistance",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. Overuse and misuse of antibiotics accelerate antimicrobial resistance, which is why stewardship is treated as a core public-health priority by major medical institutions.",
+		stableCore: [
+			"Antibiotic exposure creates selection pressure that helps resistant strains spread.",
+			"Resistance is a population-level problem driven by clinical overuse, agricultural use, and weak stewardship systems.",
+			"Experts are not debating whether resistance is real; they are debating which interventions work best in different settings."
+		],
+		openQuestions: [
+			"Which stewardship interventions reduce unnecessary prescribing most effectively across different health systems?",
+			"How should policy balance immediate treatment needs with long-term resistance pressure?"
+		],
+		whatWouldChangeMinds: [
+			"Robust evidence showing that common patterns of antibiotic overuse do not create measurable resistance pressure in the real world.",
+			"A stronger alternative model that explains the global resistance trend without antibiotic selection pressure."
+		],
+		misconceptions: [
+			"People often treat resistance as if the patient's body becomes resistant rather than the microbes.",
+			"Individual misuse can feel trivial even though the core harm appears at the population level."
+		],
+		editorSummary:
+			"This is a strong-consensus health page where the basic mechanism is settled and the live debate is mostly about implementation and stewardship design.",
+		sources: [
+			{
+				kind: "guideline",
+				title: "CDC antimicrobial resistance guidance",
+				publisher: "CDC",
+				stance: "supports",
+				note: "Useful for public-health framing and current stewardship guidance.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "WHO antimicrobial resistance resources",
+				publisher: "World Health Organization",
+				stance: "supports",
+				note: "Useful for the global burden and international consensus on stewardship.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Reviews on stewardship interventions and resistance outcomes",
+				publisher: "Evidence synthesis",
+				stance: "supports",
+				note: "Helpful for showing that the question is about reducing a known risk, not discovering whether the risk exists.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does saturated fat still raise LDL and heart risk?",
+		slug: "does-saturated-fat-still-raise-ldl-and-heart-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		bottomLine:
+			"Yes, in the broad mainstream view. Major cardiovascular guidelines still treat saturated fat reduction as a useful way to lower LDL cholesterol and reduce long-term cardiovascular risk, even though nutrition research contains real nuance and substitution effects matter.",
+		stableCore: [
+			"Saturated fat raises LDL in ways that still matter to current cardiovascular guidance.",
+			"The strongest nutrition questions usually depend on what replaces the saturated fat, not on pretending the whole issue disappeared.",
+			"New nutrition papers often refine risk estimates or subgroups rather than overturning the broad lipid-and-cardiovascular picture."
+		],
+		openQuestions: [
+			"Which replacement patterns matter most for people at different baseline risk levels?",
+			"How should nutrition communication separate mechanistic certainty from messier real-world diet patterns?"
+		],
+		whatWouldChangeMinds: [
+			"A large, durable body of evidence showing lower cardiovascular events despite high saturated fat intake and unchanged or lower-risk lipid profiles.",
+			"A stronger model that explains current LDL and cardiovascular findings without saturated fat playing the role assigned in major guidelines."
+		],
+		misconceptions: [
+			"People often hear 'the topic is more nuanced' as if it means the core risk disappeared.",
+			"Nutrition headlines regularly hide what food or nutrient is actually replacing the saturated fat in question."
+		],
+		editorSummary:
+			"This page should model how to explain a broad mainstream conclusion without pretending nutrition science is cleaner than it is.",
+		sources: [
+			{
+				kind: "guideline",
+				title: "American Heart Association dietary guidance",
+				publisher: "AHA",
+				stance: "supports",
+				note: "Important for the current mainstream cardiovascular baseline.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Systematic reviews on saturated fat, LDL, and cardiovascular outcomes",
+				publisher: "Evidence synthesis",
+				stance: "supports",
+				note: "Useful for separating the broad consensus from narrower controversies over diet pattern and substitution.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Nutrition journalism and guideline interpretation pieces",
+				publisher: "Context references",
+				stance: "context",
+				note: "Helpful for showing why the public often experiences this topic as a series of fake reversals.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do dietary supplements usually improve health in otherwise healthy adults?",
+		slug: "do-dietary-supplements-usually-improve-health-in-healthy-adults",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		bottomLine:
+			"Usually not. For otherwise healthy adults without a documented deficiency or specific medical indication, most supplements do not have strong evidence for broad health improvement and some can cause harm or waste money.",
+		stableCore: [
+			"Supplements can matter when a deficiency, pregnancy, disease state, or clinician guidance makes them relevant.",
+			"The broad mainstream view is not that supplements are useless in every case; it is that they are often oversold for general wellness.",
+			"Marketing language often outruns what trials and reviews actually support."
+		],
+		openQuestions: [
+			"Which subgroups truly benefit from targeted supplementation beyond standard deficiency treatment?",
+			"How should public guidance balance low-probability harms, placebo effects, and consumer demand?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, high-quality trials showing broad long-term benefit in otherwise healthy adults without targeted indications.",
+			"A stronger evidence base showing that commonly marketed supplement stacks improve meaningful clinical outcomes."
+		],
+		misconceptions: [
+			"'Natural' is often treated like proof of safety or effectiveness.",
+			"People often mistake biochemical plausibility for demonstrated benefit in real humans."
+		],
+		editorSummary:
+			"This is a useful nutrition page for separating deficiency treatment and targeted clinical use from the much broader wellness marketing around supplements.",
+		sources: [
+			{
+				kind: "guideline",
+				title: "NIH Office of Dietary Supplements fact sheets and evidence summaries",
+				publisher: "NIH",
+				stance: "supports",
+				note: "Useful for separating established indications from overgeneralized claims.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Reviews on multivitamins and supplement outcomes in general populations",
+				publisher: "Evidence synthesis",
+				stance: "supports",
+				note: "Helpful when summarizing the broad lack of benefit for healthy adults without specific indications.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is nuclear power more dangerous than fossil-fuel energy?",
+		slug: "is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 83,
+		bottomLine:
+			"No, not in the way public fear often suggests. Major energy and climate analyses treat nuclear power as a low-carbon source with risks that are real but generally smaller than the sustained health and climate harms tied to fossil-fuel energy.",
+		stableCore: [
+			"Nuclear accidents are dramatic and memorable, but routine fossil-fuel pollution kills far more people over time.",
+			"Nuclear power is usually treated as low-carbon in climate mitigation analyses.",
+			"The live debates are more about cost, waste handling, build timelines, and governance than about whether fossil fuels are safer overall."
+		],
+		openQuestions: [
+			"Which energy mixes are most realistic under different grid, cost, and political constraints?",
+			"How should countries weigh build speed, waste policy, and local safety culture when comparing low-carbon options?"
+		],
+		whatWouldChangeMinds: [
+			"Robust comparative evidence showing nuclear's full health and climate burden exceeds the fossil-fuel alternatives it replaces.",
+			"A stronger systems analysis demonstrating that nuclear's risks systematically outweigh its low-carbon benefits under modern operating conditions."
+		],
+		misconceptions: [
+			"People often compare the vivid image of a rare nuclear disaster to the invisible background damage of air pollution.",
+			"Arguments about waste, weapons, cost, and corruption are often blended into the narrower empirical question of comparative public-health harm."
+		],
+		editorSummary:
+			"This claim is useful because it separates visceral public fear from comparative risk and climate evidence.",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "IPCC energy-system assessments",
+				publisher: "IPCC",
+				stance: "supports",
+				note: "Useful for comparing low-carbon pathways and energy-system tradeoffs.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "IAEA safety and nuclear energy overviews",
+				publisher: "IAEA",
+				stance: "supports",
+				note: "Important for operational safety framing and reactor context.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Comparative energy mortality analyses",
+				publisher: "Energy and public-health research",
+				stance: "supports",
+				note: "Helpful for comparing routine fossil-fuel harms to nuclear risk in the same frame.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Are commercial GMO foods unsafe to eat?",
+		slug: "are-commercial-gmo-foods-unsafe-to-eat",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		bottomLine:
+			"No. Major scientific and public-health bodies treat currently approved GMO foods as no more inherently dangerous to eat than comparable conventional foods, even though broader agricultural and policy debates remain active.",
+		stableCore: [
+			"Safety assessment is done product by product rather than by assuming every GMO is identical.",
+			"Approved GM foods have not earned a scientific consensus that they are uniquely harmful to human health.",
+			"Health-risk arguments should be separated from wider debates about pesticides, patents, and agricultural policy."
+		],
+		openQuestions: [
+			"How should regulation communicate differences between consumer safety, ecological impact, and economic power?",
+			"Which biotechnology governance models best handle future gene-editing applications?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, high-quality evidence showing approved GM foods create reproducible health harms not seen in comparable conventional foods.",
+			"A stronger model demonstrating that existing safety review systems systematically miss important risks."
+		],
+		misconceptions: [
+			"'GMO' is often used as if it names one single hazard rather than a broad class of techniques and products.",
+			"Arguments about industrial agriculture are often treated like direct proof that the food itself is unsafe."
+		],
+		editorSummary:
+			"This page should separate biotechnology safety from the broader political and ecological debates that often get bundled into the same public argument.",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "WHO and FAO statements on approved GM food safety",
+				publisher: "WHO / FAO",
+				stance: "supports",
+				note: "Useful for an international baseline on current safety assessments.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "National Academies and national regulator reviews",
+				publisher: "National Academies / regulators",
+				stance: "supports",
+				note: "Helpful when explaining how safety judgments are made across institutions.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Do we only use 10 percent of our brain?",
+		slug: "do-we-only-use-10-percent-of-our-brain",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"No. Humans use brain systems broadly and continuously. The popular '10 percent' claim is a myth, not a serious neuroscientific position.",
+		stableCore: [
+			"Brain imaging, lesion studies, and everyday neurobiology do not support the idea that most of the brain sits unused.",
+			"Different tasks recruit different networks, but that is not the same thing as saying 90 percent is dormant.",
+			"The myth persists because it flatters people with the idea of huge hidden reserves waiting to be unlocked."
+		],
+		openQuestions: [
+			"Which public-facing explanations best replace simple brain myths without making neuroscience feel inaccessible?",
+			"How should educators distinguish between neural efficiency and the false idea of vast unused capacity?"
+		],
+		whatWouldChangeMinds: [
+			"Direct, repeatable evidence showing that large regions of healthy human brains serve no function across normal life.",
+			"A better neuroscientific model that explains brain injury, imaging, and cognition while still implying most tissue is unused."
+		],
+		misconceptions: [
+			"People often confuse 'not active in every task at every second' with 'unused.'",
+			"Pop culture treats motivational myths like neuroscience because they are rhetorically appealing."
+		],
+		editorSummary:
+			"This is a clean neuromyth page that helps demonstrate how an intuitive idea can thrive without earning serious empirical support.",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Neuroscience outreach and society explainers",
+				publisher: "Brain science organizations",
+				stance: "supports",
+				note: "Useful for a public-facing explanation anchored in mainstream neuroscience.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Neuroimaging and lesion evidence overviews",
+				publisher: "Neuroscience references",
+				stance: "supports",
+				note: "Helpful when showing why unused-brain claims fail against multiple evidence types.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
+		title: "Did smoking cause lung cancer?",
+		slug: "did-smoking-cause-lung-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. The causal link between cigarette smoking and lung cancer is one of the clearest historical examples of scientific consensus emerging against organized doubt.",
+		stableCore: [
+			"Large epidemiological studies, mechanistic evidence, and public-health data converged over time on the same conclusion.",
+			"Industry-funded doubt delayed public understanding, but it did not defeat the evidence base.",
+			"This case is useful because it shows how consensus can become extremely strong even when public messaging remains contested."
+		],
+		openQuestions: [
+			"Which parts of the tobacco-doubt playbook still show up in modern misinformation campaigns?",
+			"How should this history be used without implying every current controversy is equally mature?"
+		],
+		whatWouldChangeMinds: [
+			"Credible historical evidence showing the causal signal was an artifact across epidemiology, toxicology, and population trends.",
+			"A better explanatory framework that fits the full lung-cancer and smoking record without smoking as a primary cause."
+		],
+		misconceptions: [
+			"People sometimes remember the past debate and mistakenly conclude the science was weak rather than politically resisted.",
+			"Historical controversy is often confused with the absence of a strong eventual evidence base."
+		],
+		editorSummary:
+			"This page should show how consensus can harden over time despite organized campaigns to manufacture uncertainty.",
+		sources: [
+			{
+				kind: "landmark_study",
+				title: "Landmark smoking and cancer epidemiology",
+				publisher: "Public-health research",
+				stance: "supports",
+				note: "Useful for showing how the causal signal emerged across multiple study designs.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Surgeon General reports on smoking and health",
+				publisher: "U.S. Surgeon General",
+				stance: "supports",
+				note: "Important for documenting how institutional consensus formed and strengthened.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
+		title: "Were most stomach ulcers caused by stress rather than bacteria?",
+		slug: "were-most-stomach-ulcers-caused-by-stress-rather-than-bacteria",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"No. The dominant consensus shifted when strong evidence showed that many peptic ulcers are caused by Helicobacter pylori infection rather than by stress or spicy food alone.",
+		stableCore: [
+			"H. pylori transformed ulcer treatment because it explained a large share of cases that older narratives did not handle well.",
+			"This was not a case of science randomly flipping; it was a case of new evidence outperforming an older model.",
+			"The old stress-and-lifestyle story had some intuitive appeal, but the bacterial evidence changed the causal center of the field."
+		],
+		openQuestions: [
+			"How should historical reversals be explained so people learn from them without assuming every modern consensus is equally fragile?",
+			"Which institutional or cultural habits made the older ulcer model so sticky?"
+		],
+		whatWouldChangeMinds: [
+			"Strong contradictory evidence showing H. pylori is not a major causal contributor across ulcer populations.",
+			"A better model that explains treatment success and ulcer recurrence without bacterial infection playing a central role."
+		],
+		misconceptions: [
+			"People often retell this case as if stress had nothing to do with symptoms or healing, when the real shift was about the primary cause of many ulcers.",
+			"A real historical correction is sometimes used to imply that current expert consensus is always likely to be overturned just as easily."
+		],
+		editorSummary:
+			"This is one of the clearest examples of evidence changing minds for the right reason: the new explanation fit the data and changed treatment outcomes.",
+		sources: [
+			{
+				kind: "landmark_study",
+				title: "Marshall and Warren era ulcer research",
+				publisher: "Clinical research",
+				stance: "supports",
+				note: "Useful for showing how the bacterial model established itself.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Modern gastroenterology guidance on H. pylori and ulcer care",
+				publisher: "Clinical guidelines",
+				stance: "supports",
+				note: "Helpful for showing how the new causal model became routine clinical practice.",
+				order: 2
+			}
+		]
+	},
+	{
 		topicSlug: "consensus-foundations",
 		title: "How does scientific consensus form?",
 		slug: "how-does-scientific-consensus-form",

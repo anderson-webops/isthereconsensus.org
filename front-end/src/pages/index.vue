@@ -221,7 +221,7 @@ function formatTopicDate(value?: string) {
 							id="home-search"
 							v-model="search"
 							type="text"
-							placeholder="Try vaccines and autism, global warming, or learning styles"
+							placeholder="Try vaccines and autism, GMOs, global warming, or learning styles"
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>

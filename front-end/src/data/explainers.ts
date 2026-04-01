@@ -59,6 +59,19 @@ export const evergreenExplainers: ExplainerItem[] = [
 		]
 	},
 	{
+		slug: "one-study-vs-the-big-picture",
+		title: "One study versus the big picture",
+		summary:
+			"A single study can be interesting without being field-changing. The broader literature almost always matters more than the newest isolated result.",
+		whyItMatters:
+			"Many science headlines become misleading the moment a preliminary or narrow result gets framed like a final verdict.",
+		keyPoints: [
+			"Single studies are often noisy, small, or context-specific.",
+			"Systematic reviews smooth out the volatility of isolated papers.",
+			"Novelty is not the same thing as evidentiary weight."
+		]
+	},
+	{
 		slug: "replication-and-correction",
 		title: "Replication, correction, and the replication crisis",
 		summary:
@@ -85,6 +98,19 @@ export const evergreenExplainers: ExplainerItem[] = [
 		]
 	},
 	{
+		slug: "reading-science-news",
+		title: "How to read science news without getting lost",
+		summary:
+			"Good science reporting still needs context. You should check the source type, the baseline risk, the study population, and whether the finding sits inside a broader literature.",
+		whyItMatters:
+			"Public confusion often starts with framing, not fabrication. A technically accurate headline can still leave readers with the wrong takeaway.",
+		keyPoints: [
+			"Ask whether the result comes from a review, a trial, an observational study, or a preprint.",
+			"Look for who funded the research and whether independent groups agree.",
+			"Treat dramatic health or climate headlines as prompts to inspect, not as final answers."
+		]
+	},
+	{
 		slug: "why-science-seems-to-change",
 		title: "Why science seems to change its mind",
 		summary:
@@ -94,6 +120,19 @@ export const evergreenExplainers: ExplainerItem[] = [
 			"Most updates refine the edges more than they rewrite the center.",
 			"Better tools and better measurements often explain apparent reversals.",
 			"Consensus usually shifts slowly unless the old model breaks badly."
+		]
+	},
+	{
+		slug: "uncertainty-and-trust",
+		title: "Why uncertainty does not make science unreliable",
+		summary:
+			"Science can be uncertain and still highly trustworthy. Confidence is about how much evidence points in one direction, not about pretending nothing could ever change.",
+		whyItMatters:
+			"People often hear honest uncertainty as weakness, when it is usually a sign that the explanation is being kept tethered to the evidence.",
+		keyPoints: [
+			"Confidence ranges are not the same thing as ignorance.",
+			"Strong consensus can coexist with uncertainty about timing, magnitude, or mechanism.",
+			"Trust improves when uncertainty is explained clearly instead of hidden."
 		]
 	},
 	{

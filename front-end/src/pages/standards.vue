@@ -20,6 +20,24 @@ const updateTriggers = [
 	"An editorial review date passes and the claim is flagged as needing a refresh."
 ];
 
+const citationRules = [
+	"Core public claims should be backed by peer-reviewed syntheses or official reports, not by blogs, anonymous commentary, or isolated preprints.",
+	"Systematic reviews, meta-analyses, and major institutional guidance should outrank individual studies unless a landmark trial is the reason the field changed.",
+	"When evidence is early or thin, the page should say that clearly instead of forcing a settled summary."
+];
+
+const disagreementRules = [
+	"If major bodies disagree, identify the shared baseline first and then explain the narrower margin of disagreement.",
+	"Do not present a minority expert view like a 50-50 split when the broader literature is not actually balanced.",
+	"Separate disputes about effect size, scope, or policy from disputes about whether the core phenomenon exists."
+];
+
+const reviewerExpectations = [
+	"Pages should be reviewed by people with relevant domain or editorial expertise before being treated as canonical.",
+	"Reviewer qualifications should be visible enough to build trust without turning the page into a credential contest.",
+	"Claim pages should state what kind of evidence would change the current summary so the review standard stays falsifiable."
+];
+
 const trustSignals = [
 	"Original publish date and last evidence review date",
 	"Consensus band and confidence score",
@@ -42,8 +60,16 @@ const institutionStacks = [
 		body: "IPCC assessment reports, NOAA, NASA, and environmental evidence reviews are the main reference points for the settled core."
 	},
 	{
+		title: "Genetics and biotechnology",
+		body: "WHO, FAO, National Academies reviews, and major regulator safety assessments are the main starting points for GMO and biotechnology safety claims."
+	},
+	{
 		title: "Neuroscience and psychology",
 		body: "The Campbell Collaboration, APA, and domain societies are more useful than pop-psychology summaries or isolated lab claims."
+	},
+	{
+		title: "Historical case studies",
+		body: "Landmark trials, Surgeon General or equivalent public-health reports, and retrospective reviews help explain how past consensus shifts actually happened."
 	}
 ];
 
@@ -103,6 +129,16 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
+				<h2>Source and citation policy</h2>
+				<p>What kinds of materials are allowed to carry the public summary.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in citationRules" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
+		<section class="standards-panel">
+			<div class="section-heading section-heading--tight">
 				<h2>Trusted institution stacks</h2>
 				<p>The site should anchor each cluster in the bodies that already synthesize the field.</p>
 			</div>
@@ -112,6 +148,26 @@ useHead({
 					<p>{{ item.body }}</p>
 				</article>
 			</div>
+		</section>
+
+		<section class="standards-panel standards-panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>Handling disagreement among experts or institutions</h2>
+				<p>Disagreement should be explained, not flattened into confusion.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in disagreementRules" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
+		<section class="standards-panel">
+			<div class="section-heading section-heading--tight">
+				<h2>Reviewer and publication expectations</h2>
+				<p>Trust depends on visible review standards, not just confident writing.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in reviewerExpectations" :key="item">{{ item }}</li>
+			</ul>
 		</section>
 
 		<section class="standards-panel">

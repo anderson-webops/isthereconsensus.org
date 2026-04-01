@@ -28,11 +28,25 @@ export const defaultTopics = [
 		accent: "#4d5c91"
 	},
 	{
+		title: "Genetics & biotechnology",
+		slug: "genetics-and-biotechnology",
+		description: "GMOs, gene editing, and biotechnology claims where safety questions often outrun the evidence.",
+		order: 12,
+		accent: "#4a7a57"
+	},
+	{
 		title: "Neuroscience & psychology",
 		slug: "neuroscience-and-psychology",
 		description: "Popular brain myths and psychological claims that sound intuitive but fail under stronger evidence.",
 		order: 11,
 		accent: "#6d4f7f"
+	},
+	{
+		title: "Historical case studies",
+		slug: "historical-case-studies",
+		description: "Moments when science corrected itself and built stronger consensus through better evidence.",
+		order: 13,
+		accent: "#8a623c"
 	},
 	{
 		title: "Consensus foundations",

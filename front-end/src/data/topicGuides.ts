@@ -179,6 +179,44 @@ export const topicGuides: Record<string, TopicGuide> = {
 			{ title: "Fossil and geological records", note: "Helpful when addressing historical evidence claims." }
 		]
 	},
+	"genetics-and-biotechnology": {
+		slug: "genetics-and-biotechnology",
+		consensusScore: 89,
+		consensusLabel: "Strong consensus on current commercial safety assessments",
+		snapshot:
+			"Public fear around GMOs and biotechnology often blends safety, agriculture, business practices, and ethics into one argument, even when the scientific questions are more specific.",
+		stableCore: [
+			"Major scientific and public-health bodies treat currently approved GM foods as no more inherently dangerous to eat than comparable conventional foods.",
+			"Safety claims about biotechnology should be separated from wider debates about patents, farming policy, or corporate power.",
+			"Gene-editing tools can have real benefits and real risks, but those risks need to be assessed claim by claim rather than by panic about the category itself."
+		],
+		openQuestions: [
+			"Which governance rules best handle ecological, ethical, and market concerns around new biotech tools?",
+			"How should regulators communicate the difference between product risk and production politics?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, high-quality human or ecological evidence showing that approved biotech products create harms not caught by current safety assessments.",
+			"A better risk model demonstrating systematic failure in existing regulatory review."
+		],
+		commonMisreads: [
+			"People often treat 'GMO' as a single hazard rather than a set of different techniques and products.",
+			"Arguments about pesticides or corporate control are often confused with the narrower question of whether the food itself is unsafe to eat."
+		],
+		starterQuestions: [
+			"What exactly is being genetically changed here, and what was actually tested?",
+			"Is the argument about health risk, ecological risk, or agricultural policy?"
+		],
+		evidenceTrail: [
+			{
+				title: "WHO and FAO safety assessments",
+				note: "Useful for international consensus on the safety of approved GM foods."
+			},
+			{
+				title: "National Academies and major regulator reviews",
+				note: "Helpful when showing how biotechnology claims are assessed across evidence types."
+			}
+		]
+	},
 	"neuroscience-and-psychology": {
 		slug: "neuroscience-and-psychology",
 		consensusScore: 79,
@@ -211,6 +249,44 @@ export const topicGuides: Record<string, TopicGuide> = {
 			{
 				title: "Behavioral science consensus",
 				note: "Helpful when separating pop-psychology from durable findings."
+			}
+		]
+	},
+	"historical-case-studies": {
+		slug: "historical-case-studies",
+		consensusScore: 92,
+		consensusLabel: "Strong lessons from past consensus shifts",
+		snapshot:
+			"Historical case studies show that science does change, but usually when better evidence, better measurements, and better models outperform the old story over time.",
+		stableCore: [
+			"Many famous consensus shifts did not happen because people suddenly became open-minded; they happened because new evidence held up under challenge.",
+			"Industry pressure, media confusion, and professional inertia can delay consensus without defeating it forever.",
+			"These stories are useful because they show both why science can be trusted and why public confusion can last for years."
+		],
+		openQuestions: [
+			"Which historical examples best help people understand self-correction without encouraging false balance?",
+			"How should past reversals be explained so they strengthen trust instead of feeding cynicism?"
+		],
+		whatWouldChangeMinds: [
+			"Historical evidence showing that a supposed consensus shift was actually much less settled than commonly described.",
+			"New scholarship clarifying how institutional incentives distorted the pace of change."
+		],
+		commonMisreads: [
+			"People often use one real historical correction to argue that every current consensus is probably wrong.",
+			"Past scientific error is often treated as proof that expertise itself is worthless, instead of proof that scrutiny and evidence matter."
+		],
+		starterQuestions: [
+			"What evidence finally broke the old view here?",
+			"What does this case teach about how long real consensus change can take?"
+		],
+		evidenceTrail: [
+			{
+				title: "Landmark studies and trials",
+				note: "Useful for showing the specific evidence that shifted expert judgment."
+			},
+			{
+				title: "Government reports and retrospective reviews",
+				note: "Helpful when tracing how institutions changed guidance over time."
 			}
 		]
 	},
