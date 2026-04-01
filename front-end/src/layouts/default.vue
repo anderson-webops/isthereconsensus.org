@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const { currentAccount, role } = useAuth();
+
+const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
+</script>
+
 <template>
 	<div class="site-shell">
 		<header class="site-header">
@@ -10,6 +16,7 @@
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
 				<NuxtLink to="/account">Account</NuxtLink>
+				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 			</nav>
 		</header>
 

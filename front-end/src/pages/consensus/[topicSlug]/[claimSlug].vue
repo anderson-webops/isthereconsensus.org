@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import type {
-	ClaimsResponse,
-	ClaimSummary,
-	Question,
-	QuestionResponse,
-	QuestionsResponse,
-	SingleTopicResponse
-} from "~/types/board";
+import type { Claim, ClaimResponse, Question, QuestionResponse, QuestionsResponse } from "~/types/board";
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
-import CommunitySentimentPanel from "~/components/CommunitySentimentPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { getTopicGuide } from "~/data/topicGuides";
 
-interface TopicRouteParams {
-	slug?: string | string[];
+interface ClaimRouteParams {
+	topicSlug?: string | string[];
+	claimSlug?: string | string[];
 }
 
 const route = useRoute();
@@ -24,24 +16,26 @@ const { apiUrl } = useApi();
 const { isLoggedIn, currentAccount, role } = useAuth();
 
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
-const slug = computed(() => {
-	const value = (route.params as TopicRouteParams).slug;
+const topicSlug = computed(() => {
+	const value = (route.params as ClaimRouteParams).topicSlug;
+	return Array.isArray(value) ? value[0] : String(value ?? "");
+});
+const claimSlug = computed(() => {
+	const value = (route.params as ClaimRouteParams).claimSlug;
 	return Array.isArray(value) ? value[0] : String(value ?? "");
 });
 const highlightId = computed(() => (typeof route.query.highlight === "string" ? route.query.highlight : ""));
 
-const { data: topicData } = await useAsyncData(`topic-hub-${slug.value}`, () =>
-	$fetch<SingleTopicResponse>(apiUrl(`/topics/${slug.value}?includeClaims=true`))
+const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claimSlug.value}`, () =>
+	$fetch<ClaimResponse>(apiUrl(`/topics/${topicSlug.value}/claims/${claimSlug.value}`))
 );
-const { data: claimsData } = await useAsyncData(`topic-claims-${slug.value}`, () =>
-	$fetch<ClaimsResponse>(apiUrl(`/topics/${slug.value}/claims`))
-);
-const { data: questionsData, refresh } = await useAsyncData(`topic-questions-${slug.value}`, () =>
-	$fetch<QuestionsResponse>(apiUrl(`/questions?topic=${slug.value}&routingStatus=unassigned&limit=100`))
+const { data: questionsData, refresh } = await useAsyncData(
+	`claim-questions-${topicSlug.value}-${claimSlug.value}`,
+	() => $fetch<QuestionsResponse>(apiUrl(`/questions?topic=${topicSlug.value}&claim=${claimSlug.value}&limit=100`))
 );
 
-const questionText = ref("");
-const questionDetails = ref("");
+const questionTitle = ref("");
+const questionBody = ref("");
 const questionSourceUrl = ref("");
 const questionSearch = ref("");
 const showComposer = ref(false);
@@ -55,20 +49,10 @@ const deletingId = ref("");
 const flagReason = ref<Record<string, string>>({});
 const flagNote = ref<Record<string, string>>({});
 
-const topic = computed(() => topicData.value?.topic);
-const guide = computed(() => getTopicGuide(slug.value));
-const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
+const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const isAdmin = computed(() => role.value === "admin");
-const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
-
-const trustFacts = computed(() => [
-	{ label: "Topic summary", value: guide.value.consensusLabel },
-	{ label: "Published claims", value: String(claims.value.length) },
-	{ label: "Unassigned threads", value: String(questions.value.length) },
-	{ label: "Evidence routes", value: String(guide.value.evidenceTrail.length) }
-]);
-
+const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const filteredQuestions = computed(() => {
 	const query = questionSearch.value.trim().toLowerCase();
 	if (!query) return questions.value;
@@ -80,8 +64,16 @@ const filteredQuestions = computed(() => {
 	);
 });
 
+const trustFacts = computed(() => [
+	{ label: "Consensus", value: formatBandLabel(claim.value?.consensusBand) },
+	{ label: "Confidence score", value: `${claim.value?.confidenceScore ?? 0}/100` },
+	{ label: "Sources listed", value: String(claim.value?.sources?.length ?? claim.value?.sourceCount ?? 0) },
+	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
+	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") }
+]);
+
 useHead(() => ({
-	title: topic.value ? `${topic.value.title} - Topic Hub - Is There Consensus?` : "Topic hub - Is There Consensus?"
+	title: claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?"
 }));
 
 watch(
@@ -94,6 +86,13 @@ watch(
 	{ immediate: true }
 );
 
+function formatBandLabel(band?: Claim["consensusBand"]) {
+	if (band === "strong") return "Strong consensus";
+	if (band === "broad") return "Broad consensus";
+	if (band === "mixed") return "Mixed evidence";
+	return "Unclear or still forming";
+}
+
 function formatDate(value?: string, fallback = "Not available yet") {
 	if (!value) return fallback;
 	return new Intl.DateTimeFormat("en-US", {
@@ -101,13 +100,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		day: "numeric",
 		year: "numeric"
 	}).format(new Date(value));
-}
-
-function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
-	if (band === "strong") return "Strong consensus";
-	if (band === "broad") return "Broad consensus";
-	if (band === "mixed") return "Mixed evidence";
-	return "Unclear or still forming";
 }
 
 function canDeleteQuestion(question: Question) {
@@ -121,7 +113,7 @@ async function postQuestion() {
 		errorMessage.value = "Please sign in before posting.";
 		return;
 	}
-	if (!questionText.value.trim()) {
+	if (!questionTitle.value.trim()) {
 		errorMessage.value = "Please add a focused question before posting.";
 		return;
 	}
@@ -136,23 +128,24 @@ async function postQuestion() {
 			method: "POST",
 			credentials: "include",
 			body: {
-				topic: slug.value,
-				title: questionText.value.trim(),
-				body: questionDetails.value.trim(),
+				topic: topicSlug.value,
+				claim: claimSlug.value,
+				title: questionTitle.value.trim(),
+				body: questionBody.value.trim(),
 				sourceUrl: questionSourceUrl.value.trim(),
 				captchaToken: captchaToken.value
 			}
 		});
 
-		questionText.value = "";
-		questionDetails.value = "";
+		questionTitle.value = "";
+		questionBody.value = "";
 		questionSourceUrl.value = "";
+		showComposer.value = false;
 		captchaRef.value?.reset();
 		captchaToken.value = "";
-		showComposer.value = false;
 		await refresh();
 		await navigateTo({
-			path: `/consensus/${slug.value}`,
+			path: `/consensus/${topicSlug.value}/${claimSlug.value}`,
 			query: { highlight: response.question._id }
 		});
 	} catch (error) {
@@ -205,21 +198,22 @@ async function flagQuestion(questionId: string) {
 </script>
 
 <template>
-	<div class="topic-page">
+	<div class="claim-page">
 		<PageBreadcrumbs
 			:items="[
 				{ label: 'Home', to: '/' },
 				{ label: 'Browse topics', to: '/consensus' },
-				{ label: topic?.title || 'Topic hub' }
+				{ label: claim?.topic?.title || 'Topic', to: `/consensus/${topicSlug}` },
+				{ label: claim?.title || 'Claim' }
 			]"
 		/>
 
-		<header class="topic-page__header">
+		<header class="claim-page__header">
 			<div>
-				<p class="eyebrow">Topic hub</p>
-				<h1>{{ topic?.title || "Topic" }}</h1>
-				<p class="topic-page__description">
-					{{ topic?.description || guide.snapshot }}
+				<p class="eyebrow">Canonical claim review</p>
+				<h1>{{ claim?.title || "Claim review" }}</h1>
+				<p class="claim-page__description">
+					{{ claim?.editorSummary || "This page is the editorial summary for the claim." }}
 				</p>
 			</div>
 			<div class="trust-grid">
@@ -230,173 +224,154 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</header>
 
-		<section class="topic-summary">
+		<section class="bottom-line">
 			<div>
-				<p class="eyebrow">How to use this hub</p>
-				<h2>{{ guide.snapshot }}</h2>
+				<p class="eyebrow">The bottom line</p>
+				<h2>{{ claim?.bottomLine }}</h2>
 				<p>
-					Start with one of the published claim reviews below. Use the topic hub when you need the broader
-					frame before reading deeper or joining the board.
+					Read this first. Everything else on the page expands the evidence, the remaining uncertainty, and
+					the practical limits of the current consensus.
 				</p>
 			</div>
-			<div class="topic-summary__actions">
-				<NuxtLink class="button button--primary" to="/ask">Ask a question</NuxtLink>
-				<NuxtLink v-if="canEditTopic" class="button button--ghost" to="/account/editorial"
-					>Open editorial workspace</NuxtLink
-				>
-			</div>
-		</section>
-
-		<section class="claim-lane">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Published claim reviews</p>
-					<h2>Open one canonical claim before reading the board</h2>
-				</div>
-				<p>These are the editorial pages. They carry the bottom line, trust cues, and evidence trail.</p>
-			</div>
-
-			<div v-if="!claims.length" class="empty-state">
-				No published claims exist under this topic yet. The static topic summary stays here as fallback until
-				the editorial layer grows.
-			</div>
-			<div v-else class="claim-list">
+			<div class="bottom-line__actions">
+				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic hub</NuxtLink>
 				<NuxtLink
-					v-for="claim in claims"
-					:key="claim._id"
-					class="claim-row"
-					:to="`/consensus/${slug}/${claim.slug}`"
+					v-if="canEditClaim && claim?._id"
+					class="button button--ghost"
+					:to="`/account/editorial/claims/${claim._id}`"
 				>
-					<div>
-						<p class="claim-row__meta">
-							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
-							<span>{{ claim.sourceCount ?? 0 }} sources</span>
-							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
-						</p>
-						<h3>{{ claim.title }}</h3>
-						<p>{{ claim.bottomLine }}</p>
-					</div>
-					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
+					Edit claim
 				</NuxtLink>
 			</div>
 		</section>
 
-		<section class="fallback-lane">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Topic fallback summary</p>
-					<h2>What stays useful even before every claim is curated</h2>
+		<section class="content-stack">
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Stable core</p>
+						<h2>What looks settled right now</h2>
+					</div>
 				</div>
-				<p>The static topic guide remains here until the topic is fully covered by claim reviews.</p>
-			</div>
+				<ul class="plain-list">
+					<li v-for="item in claim?.stableCore || []" :key="item">{{ item }}</li>
+				</ul>
+			</section>
 
-			<div class="fallback-grid">
-				<section class="fallback-panel">
-					<h3>Stable core</h3>
-					<ul class="plain-list">
-						<li v-for="item in guide.stableCore" :key="item">{{ item }}</li>
-					</ul>
-				</section>
+			<details class="content-panel disclosure" open>
+				<summary>Open questions and live uncertainty</summary>
+				<ul class="plain-list">
+					<li v-for="item in claim?.openQuestions || []" :key="item">{{ item }}</li>
+				</ul>
+			</details>
 
-				<section class="fallback-panel">
-					<h3>Open questions</h3>
-					<ul class="plain-list">
-						<li v-for="item in guide.openQuestions" :key="item">{{ item }}</li>
-					</ul>
-				</section>
+			<details class="content-panel disclosure">
+				<summary>What would change minds</summary>
+				<ul class="plain-list">
+					<li v-for="item in claim?.whatWouldChangeMinds || []" :key="item">{{ item }}</li>
+				</ul>
+			</details>
 
-				<section class="fallback-panel">
-					<h3>What would change minds</h3>
-					<ul class="plain-list">
-						<li v-for="item in guide.whatWouldChangeMinds" :key="item">{{ item }}</li>
-					</ul>
-				</section>
+			<details class="content-panel disclosure">
+				<summary>Common misconceptions</summary>
+				<ul class="plain-list">
+					<li v-for="item in claim?.misconceptions || []" :key="item">{{ item }}</li>
+				</ul>
+			</details>
 
-				<section class="fallback-panel">
-					<h3>Common public misreads</h3>
-					<ul class="plain-list">
-						<li v-for="item in guide.commonMisreads" :key="item">{{ item }}</li>
-					</ul>
-				</section>
-			</div>
-		</section>
-
-		<section class="lane lane--sentiment">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Public sentiment</p>
-					<h2>How public impression compares</h2>
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Evidence trail</p>
+						<h2>Sources attached to this claim review</h2>
+					</div>
+					<p>These sources sit under the editorial summary, not beside it.</p>
 				</div>
-				<p>
-					This stays on the topic hub, not on the claim page headline, so it never outranks the canonical
-					review.
-				</p>
-			</div>
-			<CommunitySentimentPanel :topic-slug="slug" />
+
+				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
+				<div v-else class="source-list">
+					<article v-for="source in claim.sources" :key="source._id || source.title" class="source-row">
+						<div>
+							<p class="source-row__meta">
+								<span>{{ source.kind.replaceAll("_", " ") }}</span>
+								<span>{{ source.publisher || "Source" }}</span>
+								<span v-if="source.year">{{ source.year }}</span>
+							</p>
+							<h3>{{ source.title }}</h3>
+							<p>{{ source.note }}</p>
+						</div>
+						<a
+							v-if="source.url"
+							class="button button--ghost"
+							:href="source.url"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Open source
+						</a>
+					</article>
+				</div>
+			</section>
 		</section>
 
 		<section class="lane lane--community">
 			<div class="section-heading section-heading--stacked">
 				<div>
-					<p class="eyebrow">Unassigned community threads</p>
-					<h2>Questions still waiting for editorial routing</h2>
+					<p class="eyebrow">Claim-specific community threads</p>
+					<h2>Questions filed under this claim</h2>
 				</div>
-				<p>
-					These threads remain on the topic hub until an editor links them to a canonical claim or marks them
-					as duplicate.
-				</p>
+				<p>These threads stay below the canonical review so they do not compete with the editorial answer.</p>
 			</div>
 
 			<div class="community-toolbar">
 				<div class="community-toolbar__search">
-					<label class="field-label" for="topic-question-search">Search unassigned threads</label>
+					<label class="field-label" for="claim-question-search">Search community threads</label>
 					<input
-						id="topic-question-search"
+						id="claim-question-search"
 						v-model="questionSearch"
 						type="text"
 						placeholder="Filter by title, author, source, or context"
 					/>
 				</div>
 				<button class="button button--ghost" type="button" @click="showComposer = !showComposer">
-					{{ showComposer ? "Hide question form" : "Ask under this topic" }}
+					{{ showComposer ? "Hide question form" : "Ask under this claim" }}
 				</button>
 			</div>
 
 			<section v-if="showComposer" class="composer">
 				<div class="composer__intro">
-					<h3>Post a new unassigned thread</h3>
+					<h3>Ask a focused follow-up</h3>
 					<p>
-						Use this when the question does not already belong under one of the published claim reviews
-						above.
+						Keep this tied to the claim review above. Broad topic questions belong on the topic hub instead.
 					</p>
 				</div>
 
 				<AuthPanel
 					v-if="!isLoggedIn"
 					title="Sign in to post"
-					hint="Only logged-in members can add new topic threads."
+					hint="Only logged-in members can add claim-specific community threads."
 				/>
 				<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
 
-				<label class="field-label" for="topic-question-title">Question</label>
+				<label class="field-label" for="claim-question-title">Question</label>
 				<textarea
-					id="topic-question-title"
-					v-model="questionText"
+					id="claim-question-title"
+					v-model="questionTitle"
 					rows="3"
-					placeholder="What part of this topic still feels unresolved?"
+					placeholder="What part of the claim still feels unclear?"
 				/>
 
-				<label class="field-label" for="topic-question-body">Context or quoted source</label>
+				<label class="field-label" for="claim-question-body">Context or quoted source</label>
 				<textarea
-					id="topic-question-body"
-					v-model="questionDetails"
+					id="claim-question-body"
+					v-model="questionBody"
 					rows="4"
-					placeholder="Optional. Paste the quote, source, or detail that triggered the question."
+					placeholder="Optional. Paste the quote, headline, or specific detail you want checked."
 				/>
 
-				<label class="field-label" for="topic-question-source">Source URL</label>
+				<label class="field-label" for="claim-question-source">Source URL</label>
 				<input
-					id="topic-question-source"
+					id="claim-question-source"
 					v-model="questionSourceUrl"
 					type="url"
 					placeholder="Optional source URL"
@@ -414,7 +389,7 @@ async function flagQuestion(questionId: string) {
 						:disabled="submitting || !isLoggedIn"
 						@click="postQuestion"
 					>
-						{{ submitting ? "Posting..." : "Post to the board" }}
+						{{ submitting ? "Posting..." : "Post under this claim" }}
 					</button>
 				</div>
 			</section>
@@ -422,7 +397,7 @@ async function flagQuestion(questionId: string) {
 			<p v-if="moderationMessage" class="muted">{{ moderationMessage }}</p>
 
 			<div v-if="!filteredQuestions.length" class="empty-state">
-				No unassigned threads are waiting under this topic.
+				No community threads are attached to this claim yet.
 			</div>
 			<div v-else class="question-list">
 				<article
@@ -488,19 +463,16 @@ async function flagQuestion(questionId: string) {
 </template>
 
 <style scoped>
-.topic-page {
+.claim-page {
 	display: grid;
 	gap: 24px;
 }
 
-.topic-page__header,
+.claim-page__header,
 .trust-card,
-.topic-summary,
-.claim-lane,
-.fallback-lane,
+.bottom-line,
+.content-panel,
 .lane,
-.claim-row,
-.fallback-panel,
 .question-card,
 .composer {
 	background: var(--consensus-surface);
@@ -508,48 +480,41 @@ async function flagQuestion(questionId: string) {
 	border-radius: 22px;
 }
 
-.topic-page__header,
-.topic-summary,
-.claim-lane,
-.fallback-lane,
+.claim-page__header,
+.bottom-line,
+.content-panel,
 .lane,
 .composer {
 	padding: 22px;
 }
 
-.topic-page__header,
-.topic-summary,
-.claim-lane,
-.fallback-lane,
-.lane,
-.composer {
+.claim-page__header,
+.bottom-line {
 	display: grid;
-	gap: 16px;
+	gap: 18px;
 }
 
-.topic-page__header h1,
-.topic-summary h2,
+.claim-page__header h1,
+.bottom-line h2,
 .section-heading h2,
-.claim-row h3,
-.fallback-panel h3,
+.source-row h3,
 .question-card h3,
 .composer h3 {
 	margin: 0;
 	font-family: "Fraunces", serif;
 }
 
-.topic-page__header h1 {
+.claim-page__header h1 {
 	margin-top: 8px;
 	font-size: clamp(2.6rem, 5vw, 4.25rem);
 	line-height: 0.98;
 }
 
-.topic-page__description,
-.topic-summary p,
+.claim-page__description,
+.bottom-line p,
 .section-heading p,
-.claim-row p,
-.fallback-panel,
 .plain-list,
+.source-row p,
 .empty-state,
 .muted,
 .field-label,
@@ -574,8 +539,8 @@ async function flagQuestion(questionId: string) {
 
 .trust-card span,
 .field-label,
-.claim-row__meta,
-.question-card__meta {
+.question-card__meta,
+.source-row__meta {
 	font-size: 0.82rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -583,23 +548,26 @@ async function flagQuestion(questionId: string) {
 	color: var(--consensus-muted);
 }
 
-.trust-card strong,
-.claim-row__score {
+.trust-card strong {
 	font-size: 1rem;
 	color: var(--consensus-ink);
 }
 
-.topic-summary {
+.bottom-line {
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
 }
 
-.topic-summary__actions,
-.posting-form__actions {
+.bottom-line__actions {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 	justify-content: end;
+}
+
+.content-stack {
+	display: grid;
+	gap: 16px;
 }
 
 .section-heading {
@@ -619,43 +587,51 @@ async function flagQuestion(questionId: string) {
 	margin: 0;
 }
 
-.claim-list,
+.plain-list {
+	margin: 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 10px;
+}
+
+.disclosure summary {
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-size: 1.05rem;
+}
+
+.disclosure ul {
+	margin-top: 14px;
+}
+
+.source-list,
 .question-list {
 	display: grid;
 	gap: 12px;
 }
 
-.claim-row,
-.fallback-panel,
+.source-row,
 .question-card {
-	padding: 18px;
-}
-
-.claim-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	gap: 12px;
-	text-decoration: none;
+	gap: 10px;
 }
 
-.claim-row__meta,
+.source-row {
+	padding: 16px;
+	border-radius: 18px;
+	border: 1px solid var(--consensus-soft-line);
+}
+
+.source-row__meta,
 .question-card__meta {
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
 }
 
-.fallback-grid {
+.lane {
 	display: grid;
-	gap: 12px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.plain-list {
-	margin: 0;
-	padding-left: 20px;
-	display: grid;
-	gap: 10px;
+	gap: 16px;
 }
 
 .community-toolbar {
@@ -681,6 +657,15 @@ async function flagQuestion(questionId: string) {
 	border-radius: 14px;
 	border: 1px solid var(--consensus-line);
 	background: #fff;
+}
+
+.composer {
+	display: grid;
+	gap: 12px;
+}
+
+.question-card {
+	padding: 18px;
 }
 
 .question-card--highlighted {
@@ -729,13 +714,11 @@ async function flagQuestion(questionId: string) {
 }
 
 @media (max-width: 820px) {
-	.topic-summary,
-	.claim-row,
-	.fallback-grid {
+	.bottom-line {
 		grid-template-columns: 1fr;
 	}
 
-	.topic-summary__actions {
+	.bottom-line__actions {
 		justify-content: start;
 	}
 }

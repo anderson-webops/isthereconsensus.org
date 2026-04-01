@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import ExpertApplicationPanel from "~/components/ExpertApplicationPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const { currentAccount, isLoggedIn, role } = useAuth();
 
+const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const roleCopy = computed(() => {
 	if (!isLoggedIn.value) {
-		return "Sign in to post questions, track trust, and apply for expert review.";
+		return "Sign in to post questions, manage your account, and apply for expert review.";
 	}
 	if (role.value === "admin") {
-		return "You are reviewing moderation and expert queues for the public-facing consensus lanes.";
+		return "Admin accounts can review intake and maintain canonical claim pages from the editorial workspace.";
 	}
 	if (currentAccount.value?.expertiseStatus === "verified") {
-		return "You can post as a member and take part in the expert review path.";
+		return "Verified experts can draft and publish canonical claim reviews from the editorial workspace.";
 	}
-	return "You can post questions now and apply for expert review when you are ready.";
+	return "Member accounts can post community questions and apply for expert review.";
 });
 
 const accountFacts = computed(() => {
@@ -28,12 +28,6 @@ const accountFacts = computed(() => {
 		{ label: "Expert status", value: currentAccount.value.expertiseStatus || "none" }
 	];
 });
-
-const principles = [
-	"Read the bottom line before joining a thread.",
-	"Keep claims specific enough to evaluate with evidence.",
-	"Use the community lane for questions and the expert lane for review."
-];
 </script>
 
 <template>
@@ -43,8 +37,11 @@ const principles = [
 		<header class="account-header">
 			<div>
 				<p class="eyebrow">Account</p>
-				<h1>Manage access without leaving the public workflow.</h1>
+				<h1>Manage access without crowding the public reading path.</h1>
 				<p>{{ roleCopy }}</p>
+			</div>
+			<div v-if="canUseEditorial" class="account-header__actions">
+				<NuxtLink class="button button--primary" to="/account/editorial">Open editorial workspace</NuxtLink>
 			</div>
 		</header>
 
@@ -57,20 +54,19 @@ const principles = [
 
 		<AuthPanel
 			title="Account access"
-			hint="Posting requires a member account. Admin review and expert verification live below."
+			hint="Posting requires a member account. Editorial work lives in the dedicated workspace."
 		/>
 
 		<ExpertApplicationPanel />
-		<AdminReviewPanel />
 
-		<section class="principles">
-			<div>
-				<p class="eyebrow">How this area works</p>
-				<h2>Access supports the public reading path.</h2>
-			</div>
-			<ul>
-				<li v-for="item in principles" :key="item">{{ item }}</li>
-			</ul>
+		<section v-if="canUseEditorial" class="next-step">
+			<p class="eyebrow">Editorial access</p>
+			<h2>Use the separate editorial workspace for intake routing and claim maintenance.</h2>
+			<p>
+				The public account page stays intentionally light. Draft claims, review queues, and moderation tools
+				live in a separate workspace so they do not complicate normal account management.
+			</p>
+			<NuxtLink class="button button--ghost" to="/account/editorial">Go to editorial workspace</NuxtLink>
 		</section>
 	</div>
 </template>
@@ -83,19 +79,27 @@ const principles = [
 
 .account-header,
 .status-card,
-.principles {
+.next-step {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
 }
 
 .account-header,
-.principles {
+.next-step {
 	padding: 22px;
 }
 
+.account-header {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: end;
+}
+
 .account-header h1,
-.principles h2 {
+.next-step h2 {
 	margin: 8px 0 10px;
 	font-family: "Fraunces", serif;
 }
@@ -106,7 +110,7 @@ const principles = [
 }
 
 .account-header p,
-.principles ul {
+.next-step p {
 	margin: 0;
 	max-width: 48rem;
 	color: var(--consensus-muted);
@@ -134,18 +138,31 @@ const principles = [
 }
 
 .status-card strong {
-	font-size: 1rem;
 	color: var(--consensus-ink);
 }
 
-.principles {
+.next-step {
 	display: grid;
-	gap: 14px;
+	gap: 12px;
 }
 
-.principles ul {
-	padding-left: 18px;
-	display: grid;
-	gap: 8px;
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 11px 18px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	background: transparent;
+	color: var(--consensus-ink);
+}
+
+.button--primary {
+	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
+	color: #fff;
 }
 </style>

@@ -722,10 +722,11 @@ async function main() {
 			const filter: {
 				topic?: mongoose.Types.ObjectId;
 				claim?: mongoose.Types.ObjectId;
-				routingStatus?: string;
+				routingStatus?: string | { $ne: string };
 				status?: { $ne: string };
 			} = {
-				status: { $ne: "archived" }
+				status: { $ne: "archived" },
+				routingStatus: { $ne: "duplicate" }
 			};
 			if (topicSlug) {
 				const topic = await Topic.findOne({ slug: topicSlug });

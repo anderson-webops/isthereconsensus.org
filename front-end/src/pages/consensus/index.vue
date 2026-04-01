@@ -9,7 +9,7 @@ const router = useRouter();
 const { apiUrl } = useApi();
 
 const { data: topicsData } = await useAsyncData("topics", () =>
-	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"))
+	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
 const { data: questionsData } = await useAsyncData("recent-questions", () =>
 	$fetch<QuestionsResponse>(apiUrl("/questions?limit=9"))
@@ -175,20 +175,26 @@ const filteredQuestions = computed(() =>
 
 					<div v-if="!filteredTopics.length" class="empty-state">No topics match that search yet.</div>
 					<div v-else class="topic-list">
-						<NuxtLink
-							v-for="topic in filteredTopics"
-							:key="topic.slug"
-							class="topic-row"
-							:to="`/consensus/${topic.slug}`"
-						>
+						<article v-for="topic in filteredTopics" :key="topic.slug" class="topic-row">
 							<div class="topic-row__main">
 								<h3>{{ topic.title }}</h3>
 								<p>{{ topic.description || topic.guide.snapshot }}</p>
 								<div class="topic-row__meta">
 									<span>{{ topic.guide.consensusLabel }}</span>
+									<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
 									<span>{{ topic.guide.evidenceTrail.length }} evidence routes</span>
 									<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
 									<span>{{ topic.questionCount ?? 0 }} community threads</span>
+								</div>
+								<div v-if="topic.featuredClaims?.length" class="topic-row__claims">
+									<span>Start with:</span>
+									<NuxtLink
+										v-for="claim in topic.featuredClaims.slice(0, 2)"
+										:key="claim._id"
+										:to="`/consensus/${topic.slug}/${claim.slug}`"
+									>
+										{{ claim.title }}
+									</NuxtLink>
 								</div>
 							</div>
 							<div class="topic-row__side">
@@ -196,8 +202,11 @@ const filteredQuestions = computed(() =>
 									:level="topic.guide.consensusScore"
 									:label="topic.guide.consensusLabel"
 								/>
+								<NuxtLink class="topic-row__open" :to="`/consensus/${topic.slug}`"
+									>Open topic hub</NuxtLink
+								>
 							</div>
-						</NuxtLink>
+						</article>
 					</div>
 				</section>
 
@@ -423,6 +432,23 @@ const filteredQuestions = computed(() =>
 	margin: 0;
 }
 
+.topic-row__claims {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	font-size: 0.9rem;
+}
+
+.topic-row__claims a {
+	color: var(--consensus-ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.topic-row__claims span {
+	color: var(--consensus-muted);
+}
+
 .topic-row__meta,
 .recent-row__meta {
 	display: flex;
@@ -434,6 +460,13 @@ const filteredQuestions = computed(() =>
 .topic-row__side {
 	display: grid;
 	align-content: center;
+	gap: 10px;
+}
+
+.topic-row__open {
+	text-decoration: none;
+	font-weight: 600;
+	color: var(--consensus-ink);
 }
 
 .recent-panel summary {
