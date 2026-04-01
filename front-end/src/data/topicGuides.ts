@@ -48,6 +48,172 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"health-and-medicine": {
+		slug: "health-and-medicine",
+		consensusScore: 93,
+		consensusLabel: "Strong consensus on the core interventions",
+		snapshot:
+			"Public-health topics often look more contested in public than they do inside the evidence stack, especially when anecdotes and distrust outrun large population data.",
+		stableCore: [
+			"Safety questions in medicine usually require population-scale evidence, not isolated personal experience.",
+			"Clinical guidance rests more on systematic review and post-market monitoring than on dramatic individual stories.",
+			"When misinformation spreads here, the practical harm can be immediate."
+		],
+		openQuestions: [
+			"Which communication styles improve trust without flattening uncertainty?",
+			"How should institutions explain risk when communities already distrust them?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated evidence across large populations showing a real, replicable harm signal.",
+			"A stronger mechanism that fits both clinical and epidemiological evidence."
+		],
+		commonMisreads: [
+			"Correlation in time is often mistaken for causation.",
+			"Anecdotes feel stronger than surveillance data even when they are not."
+		],
+		starterQuestions: [
+			"What do the large population studies say here?",
+			"Is this a public-health consensus or a frontier research question?"
+		],
+		evidenceTrail: [
+			{ title: "Systematic reviews", note: "Best for checking whether the effect holds up across many studies." },
+			{
+				title: "Clinical guidelines",
+				note: "Important when the question affects current care or public-health advice."
+			}
+		]
+	},
+	"climate-and-environment": {
+		slug: "climate-and-environment",
+		consensusScore: 98,
+		consensusLabel: "Overwhelming agreement on the core drivers",
+		snapshot:
+			"The strongest climate debates are usually about pace, impacts, and regional effects, not about whether human greenhouse emissions are warming the planet.",
+		stableCore: [
+			"Greenhouse gases trap heat, and human activity has sharply raised their concentration.",
+			"Observed warming, physical theory, and attribution models point in the same broad direction.",
+			"Fake-expert arguments and cherry-picked weather events do not overturn the climate evidence stack."
+		],
+		openQuestions: [
+			"How fast will specific regional impacts unfold?",
+			"Which feedback loops matter most on different timescales?"
+		],
+		whatWouldChangeMinds: [
+			"A better model that explains the observed warming trend without anthropogenic forcing.",
+			"Robust contradictory evidence across physics, observations, and attribution studies."
+		],
+		commonMisreads: [
+			"A local cold spell is often mistaken for evidence against a long-term climate trend.",
+			"People frequently confuse public controversy with scientific disagreement."
+		],
+		starterQuestions: [
+			"What part of climate science is actually settled?",
+			"What are experts still debating at the edges?"
+		],
+		evidenceTrail: [
+			{ title: "Assessment reports", note: "Useful for seeing where large literatures converge." },
+			{ title: "Observation records", note: "Helpful when grounding claims in measurement rather than rhetoric." }
+		]
+	},
+	"nutrition-and-diet": {
+		slug: "nutrition-and-diet",
+		consensusScore: 74,
+		consensusLabel: "Broad guidance with high headline churn",
+		snapshot:
+			"Nutrition coverage often makes moderate refinements sound like total reversals, even when the broad guidance changes slowly and cautiously.",
+		stableCore: [
+			"Nutritional science leans heavily on observational evidence, so overstatement is easy.",
+			"Broad dietary guidance usually changes by refinement, not by sudden collapse.",
+			"Context matters: whole dietary patterns tell you more than isolated nutrient panic."
+		],
+		openQuestions: [
+			"Which dietary substitutions matter most for long-term outcomes?",
+			"How much do individual metabolic differences change the practical takeaway?"
+		],
+		whatWouldChangeMinds: [
+			"Better-controlled long-term evidence that shifts the effect size or direction materially.",
+			"A more predictive model linking intake patterns to clinical outcomes."
+		],
+		commonMisreads: [
+			"One nutrition headline is often treated like a complete rewrite of prior guidance.",
+			"People routinely confuse mechanistic speculation with large real-world risk."
+		],
+		starterQuestions: [
+			"Is this headline based on a single study or a broader review?",
+			"What is the real-world risk change, not just the relative risk?"
+		],
+		evidenceTrail: [
+			{ title: "Guidelines", note: "Important when checking what major medical societies currently advise." },
+			{ title: "Meta-analyses", note: "Useful for separating noisy single-study signals from broader patterns." }
+		]
+	},
+	"biology-and-evolution": {
+		slug: "biology-and-evolution",
+		consensusScore: 96,
+		consensusLabel: "Strong consensus on the core framework",
+		snapshot:
+			"Many public disputes about evolution come from language confusion or impossible expectations rather than from serious cracks in the biological evidence.",
+		stableCore: [
+			"The scientific meaning of theory is much stronger than the everyday meaning.",
+			"Common descent is supported across fossils, genetics, and comparative biology.",
+			"The active research lives more in mechanism and timing than in whether evolution happened."
+		],
+		openQuestions: [
+			"How should educators explain theory without triggering everyday-language confusion?",
+			"Which misconceptions are hardest to correct once they become identity-linked?"
+		],
+		whatWouldChangeMinds: [
+			"Evidence that breaks common descent across multiple independent lines of biology.",
+			"A more predictive framework that explains the same evidence better."
+		],
+		commonMisreads: [
+			"'Just a theory' imports everyday speech into a technical scientific context.",
+			"People often demand a perfectly complete fossil record before accepting a historical explanation."
+		],
+		starterQuestions: [
+			"What does theory mean in science here?",
+			"What evidence would actually break the current evolutionary framework?"
+		],
+		evidenceTrail: [
+			{ title: "Comparative genetics", note: "Useful for seeing why multiple lines of biology converge." },
+			{ title: "Fossil and geological records", note: "Helpful when addressing historical evidence claims." }
+		]
+	},
+	"neuroscience-and-psychology": {
+		slug: "neuroscience-and-psychology",
+		consensusScore: 79,
+		consensusLabel: "Clear expert patterns against popular myths",
+		snapshot:
+			"Brain and behavior myths spread easily because they sound personal, intuitive, and identity-relevant even when the evidence behind them is weak.",
+		stableCore: [
+			"Pop-psychology claims often outrun the evidence base.",
+			"Preferences and intuitions are not the same as tested learning or clinical outcomes.",
+			"The strongest debunks usually come from controlled comparisons rather than from anecdotes."
+		],
+		openQuestions: [
+			"Which communication approaches best replace neuromyths with better models?",
+			"How can education and mental-health practice shed weak frameworks without confusing the public?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, better-controlled evidence that a popular brain claim reliably improves outcomes.",
+			"A stronger model that predicts learning or behavior better than the current evidence-backed alternatives."
+		],
+		commonMisreads: [
+			"Self-description is often mistaken for evidence.",
+			"People like fixed categories, even when the underlying science is more dynamic."
+		],
+		starterQuestions: [
+			"Is this a tested effect or just an appealing label?",
+			"Does the claim improve outcomes outside of a narrow lab task?"
+		],
+		evidenceTrail: [
+			{ title: "Educational psychology reviews", note: "Useful when the claim affects teaching or training." },
+			{
+				title: "Behavioral science consensus",
+				note: "Helpful when separating pop-psychology from durable findings."
+			}
+		]
+	},
 	"consensus-foundations": {
 		slug: "consensus-foundations",
 		consensusScore: 94,

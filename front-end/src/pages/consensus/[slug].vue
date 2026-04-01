@@ -65,7 +65,7 @@ const canEditTopic = computed(() => role.value === "admin" || currentAccount.val
 const trustFacts = computed(() => [
 	{ label: "Topic summary", value: guide.value.consensusLabel },
 	{ label: "Published claims", value: String(claims.value.length) },
-	{ label: "Unassigned threads", value: String(questions.value.length) },
+	{ label: "Unassigned intake threads", value: String(questions.value.length) },
 	{ label: "Evidence routes", value: String(guide.value.evidenceTrail.length) }
 ]);
 
@@ -244,6 +244,17 @@ async function flagQuestion(questionId: string) {
 				<NuxtLink v-if="canEditTopic" class="button button--ghost" to="/account/editorial"
 					>Open editorial workspace</NuxtLink
 				>
+			</div>
+		</section>
+
+		<section class="resource-strip">
+			<div>
+				<p class="eyebrow">Need the method layer?</p>
+				<h2>Use the explainers and standards when the topic depends on evidence rules, risk, or causation.</h2>
+			</div>
+			<div class="resource-strip__actions">
+				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>
 		</section>
 
@@ -496,6 +507,7 @@ async function flagQuestion(questionId: string) {
 .topic-page__header,
 .trust-card,
 .topic-summary,
+.resource-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -510,6 +522,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__header,
 .topic-summary,
+.resource-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -519,6 +532,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__header,
 .topic-summary,
+.resource-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -529,6 +543,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__header h1,
 .topic-summary h2,
+.resource-strip h2,
 .section-heading h2,
 .claim-row h3,
 .fallback-panel h3,
@@ -546,6 +561,7 @@ async function flagQuestion(questionId: string) {
 
 .topic-page__description,
 .topic-summary p,
+.resource-strip p,
 .section-heading p,
 .claim-row p,
 .fallback-panel,
@@ -594,7 +610,13 @@ async function flagQuestion(questionId: string) {
 	align-items: end;
 }
 
+.resource-strip {
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: end;
+}
+
 .topic-summary__actions,
+.resource-strip__actions,
 .posting-form__actions {
 	display: flex;
 	gap: 10px;
@@ -730,12 +752,14 @@ async function flagQuestion(questionId: string) {
 
 @media (max-width: 820px) {
 	.topic-summary,
+	.resource-strip,
 	.claim-row,
 	.fallback-grid {
 		grid-template-columns: 1fr;
 	}
 
-	.topic-summary__actions {
+	.topic-summary__actions,
+	.resource-strip__actions {
 		justify-content: start;
 	}
 }

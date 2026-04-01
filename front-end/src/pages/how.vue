@@ -11,8 +11,8 @@ const steps = [
 		body: "Ask what experts broadly agree on before treating a new paper or headline as a reversal."
 	},
 	{
-		title: "Separate the bumps from the ball",
-		body: "Real debates often live in effect size, mechanism, or scope rather than in the existence of the overall effect."
+		title: "Open the uncertainty on purpose",
+		body: "Real debates usually live in effect size, mechanism, scope, or edge cases rather than in the entire claim."
 	}
 ];
 
@@ -21,6 +21,21 @@ const signals = [
 	"Public opinion and expert consensus are different signals and should stay separate.",
 	"Uncertainty is part of honest explanation, not a reason to flatten everything into confusion.",
 	"A good topic page makes the bottom line easy to find before it asks you to read the nuance."
+];
+
+const methodLinks = [
+	{
+		title: "Evergreen explainers",
+		body: "Use these when you need the recurring concepts once: evidence hierarchies, causation, risk, falsifiability, replication, and denial patterns.",
+		to: "/explainers",
+		cta: "Open explainers"
+	},
+	{
+		title: "Editorial standards",
+		body: "Use this when you want to know what the site counts as settled enough to publish, how updates work, and why source counts and review dates stay visible.",
+		to: "/standards",
+		cta: "Open standards"
+	}
 ];
 
 const mindChangers = [
@@ -37,9 +52,9 @@ const mindChangers = [
 
 		<header class="how-page__header">
 			<p class="eyebrow">How it works</p>
-			<h1>Read the stable core first. Open the nuance second.</h1>
+			<h1>Read the stable core first. Open the method layer only when you need it.</h1>
 			<p>
-				This site is built around one idea: expert consensus, active debate, and public confusion are not the
+				The site is built around one rule: expert consensus, active debate, and community discussion are not the
 				same thing, so the interface should not treat them as the same thing.
 			</p>
 		</header>
@@ -50,7 +65,7 @@ const mindChangers = [
 					<p class="eyebrow">The reading order</p>
 					<h2>The basic sequence</h2>
 				</div>
-				<p>Keep this order in mind whenever you open a topic page.</p>
+				<p>Keep this order in mind whenever you open a topic hub or claim review.</p>
 			</div>
 			<div class="step-list">
 				<article v-for="(step, index) in steps" :key="step.title" class="step-row">
@@ -75,6 +90,20 @@ const mindChangers = [
 
 		<section class="how-page__panel how-page__panel--soft">
 			<div class="section-heading section-heading--tight">
+				<h2>When you need the method layer</h2>
+				<p>Use these pages instead of forcing every claim review to re-explain the same concepts.</p>
+			</div>
+			<div class="resource-grid">
+				<article v-for="item in methodLinks" :key="item.title" class="resource-card">
+					<h3>{{ item.title }}</h3>
+					<p>{{ item.body }}</p>
+					<NuxtLink class="text-link" :to="item.to">{{ item.cta }}</NuxtLink>
+				</article>
+			</div>
+		</section>
+
+		<section class="how-page__panel">
+			<div class="section-heading section-heading--tight">
 				<h2>What would actually change minds?</h2>
 				<p>Consensus shifts when better evidence survives challenge.</p>
 			</div>
@@ -86,10 +115,11 @@ const mindChangers = [
 		<section class="how-page__cta">
 			<div>
 				<p class="eyebrow">Ready to use it?</p>
-				<h2>Pick a topic or search a claim.</h2>
+				<h2>Search the claim, then read the review in order.</h2>
 			</div>
 			<div class="how-page__cta-actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/explainers">Read explainers</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 			</div>
 		</section>
@@ -105,6 +135,7 @@ const mindChangers = [
 .how-page__header h1,
 .section-heading h2,
 .step-row h3,
+.resource-card h3,
 .how-page__cta h2 {
 	font-family: "Fraunces", serif;
 }
@@ -117,6 +148,7 @@ const mindChangers = [
 .how-page__header p,
 .section-heading p,
 .step-row p,
+.resource-card p,
 .plain-list,
 .how-page__cta p {
 	color: var(--consensus-muted);
@@ -125,6 +157,7 @@ const mindChangers = [
 
 .how-page__panel,
 .step-row,
+.resource-card,
 .how-page__cta {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -155,7 +188,8 @@ const mindChangers = [
 	margin: 0;
 }
 
-.step-list {
+.step-list,
+.resource-grid {
 	display: grid;
 	gap: 12px;
 }
@@ -179,14 +213,24 @@ const mindChangers = [
 	color: var(--consensus-ember);
 }
 
-.step-row h3 {
+.step-row h3,
+.resource-card h3 {
 	margin: 0 0 4px;
 }
 
 .step-row p,
+.resource-card p,
 .plain-list,
 .how-page__cta p {
 	margin: 0;
+}
+
+.resource-grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.resource-card {
+	padding: 18px;
 }
 
 .plain-list {
@@ -232,5 +276,16 @@ const mindChangers = [
 
 .button--ghost {
 	background: transparent;
+}
+
+.text-link {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+@media (max-width: 780px) {
+	.resource-grid {
+		grid-template-columns: 1fr;
+	}
 }
 </style>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { Topic, TopicResponse } from "~/types/board";
+import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
+import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import { evergreenExplainers } from "~/data/explainers";
 import { getTopicGuide } from "~/data/topicGuides";
 
 definePageMeta({
@@ -11,48 +13,63 @@ const router = useRouter();
 const { apiUrl } = useApi();
 
 const search = ref("");
-const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
+const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
+const loadingSuggestions = ref(false);
+const suggestionError = ref("");
+
+const starterOrder = [
+	"climate-and-environment",
+	"health-and-medicine",
+	"biology-and-evolution",
+	"nutrition-and-diet",
+	"neuroscience-and-psychology"
+];
 const fallbackTopics: Topic[] = [
 	{
-		_id: "fallback-consensus-foundations",
-		title: "Consensus foundations",
-		slug: "consensus-foundations",
-		description: "Core scientific principles with strong, long-standing agreement.",
-		questionCount: 0
+		_id: "fallback-climate-and-environment",
+		title: "Climate & environment",
+		slug: "climate-and-environment",
+		description: "Where the science stands on climate change, energy, and environmental risk.",
+		questionCount: 0,
+		claimCount: 0
 	},
 	{
-		_id: "fallback-media-misinformation",
-		title: "Media & misinformation",
-		slug: "media-misinformation",
-		description: "How narratives drift from evidence, and how to spot the gaps.",
-		questionCount: 0
+		_id: "fallback-health-and-medicine",
+		title: "Health & medicine",
+		slug: "health-and-medicine",
+		description: "High-stakes medical and public-health claims with strong evidence bases.",
+		questionCount: 0,
+		claimCount: 0
 	},
 	{
-		_id: "fallback-active-debates",
-		title: "Active scientific debates",
-		slug: "active-debates",
-		description: "The smaller, technical questions researchers are actively exploring.",
-		questionCount: 0
+		_id: "fallback-biology-and-evolution",
+		title: "Biology & evolution",
+		slug: "biology-and-evolution",
+		description: "Core biological frameworks that are often misrepresented in public debate.",
+		questionCount: 0,
+		claimCount: 0
 	},
 	{
-		_id: "fallback-bias-incentives",
-		title: "Bias & incentives",
-		slug: "bias-incentives",
-		description: "Funding, publication pressure, and why bias shows up in science.",
-		questionCount: 0
+		_id: "fallback-nutrition-and-diet",
+		title: "Nutrition & diet",
+		slug: "nutrition-and-diet",
+		description: "A noisy topic area where stable guidance is often buried under headline churn.",
+		questionCount: 0,
+		claimCount: 0
 	},
 	{
-		_id: "fallback-science-communication",
-		title: "Science communication",
-		slug: "science-communication",
-		description: "How educators balance accuracy, narrative, and engagement.",
-		questionCount: 0
+		_id: "fallback-neuroscience-and-psychology",
+		title: "Neuroscience & psychology",
+		slug: "neuroscience-and-psychology",
+		description: "Evidence-backed summaries for common brain and behavior myths.",
+		questionCount: 0,
+		claimCount: 0
 	}
 ];
 
 const { data: topicsData } = await useAsyncData("home-topics", async () => {
 	try {
-		return await $fetch<TopicResponse>(apiUrl("/topics?includeCounts=true"));
+		return await $fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"));
 	} catch {
 		return { topics: fallbackTopics };
 	}
@@ -72,61 +89,108 @@ const enrichedTopics = computed(() =>
 			const rightRank = rightIndex === -1 ? starterOrder.length : rightIndex;
 			return (
 				leftRank - rightRank ||
-				(right.questionCount ?? 0) - (left.questionCount ?? 0) ||
+				(right.claimCount ?? 0) - (left.claimCount ?? 0) ||
 				left.title.localeCompare(right.title)
 			);
 		})
 );
 
-const searchQuery = computed(() => search.value.trim().toLowerCase());
-const suggestedTopics = computed(() => {
-	if (!searchQuery.value) return [];
+const searchQuery = computed(() => search.value.trim());
+const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
+const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
+const featuredClaims = computed(() => {
+	const seen = new Set<string>();
 	return enrichedTopics.value
-		.filter((topic) => {
-			const haystack = [
-				topic.title,
-				topic.description,
-				topic.guide.snapshot,
-				topic.guide.consensusLabel,
-				...topic.guide.starterQuestions
-			]
-				.join(" ")
-				.toLowerCase();
-			return haystack.includes(searchQuery.value);
+		.flatMap((topic) =>
+			(topic.featuredClaims ?? []).map((claim) => ({
+				...claim,
+				topic
+			}))
+		)
+		.filter((claim) => {
+			if (seen.has(claim._id)) return false;
+			seen.add(claim._id);
+			return true;
 		})
 		.slice(0, 5);
 });
-
-const trendingTopics = computed(() => enrichedTopics.value.slice(0, 5));
-const quickPrinciples = [
+const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
+const explainerHighlights = computed(() => evergreenExplainers.slice(0, 4));
+const trustSignals = [
 	{
-		title: "Start with the bottom line",
-		body: "Each topic page opens with the short answer before the debate, sentiment, or community lane."
+		title: "Trust the hierarchy, not the hottest headline",
+		body: "Claim reviews are supposed to lean on reviews, guidelines, and consensus statements before they lean on a single new paper."
 	},
 	{
-		title: "Treat new studies as updates, not instant reversals",
-		body: "Most new papers add detail around the edges. They do not usually rewrite the center all at once."
+		title: "Review dates and source counts stay visible",
+		body: "Users should not have to guess whether a page was recently checked or how much evidence sits under the summary."
 	},
 	{
-		title: "Keep expert consensus separate from public opinion",
-		body: "The site shows both, but it does not present them as the same kind of signal."
+		title: "The site separates facts from discussion",
+		body: "Canonical claim reviews come first. Community threads stay below them so public sentiment does not look like expert consensus."
 	}
 ];
 
+function resetSuggestions() {
+	suggestions.value = { claims: [], topics: [], questions: [] };
+	suggestionError.value = "";
+}
+
+watchDebounced(
+	() => searchQuery.value,
+	async (value) => {
+		if (value.length < 3) {
+			resetSuggestions();
+			return;
+		}
+
+		loadingSuggestions.value = true;
+		suggestionError.value = "";
+		try {
+			suggestions.value = await $fetch<SuggestionResponse>(
+				apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`)
+			);
+		} catch (error) {
+			console.error(error);
+			resetSuggestions();
+			suggestionError.value = "Suggestion lookup is unavailable right now.";
+		} finally {
+			loadingSuggestions.value = false;
+		}
+	},
+	{ debounce: 250, maxWait: 600 }
+);
+
 function submitSearch() {
-	const query = search.value.trim();
+	const query = searchQuery.value;
 	if (!query) {
 		router.push("/consensus");
 		return;
 	}
-	if (suggestedTopics.value.length === 1) {
-		router.push(`/consensus/${suggestedTopics.value[0].slug}`);
+
+	const firstClaim = claimSuggestions.value[0];
+	if (firstClaim?.topic?.slug) {
+		router.push(`/consensus/${firstClaim.topic.slug}/${firstClaim.slug}`);
 		return;
 	}
+
+	const firstTopic = topicSuggestions.value[0];
+	if (firstTopic?.slug) {
+		router.push(`/consensus/${firstTopic.slug}`);
+		return;
+	}
+
 	router.push({
-		path: "/consensus",
-		query: { q: query }
+		path: "/ask",
+		query: { question: query }
 	});
+}
+
+function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
+	if (band === "strong") return "Strong consensus";
+	if (band === "broad") return "Broad consensus";
+	if (band === "mixed") return "Mixed evidence";
+	return "Unclear or still forming";
 }
 
 function formatTopicDate(value?: string) {
@@ -144,71 +208,127 @@ function formatTopicDate(value?: string) {
 		<section class="hero">
 			<div class="hero__copy">
 				<p class="eyebrow">Find out where the science stands</p>
-				<h1>Understand the science. Skip the noise.</h1>
+				<h1>Search the claim. Read the bottom line. Open the nuance only if you need it.</h1>
 				<p class="hero__lead">
-					Search a topic, read the short answer first, and only then decide whether you need the debate,
-					literature, or community questions.
+					This site is built for topics where public confusion is high but the evidence stack is stronger than
+					the public conversation makes it seem.
 				</p>
 
 				<form class="search-panel" @submit.prevent="submitSearch">
-					<label class="search-panel__label" for="home-search">Search a topic or claim</label>
+					<label class="search-panel__label" for="home-search">Search a claim, headline, or topic</label>
 					<div class="search-panel__row">
 						<input
 							id="home-search"
 							v-model="search"
 							type="text"
-							placeholder="Try climate change, sweeteners, or media misinformation"
+							placeholder="Try vaccines and autism, global warming, or learning styles"
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
 					<p class="search-panel__hint">
-						If a topic already exists, open it first. If not, the site will send you to the topic browser.
+						The homepage routes claim reviews first, then topic hubs, then the Ask flow if nothing matches.
 					</p>
-					<ul v-if="suggestedTopics.length" class="suggestion-list">
-						<li v-for="topic in suggestedTopics" :key="topic.slug">
-							<NuxtLink :to="`/consensus/${topic.slug}`">
-								<strong>{{ topic.title }}</strong>
-								<span>{{ topic.guide.snapshot }}</span>
-							</NuxtLink>
-						</li>
-					</ul>
+
+					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
+					<div v-else-if="loadingSuggestions && searchQuery.length >= 3" class="search-panel__hint">
+						Checking claim reviews and topic hubs...
+					</div>
+
+					<div v-if="claimSuggestions.length || topicSuggestions.length" class="suggestion-groups">
+						<div v-if="claimSuggestions.length" class="suggestion-group">
+							<p class="suggestion-group__label">Claim reviews</p>
+							<ul class="suggestion-list">
+								<li v-for="claim in claimSuggestions" :key="claim._id">
+									<NuxtLink :to="`/consensus/${claim.topic?.slug}/${claim.slug}`">
+										<strong>{{ claim.title }}</strong>
+										<span>{{ claim.bottomLine }}</span>
+									</NuxtLink>
+								</li>
+							</ul>
+						</div>
+
+						<div v-if="topicSuggestions.length" class="suggestion-group">
+							<p class="suggestion-group__label">Topic hubs</p>
+							<ul class="suggestion-list">
+								<li v-for="topic in topicSuggestions" :key="topic._id">
+									<NuxtLink :to="`/consensus/${topic.slug}`">
+										<strong>{{ topic.title }}</strong>
+										<span>{{ topic.description || getTopicGuide(topic.slug).snapshot }}</span>
+									</NuxtLink>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</form>
 			</div>
 
 			<aside class="hero__aside">
-				<p class="eyebrow">What you get on each topic page</p>
+				<p class="eyebrow">What happens on a good page</p>
 				<ol>
-					<li>A plain-language bottom line.</li>
-					<li>The stable core of the evidence.</li>
-					<li>Open questions and public misunderstandings, clearly separated.</li>
+					<li>The plain-language bottom line appears before the debate.</li>
+					<li>Trust cues show when it was reviewed and how much evidence sits underneath.</li>
+					<li>Public confusion and community threads stay visually separate from the editorial answer.</li>
 				</ol>
+				<div class="hero__aside-links">
+					<NuxtLink class="text-link" to="/explainers">Read the explainers</NuxtLink>
+					<NuxtLink class="text-link" to="/standards">Read the standards</NuxtLink>
+				</div>
 			</aside>
+		</section>
+
+		<section v-if="featuredClaims.length" class="home-section">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Start with the biggest public confusion gaps</p>
+					<h2>Canonical claim reviews worth opening first</h2>
+				</div>
+				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
+			</div>
+
+			<div class="claim-list">
+				<NuxtLink
+					v-for="claim in featuredClaims"
+					:key="claim._id"
+					class="claim-row"
+					:to="`/consensus/${claim.topic.slug}/${claim.slug}`"
+				>
+					<div class="claim-row__main">
+						<p class="claim-row__meta">
+							<span>{{ claim.topic.title }}</span>
+							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
+							<span>{{ claim.sourceCount ?? 0 }} sources</span>
+						</p>
+						<h3>{{ claim.title }}</h3>
+						<p>{{ claim.bottomLine }}</p>
+					</div>
+					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
+				</NuxtLink>
+			</div>
 		</section>
 
 		<section class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Trending consensus</p>
-					<h2>Good places to start</h2>
+					<p class="eyebrow">Topic clusters</p>
+					<h2>Browse the high-value areas first</h2>
 				</div>
-				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
+				<NuxtLink class="text-link" to="/consensus">Open the directory</NuxtLink>
 			</div>
 
 			<div class="topic-list">
 				<NuxtLink
-					v-for="topic in trendingTopics"
+					v-for="topic in topicHighlights"
 					:key="topic.slug"
 					class="topic-row"
 					:to="`/consensus/${topic.slug}`"
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<p>{{ topic.guide.snapshot }}</p>
+						<p>{{ topic.description || topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
-							<span>{{ topic.guide.evidenceTrail.length }} evidence routes</span>
+							<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
 							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
-							<span>{{ topic.questionCount ?? 0 }} community threads</span>
 						</div>
 					</div>
 					<div class="topic-row__meter">
@@ -218,35 +338,60 @@ function formatTopicDate(value?: string) {
 			</div>
 		</section>
 
-		<section class="home-section home-section--soft">
-			<div class="section-heading">
-				<div>
-					<p class="eyebrow">How to read the site</p>
-					<h2>Keep the reading order simple</h2>
+		<section class="library-grid">
+			<section class="home-section home-section--soft">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Evergreen explainers</p>
+						<h2>Read the method layer once</h2>
+					</div>
+					<NuxtLink class="text-link" to="/explainers">View all explainers</NuxtLink>
 				</div>
-			</div>
 
-			<div class="principles">
-				<article v-for="item in quickPrinciples" :key="item.title" class="principle">
-					<h3>{{ item.title }}</h3>
-					<p>{{ item.body }}</p>
-				</article>
-			</div>
+				<div class="explainer-list">
+					<article v-for="item in explainerHighlights" :key="item.slug" class="explainer-row">
+						<h3>{{ item.title }}</h3>
+						<p>{{ item.summary }}</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="home-section home-section--soft">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Why the layout looks like this</p>
+						<h2>Trust cues stay visible</h2>
+					</div>
+					<NuxtLink class="text-link" to="/standards">Read editorial standards</NuxtLink>
+				</div>
+
+				<div class="trust-list">
+					<article v-for="item in trustSignals" :key="item.title" class="trust-row">
+						<h3>{{ item.title }}</h3>
+						<p>{{ item.body }}</p>
+					</article>
+				</div>
+			</section>
 		</section>
 
 		<section class="home-section home-section--compact">
 			<div class="closing-callout">
 				<div>
-					<p class="eyebrow">Still do not see your topic?</p>
-					<h2>Check the browser first, then ask.</h2>
+					<p class="eyebrow">Still do not see your claim?</p>
+					<h2>Use Ask only after the existing reviews and topic hubs come up empty.</h2>
 					<p>
-						The site works best when new questions land under the closest existing topic, so readers hit the
-						consensus summary before the thread.
+						New threads work best when they attach to a nearby topic or claim, so the next reader still hits
+						the editorial answer before the discussion.
 					</p>
 				</div>
 				<div class="closing-callout__actions">
 					<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
-					<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
+					<NuxtLink
+						class="button button--ghost"
+						:to="searchQuery ? `/ask?question=${encodeURIComponent(searchQuery)}` : '/ask'"
+					>
+						Ask a question
+					</NuxtLink>
 				</div>
 			</div>
 		</section>
@@ -269,8 +414,10 @@ function formatTopicDate(value?: string) {
 .hero__copy,
 .hero__aside,
 .search-panel,
+.claim-row,
 .topic-row,
-.principle,
+.explainer-row,
+.trust-row,
 .closing-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -285,8 +432,10 @@ function formatTopicDate(value?: string) {
 
 .hero h1,
 .section-heading h2,
+.claim-row h3,
 .topic-row h3,
-.principle h3,
+.explainer-row h3,
+.trust-row h3,
 .closing-callout h2 {
 	font-family: "Fraunces", serif;
 }
@@ -295,12 +444,14 @@ function formatTopicDate(value?: string) {
 	font-size: clamp(2.7rem, 5vw, 4.4rem);
 	line-height: 0.98;
 	margin: 0;
-	max-width: 12ch;
+	max-width: 13ch;
 }
 
 .hero__lead,
+.claim-row p,
 .topic-row p,
-.principle p,
+.explainer-row p,
+.trust-row p,
 .closing-callout p,
 .search-panel__hint,
 .hero__aside {
@@ -310,20 +461,28 @@ function formatTopicDate(value?: string) {
 .hero__lead {
 	font-size: 1.05rem;
 	line-height: 1.7;
-	max-width: 58ch;
+	max-width: 60ch;
 	margin: 0;
 }
 
 .hero__aside {
 	padding: 24px;
+	display: grid;
+	gap: 16px;
 }
 
 .hero__aside ol {
-	margin: 12px 0 0;
+	margin: 0;
 	padding-left: 18px;
 	display: grid;
 	gap: 12px;
 	line-height: 1.6;
+}
+
+.hero__aside-links {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
 }
 
 .search-panel {
@@ -333,7 +492,9 @@ function formatTopicDate(value?: string) {
 }
 
 .search-panel__label,
+.claim-row__meta,
 .topic-row__meta,
+.suggestion-group__label,
 .text-link,
 .suggestion-list strong,
 .button {
@@ -362,6 +523,24 @@ function formatTopicDate(value?: string) {
 	margin: 0;
 	font-size: 0.95rem;
 	line-height: 1.6;
+}
+
+.suggestion-groups {
+	display: grid;
+	gap: 12px;
+}
+
+.suggestion-group {
+	display: grid;
+	gap: 8px;
+}
+
+.suggestion-group__label {
+	margin: 0;
+	font-size: 0.82rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
 }
 
 .suggestion-list {
@@ -412,36 +591,44 @@ function formatTopicDate(value?: string) {
 }
 
 .section-heading h2,
+.claim-row h3,
 .topic-row h3,
-.principle h3,
+.explainer-row h3,
+.trust-row h3,
 .closing-callout h2 {
 	margin: 6px 0 0;
 }
 
+.claim-list,
 .topic-list,
-.principles {
+.explainer-list,
+.trust-list {
 	display: grid;
 	gap: 14px;
 }
 
+.claim-row,
 .topic-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 18px;
 	padding: 18px 20px;
 	text-decoration: none;
 }
 
+.claim-row__main,
 .topic-row__main {
 	display: grid;
 	gap: 10px;
 }
 
+.claim-row__main p,
 .topic-row__main p {
 	margin: 0;
 	line-height: 1.65;
 }
 
+.claim-row__meta,
 .topic-row__meta {
 	display: flex;
 	gap: 10px;
@@ -450,20 +637,32 @@ function formatTopicDate(value?: string) {
 	color: var(--consensus-muted);
 }
 
+.claim-row__score {
+	align-self: center;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--consensus-ink);
+}
+
 .topic-row__meter {
 	display: grid;
 	align-content: center;
+	min-width: 220px;
 }
 
-.principles {
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+.library-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 24px;
 }
 
-.principle {
-	padding: 20px;
+.explainer-row,
+.trust-row {
+	padding: 18px;
 }
 
-.principle p,
+.explainer-row p,
+.trust-row p,
 .closing-callout p {
 	margin: 10px 0 0;
 	line-height: 1.65;
@@ -508,15 +707,20 @@ function formatTopicDate(value?: string) {
 	text-decoration: none;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 980px) {
 	.hero,
-	.topic-row,
-	.principles {
+	.library-grid,
+	.claim-row,
+	.topic-row {
 		grid-template-columns: 1fr;
 	}
 
 	.hero h1 {
 		max-width: none;
+	}
+
+	.topic-row__meter {
+		min-width: 0;
 	}
 }
 
@@ -524,8 +728,10 @@ function formatTopicDate(value?: string) {
 	.hero__copy,
 	.hero__aside,
 	.search-panel,
+	.claim-row,
 	.topic-row,
-	.principle,
+	.explainer-row,
+	.trust-row,
 	.closing-callout {
 		border-radius: 20px;
 	}

@@ -18,7 +18,13 @@ const { data: questionsData } = await useAsyncData("recent-questions", () =>
 const search = ref(typeof route.query.q === "string" ? route.query.q : "");
 const filter = ref<"all" | "settled" | "debated" | "exploratory">("all");
 
-const starterOrder = ["consensus-foundations", "media-misinformation", "active-debates"];
+const starterOrder = [
+	"climate-and-environment",
+	"health-and-medicine",
+	"biology-and-evolution",
+	"nutrition-and-diet",
+	"neuroscience-and-psychology"
+];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const enrichedTopics = computed(() =>
@@ -133,6 +139,18 @@ const filteredQuestions = computed(() =>
 					</p>
 					<NuxtLink class="text-link" to="/ask">Go to Ask</NuxtLink>
 				</section>
+
+				<section class="sidebar-block">
+					<p class="eyebrow">Method layer</p>
+					<p>
+						If you need help with evidence hierarchies, causation, or risk reporting, use the explainers and
+						editorial standards before you dive deeper into a single topic.
+					</p>
+					<div class="sidebar-links">
+						<NuxtLink class="text-link" to="/explainers">Read explainers</NuxtLink>
+						<NuxtLink class="text-link" to="/standards">Read standards</NuxtLink>
+					</div>
+				</section>
 			</aside>
 
 			<section class="directory__results">
@@ -151,8 +169,11 @@ const filteredQuestions = computed(() =>
 
 				<section v-if="!query && filter === 'all' && starterTopics.length" class="starter-block">
 					<div class="section-heading">
-						<h2>Good starting points</h2>
-						<p>These are the easiest topic pages for understanding how the site is structured.</p>
+						<h2>High-value starting points</h2>
+						<p>
+							These are the strongest first topics when the public conversation is noisier than the
+							evidence.
+						</p>
 					</div>
 					<div class="starter-list">
 						<NuxtLink
@@ -315,6 +336,12 @@ const filteredQuestions = computed(() =>
 .filter-stack {
 	display: grid;
 	gap: 10px;
+}
+
+.sidebar-links {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
 }
 
 .filter,

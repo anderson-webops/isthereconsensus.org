@@ -28,6 +28,257 @@ export interface SeedClaim {
 
 export const defaultClaims: SeedClaim[] = [
 	{
+		topicSlug: "health-and-medicine",
+		title: "Do childhood vaccines cause autism?",
+		slug: "do-childhood-vaccines-cause-autism",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"No. Large epidemiological studies and major public-health bodies agree that childhood vaccines do not cause autism. The timing overlap between vaccination and autism diagnosis does not establish causation.",
+		stableCore: [
+			"Vaccine schedules have been studied across very large populations without finding a causal autism signal.",
+			"Autism traits typically become noticeable around the same age vaccines are administered, which makes correlation easy to overread.",
+			"Safety monitoring continues, but the core autism claim is treated as settled by major health institutions."
+		],
+		openQuestions: [
+			"How can public-health communication address anxiety without accidentally amplifying the myth?",
+			"Which trust-building interventions work best in communities that already distrust medical institutions?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, well-designed evidence across independent populations showing a replicable causal pathway.",
+			"A credible mechanism that survives epidemiology, pharmacovigilance, and replication."
+		],
+		misconceptions: [
+			"Temporal sequence is often mistaken for causation because autism signs emerge in early childhood.",
+			"Individual anecdotes can feel decisive even when large population data show no causal relationship."
+		],
+		editorSummary:
+			"This is a flagship example of a strong public-health consensus with a persistent gap between expert evidence and public belief.",
+		sources: [
+			{
+				kind: "guideline",
+				title: "CDC vaccine safety guidance",
+				publisher: "CDC",
+				stance: "supports",
+				note: "Used to anchor current public-health guidance and safety summaries.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "WHO vaccine safety resources",
+				publisher: "World Health Organization",
+				stance: "supports",
+				note: "Useful for international consensus framing and public-health messaging.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Large pooled epidemiological studies on vaccines and autism",
+				publisher: "Evidence synthesis",
+				stance: "supports",
+				note: "The key source type for separating anecdote from broad population outcomes.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is recent global warming mainly caused by human activity?",
+		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. The current scientific consensus is that recent global warming is driven primarily by human greenhouse gas emissions, especially from fossil fuels.",
+		stableCore: [
+			"Greenhouse gases trap heat, and human activity has sharply raised atmospheric concentrations.",
+			"Instrumental records, climate models, and paleoclimate evidence converge on the same broad explanation.",
+			"The serious debate is mostly about timing, impacts, and feedback size, not about whether human-caused warming is real."
+		],
+		openQuestions: [
+			"How fast will specific regional impacts unfold under different emissions paths?",
+			"Which feedback loops will matter most at local scales and over which time horizons?"
+		],
+		whatWouldChangeMinds: [
+			"A better model that explains the observed warming trend without requiring anthropogenic greenhouse forcing.",
+			"Robust contradictory evidence across atmospheric physics, instrumental data, and attribution studies."
+		],
+		misconceptions: [
+			"A cold day or cold winter is often mistaken for evidence against long-term warming trends.",
+			"Public discussions regularly treat fringe contrarian voices as if they reflected the center of the expert literature."
+		],
+		editorSummary:
+			"This should be treated as a canonical strong-consensus page where public misunderstanding comes largely from media distortion and fake-expert framing.",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "IPCC assessment reports",
+				publisher: "IPCC",
+				stance: "supports",
+				note: "The main synthesis resource for the full climate evidence stack.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "NASA and NOAA climate summaries",
+				publisher: "NASA / NOAA",
+				stance: "supports",
+				note: "Useful for observational records and clear public-facing summaries.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Consensus-in-the-literature assessments",
+				publisher: "Peer-reviewed literature",
+				stance: "supports",
+				note: "Useful when showing how agreement is measured among domain experts.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Are dietary cholesterol and saturated fat the same kind of risk?",
+		slug: "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 78,
+		bottomLine:
+			"No. The current picture is more nuanced than older public advice suggested. Saturated fat still matters for cardiovascular risk, but dietary cholesterol is not a one-to-one proxy for blood cholesterol in the way many people were taught.",
+		stableCore: [
+			"Extremely high intakes remain a bad idea, but the risk story is more complex than 'all cholesterol in food is dangerous.'",
+			"Saturated fat still carries more weight in current cardiovascular guidance than dietary cholesterol alone.",
+			"Nutritional headlines often overstate findings from observational studies that cannot cleanly isolate cause."
+		],
+		openQuestions: [
+			"How much do individual metabolic differences change the effect of specific foods?",
+			"Which substitution patterns matter most in real diets, not just isolated nutrients?"
+		],
+		whatWouldChangeMinds: [
+			"Large, better-controlled dietary evidence that shifts the size or direction of observed cardiovascular risk.",
+			"A clearer mechanistic and clinical picture linking intake patterns to long-term outcomes across diverse populations."
+		],
+		misconceptions: [
+			"Old nutrition messaging left many people with the impression that all fats and all cholesterol behave the same way.",
+			"Single nutrition studies are often reported as if they erase decades of guidance all at once."
+		],
+		editorSummary:
+			"This page should show how real scientific updating works: the broad dietary picture changes by refinement more often than by total reversal.",
+		sources: [
+			{
+				kind: "guideline",
+				title: "AHA and ACC dietary guidance",
+				publisher: "AHA / ACC",
+				stance: "supports",
+				note: "Important for cardiovascular framing and public-health guidance.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Systematic reviews on saturated fat and cardiovascular outcomes",
+				publisher: "Evidence synthesis",
+				stance: "supports",
+				note: "Useful for separating nutrient panic from evidence-based risk assessment.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "biology-and-evolution",
+		title: "Is evolution 'just a theory'?",
+		slug: "is-evolution-just-a-theory",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. In science, a theory is a well-supported explanatory framework, not a casual guess. Evolution by common descent and natural selection is one of the core organizing theories of modern biology.",
+		stableCore: [
+			"The scientific meaning of theory is much stronger than the everyday meaning.",
+			"Fossils, genetics, comparative anatomy, and biogeography all converge on common descent.",
+			"Debates inside evolutionary biology usually concern mechanisms, rates, and details, not whether evolution happened."
+		],
+		openQuestions: [
+			"Which evolutionary mechanisms dominate in specific edge cases or time scales?",
+			"How should educators explain theory in a way that avoids everyday-language confusion?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated evidence that fundamentally breaks common descent across independent lines of biological data.",
+			"A better framework that explains the fossil, genetic, and comparative record more successfully."
+		],
+		misconceptions: [
+			"The phrase 'just a theory' imports the everyday meaning of theory into a technical scientific context.",
+			"People sometimes expect an impossibly complete fossil record before accepting a historical scientific explanation."
+		],
+		editorSummary:
+			"This claim is useful for teaching both the public meaning of theory and the difference between impossible expectations and legitimate scientific scrutiny.",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Major biology society statements on evolution",
+				publisher: "Scientific societies",
+				stance: "supports",
+				note: "Useful for clarifying that this is a foundational biological consensus, not a marginal view.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Comparative genetics and fossil evidence overviews",
+				publisher: "Biology education references",
+				stance: "supports",
+				note: "Helpful when explaining why the evidence is cumulative across multiple fields.",
+				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Do learning styles improve educational outcomes?",
+		slug: "do-learning-styles-improve-educational-outcomes",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"Not in the way the popular myth suggests. There is no strong evidence that matching instruction to a student's self-described learning style reliably improves outcomes.",
+		stableCore: [
+			"The learning-styles idea is intuitive, but it has not held up well under stronger testing.",
+			"Students may have preferences, but preference is not the same thing as evidence for better learning.",
+			"Instructional quality and content structure matter more than sorting students into fixed sensory categories."
+		],
+		openQuestions: [
+			"Which evidence-based teaching adaptations matter most for specific subjects and age groups?",
+			"How can educators replace the learning-styles myth with strategies that are actually supported?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated controlled evidence showing that matching instruction to declared styles produces reliable performance gains.",
+			"A stronger framework that distinguishes preference from measurable learning benefit."
+		],
+		misconceptions: [
+			"The idea survives partly because people like personality categories that feel personal and intuitive.",
+			"Teacher training often repeated the concept long after the research support failed to materialize."
+		],
+		editorSummary:
+			"This is a flagship neuromyth page. It should model how an intuitive idea can spread widely without earning strong empirical support.",
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Educational reviews on learning styles",
+				publisher: "Education research",
+				stance: "supports",
+				note: "Useful for showing that the empirical case for style-matching remains weak.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Psychology and education commentary on neuromyths",
+				publisher: "Behavioral science references",
+				stance: "context",
+				note: "Helpful for explaining why the myth persists despite weak evidence.",
+				order: 2
+			}
+		]
+	},
+	{
 		topicSlug: "consensus-foundations",
 		title: "How does scientific consensus form?",
 		slug: "how-does-scientific-consensus-form",

@@ -7,6 +7,7 @@
 			</NuxtLink>
 			<nav class="site-nav" aria-label="Primary">
 				<NuxtLink to="/consensus">Browse</NuxtLink>
+				<NuxtLink to="/explainers">Explainers</NuxtLink>
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
 			</nav>
@@ -26,6 +27,8 @@
 			</div>
 			<div class="site-footer__links">
 				<NuxtLink to="/consensus">Browse topics</NuxtLink>
+				<NuxtLink to="/explainers">Explainers</NuxtLink>
+				<NuxtLink to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask a question</NuxtLink>
 			</div>

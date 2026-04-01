@@ -68,6 +68,7 @@ const trustFacts = computed(() => [
 	{ label: "Consensus", value: formatBandLabel(claim.value?.consensusBand) },
 	{ label: "Confidence score", value: `${claim.value?.confidenceScore ?? 0}/100` },
 	{ label: "Sources listed", value: String(claim.value?.sources?.length ?? claim.value?.sourceCount ?? 0) },
+	{ label: "Published", value: formatDate(claim.value?.publishedAt, "Publish date pending") },
 	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
 	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") }
 ]);
@@ -245,6 +246,21 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
+		<section class="reading-guide">
+			<div>
+				<p class="eyebrow">Why this page is structured this way</p>
+				<h2>Editorial answer first. Evidence stack second. Community threads last.</h2>
+				<p>
+					This page keeps the reviewed summary, dates, and source counts above the fold. Community threads
+					below can raise questions, but they do not vote the claim into or out of consensus.
+				</p>
+			</div>
+			<div class="reading-guide__actions">
+				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
+			</div>
+		</section>
+
 		<section class="content-stack">
 			<section class="content-panel">
 				<div class="section-heading">
@@ -273,7 +289,7 @@ async function flagQuestion(questionId: string) {
 			</details>
 
 			<details class="content-panel disclosure">
-				<summary>Common misconceptions</summary>
+				<summary>Why public confusion sticks</summary>
 				<ul class="plain-list">
 					<li v-for="item in claim?.misconceptions || []" :key="item">{{ item }}</li>
 				</ul>
@@ -285,7 +301,9 @@ async function flagQuestion(questionId: string) {
 						<p class="eyebrow">Evidence trail</p>
 						<h2>Sources attached to this claim review</h2>
 					</div>
-					<p>These sources sit under the editorial summary, not beside it.</p>
+					<p>
+						These sources sit under the editorial summary, not beside it, so the reading order stays clear.
+					</p>
 				</div>
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
@@ -471,6 +489,7 @@ async function flagQuestion(questionId: string) {
 .claim-page__header,
 .trust-card,
 .bottom-line,
+.reading-guide,
 .content-panel,
 .lane,
 .question-card,
@@ -482,6 +501,7 @@ async function flagQuestion(questionId: string) {
 
 .claim-page__header,
 .bottom-line,
+.reading-guide,
 .content-panel,
 .lane,
 .composer {
@@ -489,13 +509,15 @@ async function flagQuestion(questionId: string) {
 }
 
 .claim-page__header,
-.bottom-line {
+.bottom-line,
+.reading-guide {
 	display: grid;
 	gap: 18px;
 }
 
 .claim-page__header h1,
 .bottom-line h2,
+.reading-guide h2,
 .section-heading h2,
 .source-row h3,
 .question-card h3,
@@ -512,6 +534,7 @@ async function flagQuestion(questionId: string) {
 
 .claim-page__description,
 .bottom-line p,
+.reading-guide p,
 .section-heading p,
 .plain-list,
 .source-row p,
@@ -558,7 +581,13 @@ async function flagQuestion(questionId: string) {
 	align-items: end;
 }
 
-.bottom-line__actions {
+.reading-guide {
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: end;
+}
+
+.bottom-line__actions,
+.reading-guide__actions {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
@@ -714,11 +743,13 @@ async function flagQuestion(questionId: string) {
 }
 
 @media (max-width: 820px) {
-	.bottom-line {
+	.bottom-line,
+	.reading-guide {
 		grid-template-columns: 1fr;
 	}
 
-	.bottom-line__actions {
+	.bottom-line__actions,
+	.reading-guide__actions {
 		justify-content: start;
 	}
 }
