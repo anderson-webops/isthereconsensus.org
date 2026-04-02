@@ -359,12 +359,13 @@ const filteredQuestions = computed(() =>
 }
 
 .filter.active {
-	background: var(--consensus-soft-accent);
-	border-color: rgba(211, 107, 56, 0.3);
+	background: var(--consensus-interactive-soft);
+	border-color: var(--consensus-interactive);
 }
 
 .text-link {
 	text-decoration: none;
+	color: var(--consensus-interactive-strong);
 }
 
 .results-toolbar {
@@ -430,6 +431,7 @@ const filteredQuestions = computed(() =>
 	padding: 14px 16px;
 	border-radius: 16px;
 	background: var(--consensus-mist);
+	border-inline-start: 3px solid var(--consensus-consensus);
 }
 
 .starter-row span {
@@ -442,6 +444,7 @@ const filteredQuestions = computed(() =>
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
 	gap: 18px;
+	border-inline-start: 3px solid var(--consensus-consensus);
 }
 
 .topic-row__main {
@@ -467,7 +470,7 @@ const filteredQuestions = computed(() =>
 }
 
 .topic-row__claims a {
-	color: var(--consensus-ink);
+	color: var(--consensus-interactive-strong);
 	font-weight: 600;
 	text-decoration: none;
 }
@@ -493,12 +496,22 @@ const filteredQuestions = computed(() =>
 .topic-row__open {
 	text-decoration: none;
 	font-weight: 600;
-	color: var(--consensus-ink);
+	color: var(--consensus-interactive-strong);
 }
 
 .recent-panel summary {
 	cursor: pointer;
 	font-weight: 600;
+}
+
+.starter-block {
+	border-inline-start: 4px solid var(--consensus-consensus);
+	background: linear-gradient(180deg, var(--consensus-consensus-soft), var(--consensus-surface) 28%);
+}
+
+.recent-panel {
+	border-inline-start: 4px solid var(--consensus-community);
+	background: linear-gradient(180deg, var(--consensus-community-soft), var(--consensus-surface) 28%);
 }
 
 .recent-panel__body {
@@ -513,12 +526,14 @@ const filteredQuestions = computed(() =>
 	justify-content: space-between;
 	gap: 18px;
 	align-items: start;
+	border-inline-start: 3px solid var(--consensus-community);
 }
 
 .recent-row a {
 	white-space: nowrap;
 	font-weight: 600;
 	text-decoration: none;
+	color: var(--consensus-interactive-strong);
 }
 
 @media (max-width: 920px) {

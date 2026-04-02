@@ -218,10 +218,10 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 }
 
 .cta.primary {
-	background: var(--consensus-ember);
+	background: var(--consensus-interactive);
 	color: #fff;
 	border-color: transparent;
-	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
+	box-shadow: 0 12px 30px rgba(15, 118, 110, 0.2);
 }
 
 .cta.ghost {

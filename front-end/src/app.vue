@@ -30,9 +30,28 @@ useHead({
 	--consensus-moss: #35524a;
 	--consensus-mist: #fbf8f3;
 	--consensus-surface: #fffdf9;
+	--consensus-surface-secondary: #f4f1eb;
+	--consensus-surface-tertiary: #f8f3ea;
 	--consensus-line: rgba(21, 17, 13, 0.12);
 	--consensus-soft-line: rgba(21, 17, 13, 0.08);
 	--consensus-soft-accent: rgba(211, 107, 56, 0.1);
+	--consensus-interactive: #0f766e;
+	--consensus-interactive-strong: #115e59;
+	--consensus-interactive-soft: rgba(15, 118, 110, 0.1);
+	--consensus-consensus: #334155;
+	--consensus-consensus-soft: rgba(51, 65, 85, 0.06);
+	--consensus-debate: #625fb0;
+	--consensus-debate-soft: rgba(98, 95, 176, 0.07);
+	--consensus-evidence: #4e6952;
+	--consensus-evidence-soft: rgba(78, 105, 82, 0.08);
+	--consensus-caution: #ab6d3a;
+	--consensus-caution-soft: rgba(171, 109, 58, 0.08);
+	--consensus-sentiment: #2a7c7d;
+	--consensus-sentiment-soft: rgba(42, 124, 125, 0.08);
+	--consensus-community: #6b7280;
+	--consensus-community-soft: rgba(107, 114, 128, 0.08);
+	--consensus-method: #1f3b5b;
+	--consensus-method-soft: rgba(31, 59, 91, 0.08);
 }
 
 html,

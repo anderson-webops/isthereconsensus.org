@@ -586,8 +586,8 @@ async function submitQuestion() {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
 }
 

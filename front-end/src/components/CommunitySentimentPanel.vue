@@ -109,7 +109,12 @@ watch(
 
 		<div v-if="loading" class="muted">Loading sentiment...</div>
 		<div v-else class="sentiment__grid">
-			<article v-for="meta in stanceCards" :key="meta.key" class="sentiment-card">
+			<article
+				v-for="meta in stanceCards"
+				:key="meta.key"
+				class="sentiment-card"
+				:class="`sentiment-card--${meta.key}`"
+			>
 				<div class="sentiment-card__top">
 					<h3>{{ meta.label }}</h3>
 					<strong>{{ sentiment?.percentages[meta.key] || 0 }}%</strong>
@@ -129,7 +134,7 @@ watch(
 					v-for="meta in stanceCards"
 					:key="meta.key"
 					class="vote-option"
-					:class="{ active: vote === meta.key }"
+					:class="[{ active: vote === meta.key }, `vote-option--${meta.key}`]"
 					type="button"
 					@click="vote = meta.key"
 				>
@@ -177,6 +182,8 @@ watch(
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
+	border-inline-start: 4px solid var(--consensus-sentiment);
+	background: linear-gradient(180deg, var(--consensus-sentiment-soft), var(--consensus-surface) 24%);
 }
 
 .sentiment__header h2,
@@ -222,10 +229,28 @@ watch(
 }
 
 .sentiment-card {
+	--sentiment-color: var(--consensus-sentiment);
+	--sentiment-soft: var(--consensus-sentiment-soft);
 	padding: 16px;
 	display: grid;
 	gap: 10px;
-	background: rgba(255, 255, 255, 0.78);
+	border-inline-start: 3px solid var(--sentiment-color);
+	background: linear-gradient(180deg, var(--sentiment-soft), rgba(255, 255, 255, 0.92) 40%);
+}
+
+.sentiment-card--aligns {
+	--sentiment-color: var(--consensus-evidence);
+	--sentiment-soft: var(--consensus-evidence-soft);
+}
+
+.sentiment-card--uncertain {
+	--sentiment-color: var(--consensus-sentiment);
+	--sentiment-soft: var(--consensus-sentiment-soft);
+}
+
+.sentiment-card--skeptical {
+	--sentiment-color: var(--consensus-caution);
+	--sentiment-soft: var(--consensus-caution-soft);
 }
 
 .sentiment-card__top {
@@ -245,12 +270,13 @@ watch(
 .bar__fill {
 	height: 100%;
 	border-radius: inherit;
-	background: linear-gradient(90deg, var(--consensus-ember), #e3a36d);
+	background: linear-gradient(90deg, var(--sentiment-color), rgba(255, 255, 255, 0.75));
 }
 
 .vote-panel {
 	display: grid;
 	gap: 12px;
+	border-inline-start: 4px solid var(--consensus-sentiment);
 }
 
 .vote-options {
@@ -268,8 +294,18 @@ watch(
 }
 
 .vote-option.active {
-	background: var(--consensus-soft-accent);
-	border-color: rgba(211, 107, 56, 0.3);
+	background: var(--consensus-sentiment-soft);
+	border-color: var(--consensus-sentiment);
+}
+
+.vote-option--aligns.active {
+	background: var(--consensus-evidence-soft);
+	border-color: var(--consensus-evidence);
+}
+
+.vote-option--skeptical.active {
+	background: var(--consensus-caution-soft);
+	border-color: var(--consensus-caution);
 }
 
 textarea,
@@ -296,8 +332,8 @@ textarea {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
 }
 

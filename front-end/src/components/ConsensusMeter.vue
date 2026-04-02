@@ -50,11 +50,16 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 
 .meter__track {
 	width: 100%;
-	background: rgba(21, 17, 13, 0.09);
+	background: var(--consensus-soft-line);
 }
 
 .meter__fill {
-	background: linear-gradient(90deg, #9c9a83 0%, #d6b05d 42%, #d36b38 100%);
+	background: linear-gradient(
+		90deg,
+		var(--consensus-consensus) 0%,
+		var(--consensus-evidence) 52%,
+		var(--consensus-interactive) 100%
+	);
 }
 
 .meter__meta {

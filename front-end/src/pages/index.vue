@@ -469,6 +469,8 @@ function formatTopicDate(value?: string) {
 	padding: 24px;
 	display: grid;
 	gap: 16px;
+	border-inline-start: 4px solid var(--consensus-method);
+	background: linear-gradient(180deg, var(--consensus-method-soft), var(--consensus-surface) 26%);
 }
 
 .hero__aside ol {
@@ -489,6 +491,7 @@ function formatTopicDate(value?: string) {
 	padding: 18px;
 	display: grid;
 	gap: 12px;
+	border-inline-start: 4px solid var(--consensus-interactive);
 }
 
 .search-panel__label,
@@ -574,7 +577,7 @@ function formatTopicDate(value?: string) {
 .home-section--soft {
 	padding: 24px;
 	border-radius: 24px;
-	background: rgba(255, 255, 255, 0.65);
+	background: linear-gradient(180deg, var(--consensus-surface-tertiary), rgba(255, 255, 255, 0.78));
 	border: 1px solid var(--consensus-soft-line);
 }
 
@@ -614,6 +617,10 @@ function formatTopicDate(value?: string) {
 	gap: 18px;
 	padding: 18px 20px;
 	text-decoration: none;
+}
+
+.claim-row {
+	border-inline-start: 3px solid var(--consensus-consensus);
 }
 
 .claim-row__main,
@@ -661,6 +668,14 @@ function formatTopicDate(value?: string) {
 	padding: 18px;
 }
 
+.explainer-row {
+	border-inline-start: 3px solid var(--consensus-sand);
+}
+
+.trust-row {
+	border-inline-start: 3px solid var(--consensus-method);
+}
+
 .explainer-row p,
 .trust-row p,
 .closing-callout p {
@@ -675,6 +690,7 @@ function formatTopicDate(value?: string) {
 	gap: 20px;
 	flex-wrap: wrap;
 	align-items: end;
+	border-inline-start: 4px solid var(--consensus-consensus);
 }
 
 .closing-callout__actions {
@@ -694,8 +710,8 @@ function formatTopicDate(value?: string) {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
 }
 
@@ -705,6 +721,7 @@ function formatTopicDate(value?: string) {
 
 .text-link {
 	text-decoration: none;
+	color: var(--consensus-interactive-strong);
 }
 
 @media (max-width: 980px) {

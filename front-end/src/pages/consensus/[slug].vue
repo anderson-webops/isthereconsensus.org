@@ -223,14 +223,14 @@ async function flagQuestion(questionId: string) {
 				</p>
 			</div>
 			<div class="trust-grid">
-				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card">
+				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card trust-card--consensus">
 					<span>{{ fact.label }}</span>
 					<strong>{{ fact.value }}</strong>
 				</article>
 			</div>
 		</header>
 
-		<section class="topic-summary">
+		<section class="topic-summary section-surface section-surface--consensus">
 			<div>
 				<p class="eyebrow">How to use this hub</p>
 				<h2>{{ guide.snapshot }}</h2>
@@ -247,7 +247,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="resource-strip">
+		<section class="resource-strip section-surface section-surface--method">
 			<div>
 				<p class="eyebrow">Need the method layer?</p>
 				<h2>Use the explainers and standards when the topic depends on evidence rules, risk, or causation.</h2>
@@ -258,7 +258,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="claim-lane">
+		<section class="claim-lane section-surface section-surface--consensus">
 			<div class="section-heading section-heading--stacked">
 				<div>
 					<p class="eyebrow">Published claim reviews</p>
@@ -275,7 +275,7 @@ async function flagQuestion(questionId: string) {
 				<NuxtLink
 					v-for="claim in claims"
 					:key="claim._id"
-					class="claim-row"
+					class="claim-row claim-row--consensus"
 					:to="`/consensus/${slug}/${claim.slug}`"
 				>
 					<div>
@@ -292,7 +292,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="fallback-lane">
+		<section class="fallback-lane section-surface section-surface--method">
 			<div class="section-heading section-heading--stacked">
 				<div>
 					<p class="eyebrow">Topic fallback summary</p>
@@ -302,28 +302,28 @@ async function flagQuestion(questionId: string) {
 			</div>
 
 			<div class="fallback-grid">
-				<section class="fallback-panel">
+				<section class="fallback-panel fallback-panel--consensus">
 					<h3>Stable core</h3>
 					<ul class="plain-list">
 						<li v-for="item in guide.stableCore" :key="item">{{ item }}</li>
 					</ul>
 				</section>
 
-				<section class="fallback-panel">
+				<section class="fallback-panel fallback-panel--debate">
 					<h3>Open questions</h3>
 					<ul class="plain-list">
 						<li v-for="item in guide.openQuestions" :key="item">{{ item }}</li>
 					</ul>
 				</section>
 
-				<section class="fallback-panel">
+				<section class="fallback-panel fallback-panel--method">
 					<h3>What would change minds</h3>
 					<ul class="plain-list">
 						<li v-for="item in guide.whatWouldChangeMinds" :key="item">{{ item }}</li>
 					</ul>
 				</section>
 
-				<section class="fallback-panel">
+				<section class="fallback-panel fallback-panel--caution">
 					<h3>Common public misreads</h3>
 					<ul class="plain-list">
 						<li v-for="item in guide.commonMisreads" :key="item">{{ item }}</li>
@@ -332,7 +332,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="lane lane--sentiment">
+		<section class="lane lane--sentiment section-surface section-surface--sentiment">
 			<div class="section-heading section-heading--stacked">
 				<div>
 					<p class="eyebrow">Public sentiment</p>
@@ -346,7 +346,7 @@ async function flagQuestion(questionId: string) {
 			<CommunitySentimentPanel :topic-slug="slug" />
 		</section>
 
-		<section class="lane lane--community">
+		<section class="lane lane--community section-surface section-surface--community">
 			<div class="section-heading section-heading--stacked">
 				<div>
 					<p class="eyebrow">Unassigned community threads</p>
@@ -373,7 +373,7 @@ async function flagQuestion(questionId: string) {
 				</button>
 			</div>
 
-			<section v-if="showComposer" class="composer">
+			<section v-if="showComposer" class="composer section-surface section-surface--community">
 				<div class="composer__intro">
 					<h3>Post a new unassigned thread</h3>
 					<p>
@@ -588,6 +588,10 @@ async function flagQuestion(questionId: string) {
 	gap: 6px;
 }
 
+.trust-card--consensus {
+	border-top: 3px solid var(--consensus-consensus);
+}
+
 .trust-card span,
 .field-label,
 .claim-row__meta,
@@ -641,6 +645,26 @@ async function flagQuestion(questionId: string) {
 	margin: 0;
 }
 
+.section-surface--consensus {
+	border-inline-start: 4px solid var(--consensus-consensus);
+	background: linear-gradient(180deg, var(--consensus-consensus-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--method {
+	border-inline-start: 4px solid var(--consensus-method);
+	background: linear-gradient(180deg, var(--consensus-method-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--sentiment {
+	border-inline-start: 4px solid var(--consensus-sentiment);
+	background: linear-gradient(180deg, var(--consensus-sentiment-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--community {
+	border-inline-start: 4px solid var(--consensus-community);
+	background: linear-gradient(180deg, var(--consensus-community-soft), var(--consensus-surface) 28%);
+}
+
 .claim-list,
 .question-list {
 	display: grid;
@@ -651,6 +675,30 @@ async function flagQuestion(questionId: string) {
 .fallback-panel,
 .question-card {
 	padding: 18px;
+}
+
+.claim-row--consensus {
+	border-inline-start: 3px solid var(--consensus-consensus);
+}
+
+.fallback-panel--consensus {
+	border-inline-start: 3px solid var(--consensus-consensus);
+	background: linear-gradient(180deg, var(--consensus-consensus-soft), rgba(255, 255, 255, 0.95) 35%);
+}
+
+.fallback-panel--debate {
+	border-inline-start: 3px solid var(--consensus-debate);
+	background: linear-gradient(180deg, var(--consensus-debate-soft), rgba(255, 255, 255, 0.95) 35%);
+}
+
+.fallback-panel--method {
+	border-inline-start: 3px solid var(--consensus-method);
+	background: linear-gradient(180deg, var(--consensus-method-soft), rgba(255, 255, 255, 0.95) 35%);
+}
+
+.fallback-panel--caution {
+	border-inline-start: 3px solid var(--consensus-caution);
+	background: linear-gradient(180deg, var(--consensus-caution-soft), rgba(255, 255, 255, 0.95) 35%);
 }
 
 .claim-row {
@@ -706,8 +754,8 @@ async function flagQuestion(questionId: string) {
 }
 
 .question-card--highlighted {
-	border-color: rgba(211, 107, 56, 0.42);
-	box-shadow: 0 0 0 2px rgba(211, 107, 56, 0.12);
+	border-color: var(--consensus-interactive);
+	box-shadow: 0 0 0 2px var(--consensus-interactive-soft);
 }
 
 .question-card__actions {
@@ -741,9 +789,14 @@ async function flagQuestion(questionId: string) {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
+}
+
+.button--ghost,
+.question-card__source {
+	color: var(--consensus-interactive-strong);
 }
 
 .button--danger {

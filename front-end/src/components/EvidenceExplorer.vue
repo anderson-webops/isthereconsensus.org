@@ -110,6 +110,8 @@ watch(
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
+	border-inline-start: 4px solid var(--consensus-evidence);
+	background: linear-gradient(180deg, var(--consensus-evidence-soft), var(--consensus-surface) 24%);
 }
 
 .evidence__header h2,
@@ -157,6 +159,7 @@ watch(
 	padding: 16px;
 	display: grid;
 	gap: 8px;
+	border-inline-start: 3px solid var(--consensus-evidence);
 }
 
 .result-card__top {
@@ -168,6 +171,7 @@ watch(
 .result-card a {
 	font-weight: 600;
 	text-decoration: none;
+	color: var(--consensus-interactive-strong);
 }
 
 .button {
@@ -182,8 +186,8 @@ watch(
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
 }
 

@@ -316,8 +316,8 @@ async function handleChangePassword() {
 }
 
 .tab.active {
-	background: var(--consensus-soft-accent);
-	border-color: rgba(211, 107, 56, 0.3);
+	background: var(--consensus-interactive-soft);
+	border-color: var(--consensus-interactive);
 }
 
 .field-label {
@@ -353,8 +353,8 @@ input {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
 }
 

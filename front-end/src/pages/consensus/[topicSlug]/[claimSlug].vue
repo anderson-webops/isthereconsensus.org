@@ -218,14 +218,14 @@ async function flagQuestion(questionId: string) {
 				</p>
 			</div>
 			<div class="trust-grid">
-				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card">
+				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card trust-card--consensus">
 					<span>{{ fact.label }}</span>
 					<strong>{{ fact.value }}</strong>
 				</article>
 			</div>
 		</header>
 
-		<section class="bottom-line">
+		<section class="bottom-line section-surface section-surface--consensus">
 			<div>
 				<p class="eyebrow">The bottom line</p>
 				<h2>{{ claim?.bottomLine }}</h2>
@@ -246,7 +246,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="reading-guide">
+		<section class="reading-guide section-surface section-surface--method">
 			<div>
 				<p class="eyebrow">Why this page is structured this way</p>
 				<h2>Editorial answer first. Evidence stack second. Community threads last.</h2>
@@ -262,7 +262,7 @@ async function flagQuestion(questionId: string) {
 		</section>
 
 		<section class="content-stack">
-			<section class="content-panel">
+			<section class="content-panel section-surface section-surface--consensus">
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Stable core</p>
@@ -274,28 +274,28 @@ async function flagQuestion(questionId: string) {
 				</ul>
 			</section>
 
-			<details class="content-panel disclosure" open>
+			<details class="content-panel disclosure section-surface section-surface--debate" open>
 				<summary>Open questions and live uncertainty</summary>
 				<ul class="plain-list">
 					<li v-for="item in claim?.openQuestions || []" :key="item">{{ item }}</li>
 				</ul>
 			</details>
 
-			<details class="content-panel disclosure">
+			<details class="content-panel disclosure section-surface section-surface--method">
 				<summary>What would change minds</summary>
 				<ul class="plain-list">
 					<li v-for="item in claim?.whatWouldChangeMinds || []" :key="item">{{ item }}</li>
 				</ul>
 			</details>
 
-			<details class="content-panel disclosure">
+			<details class="content-panel disclosure section-surface section-surface--caution">
 				<summary>Why public confusion sticks</summary>
 				<ul class="plain-list">
 					<li v-for="item in claim?.misconceptions || []" :key="item">{{ item }}</li>
 				</ul>
 			</details>
 
-			<section class="content-panel">
+			<section class="content-panel section-surface section-surface--evidence">
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Evidence trail</p>
@@ -308,7 +308,11 @@ async function flagQuestion(questionId: string) {
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
 				<div v-else class="source-list">
-					<article v-for="source in claim.sources" :key="source._id || source.title" class="source-row">
+					<article
+						v-for="source in claim.sources"
+						:key="source._id || source.title"
+						class="source-row section-surface section-surface--evidence"
+					>
 						<div>
 							<p class="source-row__meta">
 								<span>{{ source.kind.replaceAll("_", " ") }}</span>
@@ -332,7 +336,7 @@ async function flagQuestion(questionId: string) {
 			</section>
 		</section>
 
-		<section class="lane lane--community">
+		<section class="lane lane--community section-surface section-surface--community">
 			<div class="section-heading section-heading--stacked">
 				<div>
 					<p class="eyebrow">Claim-specific community threads</p>
@@ -356,7 +360,7 @@ async function flagQuestion(questionId: string) {
 				</button>
 			</div>
 
-			<section v-if="showComposer" class="composer">
+			<section v-if="showComposer" class="composer section-surface section-surface--community">
 				<div class="composer__intro">
 					<h3>Ask a focused follow-up</h3>
 					<p>
@@ -560,6 +564,10 @@ async function flagQuestion(questionId: string) {
 	gap: 6px;
 }
 
+.trust-card--consensus {
+	border-top: 3px solid var(--consensus-consensus);
+}
+
 .trust-card span,
 .field-label,
 .question-card__meta,
@@ -597,6 +605,36 @@ async function flagQuestion(questionId: string) {
 .content-stack {
 	display: grid;
 	gap: 16px;
+}
+
+.section-surface--consensus {
+	border-inline-start: 4px solid var(--consensus-consensus);
+	background: linear-gradient(180deg, var(--consensus-consensus-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--debate {
+	border-inline-start: 4px solid var(--consensus-debate);
+	background: linear-gradient(180deg, var(--consensus-debate-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--method {
+	border-inline-start: 4px solid var(--consensus-method);
+	background: linear-gradient(180deg, var(--consensus-method-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--caution {
+	border-inline-start: 4px solid var(--consensus-caution);
+	background: linear-gradient(180deg, var(--consensus-caution-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--evidence {
+	border-inline-start: 4px solid var(--consensus-evidence);
+	background: linear-gradient(180deg, var(--consensus-evidence-soft), var(--consensus-surface) 28%);
+}
+
+.section-surface--community {
+	border-inline-start: 4px solid var(--consensus-community);
+	background: linear-gradient(180deg, var(--consensus-community-soft), var(--consensus-surface) 28%);
 }
 
 .section-heading {
@@ -695,11 +733,12 @@ async function flagQuestion(questionId: string) {
 
 .question-card {
 	padding: 18px;
+	background: rgba(255, 255, 255, 0.88);
 }
 
 .question-card--highlighted {
-	border-color: rgba(211, 107, 56, 0.42);
-	box-shadow: 0 0 0 2px rgba(211, 107, 56, 0.12);
+	border-color: var(--consensus-interactive);
+	box-shadow: 0 0 0 2px var(--consensus-interactive-soft);
 }
 
 .question-card__actions {
@@ -733,9 +772,14 @@ async function flagQuestion(questionId: string) {
 }
 
 .button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
+	background: var(--consensus-interactive);
+	border-color: var(--consensus-interactive);
 	color: #fff;
+}
+
+.button--ghost,
+.question-card__source {
+	color: var(--consensus-interactive-strong);
 }
 
 .button--danger {
