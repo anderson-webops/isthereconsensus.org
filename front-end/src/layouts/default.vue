@@ -14,7 +14,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
 			<div class="site-header__actions">
-				<ThemeToggle />
 				<nav class="site-nav" aria-label="Primary">
 					<NuxtLink to="/consensus">Browse</NuxtLink>
 					<NuxtLink to="/explainers">Explainers</NuxtLink>
@@ -23,6 +22,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
+				<ThemeToggle />
 			</div>
 		</header>
 
@@ -71,9 +71,11 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 .site-header__actions {
-	display: grid;
-	gap: 12px;
-	justify-items: end;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	justify-content: end;
+	flex-wrap: wrap;
 }
 
 .site-brand {
@@ -163,11 +165,11 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-header__actions {
 		width: 100%;
+		justify-content: space-between;
 	}
 
 	.site-nav {
 		justify-content: start;
-		justify-self: start;
 	}
 }
 </style>

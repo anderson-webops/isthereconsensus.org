@@ -10,13 +10,13 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
 			<div class="site-header__actions">
-				<ThemeToggle />
 				<nav class="site-nav" aria-label="Primary">
 					<NuxtLink to="/consensus">Browse</NuxtLink>
 					<NuxtLink to="/explainers">Explainers</NuxtLink>
 					<NuxtLink to="/how">How it works</NuxtLink>
 					<NuxtLink to="/ask">Ask</NuxtLink>
 				</nav>
+				<ThemeToggle />
 			</div>
 		</header>
 
@@ -65,9 +65,11 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 }
 
 .site-header__actions {
-	display: grid;
-	gap: 12px;
-	justify-items: end;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	justify-content: end;
+	flex-wrap: wrap;
 }
 
 .site-brand {
@@ -157,11 +159,11 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 
 	.site-header__actions {
 		width: 100%;
+		justify-content: space-between;
 	}
 
 	.site-nav {
 		justify-content: start;
-		justify-self: start;
 	}
 }
 </style>

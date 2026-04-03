@@ -2,7 +2,6 @@
 const colorMode = useColorMode();
 
 const isDark = computed(() => colorMode.value === "dark");
-const label = computed(() => (isDark.value ? "Dark" : "Light"));
 const nextLabel = computed(() => (isDark.value ? "light" : "dark"));
 
 function toggleTheme() {
@@ -19,62 +18,57 @@ function toggleTheme() {
 		:title="`Switch to ${nextLabel} mode`"
 		@click="toggleTheme"
 	>
-		<span class="theme-toggle__track" aria-hidden="true">
-			<span class="theme-toggle__thumb" />
-		</span>
-		<span class="theme-toggle__label">{{ label }}</span>
+		<span :class="isDark ? 'i-carbon-moon' : 'i-carbon-sun'" class="theme-toggle__icon" aria-hidden="true" />
 	</button>
 </template>
 
 <style scoped>
 .theme-toggle {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	padding: 8px 12px;
+	display: inline-grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	padding: 0;
 	border-radius: 999px;
-	border: 1px solid var(--consensus-soft-line);
+	border: 1px solid var(--consensus-line);
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
-	box-shadow: var(--consensus-shell-shadow);
+	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.1);
 	backdrop-filter: blur(16px);
 	cursor: pointer;
-}
-
-.theme-toggle__track {
-	position: relative;
-	width: 44px;
-	height: 24px;
-	border-radius: 999px;
-	background: var(--consensus-soft-accent);
-	border: 1px solid var(--consensus-line);
-}
-
-.theme-toggle__thumb {
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	width: 18px;
-	height: 18px;
-	border-radius: 50%;
-	background: var(--consensus-ember);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-	transform: translateX(0);
 	transition:
-		transform 180ms ease,
-		background-color 180ms ease;
+		background-color 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease,
+		color 180ms ease,
+		transform 180ms ease;
 }
 
-:global(.dark) .theme-toggle__thumb {
-	transform: translateX(20px);
-	background: var(--consensus-moss);
+.theme-toggle:hover {
+	transform: translateY(-1px);
+	border-color: var(--consensus-soft-line);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.14);
 }
 
-.theme-toggle__label {
-	font-size: 0.84rem;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--consensus-muted);
+.theme-toggle:focus-visible {
+	outline: 2px solid var(--consensus-debate);
+	outline-offset: 3px;
+}
+
+.theme-toggle__icon {
+	font-size: 1.05rem;
+	color: var(--consensus-ember);
+}
+
+:global(.dark) .theme-toggle {
+	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
+}
+
+:global(.dark) .theme-toggle:hover {
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+:global(.dark) .theme-toggle__icon {
+	color: var(--consensus-moss);
 }
 </style>
