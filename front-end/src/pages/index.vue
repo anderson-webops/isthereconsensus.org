@@ -516,7 +516,7 @@ function formatTopicDate(value?: string) {
 	padding: 14px 16px;
 	border-radius: 16px;
 	border: 1px solid var(--consensus-line);
-	background: #fff;
+	background: var(--consensus-field-surface);
 }
 
 .search-panel__hint {
@@ -574,7 +574,7 @@ function formatTopicDate(value?: string) {
 .home-section--soft {
 	padding: 24px;
 	border-radius: 24px;
-	background: rgba(255, 255, 255, 0.65);
+	background: var(--consensus-elevated-surface);
 	border: 1px solid var(--consensus-soft-line);
 }
 
@@ -696,7 +696,7 @@ function formatTopicDate(value?: string) {
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 .button--ghost {

@@ -172,7 +172,7 @@ const mindChangers = [
 }
 
 .how-page__panel--soft {
-	background: rgba(255, 255, 255, 0.7);
+	background: var(--consensus-elevated-surface);
 }
 
 .section-heading {
@@ -271,7 +271,7 @@ const mindChangers = [
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 .button--ghost {

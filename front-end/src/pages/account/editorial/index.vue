@@ -492,7 +492,7 @@ watch(
 	padding: 12px 14px;
 	border-radius: 14px;
 	border: 1px solid var(--consensus-line);
-	background: #fff;
+	background: var(--consensus-field-surface);
 }
 
 .editorial-grid {
@@ -518,7 +518,7 @@ watch(
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 .button--danger {

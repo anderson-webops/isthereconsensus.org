@@ -264,7 +264,7 @@ useHead({
 }
 
 .standards-panel--soft {
-	background: rgba(255, 255, 255, 0.72);
+	background: var(--consensus-elevated-surface);
 }
 
 .plain-list {
@@ -319,7 +319,7 @@ useHead({
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 @media (max-width: 820px) {

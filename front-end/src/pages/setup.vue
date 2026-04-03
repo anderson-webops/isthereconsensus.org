@@ -213,19 +213,19 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 	font-weight: 600;
 	cursor: pointer;
 	font-family: inherit;
-	background: #fff;
+	background: var(--consensus-field-surface);
 	color: var(--consensus-ink);
 }
 
 .cta.primary {
 	background: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 	border-color: transparent;
 	box-shadow: 0 12px 30px rgba(211, 107, 56, 0.25);
 }
 
 .cta.ghost {
-	background: rgba(255, 255, 255, 0.72);
+	background: var(--consensus-elevated-surface);
 }
 
 .status-strip {
@@ -237,7 +237,7 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 .status-card,
 .panel,
 .task {
-	background: #fff;
+	background: var(--consensus-field-surface);
 	border-radius: 22px;
 	border: 1px solid rgba(21, 17, 13, 0.08);
 	box-shadow: 0 18px 40px rgba(21, 17, 13, 0.08);

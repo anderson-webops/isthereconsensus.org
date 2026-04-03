@@ -395,7 +395,7 @@ const filteredQuestions = computed(() =>
 	padding: 13px 15px;
 	border-radius: 14px;
 	border: 1px solid var(--consensus-line);
-	background: #fff;
+	background: var(--consensus-field-surface);
 }
 
 .section-heading {

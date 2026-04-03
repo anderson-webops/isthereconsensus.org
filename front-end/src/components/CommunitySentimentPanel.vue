@@ -225,7 +225,7 @@ watch(
 	padding: 16px;
 	display: grid;
 	gap: 10px;
-	background: rgba(255, 255, 255, 0.78);
+	background: var(--consensus-elevated-surface);
 }
 
 .sentiment-card__top {
@@ -281,7 +281,7 @@ textarea {
 	padding: 12px 14px;
 	border-radius: 14px;
 	border: 1px solid var(--consensus-line);
-	background: #fff;
+	background: var(--consensus-field-surface);
 }
 
 .button {
@@ -298,7 +298,7 @@ textarea {
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 .error {

@@ -32,6 +32,36 @@ useHead({
 	--consensus-line: rgba(21, 17, 13, 0.12);
 	--consensus-soft-line: rgba(21, 17, 13, 0.08);
 	--consensus-soft-accent: rgba(211, 107, 56, 0.1);
+	--consensus-field-surface: #ffffff;
+	--consensus-elevated-surface: rgba(255, 255, 255, 0.74);
+	--consensus-on-accent: #ffffff;
+	--consensus-page-background:
+		radial-gradient(circle at top right, rgba(211, 107, 56, 0.08), transparent 24%),
+		radial-gradient(circle at top left, rgba(53, 82, 74, 0.07), transparent 22%), var(--consensus-mist);
+	--consensus-shell-shadow: 0 24px 60px rgba(21, 17, 13, 0.06);
+}
+
+.dark {
+	color-scheme: dark;
+	--consensus-ink: #edf2f7;
+	--consensus-muted: #a4afbd;
+	--consensus-cream: #171d26;
+	--consensus-sand: #273241;
+	--consensus-ember: #d88a63;
+	--consensus-moss: #7c9a90;
+	--consensus-mist: #0c1117;
+	--consensus-surface: #121821;
+	--consensus-line: rgba(237, 242, 247, 0.16);
+	--consensus-soft-line: rgba(237, 242, 247, 0.08);
+	--consensus-soft-accent: rgba(216, 138, 99, 0.12);
+	--consensus-field-surface: #171f2a;
+	--consensus-elevated-surface: rgba(23, 31, 42, 0.88);
+	--consensus-on-accent: #f8fafc;
+	--consensus-page-background:
+		radial-gradient(circle at top right, rgba(216, 138, 99, 0.12), transparent 20%),
+		radial-gradient(circle at top left, rgba(124, 154, 144, 0.12), transparent 24%),
+		linear-gradient(180deg, #0c1117 0%, #101722 100%);
+	--consensus-shell-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
 }
 
 html,
@@ -40,9 +70,14 @@ body,
 	min-height: 100%;
 	margin: 0;
 	padding: 0;
-	background: var(--consensus-mist);
+	background: var(--consensus-page-background);
 	color: var(--consensus-ink);
 	font-family: "Space Grotesk", system-ui, sans-serif;
+	transition:
+		background-color 180ms ease,
+		color 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease;
 }
 
 * {
@@ -62,6 +97,12 @@ input,
 textarea,
 select {
 	font: inherit;
+	color: inherit;
+	transition:
+		background-color 180ms ease,
+		color 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease;
 }
 
 a {

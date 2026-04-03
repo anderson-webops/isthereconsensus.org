@@ -507,7 +507,7 @@ async function submitQuestion() {
 	padding: 14px 16px;
 	border-radius: 16px;
 	border: 1px solid var(--consensus-line);
-	background: #fff;
+	background: var(--consensus-field-surface);
 }
 
 .field-label,
@@ -588,7 +588,7 @@ async function submitQuestion() {
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 
 .button--ghost {

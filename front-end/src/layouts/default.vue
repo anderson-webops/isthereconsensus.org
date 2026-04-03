@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ThemeToggle from "~/components/ThemeToggle.vue";
+
 const { currentAccount, role } = useAuth();
 
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
@@ -11,14 +13,17 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<span class="site-brand__name">Is There Consensus?</span>
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
-			<nav class="site-nav" aria-label="Primary">
-				<NuxtLink to="/consensus">Browse</NuxtLink>
-				<NuxtLink to="/explainers">Explainers</NuxtLink>
-				<NuxtLink to="/how">How it works</NuxtLink>
-				<NuxtLink to="/ask">Ask</NuxtLink>
-				<NuxtLink to="/account">Account</NuxtLink>
-				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
-			</nav>
+			<div class="site-header__actions">
+				<ThemeToggle />
+				<nav class="site-nav" aria-label="Primary">
+					<NuxtLink to="/consensus">Browse</NuxtLink>
+					<NuxtLink to="/explainers">Explainers</NuxtLink>
+					<NuxtLink to="/how">How it works</NuxtLink>
+					<NuxtLink to="/ask">Ask</NuxtLink>
+					<NuxtLink to="/account">Account</NuxtLink>
+					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
+				</nav>
+			</div>
 		</header>
 
 		<main class="site-main">
@@ -63,6 +68,12 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	gap: 20px;
 	padding-bottom: 18px;
 	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.site-header__actions {
+	display: grid;
+	gap: 12px;
+	justify-items: end;
 }
 
 .site-brand {
@@ -150,8 +161,13 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		flex-direction: column;
 	}
 
+	.site-header__actions {
+		width: 100%;
+	}
+
 	.site-nav {
 		justify-content: start;
+		justify-self: start;
 	}
 }
 </style>

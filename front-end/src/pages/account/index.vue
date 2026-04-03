@@ -163,6 +163,6 @@ const accountFacts = computed(() => {
 .button--primary {
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
-	color: #fff;
+	color: var(--consensus-on-accent);
 }
 </style>

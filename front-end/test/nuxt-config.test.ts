@@ -11,7 +11,7 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 		config.modules?.sort(),
 		["@nuxt/eslint", "@nuxtjs/color-mode", "@pinia/nuxt", "@unocss/nuxt", "@vueuse/nuxt"].sort()
 	);
-	assert.equal(config.colorMode?.preference, "light");
+	assert.equal(config.colorMode?.preference, "system");
 	assert.equal(config.colorMode?.fallback, "light");
 
 	const headMeta = config.app?.head?.meta ?? [];
