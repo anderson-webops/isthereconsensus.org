@@ -53,6 +53,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 .site-shell {
 	min-height: 100vh;
 	padding: 24px clamp(20px, 4vw, 64px) 56px;
+	overflow-x: clip;
 }
 
 .site-header,
@@ -158,9 +159,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 @media (max-width: 700px) {
+	.site-shell {
+		padding: 16px 14px 32px;
+	}
+
 	.site-header {
 		align-items: stretch;
 		flex-direction: column;
+		padding-bottom: 14px;
 	}
 
 	.site-header__actions {
@@ -170,6 +176,15 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-nav {
 		justify-content: start;
+	}
+
+	.site-main {
+		padding-top: 18px;
+	}
+
+	.site-footer {
+		margin-top: 40px;
+		padding-top: 16px;
 	}
 }
 </style>

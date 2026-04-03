@@ -763,4 +763,13 @@ async function flagQuestion(questionId: string) {
 		justify-content: start;
 	}
 }
+
+@media (max-width: 640px) {
+	.community-toolbar__search,
+	.flag-select,
+	.flag-note {
+		min-width: 0;
+		width: 100%;
+	}
+}
 </style>

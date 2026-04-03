@@ -68,11 +68,14 @@ html,
 body,
 #__nuxt {
 	min-height: 100%;
+	width: 100%;
+	max-width: 100%;
 	margin: 0;
 	padding: 0;
 	background: var(--consensus-page-background);
 	color: var(--consensus-ink);
 	font-family: "Space Grotesk", system-ui, sans-serif;
+	overflow-x: clip;
 	transition:
 		background-color 180ms ease,
 		color 180ms ease,
@@ -82,6 +85,14 @@ body,
 
 * {
 	box-sizing: border-box;
+}
+
+img,
+svg,
+canvas,
+video {
+	max-width: 100%;
+	height: auto;
 }
 
 body {

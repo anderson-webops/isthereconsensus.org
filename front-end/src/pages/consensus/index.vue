@@ -529,8 +529,22 @@ const filteredQuestions = computed(() =>
 }
 
 @media (max-width: 640px) {
+	.results-toolbar {
+		padding: 14px;
+	}
+
+	.results-search {
+		min-width: 0;
+		width: 100%;
+	}
+
 	.recent-row {
 		flex-direction: column;
+	}
+
+	.recent-row a {
+		white-space: normal;
+		word-break: break-word;
 	}
 }
 </style>
