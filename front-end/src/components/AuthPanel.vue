@@ -26,6 +26,7 @@ const registerName = ref("");
 const registerEmail = ref("");
 const registerPassword = ref("");
 const registerCaptcha = ref("");
+const acceptedTerms = ref(false);
 
 const emailUpdate = ref("");
 const currentPassword = ref("");
@@ -64,6 +65,10 @@ async function handleLogin() {
 async function handleRegister() {
 	authError.value = "";
 	authSuccess.value = "";
+	if (!acceptedTerms.value) {
+		authError.value = "You must agree to the Terms of Service before creating an account.";
+		return;
+	}
 	if (captchaRequired.value && !registerCaptcha.value) {
 		authError.value = "Please complete the captcha.";
 		return;
@@ -74,10 +79,12 @@ async function handleRegister() {
 			name: registerName.value.trim(),
 			email: registerEmail.value.trim(),
 			password: registerPassword.value,
-			captchaToken: registerCaptcha.value
+			captchaToken: registerCaptcha.value,
+			acceptTerms: acceptedTerms.value
 		});
 		authSuccess.value = "Account created. You are now signed in.";
 		registerPassword.value = "";
+		acceptedTerms.value = false;
 	} catch (error) {
 		authError.value = "Unable to create an account. Please try again.";
 		console.error(error);
@@ -225,6 +232,13 @@ async function handleChangePassword() {
 				<label class="field-label" for="register-password">Password</label>
 				<input id="register-password" v-model="registerPassword" type="password" autocomplete="new-password" />
 				<CaptchaWidget v-model="registerCaptcha" />
+				<label class="checkbox checkbox--legal">
+					<input v-model="acceptedTerms" type="checkbox" />
+					<span>
+						I confirm I am at least 13 and agree to the
+						<NuxtLink to="/terms">Terms of Service</NuxtLink>.
+					</span>
+				</label>
 				<button class="button button--primary" type="submit" :disabled="busy">Create account</button>
 				<p class="muted">Admin accounts are managed separately.</p>
 			</form>
@@ -339,6 +353,14 @@ input {
 	display: flex;
 	gap: 8px;
 	align-items: center;
+}
+
+.checkbox--legal {
+	align-items: start;
+}
+
+.checkbox--legal a {
+	color: var(--consensus-link);
 }
 
 .button {

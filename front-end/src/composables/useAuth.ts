@@ -11,6 +11,7 @@ interface RegisterPayload {
 	email: string;
 	password: string;
 	captchaToken: string;
+	acceptTerms: boolean;
 }
 
 interface ChangeEmailPayload {

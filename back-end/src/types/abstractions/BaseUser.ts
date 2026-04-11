@@ -12,6 +12,8 @@ export interface IBaseUser extends Document {
 	expertiseStatus?: "none" | "pending" | "verified" | "rejected";
 	affiliation?: string;
 	expertiseAreas?: string[];
+	termsVersion?: string;
+	termsAcceptedAt?: Date;
 
 	comparePassword: (password: string) => Promise<boolean>;
 

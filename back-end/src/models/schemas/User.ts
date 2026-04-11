@@ -20,7 +20,9 @@ const userSchema: Schema<IUser> = new Schema(
 			enum: ["none", "pending", "verified", "rejected"]
 		},
 		affiliation: { type: String, default: "", trim: true, maxlength: 160 },
-		expertiseAreas: { type: [String], default: [] }
+		expertiseAreas: { type: [String], default: [] },
+		termsVersion: { type: String, default: "", trim: true, maxlength: 32 },
+		termsAcceptedAt: { type: Date }
 	},
 	{ timestamps: true }
 );

@@ -9,6 +9,7 @@ import { verifyCaptcha } from "../utils/captcha.js";
 type Entity = IUser | IAdmin;
 
 const THIRTY_DAYS_MS: number = 30 * 24 * 60 * 60 * 1000;
+const TERMS_VERSION = "2026-04-11";
 
 function isEntity(entity: any): entity is Entity {
 	return entity != null && typeof entity.comparePassword === "function";
@@ -27,15 +28,19 @@ function canMutate(session: CustomSession, entity: Entity) {
 }
 
 export const registerUser: RequestHandler = async (req, res) => {
-	const { name, email, password, captchaToken } = req.body as {
+	const { name, email, password, captchaToken, acceptTerms } = req.body as {
 		name?: string;
 		email?: string;
 		password?: string;
 		captchaToken?: string;
+		acceptTerms?: boolean;
 	};
 
 	if (!name || !email || !password) {
 		return res.status(400).json({ error: "Name, email, and password are required." });
+	}
+	if (!acceptTerms) {
+		return res.status(400).json({ error: "You must agree to the Terms of Service." });
 	}
 
 	const captcha = await verifyCaptcha(captchaToken, req.ip);
@@ -55,7 +60,13 @@ export const registerUser: RequestHandler = async (req, res) => {
 		return res.status(409).json({ error: "Email already in use." });
 	}
 
-	const user = await User.create({ name: trimmedName, email: trimmedEmail, password });
+	const user = await User.create({
+		name: trimmedName,
+		email: trimmedEmail,
+		password,
+		termsVersion: TERMS_VERSION,
+		termsAcceptedAt: new Date()
+	});
 	const session = req.session as CustomSession;
 	session.adminID = undefined;
 	session.userID = user._id.toString();
