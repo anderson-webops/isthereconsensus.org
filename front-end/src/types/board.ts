@@ -28,6 +28,7 @@ export interface ClaimSource {
 	appraisal?: ClaimSourceAppraisal;
 	citationStatus?: ClaimSourceCitationStatus;
 	citationCheckedAt?: string;
+	statusSources?: string[];
 	stance: "supports" | "context" | "debate";
 	note?: string;
 	order?: number;
@@ -48,6 +49,15 @@ export interface ClaimEvidenceSummary {
 export interface ClaimInstitutionalAnchor {
 	name: string;
 	role: string;
+}
+
+export interface ClaimSurveillanceSpec {
+	focus?: string;
+	cadenceDays?: number;
+	watchTerms: string[];
+	integrityMonitors: string[];
+	guidelineMonitors: string[];
+	triggerRules: string[];
 }
 
 export interface Topic {
@@ -76,7 +86,12 @@ export interface ClaimSummary {
 	reviewMode?: ClaimReviewMode;
 	bottomLine: string;
 	sourceCount?: number;
+	flaggedSourceCount?: number;
+	retractedSourceCount?: number;
+	correctedSourceCount?: number;
+	concernSourceCount?: number;
 	searchCutoffAt?: string;
+	surveillanceSpec?: ClaimSurveillanceSpec;
 	lastReviewedAt?: string;
 	nextReviewAt?: string;
 	publishedAt?: string;

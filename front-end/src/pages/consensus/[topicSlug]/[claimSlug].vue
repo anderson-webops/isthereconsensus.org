@@ -67,6 +67,7 @@ const filteredQuestions = computed(() => {
 });
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
+const surveillanceSpec = computed(() => claim.value?.surveillanceSpec);
 const sourceStackSummary = computed(() => {
 	const sources = claim.value?.sources ?? [];
 	const anchorCount = sources.filter((source) => source.isAnchor).length;
@@ -219,6 +220,15 @@ function formatEvidenceCertaintyLabel(certainty?: Claim["evidenceCertainty"]) {
 
 function formatReviewModeLabel(mode?: Claim["reviewMode"]) {
 	return mode === "living" ? "Living review" : "Scheduled review";
+}
+
+function formatCadence(days?: number) {
+	if (!days) return "Cadence not listed";
+	if (days % 30 === 0 && days >= 30) {
+		const months = days / 30;
+		return `${months} month${months === 1 ? "" : "s"}`;
+	}
+	return `${days} day${days === 1 ? "" : "s"}`;
 }
 
 function formatChangeKind(kind?: string) {
@@ -431,6 +441,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 			<div class="reading-guide__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 			</div>
@@ -561,6 +572,59 @@ async function flagQuestion(questionId: string) {
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
+						<p class="eyebrow">Evidence operations</p>
+						<h2>How this page stays on watch</h2>
+					</div>
+					<p>
+						Automation should surface integrity and guideline changes, but editors still decide whether the
+						public conclusion changes.
+					</p>
+				</div>
+
+				<div class="methods-grid">
+					<article class="method-card">
+						<h3>Surveillance focus</h3>
+						<p>{{ surveillanceSpec?.focus || "The monitoring scope is not listed yet." }}</p>
+					</article>
+
+					<article class="method-card">
+						<h3>Cadence</h3>
+						<p>{{ formatCadence(surveillanceSpec?.cadenceDays) }}</p>
+					</article>
+
+					<article class="method-card">
+						<h3>Watch terms</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in surveillanceSpec?.watchTerms || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Integrity monitors</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in surveillanceSpec?.integrityMonitors || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Guideline monitors</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in surveillanceSpec?.guidelineMonitors || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Priority triggers</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in surveillanceSpec?.triggerRules || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
 						<p class="eyebrow">Anchor institutions</p>
 						<h2>Which bodies define the public baseline here</h2>
 					</div>
@@ -668,6 +732,9 @@ async function flagQuestion(questionId: string) {
 										<span v-if="source.citationCheckedAt">
 											Checked {{ formatDate(source.citationCheckedAt, "Date pending") }}
 										</span>
+									</div>
+									<div v-if="source.statusSources?.length" class="source-row__identifiers">
+										<span>Integrity signals: {{ source.statusSources.join(" · ") }}</span>
 									</div>
 								</div>
 								<a

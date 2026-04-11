@@ -31,6 +31,7 @@ export async function seedClaims() {
 					searchCutoffAt: new Date(seed.searchCutoffAt),
 					inclusionRules: seed.inclusionRules,
 					exclusionRules: seed.exclusionRules,
+					surveillanceSpec: seed.surveillanceSpec,
 					appraisalTools: seed.appraisalTools,
 					evidenceSummaries: seed.evidenceSummaries,
 					institutionalAnchors: seed.institutionalAnchors,
@@ -59,6 +60,7 @@ export async function seedClaims() {
 		if (!claim.searchCutoffAt) missingFields.searchCutoffAt = new Date(seed.searchCutoffAt);
 		if (!claim.inclusionRules?.length) missingFields.inclusionRules = seed.inclusionRules;
 		if (!claim.exclusionRules?.length) missingFields.exclusionRules = seed.exclusionRules;
+		if (!claim.surveillanceSpec?.focus && seed.surveillanceSpec) missingFields.surveillanceSpec = seed.surveillanceSpec;
 		if (!claim.appraisalTools?.length) missingFields.appraisalTools = seed.appraisalTools;
 		if (!claim.evidenceSummaries?.length) missingFields.evidenceSummaries = seed.evidenceSummaries;
 		if (!claim.institutionalAnchors?.length) missingFields.institutionalAnchors = seed.institutionalAnchors;
@@ -106,6 +108,9 @@ export async function seedClaims() {
 			}
 			if (!existingSource.citationCheckedAt && source.citationCheckedAt) {
 				missingSourceFields.citationCheckedAt = new Date(source.citationCheckedAt);
+			}
+			if (!existingSource.statusSources?.length && source.statusSources?.length) {
+				missingSourceFields.statusSources = source.statusSources;
 			}
 
 			if (Object.keys(missingSourceFields).length) {

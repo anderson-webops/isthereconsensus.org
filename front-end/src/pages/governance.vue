@@ -235,6 +235,7 @@ useHead({
 			</div>
 			<div class="governance-callout__actions">
 				<NuxtLink class="button button--primary" to="/community-guidelines">Community guidelines</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>

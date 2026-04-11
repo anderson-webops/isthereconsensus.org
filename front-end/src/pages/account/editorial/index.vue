@@ -75,6 +75,91 @@ const topicPressure = computed(() =>
 );
 const selectedClaim = ref<Record<string, string>>({});
 
+function daysSince(value?: string) {
+	if (!value) return Number.POSITIVE_INFINITY;
+	const timestamp = new Date(value).getTime();
+	if (!Number.isFinite(timestamp)) return Number.POSITIVE_INFINITY;
+	return Math.floor((Date.now() - timestamp) / (24 * 60 * 60 * 1000));
+}
+
+function cadenceDays(claim: ClaimSummary) {
+	return claim.surveillanceSpec?.cadenceDays ?? (claim.reviewMode === "living" ? 30 : 90);
+}
+
+function buildOpsReasons(claim: ClaimSummary) {
+	const reasons: string[] = [];
+	if ((claim.retractedSourceCount ?? 0) > 0) {
+		reasons.push(`${claim.retractedSourceCount} retracted source${claim.retractedSourceCount === 1 ? "" : "s"}`);
+	}
+	if ((claim.concernSourceCount ?? 0) > 0) {
+		reasons.push(`${claim.concernSourceCount} expression${claim.concernSourceCount === 1 ? "" : "s"} of concern`);
+	}
+	if ((claim.correctedSourceCount ?? 0) > 0) {
+		reasons.push(`${claim.correctedSourceCount} corrected citation${claim.correctedSourceCount === 1 ? "" : "s"}`);
+	}
+	if (
+		(claim.flaggedSourceCount ?? 0) > 0 &&
+		(claim.retractedSourceCount ?? 0) === 0 &&
+		(claim.concernSourceCount ?? 0) === 0
+	) {
+		reasons.push(`${claim.flaggedSourceCount} flagged citation${claim.flaggedSourceCount === 1 ? "" : "s"}`);
+	}
+	if (daysSince(claim.lastRetractionCheckAt) > cadenceDays(claim)) {
+		reasons.push("retraction check is stale");
+	}
+	if (daysSince(claim.searchCutoffAt) > cadenceDays(claim)) {
+		reasons.push("search cutoff is stale");
+	}
+	if (claim.nextReviewAt && new Date(claim.nextReviewAt).getTime() <= Date.now()) {
+		reasons.push("review date has passed");
+	}
+	if (!claim.surveillanceSpec?.focus) reasons.push("missing surveillance focus");
+	if (!claim.surveillanceSpec?.integrityMonitors?.length) reasons.push("missing integrity monitors");
+	if (!claim.surveillanceSpec?.guidelineMonitors?.length) reasons.push("missing guideline monitors");
+	if (!claim.surveillanceSpec?.triggerRules?.length) reasons.push("missing trigger rules");
+	return reasons;
+}
+
+const criticalOpsClaims = computed(() =>
+	claims.value
+		.filter((claim) => (claim.retractedSourceCount ?? 0) > 0 || (claim.concernSourceCount ?? 0) > 0)
+		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+);
+
+const highPriorityOpsClaims = computed(() =>
+	claims.value
+		.filter((claim) => !criticalOpsClaims.value.some((entry) => entry.claim._id === claim._id))
+		.filter((claim) => claim.status === "published" || claim.status === "needs_update")
+		.filter(
+			(claim) =>
+				(claim.flaggedSourceCount ?? 0) > 0 ||
+				daysSince(claim.lastRetractionCheckAt) > cadenceDays(claim) ||
+				daysSince(claim.searchCutoffAt) > cadenceDays(claim) ||
+				(!!claim.nextReviewAt && new Date(claim.nextReviewAt).getTime() <= Date.now())
+		)
+		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+		.slice(0, 8)
+);
+
+const routineOpsClaims = computed(() =>
+	claims.value
+		.filter(
+			(claim) =>
+				!criticalOpsClaims.value.some((entry) => entry.claim._id === claim._id) &&
+				!highPriorityOpsClaims.value.some((entry) => entry.claim._id === claim._id)
+		)
+		.filter(
+			(claim) =>
+				!claim.surveillanceSpec?.focus ||
+				!claim.surveillanceSpec?.watchTerms?.length ||
+				!claim.surveillanceSpec?.integrityMonitors?.length ||
+				!claim.surveillanceSpec?.guidelineMonitors?.length ||
+				!claim.surveillanceSpec?.triggerRules?.length
+		)
+		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+		.slice(0, 8)
+);
+
 useHead({
 	title: "Editorial workspace - Is There Consensus?"
 });
@@ -248,9 +333,110 @@ watch(
 					<strong>{{ reviewClaims.length }}</strong>
 				</article>
 				<article class="summary-card">
+					<span>Critical evidence alerts</span>
+					<strong>{{ criticalOpsClaims.length }}</strong>
+				</article>
+				<article class="summary-card">
 					<span>Your access</span>
 					<strong>{{ isAdmin ? "Admin" : "Verified expert" }}</strong>
 				</article>
+			</section>
+
+			<section class="editorial-panel">
+				<div class="section-heading section-heading--tight">
+					<div>
+						<p class="eyebrow">Evidence-ops inbox</p>
+						<h2>Monitoring signals that need human review</h2>
+					</div>
+					<p>
+						Automation should surface what changed. Editors decide whether the public answer, source stack,
+						or review note needs to move.
+					</p>
+				</div>
+
+				<div class="ops-grid">
+					<section class="ops-column ops-column--critical">
+						<div class="ops-column__header">
+							<h3>Critical</h3>
+							<p>Retractions and expressions of concern should never wait for the next routine review.</p>
+						</div>
+						<div v-if="!criticalOpsClaims.length" class="empty-state">No critical evidence alerts.</div>
+						<div v-else class="claim-list">
+							<article v-for="entry in criticalOpsClaims" :key="entry.claim._id" class="claim-card">
+								<p class="queue-card__meta">
+									<span>{{ entry.claim.topic?.title }}</span>
+									<span>{{ entry.claim.sourceCount ?? 0 }} sources</span>
+								</p>
+								<h3>{{ entry.claim.title }}</h3>
+								<ul class="plain-chip-list">
+									<li v-for="reason in entry.reasons" :key="reason">{{ reason }}</li>
+								</ul>
+								<NuxtLink
+									class="button button--ghost"
+									:to="`/account/editorial/claims/${entry.claim._id}`"
+								>
+									Open claim
+								</NuxtLink>
+							</article>
+						</div>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>High priority</h3>
+							<p>Stale checks, flagged citations, and overdue reviews should move quickly.</p>
+						</div>
+						<div v-if="!highPriorityOpsClaims.length" class="empty-state">
+							No high-priority updates pending.
+						</div>
+						<div v-else class="claim-list">
+							<article v-for="entry in highPriorityOpsClaims" :key="entry.claim._id" class="claim-card">
+								<p class="queue-card__meta">
+									<span>{{ entry.claim.topic?.title }}</span>
+									<span>{{ cadenceDays(entry.claim) }} day cadence</span>
+								</p>
+								<h3>{{ entry.claim.title }}</h3>
+								<ul class="plain-chip-list">
+									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">{{ reason }}</li>
+								</ul>
+								<NuxtLink
+									class="button button--ghost"
+									:to="`/account/editorial/claims/${entry.claim._id}`"
+								>
+									Open claim
+								</NuxtLink>
+							</article>
+						</div>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Routine cleanup</h3>
+							<p>Fill the monitoring spec so the site can support a real evidence-surveillance loop.</p>
+						</div>
+						<div v-if="!routineOpsClaims.length" class="empty-state">
+							No routine evidence-ops cleanup is queued.
+						</div>
+						<div v-else class="claim-list">
+							<article v-for="entry in routineOpsClaims" :key="entry.claim._id" class="claim-card">
+								<p class="queue-card__meta">
+									<span>{{ entry.claim.topic?.title }}</span>
+									<span>{{ entry.claim.reviewMode === "living" ? "Living" : "Scheduled" }}</span>
+								</p>
+								<h3>{{ entry.claim.title }}</h3>
+								<ul class="plain-chip-list">
+									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">{{ reason }}</li>
+								</ul>
+								<NuxtLink
+									class="button button--ghost"
+									:to="`/account/editorial/claims/${entry.claim._id}`"
+								>
+									Open claim
+								</NuxtLink>
+							</article>
+						</div>
+					</section>
+				</div>
 			</section>
 
 			<section class="editorial-grid editorial-grid--guide">
@@ -562,6 +748,36 @@ watch(
 	gap: 14px;
 }
 
+.ops-grid {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ops-column {
+	display: grid;
+	gap: 12px;
+	padding: 18px;
+	border-radius: 18px;
+	border: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-field-surface);
+}
+
+.ops-column--critical {
+	border-color: rgba(184, 61, 46, 0.35);
+}
+
+.ops-column__header h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+}
+
+.ops-column__header p {
+	margin: 6px 0 0;
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
 .guide-list {
 	margin: 0;
 	padding-left: 20px;
@@ -617,6 +833,15 @@ watch(
 }
 
 .pressure-card__list {
+	margin: 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.plain-chip-list {
 	margin: 0;
 	padding-left: 18px;
 	display: grid;
@@ -684,6 +909,10 @@ watch(
 
 @media (max-width: 920px) {
 	.editorial-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.ops-grid {
 		grid-template-columns: 1fr;
 	}
 }

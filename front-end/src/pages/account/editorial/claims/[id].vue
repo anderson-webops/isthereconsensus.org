@@ -60,6 +60,12 @@ const form = reactive({
 	searchCutoffAt: "",
 	inclusionRules: "",
 	exclusionRules: "",
+	surveillanceFocus: "",
+	surveillanceCadenceDays: 90,
+	watchTerms: "",
+	integrityMonitors: "",
+	guidelineMonitors: "",
+	triggerRules: "",
 	appraisalTools: "",
 	authorLine: "",
 	reviewerLine: "",
@@ -112,6 +118,12 @@ function hydrateClaim(record: Claim | null) {
 	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
 	form.inclusionRules = (record?.inclusionRules || []).join("\n");
 	form.exclusionRules = (record?.exclusionRules || []).join("\n");
+	form.surveillanceFocus = record?.surveillanceSpec?.focus || "";
+	form.surveillanceCadenceDays = record?.surveillanceSpec?.cadenceDays ?? 90;
+	form.watchTerms = (record?.surveillanceSpec?.watchTerms || []).join("\n");
+	form.integrityMonitors = (record?.surveillanceSpec?.integrityMonitors || []).join("\n");
+	form.guidelineMonitors = (record?.surveillanceSpec?.guidelineMonitors || []).join("\n");
+	form.triggerRules = (record?.surveillanceSpec?.triggerRules || []).join("\n");
 	form.appraisalTools = (record?.appraisalTools || []).join("\n");
 	form.authorLine = record?.authorLine || "";
 	form.reviewerLine = record?.reviewerLine || "";
@@ -194,6 +206,14 @@ function claimPayload() {
 		searchCutoffAt: form.searchCutoffAt || undefined,
 		inclusionRules: parseLines(form.inclusionRules),
 		exclusionRules: parseLines(form.exclusionRules),
+		surveillanceSpec: {
+			focus: form.surveillanceFocus.trim(),
+			cadenceDays: form.surveillanceCadenceDays || undefined,
+			watchTerms: parseLines(form.watchTerms),
+			integrityMonitors: parseLines(form.integrityMonitors),
+			guidelineMonitors: parseLines(form.guidelineMonitors),
+			triggerRules: parseLines(form.triggerRules)
+		},
 		appraisalTools: parseLines(form.appraisalTools),
 		evidenceSummaries: evidenceSummaryRows.value
 			.map((summary) => ({
@@ -250,6 +270,7 @@ async function syncSources(claimId: string) {
 			appraisal: source.appraisal || "not_appraised",
 			citationStatus: source.citationStatus || "current",
 			citationCheckedAt: source.citationCheckedAt || undefined,
+			statusSources: (source.statusSources || []).map((item) => item.trim()).filter(Boolean),
 			stance: source.stance,
 			note: source.note?.trim() || "",
 			order: source.order ?? 0
@@ -375,6 +396,7 @@ function addSource() {
 		appraisal: "not_appraised",
 		citationStatus: "current",
 		citationCheckedAt: "",
+		statusSources: [],
 		stance: "context",
 		note: "",
 		order: sourceRows.value.length
@@ -404,6 +426,11 @@ function removeEvidenceSummary(index: number) {
 function updateEvidenceSummaryLimitations(index: number, event: Event) {
 	const target = event.target as HTMLTextAreaElement | null;
 	evidenceSummaryRows.value[index].limitations = parseLines(target?.value || "");
+}
+
+function updateSourceStatusSources(index: number, event: Event) {
+	const target = event.target as HTMLTextAreaElement | null;
+	sourceRows.value[index].statusSources = parseLines(target?.value || "");
 }
 
 function addInstitutionalAnchor() {
@@ -602,6 +629,56 @@ watch(
 					<label class="field field--full">
 						<span class="field-label">Exclusion rules (one per line)</span>
 						<textarea v-model="form.exclusionRules" rows="4" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Surveillance focus</span>
+						<textarea
+							v-model="form.surveillanceFocus"
+							rows="3"
+							placeholder="Track the exact evidence question, scope, and why the page is on watch."
+						/>
+					</label>
+
+					<label class="field">
+						<span class="field-label">Surveillance cadence (days)</span>
+						<input v-model.number="form.surveillanceCadenceDays" type="number" min="1" max="3650" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Watch terms (one per line)</span>
+						<textarea
+							v-model="form.watchTerms"
+							rows="4"
+							placeholder="vaccine autism&#10;MMR autism&#10;childhood vaccine safety"
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Integrity monitors (one per line)</span>
+						<textarea
+							v-model="form.integrityMonitors"
+							rows="4"
+							placeholder="Crossref update metadata&#10;PubMed linking&#10;Europe PMC status checks"
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Guideline monitors (one per line)</span>
+						<textarea
+							v-model="form.guidelineMonitors"
+							rows="4"
+							placeholder="WHO guidance streams&#10;CDC guidance updates"
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Update triggers (one per line)</span>
+						<textarea
+							v-model="form.triggerRules"
+							rows="4"
+							placeholder="Retracted source in the source stack&#10;New synthesis that could shift the bottom line"
+						/>
 					</label>
 
 					<label class="field field--full">
@@ -874,6 +951,15 @@ watch(
 								<label class="field">
 									<span class="field-label">Citation checked</span>
 									<input v-model="source.citationCheckedAt" type="date" />
+								</label>
+
+								<label class="field field--full">
+									<span class="field-label">Status sources (one per line)</span>
+									<textarea
+										:value="formatLines(source.statusSources)"
+										rows="3"
+										@input="updateSourceStatusSources(index, $event)"
+									/>
 								</label>
 
 								<label class="field field--checkbox">

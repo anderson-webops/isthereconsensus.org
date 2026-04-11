@@ -202,6 +202,7 @@ useHead({
 			</div>
 			<div class="standards-callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink class="button button--primary" to="/explainers">Read explainers</NuxtLink>

@@ -79,7 +79,9 @@ const updateRules = [
 const evidenceOps = [
 	"Ingest metadata through OpenAlex, Crossref, PubMed, and Europe PMC when appropriate.",
 	"Normalize core identifiers such as DOI, PMID, PMCID, ORCID, and institutional IDs.",
-	"Run integrity checks for retractions, corrections, and guideline updates.",
+	"Run integrity checks for retractions, corrections, expressions of concern, and guideline updates.",
+	"Store retrieval snapshots and provenance so the team can show what changed and when it was checked.",
+	"Send monitoring signals into an editorial inbox instead of auto-rewriting the public conclusion.",
 	"Keep a visible public trail: source tiers, identifiers, search cutoff, review dates, and change log."
 ];
 
@@ -184,6 +186,7 @@ useHead({
 			</div>
 			<div class="methods-callout__actions">
 				<NuxtLink class="button button--primary" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/consensus">Browse claim reviews</NuxtLink>

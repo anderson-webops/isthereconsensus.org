@@ -27,6 +27,7 @@ export interface IClaimSource {
 	appraisal?: ClaimSourceAppraisal;
 	citationStatus?: ClaimSourceCitationStatus;
 	citationCheckedAt?: Date;
+	statusSources?: string[];
 	stance: ClaimSourceStance;
 	note?: string;
 	order?: number;
@@ -67,6 +68,7 @@ const claimSourceSchema: Schema<IClaimSource> = new Schema(
 			enum: ["current", "corrected", "retracted", "expression_of_concern"]
 		},
 		citationCheckedAt: { type: Date },
+		statusSources: { type: [String], default: [] },
 		stance: {
 			type: String,
 			required: true,

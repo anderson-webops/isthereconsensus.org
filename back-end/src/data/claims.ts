@@ -6,7 +6,8 @@ import type {
 	ClaimReviewMode,
 	ClaimStatus,
 	IClaimEvidenceSummary,
-	IClaimInstitutionalAnchor
+	IClaimInstitutionalAnchor,
+	IClaimSurveillanceSpec
 } from "../models/schemas/Claim.js";
 import type {
 	ClaimSourceAppraisal,
@@ -28,6 +29,7 @@ interface SeedClaimSource {
 	appraisal?: ClaimSourceAppraisal;
 	citationStatus?: ClaimSourceCitationStatus;
 	citationCheckedAt?: string;
+	statusSources?: string[];
 	stance: ClaimSourceStance;
 	note: string;
 	order: number;
@@ -60,6 +62,7 @@ export interface SeedClaim {
 	searchCutoffAt?: string;
 	inclusionRules?: string[];
 	exclusionRules?: string[];
+	surveillanceSpec?: IClaimSurveillanceSpec;
 	appraisalTools?: string[];
 	evidenceSummaries?: IClaimEvidenceSummary[];
 	institutionalAnchors?: IClaimInstitutionalAnchor[];
@@ -79,6 +82,7 @@ export interface CompleteSeedClaim extends SeedClaim {
 	searchCutoffAt: string;
 	inclusionRules: string[];
 	exclusionRules: string[];
+	surveillanceSpec: IClaimSurveillanceSpec;
 	appraisalTools: string[];
 	evidenceSummaries: IClaimEvidenceSummary[];
 	institutionalAnchors: IClaimInstitutionalAnchor[];
@@ -91,6 +95,8 @@ export interface CompleteSeedClaim extends SeedClaim {
 }
 
 const seedTimestamp = new Date("2026-04-11T12:00:00.000Z").toISOString();
+const nonAlphanumericPattern = /[^a-z0-9\s]/g;
+const whitespacePattern = /\s+/;
 
 function inferAgreementLevel(consensusBand: ClaimConsensusBand): ClaimAgreementLevel {
 	if (consensusBand === "strong") return "strong";
@@ -121,6 +127,87 @@ function defaultSearchDatabases(topicSlug: string) {
 		return ["OpenAlex", "Crossref", "National Academies / official historical reviews"];
 	}
 	return ["OpenAlex", "Crossref", "Major institutional reports"];
+}
+
+function defaultSurveillanceCadenceDays(seed: SeedClaim) {
+	if (seed.reviewMode === "living") return 30;
+	if (seed.consensusBand === "strong" && seed.confidenceScore >= 90) return 120;
+	if (seed.consensusBand === "broad") return 90;
+	if (seed.consensusBand === "mixed") return 60;
+	return 45;
+}
+
+function defaultIntegrityMonitors(topicSlug: string) {
+	if (
+		topicSlug === "health-and-medicine"
+		|| topicSlug === "nutrition-and-diet"
+		|| topicSlug === "neuroscience-and-psychology"
+		|| topicSlug === "genetics-and-biotechnology"
+	) {
+		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
+	}
+	return ["Crossref update metadata", "Manual institutional watch", "Editorial source audit"];
+}
+
+function defaultGuidelineMonitors(topicSlug: string) {
+	if (topicSlug === "health-and-medicine") {
+		return ["WHO guidance streams", "CDC guidance updates", "Cochrane review updates"];
+	}
+	if (topicSlug === "nutrition-and-diet") {
+		return ["Dietary Guidelines for Americans", "WHO nutrition updates", "AHA / ACC updates"];
+	}
+	if (topicSlug === "climate-and-environment") {
+		return ["IPCC assessment cycle", "NASA climate indicators", "NOAA climate updates"];
+	}
+	if (topicSlug === "genetics-and-biotechnology") {
+		return ["WHO biotechnology guidance", "FAO food-safety updates", "National Academies reviews"];
+	}
+	if (topicSlug === "neuroscience-and-psychology") {
+		return ["APA guidance", "NIH / NIMH review updates", "Campbell review updates"];
+	}
+	if (topicSlug === "historical-case-studies") {
+		return ["Field-specific retrospective reviews", "National Academies archives", "Public-health archive updates"];
+	}
+	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
+}
+
+function defaultWatchTerms(seed: SeedClaim) {
+	const tokens = seed.title
+		.toLowerCase()
+		.replaceAll(nonAlphanumericPattern, " ")
+		.split(whitespacePattern)
+		.filter(token => token.length > 3)
+		.slice(0, 4);
+
+	return Array.from(
+		new Set([
+			seed.title,
+			...tokens,
+			...seed.sources.slice(0, 2).map(source => source.publisher).filter(Boolean)
+		])
+	).slice(0, 6);
+}
+
+function defaultTriggerRules(seed: SeedClaim) {
+	return [
+		"Escalate immediately if any cited source is retracted, corrected in a major way, or receives an expression of concern.",
+		"Open a high-priority review if a new systematic review, meta-analysis, or assessment could change the public-facing bottom line.",
+		"Open a high-priority review if a major guideline body changes its recommendation, scope, or uncertainty language.",
+		seed.consensusBand === "strong"
+			? "Batch routine surveillance on the normal cadence unless a major misinformation spike changes the practical need for a visible update."
+			: "Keep this claim on a tighter surveillance loop because qualified agreement and active uncertainty are part of the public explanation."
+	];
+}
+
+function defaultSurveillanceSpec(seed: SeedClaim): IClaimSurveillanceSpec {
+	return {
+		focus: `Track new syntheses, institutional guidance, and post-publication changes relevant to "${seed.title}".`,
+		cadenceDays: defaultSurveillanceCadenceDays(seed),
+		watchTerms: defaultWatchTerms(seed),
+		integrityMonitors: defaultIntegrityMonitors(seed.topicSlug),
+		guidelineMonitors: defaultGuidelineMonitors(seed.topicSlug),
+		triggerRules: defaultTriggerRules(seed)
+	};
 }
 
 function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnchor[] {
@@ -226,7 +313,15 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 				?? (index === 0 || source.kind === "guideline" || source.kind === "consensus_statement"),
 			appraisal: source.appraisal ?? defaultSourceAppraisal(source.kind),
 			citationStatus: source.citationStatus ?? "current",
-			citationCheckedAt: source.citationCheckedAt ?? seed.lastRetractionCheckAt ?? seedTimestamp
+			citationCheckedAt: source.citationCheckedAt ?? seed.lastRetractionCheckAt ?? seedTimestamp,
+			statusSources:
+				source.statusSources
+				?? (seed.topicSlug === "health-and-medicine"
+					|| seed.topicSlug === "nutrition-and-diet"
+					|| seed.topicSlug === "neuroscience-and-psychology"
+					|| seed.topicSlug === "genetics-and-biotechnology"
+					? ["Crossref", "PubMed", "Europe PMC"]
+					: ["Crossref", "Editorial review"])
 		})),
 		agreementLevel: seed.agreementLevel ?? inferAgreementLevel(seed.consensusBand),
 		evidenceCertainty: seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore),
@@ -243,6 +338,7 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 			"Treat mechanistic or animal-only evidence as supporting context unless the page is specifically about mechanism.",
 			"Exclude weak or redundant sources when a stronger synthesis already covers the same point."
 		],
+		surveillanceSpec: seed.surveillanceSpec ?? defaultSurveillanceSpec(seed),
 		appraisalTools: seed.appraisalTools ?? [
 			"GRADE-style certainty check for the body of evidence",
 			"Risk-of-bias review for key study designs",

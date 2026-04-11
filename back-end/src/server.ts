@@ -1,4 +1,8 @@
-import type { IClaimEvidenceSummary, IClaimInstitutionalAnchor } from "./models/schemas/Claim.js";
+import type {
+	IClaimEvidenceSummary,
+	IClaimInstitutionalAnchor,
+	IClaimSurveillanceSpec
+} from "./models/schemas/Claim.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
 import bodyParser from "body-parser";
@@ -336,6 +340,22 @@ async function main() {
 			.filter((item): item is NonNullable<typeof item> => Boolean(item));
 	}
 
+	function normalizeSurveillanceSpec(value: unknown): IClaimSurveillanceSpec {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const cadenceCandidate = Number(record.cadenceDays);
+		return {
+			focus: normalizeText(record.focus, 1000),
+			cadenceDays:
+				Number.isFinite(cadenceCandidate) && cadenceCandidate >= 1
+					? Math.min(Math.max(Math.round(cadenceCandidate), 1), 3650)
+					: undefined,
+			watchTerms: normalizeList(record.watchTerms, 8, 120),
+			integrityMonitors: normalizeList(record.integrityMonitors, 8, 180),
+			guidelineMonitors: normalizeList(record.guidelineMonitors, 8, 180),
+			triggerRules: normalizeList(record.triggerRules, 8, 240)
+		};
+	}
+
 	async function findTopicOr404(res: express.Response, slug: string) {
 		const topic = await Topic.findOne({ slug });
 		if (!topic) {
@@ -408,6 +428,7 @@ async function main() {
 					searchCutoffAt: claim.searchCutoffAt,
 					inclusionRules: claim.inclusionRules,
 					exclusionRules: claim.exclusionRules,
+					surveillanceSpec: claim.surveillanceSpec,
 					appraisalTools: claim.appraisalTools,
 					evidenceSummaries: claim.evidenceSummaries,
 					institutionalAnchors: claim.institutionalAnchors,
@@ -438,6 +459,7 @@ async function main() {
 					appraisal: source.appraisal,
 					citationStatus: source.citationStatus,
 					citationCheckedAt: source.citationCheckedAt,
+					statusSources: source.statusSources,
 					stance: source.stance,
 					note: source.note,
 					order: source.order
@@ -1167,16 +1189,60 @@ async function main() {
 			const claims = await Claim.find(filter).sort({ updatedAt: -1, createdAt: -1 }).populate("topic").lean();
 			const sourceCounts = await ClaimSource.aggregate([
 				{ $match: { claim: { $in: claims.map(claim => claim._id) } } },
-				{ $group: { _id: "$claim", count: { $sum: 1 } } }
+				{
+					$group: {
+						_id: "$claim",
+						count: { $sum: 1 },
+						flaggedCount: {
+							$sum: {
+								$cond: [{ $ne: ["$citationStatus", "current"] }, 1, 0]
+							}
+						},
+						retractedCount: {
+							$sum: {
+								$cond: [{ $eq: ["$citationStatus", "retracted"] }, 1, 0]
+							}
+						},
+						correctedCount: {
+							$sum: {
+								$cond: [{ $eq: ["$citationStatus", "corrected"] }, 1, 0]
+							}
+						},
+						concernCount: {
+							$sum: {
+								$cond: [{ $eq: ["$citationStatus", "expression_of_concern"] }, 1, 0]
+							}
+						}
+					}
+				}
 			]);
-			const sourceCountMap = new Map<string, number>();
+			const sourceCountMap = new Map<
+				string,
+				{
+					count: number;
+					flaggedCount: number;
+					retractedCount: number;
+					correctedCount: number;
+					concernCount: number;
+				}
+			>();
 			for (const row of sourceCounts) {
-				sourceCountMap.set(row._id.toString(), row.count);
+				sourceCountMap.set(row._id.toString(), {
+					count: row.count,
+					flaggedCount: row.flaggedCount,
+					retractedCount: row.retractedCount,
+					correctedCount: row.correctedCount,
+					concernCount: row.concernCount
+				});
 			}
 			return res.json({
 				claims: claims.map(claim => ({
 					...claim,
-					sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0
+					sourceCount: sourceCountMap.get(claim._id.toString())?.count ?? 0,
+					flaggedSourceCount: sourceCountMap.get(claim._id.toString())?.flaggedCount ?? 0,
+					retractedSourceCount: sourceCountMap.get(claim._id.toString())?.retractedCount ?? 0,
+					correctedSourceCount: sourceCountMap.get(claim._id.toString())?.correctedCount ?? 0,
+					concernSourceCount: sourceCountMap.get(claim._id.toString())?.concernCount ?? 0
 				}))
 			});
 		}
@@ -1243,6 +1309,7 @@ async function main() {
 				searchCutoffAt: normalizeDate(req.body?.searchCutoffAt),
 				inclusionRules: normalizeList(req.body?.inclusionRules, 8, 240),
 				exclusionRules: normalizeList(req.body?.exclusionRules, 8, 240),
+				surveillanceSpec: normalizeSurveillanceSpec(req.body?.surveillanceSpec),
 				appraisalTools: normalizeList(req.body?.appraisalTools, 8, 180),
 				evidenceSummaries: normalizeEvidenceSummaries(req.body?.evidenceSummaries),
 				institutionalAnchors: normalizeInstitutionalAnchors(req.body?.institutionalAnchors),
@@ -1356,6 +1423,9 @@ async function main() {
 			}
 			if (req.body?.exclusionRules !== undefined) {
 				claim.exclusionRules = normalizeList(req.body?.exclusionRules, 8, 240);
+			}
+			if (req.body?.surveillanceSpec !== undefined) {
+				claim.surveillanceSpec = normalizeSurveillanceSpec(req.body?.surveillanceSpec);
 			}
 			if (req.body?.appraisalTools !== undefined) {
 				claim.appraisalTools = normalizeList(req.body?.appraisalTools, 8, 180);
@@ -1537,6 +1607,7 @@ async function main() {
 				appraisal: normalizeSourceAppraisal(req.body?.appraisal),
 				citationStatus: normalizeCitationStatus(req.body?.citationStatus),
 				citationCheckedAt: normalizeDate(req.body?.citationCheckedAt),
+				statusSources: normalizeList(req.body?.statusSources, 6, 120),
 				stance: normalizeText(req.body?.stance, 24) || "context",
 				note: normalizeText(req.body?.note, 1000),
 				order: normalizeInteger(req.body?.order, 0, 999, 0)
@@ -1590,6 +1661,9 @@ async function main() {
 			}
 			if (req.body?.citationCheckedAt !== undefined) {
 				source.citationCheckedAt = normalizeDate(req.body?.citationCheckedAt);
+			}
+			if (req.body?.statusSources !== undefined) {
+				source.statusSources = normalizeList(req.body?.statusSources, 6, 120);
 			}
 			if (req.body?.stance !== undefined)
 				source.stance = normalizeText(req.body?.stance, 24) as typeof source.stance;

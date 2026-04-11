@@ -31,6 +31,15 @@ export interface IClaimInstitutionalAnchor {
 	role: string;
 }
 
+export interface IClaimSurveillanceSpec {
+	focus?: string;
+	cadenceDays?: number;
+	watchTerms: string[];
+	integrityMonitors: string[];
+	guidelineMonitors: string[];
+	triggerRules: string[];
+}
+
 export interface IClaim {
 	_id?: mongoose.Types.ObjectId;
 	topic: ITopic | mongoose.Types.ObjectId;
@@ -52,6 +61,7 @@ export interface IClaim {
 	searchCutoffAt?: Date;
 	inclusionRules: string[];
 	exclusionRules: string[];
+	surveillanceSpec: IClaimSurveillanceSpec;
 	appraisalTools: string[];
 	evidenceSummaries: IClaimEvidenceSummary[];
 	institutionalAnchors: IClaimInstitutionalAnchor[];
@@ -116,6 +126,27 @@ const claimSchema: Schema<IClaim> = new Schema(
 		searchCutoffAt: { type: Date },
 		inclusionRules: { type: [String], default: [] },
 		exclusionRules: { type: [String], default: [] },
+		surveillanceSpec: {
+			type: new Schema<IClaimSurveillanceSpec>(
+				{
+					focus: { type: String, default: "", trim: true, maxlength: 1000 },
+					cadenceDays: { type: Number, min: 1, max: 3650 },
+					watchTerms: { type: [String], default: [] },
+					integrityMonitors: { type: [String], default: [] },
+					guidelineMonitors: { type: [String], default: [] },
+					triggerRules: { type: [String], default: [] }
+				},
+				{ _id: false }
+			),
+			default: () => ({
+				focus: "",
+				cadenceDays: undefined,
+				watchTerms: [],
+				integrityMonitors: [],
+				guidelineMonitors: [],
+				triggerRules: []
+			})
+		},
 		appraisalTools: { type: [String], default: [] },
 		evidenceSummaries: {
 			type: [
