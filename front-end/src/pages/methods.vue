@@ -37,6 +37,14 @@ const methodRequirements = [
 		body: "The review should show how the team judged the quality of trials, observational studies, and evidence syntheses."
 	},
 	{
+		title: "Evidence summary objects",
+		body: "Each page should expose reusable question-and-outcome summaries with direction, certainty, and limitations instead of relying on a flat source count."
+	},
+	{
+		title: "Institutional anchors",
+		body: "Readers should be able to see which guideline bodies, assessments, or consensus panels define the baseline for the claim."
+	},
+	{
 		title: "Corrections discipline",
 		body: "Readers should be able to see when a page changed, why it changed, and whether cornerstone citations were checked for retractions or corrections."
 	}
@@ -72,7 +80,7 @@ const evidenceOps = [
 	"Ingest metadata through OpenAlex, Crossref, PubMed, and Europe PMC when appropriate.",
 	"Normalize core identifiers such as DOI, PMID, PMCID, ORCID, and institutional IDs.",
 	"Run integrity checks for retractions, corrections, and guideline updates.",
-	"Keep a visible public trail: source tiers, search cutoff, review dates, and change log."
+	"Keep a visible public trail: source tiers, identifiers, search cutoff, review dates, and change log."
 ];
 
 useHead({

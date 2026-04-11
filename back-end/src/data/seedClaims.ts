@@ -32,6 +32,8 @@ export async function seedClaims() {
 					inclusionRules: seed.inclusionRules,
 					exclusionRules: seed.exclusionRules,
 					appraisalTools: seed.appraisalTools,
+					evidenceSummaries: seed.evidenceSummaries,
+					institutionalAnchors: seed.institutionalAnchors,
 					authorLine: seed.authorLine,
 					reviewerLine: seed.reviewerLine,
 					coiSummary: seed.coiSummary,
@@ -58,6 +60,8 @@ export async function seedClaims() {
 		if (!claim.inclusionRules?.length) missingFields.inclusionRules = seed.inclusionRules;
 		if (!claim.exclusionRules?.length) missingFields.exclusionRules = seed.exclusionRules;
 		if (!claim.appraisalTools?.length) missingFields.appraisalTools = seed.appraisalTools;
+		if (!claim.evidenceSummaries?.length) missingFields.evidenceSummaries = seed.evidenceSummaries;
+		if (!claim.institutionalAnchors?.length) missingFields.institutionalAnchors = seed.institutionalAnchors;
 		if (!claim.authorLine) missingFields.authorLine = seed.authorLine;
 		if (!claim.reviewerLine) missingFields.reviewerLine = seed.reviewerLine;
 		if (!claim.coiSummary) missingFields.coiSummary = seed.coiSummary;
@@ -74,11 +78,39 @@ export async function seedClaims() {
 		}
 
 		for (const source of seed.sources) {
-			await ClaimSource.findOneAndUpdate(
-				{ claim: claim._id, title: source.title },
-				{ $setOnInsert: { claim: claim._id, ...source } },
-				{ upsert: true, new: true }
-			);
+			const existingSource = await ClaimSource.findOne({ claim: claim._id, title: source.title });
+			if (!existingSource) {
+				await ClaimSource.create({
+					claim: claim._id,
+					...source,
+					citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined
+				});
+				continue;
+			}
+
+			const missingSourceFields: Record<string, unknown> = {};
+			if (!existingSource.url && source.url) missingSourceFields.url = source.url;
+			if (!existingSource.year && source.year) missingSourceFields.year = source.year;
+			if (!existingSource.doi && source.doi) missingSourceFields.doi = source.doi;
+			if (!existingSource.pmid && source.pmid) missingSourceFields.pmid = source.pmid;
+			if (!existingSource.pmcid && source.pmcid) missingSourceFields.pmcid = source.pmcid;
+			if (!existingSource.isAnchor && source.isAnchor) missingSourceFields.isAnchor = source.isAnchor;
+			if ((!existingSource.appraisal || existingSource.appraisal === "not_appraised") && source.appraisal) {
+				missingSourceFields.appraisal = source.appraisal;
+			}
+			if (
+				(!existingSource.citationStatus || existingSource.citationStatus === "current")
+				&& source.citationStatus
+			) {
+				missingSourceFields.citationStatus = source.citationStatus;
+			}
+			if (!existingSource.citationCheckedAt && source.citationCheckedAt) {
+				missingSourceFields.citationCheckedAt = new Date(source.citationCheckedAt);
+			}
+
+			if (Object.keys(missingSourceFields).length) {
+				await ClaimSource.updateOne({ _id: existingSource._id }, { $set: missingSourceFields });
+			}
 		}
 	}
 }

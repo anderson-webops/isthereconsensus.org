@@ -41,7 +41,8 @@ const reviewerExpectations = [
 const trustSignals = [
 	"Original publish date and last evidence review date",
 	"Consensus band and confidence score",
-	"Source count and evidence-stack links",
+	"Source stack counts by type, anchor-source labels, and DOI/PMID visibility where available",
+	"Outcome-level evidence summaries and institutional anchor metadata",
 	"Plain-language bottom line before the deeper nuance",
 	"A clear statement that public sentiment is not the same thing as expert consensus"
 ];

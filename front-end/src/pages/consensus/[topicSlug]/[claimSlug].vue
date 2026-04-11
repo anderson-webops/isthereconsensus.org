@@ -63,6 +63,30 @@ const filteredQuestions = computed(() => {
 			.includes(query)
 	);
 });
+const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
+const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
+const sourceStackSummary = computed(() => {
+	const sources = claim.value?.sources ?? [];
+	const anchorCount = sources.filter((source) => source.isAnchor).length;
+	const synthesisCount = sources.filter(
+		(source) => source.kind === "systematic_review" || source.kind === "meta_analysis"
+	).length;
+	const guidelineCount = sources.filter(
+		(source) => source.kind === "guideline" || source.kind === "consensus_statement"
+	).length;
+	const flaggedCount = sources.filter(
+		(source) => source.citationStatus && source.citationStatus !== "current"
+	).length;
+
+	const parts = [
+		anchorCount ? `${anchorCount} anchor${anchorCount === 1 ? "" : "s"}` : "",
+		synthesisCount ? `${synthesisCount} synth${synthesisCount === 1 ? "esis" : "eses"}` : "",
+		guidelineCount ? `${guidelineCount} institution${guidelineCount === 1 ? "" : "s"}` : "",
+		flaggedCount ? `${flaggedCount} flagged citation${flaggedCount === 1 ? "" : "s"}` : ""
+	].filter(Boolean);
+
+	return parts.length ? parts.join(" · ") : "No source stack yet";
+});
 
 const ratingFacts = computed(() => [
 	{
@@ -83,7 +107,7 @@ const ratingFacts = computed(() => [
 ]);
 
 const trustFacts = computed(() => [
-	{ label: "Sources listed", value: String(claim.value?.sources?.length ?? claim.value?.sourceCount ?? 0) },
+	{ label: "Source stack", value: sourceStackSummary.value },
 	{ label: "Published", value: formatDate(claim.value?.publishedAt, "Publish date pending") },
 	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
 	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") },
@@ -186,6 +210,34 @@ function formatChangeKind(kind?: string) {
 
 function formatSourceKind(kind: string) {
 	return kind.replaceAll("_", " ");
+}
+
+function formatEffectDirection(direction?: string) {
+	if (direction === "supports") return "Supports current bottom line";
+	if (direction === "mixed") return "Mixed or split signal";
+	return "Still unclear";
+}
+
+function formatSourceAppraisal(appraisal?: ClaimSource["appraisal"]) {
+	if (appraisal === "high") return "High-quality anchor";
+	if (appraisal === "moderate") return "Moderate-quality anchor";
+	if (appraisal === "low") return "Low-confidence source";
+	return "Not appraised";
+}
+
+function formatCitationStatus(status?: ClaimSource["citationStatus"]) {
+	if (status === "corrected") return "Corrected";
+	if (status === "retracted") return "Retracted";
+	if (status === "expression_of_concern") return "Expression of concern";
+	return "Current";
+}
+
+function sourcePrimaryLink(source: ClaimSource) {
+	if (source.url) return source.url;
+	if (source.doi) return `https://doi.org/${source.doi}`;
+	if (source.pmid) return `https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/`;
+	if (source.pmcid) return `https://pmc.ncbi.nlm.nih.gov/articles/${source.pmcid}/`;
+	return "";
 }
 
 function formatDate(value?: string, fallback = "Not available yet") {
@@ -352,8 +404,9 @@ async function flagQuestion(questionId: string) {
 				<p class="eyebrow">Why this page is structured this way</p>
 				<h2>Editorial answer first. Evidence stack second. Community threads last.</h2>
 				<p>
-					This page keeps the reviewed summary, dates, and source counts above the fold. Community threads
-					below can raise questions, but they do not vote the claim into or out of consensus.
+					This page keeps the reviewed summary, the source stack, and the update trail above the fold.
+					Community threads below can raise questions, but they do not vote the claim into or out of
+					consensus.
 				</p>
 			</div>
 			<div class="reading-guide__actions">
@@ -400,6 +453,52 @@ async function flagQuestion(questionId: string) {
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
+						<p class="eyebrow">Outcome view</p>
+						<h2>Evidence summaries by outcome</h2>
+					</div>
+					<p>
+						These objects carry the reusable evidence summary for the claim, not just a flat list of
+						citations.
+					</p>
+				</div>
+
+				<div v-if="!evidenceSummaries.length" class="empty-state">
+					No outcome-level evidence summaries are attached yet.
+				</div>
+				<div v-else class="evidence-summary-list">
+					<article
+						v-for="summary in evidenceSummaries"
+						:key="`${summary.question}-${summary.finding}`"
+						class="evidence-summary-card"
+					>
+						<div class="evidence-summary-card__top">
+							<div>
+								<p class="eyebrow">Key question</p>
+								<h3>{{ summary.question }}</h3>
+							</div>
+							<div class="evidence-summary-card__badges">
+								<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
+								<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
+							</div>
+						</div>
+						<p v-if="summary.population" class="muted">
+							<strong>Population / context:</strong> {{ summary.population }}
+						</p>
+						<p><strong>Finding:</strong> {{ summary.finding }}</p>
+						<p v-if="summary.magnitude"><strong>Magnitude / range:</strong> {{ summary.magnitude }}</p>
+						<div v-if="summary.limitations?.length">
+							<p class="field-label">Key limitations</p>
+							<ul class="plain-list plain-list--tight">
+								<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
+							</ul>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
 						<p class="eyebrow">Methods snapshot</p>
 						<h2>How this claim was reviewed</h2>
 					</div>
@@ -435,6 +534,29 @@ async function flagQuestion(questionId: string) {
 						<ul class="plain-list plain-list--tight">
 							<li v-for="item in claim?.appraisalTools || []" :key="item">{{ item }}</li>
 						</ul>
+					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Anchor institutions</p>
+						<h2>Which bodies define the public baseline here</h2>
+					</div>
+					<p>
+						These anchors show which review bodies or assessments the page treats as the field-level
+						baseline.
+					</p>
+				</div>
+
+				<div v-if="!institutionalAnchors.length" class="empty-state">
+					No institutional anchors are listed for this claim yet.
+				</div>
+				<div v-else class="anchor-grid">
+					<article v-for="anchor in institutionalAnchors" :key="anchor.name" class="anchor-card">
+						<h3>{{ anchor.name }}</h3>
+						<p>{{ anchor.role }}</p>
 					</article>
 				</div>
 			</section>
@@ -503,11 +625,35 @@ async function flagQuestion(questionId: string) {
 									</p>
 									<h4>{{ source.title }}</h4>
 									<p>{{ source.note }}</p>
+									<div class="source-row__badges">
+										<span v-if="source.isAnchor" class="tag tag--anchor">Anchor source</span>
+										<span class="tag">{{ formatSourceAppraisal(source.appraisal) }}</span>
+										<span
+											class="tag"
+											:class="{
+												'tag--warning':
+													source.citationStatus && source.citationStatus !== 'current'
+											}"
+										>
+											{{ formatCitationStatus(source.citationStatus) }}
+										</span>
+									</div>
+									<div
+										v-if="source.doi || source.pmid || source.pmcid || source.citationCheckedAt"
+										class="source-row__identifiers"
+									>
+										<span v-if="source.doi">DOI: {{ source.doi }}</span>
+										<span v-if="source.pmid">PMID: {{ source.pmid }}</span>
+										<span v-if="source.pmcid">PMCID: {{ source.pmcid }}</span>
+										<span v-if="source.citationCheckedAt">
+											Checked {{ formatDate(source.citationCheckedAt, "Date pending") }}
+										</span>
+									</div>
 								</div>
 								<a
-									v-if="source.url"
+									v-if="sourcePrimaryLink(source)"
 									class="button button--ghost"
-									:href="source.url"
+									:href="sourcePrimaryLink(source)"
 									target="_blank"
 									rel="noreferrer"
 								>
@@ -905,7 +1051,9 @@ async function flagQuestion(questionId: string) {
 }
 
 .methods-grid,
-.review-grid {
+.review-grid,
+.anchor-grid,
+.evidence-summary-list {
 	display: grid;
 	gap: 12px;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -913,6 +1061,8 @@ async function flagQuestion(questionId: string) {
 
 .method-card,
 .review-card,
+.anchor-card,
+.evidence-summary-card,
 .change-log__entry {
 	padding: 16px;
 	border-radius: 18px;
@@ -921,13 +1071,17 @@ async function flagQuestion(questionId: string) {
 }
 
 .method-card,
-.review-card {
+.review-card,
+.anchor-card,
+.evidence-summary-card {
 	display: grid;
 	gap: 10px;
 }
 
 .method-card p,
 .review-card p,
+.anchor-card p,
+.evidence-summary-card p,
 .change-log__entry p {
 	margin: 0;
 	color: var(--consensus-muted);
@@ -951,6 +1105,33 @@ async function flagQuestion(questionId: string) {
 	border: 1px solid var(--consensus-soft-line);
 }
 
+.evidence-summary-card__top {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: start;
+}
+
+.evidence-summary-card h3,
+.anchor-card h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+}
+
+.evidence-summary-card__badges,
+.source-row__badges,
+.source-row__identifiers {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.source-row__identifiers {
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+}
+
 .source-row h4 {
 	font-size: 1.02rem;
 }
@@ -960,6 +1141,28 @@ async function flagQuestion(questionId: string) {
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
+}
+
+.tag {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	font-size: 0.76rem;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.tag--anchor {
+	border-color: var(--consensus-evidence);
+}
+
+.tag--warning {
+	border-color: rgba(184, 61, 46, 0.28);
+	background: rgba(184, 61, 46, 0.08);
 }
 
 .lane {
@@ -1061,7 +1264,9 @@ async function flagQuestion(questionId: string) {
 	.bottom-line,
 	.reading-guide,
 	.methods-grid,
-	.review-grid {
+	.review-grid,
+	.anchor-grid,
+	.evidence-summary-list {
 		grid-template-columns: 1fr;
 	}
 

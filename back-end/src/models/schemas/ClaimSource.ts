@@ -3,8 +3,15 @@ import type { IClaim } from "./Claim.js";
 import mongoose, { Schema } from "mongoose";
 
 export type ClaimSourceKind
-	= "systematic_review" | "meta_analysis" | "guideline" | "consensus_statement" | "landmark_study" | "context";
+	= | "systematic_review"
+		| "meta_analysis"
+		| "guideline"
+		| "consensus_statement"
+		| "landmark_study"
+		| "context";
 export type ClaimSourceStance = "supports" | "context" | "debate";
+export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
+export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | "expression_of_concern";
 
 export interface IClaimSource {
 	claim: IClaim | mongoose.Types.ObjectId;
@@ -14,6 +21,12 @@ export interface IClaimSource {
 	year?: number;
 	url?: string;
 	doi?: string;
+	pmid?: string;
+	pmcid?: string;
+	isAnchor?: boolean;
+	appraisal?: ClaimSourceAppraisal;
+	citationStatus?: ClaimSourceCitationStatus;
+	citationCheckedAt?: Date;
 	stance: ClaimSourceStance;
 	note?: string;
 	order?: number;
@@ -40,6 +53,20 @@ const claimSourceSchema: Schema<IClaimSource> = new Schema(
 		year: { type: Number, min: 0, max: 9999 },
 		url: { type: String, default: "", trim: true, maxlength: 500 },
 		doi: { type: String, default: "", trim: true, maxlength: 200 },
+		pmid: { type: String, default: "", trim: true, maxlength: 40 },
+		pmcid: { type: String, default: "", trim: true, maxlength: 40 },
+		isAnchor: { type: Boolean, default: false },
+		appraisal: {
+			type: String,
+			default: "not_appraised",
+			enum: ["high", "moderate", "low", "not_appraised"]
+		},
+		citationStatus: {
+			type: String,
+			default: "current",
+			enum: ["current", "corrected", "retracted", "expression_of_concern"]
+		},
+		citationCheckedAt: { type: Date },
 		stance: {
 			type: String,
 			required: true,

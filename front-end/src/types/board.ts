@@ -4,6 +4,9 @@ export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "fr
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
+export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
+export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
+export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | "expression_of_concern";
 
 export interface ClaimChangeLogEntry {
 	date: string;
@@ -19,11 +22,32 @@ export interface ClaimSource {
 	year?: number;
 	url?: string;
 	doi?: string;
+	pmid?: string;
+	pmcid?: string;
+	isAnchor?: boolean;
+	appraisal?: ClaimSourceAppraisal;
+	citationStatus?: ClaimSourceCitationStatus;
+	citationCheckedAt?: string;
 	stance: "supports" | "context" | "debate";
 	note?: string;
 	order?: number;
 	createdAt?: string;
 	updatedAt?: string;
+}
+
+export interface ClaimEvidenceSummary {
+	question: string;
+	population?: string;
+	finding: string;
+	effectDirection: ClaimEvidenceDirection;
+	magnitude?: string;
+	certainty?: ClaimEvidenceCertainty;
+	limitations: string[];
+}
+
+export interface ClaimInstitutionalAnchor {
+	name: string;
+	role: string;
 }
 
 export interface Topic {
@@ -72,6 +96,8 @@ export interface Claim extends ClaimSummary {
 	inclusionRules?: string[];
 	exclusionRules?: string[];
 	appraisalTools?: string[];
+	evidenceSummaries?: ClaimEvidenceSummary[];
+	institutionalAnchors?: ClaimInstitutionalAnchor[];
 	authorLine?: string;
 	reviewerLine?: string;
 	coiSummary?: string;

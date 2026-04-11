@@ -8,11 +8,27 @@ export type ClaimConsensusBand = "strong" | "broad" | "mixed" | "unclear";
 export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "frontier";
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
+export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
 
 export interface IClaimChangeLogEntry {
 	date: Date;
 	kind: "publication" | "update" | "correction" | "review";
 	summary: string;
+}
+
+export interface IClaimEvidenceSummary {
+	question: string;
+	population?: string;
+	finding: string;
+	effectDirection: ClaimEvidenceDirection;
+	magnitude?: string;
+	certainty?: ClaimEvidenceCertainty;
+	limitations: string[];
+}
+
+export interface IClaimInstitutionalAnchor {
+	name: string;
+	role: string;
 }
 
 export interface IClaim {
@@ -37,6 +53,8 @@ export interface IClaim {
 	inclusionRules: string[];
 	exclusionRules: string[];
 	appraisalTools: string[];
+	evidenceSummaries: IClaimEvidenceSummary[];
+	institutionalAnchors: IClaimInstitutionalAnchor[];
 	authorLine?: string;
 	reviewerLine?: string;
 	coiSummary?: string;
@@ -99,6 +117,44 @@ const claimSchema: Schema<IClaim> = new Schema(
 		inclusionRules: { type: [String], default: [] },
 		exclusionRules: { type: [String], default: [] },
 		appraisalTools: { type: [String], default: [] },
+		evidenceSummaries: {
+			type: [
+				new Schema<IClaimEvidenceSummary>(
+					{
+						question: { type: String, required: true, trim: true, maxlength: 240 },
+						population: { type: String, default: "", trim: true, maxlength: 200 },
+						finding: { type: String, required: true, trim: true, maxlength: 1200 },
+						effectDirection: {
+							type: String,
+							required: true,
+							default: "unclear",
+							enum: ["supports", "mixed", "unclear"]
+						},
+						magnitude: { type: String, default: "", trim: true, maxlength: 280 },
+						certainty: {
+							type: String,
+							default: undefined,
+							enum: ["high", "moderate", "low", "very_low"]
+						},
+						limitations: { type: [String], default: [] }
+					},
+					{ _id: false }
+				)
+			],
+			default: []
+		},
+		institutionalAnchors: {
+			type: [
+				new Schema<IClaimInstitutionalAnchor>(
+					{
+						name: { type: String, required: true, trim: true, maxlength: 160 },
+						role: { type: String, required: true, trim: true, maxlength: 280 }
+					},
+					{ _id: false }
+				)
+			],
+			default: []
+		},
 		authorLine: { type: String, default: "", trim: true, maxlength: 240 },
 		reviewerLine: { type: String, default: "", trim: true, maxlength: 240 },
 		coiSummary: { type: String, default: "", trim: true, maxlength: 1000 },

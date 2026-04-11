@@ -32,6 +32,35 @@ const topicScopedClaims = computed(() =>
 		return map;
 	}, {})
 );
+const topicPressure = computed(() =>
+	Object.values(
+		unassignedQuestions.value.reduce<
+			Record<string, { topic: Question["topic"]; count: number; sampleTitles: string[]; openClaims: number }>
+		>((map, question) => {
+			const topicKey = question.topic._id;
+			if (!map[topicKey]) {
+				map[topicKey] = {
+					topic: question.topic,
+					count: 0,
+					sampleTitles: [],
+					openClaims: (topicScopedClaims.value[topicKey] || []).length
+				};
+			}
+			map[topicKey].count += 1;
+			if (
+				question.title &&
+				!map[topicKey].sampleTitles.includes(question.title) &&
+				map[topicKey].sampleTitles.length < 3
+			) {
+				map[topicKey].sampleTitles.push(question.title);
+			}
+			map[topicKey].openClaims = (topicScopedClaims.value[topicKey] || []).length;
+			return map;
+		}, {})
+	)
+		.sort((left, right) => right.count - left.count || left.topic.title.localeCompare(right.topic.title))
+		.slice(0, 6)
+);
 const selectedClaim = ref<Record<string, string>>({});
 
 useHead({
@@ -210,6 +239,34 @@ watch(
 					<span>Your access</span>
 					<strong>{{ isAdmin ? "Admin" : "Verified expert" }}</strong>
 				</article>
+			</section>
+
+			<section class="editorial-panel">
+				<div class="section-heading section-heading--tight">
+					<div>
+						<p class="eyebrow">Ask pressure</p>
+						<h2>Where new claim demand is building</h2>
+					</div>
+					<p>
+						Use repeated unassigned questions as a signal for what needs a canonical page or a faster
+						refresh.
+					</p>
+				</div>
+
+				<div v-if="!topicPressure.length" class="empty-state">No topic pressure is building right now.</div>
+				<div v-else class="pressure-grid">
+					<article v-for="item in topicPressure" :key="item.topic._id" class="pressure-card">
+						<p class="queue-card__meta">
+							<span>{{ item.topic.title }}</span>
+							<span>{{ item.count }} open asks</span>
+							<span>{{ item.openClaims }} active claims</span>
+						</p>
+						<h3>{{ item.topic.description || "Claim demand is building in this topic." }}</h3>
+						<ul class="pressure-card__list">
+							<li v-for="title in item.sampleTitles" :key="title">{{ title }}</li>
+						</ul>
+					</article>
+				</div>
 			</section>
 
 			<section class="editorial-panel">
@@ -452,9 +509,14 @@ watch(
 
 .editorial-panel,
 .queue-list,
-.claim-list {
+.claim-list,
+.pressure-grid {
 	display: grid;
 	gap: 14px;
+}
+
+.pressure-grid {
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .section-heading {
@@ -475,6 +537,30 @@ watch(
 	padding: 18px;
 	display: grid;
 	gap: 12px;
+}
+
+.pressure-card {
+	padding: 18px;
+	display: grid;
+	gap: 12px;
+	background: var(--consensus-field-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 18px;
+}
+
+.pressure-card h3 {
+	margin: 0;
+	font-size: 1rem;
+	font-family: "Fraunces", serif;
+}
+
+.pressure-card__list {
+	margin: 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
 .queue-card__meta {

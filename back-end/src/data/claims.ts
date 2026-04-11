@@ -2,15 +2,32 @@ import type {
 	ClaimAgreementLevel,
 	ClaimConsensusBand,
 	ClaimEvidenceCertainty,
+	ClaimEvidenceDirection,
 	ClaimReviewMode,
-	ClaimStatus
+	ClaimStatus,
+	IClaimEvidenceSummary,
+	IClaimInstitutionalAnchor
 } from "../models/schemas/Claim.js";
-import type { ClaimSourceKind, ClaimSourceStance } from "../models/schemas/ClaimSource.js";
+import type {
+	ClaimSourceAppraisal,
+	ClaimSourceCitationStatus,
+	ClaimSourceKind,
+	ClaimSourceStance
+} from "../models/schemas/ClaimSource.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
 	title: string;
 	publisher: string;
+	year?: number;
+	url?: string;
+	doi?: string;
+	pmid?: string;
+	pmcid?: string;
+	isAnchor?: boolean;
+	appraisal?: ClaimSourceAppraisal;
+	citationStatus?: ClaimSourceCitationStatus;
+	citationCheckedAt?: string;
 	stance: ClaimSourceStance;
 	note: string;
 	order: number;
@@ -44,6 +61,8 @@ export interface SeedClaim {
 	inclusionRules?: string[];
 	exclusionRules?: string[];
 	appraisalTools?: string[];
+	evidenceSummaries?: IClaimEvidenceSummary[];
+	institutionalAnchors?: IClaimInstitutionalAnchor[];
 	authorLine?: string;
 	reviewerLine?: string;
 	coiSummary?: string;
@@ -61,6 +80,8 @@ export interface CompleteSeedClaim extends SeedClaim {
 	inclusionRules: string[];
 	exclusionRules: string[];
 	appraisalTools: string[];
+	evidenceSummaries: IClaimEvidenceSummary[];
+	institutionalAnchors: IClaimInstitutionalAnchor[];
 	authorLine: string;
 	reviewerLine: string;
 	coiSummary: string;
@@ -102,9 +123,111 @@ function defaultSearchDatabases(topicSlug: string) {
 	return ["OpenAlex", "Crossref", "Major institutional reports"];
 }
 
+function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnchor[] {
+	if (topicSlug === "health-and-medicine") {
+		return [
+			{ name: "World Health Organization", role: "Global public-health guideline anchor" },
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current U.S. implementation and safety anchor"
+			},
+			{ name: "Cochrane", role: "Evidence-synthesis anchor for intervention questions" }
+		];
+	}
+	if (topicSlug === "nutrition-and-diet") {
+		return [
+			{ name: "Dietary Guidelines for Americans", role: "Structured nutrition evidence-review anchor" },
+			{ name: "World Health Organization", role: "Global nutrition guidance anchor" },
+			{ name: "American Heart Association", role: "Cardiometabolic risk interpretation anchor" }
+		];
+	}
+	if (topicSlug === "climate-and-environment") {
+		return [
+			{ name: "IPCC", role: "Primary climate assessment anchor" },
+			{ name: "NASA", role: "Observational climate evidence anchor" },
+			{ name: "NOAA", role: "Attribution, trends, and indicator anchor" }
+		];
+	}
+	if (topicSlug === "genetics-and-biotechnology") {
+		return [
+			{ name: "World Health Organization", role: "Public-health and biotechnology governance anchor" },
+			{ name: "FAO", role: "Food and agricultural safety anchor" },
+			{ name: "National Academies", role: "Independent risk and evidence review anchor" }
+		];
+	}
+	if (topicSlug === "neuroscience-and-psychology") {
+		return [
+			{ name: "American Psychological Association", role: "Professional practice and evidence-synthesis anchor" },
+			{ name: "NIH / NIMH", role: "Research and review anchor for brain and mental-health claims" },
+			{ name: "Campbell Collaboration", role: "Intervention-review anchor for social and behavioral claims" }
+		];
+	}
+	if (topicSlug === "historical-case-studies") {
+		return [
+			{ name: "National Academies", role: "Retrospective evidence and policy-review anchor" },
+			{ name: "CDC / Surgeon General archives", role: "Public-health record anchor where relevant" },
+			{ name: "Major field-specific reviews", role: "Historical synthesis anchor for how the consensus shifted" }
+		];
+	}
+	return [
+		{ name: "National Academies", role: "General evidence-synthesis anchor" },
+		{ name: "Major institutional reviews", role: "Field-specific consensus anchor" }
+	];
+}
+
+function inferEffectDirection(consensusBand: ClaimConsensusBand): ClaimEvidenceDirection {
+	if (consensusBand === "strong" || consensusBand === "broad") return "supports";
+	if (consensusBand === "mixed") return "mixed";
+	return "unclear";
+}
+
+function defaultMagnitudeNote(seed: SeedClaim) {
+	if (seed.consensusBand === "strong") {
+		return "The direction of the claim is stable across major syntheses; remaining disagreement is mostly about edge cases, timing, or magnitude.";
+	}
+	if (seed.consensusBand === "broad") {
+		return "The core direction holds, but the practical size of the effect depends on context, subgroup, or implementation details.";
+	}
+	if (seed.consensusBand === "mixed") {
+		return "Credible sources do not converge cleanly on one effect size or interpretation yet.";
+	}
+	return "The evidence base is still too unsettled for a stable magnitude estimate.";
+}
+
+function defaultEvidenceSummaries(seed: SeedClaim): IClaimEvidenceSummary[] {
+	return [
+		{
+			question: seed.title,
+			population: "Public-facing summary built from the highest-weight evidence available for this claim.",
+			finding: seed.bottomLine,
+			effectDirection: inferEffectDirection(seed.consensusBand),
+			magnitude: defaultMagnitudeNote(seed),
+			certainty: seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore),
+			limitations: seed.openQuestions.slice(0, 3).length
+				? seed.openQuestions.slice(0, 3)
+				: ["This seeded page still needs a more detailed outcome-level evidence summary."]
+		}
+	];
+}
+
+function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
+	if (kind === "guideline" || kind === "consensus_statement") return "high";
+	if (kind === "systematic_review" || kind === "meta_analysis") return "moderate";
+	return "not_appraised";
+}
+
 function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 	return {
 		...seed,
+		sources: seed.sources.map((source, index) => ({
+			...source,
+			isAnchor:
+				source.isAnchor
+				?? (index === 0 || source.kind === "guideline" || source.kind === "consensus_statement"),
+			appraisal: source.appraisal ?? defaultSourceAppraisal(source.kind),
+			citationStatus: source.citationStatus ?? "current",
+			citationCheckedAt: source.citationCheckedAt ?? seed.lastRetractionCheckAt ?? seedTimestamp
+		})),
 		agreementLevel: seed.agreementLevel ?? inferAgreementLevel(seed.consensusBand),
 		evidenceCertainty: seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore),
 		reviewMode: seed.reviewMode ?? "standard",
@@ -125,6 +248,8 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 			"Risk-of-bias review for key study designs",
 			"Shared-baseline check when institutions disagree"
 		],
+		evidenceSummaries: seed.evidenceSummaries ?? defaultEvidenceSummaries(seed),
+		institutionalAnchors: seed.institutionalAnchors ?? defaultInstitutionalAnchors(seed.topicSlug),
 		authorLine: seed.authorLine ?? "Prepared by the Is There Consensus editorial desk.",
 		reviewerLine: seed.reviewerLine ?? "Reviewed for evidence quality, scope, and plain-language accuracy.",
 		coiSummary: seed.coiSummary ?? "No conflicts of interest were disclosed for this seeded claim page.",

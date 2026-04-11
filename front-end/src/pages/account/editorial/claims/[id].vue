@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type {
 	Claim,
+	ClaimEvidenceSummary,
+	ClaimInstitutionalAnchor,
 	ClaimResponse,
 	ClaimRevision,
 	ClaimRevisionsResponse,
@@ -35,6 +37,8 @@ const claim = ref<Claim | null>(null);
 const revisions = ref<ClaimRevision[]>([]);
 const topics = ref<Topic[]>([]);
 const sourceRows = ref<ClaimSource[]>([]);
+const evidenceSummaryRows = ref<ClaimEvidenceSummary[]>([]);
+const institutionalAnchorRows = ref<ClaimInstitutionalAnchor[]>([]);
 
 const form = reactive({
 	topic: "",
@@ -78,6 +82,10 @@ function parseLines(value: string) {
 		.filter(Boolean);
 }
 
+function formatLines(value?: string[]) {
+	return (value || []).join("\n");
+}
+
 function formatDateInput(value?: string) {
 	if (!value) return "";
 	return new Date(value).toISOString().slice(0, 10);
@@ -115,7 +123,17 @@ function hydrateClaim(record: Claim | null) {
 	form.revisionNote = "";
 	sourceRows.value =
 		record?.sources?.map((source) => ({
-			...source
+			...source,
+			citationCheckedAt: formatDateInput(source.citationCheckedAt)
+		})) || [];
+	evidenceSummaryRows.value =
+		record?.evidenceSummaries?.map((summary) => ({
+			...summary,
+			limitations: [...(summary.limitations || [])]
+		})) || [];
+	institutionalAnchorRows.value =
+		record?.institutionalAnchors?.map((anchor) => ({
+			...anchor
 		})) || [];
 }
 
@@ -177,6 +195,23 @@ function claimPayload() {
 		inclusionRules: parseLines(form.inclusionRules),
 		exclusionRules: parseLines(form.exclusionRules),
 		appraisalTools: parseLines(form.appraisalTools),
+		evidenceSummaries: evidenceSummaryRows.value
+			.map((summary) => ({
+				question: summary.question.trim(),
+				population: summary.population?.trim() || "",
+				finding: summary.finding.trim(),
+				effectDirection: summary.effectDirection,
+				magnitude: summary.magnitude?.trim() || "",
+				certainty: summary.certainty,
+				limitations: (summary.limitations || []).map((item) => item.trim()).filter(Boolean)
+			}))
+			.filter((summary) => summary.question && summary.finding),
+		institutionalAnchors: institutionalAnchorRows.value
+			.map((anchor) => ({
+				name: anchor.name.trim(),
+				role: anchor.role.trim()
+			}))
+			.filter((anchor) => anchor.name && anchor.role),
 		authorLine: form.authorLine.trim(),
 		reviewerLine: form.reviewerLine.trim(),
 		coiSummary: form.coiSummary.trim(),
@@ -209,6 +244,12 @@ async function syncSources(claimId: string) {
 			year: source.year || undefined,
 			url: source.url?.trim() || "",
 			doi: source.doi?.trim() || "",
+			pmid: source.pmid?.trim() || "",
+			pmcid: source.pmcid?.trim() || "",
+			isAnchor: !!source.isAnchor,
+			appraisal: source.appraisal || "not_appraised",
+			citationStatus: source.citationStatus || "current",
+			citationCheckedAt: source.citationCheckedAt || undefined,
 			stance: source.stance,
 			note: source.note?.trim() || "",
 			order: source.order ?? 0
@@ -328,6 +369,12 @@ function addSource() {
 		kind: "context",
 		title: "",
 		publisher: "",
+		pmid: "",
+		pmcid: "",
+		isAnchor: false,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: "",
 		stance: "context",
 		note: "",
 		order: sourceRows.value.length
@@ -336,6 +383,38 @@ function addSource() {
 
 function removeSource(index: number) {
 	sourceRows.value.splice(index, 1);
+}
+
+function addEvidenceSummary() {
+	evidenceSummaryRows.value.push({
+		question: "",
+		population: "",
+		finding: "",
+		effectDirection: "unclear",
+		magnitude: "",
+		certainty: "low",
+		limitations: []
+	});
+}
+
+function removeEvidenceSummary(index: number) {
+	evidenceSummaryRows.value.splice(index, 1);
+}
+
+function updateEvidenceSummaryLimitations(index: number, event: Event) {
+	const target = event.target as HTMLTextAreaElement | null;
+	evidenceSummaryRows.value[index].limitations = parseLines(target?.value || "");
+}
+
+function addInstitutionalAnchor() {
+	institutionalAnchorRows.value.push({
+		name: "",
+		role: ""
+	});
+}
+
+function removeInstitutionalAnchor(index: number) {
+	institutionalAnchorRows.value.splice(index, 1);
 }
 
 watch(
@@ -530,6 +609,130 @@ watch(
 						<textarea v-model="form.appraisalTools" rows="4" />
 					</label>
 
+					<div class="field field--full structured-block">
+						<div class="structured-block__header">
+							<div>
+								<span class="field-label">Evidence summaries</span>
+								<p>One reusable summary object per key question or outcome on the page.</p>
+							</div>
+							<button class="button button--ghost" type="button" @click="addEvidenceSummary">
+								Add evidence summary
+							</button>
+						</div>
+
+						<div v-if="!evidenceSummaryRows.length" class="empty-state">
+							No evidence summaries attached yet.
+						</div>
+						<div v-else class="structured-list">
+							<article
+								v-for="(summary, index) in evidenceSummaryRows"
+								:key="`${summary.question}-${index}`"
+								class="structured-card"
+							>
+								<div class="structured-card__grid">
+									<label class="field field--full">
+										<span class="field-label">Question</span>
+										<input v-model="summary.question" type="text" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Population / context</span>
+										<input v-model="summary.population" type="text" />
+									</label>
+
+									<label class="field">
+										<span class="field-label">Effect direction</span>
+										<select v-model="summary.effectDirection">
+											<option value="supports">Supports bottom line</option>
+											<option value="mixed">Mixed</option>
+											<option value="unclear">Unclear</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Certainty</span>
+										<select v-model="summary.certainty">
+											<option value="high">High</option>
+											<option value="moderate">Moderate</option>
+											<option value="low">Low</option>
+											<option value="very_low">Very low</option>
+										</select>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Finding</span>
+										<textarea v-model="summary.finding" rows="3" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Magnitude / range</span>
+										<input v-model="summary.magnitude" type="text" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Limitations (one per line)</span>
+										<textarea
+											:value="formatLines(summary.limitations)"
+											rows="4"
+											@input="updateEvidenceSummaryLimitations(index, $event)"
+										/>
+									</label>
+								</div>
+
+								<button
+									class="button button--ghost button--danger"
+									type="button"
+									@click="removeEvidenceSummary(index)"
+								>
+									Remove evidence summary
+								</button>
+							</article>
+						</div>
+					</div>
+
+					<div class="field field--full structured-block">
+						<div class="structured-block__header">
+							<div>
+								<span class="field-label">Institutional anchors</span>
+								<p>Show which guideline or assessment bodies define the baseline for this topic.</p>
+							</div>
+							<button class="button button--ghost" type="button" @click="addInstitutionalAnchor">
+								Add anchor
+							</button>
+						</div>
+
+						<div v-if="!institutionalAnchorRows.length" class="empty-state">
+							No institutional anchors attached yet.
+						</div>
+						<div v-else class="structured-list">
+							<article
+								v-for="(anchor, index) in institutionalAnchorRows"
+								:key="`${anchor.name}-${index}`"
+								class="structured-card"
+							>
+								<div class="structured-card__grid">
+									<label class="field">
+										<span class="field-label">Institution</span>
+										<input v-model="anchor.name" type="text" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Role on the page</span>
+										<input v-model="anchor.role" type="text" />
+									</label>
+								</div>
+
+								<button
+									class="button button--ghost button--danger"
+									type="button"
+									@click="removeInstitutionalAnchor(index)"
+								>
+									Remove anchor
+								</button>
+							</article>
+						</div>
+					</div>
+
 					<label class="field field--full">
 						<span class="field-label">Prepared by</span>
 						<input
@@ -636,6 +839,46 @@ watch(
 								<label class="field">
 									<span class="field-label">DOI</span>
 									<input v-model="source.doi" type="text" />
+								</label>
+
+								<label class="field">
+									<span class="field-label">PMID</span>
+									<input v-model="source.pmid" type="text" />
+								</label>
+
+								<label class="field">
+									<span class="field-label">PMCID</span>
+									<input v-model="source.pmcid" type="text" />
+								</label>
+
+								<label class="field">
+									<span class="field-label">Appraisal</span>
+									<select v-model="source.appraisal">
+										<option value="high">High</option>
+										<option value="moderate">Moderate</option>
+										<option value="low">Low</option>
+										<option value="not_appraised">Not appraised</option>
+									</select>
+								</label>
+
+								<label class="field">
+									<span class="field-label">Citation status</span>
+									<select v-model="source.citationStatus">
+										<option value="current">Current</option>
+										<option value="corrected">Corrected</option>
+										<option value="retracted">Retracted</option>
+										<option value="expression_of_concern">Expression of concern</option>
+									</select>
+								</label>
+
+								<label class="field">
+									<span class="field-label">Citation checked</span>
+									<input v-model="source.citationCheckedAt" type="date" />
+								</label>
+
+								<label class="field field--checkbox">
+									<input v-model="source.isAnchor" type="checkbox" />
+									<span class="field-label">Anchor source</span>
 								</label>
 
 								<label class="field">
@@ -814,6 +1057,13 @@ watch(
 	grid-column: 1 / -1;
 }
 
+.field--checkbox {
+	grid-auto-flow: column;
+	justify-content: start;
+	align-items: center;
+	gap: 10px;
+}
+
 .field-label,
 .revision-card__meta {
 	font-size: 0.82rem;
@@ -832,9 +1082,49 @@ watch(
 	background: var(--consensus-field-surface);
 }
 
+.field--checkbox input {
+	width: auto;
+	margin: 0;
+}
+
 .sources-panel {
 	display: grid;
 	gap: 14px;
+}
+
+.structured-block,
+.structured-list {
+	display: grid;
+	gap: 14px;
+}
+
+.structured-block__header {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: end;
+}
+
+.structured-block__header p {
+	margin: 4px 0 0;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.structured-card {
+	padding: 18px;
+	border-radius: 18px;
+	border: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-field-surface);
+	display: grid;
+	gap: 12px;
+}
+
+.structured-card__grid {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .section-heading {
@@ -902,7 +1192,8 @@ watch(
 
 @media (max-width: 720px) {
 	.form-grid,
-	.source-editor__grid {
+	.source-editor__grid,
+	.structured-card__grid {
 		grid-template-columns: 1fr;
 	}
 }

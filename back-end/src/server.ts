@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
+import type { IClaimEvidenceSummary, IClaimInstitutionalAnchor } from "./models/schemas/Claim.js";
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
 import { ClaimSource } from "./models/schemas/ClaimSource.js";
@@ -229,6 +230,10 @@ async function main() {
 			.map(item => (item.length > maxLength ? item.slice(0, maxLength).trim() : item));
 	}
 
+	function normalizeBoolean(value: unknown) {
+		return value === true || value === "true" || value === 1 || value === "1";
+	}
+
 	function currentActor(req: express.Request) {
 		return getActorFromRequest(req);
 	}
@@ -247,7 +252,7 @@ async function main() {
 		return "frontier";
 	}
 
-	function normalizeEvidenceCertainty(value: unknown) {
+	function normalizeEvidenceCertainty(value: unknown): IClaimEvidenceSummary["certainty"] {
 		const normalized = normalizeText(value, 24);
 		if (normalized === "high") return "high";
 		if (normalized === "moderate") return "moderate";
@@ -270,6 +275,65 @@ async function main() {
 		const numeric = Number(value);
 		if (!Number.isFinite(numeric)) return fallback;
 		return Math.min(Math.max(Math.round(numeric), min), max);
+	}
+
+	function normalizeSourceAppraisal(value: unknown) {
+		const normalized = normalizeText(value, 32);
+		if (normalized === "high") return "high";
+		if (normalized === "moderate") return "moderate";
+		if (normalized === "low") return "low";
+		return "not_appraised";
+	}
+
+	function normalizeCitationStatus(value: unknown) {
+		const normalized = normalizeText(value, 40);
+		if (normalized === "corrected") return "corrected";
+		if (normalized === "retracted") return "retracted";
+		if (normalized === "expression_of_concern") return "expression_of_concern";
+		return "current";
+	}
+
+	function normalizeEvidenceDirection(value: unknown): IClaimEvidenceSummary["effectDirection"] {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "supports") return "supports";
+		if (normalized === "mixed") return "mixed";
+		return "unclear";
+	}
+
+	function normalizeEvidenceSummaries(value: unknown): IClaimEvidenceSummary[] {
+		if (!Array.isArray(value)) return [];
+		return value
+			.slice(0, 10)
+			.map((item) => {
+				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const question = normalizeText(record.question, 240);
+				const finding = normalizeText(record.finding, 1200);
+				if (!question || !finding) return null;
+				return {
+					question,
+					population: normalizeText(record.population, 200),
+					finding,
+					effectDirection: normalizeEvidenceDirection(record.effectDirection),
+					magnitude: normalizeText(record.magnitude, 280),
+					certainty: record.certainty ? normalizeEvidenceCertainty(record.certainty) : undefined,
+					limitations: normalizeList(record.limitations, 6, 240)
+				};
+			})
+			.filter((item): item is NonNullable<typeof item> => Boolean(item));
+	}
+
+	function normalizeInstitutionalAnchors(value: unknown): IClaimInstitutionalAnchor[] {
+		if (!Array.isArray(value)) return [];
+		return value
+			.slice(0, 8)
+			.map((item) => {
+				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const name = normalizeText(record.name, 160);
+				const role = normalizeText(record.role, 280);
+				if (!name || !role) return null;
+				return { name, role };
+			})
+			.filter((item): item is NonNullable<typeof item> => Boolean(item));
 	}
 
 	async function findTopicOr404(res: express.Response, slug: string) {
@@ -345,6 +409,8 @@ async function main() {
 					inclusionRules: claim.inclusionRules,
 					exclusionRules: claim.exclusionRules,
 					appraisalTools: claim.appraisalTools,
+					evidenceSummaries: claim.evidenceSummaries,
+					institutionalAnchors: claim.institutionalAnchors,
 					authorLine: claim.authorLine,
 					reviewerLine: claim.reviewerLine,
 					coiSummary: claim.coiSummary,
@@ -366,6 +432,12 @@ async function main() {
 					year: source.year,
 					url: source.url,
 					doi: source.doi,
+					pmid: source.pmid,
+					pmcid: source.pmcid,
+					isAnchor: source.isAnchor,
+					appraisal: source.appraisal,
+					citationStatus: source.citationStatus,
+					citationCheckedAt: source.citationCheckedAt,
 					stance: source.stance,
 					note: source.note,
 					order: source.order
@@ -1172,6 +1244,8 @@ async function main() {
 				inclusionRules: normalizeList(req.body?.inclusionRules, 8, 240),
 				exclusionRules: normalizeList(req.body?.exclusionRules, 8, 240),
 				appraisalTools: normalizeList(req.body?.appraisalTools, 8, 180),
+				evidenceSummaries: normalizeEvidenceSummaries(req.body?.evidenceSummaries),
+				institutionalAnchors: normalizeInstitutionalAnchors(req.body?.institutionalAnchors),
 				authorLine: normalizeText(req.body?.authorLine, 240),
 				reviewerLine: normalizeText(req.body?.reviewerLine, 240),
 				coiSummary: normalizeText(req.body?.coiSummary, 1000),
@@ -1285,6 +1359,12 @@ async function main() {
 			}
 			if (req.body?.appraisalTools !== undefined) {
 				claim.appraisalTools = normalizeList(req.body?.appraisalTools, 8, 180);
+			}
+			if (req.body?.evidenceSummaries !== undefined) {
+				claim.evidenceSummaries = normalizeEvidenceSummaries(req.body?.evidenceSummaries);
+			}
+			if (req.body?.institutionalAnchors !== undefined) {
+				claim.institutionalAnchors = normalizeInstitutionalAnchors(req.body?.institutionalAnchors);
 			}
 			if (req.body?.authorLine !== undefined) {
 				claim.authorLine = normalizeText(req.body?.authorLine, 240);
@@ -1451,6 +1531,12 @@ async function main() {
 					: undefined,
 				url: normalizeText(req.body?.url, 500),
 				doi: normalizeText(req.body?.doi, 200),
+				pmid: normalizeText(req.body?.pmid, 40),
+				pmcid: normalizeText(req.body?.pmcid, 40),
+				isAnchor: normalizeBoolean(req.body?.isAnchor),
+				appraisal: normalizeSourceAppraisal(req.body?.appraisal),
+				citationStatus: normalizeCitationStatus(req.body?.citationStatus),
+				citationCheckedAt: normalizeDate(req.body?.citationCheckedAt),
 				stance: normalizeText(req.body?.stance, 24) || "context",
 				note: normalizeText(req.body?.note, 1000),
 				order: normalizeInteger(req.body?.order, 0, 999, 0)
@@ -1491,6 +1577,20 @@ async function main() {
 			}
 			if (req.body?.url !== undefined) source.url = normalizeText(req.body?.url, 500);
 			if (req.body?.doi !== undefined) source.doi = normalizeText(req.body?.doi, 200);
+			if (req.body?.pmid !== undefined) source.pmid = normalizeText(req.body?.pmid, 40);
+			if (req.body?.pmcid !== undefined) source.pmcid = normalizeText(req.body?.pmcid, 40);
+			if (req.body?.isAnchor !== undefined) source.isAnchor = normalizeBoolean(req.body?.isAnchor);
+			if (req.body?.appraisal !== undefined) {
+				source.appraisal = normalizeSourceAppraisal(req.body?.appraisal) as typeof source.appraisal;
+			}
+			if (req.body?.citationStatus !== undefined) {
+				source.citationStatus = normalizeCitationStatus(
+					req.body?.citationStatus
+				) as typeof source.citationStatus;
+			}
+			if (req.body?.citationCheckedAt !== undefined) {
+				source.citationCheckedAt = normalizeDate(req.body?.citationCheckedAt);
+			}
 			if (req.body?.stance !== undefined)
 				source.stance = normalizeText(req.body?.stance, 24) as typeof source.stance;
 			if (req.body?.note !== undefined) source.note = normalizeText(req.body?.note, 1000);
