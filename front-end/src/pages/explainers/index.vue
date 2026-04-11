@@ -37,6 +37,14 @@ useHead({
 						<li v-for="point in explainer.keyPoints" :key="point">{{ point }}</li>
 					</ul>
 				</section>
+				<div class="explainer-card__actions">
+					<span class="explainer-card__meta">
+						{{ explainer.relatedMisconceptions.length }} linked module{{
+							explainer.relatedMisconceptions.length === 1 ? "" : "s"
+						}}
+					</span>
+					<NuxtLink class="text-link" :to="`/explainers/${explainer.slug}`">Open explainer</NuxtLink>
+				</div>
 			</article>
 		</section>
 
@@ -51,6 +59,7 @@ useHead({
 			</div>
 			<div class="explainer-callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">View misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Read editorial standards</NuxtLink>
 			</div>
 		</section>
@@ -124,6 +133,25 @@ useHead({
 	padding-left: 20px;
 	display: grid;
 	gap: 8px;
+}
+
+.explainer-card__actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.explainer-card__meta {
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+}
+
+.text-link {
+	font-weight: 600;
+	text-decoration: none;
+	color: var(--consensus-interactive);
 }
 
 .explainer-callout {

@@ -4,6 +4,8 @@ import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { getExplainer } from "~/data/explainers";
+import { getMisconceptionModulesBySlugs } from "~/data/misconceptions";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -68,6 +70,7 @@ const filteredQuestions = computed(() => {
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
 const surveillanceSpec = computed(() => claim.value?.surveillanceSpec);
+const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
 const sourceStackSummary = computed(() => {
 	const sources = claim.value?.sources ?? [];
 	const anchorCount = sources.filter((source) => source.isAnchor).length;
@@ -236,6 +239,10 @@ function formatChangeKind(kind?: string) {
 	if (kind === "correction") return "Correction";
 	if (kind === "review") return "Review";
 	return "Update";
+}
+
+function explainerTitle(slug: string) {
+	return getExplainer(slug)?.title || slug;
 }
 
 function formatSourceKind(kind: string) {
@@ -442,6 +449,7 @@ async function flagQuestion(questionId: string) {
 			<div class="reading-guide__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 			</div>
@@ -480,6 +488,48 @@ async function flagQuestion(questionId: string) {
 					<li v-for="item in claim?.misconceptions || []" :key="item">{{ item }}</li>
 				</ul>
 			</details>
+
+			<section v-if="misconceptionModules.length" class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Misconception modules</p>
+						<h2>The recurring interpretation mistakes attached to this claim</h2>
+					</div>
+					<p>
+						These are reusable corrections. Use the linked explainer if you need the fuller method lesson.
+					</p>
+				</div>
+
+				<div class="module-grid">
+					<article v-for="item in misconceptionModules" :key="item.slug" class="module-card">
+						<div class="module-card__top">
+							<div>
+								<p class="eyebrow">Module</p>
+								<h3>{{ item.title }}</h3>
+							</div>
+						</div>
+						<p>{{ item.diagnosis }}</p>
+						<p><strong>Short correction:</strong> {{ item.shortCorrection }}</p>
+						<div>
+							<p class="field-label">Quick check</p>
+							<ul class="plain-list plain-list--tight">
+								<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
+							</ul>
+						</div>
+						<div class="module-card__links">
+							<NuxtLink class="text-link" to="/misconceptions">Module library</NuxtLink>
+							<NuxtLink
+								v-for="slug in item.relatedExplainers"
+								:key="slug"
+								class="text-link"
+								:to="`/explainers/${slug}`"
+							>
+								{{ explainerTitle(slug) }}
+							</NuxtLink>
+						</div>
+					</article>
+				</div>
+			</section>
 
 			<section class="content-panel">
 				<div class="section-heading">
@@ -1123,6 +1173,38 @@ async function flagQuestion(questionId: string) {
 	gap: 18px;
 }
 
+.module-grid {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.module-card {
+	padding: 16px;
+	border-radius: 18px;
+	border: 1px solid color-mix(in srgb, var(--consensus-caution) 34%, var(--consensus-soft-line));
+	background: color-mix(in srgb, var(--consensus-caution) 8%, var(--consensus-field-surface));
+	display: grid;
+	gap: 12px;
+}
+
+.module-card p {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.65;
+}
+
+.module-card h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+}
+
+.module-card__links {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
 .source-group {
 	display: grid;
 	gap: 12px;
@@ -1338,6 +1420,12 @@ async function flagQuestion(questionId: string) {
 	border-color: rgba(184, 61, 46, 0.3);
 }
 
+.text-link {
+	font-weight: 600;
+	text-decoration: none;
+	color: var(--consensus-interactive);
+}
+
 .change-log__meta {
 	display: flex;
 	gap: 12px;
@@ -1355,7 +1443,8 @@ async function flagQuestion(questionId: string) {
 	.methods-grid,
 	.review-grid,
 	.anchor-grid,
-	.evidence-summary-list {
+	.evidence-summary-list,
+	.module-grid {
 		grid-template-columns: 1fr;
 	}
 

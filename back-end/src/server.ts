@@ -423,6 +423,7 @@ async function main() {
 					openQuestions: claim.openQuestions,
 					whatWouldChangeMinds: claim.whatWouldChangeMinds,
 					misconceptions: claim.misconceptions,
+					misconceptionTags: claim.misconceptionTags,
 					editorSummary: claim.editorSummary,
 					searchDatabases: claim.searchDatabases,
 					searchCutoffAt: claim.searchCutoffAt,
@@ -1304,6 +1305,7 @@ async function main() {
 				openQuestions: normalizeList(req.body?.openQuestions, 12, 280),
 				whatWouldChangeMinds: normalizeList(req.body?.whatWouldChangeMinds, 12, 280),
 				misconceptions: normalizeList(req.body?.misconceptions, 12, 280),
+				misconceptionTags: normalizeList(req.body?.misconceptionTags, 8, 64),
 				editorSummary: normalizeText(req.body?.editorSummary, 4000),
 				searchDatabases: normalizeList(req.body?.searchDatabases, 8, 120),
 				searchCutoffAt: normalizeDate(req.body?.searchCutoffAt),
@@ -1408,6 +1410,9 @@ async function main() {
 			}
 			if (req.body?.misconceptions !== undefined) {
 				claim.misconceptions = normalizeList(req.body?.misconceptions, 12, 280);
+			}
+			if (req.body?.misconceptionTags !== undefined) {
+				claim.misconceptionTags = normalizeList(req.body?.misconceptionTags, 8, 64);
 			}
 			if (req.body?.editorSummary !== undefined) {
 				claim.editorSummary = normalizeText(req.body?.editorSummary, 4000);

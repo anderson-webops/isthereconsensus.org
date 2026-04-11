@@ -106,6 +106,7 @@ export interface Claim extends ClaimSummary {
 	openQuestions: string[];
 	whatWouldChangeMinds: string[];
 	misconceptions: string[];
+	misconceptionTags?: string[];
 	editorSummary?: string;
 	searchDatabases?: string[];
 	inclusionRules?: string[];

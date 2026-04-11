@@ -53,6 +53,7 @@ export interface SeedClaim {
 	openQuestions: string[];
 	whatWouldChangeMinds: string[];
 	misconceptions: string[];
+	misconceptionTags?: string[];
 	editorSummary: string;
 	sources: SeedClaimSource[];
 	agreementLevel?: ClaimAgreementLevel;
@@ -86,6 +87,7 @@ export interface CompleteSeedClaim extends SeedClaim {
 	appraisalTools: string[];
 	evidenceSummaries: IClaimEvidenceSummary[];
 	institutionalAnchors: IClaimInstitutionalAnchor[];
+	misconceptionTags: string[];
 	authorLine: string;
 	reviewerLine: string;
 	coiSummary: string;
@@ -303,6 +305,73 @@ function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 	return "not_appraised";
 }
 
+function defaultMisconceptionTags(seed: SeedClaim) {
+	const tags = new Set<string>();
+
+	if (seed.topicSlug === "health-and-medicine") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("relative-risk-can-mislead");
+		tags.add("anecdotes-are-not-population-evidence");
+		tags.add("mechanism-is-not-real-world-effect");
+		tags.add("scientists-changing-their-minds-is-normal");
+	}
+	if (seed.topicSlug === "nutrition-and-diet") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("correlation-isnt-causation");
+		tags.add("relative-risk-can-mislead");
+		tags.add("cherry-picking-distorts-the-evidence");
+		tags.add("mechanism-is-not-real-world-effect");
+		tags.add("hazard-is-not-the-same-as-risk");
+	}
+	if (seed.topicSlug === "climate-and-environment") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("cherry-picking-distorts-the-evidence");
+		tags.add("false-balance-misleads");
+		tags.add("uncertainty-isnt-ignorance");
+		tags.add("scientists-changing-their-minds-is-normal");
+	}
+	if (seed.topicSlug === "genetics-and-biotechnology") {
+		tags.add("mechanism-is-not-real-world-effect");
+		tags.add("hazard-is-not-the-same-as-risk");
+		tags.add("false-balance-misleads");
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("uncertainty-isnt-ignorance");
+	}
+	if (seed.topicSlug === "neuroscience-and-psychology") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("correlation-isnt-causation");
+		tags.add("p-values-are-not-the-whole-story");
+		tags.add("preprints-are-preliminary");
+		tags.add("scientists-changing-their-minds-is-normal");
+		tags.add("mechanism-is-not-real-world-effect");
+	}
+	if (seed.topicSlug === "historical-case-studies") {
+		tags.add("scientists-changing-their-minds-is-normal");
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("cherry-picking-distorts-the-evidence");
+		tags.add("false-balance-misleads");
+	}
+
+	const title = seed.title.toLowerCase();
+	if (title.includes("autism") || title.includes("cause")) {
+		tags.add("correlation-isnt-causation");
+		tags.add("anecdotes-are-not-population-evidence");
+	}
+	if (title.includes("risk") || title.includes("safe") || title.includes("danger")) {
+		tags.add("relative-risk-can-mislead");
+		tags.add("hazard-is-not-the-same-as-risk");
+	}
+	if (title.includes("climate") || title.includes("warming")) {
+		tags.add("false-balance-misleads");
+		tags.add("uncertainty-isnt-ignorance");
+	}
+	if (title.includes("study")) {
+		tags.add("one-study-doesnt-overturn-evidence");
+	}
+
+	return Array.from(tags).slice(0, 6);
+}
+
 function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 	return {
 		...seed,
@@ -346,6 +415,7 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 		],
 		evidenceSummaries: seed.evidenceSummaries ?? defaultEvidenceSummaries(seed),
 		institutionalAnchors: seed.institutionalAnchors ?? defaultInstitutionalAnchors(seed.topicSlug),
+		misconceptionTags: seed.misconceptionTags ?? defaultMisconceptionTags(seed),
 		authorLine: seed.authorLine ?? "Prepared by the Is There Consensus editorial desk.",
 		reviewerLine: seed.reviewerLine ?? "Reviewed for evidence quality, scope, and plain-language accuracy.",
 		coiSummary: seed.coiSummary ?? "No conflicts of interest were disclosed for this seeded claim page.",

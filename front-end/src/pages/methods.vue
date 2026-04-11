@@ -85,6 +85,12 @@ const evidenceOps = [
 	"Keep a visible public trail: source tiers, identifiers, search cutoff, review dates, and change log."
 ];
 
+const misconceptionRules = [
+	"Attach short misconception modules when the same interpretation error keeps reappearing on a claim page.",
+	"Keep the short correction neutral, reusable, and tied to one fuller explainer instead of turning it into a custom argument every time.",
+	"Use the module library to distinguish recurring reasoning mistakes from claim-specific evidence disputes."
+];
+
 useHead({
 	title: "Methods playbook - Is There Consensus?"
 });
@@ -175,6 +181,16 @@ useHead({
 			</ul>
 		</section>
 
+		<section class="methods-panel methods-panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>Misconception module discipline</h2>
+				<p>The site should reuse the same interpretation corrections instead of rewriting them ad hoc.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in misconceptionRules" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
 		<section class="methods-callout">
 			<div>
 				<p class="eyebrow">Why this matters</p>
@@ -186,6 +202,7 @@ useHead({
 			</div>
 			<div class="methods-callout__actions">
 				<NuxtLink class="button button--primary" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>

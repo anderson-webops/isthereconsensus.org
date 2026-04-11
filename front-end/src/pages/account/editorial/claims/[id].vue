@@ -55,6 +55,7 @@ const form = reactive({
 	openQuestions: "",
 	whatWouldChangeMinds: "",
 	misconceptions: "",
+	misconceptionTags: "",
 	editorSummary: "",
 	searchDatabases: "",
 	searchCutoffAt: "",
@@ -113,6 +114,7 @@ function hydrateClaim(record: Claim | null) {
 	form.openQuestions = (record?.openQuestions || []).join("\n");
 	form.whatWouldChangeMinds = (record?.whatWouldChangeMinds || []).join("\n");
 	form.misconceptions = (record?.misconceptions || []).join("\n");
+	form.misconceptionTags = (record?.misconceptionTags || []).join("\n");
 	form.editorSummary = record?.editorSummary || "";
 	form.searchDatabases = (record?.searchDatabases || []).join("\n");
 	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
@@ -201,6 +203,7 @@ function claimPayload() {
 		openQuestions: parseLines(form.openQuestions),
 		whatWouldChangeMinds: parseLines(form.whatWouldChangeMinds),
 		misconceptions: parseLines(form.misconceptions),
+		misconceptionTags: parseLines(form.misconceptionTags),
 		editorSummary: form.editorSummary.trim(),
 		searchDatabases: parseLines(form.searchDatabases),
 		searchCutoffAt: form.searchCutoffAt || undefined,
@@ -856,6 +859,15 @@ watch(
 					<label class="field field--full">
 						<span class="field-label">Misconceptions (one point per line)</span>
 						<textarea v-model="form.misconceptions" rows="5" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Misconception module tags (one per line)</span>
+						<textarea
+							v-model="form.misconceptionTags"
+							rows="4"
+							placeholder="one-study-doesnt-overturn-evidence&#10;correlation-isnt-causation"
+						/>
 					</label>
 				</div>
 

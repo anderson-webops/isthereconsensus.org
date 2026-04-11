@@ -56,6 +56,7 @@ export interface IClaim {
 	openQuestions: string[];
 	whatWouldChangeMinds: string[];
 	misconceptions: string[];
+	misconceptionTags: string[];
 	editorSummary?: string;
 	searchDatabases: string[];
 	searchCutoffAt?: Date;
@@ -121,6 +122,7 @@ const claimSchema: Schema<IClaim> = new Schema(
 		openQuestions: { type: [String], default: [] },
 		whatWouldChangeMinds: { type: [String], default: [] },
 		misconceptions: { type: [String], default: [] },
+		misconceptionTags: { type: [String], default: [] },
 		editorSummary: { type: String, default: "", trim: true, maxlength: 4000 },
 		searchDatabases: { type: [String], default: [] },
 		searchCutoffAt: { type: Date },

@@ -43,6 +43,7 @@ const trustSignals = [
 	"Consensus band and confidence score",
 	"Source stack counts by type, anchor-source labels, and DOI/PMID visibility where available",
 	"Outcome-level evidence summaries and institutional anchor metadata",
+	"Reusable misconception modules linked to fuller explainers when the same interpretation error keeps repeating",
 	"Plain-language bottom line before the deeper nuance",
 	"A clear statement that public sentiment is not the same thing as expert consensus"
 ];
@@ -202,6 +203,7 @@ useHead({
 			</div>
 			<div class="standards-callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>

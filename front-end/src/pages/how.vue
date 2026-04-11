@@ -31,6 +31,12 @@ const methodLinks = [
 		cta: "Open explainers"
 	},
 	{
+		title: "Misconception modules",
+		body: "Use these when the same interpretation mistake keeps repeating across claims, such as one-study hype, false balance, or relative-risk confusion.",
+		to: "/misconceptions",
+		cta: "Open modules"
+	},
+	{
 		title: "Editorial standards",
 		body: "Use this when you want to know what the site counts as settled enough to publish, how updates work, and why source counts and review dates stay visible.",
 		to: "/standards",
@@ -126,6 +132,7 @@ const mindChangers = [
 			<div class="how-page__cta-actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Read explainers</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">Open modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Open governance</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 			</div>

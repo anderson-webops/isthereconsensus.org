@@ -275,6 +275,7 @@ async function flagQuestion(questionId: string) {
 			</div>
 			<div class="resource-strip__actions">
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>
 		</section>
