@@ -43,6 +43,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<NuxtLink to="/explainers">Explainers</NuxtLink>
 				<NuxtLink to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink to="/community-guidelines">Community guidelines</NuxtLink>
+				<NuxtLink to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink to="/terms">Terms of service</NuxtLink>
 				<NuxtLink to="/privacy">Privacy policy</NuxtLink>
 				<NuxtLink to="/how">How it works</NuxtLink>

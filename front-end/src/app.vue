@@ -2,23 +2,24 @@
 import { appDescription, appName } from "~/constants";
 
 const siteUrl = "https://isthereconsensus.org";
+const accountRoutePattern = /^\/account(?:\/|$)/;
 const route = useRoute();
 const canonicalUrl = computed(() => new URL(route.path || "/", `${siteUrl}/`).toString());
-const noindexRoute = computed(() => /^\/account(?:\/|$)/.test(route.path));
+const noindexRoute = computed(() => accountRoutePattern.test(route.path));
 const structuredData = [
 	{
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		"description": appDescription,
-		"name": appName,
-		"url": siteUrl
+		description: appDescription,
+		name: appName,
+		url: siteUrl
 	},
 	{
 		"@context": "https://schema.org",
 		"@type": "WebSite",
-		"description": appDescription,
-		"name": appName,
-		"url": siteUrl
+		description: appDescription,
+		name: appName,
+		url: siteUrl
 	}
 ];
 
@@ -49,16 +50,16 @@ useHead(() => ({
 	}))
 }));
 
-useSeoMeta(() => ({
+useSeoMeta({
 	description: appDescription,
 	ogDescription: appDescription,
 	ogSiteName: appName,
 	ogType: "website",
-	ogUrl: canonicalUrl.value,
+	ogUrl: () => canonicalUrl.value,
 	twitterCard: "summary_large_image",
 	twitterDescription: appDescription,
 	twitterTitle: appName
-}));
+});
 </script>
 
 <template>

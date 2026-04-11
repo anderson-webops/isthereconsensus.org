@@ -1,9 +1,15 @@
+import type { H3Event } from "h3";
+
+const httpPattern = /^https?:\/\//;
+const trailingSlashPattern = /\/$/;
+const leadingSlashPattern = /^\//;
+
 function xmlEscape(value: string) {
 	return value
 		.replaceAll("&", "&amp;")
 		.replaceAll("<", "&lt;")
 		.replaceAll(">", "&gt;")
-		.replaceAll("\"", "&quot;")
+		.replaceAll('"', "&quot;")
 		.replaceAll("'", "&apos;");
 }
 
@@ -11,15 +17,16 @@ function unique<T>(values: T[]) {
 	return Array.from(new Set(values));
 }
 
-function resolveApiBase(event: Parameters<typeof defineEventHandler>[0]) {
+function resolveApiBase(event: H3Event) {
 	const config = useRuntimeConfig(event);
 	const requestOrigin = getRequestURL(event).origin;
 	const configured = String(config.apiInternalBase || config.public.apiBase || "/api");
 
-	if (/^https?:\/\//.test(configured))
-		return configured.replace(/\/$/, "");
+	if (httpPattern.test(configured)) return configured.replace(trailingSlashPattern, "");
 
-	return new URL(configured.replace(/^\//, ""), `${requestOrigin}/`).toString().replace(/\/$/, "");
+	return new URL(configured.replace(leadingSlashPattern, ""), `${requestOrigin}/`)
+		.toString()
+		.replace(trailingSlashPattern, "");
 }
 
 export default defineEventHandler(async (event) => {
@@ -45,7 +52,9 @@ export default defineEventHandler(async (event) => {
 		const topicRoutes = topics.map(({ slug }) => `/consensus/${slug}`);
 		const claimRouteGroups = await Promise.all(
 			topics.map(async ({ slug }) => {
-				const claimsResponse = await $fetch<{ claims?: Array<{ slug: string }> }>(`${apiBase}/topics/${slug}/claims`);
+				const claimsResponse = await $fetch<{ claims?: Array<{ slug: string }> }>(
+					`${apiBase}/topics/${slug}/claims`
+				);
 				return (claimsResponse.claims ?? []).map(({ slug: claimSlug }) => `/consensus/${slug}/${claimSlug}`);
 			})
 		);

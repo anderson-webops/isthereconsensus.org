@@ -13,6 +13,18 @@ const actionState = ref("");
 const errorMessage = ref("");
 const claims = ref<ClaimSummary[]>([]);
 const unassignedQuestions = ref<Question[]>([]);
+const workflowGuide = [
+	"Link to an existing claim when the proposition and scope are already covered and the new question mostly needs routing.",
+	"Create a new draft claim when the proposition needs its own evidence base, definitions, or expert pool.",
+	"Mark duplicate only when the proposition, scope, and practical answer are already represented elsewhere.",
+	"Escalate safety, legal, or privacy issues to admin handling instead of leaving them in the normal intake queue."
+];
+const moderationGuide = [
+	"Start with the smallest accurate intervention: relabel, merge, or clarify before you escalate to restrictions.",
+	"Use topic-specific controls when the problem is localized to one claim area rather than sitewide abuse.",
+	"Treat factual correction requests differently from conduct appeals; they route into revision review, not just moderation.",
+	"Keep the canonical page stable while public threads gather evidence or flag problems."
+];
 
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const isAdmin = computed(() => role.value === "admin");
@@ -239,6 +251,41 @@ watch(
 					<span>Your access</span>
 					<strong>{{ isAdmin ? "Admin" : "Verified expert" }}</strong>
 				</article>
+			</section>
+
+			<section class="editorial-grid editorial-grid--guide">
+				<section class="editorial-panel">
+					<div class="section-heading section-heading--tight">
+						<div>
+							<p class="eyebrow">Routing guide</p>
+							<h2>How to route incoming questions</h2>
+						</div>
+						<p>These rules keep the site from creating multiple competing answers to the same claim.</p>
+					</div>
+					<ul class="guide-list">
+						<li v-for="item in workflowGuide" :key="item">{{ item }}</li>
+					</ul>
+				</section>
+
+				<section class="editorial-panel">
+					<div class="section-heading section-heading--tight">
+						<div>
+							<p class="eyebrow">Moderation guide</p>
+							<h2>How to handle conflict without flattening the workflow</h2>
+						</div>
+						<p>Community discussion is useful, but canonical pages should not become live edit wars.</p>
+					</div>
+					<ul class="guide-list">
+						<li v-for="item in moderationGuide" :key="item">{{ item }}</li>
+					</ul>
+					<div class="editorial-panel__links">
+						<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
+						<NuxtLink class="button button--ghost" to="/community-guidelines"
+							>Community guidelines</NuxtLink
+						>
+						<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
+					</div>
+				</section>
 			</section>
 
 			<section class="editorial-panel">
@@ -515,6 +562,21 @@ watch(
 	gap: 14px;
 }
 
+.guide-list {
+	margin: 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 10px;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.editorial-panel__links {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
 .pressure-grid {
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -585,6 +647,10 @@ watch(
 	display: grid;
 	gap: 16px;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.editorial-grid--guide {
+	align-items: start;
 }
 
 .button {

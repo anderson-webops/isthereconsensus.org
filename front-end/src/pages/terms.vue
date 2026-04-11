@@ -172,6 +172,11 @@ useHead({
 					editorial workflow.
 				</p>
 				<p>
+					The public-facing conduct rules and moderation model are described in the
+					<NuxtLink to="/community-guidelines">Community Guidelines</NuxtLink> and
+					<NuxtLink to="/governance">Governance and Workflow</NuxtLink> pages.
+				</p>
+				<p>
 					We may suspend or terminate accounts or editorial access if we believe a user has violated these
 					terms, created legal risk, attempted to manipulate the site, or interfered with normal operations.
 				</p>
@@ -202,6 +207,10 @@ useHead({
 				<p>
 					The site discusses health, medicine, nutrition, psychology, climate, and other consequential topics.
 					That does not make the site a substitute for a licensed professional who knows your circumstances.
+				</p>
+				<p>
+					The public corrections path, including how factual changes are labeled and surfaced, is described in
+					the <NuxtLink to="/corrections">Corrections Policy</NuxtLink>.
 				</p>
 				<p>
 					If you believe you are experiencing a medical or mental health emergency, do not rely on the site.
@@ -300,6 +309,8 @@ useHead({
 				</p>
 			</div>
 			<div class="terms-callout__actions">
+				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/privacy">Privacy policy</NuxtLink>
 				<NuxtLink class="button button--primary" to="/account">Account</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>

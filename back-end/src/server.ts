@@ -1,14 +1,14 @@
+import type { IClaimEvidenceSummary, IClaimInstitutionalAnchor } from "./models/schemas/Claim.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import express from "express";
-import mongoose from "mongoose";
 
+import mongoose from "mongoose";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
-import type { IClaimEvidenceSummary, IClaimInstitutionalAnchor } from "./models/schemas/Claim.js";
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
 import { ClaimSource } from "./models/schemas/ClaimSource.js";

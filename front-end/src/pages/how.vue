@@ -35,6 +35,12 @@ const methodLinks = [
 		body: "Use this when you want to know what the site counts as settled enough to publish, how updates work, and why source counts and review dates stay visible.",
 		to: "/standards",
 		cta: "Open standards"
+	},
+	{
+		title: "Governance and workflow",
+		body: "Use this when you want the editorial pipeline, role boundaries, routing rules, and moderation model that sit behind the public claim pages.",
+		to: "/governance",
+		cta: "Open governance"
 	}
 ];
 
@@ -120,6 +126,7 @@ const mindChangers = [
 			<div class="how-page__cta-actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Read explainers</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/governance">Open governance</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 			</div>
 		</section>

@@ -168,16 +168,16 @@ useHead({
 	],
 	script: [
 		{
-			children: JSON.stringify({
+			innerHTML: JSON.stringify({
 				"@context": "https://schema.org",
 				"@type": "FAQPage",
-				"mainEntity": faqEntries.map((entry) => ({
+				mainEntity: faqEntries.map((entry) => ({
 					"@type": "Question",
-					"acceptedAnswer": {
+					acceptedAnswer: {
 						"@type": "Answer",
-						"text": entry.answer
+						text: entry.answer
 					},
-					"name": entry.question
+					name: entry.question
 				}))
 			}),
 			key: "faq-jsonld",

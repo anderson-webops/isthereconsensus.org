@@ -5,6 +5,7 @@
 	},
 	"references": [],
 	"include": [
+		"server/**/*.ts",
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",

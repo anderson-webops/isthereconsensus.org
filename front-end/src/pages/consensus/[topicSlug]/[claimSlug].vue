@@ -162,18 +162,18 @@ const sourceGroups = computed(() => {
 		.filter((group) => group.items.length > 0);
 });
 
-useSeoMeta(() => ({
-	description: pageDescription.value,
-	ogDescription: pageDescription.value,
+useSeoMeta({
+	description: () => pageDescription.value,
+	ogDescription: () => pageDescription.value,
 	ogSiteName: "Is There Consensus",
-	ogTitle: claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus",
+	ogTitle: () => (claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus"),
 	ogType: "article",
-	ogUrl: pageUrl.value,
-	title: claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?",
+	ogUrl: () => pageUrl.value,
+	title: () => (claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?"),
 	twitterCard: "summary_large_image",
-	twitterDescription: pageDescription.value,
-	twitterTitle: claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus"
-}));
+	twitterDescription: () => pageDescription.value,
+	twitterTitle: () => (claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus")
+});
 
 useHead(() => ({
 	link: [
@@ -828,12 +828,14 @@ async function flagQuestion(questionId: string) {
 
 					<div class="question-card__actions">
 						<select v-model="flagReason[question._id]" class="flag-select">
-							<option value="low-quality">Low quality</option>
+							<option value="low-quality">Low quality / unsupported</option>
 							<option value="off-topic">Off topic</option>
 							<option value="duplicate">Duplicate</option>
 							<option value="misleading">Misleading</option>
-							<option value="needs-sources">Needs sources</option>
-							<option value="abusive">Abusive</option>
+							<option value="spam">Spam / manipulation</option>
+							<option value="harassment">Harassment / abuse</option>
+							<option value="privacy">Privacy / doxxing</option>
+							<option value="legal">Legal concern</option>
 						</select>
 						<input
 							v-model="flagNote[question._id]"
