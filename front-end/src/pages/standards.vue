@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { sourceStandardList } from "~/data/sourceStandards";
 
 const sourceStack = [
-	"Systematic reviews and meta-analyses come first whenever they exist.",
-	"Consensus statements, clinical guidelines, and major institutional reviews anchor the public summary.",
-	"Single studies can inform context, but they do not outrank the broader literature."
+	"Use a two-layer anchor by default: one current institutional conclusion and one independent synthesis.",
+	"Consensus statements, clinical guidelines, regulator reviews, and major assessments anchor the public summary.",
+	"Single studies can inform context, but they do not outrank the broader literature or a methods-explicit assessment body."
 ];
 
 const publicationRules = [
 	"A claim should only be published as consensus when multiple independent reviews or major institutions converge on the same bottom line.",
-	"If the evidence is still split, the page should be labeled as active debate or unclear rather than forced into a false certainty.",
-	"When institutions disagree, the page should identify the shared baseline first and then explain the narrower margin of disagreement."
+	"If the evidence is still split, label the page as active debate or unclear instead of forcing false certainty.",
+	"When institutions disagree, identify the shared baseline first and then explain the narrower margin of disagreement."
 ];
 
 const updateTriggers = [
 	"A new landmark review materially changes the direction, size, or mechanism of the current summary.",
-	"A major professional society updates its formal guidance.",
+	"A major professional society, regulator, or assessment body updates its formal guidance.",
 	"A heavily cited paper used on the page is retracted or materially corrected.",
 	"An editorial review date passes and the claim is flagged as needing a refresh."
 ];
@@ -27,9 +28,10 @@ const citationRules = [
 ];
 
 const disagreementRules = [
-	"If major bodies disagree, identify the shared baseline first and then explain the narrower margin of disagreement.",
-	"Do not present a minority expert view like a 50-50 split when the broader literature is not actually balanced.",
-	"Separate disputes about effect size, scope, or policy from disputes about whether the core phenomenon exists."
+	"Restrict institutional disagreement to reputable bodies with explicit methods.",
+	"Label whether the disagreement is about evidence, thresholds, feasibility, or policy values.",
+	"Do not present a minority institutional view like a 50-50 split when the broader literature is not actually balanced.",
+	"Keep prominence proportional to evidence strength and institutional representativeness."
 ];
 
 const reviewerExpectations = [
@@ -40,39 +42,11 @@ const reviewerExpectations = [
 
 const trustSignals = [
 	"Original publish date and last evidence review date",
-	"Consensus band and confidence score",
+	"Expert agreement and evidence certainty shown as separate ratings",
 	"Source stack counts by type, anchor-source labels, and DOI/PMID visibility where available",
 	"Outcome-level evidence summaries and institutional anchor metadata",
 	"Reusable misconception modules linked to fuller explainers when the same interpretation error keeps repeating",
-	"Plain-language bottom line before the deeper nuance",
 	"A clear statement that public sentiment is not the same thing as expert consensus"
-];
-
-const institutionStacks = [
-	{
-		title: "Health and medicine",
-		body: "Cochrane, WHO, CDC, and NASEM are the main anchors when a claim affects care, safety, or public-health policy."
-	},
-	{
-		title: "Nutrition and diet",
-		body: "The American Heart Association, American College of Cardiology, and Academy of Nutrition and Dietetics help define the mainstream evidence-backed baseline."
-	},
-	{
-		title: "Climate and environment",
-		body: "IPCC assessment reports, NOAA, NASA, and environmental evidence reviews are the main reference points for the settled core."
-	},
-	{
-		title: "Genetics and biotechnology",
-		body: "WHO, FAO, National Academies reviews, and major regulator safety assessments are the main starting points for GMO and biotechnology safety claims."
-	},
-	{
-		title: "Neuroscience and psychology",
-		body: "The Campbell Collaboration, APA, and domain societies are more useful than pop-psychology summaries or isolated lab claims."
-	},
-	{
-		title: "Historical case studies",
-		body: "Landmark trials, Surgeon General or equivalent public-health reports, and retrospective reviews help explain how past consensus shifts actually happened."
-	}
 ];
 
 const independenceNotes = [
@@ -101,7 +75,7 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Source hierarchy</h2>
+				<h2>Institution-first source hierarchy</h2>
 				<p>What the editorial layer prefers to rely on.</p>
 			</div>
 			<ul class="plain-list">
@@ -141,13 +115,21 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Trusted institution stacks</h2>
+				<h2>Cluster anchor stacks</h2>
 				<p>The site should anchor each cluster in the bodies that already synthesize the field.</p>
 			</div>
 			<div class="institution-grid">
-				<article v-for="item in institutionStacks" :key="item.title" class="institution-card">
+				<article v-for="item in sourceStandardList" :key="item.slug" class="institution-card">
 					<h3>{{ item.title }}</h3>
-					<p>{{ item.body }}</p>
+					<p>{{ item.summary }}</p>
+					<ul class="plain-list plain-list--tight">
+						<li v-for="anchor in item.primaryAnchors.slice(0, 3)" :key="anchor.name">
+							<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
+						</li>
+					</ul>
+					<NuxtLink class="text-link" :to="`/source-standards#${item.slug}`"
+						>Open full cluster standard</NuxtLink
+					>
 				</article>
 			</div>
 		</section>
@@ -198,11 +180,12 @@ useHead({
 				<h2>Transparency is part of the product, not a footnote.</h2>
 				<p>
 					Public trust does not come from sounding confident. It comes from showing the evidence hierarchy,
-					naming the uncertainty honestly, and making the review logic legible.
+					naming the uncertainty honestly, and making the source-stack logic legible.
 				</p>
 			</div>
 			<div class="standards-callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
@@ -261,77 +244,78 @@ useHead({
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
-	flex-wrap: wrap;
 	align-items: end;
+	flex-wrap: wrap;
+	margin-bottom: 18px;
 }
 
-.section-heading--tight h2,
-.section-heading--tight p {
+.section-heading--tight {
+	margin-bottom: 14px;
+}
+
+.section-heading p,
+.section-heading h2,
+.standards-header p,
+.standards-callout p,
+.standards-callout h2 {
 	margin: 0;
-}
-
-.standards-panel--soft {
-	background: var(--consensus-elevated-surface);
 }
 
 .plain-list {
 	margin: 0;
 	padding-left: 20px;
 	display: grid;
-	gap: 10px;
+	gap: 8px;
+}
+
+.plain-list--tight {
+	gap: 6px;
 }
 
 .institution-grid {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 12px;
+	gap: 14px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .institution-card {
 	padding: 18px;
+	display: grid;
+	gap: 10px;
 }
 
-.institution-card p {
-	margin: 8px 0 0;
+.institution-card p,
+.institution-card h3 {
+	margin: 0;
+}
+
+.text-link {
+	color: var(--consensus-interactive);
+	font-weight: 600;
+	text-decoration: none;
 }
 
 .standards-callout {
-	display: flex;
-	justify-content: space-between;
-	gap: 18px;
-	flex-wrap: wrap;
+	display: grid;
+	gap: 16px;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
 }
 
 .standards-callout__actions {
 	display: flex;
 	gap: 10px;
+	justify-content: end;
 	flex-wrap: wrap;
 }
 
-.button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 11px 18px;
-	border-radius: 999px;
-	border: 1px solid var(--consensus-line);
-	font-weight: 600;
-	text-decoration: none;
-	cursor: pointer;
-	background: transparent;
-	color: var(--consensus-ink);
-}
-
-.button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
-	color: var(--consensus-on-accent);
-}
-
-@media (max-width: 820px) {
-	.institution-grid {
+@media (max-width: 760px) {
+	.standards-callout {
 		grid-template-columns: 1fr;
+	}
+
+	.standards-callout__actions {
+		justify-content: start;
 	}
 }
 </style>

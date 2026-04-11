@@ -6,6 +6,7 @@ import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getExplainer } from "~/data/explainers";
 import { getMisconceptionModulesBySlugs } from "~/data/misconceptions";
+import { getSourceStandard } from "~/data/sourceStandards";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -70,6 +71,7 @@ const filteredQuestions = computed(() => {
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
 const surveillanceSpec = computed(() => claim.value?.surveillanceSpec);
+const sourceStandard = computed(() => getSourceStandard(claim.value?.topic?.slug || topicSlug.value));
 const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
 const sourceStackSummary = computed(() => {
 	const sources = claim.value?.sources ?? [];
@@ -93,6 +95,37 @@ const sourceStackSummary = computed(() => {
 
 	return parts.length ? parts.join(" · ") : "No source stack yet";
 });
+
+const hasInstitutionalConclusionLayer = computed(() => {
+	const sources = claim.value?.sources ?? [];
+	return (
+		institutionalAnchors.value.length > 0 ||
+		sources.some((source) => ["guideline", "consensus_statement"].includes(source.kind))
+	);
+});
+
+const hasIndependentSynthesisLayer = computed(() => {
+	const sources = claim.value?.sources ?? [];
+	return sources.some((source) => ["systematic_review", "meta_analysis"].includes(source.kind));
+});
+
+const anchorChecklist = computed(() => [
+	{
+		title: "Anchor A - Institutional conclusion",
+		body: sourceStandard.value.twoLayer.anchorA,
+		status: hasInstitutionalConclusionLayer.value ? "Present on this page" : "Still missing from this page"
+	},
+	{
+		title: "Anchor B - Independent synthesis",
+		body: sourceStandard.value.twoLayer.anchorB,
+		status: hasIndependentSynthesisLayer.value ? "Present on this page" : "Still missing from this page"
+	},
+	{
+		title: "Why the two-layer check exists",
+		body: sourceStandard.value.twoLayer.why,
+		status: sourceStandard.value.title
+	}
+]);
 
 const ratingFacts = computed(() => [
 	{
@@ -451,6 +484,7 @@ async function flagQuestion(questionId: string) {
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 			</div>
 		</section>
@@ -669,6 +703,56 @@ async function flagQuestion(questionId: string) {
 							<li v-for="item in surveillanceSpec?.triggerRules || []" :key="item">{{ item }}</li>
 						</ul>
 					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Cluster sourcing baseline</p>
+						<h2>The institution-first standard this claim should meet</h2>
+					</div>
+					<p>{{ sourceStandard.summary }}</p>
+				</div>
+
+				<div class="methods-grid">
+					<article v-for="item in anchorChecklist" :key="item.title" class="method-card method-card--accent">
+						<h3>{{ item.title }}</h3>
+						<p>
+							<strong>{{ item.status }}</strong>
+						</p>
+						<p>{{ item.body }}</p>
+					</article>
+
+					<article class="method-card">
+						<h3>Primary anchors for this cluster</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="anchor in sourceStandard.primaryAnchors.slice(0, 4)" :key="anchor.name">
+								<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
+							</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>How to summarize disagreement</h3>
+						<p>{{ sourceStandard.disagreementRule }}</p>
+					</article>
+
+					<article class="method-card">
+						<h3>Common failure modes</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in sourceStandard.misconceptionPatterns.slice(0, 4)" :key="item">
+								{{ item }}
+							</li>
+						</ul>
+					</article>
+				</div>
+
+				<div class="bottom-line__actions">
+					<NuxtLink class="button button--ghost" :to="`/source-standards#${sourceStandard.slug}`"
+						>Open full cluster standard</NuxtLink
+					>
+					<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				</div>
 			</section>
 
@@ -1102,6 +1186,10 @@ async function flagQuestion(questionId: string) {
 	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.55;
+}
+
+.method-card--accent {
+	border-left: 4px solid var(--consensus-debate);
 }
 
 .bottom-line {

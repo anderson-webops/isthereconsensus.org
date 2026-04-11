@@ -149,6 +149,7 @@ const filteredQuestions = computed(() =>
 					<div class="sidebar-links">
 						<NuxtLink class="text-link" to="/explainers">Read explainers</NuxtLink>
 						<NuxtLink class="text-link" to="/standards">Read standards</NuxtLink>
+						<NuxtLink class="text-link" to="/source-standards">Read source-stack standards</NuxtLink>
 					</div>
 				</section>
 			</aside>

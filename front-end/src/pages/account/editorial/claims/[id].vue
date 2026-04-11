@@ -12,6 +12,7 @@ import type {
 } from "~/types/board";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { getSourceStandard } from "~/data/sourceStandards";
 
 interface EditorialClaimRouteParams {
 	id?: string | string[];
@@ -77,6 +78,16 @@ const form = reactive({
 	nextReviewAt: "",
 	revisionNote: ""
 });
+
+const selectedSourceStandard = computed(() => getSourceStandard(form.topic));
+const hasClaimLayerA = computed(
+	() =>
+		institutionalAnchorRows.value.length > 0 ||
+		sourceRows.value.some((source) => ["guideline", "consensus_statement"].includes(source.kind))
+);
+const hasClaimLayerB = computed(() =>
+	sourceRows.value.some((source) => ["systematic_review", "meta_analysis"].includes(source.kind))
+);
 
 useHead({
 	title: "Claim editor - Is There Consensus?"
@@ -614,6 +625,60 @@ watch(
 							placeholder="Internal framing note for the public page and future reviewers."
 						/>
 					</label>
+
+					<div class="field field--full structured-block">
+						<div class="structured-block__header">
+							<div>
+								<span class="field-label">Cluster sourcing standard</span>
+								<p>Use the topic-specific anchor stack before publishing the page as canonical.</p>
+							</div>
+							<NuxtLink
+								class="button button--ghost"
+								:to="`/source-standards#${selectedSourceStandard.slug}`"
+							>
+								Open standard
+							</NuxtLink>
+						</div>
+
+						<div class="structured-card__grid">
+							<article class="helper-card">
+								<h3>Anchor A</h3>
+								<p>
+									<strong>{{
+										hasClaimLayerA ? "Present in this draft" : "Still missing in this draft"
+									}}</strong>
+								</p>
+								<p>{{ selectedSourceStandard.twoLayer.anchorA }}</p>
+							</article>
+
+							<article class="helper-card">
+								<h3>Anchor B</h3>
+								<p>
+									<strong>{{
+										hasClaimLayerB ? "Present in this draft" : "Still missing in this draft"
+									}}</strong>
+								</p>
+								<p>{{ selectedSourceStandard.twoLayer.anchorB }}</p>
+							</article>
+
+							<article class="helper-card">
+								<h3>Primary anchors</h3>
+								<ul class="plain-list plain-list--tight">
+									<li
+										v-for="anchor in selectedSourceStandard.primaryAnchors.slice(0, 4)"
+										:key="anchor.name"
+									>
+										<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
+									</li>
+								</ul>
+							</article>
+
+							<article class="helper-card">
+								<h3>Disagreement rule</h3>
+								<p>{{ selectedSourceStandard.disagreementRule }}</p>
+							</article>
+						</div>
+					</div>
 
 					<label class="field field--full">
 						<span class="field-label">Search databases (one per line)</span>
@@ -1217,6 +1282,33 @@ watch(
 	background: var(--consensus-field-surface);
 	display: grid;
 	gap: 12px;
+}
+
+.helper-card {
+	display: grid;
+	gap: 8px;
+	padding: 14px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	background: color-mix(in srgb, var(--consensus-surface) 86%, var(--consensus-debate-soft) 14%);
+}
+
+.helper-card h3,
+.helper-card p {
+	margin: 0;
+}
+
+.plain-list {
+	margin: 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 8px;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.plain-list--tight {
+	gap: 6px;
 }
 
 .structured-card__grid {

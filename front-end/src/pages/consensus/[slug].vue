@@ -12,6 +12,7 @@ import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import CommunitySentimentPanel from "~/components/CommunitySentimentPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { getSourceStandard } from "~/data/sourceStandards";
 import { getTopicGuide } from "~/data/topicGuides";
 
 interface TopicRouteParams {
@@ -57,6 +58,7 @@ const flagNote = ref<Record<string, string>>({});
 
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
+const sourceStandard = computed(() => getSourceStandard(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const isAdmin = computed(() => role.value === "admin");
@@ -277,6 +279,50 @@ async function flagQuestion(questionId: string) {
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
+			</div>
+		</section>
+
+		<section class="source-standard-strip">
+			<div class="section-heading section-heading--stacked">
+				<div>
+					<p class="eyebrow">Institution-first baseline</p>
+					<h2>How this topic should be sourced before a claim is called canonical</h2>
+				</div>
+				<p>{{ sourceStandard.summary }}</p>
+			</div>
+
+			<div class="fallback-grid">
+				<section class="fallback-panel">
+					<h3>Anchor A</h3>
+					<p>{{ sourceStandard.twoLayer.anchorA }}</p>
+				</section>
+
+				<section class="fallback-panel">
+					<h3>Anchor B</h3>
+					<p>{{ sourceStandard.twoLayer.anchorB }}</p>
+				</section>
+
+				<section class="fallback-panel">
+					<h3>Primary anchors</h3>
+					<ul class="plain-list">
+						<li v-for="anchor in sourceStandard.primaryAnchors.slice(0, 4)" :key="anchor.name">
+							<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
+						</li>
+					</ul>
+				</section>
+
+				<section class="fallback-panel">
+					<h3>Common disagreement pattern</h3>
+					<p>{{ sourceStandard.disagreementRule }}</p>
+				</section>
+			</div>
+
+			<div class="resource-strip__actions">
+				<NuxtLink class="button button--ghost" :to="`/source-standards#${sourceStandard.slug}`"
+					>Open full cluster standard</NuxtLink
+				>
+				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 			</div>
 		</section>
 
@@ -536,6 +582,7 @@ async function flagQuestion(questionId: string) {
 .trust-card,
 .topic-summary,
 .resource-strip,
+.source-standard-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -551,6 +598,7 @@ async function flagQuestion(questionId: string) {
 .topic-page__header,
 .topic-summary,
 .resource-strip,
+.source-standard-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -561,6 +609,7 @@ async function flagQuestion(questionId: string) {
 .topic-page__header,
 .topic-summary,
 .resource-strip,
+.source-standard-strip,
 .claim-lane,
 .fallback-lane,
 .lane,
@@ -572,6 +621,7 @@ async function flagQuestion(questionId: string) {
 .topic-page__header h1,
 .topic-summary h2,
 .resource-strip h2,
+.source-standard-strip h2,
 .section-heading h2,
 .claim-row h3,
 .fallback-panel h3,
@@ -590,6 +640,7 @@ async function flagQuestion(questionId: string) {
 .topic-page__description,
 .topic-summary p,
 .resource-strip p,
+.source-standard-strip p,
 .section-heading p,
 .claim-row p,
 .fallback-panel,
