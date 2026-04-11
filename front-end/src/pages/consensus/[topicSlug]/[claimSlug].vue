@@ -96,6 +96,41 @@ const sourceStackSummary = computed(() => {
 	return parts.length ? parts.join(" · ") : "No source stack yet";
 });
 
+const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
+const anchorNames = computed(() =>
+	institutionalAnchors.value
+		.slice(0, 3)
+		.map((anchor) => anchor.name)
+		.join(" · ")
+);
+
+const uncertaintySummary = computed(() => {
+	if (claim.value?.evidenceCertainty === "high") {
+		return "High certainty means the larger evidence stack is stable and a major change would probably require a substantial new synthesis, not one isolated paper.";
+	}
+	if (claim.value?.evidenceCertainty === "moderate") {
+		return "Moderate certainty means the overall direction looks reliable, but the size of the effect, subgroup details, or implementation details could still move.";
+	}
+	if (claim.value?.evidenceCertainty === "low") {
+		return "Low certainty means the current direction is tentative enough that a better synthesis or stronger direct evidence could still reshape the page.";
+	}
+	if (claim.value?.evidenceCertainty === "very_low") {
+		return "Very low certainty means the page is describing an unstable evidence base and should be read as a careful snapshot, not a durable settled answer.";
+	}
+	return "This page does not yet expose a plain-language uncertainty summary.";
+});
+
+const uncertaintyLimits = computed(() =>
+	Array.from(
+		new Set(
+			evidenceSummaries.value
+				.flatMap((summary) => summary.limitations || [])
+				.map((item) => item.trim())
+				.filter(Boolean)
+		)
+	).slice(0, 4)
+);
+
 const hasInstitutionalConclusionLayer = computed(() => {
 	const sources = claim.value?.sources ?? [];
 	return (
@@ -146,6 +181,13 @@ const ratingFacts = computed(() => [
 ]);
 
 const trustFacts = computed(() => [
+	{ label: "Reviewed by", value: claim.value?.reviewerLine || "Reviewer details pending" },
+	{ label: "Prepared by", value: claim.value?.authorLine || "Editorial authorship pending" },
+	{ label: "Sources reviewed", value: sourceCount.value ? String(sourceCount.value) : "Not listed" },
+	{
+		label: "Institutional anchors",
+		value: anchorNames.value || "Anchor bodies not listed"
+	},
 	{ label: "Source stack", value: sourceStackSummary.value },
 	{ label: "Published", value: formatDate(claim.value?.publishedAt, "Publish date pending") },
 	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
@@ -453,8 +495,8 @@ async function flagQuestion(questionId: string) {
 				<p class="eyebrow">The bottom line</p>
 				<h2>{{ claim?.bottomLine }}</h2>
 				<p>
-					Read this first. Everything else on the page expands the evidence, the remaining uncertainty, and
-					the practical limits of the current consensus.
+					Most readers start here. Everything else on the page expands the evidence, the remaining
+					uncertainty, and the practical limits of the current consensus.
 				</p>
 			</div>
 			<div class="bottom-line__actions">
@@ -466,6 +508,27 @@ async function flagQuestion(questionId: string) {
 				>
 					Edit claim
 				</NuxtLink>
+			</div>
+		</section>
+
+		<section class="uncertainty-strip">
+			<div>
+				<p class="eyebrow">How to read the uncertainty here</p>
+				<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
+				<p>{{ uncertaintySummary }}</p>
+			</div>
+			<div class="uncertainty-strip__details">
+				<div>
+					<p class="field-label">Most visible limits</p>
+					<ul class="plain-list plain-list--tight">
+						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
+						<li v-if="!uncertaintyLimits.length">Detailed limitations have not been summarized yet.</li>
+					</ul>
+				</div>
+				<p class="muted">
+					If future research met the criteria in “What would change minds,” the editorial summary would be
+					revised.
+				</p>
 			</div>
 		</section>
 
@@ -922,6 +985,10 @@ async function flagQuestion(questionId: string) {
 				</div>
 				<p>These threads stay below the canonical review so they do not compete with the editorial answer.</p>
 			</div>
+			<p class="community-note">
+				<strong>Community discussion:</strong> these are public questions and reader opinions, not peer-reviewed
+				evidence and not the site's canonical conclusion.
+			</p>
 
 			<div class="community-toolbar">
 				<div class="community-toolbar__search">
@@ -942,7 +1009,8 @@ async function flagQuestion(questionId: string) {
 				<div class="composer__intro">
 					<h3>Ask a focused follow-up</h3>
 					<p>
-						Keep this tied to the claim review above. Broad topic questions belong on the topic hub instead.
+						This works best when it stays tied to the claim review above. Broad topic questions fit better
+						on the topic hub.
 					</p>
 				</div>
 
@@ -1077,6 +1145,7 @@ async function flagQuestion(questionId: string) {
 .claim-page__header,
 .trust-card,
 .bottom-line,
+.uncertainty-strip,
 .reading-guide,
 .content-panel,
 .lane,
@@ -1089,6 +1158,7 @@ async function flagQuestion(questionId: string) {
 
 .claim-page__header,
 .bottom-line,
+.uncertainty-strip,
 .reading-guide,
 .content-panel,
 .lane,
@@ -1098,6 +1168,7 @@ async function flagQuestion(questionId: string) {
 
 .claim-page__header,
 .bottom-line,
+.uncertainty-strip,
 .reading-guide {
 	display: grid;
 	gap: 18px;
@@ -1197,6 +1268,11 @@ async function flagQuestion(questionId: string) {
 	align-items: end;
 }
 
+.uncertainty-strip {
+	grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+	align-items: start;
+}
+
 .reading-guide {
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
@@ -1208,6 +1284,11 @@ async function flagQuestion(questionId: string) {
 	gap: 10px;
 	flex-wrap: wrap;
 	justify-content: end;
+}
+
+.uncertainty-strip__details {
+	display: grid;
+	gap: 12px;
 }
 
 .content-stack {
@@ -1429,6 +1510,16 @@ async function flagQuestion(questionId: string) {
 	gap: 16px;
 }
 
+.community-note {
+	margin: 0;
+	padding: 14px 16px;
+	border-radius: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-surface) 88%, var(--consensus-community-soft) 12%);
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
 .community-toolbar {
 	display: flex;
 	justify-content: space-between;
@@ -1527,6 +1618,7 @@ async function flagQuestion(questionId: string) {
 
 @media (max-width: 820px) {
 	.bottom-line,
+	.uncertainty-strip,
 	.reading-guide,
 	.methods-grid,
 	.review-grid,

@@ -425,6 +425,10 @@ async function flagQuestion(questionId: string) {
 					as duplicate.
 				</p>
 			</div>
+			<p class="community-note">
+				<strong>Community discussion:</strong> these are public questions and reader comments, not peer-reviewed
+				evidence and not the site's canonical answer.
+			</p>
 
 			<div class="community-toolbar">
 				<div class="community-toolbar__search">
@@ -445,8 +449,8 @@ async function flagQuestion(questionId: string) {
 				<div class="composer__intro">
 					<h3>Post a new unassigned thread</h3>
 					<p>
-						Use this when the question does not already belong under one of the published claim reviews
-						above.
+						This works best when the question does not already belong under one of the published claim
+						reviews above.
 					</p>
 				</div>
 
@@ -757,6 +761,16 @@ async function flagQuestion(questionId: string) {
 	padding-left: 20px;
 	display: grid;
 	gap: 10px;
+}
+
+.community-note {
+	margin: 0;
+	padding: 14px 16px;
+	border-radius: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-surface) 88%, var(--consensus-community-soft) 12%);
+	color: var(--consensus-muted);
+	line-height: 1.6;
 }
 
 .community-toolbar {

@@ -30,6 +30,17 @@ const askFlowGuide = [
 	"Multi-question bundles should be decomposed before claim creation so the site does not mint one page that tries to answer three different propositions.",
 	"Concept questions such as causation, risk, and uncertainty usually belong with explainers even when they arrive through the thread queue."
 ];
+const trustGuide = [
+	"Keep the reviewed answer, last-reviewed date, reviewer line, and source count above the fold on public claim pages.",
+	"Use calm, factual language and avoid wording that sounds like an order, a reprimand, or a sales pitch.",
+	"Show uncertainty plainly; a clear limitation note is usually safer than overconfident certainty.",
+	"Keep minority dissent in context so it does not visually overpower the dominant consensus."
+];
+const testingGuide = [
+	"Run quick think-aloud reviews with non-expert readers before locking major wording changes.",
+	"Ask testers to explain the bottom line and the remaining uncertainty in their own words.",
+	"Treat confusion around one paragraph or label as a content bug, not just a reader problem."
+];
 
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const isAdmin = computed(() => role.value === "admin");
@@ -510,6 +521,20 @@ watch(
 						{{ conceptQuestionCount }} concept asks, {{ loadedQuestionCount }} loaded asks, and
 						{{ bundledQuestionCount }} bundled asks are currently sitting in intake.
 					</p>
+				</section>
+
+				<section class="editorial-panel">
+					<div class="section-heading section-heading--tight">
+						<div>
+							<p class="eyebrow">Trust and wording guide</p>
+							<h2>How to keep public copy credible without sounding pushy</h2>
+						</div>
+						<p>Claim pages work better when the tone stays plain, calm, and visibly evidence-led.</p>
+					</div>
+					<ul class="guide-list">
+						<li v-for="item in trustGuide" :key="item">{{ item }}</li>
+					</ul>
+					<p class="muted">{{ testingGuide.join(" ") }}</p>
 				</section>
 			</section>
 

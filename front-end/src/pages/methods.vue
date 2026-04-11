@@ -107,6 +107,20 @@ const misconceptionRules = [
 	"Use the module library to distinguish recurring reasoning mistakes from claim-specific evidence disputes."
 ];
 
+const wordingPatterns = [
+	"Lead with a clear bottom line in plain language, then attribute the answer to evidence or institutions.",
+	"Prefer neutral, factual phrasing such as 'current evidence suggests' over pushy or combative wording.",
+	"Use modest qualifiers where needed so uncertainty is visible without diluting the main conclusion.",
+	"Explain technical terms in everyday language the first time they appear."
+];
+
+const testingLoop = [
+	"Run think-aloud reviews with readers who vary in science background and trust in institutions.",
+	"Ask users to explain the bottom line and uncertainty in their own words after reading a page.",
+	"Measure both comprehension and trust when testing alternative wording or page order.",
+	"Use small iteration cycles: revise wording, retest, and only then lock the public phrasing."
+];
+
 useHead({
 	title: "Methods playbook - Is There Consensus?"
 });
@@ -236,6 +250,29 @@ useHead({
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in misconceptionRules" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
+		<section class="methods-panel">
+			<div class="section-heading section-heading--tight">
+				<h2>Wording discipline</h2>
+				<p>Trust and comprehension improve when the language stays plain, calm, and non-directive.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in wordingPatterns" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
+		<section class="methods-panel methods-panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>Comprehension testing loop</h2>
+				<p>
+					Public-facing summaries should be user-tested instead of being treated like finished copy on first
+					draft.
+				</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in testingLoop" :key="item">{{ item }}</li>
 			</ul>
 		</section>
 
