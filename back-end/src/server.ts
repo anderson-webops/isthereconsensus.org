@@ -1,5 +1,5 @@
 // src/server.ts
-import { env, exit } from "node:process";
+import process, { env, exit } from "node:process";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import express from "express";
@@ -106,12 +106,15 @@ async function main() {
 		const connection = mongoose.connection;
 		const state = connection.readyState;
 		if (state !== 1 || !connection.db) {
-			return res.status(503).set("Cache-Control", "no-store").json({
-				ready: false,
-				components: {
-					db: { ok: false, state }
-				}
-			});
+			return res
+				.status(503)
+				.set("Cache-Control", "no-store")
+				.json({
+					ready: false,
+					components: {
+						db: { ok: false, state }
+					}
+				});
 		}
 
 		try {
@@ -124,16 +127,19 @@ async function main() {
 			});
 		}
 		catch (error) {
-			return res.status(503).set("Cache-Control", "no-store").json({
-				ready: false,
-				components: {
-					db: {
-						ok: false,
-						state,
-						error: error instanceof Error ? error.message : "db-ping-failed"
+			return res
+				.status(503)
+				.set("Cache-Control", "no-store")
+				.json({
+					ready: false,
+					components: {
+						db: {
+							ok: false,
+							state,
+							error: error instanceof Error ? error.message : "db-ping-failed"
+						}
 					}
-				}
-			});
+				});
 		}
 	});
 
@@ -167,15 +173,17 @@ async function main() {
 	console.log(`Mongo connected: db=${c.db?.databaseName} host=${c.host} name=${c.name}`);
 	app.get("/_dbinfo", (req, res) => {
 		const forwardedFor = req.headers["x-forwarded-for"];
-		const forwardedIp = typeof forwardedFor === "string"
-			? forwardedFor.split(",")[0]?.trim()
-			: Array.isArray(forwardedFor)
-				? forwardedFor[0]?.trim()
-				: undefined;
+		const forwardedIp
+			= typeof forwardedFor === "string"
+				? forwardedFor.split(",")[0]?.trim()
+				: Array.isArray(forwardedFor)
+					? forwardedFor[0]?.trim()
+					: undefined;
 		const clientIp = forwardedIp || req.ip || req.socket.remoteAddress || "";
-		const isInternalRequest = env.NODE_ENV !== "production"
-			|| (internalDiagnosticsKey && req.get("x-internal-diagnostics-key") === internalDiagnosticsKey)
-			|| loopbackAddresses.has(clientIp);
+		const isInternalRequest
+			= env.NODE_ENV !== "production"
+				|| (internalDiagnosticsKey && req.get("x-internal-diagnostics-key") === internalDiagnosticsKey)
+				|| loopbackAddresses.has(clientIp);
 
 		if (!isInternalRequest) {
 			return res.status(403).set("Cache-Control", "no-store").json({ ok: false, error: "forbidden" });
@@ -201,10 +209,7 @@ async function main() {
 	});
 	await seedTopics();
 	await seedClaims();
-	await Question.updateMany(
-		{ routingStatus: { $exists: false } },
-		{ $set: { routingStatus: "unassigned" } }
-	);
+	await Question.updateMany({ routingStatus: { $exists: false } }, { $set: { routingStatus: "unassigned" } });
 
 	const api = express.Router();
 
@@ -231,6 +236,28 @@ async function main() {
 	function normalizeStatus(value: unknown) {
 		const normalized = normalizeText(value, 24);
 		return normalized || "draft";
+	}
+
+	function normalizeAgreementLevel(value: unknown) {
+		const normalized = normalizeText(value, 32);
+		if (normalized === "strong") return "strong";
+		if (normalized === "broad_qualified") return "broad_qualified";
+		if (normalized === "divided") return "divided";
+		if (normalized === "frontier") return "frontier";
+		return "frontier";
+	}
+
+	function normalizeEvidenceCertainty(value: unknown) {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "high") return "high";
+		if (normalized === "moderate") return "moderate";
+		if (normalized === "low") return "low";
+		if (normalized === "very_low") return "very_low";
+		return "low";
+	}
+
+	function normalizeReviewMode(value: unknown) {
+		return normalizeText(value, 24) === "living" ? "living" : "standard";
 	}
 
 	function normalizeDate(value: unknown) {
@@ -262,6 +289,25 @@ async function main() {
 		return ClaimSource.find({ claim: claimId }).sort({ order: 1, createdAt: 1 }).lean();
 	}
 
+	function appendClaimChangeLog(
+		claim: {
+			changeLog?: Array<{
+				date: Date;
+				kind: "publication" | "update" | "correction" | "review";
+				summary: string;
+			}>;
+		},
+		kind: "publication" | "update" | "correction" | "review",
+		summary: string
+	) {
+		const entry = {
+			date: new Date(),
+			kind,
+			summary: normalizeText(summary, 240) || "Claim updated."
+		};
+		claim.changeLog = [entry, ...(claim.changeLog ?? [])].slice(0, 12);
+	}
+
 	async function createClaimRevision(params: {
 		claimId: mongoose.Types.ObjectId;
 		editorId: string;
@@ -284,13 +330,27 @@ async function main() {
 					slug: claim.slug,
 					status: claim.status,
 					consensusBand: claim.consensusBand,
+					agreementLevel: claim.agreementLevel,
+					evidenceCertainty: claim.evidenceCertainty,
 					confidenceScore: claim.confidenceScore,
+					reviewMode: claim.reviewMode,
 					bottomLine: claim.bottomLine,
 					stableCore: claim.stableCore,
 					openQuestions: claim.openQuestions,
 					whatWouldChangeMinds: claim.whatWouldChangeMinds,
 					misconceptions: claim.misconceptions,
 					editorSummary: claim.editorSummary,
+					searchDatabases: claim.searchDatabases,
+					searchCutoffAt: claim.searchCutoffAt,
+					inclusionRules: claim.inclusionRules,
+					exclusionRules: claim.exclusionRules,
+					appraisalTools: claim.appraisalTools,
+					authorLine: claim.authorLine,
+					reviewerLine: claim.reviewerLine,
+					coiSummary: claim.coiSummary,
+					independenceSummary: claim.independenceSummary,
+					lastRetractionCheckAt: claim.lastRetractionCheckAt,
+					changeLog: claim.changeLog,
 					lastReviewedAt: claim.lastReviewedAt,
 					nextReviewAt: claim.nextReviewAt,
 					publishedAt: claim.publishedAt,
@@ -371,10 +431,15 @@ async function main() {
 							title: claim.title,
 							slug: claim.slug,
 							consensusBand: claim.consensusBand,
+							agreementLevel: claim.agreementLevel,
+							evidenceCertainty: claim.evidenceCertainty,
 							confidenceScore: claim.confidenceScore,
+							reviewMode: claim.reviewMode,
 							bottomLine: claim.bottomLine,
+							searchCutoffAt: claim.searchCutoffAt,
 							lastReviewedAt: claim.lastReviewedAt,
-							publishedAt: claim.publishedAt
+							publishedAt: claim.publishedAt,
+							lastRetractionCheckAt: claim.lastRetractionCheckAt
 						});
 						map.set(key, current);
 					}
@@ -387,8 +452,8 @@ async function main() {
 				return {
 					...topic,
 					questionCount: countMap.get(key) ?? 0,
-					claimCount: includeClaims ? claimCountMap.get(key) ?? 0 : undefined,
-					featuredClaims: includeClaims ? featuredClaimsMap.get(key) ?? [] : undefined
+					claimCount: includeClaims ? (claimCountMap.get(key) ?? 0) : undefined,
+					featuredClaims: includeClaims ? (featuredClaimsMap.get(key) ?? []) : undefined
 				};
 			});
 
@@ -695,7 +760,9 @@ async function main() {
 					return { question, score: scoreMatch(query, haystack) };
 				})
 				.filter(entry => entry.score > 0)
-				.sort((left, right) => right.score - left.score || left.question.title.localeCompare(right.question.title))
+				.sort(
+					(left, right) => right.score - left.score || left.question.title.localeCompare(right.question.title)
+				)
 				.slice(0, 6)
 				.map(({ question }) => question);
 
@@ -956,7 +1023,9 @@ async function main() {
 
 			if (!user) return res.status(404).json({ error: "User not found." });
 			if (!credentialLabel || !statement || !expertiseAreas.length) {
-				return res.status(400).json({ error: "Credentials, expertise areas, and a short statement are required." });
+				return res
+					.status(400)
+					.json({ error: "Credentials, expertise areas, and a short statement are required." });
 			}
 
 			const application = await ExpertApplication.findOneAndUpdate(
@@ -1023,10 +1092,7 @@ async function main() {
 		try {
 			const status = typeof req.query.status === "string" ? req.query.status : "";
 			const filter = status ? { status } : {};
-			const claims = await Claim.find(filter)
-				.sort({ updatedAt: -1, createdAt: -1 })
-				.populate("topic")
-				.lean();
+			const claims = await Claim.find(filter).sort({ updatedAt: -1, createdAt: -1 }).populate("topic").lean();
 			const sourceCounts = await ClaimSource.aggregate([
 				{ $match: { claim: { $in: claims.map(claim => claim._id) } } },
 				{ $group: { _id: "$claim", count: { $sum: 1 } } }
@@ -1091,15 +1157,35 @@ async function main() {
 				slug,
 				status: normalizeStatus(req.body?.status),
 				consensusBand: normalizeText(req.body?.consensusBand, 24) || "unclear",
+				agreementLevel: normalizeAgreementLevel(req.body?.agreementLevel),
+				evidenceCertainty: normalizeEvidenceCertainty(req.body?.evidenceCertainty),
 				confidenceScore: normalizeInteger(req.body?.confidenceScore, 0, 100, 50),
+				reviewMode: normalizeReviewMode(req.body?.reviewMode),
 				bottomLine: normalizeText(req.body?.bottomLine, 2000),
 				stableCore: normalizeList(req.body?.stableCore, 12, 280),
 				openQuestions: normalizeList(req.body?.openQuestions, 12, 280),
 				whatWouldChangeMinds: normalizeList(req.body?.whatWouldChangeMinds, 12, 280),
 				misconceptions: normalizeList(req.body?.misconceptions, 12, 280),
 				editorSummary: normalizeText(req.body?.editorSummary, 4000),
+				searchDatabases: normalizeList(req.body?.searchDatabases, 8, 120),
+				searchCutoffAt: normalizeDate(req.body?.searchCutoffAt),
+				inclusionRules: normalizeList(req.body?.inclusionRules, 8, 240),
+				exclusionRules: normalizeList(req.body?.exclusionRules, 8, 240),
+				appraisalTools: normalizeList(req.body?.appraisalTools, 8, 180),
+				authorLine: normalizeText(req.body?.authorLine, 240),
+				reviewerLine: normalizeText(req.body?.reviewerLine, 240),
+				coiSummary: normalizeText(req.body?.coiSummary, 1000),
+				independenceSummary: normalizeText(req.body?.independenceSummary, 1000),
+				lastRetractionCheckAt: normalizeDate(req.body?.lastRetractionCheckAt),
 				lastReviewedAt: normalizeDate(req.body?.lastReviewedAt),
-				nextReviewAt: normalizeDate(req.body?.nextReviewAt)
+				nextReviewAt: normalizeDate(req.body?.nextReviewAt),
+				changeLog: [
+					{
+						date: new Date(),
+						kind: "update",
+						summary: revisionNote
+					}
+				]
 			});
 
 			const actor = currentActor(req);
@@ -1157,8 +1243,19 @@ async function main() {
 			if (req.body?.consensusBand) {
 				claim.consensusBand = normalizeText(req.body?.consensusBand, 24) as typeof claim.consensusBand;
 			}
+			if (req.body?.agreementLevel !== undefined) {
+				claim.agreementLevel = normalizeAgreementLevel(req.body?.agreementLevel) as typeof claim.agreementLevel;
+			}
+			if (req.body?.evidenceCertainty !== undefined) {
+				claim.evidenceCertainty = normalizeEvidenceCertainty(
+					req.body?.evidenceCertainty
+				) as typeof claim.evidenceCertainty;
+			}
 			if (req.body?.confidenceScore !== undefined) {
 				claim.confidenceScore = normalizeInteger(req.body?.confidenceScore, 0, 100, claim.confidenceScore);
+			}
+			if (req.body?.reviewMode !== undefined) {
+				claim.reviewMode = normalizeReviewMode(req.body?.reviewMode) as typeof claim.reviewMode;
 			}
 			if (req.body?.bottomLine !== undefined) claim.bottomLine = normalizeText(req.body?.bottomLine, 2000);
 			if (req.body?.stableCore !== undefined) claim.stableCore = normalizeList(req.body?.stableCore, 12, 280);
@@ -1174,12 +1271,45 @@ async function main() {
 			if (req.body?.editorSummary !== undefined) {
 				claim.editorSummary = normalizeText(req.body?.editorSummary, 4000);
 			}
+			if (req.body?.searchDatabases !== undefined) {
+				claim.searchDatabases = normalizeList(req.body?.searchDatabases, 8, 120);
+			}
+			if (req.body?.searchCutoffAt !== undefined) {
+				claim.searchCutoffAt = normalizeDate(req.body?.searchCutoffAt);
+			}
+			if (req.body?.inclusionRules !== undefined) {
+				claim.inclusionRules = normalizeList(req.body?.inclusionRules, 8, 240);
+			}
+			if (req.body?.exclusionRules !== undefined) {
+				claim.exclusionRules = normalizeList(req.body?.exclusionRules, 8, 240);
+			}
+			if (req.body?.appraisalTools !== undefined) {
+				claim.appraisalTools = normalizeList(req.body?.appraisalTools, 8, 180);
+			}
+			if (req.body?.authorLine !== undefined) {
+				claim.authorLine = normalizeText(req.body?.authorLine, 240);
+			}
+			if (req.body?.reviewerLine !== undefined) {
+				claim.reviewerLine = normalizeText(req.body?.reviewerLine, 240);
+			}
+			if (req.body?.coiSummary !== undefined) {
+				claim.coiSummary = normalizeText(req.body?.coiSummary, 1000);
+			}
+			if (req.body?.independenceSummary !== undefined) {
+				claim.independenceSummary = normalizeText(req.body?.independenceSummary, 1000);
+			}
+			if (req.body?.lastRetractionCheckAt !== undefined) {
+				claim.lastRetractionCheckAt = normalizeDate(req.body?.lastRetractionCheckAt);
+			}
 			if (req.body?.lastReviewedAt !== undefined) {
 				claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt);
 			}
 			if (req.body?.nextReviewAt !== undefined) {
 				claim.nextReviewAt = normalizeDate(req.body?.nextReviewAt);
 			}
+
+			const revisionSummary = normalizeText(req.body?.revisionNote, 2000) || "Updated claim draft.";
+			appendClaimChangeLog(claim, "update", revisionSummary);
 
 			await claim.save();
 
@@ -1188,7 +1318,7 @@ async function main() {
 				claimId: claim._id,
 				editorId: actor.id,
 				editorModel: actor.model,
-				summary: normalizeText(req.body?.revisionNote, 2000) || "Updated claim draft."
+				summary: revisionSummary
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
@@ -1216,9 +1346,13 @@ async function main() {
 			claim.publishedAt = claim.publishedAt || publishedAt;
 			claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt) || publishedAt;
 			claim.nextReviewAt
-				= normalizeDate(req.body?.nextReviewAt)
-					|| new Date(publishedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
+				= normalizeDate(req.body?.nextReviewAt) || new Date(publishedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
 			claim.reviewedBy = new mongoose.Types.ObjectId(actor.id);
+			appendClaimChangeLog(
+				claim,
+				"publication",
+				normalizeText(req.body?.revisionNote, 2000) || "Published claim."
+			);
 			await claim.save();
 
 			await createClaimRevision({
@@ -1249,6 +1383,7 @@ async function main() {
 
 			const actor = currentActor(req);
 			claim.status = "archived";
+			appendClaimChangeLog(claim, "update", normalizeText(req.body?.revisionNote, 2000) || "Archived claim.");
 			await claim.save();
 
 			await createClaimRevision({
@@ -1311,7 +1446,9 @@ async function main() {
 				kind: normalizeText(req.body?.kind, 32) || "context",
 				title: normalizeText(req.body?.title, 240),
 				publisher: normalizeText(req.body?.publisher, 160),
-				year: req.body?.year ? normalizeInteger(req.body?.year, 0, 9999, new Date().getUTCFullYear()) : undefined,
+				year: req.body?.year
+					? normalizeInteger(req.body?.year, 0, 9999, new Date().getUTCFullYear())
+					: undefined,
 				url: normalizeText(req.body?.url, 500),
 				doi: normalizeText(req.body?.doi, 200),
 				stance: normalizeText(req.body?.stance, 24) || "context",
@@ -1354,9 +1491,11 @@ async function main() {
 			}
 			if (req.body?.url !== undefined) source.url = normalizeText(req.body?.url, 500);
 			if (req.body?.doi !== undefined) source.doi = normalizeText(req.body?.doi, 200);
-			if (req.body?.stance !== undefined) source.stance = normalizeText(req.body?.stance, 24) as typeof source.stance;
+			if (req.body?.stance !== undefined)
+				source.stance = normalizeText(req.body?.stance, 24) as typeof source.stance;
 			if (req.body?.note !== undefined) source.note = normalizeText(req.body?.note, 1000);
-			if (req.body?.order !== undefined) source.order = normalizeInteger(req.body?.order, 0, 999, source.order || 0);
+			if (req.body?.order !== undefined)
+				source.order = normalizeInteger(req.body?.order, 0, 999, source.order || 0);
 			await source.save();
 
 			const actor = currentActor(req);
@@ -1432,10 +1571,7 @@ async function main() {
 				return res.status(400).json({ error: "Invalid question or claim id." });
 			}
 
-			const [question, claim] = await Promise.all([
-				Question.findById(questionId),
-				Claim.findById(claimId)
-			]);
+			const [question, claim] = await Promise.all([Question.findById(questionId), Claim.findById(claimId)]);
 			if (!question) return res.status(404).json({ error: "Question not found." });
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 			if (question.topic.toString() !== claim.topic.toString()) {
@@ -1497,7 +1633,9 @@ async function main() {
 				claimId: claim._id,
 				editorId: actor.id,
 				editorModel: actor.model,
-				summary: normalizeText(req.body?.revisionNote, 2000) || `Created draft claim from question: ${question.title}`
+				summary:
+					normalizeText(req.body?.revisionNote, 2000)
+					|| `Created draft claim from question: ${question.title}`
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();

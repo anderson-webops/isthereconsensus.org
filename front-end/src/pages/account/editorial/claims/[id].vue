@@ -42,13 +42,26 @@ const form = reactive({
 	slug: "",
 	status: "draft" as Claim["status"],
 	consensusBand: "unclear" as Claim["consensusBand"],
+	agreementLevel: "frontier" as NonNullable<Claim["agreementLevel"]>,
+	evidenceCertainty: "low" as NonNullable<Claim["evidenceCertainty"]>,
 	confidenceScore: 50,
+	reviewMode: "standard" as NonNullable<Claim["reviewMode"]>,
 	bottomLine: "",
 	stableCore: "",
 	openQuestions: "",
 	whatWouldChangeMinds: "",
 	misconceptions: "",
 	editorSummary: "",
+	searchDatabases: "",
+	searchCutoffAt: "",
+	inclusionRules: "",
+	exclusionRules: "",
+	appraisalTools: "",
+	authorLine: "",
+	reviewerLine: "",
+	coiSummary: "",
+	independenceSummary: "",
+	lastRetractionCheckAt: "",
 	lastReviewedAt: "",
 	nextReviewAt: "",
 	revisionNote: ""
@@ -77,13 +90,26 @@ function hydrateClaim(record: Claim | null) {
 	form.slug = record?.slug || "";
 	form.status = record?.status || "draft";
 	form.consensusBand = record?.consensusBand || "unclear";
+	form.agreementLevel = record?.agreementLevel || "frontier";
+	form.evidenceCertainty = record?.evidenceCertainty || "low";
 	form.confidenceScore = record?.confidenceScore ?? 50;
+	form.reviewMode = record?.reviewMode || "standard";
 	form.bottomLine = record?.bottomLine || "";
 	form.stableCore = (record?.stableCore || []).join("\n");
 	form.openQuestions = (record?.openQuestions || []).join("\n");
 	form.whatWouldChangeMinds = (record?.whatWouldChangeMinds || []).join("\n");
 	form.misconceptions = (record?.misconceptions || []).join("\n");
 	form.editorSummary = record?.editorSummary || "";
+	form.searchDatabases = (record?.searchDatabases || []).join("\n");
+	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
+	form.inclusionRules = (record?.inclusionRules || []).join("\n");
+	form.exclusionRules = (record?.exclusionRules || []).join("\n");
+	form.appraisalTools = (record?.appraisalTools || []).join("\n");
+	form.authorLine = record?.authorLine || "";
+	form.reviewerLine = record?.reviewerLine || "";
+	form.coiSummary = record?.coiSummary || "";
+	form.independenceSummary = record?.independenceSummary || "";
+	form.lastRetractionCheckAt = formatDateInput(record?.lastRetractionCheckAt);
 	form.lastReviewedAt = formatDateInput(record?.lastReviewedAt);
 	form.nextReviewAt = formatDateInput(record?.nextReviewAt);
 	form.revisionNote = "";
@@ -136,13 +162,26 @@ function claimPayload() {
 		slug: form.slug.trim(),
 		status: form.status,
 		consensusBand: form.consensusBand,
+		agreementLevel: form.agreementLevel,
+		evidenceCertainty: form.evidenceCertainty,
 		confidenceScore: form.confidenceScore,
+		reviewMode: form.reviewMode,
 		bottomLine: form.bottomLine.trim(),
 		stableCore: parseLines(form.stableCore),
 		openQuestions: parseLines(form.openQuestions),
 		whatWouldChangeMinds: parseLines(form.whatWouldChangeMinds),
 		misconceptions: parseLines(form.misconceptions),
 		editorSummary: form.editorSummary.trim(),
+		searchDatabases: parseLines(form.searchDatabases),
+		searchCutoffAt: form.searchCutoffAt || undefined,
+		inclusionRules: parseLines(form.inclusionRules),
+		exclusionRules: parseLines(form.exclusionRules),
+		appraisalTools: parseLines(form.appraisalTools),
+		authorLine: form.authorLine.trim(),
+		reviewerLine: form.reviewerLine.trim(),
+		coiSummary: form.coiSummary.trim(),
+		independenceSummary: form.independenceSummary.trim(),
+		lastRetractionCheckAt: form.lastRetractionCheckAt || undefined,
 		lastReviewedAt: form.lastReviewedAt || undefined,
 		nextReviewAt: form.nextReviewAt || undefined,
 		revisionNote: form.revisionNote.trim()
@@ -402,6 +441,44 @@ watch(
 					</label>
 
 					<label class="field">
+						<span class="field-label">Agreement level</span>
+						<select v-model="form.agreementLevel">
+							<option value="strong">Strong agreement</option>
+							<option value="broad_qualified">Broad but qualified</option>
+							<option value="divided">Divided interpretations</option>
+							<option value="frontier">Frontier debate</option>
+						</select>
+					</label>
+
+					<label class="field">
+						<span class="field-label">Evidence certainty</span>
+						<select v-model="form.evidenceCertainty">
+							<option value="high">High</option>
+							<option value="moderate">Moderate</option>
+							<option value="low">Low</option>
+							<option value="very_low">Very low</option>
+						</select>
+					</label>
+
+					<label class="field">
+						<span class="field-label">Review mode</span>
+						<select v-model="form.reviewMode">
+							<option value="standard">Scheduled review</option>
+							<option value="living">Living review</option>
+						</select>
+					</label>
+
+					<label class="field">
+						<span class="field-label">Search cutoff</span>
+						<input v-model="form.searchCutoffAt" type="date" />
+					</label>
+
+					<label class="field">
+						<span class="field-label">Retraction check</span>
+						<input v-model="form.lastRetractionCheckAt" type="date" />
+					</label>
+
+					<label class="field">
 						<span class="field-label">Last reviewed</span>
 						<input v-model="form.lastReviewedAt" type="date" />
 					</label>
@@ -427,6 +504,58 @@ watch(
 							rows="4"
 							placeholder="Internal framing note for the public page and future reviewers."
 						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Search databases (one per line)</span>
+						<textarea
+							v-model="form.searchDatabases"
+							rows="4"
+							placeholder="PubMed&#10;OpenAlex&#10;Crossref"
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Inclusion rules (one per line)</span>
+						<textarea v-model="form.inclusionRules" rows="4" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Exclusion rules (one per line)</span>
+						<textarea v-model="form.exclusionRules" rows="4" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Appraisal tools (one per line)</span>
+						<textarea v-model="form.appraisalTools" rows="4" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Prepared by</span>
+						<input
+							v-model="form.authorLine"
+							type="text"
+							placeholder="Prepared by the Is There Consensus editorial desk."
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Reviewed by</span>
+						<input
+							v-model="form.reviewerLine"
+							type="text"
+							placeholder="Reviewed for evidence quality and plain-language accuracy."
+						/>
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Conflict of interest summary</span>
+						<textarea v-model="form.coiSummary" rows="3" />
+					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Editorial independence summary</span>
+						<textarea v-model="form.independenceSummary" rows="3" />
 					</label>
 
 					<label class="field field--full">

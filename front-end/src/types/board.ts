@@ -1,6 +1,15 @@
 export type ClaimStatus = "draft" | "published" | "needs_update" | "archived";
 export type ClaimConsensusBand = "strong" | "broad" | "mixed" | "unclear";
+export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "frontier";
+export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
+export type ClaimReviewMode = "standard" | "living";
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
+
+export interface ClaimChangeLogEntry {
+	date: string;
+	kind: "publication" | "update" | "correction" | "review";
+	summary: string;
+}
 
 export interface ClaimSource {
 	_id?: string;
@@ -37,12 +46,17 @@ export interface ClaimSummary {
 	slug: string;
 	status?: ClaimStatus;
 	consensusBand: ClaimConsensusBand;
+	agreementLevel?: ClaimAgreementLevel;
+	evidenceCertainty?: ClaimEvidenceCertainty;
 	confidenceScore: number;
+	reviewMode?: ClaimReviewMode;
 	bottomLine: string;
 	sourceCount?: number;
+	searchCutoffAt?: string;
 	lastReviewedAt?: string;
 	nextReviewAt?: string;
 	publishedAt?: string;
+	lastRetractionCheckAt?: string;
 	topic?: Topic | null;
 	createdAt?: string;
 	updatedAt?: string;
@@ -54,6 +68,15 @@ export interface Claim extends ClaimSummary {
 	whatWouldChangeMinds: string[];
 	misconceptions: string[];
 	editorSummary?: string;
+	searchDatabases?: string[];
+	inclusionRules?: string[];
+	exclusionRules?: string[];
+	appraisalTools?: string[];
+	authorLine?: string;
+	reviewerLine?: string;
+	coiSummary?: string;
+	independenceSummary?: string;
+	changeLog?: ClaimChangeLogEntry[];
 	reviewedBy?: string;
 	sources?: ClaimSource[];
 }

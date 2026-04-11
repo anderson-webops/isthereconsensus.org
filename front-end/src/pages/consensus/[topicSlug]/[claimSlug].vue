@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Claim, ClaimResponse, Question, QuestionResponse, QuestionsResponse } from "~/types/board";
+import type { Claim, ClaimResponse, ClaimSource, Question, QuestionResponse, QuestionsResponse } from "~/types/board";
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
@@ -64,14 +64,77 @@ const filteredQuestions = computed(() => {
 	);
 });
 
+const ratingFacts = computed(() => [
+	{
+		label: "Expert agreement",
+		value: formatAgreementLabel(claim.value?.agreementLevel, claim.value?.consensusBand),
+		note: "How closely major reviews and expert bodies line up on the main conclusion."
+	},
+	{
+		label: "Evidence certainty",
+		value: formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
+		note: "How stable the underlying body of evidence looks right now."
+	},
+	{
+		label: "Review mode",
+		value: formatReviewModeLabel(claim.value?.reviewMode),
+		note: "Whether this page is on a scheduled review cycle or an active living update track."
+	}
+]);
+
 const trustFacts = computed(() => [
-	{ label: "Consensus", value: formatBandLabel(claim.value?.consensusBand) },
-	{ label: "Confidence score", value: `${claim.value?.confidenceScore ?? 0}/100` },
 	{ label: "Sources listed", value: String(claim.value?.sources?.length ?? claim.value?.sourceCount ?? 0) },
 	{ label: "Published", value: formatDate(claim.value?.publishedAt, "Publish date pending") },
 	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
-	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") }
+	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") },
+	{ label: "Search cutoff", value: formatDate(claim.value?.searchCutoffAt, "Cutoff not listed") },
+	{ label: "Retraction check", value: formatDate(claim.value?.lastRetractionCheckAt, "Not listed") }
 ]);
+
+const sourceGroups = computed(() => {
+	const groups: Array<{
+		key: string;
+		title: string;
+		description: string;
+		kinds: ClaimSource["kind"][];
+	}> = [
+		{
+			key: "tier1",
+			title: "Tier 1 · Guidelines and consensus statements",
+			description:
+				"These sources establish the shared institutional baseline and the current public-facing consensus.",
+			kinds: ["guideline", "consensus_statement"]
+		},
+		{
+			key: "tier2",
+			title: "Tier 2 · Systematic reviews and meta-analyses",
+			description:
+				"These sources summarize the literature and carry the most weight when the site explains the body of evidence.",
+			kinds: ["systematic_review", "meta_analysis"]
+		},
+		{
+			key: "tier3",
+			title: "Tier 3 · Pivotal primary studies",
+			description:
+				"These studies matter when a specific trial or landmark paper changed the field or clarified a major point.",
+			kinds: ["landmark_study"]
+		},
+		{
+			key: "tier4",
+			title: "Tier 4 · Context and background",
+			description:
+				"These sources help explain methods, history, and scope, but they do not outrank the higher-tier syntheses.",
+			kinds: ["context"]
+		}
+	];
+
+	return groups
+		.map((group) => ({
+			...group,
+			items: (claim.value?.sources ?? []).filter((source) => group.kinds.includes(source.kind))
+		}))
+		.filter((group) => group.items.length > 0);
+});
 
 useHead(() => ({
 	title: claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?"
@@ -92,6 +155,37 @@ function formatBandLabel(band?: Claim["consensusBand"]) {
 	if (band === "broad") return "Broad consensus";
 	if (band === "mixed") return "Mixed evidence";
 	return "Unclear or still forming";
+}
+
+function formatAgreementLabel(agreement?: Claim["agreementLevel"], fallbackBand?: Claim["consensusBand"]) {
+	if (agreement === "strong") return "Strong agreement";
+	if (agreement === "broad_qualified") return "Broad but qualified agreement";
+	if (agreement === "divided") return "Divided interpretations";
+	if (agreement === "frontier") return "Frontier debate";
+	return formatBandLabel(fallbackBand);
+}
+
+function formatEvidenceCertaintyLabel(certainty?: Claim["evidenceCertainty"]) {
+	if (certainty === "high") return "High certainty";
+	if (certainty === "moderate") return "Moderate certainty";
+	if (certainty === "low") return "Low certainty";
+	if (certainty === "very_low") return "Very low certainty";
+	return "Certainty not listed";
+}
+
+function formatReviewModeLabel(mode?: Claim["reviewMode"]) {
+	return mode === "living" ? "Living review" : "Scheduled review";
+}
+
+function formatChangeKind(kind?: string) {
+	if (kind === "publication") return "Published";
+	if (kind === "correction") return "Correction";
+	if (kind === "review") return "Review";
+	return "Update";
+}
+
+function formatSourceKind(kind: string) {
+	return kind.replaceAll("_", " ");
 }
 
 function formatDate(value?: string, fallback = "Not available yet") {
@@ -210,12 +304,19 @@ async function flagQuestion(questionId: string) {
 		/>
 
 		<header class="claim-page__header">
-			<div>
+			<div class="claim-page__hero">
 				<p class="eyebrow">Canonical claim review</p>
 				<h1>{{ claim?.title || "Claim review" }}</h1>
 				<p class="claim-page__description">
 					{{ claim?.editorSummary || "This page is the editorial summary for the claim." }}
 				</p>
+			</div>
+			<div class="rating-grid">
+				<article v-for="fact in ratingFacts" :key="fact.label" class="trust-card trust-card--rating">
+					<span>{{ fact.label }}</span>
+					<strong>{{ fact.value }}</strong>
+					<p>{{ fact.note }}</p>
+				</article>
 			</div>
 			<div class="trust-grid">
 				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card">
@@ -256,6 +357,7 @@ async function flagQuestion(questionId: string) {
 				</p>
 			</div>
 			<div class="reading-guide__actions">
+				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 			</div>
@@ -298,35 +400,148 @@ async function flagQuestion(questionId: string) {
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Evidence trail</p>
-						<h2>Sources attached to this claim review</h2>
+						<p class="eyebrow">Methods snapshot</p>
+						<h2>How this claim was reviewed</h2>
 					</div>
 					<p>
-						These sources sit under the editorial summary, not beside it, so the reading order stays clear.
+						Each page should show the search scope, the filters, and the appraisal logic behind the summary.
+					</p>
+				</div>
+
+				<div class="methods-grid">
+					<article class="method-card">
+						<h3>Databases searched</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim?.searchDatabases || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Inclusion rules</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim?.inclusionRules || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Exclusion rules</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim?.exclusionRules || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+
+					<article class="method-card">
+						<h3>Appraisal tools</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim?.appraisalTools || []" :key="item">{{ item }}</li>
+						</ul>
+					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Review and independence</p>
+						<h2>Who reviewed this and what guardrails were used</h2>
+					</div>
+					<p>
+						Trust signals should be visible enough that a skeptical reader can inspect the process without
+						guessing.
+					</p>
+				</div>
+
+				<div class="review-grid">
+					<article class="review-card">
+						<h3>Prepared by</h3>
+						<p>{{ claim?.authorLine || "Editorial authorship not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Reviewed by</h3>
+						<p>{{ claim?.reviewerLine || "Reviewer details not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Conflicts of interest</h3>
+						<p>{{ claim?.coiSummary || "Conflict-of-interest statement not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Editorial independence</h3>
+						<p>{{ claim?.independenceSummary || "Editorial independence statement not listed yet." }}</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Evidence trail</p>
+						<h2>Ranked source stack</h2>
+					</div>
+					<p>
+						The stack is grouped so readers can see which sources set the baseline and which ones are only
+						supporting context.
 					</p>
 				</div>
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
-				<div v-else class="source-list">
-					<article v-for="source in claim.sources" :key="source._id || source.title" class="source-row">
-						<div>
-							<p class="source-row__meta">
-								<span>{{ source.kind.replaceAll("_", " ") }}</span>
-								<span>{{ source.publisher || "Source" }}</span>
-								<span v-if="source.year">{{ source.year }}</span>
-							</p>
-							<h3>{{ source.title }}</h3>
-							<p>{{ source.note }}</p>
+				<div v-else class="source-groups">
+					<section v-for="group in sourceGroups" :key="group.key" class="source-group">
+						<div class="source-group__header">
+							<h3>{{ group.title }}</h3>
+							<p>{{ group.description }}</p>
 						</div>
-						<a
-							v-if="source.url"
-							class="button button--ghost"
-							:href="source.url"
-							target="_blank"
-							rel="noreferrer"
-						>
-							Open source
-						</a>
+						<div class="source-list">
+							<article v-for="source in group.items" :key="source._id || source.title" class="source-row">
+								<div>
+									<p class="source-row__meta">
+										<span>{{ formatSourceKind(source.kind) }}</span>
+										<span>{{ source.publisher || "Source" }}</span>
+										<span v-if="source.year">{{ source.year }}</span>
+									</p>
+									<h4>{{ source.title }}</h4>
+									<p>{{ source.note }}</p>
+								</div>
+								<a
+									v-if="source.url"
+									class="button button--ghost"
+									:href="source.url"
+									target="_blank"
+									rel="noreferrer"
+								>
+									Open source
+								</a>
+							</article>
+						</div>
+					</section>
+				</div>
+			</section>
+
+			<section class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Corrections and updates</p>
+						<h2>Visible change log</h2>
+					</div>
+					<p>Readers should be able to see what changed, when it changed, and why the page moved.</p>
+				</div>
+
+				<div v-if="!claim?.changeLog?.length" class="empty-state">
+					No public change log entries are recorded yet.
+				</div>
+				<div v-else class="change-log">
+					<article
+						v-for="entry in claim.changeLog"
+						:key="`${entry.date}-${entry.summary}`"
+						class="change-log__entry"
+					>
+						<p class="change-log__meta">
+							<span>{{ formatChangeKind(entry.kind) }}</span>
+							<span>{{ formatDate(entry.date, "Date pending") }}</span>
+						</p>
+						<p>{{ entry.summary }}</p>
 					</article>
 				</div>
 			</section>
@@ -515,11 +730,19 @@ async function flagQuestion(questionId: string) {
 	gap: 18px;
 }
 
+.claim-page__hero {
+	display: grid;
+	gap: 10px;
+}
+
 .claim-page__header h1,
 .bottom-line h2,
 .reading-guide h2,
 .section-heading h2,
-.source-row h3,
+.method-card h3,
+.review-card h3,
+.source-group__header h3,
+.source-row h4,
 .question-card h3,
 .composer h3 {
 	margin: 0;
@@ -554,10 +777,20 @@ async function flagQuestion(questionId: string) {
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+.rating-grid {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
 .trust-card {
 	padding: 16px 18px;
 	display: grid;
 	gap: 6px;
+}
+
+.trust-card--rating {
+	border-left: 4px solid var(--consensus-debate);
 }
 
 .trust-card span,
@@ -574,6 +807,12 @@ async function flagQuestion(questionId: string) {
 .trust-card strong {
 	font-size: 1rem;
 	color: var(--consensus-ink);
+}
+
+.trust-card p {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
 .bottom-line {
@@ -639,6 +878,63 @@ async function flagQuestion(questionId: string) {
 	gap: 12px;
 }
 
+.source-groups,
+.change-log {
+	display: grid;
+	gap: 18px;
+}
+
+.source-group {
+	display: grid;
+	gap: 12px;
+}
+
+.source-group__header {
+	display: grid;
+	gap: 6px;
+}
+
+.source-group__header p {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.methods-grid,
+.review-grid {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.method-card,
+.review-card,
+.change-log__entry {
+	padding: 16px;
+	border-radius: 18px;
+	border: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-field-surface);
+}
+
+.method-card,
+.review-card {
+	display: grid;
+	gap: 10px;
+}
+
+.method-card p,
+.review-card p,
+.change-log__entry p {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.65;
+}
+
+.plain-list--tight {
+	gap: 8px;
+	padding-left: 18px;
+}
+
 .source-row,
 .question-card {
 	display: grid;
@@ -649,6 +945,10 @@ async function flagQuestion(questionId: string) {
 	padding: 16px;
 	border-radius: 18px;
 	border: 1px solid var(--consensus-soft-line);
+}
+
+.source-row h4 {
+	font-size: 1.02rem;
 }
 
 .source-row__meta,
@@ -742,9 +1042,22 @@ async function flagQuestion(questionId: string) {
 	border-color: rgba(184, 61, 46, 0.3);
 }
 
+.change-log__meta {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	font-size: 0.82rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
+}
+
 @media (max-width: 820px) {
 	.bottom-line,
-	.reading-guide {
+	.reading-guide,
+	.methods-grid,
+	.review-grid {
 		grid-template-columns: 1fr;
 	}
 

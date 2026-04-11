@@ -35,6 +35,7 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 			<div class="site-footer__links">
 				<NuxtLink to="/consensus">Browse topics</NuxtLink>
 				<NuxtLink to="/explainers">Explainers</NuxtLink>
+				<NuxtLink to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/ask">Ask a question</NuxtLink>

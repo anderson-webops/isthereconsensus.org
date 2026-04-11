@@ -1,4 +1,10 @@
-import type { ClaimConsensusBand, ClaimStatus } from "../models/schemas/Claim.js";
+import type {
+	ClaimAgreementLevel,
+	ClaimConsensusBand,
+	ClaimEvidenceCertainty,
+	ClaimReviewMode,
+	ClaimStatus
+} from "../models/schemas/Claim.js";
 import type { ClaimSourceKind, ClaimSourceStance } from "../models/schemas/ClaimSource.js";
 
 interface SeedClaimSource {
@@ -8,6 +14,12 @@ interface SeedClaimSource {
 	stance: ClaimSourceStance;
 	note: string;
 	order: number;
+}
+
+interface SeedClaimChangeLogEntry {
+	date: string;
+	kind: "publication" | "update" | "correction" | "review";
+	summary: string;
 }
 
 export interface SeedClaim {
@@ -24,9 +36,116 @@ export interface SeedClaim {
 	misconceptions: string[];
 	editorSummary: string;
 	sources: SeedClaimSource[];
+	agreementLevel?: ClaimAgreementLevel;
+	evidenceCertainty?: ClaimEvidenceCertainty;
+	reviewMode?: ClaimReviewMode;
+	searchDatabases?: string[];
+	searchCutoffAt?: string;
+	inclusionRules?: string[];
+	exclusionRules?: string[];
+	appraisalTools?: string[];
+	authorLine?: string;
+	reviewerLine?: string;
+	coiSummary?: string;
+	independenceSummary?: string;
+	lastRetractionCheckAt?: string;
+	changeLog?: SeedClaimChangeLogEntry[];
 }
 
-export const defaultClaims: SeedClaim[] = [
+export interface CompleteSeedClaim extends SeedClaim {
+	agreementLevel: ClaimAgreementLevel;
+	evidenceCertainty: ClaimEvidenceCertainty;
+	reviewMode: ClaimReviewMode;
+	searchDatabases: string[];
+	searchCutoffAt: string;
+	inclusionRules: string[];
+	exclusionRules: string[];
+	appraisalTools: string[];
+	authorLine: string;
+	reviewerLine: string;
+	coiSummary: string;
+	independenceSummary: string;
+	lastRetractionCheckAt: string;
+	changeLog: SeedClaimChangeLogEntry[];
+}
+
+const seedTimestamp = new Date("2026-04-11T12:00:00.000Z").toISOString();
+
+function inferAgreementLevel(consensusBand: ClaimConsensusBand): ClaimAgreementLevel {
+	if (consensusBand === "strong") return "strong";
+	if (consensusBand === "broad") return "broad_qualified";
+	if (consensusBand === "mixed") return "divided";
+	return "frontier";
+}
+
+function inferEvidenceCertainty(confidenceScore: number): ClaimEvidenceCertainty {
+	if (confidenceScore >= 90) return "high";
+	if (confidenceScore >= 75) return "moderate";
+	if (confidenceScore >= 55) return "low";
+	return "very_low";
+}
+
+function defaultSearchDatabases(topicSlug: string) {
+	if (
+		topicSlug === "health-and-medicine"
+		|| topicSlug === "nutrition-and-diet"
+		|| topicSlug === "neuroscience-and-psychology"
+	) {
+		return ["PubMed", "OpenAlex", "Crossref"];
+	}
+	if (topicSlug === "climate-and-environment") {
+		return ["OpenAlex", "Crossref", "IPCC assessment reports"];
+	}
+	if (topicSlug === "historical-case-studies") {
+		return ["OpenAlex", "Crossref", "National Academies / official historical reviews"];
+	}
+	return ["OpenAlex", "Crossref", "Major institutional reports"];
+}
+
+function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
+	return {
+		...seed,
+		agreementLevel: seed.agreementLevel ?? inferAgreementLevel(seed.consensusBand),
+		evidenceCertainty: seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore),
+		reviewMode: seed.reviewMode ?? "standard",
+		searchDatabases: seed.searchDatabases ?? defaultSearchDatabases(seed.topicSlug),
+		searchCutoffAt: seed.searchCutoffAt ?? seedTimestamp,
+		inclusionRules: seed.inclusionRules ?? [
+			"Prioritize systematic reviews, meta-analyses, major guidelines, and consensus assessments.",
+			"Use landmark primary studies only when they materially changed the field or clarify a live disagreement.",
+			"Anchor the public bottom line in sources that describe methods, scope, and major limitations."
+		],
+		exclusionRules: seed.exclusionRules ?? [
+			"Do not let isolated preprints, commentary, or anecdotal reports carry the public bottom line.",
+			"Treat mechanistic or animal-only evidence as supporting context unless the page is specifically about mechanism.",
+			"Exclude weak or redundant sources when a stronger synthesis already covers the same point."
+		],
+		appraisalTools: seed.appraisalTools ?? [
+			"GRADE-style certainty check for the body of evidence",
+			"Risk-of-bias review for key study designs",
+			"Shared-baseline check when institutions disagree"
+		],
+		authorLine: seed.authorLine ?? "Prepared by the Is There Consensus editorial desk.",
+		reviewerLine: seed.reviewerLine ?? "Reviewed for evidence quality, scope, and plain-language accuracy.",
+		coiSummary: seed.coiSummary ?? "No conflicts of interest were disclosed for this seeded claim page.",
+		independenceSummary:
+			seed.independenceSummary
+			?? "The editorial summary is independent of public sentiment, sponsorship, and community vote totals.",
+		lastRetractionCheckAt: seed.lastRetractionCheckAt ?? seedTimestamp,
+		changeLog: seed.changeLog ?? [
+			{
+				date: seedTimestamp,
+				kind: seed.status === "published" ? "publication" : "update",
+				summary:
+					seed.status === "published"
+						? "Initial canonical claim page published."
+						: "Initial draft claim created."
+			}
+		]
+	};
+}
+
+const rawClaims: SeedClaim[] = [
 	{
 		topicSlug: "health-and-medicine",
 		title: "Do childhood vaccines cause autism?",
@@ -821,3 +940,5 @@ export const defaultClaims: SeedClaim[] = [
 		]
 	}
 ];
+
+export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);

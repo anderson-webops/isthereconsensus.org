@@ -200,6 +200,7 @@ useHead({
 				</p>
 			</div>
 			<div class="standards-callout__actions">
+				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink class="button button--primary" to="/explainers">Read explainers</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>
