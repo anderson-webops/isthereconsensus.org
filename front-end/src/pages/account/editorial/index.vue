@@ -25,6 +25,11 @@ const moderationGuide = [
 	"Treat factual correction requests differently from conduct appeals; they route into revision review, not just moderation.",
 	"Keep the canonical page stable while public threads gather evidence or flag problems."
 ];
+const askFlowGuide = [
+	"Loaded questions usually need a neutral rewrite plus a link to an existing claim or misconception module, not a brand-new canonical page.",
+	"Multi-question bundles should be decomposed before claim creation so the site does not mint one page that tries to answer three different propositions.",
+	"Concept questions such as causation, risk, and uncertainty usually belong with explainers even when they arrive through the thread queue."
+];
 
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const isAdmin = computed(() => role.value === "admin");
@@ -158,6 +163,13 @@ const routineOpsClaims = computed(() =>
 		)
 		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
 		.slice(0, 8)
+);
+const loadedQuestionCount = computed(() => unassignedQuestions.value.filter((question) => question.loadedFrame).length);
+const bundledQuestionCount = computed(
+	() => unassignedQuestions.value.filter((question) => question.multiQuestion).length
+);
+const conceptQuestionCount = computed(
+	() => unassignedQuestions.value.filter((question) => question.askKind === "concept").length
 );
 
 useHead({
@@ -337,6 +349,14 @@ watch(
 					<strong>{{ criticalOpsClaims.length }}</strong>
 				</article>
 				<article class="summary-card">
+					<span>Loaded asks</span>
+					<strong>{{ loadedQuestionCount }}</strong>
+				</article>
+				<article class="summary-card">
+					<span>Bundled asks</span>
+					<strong>{{ bundledQuestionCount }}</strong>
+				</article>
+				<article class="summary-card">
 					<span>Your access</span>
 					<strong>{{ isAdmin ? "Admin" : "Verified expert" }}</strong>
 				</article>
@@ -472,6 +492,25 @@ watch(
 						<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 					</div>
 				</section>
+
+				<section class="editorial-panel">
+					<div class="section-heading section-heading--tight">
+						<div>
+							<p class="eyebrow">Ask-flow guide</p>
+							<h2>Signals from the public question form</h2>
+						</div>
+						<p>
+							These fields help editors decide whether a question needs routing, reframing, or a new page.
+						</p>
+					</div>
+					<ul class="guide-list">
+						<li v-for="item in askFlowGuide" :key="item">{{ item }}</li>
+					</ul>
+					<p class="muted">
+						{{ conceptQuestionCount }} concept asks, {{ loadedQuestionCount }} loaded asks, and
+						{{ bundledQuestionCount }} bundled asks are currently sitting in intake.
+					</p>
+				</section>
 			</section>
 
 			<section class="editorial-panel">
@@ -518,9 +557,31 @@ watch(
 							<p class="queue-card__meta">
 								<span>{{ question.topic.title }}</span>
 								<span>{{ question.authorName || question.displayName || "Community member" }}</span>
+								<span v-if="question.askKind">{{ question.askKind }}</span>
 							</p>
 							<h3>{{ question.title }}</h3>
 							<p>{{ question.body || "No additional context provided." }}</p>
+							<ul
+								v-if="
+									question.loadedFrame ||
+									question.multiQuestion ||
+									(question.sourceContextType && question.sourceContextType !== 'other') ||
+									question.closestMatchLabel
+								"
+								class="plain-chip-list"
+							>
+								<li v-if="question.loadedFrame">loaded frame</li>
+								<li v-if="question.multiQuestion">multi-question bundle</li>
+								<li v-if="question.sourceContextType && question.sourceContextType !== 'other'">
+									{{ question.sourceContextType }}
+								</li>
+								<li v-if="question.closestMatchLabel">
+									closest match: {{ question.closestMatchLabel }}
+								</li>
+							</ul>
+							<p v-if="question.differenceNote" class="queue-card__note">
+								<strong>What the match missed:</strong> {{ question.differenceNote }}
+							</p>
 							<a v-if="question.sourceUrl" :href="question.sourceUrl" target="_blank" rel="noreferrer">
 								{{ question.sourceUrl }}
 							</a>
@@ -854,6 +915,10 @@ watch(
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
+}
+
+.queue-card__note {
+	margin: 0;
 }
 
 .queue-card__actions {

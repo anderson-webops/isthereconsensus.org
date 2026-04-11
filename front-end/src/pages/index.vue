@@ -6,6 +6,7 @@ import { appDescription, appName } from "~/constants";
 import { evergreenExplainers } from "~/data/explainers";
 import { misconceptionModules } from "~/data/misconceptions";
 import { getTopicGuide } from "~/data/topicGuides";
+import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 
 definePageMeta({
 	layout: "home"
@@ -98,8 +99,10 @@ const enrichedTopics = computed(() =>
 );
 
 const searchQuery = computed(() => search.value.trim());
+const searchAnalysis = computed(() => analyzeAskQuery(searchQuery.value));
 const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
 const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
+const explainerSuggestions = computed(() => matchExplainers(searchQuery.value).slice(0, 2));
 const featuredClaims = computed(() => {
 	const seen = new Set<string>();
 	return enrichedTopics.value
@@ -209,7 +212,7 @@ watchDebounced(
 			);
 		} catch (error) {
 			console.error(error);
-			resetSuggestions();
+			suggestions.value = { claims: [], topics: [], questions: [] };
 			suggestionError.value = "Suggestion lookup is unavailable right now.";
 		} finally {
 			loadingSuggestions.value = false;
@@ -234,6 +237,11 @@ function submitSearch() {
 	const firstTopic = topicSuggestions.value[0];
 	if (firstTopic?.slug) {
 		router.push(`/consensus/${firstTopic.slug}`);
+		return;
+	}
+
+	if (searchAnalysis.value.recommendedDestination === "explainer" && explainerSuggestions.value[0]) {
+		router.push(`/explainers/${explainerSuggestions.value[0].slug}`);
 		return;
 	}
 
@@ -291,7 +299,10 @@ function formatTopicDate(value?: string) {
 						Checking claim reviews and topic hubs...
 					</div>
 
-					<div v-if="claimSuggestions.length || topicSuggestions.length" class="suggestion-groups">
+					<div
+						v-if="claimSuggestions.length || topicSuggestions.length || explainerSuggestions.length"
+						class="suggestion-groups"
+					>
 						<div v-if="claimSuggestions.length" class="suggestion-group">
 							<p class="suggestion-group__label">Claim reviews</p>
 							<ul class="suggestion-list">
@@ -311,6 +322,18 @@ function formatTopicDate(value?: string) {
 									<NuxtLink :to="`/consensus/${topic.slug}`">
 										<strong>{{ topic.title }}</strong>
 										<span>{{ topic.description || getTopicGuide(topic.slug).snapshot }}</span>
+									</NuxtLink>
+								</li>
+							</ul>
+						</div>
+
+						<div v-if="explainerSuggestions.length" class="suggestion-group">
+							<p class="suggestion-group__label">Explain concepts</p>
+							<ul class="suggestion-list">
+								<li v-for="item in explainerSuggestions" :key="item.slug">
+									<NuxtLink :to="`/explainers/${item.slug}`">
+										<strong>{{ item.title }}</strong>
+										<span>{{ item.reason }}</span>
 									</NuxtLink>
 								</li>
 							</ul>

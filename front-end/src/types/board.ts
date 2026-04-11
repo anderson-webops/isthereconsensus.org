@@ -7,6 +7,16 @@ export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
 export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
 export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | "expression_of_concern";
+export type QuestionAskKind = "claim" | "topic" | "concept" | "discussion";
+export type QuestionClosestMatchType = "claim" | "topic" | "explainer" | "question" | "none";
+export type QuestionSourceContextType =
+	| "article"
+	| "social"
+	| "video"
+	| "podcast"
+	| "conversation"
+	| "classroom"
+	| "other";
 
 export interface ClaimChangeLogEntry {
 	date: string;
@@ -144,19 +154,42 @@ export interface QuestionClaimRef {
 export interface Question {
 	_id: string;
 	title: string;
+	normalizedQuestion?: string;
 	body?: string;
 	sourceUrl?: string;
+	sourceContextType?: QuestionSourceContextType;
 	displayName?: string;
 	author?: string;
 	authorName?: string;
 	authorModel?: "User" | "Admin";
 	status?: "open" | "flagged" | "archived";
 	routingStatus?: QuestionRoutingStatus;
+	askKind?: QuestionAskKind;
+	closestMatchType?: QuestionClosestMatchType;
+	closestMatchLabel?: string;
+	differenceNote?: string;
+	loadedFrame?: boolean;
+	multiQuestion?: boolean;
 	linkedAt?: string;
 	createdAt?: string;
 	updatedAt?: string;
 	topic: Topic;
 	claim?: QuestionClaimRef | null;
+}
+
+export interface SearchClaimMatch extends ClaimSummary {
+	matchReason?: string;
+	matchScore?: number;
+}
+
+export interface SearchTopicMatch extends Topic {
+	matchReason?: string;
+	matchScore?: number;
+}
+
+export interface SearchQuestionMatch extends Question {
+	matchReason?: string;
+	matchScore?: number;
 }
 
 export interface TopicResponse {
@@ -188,7 +221,7 @@ export interface QuestionsResponse {
 }
 
 export interface SuggestionResponse {
-	claims: ClaimSummary[];
-	topics: Topic[];
-	questions: Question[];
+	claims: SearchClaimMatch[];
+	topics: SearchTopicMatch[];
+	questions: SearchQuestionMatch[];
 }

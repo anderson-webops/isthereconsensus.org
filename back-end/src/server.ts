@@ -32,6 +32,7 @@ import { readMongoSecret } from "./vaultClient.js";
 import "dotenv/config";
 
 const whitespacePattern = /\s+/;
+const normalizeQuestionPattern = /[^\p{L}\p{N}\s]/gu;
 
 async function main() {
 	const app = express();
@@ -238,8 +239,44 @@ async function main() {
 		return value === true || value === "true" || value === 1 || value === "1";
 	}
 
+	function normalizeQuestionText(value: string) {
+		return value
+			.toLowerCase()
+			.replace(normalizeQuestionPattern, " ")
+			.replace(whitespacePattern, " ")
+			.trim();
+	}
+
 	function currentActor(req: express.Request) {
 		return getActorFromRequest(req);
+	}
+
+	function normalizeAskKind(value: unknown) {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "claim") return "claim";
+		if (normalized === "topic") return "topic";
+		if (normalized === "concept") return "concept";
+		return "discussion";
+	}
+
+	function normalizeClosestMatchType(value: unknown) {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "claim") return "claim";
+		if (normalized === "topic") return "topic";
+		if (normalized === "explainer") return "explainer";
+		if (normalized === "question") return "question";
+		return "none";
+	}
+
+	function normalizeSourceContextType(value: unknown) {
+		const normalized = normalizeText(value, 32);
+		if (normalized === "article") return "article";
+		if (normalized === "social") return "social";
+		if (normalized === "video") return "video";
+		if (normalized === "podcast") return "podcast";
+		if (normalized === "conversation") return "conversation";
+		if (normalized === "classroom") return "classroom";
+		return "other";
 	}
 
 	function normalizeStatus(value: unknown) {
@@ -469,17 +506,45 @@ async function main() {
 		});
 	}
 
-	function scoreMatch(query: string, haystack: string) {
-		if (!query || !haystack) return 0;
+	function analyzeMatch(query: string, haystack: string) {
+		if (!query || !haystack) {
+			return {
+				matchReason: "",
+				matchScore: 0
+			};
+		}
 		const normalizedQuery = query.toLowerCase();
 		const normalizedHaystack = haystack.toLowerCase();
-		if (normalizedHaystack === normalizedQuery) return 120;
-		if (normalizedHaystack.startsWith(normalizedQuery)) return 100;
-		if (normalizedHaystack.includes(normalizedQuery)) return 80;
+		if (normalizedHaystack === normalizedQuery) {
+			return {
+				matchReason: "Exact wording match",
+				matchScore: 120
+			};
+		}
+		if (normalizedHaystack.startsWith(normalizedQuery)) {
+			return {
+				matchReason: "Starts with the same wording",
+				matchScore: 100
+			};
+		}
+		if (normalizedHaystack.includes(normalizedQuery)) {
+			return {
+				matchReason: "Contains the same phrasing",
+				matchScore: 80
+			};
+		}
 		const queryTokens = normalizedQuery.split(whitespacePattern).filter(Boolean);
 		const haystackTokens = normalizedHaystack.split(whitespacePattern).filter(Boolean);
-		const overlap = queryTokens.filter(token => haystackTokens.some(entry => entry.includes(token)));
-		return overlap.length ? 20 + overlap.length * 10 : 0;
+		const overlap = [...new Set(queryTokens.filter(token => haystackTokens.some(entry => entry.includes(token))))];
+		return overlap.length
+			? {
+					matchReason: `Matches terms: ${overlap.slice(0, 3).join(", ")}`,
+					matchScore: 20 + overlap.length * 10
+				}
+			: {
+					matchReason: "",
+					matchScore: 0
+				};
 	}
 
 	api.get("/topics", async (req, res) => {
@@ -807,22 +872,31 @@ async function main() {
 					const haystack = [
 						claim.title,
 						claim.bottomLine,
+						claim.editorSummary,
+						...(claim.misconceptions || []),
+						...(claim.misconceptionTags || []),
 						typeof claim.topic === "object" && "title" in claim.topic ? claim.topic.title : ""
 					]
 						.join(" ")
 						.trim();
-					return { claim, score: scoreMatch(query, haystack) };
+					const match = analyzeMatch(query, haystack);
+					return { claim, match };
 				})
-				.filter(entry => entry.score > 0)
-				.sort((left, right) => right.score - left.score || left.claim.title.localeCompare(right.claim.title))
+				.filter(entry => entry.match.matchScore > 0)
+				.sort(
+					(left, right) =>
+						right.match.matchScore - left.match.matchScore || left.claim.title.localeCompare(right.claim.title)
+				)
 				.slice(0, 6)
-				.map(({ claim }) => ({
+				.map(({ claim, match }) => ({
 					_id: claim._id,
 					title: claim.title,
 					slug: claim.slug,
 					bottomLine: claim.bottomLine,
 					consensusBand: claim.consensusBand,
 					confidenceScore: claim.confidenceScore,
+					matchReason: match.matchReason,
+					matchScore: match.matchScore,
 					topic:
 						typeof claim.topic === "object" && "slug" in claim.topic
 							? {
@@ -834,32 +908,48 @@ async function main() {
 				}));
 
 			const rankedTopics = topics
-				.map(topic => ({
-					topic,
-					score: scoreMatch(query, [topic.title, topic.description, topic.slug].join(" "))
-				}))
-				.filter(entry => entry.score > 0)
-				.sort((left, right) => right.score - left.score || left.topic.title.localeCompare(right.topic.title))
+				.map((topic) => {
+					const match = analyzeMatch(query, [topic.title, topic.description, topic.slug].join(" "));
+					return { topic, match };
+				})
+				.filter(entry => entry.match.matchScore > 0)
+				.sort(
+					(left, right) =>
+						right.match.matchScore - left.match.matchScore || left.topic.title.localeCompare(right.topic.title)
+				)
 				.slice(0, 6)
-				.map(({ topic }) => topic);
+				.map(({ topic, match }) => ({
+					...topic,
+					matchReason: match.matchReason,
+					matchScore: match.matchScore
+				}));
 
 			const rankedQuestions = questions
 				.map((question) => {
 					const haystack = [
+						question.normalizedQuestion,
 						question.title,
 						question.body,
+						question.closestMatchLabel,
 						typeof question.topic === "object" && "title" in question.topic ? question.topic.title : ""
 					]
 						.join(" ")
 						.trim();
-					return { question, score: scoreMatch(query, haystack) };
+					const match = analyzeMatch(query, haystack);
+					return { question, match };
 				})
-				.filter(entry => entry.score > 0)
+				.filter(entry => entry.match.matchScore > 0)
 				.sort(
-					(left, right) => right.score - left.score || left.question.title.localeCompare(right.question.title)
+					(left, right) =>
+						right.match.matchScore - left.match.matchScore
+						|| left.question.title.localeCompare(right.question.title)
 				)
 				.slice(0, 6)
-				.map(({ question }) => question);
+				.map(({ question, match }) => ({
+					...question,
+					matchReason: match.matchReason,
+					matchScore: match.matchScore
+				}));
 
 			return res.json({
 				claims: rankedClaims,
@@ -950,9 +1040,18 @@ async function main() {
 			const topicSlug = normalizeText(req.body?.topic, 80);
 			const claimSlug = normalizeText(req.body?.claim, 160);
 			const title = normalizeText(req.body?.title, 200);
+			const normalizedQuestion
+				= normalizeText(req.body?.normalizedQuestion, 220) || normalizeQuestionText(title || "");
 			const body = normalizeText(req.body?.body, 4000);
 			const sourceUrl = normalizeText(req.body?.sourceUrl, 500);
+			const sourceContextType = normalizeSourceContextType(req.body?.sourceContextType);
 			const displayName = normalizeText(req.body?.displayName, 80);
+			const askKind = normalizeAskKind(req.body?.askKind);
+			const closestMatchType = normalizeClosestMatchType(req.body?.closestMatchType);
+			const closestMatchLabel = normalizeText(req.body?.closestMatchLabel, 240);
+			const differenceNote = normalizeText(req.body?.differenceNote, 600);
+			const loadedFrame = normalizeBoolean(req.body?.loadedFrame);
+			const multiQuestion = normalizeBoolean(req.body?.multiQuestion);
 
 			if (!topicSlug) return res.status(400).json({ error: "Topic is required." });
 			if (!title) return res.status(400).json({ error: "Title is required." });
@@ -973,14 +1072,22 @@ async function main() {
 
 			const question = await Question.create({
 				title,
+				normalizedQuestion,
 				body,
 				sourceUrl,
+				sourceContextType,
 				displayName: resolvedDisplayName,
 				author: actor.id,
 				authorModel: actor.model,
 				authorName: actor.name,
 				topic: topic._id,
 				claim: claim?._id,
+				askKind,
+				closestMatchType,
+				closestMatchLabel,
+				differenceNote,
+				loadedFrame,
+				multiQuestion,
 				routingStatus: claim ? "linked" : "unassigned",
 				linkedBy: claim ? new mongoose.Types.ObjectId(actor.id) : undefined,
 				linkedAt: claim ? new Date() : undefined

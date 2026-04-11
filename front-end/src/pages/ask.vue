@@ -1,23 +1,51 @@
 <script setup lang="ts">
-import type { ClaimSummary, QuestionResponse, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
+import type {
+	ClaimSummary,
+	QuestionAskKind,
+	QuestionClosestMatchType,
+	QuestionResponse,
+	QuestionSourceContextType,
+	SuggestionResponse,
+	Topic,
+	TopicResponse
+} from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import {
+	analyzeAskQuery,
+	defaultAskKind,
+	matchExplainers,
+	matchMisconceptionModules,
+	matchStrengthLabel
+} from "~/utils/ask-flow";
+
+interface MatchOption {
+	key: string;
+	label: string;
+	path?: string;
+	type: QuestionClosestMatchType;
+}
 
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
 const { apiUrl } = useApi();
-const { isLoggedIn, currentAccount } = useAuth();
+const { currentAccount, isLoggedIn } = useAuth();
 
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
 const question = ref(typeof route.query.question === "string" ? route.query.question : "");
+const coreQuestion = ref(question.value);
 const context = ref("");
 const sourceUrl = ref("");
 const selectedTopic = ref(typeof route.query.topic === "string" ? route.query.topic : "");
 const selectedClaimSlug = ref("");
+const selectedClosestMatch = ref("");
+const questionKind = ref<QuestionAskKind>("discussion");
+const sourceContextType = ref<QuestionSourceContextType>("other");
+const differenceNote = ref("");
 const manualContinue = ref(false);
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
@@ -27,6 +55,39 @@ const errorMessage = ref("");
 const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
 
+const sourceContextOptions: Array<{ value: QuestionSourceContextType; label: string }> = [
+	{ value: "article", label: "News article or study summary" },
+	{ value: "social", label: "Social post or screenshot" },
+	{ value: "video", label: "Video or livestream" },
+	{ value: "podcast", label: "Podcast or interview" },
+	{ value: "conversation", label: "Conversation or rumor" },
+	{ value: "classroom", label: "Classroom, school, or board meeting" },
+	{ value: "other", label: "Other" }
+];
+
+const askKinds: Array<{ description: string; label: string; value: QuestionAskKind }> = [
+	{
+		value: "claim",
+		label: "Claim check",
+		description: "A testable proposition that may already belong under a canonical claim."
+	},
+	{
+		value: "topic",
+		label: "Topic overview",
+		description: "A broad subject that may need a topic-hub answer rather than a narrow verdict."
+	},
+	{
+		value: "concept",
+		label: "Concept or explainer",
+		description: "A definition, distinction, or method question such as risk, causation, or uncertainty."
+	},
+	{
+		value: "discussion",
+		label: "Discussion or local context",
+		description: "A new, context-heavy thread that does not cleanly map to existing pages yet."
+	}
+];
+
 const { data: topicsData } = await useAsyncData("ask-topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
@@ -34,18 +95,104 @@ const { data: topicsData } = await useAsyncData("ask-topics", () =>
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const query = computed(() => question.value.trim());
 const searchReady = computed(() => query.value.length >= 3);
-const exactClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
-const hasSuggestions = computed(
+const queryAnalysis = computed(() => analyzeAskQuery(query.value));
+const explainerSuggestions = computed(() => matchExplainers(query.value));
+const misconceptionSuggestions = computed(() => matchMisconceptionModules(query.value));
+const hasAnySuggestions = computed(
 	() =>
 		suggestions.value.claims.length > 0 ||
 		suggestions.value.topics.length > 0 ||
-		suggestions.value.questions.length > 0
+		suggestions.value.questions.length > 0 ||
+		explainerSuggestions.value.length > 0 ||
+		misconceptionSuggestions.value.length > 0
 );
-const showPostingForm = computed(() => manualContinue.value || (searchReady.value && !hasSuggestions.value));
+const showPostingForm = computed(() => manualContinue.value || (searchReady.value && !hasAnySuggestions.value));
+const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
+const topTopicMatch = computed(() => suggestions.value.topics[0] ?? null);
+const topExplainerMatch = computed(() => explainerSuggestions.value[0] ?? null);
 const selectedTopicRecord = computed(() => topics.value.find((topic) => topic.slug === selectedTopic.value) ?? null);
 const claimOptions = computed(() =>
 	suggestions.value.claims.filter((claim) => claim.topic?.slug === selectedTopic.value)
 );
+const matchOptions = computed<MatchOption[]>(() => {
+	const options: MatchOption[] = [];
+
+	for (const claim of suggestions.value.claims.slice(0, 4)) {
+		options.push({
+			key: `claim:${claim._id}`,
+			label: claim.title,
+			path: claim.topic?.slug ? `/consensus/${claim.topic.slug}/${claim.slug}` : undefined,
+			type: "claim"
+		});
+	}
+
+	for (const item of explainerSuggestions.value.slice(0, 3)) {
+		options.push({
+			key: `explainer:${item.slug}`,
+			label: item.title,
+			path: `/explainers/${item.slug}`,
+			type: "explainer"
+		});
+	}
+
+	for (const topic of suggestions.value.topics.slice(0, 3)) {
+		options.push({
+			key: `topic:${topic._id}`,
+			label: topic.title,
+			path: `/consensus/${topic.slug}`,
+			type: "topic"
+		});
+	}
+
+	for (const entry of suggestions.value.questions.slice(0, 2)) {
+		options.push({
+			key: `question:${entry._id}`,
+			label: entry.title,
+			path: entry.claim
+				? `/consensus/${entry.topic.slug}/${entry.claim.slug}?highlight=${entry._id}`
+				: `/consensus/${entry.topic.slug}?highlight=${entry._id}`,
+			type: "question"
+		});
+	}
+
+	return options.slice(0, 8);
+});
+const selectedClosestMatchRecord = computed(
+	() => matchOptions.value.find((option) => option.key === selectedClosestMatch.value) ?? null
+);
+const routeCard = computed(() => {
+	if (queryAnalysis.value.isPersonalAdvice) {
+		return {
+			body: "This reads like an individual decision question. The site can point you to general evidence, but it should not replace professional advice for personal care decisions.",
+			title: "Scope warning: this looks personal or advice-seeking"
+		};
+	}
+	if (queryAnalysis.value.recommendedDestination === "explainer") {
+		return {
+			body: "This looks like a concept or method question. Start with the explainer if you need definitions, risk framing, causation, or uncertainty before you judge a claim.",
+			title: "Best next step: concept explainer"
+		};
+	}
+	if (queryAnalysis.value.recommendedDestination === "topic") {
+		return {
+			body: "This looks broad or multi-part. A topic hub is more likely to orient you than a narrow claim page on the first click.",
+			title: "Best next step: topic hub"
+		};
+	}
+	return {
+		body: "This looks like a claim check. Start with the closest canonical claim review before you create a new thread.",
+		title: "Best next step: canonical claim review"
+	};
+});
+
+useHead({
+	title: "Ask a question - Is There Consensus?"
+});
+
+function resetSuggestions() {
+	suggestions.value = { claims: [], topics: [], questions: [] };
+	suggestionError.value = "";
+}
 
 function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	if (band === "strong") return "Strong consensus";
@@ -54,18 +201,91 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	return "Unclear or still forming";
 }
 
-function resetSuggestions() {
-	suggestions.value = { claims: [], topics: [], questions: [] };
-	suggestionError.value = "";
+function continueUnderClaim(claim: ClaimSummary) {
+	selectedTopic.value = claim.topic?.slug || selectedTopic.value;
+	selectedClaimSlug.value = claim.slug;
+	selectedClosestMatch.value = `claim:${claim._id}`;
+	questionKind.value = "claim";
+	manualContinue.value = true;
+}
+
+function openSuggestion(path: string) {
+	router.push(path);
+}
+
+function adoptReframe(nextQuestion: string) {
+	question.value = nextQuestion;
+	coreQuestion.value = nextQuestion;
+	manualContinue.value = false;
+}
+
+function focusSegment(segment: string) {
+	const normalizedSegment = segment.endsWith("?") ? segment : `${segment}?`;
+	question.value = normalizedSegment;
+	coreQuestion.value = normalizedSegment;
+	manualContinue.value = false;
+}
+
+function openBestNextStep() {
+	if (queryAnalysis.value.recommendedDestination === "explainer" && topExplainerMatch.value) {
+		openSuggestion(`/explainers/${topExplainerMatch.value.slug}`);
+		return;
+	}
+	if (queryAnalysis.value.recommendedDestination === "topic" && topTopicMatch.value?.slug) {
+		openSuggestion(`/consensus/${topTopicMatch.value.slug}`);
+		return;
+	}
+	if (topClaimMatch.value?.topic?.slug) {
+		openSuggestion(`/consensus/${topClaimMatch.value.topic.slug}/${topClaimMatch.value.slug}`);
+	}
 }
 
 watch(
-	() => [topics.value.length, selectedTopic.value],
+	() => query.value,
+	(value, previous) => {
+		if (!coreQuestion.value || coreQuestion.value === previous) {
+			coreQuestion.value = value;
+		}
+		if (!manualContinue.value) {
+			questionKind.value = defaultAskKind(queryAnalysis.value);
+		}
+	},
+	{ immediate: true }
+);
+
+watch(
+	() => [topics.value.length, selectedTopic.value, topClaimMatch.value?._id, topTopicMatch.value?._id],
 	() => {
 		if (!topics.value.length) return;
 		if (topics.value.some((topic) => topic.slug === selectedTopic.value)) return;
-		selectedTopic.value =
-			exactClaimMatch.value?.topic?.slug || suggestions.value.topics[0]?.slug || topics.value[0].slug;
+		selectedTopic.value = topClaimMatch.value?.topic?.slug || topTopicMatch.value?.slug || topics.value[0].slug;
+	},
+	{ immediate: true }
+);
+
+watch(
+	() => selectedTopic.value,
+	(value) => {
+		if (!value) {
+			selectedClaimSlug.value = "";
+			return;
+		}
+		if (!claimOptions.value.some((claim) => claim.slug === selectedClaimSlug.value)) {
+			selectedClaimSlug.value = "";
+		}
+	}
+);
+
+watch(
+	() => matchOptions.value.map((entry) => entry.key).join("|"),
+	() => {
+		if (
+			selectedClosestMatch.value &&
+			matchOptions.value.some((entry) => entry.key === selectedClosestMatch.value)
+		) {
+			return;
+		}
+		selectedClosestMatch.value = matchOptions.value[0]?.key || "";
 	},
 	{ immediate: true }
 );
@@ -87,7 +307,7 @@ watchDebounced(
 		} catch (error) {
 			console.error(error);
 			suggestionError.value = "Unable to load suggestions right now.";
-			resetSuggestions();
+			suggestions.value = { claims: [], topics: [], questions: [] };
 		} finally {
 			loadingSuggestions.value = false;
 		}
@@ -95,41 +315,26 @@ watchDebounced(
 	{ debounce: 250, maxWait: 600 }
 );
 
-watch(
-	() => selectedTopic.value,
-	(value) => {
-		if (!value) {
-			selectedClaimSlug.value = "";
-			return;
-		}
-		if (!claimOptions.value.some((claim) => claim.slug === selectedClaimSlug.value)) {
-			selectedClaimSlug.value = "";
-		}
-	}
-);
-
-function openSuggestion(path: string) {
-	router.push(path);
-}
-
-function continueUnderClaim(claim: ClaimSummary) {
-	selectedTopic.value = claim.topic?.slug || selectedTopic.value;
-	selectedClaimSlug.value = claim.slug;
-	manualContinue.value = true;
-}
-
 async function submitQuestion() {
 	errorMessage.value = "";
 	if (!isLoggedIn.value) {
 		errorMessage.value = "Please sign in before posting.";
 		return;
 	}
-	if (!query.value) {
-		errorMessage.value = "Please add a question or headline first.";
+	if (!coreQuestion.value.trim()) {
+		errorMessage.value = "Add a one-sentence core question before posting.";
 		return;
 	}
 	if (!selectedTopic.value) {
 		errorMessage.value = "Choose the closest topic before posting.";
+		return;
+	}
+	if (hasAnySuggestions.value && !selectedClosestMatchRecord.value) {
+		errorMessage.value = "Pick the closest existing match before you post.";
+		return;
+	}
+	if (hasAnySuggestions.value && !differenceNote.value.trim()) {
+		errorMessage.value = "Briefly explain what the closest match missed before posting.";
 		return;
 	}
 	if (captchaRequired.value && !captchaToken.value) {
@@ -145,9 +350,17 @@ async function submitQuestion() {
 			body: {
 				topic: selectedTopic.value,
 				claim: selectedClaimSlug.value || undefined,
-				title: query.value,
+				title: coreQuestion.value.trim(),
+				normalizedQuestion: queryAnalysis.value.normalized,
 				body: context.value.trim(),
 				sourceUrl: sourceUrl.value.trim(),
+				sourceContextType: sourceContextType.value,
+				askKind: questionKind.value,
+				closestMatchType: selectedClosestMatchRecord.value?.type || "none",
+				closestMatchLabel: selectedClosestMatchRecord.value?.label || "",
+				differenceNote: differenceNote.value.trim(),
+				loadedFrame: queryAnalysis.value.looksLoaded,
+				multiQuestion: queryAnalysis.value.hasMultipleQuestions,
 				captchaToken: captchaToken.value
 			}
 		});
@@ -182,50 +395,138 @@ async function submitQuestion() {
 
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
-			<h1>Check for an existing claim review before posting.</h1>
+			<h1>Start with the closest claim, topic, or concept before you open a new thread.</h1>
 			<p>
-				The site is claim-first now. Search the claim, open the existing review if it exists, and only post a
-				new thread when the answer is not already covered.
+				Public science questions usually arrive as narratives, headline fragments, or loaded premises. This flow
+				tries to route the first attempt well instead of forcing you to reformulate blindly.
 			</p>
 		</header>
 
 		<section class="search-panel">
-			<label class="field-label" for="claim-question">What are you trying to check?</label>
+			<label class="field-label" for="claim-question">Ask a question or type a claim</label>
 			<textarea
 				id="claim-question"
 				v-model="question"
 				rows="3"
-				placeholder="Paste the claim, headline, or question"
+				placeholder="Does X cause Y? Is X safe? What is the difference between hazard and risk?"
 			/>
 			<p class="search-panel__hint">
-				Start with the exact claim if you can. Existing claim reviews are ranked above topic hubs and community
-				threads.
+				Claims, concepts, and topic hubs all compete here. The goal is first-attempt success, not making you
+				guess the perfect keyword string.
 			</p>
+		</section>
+
+		<section v-if="searchReady" class="routing-panel">
+			<div class="routing-panel__header">
+				<div>
+					<p class="eyebrow">Routing read</p>
+					<h2>{{ routeCard.title }}</h2>
+				</div>
+				<div class="routing-panel__actions">
+					<button
+						v-if="
+							(topClaimMatch && queryAnalysis.recommendedDestination === 'claim') ||
+							(topTopicMatch && queryAnalysis.recommendedDestination === 'topic') ||
+							(topExplainerMatch && queryAnalysis.recommendedDestination === 'explainer')
+						"
+						class="button button--primary"
+						type="button"
+						@click="openBestNextStep"
+					>
+						Open best next step
+					</button>
+					<button class="button button--ghost" type="button" @click="manualContinue = true">
+						I still need to post
+					</button>
+				</div>
+			</div>
+			<p>{{ routeCard.body }}</p>
+
+			<div class="chip-row">
+				<span v-if="queryAnalysis.looksLoaded" class="chip chip--warning">Loaded premise</span>
+				<span v-if="queryAnalysis.hasMultipleQuestions" class="chip">Multi-part question</span>
+				<span v-if="queryAnalysis.isDefinition" class="chip">Definition</span>
+				<span v-if="queryAnalysis.isMechanism" class="chip">Mechanism</span>
+				<span v-if="queryAnalysis.isEvidenceSeeking" class="chip">Evidence-seeking</span>
+				<span v-if="queryAnalysis.isRecencyEvent" class="chip">Recent or viral context</span>
+				<span v-if="queryAnalysis.isPersonalAdvice" class="chip chip--warning">Personal advice scope</span>
+			</div>
+
+			<div v-if="queryAnalysis.looksLoaded && queryAnalysis.neutralReframes.length" class="routing-subpanel">
+				<div class="section-heading section-heading--tight">
+					<h3>Neutral reframe</h3>
+					<p>Your wording contains a conclusion. Pick the neutral version you mean.</p>
+				</div>
+				<div class="button-row">
+					<button
+						v-for="option in queryAnalysis.neutralReframes"
+						:key="option"
+						class="button button--ghost"
+						type="button"
+						@click="adoptReframe(option)"
+					>
+						{{ option }}
+					</button>
+				</div>
+			</div>
+
+			<div v-if="queryAnalysis.hasMultipleQuestions" class="routing-subpanel">
+				<div class="section-heading section-heading--tight">
+					<h3>Split the bundle</h3>
+					<p>Answer one proposition first. The rest can stay as context or a later thread.</p>
+				</div>
+				<div class="segment-list">
+					<button
+						v-for="segment in queryAnalysis.segments"
+						:key="segment"
+						class="segment-button"
+						type="button"
+						@click="focusSegment(segment)"
+					>
+						{{ segment }}
+					</button>
+				</div>
+			</div>
+
+			<div v-if="queryAnalysis.isPersonalAdvice" class="routing-subpanel routing-subpanel--warning">
+				<p>
+					The site can summarize general evidence, but it is not a substitute for individualized medical,
+					legal, or emergency advice. Use the closest general claim or explainer first, then talk to a
+					qualified professional for personal decisions.
+				</p>
+			</div>
 		</section>
 
 		<section class="results-grid">
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">1. Existing claim reviews</p>
+						<p class="eyebrow">1. Canonical claim reviews</p>
 						<h2>Best match first</h2>
 					</div>
-					<p>Open one of these before you post anything new.</p>
+					<p>Duplicate prevention works best when the main answer already exists.</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Type at least three characters to start matching.</div>
-				<div v-else-if="loadingSuggestions" class="empty-state">Checking existing claim reviews...</div>
+				<div v-else-if="loadingSuggestions" class="empty-state">Checking claim reviews and topic hubs...</div>
 				<div v-else-if="suggestionError" class="empty-state">{{ suggestionError }}</div>
-				<div v-else-if="!suggestions.claims.length" class="empty-state">No claim review looks close yet.</div>
+				<div v-else-if="!suggestions.claims.length" class="empty-state">No close claim review yet.</div>
 				<div v-else class="match-list">
-					<article v-for="claim in suggestions.claims" :key="claim._id" class="match-row match-row--claim">
+					<article
+						v-for="claim in suggestions.claims"
+						:key="claim._id"
+						class="match-row match-row--claim"
+						:class="{ 'match-row--strong': topClaimMatch?._id === claim._id }"
+					>
 						<div>
 							<p class="match-row__meta">
 								<span>{{ claim.topic?.title }}</span>
+								<span>{{ matchStrengthLabel(claim.matchScore) }}</span>
 								<span>{{ formatBandLabel(claim.consensusBand) }}</span>
 							</p>
 							<h3>{{ claim.title }}</h3>
 							<p>{{ claim.bottomLine }}</p>
+							<p v-if="claim.matchReason" class="match-row__reason">{{ claim.matchReason }}</p>
 						</div>
 						<div class="match-row__actions">
 							<button
@@ -236,7 +537,7 @@ async function submitQuestion() {
 								Open claim review
 							</button>
 							<button class="button button--ghost" type="button" @click="continueUnderClaim(claim)">
-								Post under this claim
+								Close, but different
 							</button>
 						</div>
 					</article>
@@ -246,10 +547,79 @@ async function submitQuestion() {
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">2. Topic hubs</p>
-						<h2>Read the topic frame if the claim is still broad</h2>
+						<p class="eyebrow">2. Concepts and misconception modules</p>
+						<h2>Use the missing concept before you post</h2>
 					</div>
-					<p>Use the hub when you need the bigger context before getting more specific.</p>
+					<p>Many “new questions” are really risk, causation, or headline-reading problems.</p>
+				</div>
+
+				<div v-if="!searchReady" class="empty-state">Concept matches appear here after you type.</div>
+				<div v-else class="concept-stack">
+					<section class="concept-section">
+						<h3>Explain concepts</h3>
+						<div v-if="!explainerSuggestions.length" class="empty-state empty-state--tight">
+							No explainer looks close yet.
+						</div>
+						<div v-else class="match-list">
+							<article v-for="item in explainerSuggestions" :key="item.slug" class="match-row">
+								<div>
+									<p class="match-row__meta">
+										<span>Explainer</span>
+										<span>{{ matchStrengthLabel(item.score) }}</span>
+									</p>
+									<h3>{{ item.title }}</h3>
+									<p>{{ item.summary }}</p>
+									<p class="match-row__reason">{{ item.reason }}</p>
+								</div>
+								<button
+									class="button button--ghost"
+									type="button"
+									@click="openSuggestion(`/explainers/${item.slug}`)"
+								>
+									Open explainer
+								</button>
+							</article>
+						</div>
+					</section>
+
+					<section class="concept-section">
+						<h3>Misconception modules</h3>
+						<div v-if="!misconceptionSuggestions.length" class="empty-state empty-state--tight">
+							No recurring misconception module looks close yet.
+						</div>
+						<div v-else class="match-list">
+							<article v-for="item in misconceptionSuggestions" :key="item.slug" class="match-row">
+								<div>
+									<p class="match-row__meta">
+										<span>Module</span>
+										<span>{{ matchStrengthLabel(item.score) }}</span>
+									</p>
+									<h3>{{ item.title }}</h3>
+									<p>{{ item.summary }}</p>
+									<p class="match-row__reason">{{ item.reason }}</p>
+								</div>
+								<button
+									class="button button--ghost"
+									type="button"
+									@click="openSuggestion('/misconceptions')"
+								>
+									Open module library
+								</button>
+							</article>
+						</div>
+					</section>
+				</div>
+			</article>
+
+			<article class="results-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">3. Topic hubs</p>
+						<h2>Use the hub when the question is still broad</h2>
+					</div>
+					<p>
+						Topic hubs are better first clicks when the query spans causes, impacts, and evidence at once.
+					</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Topic matches appear here after you type.</div>
@@ -258,11 +628,13 @@ async function submitQuestion() {
 					<article v-for="topic in suggestions.topics" :key="topic._id" class="match-row">
 						<div>
 							<p class="match-row__meta">
+								<span>{{ matchStrengthLabel(topic.matchScore) }}</span>
 								<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
-								<span>{{ topic.questionCount ?? 0 }} community threads</span>
+								<span>{{ topic.questionCount ?? 0 }} threads</span>
 							</p>
 							<h3>{{ topic.title }}</h3>
 							<p>{{ topic.description }}</p>
+							<p v-if="topic.matchReason" class="match-row__reason">{{ topic.matchReason }}</p>
 						</div>
 						<button
 							class="button button--ghost"
@@ -274,59 +646,59 @@ async function submitQuestion() {
 					</article>
 				</div>
 			</article>
+		</section>
 
-			<article class="results-panel">
-				<div class="section-heading">
+		<section class="results-panel">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">4. Recent discussion threads</p>
+					<h2>Only after the reviewed answer and concept layer</h2>
+				</div>
+				<p>Threads can supply context, but they should not outrank canonical claim reviews.</p>
+			</div>
+
+			<div v-if="!searchReady" class="empty-state">Recent thread matches appear here after you type.</div>
+			<div v-else-if="!suggestions.questions.length" class="empty-state">No existing thread looks close yet.</div>
+			<div v-else class="match-list">
+				<article v-for="entry in suggestions.questions" :key="entry._id" class="match-row">
 					<div>
-						<p class="eyebrow">3. Community threads</p>
-						<h2>Only after the claim or topic frame</h2>
+						<p class="match-row__meta">
+							<span>{{ entry.topic.title }}</span>
+							<span>{{ matchStrengthLabel(entry.matchScore) }}</span>
+							<span>{{ entry.claim?.title || "Unassigned thread" }}</span>
+						</p>
+						<h3>{{ entry.title }}</h3>
+						<p>{{ entry.body || entry.sourceUrl || "Open the topic hub to read the frame first." }}</p>
+						<p v-if="entry.matchReason" class="match-row__reason">{{ entry.matchReason }}</p>
 					</div>
-					<p>These are discussion threads, not canonical summaries.</p>
-				</div>
-
-				<div v-if="!searchReady" class="empty-state">Recent thread matches appear here after you type.</div>
-				<div v-else-if="!suggestions.questions.length" class="empty-state">
-					No existing thread looks close yet.
-				</div>
-				<div v-else class="match-list">
-					<article v-for="entry in suggestions.questions" :key="entry._id" class="match-row">
-						<div>
-							<p class="match-row__meta">
-								<span>{{ entry.topic.title }}</span>
-								<span>{{ entry.claim?.title || "Unassigned thread" }}</span>
-							</p>
-							<h3>{{ entry.title }}</h3>
-							<p>{{ entry.body || entry.sourceUrl || "Open the topic hub to read the frame first." }}</p>
-						</div>
-						<button
-							class="button button--ghost"
-							type="button"
-							@click="
-								openSuggestion(
-									entry.claim
-										? `/consensus/${entry.topic.slug}/${entry.claim.slug}?highlight=${entry._id}`
-										: `/consensus/${entry.topic.slug}?highlight=${entry._id}`
-								)
-							"
-						>
-							Open thread
-						</button>
-					</article>
-				</div>
-			</article>
+					<button
+						class="button button--ghost"
+						type="button"
+						@click="
+							openSuggestion(
+								entry.claim
+									? `/consensus/${entry.topic.slug}/${entry.claim.slug}?highlight=${entry._id}`
+									: `/consensus/${entry.topic.slug}?highlight=${entry._id}`
+							)
+						"
+					>
+						Open thread
+					</button>
+				</article>
+			</div>
 		</section>
 
 		<section class="posting-gate">
 			<div>
 				<p class="eyebrow">Still need to post?</p>
-				<h2>Post only if the site still does not cover the question.</h2>
+				<h2>Only create a new thread after you reject the closest existing match.</h2>
 				<p>
-					New threads stay under a topic hub by default. You can explicitly attach the thread to a known
-					claim.
+					If none of the pages above actually answers your question, keep the new thread narrow and tell the
+					editorial queue what the closest match missed.
 				</p>
 			</div>
 			<button class="button button--ghost" type="button" @click="manualContinue = true">
-				{{ hasSuggestions ? "I still need to post" : "Continue to posting" }}
+				{{ hasAnySuggestions ? "None of these" : "Continue to posting" }}
 			</button>
 		</section>
 
@@ -337,8 +709,8 @@ async function submitQuestion() {
 					<h2>Organize the thread before you post it</h2>
 				</div>
 				<p>
-					Choose the topic first. Then decide whether the thread should stay unassigned or sit under a known
-					claim.
+					Thread creation is the fallback path. Keep the core question short, pick the closest match, and
+					explain the delta.
 				</p>
 			</div>
 
@@ -350,12 +722,34 @@ async function submitQuestion() {
 			<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
 
 			<div class="field-stack">
-				<label class="field-label" for="post-topic">Closest topic</label>
-				<select id="post-topic" v-model="selectedTopic">
-					<option v-for="topic in topics" :key="topic._id" :value="topic.slug">
-						{{ topic.title }}
-					</option>
-				</select>
+				<label class="field-label" for="core-question">One-sentence core question</label>
+				<input
+					id="core-question"
+					v-model="coreQuestion"
+					type="text"
+					placeholder="Example: Do vaccines change human DNA?"
+				/>
+			</div>
+
+			<div class="field-grid">
+				<div class="field-stack">
+					<label class="field-label" for="question-kind">What kind of ask is this?</label>
+					<select id="question-kind" v-model="questionKind">
+						<option v-for="item in askKinds" :key="item.value" :value="item.value">{{ item.label }}</option>
+					</select>
+					<p class="muted">
+						{{ askKinds.find((item) => item.value === questionKind)?.description }}
+					</p>
+				</div>
+
+				<div class="field-stack">
+					<label class="field-label" for="post-topic">Closest topic</label>
+					<select id="post-topic" v-model="selectedTopic">
+						<option v-for="topic in topics" :key="topic._id" :value="topic.slug">
+							{{ topic.title }}
+						</option>
+					</select>
+				</div>
 			</div>
 
 			<div v-if="selectedTopicRecord" class="selected-topic">
@@ -367,21 +761,51 @@ async function submitQuestion() {
 				</p>
 			</div>
 
-			<div class="field-stack">
-				<label class="field-label" for="claim-link">Attach to a published claim</label>
-				<select id="claim-link" v-model="selectedClaimSlug">
-					<option value="">Leave this as an unassigned topic thread</option>
-					<option v-for="claim in claimOptions" :key="claim._id" :value="claim.slug">
-						{{ claim.title }}
-					</option>
-				</select>
-				<p class="muted">
-					Leave this blank unless the question clearly belongs under an existing claim review.
-				</p>
+			<div class="field-grid">
+				<div class="field-stack">
+					<label class="field-label" for="claim-link">Attach to a published claim</label>
+					<select id="claim-link" v-model="selectedClaimSlug">
+						<option value="">Leave this as an unassigned topic thread</option>
+						<option v-for="claim in claimOptions" :key="claim._id" :value="claim.slug">
+							{{ claim.title }}
+						</option>
+					</select>
+					<p class="muted">Only attach it if the question clearly belongs under one canonical claim page.</p>
+				</div>
+
+				<div class="field-stack">
+					<label class="field-label" for="source-context-type">Where did you see this claim?</label>
+					<select id="source-context-type" v-model="sourceContextType">
+						<option v-for="item in sourceContextOptions" :key="item.value" :value="item.value">
+							{{ item.label }}
+						</option>
+					</select>
+				</div>
 			</div>
 
 			<div class="field-stack">
-				<label class="field-label" for="post-context">Context or quote</label>
+				<label class="field-label" for="closest-match">Closest existing match</label>
+				<select id="closest-match" v-model="selectedClosestMatch">
+					<option v-if="!matchOptions.length" value="">No close match shown</option>
+					<option v-for="item in matchOptions" :key="item.key" :value="item.key">
+						{{ item.type }} · {{ item.label }}
+					</option>
+				</select>
+				<p class="muted">This tells the editorial queue which page or thread you already checked first.</p>
+			</div>
+
+			<div class="field-stack">
+				<label class="field-label" for="difference-note">What did the closest match miss?</label>
+				<textarea
+					id="difference-note"
+					v-model="differenceNote"
+					rows="3"
+					placeholder="One sentence is enough. Example: I am asking about long-term effects, not immediate side effects."
+				/>
+			</div>
+
+			<div class="field-stack">
+				<label class="field-label" for="post-context">Context, quote, or local detail</label>
 				<textarea
 					id="post-context"
 					v-model="context"
@@ -410,20 +834,15 @@ async function submitQuestion() {
 					{{ submitting ? "Posting..." : "Post to the board" }}
 				</button>
 				<NuxtLink class="button button--ghost" to="/consensus">Browse topics</NuxtLink>
+				<button
+					v-if="selectedClosestMatchRecord?.path"
+					class="button button--ghost"
+					type="button"
+					@click="openSuggestion(selectedClosestMatchRecord.path)"
+				>
+					Open closest match again
+				</button>
 			</div>
-		</section>
-
-		<section v-if="exactClaimMatch && !showPostingForm" class="next-step">
-			<p class="eyebrow">Recommended next step</p>
-			<h2>Open the closest claim review first.</h2>
-			<p>{{ exactClaimMatch.title }} is currently the strongest match for this query.</p>
-			<button
-				class="button button--primary"
-				type="button"
-				@click="openSuggestion(`/consensus/${exactClaimMatch.topic?.slug}/${exactClaimMatch.slug}`)"
-			>
-				Open {{ exactClaimMatch.title }}
-			</button>
 		</section>
 	</div>
 </template>
@@ -436,11 +855,12 @@ async function submitQuestion() {
 
 .ask-page__header h1,
 .section-heading h2,
+.routing-panel h2,
+.routing-subpanel h3,
 .match-row h3,
 .posting-gate h2,
 .posting-form h2,
-.selected-topic h3,
-.next-step h2 {
+.selected-topic h3 {
 	font-family: "Fraunces", serif;
 }
 
@@ -452,6 +872,8 @@ async function submitQuestion() {
 .ask-page__header p,
 .search-panel__hint,
 .section-heading p,
+.routing-panel p,
+.routing-subpanel p,
 .match-row p,
 .empty-state,
 .posting-gate p,
@@ -464,22 +886,23 @@ async function submitQuestion() {
 }
 
 .search-panel,
+.routing-panel,
 .results-panel,
 .posting-gate,
 .posting-form,
 .match-row,
 .selected-topic,
-.next-step {
+.routing-subpanel {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
 }
 
 .search-panel,
+.routing-panel,
 .results-panel,
 .posting-form,
-.selected-topic,
-.next-step {
+.selected-topic {
 	padding: 20px;
 }
 
@@ -493,9 +916,11 @@ async function submitQuestion() {
 }
 
 .search-panel,
+.routing-panel,
 .results-panel,
 .posting-form,
-.field-stack {
+.field-stack,
+.routing-subpanel {
 	display: grid;
 	gap: 12px;
 }
@@ -520,12 +945,7 @@ async function submitQuestion() {
 	color: var(--consensus-muted);
 }
 
-.results-grid {
-	display: grid;
-	gap: 18px;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
+.routing-panel__header,
 .section-heading,
 .posting-form__header {
 	display: flex;
@@ -538,8 +958,89 @@ async function submitQuestion() {
 .section-heading h2,
 .section-heading p,
 .posting-form__header h2,
-.posting-form__header p {
+.posting-form__header p,
+.routing-panel__header h2 {
 	margin: 0;
+}
+
+.routing-panel__actions,
+.button-row,
+.match-row__actions,
+.posting-form__actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.chip-row {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	font-size: 0.78rem;
+	font-weight: 600;
+}
+
+.chip--warning {
+	border-color: color-mix(in srgb, var(--consensus-caution) 40%, var(--consensus-line));
+	background: color-mix(in srgb, var(--consensus-caution) 14%, var(--consensus-elevated-surface));
+}
+
+.routing-subpanel {
+	padding: 16px;
+	background: var(--consensus-field-surface);
+}
+
+.routing-subpanel--warning {
+	border-color: color-mix(in srgb, var(--consensus-caution) 36%, var(--consensus-soft-line));
+	background: color-mix(in srgb, var(--consensus-caution) 9%, var(--consensus-field-surface));
+}
+
+.segment-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.segment-button {
+	padding: 11px 14px;
+	border-radius: 16px;
+	border: 1px solid var(--consensus-line);
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+	color: var(--consensus-ink);
+}
+
+.results-grid {
+	display: grid;
+	gap: 18px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	align-items: start;
+}
+
+.concept-stack {
+	display: grid;
+	gap: 18px;
+}
+
+.concept-section {
+	display: grid;
+	gap: 12px;
+}
+
+.concept-section h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
 }
 
 .match-list {
@@ -553,6 +1054,11 @@ async function submitQuestion() {
 	gap: 14px;
 }
 
+.match-row--strong {
+	border-color: color-mix(in srgb, var(--consensus-interactive) 34%, var(--consensus-soft-line));
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--consensus-interactive) 18%, transparent);
+}
+
 .match-row__meta,
 .selected-topic__meta {
 	display: flex;
@@ -561,16 +1067,18 @@ async function submitQuestion() {
 }
 
 .match-row h3,
-.selected-topic h3,
-.next-step h2 {
+.selected-topic h3 {
 	margin: 0;
 }
 
-.match-row__actions,
-.posting-form__actions {
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
+.match-row__reason {
+	font-size: 0.95rem;
+}
+
+.field-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .button {
@@ -600,9 +1108,8 @@ async function submitQuestion() {
 	padding: 14px 0 4px;
 }
 
-.next-step {
-	display: grid;
-	gap: 10px;
+.empty-state--tight {
+	padding: 0;
 }
 
 .error {
@@ -610,8 +1117,14 @@ async function submitQuestion() {
 	font-weight: 600;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 	.results-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 720px) {
+	.field-grid {
 		grid-template-columns: 1fr;
 	}
 }
