@@ -239,6 +239,10 @@ async function handleChangePassword() {
 						<NuxtLink to="/terms">Terms of Service</NuxtLink>.
 					</span>
 				</label>
+				<p class="muted">
+					Read the <NuxtLink to="/privacy">Privacy Policy</NuxtLink> to learn how account data, secure
+					sessions, captcha checks, and public posting work on this site.
+				</p>
 				<button class="button button--primary" type="submit" :disabled="busy">Create account</button>
 				<p class="muted">Admin accounts are managed separately.</p>
 			</form>
@@ -360,6 +364,10 @@ input {
 }
 
 .checkbox--legal a {
+	color: var(--consensus-link);
+}
+
+.muted a {
 	color: var(--consensus-link);
 }
 

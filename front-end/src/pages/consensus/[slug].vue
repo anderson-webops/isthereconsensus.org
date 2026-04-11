@@ -417,6 +417,10 @@ async function flagQuestion(questionId: string) {
 					<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
 				</div>
 
+				<p class="muted">
+					Questions posted here are public and may be indexed. See the
+					<NuxtLink to="/privacy">Privacy Policy</NuxtLink> for details.
+				</p>
 				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 				<div class="posting-form__actions">
 					<button

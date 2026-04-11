@@ -173,6 +173,10 @@ watch(
 						placeholder="Describe the domain you work in and the kinds of questions you can help review."
 					/>
 
+					<p class="muted">
+						Applications are reviewed internally and may be retained with moderation and editorial records.
+						See the <NuxtLink to="/privacy">Privacy Policy</NuxtLink> for details.
+					</p>
 					<p v-if="successMessage" class="success">{{ successMessage }}</p>
 					<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 					<button class="button button--primary" type="submit" :disabled="saving">
@@ -213,6 +217,10 @@ watch(
 	margin: 0;
 	color: var(--consensus-muted);
 	line-height: 1.6;
+}
+
+.muted a {
+	color: var(--consensus-link);
 }
 
 .expert-panel__body,

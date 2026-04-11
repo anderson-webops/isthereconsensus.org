@@ -300,6 +300,7 @@ useHead({
 				</p>
 			</div>
 			<div class="terms-callout__actions">
+				<NuxtLink class="button button--ghost" to="/privacy">Privacy policy</NuxtLink>
 				<NuxtLink class="button button--primary" to="/account">Account</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>
