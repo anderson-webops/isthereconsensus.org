@@ -61,6 +61,8 @@ const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const isAdmin = computed(() => role.value === "admin");
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
+const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${slug.value}`);
+const pageDescription = computed(() => topic.value?.description || guide.value.snapshot);
 
 const trustFacts = computed(() => [
 	{ label: "Topic summary", value: guide.value.consensusLabel },
@@ -80,8 +82,26 @@ const filteredQuestions = computed(() => {
 	);
 });
 
+useSeoMeta(() => ({
+	description: pageDescription.value,
+	ogDescription: pageDescription.value,
+	ogSiteName: "Is There Consensus",
+	ogTitle: topic.value ? `${topic.value.title} | Is There Consensus` : "Topic hub | Is There Consensus",
+	ogType: "website",
+	ogUrl: pageUrl.value,
+	title: topic.value ? `${topic.value.title} - Topic Hub - Is There Consensus?` : "Topic hub - Is There Consensus?",
+	twitterCard: "summary_large_image",
+	twitterDescription: pageDescription.value,
+	twitterTitle: topic.value ? `${topic.value.title} | Is There Consensus` : "Topic hub | Is There Consensus"
+}));
+
 useHead(() => ({
-	title: topic.value ? `${topic.value.title} - Topic Hub - Is There Consensus?` : "Topic hub - Is There Consensus?"
+	link: [
+		{
+			href: pageUrl.value,
+			rel: "canonical"
+		}
+	]
 }));
 
 watch(

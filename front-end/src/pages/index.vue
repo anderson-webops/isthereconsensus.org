@@ -2,6 +2,7 @@
 import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
+import { appDescription, appName } from "~/constants";
 import { evergreenExplainers } from "~/data/explainers";
 import { getTopicGuide } from "~/data/topicGuides";
 
@@ -130,6 +131,60 @@ const trustSignals = [
 		body: "Canonical claim reviews come first. Community threads stay below them so public sentiment does not look like expert consensus."
 	}
 ];
+const faqEntries = [
+	{
+		answer: "Search the claim first, read the short bottom line, and then open the evidence stack only if you need the deeper explanation or source trail.",
+		question: "How should I use Is There Consensus?"
+	},
+	{
+		answer: "The site prioritizes consensus statements, guidelines, systematic reviews, and higher-quality syntheses before it leans on single studies or isolated headlines.",
+		question: "What evidence does the site rely on?"
+	},
+	{
+		answer: "No. Community discussion is kept separate from the canonical claim reviews so public sentiment does not get mistaken for expert consensus.",
+		question: "Are the public discussions the same thing as the site’s consensus judgment?"
+	}
+];
+
+useSeoMeta({
+	description: appDescription,
+	ogDescription: appDescription,
+	ogSiteName: appName,
+	ogTitle: appName,
+	ogType: "website",
+	ogUrl: "https://isthereconsensus.org/",
+	title: appName,
+	twitterCard: "summary_large_image",
+	twitterDescription: appDescription,
+	twitterTitle: appName
+});
+
+useHead({
+	link: [
+		{
+			href: "https://isthereconsensus.org/",
+			rel: "canonical"
+		}
+	],
+	script: [
+		{
+			children: JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "FAQPage",
+				"mainEntity": faqEntries.map((entry) => ({
+					"@type": "Question",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": entry.answer
+					},
+					"name": entry.question
+				}))
+			}),
+			key: "faq-jsonld",
+			type: "application/ld+json"
+		}
+	]
+});
 
 function resetSuggestions() {
 	suggestions.value = { claims: [], topics: [], questions: [] };

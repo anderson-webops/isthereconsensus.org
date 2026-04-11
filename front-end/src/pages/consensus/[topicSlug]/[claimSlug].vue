@@ -53,6 +53,8 @@ const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const isAdmin = computed(() => role.value === "admin");
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
+const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
+const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
 const filteredQuestions = computed(() => {
 	const query = questionSearch.value.trim().toLowerCase();
 	if (!query) return questions.value;
@@ -160,8 +162,26 @@ const sourceGroups = computed(() => {
 		.filter((group) => group.items.length > 0);
 });
 
+useSeoMeta(() => ({
+	description: pageDescription.value,
+	ogDescription: pageDescription.value,
+	ogSiteName: "Is There Consensus",
+	ogTitle: claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus",
+	ogType: "article",
+	ogUrl: pageUrl.value,
+	title: claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?",
+	twitterCard: "summary_large_image",
+	twitterDescription: pageDescription.value,
+	twitterTitle: claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus"
+}));
+
 useHead(() => ({
-	title: claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?"
+	link: [
+		{
+			href: pageUrl.value,
+			rel: "canonical"
+		}
+	]
 }));
 
 watch(

@@ -1,15 +1,64 @@
 <script setup lang="ts">
-import { appName } from "~/constants";
+import { appDescription, appName } from "~/constants";
 
-useHead({
+const siteUrl = "https://isthereconsensus.org";
+const route = useRoute();
+const canonicalUrl = computed(() => new URL(route.path || "/", `${siteUrl}/`).toString());
+const noindexRoute = computed(() => /^\/account(?:\/|$)/.test(route.path));
+const structuredData = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"description": appDescription,
+		"name": appName,
+		"url": siteUrl
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"description": appDescription,
+		"name": appName,
+		"url": siteUrl
+	}
+];
+
+useHead(() => ({
 	title: appName,
+	meta: noindexRoute.value
+		? [
+				{
+					name: "robots",
+					content: "noindex,nofollow"
+				}
+			]
+		: [],
 	link: [
 		{
 			rel: "stylesheet",
 			href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		},
+		{
+			rel: "canonical",
+			href: canonicalUrl.value
 		}
-	]
-});
+	],
+	script: structuredData.map((entry, index) => ({
+		children: JSON.stringify(entry),
+		key: `structured-data-${index}`,
+		type: "application/ld+json"
+	}))
+}));
+
+useSeoMeta(() => ({
+	description: appDescription,
+	ogDescription: appDescription,
+	ogSiteName: appName,
+	ogType: "website",
+	ogUrl: canonicalUrl.value,
+	twitterCard: "summary_large_image",
+	twitterDescription: appDescription,
+	twitterTitle: appName
+}));
 </script>
 
 <template>
