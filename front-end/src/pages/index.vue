@@ -3,6 +3,7 @@ import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/t
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName } from "~/constants";
+import { claimRoadmapPreview } from "~/data/claimRoadmap";
 import { evergreenExplainers } from "~/data/explainers";
 import { misconceptionModules } from "~/data/misconceptions";
 import { getTopicGuide } from "~/data/topicGuides";
@@ -122,6 +123,7 @@ const featuredClaims = computed(() => {
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
 const explainerHighlights = computed(() => evergreenExplainers.slice(0, 4));
 const misconceptionHighlights = computed(() => misconceptionModules.slice(0, 4));
+const roadmapHighlights = claimRoadmapPreview.slice(0, 4);
 const trustSignals = [
 	{
 		title: "Trust the hierarchy, not the hottest headline",
@@ -352,6 +354,7 @@ function formatTopicDate(value?: string) {
 				<div class="hero__aside-links">
 					<NuxtLink class="text-link" to="/explainers">Read the explainers</NuxtLink>
 					<NuxtLink class="text-link" to="/misconceptions">Open the modules</NuxtLink>
+					<NuxtLink class="text-link" to="/claim-roadmap">See the claim roadmap</NuxtLink>
 					<NuxtLink class="text-link" to="/standards">Read the standards</NuxtLink>
 				</div>
 			</aside>
@@ -416,6 +419,32 @@ function formatTopicDate(value?: string) {
 						<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
 					</div>
 				</NuxtLink>
+			</div>
+		</section>
+
+		<section class="home-section home-section--soft">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Editorial roadmap</p>
+					<h2>What the site should build next</h2>
+				</div>
+				<NuxtLink class="text-link" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+			</div>
+
+			<div class="roadmap-list">
+				<article
+					v-for="item in roadmapHighlights"
+					:key="item.slug"
+					class="explainer-row explainer-row--roadmap"
+				>
+					<p class="claim-row__meta">
+						<span>#{{ item.rank }}</span>
+						<span>{{ item.cluster }}</span>
+						<span>{{ item.pageType }}</span>
+					</p>
+					<h3>{{ item.title }}</h3>
+					<p>{{ item.whyItMatters }}</p>
+				</article>
 			</div>
 		</section>
 
@@ -698,6 +727,7 @@ function formatTopicDate(value?: string) {
 }
 
 .claim-list,
+.roadmap-list,
 .topic-list,
 .explainer-list,
 .trust-list {
@@ -757,6 +787,10 @@ function formatTopicDate(value?: string) {
 .explainer-row,
 .trust-row {
 	padding: 18px;
+}
+
+.explainer-row--roadmap {
+	border-left: 4px solid var(--consensus-interactive);
 }
 
 .explainer-row p,

@@ -2,6 +2,7 @@
 import type { Question, QuestionsResponse, Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { claimRoadmapPreview } from "~/data/claimRoadmap";
 import { getTopicGuide } from "~/data/topicGuides";
 
 const route = useRoute();
@@ -83,6 +84,7 @@ const filteredQuestions = computed(() =>
 		return matchesFilter(guide.consensusScore) && (!query.value || haystack.includes(query.value));
 	})
 );
+const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 </script>
 
 <template>
@@ -151,6 +153,17 @@ const filteredQuestions = computed(() =>
 						<NuxtLink class="text-link" to="/standards">Read standards</NuxtLink>
 						<NuxtLink class="text-link" to="/source-standards">Read source-stack standards</NuxtLink>
 					</div>
+				</section>
+
+				<section class="sidebar-block">
+					<p class="eyebrow">Editorial roadmap</p>
+					<p>
+						If the claim you want is not live yet, check the public roadmap before opening a brand-new ask.
+					</p>
+					<ul class="plain-list plain-list--tight">
+						<li v-for="item in roadmapPreview" :key="item.slug">{{ item.title }}</li>
+					</ul>
+					<NuxtLink class="text-link" to="/claim-roadmap">Open the claim roadmap</NuxtLink>
 				</section>
 			</aside>
 
@@ -332,6 +345,17 @@ const filteredQuestions = computed(() =>
 	padding-left: 18px;
 	display: grid;
 	gap: 10px;
+}
+
+.plain-list {
+	margin: 12px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
+}
+
+.plain-list--tight {
+	gap: 6px;
 }
 
 .filter-stack {

@@ -3,6 +3,7 @@ import type { ClaimSummary, Question, QuestionsResponse } from "~/types/board";
 import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
 
 const router = useRouter();
 const { apiUrl } = useApi();
@@ -182,6 +183,9 @@ const bundledQuestionCount = computed(
 const conceptQuestionCount = computed(
 	() => unassignedQuestions.value.filter((question) => question.askKind === "concept").length
 );
+const roadmapPreview = firstWaveClaims.slice(0, 6);
+const roadmapFollowOn = secondWaveClaims.slice(0, 4);
+const roadmapHolds = holdClaims.slice(0, 4);
 
 useHead({
 	title: "Editorial workspace - Is There Consensus?"
@@ -563,6 +567,58 @@ watch(
 							<li v-for="title in item.sampleTitles" :key="title">{{ title }}</li>
 						</ul>
 					</article>
+				</div>
+			</section>
+
+			<section class="editorial-panel">
+				<div class="section-heading section-heading--tight">
+					<div>
+						<p class="eyebrow">Canonical backlog</p>
+						<h2>Research-backed claims worth building next</h2>
+					</div>
+					<p>
+						Use the roadmap when demand is split across multiple topics and the queue needs a stable
+						editorial ordering instead of headline-driven decisions.
+					</p>
+				</div>
+
+				<div class="ops-grid">
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>First wave</h3>
+							<p>Best immediate candidates for the next canonical claim pages.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in roadmapPreview" :key="item.slug">
+								<strong>{{ item.title }}</strong> - {{ item.cluster }}
+							</li>
+						</ul>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Second wave</h3>
+							<p>Follow-ons that reuse the first-wave method and misconception modules.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in roadmapFollowOn" :key="item.slug">
+								<strong>{{ item.title }}</strong> - {{ item.pageType }}
+							</li>
+						</ul>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Hold queue</h3>
+							<p>Topics worth delaying until the site can carry stronger uncertainty framing.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in roadmapHolds" :key="item.slug">
+								<strong>{{ item.title }}</strong> - {{ item.cluster }}
+							</li>
+						</ul>
+						<NuxtLink class="button button--ghost" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+					</section>
 				</div>
 			</section>
 
