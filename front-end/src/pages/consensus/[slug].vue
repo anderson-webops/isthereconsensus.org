@@ -65,6 +65,64 @@ const isAdmin = computed(() => role.value === "admin");
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${slug.value}`);
 const pageDescription = computed(() => topic.value?.description || guide.value.snapshot);
+const breadcrumbStructuredData = computed(() => ({
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: [
+		{
+			"@type": "ListItem",
+			position: 1,
+			name: "Home",
+			item: "https://isthereconsensus.org/"
+		},
+		{
+			"@type": "ListItem",
+			position: 2,
+			name: "Browse topics",
+			item: "https://isthereconsensus.org/consensus"
+		},
+		{
+			"@type": "ListItem",
+			position: 3,
+			name: topic.value?.title || "Topic hub",
+			item: pageUrl.value
+		}
+	]
+}));
+const topicStructuredData = computed(() => ({
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	description: pageDescription.value,
+	isPartOf: {
+		"@type": "WebSite",
+		name: "Is There Consensus",
+		url: "https://isthereconsensus.org"
+	},
+	mainEntity: {
+		"@type": "ItemList",
+		itemListElement: claims.value.map((entry, index) => ({
+			"@type": "ListItem",
+			position: index + 1,
+			url: `https://isthereconsensus.org/consensus/${slug.value}/${entry.slug}`,
+			name: entry.title
+		}))
+	},
+	name: topic.value ? `${topic.value.title} topic hub | Is There Consensus` : "Topic hub | Is There Consensus",
+	publisher: {
+		"@type": "Organization",
+		name: "Is There Consensus",
+		url: "https://isthereconsensus.org"
+	},
+	url: pageUrl.value,
+	about: topic.value
+		? {
+				"@type": "Thing",
+				name: topic.value.title,
+				description: topic.value.description
+			}
+		: undefined,
+	dateModified: topic.value?.updatedAt
+}));
 
 const trustFacts = computed(() => [
 	{ label: "Topic summary", value: guide.value.consensusLabel },
@@ -104,7 +162,12 @@ useHead(() => ({
 			href: pageUrl.value,
 			rel: "canonical"
 		}
-	]
+	],
+	script: [breadcrumbStructuredData.value, topicStructuredData.value].map((entry, index) => ({
+		innerHTML: JSON.stringify(entry),
+		key: `topic-structured-data-${index}`,
+		type: "application/ld+json"
+	}))
 }));
 
 watch(

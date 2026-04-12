@@ -2,10 +2,10 @@
 import { appDescription, appName } from "~/constants";
 
 const siteUrl = "https://isthereconsensus.org";
-const accountRoutePattern = /^\/account(?:\/|$)/;
+const privateRoutePattern = /^(\/account|\/api|\/setup)(?:\/|$)/;
 const route = useRoute();
 const canonicalUrl = computed(() => new URL(route.path || "/", `${siteUrl}/`).toString());
-const noindexRoute = computed(() => accountRoutePattern.test(route.path));
+const noindexRoute = computed(() => privateRoutePattern.test(route.path));
 const structuredData = [
 	{
 		"@context": "https://schema.org",
@@ -44,7 +44,7 @@ useHead(() => ({
 		}
 	],
 	script: structuredData.map((entry, index) => ({
-		children: JSON.stringify(entry),
+		innerHTML: JSON.stringify(entry),
 		key: `structured-data-${index}`,
 		type: "application/ld+json"
 	}))

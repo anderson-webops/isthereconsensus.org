@@ -125,6 +125,34 @@ export default defineNuxtConfig({
 		classSuffix: ""
 	},
 
+	routeRules: {
+		"/account": {
+			headers: {
+				"X-Robots-Tag": "noindex, nofollow"
+			}
+		},
+		"/account/**": {
+			headers: {
+				"X-Robots-Tag": "noindex, nofollow"
+			}
+		},
+		"/api/**": {
+			headers: {
+				"X-Robots-Tag": "noindex, nofollow"
+			}
+		},
+		"/setup": {
+			headers: {
+				"X-Robots-Tag": "noindex, nofollow"
+			}
+		},
+		"/setup/**": {
+			headers: {
+				"X-Robots-Tag": "noindex, nofollow"
+			}
+		}
+	},
+
 	// Production source maps are not part of the deployment output and they currently
 	// trigger noisy Vite warnings from Nuxt's module preload polyfill transform.
 	sourcemap: {

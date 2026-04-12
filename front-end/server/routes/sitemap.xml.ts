@@ -17,6 +17,13 @@ function unique<T>(values: T[]) {
 	return Array.from(new Set(values));
 }
 
+function formatLastmod(value?: string) {
+	if (!value) return "";
+	const parsed = new Date(value);
+	if (Number.isNaN(parsed.getTime())) return "";
+	return parsed.toISOString();
+}
+
 function resolveApiBase(event: H3Event) {
 	const config = useRuntimeConfig(event);
 	const requestOrigin = getRequestURL(event).origin;
@@ -33,29 +40,42 @@ export default defineEventHandler(async (event) => {
 	const origin = getRequestURL(event).origin;
 	const apiBase = resolveApiBase(event);
 	const staticRoutes = [
-		"/",
-		"/ask",
-		"/consensus",
-		"/explainers",
-		"/how",
-		"/methods",
-		"/privacy",
-		"/standards",
-		"/terms"
+		{ path: "/" },
+		{ path: "/ask" },
+		{ path: "/consensus" },
+		{ path: "/corrections" },
+		{ path: "/evidence-ops" },
+		{ path: "/explainers" },
+		{ path: "/governance" },
+		{ path: "/how" },
+		{ path: "/methods" },
+		{ path: "/misconceptions" },
+		{ path: "/privacy" },
+		{ path: "/source-standards" },
+		{ path: "/standards" },
+		{ path: "/terms" }
 	];
 
-	let dynamicRoutes: string[] = [];
+	let dynamicRoutes: Array<{ path: string; lastmod?: string }> = [];
 
 	try {
-		const topicsResponse = await $fetch<{ topics?: Array<{ slug: string }> }>(`${apiBase}/topics`);
+		const topicsResponse = await $fetch<{ topics?: Array<{ slug: string; updatedAt?: string }> }>(
+			`${apiBase}/topics`
+		);
 		const topics = topicsResponse.topics ?? [];
-		const topicRoutes = topics.map(({ slug }) => `/consensus/${slug}`);
+		const topicRoutes = topics.map(({ slug, updatedAt }) => ({
+			path: `/consensus/${slug}`,
+			lastmod: updatedAt
+		}));
 		const claimRouteGroups = await Promise.all(
-			topics.map(async ({ slug }) => {
-				const claimsResponse = await $fetch<{ claims?: Array<{ slug: string }> }>(
+			topics.map(async ({ slug, updatedAt }) => {
+				const claimsResponse = await $fetch<{ claims?: Array<{ slug: string; updatedAt?: string; lastReviewedAt?: string }> }>(
 					`${apiBase}/topics/${slug}/claims`
 				);
-				return (claimsResponse.claims ?? []).map(({ slug: claimSlug }) => `/consensus/${slug}/${claimSlug}`);
+				return (claimsResponse.claims ?? []).map(({ slug: claimSlug, updatedAt: claimUpdatedAt, lastReviewedAt }) => ({
+					path: `/consensus/${slug}/${claimSlug}`,
+					lastmod: claimUpdatedAt || lastReviewedAt || updatedAt
+				}));
 			})
 		);
 
@@ -64,10 +84,17 @@ export default defineEventHandler(async (event) => {
 		dynamicRoutes = [];
 	}
 
-	const body = unique([...staticRoutes, ...dynamicRoutes])
-		.map((route) => {
-			const loc = new URL(route, `${origin}/`).toString();
-			return `<url><loc>${xmlEscape(loc)}</loc></url>`;
+	const seen = new Set<string>();
+	const body = [...staticRoutes, ...dynamicRoutes]
+		.filter((entry) => {
+			if (seen.has(entry.path)) return false;
+			seen.add(entry.path);
+			return true;
+		})
+		.map((entry) => {
+			const loc = new URL(entry.path, `${origin}/`).toString();
+			const lastmod = formatLastmod(entry.lastmod);
+			return `<url><loc>${xmlEscape(loc)}</loc>${lastmod ? `<lastmod>${xmlEscape(lastmod)}</lastmod>` : ""}</url>`;
 		})
 		.join("");
 

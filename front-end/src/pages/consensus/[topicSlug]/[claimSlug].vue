@@ -240,6 +240,80 @@ const sourceGroups = computed(() => {
 		}))
 		.filter((group) => group.items.length > 0);
 });
+const breadcrumbStructuredData = computed(() => ({
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: [
+		{
+			"@type": "ListItem",
+			position: 1,
+			name: "Home",
+			item: "https://isthereconsensus.org/"
+		},
+		{
+			"@type": "ListItem",
+			position: 2,
+			name: "Browse topics",
+			item: "https://isthereconsensus.org/consensus"
+		},
+		{
+			"@type": "ListItem",
+			position: 3,
+			name: claim.value?.topic?.title || "Topic",
+			item: `https://isthereconsensus.org/consensus/${topicSlug.value}`
+		},
+		{
+			"@type": "ListItem",
+			position: 4,
+			name: claim.value?.title || "Claim review",
+			item: pageUrl.value
+		}
+	]
+}));
+const articleStructuredData = computed(() => ({
+	"@context": "https://schema.org",
+	"@type": "Article",
+	articleSection: claim.value?.topic?.title,
+	author: claim.value?.authorLine
+		? {
+				"@type": "Person",
+				name: claim.value.authorLine
+			}
+		: {
+				"@type": "Organization",
+				name: "Is There Consensus"
+			},
+	citation: (claim.value?.sources ?? []).map((source) => sourcePrimaryLink(source) || source.title),
+	dateModified: claim.value?.updatedAt || claim.value?.lastReviewedAt,
+	datePublished: claim.value?.publishedAt,
+	description: pageDescription.value,
+	headline: claim.value?.title || "Claim review",
+	isPartOf: {
+		"@type": "WebSite",
+		name: "Is There Consensus",
+		url: "https://isthereconsensus.org"
+	},
+	mainEntityOfPage: pageUrl.value,
+	publisher: {
+		"@type": "Organization",
+		name: "Is There Consensus",
+		url: "https://isthereconsensus.org"
+	},
+	reviewedBy: claim.value?.reviewerLine
+		? {
+				"@type": "Person",
+				name: claim.value.reviewerLine
+			}
+		: undefined,
+	url: pageUrl.value,
+	about: claim.value?.topic
+		? {
+				"@type": "Thing",
+				name: claim.value.topic.title,
+				description: claim.value.topic.description
+			}
+		: undefined
+}));
 
 useSeoMeta({
 	description: () => pageDescription.value,
@@ -260,7 +334,12 @@ useHead(() => ({
 			href: pageUrl.value,
 			rel: "canonical"
 		}
-	]
+	],
+	script: [breadcrumbStructuredData.value, articleStructuredData.value].map((entry, index) => ({
+		innerHTML: JSON.stringify(entry),
+		key: `claim-structured-data-${index}`,
+		type: "application/ld+json"
+	}))
 }));
 
 watch(
