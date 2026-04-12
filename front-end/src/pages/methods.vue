@@ -288,11 +288,11 @@ useHead({
 			<div class="methods-callout__actions">
 				<NuxtLink class="button button--primary" to="/standards">Editorial standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/automation-and-ai">Automation and AI</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/consensus">Browse claim reviews</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

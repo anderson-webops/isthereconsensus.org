@@ -9,6 +9,10 @@ export interface IExpertApplication {
 	expertiseAreas: string[];
 	evidenceLinks: string[];
 	statement: string;
+	conflictDisclosure?: string;
+	fundingDisclosure?: string;
+	attestsDisclosurePolicy: boolean;
+	attestsReviewStandards: boolean;
 	status: "pending" | "approved" | "rejected" | "needs-info";
 	reviewNotes?: string;
 	reviewedBy?: mongoose.Types.ObjectId;
@@ -24,6 +28,10 @@ const expertApplicationSchema: Schema<IExpertApplication> = new Schema(
 		expertiseAreas: { type: [String], default: [] },
 		evidenceLinks: { type: [String], default: [] },
 		statement: { type: String, required: true, trim: true, maxlength: 4000 },
+		conflictDisclosure: { type: String, default: "", trim: true, maxlength: 1200 },
+		fundingDisclosure: { type: String, default: "", trim: true, maxlength: 1200 },
+		attestsDisclosurePolicy: { type: Boolean, default: false },
+		attestsReviewStandards: { type: Boolean, default: false },
 		status: {
 			type: String,
 			default: "pending",

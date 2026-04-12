@@ -223,8 +223,9 @@ useHead({
 			</div>
 			<div class="ops-callout__actions">
 				<NuxtLink class="button button--primary" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/automation-and-ai">Automation and AI</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

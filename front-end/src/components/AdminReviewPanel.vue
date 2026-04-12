@@ -9,6 +9,7 @@ const actionState = ref("");
 const applicationQueue = ref<ExpertApplication[]>([]);
 const flagQueue = ref<QuestionFlag[]>([]);
 const errorMessage = ref("");
+const reviewNotes = ref<Record<string, string>>({});
 
 const isAdmin = computed(() => role.value === "admin");
 
@@ -41,8 +42,12 @@ async function reviewApplication(id: string, decision: "approved" | "rejected" |
 		await $fetch(apiUrl(`/admin/expert-applications/${id}/review`), {
 			method: "POST",
 			credentials: "include",
-			body: { decision }
+			body: {
+				decision,
+				reviewNotes: reviewNotes.value[id] || ""
+			}
 		});
+		delete reviewNotes.value[id];
 		await refreshQueues();
 	} catch (error) {
 		errorMessage.value = "Unable to review that application.";
@@ -113,8 +118,27 @@ watch(
 							<h3>{{ application.name }}</h3>
 							<p>{{ application.credentialLabel }}</p>
 							<p class="muted">{{ application.expertiseAreas.join(", ") }}</p>
+							<p v-if="application.affiliation" class="muted">{{ application.affiliation }}</p>
+							<p v-if="application.conflictDisclosure" class="muted">
+								<strong>Conflicts:</strong> {{ application.conflictDisclosure }}
+							</p>
+							<p v-if="application.fundingDisclosure" class="muted">
+								<strong>Funding:</strong> {{ application.fundingDisclosure }}
+							</p>
+							<p class="muted">
+								Disclosure policy:
+								<strong>{{ application.attestsDisclosurePolicy ? "attested" : "missing" }}</strong>
+								· Review standards:
+								<strong>{{ application.attestsReviewStandards ? "attested" : "missing" }}</strong>
+							</p>
 						</div>
-						<div class="queue-actions">
+						<div class="queue-actions queue-actions--stacked">
+							<textarea
+								v-model="reviewNotes[application._id]"
+								class="review-notes"
+								rows="3"
+								placeholder="Optional review note shown back to the applicant"
+							/>
 							<button
 								class="mini-button mini-button--approve"
 								type="button"
@@ -274,6 +298,20 @@ watch(
 	gap: 8px;
 	flex-wrap: wrap;
 	align-items: start;
+}
+
+.queue-actions--stacked {
+	display: grid;
+	min-width: min(100%, 280px);
+}
+
+.review-notes {
+	width: 100%;
+	padding: 10px 12px;
+	border-radius: 14px;
+	border: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-field-surface);
+	color: var(--consensus-ink);
 }
 
 .button,

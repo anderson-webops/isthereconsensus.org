@@ -234,7 +234,8 @@ useHead({
 					respective owners. If you believe content on the site infringes your copyright or other rights,
 					email
 					<a href="mailto:consensus@isthereconsensus.org">consensus@isthereconsensus.org</a> with enough
-					detail for us to review the issue.
+					detail for us to review the issue. The current complaint workflow is described on the
+					<NuxtLink to="/copyright-and-trademark">Copyright and trademark complaints</NuxtLink> page.
 				</p>
 			</div>
 		</section>
@@ -309,11 +310,11 @@ useHead({
 				</p>
 			</div>
 			<div class="terms-callout__actions">
+				<NuxtLink class="button button--ghost" to="/copyright-and-trademark">Copyright and trademark</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/privacy">Privacy policy</NuxtLink>
 				<NuxtLink class="button button--primary" to="/account">Account</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>
 		</section>
 	</div>

@@ -9,6 +9,10 @@ export interface ExpertApplication {
 	expertiseAreas: string[];
 	evidenceLinks: string[];
 	statement: string;
+	conflictDisclosure?: string;
+	fundingDisclosure?: string;
+	attestsDisclosurePolicy?: boolean;
+	attestsReviewStandards?: boolean;
 	status: "pending" | "approved" | "rejected" | "needs-info";
 	reviewNotes?: string;
 	createdAt?: string;

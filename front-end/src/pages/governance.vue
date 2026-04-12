@@ -235,9 +235,11 @@ useHead({
 			</div>
 			<div class="governance-callout__actions">
 				<NuxtLink class="button button--primary" to="/community-guidelines">Community guidelines</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

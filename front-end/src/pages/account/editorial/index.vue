@@ -27,6 +27,12 @@ const moderationGuide = [
 	"Treat factual correction requests differently from conduct appeals; they route into revision review, not just moderation.",
 	"Keep the canonical page stable while public threads gather evidence or flag problems."
 ];
+const policyGuide = [
+	"Terms and Privacy should stay durable; faster-changing operational rules belong in standalone governance pages.",
+	"Verified experts should not be assigned until disclosure, conflict, and review-standard attestations are on record.",
+	"Rights complaints, moderation appeals, and factual corrections should route to different processes even when they hit the same inbox.",
+	"Do not promise a user-facing workflow publicly unless the product can actually honor it in the current release."
+];
 const askFlowGuide = [
 	"Loaded questions usually need a neutral rewrite plus a link to an existing claim or misconception module, not a brand-new canonical page.",
 	"Multi-question bundles should be decomposed before claim creation so the site does not mint one page that tries to answer three different propositions.",
@@ -529,6 +535,34 @@ watch(
 						{{ conceptQuestionCount }} concept asks, {{ loadedQuestionCount }} loaded asks, and
 						{{ bundledQuestionCount }} bundled asks are currently sitting in intake.
 					</p>
+				</section>
+
+				<section class="editorial-panel">
+					<div class="section-heading section-heading--tight">
+						<div>
+							<p class="eyebrow">Policy surfaces</p>
+							<h2>Operational pages that now back the workflow</h2>
+						</div>
+						<p>
+							These pages explain the rules around conflicts, review standards, retention, rights
+							complaints, and appeals.
+						</p>
+					</div>
+					<ul class="guide-list">
+						<li v-for="item in policyGuide" :key="item">{{ item }}</li>
+					</ul>
+					<div class="editorial-panel__links">
+						<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
+						<NuxtLink class="button button--ghost" to="/conflicts-and-funding"
+							>Conflict disclosure</NuxtLink
+						>
+						<NuxtLink class="button button--ghost" to="/expert-review-program"
+							>Verified expert review</NuxtLink
+						>
+						<NuxtLink class="button button--ghost" to="/moderation-and-appeals"
+							>Moderation and appeals</NuxtLink
+						>
+					</div>
 				</section>
 
 				<section class="editorial-panel">

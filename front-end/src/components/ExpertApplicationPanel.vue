@@ -15,6 +15,10 @@ const affiliation = ref("");
 const expertiseAreas = ref("");
 const evidenceLinks = ref("");
 const statement = ref("");
+const conflictDisclosure = ref("");
+const fundingDisclosure = ref("");
+const attestsDisclosurePolicy = ref(false);
+const attestsReviewStandards = ref(false);
 
 const isEligible = computed(() => isLoggedIn.value && role.value === "user");
 const expertiseTier = computed(() => {
@@ -25,12 +29,27 @@ const expertiseTier = computed(() => {
 });
 
 function hydrateForm(record: ExpertApplication | null) {
-	if (!record) return;
+	if (!record) {
+		credentialLabel.value = "";
+		affiliation.value = "";
+		expertiseAreas.value = "";
+		evidenceLinks.value = "";
+		statement.value = "";
+		conflictDisclosure.value = "";
+		fundingDisclosure.value = "";
+		attestsDisclosurePolicy.value = false;
+		attestsReviewStandards.value = false;
+		return;
+	}
 	credentialLabel.value = record.credentialLabel || "";
 	affiliation.value = record.affiliation || "";
 	expertiseAreas.value = record.expertiseAreas.join(", ");
 	evidenceLinks.value = record.evidenceLinks.join("\n");
 	statement.value = record.statement || "";
+	conflictDisclosure.value = record.conflictDisclosure || "";
+	fundingDisclosure.value = record.fundingDisclosure || "";
+	attestsDisclosurePolicy.value = !!record.attestsDisclosurePolicy;
+	attestsReviewStandards.value = !!record.attestsReviewStandards;
 }
 
 async function refreshApplication() {
@@ -70,7 +89,11 @@ async function submitApplication() {
 					.split("\n")
 					.map((item) => item.trim())
 					.filter(Boolean),
-				statement: statement.value.trim()
+				statement: statement.value.trim(),
+				conflictDisclosure: conflictDisclosure.value.trim(),
+				fundingDisclosure: fundingDisclosure.value.trim(),
+				attestsDisclosurePolicy: attestsDisclosurePolicy.value,
+				attestsReviewStandards: attestsReviewStandards.value
 			}
 		});
 		application.value = response.application;
@@ -126,6 +149,14 @@ watch(
 						currentAccount?.expertiseAreas?.length || application?.expertiseAreas.length || 0
 					}}</strong>
 				</article>
+				<article class="status-card">
+					<span>Disclosure status</span>
+					<strong>{{
+						application?.attestsDisclosurePolicy && application?.attestsReviewStandards
+							? "attested"
+							: "needs review"
+					}}</strong>
+				</article>
 			</div>
 
 			<p v-if="application?.reviewNotes" class="review-note">{{ application.reviewNotes }}</p>
@@ -173,9 +204,47 @@ watch(
 						placeholder="Describe the domain you work in and the kinds of questions you can help review."
 					/>
 
+					<label class="field-label" for="conflict-disclosure">Relevant conflicts or advocacy roles</label>
+					<textarea
+						id="conflict-disclosure"
+						v-model="conflictDisclosure"
+						rows="4"
+						placeholder="List any consulting, advocacy, testimony, board roles, litigation, or other interests a reader should know about."
+					/>
+
+					<label class="field-label" for="funding-disclosure"
+						>Relevant funding or sponsorship disclosure</label
+					>
+					<textarea
+						id="funding-disclosure"
+						v-model="fundingDisclosure"
+						rows="4"
+						placeholder="List relevant grants, institutional funding, employer support, or say none known."
+					/>
+
+					<label class="checkbox-row">
+						<input v-model="attestsDisclosurePolicy" type="checkbox" />
+						<span>
+							I have read the
+							<NuxtLink to="/conflicts-and-funding">Conflict and funding disclosure</NuxtLink>
+							page and have disclosed relevant interests accurately.
+						</span>
+					</label>
+
+					<label class="checkbox-row">
+						<input v-model="attestsReviewStandards" type="checkbox" />
+						<span>
+							I have read the
+							<NuxtLink to="/expert-review-program">Verified expert review program</NuxtLink>
+							and will follow the reviewer standards described there.
+						</span>
+					</label>
+
 					<p class="muted">
 						Applications are reviewed internally and may be retained with moderation and editorial records.
-						See the <NuxtLink to="/privacy">Privacy Policy</NuxtLink> for details.
+						See the <NuxtLink to="/privacy">Privacy Policy</NuxtLink>,
+						<NuxtLink to="/account-deletion-and-retention">Account deletion and retention</NuxtLink>, and
+						<NuxtLink to="/policy-center">Policy center</NuxtLink> for related rules.
 					</p>
 					<p v-if="successMessage" class="success">{{ successMessage }}</p>
 					<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -253,6 +322,23 @@ watch(
 .status-card strong {
 	font-size: 1rem;
 	color: var(--consensus-ink);
+}
+
+.checkbox-row {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 10px;
+	align-items: start;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.checkbox-row input {
+	margin-top: 4px;
+}
+
+.checkbox-row a {
+	color: var(--consensus-link);
 }
 
 .application-details {

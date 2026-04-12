@@ -242,7 +242,9 @@ useHead({
 				<p>
 					There is not currently a self-serve account deletion portal. If you ask to close an account or
 					delete data, we may still retain some records, including moderation, security, backup, and
-					community-integrity records, where reasonably necessary.
+					community-integrity records, where reasonably necessary. The practical handling of public questions,
+					disassociated attribution, and retained records is explained on the
+					<NuxtLink to="/account-deletion-and-retention">Account deletion and retention</NuxtLink> page.
 				</p>
 			</div>
 		</section>
@@ -310,6 +312,10 @@ useHead({
 			</div>
 			<div class="privacy-callout__actions">
 				<NuxtLink class="button button--primary" to="/terms">Terms of service</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/account-deletion-and-retention"
+					>Account deletion and retention</NuxtLink
+				>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/account">Account</NuxtLink>
 			</div>
 		</section>

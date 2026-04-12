@@ -129,8 +129,9 @@ useHead({
 			</div>
 			<div class="corrections-callout__actions">
 				<NuxtLink class="button button--primary" to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

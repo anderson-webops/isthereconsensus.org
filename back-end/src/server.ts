@@ -1219,15 +1219,28 @@ async function main() {
 			const credentialLabel = normalizeText(req.body?.credentialLabel, 160);
 			const affiliation = normalizeText(req.body?.affiliation, 160);
 			const statement = normalizeText(req.body?.statement, 4000);
+			const conflictDisclosure = normalizeText(req.body?.conflictDisclosure, 1200);
+			const fundingDisclosure = normalizeText(req.body?.fundingDisclosure, 1200);
+			const attestsDisclosurePolicy = normalizeBoolean(req.body?.attestsDisclosurePolicy);
+			const attestsReviewStandards = normalizeBoolean(req.body?.attestsReviewStandards);
 			const expertiseAreas = normalizeList(req.body?.expertiseAreas, 8, 80);
 			const evidenceLinks = normalizeList(req.body?.evidenceLinks, 8, 300);
 			const user = await User.findById(actor.id);
 
 			if (!user) return res.status(404).json({ error: "User not found." });
-			if (!credentialLabel || !statement || !expertiseAreas.length) {
+			if (
+				!credentialLabel
+				|| !statement
+				|| !expertiseAreas.length
+				|| !attestsDisclosurePolicy
+				|| !attestsReviewStandards
+			) {
 				return res
 					.status(400)
-					.json({ error: "Credentials, expertise areas, and a short statement are required." });
+					.json({
+						error:
+							"Credentials, expertise areas, a short statement, and both reviewer attestations are required."
+					});
 			}
 
 			const application = await ExpertApplication.findOneAndUpdate(
@@ -1240,6 +1253,10 @@ async function main() {
 					expertiseAreas,
 					evidenceLinks,
 					statement,
+					conflictDisclosure,
+					fundingDisclosure,
+					attestsDisclosurePolicy,
+					attestsReviewStandards,
 					status: "pending",
 					reviewNotes: "",
 					reviewedBy: undefined,
