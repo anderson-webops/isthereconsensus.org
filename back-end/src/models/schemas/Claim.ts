@@ -9,6 +9,7 @@ export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "fr
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
+export type ClaimUncertaintyType = "bias" | "indirectness" | "imprecision" | "inconsistency" | "generalizability" | "mechanism" | "timing" | "implementation" | "other";
 
 export interface IClaimChangeLogEntry {
 	date: Date;
@@ -29,6 +30,11 @@ export interface IClaimEvidenceSummary {
 export interface IClaimInstitutionalAnchor {
 	name: string;
 	role: string;
+}
+
+export interface IClaimUncertaintyDriver {
+	type: ClaimUncertaintyType;
+	detail: string;
 }
 
 export interface IClaimSurveillanceSpec {
@@ -58,6 +64,8 @@ export interface IClaim {
 	misconceptions: string[];
 	misconceptionTags: string[];
 	editorSummary?: string;
+	uncertaintySummary?: string;
+	uncertaintyDrivers: IClaimUncertaintyDriver[];
 	searchDatabases: string[];
 	searchCutoffAt?: Date;
 	inclusionRules: string[];
@@ -124,6 +132,33 @@ const claimSchema: Schema<IClaim> = new Schema(
 		misconceptions: { type: [String], default: [] },
 		misconceptionTags: { type: [String], default: [] },
 		editorSummary: { type: String, default: "", trim: true, maxlength: 4000 },
+		uncertaintySummary: { type: String, default: "", trim: true, maxlength: 1600 },
+		uncertaintyDrivers: {
+			type: [
+				new Schema<IClaimUncertaintyDriver>(
+					{
+						type: {
+							type: String,
+							required: true,
+							enum: [
+								"bias",
+								"indirectness",
+								"imprecision",
+								"inconsistency",
+								"generalizability",
+								"mechanism",
+								"timing",
+								"implementation",
+								"other"
+							]
+						},
+						detail: { type: String, required: true, trim: true, maxlength: 280 }
+					},
+					{ _id: false }
+				)
+			],
+			default: []
+		},
 		searchDatabases: { type: [String], default: [] },
 		searchCutoffAt: { type: Date },
 		inclusionRules: { type: [String], default: [] },

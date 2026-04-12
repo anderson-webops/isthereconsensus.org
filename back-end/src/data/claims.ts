@@ -7,7 +7,8 @@ import type {
 	ClaimStatus,
 	IClaimEvidenceSummary,
 	IClaimInstitutionalAnchor,
-	IClaimSurveillanceSpec
+	IClaimSurveillanceSpec,
+	IClaimUncertaintyDriver
 } from "../models/schemas/Claim.js";
 import type {
 	ClaimSourceAppraisal,
@@ -55,6 +56,8 @@ export interface SeedClaim {
 	misconceptions: string[];
 	misconceptionTags?: string[];
 	editorSummary: string;
+	uncertaintySummary?: string;
+	uncertaintyDrivers?: IClaimUncertaintyDriver[];
 	sources: SeedClaimSource[];
 	agreementLevel?: ClaimAgreementLevel;
 	evidenceCertainty?: ClaimEvidenceCertainty;
@@ -92,6 +95,8 @@ export interface CompleteSeedClaim extends SeedClaim {
 	reviewerLine: string;
 	coiSummary: string;
 	independenceSummary: string;
+	uncertaintySummary: string;
+	uncertaintyDrivers: IClaimUncertaintyDriver[];
 	lastRetractionCheckAt: string;
 	changeLog: SeedClaimChangeLogEntry[];
 }
@@ -299,6 +304,185 @@ function defaultEvidenceSummaries(seed: SeedClaim): IClaimEvidenceSummary[] {
 	];
 }
 
+function inferUncertaintyType(detail: string): IClaimUncertaintyDriver["type"] {
+	const normalized = detail.toLowerCase();
+	if (
+		normalized.includes("subgroup")
+		|| normalized.includes("population")
+		|| normalized.includes("community")
+		|| normalized.includes("setting")
+		|| normalized.includes("pregnan")
+		|| normalized.includes("child")
+		|| normalized.includes("adult")
+	) {
+		return "generalizability";
+	}
+	if (
+		normalized.includes("mechanism")
+		|| normalized.includes("pathway")
+		|| normalized.includes("biolog")
+		|| normalized.includes("trigger")
+	) {
+		return "mechanism";
+	}
+	if (
+		normalized.includes("magnitude")
+		|| normalized.includes("size")
+		|| normalized.includes("how large")
+		|| normalized.includes("how big")
+		|| normalized.includes("effect")
+		|| normalized.includes("risk")
+		|| normalized.includes("incidence")
+		|| normalized.includes("rate")
+	) {
+		return "imprecision";
+	}
+	if (
+		normalized.includes("long-term")
+		|| normalized.includes("long term")
+		|| normalized.includes("follow-up")
+		|| normalized.includes("follow up")
+		|| normalized.includes("over time")
+		|| normalized.includes("duration")
+		|| normalized.includes("future")
+	) {
+		return "timing";
+	}
+	if (
+		normalized.includes("communicat")
+		|| normalized.includes("intervention")
+		|| normalized.includes("policy")
+		|| normalized.includes("schedule")
+		|| normalized.includes("implement")
+		|| normalized.includes("rollout")
+	) {
+		return "implementation";
+	}
+	if (
+		normalized.includes("disagree")
+		|| normalized.includes("inconsistent")
+		|| normalized.includes("split")
+		|| normalized.includes("diverge")
+	) {
+		return "inconsistency";
+	}
+	if (
+		normalized.includes("bias")
+		|| normalized.includes("confound")
+		|| normalized.includes("selection")
+		|| normalized.includes("measurement")
+	) {
+		return "bias";
+	}
+	if (
+		normalized.includes("proxy")
+		|| normalized.includes("indirect")
+		|| normalized.includes("adjacent")
+		|| normalized.includes("surrogate")
+	) {
+		return "indirectness";
+	}
+	return "other";
+}
+
+function defaultUncertaintySummary(seed: SeedClaim) {
+	const certainty = seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore);
+	if (certainty === "high") {
+		return "The core direction of this claim is stable across the highest-weight sources. Most remaining uncertainty is about subgroup boundaries, effect size, or how the answer travels across settings, not whether the core conclusion reverses.";
+	}
+	if (certainty === "moderate") {
+		return "The overall direction looks reliable, but important details could still move. Editors should treat the main conclusion as durable while keeping effect size, subgroup risk, and implementation limits visible.";
+	}
+	if (certainty === "low") {
+		return "The page can describe the current direction of the evidence, but that direction is still tentative. Better syntheses, more direct data, or stronger follow-up could materially reshape the public-facing summary.";
+	}
+	return "This page is a careful snapshot of an unstable evidence base. The site can explain the question and the current signal, but the conclusion should not be treated as a settled answer yet.";
+}
+
+function fallbackUncertaintyDrivers(seed: SeedClaim): IClaimUncertaintyDriver[] {
+	const certainty = seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore);
+	if (certainty === "high") {
+		return [
+			{
+				type: "generalizability",
+				detail: "Most remaining uncertainty is about which subgroups, settings, or exposure levels look different from the main population-level finding."
+			},
+			{
+				type: "imprecision",
+				detail: "The direction is stable, but the exact size of the effect or risk can still move across syntheses and real-world settings."
+			},
+			{
+				type: "implementation",
+				detail: "Policy, communication, or rollout choices can change practical outcomes even when the underlying evidence direction is settled."
+			}
+		];
+	}
+	if (certainty === "moderate") {
+		return [
+			{
+				type: "imprecision",
+				detail: "The main direction looks durable, but effect size, baseline risk, or subgroup differences are still moving enough to matter."
+			},
+			{
+				type: "generalizability",
+				detail: "Results may not travel equally well across populations, settings, or implementation contexts."
+			},
+			{
+				type: "timing",
+				detail: "Longer follow-up or a newer synthesis could tighten or narrow the current public-facing answer."
+			}
+		];
+	}
+	if (certainty === "low") {
+		return [
+			{
+				type: "indirectness",
+				detail: "Some of the evidence comes from adjacent populations, proxy outcomes, or partial versions of the public claim rather than a direct test of it."
+			},
+			{
+				type: "bias",
+				detail: "Study-design limitations, confounding, or uneven measurement still make the body of evidence vulnerable to revision."
+			},
+			{
+				type: "timing",
+				detail: "Longer follow-up and stronger syntheses could still shift both the size and the interpretation of the current signal."
+			}
+		];
+	}
+	return [
+		{
+			type: "inconsistency",
+			detail: "High-weight sources do not yet converge cleanly on one interpretation of the evidence."
+		},
+		{
+			type: "imprecision",
+			detail: "Effect estimates and practical risk ranges are still unstable enough that a stronger synthesis could materially change the summary."
+		},
+		{
+			type: "indirectness",
+			detail: "The evidence base still leans on partial, proxy, or otherwise indirect signals rather than a direct durable answer."
+		}
+	];
+}
+
+function defaultUncertaintyDrivers(seed: SeedClaim): IClaimUncertaintyDriver[] {
+	const explicitDrivers = seed.openQuestions
+		.slice(0, 4)
+		.map(detail => detail.trim())
+		.filter(Boolean)
+		.map(detail => ({
+			type: inferUncertaintyType(detail),
+			detail
+		}));
+	const combined = [...explicitDrivers, ...fallbackUncertaintyDrivers(seed)];
+	const seen = new Set<string>();
+	return combined.filter((driver) => {
+		if (seen.has(driver.detail)) return false;
+		seen.add(driver.detail);
+		return true;
+	}).slice(0, 6);
+}
+
 function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 	if (kind === "guideline" || kind === "consensus_statement") return "high";
 	if (kind === "systematic_review" || kind === "meta_analysis") return "moderate";
@@ -422,6 +606,8 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 		independenceSummary:
 			seed.independenceSummary
 			?? "The editorial summary is independent of public sentiment, sponsorship, and community vote totals.",
+		uncertaintySummary: seed.uncertaintySummary ?? defaultUncertaintySummary(seed),
+		uncertaintyDrivers: seed.uncertaintyDrivers ?? defaultUncertaintyDrivers(seed),
 		lastRetractionCheckAt: seed.lastRetractionCheckAt ?? seedTimestamp,
 		changeLog: seed.changeLog ?? [
 			{

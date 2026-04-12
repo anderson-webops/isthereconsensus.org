@@ -1,7 +1,8 @@
 import type {
 	IClaimEvidenceSummary,
 	IClaimInstitutionalAnchor,
-	IClaimSurveillanceSpec
+	IClaimSurveillanceSpec,
+	IClaimUncertaintyDriver
 } from "./models/schemas/Claim.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
@@ -341,6 +342,19 @@ async function main() {
 		return "unclear";
 	}
 
+	function normalizeUncertaintyType(value: unknown): IClaimUncertaintyDriver["type"] {
+		const normalized = normalizeText(value, 32);
+		if (normalized === "bias") return "bias";
+		if (normalized === "indirectness") return "indirectness";
+		if (normalized === "imprecision") return "imprecision";
+		if (normalized === "inconsistency") return "inconsistency";
+		if (normalized === "generalizability") return "generalizability";
+		if (normalized === "mechanism") return "mechanism";
+		if (normalized === "timing") return "timing";
+		if (normalized === "implementation") return "implementation";
+		return "other";
+	}
+
 	function normalizeEvidenceSummaries(value: unknown): IClaimEvidenceSummary[] {
 		if (!Array.isArray(value)) return [];
 		return value
@@ -358,6 +372,22 @@ async function main() {
 					magnitude: normalizeText(record.magnitude, 280),
 					certainty: record.certainty ? normalizeEvidenceCertainty(record.certainty) : undefined,
 					limitations: normalizeList(record.limitations, 6, 240)
+				};
+			})
+			.filter((item): item is NonNullable<typeof item> => Boolean(item));
+	}
+
+	function normalizeUncertaintyDrivers(value: unknown): IClaimUncertaintyDriver[] {
+		if (!Array.isArray(value)) return [];
+		return value
+			.slice(0, 6)
+			.map((item) => {
+				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const detail = normalizeText(record.detail, 280);
+				if (!detail) return null;
+				return {
+					type: normalizeUncertaintyType(record.type),
+					detail
 				};
 			})
 			.filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -462,6 +492,8 @@ async function main() {
 					misconceptions: claim.misconceptions,
 					misconceptionTags: claim.misconceptionTags,
 					editorSummary: claim.editorSummary,
+					uncertaintySummary: claim.uncertaintySummary,
+					uncertaintyDrivers: claim.uncertaintyDrivers,
 					searchDatabases: claim.searchDatabases,
 					searchCutoffAt: claim.searchCutoffAt,
 					inclusionRules: claim.inclusionRules,
@@ -1431,6 +1463,8 @@ async function main() {
 				misconceptions: normalizeList(req.body?.misconceptions, 12, 280),
 				misconceptionTags: normalizeList(req.body?.misconceptionTags, 8, 64),
 				editorSummary: normalizeText(req.body?.editorSummary, 4000),
+				uncertaintySummary: normalizeText(req.body?.uncertaintySummary, 1600),
+				uncertaintyDrivers: normalizeUncertaintyDrivers(req.body?.uncertaintyDrivers),
 				searchDatabases: normalizeList(req.body?.searchDatabases, 8, 120),
 				searchCutoffAt: normalizeDate(req.body?.searchCutoffAt),
 				inclusionRules: normalizeList(req.body?.inclusionRules, 8, 240),
@@ -1540,6 +1574,12 @@ async function main() {
 			}
 			if (req.body?.editorSummary !== undefined) {
 				claim.editorSummary = normalizeText(req.body?.editorSummary, 4000);
+			}
+			if (req.body?.uncertaintySummary !== undefined) {
+				claim.uncertaintySummary = normalizeText(req.body?.uncertaintySummary, 1600);
+			}
+			if (req.body?.uncertaintyDrivers !== undefined) {
+				claim.uncertaintyDrivers = normalizeUncertaintyDrivers(req.body?.uncertaintyDrivers);
 			}
 			if (req.body?.searchDatabases !== undefined) {
 				claim.searchDatabases = normalizeList(req.body?.searchDatabases, 8, 120);

@@ -431,6 +431,7 @@ function formatTopicDate(value?: string) {
 				</div>
 				<div class="section-heading__links">
 					<NuxtLink class="text-link" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+					<NuxtLink class="text-link" to="/future-roadmap">Open the future roadmap</NuxtLink>
 					<NuxtLink class="text-link" to="/search-demand">Open search-demand signals</NuxtLink>
 				</div>
 			</div>

@@ -5,6 +5,16 @@ export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
+export type ClaimUncertaintyType =
+	| "bias"
+	| "indirectness"
+	| "imprecision"
+	| "inconsistency"
+	| "generalizability"
+	| "mechanism"
+	| "timing"
+	| "implementation"
+	| "other";
 export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
 export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | "expression_of_concern";
 export type QuestionAskKind = "claim" | "topic" | "concept" | "discussion";
@@ -59,6 +69,11 @@ export interface ClaimEvidenceSummary {
 export interface ClaimInstitutionalAnchor {
 	name: string;
 	role: string;
+}
+
+export interface ClaimUncertaintyDriver {
+	type: ClaimUncertaintyType;
+	detail: string;
 }
 
 export interface ClaimSurveillanceSpec {
@@ -118,6 +133,8 @@ export interface Claim extends ClaimSummary {
 	misconceptions: string[];
 	misconceptionTags?: string[];
 	editorSummary?: string;
+	uncertaintySummary?: string;
+	uncertaintyDrivers?: ClaimUncertaintyDriver[];
 	searchDatabases?: string[];
 	inclusionRules?: string[];
 	exclusionRules?: string[];

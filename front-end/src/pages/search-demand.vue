@@ -175,6 +175,7 @@ useHead({
 			</div>
 			<div class="callout__actions">
 				<NuxtLink class="button button--primary" to="/claim-roadmap">Open the claim roadmap</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/future-roadmap">Future roadmap</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/ask">Use the ask flow</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 			</div>

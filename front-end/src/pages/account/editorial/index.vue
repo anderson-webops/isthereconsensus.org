@@ -4,6 +4,7 @@ import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
+import { futureRoadmapPreview } from "~/data/futureRoadmap";
 import { measurementLoop, patternPreview, publishingPlanPreview } from "~/data/searchDemand";
 
 const router = useRouter();
@@ -193,6 +194,7 @@ const conceptQuestionCount = computed(
 const roadmapPreview = firstWaveClaims.slice(0, 6);
 const roadmapFollowOn = secondWaveClaims.slice(0, 4);
 const roadmapHolds = holdClaims.slice(0, 4);
+const futurePriorities = futureRoadmapPreview;
 const demandPatterns = patternPreview.slice(0, 4);
 const publishingPreview = publishingPlanPreview.slice(0, 4);
 const demandMeasurement = measurementLoop.slice(0, 2);
@@ -708,6 +710,34 @@ watch(
 						<NuxtLink class="button button--ghost" to="/search-demand">Open the full demand page</NuxtLink>
 					</section>
 				</div>
+			</section>
+
+			<section class="editorial-panel">
+				<div class="section-heading section-heading--tight">
+					<div>
+						<p class="eyebrow">Future roadmap</p>
+						<h2>What the next product phase should harden first</h2>
+					</div>
+					<p>
+						These priorities come before broad claim-volume expansion. They turn the current methods model
+						into something more inspectable and durable.
+					</p>
+				</div>
+
+				<div class="ops-grid">
+					<article v-for="item in futurePriorities" :key="item.rank" class="ops-column">
+						<div class="ops-column__header">
+							<h3>#{{ item.rank }} · {{ item.title }}</h3>
+							<p>{{ item.whyItMatters }}</p>
+						</div>
+						<ul class="guide-list">
+							<li><strong>Implement:</strong> {{ item.implementation }}</li>
+							<li><strong>Measure:</strong> {{ item.successMetric }}</li>
+						</ul>
+					</article>
+				</div>
+
+				<NuxtLink class="button button--ghost" to="/future-roadmap">Open the full future roadmap</NuxtLink>
 			</section>
 
 			<section class="editorial-panel">

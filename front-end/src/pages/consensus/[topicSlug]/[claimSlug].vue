@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import type { Claim, ClaimResponse, ClaimSource, Question, QuestionResponse, QuestionsResponse } from "~/types/board";
+import type {
+	Claim,
+	ClaimResponse,
+	ClaimSource,
+	ClaimUncertaintyDriver,
+	Question,
+	QuestionResponse,
+	QuestionsResponse
+} from "~/types/board";
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
@@ -73,6 +81,7 @@ const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ??
 const surveillanceSpec = computed(() => claim.value?.surveillanceSpec);
 const sourceStandard = computed(() => getSourceStandard(claim.value?.topic?.slug || topicSlug.value));
 const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
+const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 const sourceStackSummary = computed(() => {
 	const sources = claim.value?.sources ?? [];
 	const anchorCount = sources.filter((source) => source.isAnchor).length;
@@ -105,6 +114,9 @@ const anchorNames = computed(() =>
 );
 
 const uncertaintySummary = computed(() => {
+	if (claim.value?.uncertaintySummary?.trim()) {
+		return claim.value.uncertaintySummary.trim();
+	}
 	if (claim.value?.evidenceCertainty === "high") {
 		return "High certainty means the larger evidence stack is stable and a major change would probably require a substantial new synthesis, not one isolated paper.";
 	}
@@ -120,16 +132,31 @@ const uncertaintySummary = computed(() => {
 	return "This page does not yet expose a plain-language uncertainty summary.";
 });
 
-const uncertaintyLimits = computed(() =>
-	Array.from(
+const uncertaintyLimits = computed(() => {
+	const driverDetails = uncertaintyDrivers.value.map((driver) => driver.detail.trim()).filter(Boolean);
+	if (driverDetails.length) {
+		return Array.from(new Set(driverDetails)).slice(0, 6);
+	}
+	return Array.from(
 		new Set(
 			evidenceSummaries.value
 				.flatMap((summary) => summary.limitations || [])
 				.map((item) => item.trim())
 				.filter(Boolean)
 		)
-	).slice(0, 4)
-);
+	).slice(0, 6);
+});
+
+const outcomeCertaintyBreakdown = computed(() => {
+	const counts = evidenceSummaries.value.reduce<Record<string, number>>((map, summary) => {
+		const key = summary.certainty || "not listed";
+		map[key] = (map[key] ?? 0) + 1;
+		return map;
+	}, {});
+	return Object.entries(counts)
+		.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+		.map(([label, count]) => `${count} ${label.replaceAll("_", " ")} outcome${count === 1 ? "" : "s"}`);
+});
 
 const hasInstitutionalConclusionLayer = computed(() => {
 	const sources = claim.value?.sources ?? [];
@@ -375,6 +402,18 @@ function formatEvidenceCertaintyLabel(certainty?: Claim["evidenceCertainty"]) {
 	return "Certainty not listed";
 }
 
+function formatUncertaintyType(type?: ClaimUncertaintyDriver["type"]) {
+	if (type === "bias") return "Bias / confounding";
+	if (type === "indirectness") return "Indirectness";
+	if (type === "imprecision") return "Imprecision";
+	if (type === "inconsistency") return "Inconsistency";
+	if (type === "generalizability") return "Generalizability";
+	if (type === "mechanism") return "Mechanism";
+	if (type === "timing") return "Timing / follow-up";
+	if (type === "implementation") return "Implementation";
+	return "Other";
+}
+
 function formatReviewModeLabel(mode?: Claim["reviewMode"]) {
 	return mode === "living" ? "Living review" : "Scheduled review";
 }
@@ -598,10 +637,29 @@ async function flagQuestion(questionId: string) {
 			</div>
 			<div class="uncertainty-strip__details">
 				<div>
-					<p class="field-label">Most visible limits</p>
-					<ul class="plain-list plain-list--tight">
+					<p class="field-label">Typed uncertainty drivers</p>
+					<div v-if="uncertaintyDrivers.length" class="uncertainty-driver-list">
+						<article
+							v-for="driver in uncertaintyDrivers"
+							:key="`${driver.type}-${driver.detail}`"
+							class="uncertainty-driver"
+						>
+							<span class="tag">{{ formatUncertaintyType(driver.type) }}</span>
+							<p>{{ driver.detail }}</p>
+						</article>
+					</div>
+					<ul v-else class="plain-list plain-list--tight">
 						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
 						<li v-if="!uncertaintyLimits.length">Detailed limitations have not been summarized yet.</li>
+					</ul>
+				</div>
+				<div>
+					<p class="field-label">Outcome certainty coverage</p>
+					<ul class="plain-list plain-list--tight">
+						<li v-for="item in outcomeCertaintyBreakdown" :key="item">{{ item }}</li>
+						<li v-if="!outcomeCertaintyBreakdown.length">
+							Outcome-level certainty has not been attached yet.
+						</li>
 					</ul>
 				</div>
 				<p class="muted">
@@ -1368,6 +1426,26 @@ async function flagQuestion(questionId: string) {
 .uncertainty-strip__details {
 	display: grid;
 	gap: 12px;
+}
+
+.uncertainty-driver-list {
+	display: grid;
+	gap: 10px;
+}
+
+.uncertainty-driver {
+	padding: 14px 16px;
+	border-radius: 18px;
+	border: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-surface) 86%, var(--consensus-debate-tint) 14%);
+	display: grid;
+	gap: 8px;
+}
+
+.uncertainty-driver p {
+	margin: 0;
+	color: var(--consensus-ink);
+	line-height: 1.55;
 }
 
 .content-stack {

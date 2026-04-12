@@ -48,6 +48,7 @@ export default defineEventHandler(async (event) => {
 		{ path: "/evidence-ops" },
 		{ path: "/expert-review-program" },
 		{ path: "/explainers" },
+		{ path: "/future-roadmap" },
 		{ path: "/governance" },
 		{ path: "/how" },
 		{ path: "/methods" },

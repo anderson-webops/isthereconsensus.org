@@ -28,6 +28,8 @@ export async function seedClaims() {
 					misconceptions: seed.misconceptions,
 					misconceptionTags: seed.misconceptionTags,
 					editorSummary: seed.editorSummary,
+					uncertaintySummary: seed.uncertaintySummary,
+					uncertaintyDrivers: seed.uncertaintyDrivers,
 					searchDatabases: seed.searchDatabases,
 					searchCutoffAt: new Date(seed.searchCutoffAt),
 					inclusionRules: seed.inclusionRules,
@@ -62,6 +64,8 @@ export async function seedClaims() {
 		if (!claim.inclusionRules?.length) missingFields.inclusionRules = seed.inclusionRules;
 		if (!claim.exclusionRules?.length) missingFields.exclusionRules = seed.exclusionRules;
 		if (!claim.misconceptionTags?.length) missingFields.misconceptionTags = seed.misconceptionTags;
+		if (!claim.uncertaintySummary) missingFields.uncertaintySummary = seed.uncertaintySummary;
+		if (!claim.uncertaintyDrivers?.length) missingFields.uncertaintyDrivers = seed.uncertaintyDrivers;
 		if (!claim.surveillanceSpec?.focus && seed.surveillanceSpec) missingFields.surveillanceSpec = seed.surveillanceSpec;
 		if (!claim.appraisalTools?.length) missingFields.appraisalTools = seed.appraisalTools;
 		if (!claim.evidenceSummaries?.length) missingFields.evidenceSummaries = seed.evidenceSummaries;

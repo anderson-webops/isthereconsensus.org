@@ -185,6 +185,7 @@ useHead({
 			</div>
 			<div class="standards-callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/future-roadmap">Future roadmap</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>

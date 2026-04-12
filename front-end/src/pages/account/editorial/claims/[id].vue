@@ -7,6 +7,7 @@ import type {
 	ClaimRevision,
 	ClaimRevisionsResponse,
 	ClaimSource,
+	ClaimUncertaintyDriver,
 	Topic,
 	TopicResponse
 } from "~/types/board";
@@ -40,6 +41,7 @@ const topics = ref<Topic[]>([]);
 const sourceRows = ref<ClaimSource[]>([]);
 const evidenceSummaryRows = ref<ClaimEvidenceSummary[]>([]);
 const institutionalAnchorRows = ref<ClaimInstitutionalAnchor[]>([]);
+const uncertaintyDriverRows = ref<ClaimUncertaintyDriver[]>([]);
 
 const form = reactive({
 	topic: "",
@@ -58,6 +60,7 @@ const form = reactive({
 	misconceptions: "",
 	misconceptionTags: "",
 	editorSummary: "",
+	uncertaintySummary: "",
 	searchDatabases: "",
 	searchCutoffAt: "",
 	inclusionRules: "",
@@ -127,6 +130,7 @@ function hydrateClaim(record: Claim | null) {
 	form.misconceptions = (record?.misconceptions || []).join("\n");
 	form.misconceptionTags = (record?.misconceptionTags || []).join("\n");
 	form.editorSummary = record?.editorSummary || "";
+	form.uncertaintySummary = record?.uncertaintySummary || "";
 	form.searchDatabases = (record?.searchDatabases || []).join("\n");
 	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
 	form.inclusionRules = (record?.inclusionRules || []).join("\n");
@@ -159,6 +163,10 @@ function hydrateClaim(record: Claim | null) {
 	institutionalAnchorRows.value =
 		record?.institutionalAnchors?.map((anchor) => ({
 			...anchor
+		})) || [];
+	uncertaintyDriverRows.value =
+		record?.uncertaintyDrivers?.map((driver) => ({
+			...driver
 		})) || [];
 }
 
@@ -216,6 +224,7 @@ function claimPayload() {
 		misconceptions: parseLines(form.misconceptions),
 		misconceptionTags: parseLines(form.misconceptionTags),
 		editorSummary: form.editorSummary.trim(),
+		uncertaintySummary: form.uncertaintySummary.trim(),
 		searchDatabases: parseLines(form.searchDatabases),
 		searchCutoffAt: form.searchCutoffAt || undefined,
 		inclusionRules: parseLines(form.inclusionRules),
@@ -246,6 +255,12 @@ function claimPayload() {
 				role: anchor.role.trim()
 			}))
 			.filter((anchor) => anchor.name && anchor.role),
+		uncertaintyDrivers: uncertaintyDriverRows.value
+			.map((driver) => ({
+				type: driver.type,
+				detail: driver.detail.trim()
+			}))
+			.filter((driver) => driver.detail),
 		authorLine: form.authorLine.trim(),
 		reviewerLine: form.reviewerLine.trim(),
 		coiSummary: form.coiSummary.trim(),
@@ -458,6 +473,17 @@ function removeInstitutionalAnchor(index: number) {
 	institutionalAnchorRows.value.splice(index, 1);
 }
 
+function addUncertaintyDriver() {
+	uncertaintyDriverRows.value.push({
+		type: "other",
+		detail: ""
+	});
+}
+
+function removeUncertaintyDriver(index: number) {
+	uncertaintyDriverRows.value.splice(index, 1);
+}
+
 watch(
 	() => [ready.value, canUseEditorial.value, routeId.value],
 	async ([isReady, canEdit]) => {
@@ -625,6 +651,72 @@ watch(
 							placeholder="Internal framing note for the public page and future reviewers."
 						/>
 					</label>
+
+					<label class="field field--full">
+						<span class="field-label">Plain-language uncertainty summary</span>
+						<textarea
+							v-model="form.uncertaintySummary"
+							rows="4"
+							placeholder="Explain what is still uncertain without undermining the settled core of the page."
+						/>
+					</label>
+
+					<div class="field field--full structured-block">
+						<div class="structured-block__header">
+							<div>
+								<span class="field-label">Typed uncertainty drivers</span>
+								<p>Add three to six concrete reasons the certainty is not higher or fully settled.</p>
+							</div>
+							<button class="button button--ghost" type="button" @click="addUncertaintyDriver">
+								Add driver
+							</button>
+						</div>
+
+						<div v-if="!uncertaintyDriverRows.length" class="empty-state">
+							No uncertainty drivers attached yet.
+						</div>
+						<div v-else class="structured-list">
+							<article
+								v-for="(driver, index) in uncertaintyDriverRows"
+								:key="`${driver.type}-${index}`"
+								class="structured-card"
+							>
+								<div class="structured-card__grid">
+									<label class="field">
+										<span class="field-label">Driver type</span>
+										<select v-model="driver.type">
+											<option value="bias">Bias / confounding</option>
+											<option value="indirectness">Indirectness</option>
+											<option value="imprecision">Imprecision / effect size</option>
+											<option value="inconsistency">Inconsistency</option>
+											<option value="generalizability">Generalizability</option>
+											<option value="mechanism">Mechanism</option>
+											<option value="timing">Timing / follow-up</option>
+											<option value="implementation">Implementation / policy</option>
+											<option value="other">Other</option>
+										</select>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Public-facing note</span>
+										<textarea
+											v-model="driver.detail"
+											rows="3"
+											placeholder="What specific uncertainty should a careful reader keep in mind?"
+										/>
+									</label>
+								</div>
+
+								<button
+									class="button button--ghost button--danger"
+									type="button"
+									@click="removeUncertaintyDriver(index)"
+								>
+									Remove driver
+								</button>
+							</article>
+						</div>
+					</div>
 
 					<div class="field field--full structured-block">
 						<div class="structured-block__header">
