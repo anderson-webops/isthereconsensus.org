@@ -13,10 +13,6 @@ function xmlEscape(value: string) {
 		.replaceAll("'", "&apos;");
 }
 
-function unique<T>(values: T[]) {
-	return Array.from(new Set(values));
-}
-
 function formatLastmod(value?: string) {
 	if (!value) return "";
 	const parsed = new Date(value);
@@ -39,9 +35,10 @@ function resolveApiBase(event: H3Event) {
 export default defineEventHandler(async (event) => {
 	const origin = getRequestURL(event).origin;
 	const apiBase = resolveApiBase(event);
-	const staticRoutes = [
+	const staticRoutes: Array<{ path: string; lastmod?: string }> = [
 		{ path: "/" },
 		{ path: "/ask" },
+		{ path: "/claim-roadmap" },
 		{ path: "/consensus" },
 		{ path: "/corrections" },
 		{ path: "/evidence-ops" },
@@ -51,6 +48,7 @@ export default defineEventHandler(async (event) => {
 		{ path: "/methods" },
 		{ path: "/misconceptions" },
 		{ path: "/privacy" },
+		{ path: "/search-demand" },
 		{ path: "/source-standards" },
 		{ path: "/standards" },
 		{ path: "/terms" }
@@ -69,13 +67,15 @@ export default defineEventHandler(async (event) => {
 		}));
 		const claimRouteGroups = await Promise.all(
 			topics.map(async ({ slug, updatedAt }) => {
-				const claimsResponse = await $fetch<{ claims?: Array<{ slug: string; updatedAt?: string; lastReviewedAt?: string }> }>(
-					`${apiBase}/topics/${slug}/claims`
+				const claimsResponse = await $fetch<{
+					claims?: Array<{ slug: string; updatedAt?: string; lastReviewedAt?: string }>;
+				}>(`${apiBase}/topics/${slug}/claims`);
+				return (claimsResponse.claims ?? []).map(
+					({ slug: claimSlug, updatedAt: claimUpdatedAt, lastReviewedAt }) => ({
+						path: `/consensus/${slug}/${claimSlug}`,
+						lastmod: claimUpdatedAt || lastReviewedAt || updatedAt
+					})
 				);
-				return (claimsResponse.claims ?? []).map(({ slug: claimSlug, updatedAt: claimUpdatedAt, lastReviewedAt }) => ({
-					path: `/consensus/${slug}/${claimSlug}`,
-					lastmod: claimUpdatedAt || lastReviewedAt || updatedAt
-				}));
 			})
 		);
 

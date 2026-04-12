@@ -4,6 +4,7 @@ import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
+import { measurementLoop, patternPreview, publishingPlanPreview } from "~/data/searchDemand";
 
 const router = useRouter();
 const { apiUrl } = useApi();
@@ -186,6 +187,9 @@ const conceptQuestionCount = computed(
 const roadmapPreview = firstWaveClaims.slice(0, 6);
 const roadmapFollowOn = secondWaveClaims.slice(0, 4);
 const roadmapHolds = holdClaims.slice(0, 4);
+const demandPatterns = patternPreview.slice(0, 4);
+const publishingPreview = publishingPlanPreview.slice(0, 4);
+const demandMeasurement = measurementLoop.slice(0, 2);
 
 useHead({
 	title: "Editorial workspace - Is There Consensus?"
@@ -618,6 +622,56 @@ watch(
 							</li>
 						</ul>
 						<NuxtLink class="button button--ghost" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+					</section>
+				</div>
+			</section>
+
+			<section class="editorial-panel">
+				<div class="section-heading section-heading--tight">
+					<div>
+						<p class="eyebrow">Search-demand signals</p>
+						<h2>What public query phrasing should push upward in the queue</h2>
+					</div>
+					<p>
+						Use stable search phrasing to sharpen prioritization. Demand matters most when it overlaps with
+						strong anchors and a clean canonical question.
+					</p>
+				</div>
+
+				<div class="ops-grid">
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Common query patterns</h3>
+							<p>These patterns often signal that a canonical page or explainer is missing.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in demandPatterns" :key="item.pattern">
+								<strong>{{ item.pattern }}</strong> - {{ item.bestFit }}
+							</li>
+						</ul>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>First month publishing cues</h3>
+							<p>Start with the claims and explainers that match the strongest repeating phrasing.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in publishingPreview" :key="`${item.week}-${item.title}`">
+								<strong>{{ item.week }}:</strong> {{ item.title }}
+							</li>
+						</ul>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>What to measure</h3>
+							<p>Use these checks to confirm the search-demand work is actually reducing confusion.</p>
+						</div>
+						<ul class="guide-list">
+							<li v-for="item in demandMeasurement" :key="item">{{ item }}</li>
+						</ul>
+						<NuxtLink class="button button--ghost" to="/search-demand">Open the full demand page</NuxtLink>
 					</section>
 				</div>
 			</section>

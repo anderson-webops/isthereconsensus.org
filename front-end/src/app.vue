@@ -2,7 +2,7 @@
 import { appDescription, appName } from "~/constants";
 
 const siteUrl = "https://isthereconsensus.org";
-const privateRoutePattern = /^(\/account|\/api|\/setup)(?:\/|$)/;
+const privateRoutePattern = /^(?:\/account|\/api|\/setup)(?:\/|$)/;
 const route = useRoute();
 const canonicalUrl = computed(() => new URL(route.path || "/", `${siteUrl}/`).toString());
 const noindexRoute = computed(() => privateRoutePattern.test(route.path));

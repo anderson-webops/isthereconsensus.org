@@ -38,6 +38,7 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 				<NuxtLink to="/misconceptions">Misconceptions</NuxtLink>
 				<NuxtLink to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink to="/claim-roadmap">Claim roadmap</NuxtLink>
+				<NuxtLink to="/search-demand">Search demand</NuxtLink>
 				<NuxtLink to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink to="/standards">Editorial standards</NuxtLink>

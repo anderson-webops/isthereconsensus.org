@@ -452,6 +452,15 @@ async function submitQuestion() {
 				<span v-if="queryAnalysis.isPersonalAdvice" class="chip chip--warning">Personal advice scope</span>
 			</div>
 
+			<div v-if="queryAnalysis.queryPatternLabel" class="routing-subpanel">
+				<div class="section-heading section-heading--tight">
+					<h3>Recognized search pattern</h3>
+					<p>{{ queryAnalysis.queryPatternLabel }}</p>
+				</div>
+				<p>{{ queryAnalysis.queryPatternGuidance }}</p>
+				<NuxtLink class="text-link" to="/search-demand">See the search-demand playbook</NuxtLink>
+			</div>
+
 			<div v-if="queryAnalysis.looksLoaded && queryAnalysis.neutralReframes.length" class="routing-subpanel">
 				<div class="section-heading section-heading--tight">
 					<h3>Neutral reframe</h3>

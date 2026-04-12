@@ -3,6 +3,14 @@ import { misconceptionModules } from "../data/misconceptions";
 
 export type AskRouteDestination = "claim" | "topic" | "explainer" | "thread";
 export type AskKind = "claim" | "topic" | "concept" | "discussion";
+export type AskQueryPattern =
+	| "causality-claim"
+	| "fertility-fear"
+	| "safety-or-toxicity"
+	| "hoax-or-cover-up"
+	| "regulation-or-approval"
+	| "study-or-preprint"
+	| "risk-interpretation";
 
 export interface AskQueryAnalysis {
 	normalized: string;
@@ -15,6 +23,9 @@ export interface AskQueryAnalysis {
 	isEvidenceSeeking: boolean;
 	isPersonalAdvice: boolean;
 	isRecencyEvent: boolean;
+	queryPattern?: AskQueryPattern;
+	queryPatternLabel?: string;
+	queryPatternGuidance?: string;
 	recommendedDestination: AskRouteDestination;
 	neutralReframes: string[];
 }
@@ -40,6 +51,14 @@ const loadedContentRegex = /cause|change|hoax|hiding|lying|poison|fake|cover/i;
 const evidenceSeekingRegex = /how do we know|what'?s the evidence|what evidence|why should i trust|who funded/i;
 const personalAdviceRegex = /should i|safe for me|for my child|for my baby|my symptoms|can i take|what should i do/i;
 const recencyRegex = /latest|today|just saw|viral|new study|new paper|tiktok|youtube|instagram|this week/i;
+const causalityPatternRegex = /^(?:do|does|did|can|could|is|are)\b.+(?:cause|causes)\b/i;
+const fertilityPatternRegex = /\b(?:fertility|infertility|sterile|sterility)\b/i;
+const safetyPatternRegex = /\b(?:safe|unsafe|dangerous|harmful|toxic|poison)\b/i;
+const hoaxPatternRegex = /\b(?:hoax|scam|not real|fake|cover[- ]?up|hiding|lying|suppressed)\b/i;
+const regulationPatternRegex = /\b(?:approved|approval|regulated|regulation|legal|illegal|unregulated|fda)\b/i;
+const studyPatternRegex = /\b(?:new study|latest study|preprint|peer review|peer reviewed|headline|press release)\b/i;
+const riskPatternRegex =
+	/\b(?:relative risk|absolute risk|baseline risk|surrogate endpoint|composite endpoint|p-value|effect size)\b/i;
 
 const definitionPatterns = [
 	/^\s*what is\b/i,
@@ -161,6 +180,67 @@ function buildNeutralReframes(value: string, looksLoaded: boolean) {
 	]).slice(0, 3);
 }
 
+function detectQueryPattern(value: string, normalized: string) {
+	if (fertilityPatternRegex.test(value)) {
+		return {
+			guidance:
+				"Fertility phrasing usually signals a high-anxiety misinformation spike. These questions work best when the site routes to a stable canonical claim page with a visible evidence stack.",
+			label: "Fertility fear query",
+			pattern: "fertility-fear" as const
+		};
+	}
+	if (causalityPatternRegex.test(value)) {
+		return {
+			guidance:
+				"Causality phrasing usually points to a canonical claim page if the evidence base is settled enough to support a durable yes-no answer.",
+			label: "Cause-and-effect query",
+			pattern: "causality-claim" as const
+		};
+	}
+	if (safetyPatternRegex.test(normalized)) {
+		return {
+			guidance:
+				"Safety and toxicity questions often need a top-line verdict plus plain-language framing about dose, exposure, and what counts as actual harm.",
+			label: "Safety or toxicity query",
+			pattern: "safety-or-toxicity" as const
+		};
+	}
+	if (hoaxPatternRegex.test(normalized)) {
+		return {
+			guidance:
+				"Hoax or cover-up wording usually hides a narrower factual question underneath. Neutralize the premise and route to the closest claim page rather than treating the framing itself as evidence.",
+			label: "Hoax or cover-up query",
+			pattern: "hoax-or-cover-up" as const
+		};
+	}
+	if (regulationPatternRegex.test(normalized)) {
+		return {
+			guidance:
+				"Approval and regulation queries usually need a canonical page or explainer about what oversight actually means, not just whether a product exists on the market.",
+			label: "Approval or regulation query",
+			pattern: "regulation-or-approval" as const
+		};
+	}
+	if (riskPatternRegex.test(normalized)) {
+		return {
+			guidance:
+				"Risk-framing questions are usually explainer-first. The underlying need is to interpret evidence correctly before judging a single claim.",
+			label: "Risk interpretation query",
+			pattern: "risk-interpretation" as const
+		};
+	}
+	if (studyPatternRegex.test(normalized)) {
+		return {
+			guidance:
+				"Headline, preprint, and one-study wording usually means the real problem is evidence interpretation rather than a missing verdict page.",
+			label: "Study or preprint query",
+			pattern: "study-or-preprint" as const
+		};
+	}
+
+	return null;
+}
+
 export function analyzeAskQuery(value: string): AskQueryAnalysis {
 	const normalized = normalizeQuery(value);
 	const segments = buildSegments(value);
@@ -175,13 +255,27 @@ export function analyzeAskQuery(value: string): AskQueryAnalysis {
 	const shortBroadQuery = normalized.split(whitespaceRegex).filter(Boolean).length <= 3;
 	const isTopicOverview = broadTopicTerms.some((term) => normalized.includes(term)) || shortBroadQuery;
 	const hasMultipleQuestions = segments.length > 1;
+	const queryPattern = detectQueryPattern(value, normalized);
 
 	let recommendedDestination: AskRouteDestination = "claim";
 	if (isPersonalAdvice) {
 		recommendedDestination = "thread";
 	} else if (looksLoaded) {
 		recommendedDestination = "claim";
-	} else if (isDefinition || isMechanism) {
+	} else if (
+		queryPattern?.pattern === "fertility-fear" ||
+		queryPattern?.pattern === "causality-claim" ||
+		queryPattern?.pattern === "safety-or-toxicity" ||
+		queryPattern?.pattern === "hoax-or-cover-up" ||
+		queryPattern?.pattern === "regulation-or-approval"
+	) {
+		recommendedDestination = "claim";
+	} else if (
+		isDefinition ||
+		isMechanism ||
+		queryPattern?.pattern === "study-or-preprint" ||
+		queryPattern?.pattern === "risk-interpretation"
+	) {
 		recommendedDestination = "explainer";
 	} else if ((isTopicOverview && !looksLoaded && !isEvidenceSeeking) || (hasMultipleQuestions && !looksLoaded)) {
 		recommendedDestination = "topic";
@@ -198,6 +292,9 @@ export function analyzeAskQuery(value: string): AskQueryAnalysis {
 		isEvidenceSeeking,
 		isPersonalAdvice,
 		isRecencyEvent,
+		queryPattern: queryPattern?.pattern,
+		queryPatternLabel: queryPattern?.label,
+		queryPatternGuidance: queryPattern?.guidance,
 		recommendedDestination,
 		neutralReframes: buildNeutralReframes(value, looksLoaded)
 	};

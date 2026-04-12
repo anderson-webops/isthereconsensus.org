@@ -25,6 +25,20 @@ describe("analyzeAskQuery", () => {
 		assert.equal(analysis.hasMultipleQuestions, true);
 		assert.ok(analysis.segments.length >= 2);
 	});
+
+	it("detects fertility-fear phrasing as a high-demand claim pattern", () => {
+		const analysis = analyzeAskQuery("Do COVID vaccines cause infertility?");
+
+		assert.equal(analysis.queryPattern, "fertility-fear");
+		assert.equal(analysis.recommendedDestination, "claim");
+	});
+
+	it("routes preprint-style queries toward explainers", () => {
+		const analysis = analyzeAskQuery("What does this new preprint actually show?");
+
+		assert.equal(analysis.queryPattern, "study-or-preprint");
+		assert.equal(analysis.recommendedDestination, "explainer");
+	});
 });
 
 describe("local ask matches", () => {

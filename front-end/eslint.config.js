@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import ppFlat from "eslint-config-prettier/flat";
 import prettier from "eslint-plugin-prettier";
 import vuePlugin from "eslint-plugin-vue";
@@ -6,6 +7,8 @@ import ts from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
 // front-end/eslint.config.js
 import base from "../eslint.config.js"; // shared root config
+
+const tsconfigRootDir = fileURLToPath(new URL(".", import.meta.url));
 
 export default base
 	/* project-specific additions */
@@ -28,7 +31,11 @@ export default base
 			files: ["**/*.ts"],
 			languageOptions: {
 				parser: ts.parser,
-				parserOptions: { project: "./tsconfig.eslint.json", sourceType: "module" },
+				parserOptions: {
+					project: "./tsconfig.eslint.json",
+					sourceType: "module",
+					tsconfigRootDir
+				},
 				globals: { ...globals.browser, ...globals.node }
 			}
 		},
@@ -60,7 +67,11 @@ export default base
 			files: ["test/**/*.test.ts"],
 			languageOptions: {
 				parser: ts.parser,
-				parserOptions: { project: "./tsconfig.eslint.json", sourceType: "module" },
+				parserOptions: {
+					project: "./tsconfig.eslint.json",
+					sourceType: "module",
+					tsconfigRootDir
+				},
 				globals: { ...globals.node }
 			},
 			rules: {

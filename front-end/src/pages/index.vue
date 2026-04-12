@@ -355,6 +355,7 @@ function formatTopicDate(value?: string) {
 					<NuxtLink class="text-link" to="/explainers">Read the explainers</NuxtLink>
 					<NuxtLink class="text-link" to="/misconceptions">Open the modules</NuxtLink>
 					<NuxtLink class="text-link" to="/claim-roadmap">See the claim roadmap</NuxtLink>
+					<NuxtLink class="text-link" to="/search-demand">See search-demand signals</NuxtLink>
 					<NuxtLink class="text-link" to="/standards">Read the standards</NuxtLink>
 				</div>
 			</aside>
@@ -428,7 +429,10 @@ function formatTopicDate(value?: string) {
 					<p class="eyebrow">Editorial roadmap</p>
 					<h2>What the site should build next</h2>
 				</div>
-				<NuxtLink class="text-link" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+				<div class="section-heading__links">
+					<NuxtLink class="text-link" to="/claim-roadmap">Open the full roadmap</NuxtLink>
+					<NuxtLink class="text-link" to="/search-demand">Open search-demand signals</NuxtLink>
+				</div>
 			</div>
 
 			<div class="roadmap-list">
@@ -714,6 +718,12 @@ function formatTopicDate(value?: string) {
 	justify-content: space-between;
 	align-items: end;
 	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.section-heading__links {
+	display: flex;
+	gap: 12px;
 	flex-wrap: wrap;
 }
 

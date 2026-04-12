@@ -221,6 +221,7 @@ useHead({
 			</div>
 			<div class="callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse current claim reviews</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/search-demand">Search-demand signals</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
 			</div>
