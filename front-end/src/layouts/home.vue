@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import ThemeToggle from "~/components/ThemeToggle.vue";
+
+const { currentAccount, role } = useAuth();
+
+const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 </script>
 
 <template>
@@ -11,10 +15,13 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 			</NuxtLink>
 			<div class="site-header__actions">
 				<nav class="site-nav" aria-label="Primary">
+					<NuxtLink to="/">Home</NuxtLink>
 					<NuxtLink to="/consensus">Browse</NuxtLink>
 					<NuxtLink to="/explainers">Explainers</NuxtLink>
 					<NuxtLink to="/how">How it works</NuxtLink>
 					<NuxtLink to="/ask">Ask</NuxtLink>
+					<NuxtLink to="/account">Account</NuxtLink>
+					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
 				<ThemeToggle />
 			</div>
