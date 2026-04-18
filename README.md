@@ -13,6 +13,10 @@ Marketing site for isthereconsensus.org. This repo is a small monorepo with a Nu
 - `front-end/` - Nuxt app (SSR)
 - `back-end/` - API/server utilities
 
+## Docs
+
+- [`docs/evidence-api-integration-roadmap.md`](./docs/evidence-api-integration-roadmap.md) - repo-specific plan for evidence-provider integration, normalization, and monitoring
+
 ## Getting started
 
 ```bash
