@@ -167,9 +167,9 @@ useHead({
 				<p>
 					On deployed versions of the site, we currently load analytics scripts from
 					<code>analytics.isthereconsensus.org</code> and <code>analytics.jacobdanderson.net</code> to
-					understand site usage and performance. When your browser loads those scripts, the analytics
-					services may receive technical request information such as IP address, browser metadata, referring
-					page, and page usage details.
+					understand site usage and performance. When your browser loads those scripts, the analytics services
+					may receive technical request information such as IP address, browser metadata, referring page, and
+					page usage details.
 				</p>
 				<p>
 					When captcha protection is enabled, the site loads Cloudflare Turnstile in the browser and validates

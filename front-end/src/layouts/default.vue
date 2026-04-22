@@ -18,8 +18,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/">Home</NuxtLink>
 					<NuxtLink to="/consensus">Browse</NuxtLink>
 					<NuxtLink to="/explainers">Explainers</NuxtLink>
-					<NuxtLink to="/how">How it works</NuxtLink>
 					<NuxtLink to="/ask">Ask</NuxtLink>
+					<NuxtLink to="/standards">How Reviews Work</NuxtLink>
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
@@ -44,9 +44,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<NuxtLink to="/ask">Ask a question</NuxtLink>
 				<NuxtLink to="/explainers">Explainers</NuxtLink>
 				<NuxtLink to="/misconceptions">Misconceptions</NuxtLink>
-				<NuxtLink to="/how">How it works</NuxtLink>
-				<NuxtLink to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink to="/policy-center">Policy center</NuxtLink>
+				<NuxtLink to="/standards">How reviews work</NuxtLink>
 				<NuxtLink to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink to="/terms">Terms of service</NuxtLink>

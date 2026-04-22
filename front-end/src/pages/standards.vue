@@ -2,66 +2,66 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const sourceStack = [
-	"Use a two-layer anchor by default: one current institutional conclusion and one independent synthesis.",
-	"Consensus statements, clinical guidelines, regulator reviews, and major assessments anchor the public summary.",
-	"Single studies can inform context, but they do not outrank the broader literature or a methods-explicit assessment body."
+	"Current guidelines, consensus statements, regulator reviews, and major assessments carry the most weight.",
+	"Independent systematic reviews and meta-analyses check whether the broader literature supports the same direction.",
+	"Single studies can matter, but they do not outrank the wider evidence base on their own."
 ];
 
 const publicationRules = [
-	"Publish a reviewed claim when multiple independent reviews or major institutions converge on the same bottom line.",
-	"If the evidence is still split, say so directly instead of forcing false certainty.",
-	"When institutions disagree, explain the baseline and then the narrower point of disagreement."
+	"Every reviewed page should lead with a short bottom line in plain language.",
+	"Uncertainty should sit next to the answer, not be hidden behind it.",
+	"Readers should be able to inspect the evidence summaries, source stack, and change log without guessing where they are."
 ];
 
 const updateTriggers = [
 	"A new landmark review materially changes the direction, size, or mechanism of the current summary.",
 	"A major professional society, regulator, or assessment body updates its formal guidance.",
 	"A heavily cited paper used on the page is retracted or materially corrected.",
-	"An editorial review date passes and the claim is flagged as needing a refresh."
+	"A scheduled review date passes and the page is flagged for refresh."
 ];
 
 const citationRules = [
-	"Core public claims should rely on peer-reviewed syntheses or official reports, not blogs, anonymous commentary, or isolated preprints.",
-	"Systematic reviews, meta-analyses, and major institutional guidance should outrank individual studies unless a landmark trial changed the field.",
-	"When evidence is early or thin, the page should say that clearly."
+	"Reviewed answers should rely on syntheses and official reports before they rely on isolated papers or commentary.",
+	"When the evidence is early or thin, the page should say so directly.",
+	"Context sources can explain a topic, but they should not carry the main public answer."
 ];
 
 const disagreementRules = [
-	"Restrict institutional disagreement to reputable bodies with explicit methods.",
-	"Label whether the disagreement is about evidence, thresholds, feasibility, or policy values.",
-	"Do not present a minority institutional view like a 50-50 split when the broader literature is not actually balanced."
+	"Public discussion does not vote reviewed answers into or out of consensus.",
+	"If the evidence is split, the page should say so instead of forcing false certainty.",
+	"When institutions disagree, the page should explain what the disagreement is actually about."
 ];
 
 const pageSignals = [
 	"Original publish date and last evidence review date",
-	"Expert agreement and evidence certainty shown as separate ratings",
-	"Source stack counts by type, anchor-source labels, and DOI/PMID visibility where available",
-	"Outcome-level evidence summaries and institutional anchor metadata",
-	"A visible change log when the page moves"
+	"Separate ratings for expert agreement and evidence certainty",
+	"Outcome-level evidence summaries and a visible source stack",
+	"A public change log when the page moves",
+	"Clear review, conflict, and disclosure notes when those details matter"
 ];
 
 useHead({
-	title: "Editorial standards - Is There Consensus?"
+	title: "How reviews work - Is There Consensus?"
 });
 </script>
 
 <template>
 	<div class="standards-page">
-		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Editorial standards' }]" />
+		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'How reviews work' }]" />
 
 		<header class="standards-header">
-			<p class="eyebrow">Editorial standards</p>
-			<h1>What a reviewed claim has to meet before it goes public.</h1>
+			<p class="eyebrow">How reviews work</p>
+			<h1>What a reviewed page shows, and what it does not pretend to do.</h1>
 			<p>
-				This page covers the public publishing bar: what sources matter most, when a claim is ready, and what a
-				reader should be able to inspect on the page.
+				This is the one public trust page most readers need. It explains what evidence carries the answer, which
+				trust signals should be visible, and how the site handles uncertainty and updates.
 			</p>
 		</header>
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Institution-first source hierarchy</h2>
-				<p>The order of evidence that carries the public summary.</p>
+				<h2>How sources are weighted</h2>
+				<p>The evidence order that carries the public answer.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in sourceStack" :key="item">{{ item }}</li>
@@ -70,8 +70,8 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>When a claim is settled enough to publish</h2>
-				<p>The basic publication threshold.</p>
+				<h2>What a reviewed page should show</h2>
+				<p>The minimum public reading experience.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in publicationRules" :key="item">{{ item }}</li>
@@ -80,8 +80,8 @@ useHead({
 
 		<section class="standards-panel standards-panel--soft">
 			<div class="section-heading section-heading--tight">
-				<h2>Update triggers</h2>
-				<p>Pages should move when the evidence or institutional baseline moves.</p>
+				<h2>When pages update</h2>
+				<p>Pages move when the evidence or institutional baseline moves.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in updateTriggers" :key="item">{{ item }}</li>
@@ -90,8 +90,8 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Source and citation policy</h2>
-				<p>What can carry the reviewed answer and what cannot.</p>
+				<h2>What can carry the answer</h2>
+				<p>What matters most, and what stays supporting context.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in citationRules" :key="item">{{ item }}</li>
@@ -100,8 +100,8 @@ useHead({
 
 		<section class="standards-panel standards-panel--soft">
 			<div class="section-heading section-heading--tight">
-				<h2>Handling disagreement among experts or institutions</h2>
-				<p>Disagreement should be explained, not flattened into confusion.</p>
+				<h2>What the site does not do</h2>
+				<p>Community activity and thin evidence do not get to impersonate certainty.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in disagreementRules" :key="item">{{ item }}</li>
@@ -110,8 +110,8 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>What readers should see on the page</h2>
-				<p>The minimum public trust signals.</p>
+				<h2>The trust signals readers should see</h2>
+				<p>The visible cues that make the page inspectable.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in pageSignals" :key="item">{{ item }}</li>
@@ -121,18 +121,16 @@ useHead({
 		<section class="standards-callout">
 			<div>
 				<p class="eyebrow">Why this matters</p>
-				<h2>Readers should not have to guess why a page is trustworthy.</h2>
+				<h2>Readers should not have to learn the internal workflow to trust a page.</h2>
 				<p>
-					Transparency is part of the product. A reviewed claim should show the evidence hierarchy, the
-					uncertainty, and the update trail without sending readers through a maze of process pages.
+					A reviewed page should make its evidence, uncertainty, and update trail visible on the page itself,
+					not force readers through a maze of process documents.
 				</p>
 			</div>
 			<div class="standards-callout__actions">
-				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>
 		</section>

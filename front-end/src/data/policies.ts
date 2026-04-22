@@ -13,8 +13,9 @@ export interface PolicyGroup {
 
 export const policyGroups: PolicyGroup[] = [
 	{
-		title: "Core legal pages",
-		description: "The legal baseline for using the site and understanding how data and rights requests work.",
+		title: "Core site policies",
+		description:
+			"The main public rules for using the site, understanding moderation, and handling rights or privacy questions.",
 		items: [
 			{
 				title: "Terms of service",
@@ -47,21 +48,15 @@ export const policyGroups: PolicyGroup[] = [
 		]
 	},
 	{
-		title: "Editorial integrity and reviewer governance",
-		description: "How reviewed pages are governed, who can influence them, and how conflicts are disclosed.",
+		title: "How reviewed pages work",
+		description:
+			"The public trust pages that explain how reviewed answers are built and what disclosure rules apply.",
 		items: [
-			{
-				title: "Governance and workflow",
-				to: "/governance",
-				summary:
-					"How public questions enter editorial intake, move through expert review, and become canonical claim pages.",
-				status: "operational"
-			},
 			{
 				title: "Conflict and funding disclosure",
 				to: "/conflicts-and-funding",
 				summary:
-					"Defines what counts as a conflict, who must disclose, when recusal is required, and how public disclosure appears on canonical pages.",
+					"Defines what counts as a conflict, who must disclose, when recusal is required, and how public disclosure appears on reviewed pages.",
 				status: "program"
 			},
 			{
@@ -72,23 +67,18 @@ export const policyGroups: PolicyGroup[] = [
 				status: "program"
 			},
 			{
-				title: "Editorial standards",
+				title: "How reviews work",
 				to: "/standards",
 				summary:
-					"Defines the evidence threshold, source hierarchy, uncertainty language, and publishing standard for canonical claims.",
-				status: "operational"
-			},
-			{
-				title: "Methods playbook",
-				to: "/methods",
-				summary: "Shows the review rubric, evidence model, and page-level trust cues used across the site.",
+					"Explains what a reviewed page shows, how sources are weighted, when pages update, and what community discussion cannot decide.",
 				status: "operational"
 			}
 		]
 	},
 	{
-		title: "Community fairness and automation controls",
-		description: "How community participation is moderated, corrected, and kept separate from reviewed conclusions.",
+		title: "Community, corrections, and automation",
+		description:
+			"How community participation is moderated, how factual changes are handled, and where automation stops.",
 		items: [
 			{
 				title: "Community guidelines",
@@ -111,13 +101,6 @@ export const policyGroups: PolicyGroup[] = [
 				status: "operational"
 			},
 			{
-				title: "Evidence operations",
-				to: "/evidence-ops",
-				summary:
-					"Shows how the site monitors retractions, guideline changes, and other update triggers over time.",
-				status: "operational"
-			},
-			{
 				title: "Automation and AI disclosure",
 				to: "/automation-and-ai",
 				summary:
@@ -129,8 +112,8 @@ export const policyGroups: PolicyGroup[] = [
 ];
 
 export const policyPrinciples = [
-	"Keep the legal contract stable and move faster-changing workflow details into separate policy pages.",
-	"Do not publish policy promises the product cannot actually honor.",
-	"Make decision-makers, conflicts, and challenge paths visible.",
-	"Keep community content, expert review, and reviewed editorial conclusions separate."
+	"Start with the narrowest page that matches the problem you actually have.",
+	"Use legal pages for rights and privacy questions, and the trust pages for how reviewed answers are built.",
+	"Keep community discussion, reviewed pages, and correction paths separate.",
+	"Do not treat planning notes or internal workflow details like everyday reading."
 ];

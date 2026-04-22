@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	"Keep public threads focused on the claim, the evidence, or a concrete confusion worth checking.",
 	"Harassment, spam, doxxing, impersonation, and coordinated manipulation are not allowed.",
-	"Community discussion can improve coverage and catch errors, but it does not vote canonical claims into or out of consensus.",
+	"Community discussion can improve coverage and catch errors, but it does not vote reviewed answers into or out of consensus.",
 	"Moderators can link, lock, slow, hide, archive, remove, or escalate content to keep the site usable and safe."
 ];
 
@@ -58,7 +58,7 @@ const highConflictControls = [
 
 const appeals = [
 	"Moderation appeals should explain what action is being challenged and provide new context rather than repeating the same argument.",
-	"Canonical-accuracy disputes should usually go through the corrections path rather than the abuse-appeal path.",
+	"Accuracy disputes about reviewed pages should usually go through the corrections path rather than the abuse-appeal path.",
 	"The site may decline repeated appeals that do not add new information or that are obviously abusive."
 ];
 
@@ -150,12 +150,12 @@ useHead({
 				<p class="eyebrow">Related pages</p>
 				<h2>Use the right path for the right problem.</h2>
 				<p>
-					Use governance for workflow, corrections for factual problems, and the standards pages for how
-					canonical claims are actually reviewed.
+					Use corrections for factual problems, moderation for enforcement questions, and How Reviews Work for
+					the publishing standard.
 				</p>
 			</div>
 			<div class="guidelines-callout__actions">
-				<NuxtLink class="button button--primary" to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>

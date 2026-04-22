@@ -3,8 +3,6 @@ import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/t
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName } from "~/constants";
-import { evergreenExplainers } from "~/data/explainers";
-import { misconceptionModules } from "~/data/misconceptions";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 
@@ -120,8 +118,6 @@ const featuredClaims = computed(() => {
 		.slice(0, 5);
 });
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
-const explainerHighlights = computed(() => evergreenExplainers.slice(0, 4));
-const misconceptionHighlights = computed(() => misconceptionModules.slice(0, 4));
 const faqEntries = [
 	{
 		answer: "Search the claim first, read the short bottom line, and then open the evidence stack only if you need the deeper explanation or source trail.",
@@ -132,7 +128,7 @@ const faqEntries = [
 		question: "What evidence does the site rely on?"
 	},
 	{
-		answer: "No. Community discussion is kept separate from the canonical claim reviews so public sentiment does not get mistaken for expert consensus.",
+		answer: "No. Community discussion stays separate from reviewed claim pages so public sentiment does not get mistaken for expert consensus.",
 		question: "Are the public discussions the same thing as the site’s consensus judgment?"
 	}
 ];
@@ -276,13 +272,11 @@ function formatTopicDate(value?: string) {
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
-					<p class="search-panel__hint">
-						Matching claim reviews, topics, and explainers appear as you type.
-					</p>
+					<p class="search-panel__hint">Matching claim reviews, topics, and explainers appear as you type.</p>
 
 					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
 					<div v-else-if="loadingSuggestions && searchQuery.length >= 3" class="search-panel__hint">
-						Checking claim reviews and topic hubs...
+						Checking reviewed pages...
 					</div>
 
 					<div
@@ -302,7 +296,7 @@ function formatTopicDate(value?: string) {
 						</div>
 
 						<div v-if="topicSuggestions.length" class="suggestion-group">
-							<p class="suggestion-group__label">Topic hubs</p>
+							<p class="suggestion-group__label">Topics</p>
 							<ul class="suggestion-list">
 								<li v-for="topic in topicSuggestions" :key="topic._id">
 									<NuxtLink :to="`/consensus/${topic.slug}`">
@@ -327,19 +321,6 @@ function formatTopicDate(value?: string) {
 					</div>
 				</form>
 			</div>
-
-			<aside class="hero__aside">
-				<p class="eyebrow">Start here</p>
-				<h2>Good first clicks</h2>
-				<p>Browse reviewed topics, open a short explainer, or ask a question if nothing close appears.</p>
-				<div class="hero__aside-links">
-					<NuxtLink class="text-link" to="/consensus">Browse topics</NuxtLink>
-					<NuxtLink class="text-link" to="/explainers">Read the explainers</NuxtLink>
-					<NuxtLink class="text-link" to="/misconceptions">Open the modules</NuxtLink>
-					<NuxtLink class="text-link" to="/ask">Ask a question</NuxtLink>
-					<NuxtLink class="text-link" to="/methods">Read the methods</NuxtLink>
-				</div>
-			</aside>
 		</section>
 
 		<section v-if="featuredClaims.length" class="home-section">
@@ -404,51 +385,15 @@ function formatTopicDate(value?: string) {
 			</div>
 		</section>
 
-		<section class="library-grid">
-			<section class="home-section home-section--soft">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Background explainers</p>
-						<h2>Read the concepts once</h2>
-					</div>
-					<NuxtLink class="text-link" to="/explainers">View all explainers</NuxtLink>
-				</div>
-
-				<div class="explainer-list">
-					<article v-for="item in explainerHighlights" :key="item.slug" class="explainer-row">
-						<h3>{{ item.title }}</h3>
-						<p>{{ item.summary }}</p>
-					</article>
-				</div>
-			</section>
-
-			<section class="home-section home-section--soft">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Misconception modules</p>
-						<h2>Common mistakes, corrected once</h2>
-					</div>
-					<NuxtLink class="text-link" to="/misconceptions">Open module library</NuxtLink>
-				</div>
-
-				<div class="explainer-list">
-					<article v-for="item in misconceptionHighlights" :key="item.slug" class="explainer-row">
-						<h3>{{ item.title }}</h3>
-						<p>{{ item.shortCorrection }}</p>
-					</article>
-				</div>
-			</section>
-		</section>
-
 		<section class="home-section home-section--compact">
 			<div class="closing-callout">
 				<div>
-					<p class="eyebrow">Still not finding it?</p>
-					<h2>Ask a question.</h2>
-					<p>We’ll try to route it to the closest existing topic or claim first.</p>
+					<p class="eyebrow">Need more context?</p>
+					<h2>Use the background library or ask a focused question.</h2>
+					<p>Go to explainers for recurring concepts. Use Ask only when no close reviewed page fits.</p>
 				</div>
 				<div class="closing-callout__actions">
-					<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
+					<NuxtLink class="button button--primary" to="/explainers">Read explainers</NuxtLink>
 					<NuxtLink
 						class="button button--ghost"
 						:to="searchQuery ? `/ask?question=${encodeURIComponent(searchQuery)}` : '/ask'"
@@ -470,12 +415,11 @@ function formatTopicDate(value?: string) {
 .hero {
 	display: grid;
 	gap: 24px;
-	grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.8fr);
+	grid-template-columns: minmax(0, 1fr);
 	align-items: start;
 }
 
 .hero__copy,
-.hero__aside,
 .search-panel,
 .claim-row,
 .topic-row,
@@ -513,11 +457,9 @@ function formatTopicDate(value?: string) {
 .hero__lead,
 .claim-row p,
 .topic-row p,
-.explainer-row p,
-.trust-row p,
 .closing-callout p,
 .search-panel__hint,
-.hero__aside {
+.hero__copy {
 	color: var(--consensus-muted);
 }
 

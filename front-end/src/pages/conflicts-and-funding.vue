@@ -2,10 +2,10 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Anyone who can shape canonical pages should disclose relevant financial, professional, advocacy, and litigation-related interests.",
+	"Anyone who can shape reviewed pages should disclose relevant financial, professional, advocacy, and litigation-related interests.",
 	"The site treats perceived conflicts seriously even when there is no evidence of bad faith, because trust depends on visible safeguards.",
 	"Disclosure does not automatically disqualify a person from participation, but it can trigger recusal, added review controls, or public explanation.",
-	"Funders, employers, advocacy groups, and strategic partners do not get editorial veto power over canonical conclusions."
+	"Funders, employers, advocacy groups, and strategic partners do not get editorial veto power over reviewed conclusions."
 ];
 
 const conflictTypes = [
@@ -40,7 +40,7 @@ const recusalRules = [
 ];
 
 const publicCommitments = [
-	"Canonical pages show reviewer or author lines when those roles materially influenced the final synthesis.",
+	"Reviewed pages show reviewer or author lines when those roles materially influenced the final synthesis.",
 	"Claim pages expose a short conflict-of-interest summary and editorial-independence note when disclosure is relevant.",
 	"Internal records preserve recusals, waivers, and review decisions even when the full details are not shown publicly.",
 	"If a conflict is serious enough to affect confidence, the site prefers replacement review over private hand-waving."
@@ -57,10 +57,10 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Conflict and funding disclosure</p>
-			<h1>Who can influence canonical pages, and what they must disclose.</h1>
+			<h1>Who can influence reviewed pages, and what they must disclose.</h1>
 			<p>
 				This policy governs the interests that must be disclosed by staff editors, verified experts, and anyone
-				with approval power over canonical claim pages.
+				with approval power over reviewed claim pages.
 			</p>
 		</header>
 
@@ -118,16 +118,16 @@ useHead({
 				<p class="eyebrow">Related standards</p>
 				<h2>Disclosure is only useful when it changes assignment and review behavior.</h2>
 				<p>
-					Use the expert program page for reviewer standards and the policy center for the rest of the
-					operational governance stack.
+					Use the expert program page for reviewer standards and How Reviews Work for the public publishing
+					bar.
 				</p>
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/expert-review-program"
 					>Verified expert review program</NuxtLink
 				>
+				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 			</div>
 		</section>
 	</div>

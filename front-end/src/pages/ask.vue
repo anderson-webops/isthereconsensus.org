@@ -55,39 +55,6 @@ const errorMessage = ref("");
 const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
 
-const sourceContextOptions: Array<{ value: QuestionSourceContextType; label: string }> = [
-	{ value: "article", label: "News article or study summary" },
-	{ value: "social", label: "Social post or screenshot" },
-	{ value: "video", label: "Video or livestream" },
-	{ value: "podcast", label: "Podcast or interview" },
-	{ value: "conversation", label: "Conversation or rumor" },
-	{ value: "classroom", label: "Classroom, school, or board meeting" },
-	{ value: "other", label: "Other" }
-];
-
-const askKinds: Array<{ description: string; label: string; value: QuestionAskKind }> = [
-	{
-		value: "claim",
-		label: "Claim check",
-		description: "A testable proposition that may already belong under a canonical claim."
-	},
-	{
-		value: "topic",
-		label: "Topic overview",
-		description: "A broad subject that may need a topic-hub answer rather than a narrow verdict."
-	},
-	{
-		value: "concept",
-		label: "Concept or explainer",
-		description: "A definition, distinction, or method question such as risk, causation, or uncertainty."
-	},
-	{
-		value: "discussion",
-		label: "Discussion or local context",
-		description: "A new, context-heavy thread that does not cleanly map to existing pages yet."
-	}
-];
-
 const { data: topicsData } = await useAsyncData("ask-topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
@@ -109,9 +76,6 @@ const showPostingForm = computed(() => manualContinue.value || (searchReady.valu
 const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
 const topTopicMatch = computed(() => suggestions.value.topics[0] ?? null);
 const selectedTopicRecord = computed(() => topics.value.find((topic) => topic.slug === selectedTopic.value) ?? null);
-const claimOptions = computed(() =>
-	suggestions.value.claims.filter((claim) => claim.topic?.slug === selectedTopic.value)
-);
 const matchOptions = computed<MatchOption[]>(() => {
 	const options: MatchOption[] = [];
 
@@ -206,7 +170,8 @@ watch(
 			selectedClaimSlug.value = "";
 			return;
 		}
-		if (!claimOptions.value.some((claim) => claim.slug === selectedClaimSlug.value)) {
+		const topicClaims = suggestions.value.claims.filter((claim) => claim.topic?.slug === value);
+		if (!topicClaims.some((claim) => claim.slug === selectedClaimSlug.value)) {
 			selectedClaimSlug.value = "";
 		}
 	}
@@ -263,14 +228,6 @@ async function submitQuestion() {
 	}
 	if (!selectedTopic.value) {
 		errorMessage.value = "Choose the closest topic before posting.";
-		return;
-	}
-	if (hasAnySuggestions.value && !selectedClosestMatchRecord.value) {
-		errorMessage.value = "Pick the closest existing match before you post.";
-		return;
-	}
-	if (hasAnySuggestions.value && !differenceNote.value.trim()) {
-		errorMessage.value = "Briefly explain what the closest match missed before posting.";
 		return;
 	}
 	if (captchaRequired.value && !captchaToken.value) {
@@ -331,8 +288,8 @@ async function submitQuestion() {
 
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
-			<h1>Search first. Post only if nothing close fits.</h1>
-			<p>We’ll look for reviewed claims, topics, and explainers before creating a new thread.</p>
+			<h1>Search first. Ask if nothing close fits.</h1>
+			<p>We check reviewed claims, topics, and background explainers before opening a new thread.</p>
 		</header>
 
 		<section class="search-panel">
@@ -343,7 +300,7 @@ async function submitQuestion() {
 				rows="3"
 				placeholder="Does X cause Y? Is X safe? What is the difference between hazard and risk?"
 			/>
-			<p class="search-panel__hint">Start typing to see the closest reviewed pages and background explainers.</p>
+			<p class="search-panel__hint">Start typing to see the closest reviewed pages.</p>
 		</section>
 
 		<section class="results-grid">
@@ -357,7 +314,7 @@ async function submitQuestion() {
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Type at least three characters to start matching.</div>
-				<div v-else-if="loadingSuggestions" class="empty-state">Checking claim reviews and topic hubs...</div>
+				<div v-else-if="loadingSuggestions" class="empty-state">Checking reviewed pages...</div>
 				<div v-else-if="suggestionError" class="empty-state">{{ suggestionError }}</div>
 				<div v-else-if="!suggestions.claims.length" class="empty-state">No close claim review yet.</div>
 				<div v-else class="match-list">
@@ -396,16 +353,16 @@ async function submitQuestion() {
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Explainers and modules</p>
-						<h2>Background that may answer it faster</h2>
+						<p class="eyebrow">Related background</p>
+						<h2>Use this only if the question is really conceptual</h2>
 					</div>
-					<p>Use these when the question is really about a concept or recurring mistake.</p>
+					<p>These pages help when the issue is a recurring concept, not a new claim.</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Concept matches appear here after you type.</div>
 				<div v-else class="concept-stack">
 					<section class="concept-section">
-						<h3>Explain concepts</h3>
+						<h3>Explainers</h3>
 						<div v-if="!explainerSuggestions.length" class="empty-state empty-state--tight">
 							No explainer looks close yet.
 						</div>
@@ -431,12 +388,9 @@ async function submitQuestion() {
 						</div>
 					</section>
 
-					<section class="concept-section">
-						<h3>Misconception modules</h3>
-						<div v-if="!misconceptionSuggestions.length" class="empty-state empty-state--tight">
-							No recurring misconception module looks close yet.
-						</div>
-						<div v-else class="match-list">
+					<section v-if="misconceptionSuggestions.length" class="concept-section">
+						<h3>Quick correction modules</h3>
+						<div class="match-list">
 							<article v-for="item in misconceptionSuggestions" :key="item.slug" class="match-row">
 								<div>
 									<p class="match-row__meta">
@@ -470,7 +424,7 @@ async function submitQuestion() {
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Topic matches appear here after you type.</div>
-				<div v-else-if="!suggestions.topics.length" class="empty-state">No close topic hub yet.</div>
+				<div v-else-if="!suggestions.topics.length" class="empty-state">No close topic yet.</div>
 				<div v-else class="match-list">
 					<article v-for="topic in suggestions.topics" :key="topic._id" class="match-row">
 						<div>
@@ -488,7 +442,7 @@ async function submitQuestion() {
 							type="button"
 							@click="openSuggestion(`/consensus/${topic.slug}`)"
 						>
-							Open topic hub
+							Open topic
 						</button>
 					</article>
 				</div>
@@ -499,11 +453,9 @@ async function submitQuestion() {
 			<div>
 				<p class="eyebrow">Still need to post?</p>
 				<h2>None of these fit?</h2>
-				<p>Create a new thread and tell us what the closest match missed.</p>
+				<p>Create a new thread and add a short note about what is different, if anything.</p>
 			</div>
-			<button class="button button--ghost" type="button" @click="manualContinue = true">
-				None of these
-			</button>
+			<button class="button button--ghost" type="button" @click="manualContinue = true">None of these</button>
 		</section>
 
 		<section v-if="showPostingForm" class="posting-form">
@@ -512,7 +464,7 @@ async function submitQuestion() {
 					<p class="eyebrow">Submit to the board</p>
 					<h2>Create a new question</h2>
 				</div>
-				<p>Keep it short, pick the closest match, and explain what is different.</p>
+				<p>Keep it short. We will attach the closest existing page automatically when one exists.</p>
 			</div>
 
 			<AuthPanel
@@ -534,16 +486,6 @@ async function submitQuestion() {
 
 			<div class="field-grid">
 				<div class="field-stack">
-					<label class="field-label" for="question-kind">What kind of ask is this?</label>
-					<select id="question-kind" v-model="questionKind">
-						<option v-for="item in askKinds" :key="item.value" :value="item.value">{{ item.label }}</option>
-					</select>
-					<p class="muted">
-						{{ askKinds.find((item) => item.value === questionKind)?.description }}
-					</p>
-				</div>
-
-				<div class="field-stack">
 					<label class="field-label" for="post-topic">Closest topic</label>
 					<select id="post-topic" v-model="selectedTopic">
 						<option v-for="topic in topics" :key="topic._id" :value="topic.slug">
@@ -562,46 +504,13 @@ async function submitQuestion() {
 				</p>
 			</div>
 
-			<div class="field-grid">
-				<div class="field-stack">
-					<label class="field-label" for="claim-link">Attach to a published claim</label>
-					<select id="claim-link" v-model="selectedClaimSlug">
-						<option value="">Leave this as an unassigned topic thread</option>
-						<option v-for="claim in claimOptions" :key="claim._id" :value="claim.slug">
-							{{ claim.title }}
-						</option>
-					</select>
-					<p class="muted">Only attach it if the question clearly belongs under one canonical claim page.</p>
-				</div>
-
-				<div class="field-stack">
-					<label class="field-label" for="source-context-type">Where did you see this claim?</label>
-					<select id="source-context-type" v-model="sourceContextType">
-						<option v-for="item in sourceContextOptions" :key="item.value" :value="item.value">
-							{{ item.label }}
-						</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="field-stack">
-				<label class="field-label" for="closest-match">Closest existing match</label>
-				<select id="closest-match" v-model="selectedClosestMatch">
-					<option v-if="!matchOptions.length" value="">No close match shown</option>
-					<option v-for="item in matchOptions" :key="item.key" :value="item.key">
-						{{ item.type }} · {{ item.label }}
-					</option>
-				</select>
-				<p class="muted">This tells the editorial queue which page or thread you already checked first.</p>
-			</div>
-
-			<div class="field-stack">
-				<label class="field-label" for="difference-note">What did the closest match miss?</label>
+			<div v-if="hasAnySuggestions" class="field-stack">
+				<label class="field-label" for="difference-note">What is different, if anything?</label>
 				<textarea
 					id="difference-note"
 					v-model="differenceNote"
 					rows="3"
-					placeholder="One sentence is enough. Example: I am asking about long-term effects, not immediate side effects."
+					placeholder="Optional. Example: I am asking about long-term effects, not immediate side effects."
 				/>
 			</div>
 

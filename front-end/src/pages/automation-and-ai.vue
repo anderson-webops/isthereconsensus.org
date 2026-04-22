@@ -2,7 +2,7 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Automation can help the site monitor evidence, route questions, and surface operational priorities, but it should not publish canonical bottom lines on its own.",
+	"Automation can help the site monitor evidence, route questions, and surface operational priorities, but it should not publish reviewed bottom lines on its own.",
 	"Any materially consequential use of automation should have a named human owner who can explain the decision path.",
 	"Monitoring, triage, and drafting assistance stay separate from final editorial judgment.",
 	"If AI tools are used in draft preparation or moderation support, contributors remain responsible for correctness, confidentiality, and disclosure obligations."
@@ -12,11 +12,11 @@ const allowedUses = [
 	"evidence-monitoring tasks such as retraction checks, guideline-watch queues, citation integrity scans, and update-trigger alerts",
 	"search and routing support such as duplicate detection, misconception-module matching, or query-shape classification",
 	"internal drafting aids that help summarize existing material for editors, provided a human reviewer checks the output before publication",
-	"operational dashboards that surface likely intake pressure without automatically changing the canonical page"
+	"operational dashboards that surface likely intake pressure without automatically changing the reviewed page"
 ];
 
 const disallowedUses = [
-	"auto-publishing or materially changing a canonical bottom line without human editorial approval",
+	"auto-publishing or materially changing a reviewed bottom line without human editorial approval",
 	"final moderation decisions that cannot be meaningfully appealed to a human reviewer",
 	"using confidential reviewer or applicant materials in external tools without an explicit security and confidentiality basis",
 	"presenting generated text as if it were an institutional source, independent expert judgment, or peer-reviewed evidence"
@@ -24,7 +24,7 @@ const disallowedUses = [
 
 const humanGates = [
 	{
-		title: "Canonical publication gate",
+		title: "Publication gate",
 		body: "A human editor remains responsible for the published claim, the visible uncertainty framing, and the public source stack even when automation assisted earlier steps."
 	},
 	{
@@ -112,16 +112,13 @@ useHead({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Related workflow pages</p>
-				<h2>Readers should be able to inspect the monitoring logic and the human review layer together.</h2>
-				<p>
-					Use evidence operations for the monitoring loop and methods for the visible trust cues that explain
-					what the automation can and cannot do.
-				</p>
+				<p class="eyebrow">Related trust pages</p>
+				<h2>Readers should be able to inspect the human gate without learning the whole ops stack.</h2>
+				<p>Use How Reviews Work for the public standard and Corrections for the visible change path.</p>
 			</div>
 			<div class="policy-callout__actions">
-				<NuxtLink class="button button--primary" to="/evidence-ops">Evidence operations</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>

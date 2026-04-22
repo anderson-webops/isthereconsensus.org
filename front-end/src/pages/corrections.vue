@@ -2,7 +2,7 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Canonical pages should not be silently rewritten when the bottom line changes in a meaningful way.",
+	"Reviewed pages should not be silently rewritten when the bottom line changes in a meaningful way.",
 	"Corrections, updates, routine reviews, and archival actions should be labeled differently in the public change log.",
 	"Credible correction requests should identify the exact claim text, the evidence problem, and the best supporting sources.",
 	"A flagged citation, major correction, or retraction should trigger fast editorial review rather than waiting for the next routine review date."
@@ -75,7 +75,7 @@ useHead({
 		<section class="corrections-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Public change types</h2>
-				<p>The site should distinguish normal review from true correction work.</p>
+				<p>The site distinguishes normal review from true correction work.</p>
 			</div>
 			<div class="card-grid">
 				<article v-for="item in correctionTypes" :key="item.title" class="detail-card">
@@ -99,7 +99,7 @@ useHead({
 
 		<section class="corrections-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>How the site should respond</h2>
+				<h2>How the site responds</h2>
 				<p>Corrections should move through a bounded workflow, not an ad hoc argument thread.</p>
 			</div>
 			<ul class="plain-list">
@@ -128,9 +128,9 @@ useHead({
 				</p>
 			</div>
 			<div class="corrections-callout__actions">
-				<NuxtLink class="button button--primary" to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/automation-and-ai">Automation and AI</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>

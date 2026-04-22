@@ -2,7 +2,7 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Verified experts review drafts for scope, evidence quality, uncertainty language, and overreach; they do not unilaterally publish canonical answers.",
+	"Verified experts review drafts for scope, evidence quality, uncertainty language, and overreach; they do not unilaterally publish reviewed answers.",
 	"Eligibility depends on demonstrated domain expertise, identity verification, and enough public evidence that the editorial team can evaluate credibility.",
 	"Review assignments respect conflict disclosures and recusal rules before a draft is shared.",
 	"Reviewer names, roles, and affiliations may appear on public pages when that helps readers understand how a claim was checked."
@@ -58,7 +58,7 @@ useHead({
 			<p class="eyebrow">Verified expert review program</p>
 			<h1>How expert reviewers are verified, assigned, and held to review standards.</h1>
 			<p>
-				This page defines the verified-expert layer that sits between community discussion and canonical
+				This page defines the verified-expert layer that sits between community discussion and reviewed
 				editorial publication.
 			</p>
 		</header>
@@ -126,7 +126,7 @@ useHead({
 				<NuxtLink class="button button--ghost" to="/conflicts-and-funding"
 					>Conflict and funding disclosure</NuxtLink
 				>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>
 	</div>

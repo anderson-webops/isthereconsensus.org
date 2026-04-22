@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	"Moderation actions should come with enough explanation that the affected user can understand what happened and why.",
 	"Appeals are for challenging an enforcement decision or adding new context, not for retrying the same argument indefinitely.",
-	"Fact disputes about canonical pages should usually route through the corrections process instead of the abuse-enforcement lane.",
+	"Fact disputes about reviewed pages should usually route through the corrections process instead of the abuse-enforcement lane.",
 	"The site prefers proportional interventions and human review for meaningful appeals."
 ];
 

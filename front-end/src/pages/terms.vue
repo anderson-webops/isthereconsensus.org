@@ -21,7 +21,7 @@ const acceptableUse = [
 
 const contentRules = [
 	"Community questions are meant to surface confusion, sources, and follow-up issues. They are not a voting system for deciding what the evidence says.",
-	"If you post content, you should keep it focused, lawful, and supported where possible. We may edit routing metadata, merge duplicates, or move content to the right claim or topic hub.",
+	"If you post content, you should keep it focused, lawful, and supported where possible. We may edit routing metadata, merge duplicates, or move content to the right claim or topic page.",
 	"Do not post medical records, financial account details, passwords, government identifiers, or other information that creates an avoidable privacy or safety risk."
 ];
 
@@ -174,7 +174,7 @@ useHead({
 				<p>
 					The public-facing conduct rules and moderation model are described in the
 					<NuxtLink to="/community-guidelines">Community Guidelines</NuxtLink> and
-					<NuxtLink to="/governance">Governance and Workflow</NuxtLink> pages.
+					<NuxtLink to="/moderation-and-appeals">Moderation and Appeals</NuxtLink> pages.
 				</p>
 				<p>
 					We may suspend or terminate accounts or editorial access if we believe a user has violated these
@@ -311,7 +311,7 @@ useHead({
 			</div>
 			<div class="terms-callout__actions">
 				<NuxtLink class="button button--ghost" to="/copyright-and-trademark">Copyright and trademark</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/privacy">Privacy policy</NuxtLink>
 				<NuxtLink class="button button--primary" to="/account">Account</NuxtLink>

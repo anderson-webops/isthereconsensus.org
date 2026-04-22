@@ -10,7 +10,6 @@ import type {
 import { nextTick } from "vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
-import CommunitySentimentPanel from "~/components/CommunitySentimentPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 
@@ -82,7 +81,7 @@ const breadcrumbStructuredData = computed(() => ({
 		{
 			"@type": "ListItem",
 			position: 3,
-			name: topic.value?.title || "Topic hub",
+			name: topic.value?.title || "Topic",
 			item: pageUrl.value
 		}
 	]
@@ -105,7 +104,7 @@ const topicStructuredData = computed(() => ({
 			name: entry.title
 		}))
 	},
-	name: topic.value ? `${topic.value.title} topic hub | Is There Consensus` : "Topic hub | Is There Consensus",
+	name: topic.value ? `${topic.value.title} topic page | Is There Consensus` : "Topic page | Is There Consensus",
 	publisher: {
 		"@type": "Organization",
 		name: "Is There Consensus",
@@ -144,14 +143,13 @@ useSeoMeta({
 	description: () => pageDescription.value,
 	ogDescription: () => pageDescription.value,
 	ogSiteName: "Is There Consensus",
-	ogTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic hub | Is There Consensus"),
+	ogTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic | Is There Consensus"),
 	ogType: "website",
 	ogUrl: () => pageUrl.value,
-	title: () =>
-		topic.value ? `${topic.value.title} - Topic Hub - Is There Consensus?` : "Topic hub - Is There Consensus?",
+	title: () => (topic.value ? `${topic.value.title} - Topic - Is There Consensus?` : "Topic - Is There Consensus?"),
 	twitterCard: "summary_large_image",
 	twitterDescription: () => pageDescription.value,
-	twitterTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic hub | Is There Consensus")
+	twitterTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic | Is There Consensus")
 });
 
 useHead(() => ({
@@ -318,7 +316,7 @@ async function flagQuestion(questionId: string) {
 			<div>
 				<p class="eyebrow">Overview</p>
 				<h2>{{ guide.snapshot }}</h2>
-				<p>Start with a reviewed claim below, then use the broader topic summary when you need context.</p>
+				<p>Start with a reviewed claim below. Open the broader topic notes only when you need extra context.</p>
 			</div>
 			<div class="topic-summary__actions">
 				<NuxtLink class="button button--primary" to="/ask">Ask about this topic</NuxtLink>
@@ -337,9 +335,7 @@ async function flagQuestion(questionId: string) {
 				<p>These pages carry the reviewed bottom line, uncertainty, and source trail.</p>
 			</div>
 
-			<div v-if="!claims.length" class="empty-state">
-				No reviewed claims are published under this topic yet.
-			</div>
+			<div v-if="!claims.length" class="empty-state">No reviewed claims are published under this topic yet.</div>
 			<div v-else class="claim-list">
 				<NuxtLink
 					v-for="claim in claims"
@@ -361,15 +357,11 @@ async function flagQuestion(questionId: string) {
 			</div>
 		</section>
 
-		<section class="fallback-lane">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Topic summary</p>
-					<h2>A compact overview for the topic as a whole</h2>
-				</div>
-				<p>Use this when you need the broad frame or when a narrower reviewed claim is not live yet.</p>
-			</div>
-
+		<details class="fallback-lane disclosure">
+			<summary>Broader topic snapshot</summary>
+			<p class="disclosure-intro">
+				Use this when you need the wider frame or when a narrower reviewed claim is not live yet.
+			</p>
 			<div class="fallback-grid">
 				<section class="fallback-panel">
 					<h3>Stable core</h3>
@@ -399,27 +391,10 @@ async function flagQuestion(questionId: string) {
 					</ul>
 				</section>
 			</div>
-		</section>
+		</details>
 
-		<section class="lane lane--sentiment">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Public sentiment</p>
-					<h2>How public impression compares</h2>
-				</div>
-				<p>This shows where public conversation is running hotter or colder than the reviewed material.</p>
-			</div>
-			<CommunitySentimentPanel :topic-slug="slug" />
-		</section>
-
-		<section class="lane lane--community">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Community questions</p>
-					<h2>Open threads under this topic</h2>
-				</div>
-				<p>These questions stay separate from the reviewed claim pages until an editor routes them.</p>
-			</div>
+		<details class="lane lane--community disclosure">
+			<summary>Community questions under this topic</summary>
 			<p class="community-note">
 				<strong>Community discussion:</strong> public questions and comments, not the reviewed answer.
 			</p>
@@ -563,7 +538,7 @@ async function flagQuestion(questionId: string) {
 					</div>
 				</article>
 			</div>
-		</section>
+		</details>
 	</div>
 </template>
 
@@ -712,6 +687,16 @@ async function flagQuestion(questionId: string) {
 
 .section-heading p,
 .section-heading h2 {
+	margin: 0;
+}
+
+.disclosure summary {
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+}
+
+.disclosure-intro {
 	margin: 0;
 }
 

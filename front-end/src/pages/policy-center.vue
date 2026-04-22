@@ -19,10 +19,10 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Policy center</p>
-			<h1>Policies, governance, and review rules in one place.</h1>
+			<h1>Policies and review rules in one place.</h1>
 			<p>
-				This hub groups the pages that explain the legal baseline, editorial governance, moderation rules, and
-				the standards behind reviewed pages.
+				This hub keeps the core public rules together: legal pages, moderation and correction paths, and the
+				main trust pages behind reviewed answers.
 			</p>
 		</header>
 
@@ -54,16 +54,16 @@ useHead({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related pages</p>
-				<h2>Use legal pages for rights questions and policy pages for workflow questions.</h2>
+				<h2>Most readers only need one trust page plus the core legal and moderation pages.</h2>
 				<p>
-					Use Terms and Privacy for baseline legal questions. Use the policy pages here when the issue is
-					about review quality, disclosures, moderation, retention, or operational fairness.
+					Start with Terms or Privacy for legal questions, Community Guidelines or Moderation for conduct
+					issues, and How Reviews Work when you want to understand the public publishing standard.
 				</p>
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/terms">Terms of service</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/privacy">Privacy policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>
 	</div>

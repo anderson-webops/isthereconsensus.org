@@ -119,7 +119,7 @@ const starterTopics = computed(() =>
 					<p>Use explainers for recurring concepts like risk, causation, and uncertainty.</p>
 					<div class="sidebar-links">
 						<NuxtLink class="text-link" to="/explainers">Read explainers</NuxtLink>
-						<NuxtLink class="text-link" to="/methods">Read the methods</NuxtLink>
+						<NuxtLink class="text-link" to="/standards">How reviews work</NuxtLink>
 					</div>
 				</section>
 			</aside>

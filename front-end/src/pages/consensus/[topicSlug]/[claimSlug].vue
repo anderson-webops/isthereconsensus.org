@@ -78,6 +78,9 @@ const filteredQuestions = computed(() => {
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
 const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
+const relatedExplainerSlugs = computed(() =>
+	Array.from(new Set(misconceptionModules.value.flatMap((item) => item.relatedExplainers))).slice(0, 4)
+);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
@@ -600,79 +603,6 @@ async function flagQuestion(questionId: string) {
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Stable core</p>
-						<h2>What looks settled right now</h2>
-					</div>
-				</div>
-				<ul class="plain-list">
-					<li v-for="item in claim?.stableCore || []" :key="item">{{ item }}</li>
-				</ul>
-			</section>
-
-			<details class="content-panel disclosure" open>
-				<summary>Open questions and live uncertainty</summary>
-				<ul class="plain-list">
-					<li v-for="item in claim?.openQuestions || []" :key="item">{{ item }}</li>
-				</ul>
-			</details>
-
-			<details class="content-panel disclosure">
-				<summary>What would change minds</summary>
-				<ul class="plain-list">
-					<li v-for="item in claim?.whatWouldChangeMinds || []" :key="item">{{ item }}</li>
-				</ul>
-			</details>
-
-			<details class="content-panel disclosure">
-				<summary>Why public confusion sticks</summary>
-				<ul class="plain-list">
-					<li v-for="item in claim?.misconceptions || []" :key="item">{{ item }}</li>
-				</ul>
-			</details>
-
-			<section v-if="misconceptionModules.length" class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Misconception modules</p>
-						<h2>Common reading mistakes tied to this claim</h2>
-					</div>
-					<p>Reusable corrections for the same misunderstanding showing up repeatedly.</p>
-				</div>
-
-				<div class="module-grid">
-					<article v-for="item in misconceptionModules" :key="item.slug" class="module-card">
-						<div class="module-card__top">
-							<div>
-								<p class="eyebrow">Module</p>
-								<h3>{{ item.title }}</h3>
-							</div>
-						</div>
-						<p>{{ item.diagnosis }}</p>
-						<p><strong>Short correction:</strong> {{ item.shortCorrection }}</p>
-						<div>
-							<p class="field-label">Quick check</p>
-							<ul class="plain-list plain-list--tight">
-								<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
-							</ul>
-						</div>
-						<div class="module-card__links">
-							<NuxtLink class="text-link" to="/misconceptions">Module library</NuxtLink>
-							<NuxtLink
-								v-for="slug in item.relatedExplainers"
-								:key="slug"
-								class="text-link"
-								:to="`/explainers/${slug}`"
-							>
-								{{ explainerTitle(slug) }}
-							</NuxtLink>
-						</div>
-					</article>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
 						<p class="eyebrow">Outcome view</p>
 						<h2>Evidence summaries by outcome</h2>
 					</div>
@@ -709,38 +639,6 @@ async function flagQuestion(questionId: string) {
 								<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
 							</ul>
 						</div>
-					</article>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Review and independence</p>
-						<h2>Who reviewed this</h2>
-					</div>
-					<p>Reviewer, conflict, and independence notes for this page.</p>
-				</div>
-
-				<div class="review-grid">
-					<article class="review-card">
-						<h3>Prepared by</h3>
-						<p>{{ claim?.authorLine || "Editorial authorship not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Reviewed by</h3>
-						<p>{{ claim?.reviewerLine || "Reviewer details not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Conflicts of interest</h3>
-						<p>{{ claim?.coiSummary || "Conflict-of-interest statement not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Editorial independence</h3>
-						<p>{{ claim?.independenceSummary || "Editorial independence statement not listed yet." }}</p>
 					</article>
 				</div>
 			</section>
@@ -840,16 +738,84 @@ async function flagQuestion(questionId: string) {
 					</article>
 				</div>
 			</section>
+
+			<details class="content-panel disclosure">
+				<summary>More context</summary>
+				<div class="detail-sections">
+					<section v-if="claim?.stableCore?.length" class="detail-block">
+						<h3>What looks settled right now</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim.stableCore" :key="item">{{ item }}</li>
+						</ul>
+					</section>
+
+					<section v-if="claim?.openQuestions?.length" class="detail-block">
+						<h3>Open questions and live uncertainty</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim.openQuestions" :key="item">{{ item }}</li>
+						</ul>
+					</section>
+
+					<section v-if="claim?.whatWouldChangeMinds?.length" class="detail-block">
+						<h3>What would change minds</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim.whatWouldChangeMinds" :key="item">{{ item }}</li>
+						</ul>
+					</section>
+
+					<section v-if="claim?.misconceptions?.length" class="detail-block">
+						<h3>Why public confusion sticks</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in claim.misconceptions" :key="item">{{ item }}</li>
+						</ul>
+					</section>
+				</div>
+
+				<div v-if="misconceptionModules.length" class="detail-block">
+					<h3>Related background</h3>
+					<p class="muted">Use these only if you want recurring explanation patterns behind the claim.</p>
+					<div class="module-card__links">
+						<NuxtLink class="text-link" to="/misconceptions">Module library</NuxtLink>
+						<NuxtLink
+							v-for="slug in relatedExplainerSlugs"
+							:key="slug"
+							class="text-link"
+							:to="`/explainers/${slug}`"
+						>
+							{{ explainerTitle(slug) }}
+						</NuxtLink>
+					</div>
+				</div>
+			</details>
+
+			<details class="content-panel disclosure">
+				<summary>Review notes and disclosures</summary>
+				<div class="review-grid">
+					<article class="review-card">
+						<h3>Prepared by</h3>
+						<p>{{ claim?.authorLine || "Editorial authorship not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Reviewed by</h3>
+						<p>{{ claim?.reviewerLine || "Reviewer details not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Conflicts of interest</h3>
+						<p>{{ claim?.coiSummary || "Conflict-of-interest statement not listed yet." }}</p>
+					</article>
+
+					<article class="review-card">
+						<h3>Editorial independence</h3>
+						<p>{{ claim?.independenceSummary || "Editorial independence statement not listed yet." }}</p>
+					</article>
+				</div>
+			</details>
 		</section>
 
-		<section class="lane lane--community">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Community questions</p>
-					<h2>Follow-up questions under this claim</h2>
-				</div>
-				<p>These threads stay below the reviewed answer.</p>
-			</div>
+		<details class="lane lane--community disclosure">
+			<summary>Community follow-ups under this claim</summary>
 			<p class="community-note">
 				<strong>Community discussion:</strong> public questions and comments, not the reviewed answer.
 			</p>
@@ -993,7 +959,7 @@ async function flagQuestion(questionId: string) {
 					</div>
 				</article>
 			</div>
-		</section>
+		</details>
 	</div>
 </template>
 
@@ -1205,6 +1171,22 @@ async function flagQuestion(questionId: string) {
 	cursor: pointer;
 	font-family: "Fraunces", serif;
 	font-size: 1.05rem;
+}
+
+.detail-sections {
+	display: grid;
+	gap: 12px;
+	margin-top: 14px;
+}
+
+.detail-block {
+	display: grid;
+	gap: 10px;
+}
+
+.detail-block h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
 }
 
 .disclosure ul {
