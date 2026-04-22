@@ -1,19 +1,6 @@
 <script setup lang="ts">
-import type {
-	Claim,
-	ClaimResponse,
-	ClaimSource,
-	ClaimUncertaintyDriver,
-	Question,
-	QuestionResponse,
-	QuestionsResponse
-} from "~/types/board";
-import { nextTick } from "vue";
-import AuthPanel from "~/components/AuthPanel.vue";
-import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { getExplainer } from "~/data/explainers";
-import { getMisconceptionModulesBySlugs } from "~/data/misconceptions";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -21,11 +8,9 @@ interface ClaimRouteParams {
 }
 
 const route = useRoute();
-const config = useRuntimeConfig();
 const { apiUrl } = useApi();
-const { isLoggedIn, currentAccount, role } = useAuth();
+const { currentAccount, role } = useAuth();
 
-const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 const topicSlug = computed(() => {
 	const value = (route.params as ClaimRouteParams).topicSlug;
 	return Array.isArray(value) ? value[0] : String(value ?? "");
@@ -34,78 +19,45 @@ const claimSlug = computed(() => {
 	const value = (route.params as ClaimRouteParams).claimSlug;
 	return Array.isArray(value) ? value[0] : String(value ?? "");
 });
-const highlightId = computed(() => (typeof route.query.highlight === "string" ? route.query.highlight : ""));
+const postedToQueue = computed(() => route.query.posted === "1");
 
 const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claimSlug.value}`, () =>
 	$fetch<ClaimResponse>(apiUrl(`/topics/${topicSlug.value}/claims/${claimSlug.value}`))
 );
-const { data: questionsData, refresh } = await useAsyncData(
-	`claim-questions-${topicSlug.value}-${claimSlug.value}`,
-	() => $fetch<QuestionsResponse>(apiUrl(`/questions?topic=${topicSlug.value}&claim=${claimSlug.value}&limit=100`))
-);
-
-const questionTitle = ref("");
-const questionBody = ref("");
-const questionSourceUrl = ref("");
-const questionSearch = ref("");
-const showComposer = ref(false);
-const submitting = ref(false);
-const errorMessage = ref("");
-const moderationMessage = ref("");
-const captchaToken = ref("");
-const captchaRef = ref<{ reset: () => void } | null>(null);
-const flaggingId = ref("");
-const deletingId = ref("");
-const flagReason = ref<Record<string, string>>({});
-const flagNote = ref<Record<string, string>>({});
 
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
-const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
-const isAdmin = computed(() => role.value === "admin");
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
-const filteredQuestions = computed(() => {
-	const query = questionSearch.value.trim().toLowerCase();
-	if (!query) return questions.value;
-	return questions.value.filter((question) =>
-		[question.title, question.body, question.authorName, question.displayName, question.sourceUrl]
-			.join(" ")
-			.toLowerCase()
-			.includes(query)
-	);
-});
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
-const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
-const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
-const relatedExplainerSlugs = computed(() =>
-	Array.from(new Set(misconceptionModules.value.flatMap((item) => item.relatedExplainers))).slice(0, 4)
-);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
-
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
-const anchorNames = computed(() =>
-	institutionalAnchors.value
-		.slice(0, 3)
-		.map((anchor) => anchor.name)
-		.join(" · ")
-);
+const askLink = computed(() => ({
+	path: "/ask",
+	query: claim.value?.title ? { topic: topicSlug.value, question: claim.value.title } : { topic: topicSlug.value }
+}));
+const claimMeta = computed(() => [
+	formatBandLabel(claim.value?.consensusBand),
+	formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
+	`${sourceCount.value} source${sourceCount.value === 1 ? "" : "s"}`,
+	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
+]);
 
 const uncertaintySummary = computed(() => {
 	if (claim.value?.uncertaintySummary?.trim()) {
 		return claim.value.uncertaintySummary.trim();
 	}
 	if (claim.value?.evidenceCertainty === "high") {
-		return "High certainty means the larger evidence stack is stable and a major change would probably require a substantial new synthesis, not one isolated paper.";
+		return "High certainty means the broader evidence stack looks stable and would probably need a substantial new synthesis to move.";
 	}
 	if (claim.value?.evidenceCertainty === "moderate") {
-		return "Moderate certainty means the overall direction looks reliable, but the size of the effect, subgroup details, or implementation details could still move.";
+		return "Moderate certainty means the overall direction looks reliable, but size, subgroup details, or implementation details could still move.";
 	}
 	if (claim.value?.evidenceCertainty === "low") {
-		return "Low certainty means the current direction is tentative enough that a better synthesis or stronger direct evidence could still reshape the page.";
+		return "Low certainty means the current direction is tentative enough that stronger direct evidence could still reshape the page.";
 	}
 	if (claim.value?.evidenceCertainty === "very_low") {
-		return "Very low certainty means the page is describing an unstable evidence base and should be read as a careful snapshot, not a durable settled answer.";
+		return "Very low certainty means this is an unstable evidence base and should be read as a careful snapshot, not a durable settled answer.";
 	}
 	return "This page does not yet expose a plain-language uncertainty summary.";
 });
@@ -124,50 +76,6 @@ const uncertaintyLimits = computed(() => {
 		)
 	).slice(0, 6);
 });
-const changeLogCount = computed(() => claim.value?.changeLog?.length ?? 0);
-
-const outcomeCertaintyBreakdown = computed(() => {
-	const counts = evidenceSummaries.value.reduce<Record<string, number>>((map, summary) => {
-		const key = summary.certainty || "not listed";
-		map[key] = (map[key] ?? 0) + 1;
-		return map;
-	}, {});
-	return Object.entries(counts)
-		.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
-		.map(([label, count]) => `${count} ${label.replaceAll("_", " ")} outcome${count === 1 ? "" : "s"}`);
-});
-
-const ratingFacts = computed(() => [
-	{
-		label: "Expert agreement",
-		value: formatAgreementLabel(claim.value?.agreementLevel, claim.value?.consensusBand),
-		note: "How closely major reviews and expert bodies line up on the main conclusion."
-	},
-	{
-		label: "Evidence certainty",
-		value: formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
-		note: "How stable the underlying body of evidence looks right now."
-	},
-	{
-		label: "Review mode",
-		value: formatReviewModeLabel(claim.value?.reviewMode),
-		note: "Whether this page is on a scheduled review cycle or an active living update track."
-	}
-]);
-
-const trustFacts = computed(() => [
-	{ label: "Sources reviewed", value: sourceCount.value ? String(sourceCount.value) : "Not listed" },
-	{
-		label: "Institutional anchors",
-		value: anchorNames.value || "Anchor bodies not listed"
-	},
-	{ label: "Prepared by", value: claim.value?.authorLine || "Editorial authorship pending" },
-	{ label: "Reviewed by", value: claim.value?.reviewerLine || "Reviewer details pending" },
-	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
-	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") },
-	{ label: "Search cutoff", value: formatDate(claim.value?.searchCutoffAt, "Cutoff not listed") },
-	{ label: "Updates logged", value: changeLogCount.value ? String(changeLogCount.value) : "None yet" }
-]);
 
 const sourceGroups = computed(() => {
 	const groups: Array<{
@@ -315,29 +223,11 @@ useHead(() => ({
 	}))
 }));
 
-watch(
-	() => [highlightId.value, questions.value.length],
-	async ([value]) => {
-		if (!value || !import.meta.client) return;
-		await nextTick();
-		document.getElementById(String(value))?.scrollIntoView({ behavior: "smooth", block: "center" });
-	},
-	{ immediate: true }
-);
-
 function formatBandLabel(band?: Claim["consensusBand"]) {
 	if (band === "strong") return "Strong consensus";
 	if (band === "broad") return "Broad consensus";
 	if (band === "mixed") return "Mixed evidence";
 	return "Unclear or still forming";
-}
-
-function formatAgreementLabel(agreement?: Claim["agreementLevel"], fallbackBand?: Claim["consensusBand"]) {
-	if (agreement === "strong") return "Strong agreement";
-	if (agreement === "broad_qualified") return "Broad but qualified agreement";
-	if (agreement === "divided") return "Divided interpretations";
-	if (agreement === "frontier") return "Frontier debate";
-	return formatBandLabel(fallbackBand);
 }
 
 function formatEvidenceCertaintyLabel(certainty?: Claim["evidenceCertainty"]) {
@@ -348,31 +238,11 @@ function formatEvidenceCertaintyLabel(certainty?: Claim["evidenceCertainty"]) {
 	return "Certainty not listed";
 }
 
-function formatUncertaintyType(type?: ClaimUncertaintyDriver["type"]) {
-	if (type === "bias") return "Bias / confounding";
-	if (type === "indirectness") return "Indirectness";
-	if (type === "imprecision") return "Imprecision";
-	if (type === "inconsistency") return "Inconsistency";
-	if (type === "generalizability") return "Generalizability";
-	if (type === "mechanism") return "Mechanism";
-	if (type === "timing") return "Timing / follow-up";
-	if (type === "implementation") return "Implementation";
-	return "Other";
-}
-
-function formatReviewModeLabel(mode?: Claim["reviewMode"]) {
-	return mode === "living" ? "Living review" : "Scheduled review";
-}
-
 function formatChangeKind(kind?: string) {
 	if (kind === "publication") return "Published";
 	if (kind === "correction") return "Correction";
 	if (kind === "review") return "Review";
 	return "Update";
-}
-
-function explainerTitle(slug: string) {
-	return getExplainer(slug)?.title || slug;
 }
 
 function formatSourceKind(kind: string) {
@@ -415,100 +285,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		year: "numeric"
 	}).format(new Date(value));
 }
-
-function canDeleteQuestion(question: Question) {
-	if (isAdmin.value) return true;
-	return question.author === currentAccount.value?._id && question.authorModel === "User";
-}
-
-async function postQuestion() {
-	errorMessage.value = "";
-	if (!isLoggedIn.value) {
-		errorMessage.value = "Please sign in before posting.";
-		return;
-	}
-	if (!questionTitle.value.trim()) {
-		errorMessage.value = "Please add a focused question before posting.";
-		return;
-	}
-	if (captchaRequired.value && !captchaToken.value) {
-		errorMessage.value = "Please complete the captcha.";
-		return;
-	}
-
-	submitting.value = true;
-	try {
-		const response = await $fetch<QuestionResponse>(apiUrl("/questions"), {
-			method: "POST",
-			credentials: "include",
-			body: {
-				topic: topicSlug.value,
-				claim: claimSlug.value,
-				title: questionTitle.value.trim(),
-				body: questionBody.value.trim(),
-				sourceUrl: questionSourceUrl.value.trim(),
-				captchaToken: captchaToken.value
-			}
-		});
-
-		questionTitle.value = "";
-		questionBody.value = "";
-		questionSourceUrl.value = "";
-		showComposer.value = false;
-		captchaRef.value?.reset();
-		captchaToken.value = "";
-		await refresh();
-		await navigateTo({
-			path: `/consensus/${topicSlug.value}/${claimSlug.value}`,
-			query: { highlight: response.question._id }
-		});
-	} catch (error) {
-		console.error(error);
-		errorMessage.value = "Unable to post right now. Please try again.";
-	} finally {
-		submitting.value = false;
-	}
-}
-
-async function deleteQuestion(questionId: string) {
-	moderationMessage.value = "";
-	deletingId.value = questionId;
-	try {
-		await $fetch(apiUrl(`/questions/${questionId}`), {
-			method: "DELETE",
-			credentials: "include"
-		});
-		await refresh();
-		moderationMessage.value = "Question removed.";
-	} catch (error) {
-		console.error(error);
-		moderationMessage.value = "Unable to delete that question.";
-	} finally {
-		deletingId.value = "";
-	}
-}
-
-async function flagQuestion(questionId: string) {
-	moderationMessage.value = "";
-	flaggingId.value = questionId;
-	try {
-		await $fetch(apiUrl(`/questions/${questionId}/flags`), {
-			method: "POST",
-			credentials: "include",
-			body: {
-				reason: flagReason.value[questionId] || "low-quality",
-				note: flagNote.value[questionId] || ""
-			}
-		});
-		flagNote.value[questionId] = "";
-		moderationMessage.value = "Flag submitted for review.";
-	} catch (error) {
-		console.error(error);
-		moderationMessage.value = "Unable to submit that flag.";
-	} finally {
-		flaggingId.value = "";
-	}
-}
 </script>
 
 <template>
@@ -522,37 +298,31 @@ async function flagQuestion(questionId: string) {
 			]"
 		/>
 
+		<section v-if="postedToQueue" class="queue-note">
+			Your question was received and added to the queue. The reviewed claim stays separate from community intake.
+		</section>
+
 		<header class="claim-page__header">
 			<div class="claim-page__hero">
 				<p class="eyebrow">Reviewed claim</p>
 				<h1>{{ claim?.title || "Claim review" }}</h1>
 				<p class="claim-page__description">
-					{{ claim?.editorSummary || "This page is the editorial summary for the claim." }}
+					{{ claim?.editorSummary || "This page summarizes the reviewed evidence for the claim." }}
 				</p>
 			</div>
-			<div class="rating-grid">
-				<article v-for="fact in ratingFacts" :key="fact.label" class="trust-card trust-card--rating">
-					<span>{{ fact.label }}</span>
-					<strong>{{ fact.value }}</strong>
-					<p>{{ fact.note }}</p>
-				</article>
-			</div>
-			<div class="trust-grid">
-				<article v-for="fact in trustFacts" :key="fact.label" class="trust-card">
-					<span>{{ fact.label }}</span>
-					<strong>{{ fact.value }}</strong>
-				</article>
-			</div>
+			<p class="claim-page__meta">
+				<span v-for="item in claimMeta" :key="item">{{ item }}</span>
+			</p>
 		</header>
 
 		<section class="bottom-line">
 			<div>
 				<p class="eyebrow">Bottom line</p>
 				<h2>{{ claim?.bottomLine }}</h2>
-				<p>This is the shortest reviewed answer on the page.</p>
 			</div>
 			<div class="bottom-line__actions">
 				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
+				<NuxtLink class="button button--ghost" :to="askLink">Ask a question</NuxtLink>
 				<NuxtLink
 					v-if="canEditClaim && claim?._id"
 					class="button button--ghost"
@@ -569,33 +339,11 @@ async function flagQuestion(questionId: string) {
 				<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
 				<p>{{ uncertaintySummary }}</p>
 			</div>
-			<div class="uncertainty-strip__details">
-				<div>
-					<p class="field-label">Typed uncertainty drivers</p>
-					<div v-if="uncertaintyDrivers.length" class="uncertainty-driver-list">
-						<article
-							v-for="driver in uncertaintyDrivers"
-							:key="`${driver.type}-${driver.detail}`"
-							class="uncertainty-driver"
-						>
-							<span class="tag">{{ formatUncertaintyType(driver.type) }}</span>
-							<p>{{ driver.detail }}</p>
-						</article>
-					</div>
-					<ul v-else class="plain-list plain-list--tight">
-						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
-						<li v-if="!uncertaintyLimits.length">Detailed limitations have not been summarized yet.</li>
-					</ul>
-				</div>
-				<div>
-					<p class="field-label">Outcome certainty coverage</p>
-					<ul class="plain-list plain-list--tight">
-						<li v-for="item in outcomeCertaintyBreakdown" :key="item">{{ item }}</li>
-						<li v-if="!outcomeCertaintyBreakdown.length">
-							Outcome-level certainty has not been attached yet.
-						</li>
-					</ul>
-				</div>
+			<div v-if="uncertaintyLimits.length">
+				<p class="field-label">Main limits</p>
+				<ul class="plain-list plain-list--tight">
+					<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
+				</ul>
 			</div>
 		</section>
 
@@ -738,228 +486,7 @@ async function flagQuestion(questionId: string) {
 					</article>
 				</div>
 			</section>
-
-			<details class="content-panel disclosure">
-				<summary>More context</summary>
-				<div class="detail-sections">
-					<section v-if="claim?.stableCore?.length" class="detail-block">
-						<h3>What looks settled right now</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim.stableCore" :key="item">{{ item }}</li>
-						</ul>
-					</section>
-
-					<section v-if="claim?.openQuestions?.length" class="detail-block">
-						<h3>Open questions and live uncertainty</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim.openQuestions" :key="item">{{ item }}</li>
-						</ul>
-					</section>
-
-					<section v-if="claim?.whatWouldChangeMinds?.length" class="detail-block">
-						<h3>What would change minds</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim.whatWouldChangeMinds" :key="item">{{ item }}</li>
-						</ul>
-					</section>
-
-					<section v-if="claim?.misconceptions?.length" class="detail-block">
-						<h3>Why public confusion sticks</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim.misconceptions" :key="item">{{ item }}</li>
-						</ul>
-					</section>
-				</div>
-
-				<div v-if="misconceptionModules.length" class="detail-block">
-					<h3>Related background</h3>
-					<p class="muted">Use these only if you want recurring explanation patterns behind the claim.</p>
-					<div class="module-card__links">
-						<NuxtLink class="text-link" to="/misconceptions">Module library</NuxtLink>
-						<NuxtLink
-							v-for="slug in relatedExplainerSlugs"
-							:key="slug"
-							class="text-link"
-							:to="`/explainers/${slug}`"
-						>
-							{{ explainerTitle(slug) }}
-						</NuxtLink>
-					</div>
-				</div>
-			</details>
-
-			<details class="content-panel disclosure">
-				<summary>Review notes and disclosures</summary>
-				<div class="review-grid">
-					<article class="review-card">
-						<h3>Prepared by</h3>
-						<p>{{ claim?.authorLine || "Editorial authorship not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Reviewed by</h3>
-						<p>{{ claim?.reviewerLine || "Reviewer details not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Conflicts of interest</h3>
-						<p>{{ claim?.coiSummary || "Conflict-of-interest statement not listed yet." }}</p>
-					</article>
-
-					<article class="review-card">
-						<h3>Editorial independence</h3>
-						<p>{{ claim?.independenceSummary || "Editorial independence statement not listed yet." }}</p>
-					</article>
-				</div>
-			</details>
 		</section>
-
-		<details class="lane lane--community disclosure">
-			<summary>Community follow-ups under this claim</summary>
-			<p class="community-note">
-				<strong>Community discussion:</strong> public questions and comments, not the reviewed answer.
-			</p>
-
-			<div class="community-toolbar">
-				<div class="community-toolbar__search">
-					<label class="field-label" for="claim-question-search">Search community threads</label>
-					<input
-						id="claim-question-search"
-						v-model="questionSearch"
-						type="text"
-						placeholder="Filter by title, author, source, or context"
-					/>
-				</div>
-				<button class="button button--ghost" type="button" @click="showComposer = !showComposer">
-					{{ showComposer ? "Hide question form" : "Ask under this claim" }}
-				</button>
-			</div>
-
-			<section v-if="showComposer" class="composer">
-				<div class="composer__intro">
-					<h3>Ask a focused follow-up</h3>
-					<p>Use this when your question is about this claim specifically.</p>
-				</div>
-
-				<AuthPanel
-					v-if="!isLoggedIn"
-					title="Sign in to post"
-					hint="Only logged-in members can add claim-specific community threads."
-				/>
-				<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
-
-				<label class="field-label" for="claim-question-title">Question</label>
-				<textarea
-					id="claim-question-title"
-					v-model="questionTitle"
-					rows="3"
-					placeholder="What part of the claim still feels unclear?"
-				/>
-
-				<label class="field-label" for="claim-question-body">Context or quoted source</label>
-				<textarea
-					id="claim-question-body"
-					v-model="questionBody"
-					rows="4"
-					placeholder="Optional. Paste the quote, headline, or specific detail you want checked."
-				/>
-
-				<label class="field-label" for="claim-question-source">Source URL</label>
-				<input
-					id="claim-question-source"
-					v-model="questionSourceUrl"
-					type="url"
-					placeholder="Optional source URL"
-				/>
-
-				<div v-if="isLoggedIn" class="captcha-wrap">
-					<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
-				</div>
-
-				<p class="muted">
-					Questions posted here are public and may be indexed. See the
-					<NuxtLink to="/privacy">Privacy Policy</NuxtLink> for details.
-				</p>
-				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-				<div class="posting-form__actions">
-					<button
-						class="button button--primary"
-						type="button"
-						:disabled="submitting || !isLoggedIn"
-						@click="postQuestion"
-					>
-						{{ submitting ? "Posting..." : "Post under this claim" }}
-					</button>
-				</div>
-			</section>
-
-			<p v-if="moderationMessage" class="muted">{{ moderationMessage }}</p>
-
-			<div v-if="!filteredQuestions.length" class="empty-state">
-				No community threads are attached to this claim yet.
-			</div>
-			<div v-else class="question-list">
-				<article
-					v-for="question in filteredQuestions"
-					:id="question._id"
-					:key="question._id"
-					class="question-card"
-					:class="{ 'question-card--highlighted': highlightId === question._id }"
-				>
-					<div class="question-card__meta">
-						<span>{{ question.authorName || question.displayName || "Community member" }}</span>
-						<span>{{ formatDate(question.createdAt) }}</span>
-					</div>
-					<h3>{{ question.title }}</h3>
-					<p v-if="question.body">{{ question.body }}</p>
-					<a
-						v-if="question.sourceUrl"
-						class="question-card__source"
-						:href="question.sourceUrl"
-						target="_blank"
-						rel="noreferrer"
-					>
-						{{ question.sourceUrl }}
-					</a>
-
-					<div class="question-card__actions">
-						<select v-model="flagReason[question._id]" class="flag-select">
-							<option value="low-quality">Low quality / unsupported</option>
-							<option value="off-topic">Off topic</option>
-							<option value="duplicate">Duplicate</option>
-							<option value="misleading">Misleading</option>
-							<option value="spam">Spam / manipulation</option>
-							<option value="harassment">Harassment / abuse</option>
-							<option value="privacy">Privacy / doxxing</option>
-							<option value="legal">Legal concern</option>
-						</select>
-						<input
-							v-model="flagNote[question._id]"
-							type="text"
-							class="flag-note"
-							placeholder="Optional moderation note"
-						/>
-						<button
-							class="button button--ghost"
-							type="button"
-							:disabled="flaggingId === question._id"
-							@click="flagQuestion(question._id)"
-						>
-							{{ flaggingId === question._id ? "Submitting..." : "Flag" }}
-						</button>
-						<button
-							v-if="canDeleteQuestion(question)"
-							class="button button--ghost button--danger"
-							type="button"
-							:disabled="deletingId === question._id"
-							@click="deleteQuestion(question._id)"
-						>
-							{{ deletingId === question._id ? "Removing..." : "Delete" }}
-						</button>
-					</div>
-				</article>
-			</div>
-		</details>
 	</div>
 </template>
 
@@ -970,33 +497,19 @@ async function flagQuestion(questionId: string) {
 }
 
 .claim-page__header,
-.trust-card,
 .bottom-line,
 .uncertainty-strip,
-.reading-guide,
 .content-panel,
-.lane,
-.question-card,
-.composer {
+.queue-note {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
-}
-
-.claim-page__header,
-.bottom-line,
-.uncertainty-strip,
-.reading-guide,
-.content-panel,
-.lane,
-.composer {
 	padding: 22px;
 }
 
 .claim-page__header,
 .bottom-line,
-.uncertainty-strip,
-.reading-guide {
+.uncertainty-strip {
 	display: grid;
 	gap: 18px;
 }
@@ -1008,14 +521,9 @@ async function flagQuestion(questionId: string) {
 
 .claim-page__header h1,
 .bottom-line h2,
-.reading-guide h2,
 .section-heading h2,
-.method-card h3,
-.review-card h3,
 .source-group__header h3,
-.source-row h4,
-.question-card h3,
-.composer h3 {
+.source-row h4 {
 	margin: 0;
 	font-family: "Fraunces", serif;
 }
@@ -1027,47 +535,30 @@ async function flagQuestion(questionId: string) {
 }
 
 .claim-page__description,
+.claim-page__meta,
 .bottom-line p,
-.reading-guide p,
 .section-heading p,
 .plain-list,
 .source-row p,
 .empty-state,
 .muted,
 .field-label,
-.question-card p,
-.question-card__source,
-.composer p {
+.queue-note {
 	color: var(--consensus-muted);
 	line-height: 1.65;
 }
 
-.trust-grid {
-	display: grid;
+.queue-note {
+	background: color-mix(in srgb, var(--consensus-surface) 85%, var(--consensus-community-soft) 15%);
+}
+
+.claim-page__meta,
+.change-log__meta,
+.source-row__meta,
+.field-label {
+	display: flex;
 	gap: 12px;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.rating-grid {
-	display: grid;
-	gap: 12px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.trust-card {
-	padding: 16px 18px;
-	display: grid;
-	gap: 6px;
-}
-
-.trust-card--rating {
-	border-left: 4px solid var(--consensus-debate);
-}
-
-.trust-card span,
-.field-label,
-.question-card__meta,
-.source-row__meta {
+	flex-wrap: wrap;
 	font-size: 0.82rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -1075,251 +566,58 @@ async function flagQuestion(questionId: string) {
 	color: var(--consensus-muted);
 }
 
-.trust-card strong {
-	font-size: 1rem;
-	color: var(--consensus-ink);
-}
-
-.trust-card p {
-	margin: 0;
-	color: var(--consensus-muted);
-	line-height: 1.55;
-}
-
-.method-card--accent {
-	border-left: 4px solid var(--consensus-debate);
-}
-
 .bottom-line {
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
 }
 
-.uncertainty-strip {
-	grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
-	align-items: start;
-}
-
-.reading-guide {
-	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: end;
-}
-
 .bottom-line__actions,
-.reading-guide__actions {
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
-	justify-content: end;
-}
-
-.uncertainty-strip__details {
-	display: grid;
-	gap: 12px;
-}
-
-.uncertainty-driver-list {
-	display: grid;
-	gap: 10px;
-}
-
-.uncertainty-driver {
-	padding: 14px 16px;
-	border-radius: 18px;
-	border: 1px solid var(--consensus-soft-line);
-	background: color-mix(in srgb, var(--consensus-surface) 86%, var(--consensus-debate-tint) 14%);
-	display: grid;
-	gap: 8px;
-}
-
-.uncertainty-driver p {
-	margin: 0;
-	color: var(--consensus-ink);
-	line-height: 1.55;
-}
-
-.content-stack {
-	display: grid;
-	gap: 16px;
-}
-
-.section-heading {
+.section-heading,
+.evidence-summary-card__top,
+.source-row,
+.source-group__header {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
-	align-items: end;
-}
-
-.section-heading--stacked {
 	align-items: start;
 }
 
-.section-heading p,
-.section-heading h2 {
+.section-heading {
+	align-items: end;
+	margin-bottom: 14px;
+}
+
+.section-heading h2,
+.section-heading p {
 	margin: 0;
 }
 
-.plain-list {
-	margin: 0;
-	padding-left: 20px;
-	display: grid;
-	gap: 10px;
-}
-
-.disclosure summary {
-	cursor: pointer;
-	font-family: "Fraunces", serif;
-	font-size: 1.05rem;
-}
-
-.detail-sections {
-	display: grid;
-	gap: 12px;
-	margin-top: 14px;
-}
-
-.detail-block {
-	display: grid;
-	gap: 10px;
-}
-
-.detail-block h3 {
-	margin: 0;
-	font-family: "Fraunces", serif;
-}
-
-.disclosure ul {
-	margin-top: 14px;
-}
-
-.source-list,
-.question-list {
-	display: grid;
-	gap: 12px;
-}
-
+.content-stack,
+.evidence-summary-list,
 .source-groups,
+.source-list,
 .change-log {
 	display: grid;
-	gap: 18px;
+	gap: 16px;
 }
 
-.module-grid {
-	display: grid;
-	gap: 12px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.module-card {
-	padding: 16px;
-	border-radius: 18px;
-	border: 1px solid color-mix(in srgb, var(--consensus-caution) 34%, var(--consensus-soft-line));
-	background: color-mix(in srgb, var(--consensus-caution) 8%, var(--consensus-field-surface));
-	display: grid;
-	gap: 12px;
-}
-
-.module-card p {
-	margin: 0;
-	color: var(--consensus-muted);
-	line-height: 1.65;
-}
-
-.module-card h3 {
-	margin: 0;
-	font-family: "Fraunces", serif;
-}
-
-.module-card__links {
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
-}
-
-.source-group {
-	display: grid;
-	gap: 12px;
-}
-
-.source-group__header {
-	display: grid;
-	gap: 6px;
-}
-
-.source-group__header p {
-	margin: 0;
-	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.methods-grid,
-.review-grid,
-.anchor-grid,
-.evidence-summary-list {
-	display: grid;
-	gap: 12px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.method-card,
-.review-card,
-.anchor-card,
 .evidence-summary-card,
+.source-group,
 .change-log__entry {
-	padding: 16px;
+	display: grid;
+	gap: 14px;
+	padding: 18px;
 	border-radius: 18px;
-	border: 1px solid var(--consensus-soft-line);
 	background: var(--consensus-field-surface);
-}
-
-.method-card,
-.review-card,
-.anchor-card,
-.evidence-summary-card {
-	display: grid;
-	gap: 10px;
-}
-
-.method-card p,
-.review-card p,
-.anchor-card p,
-.evidence-summary-card p,
-.change-log__entry p {
-	margin: 0;
-	color: var(--consensus-muted);
-	line-height: 1.65;
-}
-
-.plain-list--tight {
-	gap: 8px;
-	padding-left: 18px;
-}
-
-.source-row,
-.question-card {
-	display: grid;
-	gap: 10px;
+	border: 1px solid var(--consensus-soft-line);
 }
 
 .source-row {
 	padding: 16px;
-	border-radius: 18px;
+	border-radius: 16px;
+	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-}
-
-.evidence-summary-card__top {
-	display: flex;
-	justify-content: space-between;
-	gap: 12px;
-	flex-wrap: wrap;
-	align-items: start;
-}
-
-.evidence-summary-card h3,
-.anchor-card h3 {
-	margin: 0;
-	font-family: "Fraunces", serif;
 }
 
 .evidence-summary-card__badges,
@@ -1330,20 +628,15 @@ async function flagQuestion(questionId: string) {
 	flex-wrap: wrap;
 }
 
-.source-row__identifiers {
-	color: var(--consensus-muted);
-	font-size: 0.9rem;
+.plain-list {
+	margin: 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 10px;
 }
 
-.source-row h4 {
-	font-size: 1.02rem;
-}
-
-.source-row__meta,
-.question-card__meta {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
+.plain-list--tight {
+	gap: 8px;
 }
 
 .tag {
@@ -1354,88 +647,17 @@ async function flagQuestion(questionId: string) {
 	border: 1px solid var(--consensus-line);
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
-	font-size: 0.76rem;
+	font-size: 0.78rem;
 	font-weight: 600;
-	line-height: 1;
 }
 
 .tag--anchor {
-	border-color: var(--consensus-evidence);
+	border-color: color-mix(in srgb, var(--consensus-community) 34%, var(--consensus-line));
 }
 
 .tag--warning {
-	border-color: rgba(184, 61, 46, 0.28);
-	background: rgba(184, 61, 46, 0.08);
-}
-
-.lane {
-	display: grid;
-	gap: 16px;
-}
-
-.community-note {
-	margin: 0;
-	padding: 14px 16px;
-	border-radius: 16px;
-	border: 1px solid var(--consensus-soft-line);
-	background: color-mix(in srgb, var(--consensus-surface) 88%, var(--consensus-community-soft) 12%);
-	color: var(--consensus-muted);
-	line-height: 1.6;
-}
-
-.community-toolbar {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
-}
-
-.community-toolbar__search {
-	display: grid;
-	gap: 8px;
-	min-width: min(100%, 420px);
-}
-
-.community-toolbar input,
-.composer textarea,
-.composer input,
-.flag-select,
-.flag-note {
-	padding: 12px 14px;
-	border-radius: 14px;
-	border: 1px solid var(--consensus-line);
-	background: var(--consensus-field-surface);
-}
-
-.composer {
-	display: grid;
-	gap: 12px;
-}
-
-.question-card {
-	padding: 18px;
-}
-
-.question-card--highlighted {
-	border-color: rgba(211, 107, 56, 0.42);
-	box-shadow: 0 0 0 2px rgba(211, 107, 56, 0.12);
-}
-
-.question-card__actions {
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-.flag-select {
-	min-width: 150px;
-}
-
-.flag-note {
-	flex: 1;
-	min-width: 220px;
+	border-color: color-mix(in srgb, var(--consensus-caution) 40%, var(--consensus-line));
+	background: color-mix(in srgb, var(--consensus-caution) 12%, var(--consensus-elevated-surface));
 }
 
 .button {
@@ -1452,57 +674,9 @@ async function flagQuestion(questionId: string) {
 	color: var(--consensus-ink);
 }
 
-.button--primary {
-	background: var(--consensus-ember);
-	border-color: var(--consensus-ember);
-	color: var(--consensus-on-accent);
-}
-
-.button--danger {
-	border-color: rgba(184, 61, 46, 0.3);
-}
-
-.text-link {
-	font-weight: 600;
-	text-decoration: none;
-	color: var(--consensus-interactive);
-}
-
-.change-log__meta {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-	font-size: 0.82rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	color: var(--consensus-muted);
-}
-
-@media (max-width: 820px) {
-	.bottom-line,
-	.uncertainty-strip,
-	.reading-guide,
-	.methods-grid,
-	.review-grid,
-	.anchor-grid,
-	.evidence-summary-list,
-	.module-grid {
+@media (max-width: 860px) {
+	.bottom-line {
 		grid-template-columns: 1fr;
-	}
-
-	.bottom-line__actions,
-	.reading-guide__actions {
-		justify-content: start;
-	}
-}
-
-@media (max-width: 640px) {
-	.community-toolbar__search,
-	.flag-select,
-	.flag-note {
-		min-width: 0;
-		width: 100%;
 	}
 }
 </style>

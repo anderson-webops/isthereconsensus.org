@@ -384,25 +384,6 @@ function formatTopicDate(value?: string) {
 				</NuxtLink>
 			</div>
 		</section>
-
-		<section class="home-section home-section--compact">
-			<div class="closing-callout">
-				<div>
-					<p class="eyebrow">Need more context?</p>
-					<h2>Use the background library or ask a focused question.</h2>
-					<p>Go to explainers for recurring concepts. Use Ask only when no close reviewed page fits.</p>
-				</div>
-				<div class="closing-callout__actions">
-					<NuxtLink class="button button--primary" to="/explainers">Read explainers</NuxtLink>
-					<NuxtLink
-						class="button button--ghost"
-						:to="searchQuery ? `/ask?question=${encodeURIComponent(searchQuery)}` : '/ask'"
-					>
-						Ask a question
-					</NuxtLink>
-				</div>
-			</div>
-		</section>
 	</div>
 </template>
 
@@ -424,8 +405,7 @@ function formatTopicDate(value?: string) {
 .claim-row,
 .topic-row,
 .explainer-row,
-.trust-row,
-.closing-callout {
+.trust-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 24px;
@@ -442,8 +422,7 @@ function formatTopicDate(value?: string) {
 .claim-row h3,
 .topic-row h3,
 .explainer-row h3,
-.trust-row h3,
-.closing-callout h2 {
+.trust-row h3 {
 	font-family: "Fraunces", serif;
 }
 
@@ -457,7 +436,6 @@ function formatTopicDate(value?: string) {
 .hero__lead,
 .claim-row p,
 .topic-row p,
-.closing-callout p,
 .search-panel__hint,
 .hero__copy {
 	color: var(--consensus-muted);
@@ -605,8 +583,7 @@ function formatTopicDate(value?: string) {
 .claim-row h3,
 .topic-row h3,
 .explainer-row h3,
-.trust-row h3,
-.closing-callout h2 {
+.trust-row h3 {
 	margin: 6px 0 0;
 }
 
@@ -678,25 +655,9 @@ function formatTopicDate(value?: string) {
 }
 
 .explainer-row p,
-.trust-row p,
-.closing-callout p {
+.trust-row p {
 	margin: 10px 0 0;
 	line-height: 1.65;
-}
-
-.closing-callout {
-	padding: 24px 26px;
-	display: flex;
-	justify-content: space-between;
-	gap: 20px;
-	flex-wrap: wrap;
-	align-items: end;
-}
-
-.closing-callout__actions {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
 }
 
 .button {
@@ -747,8 +708,7 @@ function formatTopicDate(value?: string) {
 	.claim-row,
 	.topic-row,
 	.explainer-row,
-	.trust-row,
-	.closing-callout {
+	.trust-row {
 		border-radius: 20px;
 	}
 

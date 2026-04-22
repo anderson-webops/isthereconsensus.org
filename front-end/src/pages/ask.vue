@@ -4,7 +4,6 @@ import type {
 	QuestionAskKind,
 	QuestionClosestMatchType,
 	QuestionResponse,
-	QuestionSourceContextType,
 	SuggestionResponse,
 	Topic,
 	TopicResponse
@@ -13,13 +12,7 @@ import { watchDebounced } from "@vueuse/core";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import {
-	analyzeAskQuery,
-	defaultAskKind,
-	matchExplainers,
-	matchMisconceptionModules,
-	matchStrengthLabel
-} from "~/utils/ask-flow";
+import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
 
 interface MatchOption {
 	key: string;
@@ -42,11 +35,9 @@ const context = ref("");
 const sourceUrl = ref("");
 const selectedTopic = ref(typeof route.query.topic === "string" ? route.query.topic : "");
 const selectedClaimSlug = ref("");
-const selectedClosestMatch = ref("");
 const questionKind = ref<QuestionAskKind>("discussion");
-const sourceContextType = ref<QuestionSourceContextType>("other");
-const differenceNote = ref("");
 const manualContinue = ref(false);
+const selectedClosestMatch = ref("");
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
 const suggestionError = ref("");
@@ -64,13 +55,11 @@ const query = computed(() => question.value.trim());
 const searchReady = computed(() => query.value.length >= 3);
 const queryAnalysis = computed(() => analyzeAskQuery(query.value));
 const explainerSuggestions = computed(() => matchExplainers(query.value));
-const misconceptionSuggestions = computed(() => matchMisconceptionModules(query.value));
 const hasAnySuggestions = computed(
 	() =>
 		suggestions.value.claims.length > 0 ||
 		suggestions.value.topics.length > 0 ||
-		explainerSuggestions.value.length > 0 ||
-		misconceptionSuggestions.value.length > 0
+		explainerSuggestions.value.length > 0
 );
 const showPostingForm = computed(() => manualContinue.value || (searchReady.value && !hasAnySuggestions.value));
 const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
@@ -237,7 +226,7 @@ async function submitQuestion() {
 
 	submitting.value = true;
 	try {
-		const response = await $fetch<QuestionResponse>(apiUrl("/questions"), {
+		await $fetch<QuestionResponse>(apiUrl("/questions"), {
 			method: "POST",
 			credentials: "include",
 			body: {
@@ -247,11 +236,11 @@ async function submitQuestion() {
 				normalizedQuestion: queryAnalysis.value.normalized,
 				body: context.value.trim(),
 				sourceUrl: sourceUrl.value.trim(),
-				sourceContextType: sourceContextType.value,
+				sourceContextType: "other",
 				askKind: questionKind.value,
 				closestMatchType: selectedClosestMatchRecord.value?.type || "none",
 				closestMatchLabel: selectedClosestMatchRecord.value?.label || "",
-				differenceNote: differenceNote.value.trim(),
+				differenceNote: "",
 				loadedFrame: queryAnalysis.value.looksLoaded,
 				multiQuestion: queryAnalysis.value.hasMultipleQuestions,
 				captchaToken: captchaToken.value
@@ -264,14 +253,14 @@ async function submitQuestion() {
 		if (selectedClaimSlug.value) {
 			await router.push({
 				path: `/consensus/${selectedTopic.value}/${selectedClaimSlug.value}`,
-				query: { highlight: response.question._id }
+				query: { posted: "1" }
 			});
 			return;
 		}
 
 		await router.push({
 			path: `/consensus/${selectedTopic.value}`,
-			query: { highlight: response.question._id }
+			query: { posted: "1" }
 		});
 	} catch (error) {
 		console.error(error);
@@ -288,8 +277,8 @@ async function submitQuestion() {
 
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
-			<h1>Search first. Ask if nothing close fits.</h1>
-			<p>We check reviewed claims, topics, and background explainers before opening a new thread.</p>
+			<h1>Search first. Ask when the close reviewed pages still miss the question.</h1>
+			<p>Reviewed claim pages come first. Broader topics and explainers are just fallback context.</p>
 		</header>
 
 		<section class="search-panel">
@@ -340,10 +329,10 @@ async function submitQuestion() {
 								type="button"
 								@click="openSuggestion(`/consensus/${claim.topic?.slug}/${claim.slug}`)"
 							>
-								Open claim review
+								Open review
 							</button>
 							<button class="button button--ghost" type="button" @click="continueUnderClaim(claim)">
-								Close, but different
+								Ask anyway
 							</button>
 						</div>
 					</article>
@@ -353,20 +342,43 @@ async function submitQuestion() {
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Related background</p>
-						<h2>Use this only if the question is really conceptual</h2>
+						<p class="eyebrow">Other close pages</p>
+						<h2>Use these only when the question is broader or conceptual</h2>
 					</div>
-					<p>These pages help when the issue is a recurring concept, not a new claim.</p>
+					<p>These are fallback clicks when one reviewed claim would be too narrow.</p>
 				</div>
 
-				<div v-if="!searchReady" class="empty-state">Concept matches appear here after you type.</div>
-				<div v-else class="concept-stack">
-					<section class="concept-section">
-						<h3>Explainers</h3>
-						<div v-if="!explainerSuggestions.length" class="empty-state empty-state--tight">
-							No explainer looks close yet.
+				<div v-if="!searchReady" class="empty-state">
+					Topic and explainer matches appear here after you type.
+				</div>
+				<div v-else class="support-stack">
+					<section v-if="suggestions.topics.length" class="support-section">
+						<h3>Topics</h3>
+						<div class="match-list">
+							<article v-for="topic in suggestions.topics" :key="topic._id" class="match-row">
+								<div>
+									<p class="match-row__meta">
+										<span>{{ matchStrengthLabel(topic.matchScore) }}</span>
+										<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
+									</p>
+									<h3>{{ topic.title }}</h3>
+									<p>{{ topic.description }}</p>
+									<p v-if="topic.matchReason" class="match-row__reason">{{ topic.matchReason }}</p>
+								</div>
+								<button
+									class="button button--ghost"
+									type="button"
+									@click="openSuggestion(`/consensus/${topic.slug}`)"
+								>
+									Open topic
+								</button>
+							</article>
 						</div>
-						<div v-else class="match-list">
+					</section>
+
+					<section v-if="explainerSuggestions.length" class="support-section">
+						<h3>Explainers</h3>
+						<div class="match-list">
 							<article v-for="item in explainerSuggestions" :key="item.slug" class="match-row">
 								<div>
 									<p class="match-row__meta">
@@ -388,83 +400,32 @@ async function submitQuestion() {
 						</div>
 					</section>
 
-					<section v-if="misconceptionSuggestions.length" class="concept-section">
-						<h3>Quick correction modules</h3>
-						<div class="match-list">
-							<article v-for="item in misconceptionSuggestions" :key="item.slug" class="match-row">
-								<div>
-									<p class="match-row__meta">
-										<span>Module</span>
-										<span>{{ matchStrengthLabel(item.score) }}</span>
-									</p>
-									<h3>{{ item.title }}</h3>
-									<p>{{ item.summary }}</p>
-									<p class="match-row__reason">{{ item.reason }}</p>
-								</div>
-								<button
-									class="button button--ghost"
-									type="button"
-									@click="openSuggestion('/misconceptions')"
-								>
-									Open module library
-								</button>
-							</article>
-						</div>
-					</section>
-				</div>
-			</article>
-
-			<article class="results-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Topics</p>
-						<h2>Use the topic when the question is still broad</h2>
+					<div
+						v-if="!suggestions.topics.length && !explainerSuggestions.length"
+						class="empty-state empty-state--tight"
+					>
+						No broader topic or background page looks close yet.
 					</div>
-					<p>Topics are the better first click when one claim page would be too narrow.</p>
-				</div>
-
-				<div v-if="!searchReady" class="empty-state">Topic matches appear here after you type.</div>
-				<div v-else-if="!suggestions.topics.length" class="empty-state">No close topic yet.</div>
-				<div v-else class="match-list">
-					<article v-for="topic in suggestions.topics" :key="topic._id" class="match-row">
-						<div>
-							<p class="match-row__meta">
-								<span>{{ matchStrengthLabel(topic.matchScore) }}</span>
-								<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
-								<span>{{ topic.questionCount ?? 0 }} threads</span>
-							</p>
-							<h3>{{ topic.title }}</h3>
-							<p>{{ topic.description }}</p>
-							<p v-if="topic.matchReason" class="match-row__reason">{{ topic.matchReason }}</p>
-						</div>
-						<button
-							class="button button--ghost"
-							type="button"
-							@click="openSuggestion(`/consensus/${topic.slug}`)"
-						>
-							Open topic
-						</button>
-					</article>
 				</div>
 			</article>
 		</section>
 
 		<section v-if="searchReady && hasAnySuggestions && !showPostingForm" class="posting-gate">
 			<div>
-				<p class="eyebrow">Still need to post?</p>
-				<h2>None of these fit?</h2>
-				<p>Create a new thread and add a short note about what is different, if anything.</p>
+				<p class="eyebrow">Still not answered?</p>
+				<h2>Ask a focused question.</h2>
+				<p>Use this only when the close reviewed page still misses what you need.</p>
 			</div>
-			<button class="button button--ghost" type="button" @click="manualContinue = true">None of these</button>
+			<button class="button button--ghost" type="button" @click="manualContinue = true">Ask anyway</button>
 		</section>
 
 		<section v-if="showPostingForm" class="posting-form">
 			<div class="posting-form__header">
 				<div>
-					<p class="eyebrow">Submit to the board</p>
+					<p class="eyebrow">Submit to the queue</p>
 					<h2>Create a new question</h2>
 				</div>
-				<p>Keep it short. We will attach the closest existing page automatically when one exists.</p>
+				<p>Keep it short. The closest existing page is attached automatically when one exists.</p>
 			</div>
 
 			<AuthPanel
@@ -484,15 +445,13 @@ async function submitQuestion() {
 				/>
 			</div>
 
-			<div class="field-grid">
-				<div class="field-stack">
-					<label class="field-label" for="post-topic">Closest topic</label>
-					<select id="post-topic" v-model="selectedTopic">
-						<option v-for="topic in topics" :key="topic._id" :value="topic.slug">
-							{{ topic.title }}
-						</option>
-					</select>
-				</div>
+			<div class="field-stack">
+				<label class="field-label" for="post-topic">Closest topic</label>
+				<select id="post-topic" v-model="selectedTopic">
+					<option v-for="topic in topics" :key="topic._id" :value="topic.slug">
+						{{ topic.title }}
+					</option>
+				</select>
 			</div>
 
 			<div v-if="selectedTopicRecord" class="selected-topic">
@@ -502,16 +461,6 @@ async function submitQuestion() {
 					<span>{{ selectedTopicRecord.claimCount ?? 0 }} claim reviews</span>
 					<span>{{ selectedTopicRecord.questionCount ?? 0 }} community threads</span>
 				</p>
-			</div>
-
-			<div v-if="hasAnySuggestions" class="field-stack">
-				<label class="field-label" for="difference-note">What is different, if anything?</label>
-				<textarea
-					id="difference-note"
-					v-model="differenceNote"
-					rows="3"
-					placeholder="Optional. Example: I am asking about long-term effects, not immediate side effects."
-				/>
 			</div>
 
 			<div class="field-stack">
@@ -541,17 +490,9 @@ async function submitQuestion() {
 					:disabled="submitting || !isLoggedIn"
 					@click="submitQuestion"
 				>
-					{{ submitting ? "Posting..." : "Post to the board" }}
+					{{ submitting ? "Posting..." : "Post to the queue" }}
 				</button>
 				<NuxtLink class="button button--ghost" to="/consensus">Browse topics</NuxtLink>
-				<button
-					v-if="selectedClosestMatchRecord?.path"
-					class="button button--ghost"
-					type="button"
-					@click="openSuggestion(selectedClosestMatchRecord.path)"
-				>
-					Open closest match again
-				</button>
 			</div>
 		</section>
 	</div>
@@ -565,12 +506,11 @@ async function submitQuestion() {
 
 .ask-page__header h1,
 .section-heading h2,
-.routing-panel h2,
-.routing-subpanel h3,
 .match-row h3,
 .posting-gate h2,
 .posting-form h2,
-.selected-topic h3 {
+.selected-topic h3,
+.support-section h3 {
 	font-family: "Fraunces", serif;
 }
 
@@ -582,8 +522,6 @@ async function submitQuestion() {
 .ask-page__header p,
 .search-panel__hint,
 .section-heading p,
-.routing-panel p,
-.routing-subpanel p,
 .match-row p,
 .empty-state,
 .posting-gate p,
@@ -596,20 +534,17 @@ async function submitQuestion() {
 }
 
 .search-panel,
-.routing-panel,
 .results-panel,
 .posting-gate,
 .posting-form,
 .match-row,
-.selected-topic,
-.routing-subpanel {
+.selected-topic {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
 }
 
 .search-panel,
-.routing-panel,
 .results-panel,
 .posting-form,
 .selected-topic {
@@ -626,11 +561,11 @@ async function submitQuestion() {
 }
 
 .search-panel,
-.routing-panel,
 .results-panel,
 .posting-form,
 .field-stack,
-.routing-subpanel {
+.support-stack,
+.support-section {
 	display: grid;
 	gap: 12px;
 }
@@ -655,7 +590,6 @@ async function submitQuestion() {
 	color: var(--consensus-muted);
 }
 
-.routing-panel__header,
 .section-heading,
 .posting-form__header {
 	display: flex;
@@ -668,13 +602,10 @@ async function submitQuestion() {
 .section-heading h2,
 .section-heading p,
 .posting-form__header h2,
-.posting-form__header p,
-.routing-panel__header h2 {
+.posting-form__header p {
 	margin: 0;
 }
 
-.routing-panel__actions,
-.button-row,
 .match-row__actions,
 .posting-form__actions {
 	display: flex;
@@ -682,75 +613,11 @@ async function submitQuestion() {
 	flex-wrap: wrap;
 }
 
-.chip-row {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
-}
-
-.chip {
-	display: inline-flex;
-	align-items: center;
-	padding: 6px 10px;
-	border-radius: 999px;
-	border: 1px solid var(--consensus-line);
-	background: var(--consensus-elevated-surface);
-	color: var(--consensus-ink);
-	font-size: 0.78rem;
-	font-weight: 600;
-}
-
-.chip--warning {
-	border-color: color-mix(in srgb, var(--consensus-caution) 40%, var(--consensus-line));
-	background: color-mix(in srgb, var(--consensus-caution) 14%, var(--consensus-elevated-surface));
-}
-
-.routing-subpanel {
-	padding: 16px;
-	background: var(--consensus-field-surface);
-}
-
-.routing-subpanel--warning {
-	border-color: color-mix(in srgb, var(--consensus-caution) 36%, var(--consensus-soft-line));
-	background: color-mix(in srgb, var(--consensus-caution) 9%, var(--consensus-field-surface));
-}
-
-.segment-list {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-}
-
-.segment-button {
-	padding: 11px 14px;
-	border-radius: 16px;
-	border: 1px solid var(--consensus-line);
-	background: transparent;
-	text-align: left;
-	cursor: pointer;
-	color: var(--consensus-ink);
-}
-
 .results-grid {
 	display: grid;
 	gap: 18px;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
 	align-items: start;
-}
-
-.concept-stack {
-	display: grid;
-	gap: 18px;
-}
-
-.concept-section {
-	display: grid;
-	gap: 12px;
-}
-
-.concept-section h3 {
-	margin: 0;
-	font-family: "Fraunces", serif;
 }
 
 .match-list {
@@ -759,36 +626,14 @@ async function submitQuestion() {
 }
 
 .match-row {
-	padding: 16px;
 	display: grid;
 	gap: 14px;
+	padding: 18px;
 }
 
 .match-row--strong {
-	border-color: color-mix(in srgb, var(--consensus-interactive) 34%, var(--consensus-soft-line));
-	box-shadow: 0 0 0 1px color-mix(in srgb, var(--consensus-interactive) 18%, transparent);
-}
-
-.match-row__meta,
-.selected-topic__meta {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-}
-
-.match-row h3,
-.selected-topic h3 {
-	margin: 0;
-}
-
-.match-row__reason {
-	font-size: 0.95rem;
-}
-
-.field-grid {
-	display: grid;
-	gap: 16px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	border-color: rgba(211, 107, 56, 0.42);
+	box-shadow: 0 0 0 2px rgba(211, 107, 56, 0.12);
 }
 
 .button {
@@ -801,6 +646,8 @@ async function submitQuestion() {
 	font-weight: 600;
 	text-decoration: none;
 	cursor: pointer;
+	background: transparent;
+	color: var(--consensus-ink);
 }
 
 .button--primary {
@@ -809,32 +656,8 @@ async function submitQuestion() {
 	color: var(--consensus-on-accent);
 }
 
-.button--ghost {
-	background: transparent;
-	color: var(--consensus-ink);
-}
-
-.empty-state {
-	padding: 14px 0 4px;
-}
-
-.empty-state--tight {
-	padding: 0;
-}
-
-.error {
-	color: #b83d2e;
-	font-weight: 600;
-}
-
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
 	.results-grid {
-		grid-template-columns: 1fr;
-	}
-}
-
-@media (max-width: 720px) {
-	.field-grid {
 		grid-template-columns: 1fr;
 	}
 }
