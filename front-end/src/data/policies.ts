@@ -14,7 +14,7 @@ export interface PolicyGroup {
 export const policyGroups: PolicyGroup[] = [
 	{
 		title: "Core legal pages",
-		description: "These pages define the site contract, data-handling baseline, and user-rights entry points.",
+		description: "The legal baseline for using the site and understanding how data and rights requests work.",
 		items: [
 			{
 				title: "Terms of service",
@@ -48,8 +48,7 @@ export const policyGroups: PolicyGroup[] = [
 	},
 	{
 		title: "Editorial integrity and reviewer governance",
-		description:
-			"These pages explain who can influence canonical pages, how review works, and how interests are disclosed.",
+		description: "How reviewed pages are governed, who can influence them, and how conflicts are disclosed.",
 		items: [
 			{
 				title: "Governance and workflow",
@@ -89,8 +88,7 @@ export const policyGroups: PolicyGroup[] = [
 	},
 	{
 		title: "Community fairness and automation controls",
-		description:
-			"These pages explain how public participation is moderated, appealed, corrected, and kept distinct from canonical conclusions.",
+		description: "How community participation is moderated, corrected, and kept separate from reviewed conclusions.",
 		items: [
 			{
 				title: "Community guidelines",
@@ -131,8 +129,8 @@ export const policyGroups: PolicyGroup[] = [
 ];
 
 export const policyPrinciples = [
-	"Keep the core legal contract stable, and move faster-changing operational rules into standalone governance pages.",
-	"Do not publish a policy promise the product cannot currently honor in a real workflow.",
-	"Show who can influence canonical pages, how conflicts are handled, and how users can challenge decisions.",
-	"Treat public community content, expert review, and canonical editorial conclusions as separate layers with different rights and responsibilities."
+	"Keep the legal contract stable and move faster-changing workflow details into separate policy pages.",
+	"Do not publish policy promises the product cannot actually honor.",
+	"Make decision-makers, conflicts, and challenge paths visible.",
+	"Keep community content, expert review, and reviewed editorial conclusions separate."
 ];

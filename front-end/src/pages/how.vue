@@ -4,49 +4,43 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const steps = [
 	{
 		title: "Start with the claim",
-		body: "Frame the question in plain language before opening up methods, edge cases, or community debate."
+		body: "Search for the closest claim or topic in plain language."
 	},
 	{
-		title: "Look for the stable core",
-		body: "Ask what experts broadly agree on before treating a new paper or headline as a reversal."
+		title: "Read the reviewed answer first",
+		body: "Open the short bottom line before diving into details or discussion."
 	},
 	{
-		title: "Open the uncertainty on purpose",
-		body: "Real debates usually live in effect size, mechanism, scope, or edge cases rather than in the entire claim."
+		title: "Open the nuance when you need it",
+		body: "Use the evidence summaries, uncertainty notes, and source trail if you need more depth."
 	}
 ];
 
 const signals = [
-	"Consensus is earned through criticism, replication, and converging evidence.",
-	"Public opinion and expert consensus are different signals and should stay separate.",
-	"Uncertainty is part of honest explanation, not a reason to flatten everything into confusion.",
-	"A good topic page makes the bottom line easy to find before it asks you to read the nuance."
+	"Reviewed claims and community discussion are separate layers.",
+	"Uncertainty belongs next to the answer, not hidden behind it.",
+	"Topics are for broad questions; claim pages are for specific propositions.",
+	"Explainers exist so claim pages do not have to reteach the same concepts every time."
 ];
 
 const methodLinks = [
 	{
+		title: "Browse topics",
+		body: "Start here when you want the closest reviewed topic or claim.",
+		to: "/consensus",
+		cta: "Browse topics"
+	},
+	{
 		title: "Evergreen explainers",
-		body: "Use these when you need the recurring concepts once: evidence hierarchies, causation, risk, falsifiability, replication, and denial patterns.",
+		body: "Use these for recurring concepts like causation, risk, uncertainty, and how to read evidence.",
 		to: "/explainers",
 		cta: "Open explainers"
 	},
 	{
-		title: "Misconception modules",
-		body: "Use these when the same interpretation mistake keeps repeating across claims, such as one-study hype, false balance, or relative-risk confusion.",
-		to: "/misconceptions",
-		cta: "Open modules"
-	},
-	{
-		title: "Editorial standards",
-		body: "Use this when you want to know what the site counts as settled enough to publish, how updates work, and why source counts and review dates stay visible.",
-		to: "/standards",
-		cta: "Open standards"
-	},
-	{
-		title: "Governance and workflow",
-		body: "Use this when you want the editorial pipeline, role boundaries, routing rules, and moderation model that sit behind the public claim pages.",
-		to: "/governance",
-		cta: "Open governance"
+		title: "Ask a question",
+		body: "Use this when you cannot find a close reviewed match and need the topic routed.",
+		to: "/ask",
+		cta: "Open Ask"
 	}
 ];
 
@@ -64,10 +58,10 @@ const mindChangers = [
 
 		<header class="how-page__header">
 			<p class="eyebrow">How it works</p>
-			<h1>Read the stable core first. Open the method layer only when you need it.</h1>
+			<h1>Use the site in this order: search, read the reviewed answer, then go deeper if needed.</h1>
 			<p>
-				The site is built around one rule: expert consensus, active debate, and community discussion are not the
-				same thing, so the interface should not treat them as the same thing.
+				The public pages are designed to get you to the closest reviewed answer before sending you into debate,
+				background reading, or new thread creation.
 			</p>
 		</header>
 
@@ -92,8 +86,8 @@ const mindChangers = [
 
 		<section class="how-page__panel">
 			<div class="section-heading section-heading--tight">
-				<h2>What the site tries to keep visible</h2>
-				<p>These are the rules behind the structure.</p>
+				<h2>What the layout is trying to do</h2>
+				<p>The main reader-facing rules.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in signals" :key="item">{{ item }}</li>
@@ -102,8 +96,8 @@ const mindChangers = [
 
 		<section class="how-page__panel how-page__panel--soft">
 			<div class="section-heading section-heading--tight">
-				<h2>When you need the method layer</h2>
-				<p>Use these pages instead of forcing every claim review to re-explain the same concepts.</p>
+				<h2>Where to go next</h2>
+				<p>Pick the surface that matches what you actually need.</p>
 			</div>
 			<div class="resource-grid">
 				<article v-for="item in methodLinks" :key="item.title" class="resource-card">
@@ -117,7 +111,7 @@ const mindChangers = [
 		<section class="how-page__panel">
 			<div class="section-heading section-heading--tight">
 				<h2>What would actually change minds?</h2>
-				<p>Consensus shifts when better evidence survives challenge.</p>
+				<p>Consensus shifts when better evidence survives scrutiny.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in mindChangers" :key="item">{{ item }}</li>
@@ -127,13 +121,11 @@ const mindChangers = [
 		<section class="how-page__cta">
 			<div>
 				<p class="eyebrow">Ready to use it?</p>
-				<h2>Search the claim, then read the review in order.</h2>
+				<h2>Start with the closest reviewed page.</h2>
 			</div>
 			<div class="how-page__cta-actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">Read explainers</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">Open modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/governance">Open governance</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/ask">Ask a question</NuxtLink>
 			</div>
 		</section>
