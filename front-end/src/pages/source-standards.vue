@@ -23,9 +23,9 @@ useHead({
 
 		<header class="page-header">
 			<p class="eyebrow">Institution-first sourcing</p>
-			<h1>How each topic cluster should build a durable source stack.</h1>
+			<h1>How each topic cluster builds a durable source stack.</h1>
 			<p>
-				These standards keep claim pages anchored in institutions and syntheses that already carry
+				These standards keep reviewed claims anchored in institutions and syntheses that already carry
 				public-service, assessment, or guideline responsibilities. The default is simple: use one current
 				institutional conclusion, check it against an independent synthesis, then place primary studies and
 				context below that.
@@ -35,7 +35,7 @@ useHead({
 		<section class="panel panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Cross-cutting rules</h2>
-				<p>The site should apply these rules before it specializes by cluster.</p>
+				<p>Apply these rules before specializing by cluster.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in crossCuttingRules" :key="item">{{ item }}</li>
@@ -150,17 +150,16 @@ useHead({
 
 		<section class="callout">
 			<div>
-				<p class="eyebrow">Operational takeaway</p>
-				<h2>Institutional sourcing is a product feature.</h2>
+				<p class="eyebrow">Takeaway</p>
+				<h2>Institutional sourcing is part of what makes a reviewed page trustworthy.</h2>
 				<p>
-					A readable claim page is not enough. The source stack has to stay inspectable, reproducible, and
-					hard to game even when one topic is under active public pressure.
+					A readable claim page is not enough. The source stack also has to stay inspectable and hard to game
+					when a topic is under public pressure.
 				</p>
 			</div>
 			<div class="callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>
 		</section>

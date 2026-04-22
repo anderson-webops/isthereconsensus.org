@@ -27,7 +27,7 @@ const disclosureFields = [
 const recusalRules = [
 	{
 		title: "Automatic recusal",
-		body: "A reviewer or editor should step out when they have a direct financial or strategic stake in the exact conclusion, source, product, or organization under review."
+		body: "A reviewer or editor steps out when they have a direct financial or strategic stake in the exact conclusion, source, product, or organization under review."
 	},
 	{
 		title: "Managed participation",
@@ -35,15 +35,15 @@ const recusalRules = [
 	},
 	{
 		title: "Post-publication discovery",
-		body: "If an undisclosed conflict is discovered after publication, the site should log it, assess whether it changes confidence in the page, and add a visible correction or reviewer change when needed."
+		body: "If an undisclosed conflict is discovered after publication, the site logs it, assesses whether it changes confidence in the page, and adds a visible correction or reviewer change when needed."
 	}
 ];
 
 const publicCommitments = [
-	"Canonical pages should show reviewer or author lines when those roles materially influenced the final synthesis.",
-	"Claim pages should expose a short conflict-of-interest summary and editorial-independence note when disclosure is relevant.",
-	"Internal records should preserve recusals, waivers, and review decisions even when the full details are not shown publicly.",
-	"If a conflict is serious enough to affect confidence, the site should prefer replacement review over private hand-waving."
+	"Canonical pages show reviewer or author lines when those roles materially influenced the final synthesis.",
+	"Claim pages expose a short conflict-of-interest summary and editorial-independence note when disclosure is relevant.",
+	"Internal records preserve recusals, waivers, and review decisions even when the full details are not shown publicly.",
+	"If a conflict is serious enough to affect confidence, the site prefers replacement review over private hand-waving."
 ];
 
 useHead({
@@ -60,7 +60,7 @@ useHead({
 			<h1>Who can influence canonical pages, and what they must disclose.</h1>
 			<p>
 				This policy governs the interests that must be disclosed by staff editors, verified experts, and anyone
-				with approval power over canonical claim pages. Current operating standard as of April 12, 2026.
+				with approval power over canonical claim pages.
 			</p>
 		</header>
 
@@ -83,7 +83,7 @@ useHead({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Required disclosure fields</h2>
-				<p>These fields should be captured before assignment, not discovered after publication.</p>
+				<p>These fields are captured before assignment, not discovered after publication.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in disclosureFields" :key="item">{{ item }}</li>

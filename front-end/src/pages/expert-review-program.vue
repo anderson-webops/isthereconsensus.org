@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	"Verified experts review drafts for scope, evidence quality, uncertainty language, and overreach; they do not unilaterally publish canonical answers.",
 	"Eligibility depends on demonstrated domain expertise, identity verification, and enough public evidence that the editorial team can evaluate credibility.",
-	"Review assignments should respect conflict disclosures and recusal rules before a draft is shared.",
+	"Review assignments respect conflict disclosures and recusal rules before a draft is shared.",
 	"Reviewer names, roles, and affiliations may appear on public pages when that helps readers understand how a claim was checked."
 ];
 
@@ -30,7 +30,7 @@ const disagreementFlow = [
 	},
 	{
 		title: "Structured disagreement handling",
-		body: "When reviewers disagree, the site should log whether the disagreement is about scope, missing sources, certainty language, or the actual conclusion."
+		body: "When reviewers disagree, the site logs whether the disagreement is about scope, missing sources, certainty language, or the actual conclusion."
 	},
 	{
 		title: "Replacement or escalation",
@@ -59,7 +59,7 @@ useHead({
 			<h1>How expert reviewers are verified, assigned, and held to review standards.</h1>
 			<p>
 				This page defines the verified-expert layer that sits between community discussion and canonical
-				editorial publication. Current operating standard as of April 12, 2026.
+				editorial publication.
 			</p>
 		</header>
 

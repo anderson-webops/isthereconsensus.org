@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { sourceStandardList } from "~/data/sourceStandards";
 
 const sourceStack = [
 	"Use a two-layer anchor by default: one current institutional conclusion and one independent synthesis.",
@@ -9,9 +8,9 @@ const sourceStack = [
 ];
 
 const publicationRules = [
-	"A claim should only be published as consensus when multiple independent reviews or major institutions converge on the same bottom line.",
-	"If the evidence is still split, label the page as active debate or unclear instead of forcing false certainty.",
-	"When institutions disagree, identify the shared baseline first and then explain the narrower margin of disagreement."
+	"Publish a reviewed claim when multiple independent reviews or major institutions converge on the same bottom line.",
+	"If the evidence is still split, say so directly instead of forcing false certainty.",
+	"When institutions disagree, explain the baseline and then the narrower point of disagreement."
 ];
 
 const updateTriggers = [
@@ -22,37 +21,23 @@ const updateTriggers = [
 ];
 
 const citationRules = [
-	"Core public claims should be backed by peer-reviewed syntheses or official reports, not by blogs, anonymous commentary, or isolated preprints.",
-	"Systematic reviews, meta-analyses, and major institutional guidance should outrank individual studies unless a landmark trial is the reason the field changed.",
-	"When evidence is early or thin, the page should say that clearly instead of forcing a settled summary."
+	"Core public claims should rely on peer-reviewed syntheses or official reports, not blogs, anonymous commentary, or isolated preprints.",
+	"Systematic reviews, meta-analyses, and major institutional guidance should outrank individual studies unless a landmark trial changed the field.",
+	"When evidence is early or thin, the page should say that clearly."
 ];
 
 const disagreementRules = [
 	"Restrict institutional disagreement to reputable bodies with explicit methods.",
 	"Label whether the disagreement is about evidence, thresholds, feasibility, or policy values.",
-	"Do not present a minority institutional view like a 50-50 split when the broader literature is not actually balanced.",
-	"Keep prominence proportional to evidence strength and institutional representativeness."
+	"Do not present a minority institutional view like a 50-50 split when the broader literature is not actually balanced."
 ];
 
-const reviewerExpectations = [
-	"Pages should be reviewed by people with relevant domain or editorial expertise before being treated as canonical.",
-	"Reviewer qualifications should be visible enough to build trust without turning the page into a credential contest.",
-	"Claim pages should state what kind of evidence would change the current summary so the review standard stays falsifiable."
-];
-
-const trustSignals = [
+const pageSignals = [
 	"Original publish date and last evidence review date",
 	"Expert agreement and evidence certainty shown as separate ratings",
 	"Source stack counts by type, anchor-source labels, and DOI/PMID visibility where available",
 	"Outcome-level evidence summaries and institutional anchor metadata",
-	"Reusable misconception modules linked to fuller explainers when the same interpretation error keeps repeating",
-	"A clear statement that public sentiment is not the same thing as expert consensus"
-];
-
-const independenceNotes = [
-	"Canonical claim pages are supposed to track the evidence stack, not the loudest public argument.",
-	"Community threads do not vote a claim into or out of consensus.",
-	"Source transparency and update logic should be visible enough that users can inspect the reasoning."
+	"A visible change log when the page moves"
 ];
 
 useHead({
@@ -66,17 +51,17 @@ useHead({
 
 		<header class="standards-header">
 			<p class="eyebrow">Editorial standards</p>
-			<h1>How the site decides when a claim is ready to publish.</h1>
+			<h1>What a reviewed claim has to meet before it goes public.</h1>
 			<p>
-				The platform is not a live opinion board. Canonical claim pages are supposed to reflect the evidence
-				stack, the limits of that evidence, and what would actually change the current view.
+				This page covers the public publishing bar: what sources matter most, when a claim is ready, and what a
+				reader should be able to inspect on the page.
 			</p>
 		</header>
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Institution-first source hierarchy</h2>
-				<p>What the editorial layer prefers to rely on.</p>
+				<p>The order of evidence that carries the public summary.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in sourceStack" :key="item">{{ item }}</li>
@@ -86,7 +71,7 @@ useHead({
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>When a claim is settled enough to publish</h2>
-				<p>Publishing thresholds should be explicit.</p>
+				<p>The basic publication threshold.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in publicationRules" :key="item">{{ item }}</li>
@@ -96,7 +81,7 @@ useHead({
 		<section class="standards-panel standards-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Update triggers</h2>
-				<p>The site should update on evidence changes, not only on a calendar.</p>
+				<p>Pages should move when the evidence or institutional baseline moves.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in updateTriggers" :key="item">{{ item }}</li>
@@ -106,32 +91,11 @@ useHead({
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Source and citation policy</h2>
-				<p>What kinds of materials are allowed to carry the public summary.</p>
+				<p>What can carry the reviewed answer and what cannot.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in citationRules" :key="item">{{ item }}</li>
 			</ul>
-		</section>
-
-		<section class="standards-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>Cluster anchor stacks</h2>
-				<p>The site should anchor each cluster in the bodies that already synthesize the field.</p>
-			</div>
-			<div class="institution-grid">
-				<article v-for="item in sourceStandardList" :key="item.slug" class="institution-card">
-					<h3>{{ item.title }}</h3>
-					<p>{{ item.summary }}</p>
-					<ul class="plain-list plain-list--tight">
-						<li v-for="anchor in item.primaryAnchors.slice(0, 3)" :key="anchor.name">
-							<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
-						</li>
-					</ul>
-					<NuxtLink class="text-link" :to="`/source-standards#${item.slug}`"
-						>Open full cluster standard</NuxtLink
-					>
-				</article>
-			</div>
 		</section>
 
 		<section class="standards-panel standards-panel--soft">
@@ -146,51 +110,28 @@ useHead({
 
 		<section class="standards-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Reviewer and publication expectations</h2>
-				<p>Trust depends on visible review standards, not just confident writing.</p>
+				<h2>What readers should see on the page</h2>
+				<p>The minimum public trust signals.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in reviewerExpectations" :key="item">{{ item }}</li>
-			</ul>
-		</section>
-
-		<section class="standards-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>Trust signals shown on public pages</h2>
-				<p>Users should not have to guess how much review a page received.</p>
-			</div>
-			<ul class="plain-list">
-				<li v-for="item in trustSignals" :key="item">{{ item }}</li>
-			</ul>
-		</section>
-
-		<section class="standards-panel standards-panel--soft">
-			<div class="section-heading section-heading--tight">
-				<h2>Editorial independence</h2>
-				<p>Confidence should come from legible process, not from posture.</p>
-			</div>
-			<ul class="plain-list">
-				<li v-for="item in independenceNotes" :key="item">{{ item }}</li>
+				<li v-for="item in pageSignals" :key="item">{{ item }}</li>
 			</ul>
 		</section>
 
 		<section class="standards-callout">
 			<div>
 				<p class="eyebrow">Why this matters</p>
-				<h2>Transparency is part of the product, not a footnote.</h2>
+				<h2>Readers should not have to guess why a page is trustworthy.</h2>
 				<p>
-					Public trust does not come from sounding confident. It comes from showing the evidence hierarchy,
-					naming the uncertainty honestly, and making the source-stack logic legible.
+					Transparency is part of the product. A reviewed claim should show the evidence hierarchy, the
+					uncertainty, and the update trail without sending readers through a maze of process pages.
 				</p>
 			</div>
 			<div class="standards-callout__actions">
 				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/future-roadmap">Future roadmap</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/automation-and-ai">Automation and AI</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>

@@ -5,7 +5,7 @@ const quickPoints = [
 	"Moderation actions should come with enough explanation that the affected user can understand what happened and why.",
 	"Appeals are for challenging an enforcement decision or adding new context, not for retrying the same argument indefinitely.",
 	"Fact disputes about canonical pages should usually route through the corrections process instead of the abuse-enforcement lane.",
-	"The site should prefer proportional interventions and human review for meaningful appeals."
+	"The site prefers proportional interventions and human review for meaningful appeals."
 ];
 
 const actionTypes = [
@@ -33,7 +33,7 @@ const appealFlow = [
 	},
 	{
 		title: "Outcome logging",
-		body: "The site should log whether the original action was upheld, narrowed, reversed, or escalated so moderation quality can be checked over time."
+		body: "The site logs whether the original action was upheld, narrowed, reversed, or escalated so moderation quality can be checked over time."
 	}
 ];
 
@@ -57,7 +57,7 @@ useHead({
 			<h1>How moderation decisions should be explained, challenged, and reviewed.</h1>
 			<p>
 				This page operationalizes the community rules by defining notices, action types, and appeal
-				expectations. Current operating standard as of April 12, 2026.
+				expectations.
 			</p>
 		</header>
 
@@ -90,7 +90,7 @@ useHead({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Appeal flow</h2>
-				<p>The site should be able to revisit decisions without turning appeals into endless relitigation.</p>
+				<p>The site can revisit decisions without turning appeals into endless relitigation.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in appealFlow" :key="item.title" class="policy-detail-card">

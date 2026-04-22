@@ -55,7 +55,7 @@ useHead({
 			<h1>How rights-related complaints should reach the site and what happens next.</h1>
 			<p>
 				This page describes the site’s current complaint intake workflow for copyright, trademark, and related
-				rights issues. Current operating standard as of April 12, 2026.
+				rights issues.
 			</p>
 		</header>
 
@@ -78,7 +78,7 @@ useHead({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Review workflow</h2>
-				<p>The site should treat rights complaints as a bounded process, not a support-thread argument.</p>
+				<p>The site treats rights complaints as a bounded process, not a support-thread argument.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in workflow" :key="item.title" class="policy-detail-card">

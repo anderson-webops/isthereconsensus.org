@@ -2,7 +2,7 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"There is not currently a self-serve account deletion portal, so account closure and deletion requests should be submitted to the site operator.",
+	"There is not currently a self-serve account deletion portal, so account closure and deletion requests are submitted to the site operator.",
 	"Public questions and threads are different from private account data: some public content may be removed, some may be disassociated, and some records may be retained for integrity reasons.",
 	"Moderation, security, abuse-prevention, and backup records may persist beyond account closure when reasonably necessary.",
 	"Search-engine copies and third-party caches may outlast removal from the live site."
@@ -11,7 +11,7 @@ const quickPoints = [
 const retentionMatrix = [
 	{
 		title: "Account profile and login data",
-		body: "The site should delete or disable direct account access and remove routine profile data unless specific records must be kept for security, legal, or abuse-prevention reasons."
+		body: "The site deletes or disables direct account access and removes routine profile data unless specific records must be kept for security, legal, or abuse-prevention reasons."
 	},
 	{
 		title: "Public questions and community content",
@@ -36,7 +36,7 @@ const requestSteps = [
 
 const expectationNotes = [
 	"Deleting an account does not guarantee removal of search-engine snippets, archived pages, or other third-party copies outside the site’s control.",
-	"If public contributions remain visible, the site should prefer reducing attribution when that is compatible with integrity and moderation needs.",
+	"If public contributions remain visible, the site may reduce attribution when that is compatible with integrity and moderation needs.",
 	"Deletion and erasure rights can be limited by legal, fraud-prevention, security, and recordkeeping exceptions."
 ];
 
@@ -54,7 +54,7 @@ useHead({
 			<h1>What happens to accounts, public questions, and retained records when a user leaves.</h1>
 			<p>
 				This page explains the site’s current request-based approach to account closure, public-content
-				handling, and retained operational records. Current operating standard as of April 12, 2026.
+				handling, and retained operational records.
 			</p>
 		</header>
 
@@ -66,7 +66,7 @@ useHead({
 
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>What the site should do with different data types</h2>
+				<h2>What happens to different data types</h2>
 				<p>Account deletion is not one uniform action across every record type.</p>
 			</div>
 			<div class="policy-card-grid">
