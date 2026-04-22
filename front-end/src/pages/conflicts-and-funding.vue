@@ -127,7 +127,6 @@ useHead({
 					>Verified expert review program</NuxtLink
 				>
 				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

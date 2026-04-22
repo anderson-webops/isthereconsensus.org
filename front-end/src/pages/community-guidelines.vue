@@ -158,7 +158,6 @@ useHead({
 				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

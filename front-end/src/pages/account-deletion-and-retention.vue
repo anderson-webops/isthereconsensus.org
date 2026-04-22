@@ -115,7 +115,6 @@ useHead({
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/privacy">Privacy policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/account">Account workspace</NuxtLink>
 			</div>
 		</section>

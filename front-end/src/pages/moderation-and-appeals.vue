@@ -129,7 +129,6 @@ useHead({
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 			</div>
 		</section>
 	</div>

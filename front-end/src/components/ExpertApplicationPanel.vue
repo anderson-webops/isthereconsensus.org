@@ -244,7 +244,7 @@ watch(
 						Applications are reviewed internally and may be retained with moderation and editorial records.
 						See the <NuxtLink to="/privacy">Privacy Policy</NuxtLink>,
 						<NuxtLink to="/account-deletion-and-retention">Account deletion and retention</NuxtLink>, and
-						<NuxtLink to="/policy-center">Policy center</NuxtLink> for related rules.
+						<NuxtLink to="/standards">How reviews work</NuxtLink> for related rules.
 					</p>
 					<p v-if="successMessage" class="success">{{ successMessage }}</p>
 					<p v-if="errorMessage" class="error">{{ errorMessage }}</p>

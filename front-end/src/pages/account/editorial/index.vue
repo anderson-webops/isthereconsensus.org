@@ -487,7 +487,7 @@ watch(
 			</section>
 
 			<section class="editorial-grid editorial-grid--guide">
-				<section class="editorial-panel">
+				<section id="moderation-guide" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
 							<p class="eyebrow">Routing guide</p>
@@ -512,7 +512,6 @@ watch(
 						<li v-for="item in moderationGuide" :key="item">{{ item }}</li>
 					</ul>
 					<div class="editorial-panel__links">
-						<NuxtLink class="button button--ghost" to="/governance">Governance and workflow</NuxtLink>
 						<NuxtLink class="button button--ghost" to="/community-guidelines"
 							>Community guidelines</NuxtLink
 						>
@@ -520,7 +519,7 @@ watch(
 					</div>
 				</section>
 
-				<section class="editorial-panel">
+				<section id="policy-surfaces" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
 							<p class="eyebrow">Ask-flow guide</p>
@@ -554,7 +553,6 @@ watch(
 						<li v-for="item in policyGuide" :key="item">{{ item }}</li>
 					</ul>
 					<div class="editorial-panel__links">
-						<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 						<NuxtLink class="button button--ghost" to="/conflicts-and-funding"
 							>Conflict disclosure</NuxtLink
 						>
@@ -567,7 +565,7 @@ watch(
 					</div>
 				</section>
 
-				<section class="editorial-panel">
+				<section id="canonical-backlog" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
 							<p class="eyebrow">Trust and wording guide</p>
@@ -657,12 +655,11 @@ watch(
 								<strong>{{ item.title }}</strong> - {{ item.cluster }}
 							</li>
 						</ul>
-						<NuxtLink class="button button--ghost" to="/claim-roadmap">Open the full roadmap</NuxtLink>
 					</section>
 				</div>
 			</section>
 
-			<section class="editorial-panel">
+			<section id="search-demand-signals" class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
 						<p class="eyebrow">Search-demand signals</p>
@@ -707,12 +704,11 @@ watch(
 						<ul class="guide-list">
 							<li v-for="item in demandMeasurement" :key="item">{{ item }}</li>
 						</ul>
-						<NuxtLink class="button button--ghost" to="/search-demand">Open the full demand page</NuxtLink>
 					</section>
 				</div>
 			</section>
 
-			<section class="editorial-panel">
+			<section id="future-roadmap" class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
 						<p class="eyebrow">Future roadmap</p>
@@ -736,8 +732,6 @@ watch(
 						</ul>
 					</article>
 				</div>
-
-				<NuxtLink class="button button--ghost" to="/future-roadmap">Open the full future roadmap</NuxtLink>
 			</section>
 
 			<section class="editorial-panel">

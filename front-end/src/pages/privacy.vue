@@ -316,7 +316,6 @@ useHead({
 				<NuxtLink class="button button--ghost" to="/account-deletion-and-retention"
 					>Account deletion and retention</NuxtLink
 				>
-				<NuxtLink class="button button--ghost" to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/account">Account</NuxtLink>
 			</div>
 		</section>
