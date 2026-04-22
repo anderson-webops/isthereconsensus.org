@@ -52,7 +52,7 @@ export async function seedClaims() {
 					publishedAt: seed.status === "published" ? new Date() : undefined
 				}
 			},
-			{ upsert: true, new: true }
+			{ upsert: true, returnDocument: "after" }
 		);
 
 		const missingFields: Record<string, unknown> = {};

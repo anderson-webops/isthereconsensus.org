@@ -841,7 +841,7 @@ async function main() {
 					note
 				},
 				{
-					new: true,
+					returnDocument: "after",
 					upsert: true,
 					setDefaultsOnInsert: true
 				}
@@ -1208,7 +1208,7 @@ async function main() {
 					status: "open"
 				},
 				{
-					new: true,
+					returnDocument: "after",
 					upsert: true,
 					setDefaultsOnInsert: true
 				}
@@ -1295,7 +1295,7 @@ async function main() {
 					reviewedAt: undefined
 				},
 				{
-					new: true,
+					returnDocument: "after",
 					upsert: true,
 					setDefaultsOnInsert: true
 				}

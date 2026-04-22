@@ -6,7 +6,7 @@ export async function seedTopics() {
 		await Topic.findOneAndUpdate(
 			{ slug: topic.slug },
 			{ $setOnInsert: topic },
-			{ upsert: true, new: true }
+			{ upsert: true, returnDocument: "after" }
 		);
 	}
 }
