@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	"Account data includes your name, email, password hash, session state, and any updates you make to that account.",
 	"Questions you post on the public site can be visible to other users and search engines.",
-	"When enabled, the site uses bot protection and production analytics to keep the service usable and understand how it is used.",
+	"When enabled, the site uses bot protection and production analytics services hosted at analytics.isthereconsensus.org and analytics.jacobdanderson.net to keep the service usable and understand how it is used.",
 	"There is not currently a self-serve account deletion tool. Privacy requests can be sent to consensus@isthereconsensus.org."
 ];
 
@@ -50,7 +50,7 @@ const useCases = [
 
 const sharingCategories = [
 	"service providers that host, secure, monitor, or help operate the site",
-	"the analytics service loaded from analytics.isthereconsensus.org on deployed versions of the site",
+	"the analytics services loaded from analytics.isthereconsensus.org and analytics.jacobdanderson.net on deployed versions of the site",
 	"Cloudflare Turnstile and related captcha infrastructure when anti-bot checks are enabled",
 	"admins, editors, or moderators who need access to review applications, flags, or operational records",
 	"courts, regulators, law enforcement, or other third parties when legally required or reasonably necessary to protect users or the service"
@@ -165,10 +165,11 @@ useHead({
 					interface behaves consistently the next time you return.
 				</p>
 				<p>
-					On deployed versions of the site, we currently load an analytics script from
-					<code>analytics.isthereconsensus.org</code> to understand site usage and performance. When your
-					browser loads that script, the analytics service may receive technical request information such as
-					IP address, browser metadata, referring page, and page usage details.
+					On deployed versions of the site, we currently load analytics scripts from
+					<code>analytics.isthereconsensus.org</code> and <code>analytics.jacobdanderson.net</code> to
+					understand site usage and performance. When your browser loads those scripts, the analytics
+					services may receive technical request information such as IP address, browser metadata, referring
+					page, and page usage details.
 				</p>
 				<p>
 					When captcha protection is enabled, the site loads Cloudflare Turnstile in the browser and validates

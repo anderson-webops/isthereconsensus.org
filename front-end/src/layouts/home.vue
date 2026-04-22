@@ -41,23 +41,16 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 			</div>
 			<div class="site-footer__links">
 				<NuxtLink to="/consensus">Browse topics</NuxtLink>
+				<NuxtLink to="/ask">Ask a question</NuxtLink>
 				<NuxtLink to="/explainers">Explainers</NuxtLink>
 				<NuxtLink to="/misconceptions">Misconceptions</NuxtLink>
+				<NuxtLink to="/how">How it works</NuxtLink>
 				<NuxtLink to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink to="/claim-roadmap">Claim roadmap</NuxtLink>
-				<NuxtLink to="/future-roadmap">Future roadmap</NuxtLink>
-				<NuxtLink to="/search-demand">Search demand</NuxtLink>
-				<NuxtLink to="/source-standards">Source-stack standards</NuxtLink>
-				<NuxtLink to="/evidence-ops">Evidence operations</NuxtLink>
-				<NuxtLink to="/standards">Editorial standards</NuxtLink>
-				<NuxtLink to="/governance">Governance and workflow</NuxtLink>
 				<NuxtLink to="/policy-center">Policy center</NuxtLink>
 				<NuxtLink to="/community-guidelines">Community guidelines</NuxtLink>
 				<NuxtLink to="/corrections">Corrections policy</NuxtLink>
 				<NuxtLink to="/terms">Terms of service</NuxtLink>
 				<NuxtLink to="/privacy">Privacy policy</NuxtLink>
-				<NuxtLink to="/how">How it works</NuxtLink>
-				<NuxtLink to="/ask">Ask a question</NuxtLink>
 			</div>
 		</footer>
 	</div>

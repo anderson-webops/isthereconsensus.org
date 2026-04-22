@@ -3,7 +3,6 @@ import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/t
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName } from "~/constants";
-import { claimRoadmapPreview } from "~/data/claimRoadmap";
 import { evergreenExplainers } from "~/data/explainers";
 import { misconceptionModules } from "~/data/misconceptions";
 import { getTopicGuide } from "~/data/topicGuides";
@@ -123,21 +122,6 @@ const featuredClaims = computed(() => {
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
 const explainerHighlights = computed(() => evergreenExplainers.slice(0, 4));
 const misconceptionHighlights = computed(() => misconceptionModules.slice(0, 4));
-const roadmapHighlights = claimRoadmapPreview.slice(0, 4);
-const trustSignals = [
-	{
-		title: "Trust the hierarchy, not the hottest headline",
-		body: "Claim reviews are supposed to lean on reviews, guidelines, and consensus statements before they lean on a single new paper."
-	},
-	{
-		title: "Review dates and source counts stay visible",
-		body: "Users should not have to guess whether a page was recently checked or how much evidence sits under the summary."
-	},
-	{
-		title: "The site separates facts from discussion",
-		body: "Canonical claim reviews come first. Community threads stay below them so public sentiment does not look like expert consensus."
-	}
-];
 const faqEntries = [
 	{
 		answer: "Search the claim first, read the short bottom line, and then open the evidence stack only if you need the deeper explanation or source trail.",
@@ -277,8 +261,8 @@ function formatTopicDate(value?: string) {
 				<p class="eyebrow">Find out where the science stands</p>
 				<h1>Search the claim. Read the bottom line. Open the nuance only if you need it.</h1>
 				<p class="hero__lead">
-					This site is built for topics where public confusion is high but the evidence stack is stronger than
-					the public conversation makes it seem.
+					Clear, reviewed summaries for scientific questions that are usually louder in public than they are
+					uncertain in the evidence.
 				</p>
 
 				<form class="search-panel" @submit.prevent="submitSearch">
@@ -293,7 +277,7 @@ function formatTopicDate(value?: string) {
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
 					<p class="search-panel__hint">
-						The homepage routes claim reviews first, then topic hubs, then the Ask flow if nothing matches.
+						Matching claim reviews, topics, and explainers appear as you type.
 					</p>
 
 					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
@@ -345,18 +329,15 @@ function formatTopicDate(value?: string) {
 			</div>
 
 			<aside class="hero__aside">
-				<p class="eyebrow">What happens on a good page</p>
-				<ol>
-					<li>The plain-language bottom line appears before the debate.</li>
-					<li>Trust cues show when it was reviewed and how much evidence sits underneath.</li>
-					<li>Public confusion and community threads stay visually separate from the editorial answer.</li>
-				</ol>
+				<p class="eyebrow">Start here</p>
+				<h2>Good first clicks</h2>
+				<p>Browse reviewed topics, open a short explainer, or ask a question if nothing close appears.</p>
 				<div class="hero__aside-links">
+					<NuxtLink class="text-link" to="/consensus">Browse topics</NuxtLink>
 					<NuxtLink class="text-link" to="/explainers">Read the explainers</NuxtLink>
 					<NuxtLink class="text-link" to="/misconceptions">Open the modules</NuxtLink>
-					<NuxtLink class="text-link" to="/claim-roadmap">See the claim roadmap</NuxtLink>
-					<NuxtLink class="text-link" to="/search-demand">See search-demand signals</NuxtLink>
-					<NuxtLink class="text-link" to="/standards">Read the standards</NuxtLink>
+					<NuxtLink class="text-link" to="/ask">Ask a question</NuxtLink>
+					<NuxtLink class="text-link" to="/methods">Read the methods</NuxtLink>
 				</div>
 			</aside>
 		</section>
@@ -364,8 +345,8 @@ function formatTopicDate(value?: string) {
 		<section v-if="featuredClaims.length" class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Start with the biggest public confusion gaps</p>
-					<h2>Canonical claim reviews worth opening first</h2>
+					<p class="eyebrow">Featured reviews</p>
+					<h2>Start with a reviewed claim</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
 			</div>
@@ -395,7 +376,7 @@ function formatTopicDate(value?: string) {
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Topic clusters</p>
-					<h2>Browse the high-value areas first</h2>
+					<h2>Browse by topic</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Open the directory</NuxtLink>
 			</div>
@@ -423,42 +404,12 @@ function formatTopicDate(value?: string) {
 			</div>
 		</section>
 
-		<section class="home-section home-section--soft">
-			<div class="section-heading">
-				<div>
-					<p class="eyebrow">Editorial roadmap</p>
-					<h2>What the site should build next</h2>
-				</div>
-				<div class="section-heading__links">
-					<NuxtLink class="text-link" to="/claim-roadmap">Open the full roadmap</NuxtLink>
-					<NuxtLink class="text-link" to="/future-roadmap">Open the future roadmap</NuxtLink>
-					<NuxtLink class="text-link" to="/search-demand">Open search-demand signals</NuxtLink>
-				</div>
-			</div>
-
-			<div class="roadmap-list">
-				<article
-					v-for="item in roadmapHighlights"
-					:key="item.slug"
-					class="explainer-row explainer-row--roadmap"
-				>
-					<p class="claim-row__meta">
-						<span>#{{ item.rank }}</span>
-						<span>{{ item.cluster }}</span>
-						<span>{{ item.pageType }}</span>
-					</p>
-					<h3>{{ item.title }}</h3>
-					<p>{{ item.whyItMatters }}</p>
-				</article>
-			</div>
-		</section>
-
 		<section class="library-grid">
 			<section class="home-section home-section--soft">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Evergreen explainers</p>
-						<h2>Read the method layer once</h2>
+						<p class="eyebrow">Background explainers</p>
+						<h2>Read the concepts once</h2>
 					</div>
 					<NuxtLink class="text-link" to="/explainers">View all explainers</NuxtLink>
 				</div>
@@ -474,25 +425,8 @@ function formatTopicDate(value?: string) {
 			<section class="home-section home-section--soft">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Why the layout looks like this</p>
-						<h2>Trust cues stay visible</h2>
-					</div>
-					<NuxtLink class="text-link" to="/standards">Read editorial standards</NuxtLink>
-				</div>
-
-				<div class="trust-list">
-					<article v-for="item in trustSignals" :key="item.title" class="trust-row">
-						<h3>{{ item.title }}</h3>
-						<p>{{ item.body }}</p>
-					</article>
-				</div>
-			</section>
-
-			<section class="home-section home-section--soft">
-				<div class="section-heading">
-					<div>
 						<p class="eyebrow">Misconception modules</p>
-						<h2>Reusable corrections for recurring mistakes</h2>
+						<h2>Common mistakes, corrected once</h2>
 					</div>
 					<NuxtLink class="text-link" to="/misconceptions">Open module library</NuxtLink>
 				</div>
@@ -509,12 +443,9 @@ function formatTopicDate(value?: string) {
 		<section class="home-section home-section--compact">
 			<div class="closing-callout">
 				<div>
-					<p class="eyebrow">Still do not see your claim?</p>
-					<h2>Use Ask only after the existing reviews and topic hubs come up empty.</h2>
-					<p>
-						New threads work best when they attach to a nearby topic or claim, so the next reader still hits
-						the editorial answer before the discussion.
-					</p>
+					<p class="eyebrow">Still not finding it?</p>
+					<h2>Ask a question.</h2>
+					<p>We’ll try to route it to the closest existing topic or claim first.</p>
 				</div>
 				<div class="closing-callout__actions">
 					<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>

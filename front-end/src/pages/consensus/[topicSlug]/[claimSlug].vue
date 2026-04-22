@@ -14,7 +14,6 @@ import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getExplainer } from "~/data/explainers";
 import { getMisconceptionModulesBySlugs } from "~/data/misconceptions";
-import { getSourceStandard } from "~/data/sourceStandards";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -78,32 +77,8 @@ const filteredQuestions = computed(() => {
 });
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const institutionalAnchors = computed(() => claim.value?.institutionalAnchors ?? []);
-const surveillanceSpec = computed(() => claim.value?.surveillanceSpec);
-const sourceStandard = computed(() => getSourceStandard(claim.value?.topic?.slug || topicSlug.value));
 const misconceptionModules = computed(() => getMisconceptionModulesBySlugs(claim.value?.misconceptionTags || []));
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
-const sourceStackSummary = computed(() => {
-	const sources = claim.value?.sources ?? [];
-	const anchorCount = sources.filter((source) => source.isAnchor).length;
-	const synthesisCount = sources.filter(
-		(source) => source.kind === "systematic_review" || source.kind === "meta_analysis"
-	).length;
-	const guidelineCount = sources.filter(
-		(source) => source.kind === "guideline" || source.kind === "consensus_statement"
-	).length;
-	const flaggedCount = sources.filter(
-		(source) => source.citationStatus && source.citationStatus !== "current"
-	).length;
-
-	const parts = [
-		anchorCount ? `${anchorCount} anchor${anchorCount === 1 ? "" : "s"}` : "",
-		synthesisCount ? `${synthesisCount} synth${synthesisCount === 1 ? "esis" : "eses"}` : "",
-		guidelineCount ? `${guidelineCount} institution${guidelineCount === 1 ? "" : "s"}` : "",
-		flaggedCount ? `${flaggedCount} flagged citation${flaggedCount === 1 ? "" : "s"}` : ""
-	].filter(Boolean);
-
-	return parts.length ? parts.join(" · ") : "No source stack yet";
-});
 
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
 const anchorNames = computed(() =>
@@ -146,6 +121,7 @@ const uncertaintyLimits = computed(() => {
 		)
 	).slice(0, 6);
 });
+const changeLogCount = computed(() => claim.value?.changeLog?.length ?? 0);
 
 const outcomeCertaintyBreakdown = computed(() => {
 	const counts = evidenceSummaries.value.reduce<Record<string, number>>((map, summary) => {
@@ -157,37 +133,6 @@ const outcomeCertaintyBreakdown = computed(() => {
 		.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
 		.map(([label, count]) => `${count} ${label.replaceAll("_", " ")} outcome${count === 1 ? "" : "s"}`);
 });
-
-const hasInstitutionalConclusionLayer = computed(() => {
-	const sources = claim.value?.sources ?? [];
-	return (
-		institutionalAnchors.value.length > 0 ||
-		sources.some((source) => ["guideline", "consensus_statement"].includes(source.kind))
-	);
-});
-
-const hasIndependentSynthesisLayer = computed(() => {
-	const sources = claim.value?.sources ?? [];
-	return sources.some((source) => ["systematic_review", "meta_analysis"].includes(source.kind));
-});
-
-const anchorChecklist = computed(() => [
-	{
-		title: "Anchor A - Institutional conclusion",
-		body: sourceStandard.value.twoLayer.anchorA,
-		status: hasInstitutionalConclusionLayer.value ? "Present on this page" : "Still missing from this page"
-	},
-	{
-		title: "Anchor B - Independent synthesis",
-		body: sourceStandard.value.twoLayer.anchorB,
-		status: hasIndependentSynthesisLayer.value ? "Present on this page" : "Still missing from this page"
-	},
-	{
-		title: "Why the two-layer check exists",
-		body: sourceStandard.value.twoLayer.why,
-		status: sourceStandard.value.title
-	}
-]);
 
 const ratingFacts = computed(() => [
 	{
@@ -208,19 +153,17 @@ const ratingFacts = computed(() => [
 ]);
 
 const trustFacts = computed(() => [
-	{ label: "Reviewed by", value: claim.value?.reviewerLine || "Reviewer details pending" },
-	{ label: "Prepared by", value: claim.value?.authorLine || "Editorial authorship pending" },
 	{ label: "Sources reviewed", value: sourceCount.value ? String(sourceCount.value) : "Not listed" },
 	{
 		label: "Institutional anchors",
 		value: anchorNames.value || "Anchor bodies not listed"
 	},
-	{ label: "Source stack", value: sourceStackSummary.value },
-	{ label: "Published", value: formatDate(claim.value?.publishedAt, "Publish date pending") },
+	{ label: "Prepared by", value: claim.value?.authorLine || "Editorial authorship pending" },
+	{ label: "Reviewed by", value: claim.value?.reviewerLine || "Reviewer details pending" },
 	{ label: "Last reviewed", value: formatDate(claim.value?.lastReviewedAt, "Review date pending") },
 	{ label: "Next review", value: formatDate(claim.value?.nextReviewAt, "Not scheduled") },
 	{ label: "Search cutoff", value: formatDate(claim.value?.searchCutoffAt, "Cutoff not listed") },
-	{ label: "Retraction check", value: formatDate(claim.value?.lastRetractionCheckAt, "Not listed") }
+	{ label: "Updates logged", value: changeLogCount.value ? String(changeLogCount.value) : "None yet" }
 ]);
 
 const sourceGroups = computed(() => {
@@ -418,15 +361,6 @@ function formatReviewModeLabel(mode?: Claim["reviewMode"]) {
 	return mode === "living" ? "Living review" : "Scheduled review";
 }
 
-function formatCadence(days?: number) {
-	if (!days) return "Cadence not listed";
-	if (days % 30 === 0 && days >= 30) {
-		const months = days / 30;
-		return `${months} month${months === 1 ? "" : "s"}`;
-	}
-	return `${days} day${days === 1 ? "" : "s"}`;
-}
-
 function formatChangeKind(kind?: string) {
 	if (kind === "publication") return "Published";
 	if (kind === "correction") return "Correction";
@@ -587,7 +521,7 @@ async function flagQuestion(questionId: string) {
 
 		<header class="claim-page__header">
 			<div class="claim-page__hero">
-				<p class="eyebrow">Canonical claim review</p>
+				<p class="eyebrow">Reviewed claim</p>
 				<h1>{{ claim?.title || "Claim review" }}</h1>
 				<p class="claim-page__description">
 					{{ claim?.editorSummary || "This page is the editorial summary for the claim." }}
@@ -610,15 +544,12 @@ async function flagQuestion(questionId: string) {
 
 		<section class="bottom-line">
 			<div>
-				<p class="eyebrow">The bottom line</p>
+				<p class="eyebrow">Bottom line</p>
 				<h2>{{ claim?.bottomLine }}</h2>
-				<p>
-					Most readers start here. Everything else on the page expands the evidence, the remaining
-					uncertainty, and the practical limits of the current consensus.
-				</p>
+				<p>This is the shortest reviewed answer on the page.</p>
 			</div>
 			<div class="bottom-line__actions">
-				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic hub</NuxtLink>
+				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
 				<NuxtLink
 					v-if="canEditClaim && claim?._id"
 					class="button button--ghost"
@@ -631,7 +562,7 @@ async function flagQuestion(questionId: string) {
 
 		<section class="uncertainty-strip">
 			<div>
-				<p class="eyebrow">How to read the uncertainty here</p>
+				<p class="eyebrow">Uncertainty and limits</p>
 				<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
 				<p>{{ uncertaintySummary }}</p>
 			</div>
@@ -662,30 +593,6 @@ async function flagQuestion(questionId: string) {
 						</li>
 					</ul>
 				</div>
-				<p class="muted">
-					If future research met the criteria in “What would change minds,” the editorial summary would be
-					revised.
-				</p>
-			</div>
-		</section>
-
-		<section class="reading-guide">
-			<div>
-				<p class="eyebrow">Why this page is structured this way</p>
-				<h2>Editorial answer first. Evidence stack second. Community threads last.</h2>
-				<p>
-					This page keeps the reviewed summary, the source stack, and the update trail above the fold.
-					Community threads below can raise questions, but they do not vote the claim into or out of
-					consensus.
-				</p>
-			</div>
-			<div class="reading-guide__actions">
-				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/evidence-ops">Evidence operations</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
 			</div>
 		</section>
 
@@ -727,11 +634,9 @@ async function flagQuestion(questionId: string) {
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Misconception modules</p>
-						<h2>The recurring interpretation mistakes attached to this claim</h2>
+						<h2>Common reading mistakes tied to this claim</h2>
 					</div>
-					<p>
-						These are reusable corrections. Use the linked explainer if you need the fuller method lesson.
-					</p>
+					<p>Reusable corrections for the same misunderstanding showing up repeatedly.</p>
 				</div>
 
 				<div class="module-grid">
@@ -771,10 +676,7 @@ async function flagQuestion(questionId: string) {
 						<p class="eyebrow">Outcome view</p>
 						<h2>Evidence summaries by outcome</h2>
 					</div>
-					<p>
-						These objects carry the reusable evidence summary for the claim, not just a flat list of
-						citations.
-					</p>
+					<p>Each summary captures the question, the finding, and the main limitations.</p>
 				</div>
 
 				<div v-if="!evidenceSummaries.length" class="empty-state">
@@ -814,181 +716,10 @@ async function flagQuestion(questionId: string) {
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Methods snapshot</p>
-						<h2>How this claim was reviewed</h2>
-					</div>
-					<p>
-						Each page should show the search scope, the filters, and the appraisal logic behind the summary.
-					</p>
-				</div>
-
-				<div class="methods-grid">
-					<article class="method-card">
-						<h3>Databases searched</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim?.searchDatabases || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Inclusion rules</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim?.inclusionRules || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Exclusion rules</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim?.exclusionRules || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Appraisal tools</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in claim?.appraisalTools || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Evidence operations</p>
-						<h2>How this page stays on watch</h2>
-					</div>
-					<p>
-						Automation should surface integrity and guideline changes, but editors still decide whether the
-						public conclusion changes.
-					</p>
-				</div>
-
-				<div class="methods-grid">
-					<article class="method-card">
-						<h3>Surveillance focus</h3>
-						<p>{{ surveillanceSpec?.focus || "The monitoring scope is not listed yet." }}</p>
-					</article>
-
-					<article class="method-card">
-						<h3>Cadence</h3>
-						<p>{{ formatCadence(surveillanceSpec?.cadenceDays) }}</p>
-					</article>
-
-					<article class="method-card">
-						<h3>Watch terms</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in surveillanceSpec?.watchTerms || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Integrity monitors</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in surveillanceSpec?.integrityMonitors || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Guideline monitors</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in surveillanceSpec?.guidelineMonitors || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>Priority triggers</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in surveillanceSpec?.triggerRules || []" :key="item">{{ item }}</li>
-						</ul>
-					</article>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Cluster sourcing baseline</p>
-						<h2>The institution-first standard this claim should meet</h2>
-					</div>
-					<p>{{ sourceStandard.summary }}</p>
-				</div>
-
-				<div class="methods-grid">
-					<article v-for="item in anchorChecklist" :key="item.title" class="method-card method-card--accent">
-						<h3>{{ item.title }}</h3>
-						<p>
-							<strong>{{ item.status }}</strong>
-						</p>
-						<p>{{ item.body }}</p>
-					</article>
-
-					<article class="method-card">
-						<h3>Primary anchors for this cluster</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="anchor in sourceStandard.primaryAnchors.slice(0, 4)" :key="anchor.name">
-								<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
-							</li>
-						</ul>
-					</article>
-
-					<article class="method-card">
-						<h3>How to summarize disagreement</h3>
-						<p>{{ sourceStandard.disagreementRule }}</p>
-					</article>
-
-					<article class="method-card">
-						<h3>Common failure modes</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in sourceStandard.misconceptionPatterns.slice(0, 4)" :key="item">
-								{{ item }}
-							</li>
-						</ul>
-					</article>
-				</div>
-
-				<div class="bottom-line__actions">
-					<NuxtLink class="button button--ghost" :to="`/source-standards#${sourceStandard.slug}`"
-						>Open full cluster standard</NuxtLink
-					>
-					<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Anchor institutions</p>
-						<h2>Which bodies define the public baseline here</h2>
-					</div>
-					<p>
-						These anchors show which review bodies or assessments the page treats as the field-level
-						baseline.
-					</p>
-				</div>
-
-				<div v-if="!institutionalAnchors.length" class="empty-state">
-					No institutional anchors are listed for this claim yet.
-				</div>
-				<div v-else class="anchor-grid">
-					<article v-for="anchor in institutionalAnchors" :key="anchor.name" class="anchor-card">
-						<h3>{{ anchor.name }}</h3>
-						<p>{{ anchor.role }}</p>
-					</article>
-				</div>
-			</section>
-
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
 						<p class="eyebrow">Review and independence</p>
-						<h2>Who reviewed this and what guardrails were used</h2>
+						<h2>Who reviewed this</h2>
 					</div>
-					<p>
-						Trust signals should be visible enough that a skeptical reader can inspect the process without
-						guessing.
-					</p>
+					<p>Reviewer, conflict, and independence notes for this page.</p>
 				</div>
 
 				<div class="review-grid">
@@ -1018,12 +749,9 @@ async function flagQuestion(questionId: string) {
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Evidence trail</p>
-						<h2>Ranked source stack</h2>
+						<h2>Source stack</h2>
 					</div>
-					<p>
-						The stack is grouped so readers can see which sources set the baseline and which ones are only
-						supporting context.
-					</p>
+					<p>Grouped so the most decision-relevant sources appear first.</p>
 				</div>
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
@@ -1090,9 +818,9 @@ async function flagQuestion(questionId: string) {
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Corrections and updates</p>
-						<h2>Visible change log</h2>
+						<h2>Change log</h2>
 					</div>
-					<p>Readers should be able to see what changed, when it changed, and why the page moved.</p>
+					<p>What changed and when.</p>
 				</div>
 
 				<div v-if="!claim?.changeLog?.length" class="empty-state">
@@ -1117,14 +845,13 @@ async function flagQuestion(questionId: string) {
 		<section class="lane lane--community">
 			<div class="section-heading section-heading--stacked">
 				<div>
-					<p class="eyebrow">Claim-specific community threads</p>
-					<h2>Questions filed under this claim</h2>
+					<p class="eyebrow">Community questions</p>
+					<h2>Follow-up questions under this claim</h2>
 				</div>
-				<p>These threads stay below the canonical review so they do not compete with the editorial answer.</p>
+				<p>These threads stay below the reviewed answer.</p>
 			</div>
 			<p class="community-note">
-				<strong>Community discussion:</strong> these are public questions and reader opinions, not peer-reviewed
-				evidence and not the site's canonical conclusion.
+				<strong>Community discussion:</strong> public questions and comments, not the reviewed answer.
 			</p>
 
 			<div class="community-toolbar">
@@ -1145,10 +872,7 @@ async function flagQuestion(questionId: string) {
 			<section v-if="showComposer" class="composer">
 				<div class="composer__intro">
 					<h3>Ask a focused follow-up</h3>
-					<p>
-						This works best when it stays tied to the claim review above. Broad topic questions fit better
-						on the topic hub.
-					</p>
+					<p>Use this when your question is about this claim specifically.</p>
 				</div>
 
 				<AuthPanel

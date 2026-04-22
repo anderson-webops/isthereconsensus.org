@@ -31,6 +31,8 @@ for (const envPath of envPathCandidates) {
 const isDev = process.env.NODE_ENV === "development";
 const publicApiBase = normalizePublicApiBase(process.env.PUBLIC_API_BASE, isDev);
 const internalApiBase = normalizeInternalApiBase(process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE);
+const centralAnalyticsDomain = "analytics.jacobdanderson.net";
+const centralAnalyticsWebsiteId = "2d20f4af-99de-4944-8f56-91ea2a32065d";
 const faviconLinks = [
 	{
 		rel: "icon",
@@ -100,6 +102,11 @@ export default defineNuxtConfig({
 							defer: true,
 							src: "https://analytics.isthereconsensus.org/script.js",
 							"data-website-id": "6a5e2165-ed75-4c43-9640-b19128069984"
+						},
+						{
+							defer: true,
+							src: `https://${centralAnalyticsDomain}/script.js`,
+							"data-website-id": centralAnalyticsWebsiteId
 						}
 					]
 		}

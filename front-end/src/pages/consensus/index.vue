@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { Question, QuestionsResponse, Topic, TopicResponse } from "~/types/board";
+import type { Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { claimRoadmapPreview } from "~/data/claimRoadmap";
 import { getTopicGuide } from "~/data/topicGuides";
 
 const route = useRoute();
@@ -11,9 +10,6 @@ const { apiUrl } = useApi();
 
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
-);
-const { data: questionsData } = await useAsyncData("recent-questions", () =>
-	$fetch<QuestionsResponse>(apiUrl("/questions?limit=9"))
 );
 
 const search = ref(typeof route.query.q === "string" ? route.query.q : "");
@@ -27,7 +23,6 @@ const starterOrder = [
 	"neuroscience-and-psychology"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
-const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const enrichedTopics = computed(() =>
 	topics.value
 		.map((topic) => ({
@@ -77,14 +72,6 @@ const filteredTopics = computed(() =>
 const starterTopics = computed(() =>
 	filteredTopics.value.filter((topic) => starterOrder.includes(topic.slug)).slice(0, 3)
 );
-const filteredQuestions = computed(() =>
-	questions.value.filter((question) => {
-		const guide = getTopicGuide(question.topic.slug);
-		const haystack = [question.title, question.body, question.topic.title, guide.snapshot].join(" ").toLowerCase();
-		return matchesFilter(guide.consensusScore) && (!query.value || haystack.includes(query.value));
-	})
-);
-const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 </script>
 
 <template>
@@ -93,24 +80,12 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 
 		<header class="directory__header">
 			<p class="eyebrow">Browse topics</p>
-			<h1>Pick one topic. Read the bottom line first.</h1>
-			<p>
-				This page is a directory, not a feed. Search first, filter if you need to, and open one topic at a time.
-			</p>
+			<h1>Browse topics and open the reviewed claim that fits your question.</h1>
+			<p>Search, filter, and start with the closest topic.</p>
 		</header>
 
 		<div class="directory__layout">
 			<aside class="directory__sidebar">
-				<section class="sidebar-block">
-					<p class="eyebrow">Start here</p>
-					<h2>Recommended reading order</h2>
-					<ol>
-						<li>Search or pick one topic.</li>
-						<li>Open the bottom line on that page.</li>
-						<li>Only then move into debate, sentiment, or community threads.</li>
-					</ol>
-				</section>
-
 				<section class="sidebar-block">
 					<p class="eyebrow">Filter topics</p>
 					<div class="filter-stack">
@@ -134,36 +109,18 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 				</section>
 
 				<section class="sidebar-block">
-					<p class="eyebrow">When to use Ask</p>
-					<p>
-						Use Ask when you cannot find the topic yet. The site works best when new threads sit under an
-						existing topic page.
-					</p>
+					<p class="eyebrow">Missing a topic?</p>
+					<p>Ask a question if nothing close appears in the directory.</p>
 					<NuxtLink class="text-link" to="/ask">Go to Ask</NuxtLink>
 				</section>
 
 				<section class="sidebar-block">
-					<p class="eyebrow">Method layer</p>
-					<p>
-						If you need help with evidence hierarchies, causation, or risk reporting, use the explainers and
-						editorial standards before you dive deeper into a single topic.
-					</p>
+					<p class="eyebrow">Need background?</p>
+					<p>Use explainers for recurring concepts like risk, causation, and uncertainty.</p>
 					<div class="sidebar-links">
 						<NuxtLink class="text-link" to="/explainers">Read explainers</NuxtLink>
-						<NuxtLink class="text-link" to="/standards">Read standards</NuxtLink>
-						<NuxtLink class="text-link" to="/source-standards">Read source-stack standards</NuxtLink>
+						<NuxtLink class="text-link" to="/methods">Read the methods</NuxtLink>
 					</div>
-				</section>
-
-				<section class="sidebar-block">
-					<p class="eyebrow">Editorial roadmap</p>
-					<p>
-						If the claim you want is not live yet, check the public roadmap before opening a brand-new ask.
-					</p>
-					<ul class="plain-list plain-list--tight">
-						<li v-for="item in roadmapPreview" :key="item.slug">{{ item.title }}</li>
-					</ul>
-					<NuxtLink class="text-link" to="/claim-roadmap">Open the claim roadmap</NuxtLink>
 				</section>
 			</aside>
 
@@ -184,10 +141,7 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 				<section v-if="!query && filter === 'all' && starterTopics.length" class="starter-block">
 					<div class="section-heading">
 						<h2>High-value starting points</h2>
-						<p>
-							These are the strongest first topics when the public conversation is noisier than the
-							evidence.
-						</p>
+						<p>These topics are strong entry points when you want a reviewed overview first.</p>
 					</div>
 					<div class="starter-list">
 						<NuxtLink
@@ -205,7 +159,7 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 				<section class="results-block">
 					<div class="section-heading section-heading--tight">
 						<h2>Topic directory</h2>
-						<p>Each topic page starts with a short answer and moves to deeper context only after that.</p>
+						<p>Each topic page leads with reviewed claims and a short topic summary.</p>
 					</div>
 
 					<div v-if="!filteredTopics.length" class="empty-state">No topics match that search yet.</div>
@@ -217,9 +171,7 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 								<div class="topic-row__meta">
 									<span>{{ topic.guide.consensusLabel }}</span>
 									<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
-									<span>{{ topic.guide.evidenceTrail.length }} evidence routes</span>
 									<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
-									<span>{{ topic.questionCount ?? 0 }} community threads</span>
 								</div>
 								<div v-if="topic.featuredClaims?.length" class="topic-row__claims">
 									<span>Start with:</span>
@@ -237,41 +189,11 @@ const roadmapPreview = claimRoadmapPreview.slice(0, 3);
 									:level="topic.guide.consensusScore"
 									:label="topic.guide.consensusLabel"
 								/>
-								<NuxtLink class="topic-row__open" :to="`/consensus/${topic.slug}`"
-									>Open topic hub</NuxtLink
-								>
+								<NuxtLink class="topic-row__open" :to="`/consensus/${topic.slug}`">Open topic</NuxtLink>
 							</div>
 						</article>
 					</div>
 				</section>
-
-				<details class="recent-panel">
-					<summary>Recent community questions</summary>
-					<div class="recent-panel__body">
-						<p>
-							Use these after you know the topic frame. If a thread looks relevant, open the topic page
-							first.
-						</p>
-						<div v-if="!filteredQuestions.length" class="empty-state">
-							No recent questions match that filter.
-						</div>
-						<div v-else class="recent-list">
-							<article v-for="question in filteredQuestions" :key="question._id" class="recent-row">
-								<div>
-									<p class="recent-row__meta">
-										<span>{{ question.topic.title }}</span>
-										<span>{{ new Date(question.createdAt || "").toLocaleDateString() }}</span>
-									</p>
-									<h3>{{ question.title }}</h3>
-									<p>{{ question.body || getTopicGuide(question.topic.slug).snapshot }}</p>
-								</div>
-								<NuxtLink :to="`/consensus/${question.topic.slug}?highlight=${question._id}`"
-									>Open thread</NuxtLink
-								>
-							</article>
-						</div>
-					</div>
-				</details>
 			</section>
 		</div>
 	</div>

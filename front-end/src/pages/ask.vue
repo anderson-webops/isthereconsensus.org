@@ -102,14 +102,12 @@ const hasAnySuggestions = computed(
 	() =>
 		suggestions.value.claims.length > 0 ||
 		suggestions.value.topics.length > 0 ||
-		suggestions.value.questions.length > 0 ||
 		explainerSuggestions.value.length > 0 ||
 		misconceptionSuggestions.value.length > 0
 );
 const showPostingForm = computed(() => manualContinue.value || (searchReady.value && !hasAnySuggestions.value));
 const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
 const topTopicMatch = computed(() => suggestions.value.topics[0] ?? null);
-const topExplainerMatch = computed(() => explainerSuggestions.value[0] ?? null);
 const selectedTopicRecord = computed(() => topics.value.find((topic) => topic.slug === selectedTopic.value) ?? null);
 const claimOptions = computed(() =>
 	suggestions.value.claims.filter((claim) => claim.topic?.slug === selectedTopic.value)
@@ -144,46 +142,11 @@ const matchOptions = computed<MatchOption[]>(() => {
 		});
 	}
 
-	for (const entry of suggestions.value.questions.slice(0, 2)) {
-		options.push({
-			key: `question:${entry._id}`,
-			label: entry.title,
-			path: entry.claim
-				? `/consensus/${entry.topic.slug}/${entry.claim.slug}?highlight=${entry._id}`
-				: `/consensus/${entry.topic.slug}?highlight=${entry._id}`,
-			type: "question"
-		});
-	}
-
 	return options.slice(0, 8);
 });
 const selectedClosestMatchRecord = computed(
 	() => matchOptions.value.find((option) => option.key === selectedClosestMatch.value) ?? null
 );
-const routeCard = computed(() => {
-	if (queryAnalysis.value.isPersonalAdvice) {
-		return {
-			body: "This reads like an individual decision question. The site can point you to general evidence, but it should not replace professional advice for personal care decisions.",
-			title: "Scope warning: this looks personal or advice-seeking"
-		};
-	}
-	if (queryAnalysis.value.recommendedDestination === "explainer") {
-		return {
-			body: "This looks like a concept or method question. Start with the explainer if you need definitions, risk framing, causation, or uncertainty before you judge a claim.",
-			title: "Best next step: concept explainer"
-		};
-	}
-	if (queryAnalysis.value.recommendedDestination === "topic") {
-		return {
-			body: "This looks broad or multi-part. A topic hub is more likely to orient you than a narrow claim page on the first click.",
-			title: "Best next step: topic hub"
-		};
-	}
-	return {
-		body: "This looks like a claim check. Start with the closest canonical claim review before you create a new thread.",
-		title: "Best next step: canonical claim review"
-	};
-});
 
 useHead({
 	title: "Ask a question - Is There Consensus?"
@@ -211,33 +174,6 @@ function continueUnderClaim(claim: ClaimSummary) {
 
 function openSuggestion(path: string) {
 	router.push(path);
-}
-
-function adoptReframe(nextQuestion: string) {
-	question.value = nextQuestion;
-	coreQuestion.value = nextQuestion;
-	manualContinue.value = false;
-}
-
-function focusSegment(segment: string) {
-	const normalizedSegment = segment.endsWith("?") ? segment : `${segment}?`;
-	question.value = normalizedSegment;
-	coreQuestion.value = normalizedSegment;
-	manualContinue.value = false;
-}
-
-function openBestNextStep() {
-	if (queryAnalysis.value.recommendedDestination === "explainer" && topExplainerMatch.value) {
-		openSuggestion(`/explainers/${topExplainerMatch.value.slug}`);
-		return;
-	}
-	if (queryAnalysis.value.recommendedDestination === "topic" && topTopicMatch.value?.slug) {
-		openSuggestion(`/consensus/${topTopicMatch.value.slug}`);
-		return;
-	}
-	if (topClaimMatch.value?.topic?.slug) {
-		openSuggestion(`/consensus/${topClaimMatch.value.topic.slug}/${topClaimMatch.value.slug}`);
-	}
 }
 
 watch(
@@ -395,11 +331,8 @@ async function submitQuestion() {
 
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
-			<h1>Start with the closest claim, topic, or concept before you open a new thread.</h1>
-			<p>
-				Public science questions usually arrive as narratives, headline fragments, or loaded premises. This flow
-				tries to route the first attempt well instead of forcing you to reformulate blindly.
-			</p>
+			<h1>Search first. Post only if nothing close fits.</h1>
+			<p>We’ll look for reviewed claims, topics, and explainers before creating a new thread.</p>
 		</header>
 
 		<section class="search-panel">
@@ -410,110 +343,17 @@ async function submitQuestion() {
 				rows="3"
 				placeholder="Does X cause Y? Is X safe? What is the difference between hazard and risk?"
 			/>
-			<p class="search-panel__hint">
-				Claims, concepts, and topic hubs all compete here. The goal is first-attempt success, not making you
-				guess the perfect keyword string.
-			</p>
-		</section>
-
-		<section v-if="searchReady" class="routing-panel">
-			<div class="routing-panel__header">
-				<div>
-					<p class="eyebrow">Routing read</p>
-					<h2>{{ routeCard.title }}</h2>
-				</div>
-				<div class="routing-panel__actions">
-					<button
-						v-if="
-							(topClaimMatch && queryAnalysis.recommendedDestination === 'claim') ||
-							(topTopicMatch && queryAnalysis.recommendedDestination === 'topic') ||
-							(topExplainerMatch && queryAnalysis.recommendedDestination === 'explainer')
-						"
-						class="button button--primary"
-						type="button"
-						@click="openBestNextStep"
-					>
-						Open best next step
-					</button>
-					<button class="button button--ghost" type="button" @click="manualContinue = true">
-						I still need to post
-					</button>
-				</div>
-			</div>
-			<p>{{ routeCard.body }}</p>
-
-			<div class="chip-row">
-				<span v-if="queryAnalysis.looksLoaded" class="chip chip--warning">Loaded premise</span>
-				<span v-if="queryAnalysis.hasMultipleQuestions" class="chip">Multi-part question</span>
-				<span v-if="queryAnalysis.isDefinition" class="chip">Definition</span>
-				<span v-if="queryAnalysis.isMechanism" class="chip">Mechanism</span>
-				<span v-if="queryAnalysis.isEvidenceSeeking" class="chip">Evidence-seeking</span>
-				<span v-if="queryAnalysis.isRecencyEvent" class="chip">Recent or viral context</span>
-				<span v-if="queryAnalysis.isPersonalAdvice" class="chip chip--warning">Personal advice scope</span>
-			</div>
-
-			<div v-if="queryAnalysis.queryPatternLabel" class="routing-subpanel">
-				<div class="section-heading section-heading--tight">
-					<h3>Recognized search pattern</h3>
-					<p>{{ queryAnalysis.queryPatternLabel }}</p>
-				</div>
-				<p>{{ queryAnalysis.queryPatternGuidance }}</p>
-				<NuxtLink class="text-link" to="/search-demand">See the search-demand playbook</NuxtLink>
-			</div>
-
-			<div v-if="queryAnalysis.looksLoaded && queryAnalysis.neutralReframes.length" class="routing-subpanel">
-				<div class="section-heading section-heading--tight">
-					<h3>Neutral reframe</h3>
-					<p>Your wording contains a conclusion. Pick the neutral version you mean.</p>
-				</div>
-				<div class="button-row">
-					<button
-						v-for="option in queryAnalysis.neutralReframes"
-						:key="option"
-						class="button button--ghost"
-						type="button"
-						@click="adoptReframe(option)"
-					>
-						{{ option }}
-					</button>
-				</div>
-			</div>
-
-			<div v-if="queryAnalysis.hasMultipleQuestions" class="routing-subpanel">
-				<div class="section-heading section-heading--tight">
-					<h3>Split the bundle</h3>
-					<p>Answer one proposition first. The rest can stay as context or a later thread.</p>
-				</div>
-				<div class="segment-list">
-					<button
-						v-for="segment in queryAnalysis.segments"
-						:key="segment"
-						class="segment-button"
-						type="button"
-						@click="focusSegment(segment)"
-					>
-						{{ segment }}
-					</button>
-				</div>
-			</div>
-
-			<div v-if="queryAnalysis.isPersonalAdvice" class="routing-subpanel routing-subpanel--warning">
-				<p>
-					The site can summarize general evidence, but it is not a substitute for individualized medical,
-					legal, or emergency advice. Use the closest general claim or explainer first, then talk to a
-					qualified professional for personal decisions.
-				</p>
-			</div>
+			<p class="search-panel__hint">Start typing to see the closest reviewed pages and background explainers.</p>
 		</section>
 
 		<section class="results-grid">
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">1. Canonical claim reviews</p>
+						<p class="eyebrow">Claim reviews</p>
 						<h2>Best match first</h2>
 					</div>
-					<p>Duplicate prevention works best when the main answer already exists.</p>
+					<p>Open the reviewed claim if one already answers the question.</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Type at least three characters to start matching.</div>
@@ -556,10 +396,10 @@ async function submitQuestion() {
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">2. Concepts and misconception modules</p>
-						<h2>Use the missing concept before you post</h2>
+						<p class="eyebrow">Explainers and modules</p>
+						<h2>Background that may answer it faster</h2>
 					</div>
-					<p>Many “new questions” are really risk, causation, or headline-reading problems.</p>
+					<p>Use these when the question is really about a concept or recurring mistake.</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Concept matches appear here after you type.</div>
@@ -623,12 +463,10 @@ async function submitQuestion() {
 			<article class="results-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">3. Topic hubs</p>
-						<h2>Use the hub when the question is still broad</h2>
+						<p class="eyebrow">Topics</p>
+						<h2>Use the topic when the question is still broad</h2>
 					</div>
-					<p>
-						Topic hubs are better first clicks when the query spans causes, impacts, and evidence at once.
-					</p>
+					<p>Topics are the better first click when one claim page would be too narrow.</p>
 				</div>
 
 				<div v-if="!searchReady" class="empty-state">Topic matches appear here after you type.</div>
@@ -657,57 +495,14 @@ async function submitQuestion() {
 			</article>
 		</section>
 
-		<section class="results-panel">
-			<div class="section-heading">
-				<div>
-					<p class="eyebrow">4. Recent discussion threads</p>
-					<h2>Only after the reviewed answer and concept layer</h2>
-				</div>
-				<p>Threads can supply context, but they should not outrank canonical claim reviews.</p>
-			</div>
-
-			<div v-if="!searchReady" class="empty-state">Recent thread matches appear here after you type.</div>
-			<div v-else-if="!suggestions.questions.length" class="empty-state">No existing thread looks close yet.</div>
-			<div v-else class="match-list">
-				<article v-for="entry in suggestions.questions" :key="entry._id" class="match-row">
-					<div>
-						<p class="match-row__meta">
-							<span>{{ entry.topic.title }}</span>
-							<span>{{ matchStrengthLabel(entry.matchScore) }}</span>
-							<span>{{ entry.claim?.title || "Unassigned thread" }}</span>
-						</p>
-						<h3>{{ entry.title }}</h3>
-						<p>{{ entry.body || entry.sourceUrl || "Open the topic hub to read the frame first." }}</p>
-						<p v-if="entry.matchReason" class="match-row__reason">{{ entry.matchReason }}</p>
-					</div>
-					<button
-						class="button button--ghost"
-						type="button"
-						@click="
-							openSuggestion(
-								entry.claim
-									? `/consensus/${entry.topic.slug}/${entry.claim.slug}?highlight=${entry._id}`
-									: `/consensus/${entry.topic.slug}?highlight=${entry._id}`
-							)
-						"
-					>
-						Open thread
-					</button>
-				</article>
-			</div>
-		</section>
-
-		<section class="posting-gate">
+		<section v-if="searchReady && hasAnySuggestions && !showPostingForm" class="posting-gate">
 			<div>
 				<p class="eyebrow">Still need to post?</p>
-				<h2>Only create a new thread after you reject the closest existing match.</h2>
-				<p>
-					If none of the pages above actually answers your question, keep the new thread narrow and tell the
-					editorial queue what the closest match missed.
-				</p>
+				<h2>None of these fit?</h2>
+				<p>Create a new thread and tell us what the closest match missed.</p>
 			</div>
 			<button class="button button--ghost" type="button" @click="manualContinue = true">
-				{{ hasAnySuggestions ? "None of these" : "Continue to posting" }}
+				None of these
 			</button>
 		</section>
 
@@ -715,12 +510,9 @@ async function submitQuestion() {
 			<div class="posting-form__header">
 				<div>
 					<p class="eyebrow">Submit to the board</p>
-					<h2>Organize the thread before you post it</h2>
+					<h2>Create a new question</h2>
 				</div>
-				<p>
-					Thread creation is the fallback path. Keep the core question short, pick the closest match, and
-					explain the delta.
-				</p>
+				<p>Keep it short, pick the closest match, and explain what is different.</p>
 			</div>
 
 			<AuthPanel

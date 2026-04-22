@@ -12,7 +12,6 @@ import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import CommunitySentimentPanel from "~/components/CommunitySentimentPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { getSourceStandard } from "~/data/sourceStandards";
 import { getTopicGuide } from "~/data/topicGuides";
 
 interface TopicRouteParams {
@@ -58,7 +57,6 @@ const flagNote = ref<Record<string, string>>({});
 
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
-const sourceStandard = computed(() => getSourceStandard(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
 const questions = computed<Question[]>(() => questionsData.value?.questions ?? []);
 const isAdmin = computed(() => role.value === "admin");
@@ -125,10 +123,10 @@ const topicStructuredData = computed(() => ({
 }));
 
 const trustFacts = computed(() => [
-	{ label: "Topic summary", value: guide.value.consensusLabel },
-	{ label: "Published claims", value: String(claims.value.length) },
-	{ label: "Unassigned intake threads", value: String(questions.value.length) },
-	{ label: "Evidence routes", value: String(guide.value.evidenceTrail.length) }
+	{ label: "Consensus snapshot", value: guide.value.consensusLabel },
+	{ label: "Reviewed claims", value: String(claims.value.length) },
+	{ label: "Last updated", value: formatDate(topic.value?.updatedAt, "Update pending") },
+	{ label: "Open community threads", value: String(questions.value.length) }
 ]);
 
 const filteredQuestions = computed(() => {
@@ -296,13 +294,13 @@ async function flagQuestion(questionId: string) {
 			:items="[
 				{ label: 'Home', to: '/' },
 				{ label: 'Browse topics', to: '/consensus' },
-				{ label: topic?.title || 'Topic hub' }
+				{ label: topic?.title || 'Topic' }
 			]"
 		/>
 
 		<header class="topic-page__header">
 			<div>
-				<p class="eyebrow">Topic hub</p>
+				<p class="eyebrow">Topic</p>
 				<h1>{{ topic?.title || "Topic" }}</h1>
 				<p class="topic-page__description">
 					{{ topic?.description || guide.snapshot }}
@@ -318,89 +316,29 @@ async function flagQuestion(questionId: string) {
 
 		<section class="topic-summary">
 			<div>
-				<p class="eyebrow">How to use this hub</p>
+				<p class="eyebrow">Overview</p>
 				<h2>{{ guide.snapshot }}</h2>
-				<p>
-					Start with one of the published claim reviews below. Use the topic hub when you need the broader
-					frame before reading deeper or joining the board.
-				</p>
+				<p>Start with a reviewed claim below, then use the broader topic summary when you need context.</p>
 			</div>
 			<div class="topic-summary__actions">
-				<NuxtLink class="button button--primary" to="/ask">Ask a question</NuxtLink>
+				<NuxtLink class="button button--primary" to="/ask">Ask about this topic</NuxtLink>
 				<NuxtLink v-if="canEditTopic" class="button button--ghost" to="/account/editorial"
 					>Open editorial workspace</NuxtLink
 				>
 			</div>
 		</section>
 
-		<section class="resource-strip">
-			<div>
-				<p class="eyebrow">Need the method layer?</p>
-				<h2>Use the explainers and standards when the topic depends on evidence rules, risk, or causation.</h2>
-			</div>
-			<div class="resource-strip__actions">
-				<NuxtLink class="button button--ghost" to="/explainers">Evergreen explainers</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">Editorial standards</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/source-standards">Source-stack standards</NuxtLink>
-			</div>
-		</section>
-
-		<section class="source-standard-strip">
-			<div class="section-heading section-heading--stacked">
-				<div>
-					<p class="eyebrow">Institution-first baseline</p>
-					<h2>How this topic should be sourced before a claim is called canonical</h2>
-				</div>
-				<p>{{ sourceStandard.summary }}</p>
-			</div>
-
-			<div class="fallback-grid">
-				<section class="fallback-panel">
-					<h3>Anchor A</h3>
-					<p>{{ sourceStandard.twoLayer.anchorA }}</p>
-				</section>
-
-				<section class="fallback-panel">
-					<h3>Anchor B</h3>
-					<p>{{ sourceStandard.twoLayer.anchorB }}</p>
-				</section>
-
-				<section class="fallback-panel">
-					<h3>Primary anchors</h3>
-					<ul class="plain-list">
-						<li v-for="anchor in sourceStandard.primaryAnchors.slice(0, 4)" :key="anchor.name">
-							<strong>{{ anchor.name }}:</strong> {{ anchor.note }}
-						</li>
-					</ul>
-				</section>
-
-				<section class="fallback-panel">
-					<h3>Common disagreement pattern</h3>
-					<p>{{ sourceStandard.disagreementRule }}</p>
-				</section>
-			</div>
-
-			<div class="resource-strip__actions">
-				<NuxtLink class="button button--ghost" :to="`/source-standards#${sourceStandard.slug}`"
-					>Open full cluster standard</NuxtLink
-				>
-				<NuxtLink class="button button--ghost" to="/methods">Methods playbook</NuxtLink>
-			</div>
-		</section>
-
 		<section class="claim-lane">
 			<div class="section-heading section-heading--stacked">
 				<div>
-					<p class="eyebrow">Published claim reviews</p>
-					<h2>Open one canonical claim before reading the board</h2>
+					<p class="eyebrow">Reviewed claims</p>
+					<h2>Start here when one matches your question</h2>
 				</div>
-				<p>These are the editorial pages. They carry the bottom line, trust cues, and evidence trail.</p>
+				<p>These pages carry the reviewed bottom line, uncertainty, and source trail.</p>
 			</div>
 
 			<div v-if="!claims.length" class="empty-state">
-				No published claims exist under this topic yet. The static topic summary stays here as fallback until
-				the editorial layer grows.
+				No reviewed claims are published under this topic yet.
 			</div>
 			<div v-else class="claim-list">
 				<NuxtLink
@@ -426,10 +364,10 @@ async function flagQuestion(questionId: string) {
 		<section class="fallback-lane">
 			<div class="section-heading section-heading--stacked">
 				<div>
-					<p class="eyebrow">Topic fallback summary</p>
-					<h2>What stays useful even before every claim is curated</h2>
+					<p class="eyebrow">Topic summary</p>
+					<h2>A compact overview for the topic as a whole</h2>
 				</div>
-				<p>The static topic guide remains here until the topic is fully covered by claim reviews.</p>
+				<p>Use this when you need the broad frame or when a narrower reviewed claim is not live yet.</p>
 			</div>
 
 			<div class="fallback-grid">
@@ -469,10 +407,7 @@ async function flagQuestion(questionId: string) {
 					<p class="eyebrow">Public sentiment</p>
 					<h2>How public impression compares</h2>
 				</div>
-				<p>
-					This stays on the topic hub, not on the claim page headline, so it never outranks the canonical
-					review.
-				</p>
+				<p>This shows where public conversation is running hotter or colder than the reviewed material.</p>
 			</div>
 			<CommunitySentimentPanel :topic-slug="slug" />
 		</section>
@@ -480,17 +415,13 @@ async function flagQuestion(questionId: string) {
 		<section class="lane lane--community">
 			<div class="section-heading section-heading--stacked">
 				<div>
-					<p class="eyebrow">Unassigned community threads</p>
-					<h2>Questions still waiting for editorial routing</h2>
+					<p class="eyebrow">Community questions</p>
+					<h2>Open threads under this topic</h2>
 				</div>
-				<p>
-					These threads remain on the topic hub until an editor links them to a canonical claim or marks them
-					as duplicate.
-				</p>
+				<p>These questions stay separate from the reviewed claim pages until an editor routes them.</p>
 			</div>
 			<p class="community-note">
-				<strong>Community discussion:</strong> these are public questions and reader comments, not peer-reviewed
-				evidence and not the site's canonical answer.
+				<strong>Community discussion:</strong> public questions and comments, not the reviewed answer.
 			</p>
 
 			<div class="community-toolbar">
@@ -510,11 +441,8 @@ async function flagQuestion(questionId: string) {
 
 			<section v-if="showComposer" class="composer">
 				<div class="composer__intro">
-					<h3>Post a new unassigned thread</h3>
-					<p>
-						This works best when the question does not already belong under one of the published claim
-						reviews above.
-					</p>
+					<h3>Post a new topic question</h3>
+					<p>Use this when none of the reviewed claims above fits what you need.</p>
 				</div>
 
 				<AuthPanel
