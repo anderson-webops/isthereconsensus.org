@@ -56,7 +56,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 <style scoped>
 .site-shell {
 	min-height: 100vh;
-	padding: 24px clamp(20px, 4vw, 64px) 56px;
+	padding: 20px clamp(18px, 3.4vw, 56px) 48px;
 	overflow-x: clip;
 }
 
@@ -70,22 +70,22 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	display: flex;
 	justify-content: space-between;
 	align-items: start;
-	gap: 20px;
-	padding-bottom: 18px;
+	gap: 16px;
+	padding-bottom: 16px;
 	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .site-header__actions {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	gap: 12px;
 	justify-content: end;
 	flex-wrap: wrap;
 }
 
 .site-brand {
 	display: grid;
-	gap: 2px;
+	gap: 1px;
 	text-decoration: none;
 }
 
@@ -103,39 +103,53 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 .site-brand__tag {
-	font-size: 0.9rem;
+	max-width: 30ch;
+	font-size: 0.88rem;
 }
 
 .site-nav {
 	display: flex;
-	gap: 14px;
+	gap: 8px;
 	flex-wrap: wrap;
 	justify-content: end;
 }
 
 .site-nav a {
+	padding: 8px 12px;
+	border-radius: 999px;
 	text-decoration: none;
 	font-weight: 600;
 	font-size: 0.95rem;
+	transition:
+		background-color 180ms ease,
+		color 180ms ease,
+		box-shadow 180ms ease;
+}
+
+.site-nav a:hover {
+	color: var(--consensus-ink);
+	background: var(--consensus-soft-line);
 }
 
 .site-nav a.router-link-active {
 	color: var(--consensus-ink);
+	background: var(--consensus-soft-accent);
+	box-shadow: inset 0 0 0 1px rgba(211, 107, 56, 0.14);
 }
 
 .site-main {
 	max-width: 1120px;
 	margin: 0 auto;
-	padding-top: 24px;
+	padding-top: 20px;
 }
 
 .site-footer {
-	margin-top: 56px;
-	padding-top: 20px;
+	margin-top: 48px;
+	padding-top: 18px;
 	border-top: 1px solid var(--consensus-soft-line);
 	display: flex;
 	justify-content: space-between;
-	gap: 24px;
+	gap: 20px;
 	flex-wrap: wrap;
 	font-size: 0.95rem;
 }
@@ -152,9 +166,11 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 .site-footer__links {
 	display: flex;
-	gap: 14px;
+	gap: 10px 12px;
 	flex-wrap: wrap;
 	align-items: start;
+	justify-content: end;
+	max-width: 420px;
 }
 
 .site-footer__links a {
@@ -164,13 +180,13 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 @media (max-width: 700px) {
 	.site-shell {
-		padding: 16px 14px 32px;
+		padding: 14px 14px 28px;
 	}
 
 	.site-header {
 		align-items: stretch;
 		flex-direction: column;
-		padding-bottom: 14px;
+		padding-bottom: 12px;
 	}
 
 	.site-header__actions {
@@ -180,15 +196,20 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-nav {
 		justify-content: start;
+		gap: 6px;
+	}
+
+	.site-nav a {
+		padding: 7px 10px;
 	}
 
 	.site-main {
-		padding-top: 18px;
+		padding-top: 16px;
 	}
 
 	.site-footer {
-		margin-top: 40px;
-		padding-top: 16px;
+		margin-top: 32px;
+		padding-top: 14px;
 	}
 }
 </style>

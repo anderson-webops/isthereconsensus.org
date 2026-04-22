@@ -31,12 +31,12 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 <style scoped>
 .meter-card {
 	display: grid;
-	gap: 8px;
+	gap: 10px;
 }
 
 .meter {
 	position: relative;
-	height: 10px;
+	height: 12px;
 }
 
 .meter__track,
@@ -50,7 +50,7 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 
 .meter__track {
 	width: 100%;
-	background: rgba(21, 17, 13, 0.09);
+	background: rgba(21, 17, 13, 0.08);
 }
 
 .meter__fill {
@@ -61,12 +61,24 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 	display: flex;
 	justify-content: space-between;
 	gap: 12px;
-	font-size: 0.92rem;
+	font-size: 0.9rem;
 	align-items: baseline;
+}
+
+.meter__meta strong {
+	font-family: "Fraunces", serif;
+	font-size: 1.02rem;
+	letter-spacing: -0.02em;
+	line-height: 1;
+}
+
+.meter__meta span {
+	color: var(--consensus-muted);
 }
 
 .meter__caption {
 	margin: 0;
+	max-width: 40ch;
 	color: var(--consensus-muted);
 	line-height: 1.55;
 }

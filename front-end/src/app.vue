@@ -86,6 +86,8 @@ useSeoMeta({
 	--consensus-elevated-surface: rgba(255, 255, 255, 0.74);
 	--consensus-on-accent: #ffffff;
 	--consensus-link: #0f766e;
+	--consensus-focus-outline: #c25b2c;
+	--consensus-focus-ring: rgba(211, 107, 56, 0.22);
 	--consensus-page-background:
 		radial-gradient(circle at top right, rgba(211, 107, 56, 0.08), transparent 24%),
 		radial-gradient(circle at top left, rgba(53, 82, 74, 0.07), transparent 22%), var(--consensus-mist);
@@ -109,6 +111,8 @@ useSeoMeta({
 	--consensus-elevated-surface: rgba(23, 31, 42, 0.88);
 	--consensus-on-accent: #f8fafc;
 	--consensus-link: #5eead4;
+	--consensus-focus-outline: #f2a37a;
+	--consensus-focus-ring: rgba(216, 138, 99, 0.26);
 	--consensus-page-background:
 		radial-gradient(circle at top right, rgba(216, 138, 99, 0.12), transparent 20%),
 		radial-gradient(circle at top left, rgba(124, 154, 144, 0.12), transparent 24%),
@@ -170,13 +174,43 @@ select {
 
 a {
 	color: inherit;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+:where(a[href], button, input, textarea, select, summary, [role="button"], .button):focus-visible {
+	outline: 3px solid var(--consensus-focus-outline);
+	outline-offset: 3px;
+	box-shadow: 0 0 0 4px var(--consensus-focus-ring);
+}
+
+:where(.button) {
+	transition:
+		background-color 180ms ease,
+		color 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease,
+		transform 120ms ease;
+}
+
+:where(.button):not([aria-disabled="true"]):not(:disabled):hover {
+	transform: translateY(-1px);
+}
+
+:where(.button):not([aria-disabled="true"]):not(:disabled):active {
+	transform: translateY(0);
 }
 
 .eyebrow {
 	text-transform: uppercase;
-	letter-spacing: 0.18em;
+	letter-spacing: 0.16em;
 	font-size: 0.73rem;
+	font-weight: 600;
 	color: var(--consensus-muted);
+}
+
+:where(.prose, .policy-prose, .plain-list, .policy-list) {
+	max-width: 72ch;
 }
 
 .policy-page {
