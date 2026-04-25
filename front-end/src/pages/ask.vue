@@ -348,6 +348,7 @@ async function submitQuestion() {
 				v-if="!isLoggedIn"
 				title="Sign in to post"
 				hint="Only logged-in members can add new community threads."
+				variant="inline"
 			/>
 			<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
 

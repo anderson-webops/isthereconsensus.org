@@ -5,10 +5,12 @@ const props = withDefaults(
 	defineProps<{
 		title?: string;
 		hint?: string;
+		variant?: "card" | "inline";
 	}>(),
 	{
 		title: "Account access",
-		hint: ""
+		hint: "",
+		variant: "card"
 	}
 );
 
@@ -149,7 +151,7 @@ async function handleChangePassword() {
 </script>
 
 <template>
-	<section class="auth-panel">
+	<section class="auth-panel" :class="{ 'auth-panel--inline': props.variant === 'inline' }">
 		<header class="auth-panel__header">
 			<div>
 				<h2>{{ props.title }}</h2>
@@ -267,6 +269,13 @@ async function handleChangePassword() {
 	padding: 20px;
 	display: grid;
 	gap: 16px;
+}
+
+.auth-panel--inline {
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 }
 
 .auth-panel__header h2,
