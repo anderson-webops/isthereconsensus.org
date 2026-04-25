@@ -255,7 +255,7 @@ function formatTopicDate(value?: string) {
 		<section class="hero">
 			<div class="hero__copy">
 				<p class="eyebrow">Find out where the science stands</p>
-				<h1>Search the claim. Read the bottom line. Open the nuance only if you need it.</h1>
+				<h1>Search a claim. Read the bottom line.</h1>
 				<p class="hero__lead">
 					Clear, reviewed summaries for scientific questions that are usually louder in public than they are
 					uncertain in the evidence.
@@ -268,7 +268,7 @@ function formatTopicDate(value?: string) {
 							id="home-search"
 							v-model="search"
 							type="text"
-							placeholder="Try vaccines and autism, GMOs, global warming, or learning styles"
+							placeholder="Try vaccines, GMOs, climate, or learning styles"
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
@@ -412,9 +412,9 @@ function formatTopicDate(value?: string) {
 }
 
 .hero__copy {
-	padding: 28px;
+	padding: 24px;
 	display: grid;
-	gap: 20px;
+	gap: 18px;
 }
 
 .hero h1,
@@ -427,17 +427,18 @@ function formatTopicDate(value?: string) {
 }
 
 .hero h1 {
-	font-size: clamp(2.7rem, 5vw, 4.4rem);
-	line-height: 0.98;
+	max-width: 18ch;
+	color: var(--consensus-ink);
+	font-size: var(--consensus-home-title-size);
+	line-height: 1.03;
+	letter-spacing: 0;
 	margin: 0;
-	max-width: 13ch;
 }
 
 .hero__lead,
 .claim-row p,
 .topic-row p,
-.search-panel__hint,
-.hero__copy {
+.search-panel__hint {
 	color: var(--consensus-muted);
 }
 
@@ -486,6 +487,7 @@ function formatTopicDate(value?: string) {
 
 .search-panel__label {
 	font-size: 0.95rem;
+	color: var(--consensus-ink);
 }
 
 .search-panel__row {
@@ -710,6 +712,15 @@ function formatTopicDate(value?: string) {
 	.explainer-row,
 	.trust-row {
 		border-radius: 20px;
+	}
+
+	.hero__copy {
+		padding: 20px;
+		gap: 16px;
+	}
+
+	.search-panel {
+		padding: 16px;
 	}
 
 	.search-panel__row {

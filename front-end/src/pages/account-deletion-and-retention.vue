@@ -51,7 +51,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Account deletion and retention</p>
-			<h1>What happens to accounts, public questions, and retained records when a user leaves.</h1>
+			<h1>Account deletion and retained records.</h1>
 			<p>
 				This page explains the site’s current request-based approach to account closure, public-content
 				handling, and retained operational records.

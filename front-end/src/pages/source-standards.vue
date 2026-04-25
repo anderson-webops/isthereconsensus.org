@@ -20,7 +20,7 @@ useHead({
 
 		<header class="page-header">
 			<p class="eyebrow">Topic sourcing notes</p>
-			<h1>A compact reference for topic-specific source stacks.</h1>
+			<h1>Topic-specific source stacks.</h1>
 			<p>
 				This page is a low-profile reference, not part of the main public reading path. Most readers only need
 				the main How Reviews Work page.

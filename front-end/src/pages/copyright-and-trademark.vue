@@ -52,7 +52,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Copyright and trademark complaints</p>
-			<h1>How rights-related complaints should reach the site and what happens next.</h1>
+			<h1>Rights complaints and takedown requests.</h1>
 			<p>
 				This page describes the site’s current complaint intake workflow for copyright, trademark, and related
 				rights issues.

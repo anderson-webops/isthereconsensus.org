@@ -265,8 +265,8 @@ async function submitQuestion() {
 
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
-			<h1>Search first. Ask only when the close reviewed page still misses the question.</h1>
-			<p>Claim reviews come first. Topics and explainers are fallback links, not parallel answer lanes.</p>
+			<h1>Search first. Ask what is missing.</h1>
+			<p>Open a reviewed page when it fits. Use the queue when it does not.</p>
 		</header>
 
 		<section class="search-panel">

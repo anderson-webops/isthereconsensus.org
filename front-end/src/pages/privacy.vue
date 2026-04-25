@@ -97,7 +97,7 @@ useHead({
 
 		<header class="privacy-header">
 			<p class="eyebrow">Privacy Policy</p>
-			<h1>How isthereconsensus.org handles personal information.</h1>
+			<h1>How we handle personal information.</h1>
 			<p>
 				Effective April 11, 2026. This policy explains what information the site collects, how that information
 				is used, when it may be disclosed, and what practical choices users currently have.

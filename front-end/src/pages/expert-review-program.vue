@@ -56,7 +56,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Verified expert review program</p>
-			<h1>How expert reviewers are verified, assigned, and held to review standards.</h1>
+			<h1>Expert reviewer verification.</h1>
 			<p>
 				This page defines the verified-expert layer that sits between community discussion and reviewed
 				editorial publication.

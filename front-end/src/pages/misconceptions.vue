@@ -33,7 +33,7 @@ useHead({
 
 		<header class="misconception-header">
 			<p class="eyebrow">Misconception modules</p>
-			<h1>The recurring interpretive mistakes that show up across claim pages.</h1>
+			<h1>Recurring mistakes across claim pages.</h1>
 			<p>
 				These modules are designed to be short, reusable embeds on claim pages. They correct predictable errors
 				before readers mistake a headline, anecdote, or partial result for the state of the evidence.

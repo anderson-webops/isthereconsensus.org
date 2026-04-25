@@ -57,7 +57,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Conflict and funding disclosure</p>
-			<h1>Who can influence reviewed pages, and what they must disclose.</h1>
+			<h1>Influence, funding, and disclosures.</h1>
 			<p>
 				This policy governs the interests that must be disclosed by staff editors, verified experts, and anyone
 				with approval power over reviewed claim pages.

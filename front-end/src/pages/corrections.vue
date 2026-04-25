@@ -59,7 +59,7 @@ useHead({
 
 		<header class="corrections-header">
 			<p class="eyebrow">Corrections policy</p>
-			<h1>How factual corrections and major updates should be handled.</h1>
+			<h1>Corrections and major updates.</h1>
 			<p>
 				The goal is a visible scholarly record, not silent copy edits that make it impossible to tell what
 				changed or why a page moved.

@@ -51,7 +51,7 @@ useHead({
 
 		<header class="standards-header">
 			<p class="eyebrow">How reviews work</p>
-			<h1>What a reviewed page shows, and what it does not pretend to do.</h1>
+			<h1>How reviewed pages show evidence and uncertainty.</h1>
 			<p>
 				This is the one public trust page most readers need. It explains what evidence carries the answer, which
 				trust signals should be visible, and how the site handles uncertainty and updates.

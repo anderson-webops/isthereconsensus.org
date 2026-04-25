@@ -88,6 +88,9 @@ useSeoMeta({
 	--consensus-link: #0f766e;
 	--consensus-focus-outline: #c25b2c;
 	--consensus-focus-ring: rgba(211, 107, 56, 0.22);
+	--consensus-home-title-size: 3.35rem;
+	--consensus-page-title-size: 3.15rem;
+	--consensus-page-title-measure: 20ch;
 	--consensus-page-background:
 		radial-gradient(circle at top right, rgba(211, 107, 56, 0.08), transparent 24%),
 		radial-gradient(circle at top left, rgba(53, 82, 74, 0.07), transparent 22%), var(--consensus-mist);
@@ -244,8 +247,9 @@ a {
 
 .policy-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
-	line-height: 1;
+	max-width: var(--consensus-page-title-measure);
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.04;
 }
 
 .policy-header p,
@@ -328,6 +332,51 @@ a {
 .policy-callout a,
 .policy-prose a {
 	color: var(--consensus-link);
+}
+
+body
+	:is(
+		.account-header,
+		.ask-page__header,
+		.claim-page__header,
+		.corrections-header,
+		.directory__header,
+		.editor-header,
+		.editorial-header,
+		.explainer-detail-header,
+		.explainer-header,
+		.guidelines-header,
+		.misconception-header,
+		.not-found,
+		.page-header,
+		.privacy-header,
+		.setup__copy,
+		.standards-header,
+		.terms-header,
+		.topic-page__header
+	)
+	h1:not(.no-page-title-scale) {
+	max-width: var(--consensus-page-title-measure);
+	color: var(--consensus-ink);
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.04;
+	letter-spacing: 0;
+}
+
+@media (max-width: 720px) {
+	:root {
+		--consensus-home-title-size: 2.55rem;
+		--consensus-page-title-size: 2.35rem;
+		--consensus-page-title-measure: 18ch;
+	}
+}
+
+@media (max-width: 420px) {
+	:root {
+		--consensus-home-title-size: 2.05rem;
+		--consensus-page-title-size: 1.95rem;
+		--consensus-page-title-measure: none;
+	}
 }
 
 @media (max-width: 720px) {

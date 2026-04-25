@@ -13,7 +13,7 @@ useHead({
 
 		<header class="explainer-header">
 			<p class="eyebrow">Evergreen explainers</p>
-			<h1>The core concepts you should not have to relearn on every topic page.</h1>
+			<h1>Core concepts behind recurring confusion.</h1>
 			<p>
 				These explainers carry the recurring ideas behind the site: evidence hierarchies, risk, causation,
 				replication, falsifiability, and the difference between settled consensus and frontier debate.

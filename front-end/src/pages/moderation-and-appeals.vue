@@ -54,7 +54,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Moderation and appeals</p>
-			<h1>How moderation decisions should be explained, challenged, and reviewed.</h1>
+			<h1>Moderation decisions and appeals.</h1>
 			<p>
 				This page operationalizes the community rules by defining notices, action types, and appeal
 				expectations.

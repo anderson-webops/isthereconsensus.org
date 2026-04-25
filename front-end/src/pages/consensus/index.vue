@@ -77,7 +77,7 @@ const filteredTopics = computed(() =>
 
 		<header class="directory__header">
 			<p class="eyebrow">Browse topics</p>
-			<h1>Browse topics and open the reviewed claim that fits your question.</h1>
+			<h1>Browse topics. Open a reviewed claim.</h1>
 			<p>Search, filter, and go straight to the closest topic.</p>
 		</header>
 

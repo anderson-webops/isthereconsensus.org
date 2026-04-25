@@ -54,7 +54,7 @@ useHead({
 
 		<header class="policy-header">
 			<p class="eyebrow">Automation and AI disclosure</p>
-			<h1>Where automation can assist, and where human review still has to own the decision.</h1>
+			<h1>Automation support and human review.</h1>
 			<p>
 				This page explains the site’s operating rules for automation, AI-assisted drafting, and decision-support
 				tools.
