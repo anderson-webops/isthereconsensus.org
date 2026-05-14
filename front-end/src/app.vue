@@ -24,6 +24,9 @@ const structuredData = [
 ];
 
 useHead(() => ({
+	htmlAttrs: {
+		lang: "en"
+	},
 	title: appName,
 	meta: noindexRoute.value
 		? [
@@ -75,7 +78,7 @@ useSeoMeta({
 	--consensus-muted: #5d544f;
 	--consensus-cream: #f6f1e8;
 	--consensus-sand: #e7d6c4;
-	--consensus-ember: #d36b38;
+	--consensus-ember: #a64620;
 	--consensus-moss: #35524a;
 	--consensus-mist: #fbf8f3;
 	--consensus-surface: #fffdf9;
@@ -103,7 +106,7 @@ useSeoMeta({
 	--consensus-muted: #a4afbd;
 	--consensus-cream: #171d26;
 	--consensus-sand: #273241;
-	--consensus-ember: #d88a63;
+	--consensus-ember: #f0a37a;
 	--consensus-moss: #7c9a90;
 	--consensus-mist: #0c1117;
 	--consensus-surface: #121821;
@@ -112,7 +115,7 @@ useSeoMeta({
 	--consensus-soft-accent: rgba(216, 138, 99, 0.12);
 	--consensus-field-surface: #171f2a;
 	--consensus-elevated-surface: rgba(23, 31, 42, 0.88);
-	--consensus-on-accent: #f8fafc;
+	--consensus-on-accent: #111827;
 	--consensus-link: #5eead4;
 	--consensus-focus-outline: #f2a37a;
 	--consensus-focus-ring: rgba(216, 138, 99, 0.26);

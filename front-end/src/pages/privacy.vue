@@ -454,6 +454,10 @@ useHead({
 	color: var(--consensus-link);
 }
 
+.privacy-callout a.button--primary {
+	color: var(--consensus-on-accent);
+}
+
 code {
 	font-family: "JetBrains Mono", monospace;
 	font-size: 0.95em;

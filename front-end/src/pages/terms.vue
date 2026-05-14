@@ -440,6 +440,10 @@ useHead({
 .terms-callout a {
 	color: var(--consensus-link);
 }
+
+.terms-callout a.button--primary {
+	color: var(--consensus-on-accent);
+}
 @media (max-width: 820px) {
 	.terms-summary {
 		grid-template-columns: 1fr;
