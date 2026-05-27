@@ -69,6 +69,9 @@ type ExtendedNuxtConfig = NuxtConfig & {
 type ColorModePreference = "light" | "dark" | "system";
 const contentColorPreference: ColorModePreference = "system";
 const colorModeFallback: Exclude<ColorModePreference, "system"> = "light";
+const devtoolsEnabled = process.env.NUXT_DEVTOOLS_ENABLED
+	? process.env.NUXT_DEVTOOLS_ENABLED === "true"
+	: process.env.CI !== "true";
 
 export default defineNuxtConfig({
 	alias: {
@@ -81,7 +84,7 @@ export default defineNuxtConfig({
 	srcDir: "src",
 
 	devtools: {
-		enabled: true
+		enabled: devtoolsEnabled
 	},
 
 	app: {
