@@ -653,25 +653,36 @@ const rawClaims: SeedClaim[] = [
 			"This is a flagship example of a strong public-health consensus with a persistent gap between expert evidence and public belief.",
 		sources: [
 			{
-				kind: "guideline",
-				title: "CDC vaccine safety guidance",
-				publisher: "CDC",
+				kind: "consensus_statement",
+				title: "WHO GACVS analysis on vaccines and autism",
+				publisher: "World Health Organization",
+				year: 2025,
+				url:
+					"https://www.who.int/news/item/11-12-2025-who-expert-group-s-new-analysis-reaffirms-there-is-no-link-between-vaccines-and-autism",
 				stance: "supports",
-				note: "Used to anchor current public-health guidance and safety summaries.",
+				note:
+					"Used to anchor the current international safety review after WHO's 2025 autism-and-vaccines evidence update.",
 				order: 1
 			},
 			{
-				kind: "consensus_statement",
-				title: "WHO vaccine safety resources",
+				kind: "systematic_review",
+				title: "Vaccines, Thimerosal and Autism Spectrum Disorder, evidence review 2010-2025",
 				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/publications/m/item/update-vaccines-thimerosal-autism",
 				stance: "supports",
-				note: "Useful for international consensus framing and public-health messaging.",
+				note:
+					"Shows the commissioned evidence review behind WHO's updated conclusion on childhood vaccines, thiomersal, aluminum adjuvants, and autism.",
 				order: 2
 			},
 			{
 				kind: "meta_analysis",
-				title: "Large pooled epidemiological studies on vaccines and autism",
-				publisher: "Evidence synthesis",
+				title: "Vaccines are not associated with autism: an evidence-based meta-analysis",
+				publisher: "Vaccine",
+				year: 2014,
+				url: "https://pubmed.ncbi.nlm.nih.gov/24814559/",
+				doi: "10.1016/j.vaccine.2014.04.085",
+				pmid: "24814559",
 				stance: "supports",
 				note: "The key source type for separating anecdote from broad population outcomes.",
 				order: 3
@@ -709,24 +720,30 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "consensus_statement",
-				title: "IPCC assessment reports",
+				title: "AR6 Synthesis Report: Climate Change 2023",
 				publisher: "IPCC",
+				year: 2023,
+				url: "https://www.ipcc.ch/report/ar6/syr/",
 				stance: "supports",
 				note: "The main synthesis resource for the full climate evidence stack.",
 				order: 1
 			},
 			{
 				kind: "guideline",
-				title: "NASA and NOAA climate summaries",
-				publisher: "NASA / NOAA",
+				title: "NASA climate evidence summary",
+				publisher: "NASA",
+				url: "https://science.nasa.gov/climate-change/evidence/",
 				stance: "supports",
 				note: "Useful for observational records and clear public-facing summaries.",
 				order: 2
 			},
 			{
 				kind: "meta_analysis",
-				title: "Consensus-in-the-literature assessments",
-				publisher: "Peer-reviewed literature",
+				title: "Consensus on consensus: a synthesis of consensus estimates on human-caused global warming",
+				publisher: "Environmental Research Letters",
+				year: 2016,
+				url: "https://doi.org/10.1088/1748-9326/11/4/048002",
+				doi: "10.1088/1748-9326/11/4/048002",
 				stance: "supports",
 				note: "Useful when showing how agreement is measured among domain experts.",
 				order: 3
@@ -811,19 +828,34 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "consensus_statement",
-				title: "Major biology society statements on evolution",
-				publisher: "Scientific societies",
+				title: "Science, Evolution, and Creationism",
+				publisher: "National Academies",
+				year: 2008,
+				url: "https://www.nationalacademies.org/publications/11876",
+				doi: "10.17226/11876",
 				stance: "supports",
 				note: "Useful for clarifying that this is a foundational biological consensus, not a marginal view.",
 				order: 1
 			},
 			{
-				kind: "context",
-				title: "Comparative genetics and fossil evidence overviews",
-				publisher: "Biology education references",
+				kind: "consensus_statement",
+				title: "Statement on the Teaching of Evolution",
+				publisher: "American Association for the Advancement of Science",
+				year: 2006,
+				url: "https://www.aaas.org/sites/default/files/0219boardstatement.pdf",
 				stance: "supports",
-				note: "Helpful when explaining why the evidence is cumulative across multiple fields.",
+				note:
+					"Documents the scientific-society baseline that evolution is a robust, widely accepted foundation of modern biology.",
 				order: 2
+			},
+			{
+				kind: "context",
+				title: "Misconceptions about evolution",
+				publisher: "University of California Museum of Paleontology",
+				url: "https://evolution.berkeley.edu/teach-evolution/misconceptions-about-evolution/",
+				stance: "context",
+				note: "Helpful when explaining why the everyday phrase 'just a theory' misreads scientific terminology.",
+				order: 3
 			}
 		]
 	},
@@ -905,24 +937,29 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "guideline",
-				title: "CDC antimicrobial resistance guidance",
+				title: "CDC antimicrobial resistance overview",
 				publisher: "CDC",
+				year: 2025,
+				url: "https://www.cdc.gov/antimicrobial-resistance/about/index.html",
 				stance: "supports",
 				note: "Useful for public-health framing and current stewardship guidance.",
 				order: 1
 			},
 			{
 				kind: "consensus_statement",
-				title: "WHO antimicrobial resistance resources",
+				title: "WHO antimicrobial resistance fact sheet",
 				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
 				stance: "supports",
 				note: "Useful for the global burden and international consensus on stewardship.",
 				order: 2
 			},
 			{
 				kind: "systematic_review",
-				title: "Reviews on stewardship interventions and resistance outcomes",
-				publisher: "Evidence synthesis",
+				title: "Improving how physicians working in hospital settings prescribe antibiotics",
+				publisher: "Cochrane",
+				year: 2017,
+				url: "https://www.cochrane.org/evidence/CD003543_improving-how-physicians-working-hospital-settings-prescribe-antibiotics",
 				stance: "supports",
 				note: "Helpful for showing that the question is about reducing a known risk, not discovering whether the risk exists.",
 				order: 3
@@ -1062,24 +1099,31 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "consensus_statement",
-				title: "IPCC energy-system assessments",
+				title: "Climate Change 2022: Mitigation of Climate Change",
 				publisher: "IPCC",
+				year: 2022,
+				url: "https://www.ipcc.ch/report/ar6/wg3/",
 				stance: "supports",
 				note: "Useful for comparing low-carbon pathways and energy-system tradeoffs.",
 				order: 1
 			},
 			{
 				kind: "guideline",
-				title: "IAEA safety and nuclear energy overviews",
+				title: "Nuclear power and climate change: Decarbonization",
 				publisher: "IAEA",
+				url: "https://www.iaea.org/topics/nuclear-power-and-climate-change",
 				stance: "supports",
 				note: "Important for operational safety framing and reactor context.",
 				order: 2
 			},
 			{
-				kind: "context",
-				title: "Comparative energy mortality analyses",
-				publisher: "Energy and public-health research",
+				kind: "landmark_study",
+				title: "Electricity generation and health",
+				publisher: "The Lancet",
+				year: 2007,
+				url: "https://pubmed.ncbi.nlm.nih.gov/17876910/",
+				doi: "10.1016/S0140-6736(07)61253-7",
+				pmid: "17876910",
 				stance: "supports",
 				note: "Helpful for comparing routine fossil-fuel harms to nuclear risk in the same frame.",
 				order: 3

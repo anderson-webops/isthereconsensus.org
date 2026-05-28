@@ -86,7 +86,10 @@ export async function seedClaims() {
 		}
 
 		for (const source of seed.sources) {
-			const existingSource = await ClaimSource.findOne({ claim: claim._id, title: source.title });
+			let existingSource = await ClaimSource.findOne({ claim: claim._id, title: source.title });
+			if (!existingSource && typeof source.order === "number") {
+				existingSource = await ClaimSource.findOne({ claim: claim._id, order: source.order });
+			}
 			if (!existingSource) {
 				await ClaimSource.create({
 					claim: claim._id,
@@ -97,11 +100,19 @@ export async function seedClaims() {
 			}
 
 			const missingSourceFields: Record<string, unknown> = {};
-			if (!existingSource.url && source.url) missingSourceFields.url = source.url;
-			if (!existingSource.year && source.year) missingSourceFields.year = source.year;
-			if (!existingSource.doi && source.doi) missingSourceFields.doi = source.doi;
-			if (!existingSource.pmid && source.pmid) missingSourceFields.pmid = source.pmid;
-			if (!existingSource.pmcid && source.pmcid) missingSourceFields.pmcid = source.pmcid;
+			const shouldResyncSeedSource = existingSource.title !== source.title && existingSource.order === source.order;
+			if (shouldResyncSeedSource && existingSource.kind !== source.kind) missingSourceFields.kind = source.kind;
+			if (shouldResyncSeedSource) missingSourceFields.title = source.title;
+			if ((shouldResyncSeedSource || !existingSource.publisher) && source.publisher) {
+				missingSourceFields.publisher = source.publisher;
+			}
+			if ((shouldResyncSeedSource || !existingSource.note) && source.note) missingSourceFields.note = source.note;
+			if (existingSource.order !== source.order) missingSourceFields.order = source.order;
+			if ((shouldResyncSeedSource || !existingSource.url) && source.url) missingSourceFields.url = source.url;
+			if ((shouldResyncSeedSource || !existingSource.year) && source.year) missingSourceFields.year = source.year;
+			if ((shouldResyncSeedSource || !existingSource.doi) && source.doi) missingSourceFields.doi = source.doi;
+			if ((shouldResyncSeedSource || !existingSource.pmid) && source.pmid) missingSourceFields.pmid = source.pmid;
+			if ((shouldResyncSeedSource || !existingSource.pmcid) && source.pmcid) missingSourceFields.pmcid = source.pmcid;
 			if (!existingSource.isAnchor && source.isAnchor) missingSourceFields.isAnchor = source.isAnchor;
 			if ((!existingSource.appraisal || existingSource.appraisal === "not_appraised") && source.appraisal) {
 				missingSourceFields.appraisal = source.appraisal;

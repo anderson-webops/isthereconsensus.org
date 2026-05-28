@@ -47,12 +47,12 @@
 		"anymatch": {
 			"picomatch": "2.3.2"
 		},
-		"brace-expansion": "5.0.5",
+		"brace-expansion": "5.0.6",
 		"micromatch": {
 			"picomatch": "2.3.2"
 		},
 		"minimatch@10.2.4": {
-			"brace-expansion": "5.0.5"
+			"brace-expansion": "5.0.6"
 		},
 		"minimatch@9.0.9": {
 			"brace-expansion": "2.0.3"
@@ -60,7 +60,7 @@
 		"node-forge": "1.4.0",
 		"path-to-regexp": "8.4.0",
 		"picomatch": "4.0.4",
-		"qs": "6.14.2",
+		"qs": "6.15.2",
 		"readdir-glob": {
 			"minimatch": "5.1.9"
 		},
@@ -71,12 +71,12 @@
 		"srvx": "0.11.13",
 		"@cypress/request": {
 			"uuid": "14.0.0",
-			"qs": "6.15.0"
+			"qs": "6.15.2"
 		},
 		"nitropack": "2.13.4",
 		"simple-git": "3.36.0"
 	},
 	"dependencies": {
-		"qs": "6.14.2"
+		"qs": "6.15.2"
 	}
 }

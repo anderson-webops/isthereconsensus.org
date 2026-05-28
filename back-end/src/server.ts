@@ -440,6 +440,20 @@ async function main() {
 		return ClaimSource.find({ claim: claimId }).sort({ order: 1, createdAt: 1 }).lean();
 	}
 
+	async function loadClaimSourceCountMap(claimIds: mongoose.Types.ObjectId[]) {
+		if (!claimIds.length) return new Map<string, number>();
+
+		const sourceCounts = await ClaimSource.aggregate([
+			{ $match: { claim: { $in: claimIds } } },
+			{ $group: { _id: "$claim", count: { $sum: 1 } } }
+		]);
+		const sourceCountMap = new Map<string, number>();
+		for (const row of sourceCounts) {
+			sourceCountMap.set(row._id.toString(), row.count);
+		}
+		return sourceCountMap;
+	}
+
 	function appendClaimChangeLog(
 		claim: {
 			changeLog?: Array<{
@@ -609,6 +623,7 @@ async function main() {
 				const publishedClaims = await Claim.find({ status: "published" })
 					.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
 					.lean();
+				const sourceCountMap = await loadClaimSourceCountMap(publishedClaims.map(claim => claim._id));
 				claimCountMap = publishedClaims.reduce((map, claim) => {
 					const key = claim.topic.toString();
 					map.set(key, (map.get(key) ?? 0) + 1);
@@ -628,6 +643,7 @@ async function main() {
 							confidenceScore: claim.confidenceScore,
 							reviewMode: claim.reviewMode,
 							bottomLine: claim.bottomLine,
+							sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0,
 							searchCutoffAt: claim.searchCutoffAt,
 							lastReviewedAt: claim.lastReviewedAt,
 							publishedAt: claim.publishedAt,
@@ -673,11 +689,15 @@ async function main() {
 					.limit(5)
 					.lean()
 			]);
+			const sourceCountMap = await loadClaimSourceCountMap(featuredClaims.map(claim => claim._id));
 			return res.json({
 				topic: {
 					...topic,
 					claimCount,
-					featuredClaims
+					featuredClaims: featuredClaims.map(claim => ({
+						...claim,
+						sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0
+					}))
 				}
 			});
 		}
@@ -695,14 +715,7 @@ async function main() {
 			const claims = await Claim.find({ topic: topic._id, status: "published" })
 				.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
 				.lean();
-			const sourceCounts = await ClaimSource.aggregate([
-				{ $match: { claim: { $in: claims.map(claim => claim._id) } } },
-				{ $group: { _id: "$claim", count: { $sum: 1 } } }
-			]);
-			const sourceCountMap = new Map<string, number>();
-			for (const row of sourceCounts) {
-				sourceCountMap.set(row._id.toString(), row.count);
-			}
+			const sourceCountMap = await loadClaimSourceCountMap(claims.map(claim => claim._id));
 
 			return res.json({
 				claims: claims.map(claim => ({
