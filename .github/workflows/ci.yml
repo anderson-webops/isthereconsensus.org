@@ -80,6 +80,27 @@ jobs:
       - name: Unit tests
         run: npm test
 
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Show toolchain
+        run: |
+          node -v
+          npm -v
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Dependency audit
+        run: npm audit
+
   accessibility:
     runs-on: ubuntu-latest
     steps:
