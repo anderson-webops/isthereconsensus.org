@@ -8,14 +8,14 @@
 	"scripts": {
 		"server": "tsx watch -r dotenv/config src/server.ts",
 		"server:once": "tsx -r dotenv/config src/server.ts",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "node --test --import tsx test/*.test.ts",
 		"start": "node dist/server.js",
 		"build": "tsc -p tsconfig.json",
 		"watch": "tsc -w",
 		"dev": "tsx watch -r dotenv/config src/server.ts",
 		"up": "taze major -I",
-		"lint": "eslint \"src/**/*.{js,ts}\"",
-		"lint-fix": "eslint \"src/**/*.{js,ts}\" --fix",
+		"lint": "eslint \"{src,test}/**/*.{js,ts}\"",
+		"lint-fix": "eslint \"{src,test}/**/*.{js,ts}\" --fix",
 		"typecheck": "tsc --noEmit -p tsconfig.json",
 		"create-admin": "node dist/create-admin-user.js",
 		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts"

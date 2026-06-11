@@ -8,7 +8,7 @@ export default base.append(
 			files: ["**/*.ts"],
 			languageOptions: {
 				parser: ts.parser,
-				parserOptions: { project: "./tsconfig.json", sourceType: "module" },
+				parserOptions: { project: "./tsconfig.eslint.json", sourceType: "module" },
 				globals: { ...globals.node }
 			},
 			rules: {
@@ -16,7 +16,8 @@ export default base.append(
 				// "import-ext/extensions": ["error", "always", { js: "always", ts: "always" }],
 				// can still tap into lite rules via the old name
 				// "import-ext/no-unresolved": ["error", { ignore: ["\\.vue$"] }],
-				"new-cap": "off"
+				"new-cap": "off",
+				"test/no-import-node-test": "off"
 			}
 		},
 	{ files: ["**/*.{js,cjs,mjs}"], languageOptions: { globals: { ...globals.node } } },

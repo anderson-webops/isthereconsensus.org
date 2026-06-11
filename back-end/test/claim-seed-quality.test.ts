@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { defaultClaims } from "../src/data/claims.js";
+
+const launchSensitiveClaimSlugs = [
+	"do-childhood-vaccines-cause-autism",
+	"is-recent-global-warming-mainly-caused-by-human-activity",
+	"does-antibiotic-overuse-drive-antibiotic-resistance",
+	"is-evolution-just-a-theory",
+	"is-nuclear-power-more-dangerous-than-fossil-fuel-energy"
+];
+
+function primarySourceLink(source: (typeof defaultClaims)[number]["sources"][number]) {
+	return source.url || source.doi || source.pmid || source.pmcid || "";
+}
+
+describe("default claim seed quality", () => {
+	it("keeps seeded claim slugs unique", () => {
+		const keys = defaultClaims.map(claim => `${claim.topicSlug}/${claim.slug}`);
+		assert.equal(new Set(keys).size, keys.length);
+	});
+
+	it("keeps every published claim complete enough for public claim pages", () => {
+		const publishedClaims = defaultClaims.filter(claim => claim.status === "published");
+
+		assert.ok(publishedClaims.length > 0);
+		for (const claim of publishedClaims) {
+			assert.ok(claim.title.trim(), `${claim.slug} is missing a title`);
+			assert.ok(claim.bottomLine.trim(), `${claim.slug} is missing a bottom line`);
+			assert.ok(claim.editorSummary.trim(), `${claim.slug} is missing an editor summary`);
+			assert.ok(claim.uncertaintySummary.trim(), `${claim.slug} is missing uncertainty summary copy`);
+			assert.ok(claim.stableCore.length >= 2, `${claim.slug} needs stable-core bullets`);
+			assert.ok(claim.openQuestions.length >= 1, `${claim.slug} needs visible uncertainty limits`);
+			assert.ok(claim.evidenceSummaries.length >= 1, `${claim.slug} needs outcome evidence summaries`);
+			assert.ok(claim.changeLog.length >= 1, `${claim.slug} needs a public change log`);
+			assert.ok(claim.sources.length >= 2, `${claim.slug} needs at least two source rows`);
+
+			const sourceOrders = claim.sources.map(source => source.order);
+			assert.equal(new Set(sourceOrders).size, sourceOrders.length, `${claim.slug} has duplicate source orders`);
+			for (const source of claim.sources) {
+				assert.ok(source.title.trim(), `${claim.slug} has a source without a title`);
+				assert.ok(source.publisher.trim(), `${claim.slug} has a source without a publisher`);
+				assert.ok(source.note.trim(), `${claim.slug} has a source without an editorial note`);
+				assert.ok(source.order > 0, `${claim.slug} has a source without a positive order`);
+			}
+		}
+	});
+
+	it("keeps launch-sensitive claim cards backed by linked source stacks", () => {
+		for (const slug of launchSensitiveClaimSlugs) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing launch-sensitive claim seed ${slug}`);
+			assert.equal(claim.status, "published", `${slug} must stay published for launch`);
+			assert.ok(claim.sources.length >= 3, `${slug} must expose at least three sources`);
+			assert.ok(
+				claim.sources.some(source => source.kind !== "context"),
+				`${slug} needs at least one decision-weight source, not only background context`
+			);
+
+			for (const source of claim.sources) {
+				assert.ok(primarySourceLink(source), `${slug} source "${source.title}" needs a public link or identifier`);
+			}
+		}
+	});
+});

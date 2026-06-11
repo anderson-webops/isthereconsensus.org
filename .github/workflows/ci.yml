@@ -78,7 +78,7 @@ jobs:
         run: npm ci
 
       - name: Unit tests
-        run: npm run -w front-end test:unit
+        run: npm test
 
   accessibility:
     runs-on: ubuntu-latest
