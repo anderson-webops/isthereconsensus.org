@@ -3,6 +3,110 @@ import { ClaimSource } from "../models/schemas/ClaimSource.js";
 import { Topic } from "../models/schemas/Topic.js";
 import { defaultClaims } from "./claims.js";
 
+type SeedClaimSource = (typeof defaultClaims)[number]["sources"][number];
+
+interface SeedSourceUpdate {
+	$set?: Record<string, unknown>;
+	$unset?: Record<string, "">;
+}
+
+interface ExistingClaimSourceForSeedSync {
+	kind?: string;
+	title?: string;
+	publisher?: string;
+	year?: number;
+	url?: string;
+	doi?: string;
+	pmid?: string;
+	pmcid?: string;
+	isAnchor?: boolean;
+	appraisal?: string;
+	citationStatus?: string;
+	citationCheckedAt?: Date | string;
+	statusSources?: string[];
+	stance?: string;
+	note?: string;
+	order?: number;
+}
+
+const optionalSeedStringFields = ["publisher", "url", "doi", "pmid", "pmcid"] as const;
+
+function datesMatch(existingValue: Date | string | undefined, seedValue: Date) {
+	if (!existingValue) return false;
+	const existingDate = existingValue instanceof Date ? existingValue : new Date(existingValue);
+	return !Number.isNaN(existingDate.getTime()) && existingDate.getTime() === seedValue.getTime();
+}
+
+function stringArraysMatch(existingValues: string[] | undefined, seedValues: string[]) {
+	if (!existingValues || existingValues.length !== seedValues.length) return false;
+	return existingValues.every((value, index) => value === seedValues[index]);
+}
+
+function hasSeedSourceUpdate(update: SeedSourceUpdate) {
+	return Boolean(Object.keys(update.$set ?? {}).length || Object.keys(update.$unset ?? {}).length);
+}
+
+export function buildSeedSourceUpdate(
+	existingSource: ExistingClaimSourceForSeedSync,
+	source: SeedClaimSource
+): SeedSourceUpdate {
+	const $set: Record<string, unknown> = {};
+	const $unset: Record<string, ""> = {};
+
+	function setIfChanged(field: keyof ExistingClaimSourceForSeedSync, value: unknown) {
+		if (existingSource[field] !== value) {
+			$set[field] = value;
+		}
+	}
+
+	function syncOptionalString(field: (typeof optionalSeedStringFields)[number]) {
+		const value = source[field] ?? "";
+		if (value) {
+			setIfChanged(field, value);
+			return;
+		}
+		if (existingSource[field]) {
+			$unset[field] = "";
+		}
+	}
+
+	setIfChanged("kind", source.kind);
+	setIfChanged("title", source.title);
+	for (const field of optionalSeedStringFields) {
+		syncOptionalString(field);
+	}
+	if (typeof source.year === "number") {
+		setIfChanged("year", source.year);
+	}
+	else if (existingSource.year) {
+		$unset.year = "";
+	}
+	setIfChanged("isAnchor", Boolean(source.isAnchor));
+	setIfChanged("appraisal", source.appraisal ?? "not_appraised");
+	setIfChanged("citationStatus", source.citationStatus ?? "current");
+	if (source.citationCheckedAt) {
+		const citationCheckedAt = new Date(source.citationCheckedAt);
+		if (!datesMatch(existingSource.citationCheckedAt, citationCheckedAt)) {
+			$set.citationCheckedAt = citationCheckedAt;
+		}
+	}
+	else if (existingSource.citationCheckedAt) {
+		$unset.citationCheckedAt = "";
+	}
+	const statusSources = source.statusSources ?? [];
+	if (!stringArraysMatch(existingSource.statusSources, statusSources)) {
+		$set.statusSources = statusSources;
+	}
+	setIfChanged("stance", source.stance);
+	setIfChanged("note", source.note);
+	setIfChanged("order", source.order);
+
+	return {
+		...(Object.keys($set).length ? { $set } : {}),
+		...(Object.keys($unset).length ? { $unset } : {})
+	};
+}
+
 export async function seedClaims() {
 	for (const seed of defaultClaims) {
 		const topic = await Topic.findOne({ slug: seed.topicSlug });
@@ -99,39 +203,9 @@ export async function seedClaims() {
 				continue;
 			}
 
-			const missingSourceFields: Record<string, unknown> = {};
-			const shouldResyncSeedSource = existingSource.title !== source.title && existingSource.order === source.order;
-			if (shouldResyncSeedSource && existingSource.kind !== source.kind) missingSourceFields.kind = source.kind;
-			if (shouldResyncSeedSource) missingSourceFields.title = source.title;
-			if ((shouldResyncSeedSource || !existingSource.publisher) && source.publisher) {
-				missingSourceFields.publisher = source.publisher;
-			}
-			if ((shouldResyncSeedSource || !existingSource.note) && source.note) missingSourceFields.note = source.note;
-			if (existingSource.order !== source.order) missingSourceFields.order = source.order;
-			if ((shouldResyncSeedSource || !existingSource.url) && source.url) missingSourceFields.url = source.url;
-			if ((shouldResyncSeedSource || !existingSource.year) && source.year) missingSourceFields.year = source.year;
-			if ((shouldResyncSeedSource || !existingSource.doi) && source.doi) missingSourceFields.doi = source.doi;
-			if ((shouldResyncSeedSource || !existingSource.pmid) && source.pmid) missingSourceFields.pmid = source.pmid;
-			if ((shouldResyncSeedSource || !existingSource.pmcid) && source.pmcid) missingSourceFields.pmcid = source.pmcid;
-			if (!existingSource.isAnchor && source.isAnchor) missingSourceFields.isAnchor = source.isAnchor;
-			if ((!existingSource.appraisal || existingSource.appraisal === "not_appraised") && source.appraisal) {
-				missingSourceFields.appraisal = source.appraisal;
-			}
-			if (
-				(!existingSource.citationStatus || existingSource.citationStatus === "current")
-				&& source.citationStatus
-			) {
-				missingSourceFields.citationStatus = source.citationStatus;
-			}
-			if (!existingSource.citationCheckedAt && source.citationCheckedAt) {
-				missingSourceFields.citationCheckedAt = new Date(source.citationCheckedAt);
-			}
-			if (!existingSource.statusSources?.length && source.statusSources?.length) {
-				missingSourceFields.statusSources = source.statusSources;
-			}
-
-			if (Object.keys(missingSourceFields).length) {
-				await ClaimSource.updateOne({ _id: existingSource._id }, { $set: missingSourceFields });
+			const sourceUpdate = buildSeedSourceUpdate(existingSource, source);
+			if (hasSeedSourceUpdate(sourceUpdate)) {
+				await ClaimSource.updateOne({ _id: existingSource._id }, sourceUpdate);
 			}
 		}
 	}
