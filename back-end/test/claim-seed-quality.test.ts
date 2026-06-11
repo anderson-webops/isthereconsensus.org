@@ -42,6 +42,10 @@ describe("default claim seed quality", () => {
 				assert.ok(source.publisher.trim(), `${claim.slug} has a source without a publisher`);
 				assert.ok(source.note.trim(), `${claim.slug} has a source without an editorial note`);
 				assert.ok(source.order > 0, `${claim.slug} has a source without a positive order`);
+				assert.ok(
+					primarySourceLink(source),
+					`${claim.slug} source "${source.title}" needs a public link or identifier`
+				);
 			}
 		}
 	});
@@ -57,9 +61,7 @@ describe("default claim seed quality", () => {
 				`${slug} needs at least one decision-weight source, not only background context`
 			);
 
-			for (const source of claim.sources) {
-				assert.ok(primarySourceLink(source), `${slug} source "${source.title}" needs a public link or identifier`);
-			}
+			assert.ok(claim.sources.every(primarySourceLink), `${slug} must expose only linked source rows`);
 		}
 	});
 });

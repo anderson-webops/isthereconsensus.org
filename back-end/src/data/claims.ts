@@ -781,16 +781,23 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "guideline",
-				title: "AHA and ACC dietary guidance",
-				publisher: "AHA / ACC",
+				title: "Dietary Cholesterol and Cardiovascular Risk: A Science Advisory From the American Heart Association",
+				publisher: "Circulation",
+				year: 2020,
+				url: "https://doi.org/10.1161/CIR.0000000000000743",
+				doi: "10.1161/CIR.0000000000000743",
 				stance: "supports",
-				note: "Important for cardiovascular framing and public-health guidance.",
+				note:
+					"Anchors the distinction between dietary cholesterol, blood lipids, and overall dietary patterns.",
 				order: 1
 			},
 			{
 				kind: "systematic_review",
-				title: "Systematic reviews on saturated fat and cardiovascular outcomes",
-				publisher: "Evidence synthesis",
+				title: "Reduction in saturated fat intake for cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2020,
+				url: "https://doi.org/10.1002/14651858.CD011737.pub3",
+				doi: "10.1002/14651858.CD011737.pub3",
 				stance: "supports",
 				note: "Useful for separating nutrient panic from evidence-based risk assessment.",
 				order: 2
@@ -890,16 +897,23 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "systematic_review",
-				title: "Educational reviews on learning styles",
-				publisher: "Education research",
+				title: "Learning styles: concepts and evidence",
+				publisher: "Psychological Science in the Public Interest",
+				year: 2008,
+				url: "https://doi.org/10.1111/j.1539-6053.2009.01038.x",
+				doi: "10.1111/j.1539-6053.2009.01038.x",
 				stance: "supports",
 				note: "Useful for showing that the empirical case for style-matching remains weak.",
 				order: 1
 			},
 			{
 				kind: "consensus_statement",
-				title: "Psychology and education commentary on neuromyths",
-				publisher: "Behavioral science references",
+				title: "Neuromyths in education: prevalence and predictors of misconceptions among teachers",
+				publisher: "Frontiers in Psychology",
+				year: 2012,
+				url: "https://doi.org/10.3389/fpsyg.2012.00429",
+				doi: "10.3389/fpsyg.2012.00429",
+				pmid: "23087664",
 				stance: "context",
 				note: "Helpful for explaining why the myth persists despite weak evidence.",
 				order: 2
@@ -997,24 +1011,33 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "guideline",
-				title: "American Heart Association dietary guidance",
-				publisher: "AHA",
+				title: "2021 Dietary Guidance to Improve Cardiovascular Health: A Scientific Statement From the American Heart Association",
+				publisher: "Circulation",
+				year: 2021,
+				url: "https://doi.org/10.1161/CIR.0000000000001031",
+				doi: "10.1161/CIR.0000000000001031",
 				stance: "supports",
 				note: "Important for the current mainstream cardiovascular baseline.",
 				order: 1
 			},
 			{
 				kind: "systematic_review",
-				title: "Systematic reviews on saturated fat, LDL, and cardiovascular outcomes",
-				publisher: "Evidence synthesis",
+				title: "Reduction in saturated fat intake for cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2020,
+				url: "https://doi.org/10.1002/14651858.CD011737.pub3",
+				doi: "10.1002/14651858.CD011737.pub3",
 				stance: "supports",
 				note: "Useful for separating the broad consensus from narrower controversies over diet pattern and substitution.",
 				order: 2
 			},
 			{
-				kind: "context",
-				title: "Nutrition journalism and guideline interpretation pieces",
-				publisher: "Context references",
+				kind: "consensus_statement",
+				title: "Dietary Fats and Cardiovascular Disease: A Presidential Advisory From the American Heart Association",
+				publisher: "Circulation",
+				year: 2017,
+				url: "https://doi.org/10.1161/CIR.0000000000000510",
+				doi: "10.1161/CIR.0000000000000510",
 				stance: "context",
 				note: "Helpful for showing why the public often experiences this topic as a series of fake reversals.",
 				order: 3
@@ -1052,16 +1075,21 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "guideline",
-				title: "NIH Office of Dietary Supplements fact sheets and evidence summaries",
-				publisher: "NIH",
+				title: "Dietary Supplements: What You Need to Know",
+				publisher: "NIH Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/WYNTK-Consumer/",
 				stance: "supports",
 				note: "Useful for separating established indications from overgeneralized claims.",
 				order: 1
 			},
 			{
-				kind: "systematic_review",
-				title: "Reviews on multivitamins and supplement outcomes in general populations",
-				publisher: "Evidence synthesis",
+				kind: "guideline",
+				title:
+					"Vitamin, Mineral, and Multivitamin Supplementation to Prevent Cardiovascular Disease and Cancer: US Preventive Services Task Force Recommendation Statement",
+				publisher: "JAMA",
+				year: 2022,
+				url: "https://doi.org/10.1001/jama.2022.8970",
+				doi: "10.1001/jama.2022.8970",
 				stance: "supports",
 				note: "Helpful when summarizing the broad lack of benefit for healthy adults without specific indications.",
 				order: 2
@@ -1161,16 +1189,20 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "consensus_statement",
-				title: "WHO and FAO statements on approved GM food safety",
-				publisher: "WHO / FAO",
+				title: "Frequently asked questions on genetically modified foods",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/questions-and-answers/item/food-genetically-modified",
 				stance: "supports",
 				note: "Useful for an international baseline on current safety assessments.",
 				order: 1
 			},
 			{
 				kind: "guideline",
-				title: "National Academies and national regulator reviews",
-				publisher: "National Academies / regulators",
+				title: "Genetically Engineered Crops: Experiences and Prospects",
+				publisher: "National Academies",
+				year: 2016,
+				url: "https://doi.org/10.17226/23395",
+				doi: "10.17226/23395",
 				stance: "supports",
 				note: "Helpful when explaining how safety judgments are made across institutions.",
 				order: 2
@@ -1207,17 +1239,23 @@ const rawClaims: SeedClaim[] = [
 			"This is a clean neuromyth page that helps demonstrate how an intuitive idea can thrive without earning serious empirical support.",
 		sources: [
 			{
-				kind: "consensus_statement",
-				title: "Neuroscience outreach and society explainers",
-				publisher: "Brain science organizations",
+				kind: "context",
+				title: "Do People Only Use 10 Percent of Their Brains?",
+				publisher: "Scientific American",
+				year: 2008,
+				url: "https://www.scientificamerican.com/article/do-people-only-use-10-percent-of-their-brains/",
 				stance: "supports",
 				note: "Useful for a public-facing explanation anchored in mainstream neuroscience.",
 				order: 1
 			},
 			{
 				kind: "context",
-				title: "Neuroimaging and lesion evidence overviews",
-				publisher: "Neuroscience references",
+				title: "Neuromyths in education: prevalence and predictors of misconceptions among teachers",
+				publisher: "Frontiers in Psychology",
+				year: 2012,
+				url: "https://doi.org/10.3389/fpsyg.2012.00429",
+				doi: "10.3389/fpsyg.2012.00429",
+				pmid: "23087664",
 				stance: "supports",
 				note: "Helpful when showing why unused-brain claims fail against multiple evidence types.",
 				order: 2
@@ -1255,16 +1293,21 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "landmark_study",
-				title: "Landmark smoking and cancer epidemiology",
-				publisher: "Public-health research",
+				title: "Smoking and carcinoma of the lung; preliminary report",
+				publisher: "British Medical Journal",
+				year: 1950,
+				url: "https://doi.org/10.1136/bmj.2.4682.739",
+				doi: "10.1136/bmj.2.4682.739",
 				stance: "supports",
 				note: "Useful for showing how the causal signal emerged across multiple study designs.",
 				order: 1
 			},
 			{
 				kind: "consensus_statement",
-				title: "Surgeon General reports on smoking and health",
-				publisher: "U.S. Surgeon General",
+				title: "Smoking and Health: Report of the Advisory Committee to the Surgeon General of the Public Health Service",
+				publisher: "U.S. Public Health Service",
+				year: 1964,
+				url: "https://www.govinfo.gov/content/pkg/GPO-SMOKINGANDHEALTH/pdf/GPO-SMOKINGANDHEALTH.pdf",
 				stance: "supports",
 				note: "Important for documenting how institutional consensus formed and strengthened.",
 				order: 2
@@ -1302,16 +1345,24 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "landmark_study",
-				title: "Marshall and Warren era ulcer research",
-				publisher: "Clinical research",
+				title: "Unidentified curved bacilli in the stomach of patients with gastritis and peptic ulceration",
+				publisher: "The Lancet",
+				year: 1984,
+				url: "https://doi.org/10.1016/S0140-6736(84)91816-6",
+				doi: "10.1016/S0140-6736(84)91816-6",
+				pmid: "6145023",
 				stance: "supports",
 				note: "Useful for showing how the bacterial model established itself.",
 				order: 1
 			},
 			{
 				kind: "guideline",
-				title: "Modern gastroenterology guidance on H. pylori and ulcer care",
-				publisher: "Clinical guidelines",
+				title: "ACG Clinical Guideline: Treatment of Helicobacter pylori Infection",
+				publisher: "American Journal of Gastroenterology",
+				year: 2017,
+				url: "https://doi.org/10.1038/ajg.2016.563",
+				doi: "10.1038/ajg.2016.563",
+				pmid: "28071659",
 				stance: "supports",
 				note: "Helpful for showing how the new causal model became routine clinical practice.",
 				order: 2
@@ -1349,16 +1400,20 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "context",
-				title: "Philosophy of science overviews",
-				publisher: "Background reading",
+				title: "Scientific Progress",
+				publisher: "Stanford Encyclopedia of Philosophy",
+				url: "https://plato.stanford.edu/entries/scientific-progress/",
 				stance: "context",
 				note: "Useful for framing model-building, inference, and falsifiability.",
 				order: 1
 			},
 			{
 				kind: "context",
-				title: "Replication crisis reporting",
-				publisher: "Background reading",
+				title: "Estimating the reproducibility of psychological science",
+				publisher: "Science",
+				year: 2015,
+				url: "https://doi.org/10.1126/science.aac4716",
+				doi: "10.1126/science.aac4716",
 				stance: "context",
 				note: "Useful when discussing how correction mechanisms work.",
 				order: 2
@@ -1396,16 +1451,20 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "context",
-				title: "Science journalism analyses",
-				publisher: "Background reading",
+				title: "Why Most Published Research Findings Are False",
+				publisher: "PLOS Medicine",
+				year: 2005,
+				url: "https://doi.org/10.1371/journal.pmed.0020124",
+				doi: "10.1371/journal.pmed.0020124",
 				stance: "context",
 				note: "Useful for spotting patterns in headline inflation.",
 				order: 1
 			},
 			{
 				kind: "context",
-				title: "Risk communication research",
-				publisher: "Background reading",
+				title: "Cochrane Handbook for Systematic Reviews of Interventions",
+				publisher: "Cochrane",
+				url: "https://training.cochrane.org/handbook/current",
 				stance: "supports",
 				note: "Helpful when translating percentages into real-world scale.",
 				order: 2
@@ -1444,16 +1503,18 @@ const rawClaims: SeedClaim[] = [
 		sources: [
 			{
 				kind: "context",
-				title: "Meta-analyses",
-				publisher: "Background reading",
+				title: "Cochrane Handbook for Systematic Reviews of Interventions",
+				publisher: "Cochrane",
+				url: "https://training.cochrane.org/handbook/current",
 				stance: "supports",
 				note: "Helpful when the dispute is about magnitude across many studies.",
 				order: 1
 			},
 			{
 				kind: "context",
-				title: "Methods papers",
-				publisher: "Background reading",
+				title: "GRADE Handbook",
+				publisher: "GRADE Working Group",
+				url: "https://gdt.gradepro.org/app/handbook/handbook.html",
 				stance: "context",
 				note: "Useful when the fight is really about measurement or model fit.",
 				order: 2
