@@ -27,6 +27,7 @@ import { authRoutes } from "./routes/authRoutes.js";
 import { buildSetupStatus } from "./setup/buildSetupStatus.js";
 import { verifyCaptcha } from "./utils/captcha.js";
 import { getActorFromRequest } from "./utils/community.js";
+import { canReadDiagnostics } from "./utils/diagnostics.js";
 import { searchEvidence } from "./utils/evidence.js";
 import { slugify } from "./utils/slugify.js";
 import { readMongoSecret } from "./vaultClient.js";
@@ -38,7 +39,6 @@ const normalizeQuestionPattern = /[^\p{L}\p{N}\s]/gu;
 async function main() {
 	const app = express();
 	const internalDiagnosticsKey = env.INTERNAL_DIAGNOSTICS_KEY;
-	const loopbackAddresses = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
 
 	// health
 	app.get("/healthz", (_req, res) => {
@@ -178,7 +178,7 @@ async function main() {
 	console.log("Connected to MongoDB");
 	const c = mongoose.connection;
 	console.log(`Mongo connected: db=${c.db?.databaseName} host=${c.host} name=${c.name}`);
-	app.get("/_dbinfo", (req, res) => {
+	function diagnosticsClientIp(req: express.Request) {
 		const forwardedFor = req.headers["x-forwarded-for"];
 		const forwardedIp
 			= typeof forwardedFor === "string"
@@ -186,15 +186,24 @@ async function main() {
 				: Array.isArray(forwardedFor)
 					? forwardedFor[0]?.trim()
 					: undefined;
-		const clientIp = forwardedIp || req.ip || req.socket.remoteAddress || "";
-		const isInternalRequest
-			= env.NODE_ENV !== "production"
-				|| (internalDiagnosticsKey && req.get("x-internal-diagnostics-key") === internalDiagnosticsKey)
-				|| loopbackAddresses.has(clientIp);
+		return forwardedIp || req.ip || req.socket.remoteAddress || "";
+	}
 
-		if (!isInternalRequest) {
-			return res.status(403).set("Cache-Control", "no-store").json({ ok: false, error: "forbidden" });
+	function requireDiagnosticsAccess(req: express.Request, res: express.Response) {
+		const allowed = canReadDiagnostics({
+			isProd,
+			configuredKey: internalDiagnosticsKey,
+			providedKey: req.get("x-internal-diagnostics-key"),
+			clientIp: diagnosticsClientIp(req)
+		});
+		if (!allowed) {
+			res.status(403).set("Cache-Control", "no-store").json({ ok: false, error: "forbidden" });
 		}
+		return allowed;
+	}
+
+	app.get("/_dbinfo", (req, res) => {
+		if (!requireDiagnosticsAccess(req, res)) return;
 
 		res.set("Cache-Control", "no-store").json({
 			databaseName: c.db?.databaseName ?? null,
@@ -204,7 +213,9 @@ async function main() {
 			usingVault: !!env.VAULT_ROLE_ID && !!env.VAULT_SECRET_ID
 		});
 	});
-	app.get("/api/setup/status", (_req, res) => {
+	app.get("/api/setup/status", (req, res) => {
+		if (!requireDiagnosticsAccess(req, res)) return;
+
 		res.json(
 			buildSetupStatus({
 				isProd,

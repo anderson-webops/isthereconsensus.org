@@ -117,6 +117,7 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		apiInternalBase: internalApiBase,
+		internalDiagnosticsKey: process.env.INTERNAL_DIAGNOSTICS_KEY || "",
 		resend: {
 			apiKey: process.env.RESEND_API_KEY,
 			from: process.env.RESEND_FROM,

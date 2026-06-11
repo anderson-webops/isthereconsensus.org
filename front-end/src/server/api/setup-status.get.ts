@@ -1,9 +1,15 @@
 import type { SetupDashboardResponse, SetupProbe, SetupStatusResponse } from "~/types/setup";
+import process from "node:process";
 import { buildApiUrl, joinBaseUrl } from "~/utils/api";
+import { canReadDiagnostics } from "~/utils/diagnostics";
 
-async function probeJson<T>(url: string, successDetail: (data: T) => string): Promise<SetupProbe<T>> {
+async function probeJson<T>(
+	url: string,
+	successDetail: (data: T) => string,
+	headers?: Record<string, string>
+): Promise<SetupProbe<T>> {
 	try {
-		const data = (await $fetch(url, { retry: 0 })) as T;
+		const data = (await $fetch(url, { headers, retry: 0 })) as T;
 		return {
 			ok: true,
 			detail: successDetail(data),
@@ -23,6 +29,23 @@ export default defineEventHandler(async (event): Promise<SetupDashboardResponse>
 	const siteUrl = config.public.siteUrl || getRequestURL(event).origin;
 	const apiBase = config.public.apiBase as string;
 	const internalApiBase = config.apiInternalBase as string;
+	const internalDiagnosticsKey = config.internalDiagnosticsKey as string;
+	const providedDiagnosticsKey = getHeader(event, "x-internal-diagnostics-key");
+	const diagnosticsAllowed = canReadDiagnostics({
+		isProd: process.env.NODE_ENV === "production",
+		configuredKey: internalDiagnosticsKey,
+		providedKey: providedDiagnosticsKey
+	});
+
+	if (!diagnosticsAllowed) {
+		throw createError({
+			statusCode: 403,
+			statusMessage: "Forbidden"
+		});
+	}
+	const diagnosticsHeaders = internalDiagnosticsKey
+		? { "x-internal-diagnostics-key": internalDiagnosticsKey }
+		: undefined;
 
 	const frontend: SetupProbe<{ ok: boolean }> = {
 		ok: true,
@@ -39,7 +62,11 @@ export default defineEventHandler(async (event): Promise<SetupDashboardResponse>
 				? "Backend /readyz reports MongoDB is ready."
 				: `Backend /readyz reports not ready${typeof data.state === "number" ? ` (state ${data.state})` : ""}.`
 		),
-		probeJson<SetupStatusResponse>(buildApiUrl(internalApiBase, "/setup/status"), (data) => data.summary)
+		probeJson<SetupStatusResponse>(
+			buildApiUrl(internalApiBase, "/setup/status"),
+			(data) => data.summary,
+			diagnosticsHeaders
+		)
 	]);
 
 	return {
