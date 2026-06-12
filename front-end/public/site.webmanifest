@@ -1,0 +1,30 @@
+{
+	"name": "Is There Consensus",
+	"short_name": "Consensus",
+	"description": "A calm guide to expert agreement, live debate, and source quality in public science claims.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#fbf8f3",
+	"theme_color": "#a64620",
+	"orientation": "portrait-primary",
+	"categories": ["education", "science", "reference"],
+	"icons": [
+		{
+			"src": "/pwa-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/pwa-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/maskable-icon.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	]
+}

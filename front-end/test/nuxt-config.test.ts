@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 // noinspection ES6PreferShortImport
-import { appDescription } from "../src/constants";
+import { appDescription, appName } from "../src/constants";
 
 test("nuxt config points to src/ and keeps the public app shell metadata", async () => {
 	const { default: config } = await import("../nuxt.config.ts");
@@ -20,5 +20,8 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	assert.equal(descriptionMeta?.content, appDescription);
 
 	const manifestLink = headLinks.find((link) => link?.rel === "manifest");
-	assert.equal(manifestLink, undefined);
+	assert.equal(manifestLink?.href, "/site.webmanifest");
+
+	const applicationName = headMeta.find((meta) => meta?.name === "application-name");
+	assert.equal(applicationName?.content, appName);
 });

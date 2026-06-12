@@ -8,7 +8,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { config as loadEnv } from "dotenv";
 import { defineNuxtConfig } from "nuxt/config";
-import { appDescription } from "./src/constants";
+import { appDescription, appName } from "./src/constants";
 import { normalizeInternalApiBase, normalizePublicApiBase } from "./src/utils/api";
 
 const __dirname: string = path.dirname(fileURLToPath(import.meta.url));
@@ -59,6 +59,10 @@ const faviconLinks = [
 		rel: "apple-touch-icon",
 		sizes: "180x180",
 		href: "/apple-touch-icon.png"
+	},
+	{
+		rel: "manifest",
+		href: "/site.webmanifest"
 	}
 ];
 
@@ -94,6 +98,8 @@ export default defineNuxtConfig({
 			meta: [
 				{ name: "viewport", content: "width=device-width, initial-scale=1" },
 				{ name: "description", content: appDescription },
+				{ name: "application-name", content: appName },
+				{ name: "apple-mobile-web-app-title", content: appName },
 				{ name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
 				{ name: "theme-color", media: "(prefers-color-scheme: light)", content: "#fbf8f3" },
 				{ name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#0c1117" }

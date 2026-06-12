@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { appDescription, appName } from "~/constants";
+import { appDescription, appName, siteUrl, socialImageUrl } from "~/constants";
 
-const siteUrl = "https://isthereconsensus.org";
 const privateRoutePattern = /^(?:\/account|\/api|\/setup)(?:\/|$)/;
 const route = useRoute();
 const canonicalUrl = computed(() => new URL(route.path || "/", `${siteUrl}/`).toString());
@@ -56,11 +55,17 @@ useHead(() => ({
 useSeoMeta({
 	description: appDescription,
 	ogDescription: appDescription,
+	ogImage: socialImageUrl,
+	ogImageAlt: `${appName} preview card`,
+	ogImageHeight: "630",
+	ogImageWidth: "1200",
 	ogSiteName: appName,
 	ogType: "website",
 	ogUrl: () => canonicalUrl.value,
 	twitterCard: "summary_large_image",
 	twitterDescription: appDescription,
+	twitterImage: socialImageUrl,
+	twitterImageAlt: `${appName} preview card`,
 	twitterTitle: appName
 });
 </script>

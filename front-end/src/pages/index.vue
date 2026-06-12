@@ -2,7 +2,7 @@
 import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
-import { appDescription, appName } from "~/constants";
+import { appDescription, appName, socialImageUrl } from "~/constants";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 
@@ -136,6 +136,10 @@ const faqEntries = [
 useSeoMeta({
 	description: appDescription,
 	ogDescription: appDescription,
+	ogImage: socialImageUrl,
+	ogImageAlt: `${appName} preview card`,
+	ogImageHeight: "630",
+	ogImageWidth: "1200",
 	ogSiteName: appName,
 	ogTitle: appName,
 	ogType: "website",
@@ -143,6 +147,8 @@ useSeoMeta({
 	title: appName,
 	twitterCard: "summary_large_image",
 	twitterDescription: appDescription,
+	twitterImage: socialImageUrl,
+	twitterImageAlt: `${appName} preview card`,
 	twitterTitle: appName
 });
 

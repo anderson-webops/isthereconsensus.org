@@ -1,0 +1,15 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#fbf8f3"/>
+  <circle cx="1035" cy="96" r="260" fill="#e7d6c4" opacity="0.65"/>
+  <circle cx="68" cy="570" r="220" fill="#d8bfa7" opacity="0.35"/>
+  <rect x="72" y="70" width="1056" height="490" rx="46" fill="#fffdf9" stroke="#e2d4c5" stroke-width="2"/>
+  <text x="120" y="154" fill="#a64620" font-family="Space Grotesk, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="7">IS THERE CONSENSUS?</text>
+  <text x="120" y="290" fill="#15110d" font-family="Georgia, serif" font-size="82" font-weight="700">Where does the</text>
+  <text x="120" y="390" fill="#15110d" font-family="Georgia, serif" font-size="82" font-weight="700">science stand?</text>
+  <text x="120" y="474" fill="#5d544f" font-family="Space Grotesk, Arial, sans-serif" font-size="32">Reviewed summaries of expert agreement, uncertainty,</text>
+  <text x="120" y="520" fill="#5d544f" font-family="Space Grotesk, Arial, sans-serif" font-size="32">and source quality for public science claims.</text>
+  <g transform="translate(856 354)">
+    <rect x="0" y="0" width="196" height="28" rx="14" fill="#15110d"/>
+    <rect x="0" y="72" width="196" height="28" rx="14" fill="#15110d"/>
+  </g>
+</svg>
