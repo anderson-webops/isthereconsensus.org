@@ -14,4 +14,12 @@ describe("CI workflow", () => {
 		assert.match(workflowSource, /actions\/checkout@v6/);
 		assert.match(workflowSource, /actions\/setup-node@v6/);
 	});
+
+	it("smoke tests built SSR public assets after the production build", () => {
+		assert.match(workflowSource, /run: npm run build/);
+		assert.match(workflowSource, /run: npm run smoke:ssr-assets/);
+		assert.ok(
+			workflowSource.indexOf("run: npm run build") < workflowSource.indexOf("run: npm run smoke:ssr-assets")
+		);
+	});
 });

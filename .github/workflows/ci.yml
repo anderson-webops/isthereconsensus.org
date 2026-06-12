@@ -142,3 +142,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: SSR public asset smoke
+        run: npm run smoke:ssr-assets

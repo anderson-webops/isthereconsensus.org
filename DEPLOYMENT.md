@@ -45,6 +45,7 @@ Optional:
 ```bash
 npm ci
 npm run build
+npm run smoke:ssr-assets
 npm run -w front-end start
 npm run -w back-end start
 ```
