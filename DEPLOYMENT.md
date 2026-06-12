@@ -46,6 +46,7 @@ Optional:
 npm ci
 npm run build
 npm run smoke:ssr-assets
+npm run smoke:ssr-routes
 npm run -w front-end start
 npm run -w back-end start
 ```
@@ -56,7 +57,7 @@ After the public reverse proxy is serving the new build, run:
 npm run smoke:live
 ```
 
-`smoke:live` verifies the public homepage, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`.
+`smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`.
 
 The same check is available from GitHub Actions as the manual `Live smoke` workflow. Use it after deploys when shell access to the deployment host is unavailable.
 

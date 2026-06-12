@@ -82,6 +82,7 @@ npm run lint
 npm run typecheck
 npm run build
 npm run smoke:ssr-assets
+npm run smoke:ssr-routes
 npm test
 npm audit
 ```

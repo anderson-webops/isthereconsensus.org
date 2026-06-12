@@ -145,3 +145,6 @@ jobs:
 
       - name: SSR public asset smoke
         run: npm run smoke:ssr-assets
+
+      - name: SSR route rule smoke
+        run: npm run smoke:ssr-routes
