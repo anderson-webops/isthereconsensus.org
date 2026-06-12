@@ -68,6 +68,43 @@ function parseJson(result) {
 	}
 }
 
+function formatBuildTimestamp(value) {
+	if (!Number.isFinite(value)) return "";
+	const date = new Date(value);
+	return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+}
+
+async function describeLiveBuildFallback() {
+	try {
+		const result = await fetchRoute("/_nuxt/builds/latest.json");
+		if (result.status !== 200 || !result.contentType.includes("application/json")) {
+			return `Live Nuxt build fallback unavailable: /_nuxt/builds/latest.json returned ${result.status}.`;
+		}
+
+		const data = parseJson(result);
+		const id = typeof data.id === "string" ? data.id : "";
+		const timestamp = formatBuildTimestamp(Number(data.timestamp));
+		if (!id && !timestamp) return "Live Nuxt build fallback returned no build id or timestamp.";
+
+		return `Live Nuxt build fallback: id=${id || "(missing)"}${timestamp ? ` timestamp=${timestamp}` : ""}.`;
+	}
+	catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		return `Live Nuxt build fallback failed: ${message}.`;
+	}
+}
+
+async function assertDeploymentMetadataWithDiagnostics(result) {
+	try {
+		assertDeploymentMetadata(result);
+	}
+	catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		const fallback = await describeLiveBuildFallback();
+		throw new Error(`${message} ${fallback}`);
+	}
+}
+
 function assertManifest(result) {
 	expectStatus(result, 200);
 	expectContentType(result, "application/manifest+json");
@@ -173,7 +210,7 @@ failures.push(await runCheck("homepage renders public site", async () => {
 }));
 
 failures.push(await runCheck("deployment metadata identifies frontend build", async () => {
-	assertDeploymentMetadata(await fetchRoute("/deployment.json"));
+	await assertDeploymentMetadataWithDiagnostics(await fetchRoute("/deployment.json"));
 }));
 
 failures.push(await runCheck("robots.txt advertises canonical sitemap", async () => {

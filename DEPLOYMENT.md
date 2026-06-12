@@ -60,6 +60,8 @@ npm run smoke:live
 
 `smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, deployment metadata, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`. To prove the public origin is running a specific build, also set `LIVE_SMOKE_EXPECT_COMMIT` to the expected commit prefix.
 
+If `/deployment.json` returns `404`, `smoke:live` also fetches `/_nuxt/builds/latest.json` and reports the live Nuxt build id/timestamp. Use that fallback to distinguish a stale frontend deploy from a backend/source-stack problem.
+
 The same check is available from GitHub Actions as the manual `Live smoke` workflow. Use it after deploys when shell access to the deployment host is unavailable.
 
 Frontend deployment metadata is served at `/deployment.json` with non-secret fields only. It should report `service: "front-end"`, `runtime: "nuxt-ssr"`, Nuxt's build ID, and the build commit/ref when `SOURCE_COMMIT`, `SOURCE_TAG`, GitHub Actions metadata, or a checked-out `.git` directory is available at build time.

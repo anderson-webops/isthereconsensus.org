@@ -34,4 +34,10 @@ describe("live smoke workflow", () => {
 		assert.match(smokeScriptSource, /sourceCount < 2/);
 		assert.match(smokeScriptSource, /Public featured claims must expose source stacks/);
 	});
+
+	it("adds stale-build diagnostics when deployment metadata is missing", () => {
+		assert.match(smokeScriptSource, /describeLiveBuildFallback/);
+		assert.match(smokeScriptSource, /\/_nuxt\/builds\/latest\.json/);
+		assert.match(smokeScriptSource, /Live Nuxt build fallback/);
+	});
 });
