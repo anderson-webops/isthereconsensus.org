@@ -35,3 +35,14 @@ export interface SetupDashboardResponse {
 	backendReady: SetupProbe<{ ready: boolean; state?: number }>;
 	backendSetup: SetupProbe<SetupStatusResponse>;
 }
+
+export interface LaunchTask {
+	title: string;
+	body: string;
+}
+
+export interface SetupPromptResponse {
+	prompt: string;
+	serverPreparationTasks: LaunchTask[];
+	launchValidationTasks: LaunchTask[];
+}

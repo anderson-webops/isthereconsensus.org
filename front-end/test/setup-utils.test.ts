@@ -1,7 +1,8 @@
 import type { SetupDashboardResponse } from "../src/types/setup";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { buildFrontendSetupChecks, buildServerAgentPrompt } from "../src/utils/setup";
+import { buildServerAgentPrompt } from "../server/utils/setupPrompt";
+import { buildFrontendSetupChecks } from "../src/utils/setup";
 
 describe("buildServerAgentPrompt", () => {
 	it("includes the public site origin and api base", () => {

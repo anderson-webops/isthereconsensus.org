@@ -1,37 +1,21 @@
 <script setup lang="ts">
-import type { SetupCheck, SetupDashboardResponse } from "~/types/setup";
-import { canReadDiagnostics } from "~/utils/diagnostics";
-import {
-	buildFrontendSetupChecks,
-	buildServerAgentPrompt,
-	launchValidationTasks,
-	serverPreparationTasks
-} from "~/utils/setup";
+import type { SetupCheck, SetupDashboardResponse, SetupPromptResponse } from "~/types/setup";
+import { buildFrontendSetupChecks } from "~/utils/setup";
 
-const config = useRuntimeConfig();
 const { copy, copied } = useClipboard();
 const isProduction = import.meta.env.PROD;
-const internalDiagnosticsKey = config.internalDiagnosticsKey as string;
-const providedDiagnosticsKey = useRequestHeader("x-internal-diagnostics-key");
-const diagnosticsAllowed = canReadDiagnostics({
-	isProd: isProduction,
-	configuredKey: internalDiagnosticsKey,
-	providedKey: providedDiagnosticsKey
-});
 
-if (!diagnosticsAllowed) {
+if (isProduction) {
 	throw createError({
 		statusCode: 404,
 		statusMessage: "Page not found"
 	});
 }
-const diagnosticsHeaders = internalDiagnosticsKey
-	? { "x-internal-diagnostics-key": internalDiagnosticsKey }
-	: undefined;
 
 const { data, pending, refresh } = await useAsyncData("setup-dashboard", () =>
-	$fetch<SetupDashboardResponse>("/api/setup-status", { headers: diagnosticsHeaders })
+	$fetch<SetupDashboardResponse>("/api/setup-status")
 );
+const { data: promptData } = await useAsyncData("setup-prompt", () => $fetch<SetupPromptResponse>("/api/setup-prompt"));
 
 const dashboard = computed(() => data.value);
 const frontendChecks = computed<SetupCheck[]>(() => (dashboard.value ? buildFrontendSetupChecks(dashboard.value) : []));
@@ -40,17 +24,15 @@ const allChecks = computed<SetupCheck[]>(() => [...frontendChecks.value, ...back
 const blockingChecks = computed(() => allChecks.value.filter((check) => check.severity === "critical" && !check.ok));
 const warningChecks = computed(() => allChecks.value.filter((check) => check.severity === "warning" && !check.ok));
 const passCount = computed(() => allChecks.value.filter((check) => check.ok).length);
-const serverAgentPrompt = computed(() =>
-	buildServerAgentPrompt({
-		siteUrl: dashboard.value?.siteUrl || "https://isthereconsensus.org",
-		apiBase: dashboard.value?.apiBase || "/api"
-	})
-);
+const serverAgentPrompt = computed(() => promptData.value?.prompt || "");
+const serverPreparationTasks = computed(() => promptData.value?.serverPreparationTasks ?? []);
+const launchValidationTasks = computed(() => promptData.value?.launchValidationTasks ?? []);
 const lastUpdated = computed(() =>
 	dashboard.value?.generatedAt ? new Date(dashboard.value.generatedAt).toLocaleString() : "Not available yet"
 );
 
 async function copyPrompt() {
+	if (!serverAgentPrompt.value) return;
 	await copy(serverAgentPrompt.value);
 }
 
@@ -73,22 +55,16 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 				<p class="eyebrow">Launch HQ</p>
 				<h1>Bring the server and the site into the same shape.</h1>
 				<p>
-					This page gives you a live readiness view, the exact production concerns this app has, and a
-					copyable prompt you can hand to a server-side AI agent.
+					This development-only page gives you a live readiness view, the production concerns this app has,
+					and a copyable prompt you can hand to a server-side AI agent.
 				</p>
 			</div>
 
 			<div class="setup__actions">
-				<button
-					v-if="!isProduction"
-					class="cta primary"
-					type="button"
-					:disabled="pending"
-					@click="refreshStatus"
-				>
+				<button class="cta primary" type="button" :disabled="pending" @click="refreshStatus">
 					{{ pending ? "Refreshing..." : "Refresh status" }}
 				</button>
-				<button class="cta ghost" type="button" @click="copyPrompt">
+				<button class="cta ghost" type="button" :disabled="!serverAgentPrompt" @click="copyPrompt">
 					{{ copied ? "Prompt copied" : "Copy server prompt" }}
 				</button>
 			</div>
@@ -173,7 +149,11 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 						Mongo, cookie auth, and reverse proxy needs.
 					</p>
 				</div>
-				<textarea class="prompt-box" readonly :value="serverAgentPrompt" />
+				<textarea
+					class="prompt-box"
+					readonly
+					:value="serverAgentPrompt || 'Authorized prompt data is unavailable.'"
+				/>
 			</div>
 
 			<div class="panel">

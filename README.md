@@ -123,6 +123,6 @@ Options if you want `/var/www/<site>/` populated for an SSR site:
 
 ## Launch coordination
 
-- `/setup` is an internal diagnostics page. In production it is gated by `INTERNAL_DIAGNOSTICS_KEY` and should not render for anonymous public visitors.
+- `/setup` is a development-only diagnostics page. In production, use the protected diagnostics APIs instead of rendering an operational UI.
 - [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
 - In production same-origin mode, set `PUBLIC_API_BASE=/api` so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.

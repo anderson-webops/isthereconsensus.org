@@ -18,7 +18,7 @@ Do not include exploit details in public issues, pull requests, Reddit posts, or
 - session cookies and auth routes
 - admin/editorial claim and source APIs
 - expert-application and community-submission data
-- `/setup` and `/api/setup/status` diagnostics
+- development-only `/setup` UI and protected `/api/setup/status` / `/api/setup-prompt` diagnostics
 - Vault, MongoDB, Resend, CAPTCHA, analytics, and provider API keys
 - deployment scripts, nginx/systemd config, and environment handling
 

@@ -56,10 +56,10 @@ npm run -w back-end start
 - Backend readiness: `GET /readyz`
 - Setup diagnostics: `GET /api/setup/status`
 
-Production diagnostics are private. Requests to `/setup` and `/api/setup/status` require the configured `INTERNAL_DIAGNOSTICS_KEY` supplied as `x-internal-diagnostics-key`; anonymous public visitors should receive a not-found response for `/setup` and a forbidden response for the API.
+Production diagnostics are private. The `/setup` UI is development-only and should return not-found in production. Requests to `/api/setup/status` and `/api/setup-prompt` require the configured `INTERNAL_DIAGNOSTICS_KEY` supplied as `x-internal-diagnostics-key`.
 
 ## Deployment notes
 
 - Cookie auth expects HTTPS in production.
 - If frontend and backend live on different public origins, configure `CORS_ORIGIN` precisely and keep secure cookie settings aligned.
-- The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only when diagnostics access is authorized.
+- The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only in development. Use the protected setup APIs for production diagnostics.
