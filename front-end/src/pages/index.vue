@@ -5,6 +5,7 @@ import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName, socialImageUrl } from "~/constants";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
+import { formatCountLabel } from "~/utils/format-count";
 
 definePageMeta({
 	layout: "home"
@@ -350,7 +351,7 @@ function formatTopicDate(value?: string) {
 						<p class="claim-row__meta">
 							<span>{{ claim.topic.title }}</span>
 							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
-							<span>{{ claim.sourceCount ?? 0 }} sources</span>
+							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
 						<p>{{ claim.bottomLine }}</p>
@@ -381,7 +382,7 @@ function formatTopicDate(value?: string) {
 						<p>{{ topic.description || topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
-							<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
+							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
 							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
 						</div>
 					</div>

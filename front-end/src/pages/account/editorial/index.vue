@@ -6,6 +6,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
 import { futureRoadmapPreview } from "~/data/futureRoadmap";
 import { measurementLoop, patternPreview, publishingPlanPreview } from "~/data/searchDemand";
+import { formatCountLabel } from "~/utils/format-count";
 
 const router = useRouter();
 const { apiUrl } = useApi();
@@ -114,20 +115,20 @@ function cadenceDays(claim: ClaimSummary) {
 function buildOpsReasons(claim: ClaimSummary) {
 	const reasons: string[] = [];
 	if ((claim.retractedSourceCount ?? 0) > 0) {
-		reasons.push(`${claim.retractedSourceCount} retracted source${claim.retractedSourceCount === 1 ? "" : "s"}`);
+		reasons.push(formatCountLabel(claim.retractedSourceCount, "retracted source"));
 	}
 	if ((claim.concernSourceCount ?? 0) > 0) {
-		reasons.push(`${claim.concernSourceCount} expression${claim.concernSourceCount === 1 ? "" : "s"} of concern`);
+		reasons.push(formatCountLabel(claim.concernSourceCount, "expression of concern", "expressions of concern"));
 	}
 	if ((claim.correctedSourceCount ?? 0) > 0) {
-		reasons.push(`${claim.correctedSourceCount} corrected citation${claim.correctedSourceCount === 1 ? "" : "s"}`);
+		reasons.push(formatCountLabel(claim.correctedSourceCount, "corrected citation"));
 	}
 	if (
 		(claim.flaggedSourceCount ?? 0) > 0 &&
 		(claim.retractedSourceCount ?? 0) === 0 &&
 		(claim.concernSourceCount ?? 0) === 0
 	) {
-		reasons.push(`${claim.flaggedSourceCount} flagged citation${claim.flaggedSourceCount === 1 ? "" : "s"}`);
+		reasons.push(formatCountLabel(claim.flaggedSourceCount, "flagged citation"));
 	}
 	if (daysSince(claim.lastRetractionCheckAt) > cadenceDays(claim)) {
 		reasons.push("retraction check is stale");
@@ -412,7 +413,7 @@ watch(
 							<article v-for="entry in criticalOpsClaims" :key="entry.claim._id" class="claim-card">
 								<p class="queue-card__meta">
 									<span>{{ entry.claim.topic?.title }}</span>
-									<span>{{ entry.claim.sourceCount ?? 0 }} sources</span>
+									<span>{{ formatCountLabel(entry.claim.sourceCount, "source") }}</span>
 								</p>
 								<h3>{{ entry.claim.title }}</h3>
 								<ul class="plain-chip-list">
@@ -846,7 +847,7 @@ watch(
 						<article v-for="claim in draftClaims" :key="claim._id" class="claim-card">
 							<p class="queue-card__meta">
 								<span>{{ claim.topic?.title }}</span>
-								<span>{{ claim.sourceCount ?? 0 }} sources</span>
+								<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							</p>
 							<h3>{{ claim.title }}</h3>
 							<p>{{ claim.bottomLine || "Draft claim waiting for a bottom line." }}</p>

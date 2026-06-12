@@ -3,6 +3,7 @@ import type { Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getTopicGuide } from "~/data/topicGuides";
+import { formatCountLabel } from "~/utils/format-count";
 
 const route = useRoute();
 const router = useRouter();
@@ -91,7 +92,7 @@ const filteredTopics = computed(() =>
 					placeholder="Search by topic, question, or keyword"
 				/>
 			</div>
-			<p class="results-count">{{ filteredTopics.length }} topics</p>
+			<p class="results-count">{{ formatCountLabel(filteredTopics.length, "topic") }}</p>
 			<div class="filter-stack">
 				<button class="filter" :class="{ active: filter === 'all' }" @click="filter = 'all'">All topics</button>
 				<button class="filter" :class="{ active: filter === 'settled' }" @click="filter = 'settled'">
@@ -120,7 +121,7 @@ const filteredTopics = computed(() =>
 						<p>{{ topic.description || topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
-							<span>{{ topic.claimCount ?? 0 }} claim reviews</span>
+							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
 							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
 						</div>
 						<div v-if="topic.featuredClaims?.length" class="topic-row__claims">

@@ -2,6 +2,7 @@
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getTopicGuide } from "~/data/topicGuides";
+import { formatCountLabel } from "~/utils/format-count";
 
 interface TopicRouteParams {
 	slug?: string | string[];
@@ -189,7 +190,7 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 					<div>
 						<p class="claim-row__meta">
 							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
-							<span>{{ claim.sourceCount ?? 0 }} sources</span>
+							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>

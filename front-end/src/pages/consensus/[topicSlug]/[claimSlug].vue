@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { formatCountLabel } from "~/utils/format-count";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -39,7 +40,7 @@ const askLink = computed(() => ({
 const claimMeta = computed(() => [
 	formatBandLabel(claim.value?.consensusBand),
 	formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
-	`${sourceCount.value} source${sourceCount.value === 1 ? "" : "s"}`,
+	formatCountLabel(sourceCount.value, "source"),
 	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
 ]);
 
