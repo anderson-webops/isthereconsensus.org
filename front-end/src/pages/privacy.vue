@@ -86,7 +86,10 @@ const rightsPoints = [
 	"Depending on where you live, you may have additional privacy rights under applicable law. We may need to verify your identity before acting on a request."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Review what personal information the site collects, how it is used, when it may be shared, and how privacy requests are handled.",
+	path: "/privacy",
 	title: "Privacy Policy - Is There Consensus?"
 });
 </script>

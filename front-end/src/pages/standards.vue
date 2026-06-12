@@ -40,7 +40,10 @@ const pageSignals = [
 	"Clear review, conflict, and disclosure notes when those details matter"
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Learn how reviewed pages weigh sources, expose uncertainty, show evidence summaries, and update when the evidence changes.",
+	path: "/standards",
 	title: "How reviews work - Is There Consensus?"
 });
 </script>

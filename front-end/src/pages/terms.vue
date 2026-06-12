@@ -42,7 +42,10 @@ const expertPoints = [
 	"We may approve, decline, pause, or revoke expert/editorial access at any time to protect quality, safety, or site operations."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Read the terms for public browsing, accounts, question submissions, expert applications, editorial tools, and acceptable use.",
+	path: "/terms",
 	title: "Terms of Service - Is There Consensus?"
 });
 </script>

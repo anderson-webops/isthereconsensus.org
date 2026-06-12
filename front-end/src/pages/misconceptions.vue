@@ -22,7 +22,10 @@ function explainerTitle(slug: string) {
 	return getExplainer(slug)?.title || slug;
 }
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Browse reusable modules that explain common mistakes in science headlines, anecdotes, isolated studies, and uncertainty.",
+	path: "/misconceptions",
 	title: "Misconception modules - Is There Consensus?"
 });
 </script>

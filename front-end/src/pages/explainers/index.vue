@@ -2,7 +2,10 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { evergreenExplainers } from "~/data/explainers";
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Read short evergreen explainers for evidence hierarchies, causation, risk, replication, and scientific uncertainty.",
+	path: "/explainers",
 	title: "Evergreen explainers - Is There Consensus?"
 });
 </script>

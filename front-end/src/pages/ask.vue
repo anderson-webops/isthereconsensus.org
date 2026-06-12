@@ -112,7 +112,10 @@ const closestMatchRecord = computed<MatchOption | null>(() => {
 	return null;
 });
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Ask a concise scientific question, see the closest reviewed claim when one exists, and add context for editorial review.",
+	path: "/ask",
 	title: "Ask a question - Is There Consensus?"
 });
 
