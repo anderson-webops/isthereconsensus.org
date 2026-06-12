@@ -8,6 +8,13 @@ import { fileURLToPath } from "node:url";
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
 const serverEntry = resolve(projectRoot, "front-end/.output/server/index.mjs");
+const securityTxtExpectation = {
+	contentType: "text/plain",
+	includes: [
+		"Contact: mailto:consensus@isthereconsensus.org",
+		"Canonical: https://isthereconsensus.org/.well-known/security.txt"
+	]
+};
 
 function parsePort(envName, fallbackPort) {
 	const rawPort = process.env[envName];
@@ -184,6 +191,28 @@ function assertManifest(result) {
 	}
 }
 
+async function assertSecurityTxt(baseUrl) {
+	const securityStandard = await fetchAsset(baseUrl, "/.well-known/security.txt");
+	const securityFallback = await fetchAsset(baseUrl, "/security.txt");
+
+	assertAsset("/.well-known/security.txt", securityStandard, securityTxtExpectation);
+	assertAsset("/security.txt", securityFallback, securityTxtExpectation);
+	if (securityFallback.body !== securityStandard.body) {
+		throw new Error("/security.txt does not match /.well-known/security.txt.");
+	}
+}
+
+async function runWithServer(baseUrl, port, callback) {
+	const serverProcess = startServer(port);
+	try {
+		await waitForText(baseUrl, "Is There Consensus?");
+		await callback();
+	}
+	finally {
+		await stopProcessTree(serverProcess);
+	}
+}
+
 if (!existsSync(serverEntry)) {
 	throw new Error("Missing front-end/.output/server/index.mjs. Run npm run build before npm run smoke:ssr-assets.");
 }
@@ -191,33 +220,12 @@ if (!existsSync(serverEntry)) {
 const reservedPorts = new Set();
 const port = await choosePort("SSR_ASSET_SMOKE_PORT", 4068, reservedPorts);
 const baseUrl = `http://127.0.0.1:${port}`;
-const serverProcess = startServer(port);
 
-try {
-	await waitForText(baseUrl, "Is There Consensus?");
-
-	const securityStandard = await fetchAsset(baseUrl, "/.well-known/security.txt");
-	const securityFallback = await fetchAsset(baseUrl, "/security.txt");
+await runWithServer(baseUrl, port, async () => {
 	const robots = await fetchAsset(baseUrl, "/robots.txt");
 	const manifest = await fetchAsset(baseUrl, "/site.webmanifest");
 
-	assertAsset("/.well-known/security.txt", securityStandard, {
-		contentType: "text/plain",
-		includes: [
-			"Contact: mailto:consensus@isthereconsensus.org",
-			"Canonical: https://isthereconsensus.org/.well-known/security.txt"
-		]
-	});
-	assertAsset("/security.txt", securityFallback, {
-		contentType: "text/plain",
-		includes: [
-			"Contact: mailto:consensus@isthereconsensus.org",
-			"Canonical: https://isthereconsensus.org/.well-known/security.txt"
-		]
-	});
-	if (securityFallback.body !== securityStandard.body) {
-		throw new Error("/security.txt does not match /.well-known/security.txt.");
-	}
+	await assertSecurityTxt(baseUrl);
 	assertAsset("/robots.txt", robots, {
 		contentType: "text/plain",
 		includes: [
@@ -229,7 +237,4 @@ try {
 	assertManifest(manifest);
 
 	console.log(`ssr public assets ok: ${baseUrl}`);
-}
-finally {
-	await stopProcessTree(serverProcess);
-}
+});

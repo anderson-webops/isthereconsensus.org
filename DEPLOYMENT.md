@@ -61,6 +61,8 @@ npm run smoke:live
 
 The same check is available from GitHub Actions as the manual `Live smoke` workflow. Use it after deploys when shell access to the deployment host is unavailable.
 
+Security reporting metadata is served by Nuxt SSR middleware at `/.well-known/security.txt` and `/security.txt`. Do not depend on nginx or `/var/www` static copies for those paths; `npm run smoke:ssr-assets` verifies the built Nitro server returns them as `text/plain`.
+
 ## Health checks
 
 - Frontend readiness: load the homepage over HTTPS.

@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import { securityTxtBody, securityTxtRoutes } from "../server/utils/securityTxt";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const publicDir = join(testDir, "..", "public");
@@ -52,17 +53,15 @@ describe("public launch assets", () => {
 		assert.match(robots, /^Sitemap: https:\/\/isthereconsensus\.org\/sitemap\.xml$/m);
 	});
 
-	it("ships a security.txt contact at the standard and fallback locations", () => {
-		const standard = readFileSync(publicPath(".well-known/security.txt"), "utf8");
-		const fallback = readFileSync(publicPath("security.txt"), "utf8");
-
-		assert.equal(fallback, standard);
-		assert.match(standard, /^Contact: mailto:consensus@isthereconsensus\.org$/m);
+	it("defines security.txt metadata for the standard and fallback routes", () => {
+		assert.ok(securityTxtRoutes.has("/.well-known/security.txt"));
+		assert.ok(securityTxtRoutes.has("/security.txt"));
+		assert.match(securityTxtBody, /^Contact: mailto:consensus@isthereconsensus\.org$/m);
 		assert.match(
-			standard,
+			securityTxtBody,
 			/^Policy: https:\/\/github\.com\/anderson-webops\/isthereconsensus\.org\/security\/policy$/m
 		);
-		assert.match(standard, /^Canonical: https:\/\/isthereconsensus\.org\/\.well-known\/security\.txt$/m);
-		assert.match(standard, /^Expires: 2027-06-30T23:59:00\.000Z$/m);
+		assert.match(securityTxtBody, /^Canonical: https:\/\/isthereconsensus\.org\/\.well-known\/security\.txt$/m);
+		assert.match(securityTxtBody, /^Expires: 2027-06-30T23:59:00\.000Z$/m);
 	});
 });
