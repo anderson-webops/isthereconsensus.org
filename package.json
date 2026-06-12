@@ -23,6 +23,7 @@
 		"lint-fix": "npm run -w front-end lint-fix && npm run -w back-end lint-fix",
 		"test": "npm run -w front-end test:unit && npm run -w back-end test",
 		"typecheck": "npm run -w front-end typecheck && npm run -w back-end typecheck",
+		"smoke:live": "node scripts/live-site-smoke.mjs",
 		"smoke:ssr-assets": "node scripts/ssr-public-assets-smoke.mjs",
 		"clean": "sudo rm -rf node_modules dist package-lock.json **/node_modules **/dist **/package-lock.json **/.nuxt **/.output",
 		"up": "node ./scripts/up.mjs",

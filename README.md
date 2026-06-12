@@ -92,6 +92,18 @@ If public route structure, headings, forms, or claim pages changed, also run:
 npm run a11y
 ```
 
+After production deploys, run the live contract smoke:
+
+```bash
+npm run smoke:live
+```
+
+To check a locally running built SSR server instead, point the smoke at that origin and use the frontend profile:
+
+```bash
+LIVE_SMOKE_BASE_URL=http://127.0.0.1:4068 LIVE_SMOKE_PROFILE=frontend npm run smoke:live
+```
+
 ## Deployment note: static vs SSR and /var/www
 
 The deploy script treats static and SSR Nuxt sites differently:
