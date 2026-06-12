@@ -119,6 +119,9 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Build frontend
+        run: npm run -w front-end build
+
       - name: Axe accessibility smoke checks
         run: npm run a11y
 

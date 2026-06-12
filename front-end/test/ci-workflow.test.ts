@@ -27,4 +27,12 @@ describe("CI workflow", () => {
 				workflowSource.indexOf("run: npm run smoke:ssr-routes")
 		);
 	});
+
+	it("builds the frontend before built-app accessibility smoke checks", () => {
+		const buildFrontendStep = workflowSource.indexOf("run: npm run -w front-end build");
+		const accessibilityStep = workflowSource.indexOf("run: npm run a11y");
+		assert.notEqual(buildFrontendStep, -1);
+		assert.notEqual(accessibilityStep, -1);
+		assert.ok(buildFrontendStep < accessibilityStep);
+	});
 });

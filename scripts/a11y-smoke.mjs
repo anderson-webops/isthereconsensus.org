@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import http from "node:http";
 import { createRequire } from "node:module";
 import net from "node:net";
@@ -12,11 +12,9 @@ const require = createRequire(import.meta.url);
 const axeSourcePath = require.resolve("axe-core/axe.min.js");
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
-const frontendPackagePath = resolve(projectRoot, "front-end/package.json");
-const frontendPackage = JSON.parse(readFileSync(frontendPackagePath, "utf8"));
+const frontendServerEntry = resolve(projectRoot, "front-end/.output/server/index.mjs");
 
 const siteName = "Is There Consensus?";
-const frontendKind = "nuxt";
 let frontendPort = 0;
 let apiPort = 0;
 let baseUrl = "";
@@ -198,17 +196,21 @@ async function waitForHttp(url, timeoutMs = 45_000, expectedText = "") {
 }
 
 function startFrontend() {
-	const isNuxt = frontendKind === "nuxt" || Object.values(frontendPackage.scripts || {}).some(script => String(script).includes("nuxt"));
-	const args = isNuxt
-		? ["exec", "-w", "front-end", "--", "nuxt", "dev", "--host", "127.0.0.1", "--port", String(frontendPort)]
-		: ["exec", "-w", "front-end", "--", "vite", "--host", "127.0.0.1", "--port", String(frontendPort), "--strictPort"];
+	if (!existsSync(frontendServerEntry)) {
+		throw new Error("Missing front-end/.output/server/index.mjs. Run `npm run build` or `npm run -w front-end build` before `npm run a11y`.");
+	}
 
-	const child = spawn("npm", args, {
-		cwd: projectRoot,
+	const child = spawn(process.execPath, [frontendServerEntry], {
+		cwd: resolve(projectRoot, "front-end"),
 		env: {
 			...process.env,
 			BROWSER: "none",
 			DISABLE_ANALYTICS: "true",
+			NODE_ENV: "production",
+			HOST: "127.0.0.1",
+			NITRO_HOST: "127.0.0.1",
+			PORT: String(frontendPort),
+			NITRO_PORT: String(frontendPort),
 			NUXT_DEVTOOLS_ENABLED: "false",
 			NUXT_TELEMETRY_DISABLED: "1",
 			NUXT_PUBLIC_APP_URL: baseUrl,
@@ -240,8 +242,8 @@ function startFrontend() {
 		detached: process.platform !== "win32",
 		stdio: ["ignore", "pipe", "pipe"]
 	});
-	child.stdout.on("data", data => writeServerLine(isNuxt ? "nuxt" : "vite", data));
-	child.stderr.on("data", data => writeServerLine(isNuxt ? "nuxt" : "vite", data));
+	child.stdout.on("data", data => writeServerLine("ssr", data));
+	child.stderr.on("data", data => writeServerLine("ssr", data));
 	return child;
 }
 

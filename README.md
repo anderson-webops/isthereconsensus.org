@@ -11,7 +11,7 @@ The site is deliberately not a truth oracle, medical-advice tool, or automated c
 - UnoCSS
 - Express
 - MongoDB / Mongoose
-- Vitest
+- Node test runner
 - Axe smoke checks
 
 ## Repo layout
@@ -58,8 +58,9 @@ npm run serve
 npm run lint
 npm run typecheck
 
-# Unit tests and accessibility smoke checks
+# Unit tests and built-app accessibility smoke checks
 npm test
+npm run build
 npm run a11y
 ```
 
@@ -83,14 +84,9 @@ npm run typecheck
 npm run build
 npm run smoke:ssr-assets
 npm run smoke:ssr-routes
+npm run a11y
 npm test
 npm audit
-```
-
-If public route structure, headings, forms, or claim pages changed, also run:
-
-```bash
-npm run a11y
 ```
 
 After production deploys, run the live contract smoke:

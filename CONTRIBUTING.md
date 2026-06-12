@@ -40,14 +40,11 @@ npm ci
 npm run lint
 npm run typecheck
 npm run build
+npm run smoke:ssr-assets
+npm run smoke:ssr-routes
+npm run a11y
 npm test
 npm audit
-```
-
-If public routes, forms, headings, claim pages, or navigation changed, also run:
-
-```bash
-npm run a11y
 ```
 
 ## Pull Request Expectations
