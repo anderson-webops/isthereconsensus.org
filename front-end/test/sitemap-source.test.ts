@@ -9,10 +9,18 @@ const sitemapSource = readFileSync(join(testDir, "..", "server", "routes", "site
 
 const publicStaticRoutes = [
 	"/",
+	"/account-deletion-and-retention",
 	"/ask",
+	"/automation-and-ai",
+	"/community-guidelines",
+	"/conflicts-and-funding",
 	"/consensus",
+	"/copyright-and-trademark",
+	"/corrections",
+	"/expert-review-program",
 	"/explainers",
 	"/misconceptions",
+	"/moderation-and-appeals",
 	"/standards",
 	"/privacy",
 	"/terms"
