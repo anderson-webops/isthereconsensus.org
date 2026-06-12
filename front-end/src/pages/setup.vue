@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SetupCheck, SetupDashboardResponse } from "~/types/setup";
+import { canReadDiagnostics } from "~/utils/diagnostics";
 import {
 	buildFrontendSetupChecks,
 	buildServerAgentPrompt,
@@ -7,10 +8,29 @@ import {
 	serverPreparationTasks
 } from "~/utils/setup";
 
+const config = useRuntimeConfig();
 const { copy, copied } = useClipboard();
+const isProduction = import.meta.env.PROD;
+const internalDiagnosticsKey = config.internalDiagnosticsKey as string;
+const providedDiagnosticsKey = useRequestHeader("x-internal-diagnostics-key");
+const diagnosticsAllowed = canReadDiagnostics({
+	isProd: isProduction,
+	configuredKey: internalDiagnosticsKey,
+	providedKey: providedDiagnosticsKey
+});
+
+if (!diagnosticsAllowed) {
+	throw createError({
+		statusCode: 404,
+		statusMessage: "Page not found"
+	});
+}
+const diagnosticsHeaders = internalDiagnosticsKey
+	? { "x-internal-diagnostics-key": internalDiagnosticsKey }
+	: undefined;
 
 const { data, pending, refresh } = await useAsyncData("setup-dashboard", () =>
-	$fetch<SetupDashboardResponse>("/api/setup-status")
+	$fetch<SetupDashboardResponse>("/api/setup-status", { headers: diagnosticsHeaders })
 );
 
 const dashboard = computed(() => data.value);
@@ -59,7 +79,13 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 			</div>
 
 			<div class="setup__actions">
-				<button class="cta primary" type="button" :disabled="pending" @click="refreshStatus">
+				<button
+					v-if="!isProduction"
+					class="cta primary"
+					type="button"
+					:disabled="pending"
+					@click="refreshStatus"
+				>
 					{{ pending ? "Refreshing..." : "Refresh status" }}
 				</button>
 				<button class="cta ghost" type="button" @click="copyPrompt">
