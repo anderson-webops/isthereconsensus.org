@@ -98,6 +98,8 @@ After production deploys, run the live contract smoke:
 npm run smoke:live
 ```
 
+The same check is also available as the manual GitHub Actions workflow `Live smoke`.
+
 To check a locally running built SSR server instead, point the smoke at that origin and use the frontend profile:
 
 ```bash

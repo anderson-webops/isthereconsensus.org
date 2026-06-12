@@ -58,6 +58,8 @@ npm run smoke:live
 
 `smoke:live` verifies the public homepage, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`.
 
+The same check is available from GitHub Actions as the manual `Live smoke` workflow. Use it after deploys when shell access to the deployment host is unavailable.
+
 ## Health checks
 
 - Frontend readiness: load the homepage over HTTPS.
