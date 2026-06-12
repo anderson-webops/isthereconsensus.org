@@ -41,4 +41,28 @@ describe("public launch assets", () => {
 
 		assert.deepEqual(size, { width: 1200, height: 630 });
 	});
+
+	it("ships crawler guidance with the canonical sitemap location", () => {
+		const robots = readFileSync(publicPath("robots.txt"), "utf8");
+
+		assert.match(robots, /^User-agent: \*/m);
+		assert.match(robots, /^Disallow: \/api/m);
+		assert.match(robots, /^Disallow: \/account/m);
+		assert.match(robots, /^Disallow: \/setup/m);
+		assert.match(robots, /^Sitemap: https:\/\/isthereconsensus\.org\/sitemap\.xml$/m);
+	});
+
+	it("ships a security.txt contact at the standard and fallback locations", () => {
+		const standard = readFileSync(publicPath(".well-known/security.txt"), "utf8");
+		const fallback = readFileSync(publicPath("security.txt"), "utf8");
+
+		assert.equal(fallback, standard);
+		assert.match(standard, /^Contact: mailto:consensus@isthereconsensus\.org$/m);
+		assert.match(
+			standard,
+			/^Policy: https:\/\/github\.com\/anderson-webops\/isthereconsensus\.org\/security\/policy$/m
+		);
+		assert.match(standard, /^Canonical: https:\/\/isthereconsensus\.org\/\.well-known\/security\.txt$/m);
+		assert.match(standard, /^Expires: 2027-06-30T23:59:00\.000Z$/m);
+	});
 });

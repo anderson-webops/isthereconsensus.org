@@ -4,7 +4,7 @@
 
 ## Reporting A Vulnerability
 
-Use GitHub private vulnerability reporting if it is available for this repository. If it is not available, contact the maintainer through the GitHub profile associated with this repository and include:
+Use GitHub private vulnerability reporting if it is available for this repository. The deployed site also exposes the standard reporting pointer at `https://isthereconsensus.org/.well-known/security.txt`. If GitHub private reporting is not available, email `consensus@isthereconsensus.org` or contact the maintainer through the GitHub profile associated with this repository and include:
 
 - affected route, endpoint, package, or workflow
 - impact and likely severity

@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import http from "node:http";
 import { createRequire } from "node:module";
+import net from "node:net";
 import { dirname, resolve } from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -16,10 +17,10 @@ const frontendPackage = JSON.parse(readFileSync(frontendPackagePath, "utf8"));
 
 const siteName = "Is There Consensus?";
 const frontendKind = "nuxt";
-const frontendPort = Number(process.env.A11Y_FRONTEND_PORT || 3348);
-const apiPort = Number(process.env.A11Y_API_PORT || 3048);
-const baseUrl = `http://127.0.0.1:${frontendPort}`;
-const apiUrl = `http://127.0.0.1:${apiPort}/api`;
+let frontendPort = 0;
+let apiPort = 0;
+let baseUrl = "";
+let apiUrl = "";
 const routes = [
 	"/",
 	"/consensus",
@@ -45,6 +46,64 @@ const chromeCandidates = [
 
 const chromePath = chromeCandidates.find(candidate => existsSync(candidate));
 if (chromePath) process.env.PUPPETEER_EXECUTABLE_PATH = chromePath;
+
+function parsePort(envName, fallbackPort) {
+	const rawPort = process.env[envName];
+	const port = Number(rawPort || fallbackPort);
+	if (!Number.isInteger(port) || port < 1 || port > 65535) {
+		throw new Error(`${envName} must be a TCP port between 1 and 65535.`);
+	}
+	return { explicit: Boolean(rawPort), port };
+}
+
+function portIsAvailable(port) {
+	return new Promise(resolvePortCheck => {
+		const server = net.createServer();
+		server.unref();
+		server.once("error", () => resolvePortCheck(false));
+		server.listen(port, "127.0.0.1", () => {
+			server.close(() => resolvePortCheck(true));
+		});
+	});
+}
+
+function getEphemeralPort(reservedPorts) {
+	return new Promise((resolvePort, reject) => {
+		const server = net.createServer();
+		server.unref();
+		server.once("error", reject);
+		server.listen(0, "127.0.0.1", () => {
+			const address = server.address();
+			const port = typeof address === "object" && address ? address.port : 0;
+			server.close(async () => {
+				if (!port || reservedPorts.has(port)) {
+					resolvePort(await getEphemeralPort(reservedPorts));
+					return;
+				}
+				resolvePort(port);
+			});
+		});
+	});
+}
+
+async function choosePort(envName, fallbackPort, reservedPorts) {
+	const { explicit, port } = parsePort(envName, fallbackPort);
+	if (!reservedPorts.has(port) && await portIsAvailable(port)) return port;
+	if (explicit) throw new Error(`${envName}=${port} is already in use.`);
+
+	const selectedPort = await getEphemeralPort(reservedPorts);
+	console.warn(`[a11y] Port ${port} is unavailable; using ${selectedPort}.`);
+	return selectedPort;
+}
+
+async function configurePorts() {
+	const reservedPorts = new Set();
+	frontendPort = await choosePort("A11Y_FRONTEND_PORT", 3348, reservedPorts);
+	reservedPorts.add(frontendPort);
+	apiPort = await choosePort("A11Y_API_PORT", 3048, reservedPorts);
+	baseUrl = `http://127.0.0.1:${frontendPort}`;
+	apiUrl = `http://127.0.0.1:${apiPort}/api`;
+}
 
 function writeServerLine(prefix, data) {
 	const text = data.toString().trim();
@@ -117,14 +176,18 @@ async function listen(server, port) {
 	});
 }
 
-async function waitForHttp(url, timeoutMs = 45_000) {
+async function waitForHttp(url, timeoutMs = 45_000, expectedText = "") {
 	const start = Date.now();
 	let lastError;
 	while (Date.now() - start < timeoutMs) {
 		try {
 			const response = await fetch(url);
-			if (response.ok) return;
+			const text = await response.text();
+			if (response.ok && (!expectedText || text.includes(expectedText))) return;
 			lastError = new Error(`${url} returned ${response.status}`);
+			if (response.ok && expectedText) {
+				lastError = new Error(`${url} did not render expected text: ${expectedText}`);
+			}
 		}
 		catch (error) {
 			lastError = error;
@@ -258,13 +321,15 @@ async function analyzePage(browser, route, scheme) {
 	};
 }
 
+await configurePorts();
+
 const apiServer = createMockApiServer();
 const frontendProcess = startFrontend();
 let browser;
 
 try {
 	await listen(apiServer, apiPort);
-	await waitForHttp(baseUrl);
+	await waitForHttp(baseUrl, 45_000, siteName);
 
 	browser = await puppeteer.launch({
 		executablePath: chromePath,
