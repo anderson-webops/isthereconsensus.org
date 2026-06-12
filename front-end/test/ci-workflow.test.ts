@@ -8,6 +8,11 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 const workflowSource = readFileSync(join(testDir, "..", "..", ".github", "workflows", "ci.yml"), "utf8");
 
 describe("CI workflow", () => {
+	it("cancels stale queued runs for the same branch", () => {
+		assert.match(workflowSource, /concurrency:\n\s+group: \$\{\{ github\.workflow \}\}-\$\{\{ github\.ref \}\}/);
+		assert.match(workflowSource, /cancel-in-progress: true/);
+	});
+
 	it("uses GitHub JavaScript actions that target the Node 24 runtime", () => {
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v4/);
 		assert.doesNotMatch(workflowSource, /FORCE_JAVASCRIPT_ACTIONS_TO_NODE24/);
