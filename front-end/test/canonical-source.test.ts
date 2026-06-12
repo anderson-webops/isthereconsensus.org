@@ -10,6 +10,7 @@ const canonicalFiles = [
 	"src/app.vue",
 	"src/pages/index.vue",
 	"src/pages/[...all].vue",
+	"src/pages/consensus/index.vue",
 	"src/pages/consensus/[slug].vue",
 	"src/pages/consensus/[topicSlug]/[claimSlug].vue"
 ];

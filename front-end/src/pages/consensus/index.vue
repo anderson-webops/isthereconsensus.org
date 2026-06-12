@@ -2,6 +2,7 @@
 import type { Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
 
@@ -24,6 +25,10 @@ const starterOrder = [
 	"neuroscience-and-psychology"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
+const pageTitle = "Browse scientific consensus topics - Is There Consensus?";
+const pageDescription =
+	"Search the public topic directory for reviewed scientific claims, evidence summaries, uncertainty notes, and source trails.";
+const pageUrl = `${siteUrl}/consensus`;
 const enrichedTopics = computed(() =>
 	topics.value
 		.map((topic) => ({
@@ -38,6 +43,68 @@ const enrichedTopics = computed(() =>
 			return leftRank - rightRank || left.title.localeCompare(right.title);
 		})
 );
+const directoryStructuredData = computed(() => ({
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	description: pageDescription,
+	isPartOf: {
+		"@type": "WebSite",
+		name: appName,
+		url: siteUrl
+	},
+	mainEntity: {
+		"@type": "ItemList",
+		itemListElement: enrichedTopics.value.map((topic, index) => ({
+			"@type": "ListItem",
+			position: index + 1,
+			name: topic.title,
+			url: `${pageUrl}/${topic.slug}`
+		}))
+	},
+	name: "Scientific consensus topic directory",
+	publisher: {
+		"@type": "Organization",
+		name: appName,
+		url: siteUrl
+	},
+	url: pageUrl
+}));
+
+useSeoMeta({
+	description: pageDescription,
+	ogDescription: pageDescription,
+	ogImage: socialImageUrl,
+	ogImageAlt: `${appName} preview card`,
+	ogImageHeight: "630",
+	ogImageWidth: "1200",
+	ogSiteName: appName,
+	ogTitle: "Browse scientific consensus topics",
+	ogType: "website",
+	ogUrl: pageUrl,
+	title: pageTitle,
+	twitterCard: "summary_large_image",
+	twitterDescription: pageDescription,
+	twitterImage: socialImageUrl,
+	twitterImageAlt: `${appName} preview card`,
+	twitterTitle: "Browse scientific consensus topics"
+});
+
+useHead(() => ({
+	link: [
+		{
+			key: "canonical",
+			href: pageUrl,
+			rel: "canonical"
+		}
+	],
+	script: [
+		{
+			innerHTML: JSON.stringify(directoryStructuredData.value),
+			key: "consensus-directory-jsonld",
+			type: "application/ld+json"
+		}
+	]
+}));
 
 function formatTopicDate(value?: string) {
 	if (!value) return "Update pending";
