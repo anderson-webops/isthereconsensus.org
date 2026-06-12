@@ -17,6 +17,7 @@ describe("CI workflow", () => {
 
 	it("smoke tests built SSR public assets and route rules after the production build", () => {
 		assert.match(workflowSource, /run: npm run build/);
+		assert.match(workflowSource, /SOURCE_COMMIT: \$\{\{ github\.sha \}\}/);
 		assert.match(workflowSource, /run: npm run smoke:ssr-assets/);
 		assert.match(workflowSource, /run: npm run smoke:ssr-routes/);
 		assert.ok(

@@ -15,6 +15,10 @@ on:
         options:
           - production
           - frontend
+      expected_commit:
+        description: Optional commit prefix that /deployment.json must report.
+        required: false
+        default: ""
 
 env:
   NODE_VERSION: 24.x
@@ -42,4 +46,5 @@ jobs:
         env:
           LIVE_SMOKE_BASE_URL: ${{ inputs.base_url }}
           LIVE_SMOKE_PROFILE: ${{ inputs.profile }}
+          LIVE_SMOKE_EXPECT_COMMIT: ${{ inputs.expected_commit }}
         run: npm run smoke:live

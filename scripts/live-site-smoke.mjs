@@ -2,6 +2,8 @@ const defaultBaseUrl = "https://isthereconsensus.org";
 const baseUrl = normalizeBaseUrl(process.env.LIVE_SMOKE_BASE_URL || defaultBaseUrl);
 const profile = process.env.LIVE_SMOKE_PROFILE || "production";
 const timeoutMs = Number(process.env.LIVE_SMOKE_TIMEOUT_MS || 10_000);
+const expectedCommit = (process.env.LIVE_SMOKE_EXPECT_COMMIT || "").trim();
+const expectedRef = (process.env.LIVE_SMOKE_EXPECT_REF || "").trim();
 
 function normalizeBaseUrl(value) {
 	try {
@@ -94,6 +96,29 @@ function assertReadyz(result) {
 	}
 }
 
+function assertDeploymentMetadata(result) {
+	expectStatus(result, 200);
+	expectContentType(result, "application/json");
+	const data = parseJson(result);
+
+	if (data.ok !== true || data.service !== "front-end" || data.runtime !== "nuxt-ssr") {
+		throw new Error(`${result.route} has unexpected service metadata: ${result.body}`);
+	}
+
+	for (const field of ["buildId", "commit", "ref", "siteUrl"]) {
+		if (typeof data[field] !== "string") {
+			throw new Error(`${result.route} field ${field} must be a string.`);
+		}
+	}
+
+	if (expectedCommit && !data.commit.startsWith(expectedCommit)) {
+		throw new Error(`${result.route} reported commit ${data.commit || "(empty)"}; expected ${expectedCommit}.`);
+	}
+	if (expectedRef && data.ref !== expectedRef) {
+		throw new Error(`${result.route} reported ref ${data.ref || "(empty)"}; expected ${expectedRef}.`);
+	}
+}
+
 async function runCheck(label, check) {
 	try {
 		await check();
@@ -118,6 +143,10 @@ failures.push(await runCheck("homepage renders public site", async () => {
 	expectStatus(result, 200);
 	expectContentType(result, "text/html");
 	expectIncludes(result, ["Is There Consensus", "Search the claim"]);
+}));
+
+failures.push(await runCheck("deployment metadata identifies frontend build", async () => {
+	assertDeploymentMetadata(await fetchRoute("/deployment.json"));
 }));
 
 failures.push(await runCheck("robots.txt advertises canonical sitemap", async () => {

@@ -191,6 +191,23 @@ function assertManifest(result) {
 	}
 }
 
+function assertDeploymentMetadata(result) {
+	assertAsset("/deployment.json", result, {
+		contentType: "application/json",
+		includes: []
+	});
+
+	const data = JSON.parse(result.body);
+	if (data.ok !== true || data.service !== "front-end" || data.runtime !== "nuxt-ssr") {
+		throw new Error(`/deployment.json has unexpected service metadata: ${result.body}`);
+	}
+	for (const field of ["buildId", "commit", "ref", "siteUrl"]) {
+		if (typeof data[field] !== "string") {
+			throw new Error(`/deployment.json field ${field} must be a string.`);
+		}
+	}
+}
+
 async function assertSecurityTxt(baseUrl) {
 	const securityStandard = await fetchAsset(baseUrl, "/.well-known/security.txt");
 	const securityFallback = await fetchAsset(baseUrl, "/security.txt");
@@ -224,8 +241,10 @@ const baseUrl = `http://127.0.0.1:${port}`;
 await runWithServer(baseUrl, port, async () => {
 	const robots = await fetchAsset(baseUrl, "/robots.txt");
 	const manifest = await fetchAsset(baseUrl, "/site.webmanifest");
+	const deployment = await fetchAsset(baseUrl, "/deployment.json");
 
 	await assertSecurityTxt(baseUrl);
+	assertDeploymentMetadata(deployment);
 	assertAsset("/robots.txt", robots, {
 		contentType: "text/plain",
 		includes: [

@@ -95,7 +95,11 @@ After production deploys, run the live contract smoke:
 npm run smoke:live
 ```
 
-The same check is also available as the manual GitHub Actions workflow `Live smoke`.
+The same check is also available as the manual GitHub Actions workflow `Live smoke`. Pass the expected commit when you need to prove production is running the current build:
+
+```bash
+LIVE_SMOKE_EXPECT_COMMIT=$(git rev-parse --short=12 HEAD) npm run smoke:live
+```
 
 To check a locally running built SSR server instead, point the smoke at that origin and use the frontend profile:
 

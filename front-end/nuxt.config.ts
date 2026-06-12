@@ -2,6 +2,7 @@
 
 import type { ModuleOptions as ColorModeOptions } from "@nuxtjs/color-mode";
 import type { NuxtConfig } from "nuxt/schema";
+import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -15,6 +16,19 @@ const __dirname: string = path.dirname(fileURLToPath(import.meta.url));
 const srcPath: string = path.resolve(__dirname, "src");
 const srcAlias = `${srcPath}/`;
 const backendEnvPath = path.resolve(__dirname, "../back-end/.env");
+
+function readGitValue(args: string[]): string {
+	try {
+		return execFileSync("git", args, {
+			cwd: path.resolve(__dirname, ".."),
+			encoding: "utf8",
+			stdio: ["ignore", "pipe", "ignore"]
+		}).trim();
+	} catch {
+		return "";
+	}
+}
+
 const envPathCandidates = [process.env.NUXT_ENV_PATH, process.env.APP_ENV_PATH, backendEnvPath].filter(
 	Boolean
 ) as string[];
@@ -31,6 +45,20 @@ for (const envPath of envPathCandidates) {
 const isDev = process.env.NODE_ENV === "development";
 const publicApiBase = normalizePublicApiBase(process.env.PUBLIC_API_BASE, isDev);
 const internalApiBase = normalizeInternalApiBase(process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE);
+const deploymentCommit =
+	process.env.SOURCE_COMMIT ||
+	process.env.SOURCE_VERSION ||
+	process.env.GITHUB_SHA ||
+	process.env.VERCEL_GIT_COMMIT_SHA ||
+	process.env.COMMIT_SHA ||
+	process.env.BUILD_SHA ||
+	readGitValue(["rev-parse", "--short=12", "HEAD"]);
+const deploymentRef =
+	process.env.SOURCE_TAG ||
+	process.env.RELEASE_VERSION ||
+	process.env.GITHUB_REF_NAME ||
+	process.env.BRANCH_NAME ||
+	readGitValue(["describe", "--tags", "--exact-match"]);
 const centralAnalyticsDomain = "analytics.jacobdanderson.net";
 const centralAnalyticsWebsiteId = "2d20f4af-99de-4944-8f56-91ea2a32065d";
 const faviconLinks = [
@@ -138,7 +166,11 @@ export default defineNuxtConfig({
 		public: {
 			apiBase: publicApiBase,
 			siteUrl: process.env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
-			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || ""
+			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || "",
+			deployment: {
+				commit: deploymentCommit || "",
+				ref: deploymentRef || ""
+			}
 		}
 	},
 

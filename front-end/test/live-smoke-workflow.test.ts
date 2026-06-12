@@ -13,6 +13,7 @@ describe("live smoke workflow", () => {
 		assert.match(workflowSource, /base_url:/);
 		assert.match(workflowSource, /default: https:\/\/isthereconsensus\.org/);
 		assert.match(workflowSource, /profile:/);
+		assert.match(workflowSource, /expected_commit:/);
 		assert.match(workflowSource, /- production/);
 		assert.match(workflowSource, /- frontend/);
 	});
@@ -22,6 +23,7 @@ describe("live smoke workflow", () => {
 		assert.match(workflowSource, /actions\/setup-node@v6/);
 		assert.match(workflowSource, /LIVE_SMOKE_BASE_URL: \$\{\{ inputs\.base_url \}\}/);
 		assert.match(workflowSource, /LIVE_SMOKE_PROFILE: \$\{\{ inputs\.profile \}\}/);
+		assert.match(workflowSource, /LIVE_SMOKE_EXPECT_COMMIT: \$\{\{ inputs\.expected_commit \}\}/);
 		assert.match(workflowSource, /run: npm run smoke:live/);
 	});
 });

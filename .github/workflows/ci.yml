@@ -120,6 +120,8 @@ jobs:
         run: npm ci
 
       - name: Build frontend
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
         run: npm run -w front-end build
 
       - name: Axe accessibility smoke checks
@@ -144,6 +146,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
         run: npm run build
 
       - name: SSR public asset smoke

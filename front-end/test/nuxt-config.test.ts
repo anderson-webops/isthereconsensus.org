@@ -24,4 +24,8 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 
 	const applicationName = headMeta.find((meta) => meta?.name === "application-name");
 	assert.equal(applicationName?.content, appName);
+
+	const publicConfig = config.runtimeConfig?.public;
+	assert.equal(typeof publicConfig?.deployment?.commit, "string");
+	assert.equal(typeof publicConfig?.deployment?.ref, "string");
 });
