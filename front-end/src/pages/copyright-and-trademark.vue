@@ -41,7 +41,10 @@ const scopeNotes = [
 	"Trademark or impersonation complaints should explain the confusing use, not just assert ownership in the abstract."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Learn how copyright and trademark complaints are triaged, reviewed, communicated, and resolved on the site.",
+	path: "/copyright-and-trademark",
 	title: "Copyright and trademark complaints - Is There Consensus?"
 });
 </script>

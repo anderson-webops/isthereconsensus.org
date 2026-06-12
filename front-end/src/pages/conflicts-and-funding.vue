@@ -46,7 +46,10 @@ const publicCommitments = [
 	"If a conflict is serious enough to affect confidence, the site prefers replacement review over private hand-waving."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Read how reviewer conflicts, funding relationships, recusals, and disclosure notes are handled during claim review.",
+	path: "/conflicts-and-funding",
 	title: "Conflict and funding disclosure - Is There Consensus?"
 });
 </script>

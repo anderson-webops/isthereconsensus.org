@@ -45,7 +45,10 @@ const removalTriggers = [
 	"harassment, confidentiality breaches, or abusive use of draft access"
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Learn how verified expert reviewers are screened, assigned, disclosed, and removed when the review role is abused.",
+	path: "/expert-review-program",
 	title: "Verified expert review program - Is There Consensus?"
 });
 </script>

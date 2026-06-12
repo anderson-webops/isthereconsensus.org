@@ -8,9 +8,12 @@ const crossCuttingRules = [
 	"Do not let background papers or media coverage outrank decision-facing reviews."
 ];
 
-useHead({
-	title: "Topic sourcing notes - Is There Consensus?",
-	meta: [{ name: "robots", content: "noindex,follow" }]
+useStaticPageMeta({
+	description:
+		"Reference topic-specific sourcing notes for reviewers checking how source stacks should be weighted in unusual fields.",
+	path: "/source-standards",
+	robots: "noindex,follow",
+	title: "Topic sourcing notes - Is There Consensus?"
 });
 </script>
 

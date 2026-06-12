@@ -40,7 +40,10 @@ const expectationNotes = [
 	"Deletion and erasure rights can be limited by legal, fraud-prevention, security, and recordkeeping exceptions."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Learn how to request account deletion, what public content can be removed, and which operational records may be retained.",
+	path: "/account-deletion-and-retention",
 	title: "Account deletion and retention - Is There Consensus?"
 });
 </script>

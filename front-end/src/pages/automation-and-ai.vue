@@ -43,7 +43,10 @@ const contributorRules = [
 	"If AI assistance shaped reviewer or editorial output in a meaningful way, disclose that use internally and, where relevant, on the public page."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"See how automation may support drafting, moderation, and operations while editorial publication remains human-controlled.",
+	path: "/automation-and-ai",
 	title: "Automation and AI disclosure - Is There Consensus?"
 });
 </script>

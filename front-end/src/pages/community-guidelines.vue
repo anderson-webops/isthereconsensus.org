@@ -62,7 +62,10 @@ const appeals = [
 	"The site may decline repeated appeals that do not add new information or that are obviously abusive."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Review the rules for public questions, evidence-focused discussion, flags, moderation actions, and high-conflict topics.",
+	path: "/community-guidelines",
 	title: "Community guidelines - Is There Consensus?"
 });
 </script>

@@ -48,7 +48,10 @@ const triggerExamples = [
 	"a claim page is shown to have merged two different scopes or populations that should be separated"
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"See how factual corrections, evidence updates, scheduled reviews, archival actions, and urgent citation issues are handled.",
+	path: "/corrections",
 	title: "Corrections policy - Is There Consensus?"
 });
 </script>

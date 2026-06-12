@@ -43,7 +43,10 @@ const transparencyCommitments = [
 	"Keep conduct enforcement distinct from scientific corrections so users do not confuse moderation power with editorial truth claims."
 ];
 
-useHead({
+useStaticPageMeta({
+	description:
+		"Review how moderation actions, safety reports, second-look reviews, appeals, and outcome logs are handled.",
+	path: "/moderation-and-appeals",
 	title: "Moderation and appeals - Is There Consensus?"
 });
 </script>
