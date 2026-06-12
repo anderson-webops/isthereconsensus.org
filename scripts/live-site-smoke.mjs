@@ -96,6 +96,33 @@ function assertReadyz(result) {
 	}
 }
 
+function assertPublicClaimSourceVisibility(result) {
+	expectStatus(result, 200);
+	expectContentType(result, "application/json");
+	const data = parseJson(result);
+	if (!Array.isArray(data.topics)) {
+		throw new Error(`${result.route} did not return a topics array.`);
+	}
+
+	const weakClaims = [];
+	for (const topic of data.topics) {
+		const claims = Array.isArray(topic?.featuredClaims) ? topic.featuredClaims : [];
+		for (const claim of claims) {
+			if (typeof claim?.title !== "string" || typeof claim?.slug !== "string") {
+				weakClaims.push(`${topic?.slug || "unknown-topic"} has a malformed featured claim`);
+				continue;
+			}
+			if (!Number.isInteger(claim.sourceCount) || claim.sourceCount < 2) {
+				weakClaims.push(`${topic?.slug || "unknown-topic"}/${claim.slug} reports ${claim.sourceCount ?? "no"} sources`);
+			}
+		}
+	}
+
+	if (weakClaims.length) {
+		throw new Error(`Public featured claims must expose source stacks: ${weakClaims.join("; ")}`);
+	}
+}
+
 function assertDeploymentMetadata(result) {
 	expectStatus(result, 200);
 	expectContentType(result, "application/json");
@@ -207,6 +234,10 @@ if (profile === "production") {
 		expectStatus(result, 403);
 		expectContentType(result, "application/json");
 		expectIncludes(result, ["forbidden"]);
+	}));
+
+	failures.push(await runCheck("public claim cards expose source stacks", async () => {
+		assertPublicClaimSourceVisibility(await fetchRoute("/api/topics?includeClaims=true"));
 	}));
 }
 

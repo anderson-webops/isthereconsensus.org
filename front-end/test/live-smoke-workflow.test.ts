@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const workflowSource = readFileSync(join(testDir, "..", "..", ".github", "workflows", "live-smoke.yml"), "utf8");
+const smokeScriptSource = readFileSync(join(testDir, "..", "..", "scripts", "live-site-smoke.mjs"), "utf8");
 
 describe("live smoke workflow", () => {
 	it("can be manually dispatched against production or a supplied origin", () => {
@@ -25,5 +26,12 @@ describe("live smoke workflow", () => {
 		assert.match(workflowSource, /LIVE_SMOKE_PROFILE: \$\{\{ inputs\.profile \}\}/);
 		assert.match(workflowSource, /LIVE_SMOKE_EXPECT_COMMIT: \$\{\{ inputs\.expected_commit \}\}/);
 		assert.match(workflowSource, /run: npm run smoke:live/);
+	});
+
+	it("verifies public claim cards expose source stacks in production", () => {
+		assert.match(smokeScriptSource, /assertPublicClaimSourceVisibility/);
+		assert.match(smokeScriptSource, /\/api\/topics\?includeClaims=true/);
+		assert.match(smokeScriptSource, /sourceCount < 2/);
+		assert.match(smokeScriptSource, /Public featured claims must expose source stacks/);
 	});
 });
