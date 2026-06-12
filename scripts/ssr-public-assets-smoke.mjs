@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import net from "node:net";
 import { dirname, resolve } from "node:path";
 import process from "node:process";
@@ -8,6 +8,10 @@ import { fileURLToPath } from "node:url";
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
 const serverEntry = resolve(projectRoot, "front-end/.output/server/index.mjs");
+const staticAssetDirs = [
+	{ dir: resolve(projectRoot, "front-end/.output/public"), label: "Nuxt public output" },
+	{ dir: resolve(projectRoot, "front-end/dist"), label: "static dist output" }
+];
 const securityTxtExpectation = {
 	contentType: "text/plain",
 	includes: [
@@ -191,6 +195,47 @@ function assertManifest(result) {
 	}
 }
 
+function readStaticAsset(dir, route) {
+	const relativePath = route.replace(/^\/+/, "");
+	return readFileSync(resolve(dir, relativePath), "utf8");
+}
+
+function assertStaticDeploymentMetadata(dir, label) {
+	const body = readStaticAsset(dir, "/deployment.json");
+	const data = JSON.parse(body);
+	if (data.ok !== true || data.service !== "front-end" || data.runtime !== "nuxt-ssr") {
+		throw new Error(`${label}/deployment.json has unexpected service metadata: ${body}`);
+	}
+	for (const field of ["buildId", "commit", "ref", "siteUrl"]) {
+		if (typeof data[field] !== "string") {
+			throw new Error(`${label}/deployment.json field ${field} must be a string.`);
+		}
+	}
+}
+
+function assertStaticSecurityTxt(dir, label) {
+	const securityStandard = readStaticAsset(dir, "/.well-known/security.txt");
+	const securityFallback = readStaticAsset(dir, "/security.txt");
+	for (const fragment of securityTxtExpectation.includes) {
+		if (!securityStandard.includes(fragment)) {
+			throw new Error(`${label}/.well-known/security.txt is missing expected text: ${fragment}`);
+		}
+	}
+	if (securityFallback !== securityStandard) {
+		throw new Error(`${label}/security.txt does not match ${label}/.well-known/security.txt.`);
+	}
+}
+
+function assertStaticMetadataFiles() {
+	for (const { dir, label } of staticAssetDirs) {
+		if (!existsSync(dir)) {
+			throw new Error(`Missing ${label} at ${dir}. Run npm run build before npm run smoke:ssr-assets.`);
+		}
+		assertStaticDeploymentMetadata(dir, label);
+		assertStaticSecurityTxt(dir, label);
+	}
+}
+
 function assertDeploymentMetadata(result) {
 	assertAsset("/deployment.json", result, {
 		contentType: "application/json",
@@ -233,6 +278,8 @@ async function runWithServer(baseUrl, port, callback) {
 if (!existsSync(serverEntry)) {
 	throw new Error("Missing front-end/.output/server/index.mjs. Run npm run build before npm run smoke:ssr-assets.");
 }
+
+assertStaticMetadataFiles();
 
 const reservedPorts = new Set();
 const port = await choosePort("SSR_ASSET_SMOKE_PORT", 4068, reservedPorts);
