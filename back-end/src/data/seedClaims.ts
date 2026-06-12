@@ -185,6 +185,9 @@ export async function seedClaims() {
 				date: new Date(entry.date)
 			}));
 		}
+		if (!claim.lastReviewedAt) missingFields.lastReviewedAt = new Date();
+		if (!claim.nextReviewAt) missingFields.nextReviewAt = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
+		if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
 		if (Object.keys(missingFields).length) {
 			await Claim.updateOne({ _id: claim._id }, { $set: missingFields });
 		}

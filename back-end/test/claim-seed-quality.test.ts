@@ -34,6 +34,10 @@ describe("default claim seed quality", () => {
 			assert.ok(claim.evidenceSummaries.length >= 1, `${claim.slug} needs outcome evidence summaries`);
 			assert.ok(claim.changeLog.length >= 1, `${claim.slug} needs a public change log`);
 			assert.ok(claim.sources.length >= 2, `${claim.slug} needs at least two source rows`);
+			assert.ok(
+				claim.sources.some(source => source.kind !== "context"),
+				`${claim.slug} needs at least one decision-weight source`
+			);
 
 			const sourceOrders = claim.sources.map(source => source.order);
 			assert.equal(new Set(sourceOrders).size, sourceOrders.length, `${claim.slug} has duplicate source orders`);

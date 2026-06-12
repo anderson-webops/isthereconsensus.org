@@ -1249,6 +1249,19 @@ const rawClaims: SeedClaim[] = [
 				order: 1
 			},
 			{
+				kind: "landmark_study",
+				title: "A default mode of brain function",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2001,
+				url: "https://doi.org/10.1073/pnas.98.2.676",
+				doi: "10.1073/pnas.98.2.676",
+				pmid: "11209064",
+				pmcid: "PMC14647",
+				stance: "supports",
+				note: "Landmark neuroimaging work showing organized baseline brain activity, not a mostly dormant brain.",
+				order: 2
+			},
+			{
 				kind: "context",
 				title: "Neuromyths in education: prevalence and predictors of misconceptions among teachers",
 				publisher: "Frontiers in Psychology",
@@ -1258,7 +1271,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "23087664",
 				stance: "supports",
 				note: "Helpful when showing why unused-brain claims fail against multiple evidence types.",
-				order: 2
+				order: 3
 			}
 		]
 	},
@@ -1408,6 +1421,17 @@ const rawClaims: SeedClaim[] = [
 				order: 1
 			},
 			{
+				kind: "consensus_statement",
+				title: "Reproducibility and Replicability in Science",
+				publisher: "National Academies",
+				year: 2019,
+				url: "https://doi.org/10.17226/25303",
+				doi: "10.17226/25303",
+				stance: "supports",
+				note: "Decision-weight anchor for why durable conclusions depend on transparent methods, replication, and independent scrutiny.",
+				order: 2
+			},
+			{
 				kind: "context",
 				title: "Estimating the reproducibility of psychological science",
 				publisher: "Science",
@@ -1416,7 +1440,7 @@ const rawClaims: SeedClaim[] = [
 				doi: "10.1126/science.aac4716",
 				stance: "context",
 				note: "Useful when discussing how correction mechanisms work.",
-				order: 2
+				order: 3
 			}
 		]
 	},
@@ -1450,7 +1474,7 @@ const rawClaims: SeedClaim[] = [
 			"Anchor the basketball-versus-bumps framing here. This page should explain why media spikes are not the same thing as consensus shifts.",
 		sources: [
 			{
-				kind: "context",
+				kind: "landmark_study",
 				title: "Why Most Published Research Findings Are False",
 				publisher: "PLOS Medicine",
 				year: 2005,
@@ -1511,7 +1535,7 @@ const rawClaims: SeedClaim[] = [
 				order: 1
 			},
 			{
-				kind: "context",
+				kind: "guideline",
 				title: "GRADE Handbook",
 				publisher: "GRADE Working Group",
 				url: "https://gdt.gradepro.org/app/handbook/handbook.html",

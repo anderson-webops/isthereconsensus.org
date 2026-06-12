@@ -1,9 +1,11 @@
 import type {
+	IClaim,
 	IClaimEvidenceSummary,
 	IClaimInstitutionalAnchor,
 	IClaimSurveillanceSpec,
 	IClaimUncertaintyDriver
 } from "./models/schemas/Claim.js";
+import type { PublicClaimSourceReadinessCounts } from "./utils/publicClaimReadiness.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
 import bodyParser from "body-parser";
@@ -29,6 +31,11 @@ import { verifyCaptcha } from "./utils/captcha.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
 import { searchEvidence } from "./utils/evidence.js";
+import {
+	emptyPublicClaimSourceReadinessCounts,
+	getPublicClaimReadiness,
+	summarizeClaimSourceReadiness
+} from "./utils/publicClaimReadiness.js";
 import { slugify } from "./utils/slugify.js";
 import { readMongoSecret } from "./vaultClient.js";
 import "dotenv/config";
@@ -451,17 +458,35 @@ async function main() {
 		return ClaimSource.find({ claim: claimId }).sort({ order: 1, createdAt: 1 }).lean();
 	}
 
-	async function loadClaimSourceCountMap(claimIds: mongoose.Types.ObjectId[]) {
-		if (!claimIds.length) return new Map<string, number>();
+	function publicClaimSourceCountsFor(
+		sourceCountMap: Map<string, PublicClaimSourceReadinessCounts>,
+		claimId: unknown
+	): PublicClaimSourceReadinessCounts {
+		return sourceCountMap.get(String(claimId)) ?? emptyPublicClaimSourceReadinessCounts;
+	}
 
-		const sourceCounts = await ClaimSource.aggregate([
-			{ $match: { claim: { $in: claimIds } } },
-			{ $group: { _id: "$claim", count: { $sum: 1 } } }
-		]);
-		const sourceCountMap = new Map<string, number>();
-		for (const row of sourceCounts) {
-			sourceCountMap.set(row._id.toString(), row.count);
+	function publicClaimIsReady(
+		claim: Partial<IClaim> & { _id?: unknown },
+		sourceCountMap: Map<string, PublicClaimSourceReadinessCounts>
+	) {
+		return getPublicClaimReadiness(claim, publicClaimSourceCountsFor(sourceCountMap, claim._id)).isReady;
+	}
+
+	async function loadClaimSourceReadinessCountMap(claimIds: mongoose.Types.ObjectId[]) {
+		if (!claimIds.length) return new Map<string, PublicClaimSourceReadinessCounts>();
+
+		const sources = await ClaimSource.find({ claim: { $in: claimIds } }).lean();
+		const sourcesByClaim = new Map<string, typeof sources>();
+		for (const source of sources) {
+			const key = source.claim.toString();
+			sourcesByClaim.set(key, [...(sourcesByClaim.get(key) ?? []), source]);
 		}
+
+		const sourceCountMap = new Map<string, PublicClaimSourceReadinessCounts>();
+		for (const [claimId, claimSources] of sourcesByClaim) {
+			sourceCountMap.set(claimId, summarizeClaimSourceReadiness(claimSources));
+		}
+
 		return sourceCountMap;
 	}
 
@@ -634,16 +659,18 @@ async function main() {
 				const publishedClaims = await Claim.find({ status: "published" })
 					.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
 					.lean();
-				const sourceCountMap = await loadClaimSourceCountMap(publishedClaims.map(claim => claim._id));
-				claimCountMap = publishedClaims.reduce((map, claim) => {
+				const sourceCountMap = await loadClaimSourceReadinessCountMap(publishedClaims.map(claim => claim._id));
+				const publicReadyClaims = publishedClaims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
+				claimCountMap = publicReadyClaims.reduce((map, claim) => {
 					const key = claim.topic.toString();
 					map.set(key, (map.get(key) ?? 0) + 1);
 					return map;
 				}, new Map<string, number>());
-				featuredClaimsMap = publishedClaims.reduce((map, claim) => {
+				featuredClaimsMap = publicReadyClaims.reduce((map, claim) => {
 					const key = claim.topic.toString();
 					const current = map.get(key) ?? [];
 					if (current.length < 3) {
+						const sourceCounts = publicClaimSourceCountsFor(sourceCountMap, claim._id);
 						current.push({
 							_id: claim._id,
 							title: claim.title,
@@ -654,7 +681,7 @@ async function main() {
 							confidenceScore: claim.confidenceScore,
 							reviewMode: claim.reviewMode,
 							bottomLine: claim.bottomLine,
-							sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0,
+							sourceCount: sourceCounts.sourceCount,
 							searchCutoffAt: claim.searchCutoffAt,
 							lastReviewedAt: claim.lastReviewedAt,
 							publishedAt: claim.publishedAt,
@@ -693,21 +720,18 @@ async function main() {
 				return res.json({ topic });
 			}
 
-			const [claimCount, featuredClaims] = await Promise.all([
-				Claim.countDocuments({ topic: topic._id, status: "published" }),
-				Claim.find({ topic: topic._id, status: "published" })
-					.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
-					.limit(5)
-					.lean()
-			]);
-			const sourceCountMap = await loadClaimSourceCountMap(featuredClaims.map(claim => claim._id));
+			const featuredClaims = await Claim.find({ topic: topic._id, status: "published" })
+				.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
+				.lean();
+			const sourceCountMap = await loadClaimSourceReadinessCountMap(featuredClaims.map(claim => claim._id));
+			const publicReadyClaims = featuredClaims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 			return res.json({
 				topic: {
 					...topic,
-					claimCount,
-					featuredClaims: featuredClaims.map(claim => ({
+					claimCount: publicReadyClaims.length,
+					featuredClaims: publicReadyClaims.slice(0, 5).map(claim => ({
 						...claim,
-						sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0
+						sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount
 					}))
 				}
 			});
@@ -726,12 +750,13 @@ async function main() {
 			const claims = await Claim.find({ topic: topic._id, status: "published" })
 				.sort({ lastReviewedAt: -1, publishedAt: -1, title: 1 })
 				.lean();
-			const sourceCountMap = await loadClaimSourceCountMap(claims.map(claim => claim._id));
+			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
+			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 
 			return res.json({
-				claims: claims.map(claim => ({
+				claims: publicReadyClaims.map(claim => ({
 					...claim,
-					sourceCount: sourceCountMap.get(claim._id.toString()) ?? 0,
+					sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
 					topic: {
 						_id: topic._id,
 						title: topic.title,
@@ -761,10 +786,14 @@ async function main() {
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 
 			const sources = await loadClaimSources(claim._id);
+			const sourceCounts = summarizeClaimSourceReadiness(sources);
+			if (!getPublicClaimReadiness(claim, sourceCounts).isReady) {
+				return res.status(404).json({ error: "Claim not found." });
+			}
 			return res.json({
 				claim: {
 					...claim,
-					sourceCount: sources.length,
+					sourceCount: sourceCounts.sourceCount,
 					topic: {
 						_id: topic._id,
 						title: topic.title,
@@ -922,8 +951,10 @@ async function main() {
 					.populate("claim")
 					.lean()
 			]);
+			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
+			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 
-			const rankedClaims = claims
+			const rankedClaims = publicReadyClaims
 				.map((claim) => {
 					const haystack = [
 						claim.title,
