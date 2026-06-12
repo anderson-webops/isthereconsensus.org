@@ -76,6 +76,12 @@ const colorModeFallback: Exclude<ColorModePreference, "system"> = "light";
 const devtoolsEnabled = process.env.NUXT_DEVTOOLS_ENABLED
 	? process.env.NUXT_DEVTOOLS_ENABLED === "true"
 	: process.env.CI !== "true";
+const privateNoindexHeaders = {
+	"X-Robots-Tag": "noindex, nofollow"
+};
+const legacyNoindexHeaders = {
+	"X-Robots-Tag": "noindex, follow"
+};
 
 export default defineNuxtConfig({
 	alias: {
@@ -144,29 +150,78 @@ export default defineNuxtConfig({
 
 	routeRules: {
 		"/account": {
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow"
-			}
+			headers: privateNoindexHeaders
 		},
 		"/account/**": {
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow"
-			}
+			headers: privateNoindexHeaders
 		},
 		"/api/**": {
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow"
+			headers: privateNoindexHeaders
+		},
+		"/claim-roadmap": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/account/editorial#canonical-backlog",
+				statusCode: 301
+			}
+		},
+		"/evidence-ops": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/standards",
+				statusCode: 301
+			}
+		},
+		"/future-roadmap": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/account/editorial#future-roadmap",
+				statusCode: 301
+			}
+		},
+		"/governance": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/account/editorial#moderation-guide",
+				statusCode: 301
+			}
+		},
+		"/how": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/standards",
+				statusCode: 301
+			}
+		},
+		"/methods": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/standards",
+				statusCode: 301
+			}
+		},
+		"/policy-center": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/standards",
+				statusCode: 301
+			}
+		},
+		"/search-demand": {
+			headers: legacyNoindexHeaders,
+			redirect: {
+				to: "/account/editorial#search-demand-signals",
+				statusCode: 301
 			}
 		},
 		"/setup": {
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow"
-			}
+			headers: privateNoindexHeaders
 		},
 		"/setup/**": {
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow"
-			}
+			headers: privateNoindexHeaders
+		},
+		"/source-standards": {
+			headers: legacyNoindexHeaders
 		}
 	},
 
