@@ -3,6 +3,7 @@ import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
+import { formatSlugTitle } from "~/utils/format-slug-title";
 
 interface TopicRouteParams {
 	slug?: string | string[];
@@ -30,6 +31,7 @@ const guide = computed(() => getTopicGuide(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${slug.value}`);
+const topicTitle = computed(() => topic.value?.title || formatSlugTitle(slug.value));
 const pageDescription = computed(() => topic.value?.description || guide.value.snapshot);
 const breadcrumbStructuredData = computed(() => ({
 	"@context": "https://schema.org",
@@ -50,7 +52,7 @@ const breadcrumbStructuredData = computed(() => ({
 		{
 			"@type": "ListItem",
 			position: 3,
-			name: topic.value?.title || "Topic",
+			name: topicTitle.value,
 			item: pageUrl.value
 		}
 	]
@@ -73,20 +75,18 @@ const topicStructuredData = computed(() => ({
 			name: entry.title
 		}))
 	},
-	name: topic.value ? `${topic.value.title} topic page | Is There Consensus` : "Topic page | Is There Consensus",
+	name: `${topicTitle.value} topic page | Is There Consensus`,
 	publisher: {
 		"@type": "Organization",
 		name: "Is There Consensus",
 		url: "https://isthereconsensus.org"
 	},
 	url: pageUrl.value,
-	about: topic.value
-		? {
-				"@type": "Thing",
-				name: topic.value.title,
-				description: topic.value.description
-			}
-		: undefined,
+	about: {
+		"@type": "Thing",
+		name: topicTitle.value,
+		description: pageDescription.value
+	},
 	dateModified: topic.value?.updatedAt
 }));
 
@@ -94,13 +94,13 @@ useSeoMeta({
 	description: () => pageDescription.value,
 	ogDescription: () => pageDescription.value,
 	ogSiteName: "Is There Consensus",
-	ogTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic | Is There Consensus"),
+	ogTitle: () => `${topicTitle.value} | Is There Consensus`,
 	ogType: "website",
 	ogUrl: () => pageUrl.value,
-	title: () => (topic.value ? `${topic.value.title} - Topic - Is There Consensus?` : "Topic - Is There Consensus?"),
+	title: () => `${topicTitle.value} - Topic - Is There Consensus?`,
 	twitterCard: "summary_large_image",
 	twitterDescription: () => pageDescription.value,
-	twitterTitle: () => (topic.value ? `${topic.value.title} | Is There Consensus` : "Topic | Is There Consensus")
+	twitterTitle: () => `${topicTitle.value} | Is There Consensus`
 });
 
 useHead(() => ({
@@ -138,11 +138,7 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 <template>
 	<div class="topic-page">
 		<PageBreadcrumbs
-			:items="[
-				{ label: 'Home', to: '/' },
-				{ label: 'Browse topics', to: '/consensus' },
-				{ label: topic?.title || 'Topic' }
-			]"
+			:items="[{ label: 'Home', to: '/' }, { label: 'Browse topics', to: '/consensus' }, { label: topicTitle }]"
 		/>
 
 		<section v-if="postedToQueue" class="queue-note">
@@ -152,7 +148,7 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 		<header class="topic-page__header">
 			<div>
 				<p class="eyebrow">Topic</p>
-				<h1>{{ topic?.title || "Topic" }}</h1>
+				<h1>{{ topicTitle }}</h1>
 				<p class="topic-page__description">
 					{{ topic?.description || guide.snapshot }}
 				</p>
