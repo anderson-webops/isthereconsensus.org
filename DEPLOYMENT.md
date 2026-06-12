@@ -21,8 +21,10 @@ Backend/runtime:
 
 - `NODE_ENV=production`
 - `SESSION_SECRET`
+- `PUBLIC_SITE_URL`
 - `PUBLIC_API_BASE`
 - `INTERNAL_API_BASE` or `API_INTERNAL_BASE` if the frontend should reach the backend through a private server-side origin
+- `INTERNAL_DIAGNOSTICS_KEY`
 - `CAPTCHA_SECRET`
 - `PUBLIC_CAPTCHA_SITEKEY`
 - `VAULT_ADDR`, `VAULT_ROLE_ID`, `VAULT_SECRET_ID`
@@ -36,11 +38,12 @@ Optional:
 - `CORS_ORIGIN`
 - `CROSS_SITE=true`
 - `ENABLE_TOPIC_CREATION=true`
+- `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_TO`
 
 ## Build and start
 
 ```bash
-npm ci --ignore-scripts
+npm ci
 npm run build
 npm run -w front-end start
 npm run -w back-end start
@@ -53,8 +56,10 @@ npm run -w back-end start
 - Backend readiness: `GET /readyz`
 - Setup diagnostics: `GET /api/setup/status`
 
+Production diagnostics are private. Requests to `/setup` and `/api/setup/status` require the configured `INTERNAL_DIAGNOSTICS_KEY` supplied as `x-internal-diagnostics-key`; anonymous public visitors should receive a not-found response for `/setup` and a forbidden response for the API.
+
 ## Deployment notes
 
 - Cookie auth expects HTTPS in production.
 - If frontend and backend live on different public origins, configure `CORS_ORIGIN` precisely and keep secure cookie settings aligned.
-- The frontend setup page at `/setup` now exposes live readiness data plus a launch prompt tailored to this stack.
+- The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only when diagnostics access is authorized.

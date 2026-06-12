@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build-stage
+FROM node:24-alpine AS build-stage
 
 WORKDIR /app
 RUN corepack enable
@@ -6,13 +6,13 @@ RUN corepack enable
 COPY package.json package-lock.json ./
 COPY back-end/package*.json ./back-end/
 COPY front-end/package*.json ./front-end/
-RUN npm ci --ignore-scripts
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
 # SSR
-FROM node:20-alpine AS production-stage
+FROM node:24-alpine AS production-stage
 
 WORKDIR /app
 

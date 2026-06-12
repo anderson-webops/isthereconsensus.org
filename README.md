@@ -1,21 +1,33 @@
 # Is There Consensus?
 
-Marketing site for isthereconsensus.org. This repo is a small monorepo with a Nuxt 4 front-end and a Node back-end.
+Public-interest evidence-literacy site for [isthereconsensus.org](https://isthereconsensus.org/). The product helps readers inspect whether a public scientific claim reflects broad expert agreement, active debate, weak evidence, or a misleading single-study headline.
+
+The site is deliberately not a truth oracle, medical-advice tool, or automated consensus engine. Source discovery, metadata enrichment, and monitoring can be automated; consensus conclusions, certainty labels, and public bottom lines stay editorial.
 
 ## Stack
 
 - Nuxt 4 + Vue 3
 - Pinia
 - UnoCSS
+- Express
+- MongoDB / Mongoose
+- Vitest
+- Axe smoke checks
 
 ## Repo layout
 
 - `front-end/` - Nuxt app (SSR)
 - `back-end/` - API/server utilities
+- `docs/` - launch, accessibility, and evidence-provider planning notes
+- `scripts/` - repo-level validation and maintenance scripts
 
 ## Docs
 
 - [`docs/evidence-api-integration-roadmap.md`](./docs/evidence-api-integration-roadmap.md) - repo-specific plan for evidence-provider integration, normalization, and monitoring
+- [`docs/accessibility-qa.md`](./docs/accessibility-qa.md) - manual and automated accessibility QA checklist
+- [`DEPLOYMENT.md`](./DEPLOYMENT.md) - production topology, environment variables, and diagnostics notes
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) - contribution rules for code, copy, evidence, and review boundaries
+- [`SECURITY.md`](./SECURITY.md) - vulnerability reporting and operational security expectations
 
 ## Getting started
 
@@ -25,6 +37,12 @@ npm run dev
 ```
 
 This starts the front-end in dev mode at `http://localhost:3000`.
+
+For API-backed local work, copy `back-end/.env.example` to `back-end/.env`, set `MONGODB_URI`, and run the backend separately:
+
+```bash
+npm run -w back-end server
+```
 
 ## Common scripts
 
@@ -39,6 +57,10 @@ npm run serve
 # Lint + typecheck
 npm run lint
 npm run typecheck
+
+# Unit tests and accessibility smoke checks
+npm test
+npm run a11y
 ```
 
 For workspace-specific scripts:
@@ -48,6 +70,25 @@ npm run -w front-end dev
 npm run -w front-end build
 npm run -w front-end serve
 npm run -w back-end server
+```
+
+## Launch quality gates
+
+Run these from the repository root before shipping a meaningful change:
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run build
+npm test
+npm audit
+```
+
+If public route structure, headings, forms, or claim pages changed, also run:
+
+```bash
+npm run a11y
 ```
 
 ## Deployment note: static vs SSR and /var/www
@@ -82,6 +123,6 @@ Options if you want `/var/www/<site>/` populated for an SSR site:
 
 ## Launch coordination
 
-- `/setup` in the frontend now surfaces live readiness checks plus a copyable server-agent prompt.
+- `/setup` is an internal diagnostics page. In production it is gated by `INTERNAL_DIAGNOSTICS_KEY` and should not render for anonymous public visitors.
 - [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
 - In production same-origin mode, set `PUBLIC_API_BASE=/api` so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.
