@@ -212,6 +212,7 @@ useSeoMeta({
 useHead(() => ({
 	link: [
 		{
+			key: "canonical",
 			href: pageUrl.value,
 			rel: "canonical"
 		}

@@ -155,6 +155,7 @@ useSeoMeta({
 useHead({
 	link: [
 		{
+			key: "canonical",
 			href: "https://isthereconsensus.org/",
 			rel: "canonical"
 		}

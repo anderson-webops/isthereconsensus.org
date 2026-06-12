@@ -1,8 +1,28 @@
 <script setup lang="ts">
+import { siteUrl } from "~/constants";
+
 const router = useRouter();
+
+if (import.meta.server) {
+	setResponseStatus(404);
+}
 
 useHead({
 	title: "Not found"
+});
+
+useSeoMeta({
+	robots: "noindex,follow"
+});
+
+useHead({
+	link: [
+		{
+			key: "canonical",
+			rel: "canonical",
+			href: `${siteUrl}/`
+		}
+	]
 });
 </script>
 
