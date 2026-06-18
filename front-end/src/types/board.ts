@@ -1,24 +1,30 @@
+import type {
+	EvidenceBoundaryDimension,
+	EvidenceClaimType,
+	EvidenceConsistencyLevel,
+	EvidenceDirectnessLevel,
+	EvidenceLandscapeCertaintyLevel,
+	EvidenceLandscapeDirection,
+	EvidenceLandscapeExpertAgreement,
+	EvidenceLandscapeSupportLabel,
+	EvidenceLandscapeWorkflowStatus,
+	EvidencePrecisionLevel,
+	EvidenceRiskOfBiasLevel,
+	EvidenceSourceExclusionReason,
+	EvidenceSourcePositionBucket,
+	EvidenceStudyDesign,
+	EvidenceTier
+} from "~/constants/evidenceLandscape";
+
 export type ClaimStatus = "draft" | "published" | "needs_update" | "archived";
 export type ClaimConsensusBand = "strong" | "broad" | "mixed" | "unclear";
 export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "frontier";
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
-export type ClaimLandscapeSupportLabel =
-	| "well_supported"
-	| "supported_with_limitations"
-	| "mixed_or_contested"
-	| "insufficient_evidence"
-	| "unlikely_or_unsupported"
-	| "unresolved";
-export type ClaimLandscapeEvidenceCertainty = "high" | "moderate" | "low" | "very_low" | "not_assessable";
-export type ClaimLandscapeExpertAgreement =
-	| "strong"
-	| "broad"
-	| "qualified"
-	| "divided"
-	| "insufficient_field"
-	| "not_assessable";
-export type ClaimLandscapeWorkflowStatus = "not_started" | "in_review" | "ready_for_review" | "published" | "retired";
+export type ClaimLandscapeSupportLabel = EvidenceLandscapeSupportLabel;
+export type ClaimLandscapeEvidenceCertainty = EvidenceLandscapeCertaintyLevel;
+export type ClaimLandscapeExpertAgreement = EvidenceLandscapeExpertAgreement;
+export type ClaimLandscapeWorkflowStatus = EvidenceLandscapeWorkflowStatus;
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
 export type ClaimUncertaintyType =
@@ -68,8 +74,58 @@ export interface ClaimSource {
 	stance: "supports" | "context" | "debate";
 	note?: string;
 	order?: number;
+	evidenceProfile?: ClaimSourceEvidenceProfile;
 	createdAt?: string;
 	updatedAt?: string;
+}
+
+export interface ClaimSourceEffectEstimate {
+	metric?: string;
+	value?: string;
+	confidenceInterval?: string;
+	pValue?: string;
+	notes?: string;
+}
+
+export interface ClaimSourceEvidenceProfile {
+	schemaVersion: number;
+	positionRelativeToClaim: EvidenceSourcePositionBucket;
+	evidenceTier: EvidenceTier;
+	studyDesign: EvidenceStudyDesign;
+	riskOfBias: EvidenceRiskOfBiasLevel;
+	directness: EvidenceDirectnessLevel;
+	consistency: EvidenceConsistencyLevel;
+	precision: EvidencePrecisionLevel;
+	publicationIntegrity: {
+		retracted: boolean;
+		expressionOfConcern: boolean;
+		correctionOrErratum: boolean;
+		predatoryOrQuestionableVenue: boolean;
+		citationStatusCheckedAt?: string;
+		integrityNotes?: string;
+	};
+	inclusion: {
+		includedInLandscape: boolean;
+		exclusionReason: EvidenceSourceExclusionReason;
+		exclusionNotes?: string;
+	};
+	extraction: {
+		keyFinding?: string;
+		limitations?: string;
+		population?: string;
+		exposureOrIntervention?: string;
+		comparator?: string;
+		outcomes: string[];
+		sampleSize?: string;
+		effectEstimate: ClaimSourceEffectEstimate;
+	};
+	reviewer?: {
+		codedById?: string;
+		codedAt?: string;
+		reviewedById?: string;
+		reviewedAt?: string;
+		notes?: string;
+	};
 }
 
 export interface ClaimEvidenceSummary {
@@ -103,7 +159,10 @@ export interface ClaimSurveillanceSpec {
 
 export interface ClaimEvidenceLandscape {
 	schemaVersion: number;
+	claimType?: EvidenceClaimType;
 	supportLabel: ClaimLandscapeSupportLabel;
+	supportScore?: number | null;
+	evidenceDirection?: EvidenceLandscapeDirection;
 	evidenceCertainty: ClaimLandscapeEvidenceCertainty;
 	expertAgreement: ClaimLandscapeExpertAgreement;
 	plainLanguageAnswer?: string;
@@ -114,18 +173,77 @@ export interface ClaimEvidenceLandscape {
 	credibleMinorityViewSummary?: string;
 	fringeOrUnsupportedViewSummary?: string;
 	whatWouldChangeThis?: string;
+	boundaryConditions?: ClaimEvidenceBoundaryCondition[];
+	applicability?: ClaimEvidenceApplicability;
+	distribution?: ClaimEvidenceLandscapeDistribution;
+	evidenceBaseSize?: ClaimEvidenceBaseSize;
 	publicFlags?: {
 		showEvidenceLandscape?: boolean;
 		showCredibleMinorityView?: boolean;
 		showFalseBalanceWarning?: boolean;
+		medicalOrPublicHealthSensitive?: boolean;
+		requiresProfessionalContext?: boolean;
 	};
+	lastAssessedAt?: string;
+	nextReviewDueAt?: string;
 	workflow?: {
 		status?: ClaimLandscapeWorkflowStatus;
 		lastAssessedAt?: string;
 		nextReviewDueAt?: string;
 		assessedBy?: string;
+		assignedEditorId?: string;
+		reviewedById?: string;
+		approvedById?: string;
+		publishedAt?: string;
+		supersededByClaimId?: string;
 		editorialNotes?: string;
 	};
+}
+
+export interface ClaimEvidenceBoundaryCondition {
+	dimension: EvidenceBoundaryDimension;
+	label: string;
+	explanation: string;
+	sourceIds?: string[];
+}
+
+export interface ClaimEvidenceApplicability {
+	population?: string;
+	exposureOrIntervention?: string;
+	comparator?: string;
+	outcomes: string[];
+	setting?: string;
+	timeframe?: string;
+}
+
+export interface ClaimEvidenceDistributionBucket {
+	count: number;
+	weightedCount?: number;
+}
+
+export interface ClaimEvidenceLandscapeDistribution {
+	supportsClaim: ClaimEvidenceDistributionBucket;
+	supportsWithCaveats: ClaimEvidenceDistributionBucket;
+	opposesClaim: ClaimEvidenceDistributionBucket;
+	inconclusiveOrMixed: ClaimEvidenceDistributionBucket;
+	backgroundContext: ClaimEvidenceDistributionBucket;
+	excludedLowQuality: ClaimEvidenceDistributionBucket;
+	excludedRetracted: ClaimEvidenceDistributionBucket;
+	excludedFringe: ClaimEvidenceDistributionBucket;
+}
+
+export interface ClaimEvidenceBaseSize {
+	totalSources: number;
+	includedSources: number;
+	excludedSources: number;
+	systematicReviews: number;
+	metaAnalyses: number;
+	evidenceBasedGuidelines: number;
+	randomizedTrials: number;
+	observationalStudies: number;
+	mechanisticOrPreclinical: number;
+	expertCommentary: number;
+	retractedOrInvalid: number;
 }
 
 export interface Topic {

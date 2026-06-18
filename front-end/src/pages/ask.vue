@@ -12,6 +12,7 @@ import { watchDebounced } from "@vueuse/core";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
 
 interface MatchOption {
@@ -129,6 +130,22 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	if (band === "broad") return "Broad consensus";
 	if (band === "mixed") return "Mixed evidence";
 	return "Unclear or still forming";
+}
+
+function claimSupportLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.supportLabel
+		? formatLandscapeSupportLabel(claim.evidenceLandscape.supportLabel)
+		: formatBandLabel(claim.consensusBand);
+}
+
+function claimCertaintyLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.evidenceCertainty
+		? formatLandscapeCertaintyLabel(claim.evidenceLandscape.evidenceCertainty)
+		: "";
+}
+
+function claimCardSummary(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
 
 function attachClaim(claim: ClaimSummary) {
@@ -307,10 +324,11 @@ async function submitQuestion() {
 						<p class="match-row__meta">
 							<span>{{ claim.topic?.title }}</span>
 							<span>{{ matchStrengthLabel(claim.matchScore) }}</span>
-							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
+							<span>{{ claimSupportLabel(claim) }}</span>
+							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claim.bottomLine }}</p>
+						<p>{{ claimCardSummary(claim) }}</p>
 						<p v-if="claim.matchReason" class="match-row__reason">{{ claim.matchReason }}</p>
 					</div>
 					<div class="match-row__actions">

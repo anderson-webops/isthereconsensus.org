@@ -3,6 +3,7 @@ import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/t
 import { watchDebounced } from "@vueuse/core";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName, socialImageUrl } from "~/constants";
+import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
@@ -248,6 +249,22 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	return "Unclear or still forming";
 }
 
+function claimSupportLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.supportLabel
+		? formatLandscapeSupportLabel(claim.evidenceLandscape.supportLabel)
+		: formatBandLabel(claim.consensusBand);
+}
+
+function claimCertaintyLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.evidenceCertainty
+		? formatLandscapeCertaintyLabel(claim.evidenceLandscape.evidenceCertainty)
+		: "";
+}
+
+function claimCardSummary(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
+}
+
 function formatTopicDate(value?: string) {
 	if (!value) return "Update pending";
 	return new Intl.DateTimeFormat("en-US", {
@@ -297,7 +314,7 @@ function formatTopicDate(value?: string) {
 								<li v-for="claim in claimSuggestions" :key="claim._id">
 									<NuxtLink :to="`/consensus/${claim.topic?.slug}/${claim.slug}`">
 										<strong>{{ claim.title }}</strong>
-										<span>{{ claim.bottomLine }}</span>
+										<span>{{ claimCardSummary(claim) }}</span>
 									</NuxtLink>
 								</li>
 							</ul>
@@ -350,11 +367,12 @@ function formatTopicDate(value?: string) {
 					<div class="claim-row__main">
 						<p class="claim-row__meta">
 							<span>{{ claim.topic.title }}</span>
-							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
+							<span>{{ claimSupportLabel(claim) }}</span>
+							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claim.bottomLine }}</p>
+						<p>{{ claimCardSummary(claim) }}</p>
 					</div>
 					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
 				</NuxtLink>

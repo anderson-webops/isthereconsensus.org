@@ -2,7 +2,10 @@ import type { IClaim, IClaimEvidenceLandscape } from "../models/schemas/Claim.js
 
 export interface PublicEvidenceLandscape {
 	schemaVersion: number;
+	claimType: IClaimEvidenceLandscape["claimType"];
 	supportLabel: IClaimEvidenceLandscape["supportLabel"];
+	supportScore?: number | null;
+	evidenceDirection: IClaimEvidenceLandscape["evidenceDirection"];
 	evidenceCertainty: IClaimEvidenceLandscape["evidenceCertainty"];
 	expertAgreement: IClaimEvidenceLandscape["expertAgreement"];
 	plainLanguageAnswer?: string;
@@ -13,10 +16,18 @@ export interface PublicEvidenceLandscape {
 	credibleMinorityViewSummary?: string;
 	fringeOrUnsupportedViewSummary?: string;
 	whatWouldChangeThis?: string;
+	boundaryConditions: IClaimEvidenceLandscape["boundaryConditions"];
+	applicability: IClaimEvidenceLandscape["applicability"];
+	distribution: IClaimEvidenceLandscape["distribution"];
+	evidenceBaseSize: IClaimEvidenceLandscape["evidenceBaseSize"];
 	publicFlags: {
 		showCredibleMinorityView: boolean;
 		showFalseBalanceWarning: boolean;
+		medicalOrPublicHealthSensitive: boolean;
+		requiresProfessionalContext: boolean;
 	};
+	lastAssessedAt?: Date;
+	nextReviewDueAt?: Date;
 	workflow: {
 		status: "published";
 		lastAssessedAt?: Date;
@@ -37,7 +48,10 @@ export function toPublicEvidenceLandscape(
 
 	return {
 		schemaVersion: landscape.schemaVersion,
+		claimType: landscape.claimType,
 		supportLabel: landscape.supportLabel,
+		supportScore: landscape.supportScore,
+		evidenceDirection: landscape.evidenceDirection,
 		evidenceCertainty: landscape.evidenceCertainty,
 		expertAgreement: landscape.expertAgreement,
 		plainLanguageAnswer: landscape.plainLanguageAnswer,
@@ -52,10 +66,18 @@ export function toPublicEvidenceLandscape(
 			? landscape.fringeOrUnsupportedViewSummary
 			: undefined,
 		whatWouldChangeThis: landscape.whatWouldChangeThis,
+		boundaryConditions: landscape.boundaryConditions ?? [],
+		applicability: landscape.applicability,
+		distribution: landscape.distribution,
+		evidenceBaseSize: landscape.evidenceBaseSize,
 		publicFlags: {
 			showCredibleMinorityView,
-			showFalseBalanceWarning
+			showFalseBalanceWarning,
+			medicalOrPublicHealthSensitive: !!landscape.publicFlags.medicalOrPublicHealthSensitive,
+			requiresProfessionalContext: !!landscape.publicFlags.requiresProfessionalContext
 		},
+		lastAssessedAt: landscape.workflow.lastAssessedAt,
+		nextReviewDueAt: landscape.workflow.nextReviewDueAt,
 		workflow: {
 			status: "published",
 			lastAssessedAt: landscape.workflow.lastAssessedAt,

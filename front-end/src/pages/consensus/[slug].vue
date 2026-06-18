@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
@@ -133,6 +134,22 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	if (band === "mixed") return "Mixed evidence";
 	return "Unclear or still forming";
 }
+
+function claimSupportLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.supportLabel
+		? formatLandscapeSupportLabel(claim.evidenceLandscape.supportLabel)
+		: formatBandLabel(claim.consensusBand);
+}
+
+function claimCertaintyLabel(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.evidenceCertainty
+		? formatLandscapeCertaintyLabel(claim.evidenceLandscape.evidenceCertainty)
+		: "";
+}
+
+function claimCardSummary(claim: ClaimSummary) {
+	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
+}
 </script>
 
 <template>
@@ -185,12 +202,16 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 				>
 					<div>
 						<p class="claim-row__meta">
-							<span>{{ formatBandLabel(claim.consensusBand) }}</span>
+							<span>{{ claimSupportLabel(claim) }}</span>
+							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claim.bottomLine }}</p>
+						<p>{{ claimCardSummary(claim) }}</p>
+						<p v-if="claim.evidenceLandscape?.caveatSummary" class="claim-row__caveat">
+							Caveat: {{ claim.evidenceLandscape.caveatSummary }}
+						</p>
 					</div>
 					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
 				</NuxtLink>
@@ -293,6 +314,13 @@ function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 .claim-row__score {
 	font-size: 1rem;
 	color: var(--consensus-ink);
+}
+
+.claim-row__caveat {
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--consensus-soft-line);
+	font-size: 0.94rem;
 }
 
 .button {

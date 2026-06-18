@@ -9,7 +9,7 @@ import type {
 	IClaimSurveillanceSpec,
 	IClaimUncertaintyDriver
 } from "./models/schemas/Claim.js";
-import type { ClaimSourceKind, ClaimSourceStance } from "./models/schemas/ClaimSource.js";
+import type { ClaimSourceKind, ClaimSourceStance, IClaimSourceEvidenceProfile } from "./models/schemas/ClaimSource.js";
 import type { IExpertApplication } from "./models/schemas/ExpertApplication.js";
 import type { IQuestion } from "./models/schemas/Question.js";
 import type { PublicClaimSourceReadinessCounts } from "./utils/publicClaimReadiness.js";
@@ -21,11 +21,22 @@ import cookieSession from "cookie-session";
 import express from "express";
 import mongoose from "mongoose";
 import {
+	EVIDENCE_BOUNDARY_DIMENSIONS,
+	EVIDENCE_CLAIM_TYPES,
+	EVIDENCE_CONSISTENCY_LEVELS,
+	EVIDENCE_DIRECTNESS_LEVELS,
 	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+	EVIDENCE_LANDSCAPE_DIRECTIONS,
 	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
 	EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
 	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
-	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES
+	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
+	EVIDENCE_PRECISION_LEVELS,
+	EVIDENCE_RISK_OF_BIAS_LEVELS,
+	EVIDENCE_SOURCE_EXCLUSION_REASONS,
+	EVIDENCE_SOURCE_POSITION_BUCKETS,
+	EVIDENCE_STUDY_DESIGNS,
+	EVIDENCE_TIERS
 } from "./constants/evidenceLandscape.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
@@ -33,6 +44,7 @@ import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.j
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
 import { ClaimSource } from "./models/schemas/ClaimSource.js";
+import { EvidenceLandscapeReview } from "./models/schemas/EvidenceLandscapeReview.js";
 import { ExpertApplication } from "./models/schemas/ExpertApplication.js";
 import { Question } from "./models/schemas/Question.js";
 import { QuestionFlag } from "./models/schemas/QuestionFlag.js";
@@ -45,6 +57,15 @@ import { verifyCaptcha } from "./utils/captcha.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
 import { searchEvidence } from "./utils/evidence.js";
+import {
+	recomputeEvidenceLandscapeFromSources,
+	sourceIsExcludedEvidenceCard,
+	sourceIsPublicEvidenceCard,
+	toPublicEvidenceSourceCard,
+	validEvidenceSourcePosition,
+	validEvidenceStudyDesign,
+	validEvidenceTier
+} from "./utils/evidenceDistribution.js";
 import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
 import {
 	emptyPublicClaimSourceReadinessCounts,
@@ -511,6 +532,137 @@ async function main() {
 		return Object.hasOwn(record, key) ? normalizeText(record[key], maxLength) : fallback;
 	}
 
+	function normalizeOptionalObjectId(value: unknown, fallback?: mongoose.Types.ObjectId) {
+		const raw = normalizeText(value, 40);
+		return mongoose.Types.ObjectId.isValid(raw) ? new mongoose.Types.ObjectId(raw) : fallback;
+	}
+
+	function normalizeLandscapeScore(value: unknown, fallback?: number | null) {
+		if (value === null) return null;
+		if (value === undefined) return fallback ?? null;
+		const numeric = Number(value);
+		return Number.isFinite(numeric) ? Math.min(Math.max(Math.round(numeric), 0), 100) : (fallback ?? null);
+	}
+
+	function normalizeLandscapeBucket(value: unknown, fallback?: { count?: number; weightedCount?: number }) {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		return {
+			count: normalizeInteger(record.count, 0, 100000, fallback?.count ?? 0),
+			weightedCount: normalizeInteger(record.weightedCount, 0, 100000, fallback?.weightedCount ?? 0)
+		};
+	}
+
+	function normalizeExcludedLandscapeBucket(value: unknown, fallback?: { count?: number }) {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		return {
+			count: normalizeInteger(record.count, 0, 100000, fallback?.count ?? 0)
+		};
+	}
+
+	function normalizeLandscapeDistribution(
+		value: unknown,
+		existing?: IClaimEvidenceLandscape["distribution"]
+	): IClaimEvidenceLandscape["distribution"] {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		return {
+			supportsClaim: normalizeLandscapeBucket(record.supportsClaim, existing?.supportsClaim),
+			supportsWithCaveats: normalizeLandscapeBucket(record.supportsWithCaveats, existing?.supportsWithCaveats),
+			opposesClaim: normalizeLandscapeBucket(record.opposesClaim, existing?.opposesClaim),
+			inconclusiveOrMixed: normalizeLandscapeBucket(record.inconclusiveOrMixed, existing?.inconclusiveOrMixed),
+			backgroundContext: normalizeLandscapeBucket(record.backgroundContext, existing?.backgroundContext),
+			excludedLowQuality: normalizeExcludedLandscapeBucket(record.excludedLowQuality, existing?.excludedLowQuality),
+			excludedRetracted: normalizeExcludedLandscapeBucket(record.excludedRetracted, existing?.excludedRetracted),
+			excludedFringe: normalizeExcludedLandscapeBucket(record.excludedFringe, existing?.excludedFringe)
+		};
+	}
+
+	function normalizeEvidenceBaseSize(
+		value: unknown,
+		existing?: IClaimEvidenceLandscape["evidenceBaseSize"]
+	): IClaimEvidenceLandscape["evidenceBaseSize"] {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		return {
+			totalSources: normalizeInteger(record.totalSources, 0, 100000, existing?.totalSources ?? 0),
+			includedSources: normalizeInteger(record.includedSources, 0, 100000, existing?.includedSources ?? 0),
+			excludedSources: normalizeInteger(record.excludedSources, 0, 100000, existing?.excludedSources ?? 0),
+			systematicReviews: normalizeInteger(record.systematicReviews, 0, 100000, existing?.systematicReviews ?? 0),
+			metaAnalyses: normalizeInteger(record.metaAnalyses, 0, 100000, existing?.metaAnalyses ?? 0),
+			evidenceBasedGuidelines: normalizeInteger(
+				record.evidenceBasedGuidelines,
+				0,
+				100000,
+				existing?.evidenceBasedGuidelines ?? 0
+			),
+			randomizedTrials: normalizeInteger(record.randomizedTrials, 0, 100000, existing?.randomizedTrials ?? 0),
+			observationalStudies: normalizeInteger(
+				record.observationalStudies,
+				0,
+				100000,
+				existing?.observationalStudies ?? 0
+			),
+			mechanisticOrPreclinical: normalizeInteger(
+				record.mechanisticOrPreclinical,
+				0,
+				100000,
+				existing?.mechanisticOrPreclinical ?? 0
+			),
+			expertCommentary: normalizeInteger(record.expertCommentary, 0, 100000, existing?.expertCommentary ?? 0),
+			retractedOrInvalid: normalizeInteger(
+				record.retractedOrInvalid,
+				0,
+				100000,
+				existing?.retractedOrInvalid ?? 0
+			)
+		};
+	}
+
+	function normalizeLandscapeApplicability(
+		value: unknown,
+		existing?: IClaimEvidenceLandscape["applicability"]
+	): IClaimEvidenceLandscape["applicability"] {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		return {
+			population: normalizeEvidenceLandscapeText(record, "population", 280, existing?.population),
+			exposureOrIntervention: normalizeEvidenceLandscapeText(
+				record,
+				"exposureOrIntervention",
+				280,
+				existing?.exposureOrIntervention
+			),
+			comparator: normalizeEvidenceLandscapeText(record, "comparator", 280, existing?.comparator),
+			outcomes: Object.hasOwn(record, "outcomes") ? normalizeList(record.outcomes, 12, 180) : (existing?.outcomes ?? []),
+			setting: normalizeEvidenceLandscapeText(record, "setting", 280, existing?.setting),
+			timeframe: normalizeEvidenceLandscapeText(record, "timeframe", 280, existing?.timeframe)
+		};
+	}
+
+	function normalizeBoundaryConditions(
+		value: unknown,
+		existing?: IClaimEvidenceLandscape["boundaryConditions"]
+	): IClaimEvidenceLandscape["boundaryConditions"] {
+		if (!Array.isArray(value)) return existing ?? [];
+		return value
+			.slice(0, 12)
+			.map((item) => {
+				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const label = normalizeText(record.label, 180);
+				const explanation = normalizeText(record.explanation, 1000);
+				if (!label || !explanation) return null;
+				const sourceIds = Array.isArray(record.sourceIds)
+					? record.sourceIds
+							.map(sourceId => normalizeOptionalObjectId(sourceId))
+							.filter((sourceId): sourceId is mongoose.Types.ObjectId => Boolean(sourceId))
+					: [];
+				return {
+					dimension: normalizeEvidenceLandscapeEnum(record.dimension, EVIDENCE_BOUNDARY_DIMENSIONS, "other"),
+					label,
+					explanation,
+					sourceIds
+				};
+			})
+			.filter((item): item is NonNullable<typeof item> => Boolean(item));
+	}
+
 	function normalizeEvidenceLandscape(value: unknown, existing?: IClaimEvidenceLandscape): IClaimEvidenceLandscape {
 		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
 		const flags = typeof record.publicFlags === "object" && record.publicFlags
@@ -522,23 +674,36 @@ async function main() {
 		const existingFlags = existing?.publicFlags ?? {
 			showEvidenceLandscape: false,
 			showCredibleMinorityView: false,
-			showFalseBalanceWarning: false
+			showFalseBalanceWarning: false,
+			medicalOrPublicHealthSensitive: false,
+			requiresProfessionalContext: false
 		};
 		const existingWorkflow = existing?.workflow ?? {
 			status: "not_started",
+			assignedEditorId: undefined,
+			reviewedById: undefined,
+			approvedById: undefined,
 			lastAssessedAt: undefined,
 			nextReviewDueAt: undefined,
+			publishedAt: undefined,
+			supersededByClaimId: undefined,
 			assessedBy: undefined,
 			editorialNotes: ""
 		};
-		const assessedByRaw = normalizeText(workflow.assessedBy, 40);
 
 		return {
 			schemaVersion: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+			claimType: normalizeEvidenceLandscapeEnum(record.claimType, EVIDENCE_CLAIM_TYPES, existing?.claimType ?? "other"),
 			supportLabel: normalizeEvidenceLandscapeEnum(
 				record.supportLabel,
 				EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
 				existing?.supportLabel ?? "unresolved"
+			),
+			supportScore: normalizeLandscapeScore(record.supportScore, existing?.supportScore),
+			evidenceDirection: normalizeEvidenceLandscapeEnum(
+				record.evidenceDirection,
+				EVIDENCE_LANDSCAPE_DIRECTIONS,
+				existing?.evidenceDirection ?? "not_applicable"
 			),
 			evidenceCertainty: normalizeEvidenceLandscapeEnum(
 				record.evidenceCertainty,
@@ -593,6 +758,13 @@ async function main() {
 				1200,
 				existing?.whatWouldChangeThis
 			),
+			boundaryConditions: normalizeBoundaryConditions(
+				Object.hasOwn(record, "boundaryConditions") ? record.boundaryConditions : undefined,
+				existing?.boundaryConditions
+			),
+			applicability: normalizeLandscapeApplicability(record.applicability, existing?.applicability),
+			distribution: normalizeLandscapeDistribution(record.distribution, existing?.distribution),
+			evidenceBaseSize: normalizeEvidenceBaseSize(record.evidenceBaseSize, existing?.evidenceBaseSize),
 			publicFlags: {
 				showEvidenceLandscape: normalizeEvidenceLandscapeBoolean(
 					flags.showEvidenceLandscape,
@@ -605,6 +777,14 @@ async function main() {
 				showFalseBalanceWarning: normalizeEvidenceLandscapeBoolean(
 					flags.showFalseBalanceWarning,
 					existingFlags.showFalseBalanceWarning
+				),
+				medicalOrPublicHealthSensitive: normalizeEvidenceLandscapeBoolean(
+					flags.medicalOrPublicHealthSensitive,
+					existingFlags.medicalOrPublicHealthSensitive
+				),
+				requiresProfessionalContext: normalizeEvidenceLandscapeBoolean(
+					flags.requiresProfessionalContext,
+					existingFlags.requiresProfessionalContext
 				)
 			},
 			workflow: {
@@ -613,6 +793,9 @@ async function main() {
 					EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
 					existingWorkflow.status
 				),
+				assignedEditorId: normalizeOptionalObjectId(workflow.assignedEditorId, existingWorkflow.assignedEditorId),
+				reviewedById: normalizeOptionalObjectId(workflow.reviewedById, existingWorkflow.reviewedById),
+				approvedById: normalizeOptionalObjectId(workflow.approvedById, existingWorkflow.approvedById),
 				lastAssessedAt:
 					workflow.lastAssessedAt === undefined
 						? existingWorkflow.lastAssessedAt
@@ -621,15 +804,196 @@ async function main() {
 					workflow.nextReviewDueAt === undefined
 						? existingWorkflow.nextReviewDueAt
 						: normalizeDate(workflow.nextReviewDueAt),
-				assessedBy: mongoose.Types.ObjectId.isValid(assessedByRaw)
-					? new mongoose.Types.ObjectId(assessedByRaw)
-					: existingWorkflow.assessedBy,
-				editorialNotes: normalizeEvidenceLandscapeText(
-					workflow,
-					"editorialNotes",
-					2000,
-					existingWorkflow.editorialNotes
+				publishedAt:
+					workflow.publishedAt === undefined ? existingWorkflow.publishedAt : normalizeDate(workflow.publishedAt),
+				supersededByClaimId: normalizeOptionalObjectId(
+					workflow.supersededByClaimId,
+					existingWorkflow.supersededByClaimId
+				),
+				assessedBy: normalizeOptionalObjectId(workflow.assessedBy, existingWorkflow.assessedBy),
+				editorialNotes: normalizeEvidenceLandscapeText(workflow, "editorialNotes", 2000, existingWorkflow.editorialNotes)
+			}
+		};
+	}
+
+	function defaultSourceEvidenceProfile(existing?: IClaimSourceEvidenceProfile): IClaimSourceEvidenceProfile {
+		return {
+			schemaVersion: existing?.schemaVersion ?? EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+			positionRelativeToClaim: existing?.positionRelativeToClaim ?? "not_coded",
+			evidenceTier: existing?.evidenceTier ?? "not_coded",
+			studyDesign: existing?.studyDesign ?? "not_coded",
+			riskOfBias: existing?.riskOfBias ?? "not_assessed",
+			directness: existing?.directness ?? "not_assessed",
+			consistency: existing?.consistency ?? "not_assessed",
+			precision: existing?.precision ?? "not_assessed",
+			publicationIntegrity: {
+				retracted: existing?.publicationIntegrity?.retracted ?? false,
+				expressionOfConcern: existing?.publicationIntegrity?.expressionOfConcern ?? false,
+				correctionOrErratum: existing?.publicationIntegrity?.correctionOrErratum ?? false,
+				predatoryOrQuestionableVenue: existing?.publicationIntegrity?.predatoryOrQuestionableVenue ?? false,
+				citationStatusCheckedAt: existing?.publicationIntegrity?.citationStatusCheckedAt,
+				integrityNotes: existing?.publicationIntegrity?.integrityNotes ?? ""
+			},
+			inclusion: {
+				includedInLandscape: existing?.inclusion?.includedInLandscape ?? false,
+				exclusionReason: existing?.inclusion?.exclusionReason ?? "",
+				exclusionNotes: existing?.inclusion?.exclusionNotes ?? ""
+			},
+			extraction: {
+				keyFinding: existing?.extraction?.keyFinding ?? "",
+				limitations: existing?.extraction?.limitations ?? "",
+				population: existing?.extraction?.population ?? "",
+				exposureOrIntervention: existing?.extraction?.exposureOrIntervention ?? "",
+				comparator: existing?.extraction?.comparator ?? "",
+				outcomes: existing?.extraction?.outcomes ?? [],
+				sampleSize: existing?.extraction?.sampleSize ?? "",
+				effectEstimate: {
+					metric: existing?.extraction?.effectEstimate?.metric ?? "",
+					value: existing?.extraction?.effectEstimate?.value ?? "",
+					confidenceInterval: existing?.extraction?.effectEstimate?.confidenceInterval ?? "",
+					pValue: existing?.extraction?.effectEstimate?.pValue ?? "",
+					notes: existing?.extraction?.effectEstimate?.notes ?? ""
+				}
+			},
+			reviewer: {
+				codedById: existing?.reviewer?.codedById,
+				codedAt: existing?.reviewer?.codedAt,
+				reviewedById: existing?.reviewer?.reviewedById,
+				reviewedAt: existing?.reviewer?.reviewedAt,
+				notes: existing?.reviewer?.notes ?? ""
+			}
+		};
+	}
+
+	function normalizeSourceEvidenceProfile(
+		value: unknown,
+		existing?: IClaimSourceEvidenceProfile
+	): IClaimSourceEvidenceProfile {
+		const defaults = defaultSourceEvidenceProfile(existing);
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const publicationIntegrity = typeof record.publicationIntegrity === "object" && record.publicationIntegrity
+			? (record.publicationIntegrity as Record<string, unknown>)
+			: {};
+		const inclusion = typeof record.inclusion === "object" && record.inclusion
+			? (record.inclusion as Record<string, unknown>)
+			: {};
+		const extraction = typeof record.extraction === "object" && record.extraction
+			? (record.extraction as Record<string, unknown>)
+			: {};
+		const effectEstimate = typeof extraction.effectEstimate === "object" && extraction.effectEstimate
+			? (extraction.effectEstimate as Record<string, unknown>)
+			: {};
+		const reviewer = typeof record.reviewer === "object" && record.reviewer
+			? (record.reviewer as Record<string, unknown>)
+			: {};
+
+		return {
+			schemaVersion: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+			positionRelativeToClaim: normalizeEvidenceLandscapeEnum(
+				record.positionRelativeToClaim,
+				EVIDENCE_SOURCE_POSITION_BUCKETS,
+				defaults.positionRelativeToClaim
+			),
+			evidenceTier: normalizeEvidenceLandscapeEnum(record.evidenceTier, EVIDENCE_TIERS, defaults.evidenceTier),
+			studyDesign: normalizeEvidenceLandscapeEnum(record.studyDesign, EVIDENCE_STUDY_DESIGNS, defaults.studyDesign),
+			riskOfBias: normalizeEvidenceLandscapeEnum(record.riskOfBias, EVIDENCE_RISK_OF_BIAS_LEVELS, defaults.riskOfBias),
+			directness: normalizeEvidenceLandscapeEnum(record.directness, EVIDENCE_DIRECTNESS_LEVELS, defaults.directness),
+			consistency: normalizeEvidenceLandscapeEnum(record.consistency, EVIDENCE_CONSISTENCY_LEVELS, defaults.consistency),
+			precision: normalizeEvidenceLandscapeEnum(record.precision, EVIDENCE_PRECISION_LEVELS, defaults.precision),
+			publicationIntegrity: {
+				retracted: normalizeEvidenceLandscapeBoolean(
+					publicationIntegrity.retracted,
+					defaults.publicationIntegrity.retracted
+				),
+				expressionOfConcern: normalizeEvidenceLandscapeBoolean(
+					publicationIntegrity.expressionOfConcern,
+					defaults.publicationIntegrity.expressionOfConcern
+				),
+				correctionOrErratum: normalizeEvidenceLandscapeBoolean(
+					publicationIntegrity.correctionOrErratum,
+					defaults.publicationIntegrity.correctionOrErratum
+				),
+				predatoryOrQuestionableVenue: normalizeEvidenceLandscapeBoolean(
+					publicationIntegrity.predatoryOrQuestionableVenue,
+					defaults.publicationIntegrity.predatoryOrQuestionableVenue
+				),
+				citationStatusCheckedAt:
+					publicationIntegrity.citationStatusCheckedAt === undefined
+						? defaults.publicationIntegrity.citationStatusCheckedAt
+						: normalizeDate(publicationIntegrity.citationStatusCheckedAt),
+				integrityNotes: normalizeEvidenceLandscapeText(
+					publicationIntegrity,
+					"integrityNotes",
+					1000,
+					defaults.publicationIntegrity.integrityNotes
 				)
+			},
+			inclusion: {
+				includedInLandscape: normalizeEvidenceLandscapeBoolean(
+					inclusion.includedInLandscape,
+					defaults.inclusion.includedInLandscape
+				),
+				exclusionReason: normalizeEvidenceLandscapeEnum(
+					inclusion.exclusionReason,
+					EVIDENCE_SOURCE_EXCLUSION_REASONS,
+					defaults.inclusion.exclusionReason
+				),
+				exclusionNotes: normalizeEvidenceLandscapeText(inclusion, "exclusionNotes", 1000, defaults.inclusion.exclusionNotes)
+			},
+			extraction: {
+				keyFinding: normalizeEvidenceLandscapeText(extraction, "keyFinding", 1000, defaults.extraction.keyFinding),
+				limitations: normalizeEvidenceLandscapeText(extraction, "limitations", 1000, defaults.extraction.limitations),
+				population: normalizeEvidenceLandscapeText(extraction, "population", 280, defaults.extraction.population),
+				exposureOrIntervention: normalizeEvidenceLandscapeText(
+					extraction,
+					"exposureOrIntervention",
+					280,
+					defaults.extraction.exposureOrIntervention
+				),
+				comparator: normalizeEvidenceLandscapeText(extraction, "comparator", 280, defaults.extraction.comparator),
+				outcomes: Object.hasOwn(extraction, "outcomes")
+					? normalizeList(extraction.outcomes, 12, 180)
+					: defaults.extraction.outcomes,
+				sampleSize: normalizeEvidenceLandscapeText(extraction, "sampleSize", 120, defaults.extraction.sampleSize),
+				effectEstimate: {
+					metric: normalizeEvidenceLandscapeText(
+						effectEstimate,
+						"metric",
+						120,
+						defaults.extraction.effectEstimate.metric
+					),
+					value: normalizeEvidenceLandscapeText(
+						effectEstimate,
+						"value",
+						160,
+						defaults.extraction.effectEstimate.value
+					),
+					confidenceInterval: normalizeEvidenceLandscapeText(
+						effectEstimate,
+						"confidenceInterval",
+						160,
+						defaults.extraction.effectEstimate.confidenceInterval
+					),
+					pValue: normalizeEvidenceLandscapeText(
+						effectEstimate,
+						"pValue",
+						80,
+						defaults.extraction.effectEstimate.pValue
+					),
+					notes: normalizeEvidenceLandscapeText(
+						effectEstimate,
+						"notes",
+						500,
+						defaults.extraction.effectEstimate.notes
+					)
+				}
+			},
+			reviewer: {
+				codedById: normalizeOptionalObjectId(reviewer.codedById, defaults.reviewer.codedById),
+				codedAt: reviewer.codedAt === undefined ? defaults.reviewer.codedAt : normalizeDate(reviewer.codedAt),
+				reviewedById: normalizeOptionalObjectId(reviewer.reviewedById, defaults.reviewer.reviewedById),
+				reviewedAt: reviewer.reviewedAt === undefined ? defaults.reviewer.reviewedAt : normalizeDate(reviewer.reviewedAt),
+				notes: normalizeEvidenceLandscapeText(reviewer, "notes", 1000, defaults.reviewer.notes)
 			}
 		};
 	}
@@ -800,6 +1164,154 @@ async function main() {
 				}))
 			}
 		});
+	}
+
+	async function createEvidenceLandscapeReviewEvent(params: {
+		claimId: mongoose.Types.ObjectId;
+		action:
+			| "created"
+			| "updated"
+			| "submitted_for_review"
+			| "changes_requested"
+			| "approved"
+			| "published"
+			| "marked_stale"
+			| "superseded"
+			| "source_coding_updated"
+			| "distribution_recomputed";
+		actorId: string;
+		actorModel: "User" | "Admin";
+		fromStatus?: string;
+		toStatus?: string;
+		notes?: string;
+		changedFields?: string[];
+	}) {
+		const claim = await Claim.findById(params.claimId).lean();
+		if (!claim) return null;
+		const sources = await loadClaimSources(params.claimId);
+		return EvidenceLandscapeReview.create({
+			claimId: params.claimId,
+			action: params.action,
+			fromStatus: params.fromStatus ?? "",
+			toStatus: params.toStatus ?? claim.evidenceLandscape?.workflow?.status ?? "",
+			actorId: new mongoose.Types.ObjectId(params.actorId),
+			actorModel: params.actorModel,
+			notes: normalizeText(params.notes, 2000),
+			changedFields: params.changedFields ?? [],
+			snapshot: {
+				evidenceLandscape: claim.evidenceLandscape ?? null,
+				sourceEvidenceProfiles: sources.map(source => ({
+					claimSourceId: source._id,
+					evidenceProfile: source.evidenceProfile
+				}))
+			}
+		});
+	}
+
+	function evidenceLandscapeCadenceMonths(landscape: IClaimEvidenceLandscape) {
+		const baseMonths = {
+			strong_consensus: 12,
+			broad_agreement_with_caveats: 9,
+			active_expert_debate: 3,
+			thin_evidence: 6,
+			unresolved: 6,
+			unsupported_fringe: 12
+		}[landscape.supportLabel];
+		return landscape.publicFlags.medicalOrPublicHealthSensitive ? Math.min(baseMonths, 6) : baseMonths;
+	}
+
+	function addMonths(date: Date, months: number) {
+		const next = new Date(date);
+		next.setMonth(next.getMonth() + months);
+		return next;
+	}
+
+	function evidenceLandscapeTextLength(value?: string) {
+		return (value ?? "").trim().length;
+	}
+
+	function validateEvidenceLandscapeForSubmit(
+		claim: Pick<IClaim, "evidenceLandscape">,
+		sources: Awaited<ReturnType<typeof loadClaimSources>>
+	) {
+		const errors: string[] = [];
+		const landscape = claim.evidenceLandscape;
+		const includedSources = sources.filter(source => source.evidenceProfile.inclusion.includedInLandscape);
+		const excludedSources = sources.filter(source => sourceIsExcludedEvidenceCard(source));
+
+		if (evidenceLandscapeTextLength(landscape.plainLanguageAnswer) < 40) {
+			errors.push("Plain-language answer must be at least 40 characters.");
+		}
+		if (evidenceLandscapeTextLength(landscape.oneSentenceSummary) < 40) {
+			errors.push("One-sentence summary must be at least 40 characters.");
+		}
+		if (evidenceLandscapeTextLength(landscape.confidenceStatement) < 40) {
+			errors.push("Confidence statement must be at least 40 characters.");
+		}
+		if (landscape.supportLabel !== "unsupported_fringe" && includedSources.length === 0) {
+			errors.push("At least one source must be included in the landscape before review.");
+		}
+		if (
+			includedSources.some(source =>
+				source.evidenceProfile.positionRelativeToClaim === "not_coded"
+				|| source.evidenceProfile.evidenceTier === "not_coded"
+				|| source.evidenceProfile.studyDesign === "not_coded"
+			)
+		) {
+			errors.push("Included sources must have position, evidence tier, and study design coded.");
+		}
+		if (excludedSources.some(source => !source.evidenceProfile.inclusion.exclusionReason)) {
+			errors.push("Excluded sources must include an exclusion reason.");
+		}
+
+		return errors;
+	}
+
+	async function validateEvidenceLandscapeForApproval(claim: IClaim, sources: Awaited<ReturnType<typeof loadClaimSources>>) {
+		const errors = validateEvidenceLandscapeForSubmit(claim, sources);
+		const landscape = claim.evidenceLandscape;
+
+		if (landscape.workflow.status !== "ready_for_review") {
+			errors.push("Evidence landscape must be ready for review before approval.");
+		}
+		if (
+			landscape.supportLabel === "strong_consensus"
+			&& (landscape.evidenceCertainty === "very_low" || landscape.evidenceCertainty === "not_assessable")
+		) {
+			errors.push("Strong consensus cannot use very low or not-assessable evidence certainty.");
+		}
+		if (
+			landscape.supportLabel === "unsupported_fringe"
+			&& !["mostly_opposes_claim", "strongly_opposes_claim"].includes(landscape.evidenceDirection)
+		) {
+			errors.push("Unsupported/fringe claims must mostly or strongly oppose the assessed claim.");
+		}
+		if (landscape.publicFlags.showCredibleMinorityView && !landscape.credibleMinorityViewSummary?.trim()) {
+			errors.push("Credible minority view summary is required when the public flag is on.");
+		}
+		if (landscape.supportLabel === "unsupported_fringe" && !landscape.fringeOrUnsupportedViewSummary?.trim()) {
+			errors.push("Unsupported/fringe claims require an unsupported-view summary.");
+		}
+		if (landscape.publicFlags.medicalOrPublicHealthSensitive && !landscape.publicFlags.requiresProfessionalContext) {
+			errors.push("Medical or public-health-sensitive claims require professional context review.");
+		}
+
+		const [latestSourceCoding, latestRecompute] = await Promise.all([
+			EvidenceLandscapeReview.findOne({ claimId: claim._id, action: "source_coding_updated" })
+				.sort({ createdAt: -1 })
+				.lean(),
+			EvidenceLandscapeReview.findOne({ claimId: claim._id, action: "distribution_recomputed" })
+				.sort({ createdAt: -1 })
+				.lean()
+		]);
+		if (
+			latestSourceCoding?.createdAt
+			&& (!latestRecompute?.createdAt || latestRecompute.createdAt < latestSourceCoding.createdAt)
+		) {
+			errors.push("Distribution must be recomputed after the latest source-coding update.");
+		}
+
+		return errors;
 	}
 
 	function analyzeMatch(query: string, haystack: string) {
@@ -1026,6 +1538,42 @@ async function main() {
 		catch (error) {
 			console.error(error);
 			return res.status(500).json({ error: "Failed to load claim." });
+		}
+	});
+
+	api.get("/claims/:claimSlug/evidence-landscape/sources", async (req, res) => {
+		try {
+			const claimSlug = typeof req.params.claimSlug === "string" ? req.params.claimSlug : "";
+			const claim = await Claim.findOne({ slug: claimSlug, status: "published" }).lean();
+			if (!claim || !toPublicEvidenceLandscape(claim)) {
+				return res.status(404).json({ error: "Evidence landscape not found." });
+			}
+
+			const includeExcluded = req.query.includeExcluded === "true";
+			const position = validEvidenceSourcePosition(req.query.position) ? req.query.position : "";
+			const tier = validEvidenceTier(req.query.tier) ? req.query.tier : "";
+			const studyDesign = validEvidenceStudyDesign(req.query.studyDesign) ? req.query.studyDesign : "";
+			const sources = await loadClaimSources(claim._id);
+			const filteredSources = sources.filter((source) => {
+				if (position && source.evidenceProfile.positionRelativeToClaim !== position) return false;
+				if (tier && source.evidenceProfile.evidenceTier !== tier) return false;
+				if (studyDesign && source.evidenceProfile.studyDesign !== studyDesign) return false;
+				if (includeExcluded) return sourceIsPublicEvidenceCard(source) || sourceIsExcludedEvidenceCard(source);
+				return sourceIsPublicEvidenceCard(source);
+			});
+
+			return res.json({
+				claim: {
+					id: claim._id,
+					title: claim.title,
+					slug: claim.slug
+				},
+				sources: filteredSources.map(source => toPublicEvidenceSourceCard(source))
+			});
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to load evidence landscape sources." });
 		}
 	});
 
@@ -2005,6 +2553,286 @@ async function main() {
 		catch (error) {
 			console.error(error);
 			return res.status(500).json({ error: "Failed to load claim revisions." });
+		}
+	});
+
+	api.get("/editorial/claims/:id/evidence-landscape", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId).lean();
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			const [sources, reviewHistory] = await Promise.all([
+				loadClaimSources(claim._id),
+				EvidenceLandscapeReview.find({ claimId: claim._id }).sort({ createdAt: -1 }).limit(50).lean()
+			]);
+
+			return res.json({
+				claim: {
+					id: claim._id,
+					title: claim.title,
+					evidenceLandscape: claim.evidenceLandscape
+				},
+				sources,
+				reviewHistory
+			});
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to load evidence landscape." });
+		}
+	});
+
+	api.patch("/editorial/claims/:id/evidence-landscape", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			claim.evidenceLandscape = normalizeEvidenceLandscape(req.body, claim.evidenceLandscape);
+			if (fromStatus !== "changes_requested") {
+				claim.evidenceLandscape.workflow.status = "draft";
+			}
+			await claim.save();
+
+			const actor = currentActor(req);
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "updated",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: claim.evidenceLandscape.workflow.status,
+				notes: normalizeText(req.body?.notes, 2000),
+				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
+			});
+
+			return res.json({ claim });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to update evidence landscape." });
+		}
+	});
+
+	api.patch("/editorial/claim-sources/:sourceId/evidence-profile", requireEditorial, async (req, res) => {
+		try {
+			const sourceId = typeof req.params.sourceId === "string" ? req.params.sourceId : "";
+			if (!mongoose.Types.ObjectId.isValid(sourceId)) {
+				return res.status(400).json({ error: "Invalid source id." });
+			}
+
+			const source = await ClaimSource.findById(sourceId);
+			if (!source) return res.status(404).json({ error: "Source not found." });
+			const claim = await Claim.findById(source.claim);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+
+			const actor = currentActor(req);
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			source.evidenceProfile = normalizeSourceEvidenceProfile(req.body, source.evidenceProfile);
+			source.evidenceProfile.reviewer.codedById = new mongoose.Types.ObjectId(actor.id);
+			source.evidenceProfile.reviewer.codedAt = new Date();
+			await source.save();
+
+			if (fromStatus !== "changes_requested") {
+				claim.evidenceLandscape.workflow.status = "draft";
+				await claim.save();
+			}
+
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "source_coding_updated",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: claim.evidenceLandscape.workflow.status,
+				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
+			});
+
+			return res.json({ source });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to update source evidence profile." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/evidence-landscape/recompute", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			const sources = await loadClaimSources(claim._id);
+			const recomputed = recomputeEvidenceLandscapeFromSources(sources);
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			claim.evidenceLandscape.distribution = recomputed.distribution;
+			claim.evidenceLandscape.evidenceBaseSize = recomputed.evidenceBaseSize;
+			if (fromStatus !== "changes_requested") {
+				claim.evidenceLandscape.workflow.status = "draft";
+			}
+			await claim.save();
+
+			const actor = currentActor(req);
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "distribution_recomputed",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: claim.evidenceLandscape.workflow.status,
+				changedFields: ["distribution", "evidenceBaseSize"]
+			});
+
+			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to recompute evidence landscape." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/evidence-landscape/submit-review", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			const sources = await loadClaimSources(claim._id);
+			const validationErrors = validateEvidenceLandscapeForSubmit(claim, sources);
+			if (validationErrors.length) {
+				return res.status(422).json({ error: "Evidence landscape is not ready for review.", validationErrors });
+			}
+
+			const actor = currentActor(req);
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			claim.evidenceLandscape.workflow.status = "ready_for_review";
+			claim.evidenceLandscape.workflow.assignedEditorId = new mongoose.Types.ObjectId(actor.id);
+			await claim.save();
+
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "submitted_for_review",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: "ready_for_review",
+				notes: normalizeText(req.body?.notes, 2000)
+			});
+
+			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to submit evidence landscape for review." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/evidence-landscape/approve", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			const sources = await loadClaimSources(claim._id);
+			const validationErrors = await validateEvidenceLandscapeForApproval(claim.toObject(), sources);
+			if (validationErrors.length) {
+				return res.status(422).json({ error: "Evidence landscape is not ready for approval.", validationErrors });
+			}
+
+			const actor = currentActor(req);
+			const now = new Date();
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			claim.evidenceLandscape.workflow.status = "approved";
+			claim.evidenceLandscape.workflow.reviewedById = new mongoose.Types.ObjectId(actor.id);
+			claim.evidenceLandscape.workflow.approvedById = new mongoose.Types.ObjectId(actor.id);
+			claim.evidenceLandscape.workflow.lastAssessedAt = now;
+			claim.evidenceLandscape.workflow.nextReviewDueAt = addMonths(
+				now,
+				evidenceLandscapeCadenceMonths(claim.evidenceLandscape)
+			);
+			await claim.save();
+
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "approved",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: "approved",
+				notes: normalizeText(req.body?.notes, 2000)
+			});
+
+			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to approve evidence landscape." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/evidence-landscape/publish", requireEditorial, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (claim.evidenceLandscape.workflow.status !== "approved") {
+				return res.status(422).json({ error: "Evidence landscape must be approved before publication." });
+			}
+
+			if (claim.evidenceLandscape.publicFlags.showCredibleMinorityView && !claim.evidenceLandscape.credibleMinorityViewSummary?.trim()) {
+				return res.status(422).json({ error: "Credible minority view summary is required before publication." });
+			}
+			if (
+				claim.evidenceLandscape.publicFlags.medicalOrPublicHealthSensitive
+				&& !claim.evidenceLandscape.publicFlags.requiresProfessionalContext
+			) {
+				return res.status(422).json({ error: "Professional context review is required before publication." });
+			}
+
+			const actor = currentActor(req);
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			claim.evidenceLandscape.workflow.status = "published";
+			claim.evidenceLandscape.workflow.publishedAt = new Date();
+			claim.evidenceLandscape.publicFlags.showEvidenceLandscape = true;
+			await claim.save();
+
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "published",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: "published",
+				notes: normalizeText(req.body?.notes, 2000)
+			});
+
+			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to publish evidence landscape." });
 		}
 	});
 
