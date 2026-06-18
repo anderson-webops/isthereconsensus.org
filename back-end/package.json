@@ -18,7 +18,8 @@
 		"lint-fix": "eslint \"{src,test}/**/*.{js,ts}\" --fix",
 		"typecheck": "tsc --noEmit -p tsconfig.json",
 		"create-admin": "node dist/create-admin-user.js",
-		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts"
+		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts",
+		"migrate:evidence-landscape:v1": "tsx -r dotenv/config src/scripts/migrations/backfillEvidenceLandscapeV1.ts"
 	},
 	"keywords": [],
 	"author": "",

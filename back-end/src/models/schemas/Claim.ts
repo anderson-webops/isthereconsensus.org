@@ -1,6 +1,13 @@
 import type { Model } from "mongoose";
 import type { ITopic } from "./Topic.js";
 import mongoose, { Schema } from "mongoose";
+import {
+	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
+	EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
+	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES
+} from "../../constants/evidenceLandscape.js";
 import { slugify } from "../../utils/slugify.js";
 
 export type ClaimStatus = "draft" | "published" | "needs_update" | "archived";
@@ -10,6 +17,10 @@ export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
 export type ClaimUncertaintyType = "bias" | "indirectness" | "imprecision" | "inconsistency" | "generalizability" | "mechanism" | "timing" | "implementation" | "other";
+export type ClaimLandscapeSupportLabel = (typeof EVIDENCE_LANDSCAPE_SUPPORT_LABELS)[number];
+export type ClaimLandscapeEvidenceCertainty = (typeof EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS)[number];
+export type ClaimLandscapeExpertAgreement = (typeof EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS)[number];
+export type ClaimLandscapeWorkflowStatus = (typeof EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES)[number];
 
 export interface IClaimChangeLogEntry {
 	date: Date;
@@ -46,6 +57,37 @@ export interface IClaimSurveillanceSpec {
 	triggerRules: string[];
 }
 
+export interface IClaimEvidenceLandscapePublicFlags {
+	showEvidenceLandscape: boolean;
+	showCredibleMinorityView: boolean;
+	showFalseBalanceWarning: boolean;
+}
+
+export interface IClaimEvidenceLandscapeWorkflow {
+	status: ClaimLandscapeWorkflowStatus;
+	lastAssessedAt?: Date;
+	nextReviewDueAt?: Date;
+	assessedBy?: mongoose.Types.ObjectId;
+	editorialNotes?: string;
+}
+
+export interface IClaimEvidenceLandscape {
+	schemaVersion: number;
+	supportLabel: ClaimLandscapeSupportLabel;
+	evidenceCertainty: ClaimLandscapeEvidenceCertainty;
+	expertAgreement: ClaimLandscapeExpertAgreement;
+	plainLanguageAnswer?: string;
+	oneSentenceSummary?: string;
+	confidenceStatement?: string;
+	caveatSummary?: string;
+	disagreementSummary?: string;
+	credibleMinorityViewSummary?: string;
+	fringeOrUnsupportedViewSummary?: string;
+	whatWouldChangeThis?: string;
+	publicFlags: IClaimEvidenceLandscapePublicFlags;
+	workflow: IClaimEvidenceLandscapeWorkflow;
+}
+
 export interface IClaim {
 	_id?: mongoose.Types.ObjectId;
 	topic: ITopic | mongoose.Types.ObjectId;
@@ -73,6 +115,7 @@ export interface IClaim {
 	surveillanceSpec: IClaimSurveillanceSpec;
 	appraisalTools: string[];
 	evidenceSummaries: IClaimEvidenceSummary[];
+	evidenceLandscape: IClaimEvidenceLandscape;
 	institutionalAnchors: IClaimInstitutionalAnchor[];
 	authorLine?: string;
 	reviewerLine?: string;
@@ -211,6 +254,110 @@ const claimSchema: Schema<IClaim> = new Schema(
 			],
 			default: []
 		},
+		evidenceLandscape: {
+			type: new Schema<IClaimEvidenceLandscape>(
+				{
+					schemaVersion: {
+						type: Number,
+						required: true,
+						default: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+						min: 1
+					},
+					supportLabel: {
+						type: String,
+						required: true,
+						default: "unresolved",
+						enum: EVIDENCE_LANDSCAPE_SUPPORT_LABELS
+					},
+					evidenceCertainty: {
+						type: String,
+						required: true,
+						default: "not_assessable",
+						enum: EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS
+					},
+					expertAgreement: {
+						type: String,
+						required: true,
+						default: "not_assessable",
+						enum: EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS
+					},
+					plainLanguageAnswer: { type: String, default: "", trim: true, maxlength: 2000 },
+					oneSentenceSummary: { type: String, default: "", trim: true, maxlength: 280 },
+					confidenceStatement: { type: String, default: "", trim: true, maxlength: 800 },
+					caveatSummary: { type: String, default: "", trim: true, maxlength: 1600 },
+					disagreementSummary: { type: String, default: "", trim: true, maxlength: 1600 },
+					credibleMinorityViewSummary: { type: String, default: "", trim: true, maxlength: 1200 },
+					fringeOrUnsupportedViewSummary: { type: String, default: "", trim: true, maxlength: 1200 },
+					whatWouldChangeThis: { type: String, default: "", trim: true, maxlength: 1200 },
+					publicFlags: {
+						type: new Schema<IClaimEvidenceLandscapePublicFlags>(
+							{
+								showEvidenceLandscape: { type: Boolean, required: true, default: false },
+								showCredibleMinorityView: { type: Boolean, required: true, default: false },
+								showFalseBalanceWarning: { type: Boolean, required: true, default: false }
+							},
+							{ _id: false }
+						),
+						default: () => ({
+							showEvidenceLandscape: false,
+							showCredibleMinorityView: false,
+							showFalseBalanceWarning: false
+						})
+					},
+					workflow: {
+						type: new Schema<IClaimEvidenceLandscapeWorkflow>(
+							{
+								status: {
+									type: String,
+									required: true,
+									default: "not_started",
+									enum: EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES
+								},
+								lastAssessedAt: { type: Date },
+								nextReviewDueAt: { type: Date },
+								assessedBy: { type: Schema.Types.ObjectId },
+								editorialNotes: { type: String, default: "", trim: true, maxlength: 2000 }
+							},
+							{ _id: false }
+						),
+						default: () => ({
+							status: "not_started",
+							lastAssessedAt: undefined,
+							nextReviewDueAt: undefined,
+							assessedBy: undefined,
+							editorialNotes: ""
+						})
+					}
+				},
+				{ _id: false }
+			),
+			default: () => ({
+				schemaVersion: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+				supportLabel: "unresolved",
+				evidenceCertainty: "not_assessable",
+				expertAgreement: "not_assessable",
+				plainLanguageAnswer: "",
+				oneSentenceSummary: "",
+				confidenceStatement: "",
+				caveatSummary: "",
+				disagreementSummary: "",
+				credibleMinorityViewSummary: "",
+				fringeOrUnsupportedViewSummary: "",
+				whatWouldChangeThis: "",
+				publicFlags: {
+					showEvidenceLandscape: false,
+					showCredibleMinorityView: false,
+					showFalseBalanceWarning: false
+				},
+				workflow: {
+					status: "not_started",
+					lastAssessedAt: undefined,
+					nextReviewDueAt: undefined,
+					assessedBy: undefined,
+					editorialNotes: ""
+				}
+			})
+		},
 		institutionalAnchors: {
 			type: [
 				new Schema<IClaimInstitutionalAnchor>(
@@ -254,6 +401,10 @@ const claimSchema: Schema<IClaim> = new Schema(
 );
 
 claimSchema.index({ topic: 1, slug: 1 }, { unique: true });
+claimSchema.index({
+	"evidenceLandscape.publicFlags.showEvidenceLandscape": 1,
+	"evidenceLandscape.workflow.status": 1
+});
 
 claimSchema.pre("validate", function () {
 	if (!this.slug && this.title) {

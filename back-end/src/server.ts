@@ -1,5 +1,6 @@
 import type {
 	IClaim,
+	IClaimEvidenceLandscape,
 	IClaimEvidenceSummary,
 	IClaimInstitutionalAnchor,
 	IClaimSurveillanceSpec,
@@ -13,6 +14,13 @@ import cookieSession from "cookie-session";
 import express from "express";
 
 import mongoose from "mongoose";
+import {
+	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
+	EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
+	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES
+} from "./constants/evidenceLandscape.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
@@ -31,6 +39,7 @@ import { verifyCaptcha } from "./utils/captcha.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
 import { searchEvidence } from "./utils/evidence.js";
+import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
 import {
 	emptyPublicClaimSourceReadinessCounts,
 	getPublicClaimReadiness,
@@ -441,6 +450,171 @@ async function main() {
 		};
 	}
 
+	function normalizeEvidenceLandscapeEnum<T extends readonly string[]>(
+		value: unknown,
+		allowed: T,
+		fallback: T[number]
+	): T[number] {
+		const normalized = normalizeText(value, 80);
+		return (allowed as readonly string[]).includes(normalized) ? (normalized as T[number]) : fallback;
+	}
+
+	function normalizeEvidenceLandscapeBoolean(value: unknown, fallback: boolean) {
+		return value === undefined ? fallback : normalizeBoolean(value);
+	}
+
+	function normalizeEvidenceLandscapeText(
+		record: Record<string, unknown>,
+		key: string,
+		maxLength: number,
+		fallback = ""
+	) {
+		return Object.hasOwn(record, key) ? normalizeText(record[key], maxLength) : fallback;
+	}
+
+	function normalizeEvidenceLandscape(value: unknown, existing?: IClaimEvidenceLandscape): IClaimEvidenceLandscape {
+		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const flags = typeof record.publicFlags === "object" && record.publicFlags
+			? (record.publicFlags as Record<string, unknown>)
+			: {};
+		const workflow = typeof record.workflow === "object" && record.workflow
+			? (record.workflow as Record<string, unknown>)
+			: {};
+		const existingFlags = existing?.publicFlags ?? {
+			showEvidenceLandscape: false,
+			showCredibleMinorityView: false,
+			showFalseBalanceWarning: false
+		};
+		const existingWorkflow = existing?.workflow ?? {
+			status: "not_started",
+			lastAssessedAt: undefined,
+			nextReviewDueAt: undefined,
+			assessedBy: undefined,
+			editorialNotes: ""
+		};
+		const assessedByRaw = normalizeText(workflow.assessedBy, 40);
+
+		return {
+			schemaVersion: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+			supportLabel: normalizeEvidenceLandscapeEnum(
+				record.supportLabel,
+				EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
+				existing?.supportLabel ?? "unresolved"
+			),
+			evidenceCertainty: normalizeEvidenceLandscapeEnum(
+				record.evidenceCertainty,
+				EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+				existing?.evidenceCertainty ?? "not_assessable"
+			),
+			expertAgreement: normalizeEvidenceLandscapeEnum(
+				record.expertAgreement,
+				EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
+				existing?.expertAgreement ?? "not_assessable"
+			),
+			plainLanguageAnswer: normalizeEvidenceLandscapeText(
+				record,
+				"plainLanguageAnswer",
+				2000,
+				existing?.plainLanguageAnswer
+			),
+			oneSentenceSummary: normalizeEvidenceLandscapeText(
+				record,
+				"oneSentenceSummary",
+				280,
+				existing?.oneSentenceSummary
+			),
+			confidenceStatement: normalizeEvidenceLandscapeText(
+				record,
+				"confidenceStatement",
+				800,
+				existing?.confidenceStatement
+			),
+			caveatSummary: normalizeEvidenceLandscapeText(record, "caveatSummary", 1600, existing?.caveatSummary),
+			disagreementSummary: normalizeEvidenceLandscapeText(
+				record,
+				"disagreementSummary",
+				1600,
+				existing?.disagreementSummary
+			),
+			credibleMinorityViewSummary: normalizeEvidenceLandscapeText(
+				record,
+				"credibleMinorityViewSummary",
+				1200,
+				existing?.credibleMinorityViewSummary
+			),
+			fringeOrUnsupportedViewSummary: normalizeEvidenceLandscapeText(
+				record,
+				"fringeOrUnsupportedViewSummary",
+				1200,
+				existing?.fringeOrUnsupportedViewSummary
+			),
+			whatWouldChangeThis: normalizeEvidenceLandscapeText(
+				record,
+				"whatWouldChangeThis",
+				1200,
+				existing?.whatWouldChangeThis
+			),
+			publicFlags: {
+				showEvidenceLandscape: normalizeEvidenceLandscapeBoolean(
+					flags.showEvidenceLandscape,
+					existingFlags.showEvidenceLandscape
+				),
+				showCredibleMinorityView: normalizeEvidenceLandscapeBoolean(
+					flags.showCredibleMinorityView,
+					existingFlags.showCredibleMinorityView
+				),
+				showFalseBalanceWarning: normalizeEvidenceLandscapeBoolean(
+					flags.showFalseBalanceWarning,
+					existingFlags.showFalseBalanceWarning
+				)
+			},
+			workflow: {
+				status: normalizeEvidenceLandscapeEnum(
+					workflow.status,
+					EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
+					existingWorkflow.status
+				),
+				lastAssessedAt:
+					workflow.lastAssessedAt === undefined
+						? existingWorkflow.lastAssessedAt
+						: normalizeDate(workflow.lastAssessedAt),
+				nextReviewDueAt:
+					workflow.nextReviewDueAt === undefined
+						? existingWorkflow.nextReviewDueAt
+						: normalizeDate(workflow.nextReviewDueAt),
+				assessedBy: mongoose.Types.ObjectId.isValid(assessedByRaw)
+					? new mongoose.Types.ObjectId(assessedByRaw)
+					: existingWorkflow.assessedBy,
+				editorialNotes: normalizeEvidenceLandscapeText(
+					workflow,
+					"editorialNotes",
+					2000,
+					existingWorkflow.editorialNotes
+				)
+			}
+		};
+	}
+
+	function sanitizePublicQuestionClaim(value: unknown) {
+		if (!value || typeof value !== "object" || !("_id" in value)) return value ?? null;
+		const record = value as Partial<IClaim> & { _id?: unknown };
+		return {
+			_id: record._id,
+			title: record.title,
+			slug: record.slug,
+			consensusBand: record.consensusBand,
+			evidenceLandscape: toPublicEvidenceLandscape(record)
+		};
+	}
+
+	function sanitizePublicQuestion<T extends { claim?: unknown }>(question: T) {
+		if (!question.claim || typeof question.claim !== "object") return question;
+		return {
+			...question,
+			claim: sanitizePublicQuestionClaim(question.claim)
+		};
+	}
+
 	async function findTopicOr404(res: express.Response, slug: string) {
 		const topic = await Topic.findOne({ slug });
 		if (!topic) {
@@ -551,6 +725,7 @@ async function main() {
 					surveillanceSpec: claim.surveillanceSpec,
 					appraisalTools: claim.appraisalTools,
 					evidenceSummaries: claim.evidenceSummaries,
+					evidenceLandscape: claim.evidenceLandscape,
 					institutionalAnchors: claim.institutionalAnchors,
 					authorLine: claim.authorLine,
 					reviewerLine: claim.reviewerLine,
@@ -681,6 +856,7 @@ async function main() {
 							confidenceScore: claim.confidenceScore,
 							reviewMode: claim.reviewMode,
 							bottomLine: claim.bottomLine,
+							evidenceLandscape: toPublicEvidenceLandscape(claim),
 							sourceCount: sourceCounts.sourceCount,
 							searchCutoffAt: claim.searchCutoffAt,
 							lastReviewedAt: claim.lastReviewedAt,
@@ -731,6 +907,7 @@ async function main() {
 					claimCount: publicReadyClaims.length,
 					featuredClaims: publicReadyClaims.slice(0, 5).map(claim => ({
 						...claim,
+						evidenceLandscape: toPublicEvidenceLandscape(claim),
 						sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount
 					}))
 				}
@@ -756,6 +933,7 @@ async function main() {
 			return res.json({
 				claims: publicReadyClaims.map(claim => ({
 					...claim,
+					evidenceLandscape: toPublicEvidenceLandscape(claim),
 					sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
 					topic: {
 						_id: topic._id,
@@ -793,6 +971,7 @@ async function main() {
 			return res.json({
 				claim: {
 					...claim,
+					evidenceLandscape: toPublicEvidenceLandscape(claim),
 					sourceCount: sourceCounts.sourceCount,
 					topic: {
 						_id: topic._id,
@@ -1033,7 +1212,7 @@ async function main() {
 				)
 				.slice(0, 6)
 				.map(({ question, match }) => ({
-					...question,
+					...sanitizePublicQuestion(question),
 					matchReason: match.matchReason,
 					matchScore: match.matchScore
 				}));
@@ -1094,7 +1273,7 @@ async function main() {
 				.populate("claim")
 				.lean();
 
-			return res.json({ questions });
+			return res.json({ questions: questions.map(sanitizePublicQuestion) });
 		}
 		catch (error) {
 			console.error(error);
@@ -1109,7 +1288,7 @@ async function main() {
 			}
 			const question = await Question.findById(req.params.id).populate("topic").populate("claim").lean();
 			if (!question) return res.status(404).json({ error: "Question not found." });
-			return res.json({ question });
+			return res.json({ question: sanitizePublicQuestion(question) });
 		}
 		catch (error) {
 			console.error(error);
@@ -1527,6 +1706,7 @@ async function main() {
 				surveillanceSpec: normalizeSurveillanceSpec(req.body?.surveillanceSpec),
 				appraisalTools: normalizeList(req.body?.appraisalTools, 8, 180),
 				evidenceSummaries: normalizeEvidenceSummaries(req.body?.evidenceSummaries),
+				evidenceLandscape: normalizeEvidenceLandscape(req.body?.evidenceLandscape),
 				institutionalAnchors: normalizeInstitutionalAnchors(req.body?.institutionalAnchors),
 				authorLine: normalizeText(req.body?.authorLine, 240),
 				reviewerLine: normalizeText(req.body?.reviewerLine, 240),
@@ -1656,6 +1836,9 @@ async function main() {
 			}
 			if (req.body?.evidenceSummaries !== undefined) {
 				claim.evidenceSummaries = normalizeEvidenceSummaries(req.body?.evidenceSummaries);
+			}
+			if (req.body?.evidenceLandscape !== undefined) {
+				claim.evidenceLandscape = normalizeEvidenceLandscape(req.body?.evidenceLandscape, claim.evidenceLandscape);
 			}
 			if (req.body?.institutionalAnchors !== undefined) {
 				claim.institutionalAnchors = normalizeInstitutionalAnchors(req.body?.institutionalAnchors);

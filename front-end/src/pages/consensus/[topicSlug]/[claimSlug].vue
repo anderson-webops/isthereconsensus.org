@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
+import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { formatCountLabel } from "~/utils/format-count";
 
@@ -31,6 +32,7 @@ const canEditClaim = computed(() => role.value === "admin" || currentAccount.val
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
 const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
+const evidenceLandscape = computed(() => claim.value?.evidenceLandscape);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
 const askLink = computed(() => ({
@@ -334,6 +336,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</NuxtLink>
 			</div>
 		</section>
+
+		<EvidenceLandscapePanel v-if="evidenceLandscape" :landscape="evidenceLandscape" />
 
 		<section class="uncertainty-strip">
 			<div>

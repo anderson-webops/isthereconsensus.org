@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import type {
+	EvidenceLandscapeCertaintyLevel,
+	EvidenceLandscapeExpertAgreement,
+	EvidenceLandscapeSupportLabel,
+	EvidenceLandscapeWorkflowStatus
+} from "~/constants/evidenceLandscape";
+import type {
 	Claim,
 	ClaimEvidenceSummary,
 	ClaimInstitutionalAnchor,
@@ -13,6 +19,16 @@ import type {
 } from "~/types/board";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import {
+	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
+	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
+	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
+	formatLandscapeCertaintyLabel,
+	formatLandscapeExpertAgreementLabel,
+	formatLandscapeSupportLabel,
+	formatLandscapeWorkflowStatus
+} from "~/constants/evidenceLandscape";
 import { getSourceStandard } from "~/data/sourceStandards";
 
 interface EditorialClaimRouteParams {
@@ -61,6 +77,24 @@ const form = reactive({
 	misconceptionTags: "",
 	editorSummary: "",
 	uncertaintySummary: "",
+	landscapeSupportLabel: "unresolved" as EvidenceLandscapeSupportLabel,
+	landscapeEvidenceCertainty: "not_assessable" as EvidenceLandscapeCertaintyLevel,
+	landscapeExpertAgreement: "not_assessable" as EvidenceLandscapeExpertAgreement,
+	landscapePlainLanguageAnswer: "",
+	landscapeOneSentenceSummary: "",
+	landscapeConfidenceStatement: "",
+	landscapeCaveatSummary: "",
+	landscapeDisagreementSummary: "",
+	landscapeCredibleMinorityViewSummary: "",
+	landscapeFringeOrUnsupportedViewSummary: "",
+	landscapeWhatWouldChangeThis: "",
+	landscapeShowEvidenceLandscape: false,
+	landscapeShowCredibleMinorityView: false,
+	landscapeShowFalseBalanceWarning: false,
+	landscapeWorkflowStatus: "not_started" as EvidenceLandscapeWorkflowStatus,
+	landscapeLastAssessedAt: "",
+	landscapeNextReviewDueAt: "",
+	landscapeEditorialNotes: "",
 	searchDatabases: "",
 	searchCutoffAt: "",
 	inclusionRules: "",
@@ -131,6 +165,24 @@ function hydrateClaim(record: Claim | null) {
 	form.misconceptionTags = (record?.misconceptionTags || []).join("\n");
 	form.editorSummary = record?.editorSummary || "";
 	form.uncertaintySummary = record?.uncertaintySummary || "";
+	form.landscapeSupportLabel = record?.evidenceLandscape?.supportLabel || "unresolved";
+	form.landscapeEvidenceCertainty = record?.evidenceLandscape?.evidenceCertainty || "not_assessable";
+	form.landscapeExpertAgreement = record?.evidenceLandscape?.expertAgreement || "not_assessable";
+	form.landscapePlainLanguageAnswer = record?.evidenceLandscape?.plainLanguageAnswer || "";
+	form.landscapeOneSentenceSummary = record?.evidenceLandscape?.oneSentenceSummary || "";
+	form.landscapeConfidenceStatement = record?.evidenceLandscape?.confidenceStatement || "";
+	form.landscapeCaveatSummary = record?.evidenceLandscape?.caveatSummary || "";
+	form.landscapeDisagreementSummary = record?.evidenceLandscape?.disagreementSummary || "";
+	form.landscapeCredibleMinorityViewSummary = record?.evidenceLandscape?.credibleMinorityViewSummary || "";
+	form.landscapeFringeOrUnsupportedViewSummary = record?.evidenceLandscape?.fringeOrUnsupportedViewSummary || "";
+	form.landscapeWhatWouldChangeThis = record?.evidenceLandscape?.whatWouldChangeThis || "";
+	form.landscapeShowEvidenceLandscape = !!record?.evidenceLandscape?.publicFlags?.showEvidenceLandscape;
+	form.landscapeShowCredibleMinorityView = !!record?.evidenceLandscape?.publicFlags?.showCredibleMinorityView;
+	form.landscapeShowFalseBalanceWarning = !!record?.evidenceLandscape?.publicFlags?.showFalseBalanceWarning;
+	form.landscapeWorkflowStatus = record?.evidenceLandscape?.workflow?.status || "not_started";
+	form.landscapeLastAssessedAt = formatDateInput(record?.evidenceLandscape?.workflow?.lastAssessedAt);
+	form.landscapeNextReviewDueAt = formatDateInput(record?.evidenceLandscape?.workflow?.nextReviewDueAt);
+	form.landscapeEditorialNotes = record?.evidenceLandscape?.workflow?.editorialNotes || "";
 	form.searchDatabases = (record?.searchDatabases || []).join("\n");
 	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
 	form.inclusionRules = (record?.inclusionRules || []).join("\n");
@@ -225,6 +277,30 @@ function claimPayload() {
 		misconceptionTags: parseLines(form.misconceptionTags),
 		editorSummary: form.editorSummary.trim(),
 		uncertaintySummary: form.uncertaintySummary.trim(),
+		evidenceLandscape: {
+			supportLabel: form.landscapeSupportLabel,
+			evidenceCertainty: form.landscapeEvidenceCertainty,
+			expertAgreement: form.landscapeExpertAgreement,
+			plainLanguageAnswer: form.landscapePlainLanguageAnswer.trim(),
+			oneSentenceSummary: form.landscapeOneSentenceSummary.trim(),
+			confidenceStatement: form.landscapeConfidenceStatement.trim(),
+			caveatSummary: form.landscapeCaveatSummary.trim(),
+			disagreementSummary: form.landscapeDisagreementSummary.trim(),
+			credibleMinorityViewSummary: form.landscapeCredibleMinorityViewSummary.trim(),
+			fringeOrUnsupportedViewSummary: form.landscapeFringeOrUnsupportedViewSummary.trim(),
+			whatWouldChangeThis: form.landscapeWhatWouldChangeThis.trim(),
+			publicFlags: {
+				showEvidenceLandscape: form.landscapeShowEvidenceLandscape,
+				showCredibleMinorityView: form.landscapeShowCredibleMinorityView,
+				showFalseBalanceWarning: form.landscapeShowFalseBalanceWarning
+			},
+			workflow: {
+				status: form.landscapeWorkflowStatus,
+				lastAssessedAt: form.landscapeLastAssessedAt || undefined,
+				nextReviewDueAt: form.landscapeNextReviewDueAt || undefined,
+				editorialNotes: form.landscapeEditorialNotes.trim()
+			}
+		},
 		searchDatabases: parseLines(form.searchDatabases),
 		searchCutoffAt: form.searchCutoffAt || undefined,
 		inclusionRules: parseLines(form.inclusionRules),
@@ -660,6 +736,186 @@ watch(
 							placeholder="Explain what is still uncertain without undermining the settled core of the page."
 						/>
 					</label>
+
+					<div class="field field--full structured-block">
+						<div class="structured-block__header">
+							<div>
+								<span class="field-label">Evidence landscape</span>
+								<p>
+									Use this for the support range, credible disagreement, and limits. It appears
+									publicly only when the workflow is published and the public flag is enabled.
+								</p>
+							</div>
+							<p class="status-pill">
+								{{ form.landscapeShowEvidenceLandscape ? "Public flag on" : "Private draft" }}
+							</p>
+						</div>
+
+						<div class="structured-card__grid">
+							<label class="field">
+								<span class="field-label">Support label</span>
+								<select v-model="form.landscapeSupportLabel">
+									<option
+										v-for="value in EVIDENCE_LANDSCAPE_SUPPORT_LABELS"
+										:key="value"
+										:value="value"
+									>
+										{{ formatLandscapeSupportLabel(value) }}
+									</option>
+								</select>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Landscape certainty</span>
+								<select v-model="form.landscapeEvidenceCertainty">
+									<option
+										v-for="value in EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS"
+										:key="value"
+										:value="value"
+									>
+										{{ formatLandscapeCertaintyLabel(value) }}
+									</option>
+								</select>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Expert agreement</span>
+								<select v-model="form.landscapeExpertAgreement">
+									<option
+										v-for="value in EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS"
+										:key="value"
+										:value="value"
+									>
+										{{ formatLandscapeExpertAgreementLabel(value) }}
+									</option>
+								</select>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Workflow status</span>
+								<select v-model="form.landscapeWorkflowStatus">
+									<option
+										v-for="value in EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES"
+										:key="value"
+										:value="value"
+									>
+										{{ formatLandscapeWorkflowStatus(value) }}
+									</option>
+								</select>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">One-sentence landscape summary</span>
+								<input
+									v-model="form.landscapeOneSentenceSummary"
+									type="text"
+									placeholder="The broad answer, stated without collapsing uncertainty into a score."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Plain-language answer</span>
+								<textarea
+									v-model="form.landscapePlainLanguageAnswer"
+									rows="4"
+									placeholder="What should a careful reader conclude, and how strong is that conclusion?"
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Confidence statement</span>
+								<textarea
+									v-model="form.landscapeConfidenceStatement"
+									rows="3"
+									placeholder="Why the site is more or less confident than a single headline would imply."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Caveat summary</span>
+								<textarea
+									v-model="form.landscapeCaveatSummary"
+									rows="3"
+									placeholder="The most important qualification a reader should keep in mind."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Disagreement summary</span>
+								<textarea
+									v-model="form.landscapeDisagreementSummary"
+									rows="3"
+									placeholder="Where credible experts still disagree, if they do."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Credible minority view</span>
+								<textarea
+									v-model="form.landscapeCredibleMinorityViewSummary"
+									rows="3"
+									placeholder="Only use for serious expert disagreement that clears the source standard."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Fringe or unsupported view note</span>
+								<textarea
+									v-model="form.landscapeFringeOrUnsupportedViewSummary"
+									rows="3"
+									placeholder="Explain why unsupported versions are not given equal weight, when necessary."
+								/>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">What would change this landscape</span>
+								<textarea
+									v-model="form.landscapeWhatWouldChangeThis"
+									rows="3"
+									placeholder="Name the kind of evidence, review, or real-world signal that could move this page."
+								/>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Last landscape assessment</span>
+								<input v-model="form.landscapeLastAssessedAt" type="date" />
+							</label>
+
+							<label class="field">
+								<span class="field-label">Next landscape review</span>
+								<input v-model="form.landscapeNextReviewDueAt" type="date" />
+							</label>
+
+							<label class="field field--checkbox">
+								<input v-model="form.landscapeShowEvidenceLandscape" type="checkbox" />
+								<span class="field-label">Show landscape publicly</span>
+							</label>
+
+							<label class="field field--checkbox">
+								<input v-model="form.landscapeShowCredibleMinorityView" type="checkbox" />
+								<span class="field-label">Show credible minority view</span>
+							</label>
+
+							<label class="field field--checkbox">
+								<input v-model="form.landscapeShowFalseBalanceWarning" type="checkbox" />
+								<span class="field-label">Show false-balance warning</span>
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Editorial landscape notes</span>
+								<textarea
+									v-model="form.landscapeEditorialNotes"
+									rows="3"
+									placeholder="Private reviewer notes. These are not exposed publicly."
+								/>
+							</label>
+						</div>
+
+						<p class="helper-note">
+							Do not use this as a vote count or a truth score. Source counts are not votes; the public
+							bottom line still requires editorial judgment.
+						</p>
+					</div>
 
 					<div class="field field--full structured-block">
 						<div class="structured-block__header">
@@ -1374,6 +1630,30 @@ watch(
 	background: var(--consensus-field-surface);
 	display: grid;
 	gap: 12px;
+}
+
+.status-pill {
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	padding: 7px 11px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--consensus-community) 35%, var(--consensus-line));
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.helper-note {
+	margin: 0;
+	padding: 14px 16px;
+	border-radius: 16px;
+	border: 1px solid color-mix(in srgb, var(--consensus-caution) 35%, var(--consensus-soft-line));
+	background: color-mix(in srgb, var(--consensus-caution) 10%, var(--consensus-field-surface));
+	color: var(--consensus-muted);
+	line-height: 1.65;
 }
 
 .helper-card {

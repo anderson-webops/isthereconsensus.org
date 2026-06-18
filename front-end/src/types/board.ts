@@ -3,6 +3,22 @@ export type ClaimConsensusBand = "strong" | "broad" | "mixed" | "unclear";
 export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "frontier";
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
+export type ClaimLandscapeSupportLabel =
+	| "well_supported"
+	| "supported_with_limitations"
+	| "mixed_or_contested"
+	| "insufficient_evidence"
+	| "unlikely_or_unsupported"
+	| "unresolved";
+export type ClaimLandscapeEvidenceCertainty = "high" | "moderate" | "low" | "very_low" | "not_assessable";
+export type ClaimLandscapeExpertAgreement =
+	| "strong"
+	| "broad"
+	| "qualified"
+	| "divided"
+	| "insufficient_field"
+	| "not_assessable";
+export type ClaimLandscapeWorkflowStatus = "not_started" | "in_review" | "ready_for_review" | "published" | "retired";
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
 export type ClaimUncertaintyType =
@@ -85,6 +101,33 @@ export interface ClaimSurveillanceSpec {
 	triggerRules: string[];
 }
 
+export interface ClaimEvidenceLandscape {
+	schemaVersion: number;
+	supportLabel: ClaimLandscapeSupportLabel;
+	evidenceCertainty: ClaimLandscapeEvidenceCertainty;
+	expertAgreement: ClaimLandscapeExpertAgreement;
+	plainLanguageAnswer?: string;
+	oneSentenceSummary?: string;
+	confidenceStatement?: string;
+	caveatSummary?: string;
+	disagreementSummary?: string;
+	credibleMinorityViewSummary?: string;
+	fringeOrUnsupportedViewSummary?: string;
+	whatWouldChangeThis?: string;
+	publicFlags?: {
+		showEvidenceLandscape?: boolean;
+		showCredibleMinorityView?: boolean;
+		showFalseBalanceWarning?: boolean;
+	};
+	workflow?: {
+		status?: ClaimLandscapeWorkflowStatus;
+		lastAssessedAt?: string;
+		nextReviewDueAt?: string;
+		assessedBy?: string;
+		editorialNotes?: string;
+	};
+}
+
 export interface Topic {
 	_id: string;
 	title: string;
@@ -117,6 +160,7 @@ export interface ClaimSummary {
 	concernSourceCount?: number;
 	searchCutoffAt?: string;
 	surveillanceSpec?: ClaimSurveillanceSpec;
+	evidenceLandscape?: ClaimEvidenceLandscape;
 	lastReviewedAt?: string;
 	nextReviewAt?: string;
 	publishedAt?: string;
