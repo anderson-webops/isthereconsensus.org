@@ -1,4 +1,7 @@
+import type { QueryFilter } from "mongoose";
 import type {
+	ClaimConsensusBand,
+	ClaimStatus,
 	IClaim,
 	IClaimEvidenceLandscape,
 	IClaimEvidenceSummary,
@@ -6,13 +9,16 @@ import type {
 	IClaimSurveillanceSpec,
 	IClaimUncertaintyDriver
 } from "./models/schemas/Claim.js";
+import type { ClaimSourceKind, ClaimSourceStance } from "./models/schemas/ClaimSource.js";
+import type { IExpertApplication } from "./models/schemas/ExpertApplication.js";
+import type { IQuestion } from "./models/schemas/Question.js";
 import type { PublicClaimSourceReadinessCounts } from "./utils/publicClaimReadiness.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
-import express from "express";
 
+import express from "express";
 import mongoose from "mongoose";
 import {
 	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
@@ -307,9 +313,25 @@ async function main() {
 		return "other";
 	}
 
-	function normalizeStatus(value: unknown) {
+	function isClaimStatus(value: string): value is ClaimStatus {
+		return value === "draft" || value === "published" || value === "needs_update" || value === "archived";
+	}
+
+	function normalizeStatus(value: unknown): ClaimStatus {
 		const normalized = normalizeText(value, 24);
-		return normalized || "draft";
+		return isClaimStatus(normalized) ? normalized : "draft";
+	}
+
+	function normalizeConsensusBand(value: unknown): ClaimConsensusBand {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "strong") return "strong";
+		if (normalized === "broad") return "broad";
+		if (normalized === "mixed") return "mixed";
+		return "unclear";
+	}
+
+	function isQuestionRoutingStatus(value: string): value is NonNullable<IQuestion["routingStatus"]> {
+		return value === "unassigned" || value === "linked" || value === "duplicate";
 	}
 
 	function normalizeAgreementLevel(value: unknown) {
@@ -360,6 +382,23 @@ async function main() {
 		if (normalized === "retracted") return "retracted";
 		if (normalized === "expression_of_concern") return "expression_of_concern";
 		return "current";
+	}
+
+	function normalizeClaimSourceKind(value: unknown): ClaimSourceKind {
+		const normalized = normalizeText(value, 32);
+		if (normalized === "systematic_review") return "systematic_review";
+		if (normalized === "meta_analysis") return "meta_analysis";
+		if (normalized === "guideline") return "guideline";
+		if (normalized === "consensus_statement") return "consensus_statement";
+		if (normalized === "landmark_study") return "landmark_study";
+		return "context";
+	}
+
+	function normalizeClaimSourceStance(value: unknown): ClaimSourceStance {
+		const normalized = normalizeText(value, 24);
+		if (normalized === "supports") return "supports";
+		if (normalized === "debate") return "debate";
+		return "context";
 	}
 
 	function normalizeEvidenceDirection(value: unknown): IClaimEvidenceSummary["effectDirection"] {
@@ -1237,12 +1276,7 @@ async function main() {
 			const limitRaw = Number(req.query.limit ?? 30);
 			const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 100) : 30;
 
-			const filter: {
-				topic?: mongoose.Types.ObjectId;
-				claim?: mongoose.Types.ObjectId;
-				routingStatus?: string | { $ne: string };
-				status?: { $ne: string };
-			} = {
+			const filter: QueryFilter<IQuestion> = {
 				status: { $ne: "archived" },
 				routingStatus: { $ne: "duplicate" }
 			};
@@ -1262,7 +1296,7 @@ async function main() {
 				}
 			}
 
-			if (routingStatus && ["unassigned", "linked", "duplicate"].includes(routingStatus)) {
+			if (isQuestionRoutingStatus(routingStatus)) {
 				filter.routingStatus = routingStatus;
 			}
 
@@ -1576,7 +1610,7 @@ async function main() {
 	api.get("/editorial/claims", requireEditorial, async (req, res) => {
 		try {
 			const status = typeof req.query.status === "string" ? req.query.status : "";
-			const filter = status ? { status } : {};
+			const filter: QueryFilter<IClaim> = isClaimStatus(status) ? { status } : {};
 			const claims = await Claim.find(filter).sort({ updatedAt: -1, createdAt: -1 }).populate("topic").lean();
 			const sourceCounts = await ClaimSource.aggregate([
 				{ $match: { claim: { $in: claims.map(claim => claim._id) } } },
@@ -1685,7 +1719,7 @@ async function main() {
 				title,
 				slug,
 				status: normalizeStatus(req.body?.status),
-				consensusBand: normalizeText(req.body?.consensusBand, 24) || "unclear",
+				consensusBand: normalizeConsensusBand(req.body?.consensusBand),
 				agreementLevel: normalizeAgreementLevel(req.body?.agreementLevel),
 				evidenceCertainty: normalizeEvidenceCertainty(req.body?.evidenceCertainty),
 				confidenceScore: normalizeInteger(req.body?.confidenceScore, 0, 100, 50),
@@ -2000,7 +2034,7 @@ async function main() {
 
 			const source = await ClaimSource.create({
 				claim: claim._id,
-				kind: normalizeText(req.body?.kind, 32) || "context",
+				kind: normalizeClaimSourceKind(req.body?.kind),
 				title: normalizeText(req.body?.title, 240),
 				publisher: normalizeText(req.body?.publisher, 160),
 				year: req.body?.year
@@ -2015,7 +2049,7 @@ async function main() {
 				citationStatus: normalizeCitationStatus(req.body?.citationStatus),
 				citationCheckedAt: normalizeDate(req.body?.citationCheckedAt),
 				statusSources: normalizeList(req.body?.statusSources, 6, 120),
-				stance: normalizeText(req.body?.stance, 24) || "context",
+				stance: normalizeClaimSourceStance(req.body?.stance),
 				note: normalizeText(req.body?.note, 1000),
 				order: normalizeInteger(req.body?.order, 0, 999, 0)
 			});
@@ -2125,10 +2159,10 @@ async function main() {
 	api.get("/editorial/questions", requireEditorial, async (req, res) => {
 		try {
 			const routingStatus = typeof req.query.routingStatus === "string" ? req.query.routingStatus : "";
-			const filter: Record<string, unknown> = {
+			const filter: QueryFilter<IQuestion> = {
 				status: { $ne: "archived" }
 			};
-			if (routingStatus && ["unassigned", "linked", "duplicate"].includes(routingStatus)) {
+			if (isQuestionRoutingStatus(routingStatus)) {
 				filter.routingStatus = routingStatus;
 			}
 			const questions = await Question.find(filter)
@@ -2256,7 +2290,10 @@ async function main() {
 	api.get("/admin/expert-applications", requireAdmin, async (req, res) => {
 		try {
 			const status = typeof req.query.status === "string" ? req.query.status : "";
-			const filter = status ? { status } : {};
+			const filter: QueryFilter<IExpertApplication>
+				= status === "pending" || status === "approved" || status === "rejected" || status === "needs-info"
+					? { status }
+					: {};
 			const applications = await ExpertApplication.find(filter).sort({ createdAt: -1 }).lean();
 			return res.json({ applications });
 		}
