@@ -212,3 +212,97 @@ export function formatEvidenceTierLabel(value?: EvidenceTier) {
 	if (value === "tier_6_retracted_or_invalid") return "Tier 6 retracted or invalid evidence";
 	return "Not coded";
 }
+
+export function formatClaimTypeLabel(value?: EvidenceClaimType) {
+	if (value === "causal") return "Causal";
+	if (value === "intervention") return "Intervention";
+	if (value === "diagnostic") return "Diagnostic";
+	if (value === "prognostic") return "Prognostic";
+	if (value === "prevalence") return "Prevalence";
+	if (value === "mechanistic") return "Mechanistic";
+	if (value === "risk_factor") return "Risk factor";
+	if (value === "descriptive") return "Descriptive";
+	if (value === "policy_relevant_science") return "Policy-relevant science";
+	return "Other";
+}
+
+export function formatEvidenceSourcePositionLabel(value?: EvidenceSourcePositionBucket) {
+	if (value === "supports_claim") return "Supports claim";
+	if (value === "supports_with_caveats") return "Supports with caveats";
+	if (value === "opposes_claim") return "Opposes claim";
+	if (value === "inconclusive_or_mixed") return "Inconclusive or mixed";
+	if (value === "background_context") return "Background context";
+	if (value === "excluded_low_quality") return "Excluded: low quality";
+	if (value === "excluded_retracted") return "Excluded: retracted or invalid";
+	if (value === "excluded_fringe") return "Excluded: fringe or pseudoscientific";
+	return "Not coded";
+}
+
+export function formatEvidenceStudyDesignLabel(value?: EvidenceStudyDesign) {
+	if (value === "systematic_review") return "Systematic review";
+	if (value === "meta_analysis") return "Meta-analysis";
+	if (value === "living_review") return "Living review";
+	if (value === "evidence_based_guideline") return "Evidence-based guideline";
+	if (value === "consensus_statement") return "Consensus statement";
+	if (value === "randomized_trial") return "Randomized trial";
+	if (value === "non_randomized_trial") return "Non-randomized trial";
+	if (value === "cohort_study") return "Cohort study";
+	if (value === "case_control_study") return "Case-control study";
+	if (value === "cross_sectional_study") return "Cross-sectional study";
+	if (value === "case_series") return "Case series";
+	if (value === "ecological_study") return "Ecological study";
+	if (value === "mechanistic_human") return "Mechanistic human study";
+	if (value === "animal_study") return "Animal study";
+	if (value === "in_vitro_study") return "In vitro study";
+	if (value === "modeling_study") return "Modeling study";
+	if (value === "expert_commentary") return "Expert commentary";
+	if (value === "news_or_secondary_reporting") return "News or secondary reporting";
+	if (value === "retracted_or_expression_of_concern") return "Retracted or expression of concern";
+	if (value === "other") return "Other";
+	return "Not coded";
+}
+
+export function formatEvidenceRiskOfBiasLabel(value?: EvidenceRiskOfBiasLevel) {
+	if (value === "low") return "Low risk";
+	if (value === "some_concerns") return "Some concerns";
+	if (value === "high") return "High risk";
+	if (value === "critical") return "Critical risk";
+	return "Not assessed";
+}
+
+export function formatEvidenceDirectnessLabel(value?: EvidenceDirectnessLevel) {
+	if (value === "direct") return "Direct";
+	if (value === "partially_direct") return "Partially direct";
+	if (value === "indirect") return "Indirect";
+	return "Not assessed";
+}
+
+export function formatEvidenceConsistencyLabel(value?: EvidenceConsistencyLevel) {
+	if (value === "consistent_with_body") return "Consistent with body";
+	if (value === "partly_consistent") return "Partly consistent";
+	if (value === "inconsistent_with_body") return "Inconsistent with body";
+	return "Not assessed";
+}
+
+export function formatEvidencePrecisionLabel(value?: EvidencePrecisionLevel) {
+	if (value === "precise") return "Precise";
+	if (value === "imprecise") return "Imprecise";
+	if (value === "not_applicable") return "Not applicable";
+	return "Not assessed";
+}
+
+export function formatEvidenceSourceExclusionReasonLabel(value?: EvidenceSourceExclusionReason) {
+	if (!value) return "No exclusion reason";
+	if (value === "not_relevant_to_claim") return "Not relevant to claim";
+	if (value === "wrong_population") return "Wrong population";
+	if (value === "wrong_exposure_or_intervention") return "Wrong exposure/intervention";
+	if (value === "wrong_outcome") return "Wrong outcome";
+	if (value === "superseded_by_better_evidence") return "Superseded by better evidence";
+	if (value === "low_quality") return "Low quality";
+	if (value === "high_risk_of_bias") return "High risk of bias";
+	if (value === "retracted") return "Retracted";
+	if (value === "pseudoscientific_or_fringe") return "Pseudoscientific or fringe";
+	if (value === "duplicate") return "Duplicate";
+	if (value === "background_only") return "Background only";
+	return "Other";
+}

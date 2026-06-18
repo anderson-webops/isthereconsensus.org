@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type {
+	EvidenceClaimType,
 	EvidenceLandscapeCertaintyLevel,
+	EvidenceLandscapeDirection,
 	EvidenceLandscapeExpertAgreement,
 	EvidenceLandscapeSupportLabel,
 	EvidenceLandscapeWorkflowStatus
@@ -13,6 +15,7 @@ import type {
 	ClaimRevision,
 	ClaimRevisionsResponse,
 	ClaimSource,
+	ClaimSourceEvidenceProfile,
 	ClaimUncertaintyDriver,
 	Topic,
 	TopicResponse
@@ -20,11 +23,30 @@ import type {
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import {
+	EVIDENCE_CLAIM_TYPES,
+	EVIDENCE_CONSISTENCY_LEVELS,
+	EVIDENCE_DIRECTNESS_LEVELS,
 	EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS,
+	EVIDENCE_LANDSCAPE_DIRECTIONS,
 	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
 	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
-	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
+	EVIDENCE_PRECISION_LEVELS,
+	EVIDENCE_RISK_OF_BIAS_LEVELS,
+	EVIDENCE_SOURCE_EXCLUSION_REASONS,
+	EVIDENCE_SOURCE_POSITION_BUCKETS,
+	EVIDENCE_STUDY_DESIGNS,
+	EVIDENCE_TIERS,
+	formatClaimTypeLabel,
+	formatEvidenceConsistencyLabel,
+	formatEvidenceDirectnessLabel,
+	formatEvidencePrecisionLabel,
+	formatEvidenceRiskOfBiasLabel,
+	formatEvidenceSourceExclusionReasonLabel,
+	formatEvidenceSourcePositionLabel,
+	formatEvidenceStudyDesignLabel,
+	formatEvidenceTierLabel,
 	formatLandscapeCertaintyLabel,
+	formatLandscapeDirectionLabel,
 	formatLandscapeExpertAgreementLabel,
 	formatLandscapeSupportLabel,
 	formatLandscapeWorkflowStatus
@@ -77,7 +99,10 @@ const form = reactive({
 	misconceptionTags: "",
 	editorSummary: "",
 	uncertaintySummary: "",
+	landscapeClaimType: "other" as EvidenceClaimType,
 	landscapeSupportLabel: "unresolved" as EvidenceLandscapeSupportLabel,
+	landscapeSupportScore: null as number | null | "",
+	landscapeEvidenceDirection: "not_applicable" as EvidenceLandscapeDirection,
 	landscapeEvidenceCertainty: "not_assessable" as EvidenceLandscapeCertaintyLevel,
 	landscapeExpertAgreement: "not_assessable" as EvidenceLandscapeExpertAgreement,
 	landscapePlainLanguageAnswer: "",
@@ -91,10 +116,18 @@ const form = reactive({
 	landscapeShowEvidenceLandscape: false,
 	landscapeShowCredibleMinorityView: false,
 	landscapeShowFalseBalanceWarning: false,
+	landscapeMedicalOrPublicHealthSensitive: false,
+	landscapeRequiresProfessionalContext: false,
 	landscapeWorkflowStatus: "not_started" as EvidenceLandscapeWorkflowStatus,
 	landscapeLastAssessedAt: "",
 	landscapeNextReviewDueAt: "",
 	landscapeEditorialNotes: "",
+	landscapeApplicabilityPopulation: "",
+	landscapeApplicabilityExposureOrIntervention: "",
+	landscapeApplicabilityComparator: "",
+	landscapeApplicabilityOutcomes: "",
+	landscapeApplicabilitySetting: "",
+	landscapeApplicabilityTimeframe: "",
 	searchDatabases: "",
 	searchCutoffAt: "",
 	inclusionRules: "",
@@ -125,6 +158,8 @@ const hasClaimLayerA = computed(
 const hasClaimLayerB = computed(() =>
 	sourceRows.value.some((source) => ["systematic_review", "meta_analysis"].includes(source.kind))
 );
+const landscapeEvidenceBaseSize = computed(() => claim.value?.evidenceLandscape?.evidenceBaseSize);
+const landscapeDistribution = computed(() => claim.value?.evidenceLandscape?.distribution);
 
 useHead({
 	title: "Claim editor - Is There Consensus?"
@@ -146,6 +181,162 @@ function formatDateInput(value?: string) {
 	return new Date(value).toISOString().slice(0, 10);
 }
 
+function defaultSourceEvidenceProfile(existing?: Partial<ClaimSourceEvidenceProfile>): ClaimSourceEvidenceProfile {
+	return {
+		schemaVersion: existing?.schemaVersion ?? 1,
+		positionRelativeToClaim: existing?.positionRelativeToClaim ?? "not_coded",
+		evidenceTier: existing?.evidenceTier ?? "not_coded",
+		studyDesign: existing?.studyDesign ?? "not_coded",
+		riskOfBias: existing?.riskOfBias ?? "not_assessed",
+		directness: existing?.directness ?? "not_assessed",
+		consistency: existing?.consistency ?? "not_assessed",
+		precision: existing?.precision ?? "not_assessed",
+		publicationIntegrity: {
+			retracted: existing?.publicationIntegrity?.retracted ?? false,
+			expressionOfConcern: existing?.publicationIntegrity?.expressionOfConcern ?? false,
+			correctionOrErratum: existing?.publicationIntegrity?.correctionOrErratum ?? false,
+			predatoryOrQuestionableVenue: existing?.publicationIntegrity?.predatoryOrQuestionableVenue ?? false,
+			citationStatusCheckedAt: formatDateInput(existing?.publicationIntegrity?.citationStatusCheckedAt),
+			integrityNotes: existing?.publicationIntegrity?.integrityNotes ?? ""
+		},
+		inclusion: {
+			includedInLandscape: existing?.inclusion?.includedInLandscape ?? false,
+			exclusionReason: existing?.inclusion?.exclusionReason ?? "",
+			exclusionNotes: existing?.inclusion?.exclusionNotes ?? ""
+		},
+		extraction: {
+			keyFinding: existing?.extraction?.keyFinding ?? "",
+			limitations: existing?.extraction?.limitations ?? "",
+			population: existing?.extraction?.population ?? "",
+			exposureOrIntervention: existing?.extraction?.exposureOrIntervention ?? "",
+			comparator: existing?.extraction?.comparator ?? "",
+			outcomes: [...(existing?.extraction?.outcomes ?? [])],
+			sampleSize: existing?.extraction?.sampleSize ?? "",
+			effectEstimate: {
+				metric: existing?.extraction?.effectEstimate?.metric ?? "",
+				value: existing?.extraction?.effectEstimate?.value ?? "",
+				confidenceInterval: existing?.extraction?.effectEstimate?.confidenceInterval ?? "",
+				pValue: existing?.extraction?.effectEstimate?.pValue ?? "",
+				notes: existing?.extraction?.effectEstimate?.notes ?? ""
+			}
+		},
+		reviewer: {
+			codedById: existing?.reviewer?.codedById,
+			codedAt: existing?.reviewer?.codedAt,
+			reviewedById: existing?.reviewer?.reviewedById,
+			reviewedAt: existing?.reviewer?.reviewedAt,
+			notes: existing?.reviewer?.notes ?? ""
+		}
+	};
+}
+
+function sourceEvidenceProfilePayload(source: ClaimSource) {
+	const profile = defaultSourceEvidenceProfile(source.evidenceProfile);
+	return {
+		positionRelativeToClaim: profile.positionRelativeToClaim,
+		evidenceTier: profile.evidenceTier,
+		studyDesign: profile.studyDesign,
+		riskOfBias: profile.riskOfBias,
+		directness: profile.directness,
+		consistency: profile.consistency,
+		precision: profile.precision,
+		publicationIntegrity: {
+			retracted: profile.publicationIntegrity.retracted,
+			expressionOfConcern: profile.publicationIntegrity.expressionOfConcern,
+			correctionOrErratum: profile.publicationIntegrity.correctionOrErratum,
+			predatoryOrQuestionableVenue: profile.publicationIntegrity.predatoryOrQuestionableVenue,
+			citationStatusCheckedAt: profile.publicationIntegrity.citationStatusCheckedAt || undefined,
+			integrityNotes: profile.publicationIntegrity.integrityNotes?.trim() || ""
+		},
+		inclusion: {
+			includedInLandscape: profile.inclusion.includedInLandscape,
+			exclusionReason: profile.inclusion.exclusionReason,
+			exclusionNotes: profile.inclusion.exclusionNotes?.trim() || ""
+		},
+		extraction: {
+			keyFinding: profile.extraction.keyFinding?.trim() || "",
+			limitations: profile.extraction.limitations?.trim() || "",
+			population: profile.extraction.population?.trim() || "",
+			exposureOrIntervention: profile.extraction.exposureOrIntervention?.trim() || "",
+			comparator: profile.extraction.comparator?.trim() || "",
+			outcomes: profile.extraction.outcomes.map((item) => item.trim()).filter(Boolean),
+			sampleSize: profile.extraction.sampleSize?.trim() || "",
+			effectEstimate: {
+				metric: profile.extraction.effectEstimate.metric?.trim() || "",
+				value: profile.extraction.effectEstimate.value?.trim() || "",
+				confidenceInterval: profile.extraction.effectEstimate.confidenceInterval?.trim() || "",
+				pValue: profile.extraction.effectEstimate.pValue?.trim() || "",
+				notes: profile.extraction.effectEstimate.notes?.trim() || ""
+			}
+		},
+		reviewer: {
+			notes: profile.reviewer?.notes?.trim() || ""
+		}
+	};
+}
+
+function sourceEvidenceProfileChanged(source: ClaimSource) {
+	const fallbackSource = {
+		evidenceProfile: defaultSourceEvidenceProfile()
+	} as ClaimSource;
+	const originalSource = source._id
+		? (claim.value?.sources?.find((record) => record._id === source._id) ?? fallbackSource)
+		: fallbackSource;
+	return (
+		JSON.stringify(sourceEvidenceProfilePayload(source)) !==
+		JSON.stringify(sourceEvidenceProfilePayload(originalSource))
+	);
+}
+
+function landscapePayload() {
+	const supportScore = typeof form.landscapeSupportScore === "number" ? form.landscapeSupportScore : null;
+	return {
+		claimType: form.landscapeClaimType,
+		supportLabel: form.landscapeSupportLabel,
+		supportScore,
+		evidenceDirection: form.landscapeEvidenceDirection,
+		evidenceCertainty: form.landscapeEvidenceCertainty,
+		expertAgreement: form.landscapeExpertAgreement,
+		plainLanguageAnswer: form.landscapePlainLanguageAnswer.trim(),
+		oneSentenceSummary: form.landscapeOneSentenceSummary.trim(),
+		confidenceStatement: form.landscapeConfidenceStatement.trim(),
+		caveatSummary: form.landscapeCaveatSummary.trim(),
+		disagreementSummary: form.landscapeDisagreementSummary.trim(),
+		credibleMinorityViewSummary: form.landscapeCredibleMinorityViewSummary.trim(),
+		fringeOrUnsupportedViewSummary: form.landscapeFringeOrUnsupportedViewSummary.trim(),
+		whatWouldChangeThis: form.landscapeWhatWouldChangeThis.trim(),
+		applicability: {
+			population: form.landscapeApplicabilityPopulation.trim(),
+			exposureOrIntervention: form.landscapeApplicabilityExposureOrIntervention.trim(),
+			comparator: form.landscapeApplicabilityComparator.trim(),
+			outcomes: parseLines(form.landscapeApplicabilityOutcomes),
+			setting: form.landscapeApplicabilitySetting.trim(),
+			timeframe: form.landscapeApplicabilityTimeframe.trim()
+		},
+		publicFlags: {
+			showEvidenceLandscape: form.landscapeShowEvidenceLandscape,
+			showCredibleMinorityView: form.landscapeShowCredibleMinorityView,
+			showFalseBalanceWarning: form.landscapeShowFalseBalanceWarning,
+			medicalOrPublicHealthSensitive: form.landscapeMedicalOrPublicHealthSensitive,
+			requiresProfessionalContext: form.landscapeRequiresProfessionalContext
+		},
+		workflow: {
+			lastAssessedAt: form.landscapeLastAssessedAt || undefined,
+			nextReviewDueAt: form.landscapeNextReviewDueAt || undefined,
+			editorialNotes: form.landscapeEditorialNotes.trim()
+		}
+	};
+}
+
+function readApiError(error: unknown, fallback: string) {
+	if (error && typeof error === "object" && "data" in error) {
+		const data = (error as { data?: { error?: string; validationErrors?: string[] } }).data;
+		if (data?.validationErrors?.length) return `${data.error || fallback} ${data.validationErrors.join(" ")}`;
+		if (data?.error) return data.error;
+	}
+	return fallback;
+}
+
 function hydrateClaim(record: Claim | null) {
 	claim.value = record;
 	form.topic = record?.topic?.slug || topics.value[0]?.slug || "";
@@ -165,7 +356,10 @@ function hydrateClaim(record: Claim | null) {
 	form.misconceptionTags = (record?.misconceptionTags || []).join("\n");
 	form.editorSummary = record?.editorSummary || "";
 	form.uncertaintySummary = record?.uncertaintySummary || "";
+	form.landscapeClaimType = record?.evidenceLandscape?.claimType || "other";
 	form.landscapeSupportLabel = record?.evidenceLandscape?.supportLabel || "unresolved";
+	form.landscapeSupportScore = record?.evidenceLandscape?.supportScore ?? null;
+	form.landscapeEvidenceDirection = record?.evidenceLandscape?.evidenceDirection || "not_applicable";
 	form.landscapeEvidenceCertainty = record?.evidenceLandscape?.evidenceCertainty || "not_assessable";
 	form.landscapeExpertAgreement = record?.evidenceLandscape?.expertAgreement || "not_assessable";
 	form.landscapePlainLanguageAnswer = record?.evidenceLandscape?.plainLanguageAnswer || "";
@@ -179,10 +373,20 @@ function hydrateClaim(record: Claim | null) {
 	form.landscapeShowEvidenceLandscape = !!record?.evidenceLandscape?.publicFlags?.showEvidenceLandscape;
 	form.landscapeShowCredibleMinorityView = !!record?.evidenceLandscape?.publicFlags?.showCredibleMinorityView;
 	form.landscapeShowFalseBalanceWarning = !!record?.evidenceLandscape?.publicFlags?.showFalseBalanceWarning;
+	form.landscapeMedicalOrPublicHealthSensitive =
+		!!record?.evidenceLandscape?.publicFlags?.medicalOrPublicHealthSensitive;
+	form.landscapeRequiresProfessionalContext = !!record?.evidenceLandscape?.publicFlags?.requiresProfessionalContext;
 	form.landscapeWorkflowStatus = record?.evidenceLandscape?.workflow?.status || "not_started";
 	form.landscapeLastAssessedAt = formatDateInput(record?.evidenceLandscape?.workflow?.lastAssessedAt);
 	form.landscapeNextReviewDueAt = formatDateInput(record?.evidenceLandscape?.workflow?.nextReviewDueAt);
 	form.landscapeEditorialNotes = record?.evidenceLandscape?.workflow?.editorialNotes || "";
+	form.landscapeApplicabilityPopulation = record?.evidenceLandscape?.applicability?.population || "";
+	form.landscapeApplicabilityExposureOrIntervention =
+		record?.evidenceLandscape?.applicability?.exposureOrIntervention || "";
+	form.landscapeApplicabilityComparator = record?.evidenceLandscape?.applicability?.comparator || "";
+	form.landscapeApplicabilityOutcomes = formatLines(record?.evidenceLandscape?.applicability?.outcomes);
+	form.landscapeApplicabilitySetting = record?.evidenceLandscape?.applicability?.setting || "";
+	form.landscapeApplicabilityTimeframe = record?.evidenceLandscape?.applicability?.timeframe || "";
 	form.searchDatabases = (record?.searchDatabases || []).join("\n");
 	form.searchCutoffAt = formatDateInput(record?.searchCutoffAt);
 	form.inclusionRules = (record?.inclusionRules || []).join("\n");
@@ -205,7 +409,8 @@ function hydrateClaim(record: Claim | null) {
 	sourceRows.value =
 		record?.sources?.map((source) => ({
 			...source,
-			citationCheckedAt: formatDateInput(source.citationCheckedAt)
+			citationCheckedAt: formatDateInput(source.citationCheckedAt),
+			evidenceProfile: defaultSourceEvidenceProfile(source.evidenceProfile)
 		})) || [];
 	evidenceSummaryRows.value =
 		record?.evidenceSummaries?.map((summary) => ({
@@ -277,30 +482,7 @@ function claimPayload() {
 		misconceptionTags: parseLines(form.misconceptionTags),
 		editorSummary: form.editorSummary.trim(),
 		uncertaintySummary: form.uncertaintySummary.trim(),
-		evidenceLandscape: {
-			supportLabel: form.landscapeSupportLabel,
-			evidenceCertainty: form.landscapeEvidenceCertainty,
-			expertAgreement: form.landscapeExpertAgreement,
-			plainLanguageAnswer: form.landscapePlainLanguageAnswer.trim(),
-			oneSentenceSummary: form.landscapeOneSentenceSummary.trim(),
-			confidenceStatement: form.landscapeConfidenceStatement.trim(),
-			caveatSummary: form.landscapeCaveatSummary.trim(),
-			disagreementSummary: form.landscapeDisagreementSummary.trim(),
-			credibleMinorityViewSummary: form.landscapeCredibleMinorityViewSummary.trim(),
-			fringeOrUnsupportedViewSummary: form.landscapeFringeOrUnsupportedViewSummary.trim(),
-			whatWouldChangeThis: form.landscapeWhatWouldChangeThis.trim(),
-			publicFlags: {
-				showEvidenceLandscape: form.landscapeShowEvidenceLandscape,
-				showCredibleMinorityView: form.landscapeShowCredibleMinorityView,
-				showFalseBalanceWarning: form.landscapeShowFalseBalanceWarning
-			},
-			workflow: {
-				status: form.landscapeWorkflowStatus,
-				lastAssessedAt: form.landscapeLastAssessedAt || undefined,
-				nextReviewDueAt: form.landscapeNextReviewDueAt || undefined,
-				editorialNotes: form.landscapeEditorialNotes.trim()
-			}
-		},
+		evidenceLandscape: landscapePayload(),
 		searchDatabases: parseLines(form.searchDatabases),
 		searchCutoffAt: form.searchCutoffAt || undefined,
 		inclusionRules: parseLines(form.inclusionRules),
@@ -387,12 +569,27 @@ async function syncSources(claimId: string) {
 				credentials: "include",
 				body
 			});
+			if (sourceEvidenceProfileChanged(source)) {
+				await $fetch(apiUrl(`/editorial/claim-sources/${source._id}/evidence-profile`), {
+					method: "PATCH",
+					credentials: "include",
+					body: sourceEvidenceProfilePayload(source)
+				});
+			}
 		} else if (body.title) {
-			await $fetch(apiUrl(`/editorial/claims/${claimId}/sources`), {
+			const response = await $fetch<{ source: ClaimSource }>(apiUrl(`/editorial/claims/${claimId}/sources`), {
 				method: "POST",
 				credentials: "include",
 				body
 			});
+			source._id = response.source._id;
+			if (source._id && sourceEvidenceProfileChanged(source)) {
+				await $fetch(apiUrl(`/editorial/claim-sources/${source._id}/evidence-profile`), {
+					method: "PATCH",
+					credentials: "include",
+					body: sourceEvidenceProfilePayload(source)
+				});
+			}
 		}
 	}
 }
@@ -400,7 +597,7 @@ async function syncSources(claimId: string) {
 async function saveClaim() {
 	if (!form.topic || !form.title.trim()) {
 		errorMessage.value = "Topic and title are required.";
-		return;
+		return false;
 	}
 
 	saving.value = true;
@@ -420,7 +617,7 @@ async function saveClaim() {
 			actionMessage.value = "Draft claim created.";
 			await router.replace(`/account/editorial/claims/${createdId}`);
 			await loadClaim();
-			return;
+			return true;
 		}
 
 		await $fetch<ClaimResponse>(apiUrl(`/editorial/claims/${routeId.value}`), {
@@ -431,9 +628,48 @@ async function saveClaim() {
 		await syncSources(routeId.value);
 		actionMessage.value = "Claim saved.";
 		await loadClaim();
+		return true;
 	} catch (error) {
 		console.error(error);
-		errorMessage.value = "Unable to save the claim.";
+		errorMessage.value = readApiError(error, "Unable to save the claim.");
+		return false;
+	} finally {
+		saving.value = false;
+	}
+}
+
+async function runLandscapeAction(action: "recompute" | "submit-review" | "approve" | "publish") {
+	if (isNew.value) {
+		errorMessage.value = "Save the draft before running evidence landscape workflow actions.";
+		return;
+	}
+
+	const saved = await saveClaim();
+	if (!saved) return;
+
+	const actionCopy = {
+		recompute: "Evidence distribution recomputed.",
+		"submit-review": "Evidence landscape submitted for review.",
+		approve: "Evidence landscape approved.",
+		publish: "Evidence landscape published."
+	} satisfies Record<"recompute" | "submit-review" | "approve" | "publish", string>;
+
+	saving.value = true;
+	errorMessage.value = "";
+	actionMessage.value = "";
+	try {
+		await $fetch(apiUrl(`/editorial/claims/${routeId.value}/evidence-landscape/${action}`), {
+			method: "POST",
+			credentials: "include",
+			body: {
+				notes: form.revisionNote.trim() || undefined
+			}
+		});
+		actionMessage.value = actionCopy[action];
+		await loadClaim();
+	} catch (error) {
+		console.error(error);
+		errorMessage.value = readApiError(error, "Unable to update the evidence landscape workflow.");
 	} finally {
 		saving.value = false;
 	}
@@ -504,7 +740,8 @@ function addSource() {
 		statusSources: [],
 		stance: "context",
 		note: "",
-		order: sourceRows.value.length
+		order: sourceRows.value.length,
+		evidenceProfile: defaultSourceEvidenceProfile()
 	});
 }
 
@@ -536,6 +773,13 @@ function updateEvidenceSummaryLimitations(index: number, event: Event) {
 function updateSourceStatusSources(index: number, event: Event) {
 	const target = event.target as HTMLTextAreaElement | null;
 	sourceRows.value[index].statusSources = parseLines(target?.value || "");
+}
+
+function updateSourceOutcomes(index: number, event: Event) {
+	const target = event.target as HTMLTextAreaElement | null;
+	const profile = defaultSourceEvidenceProfile(sourceRows.value[index].evidenceProfile);
+	profile.extraction.outcomes = parseLines(target?.value || "");
+	sourceRows.value[index].evidenceProfile = profile;
 }
 
 function addInstitutionalAnchor() {
@@ -746,12 +990,55 @@ watch(
 									publicly only when the workflow is published and the public flag is enabled.
 								</p>
 							</div>
-							<p class="status-pill">
-								{{ form.landscapeShowEvidenceLandscape ? "Public flag on" : "Private draft" }}
-							</p>
+							<div class="workflow-actions">
+								<p class="status-pill">
+									{{ formatLandscapeWorkflowStatus(form.landscapeWorkflowStatus) }}
+								</p>
+								<button
+									class="button button--ghost"
+									type="button"
+									:disabled="saving || isNew"
+									@click="runLandscapeAction('recompute')"
+								>
+									Recompute
+								</button>
+								<button
+									class="button button--ghost"
+									type="button"
+									:disabled="saving || isNew"
+									@click="runLandscapeAction('submit-review')"
+								>
+									Submit review
+								</button>
+								<button
+									class="button button--ghost"
+									type="button"
+									:disabled="saving || isNew"
+									@click="runLandscapeAction('approve')"
+								>
+									Approve
+								</button>
+								<button
+									class="button button--primary"
+									type="button"
+									:disabled="saving || isNew"
+									@click="runLandscapeAction('publish')"
+								>
+									Publish landscape
+								</button>
+							</div>
 						</div>
 
 						<div class="structured-card__grid">
+							<label class="field">
+								<span class="field-label">Claim type</span>
+								<select v-model="form.landscapeClaimType">
+									<option v-for="value in EVIDENCE_CLAIM_TYPES" :key="value" :value="value">
+										{{ formatClaimTypeLabel(value) }}
+									</option>
+								</select>
+							</label>
+
 							<label class="field">
 								<span class="field-label">Support label</span>
 								<select v-model="form.landscapeSupportLabel">
@@ -761,6 +1048,26 @@ watch(
 										:value="value"
 									>
 										{{ formatLandscapeSupportLabel(value) }}
+									</option>
+								</select>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Support score</span>
+								<input
+									v-model.number="form.landscapeSupportScore"
+									type="number"
+									min="0"
+									max="100"
+									placeholder="Optional"
+								/>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Evidence direction</span>
+								<select v-model="form.landscapeEvidenceDirection">
+									<option v-for="value in EVIDENCE_LANDSCAPE_DIRECTIONS" :key="value" :value="value">
+										{{ formatLandscapeDirectionLabel(value) }}
 									</option>
 								</select>
 							</label>
@@ -787,19 +1094,6 @@ watch(
 										:value="value"
 									>
 										{{ formatLandscapeExpertAgreementLabel(value) }}
-									</option>
-								</select>
-							</label>
-
-							<label class="field">
-								<span class="field-label">Workflow status</span>
-								<select v-model="form.landscapeWorkflowStatus">
-									<option
-										v-for="value in EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES"
-										:key="value"
-										:value="value"
-									>
-										{{ formatLandscapeWorkflowStatus(value) }}
 									</option>
 								</select>
 							</label>
@@ -886,6 +1180,40 @@ watch(
 								<input v-model="form.landscapeNextReviewDueAt" type="date" />
 							</label>
 
+							<label class="field field--full">
+								<span class="field-label">Population</span>
+								<input
+									v-model="form.landscapeApplicabilityPopulation"
+									type="text"
+									placeholder="Who or what this assessment applies to."
+								/>
+							</label>
+
+							<label class="field">
+								<span class="field-label">Exposure / intervention</span>
+								<input v-model="form.landscapeApplicabilityExposureOrIntervention" type="text" />
+							</label>
+
+							<label class="field">
+								<span class="field-label">Comparator</span>
+								<input v-model="form.landscapeApplicabilityComparator" type="text" />
+							</label>
+
+							<label class="field field--full">
+								<span class="field-label">Outcomes (one per line)</span>
+								<textarea v-model="form.landscapeApplicabilityOutcomes" rows="3" />
+							</label>
+
+							<label class="field">
+								<span class="field-label">Setting</span>
+								<input v-model="form.landscapeApplicabilitySetting" type="text" />
+							</label>
+
+							<label class="field">
+								<span class="field-label">Timeframe</span>
+								<input v-model="form.landscapeApplicabilityTimeframe" type="text" />
+							</label>
+
 							<label class="field field--checkbox">
 								<input v-model="form.landscapeShowEvidenceLandscape" type="checkbox" />
 								<span class="field-label">Show landscape publicly</span>
@@ -901,6 +1229,16 @@ watch(
 								<span class="field-label">Show false-balance warning</span>
 							</label>
 
+							<label class="field field--checkbox">
+								<input v-model="form.landscapeMedicalOrPublicHealthSensitive" type="checkbox" />
+								<span class="field-label">Medical/public-health sensitive</span>
+							</label>
+
+							<label class="field field--checkbox">
+								<input v-model="form.landscapeRequiresProfessionalContext" type="checkbox" />
+								<span class="field-label">Professional context reviewed</span>
+							</label>
+
 							<label class="field field--full">
 								<span class="field-label">Editorial landscape notes</span>
 								<textarea
@@ -909,6 +1247,34 @@ watch(
 									placeholder="Private reviewer notes. These are not exposed publicly."
 								/>
 							</label>
+						</div>
+
+						<div class="landscape-snapshot">
+							<article>
+								<span class="field-label">Evidence base</span>
+								<strong>{{ landscapeEvidenceBaseSize?.includedSources ?? 0 }} included</strong>
+								<p>
+									{{ landscapeEvidenceBaseSize?.totalSources ?? 0 }} total,
+									{{ landscapeEvidenceBaseSize?.excludedSources ?? 0 }} excluded
+								</p>
+							</article>
+							<article>
+								<span class="field-label">Direction counts</span>
+								<strong>{{ landscapeDistribution?.supportsClaim?.count ?? 0 }} support</strong>
+								<p>
+									{{ landscapeDistribution?.supportsWithCaveats?.count ?? 0 }} caveated,
+									{{ landscapeDistribution?.opposesClaim?.count ?? 0 }} opposing,
+									{{ landscapeDistribution?.inconclusiveOrMixed?.count ?? 0 }} mixed
+								</p>
+							</article>
+							<article>
+								<span class="field-label">Integrity exclusions</span>
+								<strong>{{ landscapeDistribution?.excludedRetracted?.count ?? 0 }} retracted</strong>
+								<p>
+									{{ landscapeDistribution?.excludedLowQuality?.count ?? 0 }} low quality,
+									{{ landscapeDistribution?.excludedFringe?.count ?? 0 }} fringe
+								</p>
+							</article>
 						</div>
 
 						<p class="helper-note">
@@ -1403,6 +1769,268 @@ watch(
 								</label>
 							</div>
 
+							<details v-if="source.evidenceProfile" class="source-evidence-profile">
+								<summary>
+									<span>Evidence coding</span>
+									<strong>{{
+										formatEvidenceSourcePositionLabel(
+											source.evidenceProfile.positionRelativeToClaim
+										)
+									}}</strong>
+								</summary>
+								<div class="source-evidence-profile__grid">
+									<label class="field">
+										<span class="field-label">Position relative to claim</span>
+										<select v-model="source.evidenceProfile.positionRelativeToClaim">
+											<option
+												v-for="value in EVIDENCE_SOURCE_POSITION_BUCKETS"
+												:key="value"
+												:value="value"
+											>
+												{{ formatEvidenceSourcePositionLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Evidence tier</span>
+										<select v-model="source.evidenceProfile.evidenceTier">
+											<option v-for="value in EVIDENCE_TIERS" :key="value" :value="value">
+												{{ formatEvidenceTierLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Study design</span>
+										<select v-model="source.evidenceProfile.studyDesign">
+											<option v-for="value in EVIDENCE_STUDY_DESIGNS" :key="value" :value="value">
+												{{ formatEvidenceStudyDesignLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Risk of bias</span>
+										<select v-model="source.evidenceProfile.riskOfBias">
+											<option
+												v-for="value in EVIDENCE_RISK_OF_BIAS_LEVELS"
+												:key="value"
+												:value="value"
+											>
+												{{ formatEvidenceRiskOfBiasLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Directness</span>
+										<select v-model="source.evidenceProfile.directness">
+											<option
+												v-for="value in EVIDENCE_DIRECTNESS_LEVELS"
+												:key="value"
+												:value="value"
+											>
+												{{ formatEvidenceDirectnessLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Consistency</span>
+										<select v-model="source.evidenceProfile.consistency">
+											<option
+												v-for="value in EVIDENCE_CONSISTENCY_LEVELS"
+												:key="value"
+												:value="value"
+											>
+												{{ formatEvidenceConsistencyLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Precision</span>
+										<select v-model="source.evidenceProfile.precision">
+											<option
+												v-for="value in EVIDENCE_PRECISION_LEVELS"
+												:key="value"
+												:value="value"
+											>
+												{{ formatEvidencePrecisionLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Exclusion reason</span>
+										<select v-model="source.evidenceProfile.inclusion.exclusionReason">
+											<option
+												v-for="value in EVIDENCE_SOURCE_EXCLUSION_REASONS"
+												:key="value || 'none'"
+												:value="value"
+											>
+												{{ formatEvidenceSourceExclusionReasonLabel(value) }}
+											</option>
+										</select>
+									</label>
+
+									<label class="field field--checkbox">
+										<input
+											v-model="source.evidenceProfile.inclusion.includedInLandscape"
+											type="checkbox"
+										/>
+										<span class="field-label">Count in landscape</span>
+									</label>
+
+									<label class="field field--checkbox">
+										<input
+											v-model="source.evidenceProfile.publicationIntegrity.retracted"
+											type="checkbox"
+										/>
+										<span class="field-label">Retracted / invalid</span>
+									</label>
+
+									<label class="field field--checkbox">
+										<input
+											v-model="source.evidenceProfile.publicationIntegrity.expressionOfConcern"
+											type="checkbox"
+										/>
+										<span class="field-label">Expression of concern</span>
+									</label>
+
+									<label class="field field--checkbox">
+										<input
+											v-model="source.evidenceProfile.publicationIntegrity.correctionOrErratum"
+											type="checkbox"
+										/>
+										<span class="field-label">Correction / erratum</span>
+									</label>
+
+									<label class="field field--checkbox">
+										<input
+											v-model="
+												source.evidenceProfile.publicationIntegrity.predatoryOrQuestionableVenue
+											"
+											type="checkbox"
+										/>
+										<span class="field-label">Questionable venue</span>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Integrity checked</span>
+										<input
+											v-model="
+												source.evidenceProfile.publicationIntegrity.citationStatusCheckedAt
+											"
+											type="date"
+										/>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Key finding</span>
+										<textarea v-model="source.evidenceProfile.extraction.keyFinding" rows="3" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Limitations</span>
+										<textarea v-model="source.evidenceProfile.extraction.limitations" rows="3" />
+									</label>
+
+									<label class="field">
+										<span class="field-label">Population</span>
+										<input v-model="source.evidenceProfile.extraction.population" type="text" />
+									</label>
+
+									<label class="field">
+										<span class="field-label">Exposure / intervention</span>
+										<input
+											v-model="source.evidenceProfile.extraction.exposureOrIntervention"
+											type="text"
+										/>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Comparator</span>
+										<input v-model="source.evidenceProfile.extraction.comparator" type="text" />
+									</label>
+
+									<label class="field">
+										<span class="field-label">Sample size</span>
+										<input v-model="source.evidenceProfile.extraction.sampleSize" type="text" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Outcomes (one per line)</span>
+										<textarea
+											:value="formatLines(source.evidenceProfile.extraction.outcomes)"
+											rows="3"
+											@input="updateSourceOutcomes(index, $event)"
+										/>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Effect metric</span>
+										<input
+											v-model="source.evidenceProfile.extraction.effectEstimate.metric"
+											type="text"
+										/>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Effect value</span>
+										<input
+											v-model="source.evidenceProfile.extraction.effectEstimate.value"
+											type="text"
+										/>
+									</label>
+
+									<label class="field">
+										<span class="field-label">Confidence interval</span>
+										<input
+											v-model="
+												source.evidenceProfile.extraction.effectEstimate.confidenceInterval
+											"
+											type="text"
+										/>
+									</label>
+
+									<label class="field">
+										<span class="field-label">P value</span>
+										<input
+											v-model="source.evidenceProfile.extraction.effectEstimate.pValue"
+											type="text"
+										/>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Effect notes</span>
+										<textarea
+											v-model="source.evidenceProfile.extraction.effectEstimate.notes"
+											rows="2"
+										/>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Exclusion notes</span>
+										<textarea v-model="source.evidenceProfile.inclusion.exclusionNotes" rows="2" />
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Integrity notes</span>
+										<textarea
+											v-model="source.evidenceProfile.publicationIntegrity.integrityNotes"
+											rows="2"
+										/>
+									</label>
+
+									<label class="field field--full">
+										<span class="field-label">Reviewer notes</span>
+										<textarea v-model="source.evidenceProfile.reviewer.notes" rows="2" />
+									</label>
+								</div>
+							</details>
+
 							<button
 								class="button button--ghost button--danger"
 								type="button"
@@ -1532,10 +2160,16 @@ watch(
 }
 
 .editor-header__actions,
-.editor-actions {
+.editor-actions,
+.workflow-actions {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
+}
+
+.workflow-actions {
+	align-items: center;
+	justify-content: flex-end;
 }
 
 .editor-grid {
@@ -1656,6 +2290,30 @@ watch(
 	line-height: 1.65;
 }
 
+.landscape-snapshot {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.landscape-snapshot article {
+	padding: 14px;
+	border-radius: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-surface) 84%, var(--consensus-field-surface) 16%);
+}
+
+.landscape-snapshot strong,
+.landscape-snapshot p {
+	display: block;
+	margin: 6px 0 0;
+}
+
+.landscape-snapshot p {
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
 .helper-card {
 	display: grid;
 	gap: 8px;
@@ -1707,6 +2365,37 @@ watch(
 	padding: 18px;
 }
 
+.source-evidence-profile {
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 18px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 88%, var(--consensus-surface) 12%);
+}
+
+.source-evidence-profile summary {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	cursor: pointer;
+	padding: 14px 16px;
+	font-weight: 700;
+}
+
+.source-evidence-profile summary::marker {
+	color: var(--consensus-muted);
+}
+
+.source-evidence-profile summary strong {
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+}
+
+.source-evidence-profile__grid {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	padding: 0 16px 16px;
+}
+
 .revision-list {
 	display: grid;
 	gap: 12px;
@@ -1755,7 +2444,9 @@ watch(
 @media (max-width: 720px) {
 	.form-grid,
 	.source-editor__grid,
-	.structured-card__grid {
+	.structured-card__grid,
+	.source-evidence-profile__grid,
+	.landscape-snapshot {
 		grid-template-columns: 1fr;
 	}
 }

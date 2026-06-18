@@ -119,7 +119,7 @@ export interface ClaimSourceEvidenceProfile {
 		sampleSize?: string;
 		effectEstimate: ClaimSourceEffectEstimate;
 	};
-	reviewer?: {
+	reviewer: {
 		codedById?: string;
 		codedAt?: string;
 		reviewedById?: string;
