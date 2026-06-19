@@ -747,6 +747,17 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Useful when showing how agreement is measured among domain experts.",
 				order: 3
+			},
+			{
+				kind: "context",
+				title: "The human fingerprint in global warming",
+				publisher: "Skeptical Science",
+				year: 2023,
+				url: "https://skepticalscience.com/its-not-us.htm",
+				stance: "supports",
+				note:
+					"Contextual rebuttal resource for common alternative-cause claims; use after IPCC, NASA, and consensus literature rather than as the assessment anchor.",
+				order: 4
 			}
 		]
 	},

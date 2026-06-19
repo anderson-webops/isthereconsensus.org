@@ -68,4 +68,18 @@ describe("default claim seed quality", () => {
 			assert.ok(claim.sources.every(primarySourceLink), `${slug} must expose only linked source rows`);
 		}
 	});
+
+	it("keeps Skeptical Science contextual on the flagship climate claim", () => {
+		const claim = defaultClaims.find(
+			entry => entry.slug === "is-recent-global-warming-mainly-caused-by-human-activity"
+		);
+		assert.ok(claim, "Missing flagship climate claim seed");
+
+		const skepticalScienceSource = claim.sources.find(source => source.publisher === "Skeptical Science");
+		assert.ok(skepticalScienceSource, "Climate claim should include Skeptical Science as rebuttal context");
+		assert.equal(skepticalScienceSource.kind, "context");
+		assert.equal(skepticalScienceSource.isAnchor, false);
+		assert.match(skepticalScienceSource.note, /Contextual rebuttal resource/);
+		assert.match(skepticalScienceSource.note, /rather than as the assessment anchor/);
+	});
 });

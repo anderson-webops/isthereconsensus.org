@@ -279,7 +279,14 @@ export const sourceStandards: SourceStandard[] = [
 				name: "National Academies",
 				note: "Consensus studies on climate, energy, and environmental science questions."
 			},
-			{ name: "Regional assessment programs", note: "Useful for scoped impacts when their methods are explicit." }
+			{
+				name: "Regional assessment programs",
+				note: "Useful for scoped impacts when their methods are explicit."
+			},
+			{
+				name: "Skeptical Science",
+				note: "Useful as a supporting rebuttal library for common climate-misinformation claims after the page is anchored in assessments and datasets."
+			}
 		],
 		sourceHierarchy: [
 			{
@@ -297,12 +304,16 @@ export const sourceStandards: SourceStandard[] = [
 			{
 				title: "Tier 4 - Event and local studies",
 				body: "Useful for context and local detail, but not the foundation of global conclusions."
+			},
+			{
+				title: "Tier 5 - Rebuttal explainers and myth libraries",
+				body: "Use resources such as Skeptical Science to explain recurring objections and denial techniques; do not let rebuttal pages outrank assessments, datasets, or synthesis papers."
 			}
 		],
 		anchorSourceRule:
 			"Anchor sources should be official assessments or science assessments that summarize the field and expose their uncertainty language.",
 		supportContextRule:
-			"Single event studies, advocacy explainers, short trend windows, or localized analyses should stay contextual unless a formal assessment elevates them.",
+			"Skeptical Science rebuttals, single event studies, advocacy explainers, short trend windows, or localized analyses should stay contextual unless a formal assessment elevates them.",
 		avoidOverweighting: [
 			"Single-year anomalies",
 			"Single-region impacts extrapolated globally",

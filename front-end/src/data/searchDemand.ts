@@ -89,7 +89,7 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is the flagship climate consensus claim and remains a high-leverage first click for policy, energy, and public-understanding questions.",
-		anchors: ["IPCC", "NASA", "NOAA"],
+		anchors: ["IPCC", "NASA", "NOAA", "Skeptical Science rebuttal context"],
 		querySignals: [
 			"is climate change caused by humans",
 			"human activity global warming",
@@ -102,7 +102,7 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"It is one of the oldest alternative-cause narratives and converts naturally into a yes-no canonical page with clear attribution evidence.",
-		anchors: ["IPCC", "NASA"],
+		anchors: ["IPCC", "NASA", "Skeptical Science rebuttal context"],
 		querySignals: ["sun causing global warming", "solar activity climate change", "is the sun behind warming"]
 	},
 	{
@@ -111,7 +111,7 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is a classic gotcha claim with very stable wording and a straightforward quantitative answer from authoritative sources.",
-		anchors: ["USGS", "NASA", "climate assessment summaries"],
+		anchors: ["USGS", "NASA", "climate assessment summaries", "Skeptical Science rebuttal context"],
 		querySignals: [
 			"volcanoes emit more co2 than humans",
 			"volcanoes vs humans carbon dioxide",
@@ -124,7 +124,7 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is a manufactured-uncertainty claim that stays evergreen even as specific climate news cycles change.",
-		anchors: ["IPCC", "NASA", "consensus literature summaries"],
+		anchors: ["IPCC", "NASA", "consensus literature summaries", "Skeptical Science rebuttal context"],
 		querySignals: [
 			"no climate consensus",
 			"scientists disagree on climate change",
@@ -137,7 +137,7 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "evergreen explainer",
 		whyItMatters:
 			"Public confusion is often about attribution versus local impacts. This is better handled as a reusable explainer than as a single narrow claim.",
-		anchors: ["IPCC", "public opinion research"],
+		anchors: ["IPCC", "Skeptical Science rebuttal context", "public opinion research"],
 		querySignals: ["what is settled in climate science", "climate uncertainty meaning", "why models still matter"]
 	},
 	{
