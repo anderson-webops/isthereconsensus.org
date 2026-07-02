@@ -848,6 +848,102 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does the HPV vaccine prevent cervical cancer?",
+		slug: "does-the-hpv-vaccine-prevent-cervical-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. HPV vaccination prevents infection with the HPV types that cause most cervical cancers, sharply reduces cervical precancers, and population follow-up now shows lower invasive cervical cancer risk, especially when vaccination happens before exposure.",
+		stableCore: [
+			"HPV types 16 and 18 cause about 70% of cervical cancers worldwide, and current vaccines target these and additional high-risk types.",
+			"CDC states that HPV vaccination has the potential to prevent more than 90% of cancers caused by HPV and that U.S. vaccine-type infections have dropped 88% among teen girls and 81% among young adult women.",
+			"Cochrane found high-certainty evidence that HPV vaccines reduce HPV16/18-associated cervical precancer in young women who were not already infected.",
+			"A Swedish registry study of nearly 1.7 million girls and women found substantially lower invasive cervical cancer risk after quadrivalent HPV vaccination, with the largest reduction among those vaccinated before age 17."
+		],
+		openQuestions: [
+			"How can programs raise vaccination coverage while keeping screening access strong?",
+			"How should catch-up vaccination be explained when benefit depends on previous HPV exposure?",
+			"How should cervical screening intervals evolve as vaccinated cohorts age into screening programs?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled population studies showing no reduction in persistent high-risk HPV infection, cervical precancer, or invasive cervical cancer after vaccination.",
+			"A major CDC, WHO, NCI, or Cochrane reassessment finding that vaccine benefits no longer outweigh harms in the routine target population."
+		],
+		misconceptions: [
+			"HPV vaccination is sometimes misread as a treatment for existing HPV infection; it is primarily preventive.",
+			"Some people hear 'prevents cervical cancer' as meaning screening is no longer needed, even though current programs still rely on screening because vaccines do not cover every risk or every prior exposure.",
+			"Adult catch-up benefit is sometimes presented as identical to early adolescent vaccination, even though protection is strongest before exposure."
+		],
+		editorSummary:
+			"This page should make the cancer-prevention chain visible: vaccine-type infection falls first, cervical precancer falls next, and invasive cervical cancer reduction is now visible in long follow-up.",
+		uncertaintySummary:
+			"The prevention claim is strong. Remaining uncertainty is mostly about implementation, coverage, catch-up benefit after possible exposure, and how screening policy should adapt as vaccinated cohorts age.",
+		searchCutoffAt: "2026-07-02T22:11:34.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:11:34.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:11:34.000Z",
+				kind: "publication",
+				summary:
+					"Initial HPV vaccine and cervical cancer prevention claim page published from CDC, Cochrane, NCI, and Swedish registry evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "HPV Vaccination",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/hpv/vaccines/index.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health anchor for the more-than-90% preventable HPV-cancer framing, durability, and observed U.S. drops in vaccine-type HPV infections and cervical precancers.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "HPV vaccination to prevent cancer and pre-cancerous changes of the cervix",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2018,
+				url:
+					"https://www.cochrane.org/evidence/CD009069_hpv-vaccination-prevent-cancer-and-pre-cancerous-changes-cervix",
+				doi: "10.1002/14651858.CD009069.pub3",
+				pmid: "29740819",
+				stance: "supports",
+				note:
+					"Decision-weight trial synthesis finding high-certainty protection against cervical precancer in adolescent girls and young women, strongest before HPV exposure.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "HPV Vaccination and the Risk of Invasive Cervical Cancer",
+				publisher: "New England Journal of Medicine",
+				year: 2020,
+				url: "https://doi.org/10.1056/NEJMoa1917338",
+				doi: "10.1056/NEJMoa1917338",
+				pmid: "32997908",
+				stance: "supports",
+				note:
+					"Nationwide Swedish registry cohort linking quadrivalent HPV vaccination to lower invasive cervical cancer risk at the population level.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Large Study Confirms that HPV Vaccine Prevents Cervical Cancer",
+				publisher: "National Cancer Institute",
+				year: 2020,
+				url:
+					"https://www.cancer.gov/news-events/cancer-currents-blog/2020/hpv-vaccine-prevents-cervical-cancer-sweden-study",
+				stance: "supports",
+				note:
+					"NCI context source explaining why the Swedish invasive-cancer result completed the infection-to-precancer-to-cancer prevention chain.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do mRNA COVID-19 vaccines change your DNA?",
 		slug: "do-mrna-covid-19-vaccines-change-your-dna",
 		status: "published",
@@ -1489,6 +1585,116 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does sunscreen use prevent skin cancer?",
+		slug: "does-sunscreen-use-prevent-skin-cancer",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"Yes, when used correctly as part of sun protection. Sunscreen reduces UV exposure and is recommended by major public-health and dermatology bodies to lower skin-cancer risk. Direct trial evidence is strongest for squamous cell carcinoma and suggests melanoma prevention; it is weaker or less clear for basal cell carcinoma, and sunscreen should be combined with shade and protective clothing.",
+		stableCore: [
+			"CDC recommends broad-spectrum sunscreen with SPF 15 or higher before going outside and says sunscreen works best when combined with other sun-protection options.",
+			"The American Academy of Dermatology recommends broad-spectrum, water-resistant SPF 30 or higher sunscreen and notes that SPF 30 blocks about 97% of UVB rays, while no sunscreen blocks 100%.",
+			"The Nambour randomized trial found fewer squamous-cell carcinoma tumors with daily sunscreen use, but did not show a clear basal-cell carcinoma prevention effect.",
+			"Longer follow-up of the Nambour trial found fewer melanomas in the daily-sunscreen group, with a stronger signal for invasive melanoma, but the melanoma endpoint was based on relatively few cases."
+		],
+		openQuestions: [
+			"How much of the skin-cancer prevention benefit comes from sunscreen alone versus broader sun-protection behavior?",
+			"How should guidance account for skin tone, UV index, outdoor occupation, geography, and vitamin D concerns without undermining UV protection?",
+			"How do newer sunscreen formulations, application habits, and reapplication behavior change real-world protection?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-conducted trials or strong natural experiments showing no reduction in UV damage, squamous-cell carcinoma, melanoma, or relevant precursors with correct sunscreen use.",
+			"A major dermatology, cancer, CDC, or FDA reassessment concluding that harms of properly used sunscreen outweigh sun-protection benefits in routine populations.",
+			"Evidence that sunscreen use reliably causes enough risk compensation to erase its UV-protection benefit under real-world guidance."
+		],
+		misconceptions: [
+			"Sunscreen is sometimes treated as permission for unlimited sun exposure; it is only one part of protection.",
+			"High SPF is often misunderstood as lasting longer, even though reapplication is still needed.",
+			"Evidence gaps for basal-cell carcinoma are sometimes used to dismiss the broader UV-protection and squamous-cell carcinoma evidence."
+		],
+		editorSummary:
+			"This page should answer the practical public question while keeping the evidence gradient visible: sunscreen is recommended and biologically sensible for UV protection, but the direct cancer-outcome evidence is not equally strong for every skin-cancer type.",
+		uncertaintySummary:
+			"The public-health recommendation is broad and stable, but the direct randomized evidence differs by outcome. Confidence is strongest for reducing UV exposure and squamous-cell carcinoma burden, suggestive for melanoma, and less clear for basal-cell carcinoma.",
+		searchCutoffAt: "2026-07-02T22:11:34.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:11:34.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:11:34.000Z",
+				kind: "publication",
+				summary:
+					"Initial sunscreen and skin-cancer prevention claim page published from CDC, AAD, Cochrane, and Nambour randomized-trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Sun Safety Facts",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/skin-cancer/sun-safety/index.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health guidance for broad-spectrum SPF 15 or higher sunscreen, reapplication, and combining sunscreen with other sun-protection measures.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Sunscreen FAQs",
+				publisher: "American Academy of Dermatology",
+				year: 2026,
+				url: "https://www.aad.org/media/stats-sunscreen",
+				stance: "supports",
+				note:
+					"Dermatology guidance for broad-spectrum, water-resistant SPF 30 or higher sunscreen, reapplication, and the need for shade and clothing because sunscreen alone cannot fully protect skin.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Sun protection (including sunscreens) to prevent basal cell carcinoma and cutaneous squamous cell carcinoma of the skin",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2016,
+				url:
+					"https://www.cochrane.org/evidence/CD011161_sun-protection-including-sunscreens-prevent-basal-cell-carcinoma-and-cutaneous-squamous-cell",
+				doi: "10.1002/14651858.CD011161.pub2",
+				pmid: "27501759",
+				stance: "context",
+				note:
+					"Key caution source: found only one suitable RCT through May 2016 and rated evidence low for BCC/cSCC incidence, so the page should not overstate direct trial certainty for every skin-cancer type.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Daily sunscreen application and betacarotene supplementation in prevention of basal-cell and squamous-cell carcinomas of the skin",
+				publisher: "The Lancet",
+				year: 1999,
+				url: "https://pubmed.ncbi.nlm.nih.gov/10475183/",
+				doi: "10.1016/S0140-6736(98)12168-2",
+				pmid: "10475183",
+				stance: "supports",
+				note:
+					"Nambour randomized trial source for daily sunscreen reducing squamous-cell carcinoma tumor counts while not clearly reducing basal-cell carcinoma incidence.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Reduced melanoma after regular sunscreen use: randomized trial follow-up",
+				publisher: "Journal of Clinical Oncology",
+				year: 2011,
+				url: "https://pubmed.ncbi.nlm.nih.gov/21135266/",
+				doi: "10.1200/JCO.2010.28.7078",
+				pmid: "21135266",
+				stance: "supports",
+				note:
+					"Nambour follow-up source reporting fewer primary melanomas and fewer invasive melanomas after assignment to daily sunscreen, with small event counts that require cautious wording.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
@@ -1556,6 +1762,100 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note:
 					"Contextual rebuttal resource for common alternative-cause claims; use after IPCC, NASA, and consensus literature rather than as the assessment anchor.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is global sea level rising and accelerating due to human-caused climate change?",
+		slug: "is-global-sea-level-rising-and-accelerating-due-to-human-caused-climate-change",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. Tide gauges, satellites, and IPCC assessments show that global mean sea level has risen, the rate has accelerated, and human influence has been the main driver of the increase since at least 1971. Local sea level can differ because land motion and ocean circulation also matter.",
+		stableCore: [
+			"IPCC AR6 reports that global mean sea level rose 0.20 meters from 1901 to 2018 and that the average rate increased from 1.3 mm/year in 1901-1971 to 3.7 mm/year in 2006-2018.",
+			"IPCC states that human influence was very likely the main driver of global mean sea-level rise since at least 1971.",
+			"NASA's satellite-era synthesis reports 11.1 cm of global mean sea-level rise from 1993 to 2023 and a rate that increased from about 2.1 mm/year in 1993 to about 4.5 mm/year by 2024.",
+			"Local relative sea level can rise faster or slower than the global mean because land subsidence, uplift, winds, currents, and regional ocean dynamics change what coastal communities experience."
+		],
+		openQuestions: [
+			"How much will regional relative sea level differ from the global mean in places affected by subsidence, uplift, currents, or land-water management?",
+			"How quickly will ice-sheet dynamics and low-likelihood high-impact outcomes unfold under high emissions?",
+			"Which adaptation investments reduce flooding risk most effectively for specific coastal communities?"
+		],
+		whatWouldChangeMinds: [
+			"A sustained, independently confirmed reversal of global mean sea-level rise across tide-gauge and satellite records.",
+			"A major IPCC reassessment finding that human-caused warming is not the main driver of modern global mean sea-level rise.",
+			"An alternative physical explanation that matches thermal expansion, land-ice loss, satellite altimetry, tide gauges, and regional patterns better than the current assessment."
+		],
+		misconceptions: [
+			"A local tide gauge that rises slowly, or land that is uplifting, is sometimes used to dismiss the global mean trend.",
+			"People often confuse year-to-year variability with the multi-decade acceleration signal.",
+			"Sea-level rise is sometimes framed as only a future issue, even though the observed rise is already measured in the modern record."
+		],
+		editorSummary:
+			"This page should separate the stable global answer from local planning details: the global rise and human contribution are assessed strongly, while local flood risk still needs local land-motion and exposure data.",
+		uncertaintySummary:
+			"The observed global direction and human contribution are high-certainty. The largest remaining uncertainty is not whether sea level is rising, but how fast ice sheets, emissions pathways, and local land motion will shape regional risk.",
+		searchCutoffAt: "2026-07-02T22:11:34.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:11:34.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:11:34.000Z",
+				kind: "publication",
+				summary:
+					"Initial sea-level-rise claim page published from IPCC AR6, NASA satellite-altimetry, and Communications Earth & Environment sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Summary for Policymakers, AR6 Synthesis Report",
+				publisher: "IPCC",
+				year: 2023,
+				url: "https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf",
+				stance: "supports",
+				note:
+					"Assessment anchor for 1901-2018 global mean sea-level rise, acceleration across assessed periods, and attribution of the increase since at least 1971 to human influence.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "The Rate of Global Sea Level Rise Doubled During the Past Three Decades",
+				publisher: "NASA Earthdata",
+				year: 2025,
+				url:
+					"https://www.earthdata.nasa.gov/learn/data-in-action/rate-global-sea-level-rise-doubled-during-past-three-decades",
+				stance: "supports",
+				note:
+					"NASA satellite-altimetry explainer reporting 11.1 cm of global mean sea-level rise from 1993 to 2023 and a rate increase from about 2.1 to 4.5 mm/year.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "The rate of global sea level rise doubled during the past three decades",
+				publisher: "Communications Earth & Environment",
+				year: 2024,
+				url: "https://doi.org/10.1038/s43247-024-01761-5",
+				doi: "10.1038/s43247-024-01761-5",
+				stance: "supports",
+				note:
+					"Peer-reviewed satellite-era analysis estimating 111 mm of global mean sea-level rise since 1993 and an increase from about 2.1 to 4.5 mm/year.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "NASA Analysis Shows Unexpected Amount of Sea Level Rise in 2024",
+				publisher: "NASA Sea Level Change Portal",
+				year: 2025,
+				url:
+					"https://sealevel.nasa.gov/news/282/nasa-analysis-shows-unexpected-amount-of-sea-level-rise-in-2024/",
+				stance: "context",
+				note:
+					"Recent indicator context explaining 2024 variability, thermal expansion, land-ice contributions, and the uninterrupted satellite record.",
 				order: 4
 			}
 		]
