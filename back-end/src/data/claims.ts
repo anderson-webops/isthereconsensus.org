@@ -770,6 +770,84 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Is the MMR vaccine safe and highly effective at preventing measles?",
+		slug: "is-the-mmr-vaccine-safe-and-highly-effective-at-preventing-measles",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. The MMR vaccine is a safe, routine vaccine and is highly effective against measles: CDC estimates one dose is 93% effective against measles and two doses are 97% effective, while systematic reviews support its effectiveness and overall safety profile.",
+		stableCore: [
+			"Two routine doses of MMR are the standard way to protect children against measles, mumps, and rubella.",
+			"CDC estimates one dose of MMR is 93% effective against measles and two doses are 97% effective against measles.",
+			"Cochrane's review found MMR/MMRV vaccines effective against measles, mumps, rubella, and varicella and found no evidence of an increased autism or encephalitis signal."
+		],
+		openQuestions: [
+			"How should first-dose MMRV versus separate MMR and varicella vaccination be communicated when febrile-seizure risk is relevant?",
+			"How quickly can public-health systems restore high coverage in communities where measles outbreaks expose immunity gaps?",
+			"How much does mumps protection wane over time compared with measles and rubella protection?"
+		],
+		whatWouldChangeMinds: [
+			"Large, repeated vaccine-effectiveness studies showing substantially lower real-world measles protection after correctly timed two-dose MMR.",
+			"A major vaccine-safety reassessment finding serious harms that outweigh measles, mumps, and rubella prevention benefits in routine populations."
+		],
+		misconceptions: [
+			"Breakthrough measles cases are sometimes presented as proof the vaccine does not work, even though 97% effectiveness still allows rare infections during intense outbreaks.",
+			"MMR safety questions are often blurred with the separate autism myth, even though autism has been directly studied and is not supported as a vaccine harm.",
+			"MMRV and MMR are sometimes discussed as if all schedule choices have the same risk-benefit details; first-dose MMRV has a specific febrile-seizure context."
+		],
+		editorSummary:
+			"This page complements the MMR-autism page by answering the positive claim: MMR is not merely unrelated to autism, it is a highly effective routine vaccine against a dangerous and highly contagious disease.",
+		uncertaintySummary:
+			"The consensus is strong for routine MMR safety and high measles effectiveness. Remaining nuance is about schedule choices, rare adverse events such as febrile seizures, and maintaining enough coverage to prevent outbreaks.",
+		searchCutoffAt: "2026-07-02T21:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:55:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial MMR safety and measles-effectiveness claim page published from CDC vaccine guidance, CDC safety context, and Cochrane review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Measles Vaccination",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/measles/vaccines/index.html",
+				stance: "supports",
+				note: "Current CDC public guidance states that MMR is safe and effective and gives the 93% one-dose and 97% two-dose measles effectiveness estimates.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Vaccines for measles, mumps, rubella, and varicella in children",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2021,
+				url: "https://www.cochrane.org/evidence/CD004407_does-measles-mumps-rubella-and-varicella-mmrv-vaccine-protect-children-and-does-it-cause-harmful",
+				doi: "10.1002/14651858.CD004407.pub5",
+				pmid: "34806766",
+				pmcid: "PMC8607336",
+				stance: "supports",
+				note: "Decision-weight synthesis: supports MMR/MMRV effectiveness, reports 95% one-dose and 96% two-dose measles effectiveness in included studies, and discusses rare harms such as febrile seizures.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Measles, Mumps, Rubella, Varicella (MMRV) Vaccine Safety",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/vaccine-safety/vaccines/mmrv.html",
+				stance: "context",
+				note: "Safety context source for common side effects, the disease risks prevented by vaccination, and the schedule-specific febrile-seizure issue for first-dose MMRV.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do mRNA COVID-19 vaccines change your DNA?",
 		slug: "do-mrna-covid-19-vaccines-change-your-dna",
 		status: "published",
@@ -1326,6 +1404,91 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does alcohol increase cancer risk, even at low levels?",
+		slug: "does-alcohol-increase-cancer-risk-even-at-low-levels",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"Yes. Major cancer and public-health bodies agree that alcohol causes cancer and that cancer risk generally rises with drinking. For cancer risk specifically, WHO states there is no safe level; the absolute risk increase from low intake is smaller than from heavy drinking, but it is not zero.",
+		stableCore: [
+			"Alcoholic beverages are classified as carcinogenic to humans, and the causal link includes cancers of the mouth, throat, voice box, esophagus, liver, colorectum, and female breast.",
+			"CDC states that all drinks containing alcohol, including beer, wine, and liquor, increase cancer risk.",
+			"NCI gives absolute-risk context: compared with women drinking less than one drink per week, one drink per day is associated with about 2 additional alcohol-related cancers per 100 women and two drinks per day with about 5 additional cases per 100 women."
+		],
+		openQuestions: [
+			"How should public guidance communicate small absolute low-dose risks without making them sound either negligible or catastrophic?",
+			"How should the cancer-risk consensus be weighed alongside separate debates over cardiovascular outcomes and overall mortality at low intake?",
+			"Which warning labels or public-health messages actually improve understanding without increasing backlash or fatalism?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence showing no causal increase in alcohol-related cancer risk at low intake after accounting for confounding and drinking pattern.",
+			"A major IARC, NCI, CDC, WHO, or Surgeon General reassessment reversing the causal classification or low-dose risk interpretation."
+		],
+		misconceptions: [
+			"People often hear 'moderate drinking' as if it means no cancer risk, but cancer risk can still rise at low levels.",
+			"Red wine is sometimes treated as a cancer-risk exception, even though ethanol is the relevant exposure across alcoholic drinks.",
+			"Relative-risk headlines can make low-dose risks sound huge; absolute-risk context is still needed for individual decision-making."
+		],
+		editorSummary:
+			"This page should clarify the cancer-specific consensus while avoiding overreach into every possible alcohol-health debate. The public answer is not that one drink is an emergency; it is that alcohol is a causal cancer risk and lower intake lowers that risk.",
+		uncertaintySummary:
+			"The causal cancer-risk conclusion is strong, including for low levels of drinking. Uncertainty is mainly about communicating absolute risk, individual baseline risk, drinking patterns, and how cancer-specific guidance interacts with other health outcomes.",
+		searchCutoffAt: "2026-07-02T21:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:55:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial alcohol and cancer-risk claim page published from NCI, CDC, WHO Europe, and U.S. Surgeon General advisory sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer Risk Fact Sheet",
+				publisher: "National Cancer Institute",
+				year: 2025,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/alcohol/alcohol-fact-sheet",
+				stance: "supports",
+				note: "NCI anchor for the causal cancer relationship, cancer-site list, dose-response framing, mechanisms, and absolute-risk examples for one and two drinks per day.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/cancer/risk-factors/alcohol.html",
+				stance: "supports",
+				note: "Current CDC public-health source stating that drinking less or not drinking lowers cancer risk and that beer, wine, and liquor all increase risk.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Alcohol and cancer",
+				publisher: "World Health Organization Regional Office for Europe",
+				year: 2025,
+				url: "https://www.who.int/europe/news-room/fact-sheets/item/alcohol-and-cancer",
+				stance: "supports",
+				note: "Current WHO Europe fact sheet stating that there is no safe level of alcohol consumption in relation to cancer risk and that even small amounts increase risk for most alcohol-related cancers.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer Risk",
+				publisher: "U.S. Surgeon General",
+				year: 2025,
+				url: "https://www.hhs.gov/surgeongeneral/reports-and-publications/alcohol-cancer/index.html",
+				stance: "supports",
+				note: "Surgeon General advisory summarizing evidence for a causal link between alcohol and at least seven cancer types and recommending better public risk communication.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
@@ -1448,6 +1611,93 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Useful for separating nutrient panic from evidence-based risk assessment.",
 				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do most people consume too much sodium, and does reducing sodium lower blood pressure?",
+		slug: "do-most-people-consume-too-much-sodium-and-does-reducing-sodium-lower-blood-pressure",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"Yes. Global and U.S. public-health sources report that most people consume more sodium than recommended, and randomized-trial meta-analyses show that reducing sodium lowers blood pressure, with larger average effects in people with higher baseline blood pressure.",
+		stableCore: [
+			"WHO reports that almost all populations consume too much sodium, with a 2021 global adult mean of 4,278 mg/day, more than double WHO's recommendation of less than 2,000 mg/day.",
+			"CDC reports that Americans consume more than 3,300 mg/day on average, above the U.S. recommendation of less than 2,300 mg/day for teens and adults.",
+			"A 2020 BMJ meta-analysis of 133 randomized trials found a dose-response relationship: larger sodium reductions produced larger blood-pressure reductions, especially in older people, non-white populations, and people with higher baseline blood pressure."
+		],
+		openQuestions: [
+			"Which sodium-reduction policies work best in different food systems where most sodium comes from processed and restaurant foods?",
+			"How should guidance balance sodium reduction with adequate iodine intake where iodized salt is a major iodine source?",
+			"How should low-sodium advice be individualized for people with specific medical conditions or medication regimens?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-conducted randomized evidence showing sodium reduction does not lower blood pressure when intake measurement and adherence are strong.",
+			"Major WHO, CDC, dietary-guideline, or cardiovascular-guideline revisions concluding current sodium-intake targets are not justified for population blood-pressure control."
+		],
+		misconceptions: [
+			"People often focus on table salt, but most sodium in many diets comes from packaged, processed, and restaurant foods.",
+			"Individual variation in salt sensitivity is sometimes used to dismiss the population-level blood-pressure evidence.",
+			"Claims that sodium is essential can obscure the distinction between needing some sodium and consuming far more than recommended."
+		],
+		editorSummary:
+			"This page should give readers the basic sodium consensus: average intake is high, blood pressure is a key outcome, and the main policy problem is the food environment rather than only the salt shaker.",
+		uncertaintySummary:
+			"The direction is strong: high sodium intake raises blood pressure, and reduction lowers it on average. Remaining uncertainty is about effect size for a given individual, the best implementation tools, and how to tailor advice for special clinical situations.",
+		searchCutoffAt: "2026-07-02T21:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:55:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial sodium intake and blood-pressure claim page published from WHO, CDC, and randomized-trial meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Sodium reduction",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/sodium-reduction",
+				stance: "supports",
+				note: "WHO anchor for global overconsumption and adult sodium recommendation; reports a 2021 global mean adult intake of 4,278 mg/day versus the recommendation of less than 2,000 mg/day.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About Sodium and Health",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/salt/about/index.html",
+				stance: "supports",
+				note: "CDC public-health source stating that most Americans consume too much sodium and linking excess sodium to higher blood pressure, heart disease, and stroke risk.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effect of dose and duration of reduction in dietary sodium on blood pressure levels: systematic review and meta-analysis of randomised trials",
+				publisher: "The BMJ",
+				year: 2020,
+				url: "https://doi.org/10.1136/bmj.m315",
+				doi: "10.1136/bmj.m315",
+				stance: "supports",
+				note: "Decision-weight meta-analysis of 133 randomized trials showing a dose-response relation between sodium reduction and blood-pressure lowering.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effect of population-based sodium reduction interventions on blood pressure: a systematic review and meta-analysis of randomized trials",
+				publisher: "Hypertension Research",
+				year: 2025,
+				url: "https://doi.org/10.1038/s41440-025-02181-4",
+				doi: "10.1038/s41440-025-02181-4",
+				stance: "supports",
+				note: "Recent population-intervention meta-analysis of 36 studies and 66,803 participants finding lower office blood pressure compared with usual care, with heterogeneity by setting and baseline risk.",
+				order: 4
 			}
 		]
 	},
