@@ -1861,6 +1861,87 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Is extreme heat becoming more frequent or intense because of human-caused climate change?",
+		slug: "is-extreme-heat-becoming-more-frequent-or-intense-because-of-human-caused-climate-change",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"Yes. IPCC AR6 finds it virtually certain that hot extremes, including heatwaves, have become more frequent and more intense across most land regions since the 1950s, with high confidence that human-caused climate change is the main driver. Local impacts still depend on geography, humidity, urban heat islands, exposure, and preparedness.",
+		stableCore: [
+			"IPCC AR6 says hot extremes have become more frequent and intense across most land regions since the 1950s.",
+			"The same IPCC assessment has high confidence that human-induced climate change is the main driver of these observed changes.",
+			"EPA summarizes the practical U.S. implication clearly: as average temperatures rise, the risk of extreme temperatures, heat waves, and record-breaking temperatures increases.",
+			"Observed U.S. indicators show unusually hot summer days and nights have become more common, and heat waves in major cities have become more frequent and the heat-wave season longer."
+		],
+		openQuestions: [
+			"How much of a specific local heat wave is attributable to climate change versus regional weather variability, land use, humidity, and urban heat-island effects?",
+			"Which adaptation measures most reduce heat illness and death for outdoor workers, older adults, children, pregnant people, and low-income communities?",
+			"How quickly will extreme heat risks change under different emissions, urban planning, and public-health preparedness choices?"
+		],
+		whatWouldChangeMinds: [
+			"A major IPCC reassessment finding that observed hot-extreme trends are not increasing across most land regions or are not mainly driven by human-caused warming.",
+			"Independent observational records showing a sustained reversal in hot-extreme frequency and intensity despite continued global warming.",
+			"A better attribution framework that explains the observed heat-extreme pattern without anthropogenic greenhouse-gas forcing."
+		],
+		misconceptions: [
+			"A mild summer in one place is sometimes treated as evidence against the global and multi-decade heat-extreme trend.",
+			"Weather and climate are often confused: climate change changes the odds and intensity of heat extremes without making every hot day unprecedented.",
+			"Urban heat islands can worsen local heat risk, but they do not explain the assessed global pattern of hotter extremes across most land regions."
+		],
+		editorSummary:
+			"This page should connect climate attribution to lived experience without overclaiming every individual event. The strongest phrasing is about shifted odds, frequency, intensity, and public-health exposure, not a guarantee that every place warms at the same rate.",
+		uncertaintySummary:
+			"The global direction and human contribution are high-certainty. Remaining uncertainty is mostly local and operational: exact event attribution, regional humidity and land-use effects, and how much adaptation reduces harm.",
+		searchCutoffAt: "2026-07-02T22:25:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:25:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:25:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial extreme-heat claim page published from IPCC AR6, EPA climate-science, and EPA climate-indicator sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Summary for Policymakers, AR6 WGI: The Physical Science Basis",
+				publisher: "IPCC",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/downloads/report/IPCC_AR6_WGI_SPM.pdf",
+				doi: "10.1017/9781009157896.001",
+				stance: "supports",
+				note:
+					"Assessment anchor for the virtually certain increase in hot extremes across most land regions since the 1950s and high-confidence attribution to human-induced climate change.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Extreme Heat",
+				publisher: "U.S. Environmental Protection Agency",
+				url: "https://www.epa.gov/climatechange-science/extreme-heat",
+				stance: "supports",
+				note:
+					"Public-facing climate-science source explaining that rising average temperatures increase the risk of extreme temperatures, heat waves, and record-breaking temperatures.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "EPA Releases Updated Climate Indicators Report Showing How Climate Change is Impacting People's Health and the Environment",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2024,
+				url:
+					"https://www.epa.gov/newsreleases/epa-releases-updated-climate-indicators-report-showing-how-climate-change-impacting",
+				stance: "context",
+				note:
+					"Indicator context reporting more common unusually hot U.S. summer days and nights, and city heat-wave frequency increasing from about two per year in the 1960s to six per year in the 2010s and 2020s.",
+				order: 3
+			}
+		]
+	},
+	{
 		topicSlug: "nutrition-and-diet",
 		title: "Are dietary cholesterol and saturated fat the same kind of risk?",
 		slug: "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
@@ -2379,6 +2460,198 @@ const rawClaims: SeedClaim[] = [
 				stance: "context",
 				note: "Helpful when explaining why the everyday phrase 'just a theory' misreads scientific terminology.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does regular cannabis use increase the risk of psychosis and schizophrenia, especially for adolescents and heavy or high-THC users?",
+		slug: "does-regular-cannabis-use-increase-the-risk-of-psychosis-and-schizophrenia-especially-for-adolescents-and-heavy-or-high-thc-users",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"Yes, with important caveats. The evidence strongly associates cannabis use with later psychosis risk, with the highest risks among frequent users, earlier starters, and people using high-THC products. Because much of the evidence is observational, the page should describe a risk gradient and plausible causal contribution, not claim that cannabis inevitably causes schizophrenia in every user.",
+		stableCore: [
+			"National Academies found substantial evidence of a statistical association between cannabis use and developing schizophrenia or other psychoses, with the highest risk among the most frequent users.",
+			"The Marconi meta-analysis reported higher risk among heavier users and a dose-response relationship between cannabis exposure and psychotic outcomes.",
+			"CDC warns that the association between cannabis and schizophrenia is stronger when use starts earlier and is more frequent.",
+			"High-potency and daily-use patterns are especially concerning in first-episode psychosis studies, but population-attributable estimates depend on causal assumptions and local product markets."
+		],
+		openQuestions: [
+			"How much of the association is causal versus shared vulnerability, reverse causation, correlated substance use, or other confounding?",
+			"Which THC potency, CBD content, age of first use, and frequency thresholds best predict clinically meaningful risk?",
+			"How should legalization and medical-use messaging communicate risk without exaggerating base rates or stigmatizing people with psychosis?"
+		],
+		whatWouldChangeMinds: [
+			"Large longitudinal or quasi-experimental evidence showing that frequent or high-potency cannabis use no longer predicts psychosis after strong handling of confounding and reverse causality.",
+			"Mechanistic and genetic evidence showing that the observed dose-response pattern is better explained by liability to psychosis causing cannabis use rather than cannabis contributing to risk.",
+			"Updated systematic reviews finding that earlier age, higher frequency, or higher THC potency do not materially change psychosis risk."
+		],
+		misconceptions: [
+			"'Natural' or legal does not mean risk-free, especially for adolescents, frequent users, or high-THC products.",
+			"An increased risk is not the same thing as inevitability; most cannabis users do not develop schizophrenia.",
+			"Medical uses of some cannabis-derived products do not erase the psychosis-risk evidence for high-THC recreational exposure."
+		],
+		editorSummary:
+			"This page should be careful but direct: the risk signal is too consistent to dismiss, yet the public explanation should emphasize gradients, susceptibility, adolescent exposure, and high-potency use rather than panic or inevitability.",
+		uncertaintySummary:
+			"The association, frequency gradient, and adolescent-risk concern are robust enough for a broad-consensus page. Causal size, product-potency thresholds, and individual susceptibility remain active sources of uncertainty.",
+		searchCutoffAt: "2026-07-02T22:25:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:25:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:25:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial cannabis-psychosis claim page published from National Academies, CDC, dose-response meta-analysis, and high-potency first-episode psychosis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "The Health Effects of Cannabis and Cannabinoids: Mental Health",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2017,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK425748/",
+				doi: "10.17226/24625",
+				stance: "supports",
+				note:
+					"Assessment anchor concluding substantial evidence of a statistical association between cannabis use and development of schizophrenia or other psychoses, with highest risk among the most frequent users.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Meta-analysis of the Association Between the Level of Cannabis Use and Risk of Psychosis",
+				publisher: "Schizophrenia Bulletin",
+				year: 2016,
+				url: "https://doi.org/10.1093/schbul/sbw003",
+				doi: "10.1093/schbul/sbw003",
+				pmid: "26884547",
+				stance: "supports",
+				note:
+					"Dose-response source reporting an odds ratio of 3.90 for the heaviest users versus nonusers and concluding that high levels of use increase psychotic-outcome risk.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "The contribution of cannabis use to variation in the incidence of psychotic disorder across Europe",
+				publisher: "The Lancet Psychiatry",
+				year: 2019,
+				url: "https://doi.org/10.1016/S2215-0366(19)30048-3",
+				doi: "10.1016/S2215-0366(19)30048-3",
+				pmid: "30902669",
+				stance: "supports",
+				note:
+					"EU-GEI first-episode psychosis study reporting elevated odds for daily use and nearly five-fold odds for daily high-potency use, while relying on case-control attribution assumptions.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Cannabis and Teens",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/cannabis/health-effects/cannabis-and-teens.html",
+				stance: "supports",
+				note:
+					"Public-health anchor for adolescent brain development, temporary psychosis, schizophrenia risk, and the stronger association with earlier and more frequent use.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Are antidepressants effective for major depressive disorder, and how big is the average benefit?",
+		slug: "are-antidepressants-effective-for-major-depressive-disorder-and-how-big-is-the-average-benefit",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		bottomLine:
+			"Yes, but the average benefit is modest and varies a lot. Large randomized-trial syntheses find antidepressants more effective than placebo for acute adult major depressive disorder, while guidelines emphasize severity, side effects, psychotherapy options, patient preferences, and follow-up rather than a simple works-or-does-not-work answer.",
+		stableCore: [
+			"The 2018 Lancet network meta-analysis included 522 randomized trials and 116,477 participants and found all 21 antidepressants more efficacious than placebo for acute adult major depressive disorder.",
+			"The same synthesis rated evidence certainty from moderate to very low across comparisons, so it supports effectiveness while leaving room for caution about exact rankings and effect sizes.",
+			"An FDA-submitted-trial participant-level analysis found a mean drug-placebo advantage of 1.75 HAMD17 points and suggested that a minority of participants have a substantial antidepressant effect beyond placebo.",
+			"ACP recommends either cognitive behavioral therapy or a second-generation antidepressant as initial treatment for adults with acute moderate to severe major depressive disorder, with decisions personalized to benefits, harms, cost, feasibility, symptoms, comorbidities, medications, and patient preferences."
+		],
+		openQuestions: [
+			"Which patients are most likely to experience a large medication-specific response rather than a modest average effect?",
+			"How should clinicians balance medication, psychotherapy, combined treatment, side effects, withdrawal, suicidality monitoring, access, and patient preference?",
+			"How much do trial design, publication bias, placebo response, baseline severity, and outcome measures affect the apparent size of benefit?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias pragmatic trials showing no clinically meaningful medication-specific benefit across severity strata and patient subgroups.",
+			"Stronger individual-patient predictors that reliably identify who benefits substantially, who does not, and who is harmed.",
+			"Guideline changes from major bodies finding that antidepressants should no longer be first-line options for moderate to severe adult major depression."
+		],
+		misconceptions: [
+			"'Antidepressants work' does not mean they work dramatically for everyone or that side effects and discontinuation problems are irrelevant.",
+			"'The average effect is modest' does not mean no one benefits or that all improvement is fake.",
+			"Medication and psychotherapy are often presented as rivals even though guidelines commonly support shared decision-making and, for some patients, combined treatment."
+		],
+		editorSummary:
+			"This page should avoid both miracle-cure and total-dismissal framing. The consensus answer is yes-with-qualifiers: antidepressants beat placebo on average in adult acute MDD trials, but average effects are modest, heterogeneity is substantial, and treatment choice should stay clinical and preference-sensitive.",
+		uncertaintySummary:
+			"The existence of average efficacy over placebo is well supported, but clinical interpretation is moderate-certainty because effect size, individual response prediction, trial design, and adverse-effect tradeoffs remain contested and patient-specific.",
+		searchCutoffAt: "2026-07-02T22:25:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:25:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:25:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial antidepressant-effectiveness claim page published from Lancet network meta-analysis, BMJ FDA-trial participant-level analysis, ACP guideline, and NICE guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "meta_analysis",
+				title: "Comparative efficacy and acceptability of 21 antidepressant drugs for the acute treatment of adults with major depressive disorder",
+				publisher: "The Lancet",
+				year: 2018,
+				url: "https://pubmed.ncbi.nlm.nih.gov/29477251/",
+				doi: "10.1016/S0140-6736(17)32802-7",
+				pmid: "29477251",
+				stance: "supports",
+				note:
+					"Decision-weight source for acute adult MDD efficacy; found all 21 antidepressants more efficacious than placebo across 522 trials and 116,477 participants.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Response to acute monotherapy for major depressive disorder in randomized, placebo controlled trials submitted to the US Food and Drug Administration",
+				publisher: "BMJ",
+				year: 2022,
+				url: "https://www.bmj.com/content/378/bmj-2021-067606",
+				doi: "10.1136/bmj-2021-067606",
+				stance: "context",
+				note:
+					"Individual-participant FDA trial analysis estimating a 1.75-point mean HAMD17 drug-placebo advantage and a substantial antidepressant-specific response in about 15% of participants.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Nonpharmacologic and Pharmacologic Treatments of Adults in the Acute Phase of Major Depressive Disorder",
+				publisher: "American College of Physicians",
+				year: 2023,
+				url: "https://pubmed.ncbi.nlm.nih.gov/36689752/",
+				doi: "10.7326/M22-2056",
+				pmid: "36689752",
+				stance: "supports",
+				note:
+					"Guideline anchor recommending CBT or a second-generation antidepressant as initial monotherapy for acute moderate to severe adult MDD, with personalization of benefits and harms.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Depression in adults: treatment and management",
+				publisher: "NICE",
+				year: 2022,
+				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
+				stance: "context",
+				note:
+					"Clinical guidance context for severity stratification, shared decision-making, first-line treatment choices, monitoring, and side-effect discussion.",
+				order: 4
 			}
 		]
 	},
