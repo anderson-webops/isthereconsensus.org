@@ -1830,6 +1830,168 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "nutrition-and-diet",
+		title: "Does it matter what replaces saturated fat?",
+		slug: "does-it-matter-what-replaces-saturated-fat",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"Yes. The strongest cardiovascular advice is not just 'eat less saturated fat' in isolation; it is to replace saturated fat with healthier unsaturated fats, especially polyunsaturated fats, rather than refined carbohydrates or added sugar.",
+		stableCore: [
+			"Replacement matters because removing saturated fat without improving the rest of the diet can dilute or hide the benefit.",
+			"Cochrane's 2020 review found moderate-quality evidence that reducing saturated fat reduced combined cardiovascular events, with benefits tied to what replaced the saturated fat.",
+			"A meta-analysis of randomized trials found that increasing polyunsaturated fat in place of saturated fat reduced coronary heart disease events by about 19% across eight trials."
+		],
+		openQuestions: [
+			"Which whole-food substitution patterns work best for different baseline risk groups?",
+			"How should public guidance explain nutrient replacement without making people chase isolated macronutrient targets?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled trials showing no cardiovascular advantage when saturated fat is replaced with unsaturated fats in realistic diets.",
+			"Major cardiovascular guidelines converging on a different replacement hierarchy after reviewing clinical outcomes and lipid effects."
+		],
+		misconceptions: [
+			"Headlines often ask whether saturated fat is 'bad' without saying what replaces it.",
+			"Replacing butter or fatty meat with refined starch or added sugar is not the same intervention as replacing it with plant oils, nuts, fish, or other unsaturated-fat sources."
+		],
+		editorSummary:
+			"This page makes the nutrition nuance explicit: the public argument is often framed as saturated fat yes-or-no, while the evidence is largely about replacement patterns.",
+		searchCutoffAt: "2026-07-02T21:33:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:33:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial saturated-fat replacement claim page published from Cochrane, randomized-trial meta-analysis, and AHA advisory sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Effect of cutting down on the saturated fat we eat on our risk of heart disease",
+				publisher: "Cochrane",
+				year: 2020,
+				url:
+					"https://www.cochrane.org/evidence/CD011737_effect-cutting-down-saturated-fat-we-eat-our-risk-heart-disease",
+				doi: "10.1002/14651858.CD011737.pub3",
+				stance: "supports",
+				note:
+					"Decision-weight review: 15 studies with more than 56,000 participants; reports a 17% reduction in combined cardiovascular events and emphasizes replacement patterns.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effects on Coronary Heart Disease of Increasing Polyunsaturated Fat in Place of Saturated Fat: A Systematic Review and Meta-Analysis of Randomized Controlled Trials",
+				publisher: "PLOS Medicine",
+				year: 2010,
+				url: "https://doi.org/10.1371/journal.pmed.1000252",
+				doi: "10.1371/journal.pmed.1000252",
+				pmid: "20351774",
+				pmcid: "PMC2843598",
+				stance: "supports",
+				note:
+					"Eight randomized trials with 13,614 participants and 1,042 coronary heart disease events; pooled risk reduction was 19% when PUFA replaced saturated fat.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Dietary Fats and Cardiovascular Disease: A Presidential Advisory From the American Heart Association",
+				publisher: "Circulation",
+				year: 2017,
+				url: "https://doi.org/10.1161/CIR.0000000000000510",
+				doi: "10.1161/CIR.0000000000000510",
+				pmid: "28620111",
+				stance: "supports",
+				note:
+					"Guideline-style cardiovascular advisory concluding that replacing saturated fat with unsaturated fat, especially polyunsaturated fat, lowers cardiovascular disease risk.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Are seed oils uniquely toxic or inflammatory?",
+		slug: "are-seed-oils-uniquely-toxic-or-inflammatory",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"No. The evidence does not support treating common seed oils as a uniquely toxic or inflammatory food category. The better-supported concern is overall diet quality, especially ultra-processed foods, excess calories, and what fats or carbohydrates are replacing what.",
+		stableCore: [
+			"Linoleic acid is an essential omega-6 fatty acid, and vegetable oils and nuts are common sources.",
+			"Cochrane's omega-6 review found no conclusive evidence that increasing omega-6 fats reduces or increases overall cardiovascular events, while it did find high-quality evidence for a small long-term reduction in total cholesterol.",
+			"Human trial reviews do not support the common claim that dietary linoleic acid reliably increases inflammatory markers in healthy people."
+		],
+		openQuestions: [
+			"How much do repeated high-heat frying, food processing, and calorie-dense dietary patterns change risk compared with the oil category itself?",
+			"Which specific oils, doses, and food matrices matter most for people with metabolic disease?"
+		],
+		whatWouldChangeMinds: [
+			"Large, consistent human outcome evidence showing seed oils as a class independently cause major harm after accounting for food processing, calories, and replacement nutrients.",
+			"Randomized trials showing clinically meaningful inflammatory harm from realistic linoleic-acid intake in otherwise comparable diets."
+		],
+		misconceptions: [
+			"Seed oils are often blamed for the health effects of the ultra-processed foods that contain them.",
+			"Mechanistic concern about oxidation or omega-6 pathways is often presented as if it already proves real-world disease harm."
+		],
+		editorSummary:
+			"This page should be careful rather than dismissive: seed-oil panic is overconfident, but the most honest answer still separates oils, processing, dose, and replacement foods.",
+		searchCutoffAt: "2026-07-02T21:33:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:33:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial seed-oil and omega-6 claim page published from Cochrane, AHA, and human inflammation-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Omega-6 fats for the primary and secondary prevention of cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2018,
+				url:
+					"https://www.cochrane.org/evidence/CD011094_omega-6-fats-prevent-and-treat-heart-and-circulatory-diseases",
+				doi: "10.1002/14651858.CD011094.pub4",
+				stance: "supports",
+				note:
+					"Most extensive systematic assessment cited here: 19 randomized trials with 6,461 adults; found little or no difference for deaths or CVD events and high-quality evidence for a small total-cholesterol reduction.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Effect of Dietary Linoleic Acid on Markers of Inflammation in Healthy Persons",
+				publisher: "Journal of the Academy of Nutrition and Dietetics",
+				year: 2012,
+				url: "https://doi.org/10.1016/j.jand.2012.03.029",
+				doi: "10.1016/j.jand.2012.03.029",
+				pmid: "22889633",
+				stance: "supports",
+				note:
+					"Human intervention-review source used to test the common claim that linoleic acid intake increases inflammatory markers.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Omega-6 Fatty Acids and Risk for Cardiovascular Disease",
+				publisher: "Circulation",
+				year: 2009,
+				url: "https://doi.org/10.1161/CIRCULATIONAHA.108.191627",
+				doi: "10.1161/CIRCULATIONAHA.108.191627",
+				pmid: "19171857",
+				stance: "context",
+				note:
+					"AHA advisory context for why mainstream cardiovascular guidance has not adopted blanket omega-6 or seed-oil avoidance.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
 		title: "Do dietary supplements usually improve health in otherwise healthy adults?",
 		slug: "do-dietary-supplements-usually-improve-health-in-healthy-adults",
 		status: "published",
@@ -2656,6 +2818,83 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Helpful when translating percentages into real-world scale.",
 				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "media-misinformation",
+		title: "Are preprints the same as peer-reviewed studies?",
+		slug: "are-preprints-the-same-as-peer-reviewed-studies",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"No. Preprints can be useful for rapid scientific communication, but they are public drafts that have not yet been certified by peer review and should not be treated as equivalent to peer-reviewed journal articles.",
+		stableCore: [
+			"Preprints can speed discovery and invite feedback, but the key distinction is that they have not yet passed journal peer review.",
+			"Any part of a preprint, including results and conclusions, can change after peer review or author revision.",
+			"In medical and public-health topics, preprints need especially clear labeling because premature claims can influence behavior before stronger review is available."
+		],
+		openQuestions: [
+			"Which labels and warnings best help non-specialists interpret preprints without dismissing useful early evidence?",
+			"How should evidence systems handle preprints during fast-moving emergencies without laundering them into established facts?"
+		],
+		whatWouldChangeMinds: [
+			"A major change in scholarly publishing where posted preprints routinely receive review equivalent to journal peer review before public release.",
+			"Evidence that public audiences reliably distinguish preprints from certified studies without visible labeling or editorial context."
+		],
+		misconceptions: [
+			"People often assume that anything indexed in a scientific database has already passed peer review.",
+			"Headlines can treat preliminary manuscripts as settled evidence because the uncertainty label is inconvenient."
+		],
+		editorSummary:
+			"This page strengthens the site's research-literacy layer by giving readers a simple rule for fast-moving claims: preprints may be useful evidence signals, but they are not final evidence.",
+		searchCutoffAt: "2026-07-02T21:33:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:33:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial preprint-versus-peer-review claim page published from NLM/NIH preprint guidance and preprint citation-reliability evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "NIH Preprint Pilot",
+				publisher: "PubMed Central / National Library of Medicine",
+				url: "https://pmc.ncbi.nlm.nih.gov/about/nihpreprints/",
+				stance: "supports",
+				note:
+					"Defines preprints as complete public drafts not yet certified by peer review and warns that results and conclusions may change.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Reliability of citations of medRxiv preprints in articles published on COVID-19 in the world leading medical journals",
+				publisher: "PLOS ONE",
+				year: 2022,
+				url: "https://doi.org/10.1371/journal.pone.0264661",
+				doi: "10.1371/journal.pone.0264661",
+				pmid: "35947559",
+				pmcid: "PMC9368286",
+				stance: "supports",
+				note:
+					"Empirical cautionary source: in 2020 articles from four major medical journals, 29.3% cited at least one medRxiv preprint and many cited preprints later differed from published versions.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Preprints and PubMed Central",
+				publisher: "National Library of Medicine",
+				year: 2020,
+				url: "https://www.nlm.nih.gov/oet/ed/pmc/index.html",
+				stance: "context",
+				note:
+					"NLM educational context describing preprints as scholarly manuscripts posted to open platforms, usually before peer review.",
+				order: 3
 			}
 		]
 	},
