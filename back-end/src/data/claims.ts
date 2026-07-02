@@ -690,6 +690,261 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does the MMR vaccine cause autism?",
+		slug: "does-the-mmr-vaccine-cause-autism",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"No. Large cohort studies, meta-analyses, and vaccine-safety reviews do not find that the measles, mumps, and rubella vaccine causes autism, triggers autism in susceptible children, or creates a post-vaccination autism cluster.",
+		stableCore: [
+			"The MMR-autism claim has been tested directly in very large population cohorts.",
+			"The strongest direct cohort evidence does not show increased autism risk after MMR vaccination, including in higher-risk subgroups.",
+			"The broader vaccine/autism evidence base also does not support causal claims about MMR, thimerosal, or mercury exposure."
+		],
+		openQuestions: [
+			"Which explanations best help readers separate timing coincidence from causal evidence?",
+			"How should a public page acknowledge parental fear while keeping the causal claim accurately closed?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated independent cohort evidence showing a clear, dose-timed, biologically plausible MMR-autism risk signal.",
+			"A mechanism that fits both immune biology and the absence of a signal in large epidemiological studies."
+		],
+		misconceptions: [
+			"The first MMR dose is often given near ages when autism signs are becoming visible, which can make sequence feel like cause.",
+			"Claims about susceptible subgroups are often presented as if they avoid the large-study evidence, even though those subgroups have been directly examined."
+		],
+		editorSummary:
+			"This exact claim deserves its own page because MMR is the most recognizable version of the broader vaccine-autism myth.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial exact MMR-autism claim page published from nationwide cohort, meta-analysis, and WHO safety-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "landmark_study",
+				title: "Measles, Mumps, Rubella Vaccination and Autism",
+				publisher: "Annals of Internal Medicine",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/30831578/",
+				doi: "10.7326/M18-2101",
+				pmid: "30831578",
+				stance: "supports",
+				note:
+					"Direct nationwide cohort study of 657,461 Danish children; useful because it addresses MMR, susceptible subgroups, and clustering after vaccination.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Vaccines are not associated with autism: an evidence-based meta-analysis",
+				publisher: "Vaccine",
+				year: 2014,
+				url: "https://pubmed.ncbi.nlm.nih.gov/24814559/",
+				doi: "10.1016/j.vaccine.2014.04.085",
+				pmid: "24814559",
+				stance: "supports",
+				note:
+					"Provides pooled case-control and cohort context for MMR and related vaccine-autism claims.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "WHO GACVS analysis on vaccines and autism",
+				publisher: "World Health Organization",
+				year: 2025,
+				url:
+					"https://www.who.int/news/item/11-12-2025-who-expert-group-s-new-analysis-reaffirms-there-is-no-link-between-vaccines-and-autism",
+				stance: "supports",
+				note:
+					"Current international vaccine-safety anchor for the broader autism-and-vaccines evidence review.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Do mRNA COVID-19 vaccines change your DNA?",
+		slug: "do-mrna-covid-19-vaccines-change-your-dna",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. mRNA vaccines deliver temporary instructions in the cell cytoplasm; they do not enter the nucleus where DNA is kept, and they do not alter a person's genes.",
+		stableCore: [
+			"Messenger RNA is a short-lived instruction molecule, not a tool for rewriting human chromosomes.",
+			"mRNA COVID-19 vaccines direct cells to make a harmless spike-protein piece and then the mRNA is broken down.",
+			"Major U.S. government health and genomics resources state that COVID-19 vaccines do not affect or interact with DNA."
+		],
+		openQuestions: [
+			"Which analogies explain mRNA without making the mechanism sound more permanent than it is?",
+			"How should pages distinguish mRNA vaccines from DNA vaccines, viral vectors, and gene therapy without blurring the public bottom line?"
+		],
+		whatWouldChangeMinds: [
+			"Direct human evidence that vaccine mRNA routinely enters nuclei, is reverse-transcribed, and integrates into chromosomes at a clinically meaningful rate.",
+			"Independent replication of a mechanism that contradicts the established cell-biology explanation and changes observed human outcomes."
+		],
+		misconceptions: [
+			"The word genetic is often misread as meaning gene-editing, even when a technology only carries temporary protein-making instructions.",
+			"Laboratory discussions about nucleic-acid platforms are often pulled out of context and treated as evidence of DNA alteration in vaccinated people."
+		],
+		editorSummary:
+			"This is a high-value mechanism page for a recurring mRNA misconception: the public claim is about changing DNA, not about whether rare side effects or vaccine recommendations can vary by group.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial mRNA-and-DNA claim page published from NHGRI, MedlinePlus, CDC, and mRNA platform review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Understanding COVID-19 mRNA Vaccines",
+				publisher: "National Human Genome Research Institute",
+				year: 2021,
+				url: "https://www.genome.gov/about-genomics/fact-sheets/Understanding-COVID-19-mRNA-Vaccines",
+				stance: "supports",
+				note:
+					"Clear genomics anchor explaining that mRNA vaccines cannot alter DNA and are built on decades of mRNA research.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "What are mRNA vaccines and how do they work?",
+				publisher: "MedlinePlus Genetics",
+				year: 2022,
+				url: "https://medlineplus.gov/genetics/understanding/therapy/mrnavaccines/",
+				stance: "supports",
+				note:
+					"National Library of Medicine explainer stating that vaccine mRNA does not enter the nucleus or alter DNA.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "COVID-19 Vaccine Basics",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/covid/vaccines/how-they-work.html",
+				stance: "supports",
+				note:
+					"Current U.S. implementation explainer separating vaccine mechanism from DNA interaction claims.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "mRNA vaccines for COVID-19: what, why and how",
+				publisher: "International Journal of Biological Sciences",
+				year: 2021,
+				url: "https://doi.org/10.7150/ijbs.59233",
+				doi: "10.7150/ijbs.59233",
+				stance: "supports",
+				note:
+					"Mechanism and platform background from the peer-reviewed literature; use as context beneath direct institutional explanations.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Do COVID-19 vaccines cause infertility?",
+		slug: "do-covid-19-vaccines-cause-infertility",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"No. Current evidence does not show that COVID-19 vaccines cause infertility in women or men. Studies of couples trying to conceive, assisted reproduction, and semen parameters do not support the claim.",
+		stableCore: [
+			"Prospective data on couples trying to conceive did not find reduced fecundability after vaccination in either partner.",
+			"Systematic reviews and meta-analyses have not found evidence that COVID-19 vaccination impairs fertility in men or women.",
+			"Some menstrual-cycle changes after vaccination can occur, but available evidence does not connect them to infertility."
+		],
+		openQuestions: [
+			"How should pages distinguish temporary menstrual-cycle changes from fertility impairment?",
+			"Which assisted-reproduction subgroups need continued monitoring as vaccine platforms, infection history, and timing vary?",
+			"How should updated COVID vaccine recommendations be separated from the narrower evidence question about fertility?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence showing reproducible reductions in conception, ovarian reserve, semen quality, or live-birth outcomes after vaccination.",
+			"A biologically plausible fertility-harm mechanism that predicts and matches observed human reproductive outcomes."
+		],
+		misconceptions: [
+			"Fertility fears often treat antibodies, menstrual changes, or anecdotes as if they were evidence of failed conception.",
+			"COVID infection effects on reproductive health are sometimes conflated with vaccine effects, even when studies separate the two."
+		],
+		editorSummary:
+			"This page should answer a common reproductive-health fear directly while keeping the scope narrow: fertility outcomes, not every question about COVID vaccine policy.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial COVID-vaccination fertility claim page published from CDC, National Academies, prospective cohort, and meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "COVID-19 Vaccination for People Who Would Like to Have a Baby",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/covid/vaccines/planning-for-pregnancy.html",
+				stance: "supports",
+				note:
+					"Public-health summary that directly states there is no evidence that vaccines, including COVID-19 vaccines, cause fertility problems in women or men.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Female Infertility and COVID-19 Vaccines",
+				publisher: "National Academies Press / NCBI Bookshelf",
+				year: 2024,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK607379/",
+				stance: "supports",
+				note:
+					"Independent evidence-review chapter for the potential relationship between COVID-19 vaccines and female infertility.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "The impact of COVID-19 vaccines on fertility: a systematic review and meta-analysis",
+				publisher: "Vaccine",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.vaccine.2022.09.019",
+				doi: "10.1016/j.vaccine.2022.09.019",
+				stance: "supports",
+				note:
+					"Direct synthesis of male and female fertility outcomes after COVID-19 vaccination.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "A Prospective Cohort Study of COVID-19 Vaccination, SARS-CoV-2 Infection, and Fertility",
+				publisher: "American Journal of Epidemiology",
+				year: 2022,
+				url: "https://pubmed.ncbi.nlm.nih.gov/35051292/",
+				doi: "10.1093/aje/kwac011",
+				pmid: "35051292",
+				pmcid: "PMC8807200",
+				stance: "supports",
+				note:
+					"Direct preconception cohort evidence separating vaccination from SARS-CoV-2 infection effects in couples trying to conceive.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",

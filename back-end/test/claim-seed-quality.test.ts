@@ -4,6 +4,9 @@ import { defaultClaims } from "../src/data/claims.js";
 
 const launchSensitiveClaimSlugs = [
 	"do-childhood-vaccines-cause-autism",
+	"does-the-mmr-vaccine-cause-autism",
+	"do-mrna-covid-19-vaccines-change-your-dna",
+	"do-covid-19-vaccines-cause-infertility",
 	"is-recent-global-warming-mainly-caused-by-human-activity",
 	"is-the-sun-causing-recent-global-warming",
 	"do-volcanoes-emit-more-co2-than-humans",
