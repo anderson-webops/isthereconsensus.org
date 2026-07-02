@@ -2624,6 +2624,295 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does cervical cancer screening reduce cervical cancer deaths?",
+		slug: "does-cervical-cancer-screening-reduce-cervical-cancer-deaths",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Cervical cancer screening reduces cervical cancer incidence and deaths by finding precancerous changes or early cancer when treatment is more effective. HPV vaccination lowers future risk, but it does not replace screening for people who are still in recommended screening age groups.",
+		stableCore: [
+			"USPSTF recommends cervical cancer screening for average-risk people with a cervix from ages 21 to 65, with different cytology and HPV-testing options by age.",
+			"NCI states that screening can help prevent cervical cancer and find it early, and that both HPV testing and Pap testing are used to detect high-risk HPV infection or abnormal cervical cells.",
+			"A systematic review and meta-analysis found protective benefits from screening, including pooled case-control evidence for lower invasive cervical cancer risk with cytology screening.",
+			"Organized screening programs reduce cervical cancer mortality, but the benefit depends on access, repeat screening at the right interval, and follow-up of abnormal results."
+		],
+		openQuestions: [
+			"How should screening intervals adapt as HPV-vaccinated cohorts age into screening programs?",
+			"Which combination of clinician-collected HPV testing, self-sampling, cytology, and triage best improves access while minimizing false positives and overtreatment?",
+			"How should guidance differ for immunocompromised people, people with prior abnormal results, and those with inadequate prior screening?"
+		],
+		whatWouldChangeMinds: [
+			"High-quality evidence showing that recommended cervical screening no longer reduces cervical cancer incidence or mortality in screened populations.",
+			"Major USPSTF, NCI, WHO, or specialty-society reassessments withdrawing cervical screening recommendations for average-risk adults in current age groups.",
+			"Evidence that harms from guideline-concordant screening and follow-up outweigh prevention and early-detection benefits."
+		],
+		misconceptions: [
+			"HPV vaccination greatly reduces risk but does not remove the need for screening in everyone currently eligible.",
+			"Pap and HPV tests are screening tools, not treatment; abnormal results need appropriate follow-up.",
+			"More frequent screening is not automatically better because false positives, colposcopy, and treatment can cause avoidable harm."
+		],
+		editorSummary:
+			"This page should connect the HPV vaccine page to the practical prevention system: vaccination and screening work together, and the public-health failure is often missed screening or missed follow-up rather than uncertainty about whether screening can prevent deaths.",
+		uncertaintySummary:
+			"The mortality-reduction claim is strong. Remaining uncertainty is about optimal intervals, triage, self-sampling implementation, harms from overtesting, and adapting programs as vaccination changes population risk.",
+		searchCutoffAt: "2026-07-02T23:13:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:13:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:13:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial cervical-cancer screening mortality claim page published from USPSTF, NCI, and systematic review evidence on screening incidence and mortality effects."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Cervical Cancer: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2018,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/cervical-cancer-screening",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for age-specific screening options, benefits, and harms in average-risk people with a cervix.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Cervical Cancer Screening",
+				publisher: "National Cancer Institute",
+				url: "https://www.cancer.gov/types/cervical/screening",
+				stance: "supports",
+				note:
+					"NCI public anchor explaining that cervical screening can help prevent cervical cancer and find cancer early through HPV and Pap testing.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Screening for cervical cancer: a systematic review and meta-analysis",
+				publisher: "Systematic Reviews",
+				year: 2013,
+				url: "https://doi.org/10.1186/2046-4053-2-35",
+				doi: "10.1186/2046-4053-2-35",
+				stance: "supports",
+				note:
+					"Review of randomized and observational evidence finding that cervical screening is associated with reduced invasive cervical cancer incidence and cervical cancer mortality.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Effect of organised cervical cancer screening on cervical cancer mortality in Europe",
+				publisher: "European Journal of Cancer",
+				year: 2020,
+				url: "https://doi.org/10.1016/j.ejca.2019.12.013",
+				doi: "10.1016/j.ejca.2019.12.013",
+				stance: "supports",
+				note:
+					"Organized-program review showing cervical cancer mortality reductions in monitored European screening programs, with effect size varying by setting and participation.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does quitting smoking reduce health risks even after years of smoking?",
+		slug: "does-quitting-smoking-reduce-health-risks-even-after-years-of-smoking",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. Quitting smoking reduces the risk of premature death, heart disease, stroke, lung disease, and many cancers, even for people who have smoked for years. Earlier quitting produces the largest benefit, but quitting at any age is better than continuing to smoke.",
+		stableCore: [
+			"CDC states that quitting smoking is one of the most important actions people can take to improve health, regardless of age or smoking duration.",
+			"The 2020 Surgeon General report concluded that smoking cessation reduces risk of premature death and adds as much as a decade to life expectancy.",
+			"A 2024 pooled cohort study of 1.48 million adults found current smokers had roughly 12 to 13 fewer years of survival from ages 40 to 79 than never-smokers, while cessation at every age was associated with longer survival.",
+			"Cardiovascular benefits persist even when people gain weight after quitting; a meta-analysis found lower cardiovascular disease risk among quitters with or without post-cessation weight gain."
+		],
+		openQuestions: [
+			"Which cessation supports work best for people with different nicotine dependence, mental health, pregnancy, or socioeconomic contexts?",
+			"How should clinicians communicate lingering lung-cancer risk after quitting while still emphasizing that quitting reduces risk substantially?",
+			"What mix of medications, counseling, quitlines, text support, and policy changes best sustains long-term abstinence?"
+		],
+		whatWouldChangeMinds: [
+			"Large replicated cohort evidence showing no reduction in mortality or major disease risk after smoking cessation compared with continued smoking.",
+			"Major CDC, Surgeon General, WHO, or National Academies reassessments concluding that cessation does not materially improve health outcomes.",
+			"Evidence that common cessation treatments cause harms large enough to outweigh the benefits of stopping combustible tobacco use."
+		],
+		misconceptions: [
+			"'The damage is already done' is wrong; risk starts improving after quitting even though some excess risk can persist.",
+			"Cutting down is not the same as quitting; complete cessation is the clearest route to lowering mortality and cardiovascular risk.",
+			"Weight gain after quitting can matter, but it usually does not erase the cardiovascular benefit of stopping smoking."
+		],
+		editorSummary:
+			"This page should be both blunt and hopeful: smoking causes major disease, but quitting is one of the highest-value health changes available, and the benefit is not limited to young or light smokers.",
+		uncertaintySummary:
+			"The direction of benefit is settled. Uncertainty is mostly about individual risk trajectories, the best cessation support for different people, and how fast each disease-specific risk approaches that of never-smokers.",
+		searchCutoffAt: "2026-07-02T23:13:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:13:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:13:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial smoking-cessation health-risk claim page published from CDC, Surgeon General, NEJM Evidence pooled cohort, and cardiovascular meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Benefits of Quitting Smoking",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/tobacco/about/benefits-of-quitting.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health source summarizing the health benefits of quitting regardless of age or smoking history.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Smoking Cessation: A Report of the Surgeon General",
+				publisher: "U.S. Surgeon General",
+				year: 2020,
+				url: "https://www.hhs.gov/surgeongeneral/reports-and-publications/tobacco/index.html",
+				stance: "supports",
+				note:
+					"Federal evidence-review anchor concluding that smoking cessation reduces premature death, improves health, and can add as much as a decade to life expectancy.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Smoking Cessation and Short- and Longer-Term Mortality",
+				publisher: "NEJM Evidence",
+				year: 2024,
+				url: "https://doi.org/10.1056/EVIDoa2300272",
+				doi: "10.1056/EVIDoa2300272",
+				stance: "supports",
+				note:
+					"Pooled national-cohort study of 1.48 million adults quantifying survival loss from current smoking and survival gains after cessation at multiple ages.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Smoking cessation, weight gain, cardiovascular risk, and all-cause mortality",
+				publisher: "Nicotine & Tobacco Research",
+				year: 2021,
+				url: "https://doi.org/10.1093/ntr/ntab076",
+				doi: "10.1093/ntr/ntab076",
+				stance: "supports",
+				note:
+					"Meta-analysis showing lower cardiovascular disease and all-cause mortality risk among quitters compared with continuing smokers, even with post-cessation weight gain.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does PrEP prevent HIV infection when taken as prescribed?",
+		slug: "does-prep-prevent-hiv-infection-when-taken-as-prescribed",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. HIV pre-exposure prophylaxis, or PrEP, is highly effective at preventing HIV when taken as prescribed. It does not protect against other sexually transmitted infections, and effectiveness depends on choosing an appropriate product, confirming HIV-negative status before starting, and maintaining adherence or injection schedules.",
+		stableCore: [
+			"CDC says PrEP reduces the risk of getting HIV from sex by about 99% when taken as prescribed and reduces HIV risk from injection drug use by at least 74% for oral PrEP.",
+			"Randomized-trial meta-analysis shows oral tenofovir-containing PrEP reduces HIV acquisition in several high-risk populations, with efficacy strongly associated with adherence.",
+			"A 2024 pooled analysis of 72 global daily oral F/TDF PrEP studies found low HIV incidence overall and much lower incidence among people with higher measured adherence.",
+			"Long-acting injectable cabotegravir is also highly effective; meta-analysis found lower HIV acquisition compared with oral PrEP in efficacy studies, while noting implementation and resistance-monitoring issues."
+		],
+		openQuestions: [
+			"How can programs improve equitable access and adherence for groups with high HIV risk but lower PrEP uptake?",
+			"How should clinicians choose among daily oral PrEP, on-demand oral PrEP where appropriate, and long-acting injectable PrEP?",
+			"How should programs monitor kidney, bone, hepatitis B, pregnancy, drug resistance, and STI risks without creating access barriers?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence showing no meaningful HIV prevention benefit from guideline-concordant PrEP use with confirmed adherence.",
+			"Major CDC, WHO, NIH, or infectious-disease guideline reassessments withdrawing PrEP as a recommended HIV prevention strategy.",
+			"Evidence that drug resistance, adverse effects, or implementation harms outweigh the HIV infections prevented in indicated populations."
+		],
+		misconceptions: [
+			"PrEP is prevention for people who are HIV-negative; it is not HIV treatment by itself.",
+			"PrEP does not prevent syphilis, gonorrhea, chlamydia, hepatitis C, or pregnancy, so condoms, testing, and other prevention tools can still matter.",
+			"PrEP effectiveness numbers assume adherence; missed pills, missed injections, or starting during undetected acute HIV infection change the risk picture."
+		],
+		editorSummary:
+			"This page should make a lifesaving prevention tool visible without turning it into a magic shield. The consensus is strong that PrEP works, and the practical caveat is that adherence, testing, and comprehensive sexual-health care matter.",
+		uncertaintySummary:
+			"The core effectiveness claim is strong. Remaining uncertainty is about real-world implementation, adherence support, product choice, resistance after breakthrough infection, pregnancy data for newer products, and access inequities.",
+		searchCutoffAt: "2026-07-02T23:13:42.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:13:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:13:42.000Z",
+				kind: "publication",
+				summary:
+					"Initial HIV PrEP effectiveness claim page published from CDC guidance, oral PrEP randomized-trial meta-analysis, pooled global F/TDF studies, and injectable cabotegravir evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "About PrEP",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/hiv/prevention/prep.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health anchor for PrEP reducing HIV risk from sex by about 99% when taken as prescribed and reducing injection-related risk with oral PrEP.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Guidance for PrEP",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/hivnexus/hcp/prep/index.html",
+				stance: "supports",
+				note:
+					"Clinical implementation source for PrEP eligibility, HIV testing before initiation, ongoing monitoring, oral options, and injectable cabotegravir.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Oral pre-exposure prophylaxis (PrEP) to prevent HIV: a systematic review and meta-analysis of clinical effectiveness, safety, adherence and risk compensation in all populations",
+				publisher: "BMJ Open",
+				year: 2021,
+				url: "https://doi.org/10.1136/bmjopen-2020-048478",
+				doi: "10.1136/bmjopen-2020-048478",
+				stance: "supports",
+				note:
+					"Meta-analysis of 15 randomized trials and more than 25,000 participants; PrEP was effective in key high-risk populations and efficacy was strongly associated with adherence.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Type 1 Human Immunodeficiency Virus (HIV-1) Incidence, Adherence, and Drug Resistance in Individuals Taking Daily Emtricitabine/Tenofovir Disoproxil Fumarate for HIV-1 Pre-exposure Prophylaxis",
+				publisher: "Clinical Infectious Diseases",
+				year: 2024,
+				url: "https://doi.org/10.1093/cid/ciae143",
+				doi: "10.1093/cid/ciae143",
+				stance: "supports",
+				note:
+					"Pooled analysis of 72 global studies showing daily oral F/TDF PrEP is safe and highly effective across diverse settings, with measured adherence strongly tied to incidence.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Safety and efficacy of long-acting injectable cabotegravir as preexposure prophylaxis to prevent HIV acquisition",
+				publisher: "AIDS",
+				year: 2023,
+				url: "https://doi.org/10.1097/QAD.0000000000003494",
+				doi: "10.1097/QAD.0000000000003494",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis finding long-acting injectable cabotegravir highly efficacious compared with oral PrEP in efficacy studies, with resistance and pregnancy-data caveats.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
