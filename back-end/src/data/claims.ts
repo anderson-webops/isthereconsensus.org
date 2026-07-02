@@ -1328,6 +1328,193 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Are nicotine e-cigarettes less harmful than smoking, and do they help people quit?",
+		slug: "are-nicotine-e-cigarettes-less-harmful-than-smoking-and-do-they-help-people-quit",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		bottomLine:
+			"Usually yes for adults who smoke, but only with careful boundaries. Completely switching from combustible cigarettes to regulated nicotine e-cigarettes likely reduces exposure to many toxicants, and Cochrane finds nicotine e-cigarettes can help more adults stop smoking than nicotine replacement therapy. They are not safe, not appropriate for youth or non-smokers, and dual use does not provide the full harm-reduction benefit.",
+		stableCore: [
+			"Combustible cigarettes remain far more hazardous because smoke contains thousands of chemicals and many established carcinogens and toxicants.",
+			"National Academies concluded that e-cigarette aerosol generally contains fewer numbers and lower levels of most toxicants than combustible cigarette smoke, while still containing nicotine and potentially toxic substances.",
+			"Cochrane's living review reports that nicotine e-cigarettes help more adults stop smoking for at least six months than nicotine replacement therapy, with roughly 8 to 11 quitters per 100 users versus about 6 per 100 for NRT.",
+			"CDC and FDA both emphasize the same condition: any potential benefit is for non-pregnant adults who smoke and switch completely away from smoked tobacco products."
+		],
+		openQuestions: [
+			"What are the long-term health outcomes of exclusive e-cigarette use over decades, especially for newer high-nicotine and disposable products?",
+			"How should policy preserve adult smoking-cessation value while minimizing youth initiation, flavored-product appeal, and black-market or unauthorized product risks?",
+			"How often do adults who try e-cigarettes actually switch completely rather than continuing long-term dual use?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term epidemiology showing that exclusive regulated e-cigarette use has morbidity and mortality comparable to combustible cigarette smoking.",
+			"Large, high-quality randomized or pragmatic evidence showing nicotine e-cigarettes do not improve sustained smoking cessation compared with established therapies.",
+			"Population-level evidence showing adult switching benefits are consistently outweighed by youth initiation and later combustible-tobacco uptake under real-world regulation."
+		],
+		misconceptions: [
+			"'Less harmful than smoking' is often misstated as 'safe,' which is not what the evidence says.",
+			"Dual use is sometimes treated as harm reduction even though the main potential benefit depends on complete switching away from smoked tobacco.",
+			"Evidence that e-cigarettes can help adult smokers quit does not imply that non-smokers, youth, or pregnant people should start vaping."
+		],
+		editorSummary:
+			"This page should model a two-truths-at-once answer: nicotine e-cigarettes can be harm-reducing and useful for some adult smokers, while still being addictive, non-safe products that require strong youth protections and complete-switching caveats.",
+		uncertaintySummary:
+			"The relative toxicant and adult cessation direction is fairly consistent, but long-term exclusive-use outcomes, real-world dual-use patterns, product variation, and youth initiation make the public-health answer qualified rather than simple.",
+		searchCutoffAt: "2026-07-02T22:33:57.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:33:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:33:57.000Z",
+				kind: "publication",
+				summary:
+					"Initial adult e-cigarette harm-reduction and cessation claim page published from Cochrane, National Academies, CDC, and FDA sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Can electronic cigarettes help people stop smoking, and do they have any unwanted effects when used for this purpose?",
+				publisher: "Cochrane",
+				year: 2025,
+				url:
+					"https://www.cochrane.org/evidence/CD010216_can-electronic-cigarettes-help-people-stop-smoking-and-do-they-have-any-unwanted-effects-when-used",
+				doi: "10.1002/14651858.CD010216.pub9",
+				stance: "supports",
+				note:
+					"Decision-weight smoking-cessation source reporting high-certainty evidence that nicotine e-cigarettes increase quit rates compared with nicotine replacement therapy.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Public Health Consequences of E-Cigarettes: Summary",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2018,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK507163/",
+				doi: "10.17226/24952",
+				stance: "supports",
+				note:
+					"Assessment anchor for lower toxicant exposure than combustible cigarettes, dependence risk, product variability, and the public-health balance between adult cessation and youth initiation.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "E-Cigarette Use Among Adults",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/tobacco/e-cigarettes/adults.html",
+				stance: "context",
+				note:
+					"Public-health context stating that no e-cigarette is FDA-approved to help people quit smoking and that potential benefit depends on complete substitution by non-pregnant adults who smoke.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "E-Cigarettes, Vapes, and other Electronic Nicotine Delivery Systems",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/tobacco-products/products-ingredients-components/e-cigarettes-vapes-and-other-electronic-nicotine-delivery-systems-ends",
+				stance: "context",
+				note:
+					"Current regulatory context: FDA says switching completely may reduce exposure for adults who smoke, but e-cigarettes are not risk-free and youth or adults who do not use tobacco should not start.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Are e-cigarettes safe for kids and teens?",
+		slug: "are-e-cigarettes-safe-for-kids-and-teens",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"No. U.S. and global public-health authorities agree that e-cigarettes are not safe for children, teens, or young adults. Most contain nicotine, youth users often use flavored and disposable products, and adolescent nicotine exposure can harm brain development, cause dependence, and increase risk of later cigarette smoking.",
+		stableCore: [
+			"CDC states that no tobacco products, including e-cigarettes, are safe for children, teens, and young adults.",
+			"FDA's 2025 National Youth Tobacco Survey analysis found that e-cigarettes remained the most commonly used tobacco product among U.S. middle and high school students, with 5.2% reporting current use.",
+			"Among current youth e-cigarette users in 2025, FDA reported daily use by 27.5%, use on at least 20 of the last 30 days by 41.2%, and flavored e-cigarette use by 89.4%.",
+			"CDC and WHO warn that nicotine is highly addictive and can harm adolescent brain development; e-cigarette aerosol can also contain harmful chemicals, metals, fine particles, and flavoring chemicals that are safe to eat but not necessarily safe to inhale."
+		],
+		openQuestions: [
+			"How much will youth use shift from e-cigarettes to nicotine pouches or other emerging nicotine products as markets and enforcement change?",
+			"Which prevention policies reduce youth initiation without unintentionally increasing combustible cigarette use among adults who smoke?",
+			"What are the long-term respiratory, cardiovascular, oral-health, and mental-health outcomes for adolescents who start with modern disposable or high-nicotine products?"
+		],
+		whatWouldChangeMinds: [
+			"Major CDC, FDA, WHO, or Surgeon General reassessments concluding that youth e-cigarette use is safe or carries negligible addiction and developmental risk.",
+			"Long-term studies showing no meaningful adolescent nicotine dependence, brain-development, respiratory, or later-smoking risks from youth vaping.",
+			"Market surveillance showing youth exposure and use have become negligible across product types and no longer require dedicated prevention guidance."
+		],
+		misconceptions: [
+			"Flavors and sleek devices can make e-cigarettes look harmless even when they deliver addictive nicotine.",
+			"Lower toxicant exposure than cigarettes for adult smokers does not make vaping safe for teens who otherwise would not use nicotine.",
+			"Some teens believe vaping only water vapor, but e-cigarette aerosol can contain nicotine, ultrafine particles, volatile organic compounds, heavy metals, and other harmful substances."
+		],
+		editorSummary:
+			"This page should be less ambivalent than the adult-smoker page. The consensus boundary is clear: youth and non-smokers should not use e-cigarettes, even though separate adult cessation evidence can be favorable in a complete-switching context.",
+		uncertaintySummary:
+			"The main youth-safety answer is high-certainty. The moving pieces are product markets, enforcement, flavor/device shifts, and the exact size of long-term harms for newer product generations.",
+		searchCutoffAt: "2026-07-02T22:33:57.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:33:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:33:57.000Z",
+				kind: "publication",
+				summary:
+					"Initial youth e-cigarette safety claim page published from CDC, FDA National Youth Tobacco Survey, WHO, and Surgeon General sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Health Effects of Vaping",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/tobacco/e-cigarettes/health-effects.html",
+				stance: "supports",
+				note:
+					"Primary public-health anchor stating that e-cigarettes are not safe, should not be used by youth, and can expose users to nicotine and harmful aerosol constituents.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Results from the Annual National Youth Tobacco Survey",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/tobacco-products/youth-and-tobacco/results-annual-national-youth-tobacco-survey-nyts",
+				stance: "supports",
+				note:
+					"Current surveillance source reporting 2025 youth e-cigarette prevalence, frequent use, daily use, flavored-product use, and disposable-device dominance.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Tobacco: E-cigarettes",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/questions-and-answers/item/tobacco-e-cigarettes",
+				stance: "supports",
+				note:
+					"Global public-health context warning that e-cigarettes are harmful and not safe, and that nicotine in children and adolescents has negative impacts on brain development.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "E-Cigarette Use Among Youth and Young Adults: A Report of the Surgeon General",
+				publisher: "U.S. Surgeon General / NCBI Bookshelf",
+				year: 2016,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK538680/",
+				pmid: "30869850",
+				stance: "supports",
+				note:
+					"Surgeon General assessment focused on youth and young adults, the precautionary principle, youth marketing, adolescent initiation, and known health risks.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does fluoride in community drinking water prevent tooth decay, and is it safe at recommended levels?",
 		slug: "does-fluoride-in-community-drinking-water-prevent-tooth-decay-and-is-it-safe",
 		status: "published",
@@ -2459,6 +2646,86 @@ const rawClaims: SeedClaim[] = [
 				url: "https://evolution.berkeley.edu/teach-evolution/misconceptions-about-evolution/",
 				stance: "context",
 				note: "Helpful when explaining why the everyday phrase 'just a theory' misreads scientific terminology.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does nicotine harm brain development into the mid-20s?",
+		slug: "does-nicotine-harm-brain-development-into-the-mid-20s",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		bottomLine:
+			"Yes. Public-health authorities warn that nicotine exposure during adolescence and young adulthood can harm brain development, which continues until about age 25. The strongest practical consensus is prevention-focused: youth and young adults should avoid nicotine products, including e-cigarettes and pouches, because nicotine is addictive and can affect attention, learning, mood, and impulse control.",
+		stableCore: [
+			"CDC states that nicotine can harm brain development, which continues until about age 25.",
+			"CDC also warns that youth can show signs of nicotine addiction quickly, sometimes before regular or daily use.",
+			"WHO warns that nicotine consumption in children and adolescents has negative impacts on brain development, with possible long-term consequences for learning and anxiety disorders.",
+			"Surgeon General materials treat adolescent nicotine exposure as a public-health concern because most tobacco use starts during youth and because early nicotine exposure can shape addiction risk."
+		],
+		openQuestions: [
+			"Which cognitive, mood, and impulse-control effects are most persistent after nicotine cessation versus reversible with time and treatment?",
+			"How do risk profiles differ across cigarettes, e-cigarettes, nicotine pouches, nicotine concentration, frequency, and co-use with cannabis or alcohol?",
+			"How should prevention messages distinguish nicotine risks in youth from medically supervised nicotine replacement for adults trying to quit smoking?"
+		],
+		whatWouldChangeMinds: [
+			"Major CDC, WHO, or Surgeon General reassessments finding that adolescent nicotine exposure does not materially affect brain development or addiction risk.",
+			"Long-term human studies showing no meaningful cognitive, mood, impulse-control, or dependence-related harm from adolescent nicotine exposure across product types.",
+			"Evidence that modern non-combustible nicotine products used by youth do not deliver enough nicotine to create dependence or neurodevelopmental concern."
+		],
+		misconceptions: [
+			"'It is not smoke' is often mistaken for 'it cannot affect the brain,' even though nicotine itself is the addictive neuroactive exposure.",
+			"Some people treat nicotine as an adult-only concern, but adolescence is a period of heightened vulnerability to dependence.",
+			"Adult cessation use of nicotine replacement is sometimes conflated with recreational youth nicotine exposure."
+		],
+		editorSummary:
+			"This page should anchor the youth vaping and nicotine-pouch pages. Keep the wording on 'can harm' and 'development continues until about 25' rather than overstating irreversible outcomes for every user.",
+		uncertaintySummary:
+			"The prevention consensus is strong, but exact effect sizes, reversibility, and product-specific risk levels are still harder to pin down in humans because exposure patterns, co-use, and social context vary.",
+		searchCutoffAt: "2026-07-02T22:33:57.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:33:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:33:57.000Z",
+				kind: "publication",
+				summary:
+					"Initial adolescent nicotine brain-development claim page published from CDC, WHO, and Surgeon General sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Health Effects of Vaping",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/tobacco/e-cigarettes/health-effects.html",
+				stance: "supports",
+				note:
+					"Primary anchor for the about-age-25 brain-development statement, rapid youth nicotine addiction, and attention, learning, mood, and impulse-control risks.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Tobacco: E-cigarettes",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/questions-and-answers/item/tobacco-e-cigarettes",
+				stance: "supports",
+				note:
+					"Global public-health anchor stating that nicotine in children and adolescents negatively affects brain development and may lead to learning and anxiety consequences.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "E-Cigarette Use Among Youth and Young Adults: A Report of the Surgeon General",
+				publisher: "U.S. Surgeon General / NCBI Bookshelf",
+				year: 2016,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK538680/",
+				pmid: "30869850",
+				stance: "supports",
+				note:
+					"Surgeon General assessment explaining why youth and young-adult e-cigarette exposure is a distinct public-health concern rather than an adult cessation question.",
 				order: 3
 			}
 		]
