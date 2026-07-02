@@ -2717,6 +2717,273 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does mammography screening reduce deaths from breast cancer?",
+		slug: "does-mammography-screening-reduce-deaths-from-breast-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		bottomLine:
+			"Yes, for people in recommended screening age groups. Mammography can lower the risk of dying from breast cancer by finding cancers earlier, but it does not prevent breast cancer and it also creates false positives, overdiagnosis, anxiety, and follow-up testing. Current USPSTF guidance recommends biennial screening mammography from ages 40 to 74 for people at average risk.",
+		stableCore: [
+			"USPSTF recommends biennial screening mammography for women aged 40 to 74 and concludes with moderate certainty that this has a moderate net benefit.",
+			"CDC states that regular mammograms can lower the risk of dying from breast cancer and that mammography is the best screening test for most women of screening age.",
+			"The 2024 USPSTF evidence report states that trials have established that screening mammography can reduce mortality risk, while the optimal age, interval, and modality details remain less certain.",
+			"A 2024 systematic review update reported randomized-trial evidence consistent with a 15% relative reduction in breast-cancer mortality from screening mammography, while also emphasizing low certainty for many benefit-harm details and no new no-screening RCTs."
+		],
+		openQuestions: [
+			"Should some people with dense breasts, family history, or other risk factors receive supplemental MRI or ultrasound after a negative mammogram?",
+			"How should screening be personalized for people older than 74, where direct evidence is insufficient?",
+			"Which screening interval and modality best balances mortality reduction, false positives, overdiagnosis, cost, and access for different risk groups?"
+		],
+		whatWouldChangeMinds: [
+			"Large, high-quality evidence showing no breast-cancer mortality reduction from guideline-concordant mammography screening in recommended age groups.",
+			"Major USPSTF, CDC, NCI, or comparable guideline reassessments withdrawing mammography screening recommendations for average-risk people aged 40 to 74.",
+			"Evidence that harms from guideline-concordant mammography screening substantially outweigh breast-cancer mortality benefits in the recommended age range."
+		],
+		misconceptions: [
+			"Mammography does not prevent breast cancer; it is intended to detect cancer earlier, when treatment is more likely to work.",
+			"A normal mammogram does not guarantee that no cancer is present, and an abnormal mammogram does not mean cancer is definitely present.",
+			"More screening is not automatically better; annual screening and supplemental imaging can add false positives and overdiagnosis without clear outcome gains for every person."
+		],
+		editorSummary:
+			"This page should be practical rather than celebratory. Mammography has real mortality benefit in the recommended age range, but readers should understand the tradeoffs and the open questions around dense breasts, older adults, and personalized schedules.",
+		uncertaintySummary:
+			"The direction of breast-cancer mortality benefit is strong enough for population recommendations from ages 40 to 74. Uncertainty is higher for supplemental imaging, screening after 74, annual versus biennial intervals, and overdiagnosis estimates.",
+		searchCutoffAt: "2026-07-02T23:32:58.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:32:58.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:32:58.000Z",
+				kind: "publication",
+				summary:
+					"Initial mammography screening claim page published from USPSTF, CDC, JAMA evidence report, and 2024 systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Breast Cancer: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2024,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/breast-cancer-screening",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for biennial screening mammography from ages 40 to 74 and insufficient evidence for screening after 74 or supplemental imaging after negative mammography in dense breasts.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Screening for Breast Cancer",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/breast-cancer/screening/index.html",
+				stance: "supports",
+				note:
+					"Current CDC public-facing source stating that regular mammograms can lower the risk of dying from breast cancer and summarizing USPSTF age and interval guidance.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Screening for Breast Cancer: Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2024,
+				url: "https://doi.org/10.1001/jama.2023.25844",
+				doi: "10.1001/jama.2023.25844",
+				stance: "supports",
+				note:
+					"USPSTF evidence report stating that trials established mammography can reduce mortality risk, while comparative evidence on intervals, age limits, DBT, and supplemental imaging remains incomplete.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Screening for breast cancer: a systematic review update to inform the Canadian Task Force on Preventive Health Care guideline",
+				publisher: "Systematic Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1186/s13643-024-02700-3",
+				doi: "10.1186/s13643-024-02700-3",
+				stance: "supports",
+				note:
+					"Recent systematic review update reporting RCT evidence of a 15% relative reduction in breast-cancer mortality, with absolute benefits varying by age and uncertainty about benefit-harm details.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does low-dose CT screening reduce lung cancer deaths in high-risk adults?",
+		slug: "does-low-dose-ct-screening-reduce-lung-cancer-deaths-in-high-risk-adults",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"Yes, in carefully selected high-risk adults. Low-dose CT screening reduces lung-cancer deaths among people with substantial smoking history, but it is not a general-population screening test. It can also produce false positives, incidental findings, overdiagnosis, radiation exposure, and invasive follow-up procedures, so eligibility and shared decision-making matter.",
+		stableCore: [
+			"USPSTF recommends annual low-dose CT screening for adults aged 50 to 80 who have at least a 20 pack-year smoking history and currently smoke or quit within the past 15 years.",
+			"USPSTF says screening should stop once a person has not smoked for 15 years or develops a health problem that substantially limits life expectancy or ability to have lung surgery.",
+			"The National Lung Screening Trial randomized 53,454 high-risk people and found low-dose CT reduced lung-cancer mortality by 20% compared with chest radiography.",
+			"The 2021 USPSTF evidence review found the NLST and NELSON trials both reduced lung-cancer mortality, but also documented false positives, invasive follow-up, overdiagnosis, incidental findings, distress, and rare radiation-induced cancer risk."
+		],
+		openQuestions: [
+			"Can risk-prediction models outperform simple age and pack-year criteria while improving equity and avoiding over-screening?",
+			"How should screening programs optimize nodule management so fewer false positives lead to unnecessary invasive procedures?",
+			"How can screening visits be paired with smoking-cessation support, since screening does not prevent most lung cancer deaths?"
+		],
+		whatWouldChangeMinds: [
+			"Large replicated randomized evidence showing no lung-cancer mortality reduction from well-implemented LDCT screening in high-risk adults.",
+			"Major USPSTF, NCI, CDC, or specialty-society reassessments withdrawing LDCT screening recommendations for the current high-risk eligibility group.",
+			"Evidence that modern LDCT screening harms outweigh mortality benefits even when eligibility, nodule management, and follow-up are guideline-concordant."
+		],
+		misconceptions: [
+			"Low-dose CT screening is not recommended for everyone; the benefit is concentrated in people at high lung-cancer risk from smoking history and age.",
+			"A negative CT scan does not make smoking safe, and screening is not a substitute for quitting.",
+			"Most positive findings are not cancer, so a positive screen often means follow-up imaging or evaluation rather than a confirmed diagnosis."
+		],
+		editorSummary:
+			"This page should pair the mortality result with the eligibility guardrails. LDCT is one of the rare cancer screening tests with randomized evidence for lung-cancer mortality reduction, but the public message needs to keep smoking cessation and false-positive harms visible.",
+		uncertaintySummary:
+			"The high-risk mortality benefit is strong. Remaining uncertainty is about best eligibility modeling, screening intervals after negative scans, follow-up protocols, equity, and implementation in real-world programs.",
+		searchCutoffAt: "2026-07-02T23:32:58.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:32:58.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:32:58.000Z",
+				kind: "publication",
+				summary:
+					"Initial low-dose CT lung-cancer screening claim page published from USPSTF, NCI NLST summary, JAMA evidence review, and NLST randomized-trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Lung Cancer: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2021,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for annual LDCT screening in adults aged 50 to 80 with at least 20 pack-years who currently smoke or quit within 15 years.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "National Lung Screening Trial (NLST)",
+				publisher: "National Cancer Institute",
+				url: "https://www.cancer.gov/types/lung/research/nlst",
+				stance: "supports",
+				note:
+					"NCI public summary reporting a 15% to 20% lower risk of lung-cancer death with low-dose helical CT compared with standard chest x-ray among high-risk participants.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Screening for Lung Cancer With Low-Dose Computed Tomography: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2021,
+				url: "https://doi.org/10.1001/jama.2021.0377",
+				doi: "10.1001/jama.2021.0377",
+				stance: "supports",
+				note:
+					"USPSTF evidence review finding the NLST and NELSON trials reduced lung-cancer mortality while also quantifying false positives, invasive follow-up, overdiagnosis, and incidental findings.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Reduced Lung-Cancer Mortality with Low-Dose Computed Tomographic Screening",
+				publisher: "New England Journal of Medicine",
+				year: 2011,
+				url: "https://doi.org/10.1056/NEJMoa1102873",
+				doi: "10.1056/NEJMoa1102873",
+				stance: "supports",
+				note:
+					"NLST randomized trial of 53,454 high-risk participants finding a 20% relative reduction in lung-cancer mortality and a 6.7% all-cause mortality reduction with LDCT compared with chest radiography.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Should PSA screening for prostate cancer be routine for every older man?",
+		slug: "should-psa-screening-for-prostate-cancer-be-routine-for-every-older-man",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"No. PSA screening can slightly reduce prostate-cancer death for some men aged 55 to 69, but the net benefit is small and depends strongly on values, life expectancy, baseline risk, and tolerance for false positives, biopsy harms, overdiagnosis, and treatment side effects. Current USPSTF guidance recommends individual decision-making from ages 55 to 69 and recommends against routine PSA screening at age 70 and older.",
+		stableCore: [
+			"USPSTF concludes that the net benefit of PSA-based screening for men aged 55 to 69 is small for some men and should be an individual decision after discussing benefits and harms.",
+			"USPSTF recommends against PSA-based screening in men aged 70 and older because expected harms do not outweigh potential benefits.",
+			"USPSTF estimates screening may prevent about 1.3 prostate-cancer deaths and about 3 metastatic prostate-cancer cases per 1000 men screened over roughly 13 years, with no all-cause mortality reduction in current trial results.",
+			"The 2018 JAMA evidence review found PSA screening may reduce prostate-cancer mortality risk but is associated with false positives, biopsy complications, overdiagnosis, and urinary and sexual harms from treatment."
+		],
+		openQuestions: [
+			"How should screening decisions change for men with higher baseline risk, including Black men, men with a strong family history, or men with germline cancer-risk variants?",
+			"Can MRI, risk calculators, and newer biomarkers reduce unnecessary biopsies and overdiagnosis while preserving mortality benefit?",
+			"What PSA thresholds, retesting intervals, and active-surveillance strategies best reduce overtreatment in modern practice?"
+		],
+		whatWouldChangeMinds: [
+			"Strong evidence that routine PSA screening produces a large prostate-cancer or all-cause mortality benefit with much lower overdiagnosis and treatment-harm rates than current evidence suggests.",
+			"Major USPSTF, CDC, NCI, or urology guideline revisions recommending routine PSA screening for all older men regardless of values, health status, and risk.",
+			"Large modern trials showing risk-adapted PSA-plus-MRI screening clearly improves hard outcomes with a favorable harm profile across broad populations."
+		],
+		misconceptions: [
+			"A PSA test is not a cancer diagnosis; elevated PSA can come from benign enlargement, inflammation, recent procedures, or other non-cancer causes.",
+			"Finding more prostate cancers is not automatically better because some screen-detected cancers would never cause symptoms or death.",
+			"Declining routine PSA screening after informed discussion is not the same as ignoring symptoms or refusing diagnostic evaluation when symptoms or high-risk findings exist."
+		],
+		editorSummary:
+			"This page should model nuance. PSA screening is not quackery and not a slam dunk: it can prevent a small number of prostate-cancer deaths for some men, but routine population-style testing creates enough downstream harm that shared decision-making is the consensus position.",
+		uncertaintySummary:
+			"The broad consensus is against routine PSA screening for every older man and for individualized decisions from ages 55 to 69. Uncertainty remains around higher-risk groups, MRI-based pathways, newer biomarkers, and modern active-surveillance strategies.",
+		searchCutoffAt: "2026-07-02T23:32:58.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:32:58.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:32:58.000Z",
+				kind: "publication",
+				summary:
+					"Initial PSA screening claim page published from USPSTF, CDC, and 2018 JAMA evidence-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Prostate Cancer: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2018,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for shared decision-making from ages 55 to 69, against routine screening at age 70 and older, and quantified small benefit estimates.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Should I Get Screened for Prostate Cancer?",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/prostate-cancer/screening/get-screened.html",
+				stance: "supports",
+				note:
+					"Current CDC public-facing source summarizing USPSTF guidance, individual decision-making for ages 55 to 69, no routine screening after 70, and the main screening harms.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Prostate-Specific Antigen-Based Screening for Prostate Cancer: Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2018,
+				url: "https://doi.org/10.1001/jama.2018.3712",
+				doi: "10.1001/jama.2018.3712",
+				stance: "supports",
+				note:
+					"USPSTF evidence review finding possible prostate-cancer mortality reduction but also false positives, biopsy complications, overdiagnosis, and sexual and urinary harms from active treatment.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does quitting smoking reduce health risks even after years of smoking?",
 		slug: "does-quitting-smoking-reduce-health-risks-even-after-years-of-smoking",
 		status: "published",
