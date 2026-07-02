@@ -2347,6 +2347,283 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Do antibiotics treat colds, flu, or most viral respiratory infections?",
+		slug: "do-antibiotics-treat-colds-flu-or-most-viral-respiratory-infections",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. Antibiotics treat bacterial infections, not viral infections such as the common cold or flu. They can still be lifesaving when a bacterial infection is present, but using them for viral respiratory illness usually adds side-effect and resistance risk without helping the virus clear.",
+		stableCore: [
+			"CDC states that antibiotics do not work on viruses such as those that cause colds, flu, bronchitis, or runny noses, even when mucus is thick, yellow, or green.",
+			"CDC's common-cold guidance says the common cold should improve on its own and that antibiotics do not help people feel better when the illness is viral.",
+			"A 2023 Cochrane review of delayed, immediate, and no antibiotics for respiratory infections found similar outcomes for many symptoms and complications, with no-antibiotic strategies producing the least antibiotic use when clinicians judge that approach safe.",
+			"Clinical guidance still reserves antibiotics for bacterial conditions such as pneumonia, confirmed strep throat, selected bacterial sinusitis presentations, sepsis, and other infections where benefits outweigh risks."
+		],
+		openQuestions: [
+			"Which rapid tests and decision rules best separate bacterial from viral respiratory infections in everyday clinics?",
+			"How can clinicians reduce unnecessary antibiotic prescribing while keeping patient satisfaction and safety-net follow-up strong?",
+			"Which higher-risk patients need different thresholds because complications from respiratory infections are more likely?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized trials showing that antibiotics meaningfully improve viral cold or flu outcomes without offsetting harms.",
+			"Evidence that common viral respiratory illnesses usually contain a bacterial target that responds to antibiotics under ordinary outpatient conditions.",
+			"A major CDC, ACP, IDSA, Cochrane, or WHO reassessment reversing current guidance for common viral respiratory infections."
+		],
+		misconceptions: [
+			"Colored mucus can happen during viral illness and does not automatically mean antibiotics are needed.",
+			"Feeling very sick does not by itself prove a bacterial infection; flu, COVID-19, RSV, and other viruses can cause severe symptoms.",
+			"Saving leftover antibiotics for a future cold can delay correct care and expose people to side effects or resistant bacteria."
+		],
+		editorSummary:
+			"This page should be useful at the moment someone wants antibiotics for a cold: antibiotics are not anti-virus drugs, but the page should also avoid implying that antibiotics are bad when they are genuinely indicated.",
+		uncertaintySummary:
+			"The core viral-infection claim is settled. Uncertainty is mainly diagnostic and clinical: which symptoms, tests, patient risks, and follow-up plans justify antibiotics for a possible bacterial infection.",
+		searchCutoffAt: "2026-07-02T23:03:13.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:03:13.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:03:13.000Z",
+				kind: "publication",
+				summary:
+					"Initial antibiotics and viral respiratory infections claim page published from CDC public guidance, ACP/CDC clinical advice, and Cochrane respiratory-infection prescribing evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Manage Common Cold",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/common-cold/treatment/index.html",
+				stance: "supports",
+				note:
+					"Current CDC common-cold guidance stating that the common cold has no cure, should improve on its own, and is not helped by antibiotics when viral.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Antibiotics Aren't Always the Answer",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/antibiotic-use/media/pdfs/Antibiotics-Arent-Always-the-Answer-P.pdf",
+				stance: "supports",
+				note:
+					"CDC public-health handout explaining that antibiotics treat certain bacterial infections, not viruses such as colds, flu, bronchitis, or runny noses, and can cause side effects when unnecessary.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Immediate versus delayed versus no antibiotics for respiratory infections",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2023,
+				url: "https://doi.org/10.1002/14651858.CD004417.pub6",
+				doi: "10.1002/14651858.CD004417.pub6",
+				stance: "supports",
+				note:
+					"Decision-weight review of 12 studies and 3,968 participants; no-antibiotic or delayed strategies reduced antibiotic use while maintaining similar outcomes where immediate antibiotics were not needed.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title:
+					"Appropriate Antibiotic Use for Acute Respiratory Tract Infection in Adults: Advice for High-Value Care From the American College of Physicians and the Centers for Disease Control and Prevention",
+				publisher: "Annals of Internal Medicine",
+				year: 2016,
+				url: "https://doi.org/10.7326/M15-1840",
+				doi: "10.7326/M15-1840",
+				stance: "supports",
+				note:
+					"ACP/CDC clinical advice not to prescribe antibiotics for the common cold and not to initiate antibiotics for bronchitis unless pneumonia is suspected.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does regular physical activity reduce the risk of early death and chronic disease?",
+		slug: "does-regular-physical-activity-reduce-the-risk-of-early-death-and-chronic-disease",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"Yes. Regular physical activity is one of the clearest prevention signals in public health. The strongest benefits are seen when inactive adults add activity, with lower risks of all-cause mortality, cardiovascular disease, type 2 diabetes, several cancers, falls, depression, and dementia.",
+		stableCore: [
+			"WHO states that insufficiently active people have a 20-30% increased risk of death compared with sufficiently active people.",
+			"WHO and CDC guidance links regular physical activity with lower all-cause mortality, cardiovascular disease, type 2 diabetes, site-specific cancers, depression, dementia, and falls.",
+			"A 2023 dose-response meta-analysis covered 196 articles, 94 cohorts, and more than 30 million participants; activity equivalent to 150 minutes per week of moderate-to-vigorous aerobic activity was associated with lower all-cause, cardiovascular, and cancer mortality.",
+			"The dose-response curve is nonlinear: the biggest marginal gains usually come from moving from inactive to somewhat active, while additional gains above guideline levels become smaller and less certain."
+		],
+		openQuestions: [
+			"How should guidance personalize type, intensity, and volume of activity for age, disability, pregnancy, chronic illness, and injury risk?",
+			"Which community, workplace, school, and transportation policies produce durable increases in physical activity?",
+			"How much of the observed association for some outcomes is causal versus influenced by baseline health and other confounding factors?"
+		],
+		whatWouldChangeMinds: [
+			"Large bodies of prospective, randomized, or natural-experiment evidence showing no health benefit from increased physical activity after accounting for baseline health.",
+			"Major WHO, CDC, or national guideline reassessments withdrawing physical activity as a core prevention recommendation.",
+			"Mechanistic and clinical evidence showing that improved cardiorespiratory fitness, muscle strength, glycemic control, blood pressure, and inflammation do not translate into meaningful health benefits."
+		],
+		misconceptions: [
+			"Exercise does not have to mean gym workouts; walking, cycling, dancing, yard work, active transport, and household movement can count.",
+			"The 150-minute target is not a cliff; smaller increases from inactivity still appear beneficial.",
+			"Physical activity reduces risk, but it is not a guarantee against disease and should not be used to blame people for illness."
+		],
+		editorSummary:
+			"This page should help readers act without sounding moralistic. The consensus is strong that movement matters, but the most useful public message is that some activity is better than none and that practical, enjoyable movement is more sustainable than perfection.",
+		uncertaintySummary:
+			"The broad prevention claim is strong across guidelines and very large cohort syntheses. Uncertainty is highest for exact dose, causal size for specific diseases, and how best to increase activity equitably in real communities.",
+		searchCutoffAt: "2026-07-02T23:03:13.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:03:13.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:03:13.000Z",
+				kind: "publication",
+				summary:
+					"Initial physical activity and chronic-disease prevention claim page published from WHO, CDC, and large dose-response meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Physical activity",
+				publisher: "World Health Organization",
+				year: 2024,
+				url: "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+				stance: "supports",
+				note:
+					"WHO fact sheet summarizing mortality risk from insufficient activity, prevention of noncommunicable diseases, and the global 150-minute recommendation baseline.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Benefits of Physical Activity",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/physical-activity-basics/benefits/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health guidance for the 150-minute weekly moderate-activity benchmark and reduced risk of heart disease, stroke, type 2 diabetes, and metabolic syndrome.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Health Benefits of Physical Activity for Adults",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/physical-activity-basics/health-benefits/adults.html",
+				stance: "supports",
+				note:
+					"CDC adult-benefits page listing long-term lower risk of heart disease, stroke, type 2 diabetes, eight cancers, depression, dementia, and falls.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Non-occupational physical activity and risk of cardiovascular disease, cancer and mortality outcomes: a dose-response meta-analysis of large prospective studies",
+				publisher: "British Journal of Sports Medicine",
+				year: 2023,
+				url: "https://doi.org/10.1136/bjsports-2022-105669",
+				doi: "10.1136/bjsports-2022-105669",
+				stance: "supports",
+				note:
+					"Decision-weight synthesis of 196 articles and 94 cohorts with more than 30 million participants; 8.75 mMET-hours/week was associated with lower all-cause, cardiovascular, and cancer mortality.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does colorectal cancer screening reduce deaths?",
+		slug: "does-colorectal-cancer-screening-reduce-deaths",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Colorectal cancer screening reduces deaths from colorectal cancer, and some screening methods also reduce cancer incidence by finding and removing precancerous polyps. The benefit depends on using an evidence-based test on schedule and completing follow-up colonoscopy after abnormal results.",
+		stableCore: [
+			"USPSTF recommends screening average-risk adults from ages 45 to 75, with high certainty of substantial net benefit for ages 50 to 75 and moderate net benefit for ages 45 to 49.",
+			"NCI states that, based on solid evidence, screening for colorectal cancer reduces colorectal-cancer mortality and that some modalities reduce incidence.",
+			"Cochrane fecal occult blood test evidence found a 16% relative reduction in colorectal-cancer mortality in randomized trials, with greater benefit among people who attended screening.",
+			"Flexible sigmoidoscopy trials show reductions in both colorectal-cancer incidence and mortality; evidence for colonoscopy and FIT also supports benefit, though the exact evidence base differs by test."
+		],
+		openQuestions: [
+			"Which screening strategy is best for a specific person depends on access, preferences, risk, test frequency, bowel preparation, sedation, and ability to complete follow-up.",
+			"How should screening continue or stop from ages 76 to 85, when benefit depends more strongly on health status, prior screening, and life expectancy?",
+			"How can health systems close screening and follow-up gaps that drive avoidable colorectal-cancer deaths?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized or high-quality comparative-effectiveness evidence showing no colorectal-cancer mortality reduction from recommended screening strategies with appropriate follow-up.",
+			"Major USPSTF, NCI, CDC, Cochrane, or specialty-society reassessments withdrawing screening recommendations for average-risk adults.",
+			"Evidence that harms from recommended screening and follow-up exceed mortality and incidence benefits in the target age groups."
+		],
+		misconceptions: [
+			"Screening is sometimes treated as one test, but stool tests, flexible sigmoidoscopy, CT colonography, stool DNA-FIT, and colonoscopy have different intervals, tradeoffs, and evidence bases.",
+			"A negative stool test does not permanently rule out cancer; repeat testing on schedule is part of the screening strategy.",
+			"A positive stool-based test is not the endpoint; colonoscopy follow-up is needed for the screening benefit to be achieved."
+		],
+		editorSummary:
+			"This page should be action-oriented: colorectal screening is a real mortality-reduction intervention, but the practical benefit comes from choosing a feasible test, repeating it at the right interval, and completing follow-up.",
+		uncertaintySummary:
+			"The mortality-reduction claim is strong. Remaining uncertainty is mostly comparative and implementation-focused: which test is best for whom, how to maximize adherence and follow-up, and where screening should stop in older adults.",
+		searchCutoffAt: "2026-07-02T23:03:13.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:03:13.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:03:13.000Z",
+				kind: "publication",
+				summary:
+					"Initial colorectal-cancer screening mortality claim page published from USPSTF, NCI, Cochrane, and 2025 umbrella-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Colorectal Cancer: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2021,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/colorectal-cancer-screening",
+				stance: "supports",
+				note:
+					"Primary U.S. screening recommendation: all average-risk adults 45 to 75 should be screened, with test options and selective screening for ages 76 to 85.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Colorectal Cancer Screening (PDQ) - Health Professional Version",
+				publisher: "National Cancer Institute",
+				url: "https://www.cancer.gov/types/colorectal/hp/colorectal-screening-pdq",
+				stance: "supports",
+				note:
+					"NCI evidence summary stating that solid evidence shows colorectal-cancer screening reduces colorectal-cancer mortality and that some modalities reduce incidence.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Cochrane Systematic Review of Colorectal Cancer Screening Using the Fecal Occult Blood Test (Hemoccult): An Update",
+				publisher: "The American Journal of Gastroenterology",
+				year: 2008,
+				url: "https://doi.org/10.1111/j.1572-0241.2008.01875.x",
+				doi: "10.1111/j.1572-0241.2008.01875.x",
+				stance: "supports",
+				note:
+					"Review of four randomized trials with more than 320,000 participants, finding a 16% relative reduction in colorectal-cancer mortality with FOBT screening.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Accuracy and long-term effectiveness of established screening modalities and strategies in colorectal cancer screening: An umbrella review",
+				publisher: "International Journal of Cancer",
+				year: 2025,
+				url: "https://doi.org/10.1002/ijc.35381",
+				doi: "10.1002/ijc.35381",
+				stance: "supports",
+				note:
+					"Recent umbrella review finding convincing evidence that flexible sigmoidoscopy reduces colorectal-cancer incidence and mortality and that gFOBT reduces colorectal-cancer mortality.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
