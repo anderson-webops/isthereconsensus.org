@@ -944,6 +944,102 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does the HPV vaccine cause fertility problems?",
+		slug: "does-the-hpv-vaccine-cause-fertility-problems",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"No. Major vaccine-safety reviews and large observational studies do not support claims that HPV vaccination causes infertility or premature ovarian insufficiency. The better-supported fertility concern runs in the opposite direction: HPV-related cervical cancer and some treatments for cervical precancer or cancer can threaten future fertility.",
+		stableCore: [
+			"CDC says HPV vaccine does not cause fertility problems and notes that cervical cancer treatment can sometimes limit the ability to have children.",
+			"WHO's Global Advisory Committee on Vaccine Safety concluded that available data do not support an association between HPV vaccination and infertility or premature ovarian insufficiency.",
+			"Cochrane's broad 2025 HPV-vaccination evidence review found moderate-certainty evidence that HPV vaccination likely does not increase infertility risk.",
+			"A Danish nationwide cohort of 996,300 girls and women found no association between quadrivalent HPV vaccination and primary ovarian insufficiency diagnoses."
+		],
+		openQuestions: [
+			"How can clinicians communicate rare-event surveillance limits without implying that unsupported fertility fears are equally plausible?",
+			"How much can HPV vaccination indirectly protect fertility by preventing cervical precancer, cervical cancer, and fertility-threatening treatment?",
+			"How should safety monitoring continue as vaccine schedules, vaccine valency, and vaccinated cohorts age?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled cohort or registry studies showing a reproducible increase in infertility or premature ovarian insufficiency after HPV vaccination.",
+			"A major CDC, WHO, Cochrane, or national vaccine-safety reassessment finding a causal fertility signal after accounting for surveillance bias and background rates.",
+			"Strong mechanistic evidence plus human epidemiology showing that HPV vaccine components impair ovarian function or conception."
+		],
+		misconceptions: [
+			"Case reports and VAERS-style passive reports can generate safety signals, but they cannot by themselves prove that a vaccine caused infertility.",
+			"Lower pregnancy rates in vaccinated cohorts can reflect age, sexual activity, health-care access, or social differences rather than biological infertility.",
+			"Fertility fears often ignore that HPV-related disease and its treatment can be a real fertility risk."
+		],
+		editorSummary:
+			"This page should be a direct myth-correction companion to the HPV cancer-prevention page. The safest wording is not 'impossible,' but 'the evidence does not support a causal link and major safety bodies continue to monitor it.'",
+		uncertaintySummary:
+			"The practical answer is high-confidence: major safety bodies and large studies do not find a fertility harm signal. Remaining uncertainty is mostly rare-event surveillance and communication, not a balanced dispute over causation.",
+		searchCutoffAt: "2026-07-02T22:42:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:42:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:42:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial HPV vaccine fertility claim page published from CDC, WHO GACVS, Cochrane, and Danish nationwide cohort evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Impact of the HPV Vaccine",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/hpv/vaccination-impact/index.html",
+				stance: "supports",
+				note:
+					"CDC public-facing anchor stating that HPV vaccine does not cause fertility problems and that cervical cancer or precancer treatment can sometimes affect fertility or pregnancy.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Human papillomavirus vaccines and infertility",
+				publisher: "WHO Global Advisory Committee on Vaccine Safety",
+				year: 2019,
+				url:
+					"https://www.who.int/groups/global-advisory-committee-on-vaccine-safety/topics/human-papillomavirus-vaccines/infertility",
+				stance: "supports",
+				note:
+					"WHO GACVS assessment concluding that available data do not support an association between HPV vaccination and infertility or premature ovarian insufficiency.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "What are the benefits and risks of different human papillomavirus (HPV) vaccines for preventing cervical cancer?",
+				publisher: "Cochrane",
+				year: 2025,
+				url:
+					"https://www.cochrane.org/evidence/CD015363_what-are-benefits-and-risks-different-human-papillomavirus-hpv-vaccines-preventing-cervical-cancer",
+				doi: "10.1002/14651858.CD015363.pub2",
+				stance: "supports",
+				note:
+					"Large population-level review source reporting moderate-certainty evidence that HPV vaccination likely does not increase infertility risk.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Association Between Human Papillomavirus Vaccination and Primary Ovarian Insufficiency in a Nationwide Cohort",
+				publisher: "JAMA Network Open",
+				year: 2021,
+				url: "https://doi.org/10.1001/jamanetworkopen.2021.20391",
+				doi: "10.1001/jamanetworkopen.2021.20391",
+				pmid: "34431985",
+				stance: "supports",
+				note:
+					"Danish registry cohort of 996,300 girls and women finding no association between quadrivalent HPV vaccination and primary ovarian insufficiency.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do mRNA COVID-19 vaccines change your DNA?",
 		slug: "do-mrna-covid-19-vaccines-change-your-dna",
 		status: "published",
@@ -1878,6 +1974,179 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Nambour follow-up source reporting fewer primary melanomas and fewer invasive melanomas after assignment to daily sunscreen, with small event counts that require cautious wording.",
 				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Are modern sunscreens safe when used as directed, including 'chemical' sunscreens?",
+		slug: "are-modern-sunscreens-safe-when-used-as-directed-including-chemical-sunscreens",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"Yes, with regulatory nuance. Dermatology and public-health bodies continue to recommend FDA-regulated sunscreens as safe and beneficial when used as directed. FDA has asked for more data on several older organic sunscreen filters, which is not the same thing as finding them harmful, and mineral options remain available for people who prefer them.",
+		stableCore: [
+			"The American Academy of Dermatology says current scientific evidence does not show that sunscreen ingredients currently available in the United States are harmful to human health.",
+			"FDA regulates sunscreens as nonprescription drugs and says Americans should use sunscreen in combination with other sun-protective measures.",
+			"FDA's request for more data on several sunscreen ingredients does not mean the agency has concluded those ingredients are unsafe or told the public to stop using them.",
+			"In June 2026, FDA added bemotrizinol as a permitted sunscreen active ingredient and considered it generally recognized as safe and effective for adults and children 6 months and older."
+		],
+		openQuestions: [
+			"How should regulators resolve remaining data needs for older organic filters while keeping strong sun-protection messages clear?",
+			"How should public guidance communicate ingredient absorption findings without implying that absorption automatically means harm?",
+			"How should environmental concerns about some ingredients be separated from human-health safety for ordinary sunscreen use?"
+		],
+		whatWouldChangeMinds: [
+			"Well-conducted human evidence showing that correctly used sunscreen ingredients cause clinically meaningful harm that outweighs UV-protection benefits.",
+			"A major FDA, AAD, CDC, WHO, or cancer-prevention reassessment recommending against routine sunscreen use because of ingredient safety concerns.",
+			"New regulatory findings that currently common sunscreen active ingredients are not safe under labeled use conditions."
+		],
+		misconceptions: [
+			"'Chemical sunscreen' is often used as if chemical automatically means dangerous, even though all sunscreen ingredients are chemicals and safety depends on exposure and evidence.",
+			"FDA data requests are often misread as proof of harm rather than a call for better evidence under modern standards.",
+			"Homemade oils, beef tallow, or tanning routines are sometimes promoted as safer substitutes even though they do not provide regulated broad-spectrum UV protection."
+		],
+		editorSummary:
+			"This page should reduce fear without flattening the regulatory nuance. The useful answer is: keep using regulated sunscreen, choose mineral sunscreen if preferred, and do not treat 'more data needed' as a reason to abandon UV protection.",
+		uncertaintySummary:
+			"The recommendation to use sunscreen remains broad and stable. Uncertainty is concentrated in ingredient-specific data gaps, long-term exposure monitoring, and environmental effects, not in whether UV protection is beneficial.",
+		searchCutoffAt: "2026-07-02T22:42:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:42:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:42:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial sunscreen safety claim page published from AAD, FDA sunscreen guidance, FDA regulatory Q&A, and FDA 2026 bemotrizinol action."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Is sunscreen safe?",
+				publisher: "American Academy of Dermatology",
+				url:
+					"https://www.aad.org/public/everyday-care/sun-protection/shade-clothing-sunscreen/is-sunscreen-safe",
+				stance: "supports",
+				note:
+					"Primary dermatology anchor: AAD says science does not show currently available U.S. sunscreen ingredients are harmful and that FDA data requests are not instructions to stop using sunscreen.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Sunscreen: How to Help Protect Your Skin from the Sun",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+				stance: "supports",
+				note:
+					"Current FDA consumer guidance stating that FDA regulates sunscreens for safety and effectiveness and that sunscreen should be used with other sun-protective measures.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Questions and Answers: FDA posts deemed final order and proposed order for OTC sunscreen",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2021,
+				url:
+					"https://www.fda.gov/drugs/understanding-over-counter-medicines/questions-and-answers-fda-posts-deemed-final-order-and-proposed-order-over-counter-sunscreen",
+				stance: "context",
+				note:
+					"Regulatory nuance source distinguishing GRASE determinations, ingredients needing more data, and ingredients FDA proposed as not GRASE because of safety issues.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "FDA Expands Sunscreen Options for the First Time in 20 Years",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url: "https://www.fda.gov/news-events/press-announcements/fda-expands-sunscreen-options-first-time-20-years",
+				stance: "context",
+				note:
+					"Current regulatory update adding bemotrizinol as a permitted sunscreen active ingredient considered GRASE for adults and children 6 months and older.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Should you rely on sunscreen alone, or are clothing and shade more protective?",
+		slug: "should-you-rely-on-sunscreen-alone-or-are-clothing-and-shade-more-protective",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Do not rely on sunscreen alone. Sunscreen is useful, but major guidance recommends a layered strategy: shade, protective clothing, hats, sunglasses, limiting peak sun, and broad-spectrum sunscreen on exposed skin. Clothing and shade reduce exposure without depending as much on perfect application and reapplication.",
+		stableCore: [
+			"FDA says no sunscreen completely blocks UV radiation, so protective clothing, sunglasses, and shade are also needed.",
+			"CDC recommends shade, clothing, hats, sunglasses, and sunscreen, and notes that sunscreen or protective clothing is still useful even when staying in shade.",
+			"The Skin Cancer Foundation explicitly says sunscreen alone is not enough and recommends shade, sun-safe clothing, a wide-brimmed hat, and UV-blocking sunglasses.",
+			"Correct sunscreen use still matters: use enough, cover all exposed skin, reapply at least every two hours, and reapply more often after swimming or sweating."
+		],
+		openQuestions: [
+			"Which combinations of shade, clothing, sunscreen, and behavior produce the best real-world adherence for different ages, jobs, sports, and skin types?",
+			"How should advice vary by UV index, geography, season, altitude, cloud cover, reflective surfaces, and skin-cancer history?",
+			"How can guidance avoid making sun protection sound so burdensome that people skip it entirely?"
+		],
+		whatWouldChangeMinds: [
+			"Major CDC, FDA, WHO, dermatology, or cancer-prevention guidance concluding that sunscreen alone provides complete practical sun protection.",
+			"Strong real-world evidence that sunscreen-alone guidance prevents UV damage and skin cancers as well as layered sun protection under ordinary use conditions.",
+			"Evidence that shade and protective clothing do not meaningfully reduce UV exposure when used correctly."
+		],
+		misconceptions: [
+			"High SPF is often mistaken for all-day protection, even though reapplication and coverage still matter.",
+			"People sometimes use sunscreen to justify longer intentional tanning, which can erase protection benefits through extra exposure.",
+			"Shade is sometimes treated as complete protection, but reflected and scattered UV can still reach skin."
+		],
+		editorSummary:
+			"This page should help users act, not just believe. It should make sunscreen feel like one useful tool in a simple hierarchy: avoid peak UV when possible, cover up, seek shade, and use sunscreen on exposed skin.",
+		uncertaintySummary:
+			"The layered-protection recommendation is high-certainty. Remaining uncertainty is mostly behavioral: what people will actually do consistently, and how to tailor guidance without overcomplicating it.",
+		searchCutoffAt: "2026-07-02T22:42:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:42:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:42:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial sunscreen-alone versus shade-and-clothing claim page published from FDA, CDC, and Skin Cancer Foundation sun-safety guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Tips to Stay Safe in the Sun: From Sunscreen to Sunglasses",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url:
+					"https://www.fda.gov/consumers/consumer-updates/tips-stay-safe-sun-sunscreen-sunglasses",
+				stance: "supports",
+				note:
+					"Primary practical anchor for no sunscreen completely blocking UV radiation, the need for clothing, sunglasses, and shade, and reapplication guidance.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Sun Safety Facts",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/skin-cancer/sun-safety/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health guidance for shade, clothing, hats, sunglasses, sunscreen, UV index, and cloudy-day/reflected-UV context.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Sunscreen",
+				publisher: "Skin Cancer Foundation",
+				url: "https://www.skincancer.org/skin-cancer-prevention/sun-protection/sunscreen/",
+				stance: "supports",
+				note:
+					"Skin-cancer prevention guidance stating that sunscreen alone is not enough and should be combined with shade, sun-safe clothing, hats, and UV-blocking sunglasses.",
+				order: 3
 			}
 		]
 	},
