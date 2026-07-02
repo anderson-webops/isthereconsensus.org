@@ -1869,6 +1869,202 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does secondhand smoke cause cancer and heart disease in people who do not smoke?",
+		slug: "does-secondhand-smoke-cause-cancer-and-heart-disease-in-people-who-do-not-smoke",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. Surgeon General, CDC, NCI, and meta-analysis evidence agree that secondhand smoke causes serious disease in people who do not smoke, including lung cancer and cardiovascular disease. There is no risk-free level of exposure.",
+		stableCore: [
+			"CDC states that there is no safe level of exposure to secondhand smoke and that even brief exposure can cause harm.",
+			"Among U.S. adults who do not smoke, CDC reports nearly 34,000 premature heart-disease deaths and more than 7,300 lung-cancer deaths each year from secondhand smoke.",
+			"Adults who do not smoke but are exposed to secondhand smoke have about 20-30% higher lung-cancer risk, 25-30% higher coronary-heart-disease risk, and 20-30% higher stroke risk.",
+			"A 2024 systematic review and meta-analysis found a pooled relative risk of 1.24 for lung cancer among never-smokers exposed to secondhand smoke, with higher risk as exposure duration and intensity increased."
+		],
+		openQuestions: [
+			"Which home, multi-unit housing, workplace, and public-space policies most effectively reduce remaining exposure without widening enforcement inequities?",
+			"How should public-health messaging address smoke drift, thirdhand residue, and vaping aerosols while keeping the core secondhand-smoke evidence clear?",
+			"How can clinicians communicate risk without blaming household members who may be dealing with nicotine addiction?"
+		],
+		whatWouldChangeMinds: [
+			"Large, independently replicated exposure studies showing no dose-response relationship between secondhand smoke and lung cancer or cardiovascular outcomes after strong exposure measurement.",
+			"A Surgeon General, CDC, NCI, WHO, or National Academies reassessment reversing the causal conclusion for lung cancer or cardiovascular disease.",
+			"Mechanistic and epidemiologic evidence showing that measured secondhand-smoke constituents do not plausibly produce the observed vascular and cancer risks."
+		],
+		misconceptions: [
+			"Ventilation, open windows, or sitting in a separate area can reduce smell but do not make indoor secondhand smoke safe.",
+			"Because the exposed person is not smoking directly, people often underestimate cardiovascular effects from short exposures.",
+			"Relative-risk numbers can sound small, but population impact is large because exposure is common and heart disease is common."
+		],
+		editorSummary:
+			"This page should be direct about causation while separating individual risk from population burden. The consensus is not just that smoke is unpleasant; it causes cancer, cardiovascular disease, respiratory illness, and preventable deaths in people who do not smoke.",
+		uncertaintySummary:
+			"The causal conclusion is strong. Remaining uncertainty is mostly about residual exposure measurement, setting-specific policy effectiveness, and how best to communicate risk without overstating precision for every disease endpoint.",
+		searchCutoffAt: "2026-07-02T22:51:14.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:51:14.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:51:14.000Z",
+				kind: "publication",
+				summary:
+					"Initial secondhand-smoke disease claim page published from CDC, NCI, Surgeon General, and lung-cancer meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Health Problems Caused by Secondhand Smoke",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/tobacco/secondhand-smoke/health.html",
+				stance: "supports",
+				note:
+					"Current CDC anchor for no safe exposure level, immediate harm, U.S. mortality estimates, and risk increases for coronary heart disease, stroke, and lung cancer.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Secondhand Smoke Exposure",
+				publisher: "National Cancer Institute",
+				url: "https://cancercontrol.cancer.gov/brp/tcrb/secondhand-smoke-exposure",
+				stance: "supports",
+				note:
+					"NCI source summarizing causal links to lung cancer, respiratory and cardiovascular disease, plus Surgeon General estimates for lung-cancer, heart-disease, and stroke burden.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "The Health Consequences of Involuntary Exposure to Tobacco Smoke",
+				publisher: "U.S. Surgeon General",
+				year: 2006,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK44324/",
+				pmid: "20669524",
+				stance: "supports",
+				note:
+					"Foundational Surgeon General evidence review used to anchor the causal framing and the no-risk-free-level conclusion used in later CDC and NCI pages.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Association between second-hand smoke exposure and lung cancer risk in never-smokers: a systematic review and meta-analysis",
+				publisher: "European Respiratory Review",
+				year: 2024,
+				url: "https://doi.org/10.1183/16000617.0077-2024",
+				doi: "10.1183/16000617.0077-2024",
+				stance: "supports",
+				note:
+					"Decision-weight synthesis of 97 original articles; pooled relative risk for lung cancer was 1.24 among never-smokers exposed to secondhand smoke.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does radon in homes cause lung cancer?",
+		slug: "does-radon-in-homes-cause-lung-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"Yes. Radon is an invisible radioactive gas that can accumulate indoors, and major cancer, environmental-health, and radiation bodies agree that long-term residential radon exposure causes lung cancer. The risk is especially high for people who smoke.",
+		stableCore: [
+			"EPA estimates radon causes about 21,000 lung-cancer deaths each year in the United States and calls it the second leading cause of lung cancer overall.",
+			"CDC says radon is the second leading cause of lung-cancer deaths after cigarette smoking and that people who smoke and are exposed to radon have about 10 times higher radon-related lung-cancer risk than people who do not smoke at the same radon level.",
+			"WHO estimates radon causes between 3% and 14% of lung cancers in a country, depending on average radon levels and smoking prevalence.",
+			"WHO reports that lung-cancer risk rises by about 16% per 100 Bq/m3 increase in long-term average radon concentration."
+		],
+		openQuestions: [
+			"Which testing and mitigation policies produce the greatest risk reduction in older housing, rental housing, schools, and high-radon geographies?",
+			"How should guidance handle homes below an action level when risk appears continuous but mitigation cost and feasibility vary?",
+			"How can radon risk be communicated clearly without making people think all non-smoker lung-cancer risk is radon?"
+		],
+		whatWouldChangeMinds: [
+			"Large, high-quality pooled residential studies showing no exposure-response relationship after long-term measurement and smoking adjustment.",
+			"Major WHO, EPA, NCI, National Academies, or radiation-protection reassessments reversing radon's lung-cancer causal classification.",
+			"Mechanistic evidence showing inhaled radon decay products cannot plausibly explain the observed lung-cancer pattern."
+		],
+		misconceptions: [
+			"Because radon cannot be seen or smelled, people often assume an untested home is low-risk.",
+			"Some people treat radon as only a miner or workplace hazard, even though residential pooled studies confirm home risk.",
+			"Action levels are practical mitigation thresholds, not a bright line between safe and unsafe exposure."
+		],
+		editorSummary:
+			"This page should make the practical consensus clear: radon is measurable, reducible, and causally linked to lung cancer. The main public action is testing and mitigation, especially in homes with elevated levels and households with smokers.",
+		uncertaintySummary:
+			"The lung-cancer causal link is strong. Uncertainty is mainly about exact local exposure, individual lifetime risk, how risk behaves at very low levels, and how aggressively to mitigate below national action thresholds.",
+		searchCutoffAt: "2026-07-02T22:51:14.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:51:14.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:51:14.000Z",
+				kind: "publication",
+				summary:
+					"Initial residential radon and lung-cancer claim page published from EPA, CDC, WHO, NCI, and pooled residential-study sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Health Risk of Radon",
+				publisher: "U.S. Environmental Protection Agency",
+				url: "https://www.epa.gov/radon/health-risk-radon",
+				stance: "supports",
+				note:
+					"EPA anchor for radon as the leading lung-cancer cause among non-smokers, the second leading cause overall, and about 21,000 U.S. lung-cancer deaths per year.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Radon and Your Health",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/radon/features/reduce-radon.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health source for residential exposure, the 21,000-death estimate, second-leading-cause framing, and higher combined risk for people who smoke.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Radon",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/news-room/fact-sheets/detail/radon-and-health",
+				stance: "supports",
+				note:
+					"International public-health anchor for radon causing an estimated 3-14% of lung cancers and about a 16% risk increase per 100 Bq/m3 long-term average exposure.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Radon",
+				publisher: "National Cancer Institute",
+				year: 2024,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/substances/radon",
+				stance: "supports",
+				note:
+					"Cancer-specific federal source explaining residential exposure pathways and identifying lung cancer as the established cancer outcome linked to radon.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Radon in homes and risk of lung cancer: collaborative analysis of individual data from 13 European case-control studies",
+				publisher: "BMJ",
+				year: 2004,
+				url: "https://doi.org/10.1136/bmj.38308.477650.63",
+				doi: "10.1136/bmj.38308.477650.63",
+				stance: "supports",
+				note:
+					"Landmark pooled individual-data analysis finding lung-cancer risk increased with residential radon and remained significant below 200 Bq/m3.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does sunscreen use prevent skin cancer?",
 		slug: "does-sunscreen-use-prevent-skin-cancer",
 		status: "published",
@@ -3381,6 +3577,113 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Helpful for showing that the question is about reducing a known risk, not discovering whether the risk exists.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does eating processed meat increase colorectal cancer risk?",
+		slug: "does-eating-processed-meat-increase-colorectal-cancer-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		bottomLine:
+			"Yes. Major cancer and diet-review bodies agree that processed meat increases colorectal cancer risk. IARC classifies processed meat as carcinogenic to humans based on sufficient evidence that it causes colorectal cancer, but that classification describes strength of evidence, not that processed meat is as risky as smoking.",
+		stableCore: [
+			"IARC classified processed meat as Group 1, carcinogenic to humans, based on sufficient human evidence that processed meat causes colorectal cancer.",
+			"IARC estimated that each 50 g daily portion of processed meat increases colorectal cancer risk by about 18%, while noting that the individual absolute-risk increase remains small and rises with amount consumed.",
+			"World Cancer Research Fund states there is convincing evidence that processed meat is a cause of colorectal cancer and recommends consuming very little, if any, processed meat.",
+			"Prospective-study meta-analyses consistently find higher colorectal cancer risk with higher processed-meat intake, though observational nutrition evidence still requires careful confounding and dose interpretation."
+		],
+		openQuestions: [
+			"How much do specific processing methods, nitrite use, smoking, salting, food matrix, and cooking practices change risk?",
+			"What is the best way to communicate relative risk without making occasional intake sound equivalent to high chronic exposure?",
+			"How should dietary advice balance colorectal-cancer risk reduction with cultural food patterns, food access, and broader dietary quality?"
+		],
+		whatWouldChangeMinds: [
+			"Large, high-quality prospective evidence with better dietary measurement showing no association between processed meat and colorectal cancer after confounding adjustment.",
+			"Major IARC, WCRF/AICR, NCI, or dietary-guideline reassessments withdrawing the causal classification for processed meat and colorectal cancer.",
+			"Mechanistic and epidemiologic evidence showing that the observed risk is fully explained by confounding factors unrelated to processed meat exposure."
+		],
+		misconceptions: [
+			"Group 1 means the evidence for carcinogenicity is strong; it does not mean the risk magnitude equals tobacco smoking.",
+			"Relative-risk increases can sound larger than the absolute-risk change for an individual, especially at low intake.",
+			"Processed meat is sometimes lumped together with all meat; the evidence is clearer for processed meat than for unprocessed red meat."
+		],
+		editorSummary:
+			"This page should be precise: processed meat is a supported colorectal-cancer risk factor, but readers also need classification and absolute-risk context so the claim does not become nutrition fearmongering.",
+		uncertaintySummary:
+			"The direction of evidence is strong for processed meat and colorectal cancer. Uncertainty is mainly about exact dose-response shape at low intakes, product-specific risks, residual confounding in observational nutrition studies, and how much risk changes after substitution with healthier foods.",
+		searchCutoffAt: "2026-07-02T22:51:14.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:51:14.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:51:14.000Z",
+				kind: "publication",
+				summary:
+					"Initial processed-meat and colorectal-cancer claim page published from IARC, NCI, WCRF, and prospective meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "IARC Monographs evaluate consumption of red meat and processed meat",
+				publisher: "International Agency for Research on Cancer",
+				year: 2015,
+				url: "https://www.iarc.who.int/wp-content/uploads/2018/07/pr240_E.pdf",
+				stance: "supports",
+				note:
+					"IARC source for processed meat as Group 1 carcinogenic to humans, sufficient evidence for colorectal cancer causation, and the 18% relative-risk estimate per 50 g daily portion.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Limit consumption of red and processed meat",
+				publisher: "World Cancer Research Fund",
+				url:
+					"https://www.wcrf.org/research-policy/evidence-for-our-recommendations/limit-red-processed-meat/",
+				stance: "supports",
+				note:
+					"WCRF recommendation page stating there is convincing evidence that processed meat causes colorectal cancer and advising little, if any, processed meat.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Red Meat and Processed Meat Consumption",
+				publisher: "National Cancer Institute Cancer Trends Progress Report",
+				url: "https://progressreport.cancer.gov/prevention/diet_alcohol/red_meat",
+				stance: "supports",
+				note:
+					"NCI-linked cancer trends source defining processed meat, summarizing IARC's Group 1 classification, and noting the evidence is strongest for colorectal cancer.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Red and Processed Meat and Colorectal Cancer Incidence: Meta-Analysis of Prospective Studies",
+				publisher: "PLOS ONE",
+				year: 2011,
+				url: "https://doi.org/10.1371/journal.pone.0020456",
+				doi: "10.1371/journal.pone.0020456",
+				pmid: "21674008",
+				pmcid: "PMC3108955",
+				stance: "supports",
+				note:
+					"Prospective-study meta-analysis finding colorectal cancer risk increased with processed meat intake, including RR 1.18 per 50 g/day processed meat.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Foods and beverages and colorectal cancer risk: a systematic review and meta-analysis of cohort studies, an update of the evidence of the WCRF-AICR Continuous Update Project",
+				publisher: "Annals of Oncology",
+				year: 2017,
+				url: "https://doi.org/10.1093/annonc/mdx171",
+				doi: "10.1093/annonc/mdx171",
+				pmid: "28407090",
+				stance: "supports",
+				note:
+					"WCRF/AICR Continuous Update Project synthesis of cohort studies reinforcing higher colorectal-cancer risk with higher red and processed meat intake.",
+				order: 5
 			}
 		]
 	},
