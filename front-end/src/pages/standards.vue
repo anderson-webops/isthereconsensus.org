@@ -23,7 +23,8 @@ const updateTriggers = [
 const citationRules = [
 	"Reviewed answers should rely on syntheses and official reports before they rely on isolated papers or commentary.",
 	"When the evidence is early or thin, the page should say so directly.",
-	"Context sources can explain a topic, but they should not carry the main public answer."
+	"Context sources can explain a topic, but they should not carry the main public answer.",
+	"AI research tools such as Consensus.app can help find papers, but the reviewed page should verify and cite the underlying sources directly."
 ];
 
 const disagreementRules = [

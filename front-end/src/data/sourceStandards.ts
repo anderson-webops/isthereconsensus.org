@@ -65,17 +65,22 @@ export const fallbackSourceStandard: SourceStandard = {
 		{
 			title: "Tier 4 - Context",
 			body: "Mechanism, history, and explanatory context belong here; they do not outrank synthesis."
+		},
+		{
+			title: "Tier 5 - Discovery tools and AI research assistants",
+			body: "Use tools such as Consensus.app to find candidate papers and citation trails, then verify the underlying sources directly before they influence a reviewed answer."
 		}
 	],
 	anchorSourceRule:
 		"Anchor sources should be institutional, explicit, and decision-facing. They should define the population, outcome, and update path.",
 	supportContextRule:
-		"Single studies, preprints, conference abstracts, mechanism papers, and commentary can explain context but should not carry the public bottom line by themselves.",
+		"Single studies, preprints, conference abstracts, mechanism papers, commentary, and AI-generated literature summaries can explain context or help discovery but should not carry the public bottom line by themselves.",
 	avoidOverweighting: [
 		"Small underpowered studies",
 		"Subgroup claims treated as the main finding",
 		"Mechanism papers treated like outcome evidence",
-		"Media explainers treated like primary synthesis"
+		"Media explainers treated like primary synthesis",
+		"AI search summaries treated as if they were a reviewed source"
 	],
 	updateTriggers: [
 		"A new major guideline or assessment changes the public-facing answer.",

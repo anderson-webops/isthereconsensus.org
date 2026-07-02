@@ -25,4 +25,19 @@ describe("source standards", () => {
 			)
 		);
 	});
+
+	it("keeps AI literature search tools in discovery context", () => {
+		const standard = getSourceStandard();
+
+		assert.match(standard.supportContextRule, /AI-generated literature summaries/);
+		assert.ok(
+			standard.sourceHierarchy.some(
+				(tier) =>
+					/Discovery tools/.test(tier.title) &&
+					/Consensus\.app/.test(tier.body) &&
+					/verify the underlying sources directly/i.test(tier.body)
+			)
+		);
+		assert.ok(standard.avoidOverweighting.some((item) => /AI search summaries/.test(item)));
+	});
 });

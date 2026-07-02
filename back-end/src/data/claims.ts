@@ -816,6 +816,238 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Is the Sun causing recent global warming?",
+		slug: "is-the-sun-causing-recent-global-warming",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. The Sun affects Earth's climate, but recent global warming cannot be explained by solar activity. Satellite-era solar energy has not risen enough to match the observed warming, and the atmospheric pattern fits greenhouse-gas forcing instead.",
+		stableCore: [
+			"Solar variability is real, but it does not explain the sharp recent warming trend.",
+			"Recent warming is much larger than the assessed contribution from natural solar and volcanic drivers.",
+			"Surface warming paired with stratospheric cooling is the pattern expected from increased heat-trapping gases, not from the Sun simply getting stronger."
+		],
+		openQuestions: [
+			"How should climate pages explain natural variability without letting it be mistaken for the main driver?",
+			"Which charts best help readers separate short solar cycles from long-term greenhouse forcing?"
+		],
+		whatWouldChangeMinds: [
+			"A durable solar forcing record that rises in step with the observed late-20th and 21st century warming.",
+			"A physical attribution model that explains the warming pattern without increased greenhouse gases and performs better across observations."
+		],
+		misconceptions: [
+			"People often confuse the true statement that the Sun powers climate with the false claim that solar activity explains recent warming.",
+			"Cherry-picked pre-1975 solar correlations are often used while ignoring the later divergence between solar activity and temperature."
+		],
+		editorSummary:
+			"This claim turns a common climate challenge into a direct attribution page: natural solar influence is real, but it is not the recent warming driver.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial climate-misconception claim page published from IPCC, NASA, and rebuttal-context sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "AR6 Synthesis Report: Summary for Policymakers",
+				publisher: "IPCC",
+				year: 2023,
+				url: "https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf",
+				stance: "supports",
+				note: "Anchors the attribution baseline that human-caused warming dominates while natural solar and volcanic drivers explain little of the recent temperature change.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Is the Sun causing global warming?",
+				publisher: "NASA Science",
+				year: 2024,
+				url: "https://science.nasa.gov/climate-change/faq/is-the-sun-causing-global-warming/",
+				stance: "supports",
+				note: "Provides the public-facing observational explanation: no net solar increase since the 1950s, warming at the surface, and cooling in the stratosphere.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Sun and climate: moving in opposite directions",
+				publisher: "Skeptical Science",
+				url: "https://skepticalscience.com/solar-activity-sunspots-global-warming.htm",
+				stance: "supports",
+				note: "Supporting rebuttal context for the common 'it is the Sun' objection; keep below IPCC and NASA in the source stack.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Do volcanoes emit more CO2 than humans?",
+		slug: "do-volcanoes-emit-more-co2-than-humans",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. Volcanoes release CO2, but present-day volcanic emissions are far smaller than human emissions from fossil fuels, land use, cement, and related activity. The common volcano claim gets the scale wrong by roughly two orders of magnitude.",
+		stableCore: [
+			"Volcanoes are part of Earth's long carbon cycle, but their present-day annual CO2 emissions are small compared with human emissions.",
+			"Large eruptions can matter for short-term climate, often through aerosols and temporary cooling, but they do not explain the modern CO2 rise.",
+			"The volcano argument is mostly a scale error: dramatic events are mistaken for the relentless size of human emissions."
+		],
+		openQuestions: [
+			"How should the page explain volcanic climate effects without implying volcanoes are irrelevant to climate science?",
+			"Which current emissions baseline should be displayed when the page is next refreshed?"
+		],
+		whatWouldChangeMinds: [
+			"Credible global volcanic CO2 estimates rising to the same order of magnitude as current human emissions.",
+			"Atmospheric carbon evidence showing the modern CO2 rise is volcanic rather than tied to fossil carbon and land-use emissions."
+		],
+		misconceptions: [
+			"A spectacular eruption is often mistaken for a larger long-term carbon source than daily global fossil-fuel burning.",
+			"Short-lived volcanic cooling from aerosols is sometimes confused with volcanic CO2 driving long-term warming."
+		],
+		editorSummary:
+			"This claim is a compact quantitative climate page: the scientific answer is less about ideology than about orders of magnitude.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial volcano-versus-human CO2 claim page published from USGS, NOAA, and rebuttal-context sources."
+			}
+		],
+		sources: [
+			{
+				kind: "landmark_study",
+				title: "Volcanic versus anthropogenic carbon dioxide",
+				publisher: "Eos, Transactions American Geophysical Union",
+				year: 2011,
+				url: "https://volcanoes.usgs.gov/vsc/file_mngr/file-154/Gerlach-2011-EOS_AGU.pdf",
+				stance: "supports",
+				note: "USGS-authored scale comparison showing modern human CO2 emissions dwarf present-day volcanic CO2 estimates.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Which emits more carbon dioxide: volcanoes or human activities?",
+				publisher: "NOAA Climate.gov",
+				year: 2016,
+				url: "https://www.climate.gov/news-features/climate-qa/which-emits-more-carbon-dioxide-volcanoes-or-human-activities",
+				stance: "supports",
+				note: "Public climate Q&A used to cross-check the quantitative bottom line against an official climate-education source.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Do volcanoes emit more CO2 than humans?",
+				publisher: "Skeptical Science",
+				url: "https://skepticalscience.com/volcanoes-and-global-warming.htm",
+				stance: "supports",
+				note: "Supporting rebuttal context for the exact myth phrasing; useful for readers who arrive through climate-skeptic challenge wording.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Fact brief: Do volcanoes emit more CO2 than humans?",
+				publisher: "Skeptical Science / Gigafact",
+				year: 2024,
+				url: "https://skepticalscience.com/fact-brief-volcano.html",
+				stance: "supports",
+				note: "Short reader-facing context with a current emissions comparison; do not let it outrank USGS or NOAA anchors.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is there a scientific consensus that humans are causing climate change?",
+		slug: "is-there-a-scientific-consensus-that-humans-are-causing-climate-change",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"Yes. Major assessments and multiple studies of the climate literature find overwhelming agreement that humans are causing recent global warming. The exact percentage depends on method, but the practical answer is strong expert consensus, not a divided field.",
+		stableCore: [
+			"IPCC assessments treat human-caused warming as established, not as a fringe or evenly divided proposition.",
+			"NASA's scientific-consensus summary lists major scientific societies and academies that endorse the human-caused warming baseline.",
+			"Consensus-estimate studies repeatedly find very high agreement among publishing climate experts or papers that take a position."
+		],
+		openQuestions: [
+			"Which consensus statistic is clearest for readers without creating a false impression that science is just a poll?",
+			"How should the page distinguish consensus on cause from active debates about impacts, timing, policy, and regional risk?"
+		],
+		whatWouldChangeMinds: [
+			"Multiple independent surveys or literature analyses showing the publishing expert community is genuinely split on human-caused warming.",
+			"A formal assessment overturning the attribution baseline across observations, physics, and model evidence."
+		],
+		misconceptions: [
+			"Public controversy is often mistaken for expert disagreement.",
+			"Arguments over the exact consensus percentage are often used to distract from the robust conclusion that agreement is overwhelming."
+		],
+		editorSummary:
+			"This page should answer the site's namesake climate question directly: the climate attribution consensus is real, high, and repeatedly measured.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary: "Initial climate-consensus statistics claim page published."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "AR6 Synthesis Report: Summary for Policymakers",
+				publisher: "IPCC",
+				year: 2023,
+				url: "https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf",
+				stance: "supports",
+				note: "Primary assessment anchor for the established human-caused warming conclusion and calibrated confidence language.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Scientific Consensus",
+				publisher: "NASA Science",
+				year: 2024,
+				url: "https://science.nasa.gov/climate-change/scientific-consensus/",
+				stance: "supports",
+				note: "Public institutional summary collecting society and academy statements plus peer-reviewed consensus literature.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Consensus on consensus: a synthesis of consensus estimates on human-caused global warming",
+				publisher: "Environmental Research Letters",
+				year: 2016,
+				url: "https://doi.org/10.1088/1748-9326/11/4/048002",
+				doi: "10.1088/1748-9326/11/4/048002",
+				stance: "supports",
+				note: "Synthesis source for the 90-100 percent range across independent estimates of expert agreement.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Greater than 99% consensus on human caused climate change in the peer-reviewed scientific literature",
+				publisher: "Environmental Research Letters",
+				year: 2021,
+				url: "https://doi.org/10.1088/1748-9326/ac2966",
+				doi: "10.1088/1748-9326/ac2966",
+				stance: "supports",
+				note: "Updated literature-survey source showing that papers rejecting human-caused contemporary climate change are rare in the peer-reviewed climate literature.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "biology-and-evolution",
 		title: "Is evolution 'just a theory'?",
 		slug: "is-evolution-just-a-theory",
@@ -862,8 +1094,7 @@ const rawClaims: SeedClaim[] = [
 				year: 2006,
 				url: "https://www.aaas.org/sites/default/files/0219boardstatement.pdf",
 				stance: "supports",
-				note:
-					"Documents the scientific-society baseline that evolution is a robust, widely accepted foundation of modern biology.",
+				note: "Documents the scientific-society baseline that evolution is a robust, widely accepted foundation of modern biology.",
 				order: 2
 			},
 			{
@@ -1095,8 +1326,7 @@ const rawClaims: SeedClaim[] = [
 			},
 			{
 				kind: "guideline",
-				title:
-					"Vitamin, Mineral, and Multivitamin Supplementation to Prevent Cardiovascular Disease and Cancer: US Preventive Services Task Force Recommendation Statement",
+				title: "Vitamin, Mineral, and Multivitamin Supplementation to Prevent Cardiovascular Disease and Cancer: US Preventive Services Task Force Recommendation Statement",
 				publisher: "JAMA",
 				year: 2022,
 				url: "https://doi.org/10.1001/jama.2022.8970",

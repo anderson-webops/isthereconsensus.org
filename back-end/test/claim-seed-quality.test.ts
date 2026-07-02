@@ -5,6 +5,9 @@ import { defaultClaims } from "../src/data/claims.js";
 const launchSensitiveClaimSlugs = [
 	"do-childhood-vaccines-cause-autism",
 	"is-recent-global-warming-mainly-caused-by-human-activity",
+	"is-the-sun-causing-recent-global-warming",
+	"do-volcanoes-emit-more-co2-than-humans",
+	"is-there-a-scientific-consensus-that-humans-are-causing-climate-change",
 	"does-antibiotic-overuse-drive-antibiotic-resistance",
 	"is-evolution-just-a-theory",
 	"is-nuclear-power-more-dangerous-than-fossil-fuel-energy"
