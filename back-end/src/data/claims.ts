@@ -2913,6 +2913,275 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does treating high blood pressure reduce the risk of stroke and heart disease?",
+		slug: "does-treating-high-blood-pressure-reduce-the-risk-of-stroke-and-heart-disease",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. Lowering high blood pressure through lifestyle changes and, when indicated, medication reduces the risk of stroke, heart attack, heart failure, and premature death. The size of the benefit depends on baseline cardiovascular risk, achieved blood-pressure reduction, treatment tolerance, and adherence.",
+		stableCore: [
+			"WHO describes hypertension as common, serious when untreated, and a major cause of premature death; its current fact sheet says reducing hypertension prevents heart attack, stroke, kidney damage, and other health problems.",
+			"CDC reports that nearly half of U.S. adults have high blood pressure and that taking steps to prevent and control it can lower the risk of heart disease and stroke.",
+			"A Lancet meta-analysis of 123 blood-pressure-lowering trials with 613,815 participants found that each 10 mm Hg reduction in systolic blood pressure significantly reduced major cardiovascular events, coronary heart disease, stroke, heart failure, and all-cause mortality.",
+			"An individual participant-level meta-analysis from the Blood Pressure Lowering Treatment Trialists' Collaboration found that a 5 mm Hg systolic reduction reduced major cardiovascular events by about 10% across primary and secondary prevention populations."
+		],
+		openQuestions: [
+			"Which blood-pressure target is best for a specific person given age, frailty, kidney disease, diabetes, prior cardiovascular disease, medication side effects, and fall risk?",
+			"How can health systems improve long-term blood-pressure control in groups with poor access, low diagnosis rates, or low medication adherence?",
+			"Which combinations of team-based care, home monitoring, lifestyle support, and medication protocols achieve the largest real-world risk reductions?"
+		],
+		whatWouldChangeMinds: [
+			"Large replicated randomized evidence showing that guideline-concordant blood-pressure reduction does not reduce stroke or cardiovascular events in people with hypertension or elevated cardiovascular risk.",
+			"Major WHO, CDC, AHA/ACC, or USPSTF reassessments concluding that blood-pressure treatment does not materially lower cardiovascular risk.",
+			"Evidence that harms from standard blood-pressure management outweigh cardiovascular benefits across most indicated populations."
+		],
+		misconceptions: [
+			"High blood pressure often has no symptoms, so feeling well does not mean risk is low.",
+			"Medication is not a substitute for lifestyle changes in every case, but lifestyle changes alone are also not enough for everyone.",
+			"Lower is not automatically better for every person; targets should reflect overall cardiovascular risk and the chance of adverse effects."
+		],
+		editorSummary:
+			"This page should make hypertension feel like a practical prevention issue rather than an abstract vital sign. The consensus is strong that treating high blood pressure reduces cardiovascular risk, while individualized targets and access remain the hard implementation questions.",
+		uncertaintySummary:
+			"The direction of benefit is high-certainty. Remaining uncertainty is about individualized targets, drug choice, side-effect tradeoffs, adherence, and delivery models that close control gaps.",
+		searchCutoffAt: "2026-07-02T23:24:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:24:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:24:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial high-blood-pressure treatment claim page published from WHO, CDC, Lancet trial meta-analysis, and Blood Pressure Lowering Treatment Trialists' Collaboration sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Hypertension",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/news-room/fact-sheets/detail/hypertension",
+				stance: "supports",
+				note:
+					"Current WHO public-health anchor for hypertension prevalence, complications, treatment, and the statement that reducing hypertension prevents heart attack, stroke, kidney damage, and other health problems.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "High Blood Pressure Facts",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/high-blood-pressure/data-research/facts-stats/index.html",
+				stance: "supports",
+				note:
+					"Current CDC U.S. burden and prevention source reporting nearly half of adults have high blood pressure and that control lowers heart disease and stroke risk.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Blood pressure lowering for prevention of cardiovascular disease and death: a systematic review and meta-analysis",
+				publisher: "Lancet",
+				year: 2016,
+				url: "https://doi.org/10.1016/S0140-6736(15)01225-8",
+				doi: "10.1016/S0140-6736(15)01225-8",
+				stance: "supports",
+				note:
+					"Meta-analysis of 123 trials and 613,815 participants finding lower risk of major cardiovascular events, coronary heart disease, stroke, heart failure, and all-cause mortality per 10 mm Hg systolic reduction.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Pharmacological blood pressure lowering for primary and secondary prevention of cardiovascular disease across different levels of blood pressure",
+				publisher: "Lancet",
+				year: 2021,
+				url: "https://doi.org/10.1016/S0140-6736(21)00590-0",
+				doi: "10.1016/S0140-6736(21)00590-0",
+				stance: "supports",
+				note:
+					"Individual participant-level meta-analysis of 344,716 participants from 48 randomized trials finding about a 10% lower major cardiovascular-event risk per 5 mm Hg systolic reduction.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Do statins reduce heart attacks and strokes for people at elevated cardiovascular risk?",
+		slug: "do-statins-reduce-heart-attacks-and-strokes-for-people-at-elevated-cardiovascular-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		bottomLine:
+			"Yes, for appropriately selected adults at elevated cardiovascular risk. Statins reduce heart attacks, strokes, and composite cardiovascular events, with larger absolute benefit as baseline risk rises. They are not automatically indicated for every low-risk adult, and evidence is less certain for starting statins after age 75 without known cardiovascular disease.",
+		stableCore: [
+			"USPSTF recommends prescribing a statin for adults aged 40 to 75 who have at least one cardiovascular risk factor and an estimated 10-year cardiovascular disease risk of 10% or greater.",
+			"USPSTF recommends selectively offering a statin to similar adults with estimated 10-year risk from 7.5% to less than 10%, because the expected benefit is smaller.",
+			"The 2022 USPSTF evidence review included 22 statin-versus-control trials with 90,624 participants and found significantly lower risk of all-cause mortality, stroke, myocardial infarction, and composite cardiovascular outcomes.",
+			"The same evidence review did not find a statistically significant increase in serious adverse events or myalgias overall, while noting sparse evidence for adults older than 75 and a diabetes signal in one high-intensity statin trial."
+		],
+		openQuestions: [
+			"How should statin decisions be individualized for adults older than 75 without known cardiovascular disease?",
+			"How should clinicians weigh absolute risk reduction, patient preferences, pill burden, side effects, diabetes risk, pregnancy considerations, and drug interactions?",
+			"Which decision aids and risk calculators best support equitable statin use without overtreating very low-risk people?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized evidence showing that statins do not reduce myocardial infarction, stroke, or composite cardiovascular events in adults at elevated baseline risk.",
+			"Major USPSTF, ACC/AHA, or comparable guideline revisions withdrawing statins as preventive medication for adults with elevated cardiovascular risk.",
+			"Evidence that common statin harms are substantially larger than currently estimated and outweigh cardiovascular benefits in guideline-indicated groups."
+		],
+		misconceptions: [
+			"Statins are sometimes framed as either necessary for everyone or useful for no one; the evidence-based answer depends heavily on baseline cardiovascular risk.",
+			"A relative risk reduction is not the same as an absolute benefit; people at higher baseline risk generally gain more absolute benefit.",
+			"Muscle symptoms can occur and should be taken seriously, but blinded trial evidence does not support the idea that severe statin harms are common for most indicated users."
+		],
+		editorSummary:
+			"This page should avoid the usual all-or-nothing statin fight. The consensus is strong that statins reduce cardiovascular events in elevated-risk adults; the practical judgment is who crosses the risk threshold where the absolute benefit is worth daily medication.",
+		uncertaintySummary:
+			"The risk-reduction claim is strong for adults aged 40 to 75 at elevated cardiovascular risk. Uncertainty is greater for starting statins after age 75 without prior cardiovascular disease, for very low-risk adults, and for individual tolerance.",
+		searchCutoffAt: "2026-07-02T23:24:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:24:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:24:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial statin primary-prevention claim page published from USPSTF recommendation and updated evidence-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Statin Use for the Primary Prevention of Cardiovascular Disease in Adults: Preventive Medication",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2022,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/statin-use-in-adults-preventive-medication",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for prescribing statins to adults aged 40 to 75 with cardiovascular risk factors and sufficient estimated 10-year risk.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Statin Use for the Primary Prevention of Cardiovascular Disease in Adults: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2022,
+				url: "https://doi.org/10.1001/jama.2022.12138",
+				doi: "10.1001/jama.2022.12138",
+				stance: "supports",
+				note:
+					"Updated evidence review finding statins were associated with lower all-cause mortality, stroke, myocardial infarction, and composite cardiovascular outcomes in adults at increased risk without prior cardiovascular events.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Statins for the primary prevention of cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2013,
+				url: "https://doi.org/10.1002/14651858.CD004816.pub5",
+				doi: "10.1002/14651858.CD004816.pub5",
+				stance: "supports",
+				note:
+					"Cochrane review finding lower all-cause mortality and major vascular events among primary-prevention participants treated with statins, while emphasizing benefit-harm assessment.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does naloxone reverse opioid overdoses and save lives?",
+		slug: "does-naloxone-reverse-opioid-overdoses-and-save-lives",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Naloxone can rapidly reverse opioid overdose by blocking opioid effects and restoring breathing when given in time. It is a rescue medication, not treatment for opioid use disorder by itself, and emergency help is still needed because some opioids can outlast naloxone or require repeated doses.",
+		stableCore: [
+			"CDC says naloxone is a safe medication that can reverse overdose from opioids, including heroin and fentanyl, and that it can restore normal breathing within 2 to 3 minutes when breathing has slowed or stopped.",
+			"CDC reports that nearly 80,000 U.S. drug overdose deaths in 2023 involved an opioid and that a potential bystander was present in nearly 43% of overdose deaths, making rapid access to naloxone a practical lifesaving tool.",
+			"WHO says death following opioid overdose is preventable with basic life support and timely naloxone, and recommends making naloxone available to people likely to witness an opioid overdose.",
+			"A systematic review of take-home naloxone programs found that the evidence met all nine Bradford Hill criteria, reduced overdose mortality among program participants and in the community, and had a low rate of adverse events."
+		],
+		openQuestions: [
+			"Which distribution models best reach people most likely to witness an overdose before emergency responders arrive?",
+			"How should programs adapt dosing, training, and follow-up for fentanyl, fentanyl analogues, polysubstance use, and long-acting opioids?",
+			"How can naloxone distribution be paired with effective opioid-use-disorder treatment, housing support, and stigma reduction?"
+		],
+		whatWouldChangeMinds: [
+			"Strong evidence showing naloxone does not reverse opioid-induced respiratory depression when administered correctly and in time.",
+			"Large real-world evaluations showing take-home naloxone distribution fails to reduce overdose mortality despite adequate access, training, and use.",
+			"Major CDC, WHO, FDA, or addiction-medicine guideline revisions concluding that naloxone access should no longer be a core overdose-prevention strategy."
+		],
+		misconceptions: [
+			"Naloxone is not a way to get high and does not treat non-opioid overdoses, though CDC advises using it when overdose is suspected because it is unlikely to harm someone overdosing on another drug.",
+			"Naloxone can wear off before some opioids do, so people still need emergency monitoring after it is given.",
+			"Making naloxone available is harm reduction, not an endorsement of unsafe drug use; it keeps people alive long enough to receive care."
+		],
+		editorSummary:
+			"This page should be practical and urgent. The consensus is strong that naloxone reverses opioid overdose and saves lives, while the implementation questions are access, training, repeat dosing, and linkage to longer-term treatment.",
+		uncertaintySummary:
+			"The pharmacologic reversal claim is high-certainty. Community mortality evidence is necessarily more observational because randomized withholding is ethically difficult, but systematic reviews and public-health agencies strongly support naloxone distribution.",
+		searchCutoffAt: "2026-07-02T23:24:05.000Z",
+		lastRetractionCheckAt: "2026-07-02T23:24:05.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T23:24:05.000Z",
+				kind: "publication",
+				summary:
+					"Initial naloxone overdose-reversal claim page published from CDC, WHO, and take-home naloxone systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Lifesaving Naloxone",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/stop-overdose/caring/naloxone.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health anchor describing naloxone as safe, effective, available over the counter, and able to restore normal breathing within 2 to 3 minutes in opioid overdose.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Opioid overdose",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/news-room/fact-sheets/detail/opioid-overdose",
+				stance: "supports",
+				note:
+					"WHO anchor for timely naloxone plus basic life support preventing opioid-overdose death and for making naloxone available to likely overdose witnesses.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Reverse Opioid Overdose to Prevent Death",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/overdose-prevention/reversing-overdose/index.html",
+				stance: "supports",
+				note:
+					"CDC overdose-prevention source quantifying opioid involvement in overdose deaths and emphasizing bystander access to naloxone.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Are take-home naloxone programmes effective? Systematic review utilizing application of the Bradford Hill criteria",
+				publisher: "Addiction",
+				year: 2016,
+				url: "https://doi.org/10.1111/add.13326",
+				doi: "10.1111/add.13326",
+				stance: "supports",
+				note:
+					"Systematic review of 22 observational studies finding take-home naloxone programs met Bradford Hill criteria, reduced overdose mortality, and had a low adverse-event rate.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
