@@ -1153,6 +1153,179 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does fluoride in community drinking water prevent tooth decay, and is it safe at recommended levels?",
+		slug: "does-fluoride-in-community-drinking-water-prevent-tooth-decay-and-is-it-safe",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"Yes, with dose and context caveats. Major public-health bodies still support community water fluoridation at recommended levels for preventing tooth decay, but modern evidence suggests the added benefit is smaller than older estimates and high-fluoride exposure is a separate safety question.",
+		stableCore: [
+			"The U.S. recommended concentration for community water fluoridation is 0.7 mg/L, chosen to balance tooth-decay prevention with fluorosis risk.",
+			"Cochrane's 2024 update found that contemporary studies show smaller dental benefits than pre-1975 studies, likely because fluoride toothpaste and other sources are now widespread.",
+			"Safety conclusions are dose-specific: concerns about high natural fluoride exposure, including levels around or above 1.5 mg/L, should not be treated as the same exposure as properly controlled community fluoridation."
+		],
+		openQuestions: [
+			"How large is the incremental benefit of community water fluoridation today in communities with widespread fluoride toothpaste access?",
+			"How should public guidance weigh dental-health equity benefits against uncertainty in newer high-exposure neurodevelopment literature?"
+		],
+		whatWouldChangeMinds: [
+			"Strong evidence that guideline-level community fluoridation creates serious systemic harm in comparable populations.",
+			"Strong contemporary evidence that community fluoridation provides negligible dental benefit across high-risk and low-income groups."
+		],
+		misconceptions: [
+			"The word 'chemical' is often used as if it settles the risk question without asking about dose.",
+			"Evidence about high naturally occurring fluoride levels is often presented as if it directly proves harm at the recommended community level."
+		],
+		editorSummary:
+			"This page should help readers separate three different questions: whether fluoride prevents tooth decay, whether the modern incremental benefit is smaller, and whether recommended-level exposure is the same as high-fluoride exposure.",
+		uncertaintySummary:
+			"Agreement remains broad that guideline-level fluoridation prevents tooth decay and is supported by major dental and public-health bodies, but the size of modern benefit and interpretation of high-exposure neurodevelopment evidence deserve careful qualification.",
+		searchCutoffAt: "2026-07-02T21:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial community water fluoridation claim page published from CDC, Cochrane, PHS recommendation, and NTP high-exposure context sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "CDC Scientific Statement on Community Water Fluoridation",
+				publisher: "Centers for Disease Control and Prevention",
+				url:
+					"https://www.cdc.gov/fluoridation/about/statement-on-the-evidence-supporting-the-safety-and-effectiveness-of-community-water-fluoridation.html",
+				stance: "supports",
+				note:
+					"CDC states its public-health position that community water fluoridation is an effective and cost-efficient way to prevent tooth decay and improve oral health.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Water fluoridation for the prevention of dental caries",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1002/14651858.CD010856.pub3",
+				doi: "10.1002/14651858.CD010856.pub3",
+				pmid: "39362658",
+				stance: "supports",
+				note:
+					"Updated systematic review showing that contemporary caries-prevention effects appear smaller than older estimates and that cessation and disparity effects remain uncertain.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Community Water Fluoridation Recommendations",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/fluoridation/about/community-water-fluoridation-recommendations.html",
+				stance: "supports",
+				note:
+					"Summarizes the U.S. Public Health Service recommendation of 0.7 mg/L to maximize oral-health benefit while minimizing potential harms such as dental fluorosis.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "NTP Monograph on the State of the Science Concerning Fluoride Exposure and Neurodevelopment and Cognition",
+				publisher: "National Toxicology Program",
+				year: 2024,
+				url: "https://ntp.niehs.nih.gov/publications/monographs/mgraph08",
+				stance: "context",
+				note:
+					"High-exposure safety context: evaluates neurodevelopment evidence and helps distinguish community guideline levels from higher exposure scenarios.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Is there no safe level of lead exposure for children?",
+		slug: "is-there-no-safe-level-of-lead-exposure-for-children",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. Public-health agencies and toxicology reviews consistently treat lead as unsafe for children even at low levels; reference values and action levels are intervention triggers, not safety thresholds.",
+		stableCore: [
+			"No safe blood lead concentration has been identified for children.",
+			"Even low blood lead levels are associated with lower IQ, attention problems, learning difficulties, and other developmental harms.",
+			"Drinking-water action levels and blood lead reference values help prioritize response, but they do not mean exposures below those numbers are harmless."
+		],
+		openQuestions: [
+			"Which local sources contribute most to remaining exposure in a given community: paint, dust, soil, plumbing, industry, imported products, or other sources?",
+			"How should governments prioritize replacement and remediation when there is no safe threshold but resources are limited?"
+		],
+		whatWouldChangeMinds: [
+			"High-quality developmental evidence showing a clear safe threshold below which childhood lead exposure has no meaningful harm.",
+			"A major toxicology reassessment reversing the conclusion that low-level lead exposure harms child development."
+		],
+		misconceptions: [
+			"An action level is often mistaken for a safe level.",
+			"Because many children with lead exposure have no obvious symptoms, people can underestimate permanent developmental risk."
+		],
+		editorSummary:
+			"This page should be blunt and practical: the consensus is not that every trace means an emergency, but that prevention and exposure reduction matter because no safe child threshold has been identified.",
+		searchCutoffAt: "2026-07-02T21:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial childhood lead exposure claim page published from CDC, WHO, EPA, and National Toxicology Program sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "CDC Updates Blood Lead Reference Value",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/lead-prevention/php/news-features/updates-blood-lead-reference-value.html",
+				stance: "supports",
+				note:
+					"CDC states that no safe level of lead in children has been identified and explains that the reference value is used to identify children with higher exposure, not to define safety.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Lead poisoning",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/lead-poisoning-and-health",
+				stance: "supports",
+				note:
+					"WHO states that there is no known safe blood lead concentration and that low concentrations can be associated with decreased intelligence, behavioral difficulties, and learning problems.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "About Lead in Drinking Water",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/lead-prevention/prevention/drinking-water.html",
+				stance: "supports",
+				note:
+					"Clarifies that no safe blood lead level has been identified for young children and that EPA's maximum contaminant level goal for lead in drinking water is zero.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Health Effects of Low-level Lead",
+				publisher: "National Toxicology Program",
+				year: 2026,
+				url: "https://ntp.niehs.nih.gov/research/assessments/noncancer/completed/lead",
+				stance: "supports",
+				note:
+					"Toxicology assessment context supporting adverse health effects below 10 micrograms per deciliter and, for some effects, below 5 micrograms per deciliter.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
@@ -1506,6 +1679,94 @@ const rawClaims: SeedClaim[] = [
 				doi: "10.1088/1748-9326/ac2966",
 				stance: "supports",
 				note: "Updated literature-survey source showing that papers rejecting human-caused contemporary climate change are rare in the peer-reviewed climate literature.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Does air pollution cause millions of premature deaths each year?",
+		slug: "does-air-pollution-cause-millions-of-premature-deaths-each-year",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. The exact number depends on the year, pollutant mix, and burden-model assumptions, but major health agencies and global burden assessments consistently attribute millions of premature deaths each year to ambient and household air pollution.",
+		stableCore: [
+			"Fine particulate matter and other air pollutants increase risks of cardiovascular disease, stroke, chronic obstructive pulmonary disease, lower respiratory infection, lung cancer, and other outcomes.",
+			"WHO estimates 4.2 million premature deaths from ambient outdoor air pollution in 2019 and 6.7 million premature deaths from the combined effects of ambient and household air pollution.",
+			"State of Global Air 2025 estimates that air pollution contributed to about 7.9 million deaths worldwide in 2023, underscoring that the burden is measured in millions, not thousands."
+		],
+		openQuestions: [
+			"How should burden estimates be updated as exposure models, baseline disease rates, and pollution mixtures change?",
+			"Which policies deliver the largest health gains in communities that face the highest exposure and vulnerability?"
+		],
+		whatWouldChangeMinds: [
+			"Multiple independent global burden assessments converging on far lower attributable deaths after better exposure and disease modeling.",
+			"Strong causal evidence overturning the established links between fine particulate pollution and major cardiovascular and respiratory outcomes."
+		],
+		misconceptions: [
+			"Air pollution is often treated as only an asthma or visibility problem, while the largest burden estimates include heart disease and stroke.",
+			"Because attributable deaths are modeled, people sometimes mistake uncertainty ranges for evidence that the risk is speculative."
+		],
+		editorSummary:
+			"This page should make the scale legible without pretending the exact global number is a direct body count. The durable answer is that air pollution is a major, measurable mortality risk.",
+		uncertaintySummary:
+			"Attributable-death estimates depend on exposure modeling, baseline disease rates, counterfactual assumptions, and overlapping risks, but the direction and large scale of the burden are not fringe claims.",
+		searchCutoffAt: "2026-07-02T21:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial air-pollution mortality burden claim page published from WHO fact sheets, WHO air-quality guidelines, and State of Global Air 2025."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Ambient (outdoor) air pollution",
+				publisher: "World Health Organization",
+				year: 2024,
+				url:
+					"https://www.who.int/news-room/fact-sheets/detail/ambient-%28outdoor%29-air-quality-and-health",
+				stance: "supports",
+				note:
+					"WHO fact sheet estimating 4.2 million premature deaths from ambient air pollution in 2019 and identifying cardiovascular, respiratory, and cancer pathways.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Household air pollution",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health",
+				stance: "supports",
+				note:
+					"WHO fact sheet estimating 2.9 million deaths from household air pollution in 2021 and 6.7 million premature deaths from combined ambient and household air pollution.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "WHO global air quality guidelines",
+				publisher: "World Health Organization",
+				year: 2021,
+				url: "https://www.who.int/publications/i/item/9789240034228",
+				stance: "supports",
+				note:
+					"Guideline anchor for the causal health framing and pollutant thresholds, including PM2.5, PM10, ozone, nitrogen dioxide, sulfur dioxide, and carbon monoxide.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "State of Global Air Report 2025",
+				publisher: "Health Effects Institute and Institute for Health Metrics and Evaluation",
+				year: 2025,
+				url: "https://www.stateofglobalair.org/resources/report/state-global-air-report-2025",
+				stance: "supports",
+				note:
+					"Recent global burden context estimating air-pollution-attributable deaths worldwide in 2023 and showing why estimates vary by model and year.",
 				order: 4
 			}
 		]
