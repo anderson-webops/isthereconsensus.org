@@ -1954,6 +1954,80 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "nutrition-and-diet",
+		title: "Can dietary supplements legally claim to treat or cure diseases?",
+		slug: "can-dietary-supplements-legally-claim-to-treat-or-cure-diseases",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"No. In the United States, a product marketed as a dietary supplement cannot legally claim to treat, prevent, or cure a specific disease unless it is regulated as a drug or fits a separate authorized claim pathway.",
+		stableCore: [
+			"Disease treatment, prevention, and cure claims are drug claims, not ordinary dietary supplement claims.",
+			"Structure/function claims can describe normal body structure or function, but they require substantiation, the standard FDA disclaimer, and no disease claim.",
+			"Firms making covered structure/function, general well-being, or classical nutrient-deficiency claims must notify FDA no later than 30 days after first marketing the supplement with the claim."
+		],
+		openQuestions: [
+			"How often do consumers understand the difference between structure/function language and disease-treatment claims?",
+			"How consistently do FDA and FTC enforcement actions deter implied disease claims in supplement marketing?"
+		],
+		whatWouldChangeMinds: [
+			"A statutory change allowing ordinary dietary supplements to make disease-treatment or cure claims without being regulated as drugs.",
+			"An FDA rule or court decision materially changing how disease claims on supplement labels are classified."
+		],
+		misconceptions: [
+			"Some marketing implies that a disclaimer makes disease-treatment language legal; it does not.",
+			"People often treat 'supports immune health' and 'treats viral infection' as similar claims, but they live in different regulatory categories."
+		],
+		editorSummary:
+			"This page clarifies a common supplement-marketing confusion: supplements are regulated products, but disease-treatment claims move a product into drug-claim territory.",
+		searchCutoffAt: "2026-07-02T22:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial supplement disease-claim page published from FDA consumer, industry-notification, and CFR regulatory sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Questions and Answers on Dietary Supplements",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url:
+					"https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements",
+				stance: "supports",
+				note:
+					"FDA states that a supplement represented for treatment, prevention, or cure of a specific disease meets the definition of a drug and is regulated as a drug.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Notifications for Structure/Function and Related Claims in Dietary Supplement Labeling",
+				publisher: "U.S. Food and Drug Administration",
+				url:
+					"https://www.fda.gov/food/information-industry-dietary-supplements/notifications-structurefunction-and-related-claims-dietary-supplement-labeling",
+				stance: "supports",
+				note:
+					"Explains the 30-day notification rule, required disclaimer, substantiation requirement, and bar on specific disease claims for section 403(r)(6) claims.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "21 CFR 101.93 - Certain types of statements for dietary supplements",
+				publisher: "Electronic Code of Federal Regulations",
+				url: "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-101/subpart-F/section-101.93",
+				stance: "supports",
+				note:
+					"Regulatory text used to anchor the distinction between allowed supplement statements and disease claims that trigger drug regulation.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
 		title: "Do vitamin E or beta-carotene supplements prevent heart disease or cancer?",
 		slug: "do-vitamin-e-or-beta-carotene-supplements-prevent-heart-disease-or-cancer",
 		status: "published",
@@ -2142,6 +2216,160 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Helpful when explaining how safety judgments are made across institutions.",
 				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Are GMOs unregulated in the United States?",
+		slug: "are-gmos-unregulated-in-the-united-states",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"No. U.S. GMO and biotechnology products are regulated through a coordinated federal framework involving FDA, EPA, and USDA, although the system is product- and risk-based rather than one single blanket 'GMO approval' law.",
+		stableCore: [
+			"FDA, EPA, and USDA share biotechnology oversight under the Coordinated Framework for the Regulation of Biotechnology.",
+			"FDA regulates most human and animal food, EPA regulates pesticides and plant-incorporated protectants, and USDA APHIS regulates certain genetically engineered organisms that may pose plant-health risks.",
+			"The U.S. system uses existing statutes and product-specific risk questions, so some products may need one agency review while others may need multiple reviews or fall outside a particular agency's authority."
+		],
+		openQuestions: [
+			"How should regulators improve public transparency for product-by-product biotechnology decisions?",
+			"How should new gene-editing applications be routed when product features do not fit older public expectations about GMOs?"
+		],
+		whatWouldChangeMinds: [
+			"Evidence that FDA, EPA, and USDA lack enforceable statutory authority over the relevant GMO product categories.",
+			"A federal policy change removing product-based biotechnology oversight rather than revising how it is coordinated."
+		],
+		misconceptions: [
+			"Because the United States does not use one single GMO approval statute, people sometimes infer that GMOs are unregulated.",
+			"Food-safety review, pesticide regulation, plant-pest risk, labeling, and environmental release are different questions handled through different legal authorities."
+		],
+		editorSummary:
+			"This page helps separate a real governance debate from the inaccurate shortcut that GMOs are simply unregulated in the United States.",
+		searchCutoffAt: "2026-07-02T22:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial GMO regulation claim page published from FDA, USDA APHIS, and Coordinated Framework regulatory sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "How GMOs Are Regulated in the United States",
+				publisher: "U.S. Food and Drug Administration",
+				url: "https://www.fda.gov/food/agricultural-biotechnology/how-gmos-are-regulated-united-states",
+				stance: "supports",
+				note:
+					"FDA explains that FDA, EPA, and USDA work together to regulate most GMOs and monitor food, health, plant, animal, and environmental safety questions.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Biotechnology Regulations",
+				publisher: "USDA Animal and Plant Health Inspection Service",
+				year: 2025,
+				url: "https://www.aphis.usda.gov/biotechnology/regulations",
+				stance: "supports",
+				note:
+					"APHIS describes the Coordinated Framework roles and 7 CFR part 340 oversight for importation, interstate movement, and environmental release of relevant modified plants and plant pests.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "The Coordinated Framework for the Regulation of Biotechnology",
+				publisher: "U.S. Department of Agriculture, Environmental Protection Agency, and Food and Drug Administration",
+				year: 2023,
+				url:
+					"https://usbiotechnologyregulation.mrp.usda.gov/sites/default/files/coordinated-framework-plain-language.pdf",
+				stance: "supports",
+				note:
+					"Plain-language federal overview explaining that U.S. biotechnology regulation is science-based, product-based, and shared across existing agency authorities.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Are people left-brained or right-brained personality types?",
+		slug: "are-people-left-brained-or-right-brained-personality-types",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		bottomLine:
+			"No. Brain lateralization is real, but the popular idea that people are globally 'left-brained' logical types or 'right-brained' creative types is not supported by neuroimaging evidence.",
+		stableCore: [
+			"Some functions are lateralized, especially language and aspects of attention or visuospatial processing.",
+			"That does not imply people sort into whole-brain personality categories based on one dominant hemisphere.",
+			"A large resting-state fMRI analysis of 1,011 people found local lateralized networks, but not a whole-brain left-brained or right-brained network-strength phenotype across individuals."
+		],
+		openQuestions: [
+			"How do specific lateralized networks relate to individual differences without collapsing them into a two-type personality label?",
+			"Which public explanations best preserve the real science of lateralization while discouraging classroom or workplace neuromyths?"
+		],
+		whatWouldChangeMinds: [
+			"Large, reproducible neuroimaging evidence showing stable whole-brain left/right dominance that predicts the popular logical-versus-creative personality categories.",
+			"A validated model demonstrating that the two-category left-brain/right-brain personality scheme explains cognition better than modern network-based neuroscience."
+		],
+		misconceptions: [
+			"Real hemispheric specialization is often stretched into a much stronger personality-typing claim.",
+			"People often treat classroom learning preferences or career stereotypes as if they were direct brain-imaging evidence."
+		],
+		editorSummary:
+			"This page is a useful companion to the learning-styles and 10-percent-brain pages because it shows how a real neuroscience fact can become an overconfident pop-psychology label.",
+		searchCutoffAt: "2026-07-02T22:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T22:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial left-brain/right-brain personality claim page published from neuroimaging and neuromyth evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "landmark_study",
+				title:
+					"An Evaluation of the Left-Brain vs. Right-Brain Hypothesis with Resting State Functional Connectivity Magnetic Resonance Imaging",
+				publisher: "PLOS ONE",
+				year: 2013,
+				url: "https://doi.org/10.1371/journal.pone.0071275",
+				doi: "10.1371/journal.pone.0071275",
+				pmid: "23967180",
+				pmcid: "PMC3743825",
+				stance: "supports",
+				note:
+					"Analyzed resting-state scans from 1,011 people and found local lateralization, not a global left-brained or right-brained phenotype.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Neuromyths in education: prevalence and predictors of misconceptions among teachers",
+				publisher: "Frontiers in Psychology",
+				year: 2012,
+				url: "https://doi.org/10.3389/fpsyg.2012.00429",
+				doi: "10.3389/fpsyg.2012.00429",
+				pmid: "23087664",
+				stance: "supports",
+				note:
+					"Frames left- and right-brain learner beliefs as part of a broader neuromyth problem in education.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "No such thing as 'right-brained' or 'left-brained,' new research finds",
+				publisher: "American Psychological Association Monitor on Psychology",
+				year: 2013,
+				url: "https://www.apa.org/monitor/2013/11/right-brained",
+				stance: "context",
+				note:
+					"Public-facing psychology summary useful for explaining the difference between real lateralized functions and the popular personality myth.",
+				order: 3
 			}
 		]
 	},
