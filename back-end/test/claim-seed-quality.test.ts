@@ -7,6 +7,8 @@ const launchSensitiveClaimSlugs = [
 	"does-the-mmr-vaccine-cause-autism",
 	"do-mrna-covid-19-vaccines-change-your-dna",
 	"do-covid-19-vaccines-cause-infertility",
+	"are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+	"how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
 	"is-recent-global-warming-mainly-caused-by-human-activity",
 	"is-the-sun-causing-recent-global-warming",
 	"do-volcanoes-emit-more-co2-than-humans",

@@ -945,6 +945,214 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Are COVID-19 vaccines safe and beneficial during pregnancy and breastfeeding?",
+		slug: "are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 91,
+		reviewMode: "living",
+		bottomLine:
+			"Broadly yes, with current policy nuance. Large observational syntheses and current clinical guidance support that COVID-19 vaccination in pregnancy has not been linked to increased maternal or infant health risks and can reduce severe COVID-19 risk. CDC's 2025-2026 schedule frames vaccination as individual decision-making, while ACOG continues to recommend updated vaccination for pregnant and lactating patients.",
+		stableCore: [
+			"Pregnancy and the recently pregnant period increase the risk of severe COVID-19 and pregnancy complications from infection.",
+			"Large pregnancy studies and systematic reviews have not found increased risks such as miscarriage, preterm delivery, stillbirth, or birth defects after COVID-19 vaccination.",
+			"Vaccination during pregnancy and lactation can generate antibodies that may help protect infants too young to be vaccinated."
+		],
+		openQuestions: [
+			"How do absolute benefits vary with current variants, prior infection, underlying risk, vaccine product, and timing during pregnancy?",
+			"How long does infant protection last after vaccination during pregnancy or lactation, and what timing maximizes that protection?",
+			"How should public pages explain the difference between CDC's current individual-decision framework and stronger specialty-society recommendations?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, well-controlled surveillance showing a replicated vaccine-attributable increase in serious maternal, fetal, or infant outcomes.",
+			"Evidence that current vaccine formulations no longer reduce severe COVID-19 outcomes for pregnant or recently pregnant people at elevated risk."
+		],
+		misconceptions: [
+			"Early exclusion of pregnant people from initial randomized trials is often mistaken for a lack of later real-world safety data.",
+			"Changes in policy language are sometimes presented as proof of harm, even when the underlying safety evidence remains broadly consistent."
+		],
+		editorSummary:
+			"This maternal-child health page should distinguish evidence about safety and benefit from current policy wording, because readers need both pieces to make sense of the public dispute.",
+		uncertaintySummary:
+			"The safety signal is reassuring across large observational datasets, but recommendations remain sensitive to variant era, baseline risk, vaccine product, prior immunity, and jurisdiction-specific policy updates.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial pregnancy and breastfeeding COVID-19 vaccination page published from current CDC/ACOG guidance, living systematic review, meta-analysis, and lactation review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "COVID-19 Vaccination for Women Who Are Pregnant or Breastfeeding",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/covid/vaccines/pregnant-or-breastfeeding.html",
+				stance: "supports",
+				note:
+					"Current U.S. public guidance anchoring the 2025-2026 individual-decision framework, pregnancy risk context, and safety summary.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Maternal Immunizations",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2026,
+				url: "https://www.acog.org/clinical/clinical-guidance/committee-statement/articles/2026/02/maternal-immunizations",
+				stance: "supports",
+				note:
+					"Current specialty-society guidance recommending annual COVID-19 immunization during pregnancy and lactation while summarizing fetal safety evidence.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Systematic review and meta-analysis of the effectiveness and perinatal outcomes of COVID-19 vaccination in pregnancy",
+				publisher: "Nature Communications",
+				year: 2022,
+				url: "https://doi.org/10.1038/s41467-022-30052-w",
+				doi: "10.1038/s41467-022-30052-w",
+				stance: "supports",
+				note:
+					"Synthesis of 23 studies and 117,552 vaccinated pregnant people, mostly mRNA recipients, with no higher risk of the assessed adverse pregnancy or neonatal outcomes.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Safety and Effectiveness of COVID-19 Vaccines During Pregnancy",
+				publisher: "Drug Safety",
+				year: 2024,
+				url: "https://doi.org/10.1007/s40264-024-01458-w",
+				doi: "10.1007/s40264-024-01458-w",
+				stance: "supports",
+				note:
+					"Living systematic review and meta-analysis covering 177 studies and 638,791 participants, useful for ongoing evidence-surveillance framing.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Safety and Efficacy of Coronavirus Disease 2019 (COVID-19) mRNA Vaccines During Lactation",
+				publisher: "Obstetrics and Gynecology",
+				year: 2023,
+				url: "https://doi.org/10.1097/AOG.0000000000005093",
+				doi: "10.1097/AOG.0000000000005093",
+				stance: "supports",
+				note:
+					"Focused lactation review covering maternal and infant side-effect data, breast-milk mRNA concerns, and antibody transfer evidence.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "How big is the myocarditis risk after mRNA COVID-19 vaccination, and who is most affected?",
+		slug: "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 90,
+		reviewMode: "living",
+		bottomLine:
+			"The risk is real but rare. It is highest in adolescent and young adult males, especially within about a week after a second mRNA dose, and varies by age, sex, product, dose, and interval. Most reported young-person cases improve, but long-term follow-up and current-formulation surveillance still matter.",
+		stableCore: [
+			"Myocarditis and pericarditis after mRNA COVID-19 vaccination are recognized safety signals, not imaginary concerns.",
+			"Absolute risk is low overall, but it is concentrated in adolescent and young adult males after mRNA vaccination, especially after dose two.",
+			"Product choice, dose number, spacing, prior infection, and baseline COVID-19 risk all matter when comparing benefits and harms."
+		],
+		openQuestions: [
+			"How do current formulations and schedules change risk compared with the early primary-series evidence base?",
+			"What is the long-term clinical meaning of persistent symptoms or cardiac MRI abnormalities in a minority of follow-up cases?",
+			"How should risk comparisons account for age, sex, infection history, and changing COVID-19 severity over time?"
+		],
+		whatWouldChangeMinds: [
+			"Current-season active surveillance showing materially higher myocarditis burden, worse outcomes, or a different high-risk group than prior evidence suggests.",
+			"Long-term follow-up showing persistent clinically important cardiac dysfunction in a substantially larger share of cases."
+		],
+		misconceptions: [
+			"Calling the event rare is sometimes misread as denying the safety signal.",
+			"Using population-average rates can hide the higher risk in young males, while using only the highest-risk subgroup can exaggerate risk for everyone else."
+		],
+		editorSummary:
+			"This page should treat myocarditis as a real subgroup safety issue while resisting both minimization and denominator-free alarm.",
+		uncertaintySummary:
+			"The highest-risk subgroup and early-dose signal are clear, but precise current-season risk depends on vaccine product, schedule, prior immunity, variant era, case definition, and follow-up duration.",
+		searchCutoffAt: "2026-07-02T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial mRNA vaccine myocarditis risk page published from CDC safety guidance, active surveillance, systematic review, and infection-comparison cohort sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Safety Considerations for COVID-19 Vaccines",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/covid/hcp/vaccine-considerations/safety-considerations.html",
+				stance: "supports",
+				note:
+					"Current CDC clinical guidance describing the rare myocarditis/pericarditis risk, highest-attention male 12-39 group, counseling symptoms, and interval considerations.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Incidence, risk factors, natural history, and hypothesised mechanisms of myocarditis and pericarditis following covid-19 vaccination",
+				publisher: "BMJ",
+				year: 2022,
+				url: "https://doi.org/10.1136/bmj-2021-069445",
+				doi: "10.1136/bmj-2021-069445",
+				stance: "supports",
+				note:
+					"Living evidence synthesis estimating highest incidence in male adolescents and young adults and flagging product and interval differences.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Risk of myocarditis and pericarditis after the COVID-19 mRNA vaccination in the USA",
+				publisher: "Lancet",
+				year: 2022,
+				url: "https://doi.org/10.1016/S0140-6736(22)00791-7",
+				doi: "10.1016/S0140-6736(22)00791-7",
+				stance: "supports",
+				note:
+					"Large U.S. claims-database cohort quantifying rare post-vaccination myocarditis/pericarditis and the higher risk in men aged 18-25 after dose two.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Risk of Myocarditis After Sequential Doses of COVID-19 Vaccine and SARS-CoV-2 Infection by Age and Sex",
+				publisher: "Circulation",
+				year: 2022,
+				url: "https://doi.org/10.1161/CIRCULATIONAHA.122.059970",
+				doi: "10.1161/CIRCULATIONAHA.122.059970",
+				stance: "supports",
+				note:
+					"Large England self-controlled case-series study comparing myocarditis risk after sequential vaccine doses and SARS-CoV-2 infection by age and sex.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Update on CDC's COVID-19 Vaccine Safety Monitoring",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/acip/downloads/slides-2025-06-25-26/04-Meyer-COVID-508.pdf",
+				stance: "supports",
+				note:
+					"ACIP safety-monitoring update with current-era myocarditis surveillance and follow-up recovery context for adolescents and young adults.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is recent global warming mainly caused by human activity?",
 		slug: "is-recent-global-warming-mainly-caused-by-human-activity",
