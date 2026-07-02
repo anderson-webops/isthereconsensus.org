@@ -38,6 +38,7 @@ import {
 	EVIDENCE_STUDY_DESIGNS,
 	EVIDENCE_TIERS
 } from "./constants/evidenceLandscape.js";
+import { listAccountActivity } from "./controllers/accountActivityController.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
@@ -53,6 +54,7 @@ import { TopicSentimentVote } from "./models/schemas/TopicSentimentVote.js";
 import { User } from "./models/schemas/User.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { buildSetupStatus } from "./setup/buildSetupStatus.js";
+import { recordAccountActivity } from "./utils/accountActivity.js";
 import { verifyCaptcha } from "./utils/captcha.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
@@ -2121,6 +2123,23 @@ async function main() {
 			if (affiliation) user.affiliation = affiliation;
 			if (expertiseAreas.length) user.expertiseAreas = expertiseAreas;
 			await user.save();
+			await recordAccountActivity({
+				req,
+				action: "expert_application.created",
+				actor: {
+					id: user._id.toString(),
+					type: "user"
+				},
+				target: {
+					id: application._id.toString(),
+					type: "expert_application",
+					email: user.email
+				},
+				metadata: {
+					expertiseAreas: expertiseAreas.join(", "),
+					source: "account_workspace"
+				}
+			});
 
 			return res.status(201).json({ application });
 		}
@@ -3115,6 +3134,8 @@ async function main() {
 		}
 	});
 
+	api.get("/admin/account-activity", requireAdmin, listAccountActivity);
+
 	api.get("/admin/expert-applications", requireAdmin, async (req, res) => {
 		try {
 			const status = typeof req.query.status === "string" ? req.query.status : "";
@@ -3155,6 +3176,7 @@ async function main() {
 
 			const user = await User.findById(application.user);
 			if (user) {
+				const previousStatus = user.expertiseStatus;
 				user.expertiseStatus
 					= decision === "approved" ? "verified" : decision === "needs-info" ? "pending" : "rejected";
 				if (decision === "approved") {
@@ -3164,6 +3186,25 @@ async function main() {
 					user.expertiseAreas = application.expertiseAreas;
 				}
 				await user.save();
+				await recordAccountActivity({
+					req,
+					action: "expert_application.reviewed",
+					actor: {
+						id: req.currentAdmin?._id.toString() ?? currentActor(req).id,
+						type: "admin"
+					},
+					target: {
+						id: application._id.toString(),
+						type: "expert_application",
+						email: user.email
+					},
+					metadata: {
+						decision,
+						previousStatus,
+						newStatus: user.expertiseStatus,
+						userId: user._id.toString()
+					}
+				});
 			}
 
 			return res.json({ application });

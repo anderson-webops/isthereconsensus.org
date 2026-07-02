@@ -2,8 +2,10 @@ import type { RequestHandler } from "express";
 import type { IAdmin } from "../types/entities/IAdmin.js";
 import type { IUser } from "../types/entities/IUser.js";
 import type { CustomSession } from "../types/session/CustomSession.js";
+import type { AccountActivityActor, AccountActivityTarget } from "../utils/accountActivity.js";
 import { Admin } from "../models/schemas/Admin.js";
 import { User } from "../models/schemas/User.js";
+import { emailFingerprint, recordAccountActivity } from "../utils/accountActivity.js";
 import { verifyCaptcha } from "../utils/captcha.js";
 
 type Entity = IUser | IAdmin;
@@ -17,6 +19,37 @@ function isEntity(entity: any): entity is Entity {
 
 function getEntityId(entity: Entity) {
 	return entity._id.toString();
+}
+
+function accountType(entity: Entity): "admin" | "user" {
+	return entity instanceof Admin ? "admin" : "user";
+}
+
+function accountTarget(entity: Entity): AccountActivityTarget {
+	return {
+		id: entity._id.toString(),
+		type: accountType(entity),
+		email: entity.email
+	};
+}
+
+function accountActor(entity: Entity): AccountActivityActor {
+	return {
+		id: entity._id.toString(),
+		type: accountType(entity)
+	};
+}
+
+async function actorFromSession(session: CustomSession): Promise<AccountActivityActor | undefined> {
+	if (session.adminID) {
+		const admin = await Admin.findById(session.adminID);
+		if (admin) return accountActor(admin);
+	}
+	if (session.userID) {
+		const user = await User.findById(session.userID);
+		if (user) return accountActor(user);
+	}
+	return undefined;
 }
 
 function canMutate(session: CustomSession, entity: Entity) {
@@ -71,6 +104,17 @@ export const registerUser: RequestHandler = async (req, res) => {
 	session.adminID = undefined;
 	session.userID = user._id.toString();
 
+	await recordAccountActivity({
+		req,
+		action: "user.registered",
+		actor: { type: "anonymous" },
+		target: accountTarget(user),
+		metadata: {
+			source: "public_registration",
+			termsVersion: TERMS_VERSION
+		}
+	});
+
 	return res.status(201).json({ currentUser: user });
 };
 
@@ -101,7 +145,17 @@ export const login: RequestHandler = async (req, res) => {
 	])) as Array<IUser | IAdmin | null>;
 
 	const entity = results.find(isEntity);
-	if (!entity || !(await entity.comparePassword(password))) {
+	const matches = entity ? await entity.comparePassword(password) : false;
+	if (!entity || !matches) {
+		await recordAccountActivity({
+			req,
+			action: "login.failed",
+			actor: { type: "anonymous" },
+			target: entity ? accountTarget(entity) : { type: "unknown", email: normalizedEmail },
+			metadata: {
+				reason: "bad_credentials"
+			}
+		});
 		return res.status(403).json({ error: "Bad credentials." });
 	}
 
@@ -121,10 +175,36 @@ export const login: RequestHandler = async (req, res) => {
 	const options = ((req as any).sessionOptions ??= {});
 	options.maxAge = remember ? THIRTY_DAYS_MS : undefined;
 
+	await recordAccountActivity({
+		req,
+		action: "login.success",
+		actor: accountActor(entity),
+		target: accountTarget(entity),
+		metadata: {
+			remember: remember ? "true" : "false"
+		}
+	});
+
 	return res.json({ [responseKey]: entity });
 };
 
-export const logout: RequestHandler = (req, res) => {
+export const logout: RequestHandler = async (req, res) => {
+	const session = req.session as CustomSession;
+	const entity = session.adminID
+		? await Admin.findById(session.adminID)
+		: session.userID
+			? await User.findById(session.userID)
+			: null;
+
+	if (entity) {
+		await recordAccountActivity({
+			req,
+			action: "logout",
+			actor: accountActor(entity),
+			target: accountTarget(entity)
+		});
+	}
+
 	(req.session as any) = null;
 	return res.sendStatus(200);
 };
@@ -180,8 +260,23 @@ export const changeEmail: RequestHandler = async (req, res) => {
 		if (!canMutate(session, doc as Entity)) {
 			return res.status(403).json({ error: "Not authorized to update this email." });
 		}
+		const previousEmail = doc.email;
 		doc.email = normalizedEmail;
 		await doc.save();
+		const previousEmailFingerprint = emailFingerprint(previousEmail);
+		const newEmailFingerprint = emailFingerprint(normalizedEmail);
+		await recordAccountActivity({
+			req,
+			action: "email.changed",
+			actor: (await actorFromSession(session)) ?? accountActor(doc as Entity),
+			target: accountTarget(doc as Entity),
+			metadata: {
+				previousEmailHash: previousEmailFingerprint.targetEmailHash,
+				previousEmailDomain: previousEmailFingerprint.targetEmailDomain,
+				newEmailHash: newEmailFingerprint.targetEmailHash,
+				newEmailDomain: newEmailFingerprint.targetEmailDomain
+			}
+		});
 		return res.json({ message: "Email updated successfully." });
 	}
 
@@ -221,6 +316,15 @@ export const changePassword: RequestHandler = async (req, res) => {
 
 		doc.password = newPassword;
 		await doc.save();
+		await recordAccountActivity({
+			req,
+			action: "password.changed",
+			actor: (await actorFromSession(session)) ?? accountActor(doc as Entity),
+			target: accountTarget(doc as Entity),
+			metadata: {
+				adminOverride: isAdminOverride ? "true" : "false"
+			}
+		});
 		return res.json({ message: "Password updated successfully." });
 	}
 

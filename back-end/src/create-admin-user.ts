@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import * as readlineSync from "readline-sync";
 
 import { Admin } from "./models/schemas/Admin.js";
+import { recordAccountActivity } from "./utils/accountActivity.js";
 import "dotenv/config";
 
 const MONGODB_URI = env.MONGODB_URI;
@@ -48,6 +49,18 @@ if (!name || !email || !password) {
 		});
 
 		await admin.save();
+		await recordAccountActivity({
+			action: "admin.created",
+			actor: { type: "system" },
+			target: {
+				id: admin._id.toString(),
+				type: "admin",
+				email: admin.email
+			},
+			metadata: {
+				source: "create-admin-user"
+			}
+		});
 		// console.log(`Admin user created for ${name} with email ${email}`);
 		exit(0);
 	}

@@ -1,5 +1,46 @@
 export type ContributorTier = "member" | "contributor" | "trusted" | "expert";
 export type ExpertiseStatus = "none" | "pending" | "verified" | "rejected";
+export type AccountActivityAction =
+	| "user.registered"
+	| "user.deleted"
+	| "admin.created"
+	| "admin.deleted"
+	| "login.success"
+	| "login.failed"
+	| "logout"
+	| "password.changed"
+	| "email.changed"
+	| "expert_application.created"
+	| "expert_application.reviewed";
+
+export type AccountActivityActorType = "user" | "admin" | "system" | "anonymous";
+export type AccountActivityTargetType = "user" | "admin" | "expert_application" | "unknown";
+
+export interface AccountActivityLog {
+	_id: string;
+	action: AccountActivityAction;
+	actorType: AccountActivityActorType;
+	actorId?: string;
+	targetType: AccountActivityTargetType;
+	targetId?: string;
+	targetEmailHash?: string;
+	targetEmailDomain?: string;
+	sourceIp?: string;
+	requestId?: string;
+	userAgent?: string;
+	metadata?: Record<string, string>;
+	createdAt?: string;
+}
+
+export interface AccountActivityResponse {
+	logs: AccountActivityLog[];
+	pagination: {
+		page: number;
+		limit: number;
+		total: number;
+		hasMore: boolean;
+	};
+}
 
 export interface ExpertApplication {
 	_id: string;

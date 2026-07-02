@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import type { ExpertApplication, QuestionFlag } from "~/types/platform";
+import type {
+	AccountActivityAction,
+	AccountActivityLog,
+	AccountActivityResponse,
+	ExpertApplication,
+	QuestionFlag
+} from "~/types/platform";
 
 const { apiUrl } = useApi();
 const { role } = useAuth();
@@ -8,26 +14,64 @@ const loading = ref(false);
 const actionState = ref("");
 const applicationQueue = ref<ExpertApplication[]>([]);
 const flagQueue = ref<QuestionFlag[]>([]);
+const activityLogs = ref<AccountActivityLog[]>([]);
 const errorMessage = ref("");
 const reviewNotes = ref<Record<string, string>>({});
 
 const isAdmin = computed(() => role.value === "admin");
+const activityLabels: Record<AccountActivityAction, string> = {
+	"user.registered": "Public registration",
+	"user.deleted": "User deleted",
+	"admin.created": "Admin created",
+	"admin.deleted": "Admin deleted",
+	"login.success": "Login success",
+	"login.failed": "Login failed",
+	logout: "Logout",
+	"password.changed": "Password changed",
+	"email.changed": "Email changed",
+	"expert_application.created": "Expert application created",
+	"expert_application.reviewed": "Expert application reviewed"
+};
+
+function formatActivityDate(value?: string) {
+	if (!value) return "Unknown time";
+	return new Intl.DateTimeFormat(undefined, {
+		dateStyle: "medium",
+		timeStyle: "short"
+	}).format(new Date(value));
+}
+
+function activityLabel(action: AccountActivityAction) {
+	return activityLabels[action] ?? action;
+}
+
+function activityActor(log: AccountActivityLog) {
+	return log.actorId ? `${log.actorType} ${log.actorId.slice(-6)}` : log.actorType;
+}
+
+function activityMetadata(log: AccountActivityLog) {
+	return Object.entries(log.metadata ?? {}).slice(0, 4);
+}
 
 async function refreshQueues() {
 	if (import.meta.server || !isAdmin.value) return;
 	loading.value = true;
 	errorMessage.value = "";
 	try {
-		const [applicationsResponse, flagsResponse] = await Promise.all([
+		const [applicationsResponse, flagsResponse, activityResponse] = await Promise.all([
 			$fetch<{ applications: ExpertApplication[] }>(apiUrl("/admin/expert-applications?status=pending"), {
 				credentials: "include"
 			}),
 			$fetch<{ flags: QuestionFlag[] }>(apiUrl("/admin/question-flags"), {
 				credentials: "include"
+			}),
+			$fetch<AccountActivityResponse>(apiUrl("/admin/account-activity?limit=20"), {
+				credentials: "include"
 			})
 		]);
 		applicationQueue.value = applicationsResponse.applications;
 		flagQueue.value = flagsResponse.flags;
+		activityLogs.value = activityResponse.logs;
 	} catch (error) {
 		errorMessage.value = "Unable to load admin review queues.";
 		console.error(error);
@@ -90,9 +134,14 @@ watch(
 				<h2>Admin review</h2>
 				<p>Moderation and expert-review queues, in one place.</p>
 			</div>
-			<button class="button button--ghost" type="button" :disabled="loading" @click="refreshQueues">
-				{{ loading ? "Refreshing..." : "Refresh queues" }}
-			</button>
+			<div class="admin-panel__actions">
+				<NuxtLink class="button button--ghost" to="/account/editorial/account-activity">
+					Account activity
+				</NuxtLink>
+				<button class="button button--ghost" type="button" :disabled="loading" @click="refreshQueues">
+					{{ loading ? "Refreshing..." : "Refresh queues" }}
+				</button>
+			</div>
 		</header>
 
 		<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -105,6 +154,10 @@ watch(
 			<article class="summary-card">
 				<span>Question flags</span>
 				<strong>{{ flagQueue.length }}</strong>
+			</article>
+			<article class="summary-card">
+				<span>Account activity</span>
+				<strong>{{ activityLogs.length }}</strong>
 			</article>
 		</div>
 
@@ -202,6 +255,34 @@ watch(
 				</div>
 			</div>
 		</details>
+
+		<details class="queue-panel" open>
+			<summary>Recent account activity</summary>
+			<div class="queue-panel__body">
+				<div v-if="!activityLogs.length" class="muted">No account activity logged yet.</div>
+				<div v-else class="queue-list">
+					<article v-for="log in activityLogs" :key="log._id" class="queue-card queue-card--activity">
+						<div>
+							<p class="activity-kicker">{{ activityLabel(log.action) }}</p>
+							<h3>{{ log.targetType }} target</h3>
+							<p class="muted">
+								Actor: {{ activityActor(log) }} · Target:
+								{{ log.targetId ? log.targetId.slice(-6) : log.targetEmailDomain || "unknown" }}
+							</p>
+							<p class="muted">
+								{{ formatActivityDate(log.createdAt) }}
+								<span v-if="log.sourceIp"> · IP {{ log.sourceIp }}</span>
+							</p>
+							<div v-if="activityMetadata(log).length" class="activity-meta">
+								<span v-for="[key, value] in activityMetadata(log)" :key="key">
+									{{ key }}: {{ value }}
+								</span>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</details>
 	</section>
 </template>
 
@@ -226,6 +307,13 @@ watch(
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
+}
+
+.admin-panel__actions {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
 .admin-panel__header h2,
@@ -291,6 +379,34 @@ watch(
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
+}
+
+.queue-card--activity {
+	display: block;
+}
+
+.activity-kicker {
+	margin: 0 0 4px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
+}
+
+.activity-meta {
+	margin-top: 10px;
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.activity-meta span {
+	padding: 4px 8px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-soft-line);
+	font-size: 0.78rem;
+	color: var(--consensus-muted);
 }
 
 .queue-actions {
