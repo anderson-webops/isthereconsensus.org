@@ -1626,6 +1626,85 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does sugar make children hyperactive?",
+		slug: "does-sugar-make-children-hyperactive",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"Not in the usual immediate 'sugar high' sense. Blinded challenge studies and a JAMA meta-analysis do not show that sugar reliably worsens children's behavior or cognition, although high-sugar diets can still matter for dental, metabolic, and overall health.",
+		stableCore: [
+			"The classic meta-analysis included 16 reports and 23 within-subject studies; all 14 behavior or cognition effect-size confidence intervals included zero.",
+			"Parent expectancy can make behavior seem worse when adults believe a child received sugar, even when the child actually received a placebo.",
+			"Observational links between sugary drinks and ADHD symptoms do not prove that eating sugar causes immediate hyperactivity."
+		],
+		openQuestions: [
+			"Whether small susceptible subgroups respond differently enough to matter clinically.",
+			"How long-term dietary patterns, sleep, household routines, and highly stimulating party settings interact with perceived behavior."
+		],
+		whatWouldChangeMinds: [
+			"Repeated blinded challenge trials showing a reliable, clinically meaningful hyperactivity effect after sugar compared with placebo.",
+			"Evidence separating sugar's direct behavioral effect from expectancy, sleep, excitement, caffeine, and broader diet quality."
+		],
+		misconceptions: [
+			"Exciting settings where children eat sweets can make sugar look causal even when the setting is doing much of the work.",
+			"Diet quality and acute sugar-triggered hyperactivity are different questions and should not be collapsed into one claim."
+		],
+		editorSummary:
+			"This is a useful neuromyth page because it lets the site say both things at once: the immediate hyperactivity claim is not well supported, and high-sugar diets can still be worth reducing for other health reasons.",
+		searchCutoffAt: "2026-07-02T21:30:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:30:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:30:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial sugar-hyperactivity claim page published from blinded challenge meta-analysis, expectancy study, and observational ADHD context."
+			}
+		],
+		sources: [
+			{
+				kind: "meta_analysis",
+				title: "The effect of sugar on behavior or cognition in children. A meta-analysis",
+				publisher: "JAMA",
+				year: 1995,
+				url: "https://pubmed.ncbi.nlm.nih.gov/7474248/",
+				doi: "10.1001/jama.1995.03530200053037",
+				pmid: "7474248",
+				stance: "supports",
+				note:
+					"Decision-weight source for the acute causal question; the meta-analysis found no significant sugar effect across 14 behavioral and cognitive constructs.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Effects of sugar ingestion expectancies on mother-child interactions",
+				publisher: "Journal of Abnormal Child Psychology",
+				year: 1994,
+				url: "https://pubmed.ncbi.nlm.nih.gov/7963081/",
+				doi: "10.1007/BF02168088",
+				pmid: "7963081",
+				stance: "context",
+				note:
+					"Shows why the belief persists: mothers told their child received sugar rated more hyperactivity even though all children received placebo.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Sugar consumption, sugar sweetened beverages and Attention Deficit Hyperactivity Disorder",
+				publisher: "Complementary Therapies in Medicine",
+				year: 2020,
+				url: "https://doi.org/10.1016/j.ctim.2020.102512",
+				doi: "10.1016/j.ctim.2020.102512",
+				stance: "context",
+				note:
+					"Context source: observational studies can show sugar-sweetened beverage and ADHD-symptom associations, but this is not the same as blinded proof of acute sugar hyperactivity.",
+				order: 3
+			}
+		]
+	},
+	{
 		topicSlug: "health-and-medicine",
 		title: "Does antibiotic overuse drive antibiotic resistance?",
 		slug: "does-antibiotic-overuse-drive-antibiotic-resistance",
@@ -1797,6 +1876,159 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Helpful when summarizing the broad lack of benefit for healthy adults without specific indications.",
 				order: 2
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Are dietary supplements FDA-approved like drugs?",
+		slug: "are-dietary-supplements-fda-approved-like-drugs",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"No. In the United States, dietary supplements are regulated, but they are not FDA-approved for safety and effectiveness before marketing in the way prescription or over-the-counter drugs are.",
+		stableCore: [
+			"FDA oversight exists, but the baseline legal framework is different from drug approval.",
+			"Most supplement firms do not have to prove safety and effectiveness to FDA before a product reaches consumers.",
+			"Manufacturers are responsible for safe products and truthful, non-misleading claims; FDA mainly enforces after products are marketed, with extra notification rules for new dietary ingredients."
+		],
+		openQuestions: [
+			"How well does postmarket enforcement catch unsafe or mislabeled supplements in practice?",
+			"Which product categories would benefit most from stronger premarket review or third-party testing?"
+		],
+		whatWouldChangeMinds: [
+			"A statutory change requiring routine FDA premarket approval of dietary supplements for safety and effectiveness.",
+			"Evidence that a specific product is actually an FDA-approved drug rather than a dietary supplement."
+		],
+		misconceptions: [
+			"FDA oversight is often mistaken for FDA premarket approval.",
+			"The required structure/function disclaimer can be misread as a technicality rather than a warning that disease claims are not approved."
+		],
+		editorSummary:
+			"This is a regulatory consensus page: useful because many health claims borrow the credibility of FDA approval even when the legal category is dietary supplement, not drug.",
+		searchCutoffAt: "2026-07-02T21:30:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:30:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:30:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial supplement-regulation claim page published from FDA and NIH consumer-regulatory sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Questions and Answers on Dietary Supplements",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url:
+					"https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements",
+				stance: "supports",
+				note:
+					"FDA explains that it does not have authority to approve dietary supplements before marketing and that firms generally do not submit substantiation before or after marketing.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Information for Consumers on Using Dietary Supplements",
+				publisher: "U.S. Food and Drug Administration",
+				url: "https://www.fda.gov/food/dietary-supplements/information-consumers-using-dietary-supplements",
+				stance: "supports",
+				note:
+					"Consumer-facing FDA source stating that DSHEA does not authorize FDA to approve supplements for safety and effectiveness before marketing.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Dietary Supplements: What You Need to Know",
+				publisher: "NIH Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/WYNTK-Consumer/",
+				stance: "context",
+				note:
+					"Helps readers distinguish supplements from medicines and understand the disclaimer used for structure/function claims.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do vitamin E or beta-carotene supplements prevent heart disease or cancer?",
+		slug: "do-vitamin-e-or-beta-carotene-supplements-prevent-heart-disease-or-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"No for routine primary prevention in community-dwelling, nonpregnant adults. The USPSTF recommends against beta-carotene or vitamin E supplements for preventing cardiovascular disease or cancer; vitamin E shows no net benefit, and beta-carotene can increase harm in people at high lung-cancer risk.",
+		stableCore: [
+			"The 2022 USPSTF evidence review included 84 studies and 739,803 participants.",
+			"Vitamin E was not significantly associated with lower all-cause mortality, cardiovascular events, or cancer incidence in pooled randomized-trial evidence.",
+			"Beta-carotene was associated with higher lung cancer risk and cardiovascular mortality in relevant high-risk groups, especially people who smoke or had asbestos exposure."
+		],
+		openQuestions: [
+			"Whether baseline nutrient status, food insecurity, or other subgroup factors change the benefit-harm balance for some nutrients.",
+			"How to communicate the difference between eating antioxidant-rich foods and taking high-dose isolated supplements."
+		],
+		whatWouldChangeMinds: [
+			"Large, well-conducted randomized trials showing a durable net benefit for vitamin E or beta-carotene supplementation in the general prevention population.",
+			"A future USPSTF or comparable guideline update reversing the current no-benefit or harm assessment."
+		],
+		misconceptions: [
+			"Antioxidant biology is often treated as proof that antioxidant pills prevent disease, but trial outcomes are the stronger test.",
+			"Evidence against routine prevention is not the same as saying deficiency treatment or pregnancy-specific supplementation never matters."
+		],
+		editorSummary:
+			"This page captures a clean supplement-prevention claim with useful numbers: a large evidence review, no vitamin E prevention benefit, and beta-carotene harm signals in high-risk groups.",
+		searchCutoffAt: "2026-07-02T21:30:00.000Z",
+		lastRetractionCheckAt: "2026-07-02T21:30:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-02T21:30:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial vitamin E and beta-carotene prevention claim page published from USPSTF recommendation and systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title:
+					"Vitamin, Mineral, and Multivitamin Supplementation to Prevent Cardiovascular Disease and Cancer: Preventive Medication",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2022,
+				url:
+					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/vitamin-supplementation-to-prevent-cvd-and-cancer-preventive-medication",
+				stance: "supports",
+				note:
+					"Primary guideline anchor: recommends against beta-carotene or vitamin E supplements for cardiovascular disease or cancer prevention in the covered adult population.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Vitamin and Mineral Supplements for the Primary Prevention of Cardiovascular Disease and Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2022,
+				url: "https://doi.org/10.1001/jama.2021.15650",
+				doi: "10.1001/jama.2021.15650",
+				stance: "supports",
+				note:
+					"Decision-weight source with 84 studies and 739,803 participants; found no significant vitamin E benefit and beta-carotene harm signals.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Dietary Supplements and Risk of Cause-Specific Death, Cardiovascular Disease, and Cancer: A Systematic Review and Meta-Analysis of Primary Prevention Trials",
+				publisher: "Advances in Nutrition",
+				year: 2017,
+				url: "https://doi.org/10.3945/an.116.013516",
+				doi: "10.3945/an.116.013516",
+				stance: "context",
+				note:
+					"Older broad supplement meta-analysis used as context for why isolated nutrient pills should not be equated with food-pattern evidence.",
+				order: 3
 			}
 		]
 	},
