@@ -64,22 +64,27 @@ useStaticPageMeta({
 					<p class="eyebrow">Module</p>
 					<h2>{{ item.title }}</h2>
 				</div>
-				<p>{{ item.diagnosis }}</p>
-				<section class="misconception-card__section">
+				<p class="misconception-card__diagnosis">{{ item.diagnosis }}</p>
+				<section class="misconception-card__section misconception-card__section--correction">
 					<h3>Short correction</h3>
 					<p>{{ item.shortCorrection }}</p>
 				</section>
-				<section class="misconception-card__section">
-					<h3>Quick check</h3>
-					<ul>
-						<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
-					</ul>
-				</section>
-				<section class="misconception-card__section">
-					<h3>Why it persists</h3>
-					<p>{{ item.whyItPersists }}</p>
-				</section>
-				<section class="misconception-card__section">
+				<details class="misconception-card__details">
+					<summary>Checks and context</summary>
+					<div class="misconception-card__details-body">
+						<section class="misconception-card__section">
+							<h3>Quick check</h3>
+							<ul>
+								<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
+							</ul>
+						</section>
+						<section class="misconception-card__section">
+							<h3>Why it persists</h3>
+							<p>{{ item.whyItPersists }}</p>
+						</section>
+					</div>
+				</details>
+				<section class="misconception-card__section misconception-card__section--links">
 					<h3>Related explainers</h3>
 					<div class="chip-row">
 						<NuxtLink
@@ -195,19 +200,40 @@ useStaticPageMeta({
 .misconception-grid {
 	display: grid;
 	gap: 16px;
+	align-items: start;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .misconception-card {
 	padding: 22px;
 	display: grid;
-	gap: 14px;
+	gap: 13px;
+	align-content: start;
 	min-width: 0;
 }
 
 .misconception-card__section {
 	display: grid;
 	gap: 8px;
+}
+
+.misconception-card__diagnosis {
+	margin: 0;
+}
+
+.misconception-card__section--correction {
+	padding: 13px 14px;
+	border: 1px solid color-mix(in srgb, var(--consensus-method) 28%, var(--consensus-soft-line));
+	border-radius: 14px;
+	background: color-mix(in srgb, var(--consensus-method) 10%, var(--consensus-surface));
+}
+
+.misconception-card__section--correction p {
+	color: var(--consensus-ink);
+}
+
+.misconception-card__section--links {
+	padding-top: 2px;
 }
 
 .misconception-card__section p,
@@ -220,6 +246,59 @@ useStaticPageMeta({
 	padding-left: 20px;
 	display: grid;
 	gap: 8px;
+}
+
+.misconception-card__details {
+	display: grid;
+	gap: 10px;
+	padding-top: 2px;
+}
+
+.misconception-card__details summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	list-style: none;
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--consensus-ink);
+}
+
+.misconception-card__details summary::-webkit-details-marker {
+	display: none;
+}
+
+.misconception-card__details summary:focus-visible {
+	border-radius: 8px;
+	outline: 2px solid var(--consensus-debate);
+	outline-offset: 4px;
+}
+
+.misconception-card__details summary::after {
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	color: var(--consensus-muted);
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 0.82rem;
+	line-height: 16px;
+	text-align: center;
+	content: "+";
+}
+
+.misconception-card__details[open] summary::after {
+	content: "-";
+}
+
+.misconception-card__details-body {
+	display: grid;
+	gap: 12px;
+	padding-top: 10px;
 }
 
 .misconception-panel--soft {
