@@ -7516,6 +7516,334 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Is ADHD a common neurodevelopmental disorder that often persists into adulthood?",
+		slug: "is-adhd-a-common-neurodevelopmental-disorder-that-often-persists-into-adulthood",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+				"Yes. ADHD is a common neurodevelopmental disorder that begins in childhood, can impair school, work, and relationships, and often continues into adolescence or adulthood. A careful diagnosis still requires persistent symptoms, impairment, and evaluation for other conditions that can look similar.",
+		stableCore: [
+			"ADHD symptoms start in childhood and can last into adulthood, although the way symptoms show up often changes with age.",
+			"Current U.S. parent-survey data estimate that about 7 million children aged 3 to 17, or 11.4%, have ever been diagnosed with ADHD.",
+			"Systematic reviews find that childhood ADHD often persists into adulthood, but persistence estimates vary because studies use different diagnostic criteria, impairment thresholds, informants, and follow-up designs."
+		],
+		openQuestions: [
+			"How much of rising diagnosis reflects better recognition, diagnostic drift, service access, school demands, or true prevalence change?",
+			"How should clinicians distinguish adult ADHD from anxiety, depression, sleep disorders, substance use, trauma, or other causes of attention problems?",
+			"Which supports most improve long-term functioning across school, work, driving, relationships, and co-occurring conditions?"
+		],
+		whatWouldChangeMinds: [
+			"Large representative longitudinal studies showing that carefully diagnosed ADHD does not predict impairment or persistence beyond ordinary development.",
+			"A major clinical-guideline reassessment concluding that ADHD is not a valid neurodevelopmental disorder."
+		],
+		misconceptions: [
+			"ADHD is sometimes dismissed as laziness, bad parenting, or normal childhood energy.",
+			"Rising diagnosis is sometimes treated as proof that the condition is fake, rather than as a signal that requires careful evaluation and service-quality checks.",
+			"A childhood ADHD diagnosis is sometimes assumed to disappear automatically by adulthood."
+		],
+		editorSummary:
+				"This page gives readers a stigma-resistant baseline: ADHD is real and often persistent, while diagnosis still needs careful clinical boundaries.",
+		uncertaintySummary:
+				"The consensus is strongest for ADHD as a valid and often persistent neurodevelopmental disorder. Estimates of prevalence and adult persistence are less exact because studies differ in diagnostic method, sampling, impairment requirements, and access to evaluation.",
+		searchCutoffAt: "2026-07-03T03:41:57.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:41:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:41:57.000Z",
+				kind: "publication",
+				summary:
+						"Initial ADHD neurodevelopment and persistence page published from CDC, AAP, consensus-statement, and systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "ADHD in Children",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/adhd/about/index.html",
+				stance: "supports",
+				note:
+						"CDC describes ADHD as one of the most common neurodevelopmental disorders of childhood, with symptoms starting in childhood and often lasting into adulthood.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Data and Statistics on ADHD",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/adhd/data/index.html",
+				stance: "supports",
+				note:
+						"CDC summarizes 2022 U.S. parent-survey data estimating 7 million children aged 3 to 17 have ever been diagnosed with ADHD, while noting variation in diagnosis and treatment estimates.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "The World Federation of ADHD International Consensus Statement: 208 Evidence-based Conclusions about the Disorder",
+				publisher: "Neuroscience and Biobehavioral Reviews",
+				year: 2021,
+				url: "https://doi.org/10.1016/j.neubiorev.2021.01.022",
+				doi: "10.1016/j.neubiorev.2021.01.022",
+				pmid: "33549739",
+				stance: "supports",
+				note:
+						"International consensus statement curated evidence-based conclusions about ADHD to reduce misconceptions, stigma, and delayed treatment.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "ADHD in children and young people: prevalence, care pathways, and service provision",
+				publisher: "The Lancet Psychiatry",
+				year: 2018,
+				url: "https://doi.org/10.1016/S2215-0366(17)30167-0",
+				doi: "10.1016/S2215-0366(17)30167-0",
+				pmid: "29033005",
+				stance: "supports",
+				note:
+						"Review reports global community prevalence estimates commonly around 2% to 7% and emphasizes under-recognition, care pathways, and long-term outcome opportunities.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Children and adolescents with ADHD followed up to adulthood: a systematic review of long-term outcomes",
+				publisher: "Acta Neuropsychiatrica",
+				year: 2021,
+				url: "https://doi.org/10.1017/neu.2021.23",
+				doi: "10.1017/neu.2021.23",
+				pmid: "34384511",
+				stance: "supports",
+				note:
+						"Systematic review found ADHD persisted into adulthood with a mean rate of 43%, while also showing why persistence estimates depend on study design and diagnostic approach.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Do ADHD medications improve symptoms compared with placebo?",
+		slug: "do-adhd-medications-improve-symptoms-compared-with-placebo",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		bottomLine:
+				"Yes, especially for short-term core symptoms. Stimulants and several nonstimulants outperform placebo in randomized trials, but medication choice depends on age, side effects, co-occurring conditions, patient and family preferences, and careful monitoring. The evidence is stronger for symptom ratings than for every long-term life outcome.",
+		stableCore: [
+			"Short-term randomized trials show that several ADHD medications reduce core symptoms more than placebo.",
+			"Clinical guidance recommends age-specific care: behavioral therapy first for preschool children, and FDA-approved medication with parent training or classroom supports for many school-age children and adolescents.",
+			"Medication is not a character judgment or a cure; dose adjustment and monitoring aim to maximize benefit while keeping side effects tolerable."
+		],
+		openQuestions: [
+			"Which medication or non-medication plan works best for specific subgroups with anxiety, tics, substance-use risk, sleep problems, or cardiovascular concerns?",
+			"How well do short-term symptom improvements translate into school, work, driving, relationship, quality-of-life, and injury outcomes over years?",
+			"How should treatment systems balance access, diversion prevention, medication shortages, adverse effects, and shared decision-making?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias randomized trials showing no clinically meaningful symptom benefit for stimulant or approved nonstimulant medications compared with placebo.",
+			"Long-term safety or effectiveness evidence strong enough to substantially revise guideline recommendations for major patient groups."
+		],
+		misconceptions: [
+			"Some people treat ADHD medication as proof that ADHD is fake or that ordinary child behavior is being chemically controlled.",
+			"Others treat medication as a universal fix, when benefit, side effects, dosing, diversion risk, and patient goals all require monitoring.",
+			"Short-term symptom efficacy is sometimes overstated as proof that every long-term outcome is solved."
+		],
+		editorSummary:
+				"This page separates the well-supported short-term medication signal from harder questions about individual fit, adverse effects, and long-term functional outcomes.",
+		uncertaintySummary:
+				"Medication efficacy for short-term symptom reduction is well supported, especially for stimulants. Evidence is thinner and more mixed for long-term patient-important outcomes, head-to-head individualization, and some adult non-medication comparisons.",
+		searchCutoffAt: "2026-07-03T03:41:57.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:41:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:41:57.000Z",
+				kind: "publication",
+				summary:
+						"Initial ADHD medication-efficacy page published from CDC/AAP guidance, NIMH context, and network meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Clinical Care of ADHD in Children",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/adhd/hcp/clinical-care/index.html",
+				stance: "supports",
+				note:
+						"CDC summarizes AAP age-specific treatment recommendations, including parent training and classroom interventions for ages 4 to 6 and FDA-approved medications with behavioral supports for school-age children and adolescents.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Practice Guideline for the Diagnosis, Evaluation, and Treatment of Attention-Deficit/Hyperactivity Disorder in Children and Adolescents",
+				publisher: "Pediatrics",
+				year: 2019,
+				url: "https://doi.org/10.1542/peds.2019-2528",
+				doi: "10.1542/peds.2019-2528",
+				pmid: "31570648",
+				stance: "supports",
+				note:
+						"AAP clinical guideline is the main U.S. pediatric anchor for diagnosis, evaluation, age-specific treatment, and dose monitoring.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Attention-Deficit/Hyperactivity Disorder: What You Need to Know",
+				publisher: "National Institute of Mental Health",
+				url: "https://www.nimh.nih.gov/health/publications/attention-deficit-hyperactivity-disorder-what-you-need-to-know",
+				stance: "supports",
+				note:
+						"NIMH summarizes that current treatments may reduce symptoms and improve functioning, that stimulants are highly effective, and that side effects require provider monitoring.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Comparative efficacy and tolerability of medications for attention-deficit hyperactivity disorder in children, adolescents, and adults: a systematic review and network meta-analysis",
+				publisher: "The Lancet Psychiatry",
+				year: 2018,
+				url: "https://doi.org/10.1016/S2215-0366(18)30269-4",
+				doi: "10.1016/S2215-0366(18)30269-4",
+				pmid: "30097390",
+				stance: "supports",
+				note:
+						"Network meta-analysis of double-blind randomized trials found several medications superior to placebo for short-term ADHD symptoms, with preferred first-choice options differing by age group.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Comparative efficacy and acceptability of pharmacological, psychological, and neurostimulatory interventions for ADHD in adults: a systematic review and component network meta-analysis",
+				publisher: "The Lancet Psychiatry",
+				year: 2025,
+				url: "https://doi.org/10.1016/S2215-0366(24)00360-2",
+				doi: "10.1016/S2215-0366(24)00360-2",
+				stance: "context",
+				note:
+						"Adult component network meta-analysis found stimulants and atomoxetine reduced short-term core symptoms versus placebo, while longer-term and quality-of-life evidence remained limited.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Are parent training and behavioral therapy effective parts of ADHD treatment?",
+		slug: "are-parent-training-and-behavioral-therapy-effective-parts-of-adhd-treatment",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+				"Yes, especially as part of age-appropriate, multimodal care. Parent training in behavior management is recommended first for young children with ADHD and remains an important support for older children. The strongest evidence is for parenting skills, disruptive behavior, family functioning, and some child outcomes; claims about core ADHD symptom reduction need more caveats.",
+		stableCore: [
+			"CDC and AAP recommend parent training in behavior management and classroom interventions as first-line treatment for children aged 4 to 6 with ADHD.",
+			"For school-age children and adolescents, medication is often paired with parent training, classroom interventions, school supports, or other behavioral strategies.",
+			"Meta-analyses show benefits for parenting outcomes, behavior problems, and some longer-term child outcomes, while blinded evidence for core symptom reduction is more mixed."
+		],
+		openQuestions: [
+			"Which behavioral components, delivery formats, booster sessions, and school integrations sustain benefits best?",
+			"How can systems improve access for families facing cost, transportation, language, stigma, parent ADHD, or shortage barriers?",
+			"Which outcomes should be prioritized: core symptoms, conduct problems, parent-child relationship quality, academic functioning, family stress, or long-term quality of life?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-blinded trials showing no benefit of structured parent training or classroom behavioral interventions on meaningful child or family outcomes.",
+			"Clinical guideline updates replacing parent training with better-supported first-line psychosocial approaches for young children."
+		],
+		misconceptions: [
+			"Behavioral parent training is sometimes dismissed as fluff because it is not medication.",
+			"Parent training is sometimes misunderstood as blaming parents for causing ADHD.",
+			"Behavior therapy is sometimes oversold as a stand-alone cure for all children, even though many children need combined supports."
+		],
+		editorSummary:
+				"This treatment page gives families a practical middle path: parent training is evidence-based and useful, but it should not be framed as blame or as a universal replacement for medication.",
+		uncertaintySummary:
+				"Evidence is strongest for parenting practices, conduct problems, and family functioning, with some supportive longer-term child findings. Effects on blinded core ADHD symptom ratings vary more by study design, rater, age, and intervention package.",
+		searchCutoffAt: "2026-07-03T03:41:57.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:41:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:41:57.000Z",
+				kind: "publication",
+				summary:
+						"Initial ADHD parent-training and behavioral-therapy page published from CDC/AAP guidance and behavioral-intervention meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Parent Training in Behavior Management",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/adhd/treatment/behavior-therapy.html",
+				stance: "supports",
+				note:
+						"CDC describes behavior therapy as effective for ADHD, especially in young children when delivered by parents, and summarizes the skills taught in parent training.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Care of ADHD in Children",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/adhd/hcp/clinical-care/index.html",
+				stance: "supports",
+				note:
+						"CDC summarizes AAP recommendations that parent training and classroom interventions are first-line for ages 4 to 6 and part of treatment for many older children and adolescents.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Practice Guideline for the Diagnosis, Evaluation, and Treatment of Attention-Deficit/Hyperactivity Disorder in Children and Adolescents",
+				publisher: "Pediatrics",
+				year: 2019,
+				url: "https://doi.org/10.1542/peds.2019-2528",
+				doi: "10.1542/peds.2019-2528",
+				pmid: "31570648",
+				stance: "supports",
+				note:
+						"AAP clinical guideline is the main U.S. pediatric anchor for age-specific behavioral therapy and combined treatment recommendations.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Meta-analysis: Which Components of Parent Training Work for Children With Attention-Deficit/Hyperactivity Disorder?",
+				publisher: "Journal of the American Academy of Child and Adolescent Psychiatry",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.jaac.2021.06.015",
+				doi: "10.1016/j.jaac.2021.06.015",
+				pmid: "34224837",
+				stance: "supports",
+				note:
+						"Meta-analysis found robust small-to-medium positive effects of parent training on parental outcomes and examined which behavioral components were associated with benefit.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Sustained improvements by behavioural parent training for children with attention-deficit/hyperactivity disorder: A meta-analytic review of longer-term child and parental outcomes",
+				publisher: "JCPP Advances",
+				year: 2023,
+				url: "https://doi.org/10.1002/jcv2.12196",
+				doi: "10.1002/jcv2.12196",
+				stance: "supports",
+				note:
+						"Longer-term meta-analysis reported small-to-moderate benefits for children's ADHD symptoms and behavior problems as well as parenting and relationship outcomes at follow-up.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Behavioral interventions in attention-deficit/hyperactivity disorder: a meta-analysis of randomized controlled trials across multiple outcome domains",
+				publisher: "Journal of the American Academy of Child and Adolescent Psychiatry",
+				year: 2014,
+				url: "https://doi.org/10.1016/j.jaac.2014.05.013",
+				doi: "10.1016/j.jaac.2014.05.013",
+				pmid: "25062591",
+				stance: "context",
+				note:
+						"Meta-analysis supports benefits for parenting and conduct problems while cautioning that blinded evidence for core ADHD symptom decreases was less clear.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
