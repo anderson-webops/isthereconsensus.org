@@ -343,6 +343,7 @@ async function handleChangePassword() {
 }
 
 .account-details {
+	margin-top: 2px;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
@@ -361,16 +362,41 @@ async function handleChangePassword() {
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	min-height: 44px;
-	padding: 0;
+	min-height: 46px;
+	padding: 10px 12px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 40%, transparent);
 	list-style: none;
 	cursor: pointer;
 	font-weight: 600;
 	color: var(--consensus-ink);
+	transition:
+		background 0.18s ease,
+		border-color 0.18s ease,
+		box-shadow 0.18s ease;
 }
 
 .account-details__summary::-webkit-details-marker {
 	display: none;
+}
+
+.account-details__summary:hover {
+	border-color: color-mix(in srgb, var(--consensus-ember) 36%, var(--consensus-soft-line));
+	background: color-mix(in srgb, var(--consensus-field-surface) 58%, transparent);
+}
+
+.account-details__summary:focus {
+	outline: none;
+}
+
+.account-details__summary:focus-visible {
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--consensus-ember) 30%, transparent);
+}
+
+.account-details[open] .account-details__summary {
+	border-bottom-color: var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-field-surface) 52%, transparent);
 }
 
 .account-details__summary-icon {
@@ -406,10 +432,11 @@ async function handleChangePassword() {
 }
 
 .account-details__body {
-	grid-template-columns: minmax(240px, 0.9fr) minmax(300px, 1.1fr);
+	grid-template-columns: repeat(2, minmax(240px, 520px));
+	justify-content: start;
 	align-items: start;
-	gap: 24px;
-	padding: 16px 0 2px;
+	gap: 28px;
+	padding: 16px 12px 4px;
 	border-top: 1px solid var(--consensus-soft-line);
 	background: transparent;
 }
@@ -455,6 +482,7 @@ async function handleChangePassword() {
 }
 
 .account-form input {
+	box-sizing: border-box;
 	width: 100%;
 	height: 44px;
 	max-width: 100%;
@@ -475,6 +503,7 @@ async function handleChangePassword() {
 	justify-self: start;
 	width: auto;
 	min-width: 132px;
+	max-width: max-content;
 	min-height: 42px;
 	padding: 9px 16px;
 	border-radius: 999px;
