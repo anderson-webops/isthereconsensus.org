@@ -328,7 +328,9 @@ async function submitQuestion() {
 							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claimCardSummary(claim) }}</p>
+						<p class="match-row__summary" :title="claimCardSummary(claim)">
+							{{ claimCardSummary(claim) }}
+						</p>
 						<p v-if="claim.matchReason" class="match-row__reason">{{ claim.matchReason }}</p>
 					</div>
 					<div class="match-row__actions">
@@ -523,6 +525,13 @@ async function submitQuestion() {
 	color: var(--consensus-muted);
 }
 
+.match-row__meta {
+	display: flex;
+	gap: 8px 12px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
 .section-heading,
 .posting-form__header,
 .match-row__actions,
@@ -562,6 +571,13 @@ async function submitQuestion() {
 .match-row--strong {
 	border-color: rgba(211, 107, 56, 0.42);
 	box-shadow: 0 0 0 2px rgba(211, 107, 56, 0.12);
+}
+
+.match-row__summary {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 }
 
 .support-links {

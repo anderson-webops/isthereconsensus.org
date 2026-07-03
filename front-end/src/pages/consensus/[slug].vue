@@ -208,7 +208,9 @@ function claimCardSummary(claim: ClaimSummary) {
 							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claimCardSummary(claim) }}</p>
+						<p class="claim-row__summary" :title="claimCardSummary(claim)">
+							{{ claimCardSummary(claim) }}
+						</p>
 						<p v-if="claim.evidenceLandscape?.caveatSummary" class="claim-row__caveat">
 							Caveat: {{ claim.evidenceLandscape.caveatSummary }}
 						</p>
@@ -311,6 +313,13 @@ function claimCardSummary(claim: ClaimSummary) {
 
 .claim-row p {
 	margin: 0;
+}
+
+.claim-row__summary {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 }
 
 .claim-row__meta {

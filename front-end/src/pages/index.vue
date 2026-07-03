@@ -315,7 +315,9 @@ function formatTopicUpdateLabel(value?: string) {
 								<li v-for="claim in claimSuggestions" :key="claim._id">
 									<NuxtLink :to="`/consensus/${claim.topic?.slug}/${claim.slug}`">
 										<strong>{{ claim.title }}</strong>
-										<span>{{ claimCardSummary(claim) }}</span>
+										<span class="suggestion-list__summary" :title="claimCardSummary(claim)">
+											{{ claimCardSummary(claim) }}
+										</span>
 									</NuxtLink>
 								</li>
 							</ul>
@@ -373,7 +375,9 @@ function formatTopicUpdateLabel(value?: string) {
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
-						<p>{{ claimCardSummary(claim) }}</p>
+						<p class="claim-row__summary" :title="claimCardSummary(claim)">
+							{{ claimCardSummary(claim) }}
+						</p>
 					</div>
 					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
 				</NuxtLink>
@@ -577,6 +581,21 @@ function formatTopicUpdateLabel(value?: string) {
 	font-size: 0.94rem;
 	line-height: 1.5;
 	color: var(--consensus-muted);
+}
+
+.suggestion-list__summary,
+.claim-row__summary {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+}
+
+.suggestion-list__summary {
+	-webkit-line-clamp: 2;
+}
+
+.claim-row__summary {
+	-webkit-line-clamp: 3;
 }
 
 .home-section {
