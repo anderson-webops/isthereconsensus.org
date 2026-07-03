@@ -4218,6 +4218,98 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "biology-and-evolution",
+		title: "Did humans evolve from chimpanzees living today?",
+		slug: "did-humans-evolve-from-chimpanzees-living-today",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"No. Humans did not evolve from chimpanzees, bonobos, gorillas, or monkeys alive today. Modern humans and modern apes are related branches of the primate family tree that share extinct common ancestors, with humans, chimpanzees, and bonobos sharing a relatively recent common ancestor.",
+		stableCore: [
+			"The Smithsonian Human Origins Program states that chimpanzees and bonobos are humans' closest living biological relatives, but that humans did not evolve directly from any primates living today.",
+			"Smithsonian summarizes DNA evidence as showing that humans and chimpanzees diverged from a common ancestor species that lived roughly 8 to 6 million years ago.",
+			"The National Academies explains the standard misconception directly: humans and modern apes did not descend from one another; they shared a common ancestor that no longer exists.",
+			"The chimpanzee genome comparison catalogued tens of millions of genetic differences accumulated since the human and chimpanzee lineages diverged from their common ancestor."
+		],
+		openQuestions: [
+			"What did the last common ancestor of humans, chimpanzees, and bonobos look and behave like?",
+			"Which fossil species sit closest to the branching point of the human and chimpanzee lineages?",
+			"How should educators explain the word 'ape' without implying that a living chimpanzee is a human ancestor?"
+		],
+		whatWouldChangeMinds: [
+			"Independent fossil, anatomical, and genomic evidence repeatedly showing that the human lineage did not nest within the primate family tree.",
+			"A better-supported biological framework that explains shared DNA, chromosome structure, fossils, anatomy, and biogeography without common ancestry.",
+			"Major evolutionary biology institutions revising the branching-tree model of human and ape relationships."
+		],
+		misconceptions: [
+			"The statement 'humans evolved from apes' is often heard as 'humans evolved from modern chimpanzees,' which is not the scientific claim.",
+			"DNA similarity percentages depend on how genomes are aligned and compared, but that technical detail does not erase the broader common-ancestry signal.",
+			"Living species can share a common ancestor without one living species being the parent form of another."
+		],
+		editorSummary:
+			"This page should handle a persistent evolution misconception in a low-temperature way: modern chimpanzees are cousins, not ancestors, and the evidence is a branching pattern across DNA, fossils, anatomy, and geography.",
+		uncertaintySummary:
+			"The common-ancestry point is settled. Uncertainty remains about the exact fossil placement, traits, and population structure near the human-chimpanzee branching point, and about the best way to explain genome-similarity percentages without oversimplifying.",
+		searchCutoffAt: "2026-07-03T02:46:15.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:46:15.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:46:15.000Z",
+				kind: "publication",
+				summary:
+					"Initial human-ape common-ancestry claim page published from Smithsonian, National Academies, AMNH, and chimpanzee-genome comparison sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Genetics",
+				publisher: "Smithsonian Human Origins Program",
+				year: 2024,
+				url: "https://humanorigins.si.edu/evidence/genetics",
+				stance: "supports",
+				note:
+					"Official museum science source explaining that humans' closest living relatives are chimpanzees and bonobos, that humans did not evolve directly from living primates, and that DNA places the human-chimpanzee common ancestor roughly 8 to 6 million years ago.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Frequently Asked Questions - Science and Creationism",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2008,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK230200/",
+				stance: "supports",
+				note:
+					"National Academies explanation distinguishing modern apes from extinct common ancestors and describing evolution as a branching process.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "DNA: Comparing Humans and Chimps",
+				publisher: "American Museum of Natural History",
+				url: "https://www.amnh.org/exhibitions/permanent/human-origins/understanding-our-past/dna-comparing-humans-and-chimps",
+				stance: "context",
+				note:
+					"Public education source explaining that humans, chimpanzees, and bonobos descended from a single ancestor species and that DNA similarity still leaves many functional differences.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Initial sequence of the chimpanzee genome and comparison with the human genome",
+				publisher: "Nature",
+				year: 2005,
+				url: "https://doi.org/10.1038/nature04072",
+				doi: "10.1038/nature04072",
+				pmid: "16136131",
+				stance: "supports",
+				note:
+					"Landmark genome comparison cataloguing about 35 million single-nucleotide changes, about 5 million insertion/deletion events, and chromosomal rearrangements accumulated since the human and chimpanzee lineages diverged.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Does nicotine harm brain development into the mid-20s?",
 		slug: "does-nicotine-harm-brain-development-into-the-mid-20s",
@@ -5874,6 +5966,214 @@ const rawClaims: SeedClaim[] = [
 				stance: "context",
 				note: "Useful when discussing how correction mechanisms work.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		title: "Does scientific consensus mean every scientist agrees?",
+		slug: "does-scientific-consensus-mean-every-scientist-agrees",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		bottomLine:
+			"No. Scientific consensus means strong, evidence-based agreement among qualified experts in a field, not unanimity and not a popularity vote. A few dissenting experts can exist even when the best-supported conclusion is clear, and the existence of dissent does not by itself make the evidence evenly divided.",
+		stableCore: [
+			"Scientific consensus is best understood as expert convergence around the weight of evidence, not a demand that every scientist agree.",
+			"NASA's climate-consensus page emphasizes that science focuses on evidence rather than opinion, and uses multiple peer-reviewed studies plus institutional statements to document expert agreement.",
+			"Dellsen's consensus-versus-unanimity analysis directly contrasts expert unanimity with expert consensus, where some experts may reject or remain uncertain about the dominant view.",
+			"Public-understanding research finds that familiarity with what scientific consensus means is often rarer than communicators assume."
+		],
+		openQuestions: [
+			"Which public explanations help people distinguish minority expert dissent from an actual split in the evidence?",
+			"How should consensus estimates be communicated when the relevant expert population is hard to define?",
+			"When does emphasizing consensus help public understanding, and when does it trigger motivated reasoning or distrust?"
+		],
+		whatWouldChangeMinds: [
+			"A robust account showing that scientific consensus requires literal unanimity before it is meaningful to non-experts.",
+			"Evidence that dissenting minority views, by their mere existence, reliably make high-agreement expert claims evidentially 50/50.",
+			"Major science-communication or assessment bodies adopting unanimity as the standard for describing consensus."
+		],
+		misconceptions: [
+			"Consensus is not a vote where the largest team wins; it is a judgment about what the total evidence supports.",
+			"One credentialed dissenter does not automatically cancel the weight of many independent lines of evidence.",
+			"Consensus can coexist with uncertainty about mechanisms, effect size, timing, scope, or edge cases."
+		],
+		editorSummary:
+			"This page should make the site's own language clearer: consensus is neither groupthink nor unanimity. It is the public-facing name for a strong expert-evidence convergence that still leaves room for technical dispute.",
+		uncertaintySummary:
+			"The concept-level point is strong: consensus does not mean every scientist agrees. Practical uncertainty is about how to measure expert agreement fairly, communicate minority dissent, and avoid turning consensus language into either overclaiming or false balance.",
+		searchCutoffAt: "2026-07-03T02:46:15.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:46:15.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:46:15.000Z",
+				kind: "publication",
+				summary:
+					"Initial consensus-versus-unanimity claim page published from NASA consensus documentation and science-communication literature."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Scientific Consensus",
+				publisher: "NASA Science",
+				year: 2024,
+				url: "https://science.nasa.gov/climate-change/scientific-consensus/",
+				stance: "supports",
+				note:
+					"Official science-communication source emphasizing evidence over opinion and using peer-reviewed studies plus institutional statements to document a field-specific consensus.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Consensus versus Unanimity: Which Carries More Weight?",
+				publisher: "The British Journal for the Philosophy of Science",
+				year: 2021,
+				url: "https://doi.org/10.1086/718273",
+				doi: "10.1086/718273",
+				stance: "supports",
+				note:
+					"Directly contrasts unanimity with expert consensus, including cases where some experts reject or remain uncertain about the dominant view.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Public Conceptions of Scientific Consensus",
+				publisher: "Erkenntnis",
+				year: 2022,
+				url: "https://doi.org/10.1007/s10670-022-00569-z",
+				doi: "10.1007/s10670-022-00569-z",
+				pmid: "35873138",
+				pmcid: "PMC9289351",
+				stance: "context",
+				note:
+					"Qualitative interview study finding that public familiarity with scientific consensus can be lower than communicators expect, which supports defining the term explicitly.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Covering scientific consensus: What to avoid and how to get it right",
+				publisher: "The Journalist's Resource",
+				year: 2021,
+				url: "https://journalistsresource.org/media/scientific-consensus-news-tips/",
+				stance: "context",
+				note:
+					"Practical media-literacy source describing consensus as the collective position scientists in a field have taken based on available evidence.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "science-communication",
+		title: "Can prebunking and corrections reduce misinformation?",
+		slug: "can-prebunking-and-corrections-reduce-misinformation",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"Yes, often, but not perfectly. Corrections, fact checks, accuracy prompts, and prebunking can reduce belief in or sharing of misinformation and can improve discernment, but effects vary by topic, trust, timing, format, audience, and how the outcome is measured. These tools are useful safeguards, not a cure for every misinformation problem.",
+		stableCore: [
+			"Reactive corrections can reduce misinformation belief, but false claims can continue to influence reasoning after correction.",
+			"Prebunking or psychological inoculation aims to warn people about misleading tactics before exposure, so they are less likely to be persuaded later.",
+			"A 2023 JMIR meta-analysis of 42 independent studies with 42,530 subjects found psychological inoculation reduced perceived credibility of misinformation and improved credibility and sharing discernment.",
+			"A 2026 signal-detection meta-analysis of 33 inoculation experiments found improved discrimination between reliable and unreliable news without increasing generalized response bias.",
+			"A 2026 systematic review of digital inoculation studies cautioned that many studies have weak links to core inoculation-theory mechanisms, so practical effectiveness and theoretical claims should not be overstated."
+		],
+		openQuestions: [
+			"Which interventions last beyond the immediate test setting without requiring frequent boosters?",
+			"How do effects change in highly polarized or low-trust topics?",
+			"Which formats improve discernment without making people distrust accurate information?",
+			"How should platforms and public agencies combine prebunking, corrections, source labels, community trust, and slower sharing prompts?"
+		],
+		whatWouldChangeMinds: [
+			"Large preregistered reviews showing that corrections and prebunking do not improve belief accuracy, sharing discernment, or manipulation-recognition outcomes beyond placebo-like effects.",
+			"Strong evidence that common interventions reliably backfire by increasing belief in misinformation or reducing trust in accurate information across audiences.",
+			"Better long-term field evidence showing a different intervention class consistently outperforms corrections and prebunking for public-interest misinformation."
+		],
+		misconceptions: [
+			"A correction can help without fully erasing the original false belief.",
+			"Prebunking is not mind control; it usually teaches warning signs or manipulation tactics before exposure.",
+			"A successful intervention in a lab, game, or short video does not guarantee durable real-world behavior change.",
+			"Calling an intervention evidence-based does not mean it works equally well for every audience or every topic."
+		],
+		editorSummary:
+			"This page should help the site explain how to respond to misinformation without sounding naive. The evidence supports using corrections and prebunking, but the durable public-health lesson is layered defenses, not one perfect message.",
+		uncertaintySummary:
+			"Evidence supports modest-to-useful effects for several misinformation interventions, especially on belief and discernment outcomes. Uncertainty is higher for long-term durability, behavior change, cross-cultural generalization, polarized topics, and whether digital games or videos always work through the mechanisms claimed by inoculation theory.",
+		searchCutoffAt: "2026-07-03T02:46:15.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:46:15.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:46:15.000Z",
+				kind: "publication",
+				summary:
+					"Initial misinformation-intervention claim page published from meta-analysis, review, public-health guidance, and recent cautionary systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "meta_analysis",
+				title:
+					"Psychological Inoculation for Credibility Assessment, Sharing Intention, and Discernment of Misinformation: Systematic Review and Meta-Analysis",
+				publisher: "Journal of Medical Internet Research",
+				year: 2023,
+				url: "https://doi.org/10.2196/49255",
+				doi: "10.2196/49255",
+				pmid: "37560816",
+				pmcid: "PMC10498317",
+				stance: "supports",
+				note:
+					"Meta-analysis of 42 independent studies with 42,530 subjects finding reduced misinformation credibility assessment and improved credibility and sharing discernment, while not finding a significant overall effect on misinformation sharing intention.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "A signal detection theory meta-analysis of psychological inoculation against misinformation",
+				publisher: "Current Opinion in Psychology",
+				year: 2026,
+				url: "https://doi.org/10.1016/j.copsyc.2025.102194",
+				doi: "10.1016/j.copsyc.2025.102194",
+				pmid: "41151144",
+				stance: "supports",
+				note:
+					"Meta-analysis of 33 inoculation experiments with 37,075 participants finding improved discrimination between reliable and unreliable news without inducing generalized skepticism or credulity.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "The psychological drivers of misinformation belief and its resistance to correction",
+				publisher: "Nature Reviews Psychology",
+				year: 2022,
+				url: "https://doi.org/10.1038/s44159-021-00006-y",
+				doi: "10.1038/s44159-021-00006-y",
+				stance: "supports",
+				note:
+					"High-level review explaining why misinformation can keep influencing reasoning after correction and why both prebunking and debunking interventions are used.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Confronting Health Misinformation: The U.S. Surgeon General's Advisory on Building a Healthy Information Environment",
+				publisher: "U.S. Surgeon General / NCBI Bookshelf",
+				year: 2021,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK572168/",
+				stance: "context",
+				note:
+					"Public-health guidance defining debunking and prebunking, calling for evidence-based intervention research, and recommending proactive, easy-to-understand communication.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "An Analysis of Studies Testing Digital Interventions to Inoculate Against Misinformation",
+				publisher: "Communication Research",
+				year: 2026,
+				url: "https://doi.org/10.1177/00936502251411467",
+				doi: "10.1177/00936502251411467",
+				stance: "debate",
+				note:
+					"Cautionary systematic review of 72 digital intervention studies warning that many designs weakly test core inoculation-theory mechanisms and may include confounding factors.",
+				order: 5
 			}
 		]
 	},
