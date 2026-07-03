@@ -188,7 +188,7 @@ useStaticPageMeta({
 .card-grid {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .summary-card,
