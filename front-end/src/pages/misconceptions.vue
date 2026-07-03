@@ -191,10 +191,20 @@ useStaticPageMeta({
 .misconception-card p,
 .misconception-card li,
 .misconception-callout p,
+.section-heading p,
 .plain-list,
 .reuse-table {
 	color: var(--consensus-muted);
 	line-height: 1.65;
+}
+
+.misconception-header p,
+.misconception-callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .misconception-grid {
@@ -306,11 +316,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
+	display: grid;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .section-heading--tight h2,
@@ -367,6 +375,10 @@ useStaticPageMeta({
 	align-items: end;
 }
 
+.misconception-callout > div {
+	flex: 1 1 340px;
+}
+
 .misconception-callout__actions {
 	display: flex;
 	gap: 10px;
@@ -417,6 +429,14 @@ useStaticPageMeta({
 	.misconception-header h1 {
 		font-size: 2.35rem;
 		line-height: 1.05;
+	}
+
+	.misconception-callout {
+		align-items: stretch;
+	}
+
+	.misconception-callout__actions {
+		width: 100%;
 	}
 }
 </style>

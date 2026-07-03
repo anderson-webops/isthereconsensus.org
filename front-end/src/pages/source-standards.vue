@@ -98,10 +98,20 @@ useStaticPageMeta({
 }
 
 .page-header p,
+.section-heading p,
 .plain-list,
 .callout p {
 	color: var(--consensus-muted);
 	line-height: 1.65;
+}
+
+.page-header p,
+.callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .section-heading {
@@ -138,6 +148,10 @@ useStaticPageMeta({
 	align-items: end;
 }
 
+.callout > div {
+	flex: 1 1 340px;
+}
+
 .callout__actions {
 	display: flex;
 	gap: 10px;
@@ -162,5 +176,21 @@ useStaticPageMeta({
 	background: var(--consensus-ember);
 	border-color: var(--consensus-ember);
 	color: var(--consensus-on-accent);
+}
+
+@media (max-width: 720px) {
+	.page-header,
+	.panel,
+	.callout {
+		padding: 18px;
+	}
+
+	.callout {
+		align-items: stretch;
+	}
+
+	.callout__actions {
+		width: 100%;
+	}
 }
 </style>
