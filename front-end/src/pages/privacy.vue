@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Account data includes your name, email, password hash, session state, and any updates you make to that account.",
-	"Questions you post on the public site can be visible to other users and search engines.",
-	"When enabled, the site uses bot protection and production analytics services hosted at analytics.isthereconsensus.org and analytics.jacobdanderson.net to keep the service usable and understand how it is used.",
-	"There is not currently a self-serve account deletion tool. Privacy requests can be sent to consensus@isthereconsensus.org."
+	{
+		title: "Account data",
+		body: "Includes your name, email, password hash, session state, and any updates you make to that account."
+	},
+	{
+		title: "Public posts",
+		body: "Questions you post on the public site can be visible to other users and search engines."
+	},
+	{
+		title: "Analytics and abuse prevention",
+		body: "When enabled, the site uses bot protection and production analytics services hosted at analytics.isthereconsensus.org and analytics.jacobdanderson.net to keep the service usable and understand how it is used."
+	},
+	{
+		title: "Privacy requests",
+		body: "There is not currently a self-serve account deletion tool. Privacy requests can be sent to consensus@isthereconsensus.org."
+	}
 ];
 
 const collectionCategories = [
@@ -108,8 +120,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="privacy-summary">
-			<article v-for="item in quickPoints" :key="item" class="summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
+				<h3>{{ item.title }}</h3>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 
@@ -349,6 +362,7 @@ useStaticPageMeta({
 
 .privacy-header h1,
 .section-heading h2,
+.summary-card h3,
 .category-card h3,
 .privacy-callout h2 {
 	margin: 0;
@@ -378,14 +392,30 @@ useStaticPageMeta({
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
+.privacy-summary {
+	align-items: start;
+}
+
 .summary-card,
 .category-card {
 	padding: 18px;
 }
 
+.summary-card {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+}
+
+.summary-card h3 {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
 .summary-card p,
 .plain-list,
 .prose p,
+.summary-card h3,
 .category-card h3,
 .category-card p {
 	margin: 0;
