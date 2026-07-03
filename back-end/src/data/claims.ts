@@ -1413,6 +1413,109 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Can VAERS reports prove that a vaccine caused an adverse event?",
+		slug: "can-vaers-reports-prove-that-a-vaccine-caused-an-adverse-event",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"No. VAERS is an early warning and signal-detection system, not a stand-alone proof-of-causation database. A report shows that a health event happened after vaccination and may deserve review; it does not by itself show that the vaccine caused the event, how often the event occurs, or how risk compares with an unvaccinated group.",
+		stableCore: [
+			"CDC and FDA co-manage VAERS as a passive reporting system that accepts reports even when the reporter is not sure the vaccine caused the event.",
+			"VAERS can help detect unusual patterns, rare events, reporting clusters, administration errors, and signals that deserve follow-up.",
+			"VAERS reports can be incomplete, inaccurate, duplicate, stimulated by media attention, or coincidental because many health events occur after vaccination by timing alone.",
+			"Counts from VAERS alone cannot establish causation, incidence rates, or relative risks; safety signals usually require clinical review and stronger active-surveillance or epidemiologic studies."
+		],
+		openQuestions: [
+			"Which signal-detection methods best balance early warning, false positives, and rare-event sensitivity for newer vaccines?",
+			"How can public VAERS access stay transparent while reducing denominator-free misuse in viral claims?",
+			"When should a VAERS signal trigger active surveillance, medical-record review, label changes, or formal causal evaluation?"
+		],
+		whatWouldChangeMinds: [
+			"A redesigned passive-reporting system with verified exposure denominators, systematic outcome capture, complete follow-up, and valid unvaccinated comparators.",
+			"Major CDC, FDA, or pharmacovigilance guidance concluding that raw passive reports can directly determine causation and event rates without further study.",
+			"Repeated evidence that VAERS-only causal claims perform as well as controlled active-surveillance studies across known vaccine-safety questions."
+		],
+		misconceptions: [
+			"Reporting to VAERS is encouraged even when causation is uncertain, so the existence of a report is not a verdict.",
+			"A large number of reports can reflect high vaccine use, publicity, reporting requirements, duplicate follow-up records, or background illness, not necessarily a high vaccine-caused event rate.",
+			"Saying VAERS cannot prove causation is not dismissing VAERS; it is explaining why signals need investigation."
+		],
+		editorSummary:
+			"This page should become the reusable safety-surveillance explainer for vaccine pages. Keep the balance clear: VAERS is important because it can flag signals, but raw reports are not causal proof.",
+		uncertaintySummary:
+			"The core interpretation principle is settled: passive reports can generate signals but cannot by themselves prove causation or incidence. Uncertainty is about specific signals, how quickly they should escalate, and which follow-up system is best suited to each safety question.",
+		searchCutoffAt: "2026-07-03T20:33:03.000Z",
+		lastRetractionCheckAt: "2026-07-03T20:33:03.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T20:33:03.000Z",
+				kind: "publication",
+				summary:
+					"Initial VAERS interpretation claim page published from CDC/FDA guidance, HHS VAERS data guidance, and peer-reviewed VAERS surveillance methodology sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "About the Vaccine Adverse Event Reporting System (VAERS)",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/vaccine-safety-systems/vaers/index.html",
+				stance: "supports",
+				note:
+					"Current CDC anchor explaining that VAERS is one of several vaccine-safety systems, accepts reports regardless of causal certainty, and cannot alone determine causation or rates.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Vaccine Adverse Event Reporting System (VAERS) Questions and Answers",
+				publisher: "U.S. Food and Drug Administration",
+				url:
+					"https://www.fda.gov/vaccines-blood-biologics/vaccine-adverse-events/vaccine-adverse-event-reporting-system-vaers-questions-and-answers",
+				stance: "supports",
+				note:
+					"FDA public guidance explaining that VAERS reports generally cannot determine whether a vaccine caused an adverse event and that signals can be followed up in systems such as VSD or CISA.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Guide to Interpreting VAERS Data",
+				publisher: "U.S. Department of Health and Human Services",
+				url: "https://vaers.hhs.gov/data/dataguide.html",
+				stance: "supports",
+				note:
+					"Official VAERS data guide explaining passive-report limitations, underreporting, variable report quality, and why a report is not documentation that a vaccine caused the event.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Safety monitoring in the Vaccine Adverse Event Reporting System (VAERS)",
+				publisher: "Vaccine",
+				year: 2015,
+				url: "https://pubmed.ncbi.nlm.nih.gov/26209838/",
+				pmid: "26209838",
+				stance: "supports",
+				note:
+					"Consensus-identified CDC/FDA review describing VAERS as a safety-signal detection and hypothesis-generating system that cannot generally determine causation by itself.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Understanding vaccine safety information from the Vaccine Adverse Event Reporting System",
+				publisher: "The Pediatric Infectious Disease Journal",
+				year: 2004,
+				url: "https://pubmed.ncbi.nlm.nih.gov/15071280/",
+				pmid: "15071280",
+				stance: "supports",
+				note:
+					"Foundational VAERS methods article explaining passive-surveillance biases, inability to calculate incidence or relative risk from VAERS alone, and the need to confirm signals in controlled studies.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "How big is the myocarditis risk after mRNA COVID-19 vaccination, and who is most affected?",
 		slug: "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
 		status: "published",
