@@ -8333,6 +8333,122 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "media-misinformation",
+		title: "Can relative risk show how likely something is without absolute risk?",
+		slug: "can-relative-risk-tell-you-how-likely-something-is-without-absolute-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"No. Relative risk is useful for comparing groups, but it cannot show the real-world size of a benefit or harm unless readers also see the baseline risk, absolute risk difference, and time period. A doubled risk can still be tiny or large depending on what it doubled from.",
+		stableCore: [
+			"Cochrane guidance says systematic-review summaries should show absolute effects alongside relative effects because baseline risk changes the real-world magnitude.",
+			"GRADE evidence profiles include assumed risk, corresponding risk, relative effect, and absolute effect so decision makers can judge practical size.",
+			"A systematic review of 84 articles found that visual aids and absolute-risk formats can improve understanding, while absolute risk reductions outperformed relative risk reductions for maximizing accuracy.",
+			"A Cochrane review found that relative risk reductions are perceived as larger and more persuasive than absolute risk reductions, which can mislead readers when absolute scale is missing."
+		],
+		openQuestions: [
+			"Which format works best for a specific audience, outcome, numeracy level, and decision setting?",
+			"How should headlines balance concise wording with enough absolute-risk context to prevent exaggeration?",
+			"When should communicators use percentages, natural frequencies, icon arrays, or decision aids?"
+		],
+		whatWouldChangeMinds: [
+			"Risk-communication evidence showing that relative-risk-only presentations produce equal or better understanding without exaggerating the perceived effect size.",
+			"Major Cochrane, GRADE, FDA, or AHRQ guidance abandoning the need to communicate baseline and absolute risks.",
+			"Replicated decision-quality studies showing that omitting absolute risk does not change comprehension, risk perception, or choices."
+		],
+		misconceptions: [
+			"A 100% increase does not always mean a common event; it could mean a risk moved from 1 in 10,000 to 2 in 10,000.",
+			"Relative risk is not fake or useless; it is incomplete when presented without the absolute numbers and time horizon.",
+			"Number needed to treat or harm can help some readers, but it still depends on baseline risk and can confuse others when used alone."
+		],
+		editorSummary:
+			"This page gives readers a reusable denominator check for health, environment, and technology claims. It should not dismiss relative risk; it should explain why relative and absolute framing need to travel together.",
+		uncertaintySummary:
+			"The core communication principle is high-certainty: relative effects need baseline and absolute context for practical interpretation. Uncertainty is about the best format for different audiences and whether natural frequencies, percentages, icon arrays, or decision aids work best in a given setting.",
+		searchCutoffAt: "2026-07-03T20:26:27.000Z",
+		lastRetractionCheckAt: "2026-07-03T20:26:27.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T20:26:27.000Z",
+				kind: "publication",
+				summary:
+					"Initial relative-versus-absolute-risk page published from Cochrane/GRADE guidance, AHRQ risk-communication guidance, and systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Chapter 15: Interpreting results and drawing conclusions",
+				publisher: "Cochrane",
+				url: "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-15",
+				stance: "supports",
+				note:
+					"Cochrane handbook guidance explaining that absolute effects differ according to baseline risk even when relative effects are similar.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "GRADE handbook",
+				publisher: "GRADE Working Group",
+				url: "https://gradepro.org/handbook/",
+				stance: "supports",
+				note:
+					"Guideline-development anchor describing evidence profiles that present assumed risk, corresponding risk, relative effect, and absolute effect.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "The SHARE Approach: Communicating Numbers to Your Patients",
+				publisher: "Agency for Healthcare Research and Quality",
+				url: "https://www.ahrq.gov/sites/default/files/wysiwyg/sdm/share-approach/share-communicating-numbers.pdf",
+				stance: "supports",
+				note:
+					"AHRQ shared-decision-making resource recommending absolute risk and absolute risk differences rather than relative-risk-only framing.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Evidence-Based Risk Communication: A Systematic Review",
+				publisher: "Annals of Internal Medicine",
+				year: 2014,
+				url: "https://www.acpjournals.org/doi/10.7326/M14-0295",
+				doi: "10.7326/M14-0295",
+				pmid: "25133362",
+				stance: "supports",
+				note:
+					"Systematic review of 84 articles and 91 unique studies finding that visual aids and absolute-risk formats can improve understanding, with absolute risk reductions outperforming relative risk reductions for maximizing accuracy.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Using alternative statistical formats for presenting risks and risk reductions",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2011,
+				url: "https://www.cochrane.org/evidence/CD006776_using-different-statistical-formats-presenting-health-information",
+				doi: "10.1002/14651858.CD006776.pub2",
+				pmid: "21412897",
+				stance: "supports",
+				note:
+					"Review of 35 studies and 83 comparisons finding natural frequencies better understood than percentages and relative risk reductions perceived as larger and more persuasive than absolute risk reductions.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Communicating Relative Risk Changes with Baseline Risk",
+				publisher: "Medical Decision Making",
+				year: 2014,
+				url: "https://doi.org/10.1177/0272989X14526305",
+				doi: "10.1177/0272989X14526305",
+				pmid: "24803429",
+				stance: "supports",
+				note:
+					"Experimental study of 1,234 laypeople showing that frequency-form baseline risks improved understanding and that many participants misread relative risk changes as absolute changes.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "bias-incentives",
 		title: "Does industry funding automatically make a study false?",
 		slug: "does-industry-funding-automatically-make-a-study-false",
