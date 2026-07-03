@@ -5038,6 +5038,199 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "biology-and-evolution",
+		title: "Have modern humans stopped evolving?",
+		slug: "have-modern-humans-stopped-evolving",
+		status: "published",
+		consensusBand: "strong",
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		confidenceScore: 88,
+		reviewMode: "standard",
+		bottomLine:
+			"No. Evolution has not stopped in modern humans. Culture, medicine, and technology change the pressures acting on people, but they do not eliminate heritable variation, differences in reproductive success, mutation, migration, drift, or selection.",
+		stableCore: [
+			"Evolution only stops if allele frequencies stop changing; modern human populations still have mutation, migration, genetic drift, and heritable differences linked to reproduction.",
+			"Contemporary studies can detect natural selection in humans, but the expected changes are usually slow and small compared with rapid cultural and environmental change.",
+			"Modern medicine and technology often reshape selection pressures rather than turning selection off.",
+			"Claims about future human evolution need caution because demographic structure, environment, culture, and polygenic trait measurement all complicate interpretation."
+		],
+		openQuestions: [
+			"Which signals reflect durable genetic change rather than short-term demographic, social, or environmental patterning?",
+			"How well do findings from large European-ancestry datasets generalize to other populations?",
+			"Which traits matter most for future selection as fertility patterns, disease environments, migration, and technology keep changing?",
+			"How should public explanations avoid sliding from 'selection is detectable' into exaggerated claims about human improvement or decline?"
+		],
+		whatWouldChangeMinds: [
+			"Evidence that modern human populations no longer have heritable variation, mutation, drift, migration, or reproductive differences capable of shifting allele frequencies.",
+			"Large, replicated genomic and demographic datasets showing no detectable selection or evolutionary change across contemporary human populations.",
+			"A better evolutionary model explaining observed genomic and reproductive patterns without ongoing evolutionary processes."
+		],
+		misconceptions: [
+			"Modern medicine is often treated as proof that natural selection disappeared, but survival is only one route through which evolutionary change can occur.",
+			"'Still evolving' does not mean humans are inevitably becoming smarter, weaker, better, or worse.",
+			"Detecting selection on a trait is not the same as making confident long-term predictions about the future of humanity.",
+			"Cultural change can be much faster than genetic evolution while still changing which genetic variants become more or less common."
+		],
+		editorSummary:
+			"This page should handle the common 'humans stopped evolving' claim without sensational predictions. Keep the center simple: evolution is allele-frequency change, and modern conditions redirect rather than abolish evolutionary forces.",
+		uncertaintySummary:
+			"The core answer is stable: humans have not stopped evolving. The main uncertainty is not whether evolutionary processes still operate, but how large, fast, trait-specific, and generalizable contemporary selection signals are.",
+		uncertaintyDrivers: [
+			{
+				type: "generalizability",
+				detail:
+					"Many contemporary genomic datasets overrepresent European-ancestry populations, so editors should avoid treating one cohort as a global human pattern."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Detected selection signals are often small and slow, especially compared with cultural, medical, and environmental changes over the same period."
+			},
+			{
+				type: "bias",
+				detail:
+					"Population stratification, fertility measurement, and social confounding can distort claims about selection on complex traits."
+			},
+			{
+				type: "timing",
+				detail:
+					"Short-term contemporary signals should not be projected far into the future without strong assumptions about changing environments and fertility patterns."
+			}
+		],
+		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref"],
+		searchCutoffAt: "2026-07-03T15:58:00.000Z",
+		inclusionRules: [
+			"Prioritize reviews and population-genetic studies that directly address contemporary or recent human evolutionary change.",
+			"Separate evidence that selection exists from speculative claims about desirable or undesirable future traits.",
+			"Use examples only when the source ties reproductive success, heritability, or genetic association to evolutionary interpretation."
+		],
+		exclusionRules: [
+			"Exclude popular evolutionary psychology claims that are not backed by population-genetic or demographic evidence.",
+			"Exclude deterministic claims that rank groups or traits as biologically superior or inferior.",
+			"Exclude futurist speculation unless it is clearly framed as context rather than evidence."
+		],
+		surveillanceSpec: {
+			focus:
+				"Track reviews and large-cohort genomic studies about recent or ongoing natural selection in human populations, especially work that changes interpretation cautions.",
+			cadenceDays: 120,
+			watchTerms: [
+				"modern humans still evolving",
+				"contemporary human natural selection",
+				"recent human evolution",
+				"polygenic selection fertility"
+			],
+			integrityMonitors: ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"],
+			guidelineMonitors: ["Major evolutionary genetics reviews", "Population genetics review literature"],
+			triggerRules: [
+				"Recheck the page if a major review changes the interpretation of contemporary human selection evidence.",
+				"Recheck immediately if a cited paper is corrected, retracted, or receives a major methodological critique.",
+				"Escalate if a new large-cohort study materially changes the caution language around population stratification or generalizability."
+			]
+		},
+		appraisalTools: [
+			"Population-genetics review appraisal",
+			"Cohort representativeness and stratification check",
+			"Public-communication overclaim screen"
+		],
+		evidenceSummaries: [
+			{
+				question: "Have modern humans stopped evolving?",
+				population: "Contemporary and recent human populations studied with demographic and genomic evidence.",
+				finding:
+					"Reviews and large-cohort studies support the conclusion that evolutionary processes, including natural selection, still operate in humans, though observed changes are generally slow and context-dependent.",
+				effectDirection: "supports",
+				magnitude:
+					"Detectable selection signals exist, but effect sizes and projected trait changes are usually modest over short timescales.",
+				certainty: "moderate",
+				limitations: [
+					"Large biobank datasets are not globally representative.",
+					"Complex traits are affected by social structure, environment, and measurement choices.",
+					"Short-term signals should not be turned into confident long-term forecasts."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{ name: "Nature Reviews Genetics", role: "Review anchor for measuring selection in contemporary humans" },
+			{ name: "Proceedings of the National Academy of Sciences", role: "Primary recent-selection study and methods-discussion source" },
+			{ name: "Population genetics literature", role: "Framework anchor for mutation, migration, drift, and selection" }
+		],
+		authorLine: "Is There Consensus editorial seed",
+		reviewerLine: "Pending expert review",
+		coiSummary: "No financial conflict identified for this editorial seed.",
+		independenceSummary:
+			"Seeded from peer-reviewed evolutionary genetics literature located through Consensus and source metadata checks.",
+		lastRetractionCheckAt: "2026-07-03T15:58:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T15:58:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial contemporary-human-evolution claim page published from Consensus research results and peer-reviewed review/cohort sources."
+			}
+		],
+		sources: [
+			{
+				kind: "context",
+				title: "Measuring selection in contemporary human populations",
+				publisher: "Nature Reviews Genetics",
+				year: 2010,
+				url: "https://doi.org/10.1038/nrg2831",
+				doi: "10.1038/nrg2831",
+				pmid: "20680024",
+				citationCheckedAt: "2026-07-03T15:58:00.000Z",
+				stance: "supports",
+				note:
+					"Review located through Consensus; summarizes methods for measuring selection and inheritance in humans and states that evidence strongly suggests humans are still evolving.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Natural selection in a contemporary human population",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2010,
+				url: "https://www.pnas.org/doi/10.1073/pnas.0906199106",
+				doi: "10.1073/pnas.0906199106",
+				pmid: "19858476",
+				citationCheckedAt: "2026-07-03T15:58:00.000Z",
+				stance: "supports",
+				note:
+					"Framingham Heart Study analysis estimating selection and genetic covariance in women and predicting slow, gradual evolutionary change in several traits.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Evidence of directional and stabilizing selection in contemporary humans",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2018,
+				url: "https://www.pnas.org/doi/10.1073/pnas.1707227114",
+				doi: "10.1073/pnas.1707227114",
+				pmid: "29255044",
+				citationStatus: "corrected",
+				citationCheckedAt: "2026-07-03T15:58:00.000Z",
+				statusSources: ["https://www.pnas.org/doi/10.1073/pnas.1806837115"],
+				stance: "supports",
+				note:
+					"UK Biobank study reporting phenotypic and genetic evidence consistent with directional selection and widespread weak stabilizing selection; citation has a published PNAS correction.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "The challenge of detecting recent natural selection in human populations",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2022,
+				url: "https://www.pnas.org/doi/10.1073/pnas.2203237119",
+				doi: "10.1073/pnas.2203237119",
+				pmid: "35353603",
+				citationCheckedAt: "2026-07-03T15:58:00.000Z",
+				stance: "context",
+				note:
+					"Methods and interpretation context explaining why very recent or ongoing selection can be studied with large datasets but remains difficult to interpret cleanly.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Does nicotine harm brain development into the mid-20s?",
 		slug: "does-nicotine-harm-brain-development-into-the-mid-20s",
