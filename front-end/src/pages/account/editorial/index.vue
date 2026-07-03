@@ -3,9 +3,9 @@ import type { ClaimSummary, Question, QuestionsResponse } from "~/types/board";
 import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
+import { backlogClaims, firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
 import { futureRoadmapPreview } from "~/data/futureRoadmap";
-import { measurementLoop, patternPreview, publishingPlanPreview } from "~/data/searchDemand";
+import { measurementLoop, patternPreview, publishingPlan, publishingPlanPreview } from "~/data/searchDemand";
 import { formatCountLabel } from "~/utils/format-count";
 
 const router = useRouter();
@@ -192,12 +192,17 @@ const bundledQuestionCount = computed(
 const conceptQuestionCount = computed(
 	() => unassignedQuestions.value.filter((question) => question.askKind === "concept").length
 );
-const roadmapPreview = firstWaveClaims.slice(0, 6);
-const roadmapFollowOn = secondWaveClaims.slice(0, 4);
-const roadmapHolds = holdClaims.slice(0, 4);
+const roadmapPreview = firstWaveClaims.slice(0, 4);
+const roadmapFollowOn = secondWaveClaims.slice(0, 3);
+const roadmapBacklog = backlogClaims
+	.filter((item) => item.wave === "backlog")
+	.slice(-4)
+	.reverse();
+const roadmapHolds = holdClaims.slice(0, 3);
 const futurePriorities = futureRoadmapPreview;
 const demandPatterns = patternPreview.slice(0, 4);
 const publishingPreview = publishingPlanPreview.slice(0, 4);
+const recentPublishing = publishingPlan.slice(-4).reverse();
 const demandMeasurement = measurementLoop.slice(0, 2);
 
 useHead({
@@ -621,17 +626,31 @@ watch(
 					</p>
 				</div>
 
-				<div class="ops-grid">
+				<div class="ops-grid ops-grid--decision">
 					<section class="ops-column">
 						<div class="ops-column__header">
 							<h3>First wave</h3>
 							<p>Best immediate candidates for the next canonical claim pages.</p>
 						</div>
-						<ul class="guide-list">
-							<li v-for="item in roadmapPreview" :key="item.slug">
-								<strong>{{ item.title }}</strong> - {{ item.cluster }}
-							</li>
-						</ul>
+						<div class="decision-list">
+							<article v-for="item in roadmapPreview" :key="item.slug" class="decision-item">
+								<p class="decision-item__meta">
+									<span>#{{ item.rank }}</span>
+									<span>{{ item.cluster }}</span>
+									<span>{{ item.evidenceCertainty }} certainty</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<details class="decision-item__details">
+									<summary>Routing details</summary>
+									<ul>
+										<li><strong>Why it matters:</strong> {{ item.whyItMatters }}</li>
+										<li><strong>Page:</strong> {{ item.pageType }}</li>
+										<li><strong>Anchors:</strong> {{ item.anchors.join(", ") }}</li>
+										<li><strong>Watch:</strong> {{ item.misconceptions.join(", ") }}</li>
+									</ul>
+								</details>
+							</article>
+						</div>
 					</section>
 
 					<section class="ops-column">
@@ -639,11 +658,50 @@ watch(
 							<h3>Second wave</h3>
 							<p>Follow-ons that reuse the first-wave method and misconception modules.</p>
 						</div>
-						<ul class="guide-list">
-							<li v-for="item in roadmapFollowOn" :key="item.slug">
-								<strong>{{ item.title }}</strong> - {{ item.pageType }}
-							</li>
-						</ul>
+						<div class="decision-list">
+							<article v-for="item in roadmapFollowOn" :key="item.slug" class="decision-item">
+								<p class="decision-item__meta">
+									<span>#{{ item.rank }}</span>
+									<span>{{ item.pageType }}</span>
+									<span>{{ item.consensusTier }}</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<details class="decision-item__details">
+									<summary>Evidence threshold</summary>
+									<ul>
+										<li><strong>Why it matters:</strong> {{ item.whyItMatters }}</li>
+										<li><strong>Anchors:</strong> {{ item.anchors.join(", ") }}</li>
+										<li><strong>Would change minds:</strong> {{ item.whatWouldChangeMinds }}</li>
+									</ul>
+								</details>
+							</article>
+						</div>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Active backlog additions</h3>
+							<p>Recently added candidates that still need ordering against the first two waves.</p>
+						</div>
+						<div class="decision-list">
+							<article v-for="item in roadmapBacklog" :key="item.slug" class="decision-item">
+								<p class="decision-item__meta">
+									<span>#{{ item.rank }}</span>
+									<span>{{ item.cluster }}</span>
+									<span>{{ item.evidenceCertainty }} certainty</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<details class="decision-item__details">
+									<summary>Why it belongs here</summary>
+									<ul>
+										<li><strong>Why it matters:</strong> {{ item.whyItMatters }}</li>
+										<li><strong>Page:</strong> {{ item.pageType }}</li>
+										<li><strong>Anchors:</strong> {{ item.anchors.join(", ") }}</li>
+										<li><strong>Watch:</strong> {{ item.misconceptions.join(", ") }}</li>
+									</ul>
+								</details>
+							</article>
+						</div>
 					</section>
 
 					<section class="ops-column">
@@ -651,11 +709,26 @@ watch(
 							<h3>Hold queue</h3>
 							<p>Topics worth delaying until the site can carry stronger uncertainty framing.</p>
 						</div>
-						<ul class="guide-list">
-							<li v-for="item in roadmapHolds" :key="item.slug">
-								<strong>{{ item.title }}</strong> - {{ item.cluster }}
-							</li>
-						</ul>
+						<div class="decision-list">
+							<article v-for="item in roadmapHolds" :key="item.slug" class="decision-item">
+								<p class="decision-item__meta">
+									<span>#{{ item.rank }}</span>
+									<span>{{ item.cluster }}</span>
+									<span>{{ item.consensusTier }}</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<details class="decision-item__details">
+									<summary>Hold reason context</summary>
+									<ul>
+										<li><strong>Why it matters:</strong> {{ item.whyItMatters }}</li>
+										<li>
+											<strong>Need before publishing:</strong> {{ item.whatWouldChangeMinds }}
+										</li>
+										<li><strong>Page:</strong> {{ item.pageType }}</li>
+									</ul>
+								</details>
+							</article>
+						</div>
 					</section>
 				</div>
 			</section>
@@ -672,17 +745,27 @@ watch(
 					</p>
 				</div>
 
-				<div class="ops-grid">
+				<div class="ops-grid ops-grid--decision">
 					<section class="ops-column">
 						<div class="ops-column__header">
 							<h3>Common query patterns</h3>
 							<p>These patterns often signal that a canonical page or explainer is missing.</p>
 						</div>
-						<ul class="guide-list">
-							<li v-for="item in demandPatterns" :key="item.pattern">
-								<strong>{{ item.pattern }}</strong> - {{ item.bestFit }}
-							</li>
-						</ul>
+						<div class="decision-list">
+							<article v-for="item in demandPatterns" :key="item.pattern" class="decision-item">
+								<p class="decision-item__meta">
+									<span>{{ item.bestFit }}</span>
+									<span>{{ item.signal }}</span>
+								</p>
+								<h4>{{ item.pattern }}</h4>
+								<details class="decision-item__details">
+									<summary>Example searches</summary>
+									<ul>
+										<li v-for="example in item.examples" :key="example">{{ example }}</li>
+									</ul>
+								</details>
+							</article>
+						</div>
 					</section>
 
 					<section class="ops-column">
@@ -690,11 +773,43 @@ watch(
 							<h3>First month publishing cues</h3>
 							<p>Start with the claims and explainers that match the strongest repeating phrasing.</p>
 						</div>
-						<ul class="guide-list">
-							<li v-for="item in publishingPreview" :key="`${item.week}-${item.title}`">
-								<strong>{{ item.week }}:</strong> {{ item.title }}
-							</li>
-						</ul>
+						<div class="decision-list">
+							<article
+								v-for="item in publishingPreview"
+								:key="`${item.week}-${item.title}`"
+								class="decision-item"
+							>
+								<p class="decision-item__meta">
+									<span>{{ item.week }}</span>
+									<span>{{ item.type }}</span>
+									<span>{{ item.cluster }}</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<p>{{ item.rationale }}</p>
+							</article>
+						</div>
+					</section>
+
+					<section class="ops-column">
+						<div class="ops-column__header">
+							<h3>Recent publishing additions</h3>
+							<p>Newly added plan rows that need the same title, routing, and rationale checks.</p>
+						</div>
+						<div class="decision-list">
+							<article
+								v-for="item in recentPublishing"
+								:key="`${item.week}-${item.title}`"
+								class="decision-item"
+							>
+								<p class="decision-item__meta">
+									<span>{{ item.week }}</span>
+									<span>{{ item.type }}</span>
+									<span>{{ item.cluster }}</span>
+								</p>
+								<h4>{{ item.title }}</h4>
+								<p>{{ item.rationale }}</p>
+							</article>
+						</div>
 					</section>
 
 					<section class="ops-column">
@@ -1009,6 +1124,16 @@ watch(
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.ops-grid--decision {
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.ops-grid--decision .ops-column {
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
 .ops-column {
 	display: grid;
 	gap: 12px;
@@ -1031,6 +1156,70 @@ watch(
 	margin: 6px 0 0;
 	color: var(--consensus-muted);
 	line-height: 1.55;
+}
+
+.decision-list {
+	display: grid;
+	gap: 12px;
+}
+
+.decision-item {
+	display: grid;
+	gap: 7px;
+	padding-top: 12px;
+	border-top: 1px solid var(--consensus-soft-line);
+	min-width: 0;
+}
+
+.decision-item:first-child {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.decision-item h4 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+	font-size: 1rem;
+	line-height: 1.25;
+	color: var(--consensus-ink);
+}
+
+.decision-item p {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.decision-item__meta {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	font-size: 0.76rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--consensus-muted);
+}
+
+.decision-item__details {
+	color: var(--consensus-muted);
+	font-size: 0.92rem;
+	line-height: 1.5;
+}
+
+.decision-item__details summary {
+	width: max-content;
+	max-width: 100%;
+	cursor: pointer;
+	font-weight: 700;
+	color: var(--consensus-ink);
+}
+
+.decision-item__details ul {
+	margin: 8px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 6px;
 }
 
 .guide-list {
