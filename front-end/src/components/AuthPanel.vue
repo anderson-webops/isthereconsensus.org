@@ -172,11 +172,10 @@ async function handleChangePassword() {
 				</button>
 			</div>
 
-			<details class="account-details">
-				<summary class="account-details__summary">
-					<span>Account settings</span>
-					<span class="account-details__summary-icon" aria-hidden="true"></span>
-				</summary>
+			<section class="account-details" aria-labelledby="account-settings-title">
+				<div class="account-details__summary">
+					<span id="account-settings-title">Account settings</span>
+				</div>
 				<div class="account-details__body">
 					<form class="account-form setting-card" @submit.prevent="handleChangeEmail">
 						<div class="setting-card__intro">
@@ -224,7 +223,7 @@ async function handleChangePassword() {
 						</div>
 					</form>
 				</div>
-			</details>
+			</section>
 
 			<p v-if="accountMessage" class="success">{{ accountMessage }}</p>
 			<p v-if="accountError" class="error">{{ accountError }}</p>
@@ -349,108 +348,47 @@ async function handleChangePassword() {
 	border-radius: 0;
 	overflow: visible;
 	background: transparent;
-}
-
-.account-details summary::marker,
-.account-details summary::-webkit-details-marker {
-	display: none;
-	content: "";
+	display: grid;
+	gap: 12px;
 }
 
 .account-details__summary {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	min-height: 46px;
-	padding: 10px 12px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 14px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 40%, transparent);
-	list-style: none;
-	cursor: pointer;
-	font-weight: 600;
-	color: var(--consensus-ink);
-	transition:
-		background 0.18s ease,
-		border-color 0.18s ease,
-		box-shadow 0.18s ease;
-}
-
-.account-details__summary::-webkit-details-marker {
-	display: none;
-}
-
-.account-details__summary:hover {
-	border-color: color-mix(in srgb, var(--consensus-ember) 36%, var(--consensus-soft-line));
-	background: color-mix(in srgb, var(--consensus-field-surface) 58%, transparent);
-}
-
-.account-details__summary:focus {
-	outline: none;
-}
-
-.account-details__summary:focus-visible {
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--consensus-ember) 30%, transparent);
-}
-
-.account-details[open] .account-details__summary {
-	border-bottom-color: var(--consensus-soft-line);
-	background: color-mix(in srgb, var(--consensus-field-surface) 52%, transparent);
-}
-
-.account-details__summary-icon {
-	position: relative;
-	width: 20px;
-	height: 20px;
-	flex: 0 0 20px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 82%, transparent);
-}
-
-.account-details__summary-icon::before,
-.account-details__summary-icon::after {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 8px;
-	height: 2px;
-	border-radius: 999px;
-	background: currentColor;
-	content: "";
-	transform: translate(-50%, -50%);
-}
-
-.account-details__summary-icon::after {
-	transform: translate(-50%, -50%) rotate(90deg);
-	transition: transform 0.18s ease;
-}
-
-.account-details[open] .account-details__summary-icon::after {
-	transform: translate(-50%, -50%) rotate(0deg);
+	gap: 10px;
+	min-height: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-size: 0.82rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--consensus-muted);
 }
 
 .account-details__body {
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 390px));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	justify-content: start;
-	align-items: start;
-	gap: 22px 28px;
-	padding: 16px 12px 4px;
+	align-items: stretch;
+	gap: 14px;
+	max-width: 860px;
+	padding: 0;
 	border-top: 0;
 	background: transparent;
 }
 
 .setting-card {
 	width: 100%;
+	height: 100%;
 	align-content: start;
-	gap: 12px;
+	gap: 14px;
 	min-width: 0;
-	max-width: 390px;
-	padding: 0;
-	border: 0;
-	border-radius: 0;
-	background: transparent;
+	max-width: none;
+	padding: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 34%, transparent);
 }
 
 .setting-card__intro {
@@ -474,7 +412,7 @@ async function handleChangePassword() {
 
 .field-stack {
 	gap: 7px;
-	max-width: 390px;
+	max-width: none;
 }
 
 .account-form input {
@@ -492,7 +430,7 @@ async function handleChangePassword() {
 .setting-card__actions {
 	display: flex;
 	justify-content: flex-start;
-	margin-top: 2px;
+	margin-top: auto;
 }
 
 .account-form .button {
@@ -606,17 +544,13 @@ input {
 		padding-inline: 0;
 	}
 
-	.setting-card + .setting-card {
-		padding-top: 16px;
-		border-top: 1px solid var(--consensus-soft-line);
-	}
-
 	.setting-card__actions {
 		justify-content: stretch;
 	}
 
 	.account-form .button {
 		width: 100%;
+		max-width: none;
 	}
 
 	.auth-form .button {
