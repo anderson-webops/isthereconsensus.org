@@ -34,12 +34,12 @@ useStaticPageMeta({
 					<h3>Why it matters</h3>
 					<p>{{ explainer.whyItMatters }}</p>
 				</section>
-				<section class="explainer-card__section">
-					<h3>Key points</h3>
+				<details class="explainer-card__details">
+					<summary>Key points</summary>
 					<ul>
 						<li v-for="point in explainer.keyPoints" :key="point">{{ point }}</li>
 					</ul>
-				</section>
+				</details>
 				<div class="explainer-card__actions">
 					<span class="explainer-card__meta">
 						{{ explainer.relatedMisconceptions.length }} linked module{{
@@ -125,24 +125,62 @@ useStaticPageMeta({
 	padding: 20px;
 	display: grid;
 	gap: 14px;
+	align-content: start;
 }
 
-.explainer-card__section {
+.explainer-card__section,
+.explainer-card__details {
 	display: grid;
 	gap: 8px;
+	padding-top: 2px;
 }
 
 .explainer-card h2,
-.explainer-card h3 {
+.explainer-card h3,
+.explainer-card__details summary {
 	line-height: 1.2;
 }
 
 .explainer-card__section p,
-.explainer-card__section ul {
+.explainer-card__details ul {
 	margin: 0;
 }
 
-.explainer-card__section ul {
+.explainer-card__details summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	list-style: none;
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-weight: 600;
+	color: var(--consensus-ink);
+}
+
+.explainer-card__details summary::-webkit-details-marker {
+	display: none;
+}
+
+.explainer-card__details summary::after {
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	color: var(--consensus-muted);
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 0.82rem;
+	line-height: 16px;
+	text-align: center;
+	content: "+";
+}
+
+.explainer-card__details[open] summary::after {
+	content: "-";
+}
+
+.explainer-card__details ul {
 	padding-left: 20px;
 	display: grid;
 	gap: 8px;
