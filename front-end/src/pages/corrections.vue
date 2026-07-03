@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Reviewed pages should not be silently rewritten when the bottom line changes in a meaningful way.",
-	"Corrections, updates, routine reviews, and archival actions should be labeled differently in the public change log.",
-	"Credible correction requests should identify the exact claim text, the evidence problem, and the best supporting sources.",
-	"A flagged citation, major correction, or retraction should trigger fast editorial review rather than waiting for the next routine review date."
+	{
+		title: "Visible record",
+		body: "Reviewed pages should not be silently rewritten when the bottom line changes in a meaningful way."
+	},
+	{
+		title: "Labeled changes",
+		body: "Corrections, updates, routine reviews, and archival actions should be labeled differently in the public change log."
+	},
+	{
+		title: "Specific requests",
+		body: "Credible correction requests should identify the exact claim text, the evidence problem, and the best supporting sources."
+	},
+	{
+		title: "Fast review triggers",
+		body: "A flagged citation, major correction, or retraction should trigger fast editorial review rather than waiting for the next routine review date."
+	}
 ];
 
 const correctionTypes = [
@@ -70,8 +82,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="corrections-summary">
-			<article v-for="item in quickPoints" :key="item" class="summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
+				<h3>{{ item.title }}</h3>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 
@@ -163,6 +176,7 @@ useStaticPageMeta({
 
 .corrections-header h1,
 .section-heading h2,
+.summary-card h3,
 .detail-card h3,
 .corrections-callout h2 {
 	margin: 0;
@@ -191,12 +205,28 @@ useStaticPageMeta({
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
+.corrections-summary {
+	align-items: start;
+}
+
 .summary-card,
 .detail-card {
 	padding: 18px;
 }
 
+.summary-card {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+}
+
+.summary-card h3 {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
 .summary-card p,
+.summary-card h3,
 .detail-card p,
 .plain-list {
 	margin: 0;

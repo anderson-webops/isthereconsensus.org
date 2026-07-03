@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Keep public threads focused on the claim, the evidence, or a concrete confusion worth checking.",
-	"Harassment, spam, doxxing, impersonation, and coordinated manipulation are not allowed.",
-	"Community discussion can improve coverage and catch errors, but it does not vote reviewed answers into or out of consensus.",
-	"Moderators can link, lock, slow, hide, archive, remove, or escalate content to keep the site usable and safe."
+	{
+		title: "Stay on the claim",
+		body: "Keep public threads focused on the claim, the evidence, or a concrete confusion worth checking."
+	},
+	{
+		title: "No abuse",
+		body: "Harassment, spam, doxxing, impersonation, and coordinated manipulation are not allowed."
+	},
+	{
+		title: "Discussion is not a vote",
+		body: "Community discussion can improve coverage and catch errors, but it does not vote reviewed answers into or out of consensus."
+	},
+	{
+		title: "Moderation tools",
+		body: "Moderators can link, lock, slow, hide, archive, remove, or escalate content to keep the site usable and safe."
+	}
 ];
 
 const conductRules = [
@@ -84,8 +96,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="guidelines-summary">
-			<article v-for="item in quickPoints" :key="item" class="summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
+				<h3>{{ item.title }}</h3>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 
@@ -190,6 +203,7 @@ useStaticPageMeta({
 
 .guidelines-header h1,
 .section-heading h2,
+.summary-card h3,
 .detail-card h3,
 .guidelines-callout h2 {
 	margin: 0;
@@ -219,12 +233,28 @@ useStaticPageMeta({
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
+.guidelines-summary {
+	align-items: start;
+}
+
 .summary-card,
 .detail-card {
 	padding: 18px;
 }
 
+.summary-card {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+}
+
+.summary-card h3 {
+	font-size: 1rem;
+	color: var(--consensus-ink);
+}
+
 .summary-card p,
+.summary-card h3,
 .detail-card p,
 .plain-list,
 .prose p {

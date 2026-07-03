@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"This site is an educational service, not a medical, legal, or other professional service.",
-	"Public questions and related community content can be visible to other users and search engines.",
-	"You must be at least 13 to create an account or submit community content.",
-	"We can route, merge, hide, archive, or remove content to keep the site usable and accurate."
+	{
+		title: "Educational service",
+		body: "This site is an educational service, not a medical, legal, or other professional service."
+	},
+	{
+		title: "Public submissions",
+		body: "Public questions and related community content can be visible to other users and search engines."
+	},
+	{
+		title: "Minimum age",
+		body: "You must be at least 13 to create an account or submit community content."
+	},
+	{
+		title: "Moderation authority",
+		body: "We can route, merge, hide, archive, or remove content to keep the site usable and accurate."
+	}
 ];
 
 const acceptableUse = [
@@ -64,8 +76,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="terms-summary">
-			<article v-for="item in quickPoints" :key="item" class="summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
+				<h3>{{ item.title }}</h3>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 
@@ -346,6 +359,7 @@ useStaticPageMeta({
 
 .terms-header h1,
 .section-heading h2,
+.summary-card h3,
 .terms-callout h2 {
 	margin: 0;
 	font-family: "Fraunces", serif;
@@ -372,13 +386,29 @@ useStaticPageMeta({
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
+.terms-summary {
+	align-items: start;
+}
+
 .summary-card {
 	padding: 18px;
+}
+
+.summary-card {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+}
+
+.summary-card h3 {
+	font-size: 1rem;
+	color: var(--consensus-ink);
 }
 
 .summary-card p,
 .plain-list,
 .prose p,
+.summary-card h3,
 .section-heading h2 {
 	margin: 0;
 }
