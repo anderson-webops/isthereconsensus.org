@@ -12,7 +12,7 @@ const quickPoints = [
 	},
 	{
 		title: "Analytics and abuse prevention",
-		body: "When enabled, the site uses bot protection and production analytics services hosted at analytics.isthereconsensus.org and analytics.jacobdanderson.net to keep the service usable and understand how it is used."
+		body: "When enabled, bot protection and production analytics from analytics.isthereconsensus.org and analytics.jacobdanderson.net keep the service usable and show how deployed pages are used."
 	},
 	{
 		title: "Privacy requests",
@@ -399,11 +399,15 @@ useStaticPageMeta({
 .category-grid {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .privacy-summary {
 	align-items: start;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.category-grid {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .summary-card,

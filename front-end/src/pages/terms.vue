@@ -393,11 +393,8 @@ useStaticPageMeta({
 .terms-summary {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-}
-
-.terms-summary {
 	align-items: start;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .summary-card {
