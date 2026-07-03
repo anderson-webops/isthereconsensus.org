@@ -321,8 +321,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 		<section class="bottom-line">
 			<div>
-				<p class="eyebrow">Bottom line</p>
-				<h2>{{ claim?.bottomLine }}</h2>
+				<h2>Bottom line</h2>
+				<p class="bottom-line__text">{{ claim?.bottomLine }}</p>
 			</div>
 			<div class="bottom-line__actions">
 				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
@@ -587,11 +587,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.18;
 }
 
+.bottom-line .bottom-line__text {
+	max-width: 72ch;
+	margin: 8px 0 0;
+	color: var(--consensus-ink);
+	font-size: clamp(1.04rem, 1.2vw, 1.2rem);
+	line-height: 1.62;
+}
+
 .bottom-line__actions,
-.section-heading,
 .evidence-summary-card__top,
-.source-row,
-.source-group__header {
+.source-row {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
@@ -599,14 +605,26 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	align-items: start;
 }
 
+.bottom-line__actions {
+	justify-content: end;
+}
+
 .section-heading {
-	align-items: end;
+	display: grid;
+	gap: 6px;
 	margin-bottom: 14px;
 }
 
 .section-heading h2,
 .section-heading p {
 	margin: 0;
+}
+
+.section-heading p,
+.source-group__header p {
+	max-width: 58ch;
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
 .content-stack,
@@ -636,6 +654,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	border: 1px solid var(--consensus-soft-line);
 }
 
+.source-group__header {
+	display: grid;
+	gap: 6px;
+}
+
 .evidence-summary-card p,
 .source-row p,
 .change-log__entry p {
@@ -654,6 +677,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;
+}
+
+.source-row__identifiers span,
+.source-row h4 {
+	overflow-wrap: anywhere;
 }
 
 .plain-list {
@@ -716,6 +744,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	}
 
 	.bottom-line__actions {
+		width: 100%;
+		justify-content: start;
+	}
+}
+
+@media (max-width: 560px) {
+	.bottom-line__actions {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.bottom-line__actions .button {
 		width: 100%;
 	}
 }
