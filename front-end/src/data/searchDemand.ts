@@ -313,6 +313,20 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		querySignals: ["relative vs absolute risk", "what does risk doubled mean", "baseline risk explanation"]
 	},
 	{
+		cluster: "Indoor air",
+		title: "Indoor dampness and mold worsen respiratory health",
+		format: "claim page",
+		whyItMatters:
+			"Mold questions spike after leaks, floods, and rental or workplace disputes. A canonical page can separate respiratory-risk consensus and moisture remediation from black-mold panic or overconfident symptom attribution.",
+		anchors: ["WHO indoor air guidance", "CDC", "EPA", "systematic reviews"],
+		querySignals: [
+			"is indoor mold dangerous",
+			"does mold cause asthma",
+			"black mold health effects",
+			"mold testing health risk"
+		]
+	},
+	{
 		cluster: "Science-news literacy",
 		title: "What is a preprint and why can preprint findings change?",
 		format: "evergreen explainer",

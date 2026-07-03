@@ -4978,6 +4978,139 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Can indoor dampness and mold worsen respiratory health?",
+		slug: "can-indoor-dampness-and-mold-worsen-respiratory-health",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Damp or moldy indoor spaces are consistently linked with respiratory and allergic problems, including asthma symptoms, asthma development in some groups, wheeze, cough, rhinitis, and respiratory infections. The practical consensus is to fix moisture and remove mold rather than wait for species testing, while avoiding the overclaim that every symptom in a building is caused by mold.",
+		stableCore: [
+			"WHO concludes that occupants of damp or moldy buildings are at increased risk of respiratory symptoms, respiratory infections, and asthma exacerbation, with some evidence for allergic rhinitis and asthma development.",
+			"CDC and EPA identify mold and dampness as triggers for allergic symptoms, irritation, and asthma attacks, especially for people with asthma, mold allergy, immune compromise, or chronic lung disease.",
+			"A comprehensive epidemiologic review found consistent associations between evident dampness or mold and asthma development or exacerbation, wheeze, cough, respiratory infections, bronchitis, allergic rhinitis, eczema, and upper respiratory symptoms.",
+			"Meta-analyses quantify the direction of risk: one asthma-onset review estimated elevated risks for dampness, visible mold, and especially mold odor, while another found roughly 30% to 50% increases across several respiratory and asthma-related outcomes."
+		],
+		openQuestions: [
+			"Which specific microbial agents, chemical emissions, building materials, or exposure mixtures drive the observed health risks?",
+			"How should hidden dampness and mold odor be measured in ways that predict health risk better than short-term air sampling?",
+			"Which remediation approaches produce the most durable health gains across homes, schools, workplaces, and climates?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled longitudinal or remediation studies showing no respiratory or allergic risk reduction after dampness and mold problems are corrected.",
+			"Major WHO, CDC, EPA, National Academies, or systematic-review reassessments withdrawing the current respiratory-risk conclusions.",
+			"Exposure-measurement evidence showing that the observed associations are explained entirely by confounding rather than dampness-related indoor conditions."
+		],
+		misconceptions: [
+			"'Black mold' color is not a reliable danger ranking; CDC notes color does not necessarily show whether mold is more or less dangerous.",
+			"Routine mold air sampling is often oversold. NIOSH says there are no health-based indoor-air standards for mold and does not recommend routine air sampling for building air-quality evaluations.",
+			"Not every symptom in a damp building is necessarily caused by mold; the strongest public-health answer concerns respiratory and allergic outcomes plus moisture control."
+		],
+		editorSummary:
+			"This page should be practical and bounded: dampness and visible or smelled mold are real respiratory-risk signals, but the answer should steer away from species-name panic, unsupported toxin narratives, and diagnostic overreach.",
+		uncertaintySummary:
+			"The direction of the association is stable across guidance and reviews, especially for respiratory and allergic outcomes. Remaining uncertainty is about exact causal agents, dose thresholds, hidden exposures, individual attribution, and the health effect size of specific remediation strategies.",
+		searchCutoffAt: "2026-07-03T16:59:04.000Z",
+		lastRetractionCheckAt: "2026-07-03T16:59:04.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T16:59:04.000Z",
+				kind: "publication",
+				summary:
+					"Initial indoor dampness and mold respiratory-health page published from WHO, CDC, EPA, and systematic-review/meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "WHO guidelines for indoor air quality : dampness and mould",
+				publisher: "World Health Organization",
+				year: 2009,
+				url: "https://www.who.int/publications/i/item/9789289041683",
+				stance: "supports",
+				note:
+					"WHO guideline anchor concluding that persistent dampness and microbial growth increase respiratory, allergy, asthma, and immune-related health risks.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Mold",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/mold-health/about/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor for mold growth conditions, possible health effects, IOM evidence categories, prevention, and moisture cleanup advice.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Mold, Testing, and Remediation",
+				publisher: "National Institute for Occupational Safety and Health",
+				year: 2025,
+				url: "https://www.cdc.gov/niosh/mold/testing-remediation/index.html",
+				stance: "supports",
+				note:
+					"NIOSH guidance explaining that mold color is not a danger ranking, routine air sampling is not recommended, and moisture problems should be remediated.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Mold and Health",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url: "https://www.epa.gov/mold/mold-and-health",
+				stance: "supports",
+				note:
+					"EPA public guidance summarizing allergic, irritant, and asthma-triggering effects and pointing readers toward moisture cleanup.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Respiratory and Allergic Health Effects of Dampness, Mold, and Dampness-Related Agents",
+				publisher: "Environmental Health Perspectives",
+				year: 2011,
+				url: "https://doi.org/10.1289/ehp.1002410",
+				doi: "10.1289/ehp.1002410",
+				pmid: "21269928",
+				stance: "supports",
+				note:
+					"Review found consistent positive associations between evident dampness or mold and multiple respiratory and allergic outcomes, while cautioning against relying on specific microbial measurements for action.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Residential Dampness and Molds and the Risk of Developing Asthma",
+				publisher: "PLoS ONE",
+				year: 2012,
+				url: "https://doi.org/10.1371/journal.pone.0047526",
+				doi: "10.1371/journal.pone.0047526",
+				pmid: "23144822",
+				pmcid: "PMC3492391",
+				stance: "supports",
+				note:
+					"Meta-analysis of 16 cohort or incident case-control studies found elevated asthma-onset estimates for dampness, visible mold, and mold odor.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "Meta-analyses of the associations of respiratory health effects with dampness and mold in homes",
+				publisher: "Indoor Air",
+				year: 2007,
+				url: "https://doi.org/10.1111/j.1600-0668.2007.00475.x",
+				doi: "10.1111/j.1600-0668.2007.00475.x",
+				pmid: "17661925",
+				stance: "supports",
+				note:
+					"Meta-analysis found building dampness and mold associated with roughly 30% to 50% increases in several respiratory and asthma-related outcomes.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "biology-and-evolution",
 		title: "Is evolution 'just a theory'?",
 		slug: "is-evolution-just-a-theory",

@@ -148,6 +148,10 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
+.misconception-page > * {
+	min-width: 0;
+}
+
 .misconception-header,
 .misconception-panel,
 .misconception-card,
@@ -198,6 +202,7 @@ useStaticPageMeta({
 	padding: 22px;
 	display: grid;
 	gap: 14px;
+	min-width: 0;
 }
 
 .misconception-card__section {
@@ -247,9 +252,13 @@ useStaticPageMeta({
 	text-decoration: none;
 	color: var(--consensus-ink);
 	font-weight: 600;
+	max-width: 100%;
+	overflow-wrap: anywhere;
 }
 
 .reuse-table-wrap {
+	max-width: 100%;
+	min-width: 0;
 	overflow-x: auto;
 }
 
@@ -308,6 +317,27 @@ useStaticPageMeta({
 @media (max-width: 900px) {
 	.misconception-grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 640px) {
+	.misconception-header,
+	.misconception-panel,
+	.misconception-card,
+	.misconception-callout {
+		border-radius: 18px;
+	}
+
+	.misconception-header,
+	.misconception-panel,
+	.misconception-callout,
+	.misconception-card {
+		padding: 18px;
+	}
+
+	.misconception-header h1 {
+		font-size: 2.35rem;
+		line-height: 1.05;
 	}
 }
 </style>
