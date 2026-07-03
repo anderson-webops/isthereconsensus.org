@@ -176,6 +176,9 @@ async function handleChangePassword() {
 				<summary>Account settings</summary>
 				<div class="account-details__body">
 					<form class="account-form" @submit.prevent="handleChangeEmail">
+						<div class="account-form__intro">
+							<h3>Email</h3>
+						</div>
 						<label class="field-label" for="email-update">Update email</label>
 						<input id="email-update" v-model="emailUpdate" type="email" placeholder="you@email.com" />
 						<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
@@ -184,6 +187,9 @@ async function handleChangePassword() {
 					</form>
 
 					<form class="account-form" @submit.prevent="handleChangePassword">
+						<div class="account-form__intro">
+							<h3>Password</h3>
+						</div>
 						<label class="field-label" for="current-password">Current password</label>
 						<input
 							id="current-password"
@@ -317,17 +323,67 @@ async function handleChangePassword() {
 }
 
 .account-details {
-	padding: 16px 18px;
+	padding: 14px;
+	border-radius: 18px;
 }
 
 .account-details summary {
 	cursor: pointer;
 	font-weight: 600;
+	color: var(--consensus-ink);
 }
 
 .account-details__body {
 	margin-top: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
+	gap: 12px;
+	padding-top: 12px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.account-form {
+	align-content: start;
+	gap: 9px;
+	padding: 14px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 88%, var(--consensus-surface));
+}
+
+.account-form__intro {
+	margin-bottom: 3px;
+}
+
+.account-form__intro h3 {
+	font-family: "Fraunces", serif;
+	font-size: 1.02rem;
+	line-height: 1.2;
+	margin: 0;
+}
+
+.account-form .field-label:not(:first-child) {
+	margin-top: 4px;
+}
+
+.account-form input {
+	width: 100%;
+	height: 44px;
+	min-height: 44px;
+	padding: 0 13px;
+	border-radius: 12px;
+	font-size: 0.96rem;
+	line-height: 1.2;
+}
+
+.account-form .button {
+	justify-self: start;
+	width: auto;
+	min-height: 42px;
+	margin-top: 4px;
+	padding: 9px 16px;
+	border-radius: 999px;
+	font-size: 0.95rem;
 }
 
 .auth-tabs {
@@ -409,5 +465,15 @@ input {
 .success {
 	color: #2f6b4e;
 	font-weight: 600;
+}
+
+@media (max-width: 760px) {
+	.account-details__body {
+		grid-template-columns: 1fr;
+	}
+
+	.account-form .button {
+		width: 100%;
+	}
 }
 </style>
