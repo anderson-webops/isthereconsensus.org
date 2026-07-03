@@ -3,8 +3,9 @@ import type { Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
-import { getTopicGuide } from "~/data/topicGuides";
+import { getTopicGuide, topicGuides } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
+import { formatSlugTitle } from "~/utils/format-slug-title";
 
 const route = useRoute();
 const router = useRouter();
@@ -25,12 +26,38 @@ const starterOrder = [
 	"neuroscience-and-psychology"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
+const fallbackTopics = computed<Topic[]>(() =>
+	Object.values(topicGuides).map((guide, index) => ({
+		_id: guide.slug,
+		title: formatSlugTitle(guide.slug),
+		slug: guide.slug,
+		description: guide.snapshot,
+		order: index
+	}))
+);
 const pageTitle = "Browse scientific consensus topics - Is There Consensus?";
 const pageDescription =
 	"Search the public topic directory for reviewed scientific claims, evidence summaries, uncertainty notes, and source trails.";
 const pageUrl = `${siteUrl}/consensus`;
+const directoryTopics = computed<Topic[]>(() => {
+	const apiTopicsBySlug = new Map(topics.value.map((topic) => [topic.slug, topic]));
+	const seen = new Set<string>();
+	const mergedTopics = fallbackTopics.value.map((fallbackTopic) => {
+		seen.add(fallbackTopic.slug);
+		return {
+			...fallbackTopic,
+			...apiTopicsBySlug.get(fallbackTopic.slug)
+		};
+	});
+
+	for (const topic of topics.value) {
+		if (!seen.has(topic.slug)) mergedTopics.push(topic);
+	}
+
+	return mergedTopics;
+});
 const enrichedTopics = computed(() =>
-	topics.value
+	directoryTopics.value
 		.map((topic) => ({
 			...topic,
 			guide: getTopicGuide(topic.slug)
@@ -106,13 +133,14 @@ useHead(() => ({
 	]
 }));
 
-function formatTopicDate(value?: string) {
+function formatTopicUpdateLabel(value?: string) {
 	if (!value) return "Update pending";
-	return new Intl.DateTimeFormat("en-US", {
+	const formattedDate = new Intl.DateTimeFormat("en-US", {
 		month: "short",
 		day: "numeric",
 		year: "numeric"
 	}).format(new Date(value));
+	return `Updated ${formattedDate}`;
 }
 
 watch(search, (value) => {
@@ -137,6 +165,21 @@ const filteredTopics = computed(() =>
 		return matchesFilter(topic.guide.consensusScore) && (!query.value || haystack.includes(query.value));
 	})
 );
+const totalTopicCount = computed(() => enrichedTopics.value.length);
+const resultsCountLabel = computed(() => {
+	if (filteredTopics.value.length === totalTopicCount.value) return formatCountLabel(totalTopicCount.value, "topic");
+	return `${filteredTopics.value.length} of ${formatCountLabel(totalTopicCount.value, "topic")}`;
+});
+
+function formatTopicClaimCount(topic: Topic) {
+	if (typeof topic.claimCount === "number") return formatCountLabel(topic.claimCount, "claim review");
+	return "Claim reviews load on topic pages";
+}
+
+function showAllTopics() {
+	search.value = "";
+	filter.value = "all";
+}
 </script>
 
 <template>
@@ -159,7 +202,7 @@ const filteredTopics = computed(() =>
 					placeholder="Search by topic, question, or keyword"
 				/>
 			</div>
-			<p class="results-count">{{ formatCountLabel(filteredTopics.length, "topic") }}</p>
+			<p class="results-count">{{ resultsCountLabel }}</p>
 			<div class="filter-stack">
 				<button class="filter" :class="{ active: filter === 'all' }" @click="filter = 'all'">All topics</button>
 				<button class="filter" :class="{ active: filter === 'settled' }" @click="filter = 'settled'">
@@ -180,7 +223,12 @@ const filteredTopics = computed(() =>
 				<p>Each topic page leads with reviewed claims, not general discussion.</p>
 			</div>
 
-			<div v-if="!filteredTopics.length" class="empty-state">No topics match that search yet.</div>
+			<div v-if="!filteredTopics.length" class="empty-state">
+				<p>No topics match that search yet.</p>
+				<button class="empty-state__action" type="button" @click="showAllTopics">
+					Show all {{ formatCountLabel(totalTopicCount, "topic") }}
+				</button>
+			</div>
 			<div v-else class="topic-list">
 				<article v-for="topic in filteredTopics" :key="topic.slug" class="topic-row">
 					<div class="topic-row__main">
@@ -188,8 +236,8 @@ const filteredTopics = computed(() =>
 						<p>{{ topic.description || topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
-							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
-							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
+							<span>{{ formatTopicClaimCount(topic) }}</span>
+							<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
 						</div>
 						<div v-if="topic.featuredClaims?.length" class="topic-row__claims">
 							<span>Start with:</span>
@@ -296,6 +344,28 @@ const filteredTopics = computed(() =>
 .filter.active {
 	border-color: var(--consensus-ember);
 	background: color-mix(in srgb, var(--consensus-ember) 12%, var(--consensus-surface));
+}
+
+.empty-state {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.empty-state p {
+	margin: 0;
+}
+
+.empty-state__action {
+	border: 1px solid var(--consensus-ember);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--consensus-ember) 12%, var(--consensus-surface));
+	color: var(--consensus-ink);
+	cursor: pointer;
+	font-weight: 700;
+	padding: 10px 14px;
 }
 
 .section-heading {
