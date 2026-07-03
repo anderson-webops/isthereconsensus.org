@@ -35,6 +35,41 @@ const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
 const evidenceLandscape = computed(() => claim.value?.evidenceLandscape);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
+const claimSnapshotGroups = computed(() => {
+	const groups = [
+		{
+			key: "stable-core",
+			eyebrow: "Stable core",
+			title: "What is settled",
+			items: claim.value?.stableCore ?? []
+		},
+		{
+			key: "misconceptions",
+			eyebrow: "Reader traps",
+			title: "Common misconceptions",
+			items: claim.value?.misconceptions ?? []
+		},
+		{
+			key: "open-questions",
+			eyebrow: "Open questions",
+			title: "What remains open",
+			items: claim.value?.openQuestions ?? []
+		},
+		{
+			key: "change-threshold",
+			eyebrow: "Change threshold",
+			title: "What would change this",
+			items: claim.value?.whatWouldChangeMinds ?? []
+		}
+	];
+
+	return groups
+		.map((group) => ({
+			...group,
+			items: group.items.map((item) => item.trim()).filter(Boolean)
+		}))
+		.filter((group) => group.items.length > 0);
+});
 const askLink = computed(() => ({
 	path: "/ask",
 	query: claim.value?.title ? { topic: topicSlug.value, question: claim.value.title } : { topic: topicSlug.value }
@@ -45,6 +80,14 @@ const claimMeta = computed(() => [
 	formatCountLabel(sourceCount.value, "source"),
 	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
 ]);
+const evidenceSectionTitle = computed(() =>
+	claimSnapshotGroups.value.length ? "Claim snapshot" : "Evidence summaries by outcome"
+);
+const evidenceSectionDescription = computed(() =>
+	claimSnapshotGroups.value.length
+		? "A concise view of what is stable, what is easy to misread, and what could still change."
+		: "Each summary captures the question, the finding, and the main limitations."
+);
 
 const uncertaintySummary = computed(() => {
 	if (claim.value?.uncertaintySummary?.trim()) {
@@ -358,42 +401,58 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Outcome view</p>
-						<h2>Evidence summaries by outcome</h2>
+						<h2>{{ evidenceSectionTitle }}</h2>
 					</div>
-					<p>Each summary captures the question, the finding, and the main limitations.</p>
+					<p>{{ evidenceSectionDescription }}</p>
 				</div>
 
-				<div v-if="!evidenceSummaries.length" class="empty-state">
-					No outcome-level evidence summaries are attached yet.
-				</div>
-				<div v-else class="evidence-summary-list">
-					<article
-						v-for="summary in evidenceSummaries"
-						:key="`${summary.question}-${summary.finding}`"
-						class="evidence-summary-card"
-					>
-						<div class="evidence-summary-card__top">
-							<div>
-								<p class="eyebrow">Key question</p>
-								<h3>{{ summary.question }}</h3>
-							</div>
-							<div class="evidence-summary-card__badges">
-								<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
-								<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
-							</div>
-						</div>
-						<p v-if="summary.population" class="muted">
-							<strong>Population / context:</strong> {{ summary.population }}
-						</p>
-						<p><strong>Finding:</strong> {{ summary.finding }}</p>
-						<p v-if="summary.magnitude"><strong>Magnitude / range:</strong> {{ summary.magnitude }}</p>
-						<div v-if="summary.limitations?.length">
-							<p class="field-label">Key limitations</p>
-							<ul class="plain-list plain-list--tight">
-								<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
-							</ul>
-						</div>
+				<div v-if="claimSnapshotGroups.length" class="claim-snapshot-grid">
+					<article v-for="group in claimSnapshotGroups" :key="group.key" class="claim-snapshot-block">
+						<p class="eyebrow">{{ group.eyebrow }}</p>
+						<h3>{{ group.title }}</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in group.items" :key="item">{{ item }}</li>
+						</ul>
 					</article>
+				</div>
+
+				<div v-if="evidenceSummaries.length" class="outcome-summary-section">
+					<div v-if="claimSnapshotGroups.length" class="section-subheading">
+						<h3>Outcome summaries</h3>
+						<p>Each summary captures the question, the finding, and the main limitations.</p>
+					</div>
+					<div class="evidence-summary-list">
+						<article
+							v-for="summary in evidenceSummaries"
+							:key="`${summary.question}-${summary.finding}`"
+							class="evidence-summary-card"
+						>
+							<div class="evidence-summary-card__top">
+								<div>
+									<p class="eyebrow">Key question</p>
+									<h3>{{ summary.question }}</h3>
+								</div>
+								<div class="evidence-summary-card__badges">
+									<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
+									<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
+								</div>
+							</div>
+							<p v-if="summary.population" class="muted">
+								<strong>Population / context:</strong> {{ summary.population }}
+							</p>
+							<p><strong>Finding:</strong> {{ summary.finding }}</p>
+							<p v-if="summary.magnitude"><strong>Magnitude / range:</strong> {{ summary.magnitude }}</p>
+							<div v-if="summary.limitations?.length">
+								<p class="field-label">Key limitations</p>
+								<ul class="plain-list plain-list--tight">
+									<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
+								</ul>
+							</div>
+						</article>
+					</div>
+				</div>
+				<div v-else-if="!claimSnapshotGroups.length" class="empty-state">
+					No outcome-level evidence summaries are attached yet.
 				</div>
 			</section>
 
@@ -528,6 +587,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__header h1,
 .bottom-line h2,
 .section-heading h2,
+.section-subheading h3,
+.claim-snapshot-block h3,
 .source-group__header h3,
 .source-row h4 {
 	margin: 0;
@@ -544,6 +605,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__meta,
 .bottom-line p,
 .section-heading p,
+.section-subheading p,
 .plain-list,
 .source-row p,
 .empty-state,
@@ -621,13 +683,26 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .section-heading p,
+.section-subheading p,
 .source-group__header p {
 	max-width: 58ch;
 	color: var(--consensus-muted);
 	line-height: 1.55;
 }
 
+.section-subheading {
+	display: grid;
+	gap: 6px;
+	padding-top: 2px;
+}
+
+.section-subheading h3,
+.section-subheading p {
+	margin: 0;
+}
+
 .content-stack,
+.outcome-summary-section,
 .evidence-summary-list,
 .source-groups,
 .source-list,
@@ -636,7 +711,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	gap: 16px;
 }
 
+.claim-snapshot-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+	align-items: start;
+	gap: 16px;
+}
+
 .evidence-summary-card,
+.claim-snapshot-block,
 .source-group,
 .change-log__entry {
 	display: grid;
@@ -660,12 +743,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .evidence-summary-card p,
+.claim-snapshot-block p,
 .source-row p,
 .change-log__entry p {
 	margin: 0;
 }
 
 .evidence-summary-card h3,
+.section-subheading h3,
+.claim-snapshot-block h3,
 .source-group__header h3,
 .source-row h4 {
 	line-height: 1.22;
