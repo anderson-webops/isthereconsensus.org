@@ -348,6 +348,7 @@ dd {
 
 .policy-header h1,
 .policy-section-heading h2,
+.policy-summary-card h2,
 .policy-detail-card h3,
 .policy-callout h2 {
 	margin: 0;
@@ -379,7 +380,7 @@ dd {
 .policy-summary {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .policy-card-grid {
@@ -391,6 +392,25 @@ dd {
 .policy-summary-card,
 .policy-detail-card {
 	padding: 18px;
+}
+
+.policy-summary-card {
+	display: grid;
+	gap: 5px;
+	align-content: start;
+	padding: 15px 16px;
+}
+
+.policy-summary-card h2 {
+	color: var(--consensus-ink);
+	font-family: inherit;
+	font-size: 0.96rem;
+	line-height: 1.22;
+}
+
+.policy-summary-card p {
+	font-size: 0.96rem;
+	line-height: 1.48;
 }
 
 .policy-summary-card p,

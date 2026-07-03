@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Anyone who can shape reviewed pages should disclose relevant financial, professional, advocacy, and litigation-related interests.",
-	"The site treats perceived conflicts seriously even when there is no evidence of bad faith, because trust depends on visible safeguards.",
-	"Disclosure does not automatically disqualify a person from participation, but it can trigger recusal, added review controls, or public explanation.",
-	"Funders, employers, advocacy groups, and strategic partners do not get editorial veto power over reviewed conclusions."
+	{
+		title: "Who discloses",
+		body: "Anyone who can shape reviewed pages should disclose relevant financial, professional, advocacy, and litigation-related interests."
+	},
+	{
+		title: "Perception matters",
+		body: "The site treats perceived conflicts seriously because trust depends on visible safeguards, not only proof of bad faith."
+	},
+	{
+		title: "Managed participation",
+		body: "Disclosure does not automatically disqualify someone, but it can trigger recusal, added review controls, or public explanation."
+	},
+	{
+		title: "No veto power",
+		body: "Funders, employers, advocacy groups, and strategic partners do not get editorial veto power over reviewed conclusions."
+	}
 ];
 
 const conflictTypes = [
@@ -68,8 +80,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 

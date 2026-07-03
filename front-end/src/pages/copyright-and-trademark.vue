@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Use this path for copyright, trademark, logo, impersonation, or other intellectual-property concerns related to site content or user submissions.",
-	"Rights complaints should identify the exact material at issue, who owns the right being asserted, and what action is being requested.",
-	"The site may temporarily limit access to disputed material while a complaint is reviewed.",
-	"Counter-statements should respond to the specific complaint rather than simply repeating that the site is educational."
+	{
+		title: "Use the rights lane",
+		body: "Use this path for copyright, trademark, logo, impersonation, or other intellectual-property concerns tied to site content or submissions."
+	},
+	{
+		title: "Make notices specific",
+		body: "Rights complaints should identify the exact material, who owns the asserted right, and what action is being requested."
+	},
+	{
+		title: "Interim limits",
+		body: "The site may temporarily limit access to disputed material while a complaint is reviewed."
+	},
+	{
+		title: "Specific responses",
+		body: "Counter-statements should respond to the complaint rather than simply repeating that the site is educational."
+	}
 ];
 
 const noticeRequirements = [
@@ -63,8 +75,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 

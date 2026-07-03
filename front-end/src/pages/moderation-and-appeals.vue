@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Moderation actions should come with enough explanation that the affected user can understand what happened and why.",
-	"Appeals are for challenging an enforcement decision or adding new context, not for retrying the same argument indefinitely.",
-	"Fact disputes about reviewed pages should usually route through the corrections process instead of the abuse-enforcement lane.",
-	"The site prefers proportional interventions and human review for meaningful appeals."
+	{
+		title: "Explain the action",
+		body: "Moderation actions should include enough explanation for the affected user to understand what happened and why."
+	},
+	{
+		title: "Appeals need new context",
+		body: "Appeals challenge an enforcement decision or add new context; they are not for retrying the same argument indefinitely."
+	},
+	{
+		title: "Use the right lane",
+		body: "Fact disputes about reviewed pages usually belong in corrections, not the abuse-enforcement lane."
+	},
+	{
+		title: "Proportional review",
+		body: "The site prefers proportional interventions and human review for meaningful appeals."
+	}
 ];
 
 const actionTypes = [
@@ -65,8 +77,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 

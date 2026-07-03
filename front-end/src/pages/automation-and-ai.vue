@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Automation can help the site monitor evidence, route questions, and surface operational priorities, but it should not publish reviewed bottom lines on its own.",
-	"Any materially consequential use of automation should have a named human owner who can explain the decision path.",
-	"Monitoring, triage, and drafting assistance stay separate from final editorial judgment.",
-	"If AI tools are used in draft preparation or moderation support, contributors remain responsible for correctness, confidentiality, and disclosure obligations."
+	{
+		title: "Human gate",
+		body: "Automation can support monitoring, routing, and prioritization, but it should not publish reviewed bottom lines on its own."
+	},
+	{
+		title: "Named owner",
+		body: "Any materially consequential use should have a human owner who can explain the decision path."
+	},
+	{
+		title: "Separate lanes",
+		body: "Monitoring, triage, and drafting assistance stay separate from final editorial judgment."
+	},
+	{
+		title: "Contributor responsibility",
+		body: "If AI tools support drafts or moderation, contributors remain responsible for correctness, confidentiality, and disclosure."
+	}
 ];
 
 const allowedUses = [
@@ -65,8 +77,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 

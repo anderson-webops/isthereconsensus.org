@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"Verified experts review drafts for scope, evidence quality, uncertainty language, and overreach; they do not unilaterally publish reviewed answers.",
-	"Eligibility depends on demonstrated domain expertise, identity verification, and enough public evidence that the editorial team can evaluate credibility.",
-	"Review assignments respect conflict disclosures and recusal rules before a draft is shared.",
-	"Reviewer names, roles, and affiliations may appear on public pages when that helps readers understand how a claim was checked."
+	{
+		title: "Review scope",
+		body: "Verified experts check scope, evidence quality, uncertainty language, and overreach; they do not publish reviewed answers alone."
+	},
+	{
+		title: "Eligibility",
+		body: "Eligibility depends on domain expertise, identity verification, and enough public evidence to evaluate credibility."
+	},
+	{
+		title: "Conflict-aware assignments",
+		body: "Review assignments respect conflict disclosures and recusal rules before a draft is shared."
+	},
+	{
+		title: "Public context",
+		body: "Reviewer names, roles, and affiliations may appear publicly when they help readers understand how a claim was checked."
+	}
 ];
 
 const eligibility = [
@@ -67,8 +79,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 

@@ -2,10 +2,22 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
-	"There is not currently a self-serve account deletion portal, so account closure and deletion requests are submitted to the site operator.",
-	"Public questions and threads are different from private account data: some public content may be removed, some may be disassociated, and some records may be retained for integrity reasons.",
-	"Moderation, security, abuse-prevention, and backup records may persist beyond account closure when reasonably necessary.",
-	"Search-engine copies and third-party caches may outlast removal from the live site."
+	{
+		title: "Manual request path",
+		body: "There is not currently a self-serve deletion portal, so account closure and deletion requests go to the site operator."
+	},
+	{
+		title: "Public content differs",
+		body: "Public questions and threads are different from private account data: some may be removed, disassociated, or retained for integrity reasons."
+	},
+	{
+		title: "Records may remain",
+		body: "Moderation, security, abuse-prevention, and backup records may persist beyond account closure when reasonably necessary."
+	},
+	{
+		title: "External caches",
+		body: "Search-engine copies and third-party caches may outlast removal from the live site."
+	}
 ];
 
 const retentionMatrix = [
@@ -62,8 +74,9 @@ useStaticPageMeta({
 		</header>
 
 		<section class="policy-summary">
-			<article v-for="item in quickPoints" :key="item" class="policy-summary-card">
-				<p>{{ item }}</p>
+			<article v-for="item in quickPoints" :key="item.title" class="policy-summary-card">
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.body }}</p>
 			</article>
 		</section>
 
