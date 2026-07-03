@@ -284,6 +284,14 @@ function showAllTopics() {
 	line-height: 1.64;
 }
 
+.directory__header p {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
+}
+
 .directory__controls,
 .results-block,
 .topic-row {
@@ -370,11 +378,8 @@ function showAllTopics() {
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
+	display: grid;
+	gap: 6px;
 	margin-bottom: 14px;
 }
 

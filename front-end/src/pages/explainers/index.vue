@@ -115,6 +115,11 @@ useStaticPageMeta({
 	max-width: 68ch;
 }
 
+.explainer-callout > div {
+	flex: 1 1 340px;
+	max-width: 68ch;
+}
+
 .explainer-grid {
 	display: grid;
 	gap: 16px;
@@ -248,6 +253,14 @@ useStaticPageMeta({
 	.explainer-header,
 	.explainer-callout {
 		padding: 18px;
+	}
+
+	.explainer-callout {
+		align-items: stretch;
+	}
+
+	.explainer-callout__actions {
+		width: 100%;
 	}
 }
 </style>
