@@ -6741,6 +6741,205 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "nutrition-and-diet",
+		title: "Does vitamin D supplementation prevent or treat COVID-19 beyond correcting deficiency?",
+		slug: "does-vitamin-d-supplementation-prevent-or-treat-covid-19-beyond-correcting-deficiency",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 68,
+		evidenceCertainty: "low",
+		reviewMode: "living",
+		bottomLine:
+			"Not as a broad COVID-19 prevention or treatment strategy. Correcting vitamin D deficiency remains good general care, and deficient or high-risk hospitalized patients are still plausible subgroups for research. But large prevention and early-treatment randomized trials have not shown meaningful acute COVID-19 benefit in the general population, and treatment meta-analyses remain heterogeneous: some show possible ICU, ventilation, or hospital-stay signals, while mortality and short-term hard outcomes remain uncertain.",
+		stableCore: [
+			"Low vitamin D levels are associated with worse COVID-19 outcomes in many observational studies, but illness, age, obesity, chronic disease, indoor time, and inflammation can confound or reverse that relationship.",
+			"NICE says not to use vitamin D to treat COVID-19 except as part of a clinical trial, while still pointing people to ordinary vitamin D guidance for bone and muscle health.",
+			"NIH ODS states that data are insufficient to support recommendations for or against dietary supplements, including vitamin D, to prevent or treat COVID-19.",
+			"CORONAVIT, a 6,200-person UK test-and-treat trial, did not reduce acute respiratory infections or COVID-19 with vitamin D supplementation in people with high baseline prevalence of suboptimal vitamin D status.",
+			"The 2026 VIVID trial did not reduce four-week healthcare utilization, death, symptom severity, or household transmission after high-dose vitamin D3 in newly diagnosed COVID-19; a possible long-COVID signal needs further study.",
+			"Hospital treatment trials and meta-analyses are mixed: a JAMA trial of a single high dose did not reduce hospital stay, while some reviews suggest possible benefits in moderate-to-severe, deficient, or repeated-dose subgroups."
+		],
+		openQuestions: [
+			"Are there specific deficient, older, hospitalized, or immunologically vulnerable subgroups that benefit from a particular vitamin D form, dose, and timing?",
+			"Do repeated-dose strategies or calcifediol differ meaningfully from one-time high-dose cholecalciferol in clinically important outcomes?",
+			"Can vitamin D reduce long COVID risk or symptom burden, and does that require baseline deficiency, longer treatment, or different outcome timing?",
+			"How should guidance adapt as variants, vaccination, antivirals, corticosteroid use, and baseline immunity change the absolute risk of severe COVID-19?"
+		],
+		whatWouldChangeMinds: [
+			"Large, blinded, preregistered RCTs in vitamin D-deficient patients showing durable reductions in mortality, ICU admission, ventilation, hospitalization, or long COVID.",
+			"Major NIH, NICE, WHO, IDSA, or comparable guideline updates recommending a specific vitamin D regimen for defined COVID-19 prevention or treatment populations.",
+			"Updated individual-participant meta-analyses showing that apparent subgroup benefits disappear after baseline deficiency, timing, dose, severity, vaccination, and standard-care differences are handled well."
+		],
+		misconceptions: [
+			"Low vitamin D in sicker COVID-19 patients does not by itself prove vitamin D deficiency caused the worse outcome.",
+			"Correcting a documented deficiency is not the same claim as saying high-dose vitamin D treats COVID-19.",
+			"A biologically plausible immune mechanism does not prove a clinically useful prevention or treatment effect.",
+			"High-dose self-treatment can cause harm and should not replace vaccination, antivirals, oxygen, corticosteroids when indicated, or clinician-directed care."
+		],
+		misconceptionTags: [
+			"correlation-isnt-causation",
+			"mechanism-is-not-real-world-effect",
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"does-natural-mean-safer-or-better"
+		],
+		editorSummary:
+			"This page should answer the supplement claim without mocking deficiency concerns. The useful framing is: treat deficiency for ordinary health reasons, but do not treat vitamin D as a proven broad COVID-19 prevention or treatment intervention.",
+		uncertaintySummary:
+			"Evidence certainty is low because the stronger prevention and early-treatment trials are mostly null, while hospitalized-treatment reviews remain heterogeneous by baseline vitamin D status, severity, dose, formulation, timing, and standard of care. Confidence is higher that vitamin D should not replace established COVID-19 prevention or treatment.",
+		uncertaintyDrivers: [
+			{
+				type: "inconsistency",
+				detail: "Large community trials and some hospital RCTs are null, while later meta-analyses report possible benefits in selected hospitalized or repeated-dose subgroups."
+			},
+			{
+				type: "indirectness",
+				detail: "Many observational studies measure vitamin D status during or near illness, when inflammation and behavior may affect measured levels."
+			},
+			{
+				type: "imprecision",
+				detail: "Several clinically important subgroup estimates involve small trial counts, few hard-outcome events, or results that are not robust across sensitivity analyses."
+			},
+			{
+				type: "bias",
+				detail: "Open-label designs, changing COVID-19 standards of care, supplement adherence, and publication of small positive trials can all affect pooled estimates."
+			}
+		],
+		searchDatabases: ["PubMed", "Cochrane Library", "Embase", "Consensus", "NIH/NICE guidance"],
+		searchCutoffAt: "2026-07-03T21:10:00.000Z",
+		inclusionRules: [
+			"Prioritize randomized trials, systematic reviews, meta-analyses, and current institutional guidance that distinguish prevention, early outpatient treatment, hospitalized treatment, deficiency correction, and long COVID.",
+			"Track baseline 25(OH)D status, COVID-19 severity, dose, formulation, timing after diagnosis, vaccination era, and comparator care.",
+			"Separate ordinary deficiency treatment and bone-health supplementation from claims that vitamin D prevents or treats COVID-19."
+		],
+		exclusionRules: [
+			"Do not treat in vitro mechanism papers, testimonials, supplement marketing, or ecological correlations as direct clinical evidence.",
+			"Do not infer broad COVID-19 benefit from low vitamin D associations without randomized or carefully controlled evidence.",
+			"Do not recommend high-dose supplementation outside clinical guidance or trial contexts."
+		],
+		institutionalAnchors: [
+			{ name: "NICE", role: "COVID-19 treatment-guideline anchor for not using vitamin D solely to treat COVID-19 outside clinical trials" },
+			{ name: "NIH Office of Dietary Supplements", role: "U.S. supplement-evidence and safety anchor for COVID-19 dietary supplement claims" },
+			{ name: "Consensus", role: "Literature-discovery anchor for recent randomized trials and meta-analyses" }
+		],
+		lastRetractionCheckAt: "2026-07-03T21:10:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T21:10:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial vitamin D and COVID-19 outcomes page published from NICE, NIH ODS, large randomized trials, hospital-treatment RCTs, and randomized-trial meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "COVID-19 rapid guideline: managing COVID-19, therapeutics for COVID-19",
+				publisher: "NICE",
+				year: 2022,
+				url: "https://www.nice.org.uk/guidance/NG191/chapter/4-therapeutics-for-covid-19",
+				stance: "context",
+				note:
+					"Current NICE guidance states not to use vitamin D to treat COVID-19 except as part of a clinical trial, while pointing readers to ordinary vitamin D advice for muscle and bone health.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Dietary Supplements in the Time of COVID-19",
+				publisher: "NIH Office of Dietary Supplements",
+				year: 2026,
+				url: "https://ods.od.nih.gov/factsheets/COVID19-HealthProfessional/",
+				stance: "context",
+				note:
+					"NIH ODS health-professional fact sheet states evidence is insufficient to support recommendations for or against supplements to prevent or treat COVID-19, and notes that supplements cannot legally be marketed as disease cures.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Effect of a test-and-treat approach to vitamin D supplementation on risk of all cause acute respiratory tract infection and covid-19: phase 3 randomised controlled trial (CORONAVIT)",
+				publisher: "The BMJ",
+				year: 2022,
+				url: "https://www.bmj.com/content/378/bmj-2022-071230",
+				doi: "10.1136/bmj-2022-071230",
+				pmid: "36215226",
+				stance: "supports",
+				note:
+					"Phase 3 randomized trial in 6,200 UK adults found a population test-and-treat vitamin D strategy was not associated with reduced acute respiratory infection or COVID-19 risk.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"A Randomized Trial of Vitamin D Supplementation and COVID-19 Clinical Outcomes and Long COVID: The Vitamin D for COVID-19 Trial",
+				publisher: "The Journal of Nutrition",
+				year: 2026,
+				url: "https://doi.org/10.1016/j.tjnut.2026.101398",
+				doi: "10.1016/j.tjnut.2026.101398",
+				stance: "supports",
+				note:
+					"VIVID trial of newly diagnosed COVID-19 cases and household contacts found no significant four-week benefit for healthcare utilization, death, symptom severity, or household transmission; long-COVID signals remain exploratory.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Effect of a Single High Dose of Vitamin D3 on Hospital Length of Stay in Patients With Moderate to Severe COVID-19: A Randomized Clinical Trial",
+				publisher: "JAMA",
+				year: 2021,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2776738",
+				doi: "10.1001/jama.2020.26848",
+				pmid: "33595634",
+				pmcid: "PMC7890452",
+				stance: "supports",
+				note:
+					"Double-blind RCT in 240 hospitalized patients found a single 200,000 IU dose raised 25(OH)D but did not reduce hospital length of stay or other clinically relevant outcomes.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"High-dose versus standard-dose vitamin D supplementation in older adults with COVID-19 (COVIT-TRIAL): A multicenter, open-label, randomized controlled superiority trial",
+				publisher: "PLoS Medicine",
+				year: 2022,
+				url: "https://doi.org/10.1371/journal.pmed.1003999",
+				doi: "10.1371/journal.pmed.1003999",
+				pmid: "35639792",
+				pmcid: "PMC9154122",
+				stance: "debate",
+				note:
+					"Open-label RCT in 254 at-risk older adults found lower 14-day mortality with high-dose versus standard-dose vitamin D3, but the effect was not sustained at 28 days.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Therapeutic effects of vitamin D supplementation on COVID-19 aggravation: a systematic review and meta-analysis of randomized controlled trials",
+				publisher: "Frontiers in Pharmacology",
+				year: 2024,
+				url: "https://doi.org/10.3389/fphar.2024.1367686",
+				doi: "10.3389/fphar.2024.1367686",
+				stance: "debate",
+				note:
+					"Meta-analysis of 19 RCTs reported lower ICU admission, mechanical ventilation, and length of hospitalization in moderate-to-severe and multiple-dose subgroups, but no statistically significant mortality effect.",
+				order: 7
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Vitamin D supplementation for managing COVID-19 in patients with vitamin D deficiency: a systematic review and meta-analysis of randomised controlled trials",
+				publisher: "BMJ Open",
+				year: 2025,
+				url: "https://doi.org/10.1136/bmjopen-2024-091903",
+				doi: "10.1136/bmjopen-2024-091903",
+				stance: "debate",
+				note:
+					"Deficiency-focused meta-analysis of nine RCTs found lower follow-up mortality but no significant benefit for 28-day mortality, mechanical ventilation, ICU admission, hospital stay, or ICU stay; mortality signal was not robust in sensitivity analyses.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
 		title: "Does saturated fat still raise LDL and heart risk?",
 		slug: "does-saturated-fat-still-raise-ldl-and-heart-risk",
 		status: "published",
