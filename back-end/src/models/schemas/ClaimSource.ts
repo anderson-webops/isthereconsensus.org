@@ -32,6 +32,8 @@ export type ClaimSourceConsistency = (typeof EVIDENCE_CONSISTENCY_LEVELS)[number
 export type ClaimSourcePrecision = (typeof EVIDENCE_PRECISION_LEVELS)[number];
 export type ClaimSourceExclusionReason = (typeof EVIDENCE_SOURCE_EXCLUSION_REASONS)[number];
 
+export const CLAIM_SOURCE_TITLE_MAX_LENGTH = 320;
+
 export interface IClaimSourceEffectEstimate {
 	metric?: string;
 	value?: string;
@@ -276,7 +278,7 @@ const claimSourceSchema: Schema<IClaimSource> = new Schema(
 				"context"
 			]
 		},
-		title: { type: String, required: true, trim: true, maxlength: 240 },
+		title: { type: String, required: true, trim: true, maxlength: CLAIM_SOURCE_TITLE_MAX_LENGTH },
 		publisher: { type: String, default: "", trim: true, maxlength: 160 },
 		year: { type: Number, min: 0, max: 9999 },
 		url: { type: String, default: "", trim: true, maxlength: 500 },

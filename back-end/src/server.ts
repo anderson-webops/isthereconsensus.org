@@ -44,7 +44,7 @@ import { seedTopics } from "./data/seedTopics.js";
 import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
-import { ClaimSource } from "./models/schemas/ClaimSource.js";
+import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "./models/schemas/ClaimSource.js";
 import { EvidenceLandscapeReview } from "./models/schemas/EvidenceLandscapeReview.js";
 import { ExpertApplication } from "./models/schemas/ExpertApplication.js";
 import { Question } from "./models/schemas/Question.js";
@@ -2882,7 +2882,7 @@ async function main() {
 			const source = await ClaimSource.create({
 				claim: claim._id,
 				kind: normalizeClaimSourceKind(req.body?.kind),
-				title: normalizeText(req.body?.title, 240),
+				title: normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH),
 				publisher: normalizeText(req.body?.publisher, 160),
 				year: req.body?.year
 					? normalizeInteger(req.body?.year, 0, 9999, new Date().getUTCFullYear())
@@ -2929,7 +2929,7 @@ async function main() {
 			if (!source) return res.status(404).json({ error: "Source not found." });
 
 			if (req.body?.kind !== undefined) source.kind = normalizeText(req.body?.kind, 32) as typeof source.kind;
-			if (req.body?.title !== undefined) source.title = normalizeText(req.body?.title, 240);
+			if (req.body?.title !== undefined) source.title = normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
 			if (req.body?.publisher !== undefined) source.publisher = normalizeText(req.body?.publisher, 160);
 			if (req.body?.year !== undefined) {
 				source.year = req.body?.year ? normalizeInteger(req.body?.year, 0, 9999, 0) : undefined;

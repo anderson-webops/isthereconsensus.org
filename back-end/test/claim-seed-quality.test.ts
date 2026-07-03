@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import mongoose from "mongoose";
 import { defaultClaims } from "../src/data/claims.js";
+import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "../src/models/schemas/ClaimSource.js";
 
 const launchSensitiveClaimSlugs = [
 	"do-childhood-vaccines-cause-autism",
@@ -74,6 +76,30 @@ describe("default claim seed quality", () => {
 			);
 
 			assert.ok(claim.sources.every(primarySourceLink), `${slug} must expose only linked source rows`);
+		}
+	});
+
+	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
+		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
+		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);
+
+		for (const claim of defaultClaims) {
+			for (const source of claim.sources) {
+				assert.ok(
+					source.title.length <= CLAIM_SOURCE_TITLE_MAX_LENGTH,
+					`${claim.slug} source title is ${source.title.length}/${CLAIM_SOURCE_TITLE_MAX_LENGTH} characters: ${source.title}`
+				);
+
+				const sourceDocument = new ClaimSource({
+					claim: new mongoose.Types.ObjectId(),
+					...source,
+					citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined
+				});
+				await assert.doesNotReject(
+					() => sourceDocument.validate(),
+					`${claim.slug} source "${source.title}" failed schema validation`
+				);
+			}
 		}
 	});
 
