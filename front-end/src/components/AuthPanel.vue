@@ -283,8 +283,6 @@ async function handleChangePassword() {
 
 <style scoped>
 .auth-panel,
-.account-state__summary,
-.account-details,
 .tab {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -331,12 +329,13 @@ async function handleChangePassword() {
 }
 
 .account-state__summary {
-	padding: 16px 18px;
+	padding: 2px 0 16px;
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
 	flex-wrap: wrap;
 	align-items: start;
+	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .account-state__name {
@@ -345,9 +344,10 @@ async function handleChangePassword() {
 
 .account-details {
 	padding: 0;
-	border-radius: 18px;
-	overflow: hidden;
-	background: color-mix(in srgb, var(--consensus-surface) 92%, transparent);
+	border: 0;
+	border-radius: 0;
+	overflow: visible;
+	background: transparent;
 }
 
 .account-details summary::marker,
@@ -361,8 +361,8 @@ async function handleChangePassword() {
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	min-height: 54px;
-	padding: 14px 16px;
+	min-height: 44px;
+	padding: 0;
 	list-style: none;
 	cursor: pointer;
 	font-weight: 600;
@@ -375,9 +375,9 @@ async function handleChangePassword() {
 
 .account-details__summary-icon {
 	position: relative;
-	width: 18px;
-	height: 18px;
-	flex: 0 0 18px;
+	width: 20px;
+	height: 20px;
+	flex: 0 0 20px;
 	border: 1px solid var(--consensus-line);
 	border-radius: 999px;
 	background: color-mix(in srgb, var(--consensus-field-surface) 82%, transparent);
@@ -406,11 +406,10 @@ async function handleChangePassword() {
 }
 
 .account-details__body {
-	grid-template-columns: minmax(260px, 420px) minmax(320px, 520px);
+	grid-template-columns: minmax(240px, 0.9fr) minmax(300px, 1.1fr);
 	align-items: start;
-	justify-content: start;
-	gap: 22px;
-	padding: 18px 16px 16px;
+	gap: 24px;
+	padding: 16px 0 2px;
 	border-top: 1px solid var(--consensus-soft-line);
 	background: transparent;
 }
@@ -481,6 +480,12 @@ async function handleChangePassword() {
 	border-radius: 999px;
 	font-size: 0.95rem;
 	line-height: 1.2;
+}
+
+.account-form .button--primary {
+	background: color-mix(in srgb, var(--consensus-ember) 18%, var(--consensus-surface));
+	border-color: color-mix(in srgb, var(--consensus-ember) 58%, var(--consensus-line));
+	color: var(--consensus-ink);
 }
 
 .auth-form .button {
