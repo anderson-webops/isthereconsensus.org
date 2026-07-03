@@ -372,12 +372,22 @@ useStaticPageMeta({
 }
 
 .terms-header p,
+.section-heading p,
 .summary-card p,
 .plain-list,
 .prose p,
 .terms-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.7;
+}
+
+.terms-header p,
+.terms-callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .terms-summary {
@@ -414,12 +424,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
-	margin-bottom: 12px;
+	display: grid;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .prose {
@@ -439,6 +446,10 @@ useStaticPageMeta({
 	gap: 20px;
 	flex-wrap: wrap;
 	align-items: end;
+}
+
+.terms-callout > div {
+	flex: 1 1 340px;
 }
 
 .terms-callout__actions {
@@ -477,6 +488,23 @@ useStaticPageMeta({
 .terms-callout a.button--primary {
 	color: var(--consensus-on-accent);
 }
+
+@media (max-width: 720px) {
+	.terms-header,
+	.terms-panel,
+	.terms-callout {
+		padding: 18px;
+	}
+
+	.terms-callout {
+		align-items: stretch;
+	}
+
+	.terms-callout__actions {
+		width: 100%;
+	}
+}
+
 @media (max-width: 820px) {
 	.terms-summary {
 		grid-template-columns: 1fr;

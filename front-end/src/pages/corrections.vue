@@ -190,12 +190,22 @@ useStaticPageMeta({
 }
 
 .corrections-header p,
+.section-heading p,
 .summary-card p,
 .detail-card p,
 .plain-list,
 .corrections-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.65;
+}
+
+.corrections-header p,
+.corrections-callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .corrections-summary,
@@ -233,12 +243,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
-	margin-bottom: 12px;
+	display: grid;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .section-heading--tight h2,
@@ -262,6 +269,10 @@ useStaticPageMeta({
 	gap: 18px;
 	flex-wrap: wrap;
 	align-items: end;
+}
+
+.corrections-callout > div {
+	flex: 1 1 340px;
 }
 
 .corrections-callout__actions {
@@ -292,5 +303,21 @@ useStaticPageMeta({
 
 .corrections-callout a {
 	color: var(--consensus-ink);
+}
+
+@media (max-width: 720px) {
+	.corrections-header,
+	.corrections-panel,
+	.corrections-callout {
+		padding: 18px;
+	}
+
+	.corrections-callout {
+		align-items: stretch;
+	}
+
+	.corrections-callout__actions {
+		width: 100%;
+	}
 }
 </style>

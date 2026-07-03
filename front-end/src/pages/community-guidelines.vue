@@ -217,6 +217,7 @@ useStaticPageMeta({
 }
 
 .guidelines-header p,
+.section-heading p,
 .summary-card p,
 .detail-card p,
 .plain-list,
@@ -224,6 +225,15 @@ useStaticPageMeta({
 .guidelines-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.65;
+}
+
+.guidelines-header p,
+.guidelines-callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .guidelines-summary,
@@ -262,12 +272,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
-	margin-bottom: 12px;
+	display: grid;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .section-heading--tight h2,
@@ -291,6 +298,10 @@ useStaticPageMeta({
 	gap: 18px;
 	flex-wrap: wrap;
 	align-items: end;
+}
+
+.guidelines-callout > div {
+	flex: 1 1 340px;
 }
 
 .guidelines-callout__actions {
@@ -321,5 +332,21 @@ useStaticPageMeta({
 
 .prose a {
 	color: var(--consensus-ink);
+}
+
+@media (max-width: 720px) {
+	.guidelines-header,
+	.guidelines-panel,
+	.guidelines-callout {
+		padding: 18px;
+	}
+
+	.guidelines-callout {
+		align-items: stretch;
+	}
+
+	.guidelines-callout__actions {
+		width: 100%;
+	}
 }
 </style>

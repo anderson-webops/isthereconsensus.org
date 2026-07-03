@@ -376,6 +376,7 @@ useStaticPageMeta({
 }
 
 .privacy-header p,
+.section-heading p,
 .summary-card p,
 .plain-list,
 .prose p,
@@ -383,6 +384,15 @@ useStaticPageMeta({
 .privacy-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.7;
+}
+
+.privacy-header p,
+.privacy-callout > div {
+	max-width: 68ch;
+}
+
+.section-heading p {
+	max-width: 56ch;
 }
 
 .privacy-summary,
@@ -422,12 +432,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
-	margin-bottom: 12px;
+	display: grid;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .prose {
@@ -452,6 +459,10 @@ useStaticPageMeta({
 	gap: 20px;
 	flex-wrap: wrap;
 	align-items: end;
+}
+
+.privacy-callout > div {
+	flex: 1 1 340px;
 }
 
 .privacy-callout__actions {
@@ -499,6 +510,22 @@ code {
 	color: var(--consensus-ink);
 	font-family: "JetBrains Mono", monospace;
 	font-size: 0.95em;
+}
+
+@media (max-width: 720px) {
+	.privacy-header,
+	.privacy-panel,
+	.privacy-callout {
+		padding: 18px;
+	}
+
+	.privacy-callout {
+		align-items: stretch;
+	}
+
+	.privacy-callout__actions {
+		width: 100%;
+	}
 }
 
 @media (max-width: 820px) {
