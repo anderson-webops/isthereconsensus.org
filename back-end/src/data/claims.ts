@@ -1699,13 +1699,13 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
-		title: "Is there no safe level of lead exposure for children?",
+		title: "Is there no safe level of lead exposure for children, including from drinking water?",
 		slug: "is-there-no-safe-level-of-lead-exposure-for-children",
 		status: "published",
 		consensusBand: "strong",
 		confidenceScore: 99,
 		bottomLine:
-			"Yes. Public-health agencies and toxicology reviews consistently treat lead as unsafe for children even at low levels; reference values and action levels are intervention triggers, not safety thresholds.",
+			"Yes. Public-health agencies and toxicology reviews consistently treat childhood lead exposure as something to prevent, not tolerate. Reference values and drinking-water action levels are intervention triggers, not safety thresholds.",
 		stableCore: [
 			"No safe blood lead concentration has been identified for children.",
 			"Even low blood lead levels are associated with lower IQ, attention problems, learning difficulties, and other developmental harms.",
@@ -1721,13 +1721,20 @@ const rawClaims: SeedClaim[] = [
 		],
 		misconceptions: [
 			"An action level is often mistaken for a safe level.",
-			"Because many children with lead exposure have no obvious symptoms, people can underestimate permanent developmental risk."
+			"Because many children with lead exposure have no obvious symptoms, people can underestimate permanent developmental risk.",
+			"Lead in drinking water is sometimes treated as safe if a system is below an action level, even though the health goal for lead in water is zero."
 		],
 		editorSummary:
-			"This page should be blunt and practical: the consensus is not that every trace means an emergency, but that prevention and exposure reduction matter because no safe child threshold has been identified.",
-		searchCutoffAt: "2026-07-02T21:45:00.000Z",
-		lastRetractionCheckAt: "2026-07-02T21:45:00.000Z",
+			"This page should be blunt and practical: the consensus is not that every trace means an emergency, but that prevention and exposure reduction matter because no safe child threshold has been identified, including for lead contributed by plumbing or service lines.",
+		searchCutoffAt: "2026-07-03T03:57:42.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:57:42.000Z",
 		changeLog: [
+			{
+				date: "2026-07-03T03:57:42.000Z",
+				kind: "update",
+				summary:
+					"Updated the childhood lead claim title and evidence stack to make the drinking-water action-level distinction explicit."
+			},
 			{
 				date: "2026-07-02T21:45:00.000Z",
 				kind: "publication",
@@ -1779,6 +1786,32 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Toxicology assessment context supporting adverse health effects below 10 micrograms per deciliter and, for some effects, below 5 micrograms per deciliter.",
 				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Low-Level Environmental Lead Exposure and Children's Intellectual Function: An International Pooled Analysis",
+				publisher: "Environmental Health Perspectives",
+				year: 2005,
+				url: "https://doi.org/10.1289/ehp.7688",
+				doi: "10.1289/ehp.7688",
+				pmid: "16002379",
+				stance: "supports",
+				note:
+					"Pooled analysis of 1,333 children from seven cohorts found an inverse blood-lead and IQ relationship, including deficits below 10 micrograms per deciliter.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "An International Pooled Analysis for Obtaining a Benchmark Dose for Environmental Lead Exposure in Children",
+				publisher: "Risk Analysis",
+				year: 2013,
+				url: "https://doi.org/10.1111/j.1539-6924.2012.01882.x",
+				doi: "10.1111/j.1539-6924.2012.01882.x",
+				pmid: "22924487",
+				stance: "supports",
+				note:
+					"Benchmark-dose analysis of the pooled child IQ data describes the lack of a clear threshold as a practical reason to keep lowering allowable exposure.",
+				order: 6
 			}
 		]
 	},
@@ -7840,6 +7873,205 @@ const rawClaims: SeedClaim[] = [
 				note:
 						"Meta-analysis supports benefits for parenting and conduct problems while cautioning that blinded evidence for core ADHD symptom decreases was less clear.",
 				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Are PFAS ('forever chemicals') harmful to human health, and what do drinking-water limits try to prevent?",
+		slug: "are-pfas-forever-chemicals-harmful-to-human-health-and-what-do-drinking-water-limits-try-to-prevent",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+				"Broadly, yes for several well-studied PFAS, but the answer is compound-, dose-, duration-, and outcome-specific. Public-health agencies link PFAS exposure with several health outcomes and use drinking-water limits to reduce long-term population exposure. Detection alone does not predict an individual's disease, and regulatory limits combine health evidence with monitoring, treatment, cost, legal, and implementation constraints.",
+		stableCore: [
+			"ATSDR and the National Academies identify health outcomes associated with PFAS exposure, including dyslipidemia, lower vaccine antibody response, decreased fetal or infant growth, and kidney cancer for some evidence categories.",
+			"EPA finalized a 2024 national drinking-water rule for six PFAS, with enforceable limits including 4 ppt for PFOA and PFOS and health goals of zero for those two compounds.",
+			"As of May 2026, EPA has proposed to uphold PFOA and PFOS limits while reconsidering or rescinding several other PFAS limits, so current regulatory status and the underlying health evidence should be tracked separately."
+		],
+		openQuestions: [
+			"Which health effects are best understood for individual PFAS versus mixtures or the broader class?",
+			"How should regulators handle replacement PFAS and mixtures when human outcome data are thinner than for PFOA and PFOS?",
+			"How should public guidance distinguish individual clinical risk from population-level exposure reduction?"
+		],
+		whatWouldChangeMinds: [
+			"Large, independent human evidence syntheses showing that the better-studied PFAS are not associated with the key health outcomes after robust confounding control.",
+			"Major ATSDR, National Academies, EPA, or comparable international reassessments reversing the current health-evidence categories.",
+			"Stronger mixture and replacement-PFAS evidence showing that today's compound-specific risk assumptions are materially wrong."
+		],
+		misconceptions: [
+			"PFAS detection is sometimes treated as proof that an individual is already sick or will become sick.",
+			"PFAS blood testing is sometimes misunderstood as a diagnostic test that predicts future disease, even though ATSDR says results do not provide treatment information or predict future health problems.",
+			"All PFAS are sometimes treated as identical, even though persistence, mobility, exposure, evidence strength, and toxicity differ by compound."
+		],
+		editorSummary:
+				"This page should help readers separate real health concern from vague toxin language. The consensus answer is broad and qualified: several PFAS are linked to important outcomes and justify exposure reduction, but individual prediction and compound-specific regulation remain more complicated.",
+		uncertaintySummary:
+				"Evidence is strongest for several outcomes and older, well-studied PFAS such as PFOA and PFOS. Uncertainty remains around mixtures, newer replacement PFAS, causal mechanisms for every endpoint, and how evolving federal rules will treat compounds beyond PFOA and PFOS.",
+		searchCutoffAt: "2026-07-03T03:57:42.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:57:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:57:42.000Z",
+				kind: "publication",
+				summary:
+						"Initial PFAS health and drinking-water-limits page published from EPA, ATSDR, National Academies, and PFAS health-outcome synthesis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Per- and Polyfluoroalkyl Substances (PFAS)",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url: "https://www.epa.gov/sdwa/and-polyfluoroalkyl-substances-pfas",
+				stance: "supports",
+				note:
+						"EPA regulatory anchor for the 2024 drinking-water rule, 4 ppt enforceable limits for PFOA and PFOS, and the May 2026 proposed-rule context that may change several other PFAS limits.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "PFAS Information for Clinicians - 2024",
+				publisher: "Agency for Toxic Substances and Disease Registry",
+				year: 2024,
+				url: "https://www.atsdr.cdc.gov/pfas/hcp/clinical-overview/index.html",
+				stance: "supports",
+				note:
+						"ATSDR clinical anchor listing potentially associated health effects and explaining why exposure history, exposure reduction, and careful interpretation of PFAS blood testing matter.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Health Effects: PFAS Information for Clinicians - 2024",
+				publisher: "Agency for Toxic Substances and Disease Registry",
+				year: 2024,
+				url: "https://www.atsdr.cdc.gov/pfas/hcp/clinical-overview/health-effects.html",
+				stance: "supports",
+				note:
+						"ATSDR health-effects table summarizes evidence-of-association categories while warning that causality and clinical magnitude are not established for every endpoint.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Guidance on PFAS Exposure, Testing, and Clinical Follow-Up",
+				publisher: "National Academies of Sciences, Engineering, and Medicine",
+				year: 2022,
+				url: "https://doi.org/10.17226/26156",
+				doi: "10.17226/26156",
+				stance: "supports",
+				note:
+						"Consensus report categorizing evidence strength for PFAS-associated outcomes, including sufficient evidence for decreased antibody response, dyslipidemia, decreased infant and fetal growth, and kidney cancer.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Are PFAS exposures linked to higher cholesterol and reduced vaccine antibody response?",
+		slug: "are-pfas-exposures-linked-to-higher-cholesterol-and-reduced-vaccine-antibody-response",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+				"Yes, these are among the better-supported PFAS-associated human health signals, but they are associations rather than a simple individual prediction. The National Academies judged evidence sufficient for dyslipidemia and decreased antibody response, and meta-analyses support links between several PFAS and total or LDL cholesterol and between PFOA, PFOS, PFHxS and lower vaccine antibody concentrations. Effect sizes are usually modest and vary by compound, age, vaccine, exposure history, and study design.",
+		stableCore: [
+			"The National Academies classified dyslipidemia and decreased antibody response as sufficient-evidence associations for PFAS exposure.",
+			"An adult lipid meta-analysis found PFOA and PFOS associated with higher total and LDL cholesterol, while evidence for cardiovascular-event consequences remains less direct.",
+			"A vaccine-response meta-analysis found inverse associations across multiple antibodies, with stronger support for PFOA, PFOS, and PFHxS than for PFNA or PFDA."
+		],
+		openQuestions: [
+			"How much of the cholesterol association is causal, and how much is affected by toxicokinetics, diet, kidney function, or other confounding?",
+			"What clinical significance should be assigned to modest antibody-concentration changes for specific vaccines and age groups?",
+			"How should evidence from older PFAS apply to replacement PFAS and real-world mixtures?"
+		],
+		whatWouldChangeMinds: [
+			"High-quality prospective or quasi-experimental evidence showing that PFAS reduction does not change lipid or vaccine-response outcomes in expected directions.",
+			"Large updated systematic reviews showing that the observed cholesterol or vaccine-response associations disappear after better exposure measurement and confounding control.",
+			"Major National Academies, ATSDR, or equivalent reassessments downgrading these outcomes from the current evidence categories."
+		],
+		misconceptions: [
+			"Any PFAS exposure is sometimes treated as meaning imminent disease, even though these are probabilistic population signals.",
+			"No symptoms are sometimes taken to mean no biological effect, even for outcomes like cholesterol or antibody concentration that require measurement.",
+			"A PFAS blood result is sometimes interpreted as a personalized forecast of future illness, which ATSDR explicitly cautions against."
+		],
+		editorSummary:
+				"This page gives concrete examples of what PFAS evidence does and does not show. It should avoid vague alarm while making clear that cholesterol and vaccine antibody response are not fringe concerns.",
+		uncertaintySummary:
+				"The association signal is broad but not a one-size-fits-all causal prediction. Remaining uncertainty involves compound specificity, mixtures, life stage, vaccine type, clinical magnitude, and whether lipid changes translate into cardiovascular outcomes.",
+		searchCutoffAt: "2026-07-03T03:57:42.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:57:42.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:57:42.000Z",
+				kind: "publication",
+				summary:
+						"Initial PFAS cholesterol and vaccine-antibody page published from National Academies, ATSDR, and human meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Guidance on PFAS Exposure, Testing, and Clinical Follow-Up",
+				publisher: "National Academies of Sciences, Engineering, and Medicine",
+				year: 2022,
+				url: "https://doi.org/10.17226/26156",
+				doi: "10.17226/26156",
+				stance: "supports",
+				note:
+						"Consensus anchor classifying dyslipidemia and decreased antibody response as sufficient-evidence associations for PFAS exposure.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Health Effects: PFAS Information for Clinicians - 2024",
+				publisher: "Agency for Toxic Substances and Disease Registry",
+				year: 2024,
+				url: "https://www.atsdr.cdc.gov/pfas/hcp/clinical-overview/health-effects.html",
+				stance: "supports",
+				note:
+						"ATSDR summarizes evidence-of-association findings for cholesterol increases and lower antibody response to some vaccines while preserving caveats about causality and magnitude.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Associations between Per- and Polyfluoroalkyl Substances Exposures and Blood Lipid Levels among Adults-A Meta-Analysis",
+				publisher: "Environmental Health Perspectives",
+				year: 2023,
+				url: "https://doi.org/10.1289/EHP11840",
+				doi: "10.1289/EHP11840",
+				pmid: "37141244",
+				stance: "supports",
+				note:
+						"Meta-analysis of 29 publications found PFOA and PFOS significantly associated with higher total cholesterol and LDL cholesterol in adults, with cardiovascular-event implications still uncertain.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Systematic review and meta-analysis of epidemiologic data on vaccine response in relation to exposure to five principal perfluoroalkyl substances",
+				publisher: "Environment International",
+				year: 2023,
+				url: "https://doi.org/10.1016/j.envint.2023.107734",
+				doi: "10.1016/j.envint.2023.107734",
+				pmid: "36764183",
+				stance: "supports",
+				note:
+						"Meta-analysis of 14 reports from 13 unique groups found inverse associations between serum PFAS and vaccine antibody concentrations, with stronger support for PFOA, PFOS, and PFHxS.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Childhood PFAS exposure and immunotoxicity: a systematic review and meta-analysis of human studies",
+				publisher: "Systematic Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1186/s13643-024-02596-z",
+				doi: "10.1186/s13643-024-02596-z",
+				pmid: "38982538",
+				stance: "context",
+				note:
+						"Recent child-focused synthesis adds caution: it found suggestive infection evidence and small antibody-response decreases, but moderate to no evidence for antibody titer reduction in its narrower analysis.",
+				order: 5
 			}
 		]
 	},
