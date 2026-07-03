@@ -9008,6 +9008,128 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Is hearing loss linked to higher dementia risk, and can hearing aids help?",
+		slug: "is-hearing-loss-linked-to-higher-dementia-risk-and-can-hearing-aids-help",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+				"Yes. Adult hearing loss is consistently linked with higher risk of cognitive decline and dementia, and treating it is worthwhile for communication, safety, and quality of life. The dementia-prevention claim is narrower: hearing aids should not be sold as a guaranteed way to prevent dementia for everyone, but randomized and observational evidence suggests they may help slow cognitive decline in older adults at higher baseline risk.",
+		stableCore: [
+			"Large cohort meta-analyses find adult-onset hearing loss associated with later dementia, mild cognitive impairment, and cognitive decline, with risk rising as hearing worsens.",
+			"The 2024 Lancet Commission treats hearing loss as a modifiable dementia-risk factor and says evidence that treating hearing loss decreases dementia risk is stronger than in its previous report.",
+			"The ACHIEVE randomized trial found no overall 3-year cognitive-change benefit in the full cohort, but prespecified analyses suggested benefit among older adults at higher risk for cognitive decline.",
+			"Observational meta-analyses link hearing aids and cochlear implants with lower long-term cognitive-decline hazards, but access, health behavior, baseline risk, and other confounding can still affect those estimates."
+		],
+		openQuestions: [
+			"Which groups gain the most cognitive benefit from hearing intervention, and how do baseline dementia risk, severity, age, adherence, and social isolation change the effect?",
+			"How much of the hearing-loss and dementia association is causal versus shared aging, vascular risk, education, measurement bias, or early neurodegenerative change affecting hearing?",
+			"Which models of affordable hearing care, over-the-counter hearing aids, cochlear implants, counseling, and follow-up improve uptake and sustained use?"
+		],
+		whatWouldChangeMinds: [
+			"Longer randomized trials showing hearing intervention does or does not reduce incident dementia or cognitive decline across clearly defined risk groups.",
+			"Large, well-controlled longitudinal evidence showing the hearing-loss association disappears after better measurement and confounding control.",
+			"Major dementia-prevention or audiology guideline reassessments removing hearing loss from modifiable risk-factor frameworks."
+		],
+		misconceptions: [
+			"Hearing aids are sometimes oversold as a guaranteed way to prevent dementia; the intervention evidence is promising but not that broad.",
+			"The opposite error treats hearing loss as only an inconvenience, ignoring communication, safety, social participation, and possible cognitive-risk links.",
+			"Observational hearing-aid benefits can be inflated if people who get aids also differ in healthcare access, income, education, or other health behaviors."
+		],
+		editorSummary:
+				"This page should give older adults and families a practical middle answer: treat hearing loss because it matters now, and present the dementia-risk evidence as real but still qualified by trial subgroup results and confounding concerns.",
+		uncertaintySummary:
+				"The association between adult hearing loss and later cognitive outcomes is consistent and moderately strong. Causality and intervention benefit are more qualified: ACHIEVE did not show a total-cohort cognitive benefit over 3 years, while higher-risk subgroups and observational studies suggest possible cognitive protection.",
+		searchCutoffAt: "2026-07-03T18:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T18:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T18:15:00.000Z",
+				kind: "publication",
+				summary:
+						"Initial hearing-loss and dementia-risk page published from the 2024 Lancet Commission, NIH/NIDCD context, ACHIEVE randomized-trial evidence, and meta-analyses of cohort and hearing-device evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Dementia prevention, intervention, and care: 2024 report of the Lancet standing Commission",
+				publisher: "The Lancet",
+				year: 2024,
+				url: "https://doi.org/10.1016/S0140-6736(24)01296-0",
+				doi: "10.1016/S0140-6736(24)01296-0",
+				stance: "supports",
+				note:
+						"Lancet Commission anchor for hearing loss as a modifiable dementia-risk factor, stronger evidence for treating hearing loss, and particular promise for hearing aids in people with additional dementia-risk factors.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Adult-onset hearing loss and incident cognitive impairment and dementia - A systematic review and meta-analysis of cohort studies",
+				publisher: "Ageing Research Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1016/j.arr.2024.102346",
+				doi: "10.1016/j.arr.2024.102346",
+				pmid: "38788800",
+				stance: "supports",
+				note:
+						"Meta-analysis of 50 cohort studies found hearing loss associated with incident dementia, MCI, cognitive decline, and Alzheimer disease dementia; each 10 dB worsening was associated with 16% higher dementia risk.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Age-Related Hearing Loss (Presbycusis)",
+				publisher: "National Institute on Deafness and Other Communication Disorders",
+				year: 2023,
+				url: "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+				stance: "supports",
+				note:
+						"NIDCD public-health anchor for prevalence, daily-life harms, treatment options, over-the-counter hearing aids for mild-to-moderate adult hearing loss, and hearing-health access context.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Hearing intervention versus health education control to reduce cognitive decline in older adults with hearing loss in the USA (ACHIEVE): a multicentre, randomised controlled trial",
+				publisher: "The Lancet",
+				year: 2023,
+				url: "https://doi.org/10.1016/S0140-6736(23)01406-X",
+				doi: "10.1016/S0140-6736(23)01406-X",
+				pmid: "37478886",
+				pmcid: "PMC10529382",
+				stance: "context",
+				note:
+						"ACHIEVE RCT found no significant total-cohort 3-year cognitive benefit, but prespecified analyses suggested slower cognitive change among older adults at higher baseline risk.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Association of Hearing Aids and Cochlear Implants With Cognitive Decline and Dementia: A Systematic Review and Meta-analysis",
+				publisher: "JAMA Neurology",
+				year: 2022,
+				url: "https://doi.org/10.1001/jamaneurol.2022.4427",
+				doi: "10.1001/jamaneurol.2022.4427",
+				pmid: "36469314",
+				pmcid: "PMC9856596",
+				stance: "context",
+				note:
+						"Meta-analysis found hearing-device use associated with lower hazards of long-term cognitive decline and small short-term cognitive-test improvement, while calling for more randomized trials.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Hearing aids slow cognitive decline in people at high risk",
+				publisher: "National Institutes of Health",
+				year: 2023,
+				url: "https://www.nih.gov/news-events/nih-research-matters/hearing-aids-slow-cognitive-decline-people-high-risk",
+				stance: "context",
+				note:
+						"NIH summary of ACHIEVE explains the no-difference full-cohort result, the nearly 50% slower decline in the higher-risk heart-health cohort, and the recommendation to address hearing for general health and well-being.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Is ADHD a common neurodevelopmental disorder that often persists into adulthood?",
 		slug: "is-adhd-a-common-neurodevelopmental-disorder-that-often-persists-into-adulthood",
 		status: "published",
