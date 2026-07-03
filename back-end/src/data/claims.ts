@@ -6971,6 +6971,269 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Is the ocean becoming more acidic because of human CO2 emissions?",
+		slug: "is-the-ocean-becoming-more-acidic-because-of-human-co2-emissions",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+				"Yes. Human CO2 emissions are increasing atmospheric CO2, and the ocean absorbs a large share of that CO2. The result is a well-understood shift in seawater chemistry: lower pH, more hydrogen ions, and fewer carbonate ions, even though seawater remains alkaline overall.",
+		stableCore: [
+			"Ocean acidification means a long-term reduction in ocean pH, not that the ocean has become literally acidic like vinegar.",
+			"Modern open-ocean acidification is primarily driven by anthropogenic CO2 uptake from the atmosphere.",
+			"The chemical direction is very well established; the size and timing of biological, ecological, and socioeconomic impacts vary by species, region, and exposure history."
+		],
+		openQuestions: [
+			"Which species and ecosystems will be most resilient or most vulnerable under combined warming, deoxygenation, and acidification?",
+			"How much local coastal chemistry is shaped by runoff, upwelling, pollution, and ecosystem management compared with the global CO2 signal?",
+			"Which adaptation or emissions pathways most reduce harm to fisheries, reefs, shellfish, and coastal communities?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term, independently replicated observations showing that ocean pH and carbonate chemistry are not tracking atmospheric CO2 uptake as expected.",
+			"A stronger geochemical explanation that fits global observations better than anthropogenic CO2 absorption."
+		],
+		misconceptions: [
+			"Some people argue that acidification is fake because seawater is still alkaline.",
+			"Others treat uncertainty about ecosystem impact size as uncertainty about the basic CO2 chemistry."
+		],
+		editorSummary:
+				"This page gives readers a compact answer to a common climate-adjacent claim: the chemistry is settled even though local impacts and adaptation questions remain active research areas.",
+		searchCutoffAt: "2026-07-03T03:21:50.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:21:50.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:21:50.000Z",
+				kind: "publication",
+				summary:
+						"Initial ocean-acidification claim page published from NOAA, IPCC, and expert-survey evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "What is Ocean Acidification?",
+				publisher: "NOAA National Ocean Service",
+				year: 2024,
+				url: "https://oceanservice.noaa.gov/facts/acidification.html",
+				stance: "supports",
+				note:
+						"NOAA explains the core mechanism: atmospheric CO2 uptake lowers pH, increases hydrogen ions, and reduces carbonate ions; it also states the ocean absorbs about 30% of released atmospheric CO2.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Special Report on the Ocean and Cryosphere in a Changing Climate",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2019,
+				url: "https://www.ipcc.ch/srocc/",
+				stance: "supports",
+				note:
+						"IPCC assessment anchor stating that ocean acidity is increasing with high confidence and placing acidification among human-linked ocean and cryosphere changes.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Ocean acidification and its impacts: an expert survey",
+				publisher: "Climatic Change",
+				year: 2013,
+				url: "https://doi.org/10.1007/s10584-012-0591-5",
+				doi: "10.1007/s10584-012-0591-5",
+				stance: "supports",
+				note:
+						"Expert survey of 53 ocean-acidification specialists finding strong agreement on chemical aspects and anthropogenic CO2 as the main mechanism, with lower agreement on biological and socioeconomic impacts.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Do electric vehicles usually have lower lifetime greenhouse gas emissions than gasoline cars?",
+		slug: "do-electric-vehicles-usually-have-lower-lifetime-greenhouse-gas-emissions-than-gasoline-cars",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 90,
+		bottomLine:
+				"Usually yes. Battery manufacturing can make an electric vehicle start with higher production emissions, and the grid mix matters, but cradle-to-grave comparisons typically find lower lifetime greenhouse gas emissions for electric vehicles than for comparable gasoline cars.",
+		stableCore: [
+			"The right comparison is cradle-to-grave: vehicle and battery manufacturing, fuel or electricity production, driving, maintenance, and end-of-life handling.",
+			"Electric vehicles have no tailpipe emissions and are much more energy efficient during operation, while battery production adds upfront emissions.",
+			"The greenhouse-gas advantage is usually larger on cleaner electricity grids and can shrink for very large batteries, low-mileage use, or high-emissions electricity."
+		],
+		openQuestions: [
+			"How should life-cycle models handle marginal electricity generation, charging timing, and future grid decarbonization?",
+			"How quickly will battery recycling, mineral sourcing, and manufacturing electricity improve the production-emissions side of the ledger?",
+			"How should public comparisons include non-greenhouse categories such as particulate matter, human toxicity, and mineral depletion?"
+		],
+		whatWouldChangeMinds: [
+			"Updated cradle-to-grave analyses showing that typical electric vehicles on current and projected grids no longer have lower lifetime greenhouse gas emissions than comparable gasoline vehicles.",
+			"Robust real-world data showing that battery production, replacement, and electricity generation emissions are consistently much higher than current life-cycle assumptions."
+		],
+		misconceptions: [
+			"People sometimes compare gasoline tailpipe emissions with EV battery manufacturing instead of comparing full life cycles on both sides.",
+			"Others treat zero tailpipe emissions as if electric vehicles have zero life-cycle emissions."
+		],
+		editorSummary:
+				"This page answers the practical climate question without flattening the tradeoffs: EVs generally reduce greenhouse gas emissions, but the size of the benefit depends on vehicle, grid, and lifetime assumptions.",
+		searchCutoffAt: "2026-07-03T03:21:50.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:21:50.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:21:50.000Z",
+				kind: "publication",
+				summary:
+						"Initial EV life-cycle greenhouse-gas claim page published from EPA, DOE, IEA, and review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Electric Vehicle Myths",
+				publisher: "U.S. Environmental Protection Agency",
+				url: "https://www.epa.gov/greenvehicles/electric-vehicle-myths",
+				stance: "supports",
+				note:
+						"EPA states that EVs typically have a smaller carbon footprint than gasoline cars, including electricity used for charging and manufacturing, while noting grid and battery-manufacturing variation.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Emissions from Electric Vehicles",
+				publisher: "U.S. Department of Energy Alternative Fuels Data Center",
+				url: "https://afdc.energy.gov/vehicles/electric-emissions",
+				stance: "supports",
+				note:
+						"DOE AFDC explains why cradle-to-grave accounting must include fuel-cycle and vehicle-cycle emissions, and why the benefit varies with electricity mix.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "EV Life Cycle Assessment Calculator",
+				publisher: "International Energy Agency",
+				year: 2024,
+				url: "https://www.iea.org/data-and-statistics/data-tools/ev-life-cycle-assessment-calculator",
+				stance: "supports",
+				note:
+						"IEA life-cycle tool compares conventional, plug-in hybrid, and electric cars across assumptions such as vehicle size, distance, lifetime, battery size, and electricity emissions intensity.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+						"Life cycle assessment comparison of electric and internal combustion vehicles: A review on the main challenges and opportunities",
+				publisher: "Renewable and Sustainable Energy Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1016/j.rser.2024.114988",
+				doi: "10.1016/j.rser.2024.114988",
+				stance: "supports",
+				note:
+						"Review evidence finding battery electric vehicles generally superior on greenhouse gas emissions, energy demand, and fossil depletion, while not superior in every environmental category.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
+		title: "Is the ozone layer recovering because of the Montreal Protocol?",
+		slug: "is-the-ozone-layer-recovering-because-of-the-montreal-protocol",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+				"Yes. Ozone-depleting substances caused major stratospheric ozone loss, and controls under the Montreal Protocol have reduced those chemicals and put the ozone layer on a long-term recovery path. The ozone hole still varies from year to year and is not fully healed.",
+		stableCore: [
+			"Human-made chlorine- and bromine-containing compounds, including CFCs and halons, drove stratospheric ozone depletion.",
+			"The Montreal Protocol and later amendments sharply reduced controlled ozone-depleting substances, and atmospheric measurements now show a long-term recovery signal.",
+			"Annual ozone-hole size is strongly affected by stratospheric temperature and circulation, so a large or small single year does not by itself prove failure or success."
+		],
+		openQuestions: [
+			"How much could non-compliant emissions, very short-lived substances, replacement chemicals, or future aviation delay recovery?",
+			"How will climate change alter polar stratospheric chemistry and recovery timing?",
+			"Which monitoring systems are needed to detect renewed emissions quickly enough to protect the recovery path?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term measurements showing that ozone-depleting substances are no longer declining or that ozone recovery has stalled despite accounting for natural variability.",
+			"Robust attribution evidence showing a driver other than reduced ozone-depleting substances better explains the observed recovery pattern."
+		],
+		misconceptions: [
+			"Some people treat the ozone hole as a failed or fake environmental problem because it still appears each Antarctic spring.",
+			"Others confuse ozone depletion with the greenhouse effect and assume the same policy lesson transfers without qualification."
+		],
+		editorSummary:
+				"This historical case study shows what successful consensus-informed policy looks like: the core causal mechanism is strong, monitoring remains essential, and full recovery takes decades.",
+		searchCutoffAt: "2026-07-03T03:21:50.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:21:50.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:21:50.000Z",
+				kind: "publication",
+				summary:
+						"Initial ozone-recovery claim page published from WMO, NASA/NOAA, and peer-reviewed Montreal Protocol evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Scientific Assessment of Ozone Depletion: 2022 Executive Summary",
+				publisher: "WMO / UNEP Scientific Assessment Panel",
+				year: 2022,
+				url: "https://csl.noaa.gov/assessments/ozone/2022/executivesummary/",
+				stance: "supports",
+				note:
+						"Assessment anchor reporting continued Antarctic ozone recovery, strong year-to-year variability, and projected return to 1980 values around mid-century under continued policy compliance.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "WMO Bulletin shows recovery of ozone layer, driven by science",
+				publisher: "World Meteorological Organization",
+				year: 2025,
+				url:
+						"https://wmo.int/news/media-centre/wmo-bulletin-shows-successful-recovery-of-ozone-layer-driven-science",
+				stance: "supports",
+				note:
+						"WMO reports that the long-term positive trend reflects international action and that controlled ozone-depleting substances have been phased out by more than 99%.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "NASA, NOAA Rank 2025 Ozone Hole as 5th Smallest Since 1992",
+				publisher: "NASA / NOAA",
+				year: 2025,
+				url:
+						"https://science.nasa.gov/earth/nasa-noaa-rank-2025-ozone-hole-as-5th-smallest-since-1992/",
+				stance: "supports",
+				note:
+						"Current monitoring context stating that Montreal Protocol controls are driving gradual ozone-layer recovery while the hole remains far from fully recovered.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Evidence for the effectiveness of the Montreal Protocol to protect the ozone layer",
+				publisher: "Atmospheric Chemistry and Physics",
+				year: 2010,
+				url: "https://doi.org/10.5194/acp-10-12161-2010",
+				doi: "10.5194/acp-10-12161-2010",
+				stance: "supports",
+				note:
+						"Peer-reviewed evidence that the Montreal Protocol had measurable effects on the ozone layer about twenty years after becoming legally binding.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Renewed and emerging concerns over the production and emission of ozone-depleting substances",
+				publisher: "Nature Reviews Earth & Environment",
+				year: 2020,
+				url: "https://doi.org/10.1038/s43017-020-0048-8",
+				doi: "10.1038/s43017-020-0048-8",
+				stance: "context",
+				note:
+						"Review context on why non-compliant and short-lived emissions could delay recovery, supporting the page's caveat that the success still requires monitoring.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
