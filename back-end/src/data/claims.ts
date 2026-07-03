@@ -8076,6 +8076,291 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "nutrition-and-diet",
+		title: "Are ultra-processed foods linked to worse health outcomes, and how much is causation versus confounding?",
+		slug: "are-ultra-processed-foods-linked-to-worse-health-outcomes-and-how-much-is-causation-versus-confounding",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		bottomLine:
+			"Yes, higher ultra-processed food intake is consistently linked with worse health outcomes, especially cardiometabolic outcomes, some mental-health outcomes, obesity, and mortality. But the causal story is still not as clean as 'processing alone causes every harm': many studies are observational, the NOVA category includes diverse foods, and part of the signal may reflect diet quality, calories, food texture, palatability, marketing, affordability, and the broader food environment.",
+		stableCore: [
+			"Umbrella reviews find higher ultra-processed-food exposure associated with many adverse outcomes, including stronger signals for type 2 diabetes, cardiovascular mortality, obesity, and some mental-health outcomes.",
+			"A short inpatient randomized feeding trial found that people ate about 500 more kcal/day and gained weight on an ultra-processed diet even when offered meals were matched for presented calories, sugar, fat, sodium, fiber, and macronutrients.",
+			"WHO healthy-diet guidance emphasizes whole grains, fruits, vegetables, pulses, and varied nutrient-dense foods, and notes that diets with significant amounts of highly processed foods are associated with negative health outcomes."
+		],
+		openQuestions: [
+			"Which mechanisms matter most: energy density, eating rate, texture, additives, altered food matrices, marketing, price, or displacement of healthier foods?",
+			"Which ultra-processed foods carry most risk, and are some relatively neutral when the overall diet is high quality?",
+			"How should public guidance reduce harm without making food choices feel morally loaded or unrealistic for people with limited time, money, or access?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled intervention studies showing no adverse effect of high ultra-processed-food diets when diet quality and calories are carefully matched.",
+			"Updated umbrella reviews finding that the associations largely disappear after stronger confounding control and better dietary measurement.",
+			"Mechanistic evidence showing that the observed risks are fully explained by unrelated lifestyle or socioeconomic factors rather than the foods or food patterns themselves."
+		],
+		misconceptions: [
+			"Correlation is sometimes treated as proof that every ultra-processed food is equally harmful.",
+			"Processing category confusion can make canned, frozen, fortified, or packaged foods sound automatically dangerous even when the evidence is about highly formulated diets.",
+			"Some people blame one ingredient, such as seed oils or an additive, when the evidence points more broadly to food pattern, palatability, excess calories, and displacement of minimally processed foods."
+		],
+		editorSummary:
+			"This page should give readers a balanced nutrition answer: the association is real enough to matter, and the trial evidence supports a plausible intake mechanism, but the page should not imply that NOVA category alone perfectly ranks every food or explains every outcome.",
+		uncertaintySummary:
+			"The evidence is broad but not fully causal for every endpoint. Confidence is strongest for consistent associations and short-term intake/weight-gain mechanisms; uncertainty is larger for individual foods, long-term intervention effects, and separating processing from overall diet quality and social context.",
+		searchCutoffAt: "2026-07-03T04:29:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:29:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:29:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial ultra-processed-food health-outcomes page published from WHO healthy-diet guidance, BMJ umbrella review evidence, and inpatient randomized feeding-trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Healthy diet",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+				stance: "supports",
+				note:
+					"WHO dietary guidance anchors the practical food-pattern baseline and states that diets with significant amounts of highly processed foods, often high in sodium, sugar, or unhealthy fats, are associated with negative health outcomes.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Ultra-processed food exposure and adverse health outcomes: umbrella review of epidemiological meta-analyses",
+				publisher: "The BMJ",
+				year: 2024,
+				url: "https://doi.org/10.1136/bmj-2023-077310",
+				doi: "10.1136/bmj-2023-077310",
+				stance: "supports",
+				note:
+					"Umbrella review of 45 pooled analyses covering nearly 9.9 million participants; found higher ultra-processed-food exposure associated with 32 adverse health parameters, while many GRADE ratings remained low or very low.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Ultra-processed diets cause excess calorie intake and weight gain: An inpatient randomized controlled trial of ad libitum food intake",
+				publisher: "Cell Metabolism",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.cmet.2019.05.008",
+				doi: "10.1016/j.cmet.2019.05.008",
+				pmid: "31105044",
+				stance: "supports",
+				note:
+					"Inpatient crossover trial in 20 adults found about 508 kcal/day higher intake and weight gain during the ultra-processed diet phase versus weight loss during the unprocessed diet phase.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Ultra-processed foods consumption and health-related outcomes: a systematic review of randomized controlled trials",
+				publisher: "Frontiers in Nutrition",
+				year: 2024,
+				url: "https://doi.org/10.3389/fnut.2024.1421728",
+				doi: "10.3389/fnut.2024.1421728",
+				pmid: "38988861",
+				stance: "context",
+				note:
+					"RCT-focused review notes that trial evidence remains limited and methodologically constrained, supporting cautious causal wording beyond short-term intake and weight outcomes.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Are intensive behavioral interventions effective for children with obesity, and does dose matter?",
+		slug: "are-intensive-behavioral-interventions-effective-for-children-with-obesity-and-does-dose-matter",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. For children and adolescents with high BMI, comprehensive intensive behavioral interventions can improve weight status, and the dose matters: USPSTF highlights 26 or more contact hours as the threshold for achieving benefit. The practical problem is not just telling families to try harder; effective programs are structured, family-centered, multicomponent, and often hard to access.",
+		stableCore: [
+			"USPSTF recommends that clinicians provide or refer children and adolescents 6 years or older with BMI at or above the 95th percentile to comprehensive intensive behavioral interventions.",
+			"USPSTF identifies 26 or more contact hours as important for benefit; higher-contact programs and those with supervised physical activity show larger average effects.",
+			"Effective programs commonly involve both child and parent, nutrition and physical-activity support, goal setting, self-monitoring, problem solving, and multidisciplinary delivery."
+		],
+		openQuestions: [
+			"How can health systems make 26+ contact-hour programs available to families who face cost, transportation, work-schedule, language, stigma, or specialist-shortage barriers?",
+			"How durable are benefits beyond one to two years, and which maintenance supports prevent regain?",
+			"How should medications or surgery be integrated for selected adolescents without replacing access to behavioral and family supports?"
+		],
+		whatWouldChangeMinds: [
+			"Updated randomized evidence showing that high-contact behavioral programs do not improve BMI, quality of life, or cardiometabolic measures compared with lower-intensity care.",
+			"Evidence of meaningful psychosocial harms from well-designed family-based interventions that outweigh weight-status and health benefits.",
+			"Major USPSTF, AAP, APA, or comparable guideline reversals removing comprehensive behavioral treatment as a core pediatric obesity intervention."
+		],
+		misconceptions: [
+			"Brief advice is often mistaken for the kind of intensive behavioral treatment studied in effective programs.",
+			"Child obesity treatment is sometimes framed as willpower or blame, even though guidelines emphasize structured family and environmental support.",
+			"Screening and treatment are sometimes assumed to cause stigma; USPSTF found no evidence that behavioral interventions increased stigma, self-esteem harm, body dissatisfaction, or disordered eating in trials."
+		],
+		editorSummary:
+			"This page should be family-practical and stigma-aware. The evidence supports intensive structured treatment, but the real implementation gap is access to enough contact hours and multidisciplinary support.",
+		uncertaintySummary:
+			"The short-term benefit of comprehensive intensive behavioral intervention is well supported. Uncertainty is mainly about long-term maintenance, equitable implementation, component selection, medication discontinuation, and outcomes beyond BMI.",
+		searchCutoffAt: "2026-07-03T04:29:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:29:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:29:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial pediatric intensive behavioral obesity-intervention page published from USPSTF, CDC, and JAMA evidence-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "High Body Mass Index in Children and Adolescents: Interventions",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2024,
+				url: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/obesity-in-children-and-adolescents-screening",
+				stance: "supports",
+				note:
+					"Primary recommendation anchor: USPSTF recommends comprehensive intensive behavioral interventions for children and adolescents 6 years or older with BMI at or above the 95th percentile and highlights 26+ contact hours.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Evidence-Based Guidelines for Child Obesity",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/obesity/child-obesity-strategies/evidence-based-guidelines.html",
+				stance: "supports",
+				note:
+					"CDC implementation context summarizing USPSTF and other professional guidelines, including family-based multicomponent behavioral interventions with at least 26 contact hours.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Interventions for Weight Management in Children and Adolescents: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2024,
+				url: "https://doi.org/10.1001/jama.2024.6739",
+				doi: "10.1001/jama.2024.6739",
+				pmid: "38888912",
+				stance: "supports",
+				note:
+					"Evidence review of 58 RCTs with 10,143 participants found behavioral interventions lowered BMI in the short term, with larger effects in higher-contact interventions and those offering physical activity sessions.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Family-Based Behavioral Treatment for Childhood Obesity Implemented in Pediatric Primary Care: A Randomized Clinical Trial",
+				publisher: "JAMA",
+				year: 2023,
+				url: "https://doi.org/10.1001/jama.2023.8061",
+				doi: "10.1001/jama.2023.8061",
+				pmid: "37314275",
+				stance: "supports",
+				note:
+					"Primary-care randomized trial in 452 children found family-based treatment improved child, parent, and sibling weight outcomes over 24 months compared with usual care.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Is obesity a major health risk condition at the population level?",
+		slug: "is-obesity-a-major-health-risk-condition-at-the-population-level",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		bottomLine:
+			"Yes. At the population level, obesity is a major health risk condition linked to higher risks of type 2 diabetes, cardiovascular disease, stroke, several cancers, sleep apnea, osteoarthritis, pregnancy complications, and premature death. That does not mean BMI perfectly diagnoses an individual person's health, and it should not be used to moralize, stigmatize, or ignore fitness, fat distribution, medications, disability, income, stress, or food environment.",
+		stableCore: [
+			"WHO classifies obesity as a chronic, relapsing disease shaped by genetics, neurobiology, behavior, food access, market forces, and broader environments.",
+			"WHO reports that in 2022 about 2.5 billion adults were overweight, including over 890 million adults living with obesity, and that more than 160 million children and adolescents aged 5-19 were living with obesity.",
+			"WHO estimates that higher-than-optimal BMI caused about 3.7 million deaths from noncommunicable diseases in 2021.",
+			"BMI is useful for population surveillance but imperfect for individual risk; waist circumference, metabolic markers, fitness, age, and clinical context can materially change personal risk."
+		],
+		openQuestions: [
+			"How should clinical definitions move beyond BMI while keeping population surveillance comparable across countries and time?",
+			"Which policy interventions most reduce obesity-related disease without increasing stigma or worsening inequities?",
+			"How should prevention, behavioral treatment, medications, surgery, and social supports be combined for different risk groups?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence showing that excess adiposity is not associated with cardiometabolic, cancer, mobility, or mortality risk after robust measurement and confounding control.",
+			"Major WHO, CDC, NCI, cardiovascular, diabetes, or cancer-prevention reassessments withdrawing obesity as a major population health risk.",
+			"Better individual-risk models that replace BMI for diagnosis while still showing that excess adiposity is not a meaningful population burden."
+		],
+		misconceptions: [
+			"BMI's limitations are sometimes misused to claim obesity has no population-level health relevance.",
+			"Population risk is sometimes wrongly translated into certainty about any one person's health or character.",
+			"Obesity is sometimes framed as a simple willpower issue, even though major health agencies describe complex biological, environmental, social, and market drivers."
+		],
+		editorSummary:
+			"This page should be explicit and non-moralizing: the consensus is that obesity is a major population health risk, while individual health assessment needs more than BMI and public-health solutions need to reduce stigma and structural barriers.",
+		uncertaintySummary:
+			"The population-level risk relationship is strong. Uncertainty is concentrated in individual diagnosis, causal pathways for specific outcomes, thresholds across ancestry and age groups, and which interventions best reduce harm equitably.",
+		searchCutoffAt: "2026-07-03T04:29:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:29:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:29:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial obesity population-health-risk page published from WHO, NCI, Lancet mortality meta-analysis, and adiposity cardiovascular evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Obesity and overweight",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight",
+				stance: "supports",
+				note:
+					"WHO anchor for obesity as a complex chronic disease, global prevalence, BMI caveats, environmental drivers, and the 2021 estimate of 3.7 million deaths attributable to higher-than-optimal BMI.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Obesity and Cancer Fact Sheet",
+				publisher: "National Cancer Institute",
+				year: 2025,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/obesity/obesity-fact-sheet",
+				stance: "supports",
+				note:
+					"NCI cancer-prevention anchor explaining that overweight and obesity are associated with diabetes, high blood pressure, cardiovascular disease, stroke, at least 13 cancers, and higher all-cause mortality risk.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Body-mass index and all-cause mortality: individual-participant-data meta-analysis of 239 prospective studies in four continents",
+				publisher: "The Lancet",
+				year: 2016,
+				url: "https://doi.org/10.1016/S0140-6736(16)30175-1",
+				doi: "10.1016/S0140-6736(16)30175-1",
+				pmid: "27423262",
+				stance: "supports",
+				note:
+					"Individual-participant meta-analysis of 239 prospective studies found higher all-cause mortality across overweight and obesity ranges after restricting primary analyses to never-smokers without chronic disease at baseline.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Association between adiposity and cardiovascular outcomes: an umbrella review and meta-analysis of observational and Mendelian randomization studies",
+				publisher: "European Heart Journal",
+				year: 2021,
+				url: "https://doi.org/10.1093/eurheartj/ehab454",
+				doi: "10.1093/eurheartj/ehab454",
+				pmid: "34458925",
+				stance: "supports",
+				note:
+					"Umbrella review and Mendelian randomization synthesis found increased adiposity associated with multiple cardiovascular outcomes, while also showing that evidence gradients differ by outcome.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
