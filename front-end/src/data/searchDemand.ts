@@ -295,6 +295,15 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		]
 	},
 	{
+		cluster: "Aging & cognitive health",
+		title: "Hearing loss is linked to higher dementia risk",
+		format: "claim page",
+		whyItMatters:
+			"Readers need a clear separation between the hearing-loss association, the immediate value of hearing care, and the narrower evidence on whether hearing aids slow cognitive decline.",
+		anchors: ["Lancet Commission", "NIH", "NIDCD", "ACHIEVE trial"],
+		querySignals: ["hearing loss dementia", "do hearing aids prevent dementia", "hearing aids cognitive decline"]
+	},
+	{
 		cluster: "Psychology myths",
 		title: "Sugar makes kids hyperactive",
 		format: "claim page",
@@ -598,6 +607,14 @@ export const publishingPlan: PublishingPlanRow[] = [
 		type: "claim page",
 		cluster: "Psychology myths",
 		rationale: "Extremely persistent pop-culture myth with high recognition and simple routing value."
+	},
+	{
+		week: "Week 13",
+		title: "Hearing loss is linked to higher dementia risk",
+		type: "claim page",
+		cluster: "Aging & cognitive health",
+		rationale:
+			"Practical aging topic with strong association evidence and a careful distinction between hearing care benefits and dementia-prevention claims."
 	}
 ];
 

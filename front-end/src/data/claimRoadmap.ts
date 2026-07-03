@@ -929,6 +929,23 @@ export const backlogClaims: ClaimRoadmapEntry[] = [
 		whatWouldChangeMinds: "Strong evidence showing no benefit across outcomes compared with controls.",
 		pageType: "topic-hub-only section",
 		wave: "backlog"
+	},
+	{
+		rank: 51,
+		slug: "is-hearing-loss-linked-to-higher-dementia-risk-and-can-hearing-aids-help",
+		title: "Is hearing loss linked to higher dementia risk, and can hearing aids help?",
+		cluster: "Aging & cognitive health",
+		topicSlug: "neuroscience-and-psychology",
+		whyItMatters:
+			"Families search for this at the boundary between everyday hearing care and dementia prevention. The page should encourage hearing evaluation while making clear that hearing aids are not guaranteed dementia prevention.",
+		consensusTier: "broad but qualified agreement",
+		evidenceCertainty: "moderate",
+		anchors: ["Lancet Commission", "NIH", "NIDCD", "ACHIEVE trial"],
+		misconceptions: ["hearing aids guarantee dementia prevention", "hearing loss is only an inconvenience"],
+		whatWouldChangeMinds:
+			"Longer randomized trials showing hearing intervention does or does not reduce cognitive decline or incident dementia across well-defined risk groups.",
+		pageType: "canonical claim page",
+		wave: "backlog"
 	}
 ];
 
