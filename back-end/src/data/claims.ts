@@ -5111,6 +5111,144 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Do gas stoves worsen indoor air quality and childhood asthma risk?",
+		slug: "do-gas-stoves-worsen-indoor-air-quality-and-childhood-asthma-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes for indoor air pollution, with a qualified yes for asthma risk. Gas and propane stoves can raise indoor nitrogen dioxide and other combustion pollutants, and the epidemiology generally links gas cooking or indoor NO2 with higher childhood asthma or wheeze risk. The exact causal share and best intervention are less certain than the exposure problem itself, so the practical consensus is to ventilate well, avoid using gas stoves for heat, and consider electric or induction cooking where feasible.",
+		stableCore: [
+			"EPA identifies gas stoves as an indoor source of nitrogen dioxide and says homes with gas stoves can have indoor NO2 levels above outdoor levels.",
+			"EPA's exposure-reduction guidance emphasizes outdoor-vented exhaust over gas stoves, proper appliance adjustment, and never using a gas stove to heat a home.",
+			"A 2013 meta-analysis of 41 studies estimated higher childhood asthma odds with gas cooking exposure and higher current wheeze odds with indoor NO2.",
+			"More recent reviews agree that gas combustion is an exposure source but caution that much of the child-asthma evidence is observational, heterogeneous, and limited for precise causal estimates."
+		],
+		openQuestions: [
+			"How much childhood asthma burden would be prevented by stove replacement, outdoor-vented range hoods, better ventilation, or combined indoor-air interventions?",
+			"Which pollutant mixture matters most in real homes: NO2, fine particles, carbon monoxide, formaldehyde, benzene, ultrafine particles, or co-exposures?",
+			"How should risk-reduction advice be prioritized for renters, small homes, children with asthma, and households that cannot easily replace appliances?"
+		],
+		whatWouldChangeMinds: [
+			"Large longitudinal or intervention studies showing that reducing gas-stove combustion exposure does not reduce relevant respiratory outcomes in children.",
+			"Updated systematic reviews with better exposure measurement and confounding control finding that gas cooking and indoor NO2 associations disappear.",
+			"Major EPA, WHO, CPSC, or comparable reassessments withdrawing concern about gas-stove emissions as an indoor-air hazard."
+		],
+		misconceptions: [
+			"The evidence does not mean every gas stove automatically causes asthma or that every home with gas cooking is unsafe at the same level.",
+			"Gas is far cleaner than wood, charcoal, dung, coal, or kerosene in many global household-energy settings, but it is still not zero-combustion cooking.",
+			"The U.S. CPSC has said it is not pursuing a gas-stove ban; the health question is separate from political claims about bans.",
+			"A recirculating range hood may trap some particles or grease, but it does not vent nitrogen dioxide outdoors the way an outdoor-vented hood does."
+		],
+		editorSummary:
+			"This page should answer a politicized indoor-air question without becoming a ban debate: gas stoves are a real combustion-pollution source, the child-asthma signal is concerning but not perfectly causal, and the most useful guidance is exposure reduction.",
+		uncertaintySummary:
+			"The exposure evidence is strong, especially for nitrogen dioxide from gas combustion. The child-asthma evidence is directionally concerning but moderate-certainty because many studies are observational, exposure definitions vary, and intervention evidence is still limited.",
+		searchCutoffAt: "2026-07-03T17:18:30.000Z",
+		lastRetractionCheckAt: "2026-07-03T17:18:30.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T17:18:30.000Z",
+				kind: "publication",
+				summary:
+					"Initial gas-stove indoor-air and childhood-asthma page published from EPA, WHO, CPSC, systematic-review, meta-analysis, and exposure-modeling evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Nitrogen Dioxide's Impact on Indoor Air Quality",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url:
+					"https://www.epa.gov/indoor-air-quality-iaq/nitrogen-dioxides-impact-indoor-air-quality",
+				stance: "supports",
+				note:
+					"EPA indoor-air anchor identifying gas stoves as an indoor NO2 source, describing respiratory risks, and recommending outdoor-vented exhaust over gas stoves.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "WHO guidelines for indoor air quality: selected pollutants",
+				publisher: "World Health Organization",
+				year: 2010,
+				url: "https://www.who.int/publications/i/item/9789289002134",
+				stance: "supports",
+				note:
+					"WHO guideline anchor for indoor chemical pollutants including nitrogen dioxide, their sources, exposure pathways, health effects, and health-risk evaluation.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Meta-analysis of the effects of indoor nitrogen dioxide and gas cooking on asthma and wheeze in children",
+				publisher: "International Journal of Epidemiology",
+				year: 2013,
+				url: "https://doi.org/10.1093/ije/dyt150",
+				doi: "10.1093/ije/dyt150",
+				pmid: "23962958",
+				stance: "supports",
+				note:
+					"Meta-analysis of 41 studies estimated asthma odds ratio 1.32 for gas cooking exposure and current-wheeze odds ratio 1.15 for indoor NO2.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Gas cooking and respiratory outcomes in children: A systematic review",
+				publisher: "Global Epidemiology",
+				year: 2023,
+				url: "https://doi.org/10.1016/j.gloepi.2023.100107",
+				doi: "10.1016/j.gloepi.2023.100107",
+				pmid: "37638371",
+				stance: "debate",
+				note:
+					"Review of 66 studies emphasizing high heterogeneity, mostly cross-sectional evidence, exposure and outcome measurement limitations, and caution about causal interpretation.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Nitrogen dioxide exposure, health outcomes, and associated demographic disparities due to gas and propane combustion by U.S. stoves",
+				publisher: "Science Advances",
+				year: 2024,
+				url: "https://doi.org/10.1126/sciadv.adm8680",
+				doi: "10.1126/sciadv.adm8680",
+				stance: "context",
+				note:
+					"U.S. measurement-and-modeling study estimating gas and propane stove contributions to long-term NO2 exposure, pediatric asthma burden, and disproportionate exposure in smaller homes and some demographic groups.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Estimated health effects from domestic use of gaseous fuels for cooking and heating in high-income, middle-income, and low-income countries: a systematic review and meta-analyses",
+				publisher: "The Lancet Respiratory Medicine",
+				year: 2024,
+				url: "https://doi.org/10.1016/S2213-2600(23)00427-7",
+				doi: "10.1016/S2213-2600(23)00427-7",
+				pmid: "38310914",
+				stance: "context",
+				note:
+					"Broader household-energy review showing gas is much cleaner than solid or kerosene fuels but can still compare less favorably than electricity for some respiratory outcomes.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "Statement of Chair Alexander Hoehn-Saric Regarding Gas Stoves",
+				publisher: "U.S. Consumer Product Safety Commission",
+				year: 2023,
+				url:
+					"https://www.cpsc.gov/About-CPSC/Chairman/Alexander-Hoehn-Saric/Statement/Statement-of-Chair-Alexander-Hoehn-Saric-Regarding-Gas-Stoves",
+				stance: "context",
+				note:
+					"Regulatory context noting CPSC concern about gas-stove emissions while explicitly stating that the agency was not pursuing a gas-stove ban.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "biology-and-evolution",
 		title: "Is evolution 'just a theory'?",
 		slug: "is-evolution-just-a-theory",

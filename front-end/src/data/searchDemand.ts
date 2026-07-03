@@ -327,6 +327,20 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		]
 	},
 	{
+		cluster: "Indoor air",
+		title: "Gas stoves worsen indoor air quality and may increase childhood asthma risk",
+		format: "claim page",
+		whyItMatters:
+			"Gas stove searches mix indoor-air science, asthma fears, ventilation advice, and political ban claims. A canonical page can separate real combustion exposure from overconfident causal or policy framing.",
+		anchors: ["EPA nitrogen dioxide guidance", "WHO indoor air guidance", "child asthma meta-analyses"],
+		querySignals: [
+			"gas stove asthma",
+			"are gas stoves bad for you",
+			"gas stove nitrogen dioxide",
+			"gas stove ban asthma"
+		]
+	},
+	{
 		cluster: "Science-news literacy",
 		title: "What is a preprint and why can preprint findings change?",
 		format: "evergreen explainer",
