@@ -3240,6 +3240,114 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does folic acid before and early in pregnancy prevent neural tube defects?",
+		slug: "does-folic-acid-before-and-early-in-pregnancy-prevent-neural-tube-defects",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. Daily folic acid supplementation before conception and during early pregnancy reduces the risk of neural tube defects such as spina bifida and anencephaly. The timing matters because the neural tube closes very early, often before someone knows they are pregnant.",
+		stableCore: [
+			"USPSTF gives an A recommendation that all people planning to or who could become pregnant take a daily supplement containing 0.4 to 0.8 mg (400 to 800 mcg) of folic acid.",
+			"USPSTF says supplementation should start at least 1 month before anticipated conception and continue through the first 2 to 3 months of pregnancy to achieve benefit.",
+			"CDC states that 400 mcg of folic acid daily can help prevent neural tube defects and that these defects happen in the first few weeks of pregnancy.",
+			"A Cochrane review of five trials found daily folic acid, alone or with other vitamins and minerals, reduced neural tube defects compared with no folic acid, with a risk ratio of 0.31."
+		],
+		openQuestions: [
+			"Which outreach and supplementation strategies best reach people before unplanned pregnancies, when the prevention window is easiest to miss?",
+			"How should clinicians individualize higher-dose folic acid for people with a prior neural-tube-defect-affected pregnancy, certain antiseizure medications, malabsorption, diabetes, obesity, or other risk factors?",
+			"How much additional prevention is gained by supplementation in countries that already fortify staple grains with folic acid, and which groups remain underserved by fortification?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated reviews showing that periconceptional folic acid supplementation does not reduce neural tube defects after accounting for fortification, timing, and baseline risk.",
+			"Major USPSTF, CDC, WHO, or obstetric guideline revisions withdrawing routine folic acid supplementation recommendations for people who could become pregnant.",
+			"High-quality evidence of harms from recommended-dose folic acid large enough to outweigh the neural-tube-defect prevention benefit."
+		],
+		misconceptions: [
+			"Starting after a positive pregnancy test may be too late for full neural-tube-defect prevention because neural tube closure happens early.",
+			"Food fortification helps, but it has not eliminated the need for daily supplements for people who could become pregnant.",
+			"Standard-dose folic acid advice is not the same as high-risk dosing; people with prior affected pregnancies or certain medications need clinician-specific guidance."
+		],
+		editorSummary:
+			"This page should be practical and time-sensitive. The consensus is strong that recommended-dose folic acid prevents neural tube defects, but the prevention window is easy to miss and high-risk situations need individualized medical advice.",
+		uncertaintySummary:
+			"The prevention claim is strong. Remaining uncertainty is mostly about implementation before unplanned pregnancies, the marginal effect in fortified-food settings, optimal strategies for higher-risk groups, and how to improve equitable access without overmedicalizing routine supplementation.",
+		searchCutoffAt: "2026-07-03T21:11:11.000Z",
+		lastRetractionCheckAt: "2026-07-03T21:11:11.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T21:11:11.000Z",
+				kind: "publication",
+				summary:
+					"Initial folic acid and neural tube defect prevention claim page published from USPSTF, CDC, WHO, JAMA evidence-review, and Cochrane sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Folic Acid Supplementation to Prevent Neural Tube Defects: Preventive Medication",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2023,
+				url:
+					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/folic-acid-for-the-prevention-of-neural-tube-defects-preventive-medication",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source for daily 0.4 to 0.8 mg folic acid for people planning to or able to become pregnant, starting at least 1 month before conception and continuing through early pregnancy.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About Folic Acid",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/folic-acid/about/index.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health source explaining that 400 mcg of folic acid daily helps prevent neural tube defects and that the defects occur early in pregnancy.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Periconceptional folic acid supplementation to prevent neural tube defects",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/tools/elena/interventions/folate-periconceptional",
+				stance: "supports",
+				note:
+					"WHO recommendation that women take 400 mcg folic acid daily from the time they begin trying to conceive until 12 weeks of gestation, with high-dose guidance after an affected pregnancy.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Folic Acid Supplementation to Prevent Neural Tube Defects: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2023,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2807740",
+				doi: "10.1001/jama.2023.9864",
+				pmid: "37526714",
+				stance: "supports",
+				note:
+					"USPSTF evidence update of 12 studies with 1,244,072 participants, finding new evidence consistent with benefit and no statistically significant harms for multiple gestation, autism, or maternal cancer.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Effects and safety of periconceptional oral folate supplementation for preventing birth defects",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2015,
+				url: "https://doi.org/10.1002/14651858.CD007950.pub3",
+				doi: "10.1002/14651858.CD007950.pub3",
+				pmid: "26662928",
+				pmcid: "PMC8783750",
+				stance: "supports",
+				note:
+					"Cochrane review of five trials and 6,708 births with NTD outcome data, finding daily folic acid reduced neural tube defects compared with no folic acid.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does low-dose CT screening reduce lung cancer deaths in high-risk adults?",
 		slug: "does-low-dose-ct-screening-reduce-lung-cancer-deaths-in-high-risk-adults",
 		status: "published",
