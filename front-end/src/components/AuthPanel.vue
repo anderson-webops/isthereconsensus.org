@@ -347,6 +347,7 @@ async function handleChangePassword() {
 	padding: 0;
 	border-radius: 18px;
 	overflow: hidden;
+	background: color-mix(in srgb, var(--consensus-surface) 92%, transparent);
 }
 
 .account-details summary::marker,
@@ -399,22 +400,27 @@ async function handleChangePassword() {
 }
 
 .account-details__body {
-	grid-template-columns: repeat(2, minmax(260px, 1fr));
+	grid-template-columns: repeat(2, minmax(280px, 1fr));
 	align-items: start;
-	gap: 14px;
-	padding: 16px;
+	gap: 20px;
+	padding: 18px 16px 16px;
 	border-top: 1px solid var(--consensus-soft-line);
-	background: color-mix(in srgb, var(--consensus-field-surface) 36%, transparent);
+	background: transparent;
 }
 
 .setting-card {
 	align-content: start;
 	gap: 12px;
 	min-width: 0;
-	padding: 16px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	background: var(--consensus-surface);
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+.setting-card + .setting-card {
+	padding-left: 20px;
+	border-left: 1px solid var(--consensus-soft-line);
 }
 
 .setting-card__intro {
@@ -452,11 +458,13 @@ async function handleChangePassword() {
 
 .setting-card__actions {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: flex-start;
+	margin-top: 2px;
 }
 
 .account-form .button {
 	width: auto;
+	min-width: 132px;
 	min-height: 42px;
 	padding: 9px 16px;
 	border-radius: 999px;
@@ -547,6 +555,13 @@ input {
 @media (max-width: 760px) {
 	.account-details__body {
 		grid-template-columns: 1fr;
+	}
+
+	.setting-card + .setting-card {
+		padding-top: 16px;
+		padding-left: 0;
+		border-top: 1px solid var(--consensus-soft-line);
+		border-left: 0;
 	}
 
 	.setting-card__actions {

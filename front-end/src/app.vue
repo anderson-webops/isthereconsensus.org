@@ -293,11 +293,16 @@ dd {
 	max-width: 68ch;
 }
 
-.policy-summary,
+.policy-summary {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
 .policy-card-grid {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .policy-summary-card,
