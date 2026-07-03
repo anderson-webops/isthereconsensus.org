@@ -58,6 +58,15 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 	},
 	{
 		cluster: "Vaccines",
+		title: "Measles infection weakens immune memory",
+		format: "claim page",
+		whyItMatters:
+			"Measles outbreaks create recurring searches about whether measles is 'just a rash.' This claim explains immune amnesia with human immune-memory evidence and keeps the vaccine distinction explicit.",
+		anchors: ["WHO", "CDC", "Science immune-amnesia studies"],
+		querySignals: ["measles immune amnesia", "does measles weaken the immune system", "measles wipes immune memory"]
+	},
+	{
+		cluster: "Vaccines",
 		title: "COVID-19 mRNA vaccines change your DNA",
 		format: "claim page",
 		whyItMatters:

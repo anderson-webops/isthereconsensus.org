@@ -848,6 +848,99 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Can measles infection weaken immune memory after recovery?",
+		slug: "can-measles-infection-weaken-immune-memory-after-recovery",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 90,
+		bottomLine:
+			"Yes. Measles infection can suppress immune memory after the rash resolves, leaving people more vulnerable to other infections for a period afterward. The MMR vaccine prevents measles and does not produce the same immune-memory loss seen after natural infection.",
+		stableCore: [
+			"WHO says measles itself weakens the immune system and can make the body forget how to protect itself against infections.",
+			"A Science study of 77 unvaccinated children found that natural measles infection eliminated 11% to 73% of their pre-existing antibody repertoire two months after infection; this was not seen after MMR vaccination.",
+			"A Science Immunology study found persistent disruption of naive and memory B-cell diversity after measles, offering a mechanism for prolonged susceptibility to other infections."
+		],
+		openQuestions: [
+			"How long and how strongly immune-memory loss persists across age, nutrition status, prior immunity, and health-care settings.",
+			"Which later infections or vaccine responses are most affected in contemporary outbreak settings.",
+			"How to explain immune amnesia without implying that the measles vaccine weakens immune memory."
+		],
+		whatWouldChangeMinds: [
+			"Large longitudinal cohorts showing no sustained antibody or B-cell memory loss after confirmed measles infection.",
+			"Clinical follow-up showing that measured immune-memory changes after measles do not translate into higher vulnerability to other infections.",
+			"A stronger mechanism demonstrating that the observed antibody-repertoire loss is an artifact or is rapidly and fully restored without re-exposure."
+		],
+		misconceptions: [
+			"'Natural infection strengthens immunity' is too simple here: measles can create strong measles immunity while erasing parts of prior immune memory.",
+			"Immune amnesia is a consequence of measles infection, not of MMR vaccination.",
+			"Calling measles 'just a rash' misses pneumonia, encephalitis, death risk, and the post-infection immune-memory problem."
+		],
+		editorSummary:
+			"This page should help readers understand why measles prevention matters beyond avoiding the acute illness. Keep the wording clear: immune amnesia is a real post-measles concern, while the exact duration and clinical size vary by setting.",
+		uncertaintySummary:
+			"The direction is well supported: measles can damage immune memory after infection. The remaining uncertainty is about duration, magnitude, subgroup risk, and which downstream infections are most affected in different populations.",
+		searchCutoffAt: "2026-07-03T16:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T16:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T16:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial measles immune-memory claim page published from WHO measles guidance, CDC measles guidance, and peer-reviewed immune-amnesia studies identified through Consensus."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Measles",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/news-room/fact-sheets/detail/measles",
+				stance: "supports",
+				note:
+					"Current WHO fact sheet stating that measles weakens the immune system and can make the body forget how to protect itself against infections.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Measles virus infection diminishes preexisting antibodies that offer protection from other pathogens",
+				publisher: "Science",
+				year: 2019,
+				url: "https://doi.org/10.1126/science.aay6485",
+				doi: "10.1126/science.aay6485",
+				pmid: "31672891",
+				stance: "supports",
+				note:
+					"Consensus-identified study measuring loss of 11% to 73% of the pre-existing antibody repertoire in 77 unvaccinated children after natural measles infection, with no similar loss after MMR vaccination.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Incomplete genetic reconstitution of B cell pools contributes to prolonged immunosuppression after measles",
+				publisher: "Science Immunology",
+				year: 2019,
+				url: "https://doi.org/10.1126/sciimmunol.aay6125",
+				doi: "10.1126/sciimmunol.aay6125",
+				stance: "supports",
+				note:
+					"Consensus-identified B-cell receptor sequencing study linking post-measles immune suppression to incomplete naive B-cell reconstitution and depleted memory B-cell clones.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "About Measles",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/measles/about/index.html",
+				stance: "context",
+				note:
+					"Current CDC public-health context for measles contagiousness, serious complications, and the approximately 97% protection expected after two MMR doses.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does the HPV vaccine prevent cervical cancer?",
 		slug: "does-the-hpv-vaccine-prevent-cervical-cancer",
 		status: "published",
