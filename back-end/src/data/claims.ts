@@ -1902,6 +1902,207 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do all types of alcoholic drinks increase cancer risk?",
+		slug: "do-all-types-of-alcoholic-drinks-increase-cancer-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. The main cancer-relevant exposure in beer, wine, hard cider, malt liquor, and spirits is ethanol, which the body can convert to carcinogenic acetaldehyde. Beverage type can affect serving size and drinking pattern, but red wine is not a cancer-risk exception and all drinks containing alcohol raise risk.",
+		stableCore: [
+			"NCI defines alcohol in alcoholic beverages as ethanol and lists beer, wine, hard cider, malt liquor, and distilled spirits as sources of that exposure.",
+			"CDC states that all drinks containing alcohol, including red and white wine, beer, and liquor, increase cancer risk.",
+			"NCI's public-awareness summary explicitly warns that all alcoholic beverages, including wine, increase cancer risk because cancer risk rises with ethanol consumed.",
+			"Systematic-review evidence comparing beverage types does not show a consistent cancer-risk advantage for moderate wine, beer, or spirits after accounting for alcohol exposure."
+		],
+		openQuestions: [
+			"How should risk messages account for larger-than-standard pours, binge patterns, and mixed drinks whose ethanol content is hard for consumers to estimate?",
+			"Do non-ethanol compounds in specific beverages have small outcome-specific effects that matter after ethanol dose, smoking, diet, and socioeconomic confounding are controlled?",
+			"Which public messages best correct the red-wine exception myth without implying that every drink carries the same absolute risk for every person?"
+		],
+		whatWouldChangeMinds: [
+			"High-quality prospective evidence showing that one beverage type has materially lower alcohol-related cancer risk than another at equivalent ethanol dose and drinking pattern.",
+			"A major NCI, CDC, WHO, IARC, or Surgeon General reassessment concluding that ethanol content is not the dominant beverage-shared cancer-risk exposure.",
+			"Replicated mechanistic and epidemiologic evidence that protective compounds in a beverage reliably offset ethanol-related cancer mechanisms in real-world drinkers."
+		],
+		misconceptions: [
+			"Wine, especially red wine, is often treated as if it is biologically separate from other alcoholic drinks for cancer risk.",
+			"Some people hear 'beer only' or 'no hard liquor' as a cancer-risk shield, even when the total ethanol dose is similar.",
+			"Standard drink examples can be misread as typical serving sizes, even though actual pours often contain more alcohol."
+		],
+		editorSummary:
+			"This page should be the beverage-type answer linked from the broader alcohol-cancer page. The key is not that every beverage is identical in every health respect; it is that ethanol-containing drinks share the cancer-risk exposure.",
+		uncertaintySummary:
+			"The shared ethanol and cancer-risk conclusion is strong. Uncertainty is mostly about beverage-specific confounding, actual serving sizes, drinking patterns, and whether non-ethanol compounds have small effects that are outweighed by ethanol in real-world intake.",
+		searchCutoffAt: "2026-07-03T13:42:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:42:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:42:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial beverage-type alcohol cancer-risk page published from CDC, NCI, and systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/cancer/risk-factors/alcohol.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health source stating that all drinks containing alcohol, including red and white wine, beer, and liquor, increase cancer risk.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer Risk Fact Sheet",
+				publisher: "National Cancer Institute",
+				year: 2025,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/alcohol/alcohol-fact-sheet",
+				stance: "supports",
+				note:
+					"NCI anchor for ethanol as the alcoholic-beverage exposure, standard-drink comparisons across beer, wine, and spirits, and the lack of evidence that red wine prevents cancer.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Awareness of Alcohol's Link to Cancer Lagging",
+				publisher: "National Cancer Institute",
+				year: 2023,
+				url: "https://www.cancer.gov/news-events/cancer-currents-blog/2023/cancer-alcohol-link-public-awareness",
+				stance: "supports",
+				note:
+					"Public-awareness context documenting the beverage-type misconception and stating that all alcoholic beverages, including wine, increase cancer risk.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Associations between Low to Moderate Consumption of Alcoholic Beverage Types and Health Outcomes: A Systematic Review",
+				publisher: "Alcohol and Alcoholism",
+				year: 2022,
+				url: "https://doi.org/10.1093/alcalc/agab082",
+				doi: "10.1093/alcalc/agab082",
+				pmid: "34897368",
+				stance: "context",
+				note:
+					"Systematic review of wine, beer, and spirits comparisons concluding that one beverage type is not consistently associated with lower or higher common health risks than another at low-to-moderate intake.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Is there a safe level of alcohol consumption when it comes to cancer risk?",
+		slug: "is-there-a-safe-level-of-alcohol-consumption-when-it-comes-to-cancer-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"For cancer risk, major public-health sources do not identify a zero-risk threshold. That does not mean one drink is as risky as heavy drinking; it means risk generally rises with dose, some cancer risks can increase at low intake, and the lowest cancer-risk choice is to drink less or not drink.",
+		stableCore: [
+			"WHO Europe states that available evidence cannot identify a threshold where alcohol's carcinogenic effects start, so no safe amount can be established for cancer and health.",
+			"NCI states that even light drinkers can have increased risk for some cancers, while also giving absolute-risk examples that keep low-dose increases in proportion.",
+			"CDC advises that drinking less alcohol or not drinking can lower cancer risk and says drinking less is better for health than drinking more.",
+			"A 2023 systematic review and meta-analysis of prospective evidence found dose-response patterns and elevated risks for several cancers even in light or light-to-moderate drinking categories."
+		],
+		openQuestions: [
+			"How should cancer-specific no-threshold language be integrated with separate evidence debates about cardiovascular outcomes and all-cause mortality?",
+			"What are the best absolute-risk formats for communicating low-dose cancer risk without exaggeration or minimization?",
+			"How quickly do risks for different alcohol-related cancers decline after reduction or cessation, and how does this vary by age, sex, genetics, smoking, and prior exposure?"
+		],
+		whatWouldChangeMinds: [
+			"Prospective or causal-inference evidence demonstrating a reproducible alcohol dose below which cancer risk is not elevated, with tight uncertainty bounds.",
+			"A major WHO, NCI, CDC, IARC, or Surgeon General reassessment adopting a cancer-specific safe threshold.",
+			"Evidence that apparent low-dose cancer associations are fully explained by confounding, former-drinker bias, exposure misclassification, or drinking pattern after rigorous correction."
+		],
+		misconceptions: [
+			"No safe level for cancer risk is sometimes caricatured as meaning a single drink creates a large immediate danger.",
+			"Moderation guidelines are sometimes read as a guarantee of zero cancer risk rather than a harm-reduction boundary.",
+			"Potential cardiovascular findings are sometimes used to dismiss the separate and causal alcohol-cancer evidence."
+		],
+		editorSummary:
+			"This page should make threshold language usable. The public answer is a dose-response and risk-minimization answer, not an alarmist claim that all drinking patterns have equal consequences.",
+		uncertaintySummary:
+			"Agreement is broad for cancer-specific no-zero-risk-threshold framing, but exact low-dose risk estimates are still affected by observational confounding, exposure measurement, drinking patterns, cancer site, genetics, and baseline absolute risk.",
+		searchCutoffAt: "2026-07-03T13:42:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:42:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:42:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial alcohol safe-threshold cancer-risk page published from WHO, NCI, CDC, Lancet Public Health, and meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "No level of alcohol consumption is safe for our health",
+				publisher: "World Health Organization Regional Office for Europe",
+				year: 2023,
+				url: "https://www.who.int/europe/news/item/04-01-2023-no-level-of-alcohol-consumption-is-safe-for-our-health",
+				stance: "supports",
+				note:
+					"WHO Europe statement explaining that evidence cannot identify a threshold where carcinogenic effects begin and that less drinking is safer than more drinking.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer Risk Fact Sheet",
+				publisher: "National Cancer Institute",
+				year: 2025,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/alcohol/alcohol-fact-sheet",
+				stance: "supports",
+				note:
+					"NCI source for causal classification, dose-response framing, low-dose examples, and absolute-risk context for one and two drinks per day.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Alcohol and Cancer",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/cancer/risk-factors/alcohol.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health guidance stating that drinking less or not drinking lowers cancer risk and that drinking less is better for health than drinking more.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Health and cancer risks associated with low levels of alcohol consumption",
+				publisher: "The Lancet Public Health",
+				year: 2023,
+				url: "https://doi.org/10.1016/S2468-2667(22)00317-6",
+				doi: "10.1016/S2468-2667(22)00317-6",
+				pmid: "36603913",
+				stance: "supports",
+				note:
+					"WHO-linked public-health commentary arguing that no safe amount can be established for cancers and health because evidence does not identify a carcinogenic threshold.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Cancer risk based on alcohol consumption levels: a comprehensive systematic review and meta-analysis",
+				publisher: "Epidemiology and Health",
+				year: 2023,
+				url: "https://doi.org/10.4178/epih.e2023092",
+				doi: "10.4178/epih.e2023092",
+				pmid: "37905315",
+				stance: "supports",
+				note:
+					"Meta-analysis of 139 cohort studies, 106 in quantitative synthesis, reporting dose-response patterns and higher risks for several cancers even at light or light-to-moderate intake.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does secondhand smoke cause cancer and heart disease in people who do not smoke?",
 		slug: "does-secondhand-smoke-cause-cancer-and-heart-disease-in-people-who-do-not-smoke",
 		status: "published",
@@ -3649,6 +3850,113 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "climate-and-environment",
+		title: "Is global sea level rise influenced year to year by climate cycles even as the long-term trend rises?",
+		slug: "is-global-sea-level-rise-influenced-year-to-year-by-climate-cycles-even-as-the-long-term-trend-rises",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Global mean sea level has a strong long-term rising trend, but individual years can run above or below the expected path because El Nino, La Nina, ocean heat uptake, rainfall over land, ice melt, and land-water storage shift heat and water between the ocean and land. Short-term wiggles do not overturn the multi-decade rise.",
+		stableCore: [
+			"NASA describes global mean sea level as an integrative climate indicator whose long-term change is driven mainly by ice melt, thermal expansion, and land-water storage.",
+			"NASA's 2024 analysis shows a year with faster-than-expected sea-level rise, mostly from thermal expansion, while also emphasizing that every year differs and the long-term rate is getting faster.",
+			"Peer-reviewed evidence finds that interannual global mean sea-level variability is driven by both steric changes in ocean heat content and barystatic water-mass exchange between land and ocean, with both tied to ENSO variability.",
+			"Earlier work found that correcting for interannual natural variability removes an apparent short-term slowdown, supporting the need to separate climate-cycle noise from the long-term warming signal."
+		],
+		openQuestions: [
+			"How much will internal climate variability affect apparent five-year or decade-scale rates in the satellite record?",
+			"How should public charts show uncertainty, acceleration, and short-term variability without encouraging cherry-picked trend windows?",
+			"How will future changes in ENSO behavior, ocean heat uptake, ice-sheet mass loss, and land-water management affect regional and global variability?"
+		],
+		whatWouldChangeMinds: [
+			"Independent sea-level budgets showing that interannual variability is not substantially tied to ocean heat content, land-water exchange, or ENSO-related processes.",
+			"A sustained, multi-decade reversal in global mean sea level across satellite altimetry, tide gauges, and budget components.",
+			"A major IPCC or NASA reassessment finding that short-term variability can explain the long-term satellite-era rise and acceleration."
+		],
+		misconceptions: [
+			"A single year with a slower rise, faster rise, or temporary dip is sometimes treated as proof that the long-term trend has ended.",
+			"El Nino and La Nina are sometimes framed as alternatives to climate change, even though they mostly modulate the year-to-year path around the longer trend.",
+			"Global mean sea level is sometimes confused with local relative sea level, which also depends on land subsidence, uplift, currents, and coastal processes."
+		],
+		editorSummary:
+			"This page should be a measurement-literacy companion to the main sea-level page. It should inoculate against cherry-picked annual changes while making clear that variability is real and scientifically useful.",
+		uncertaintySummary:
+			"The existence of short-term variability around a rising global mean trend is high-certainty. Uncertainty is mostly about the exact partitioning among thermal expansion, land-water storage, ice melt, and internal climate variability over short windows.",
+		searchCutoffAt: "2026-07-03T13:42:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:42:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:42:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial sea-level variability page published from NASA sea-level explainers and interannual global mean sea-level literature."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Overview: Global Sea Level",
+				publisher: "NASA Sea Level Change Portal",
+				url: "https://sealevel.nasa.gov/understanding-sea-level/global-sea-level/overview/",
+				stance: "supports",
+				note:
+					"NASA anchor explaining global mean sea level as a climate indicator and identifying ice melt, thermal expansion, and land-water storage as the major processes.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "NASA Analysis Shows Unexpected Amount of Sea Level Rise in 2024",
+				publisher: "NASA Sea Level Change Portal",
+				year: 2025,
+				url:
+					"https://sealevel.nasa.gov/news/282/nasa-analysis-shows-unexpected-amount-of-sea-level-rise-in-2024/",
+				stance: "supports",
+				note:
+					"Recent NASA example showing year-to-year variability, a faster-than-expected 2024 rise, thermal-expansion dominance that year, and the continuing multi-decade acceleration.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Origin of interannual variability in global mean sea level",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2020,
+				url: "https://doi.org/10.1073/pnas.1922190117",
+				doi: "10.1073/pnas.1922190117",
+				pmid: "32513709",
+				stance: "supports",
+				note:
+					"Satellite, GRACE, and Argo analysis finding that steric ocean-heat changes and barystatic land-ocean water exchange explain most observed interannual global mean sea-level variability and are correlated with ENSO.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "The rate of sea-level rise",
+				publisher: "Nature Climate Change",
+				year: 2014,
+				url: "https://doi.org/10.1038/nclimate2159",
+				doi: "10.1038/nclimate2159",
+				stance: "supports",
+				note:
+					"Earlier analysis showing that removing interannual natural variability eliminates an apparent recent slowdown, illustrating why short windows should not be read as trend reversals.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Rate of Sea Level Rise Doubled over 30 Years, New Study Shows",
+				publisher: "NASA Sea Level Change Portal",
+				year: 2025,
+				url:
+					"https://sealevel.nasa.gov/news/280/rate-of-sea-level-rise-doubled-over-30-years-new-study-shows/",
+				stance: "context",
+				note:
+					"NASA satellite-era context for the long-term trend: about 2.1 mm/year in 1993 rising to about 4.5 mm/year in 2023, driven primarily by warming and ice melt.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
 		title: "Is extreme heat becoming more frequent or intense because of human-caused climate change?",
 		slug: "is-extreme-heat-becoming-more-frequent-or-intense-because-of-human-caused-climate-change",
 		status: "published",
@@ -3821,6 +4129,90 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Recent inequality-focused attribution study reporting faster increases in compound drought-heatwave frequency in low-income regions and a detectable anthropogenic contribution over many of those regions.",
 				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Has human influence increased fire weather occurrence in some regions?",
+		slug: "has-human-influence-increased-fire-weather-occurrence-in-some-regions",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, in some regions, with important caveats. IPCC AR6 has medium confidence that human influence has increased fire weather occurrence in some regions. Fire weather means hot, dry, and windy conditions that make fires easier to start and spread; actual wildfire damage also depends on fuels, ignition, land management, suppression, development patterns, and vulnerability.",
+		stableCore: [
+			"IPCC AR6 assesses medium confidence that fire weather conditions have become more probable in some regions and that human influence has increased fire weather occurrence in some regions.",
+			"IPCC has high confidence that fire weather conditions will become more frequent in some regions at higher levels of global warming.",
+			"A 2022 review concludes that climate change has exerted pervasive upward pressure on fire weather globally, while human and bioclimatic factors can override the relationship with burned area in some places.",
+			"Modeling work finds that anthropogenic emergence of extreme fire weather indices was already detectable over about 22% of burnable land area by 2019 and expands with additional warming."
+		],
+		openQuestions: [
+			"Which regions have the strongest observed attribution signal for fire weather versus burned area, fire severity, smoke exposure, and structural loss?",
+			"How much do land management, suppression, fuel accumulation, ignition, invasive grasses, development in fire-prone areas, and Indigenous burning practices change local risk?",
+			"How should public communication separate climate-driven fire weather from the many non-climate factors that determine whether a fire starts, spreads, or becomes disastrous?"
+		],
+		whatWouldChangeMinds: [
+			"A major IPCC or comparable reassessment downgrading the conclusion that human influence has increased regional fire weather occurrence.",
+			"Regional syntheses showing that observed fire-weather increases are not linked to warming, humidity, drought, wind, or greenhouse forcing after accounting for natural variability.",
+			"Fire-weather models and observations showing no expansion of anthropogenic emergence with additional global warming."
+		],
+		misconceptions: [
+			"Every wildfire is sometimes blamed entirely on climate change, even when ignition, fuel, and land-use factors are decisive.",
+			"The opposite mistake treats arson, forest management, or natural ignition as evidence that climate cannot be changing fire weather.",
+			"Global burned area trends can be misused as a simple proxy for climate-driven fire weather, even though savanna land-use changes and human suppression strongly affect total burned area."
+		],
+		editorSummary:
+			"This page should hold the middle line: climate change has increased fire-weather risk in some regions, but fire outcomes are not climate-only. The public value is careful attribution language, not a one-cause wildfire story.",
+		uncertaintySummary:
+			"Agreement is broad but regionally qualified. The clearest signal is for fire weather, especially hot/dry conditions; uncertainty is larger for burned area, severity, smoke, structural loss, and individual events because fuels, ignitions, land management, suppression, and exposure can dominate local outcomes.",
+		searchCutoffAt: "2026-07-03T13:42:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:42:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:42:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial fire-weather attribution page published from IPCC AR6 and fire-weather review and modeling literature."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Weather and Climate Extreme Events in a Changing Climate",
+				publisher: "IPCC",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-11/",
+				doi: "10.1017/9781009157896.013",
+				stance: "supports",
+				note:
+					"IPCC AR6 Chapter 11 anchor for medium-confidence regional fire-weather attribution and high-confidence projection that fire weather will become more frequent in some regions at higher warming levels.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Global and Regional Trends and Drivers of Fire Under Climate Change",
+				publisher: "Reviews of Geophysics",
+				year: 2022,
+				url: "https://doi.org/10.1029/2020RG000726",
+				doi: "10.1029/2020RG000726",
+				stance: "supports",
+				note:
+					"Review source finding globally pervasive increases in fire-weather frequency and extremity due to climate change during 1979-2019, while emphasizing that burned area can be overridden by other human and bioclimatic factors.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Global Emergence of Anthropogenic Climate Change in Fire Weather Indices",
+				publisher: "Geophysical Research Letters",
+				year: 2019,
+				url: "https://doi.org/10.1029/2018GL080959",
+				doi: "10.1029/2018GL080959",
+				stance: "supports",
+				note:
+					"Modeling study estimating anthropogenic emergence of extreme fire-weather-index days over about 22% of burnable land area by 2019 and wider emergence with additional warming.",
+				order: 3
 			}
 		]
 	},
