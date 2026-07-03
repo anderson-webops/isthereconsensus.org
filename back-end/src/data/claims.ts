@@ -6374,6 +6374,182 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "nutrition-and-diet",
+		title: "Does aspartame cause cancer at typical intake levels?",
+		slug: "does-aspartame-cause-cancer-at-typical-intake-levels",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 72,
+		evidenceCertainty: "low",
+		bottomLine:
+			"The best answer is cautious, not alarmist. IARC classifies aspartame as possibly carcinogenic to humans because limited evidence suggested a possible liver-cancer signal. JECFA, FDA, and EFSA still conclude that intake below their acceptable daily intake limits is not a cancer-safety concern for the general population. Human studies are inconsistent: one large French cohort found a modest association with cancer, while broader reviews and several large cohorts have not shown a clear overall cancer link.",
+		stableCore: [
+			"IARC Group 2B means possible carcinogenic hazard based on limited evidence; it is not proof that typical consumer intake causes cancer.",
+			"JECFA reaffirmed an acceptable daily intake of 0 to 40 mg/kg body weight per day, and WHO's joint release gave the example that a 70 kg adult would need more than 9 to 14 diet-drink cans per day to exceed it if there were no other aspartame sources.",
+			"FDA disagrees that the IARC-reviewed studies support classifying aspartame as a possible human carcinogen and keeps a U.S. ADI of 50 mg/kg body weight per day.",
+			"EFSA's full risk assessment concluded that aspartame and its breakdown products are safe for the general population at current exposure levels, with a 40 mg/kg body weight per day ADI.",
+			"People with phenylketonuria need to avoid or restrict aspartame because it contains phenylalanine; that is a separate issue from cancer risk."
+		],
+		openQuestions: [
+			"Do aspartame-specific cancer signals persist in newer cohorts with repeated dietary measurement, better product-composition data, longer follow-up, and stronger confounding control?",
+			"How should assessments weigh studies of aspartame itself against studies of artificially sweetened beverages or mixed artificial sweeteners?",
+			"Are any observed associations explained by reverse causality, diabetes, obesity, diet quality, screening behavior, or other differences between consumers and non-consumers?"
+		],
+		whatWouldChangeMinds: [
+			"Large replicated cohorts or trials showing a consistent dose-response between measured aspartame intake and specific cancer outcomes below current ADIs after confounding and reverse causality are handled well.",
+			"A major JECFA, FDA, EFSA, NCI, or IARC reassessment changing its conclusion after reviewing newer epidemiology, toxicology, and mechanism evidence.",
+			"Mechanistic evidence identifying a plausible human cancer pathway at oral exposures comparable to typical consumer intake."
+		],
+		misconceptions: [
+			"Possibly carcinogenic is often misread as definitely causes cancer.",
+			"Safe below the ADI is often misread as meaning every study is negative or that unlimited intake is sensible.",
+			"Artificially sweetened beverages are sometimes treated as a perfect measure of aspartame even though products can contain different or mixed sweeteners.",
+			"Aspartame's PKU warning is sometimes confused with a cancer warning."
+		],
+		misconceptionTags: [
+			"hazard-is-not-the-same-as-risk",
+			"relative-risk-can-mislead",
+			"correlation-isnt-causation",
+			"mechanism-is-not-real-world-effect",
+			"cherry-picking-distorts-the-evidence"
+		],
+		editorSummary:
+			"This page should help readers interpret the IARC/JECFA split without turning it into either 'aspartame causes cancer' or 'there is nothing to study.' Keep hazard classification, acceptable daily intake, ordinary exposure, and observational-study limits separate.",
+		uncertaintySummary:
+			"Evidence certainty is low for a cancer effect at typical intake levels because the positive epidemiology is limited and inconsistent, exposure measurement is difficult, and residual confounding or reverse causality can affect artificial-sweetener studies. Confidence is higher that current regulators treat intake below ADI as acceptable for the general population.",
+		uncertaintyDrivers: [
+			{
+				type: "inconsistency",
+				detail: "IARC's hazard classification and JECFA/FDA/EFSA risk assessments answer different questions and weigh the same evidence differently."
+			},
+			{
+				type: "bias",
+				detail: "Aspartame consumers can differ from non-consumers in diabetes, body weight, diet quality, health behavior, and screening patterns."
+			},
+			{
+				type: "indirectness",
+				detail: "Many studies measure artificially sweetened beverages or grouped sweeteners rather than verified aspartame intake from all sources."
+			},
+			{
+				type: "imprecision",
+				detail: "Cancer-site-specific analyses often rely on fewer cases and yield estimates with wider uncertainty than overall-cancer analyses."
+			}
+		],
+		searchDatabases: ["PubMed", "OpenAlex", "Crossref", "IARC/JECFA/FDA/EFSA assessments"],
+		searchCutoffAt: "2026-07-03T19:31:53.000Z",
+		inclusionRules: [
+			"Prioritize IARC, JECFA, FDA, EFSA, NCI, large prospective cohorts, umbrella reviews, and meta-analyses that separate aspartame from other sweeteners when possible.",
+			"Separate hazard-identification conclusions from risk-assessment and acceptable-daily-intake conclusions.",
+			"Track whether evidence measures aspartame, all artificial sweeteners, artificially sweetened beverages, or other substitute exposures."
+		],
+		exclusionRules: [
+			"Do not treat product-marketing claims, advocacy petitions, or single-anecdote reports as cancer evidence.",
+			"Do not infer cancer risk at typical intake directly from high-dose animal, cell, or grouped-sweetener findings.",
+			"Do not treat PKU labeling requirements as evidence that aspartame causes cancer."
+		],
+		institutionalAnchors: [
+			{ name: "IARC", role: "Hazard-identification anchor for the Group 2B classification" },
+			{ name: "JECFA", role: "Joint FAO/WHO food-additive risk-assessment and ADI anchor" },
+			{ name: "U.S. Food and Drug Administration", role: "U.S. sweetener approval and ADI anchor" },
+			{ name: "European Food Safety Authority", role: "EU food-additive risk-assessment and ADI anchor" },
+			{ name: "National Cancer Institute", role: "Cancer-evidence interpretation anchor for public readers" }
+		],
+		lastRetractionCheckAt: "2026-07-03T19:31:53.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T19:31:53.000Z",
+				kind: "publication",
+				summary:
+					"Initial aspartame cancer-risk page published from IARC/JECFA, FDA, EFSA, NCI, NutriNet-Sante, meta-analysis, and umbrella-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Aspartame hazard and risk assessment results released",
+				publisher: "World Health Organization / IARC / JECFA",
+				year: 2023,
+				url: "https://www.who.int/news/item/14-07-2023-aspartame-hazard-and-risk-assessment-results-released",
+				stance: "context",
+				note:
+					"Joint release explaining IARC's Group 2B classification, JECFA's unchanged 0 to 40 mg/kg body weight per day ADI, and the distinction between hazard identification and risk assessment.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Aspartame and Other Sweeteners in Food",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2025,
+				url: "https://www.fda.gov/food/food-additives-petitions/aspartame-and-other-sweeteners-food",
+				stance: "context",
+				note:
+					"FDA source disagreeing with IARC's possible-carcinogen conclusion, stating no safety concern under approved use, listing a 50 mg/kg body weight per day ADI, and noting the PKU exception.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Aspartame",
+				publisher: "European Food Safety Authority",
+				year: 2025,
+				url: "https://www.efsa.europa.eu/en/topics/topic/aspartame",
+				stance: "context",
+				note:
+					"EFSA topic page for the 40 mg/kg body weight per day ADI, conclusion that aspartame is safe at current exposure levels, and the phenylketonuria exception.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Artificial Sweeteners and Cancer",
+				publisher: "National Cancer Institute",
+				year: 2023,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/diet/artificial-sweeteners-fact-sheet",
+				stance: "context",
+				note:
+					"NCI public evidence summary explaining the IARC and JECFA conclusions, inconsistent human studies, and the lack of a clear overall aspartame-cancer association in large cohorts.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Artificial sweeteners and cancer risk: Results from the NutriNet-Sante population-based cohort study",
+				publisher: "PLoS Medicine",
+				year: 2022,
+				url: "https://doi.org/10.1371/journal.pmed.1003950",
+				doi: "10.1371/journal.pmed.1003950",
+				pmid: "35324894",
+				pmcid: "PMC8946744",
+				stance: "debate",
+				note:
+					"Large French cohort reported higher overall cancer risk among higher aspartame consumers, including HR 1.15 with a 95% confidence interval of 1.03 to 1.28.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Can Artificial Sweeteners Increase the Risk of Cancer Incidence and Mortality: Evidence from Prospective Studies",
+				publisher: "Nutrients",
+				year: 2022,
+				url: "https://doi.org/10.3390/nu14183742",
+				doi: "10.3390/nu14183742",
+				pmid: "36145117",
+				stance: "context",
+				note:
+					"Prospective-study meta-analysis of 25 observational studies and 3,739,775 participants found no apparent overall association with cancer incidence or mortality, with some regional and aspartame subgroup signals.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "The association of artificial sweeteners intake and risk of cancer: an umbrella meta-analysis",
+				publisher: "Frontiers in Medicine",
+				year: 2025,
+				url: "https://doi.org/10.3389/fmed.2025.1647178",
+				doi: "10.3389/fmed.2025.1647178",
+				stance: "context",
+				note:
+					"Umbrella review of 10 meta-analyses found no significant overall artificial-sweetener cancer association, while cautioning that grouped results should not be extrapolated to individual compounds.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
 		title: "Does saturated fat still raise LDL and heart risk?",
 		slug: "does-saturated-fat-still-raise-ldl-and-heart-risk",
 		status: "published",
