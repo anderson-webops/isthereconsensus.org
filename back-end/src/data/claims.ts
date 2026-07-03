@@ -3611,6 +3611,101 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does modern treatment cure hepatitis C for most people?",
+		slug: "does-modern-treatment-cure-hepatitis-c-for-most-people",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Modern direct-acting antiviral medicines cure hepatitis C for more than 95% of people who receive appropriate treatment, usually with 8 to 12 weeks of oral medication. The main public-health problem is no longer whether cure is possible, but whether people are tested, linked to care, treated, and protected from reinfection.",
+		stableCore: [
+			"CDC states that hepatitis C can be cured in more than 95% of cases with 8 to 12 weeks of well-tolerated oral direct-acting antiviral treatment.",
+			"WHO states that direct-acting antiviral medicines can cure more than 95% of people with hepatitis C infection, while access to diagnosis and treatment remains low.",
+			"AASLD/IDSA guidance strongly recommends universal DAA treatment for all people with acute or chronic HCV infection, with limited exceptions such as a short life expectancy that cannot be improved by HCV therapy or related care.",
+			"The USPSTF evidence review found pooled sustained virologic response rates greater than 95% across genotypes for DAA regimens, with low short-term serious-adverse-event and withdrawal rates."
+		],
+		openQuestions: [
+			"How can screening, confirmatory RNA testing, and same-day linkage to treatment be made routine enough to close the diagnosis and treatment gap?",
+			"Which delivery models best reach people who inject drugs, people in correctional settings, people without stable insurance or housing, and other groups with high HCV burden?",
+			"How should systems monitor reinfection, hepatitis B reactivation risk, pregnancy considerations, advanced liver disease, and drug interactions without making treatment harder to access?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated evidence showing that recommended DAA regimens no longer achieve high sustained virologic response rates across the major treated HCV populations.",
+			"Major CDC, WHO, AASLD, or IDSA guideline revisions withdrawing DAA treatment as the standard curative therapy for most people with hepatitis C.",
+			"Evidence that treatment harms, resistance, or reinfection consequences outweigh the benefits of curing HCV infection in the populations now recommended for therapy."
+		],
+		misconceptions: [
+			"Hepatitis C is often treated as inevitably chronic, but most treated infections can now be cured.",
+			"A positive antibody test does not prove current infection; confirmatory HCV RNA testing is needed to know whether treatment is needed.",
+			"Cure is not the same as immunity. People can be reinfected after successful treatment, so prevention and follow-up still matter."
+		],
+		editorSummary:
+			"This page should make the modern treatment shift explicit: hepatitis C moved from a hard-to-treat chronic infection to one that is usually curable, but testing, access, reinfection prevention, and liver follow-up remain the practical bottlenecks.",
+		uncertaintySummary:
+			"The curability claim is strong for guideline-recommended DAA treatment. Remaining uncertainty is mainly about implementation, access, reinfection, special populations, drug interactions, and long-term outcomes after cure in people with advanced liver disease.",
+		searchCutoffAt: "2026-07-03T21:03:45.000Z",
+		lastRetractionCheckAt: "2026-07-03T21:03:45.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T21:03:45.000Z",
+				kind: "publication",
+				summary:
+					"Initial hepatitis C treatment claim page published from CDC, WHO, AASLD/IDSA guidance, and USPSTF/JAMA evidence-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Clinical Care of Hepatitis C",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/hepatitis-c/hcp/clinical-care/index.html",
+				stance: "supports",
+				note:
+					"Current CDC clinician-facing anchor stating that HCV can be cured in more than 95% of cases with 8 to 12 weeks of oral DAA treatment and that curative treatment is recommended for essentially everyone with hepatitis C.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Hepatitis C",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/hepatitis-c",
+				stance: "supports",
+				note:
+					"Current WHO fact sheet stating that DAAs can cure more than 95% of people with hepatitis C infection, while diagnosis and treatment access remain low.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title:
+					"AASLD/IDSA 2023 Clinical Practice Guidance Update for Testing, Managing, and Treating Hepatitis C Virus Infection",
+				publisher: "AASLD/IDSA",
+				year: 2023,
+				url: "https://www.idsociety.org/practice-guideline/hcv-guidance/",
+				stance: "supports",
+				note:
+					"Specialty-society guidance strongly recommending universal DAA treatment for acute or chronic HCV infection, with narrow exceptions, and emphasizing simplified treatment models.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Screening for Hepatitis C Virus Infection in Adolescents and Adults: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2020,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2762185",
+				doi: "10.1001/jama.2019.20788",
+				pmid: "32119034",
+				stance: "supports",
+				note:
+					"USPSTF evidence review finding pooled SVR rates greater than 95% across genotypes for DAA regimens, low short-term serious adverse events, and better outcomes among people who achieve SVR.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does treating high blood pressure reduce the risk of stroke and heart disease?",
 		slug: "does-treating-high-blood-pressure-reduce-the-risk-of-stroke-and-heart-disease",
 		status: "published",
