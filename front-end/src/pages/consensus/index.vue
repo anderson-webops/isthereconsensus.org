@@ -234,16 +234,18 @@ function showAllTopics() {
 							<span>{{ formatTopicClaimCount(topic) }}</span>
 							<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
 						</div>
-						<div v-if="topic.featuredClaims?.length" class="topic-row__claims">
-							<span>Start with:</span>
-							<NuxtLink
-								v-for="claim in topic.featuredClaims.slice(0, 2)"
-								:key="claim._id"
-								:to="`/consensus/${topic.slug}/${claim.slug}`"
-							>
-								{{ claim.title }}
-							</NuxtLink>
-						</div>
+						<details v-if="topic.featuredClaims?.length" class="topic-row__claims">
+							<summary>Start with reviewed claims</summary>
+							<div class="topic-row__claims-list">
+								<NuxtLink
+									v-for="claim in topic.featuredClaims.slice(0, 2)"
+									:key="claim._id"
+									:to="`/consensus/${topic.slug}/${claim.slug}`"
+								>
+									{{ claim.title }}
+								</NuxtLink>
+							</div>
+						</details>
 					</div>
 					<div class="topic-row__side">
 						<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
@@ -402,11 +404,55 @@ function showAllTopics() {
 	margin: 0;
 }
 
-.topic-row__meta,
-.topic-row__claims {
+.topic-row__meta {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
+}
+
+.topic-row__claims {
+	display: grid;
+	gap: 8px;
+	padding-top: 2px;
+}
+
+.topic-row__claims summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	list-style: none;
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--consensus-ink);
+}
+
+.topic-row__claims summary::-webkit-details-marker {
+	display: none;
+}
+
+.topic-row__claims summary::after {
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	line-height: 16px;
+	text-align: center;
+	content: "+";
+}
+
+.topic-row__claims[open] summary::after {
+	content: "-";
+}
+
+.topic-row__claims-list {
+	display: flex;
+	gap: 8px 10px;
+	flex-wrap: wrap;
+	padding-left: 2px;
 }
 
 .topic-row__claims a,
