@@ -382,31 +382,26 @@ async function handleChangePassword() {
 .account-details__body {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	align-items: start;
-	gap: 0;
+	gap: 12px;
 	width: 100%;
-	max-width: 920px;
+	max-width: 980px;
 	padding: 0;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	overflow: hidden;
-	background: color-mix(in srgb, var(--consensus-field-surface) 26%, transparent);
+	border: 0;
+	border-radius: 0;
+	overflow: visible;
+	background: transparent;
 }
 
 .setting-card {
 	width: 100%;
-	height: 100%;
 	align-content: start;
-	gap: 13px;
+	gap: 12px;
 	min-width: 0;
 	max-width: none;
-	padding: 18px;
-	border: 0;
-	border-radius: 0;
-	background: transparent;
-}
-
-.setting-card + .setting-card {
-	border-left: 1px solid var(--consensus-soft-line);
+	padding: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 24%, transparent);
 }
 
 .setting-card__intro {
@@ -449,7 +444,7 @@ async function handleChangePassword() {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	margin-top: auto;
+	margin-top: 2px;
 }
 
 .account-form .button {
@@ -561,11 +556,6 @@ input {
 	.account-details__body {
 		grid-template-columns: 1fr;
 		padding-inline: 0;
-	}
-
-	.setting-card + .setting-card {
-		border-top: 1px solid var(--consensus-soft-line);
-		border-left: 0;
 	}
 
 	.setting-card__actions {
