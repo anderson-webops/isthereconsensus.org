@@ -9758,6 +9758,193 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Does glyphosate cause cancer in humans?",
+		slug: "does-glyphosate-cause-cancer-in-humans",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 68,
+		evidenceCertainty: "low",
+		bottomLine:
+			"The honest answer is disputed and exposure-specific. IARC classifies glyphosate as probably carcinogenic to humans as a hazard judgment, based on limited human non-Hodgkin lymphoma evidence plus animal and mechanistic evidence. EPA, EFSA/ECHA, and JMPR do not classify glyphosate as likely to cause cancer under regulatory risk-assessment frameworks for approved uses or dietary exposure. Human studies are mixed: some high-exposure meta-analyses report higher non-Hodgkin lymphoma risk, while the large Agricultural Health Study and later meta-analyses do not show a clear overall association.",
+		stableCore: [
+			"IARC's Group 2A classification is a hazard classification, not a direct estimate of consumer or dietary risk.",
+			"EPA says its withdrawn 2020 interim decision does not automatically invalidate its longstanding not-likely-carcinogenic finding while the agency updates its carcinogenicity explanation after the Ninth Circuit decision.",
+			"EFSA's 2023 peer review did not identify critical areas of concern, and ECHA did not classify glyphosate as carcinogenic, mutagenic, or toxic for reproduction under EU criteria.",
+			"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk through dietary exposure, while acknowledging occupational non-Hodgkin lymphoma evidence and high-dose animal uncertainty.",
+			"The direct human epidemiology is mixed: Zhang 2019 reported increased non-Hodgkin lymphoma risk in highest-exposure groups, while Andreotti 2018 and Boffetta 2021 did not find a clear overall non-Hodgkin lymphoma association."
+		],
+		openQuestions: [
+			"How should assessments weigh occupational exposure to glyphosate-based formulations against dietary exposure to glyphosate residues?",
+			"Do subtype-specific signals such as diffuse large B-cell lymphoma, follicular lymphoma, or acute myeloid leukemia persist in larger prospective cohorts with better exposure measurement?",
+			"How much should public-domain mechanistic evidence, unpublished regulatory toxicology, formulation studies, and registrant studies each count in hazard and risk decisions?"
+		],
+		whatWouldChangeMinds: [
+			"Large prospective cohorts or pooled analyses with measured exposure and formulation data showing a consistent dose-response for lymphoma subtypes or acute myeloid leukemia after latency and other-pesticide confounding are addressed.",
+			"A major IARC, EPA, EFSA/ECHA, or JMPR reassessment aligning hazard and risk conclusions after reviewing newer epidemiology and mechanistic evidence.",
+			"Mechanistic and animal evidence demonstrating either robust human-relevant carcinogenic pathways at approved-use exposures or explaining positive signals as non-causal."
+		],
+		misconceptions: [
+			"IARC Group 2A is sometimes misread as proof that ordinary food residues or home exposure cause cancer.",
+			"Regulatory non-carcinogenic classifications are sometimes misread as proof that occupational and formulation questions are fully closed.",
+			"Glyphosate and glyphosate-based formulations are sometimes treated as identical exposures even though co-formulants and use patterns can matter.",
+			"Court verdicts, bans, and regulatory approvals are sometimes treated as substitutes for evidence synthesis."
+		],
+		misconceptionTags: [
+			"hazard-is-not-the-same-as-risk",
+			"mechanism-is-not-real-world-effect",
+			"false-balance-misleads",
+			"correlation-isnt-causation",
+			"cherry-picking-distorts-the-evidence"
+		],
+		editorSummary:
+			"This page should explain why credible bodies disagree without flattening the answer into either 'safe' or 'proven carcinogen.' Keep hazard classification, dietary risk, occupational formulation exposure, and cancer-subtype evidence separate.",
+		uncertaintySummary:
+			"Confidence is moderate that the disagreement is real and framework-dependent, but low for the exact cancer risk from high occupational or formulation exposure. Evidence is split by hazard versus risk framing, exposure scenario, latency, cancer-subtype definition, and study design.",
+		uncertaintyDrivers: [
+			{
+				type: "inconsistency",
+				detail: "Institutional hazard-identification and regulatory risk-assessment frameworks answer related but different questions."
+			},
+			{
+				type: "bias",
+				detail: "Human studies can be affected by exposure recall, applicator selection, latency choices, and other-pesticide confounding."
+			},
+			{
+				type: "imprecision",
+				detail: "Subtype-specific estimates often have wide confidence intervals and fewer highly exposed cases."
+			},
+			{
+				type: "indirectness",
+				detail: "Dietary residues, occupational use, and glyphosate-based formulations are not the same exposure scenario."
+			}
+		],
+		searchDatabases: ["PubMed", "OpenAlex", "Crossref", "IARC/EPA/EFSA/JMPR assessments"],
+		searchCutoffAt: "2026-07-03T19:21:12.000Z",
+		inclusionRules: [
+			"Prioritize IARC, EPA, EFSA/ECHA, JMPR, large prospective cohorts, pooled analyses, and systematic reviews or meta-analyses of glyphosate and cancer.",
+			"Separate hazard-identification sources from regulatory risk assessments and from dietary-exposure conclusions.",
+			"Track whether studies assess glyphosate alone, glyphosate-based formulations, occupational use, or dietary residues."
+		],
+		exclusionRules: [
+			"Do not treat court verdicts, advocacy summaries, or product labels as primary evidence for carcinogenicity.",
+			"Do not combine all pesticide exposure with glyphosate-specific exposure unless the source reports glyphosate separately.",
+			"Do not infer consumer dietary risk directly from high-dose animal, cell, or occupational-formulation studies."
+		],
+		institutionalAnchors: [
+			{ name: "IARC", role: "Hazard-identification anchor for carcinogenicity classification" },
+			{ name: "U.S. Environmental Protection Agency", role: "U.S. regulatory risk-assessment and registration-review anchor" },
+			{ name: "EFSA / ECHA", role: "European peer-review and hazard-classification anchor" },
+			{ name: "JMPR", role: "Joint FAO/WHO dietary-exposure risk-assessment anchor" }
+		],
+		lastRetractionCheckAt: "2026-07-03T19:21:12.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T19:21:12.000Z",
+				kind: "publication",
+				summary:
+					"Initial glyphosate cancer page published from IARC, EPA, EFSA/ECHA, JMPR, Agricultural Health Study, meta-analysis, and mechanistic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "IARC Monographs Volume 112: evaluation of five organophosphate insecticides and herbicides",
+				publisher: "International Agency for Research on Cancer",
+				year: 2015,
+				url: "https://www.iarc.who.int/featured-news/media-centre-iarc-news-glyphosate/",
+				stance: "debate",
+				note:
+					"IARC classified glyphosate as probably carcinogenic to humans, citing limited human evidence, sufficient animal evidence, and strong mechanistic evidence of genotoxicity.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Glyphosate",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url: "https://www.epa.gov/ingredients-used-pesticide-products/glyphosate",
+				stance: "context",
+				note:
+					"EPA says it is updating the carcinogenicity explanation after the Ninth Circuit decision while maintaining that glyphosate is not likely carcinogenic to humans based on current evidence.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Glyphosate: no critical areas of concern; data gaps identified",
+				publisher: "European Food Safety Authority",
+				year: 2023,
+				url: "https://www.efsa.europa.eu/en/news/glyphosate-no-critical-areas-concern-data-gaps-identified",
+				stance: "context",
+				note:
+					"EFSA's peer review found no critical areas of concern and used ECHA's conclusion that glyphosate did not meet EU criteria for carcinogenic classification, while noting data gaps.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Joint FAO/WHO Meeting on Pesticide Residues: Summary Report, May 2016",
+				publisher: "Joint FAO/WHO Meeting on Pesticide Residues",
+				year: 2016,
+				url: "https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/2016_JMPR_Summary_Special.pdf",
+				stance: "context",
+				note:
+					"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk to humans through dietary exposure, despite some occupational and high-dose animal uncertainty.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Glyphosate Use and Cancer Incidence in the Agricultural Health Study",
+				publisher: "Journal of the National Cancer Institute",
+				year: 2018,
+				url: "https://doi.org/10.1093/jnci/djx233",
+				doi: "10.1093/jnci/djx233",
+				stance: "context",
+				note:
+					"Large prospective applicator cohort reported no statistically significant association with cancer at any site or with non-Hodgkin lymphoma overall, while noting an AML signal needing confirmation.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Exposure to Glyphosate-Based Herbicides and Risk for Non-Hodgkin Lymphoma: A Meta-Analysis and Supporting Evidence",
+				publisher: "Mutation Research/Reviews in Mutation Research",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.mrrev.2019.02.001",
+				doi: "10.1016/j.mrrev.2019.02.001",
+				pmid: "31342895",
+				stance: "debate",
+				note:
+					"Meta-analysis reported a higher non-Hodgkin lymphoma risk among high-exposure groups, with a meta-relative risk of 1.41 and a 95% confidence interval of 1.13 to 1.75.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "Exposure to glyphosate and risk of Non-Hodgkin lymphoma: an updated meta-analysis",
+				publisher: "La Medicina del Lavoro",
+				year: 2021,
+				url: "https://doi.org/10.23749/mdl.v112i3.11123",
+				doi: "10.23749/mdl.v112i3.11123",
+				pmid: "34142676",
+				stance: "context",
+				note:
+					"Updated meta-analysis did not find a clear overall non-Hodgkin lymphoma association but reported that a diffuse large B-cell lymphoma signal could not be ruled out.",
+				order: 7
+			},
+			{
+				kind: "systematic_review",
+				title: "Mapping the key characteristics of carcinogens for glyphosate and its formulations: a systematic review",
+				publisher: "Chemosphere",
+				year: 2023,
+				url: "https://doi.org/10.1016/j.chemosphere.2023.139572",
+				doi: "10.1016/j.chemosphere.2023.139572",
+				pmid: "37474029",
+				stance: "debate",
+				note:
+					"Mechanistic systematic review found evidence supporting key carcinogen characteristics, especially genotoxicity and endocrine disruption, relevant to hazard plausibility.",
+				order: 8
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title:
 			"Are microplastics in drinking water proven to cause human health harms at current exposure levels?",
