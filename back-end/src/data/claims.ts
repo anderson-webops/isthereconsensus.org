@@ -9620,6 +9620,428 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Does sustained HIV viral suppression prevent sexual transmission?",
+		slug: "does-sustained-hiv-viral-suppression-prevent-sexual-transmission",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. People living with HIV who take antiretroviral therapy and maintain viral suppression below 200 copies/mL do not sexually transmit HIV. This is the evidence behind U=U, or Undetectable = Untransmittable. The protection depends on sustained adherence and viral-load monitoring, and it does not prevent transmission of other sexually transmitted infections.",
+		stableCore: [
+			"CDC says a person living with HIV who is on treatment and maintains an undetectable viral load has zero risk of transmitting HIV to sexual partners.",
+			"The U.S. NIH adult and adolescent HIV guideline says maintaining HIV RNA below 200 copies/mL with antiretroviral therapy prevents sexual transmission and should be explained to all people with HIV.",
+			"NIH summarizes HPTN 052, PARTNER 1, PARTNER 2, and Opposites Attract as showing no phylogenetically linked transmissions across 144,631 condomless sex acts while the partner with HIV had viral suppression below 200 copies/mL.",
+			"PARTNER's final Lancet report estimated the risk of HIV transmission through condomless sex in serodifferent gay couples with suppressive ART as effectively zero."
+		],
+		openQuestions: [
+			"How can health systems make viral-load testing, medication access, and adherence support reliable enough for people to maintain suppression over time?",
+			"How should clinicians communicate U=U without implying protection against other sexually transmitted infections or pregnancy?",
+			"How should public messaging handle brief treatment interruptions, delayed suppression after starting ART, and individual risk tolerance?"
+		],
+		whatWouldChangeMinds: [
+			"Well-documented phylogenetically linked sexual transmissions occurring while HIV RNA was confirmed below 200 copies/mL on sustained antiretroviral therapy.",
+			"Major CDC, NIH, WHO, or comparable guideline revisions withdrawing the U=U / treatment-as-prevention conclusion for sustained viral suppression.",
+			"New evidence showing that the 200 copies/mL operational threshold does not reliably mark prevention-level suppression in real-world care."
+		],
+		misconceptions: [
+			"U=U does not mean HIV has been cured; treatment must continue to keep viral load suppressed.",
+			"Undetectable status prevents sexual HIV transmission, but it does not prevent other STIs, so STI screening and prevention still matter.",
+			"The evidence is about sustained viral suppression, not simply having a prescription or having started treatment recently."
+		],
+		editorSummary:
+			"This page should be clear and stigma-reducing: the consensus is strong that sustained viral suppression prevents sexual HIV transmission, while the practical work is access, adherence, monitoring, and STI context.",
+		uncertaintySummary:
+			"The central U=U conclusion is high-certainty for sexual HIV transmission when viral load is sustained below 200 copies/mL. Uncertainty is mostly implementation-related: treatment access, monitoring cadence, adherence interruptions, and communicating the boundary with other STI risks.",
+		searchCutoffAt: "2026-07-03T14:31:39.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:31:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:31:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial HIV viral-suppression transmission-prevention page published from CDC, NIH guideline, and PARTNER final-study evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Undetectable = Untransmittable",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/global-hiv-tb/php/our-approach/undetectable-untransmittable.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor for the U=U message that treatment with maintained undetectable viral load creates zero risk of sexual HIV transmission.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Antiretroviral Therapy to Prevent Sexual Transmission of HIV (Treatment as Prevention)",
+				publisher: "NIH ClinicalInfo HIV.gov",
+				year: 2025,
+				url: "https://clinicalinfo.hiv.gov/en/guidelines/hiv-clinical-guidelines-adult-and-adolescent-arv/arv-therapy-as-prevention",
+				stance: "supports",
+				note:
+					"Current U.S. HIV guideline source for the <200 copies/mL threshold, need for sustained suppression, and limits around STIs and treatment interruptions.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Risk of HIV transmission through condomless sex in serodifferent gay couples with the HIV-positive partner taking suppressive antiretroviral therapy (PARTNER): final results of a multicentre, prospective, observational study",
+				publisher: "The Lancet",
+				year: 2019,
+				url: "https://doi.org/10.1016/S0140-6736(19)30418-0",
+				doi: "10.1016/S0140-6736(19)30418-0",
+				pmid: "31056293",
+				stance: "supports",
+				note:
+					"PARTNER final results source concluding that transmission risk through condomless sex with suppressive ART was effectively zero in the studied serodifferent gay couples.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does indoor tanning increase skin cancer risk?",
+		slug: "does-indoor-tanning-increase-skin-cancer-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"Yes. Indoor tanning exposes skin to intense ultraviolet radiation, and major cancer agencies classify UV-emitting tanning devices as carcinogenic to humans. Risk is especially concerning when people start young, but the practical consensus is simpler: tanning beds are not a safe way to tan.",
+		stableCore: [
+			"IARC classified UV-emitting tanning devices as carcinogenic to humans and reported that melanoma risk increased by 75% when use started before age 30 in combined epidemiologic evidence.",
+			"CDC advises avoiding indoor tanning because tanning beds, booths, sunbeds, and sunlamps expose users to high levels of UV rays that can cause skin cancer, eye cancer, cataracts, burns, and other injuries.",
+			"CDC explicitly describes a tan after UV exposure as a sign of skin injury, not health, and says a base tan does not protect against sunburns.",
+			"BMJ meta-analysis evidence found sunbed use associated with a significant increase in melanoma risk, with greater risk at younger first use and more sessions."
+		],
+		openQuestions: [
+			"How much do risk estimates vary by device type, UV intensity, cumulative sessions, age at first use, skin type, and sunburn history?",
+			"Which policies best reduce adolescent and young-adult exposure without shifting users to unregulated or poorly supervised settings?",
+			"How should public messaging balance vitamin D concerns with safer non-UV ways to maintain adequate vitamin D?"
+		],
+		whatWouldChangeMinds: [
+			"Large, independently replicated epidemiologic evidence showing no increased melanoma, basal-cell carcinoma, squamous-cell carcinoma, or ocular melanoma risk from indoor tanning after adequate exposure measurement.",
+			"Major IARC, WHO, CDC, FDA, or dermatology-society reassessment concluding that UV-emitting tanning devices are not carcinogenic under real-world cosmetic-use conditions.",
+			"Mechanistic evidence overturning the established role of tanning-device UV exposure in DNA damage and skin-cancer pathways."
+		],
+		misconceptions: [
+			"A base tan is often marketed as protective, but health agencies treat it as UV injury and not a safe shield against future damage.",
+			"Indoor tanning is not a safer or more controlled version of sunlight; the issue is carcinogenic UV exposure.",
+			"Using tanning beds for vitamin D is not necessary when diet, supplements, and ordinary clinical guidance can address deficiency without intentional UV damage."
+		],
+		editorSummary:
+			"This page should be direct because the consensus is unusually practical: indoor tanning increases cancer risk, especially with early and repeated use, and a cosmetic tan should not be framed as a health behavior.",
+		uncertaintySummary:
+			"The direction of risk is high-certainty. Remaining uncertainty is mostly about the exact size of risk for particular device types, user histories, and skin-cancer subtypes, not whether indoor tanning is a credible carcinogenic exposure.",
+		searchCutoffAt: "2026-07-03T14:31:39.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:31:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:31:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial indoor-tanning skin-cancer page published from IARC classification, CDC prevention guidance, and sunbed meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Sunbeds and UV Radiation",
+				publisher: "International Agency for Research on Cancer",
+				year: 2009,
+				url: "https://www.iarc.who.int/media-centre-iarc-news-32/",
+				stance: "supports",
+				note:
+					"IARC anchor for classifying UV-emitting tanning devices as carcinogenic to humans and for the 75% higher melanoma-risk estimate when use starts young.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Reducing Risk for Skin Cancer",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/skin-cancer/prevention/index.html",
+				stance: "supports",
+				note:
+					"CDC prevention source advising people to avoid indoor tanning and describing tans from UV exposure as signs of injury rather than health.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Cutaneous melanoma attributable to sunbed use: systematic review and meta-analysis",
+				publisher: "The BMJ",
+				year: 2012,
+				url: "https://doi.org/10.1136/bmj.e4757",
+				doi: "10.1136/bmj.e4757",
+				pmid: "22833605",
+				stance: "supports",
+				note:
+					"Meta-analysis finding sunbed use associated with significantly increased melanoma risk, with higher risk from younger first use and more sessions.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "The association of use of sunbeds with cutaneous malignant melanoma and other skin cancers: A systematic review",
+				publisher: "International Journal of Cancer",
+				year: 2007,
+				url: "https://doi.org/10.1002/ijc.22453",
+				doi: "10.1002/ijc.22453",
+				pmid: "17131335",
+				stance: "supports",
+				note:
+					"Earlier IARC-linked systematic review summarizing epidemiologic and experimental evidence on indoor tanning equipment and skin cancer.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do industrially produced trans fats increase cardiovascular risk?",
+		slug: "do-industrially-produced-trans-fats-increase-cardiovascular-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"Yes. Industrially produced trans fats from partially hydrogenated oils increase cardiovascular risk and have no known health benefit. The consensus has moved from labeling to elimination: WHO recommends limiting trans fat to less than 1% of energy and eliminating industrial trans fats from the food supply, and FDA determined partially hydrogenated oils are no longer generally recognized as safe for U.S. foods.",
+		stableCore: [
+			"WHO states that high trans-fat intake increases risk of death from any cause by 34%, coronary heart disease deaths by 28%, and coronary heart disease by 21%.",
+			"WHO recommends adults limit trans fat to less than 1% of total energy intake and says industrially produced trans fats are not part of a healthy diet and should be avoided.",
+			"FDA determined in 2015 that partially hydrogenated oils, the primary source of industrially produced trans fats, are not generally recognized as safe for use in food.",
+			"New England Journal of Medicine review evidence links trans-fat intake with coronary heart disease, sudden cardiac death, and adverse lipid and inflammatory pathways."
+		],
+		openQuestions: [
+			"How quickly will remaining countries adopt and enforce best-practice trans-fat limits or partially hydrogenated oil bans?",
+			"How should regulators monitor replacement fats so trans-fat elimination does not increase other diet-related risks?",
+			"How should public guidance distinguish industrial trans fats from broader dietary fat debates without encouraging oversimplified fat avoidance?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence showing industrially produced trans fats do not worsen blood lipids, inflammation, coronary heart disease risk, or cardiovascular mortality.",
+			"Major WHO, FDA, or comparable food-safety agency revisions concluding that partially hydrogenated oils are safe for routine food use.",
+			"Population-level evidence showing trans-fat elimination fails to reduce cardiovascular risk when replacement fats and dietary context are accounted for."
+		],
+		misconceptions: [
+			"Trans fats are sometimes blurred with all dietary fat, but the evidence and policy consensus are specifically strong against industrial trans fats and partially hydrogenated oils.",
+			"Zero grams on a label does not always mean literally no trans fat in every serving, so ingredient lists and regulation both matter.",
+			"Removing industrial trans fats does not mean every replacement ingredient is automatically healthy; the replacement pattern still matters."
+		],
+		editorSummary:
+			"This page should be one of the site's clearest nutrition consensus examples. Unlike many diet debates, industrial trans fats have a strong harm signal, no known health benefit, and broad policy consensus around elimination.",
+		uncertaintySummary:
+			"The harm direction is high-certainty for industrial trans fats. Remaining uncertainty is mainly policy and substitution: enforcement, replacement fats, residual exposure, and how different food systems complete elimination.",
+		searchCutoffAt: "2026-07-03T14:31:39.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:31:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:31:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial industrial trans-fat cardiovascular-risk page published from WHO, FDA, and NEJM review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Trans fat",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/news-room/fact-sheets/detail/trans-fat",
+				stance: "supports",
+				note:
+					"WHO anchor for the cardiovascular risk estimates, the less-than-1% energy recommendation, and global industrial trans-fat elimination policy.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Final Determination Regarding Partially Hydrogenated Oils (Removing Trans Fat)",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2015,
+				url: "https://www.fda.gov/food/food-additives-petitions/final-determination-regarding-partially-hydrogenated-oils-removing-trans-fat",
+				stance: "supports",
+				note:
+					"FDA regulatory anchor for determining partially hydrogenated oils are no longer generally recognized as safe for use in food.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Trans Fatty Acids and Cardiovascular Disease",
+				publisher: "The New England Journal of Medicine",
+				year: 2006,
+				url: "https://doi.org/10.1056/NEJMra054035",
+				doi: "10.1056/NEJMra054035",
+				pmid: "16611951",
+				stance: "supports",
+				note:
+					"Review evidence summarizing cardiovascular disease, lipid, inflammation, and policy implications of reducing trans fatty acids from partially hydrogenated oils.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is heavy rainfall becoming more frequent and intense because of human-caused climate change?",
+		slug: "is-heavy-rainfall-becoming-more-frequent-and-intense-because-of-human-caused-climate-change",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		bottomLine:
+			"Yes, for the global land signal and many well-observed regions. A warmer atmosphere holds more moisture, and IPCC concludes human influence is likely the main driver of the observed global-scale intensification of heavy precipitation over land. The exact trend varies by region, so a local flood still needs local attribution and exposure analysis.",
+		stableCore: [
+			"IPCC AR6 finds the frequency and intensity of heavy precipitation events have likely increased globally over most land regions with good observational coverage.",
+			"IPCC AR6 says human influence, especially greenhouse gas emissions, is likely the main driver of the observed global-scale intensification of heavy precipitation over land regions.",
+			"EPA says heavy precipitation events have become more frequent across the contiguous United States since the 1950s, especially in the Northeast and Midwest, with strong evidence that warming from human activities contributed.",
+			"NCA5 reports that heavy precipitation events became more frequent and intense across much of the United States over 1958-2021, with robust evidence that human-caused warming contributed to the heaviest events across nearly 70% of the country."
+		],
+		openQuestions: [
+			"How large is the human contribution to a specific local flood compared with land use, drainage, river management, antecedent soil moisture, and exposure?",
+			"Which regions have enough long-term observations to support confident trend and attribution statements?",
+			"How should infrastructure standards update rainfall assumptions without overclaiming precision at very local scales?"
+		],
+		whatWouldChangeMinds: [
+			"An IPCC-scale reassessment finding that observed heavy-precipitation intensification over land is not attributable to anthropogenic warming.",
+			"New global observations showing no increase in the frequency or intensity of heavy precipitation across well-observed land regions.",
+			"Stronger physical evidence showing atmospheric moisture increases from warming do not translate into heavier precipitation extremes."
+		],
+		misconceptions: [
+			"A cold or dry season in one place does not disprove the global heavy-precipitation signal.",
+			"Climate change does not mean every flood has the same cause; flooding also depends on where people build, drainage, soils, rivers, and emergency preparation.",
+			"Average annual precipitation and the heaviest precipitation events can move differently, so a region can face more intense downpours even if total rainfall changes less."
+		],
+		editorSummary:
+			"This page should make the physical signal visible without turning every flood into a single-cause story: the broad consensus is strong for heavier precipitation in a warmer climate, while local damages depend on many non-climate factors too.",
+		uncertaintySummary:
+			"The global and U.S. direction is high-certainty in well-observed regions. Uncertainty grows at smaller spatial scales, in regions with sparse records, and when converting rainfall trends into flood damages or design standards.",
+		searchCutoffAt: "2026-07-03T14:31:39.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:31:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:31:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial heavy-precipitation climate-change page published from IPCC AR6, EPA extreme-precipitation guidance, and NCA5 climate-trends assessment evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Chapter 11: Weather and Climate Extreme Events in a Changing Climate",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-11/",
+				stance: "supports",
+				note:
+					"IPCC assessment anchor for observed increases in heavy precipitation and attribution of global land intensification primarily to human influence.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Extreme Precipitation",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2025,
+				url: "https://www.epa.gov/climatechange-science/extreme-precipitation",
+				stance: "supports",
+				note:
+					"EPA public science source for U.S. heavy-precipitation increases since the 1950s and the role of human-caused warming in the trend.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Climate Trends",
+				publisher: "U.S. Global Change Research Program",
+				year: 2023,
+				url: "https://toolkit.climate.gov/sites/default/files/2025-07/NCA5_Ch2_Climate-Trends.pdf",
+				doi: "10.7930/NCA5.2023.CH2",
+				stance: "supports",
+				note:
+					"NCA5 chapter source for observed U.S. heavy-precipitation changes over 1958-2021 and evidence that human-caused warming contributed across nearly 70% of the United States.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Does climate change make hurricanes wetter and coastal flooding worse?",
+		slug: "does-climate-change-make-hurricanes-wetter-and-coastal-flooding-worse",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		bottomLine:
+			"Broadly yes, with an important caveat. Human-caused warming is expected to make tropical-cyclone rainfall rates higher, and sea-level rise makes coastal inundation from storms worse when storms occur. But the total number of Atlantic tropical storms or hurricanes is not expected to show a simple large increase, and basin-specific frequency projections remain uncertain.",
+		stableCore: [
+			"NOAA GFDL summarizes modeling studies as projecting tropical-cyclone precipitation-rate increases of about 14% for a 2 degrees Celsius warming scenario, with the strongest agreement across studies for rain rates and intensity.",
+			"NOAA GFDL says neither model projections nor trend analyses support the idea that greenhouse-gas warming leads to large increases in Atlantic tropical storm or overall hurricane numbers.",
+			"NOAA GFDL notes that sea-level rise, for which human activity has very likely been the main driver since at least 1971 according to IPCC AR6, should raise coastal inundation levels for tropical cyclones that do occur, all else equal.",
+			"IPCC AR6 assesses high confidence that sea-level rise will increase the possibility of extreme coastal water levels in most regions, with other factors held equal."
+		],
+		openQuestions: [
+			"How will Atlantic basin frequency, tracks, rapid intensification, wind shear, aerosols, and natural variability interact over the next several decades?",
+			"How much of a specific hurricane's rainfall, wind intensity, or surge damage can be attributed to human-caused warming versus weather variability and local exposure?",
+			"How should coastal planning combine rainfall, river flow, storm surge, sea-level rise, land subsidence, and development patterns into practical flood standards?"
+		],
+		whatWouldChangeMinds: [
+			"An IPCC or NOAA reassessment showing that warmer oceans and air do not increase tropical-cyclone rainfall rates under otherwise comparable conditions.",
+			"Robust evidence showing sea-level rise does not increase coastal inundation levels during tropical cyclones, all else equal.",
+			"Updated observations and models converging on a simple large increase in total Atlantic hurricane counts, which would change the current caveated answer."
+		],
+		misconceptions: [
+			"Climate change and hurricanes are sometimes reduced to 'more storms' or 'no effect'; the stronger consensus concerns heavier rainfall, more intense storms in some measures, and higher storm-surge baseline from sea-level rise.",
+			"No long-term U.S. landfall trend does not mean hurricanes are unaffected by warming; rainfall, rapid intensification, storm surge, and exposure are separate questions.",
+			"Storm damage trends cannot be read as climate trends without accounting for coastal development, wealth, building standards, insurance, and preparedness."
+		],
+		editorSummary:
+			"This page should model the site's best nuance: readers need the consensus that warmer climate worsens hurricane hazards through rain and sea level, while also seeing that total storm counts are not the settled or most useful claim.",
+		uncertaintySummary:
+			"Confidence is high for increased tropical-cyclone rainfall rates with warming and for sea-level rise amplifying coastal inundation. Confidence is lower for simple claims about total Atlantic hurricane frequency, basin-specific tracks, and individual-event attribution.",
+		searchCutoffAt: "2026-07-03T14:31:39.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:31:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:31:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial hurricane rainfall and coastal-flooding climate-change page published from NOAA GFDL, IPCC AR6, and NCA5 evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Global Warming and Hurricanes",
+				publisher: "NOAA Geophysical Fluid Dynamics Laboratory",
+				year: 2026,
+				url: "https://www.gfdl.noaa.gov/global-warming-and-hurricanes/",
+				stance: "supports",
+				note:
+					"NOAA GFDL anchor for projected tropical-cyclone rainfall increases, uncertain frequency changes, and sea-level rise effects on coastal inundation.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Chapter 11: Weather and Climate Extreme Events in a Changing Climate",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-11/",
+				stance: "supports",
+				note:
+					"IPCC assessment anchor for tropical-cyclone, compound flooding, heavy precipitation, and sea-level-rise evidence boundaries.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Climate Trends",
+				publisher: "U.S. Global Change Research Program",
+				year: 2023,
+				url: "https://toolkit.climate.gov/sites/default/files/2025-07/NCA5_Ch2_Climate-Trends.pdf",
+				doi: "10.7930/NCA5.2023.CH2",
+				stance: "supports",
+				note:
+					"NCA5 chapter source for U.S. climate-trend framing, Hurricane Harvey rainfall attribution examples, and the distinction between storm hazards and exposure.",
+				order: 3
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
