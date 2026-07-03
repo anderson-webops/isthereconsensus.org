@@ -176,6 +176,10 @@ function formatTopicClaimCount(topic: Topic) {
 	return "Claim reviews load on topic pages";
 }
 
+function topicDirectoryDescription(topic: Topic & { guide: ReturnType<typeof getTopicGuide> }) {
+	return topic.description || topic.guide.snapshot;
+}
+
 function showAllTopics() {
 	search.value = "";
 	filter.value = "all";
@@ -228,7 +232,9 @@ function showAllTopics() {
 				<article v-for="topic in filteredTopics" :key="topic.slug" class="topic-row">
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<p>{{ topic.description || topic.guide.snapshot }}</p>
+						<p class="topic-row__description" :title="topicDirectoryDescription(topic)">
+							{{ topicDirectoryDescription(topic) }}
+						</p>
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
 							<span>{{ formatTopicClaimCount(topic) }}</span>
@@ -400,13 +406,26 @@ function showAllTopics() {
 	padding: 18px 20px;
 }
 
+.topic-row__main {
+	display: grid;
+	gap: 10px;
+	align-content: start;
+}
+
 .topic-row h3 {
-	margin: 0 0 6px;
+	margin: 0;
 	line-height: 1.2;
 }
 
 .topic-row p {
 	margin: 0;
+}
+
+.topic-row__description {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 }
 
 .topic-row__meta {
