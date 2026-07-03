@@ -6808,7 +6808,8 @@ const rawClaims: SeedClaim[] = [
 		stableCore: [
 			"The 2022 USPSTF evidence review included 84 studies and 739,803 participants.",
 			"Vitamin E was not significantly associated with lower all-cause mortality, cardiovascular events, or cancer incidence in pooled randomized-trial evidence.",
-			"Beta-carotene was associated with higher lung cancer risk and cardiovascular mortality in relevant high-risk groups, especially people who smoke or had asbestos exposure."
+			"Beta-carotene was associated with higher lung cancer risk and cardiovascular mortality in relevant high-risk groups, especially people who smoke or had asbestos exposure.",
+			"Vitamin E as an essential nutrient from foods or deficiency treatment is a separate question from high-dose supplement pills for disease prevention."
 		],
 		openQuestions: [
 			"Whether baseline nutrient status, food insecurity, or other subgroup factors change the benefit-harm balance for some nutrients.",
@@ -6820,13 +6821,20 @@ const rawClaims: SeedClaim[] = [
 		],
 		misconceptions: [
 			"Antioxidant biology is often treated as proof that antioxidant pills prevent disease, but trial outcomes are the stronger test.",
-			"Evidence against routine prevention is not the same as saying deficiency treatment or pregnancy-specific supplementation never matters."
+			"Evidence against routine prevention is not the same as saying deficiency treatment or pregnancy-specific supplementation never matters.",
+			"Food sources of vitamin E should not be treated as equivalent to high-dose vitamin E supplements marketed for heart or cancer prevention."
 		],
 		editorSummary:
 			"This page captures a clean supplement-prevention claim with useful numbers: a large evidence review, no vitamin E prevention benefit, and beta-carotene harm signals in high-risk groups.",
-		searchCutoffAt: "2026-07-02T21:30:00.000Z",
-		lastRetractionCheckAt: "2026-07-02T21:30:00.000Z",
+		searchCutoffAt: "2026-07-03T18:35:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T18:35:00.000Z",
 		changeLog: [
+			{
+				date: "2026-07-03T18:35:00.000Z",
+				kind: "update",
+				summary:
+					"Added NIH Office of Dietary Supplements context separating vitamin E as a nutrient from routine high-dose supplement use for cardiovascular disease or cancer prevention."
+			},
 			{
 				date: "2026-07-02T21:30:00.000Z",
 				kind: "publication",
@@ -6873,6 +6881,16 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Older broad supplement meta-analysis used as context for why isolated nutrient pills should not be equated with food-pattern evidence.",
 				order: 3
+			},
+			{
+				kind: "context",
+				title: "Vitamin E - Health Professional Fact Sheet",
+				publisher: "NIH Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/VitaminE-HealthProfessional/",
+				stance: "context",
+				note:
+					"NIH ODS context distinguishing food sources, typical supplement doses, deficiency states, and trial evidence that routine vitamin E supplements do not prevent cardiovascular disease or cancer.",
+				order: 4
 			}
 		]
 	},
