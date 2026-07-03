@@ -5215,6 +5215,212 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Can cannabis be addictive and lead to cannabis use disorder?",
+		slug: "can-cannabis-be-addictive-and-lead-to-cannabis-use-disorder",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		bottomLine:
+			"Yes. Cannabis can be addictive and can lead to cannabis use disorder, especially with frequent use and earlier initiation. That does not mean every adult who uses cannabis will develop a disorder, but it does mean the 'not addictive' claim is wrong and risk communication should be direct about cravings, withdrawal, tolerance, unsuccessful quit attempts, and continued use despite harm.",
+		stableCore: [
+			"CDC says approximately 3 in 10 people who use cannabis have cannabis use disorder and that risk is greater for people who start during youth or adolescence and who use more frequently.",
+			"National Academies found substantial evidence that increasing cannabis-use frequency is statistically associated with progression to problem cannabis use, and substantial evidence that earlier initiation is a risk factor.",
+			"A 2020 systematic review and meta-analysis estimated that about 22% of people who use cannabis have cannabis use disorder, with higher dependence risk among young people who use weekly or daily.",
+			"A 2022 systematic review and meta-analysis found a log-linear dose-response relationship: CUD risk rose from yearly to monthly, weekly, and daily use, with daily use associated with the largest absolute risk increase."
+		],
+		openQuestions: [
+			"How much do THC potency, concentrates, vaping, edibles, and route of administration change CUD risk beyond frequency of use?",
+			"Which prevention and treatment approaches work best for adolescents, daily users, medical users, and people with co-occurring mental-health conditions?",
+			"How should legalization and medical-use messaging communicate CUD risk without implying that all cannabis use is identical or that people with CUD should be stigmatized?"
+		],
+		whatWouldChangeMinds: [
+			"Large contemporary longitudinal studies showing that frequent use, early initiation, and higher exposure no longer predict CUD after strong control for confounding and reverse causality.",
+			"Major CDC, National Academies, WHO, DSM, or ICD reassessments concluding that cannabis use disorder is not a valid or clinically meaningful disorder.",
+			"High-quality evidence showing that modern high-THC products, concentrates, or daily-use patterns do not increase tolerance, withdrawal, craving, impaired control, or continued use despite harm."
+		],
+		misconceptions: [
+			"'Natural' or legal is sometimes mistaken for 'not addictive,' even though addiction risk depends on exposure, vulnerability, and product characteristics.",
+			"Cannabis withdrawal and tolerance are sometimes dismissed as impossible, but they are part of the clinical CUD picture for some users.",
+			"CUD risk does not mean every use is addiction, and it does not mean people using cannabis medically are automatically misusing it."
+		],
+		editorSummary:
+			"This page should be frank without sounding punitive: cannabis can be addictive, risk rises with frequency and early initiation, and the goal is practical risk literacy rather than a blanket moral judgment about every adult or medical use.",
+		uncertaintySummary:
+			"The existence of CUD and the frequency/early-initiation risk gradient are well supported. The more uncertain parts are the exact modern risk by product potency, route, legal-market context, individual vulnerability, and treatment pathway.",
+		searchCutoffAt: "2026-07-03T14:53:10.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:53:10.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:53:10.000Z",
+				kind: "publication",
+				summary:
+					"Initial cannabis-use-disorder page published from CDC guidance, National Academies conclusions, and CUD prevalence/frequency meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Understanding Your Risk for Cannabis Use Disorder",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html",
+				stance: "supports",
+				note:
+					"Primary public-health anchor for the approximately 3-in-10 CUD estimate, signs of CUD, and higher risk with youth initiation and more frequent use.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "The Health Effects of Cannabis and Cannabinoids: Problem Cannabis Use",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2017,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK425740/",
+				doi: "10.17226/24625",
+				stance: "supports",
+				note:
+					"Assessment anchor concluding substantial evidence that greater frequency increases the likelihood of problem cannabis use and that earlier initiation is a risk factor.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"What is the prevalence and risk of cannabis use disorders among people who use cannabis? a systematic review and meta-analysis.",
+				publisher: "Addictive Behaviors",
+				year: 2020,
+				url: "https://doi.org/10.1016/j.addbeh.2020.106479",
+				doi: "10.1016/j.addbeh.2020.106479",
+				pmid: "32485547",
+				stance: "supports",
+				note:
+					"Meta-analysis estimating that 22% of people who use cannabis have CUD and that young weekly or daily users have higher cannabis-dependence risk.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Identifying risk-thresholds for the association between frequency of cannabis use and development of cannabis use disorder",
+				publisher: "Drug and Alcohol Dependence",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.drugalcdep.2022.109582",
+				doi: "10.1016/j.drugalcdep.2022.109582",
+				pmid: "35932748",
+				stance: "supports",
+				note:
+					"Prospective-study meta-analysis finding a dose-response relationship from yearly through daily use, with daily use associated with the highest relative and absolute CUD risk.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does cannabis use impair driving and increase crash risk?",
+		slug: "does-cannabis-use-impair-driving-and-increase-crash-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		bottomLine:
+			"Yes. Acute cannabis or THC use impairs skills needed for safe driving and is associated with increased crash risk. The exact risk varies by dose, time since use, route, tolerance, co-use with alcohol or other drugs, and study design, so the consensus is not that blood THC works like blood alcohol concentration. The practical bottom line is simpler: do not drive while impaired by cannabis, and avoid mixing cannabis with alcohol before driving.",
+		stableCore: [
+			"CDC says cannabis can slow reaction time and decision-making, impair coordination, distort perception, and has been associated with car crashes.",
+			"NHTSA says marijuana and other drugs can impair driving because they slow coordination, judgment, and reaction times, and that combining substances can amplify impairment.",
+			"National Academies found substantial evidence of a statistical association between cannabis use and increased risk of motor vehicle crashes.",
+			"Asbridge and colleagues' 2012 meta-analysis found acute cannabis consumption was associated with higher collision risk, with a pooled odds ratio of 1.92.",
+			"McCartney and colleagues' 2021 meta-analysis found acute THC impairs driving-related cognitive skills at peak effects; most skills recovered within about 5 hours after inhaled 20 mg THC and almost all within about 7 hours, while oral THC may last longer."
+		],
+		openQuestions: [
+			"What blood, oral-fluid, behavioral, or device-based measures best identify real-time THC impairment in individual drivers?",
+			"How do edibles, high-potency concentrates, tolerance, chronic use, sleepiness, age, and alcohol co-use change crash risk and impairment duration?",
+			"Which public-safety policies reduce cannabis-impaired driving without relying on misleading one-size-fits-all THC cutoffs?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled epidemiologic studies showing no increased crash risk after acute cannabis use once alcohol, other drugs, driving exposure, and risk-taking are handled well.",
+			"Controlled experimental or on-road studies showing no meaningful impairment in reaction time, lane control, divided attention, perception, or judgment after real-world THC exposure.",
+			"Validated impairment standards showing that current practical warnings are overly conservative across routes, doses, users, and time since use."
+		],
+		misconceptions: [
+			"'I drive better high' is not supported by the evidence on reaction time, coordination, perception, and lane-control impairment.",
+			"Legal or medical cannabis access does not make driving after THC use safe.",
+			"Blood THC is not as straightforward as blood alcohol concentration; a test result can be hard to map to impairment in a specific person."
+		],
+		editorSummary:
+			"This page should separate the strong safety message from the harder enforcement science. Cannabis impairs driving-relevant skills and is linked to crash risk, but THC cutoffs, impairment duration, and individual variability require careful wording.",
+		uncertaintySummary:
+			"The impairment and crash-risk direction is well supported, while the exact magnitude, duration, dose-response curve, route-specific risk, and best roadside threshold remain more uncertain than alcohol impairment standards.",
+		searchCutoffAt: "2026-07-03T14:53:10.000Z",
+		lastRetractionCheckAt: "2026-07-03T14:53:10.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T14:53:10.000Z",
+				kind: "publication",
+				summary:
+					"Initial cannabis-driving page published from CDC and NHTSA guidance, National Academies conclusions, and crash-risk/THC-impairment meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Cannabis and Driving",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/cannabis/health-effects/driving.html",
+				stance: "supports",
+				note:
+					"Primary public-health anchor for reaction time, decision-making, coordination, perception, acute-crash association, and polysubstance impairment cautions.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Drug-Impaired Driving",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/risky-driving/drug-impaired-driving",
+				stance: "supports",
+				note:
+					"Road-safety anchor stating that marijuana and other drugs can impair driving by slowing coordination, judgment, and reaction times, with amplified effects from multiple substances.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "The Health Effects of Cannabis and Cannabinoids: Injury and Death",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2017,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK425742/",
+				doi: "10.17226/24625",
+				stance: "supports",
+				note:
+					"Assessment anchor concluding substantial evidence of a statistical association between cannabis use and increased motor-vehicle-crash risk.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Acute cannabis consumption and motor vehicle collision risk: systematic review of observational studies and meta-analysis",
+				publisher: "The BMJ",
+				year: 2012,
+				url: "https://doi.org/10.1136/bmj.e536",
+				doi: "10.1136/bmj.e536",
+				pmid: "22323502",
+				pmcid: "PMC3277079",
+				stance: "supports",
+				note:
+					"Observational-study meta-analysis finding acute cannabis consumption associated with increased motor-vehicle-collision risk, with pooled OR 1.92 and higher estimates for fatal collisions.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Determining the magnitude and duration of acute THC-induced driving and cognitive impairment",
+				publisher: "Neuroscience and Biobehavioral Reviews",
+				year: 2021,
+				url: "https://doi.org/10.1016/j.neubiorev.2021.01.003",
+				doi: "10.1016/j.neubiorev.2021.01.003",
+				pmid: "33497784",
+				stance: "supports",
+				note:
+					"Meta-analytic review of 80 publications finding acute THC impairment in driving-related skills and estimating recovery timing that varies by route, dose, user history, and time since use.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Are antidepressants effective for major depressive disorder, and how big is the average benefit?",
 		slug: "are-antidepressants-effective-for-major-depressive-disorder-and-how-big-is-the-average-benefit",
 		status: "published",
