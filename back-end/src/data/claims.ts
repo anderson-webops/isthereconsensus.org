@@ -8076,6 +8076,282 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Should individuals get PFAS blood testing, and does it change medical care?",
+		slug: "should-individuals-get-pfas-blood-testing-and-does-it-change-medical-care",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 64,
+		evidenceCertainty: "low",
+		bottomLine:
+			"Sometimes, but it is not a general screening test for everyone. PFAS blood testing can be useful for people with likely elevated exposure, especially when results could guide exposure reduction or follow-up. But the test does not identify the exposure source, does not diagnose a current illness, does not predict a person's future health outcome, and there is no approved medical treatment that removes PFAS from the body.",
+		stableCore: [
+			"ATSDR says clinicians can consider PFAS testing based on exposure history, other environmental testing results, and whether results can inform exposure reduction or health promotion.",
+			"National Academies guidance recommends offering testing to people likely to have elevated exposure, with shared discussion of benefits, harms, social implications, and limitations.",
+			"NASEM proposes interpreting the serum or plasma sum of specified PFAS at less than 2 ng/mL, 2 to less than 20 ng/mL, and 20 ng/mL or higher, with more clinical follow-up at higher levels.",
+			"Testing is exposure information, not a diagnosis: ATSDR says PFAS blood results do not identify sources, attribute current illness, or predict future health outcomes."
+		],
+		openQuestions: [
+			"Which people benefit most from individual testing versus community-wide exposure assessment and water or source testing?",
+			"Which follow-up screenings improve outcomes rather than adding anxiety, cost, false positives, or inequitable access?",
+			"How should clinical thresholds change as evidence develops for additional PFAS, mixtures, children, pregnant people, and replacement chemicals?"
+		],
+		whatWouldChangeMinds: [
+			"Evidence that PFAS blood testing routinely changes management and improves health outcomes across broad low-exposure populations.",
+			"Major ATSDR or National Academies guidance withdrawing serum or plasma testing for likely elevated exposure groups.",
+			"Validated treatments that safely reduce PFAS body burden and make testing more directly actionable."
+		],
+		misconceptions: [
+			"A PFAS blood number is sometimes treated as a personal prediction of future disease.",
+			"Testing is sometimes framed as either always necessary or always useless, when current guidance is exposure-history dependent.",
+			"People sometimes expect a blood test to identify the source of exposure, even though blood results alone cannot do that."
+		],
+		editorSummary:
+			"This page should be practical and non-alarmist: PFAS testing can matter for likely elevated exposure, but readers need to understand what the number can and cannot do before seeking individual testing.",
+		uncertaintySummary:
+			"The guidance is actionable but still incomplete. Evidence supports testing for likely elevated exposure and clinical interpretation tiers, while outcome benefit, repeat-testing intervals, equity, and care pathways remain unsettled.",
+		searchCutoffAt: "2026-07-03T04:47:09.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:47:09.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:47:09.000Z",
+				kind: "publication",
+				summary:
+					"Initial PFAS blood-testing page published from ATSDR clinical guidance, National Academies testing recommendations, and serum-assay literature."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Clinical Evaluation and Management: PFAS Information for Clinicians - 2024",
+				publisher: "Agency for Toxic Substances and Disease Registry",
+				year: 2024,
+				url: "https://www.atsdr.cdc.gov/pfas/hcp/clinical-overview/clinical-evaluation-management.html",
+				stance: "supports",
+				note:
+					"ATSDR clinical anchor explaining exposure-history assessment, testing considerations, testing limitations, lack of approved PFAS-removal treatment, and management based on usual preventive care plus NASEM thresholds.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Guidance on PFAS Exposure, Testing, and Clinical Follow-Up",
+				publisher: "National Academies of Sciences, Engineering, and Medicine",
+				year: 2022,
+				url: "https://doi.org/10.17226/26156",
+				doi: "10.17226/26156",
+				stance: "supports",
+				note:
+					"Consensus report recommending testing discussions for likely elevated exposure and serum/plasma interpretation tiers of less than 2, 2 to less than 20, and 20 ng/mL or higher for the sum of specified PFAS.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Development, validation, and clinical assessment of a liquid chromatography-tandem mass spectrometry serum assay for per- and polyfluoroalkyl substances (PFAS) recommended by the National Academies of Science, Engineering, and Medicine (NASEM)",
+				publisher: "Analytical and Bioanalytical Chemistry",
+				year: 2024,
+				url: "https://doi.org/10.1007/s00216-024-05519-y",
+				doi: "10.1007/s00216-024-05519-y",
+				pmid: "39269501",
+				stance: "context",
+				note:
+					"Validated a serum/plasma LC-MS/MS assay aligned with NASEM analytes and found 82.2% of 1023 specimens between 2 and less than 20 ng/mL and 2.5% at 20 ng/mL or higher.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title:
+			"Are microplastics in drinking water proven to cause human health harms at current exposure levels?",
+		slug: "are-microplastics-in-drinking-water-proven-to-cause-human-health-harms-at-current-exposure-levels",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 73,
+		evidenceCertainty: "low",
+		bottomLine:
+			"No. Microplastics have been detected in tap and bottled drinking water, but current evidence does not prove that levels found in drinking water cause human health harms. That is not the same as proving they are safe. The honest consensus is precautionary: reduce plastic pollution, improve measurement methods, and keep studying exposure, smaller particles, additives, and plausible toxic effects.",
+		stableCore: [
+			"WHO's drinking-water technical report examined occurrence, possible health impacts, treatment removal, and key knowledge gaps rather than declaring the issue settled.",
+			"FDA says the current scientific evidence does not demonstrate that levels of microplastics or nanoplastics in water pose a human-health risk, and that presence alone does not indicate risk.",
+			"Systematic-review evidence finds microplastics in drinking water, but reported concentrations vary widely because sampling, size cutoffs, quality controls, and polymer-identification methods differ across studies.",
+			"The absence of proven harm at current detected levels should be kept separate from the broader case for reducing plastic waste and improving exposure science."
+		],
+		openQuestions: [
+			"What are realistic human exposures to very small microplastics and nanoplastics from tap water, bottled water, beverages, food, dust, and air combined?",
+			"Which particle sizes, shapes, polymer types, additives, or co-contaminants matter most for biological effects?",
+			"What standardized analytical methods should regulators use before setting health-based drinking-water thresholds?"
+		],
+		whatWouldChangeMinds: [
+			"Robust human epidemiology linking current drinking-water microplastic exposure to specific health outcomes with dose-response evidence.",
+			"Validated toxicology showing adverse effects at exposure levels comparable to real-world drinking-water intake.",
+			"Major WHO, FDA, EPA, or comparable reassessment concluding that current drinking-water levels require health-based limits."
+		],
+		misconceptions: [
+			"Detection in water is sometimes treated as proof that the water is unsafe to drink.",
+			"Low-certainty risk language is sometimes misread as proof that microplastics are harmless.",
+			"High-dose animal, cell, or modeled studies are sometimes treated as direct evidence of harm from typical drinking-water exposure."
+		],
+		editorSummary:
+			"This page should resist both panic and dismissal. The best answer is that harm at current drinking-water levels is not proven, while the research gaps and pollution-reduction rationale are real.",
+		uncertaintySummary:
+			"Evidence certainty is low because exposure measurement is inconsistent, nanoplastics are difficult to quantify, human outcome evidence is sparse, and toxicology often uses particles or doses that do not map cleanly onto real drinking-water exposure.",
+		searchCutoffAt: "2026-07-03T04:47:09.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:47:09.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:47:09.000Z",
+				kind: "publication",
+				summary:
+					"Initial drinking-water microplastics evidence-boundary page published from WHO, FDA, and systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Microplastics in drinking-water",
+				publisher: "World Health Organization",
+				year: 2019,
+				url: "https://www.who.int/publications/i/item/9789241516198",
+				stance: "supports",
+				note:
+					"WHO technical document examining occurrence in treated tap and bottled water, potential health impacts, treatment removal, management recommendations, and key knowledge gaps.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Microplastics and Nanoplastics in Foods",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url: "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods",
+				stance: "supports",
+				note:
+					"FDA source stating that current evidence does not demonstrate that levels found in water pose a human-health risk and that presence alone does not indicate risk.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Microplastic contamination of drinking water: A systematic review",
+				publisher: "PLOS ONE",
+				year: 2020,
+				url: "https://doi.org/10.1371/journal.pone.0236838",
+				doi: "10.1371/journal.pone.0236838",
+				pmid: "32735575",
+				stance: "context",
+				note:
+					"Systematic review of 12 drinking-water studies found common contamination but high heterogeneity, methodological variability, and a need for standardized protocols.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Microplastics in drinking water: A review on methods, occurrence, sources, and potential risks assessment",
+				publisher: "Environmental Pollution",
+				year: 2024,
+				url: "https://doi.org/10.1016/j.envpol.2024.123857",
+				doi: "10.1016/j.envpol.2024.123857",
+				pmid: "38537794",
+				stance: "context",
+				note:
+					"Recent review found widespread detection with large concentration variation and emphasized standardized sampling and analysis, especially for smaller particles and nanoplastics.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		title: "Does the presence of microplastics in food automatically mean it is unsafe to eat?",
+		slug: "does-the-presence-of-microplastics-in-food-automatically-mean-it-is-unsafe-to-eat",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 76,
+		evidenceCertainty: "low",
+		bottomLine:
+			"No. Finding microplastics or nanoplastics in a food does not automatically mean that food is unsafe to eat. Food-safety risk depends on exposure amount, particle size, polymer type, additives or co-contaminants, dose, route, and biological effect. Current evidence does not demonstrate that levels detected in foods pose a human-health risk, but the evidence is incomplete enough that agencies still call for better methods, monitoring, and toxicology.",
+		stableCore: [
+			"FDA states that the presence of environmentally derived microplastics or nanoplastics in food alone does not indicate risk or violate FDA regulations unless it creates a health concern.",
+			"FDA also says current scientific evidence does not demonstrate that levels detected in foods pose a human-health risk, while emphasizing research gaps.",
+			"EFSA identifies major uncertainties, lack of standardized methods, and the need to assess potential health risks from dietary micro- and nanoplastics.",
+			"Risk assessment requires both exposure and hazard information; mere detection is a starting point for evaluation, not the conclusion."
+		],
+		openQuestions: [
+			"Which foods contribute most to total microplastic and nanoplastic exposure after accounting for realistic consumption patterns and measurement quality?",
+			"How should risk assessment handle nanoplastics, additives, adsorbed contaminants, and possible effects in the gastrointestinal tract?",
+			"What validated methods can reliably compare microplastic levels across complex food matrices?"
+		],
+		whatWouldChangeMinds: [
+			"Strong human or toxicological evidence showing that typical dietary levels of specific particles cause measurable harm.",
+			"Validated exposure assessments showing much higher real-world intake than current best estimates after standardized methods are used.",
+			"FDA, EFSA, or comparable food-safety agencies setting health-based limits or warning against particular foods because of microplastic contamination."
+		],
+		misconceptions: [
+			"Presence is sometimes treated as the same thing as demonstrated harm.",
+			"Food packaging is sometimes assumed to be the main source of all food microplastics, even though FDA says current evidence is insufficient to show migration into foods and beverages.",
+			"All detected particles are sometimes treated as interchangeable despite differences in size, chemistry, dose, and biological behavior."
+		],
+		editorSummary:
+			"This page should teach a reusable risk-literacy principle: detection matters, but safety decisions require exposure, hazard, dose, and uncertainty. It should not minimize plastic pollution or overstate food-level harm.",
+		uncertaintySummary:
+			"Evidence certainty is low because methods remain variable, nanoplastic detection is especially difficult, occurrence data are uneven across foods, and toxicology and human outcome evidence are not mature enough for a complete dietary risk characterization.",
+		searchCutoffAt: "2026-07-03T04:47:09.000Z",
+		lastRetractionCheckAt: "2026-07-03T04:47:09.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T04:47:09.000Z",
+				kind: "publication",
+				summary:
+					"Initial microplastics-in-food risk-literacy page published from FDA, EFSA, and regulatory-science review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Microplastics and Nanoplastics in Foods",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url: "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods",
+				stance: "supports",
+				note:
+					"FDA food-safety anchor stating that current evidence does not demonstrate that detected levels in foods pose a health risk, and that presence alone does not indicate risk unless it creates a health concern.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Microplastics and nanoplastics in food",
+				publisher: "European Food Safety Authority",
+				year: 2026,
+				url: "https://www.efsa.europa.eu/en/topics/microplastics-and-nanoplastics-food",
+				stance: "context",
+				note:
+					"EFSA topic page summarizing remaining major knowledge gaps, lack of harmonized methods, dietary-risk-assessment work, and the need for coordinated research.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Presence of microplastics and nanoplastics in food, with particular focus on seafood",
+				publisher: "EFSA Journal",
+				year: 2016,
+				url: "https://doi.org/10.2903/j.efsa.2016.4501",
+				doi: "10.2903/j.efsa.2016.4501",
+				stance: "context",
+				note:
+					"EFSA statement found limited occurrence data, no nanoplastics occurrence data in food, small estimated contribution to additive or contaminant exposure from seafood microplastics, and lacking toxicity and toxicokinetic data.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Regulatory Science Perspective on the Analysis of Microplastics and Nanoplastics in Human Food",
+				publisher: "Analytical Chemistry",
+				year: 2024,
+				url: "https://doi.org/10.1021/acs.analchem.3c05408",
+				doi: "10.1021/acs.analchem.3c05408",
+				pmid: "38452774",
+				stance: "context",
+				note:
+					"Regulatory-science perspective explaining why lack of standardized definitions, reference materials, sample preparation, analytical methods, quality controls, and toxicology limits food risk assessment.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "nutrition-and-diet",
 		title: "Are ultra-processed foods linked to worse health outcomes, and how much is causation versus confounding?",
 		slug: "are-ultra-processed-foods-linked-to-worse-health-outcomes-and-how-much-is-causation-versus-confounding",
