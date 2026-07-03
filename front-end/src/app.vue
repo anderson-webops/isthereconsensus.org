@@ -143,6 +143,89 @@ useSeoMeta({
 	--consensus-shell-shadow: 0 30px 80px rgba(0, 0, 0, 0.24);
 }
 
+:root[data-consensus-palette="blue"] {
+	--consensus-ink: #16212b;
+	--consensus-muted: #566675;
+	--consensus-cream: #f3f7fb;
+	--consensus-sand: #d4e0ec;
+	--consensus-mist: #f6f9fc;
+	--consensus-surface: #fffffe;
+	--consensus-soft-accent: rgba(37, 109, 133, 0.12);
+	--consensus-field-surface: #ffffff;
+	--consensus-elevated-surface: rgba(255, 255, 255, 0.78);
+	--consensus-link: #0f6b8a;
+	--consensus-interactive: #0f6b8a;
+	--consensus-focus-ring: rgba(37, 109, 133, 0.22);
+	--consensus-page-background: linear-gradient(180deg, #f6f9fc 0%, #eaf2f7 100%);
+	--consensus-shell-shadow: 0 24px 60px rgba(15, 53, 74, 0.06);
+}
+
+.dark[data-consensus-palette="blue"] {
+	--consensus-ink: #edf5fb;
+	--consensus-muted: #a8b7c4;
+	--consensus-cream: #0f141a;
+	--consensus-sand: #243342;
+	--consensus-mist: #0b1117;
+	--consensus-surface: #121a23;
+	--consensus-soft-accent: rgba(125, 211, 252, 0.16);
+	--consensus-field-surface: #17212c;
+	--consensus-elevated-surface: rgba(23, 33, 44, 0.9);
+	--consensus-link: #7dd3fc;
+	--consensus-interactive: #7dd3fc;
+	--consensus-focus-ring: rgba(125, 211, 252, 0.24);
+	--consensus-page-background: linear-gradient(180deg, #0b1117 0%, #101923 100%);
+	--consensus-shell-shadow: 0 30px 80px rgba(0, 0, 0, 0.26);
+}
+
+:root[data-consensus-palette="warm"] {
+	--consensus-ink: #15110d;
+	--consensus-muted: #5d544f;
+	--consensus-cream: #f6f1e8;
+	--consensus-sand: #e7d6c4;
+	--consensus-ember: #a64620;
+	--consensus-moss: #35524a;
+	--consensus-mist: #fbf8f3;
+	--consensus-surface: #fffdf9;
+	--consensus-soft-accent: rgba(211, 107, 56, 0.1);
+	--consensus-field-surface: #ffffff;
+	--consensus-elevated-surface: rgba(255, 255, 255, 0.74);
+	--consensus-link: #0f766e;
+	--consensus-interactive: #0f766e;
+	--consensus-debate: #a64620;
+	--consensus-debate-soft: rgba(211, 107, 56, 0.14);
+	--consensus-focus-outline: #c25b2c;
+	--consensus-focus-ring: rgba(211, 107, 56, 0.22);
+	--consensus-page-background:
+		radial-gradient(circle at top right, rgba(211, 107, 56, 0.08), transparent 24%),
+		radial-gradient(circle at top left, rgba(53, 82, 74, 0.07), transparent 22%), var(--consensus-mist);
+	--consensus-shell-shadow: 0 24px 60px rgba(21, 17, 13, 0.06);
+}
+
+.dark[data-consensus-palette="warm"] {
+	--consensus-ink: #edf2f7;
+	--consensus-muted: #a4afbd;
+	--consensus-cream: #171d26;
+	--consensus-sand: #273241;
+	--consensus-ember: #f0a37a;
+	--consensus-moss: #7c9a90;
+	--consensus-mist: #0c1117;
+	--consensus-surface: #121821;
+	--consensus-soft-accent: rgba(216, 138, 99, 0.12);
+	--consensus-field-surface: #171f2a;
+	--consensus-elevated-surface: rgba(23, 31, 42, 0.88);
+	--consensus-link: #5eead4;
+	--consensus-interactive: #5eead4;
+	--consensus-debate: #f0a37a;
+	--consensus-debate-soft: rgba(216, 138, 99, 0.16);
+	--consensus-focus-outline: #f2a37a;
+	--consensus-focus-ring: rgba(216, 138, 99, 0.26);
+	--consensus-page-background:
+		radial-gradient(circle at top right, rgba(216, 138, 99, 0.12), transparent 20%),
+		radial-gradient(circle at top left, rgba(124, 154, 144, 0.12), transparent 24%),
+		linear-gradient(180deg, #0c1117 0%, #101722 100%);
+	--consensus-shell-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+}
+
 html,
 body,
 #__nuxt {

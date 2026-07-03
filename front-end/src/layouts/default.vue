@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PaletteSwitcher from "~/components/PaletteSwitcher.vue";
 import ThemeToggle from "~/components/ThemeToggle.vue";
 
 const { currentAccount, role } = useAuth();
@@ -23,7 +24,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
-				<ThemeToggle />
+				<div class="site-header__controls">
+					<PaletteSwitcher />
+					<ThemeToggle />
+				</div>
 			</div>
 		</header>
 
@@ -82,6 +86,13 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	gap: 12px;
 	justify-content: end;
 	min-width: 0;
+}
+
+.site-header__controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
 }
 
 .site-brand {
@@ -192,9 +203,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-header__actions {
+		grid-template-columns: 1fr;
 		width: 100%;
 		align-items: start;
 		justify-content: stretch;
+	}
+
+	.site-header__controls {
+		justify-content: start;
 	}
 
 	.site-nav {

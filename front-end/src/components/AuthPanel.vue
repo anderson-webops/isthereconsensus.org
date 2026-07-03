@@ -361,10 +361,16 @@ async function handleChangePassword() {
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
+	min-height: 54px;
 	padding: 14px 16px;
+	list-style: none;
 	cursor: pointer;
 	font-weight: 600;
 	color: var(--consensus-ink);
+}
+
+.account-details__summary::-webkit-details-marker {
+	display: none;
 }
 
 .account-details__summary-icon {
@@ -400,18 +406,21 @@ async function handleChangePassword() {
 }
 
 .account-details__body {
-	grid-template-columns: repeat(2, minmax(280px, 1fr));
+	grid-template-columns: minmax(260px, 420px) minmax(320px, 520px);
 	align-items: start;
-	gap: 20px;
+	justify-content: start;
+	gap: 22px;
 	padding: 18px 16px 16px;
 	border-top: 1px solid var(--consensus-soft-line);
 	background: transparent;
 }
 
 .setting-card {
+	width: 100%;
 	align-content: start;
 	gap: 12px;
 	min-width: 0;
+	max-width: 520px;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
@@ -449,6 +458,7 @@ async function handleChangePassword() {
 .account-form input {
 	width: 100%;
 	height: 44px;
+	max-width: 100%;
 	min-height: 44px;
 	padding: 0 13px;
 	border-radius: 12px;
@@ -463,12 +473,20 @@ async function handleChangePassword() {
 }
 
 .account-form .button {
+	justify-self: start;
 	width: auto;
 	min-width: 132px;
 	min-height: 42px;
 	padding: 9px 16px;
 	border-radius: 999px;
 	font-size: 0.95rem;
+	line-height: 1.2;
+}
+
+.auth-form .button {
+	justify-self: start;
+	width: auto;
+	min-width: 132px;
 }
 
 .auth-tabs {
@@ -569,6 +587,10 @@ input {
 	}
 
 	.account-form .button {
+		width: 100%;
+	}
+
+	.auth-form .button {
 		width: 100%;
 	}
 }
