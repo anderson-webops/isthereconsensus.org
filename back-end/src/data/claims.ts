@@ -8361,6 +8361,294 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Do COVID-19 vaccines cause menstrual cycle changes, and are the changes temporary?",
+		slug: "do-covid-19-vaccines-cause-menstrual-cycle-changes-and-are-the-changes-temporary",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, COVID-19 vaccination can be followed by small, temporary menstrual changes for some people, especially small shifts in cycle length, flow, or symptoms. The best-tracked studies find average cycle-length changes of about a day or less for one dose in a cycle, with larger but still temporary changes when two doses occur in the same cycle. This does not mean the vaccines cause infertility.",
+		stableCore: [
+			"CDC states that people may notice no change or small temporary menstrual changes after COVID-19 vaccination, and that there is no evidence COVID-19 vaccines cause fertility problems.",
+			"A global app-based cohort of 19,622 people found less than a one-day adjusted increase in cycle length after the first and second vaccine cycles when one dose occurred in a cycle, and no change in menses length.",
+			"State-of-the-science reviews find the overall literature supports a temporary association, while noting that many self-report studies are at moderate-to-high risk of bias and future vaccine trials should measure menstrual outcomes directly."
+		],
+		openQuestions: [
+			"Which immune, stress, timing, or hormonal factors explain why some people notice changes and others do not?",
+			"How should studies better capture flow, pain, breakthrough bleeding, postmenopausal bleeding, and outcomes in adolescents or people using hormonal contraception?",
+			"How can clinicians acknowledge the signal without letting temporary cycle changes get misrepresented as fertility damage?"
+		],
+		whatWouldChangeMinds: [
+			"Large controlled studies showing no menstrual-cycle difference after vaccination once infection, stress, baseline variability, and reporting bias are handled.",
+			"Consistent evidence of persistent cycle disruption or fertility impairment after vaccination across prospective cohorts and clinical endpoints.",
+			"Updated CDC, ACOG, NIH, or comparable reproductive-health guidance withdrawing the temporary-change framing."
+		],
+		misconceptions: [
+			"Some messaging wrongly implied menstrual reports were impossible or purely psychological before the evidence base matured.",
+			"Temporary changes in cycle timing or flow are sometimes inflated into claims of permanent reproductive harm.",
+			"Anecdotes after vaccination can be real and still require denominators, baseline cycle variability, and comparison groups to interpret."
+		],
+		editorSummary:
+			"This page should model a trust-building answer: acknowledge the temporary menstrual signal clearly, quantify the average size where possible, and separate it from unsupported infertility claims.",
+		uncertaintySummary:
+			"The direction of evidence supports small temporary menstrual changes, but precision varies by outcome because early trials did not collect menstruation data and many later studies used self-report designs. The evidence against fertility harm remains stronger than the evidence for any lasting menstrual effect.",
+		searchCutoffAt: "2026-07-03T05:21:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T05:21:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T05:21:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial COVID-19 vaccination and menstrual-cycle changes page published from CDC reproductive-health guidance, NIH-funded cohort evidence, and state-of-the-science review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "COVID-19 Vaccination for People Who Would Like to Have a Baby",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/covid/vaccines/planning-for-pregnancy.html",
+				stance: "supports",
+				note:
+					"CDC anchor stating that recent studies show no change or small temporary period changes after vaccination and no evidence that COVID-19 vaccines cause fertility problems.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "COVID-19 vaccination associated with small, temporary increase in menstrual cycle length, suggests NIH-funded study",
+				publisher: "National Institutes of Health",
+				year: 2022,
+				url: "https://www.nih.gov/news-events/news-releases/covid-19-vaccination-associated-small-temporary-increase-menstrual-cycle-length-suggests-nih-funded-study",
+				stance: "supports",
+				note:
+					"NIH public-research summary explaining the less-than-one-day average cycle-length change, no change in bleeding days, normal-variability context, and need for more menstrual-outcome research.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Association between menstrual cycle length and covid-19 vaccination: global, retrospective cohort study of prospectively collected data",
+				publisher: "BMJ Medicine",
+				year: 2022,
+				url: "https://doi.org/10.1136/bmjmed-2022-000297",
+				doi: "10.1136/bmjmed-2022-000297",
+				pmid: "36381261",
+				stance: "supports",
+				note:
+					"Global Natural Cycles cohort of 19,622 people found less than one-day adjusted cycle-length increases after first and second vaccine cycles when one dose occurred in a cycle, larger changes when two doses occurred in one cycle, and no menses-length change.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Association between COVID-19 Vaccination and Menstruation: A State of the Science Review",
+				publisher: "BMJ Sexual & Reproductive Health",
+				year: 2024,
+				url: "https://doi.org/10.1136/bmjsrh-2024-202274",
+				doi: "10.1136/bmjsrh-2024-202274",
+				pmid: "38857991",
+				pmcid: "PMC11246222",
+				stance: "supports",
+				note:
+					"Review of 53 publications found the bulk of evidence supports temporary menstrual changes after vaccination while emphasizing bias limitations and the need to include menstrual outcomes in future vaccine trials.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Is higher potassium intake from food recommended to reduce blood pressure and cardiovascular risk?",
+		slug: "is-higher-potassium-intake-from-food-recommended-to-reduce-blood-pressure-and-cardiovascular-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes, for most adults, major guidelines recommend increasing potassium from foods as part of blood-pressure and cardiovascular-risk reduction, especially when diets are high in sodium and low in fruits, vegetables, beans, nuts, and other minimally processed potassium-rich foods. The practical caveat is that this is food-first advice: people with kidney disease, impaired potassium handling, or certain medications need clinician guidance before deliberately increasing potassium or using supplements.",
+		stableCore: [
+			"WHO recommends increasing potassium intake from food to reduce blood pressure and the risk of cardiovascular disease, stroke, and coronary heart disease in adults.",
+			"WHO suggests at least 90 mmol/day, or 3510 mg/day, of potassium for adults, while noting recommendations should be used with sodium guidance.",
+			"A WHO-linked BMJ systematic review found increased potassium intake reduced systolic blood pressure by 3.49 mm Hg and diastolic blood pressure by 1.96 mm Hg in adults, with the effect concentrated in people with hypertension.",
+			"Higher potassium intake was associated with lower incident stroke risk in cohort evidence, while direct coronary heart disease and overall cardiovascular disease associations were less precise."
+		],
+		openQuestions: [
+			"How much benefit comes from potassium itself versus the broader diet pattern that brings more fruits, vegetables, beans, nuts, and less processed food?",
+			"How should clinicians tailor potassium advice for people with chronic kidney disease, heart failure, diabetes, or medications that raise potassium?",
+			"Which public-health interventions best increase food-based potassium intake without pushing people toward unsafe supplement use?"
+		],
+		whatWouldChangeMinds: [
+			"Updated WHO, AHA, or comparable cardiovascular guidelines withdrawing food-based potassium recommendations after reviewing newer outcome evidence.",
+			"Large randomized evidence showing no meaningful blood-pressure effect of increased potassium intake in people with elevated blood pressure.",
+			"Evidence that population potassium-increase strategies cause more harm than benefit in groups without known impaired potassium handling."
+		],
+		misconceptions: [
+			"Potassium advice is sometimes treated as a reason to ignore sodium reduction, when the strongest guidance treats both together.",
+			"Food-based potassium guidance is sometimes confused with high-dose potassium supplements, which are not safe for everyone.",
+			"A normal-looking diet can still be low in potassium if it is dominated by refined grains, processed foods, and few fruits, vegetables, beans, or nuts."
+		],
+		editorSummary:
+			"This page should complement the sodium page by explaining why potassium-rich foods matter for blood pressure while keeping kidney disease, medication, and supplement caveats prominent.",
+		uncertaintySummary:
+			"The blood-pressure effect is well supported, especially for adults with hypertension. Outcome evidence is strongest for stroke association and less direct for coronary heart disease; food-pattern confounding and safety tailoring remain important caveats.",
+		searchCutoffAt: "2026-07-03T05:21:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T05:21:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T05:21:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial food-based potassium and blood-pressure page published from WHO guideline/eLENA recommendations, AHA patient guidance, and BMJ meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Increasing potassium intake to reduce blood pressure and risk of cardiovascular diseases in adults",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/tools/elena/interventions/potassium-cvd-adults",
+				stance: "supports",
+				note:
+					"Current WHO eLENA summary of the potassium intervention, including the recommendation to increase potassium intake from food and the adult target of at least 3510 mg/day.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Guideline: Potassium intake for adults and children",
+				publisher: "World Health Organization",
+				year: 2012,
+				url: "https://www.who.int/publications/i/item/9789241504829",
+				stance: "supports",
+				note:
+					"WHO guideline source for food-based potassium recommendations for adults and children, intended to be used alongside sodium guidance.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "How Potassium Can Help Prevent or Treat High Blood Pressure",
+				publisher: "American Heart Association",
+				year: 2025,
+				url: "https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure/how-potassium-can-help-control-high-blood-pressure",
+				stance: "supports",
+				note:
+					"Clinical-practical source explaining potassium-rich foods, the 3500-5000 mg/day diet-first range for many adults trying to prevent or treat high blood pressure, and kidney/medication cautions.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effect of increased potassium intake on cardiovascular risk factors and disease: systematic review and meta-analyses",
+				publisher: "The BMJ",
+				year: 2013,
+				url: "https://doi.org/10.1136/bmj.f1378",
+				doi: "10.1136/bmj.f1378",
+				pmid: "23558164",
+				stance: "supports",
+				note:
+					"WHO-linked meta-analysis of 22 RCTs and 11 cohort studies found lower blood pressure in adults and an inverse association with incident stroke, with kidney-handling caveats.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do potassium-enriched salt substitutes reduce blood pressure compared with regular salt?",
+		slug: "do-potassium-enriched-salt-substitutes-reduce-blood-pressure-compared-with-regular-salt",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, potassium-enriched lower-sodium salt substitutes generally lower blood pressure compared with regular salt, and some trials show fewer strokes, cardiovascular events, or deaths in high-risk populations. But this is not a universal swap for everyone: WHO's recommendation is conditional, intended for adults in general populations, and excludes pregnant people, children, people with kidney impairment, and people with other conditions or medications that could make extra potassium dangerous.",
+		stableCore: [
+			"WHO suggests replacing regular table salt with lower-sodium salt substitutes that contain potassium when people choose to use table salt, but frames the recommendation as conditional.",
+			"Cochrane review evidence found lower-sodium salt substitutes probably reduce systolic blood pressure by about 4.76 mm Hg and diastolic blood pressure by about 2.43 mm Hg in adults compared with regular salt.",
+			"A 2022 Heart meta-analysis of 21 trials found systolic blood pressure reduced by 4.61 mm Hg and diastolic blood pressure by 1.61 mm Hg, with protective associations for total mortality, cardiovascular mortality, and cardiovascular events.",
+			"The largest hard-outcome trial, SSaSS, studied 20,995 high-risk adults in rural China and found lower stroke, major cardiovascular event, and death rates with a 75% sodium chloride / 25% potassium chloride substitute."
+		],
+		openQuestions: [
+			"How well do cardiovascular-event benefits generalize to places where most sodium comes from packaged or restaurant foods rather than salt added at home?",
+			"How should health systems screen for kidney disease, potassium-raising medications, or other hyperkalemia risks before encouraging salt substitutes?",
+			"Which lower-sodium formulations balance taste, adherence, cost, blood-pressure benefit, and potassium safety best across different populations?"
+		],
+		whatWouldChangeMinds: [
+			"Large trials outside high-discretionary-salt settings showing no meaningful blood-pressure effect versus regular salt.",
+			"Strong evidence that potassium-enriched substitutes cause clinically important hyperkalemia or arrhythmia harms in screened general-adult populations.",
+			"WHO or Cochrane reassessments concluding that the safety exclusions and generalizability limitations outweigh the blood-pressure benefit."
+		],
+		misconceptions: [
+			"Salt substitutes are sometimes described as either harmless for everyone or dangerous for everyone; the evidence supports a conditional middle position.",
+			"People may confuse potassium-enriched salt substitutes with non-potassium herbs, spices, or seasoning blends.",
+			"Outcome benefits from high-risk Chinese trials should not be pasted uncritically onto every country, diet, or clinical group."
+		],
+		editorSummary:
+			"This page should give a practical, safety-first answer: potassium-enriched salt substitutes can lower blood pressure, but the recommendation belongs in a screened adult context and is strongest where discretionary salt is a major sodium source.",
+		uncertaintySummary:
+			"Blood-pressure evidence is moderate and consistent across trials. Hard-outcome evidence is promising but depends heavily on large Chinese high-risk/discretionary-salt trials, and safety evidence is limited for people with impaired potassium excretion, pregnant people, children, and broader food-manufacturing uses.",
+		searchCutoffAt: "2026-07-03T05:21:00.000Z",
+		lastRetractionCheckAt: "2026-07-03T05:21:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T05:21:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial potassium-enriched salt-substitute page published from 2025 WHO conditional guidance, Cochrane review evidence, Heart meta-analysis, and SSaSS trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Use of lower-sodium salt substitutes: WHO guideline",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/publications/i/item/9789240105591",
+				stance: "supports",
+				note:
+					"WHO guideline source for conditional replacement of regular table salt with potassium-containing lower-sodium salt substitutes when adults choose to use table salt, with explicit exclusions for kidney impairment and other potassium-excretion risks.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Replacing salt with low-sodium salt substitutes (LSSS) for cardiovascular health in adults, children and pregnant women",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2022,
+				url: "https://doi.org/10.1002/14651858.CD015207",
+				doi: "10.1002/14651858.CD015207",
+				pmid: "35944931",
+				stance: "supports",
+				note:
+					"Review of 26 RCTs found LSSS probably reduce adult systolic and diastolic blood pressure, probably increase blood potassium slightly, and leave limited evidence for children, pregnant people, and higher-risk potassium-handling groups.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effects of salt substitutes on clinical outcomes: a systematic review and meta-analysis",
+				publisher: "Heart",
+				year: 2022,
+				url: "https://doi.org/10.1136/heartjnl-2022-321332",
+				doi: "10.1136/heartjnl-2022-321332",
+				pmid: "35945000",
+				stance: "supports",
+				note:
+					"Meta-analysis of 21 trials and 31,949 participants found lower blood pressure with salt substitutes and protective effects for total mortality, cardiovascular mortality, and cardiovascular events.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Effect of Salt Substitution on Cardiovascular Events and Death",
+				publisher: "The New England Journal of Medicine",
+				year: 2021,
+				url: "https://doi.org/10.1056/NEJMoa2105675",
+				doi: "10.1056/NEJMoa2105675",
+				pmid: "34459569",
+				stance: "supports",
+				note:
+					"SSaSS cluster-randomized trial of 20,995 high-risk adults in rural China found lower stroke, major cardiovascular-event, and death rates with a 75% sodium chloride / 25% potassium chloride salt substitute.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
