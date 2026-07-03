@@ -400,20 +400,25 @@ async function submitQuestion() {
 				</select>
 			</div>
 
-			<div class="field-stack">
-				<label class="field-label" for="post-context">Context, quote, or local detail</label>
-				<textarea
-					id="post-context"
-					v-model="context"
-					rows="4"
-					placeholder="Optional. Paste the quote, describe what felt off, or explain the confusion."
-				/>
-			</div>
+			<details class="posting-form__optional">
+				<summary>Add context or source</summary>
+				<div class="posting-form__optional-body">
+					<div class="field-stack">
+						<label class="field-label" for="post-context">Context, quote, or local detail</label>
+						<textarea
+							id="post-context"
+							v-model="context"
+							rows="4"
+							placeholder="Optional. Paste the quote, describe what felt off, or explain the confusion."
+						/>
+					</div>
 
-			<div class="field-stack">
-				<label class="field-label" for="post-source">Source URL</label>
-				<input id="post-source" v-model="sourceUrl" type="url" placeholder="Optional source URL" />
-			</div>
+					<div class="field-stack">
+						<label class="field-label" for="post-source">Source URL</label>
+						<input id="post-source" v-model="sourceUrl" type="url" placeholder="Optional source URL" />
+					</div>
+				</div>
+			</details>
 
 			<div v-if="isLoggedIn" class="captcha-wrap">
 				<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
@@ -574,6 +579,60 @@ async function submitQuestion() {
 .attached-claim {
 	padding: 16px 18px;
 	align-items: center;
+}
+
+.posting-form__optional {
+	display: grid;
+	gap: 10px;
+	padding: 12px 0 2px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.posting-form__optional summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	list-style: none;
+	cursor: pointer;
+	font-family: "Fraunces", serif;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--consensus-ink);
+}
+
+.posting-form__optional summary::-webkit-details-marker {
+	display: none;
+}
+
+.posting-form__optional summary:focus-visible {
+	border-radius: 8px;
+	outline: 2px solid var(--consensus-debate);
+	outline-offset: 4px;
+}
+
+.posting-form__optional summary::after {
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	color: var(--consensus-muted);
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 0.82rem;
+	line-height: 16px;
+	text-align: center;
+	content: "+";
+}
+
+.posting-form__optional[open] summary::after {
+	content: "-";
+}
+
+.posting-form__optional-body {
+	display: grid;
+	gap: 12px;
+	padding-top: 10px;
 }
 
 .button,
