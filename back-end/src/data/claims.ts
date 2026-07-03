@@ -6739,6 +6739,238 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "media-misinformation",
+		title: "Does \"natural\" mean safer or better?",
+		slug: "does-natural-mean-safer-or-better",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"No. Natural origin does not by itself make a product safe, effective, pure, or better. Safety depends on dose, ingredients, manufacturing quality, contamination, interactions, and the person using it.",
+		stableCore: [
+			"Natural products can contain biologically active chemicals, and biologically active chemicals can help, harm, or interact with medicines.",
+			"Supplement labels and marketing claims do not guarantee that the product is safe, effective, uncontaminated, or accurately represented.",
+			"Risk varies by product, dose, medical condition, pregnancy status, age, other medicines, and manufacturing quality."
+		],
+		openQuestions: [
+			"Which label language best helps consumers distinguish natural origin from proven safety?",
+			"How often do specific supplement categories contain contaminants, undeclared drugs, or clinically important dose variation?",
+			"Which products deserve stronger premarket safety review because plausible harms exceed plausible benefits?"
+		],
+		whatWouldChangeMinds: [
+			"Reliable evidence that natural-origin products as a class have lower adverse-event, contamination, and interaction risk after controlling for use patterns and dose.",
+			"Regulatory or surveillance evidence showing that product quality and safety are consistently verified before public sale."
+		],
+		misconceptions: [
+			"People often treat natural as the opposite of chemical, even though natural products are made of chemicals too.",
+			"Marketing can imply that plant-derived, traditional, or supplement products are automatically safer than medicines."
+		],
+		editorSummary:
+			"Use this page when a claim relies on the naturalistic fallacy: natural may be relevant context, but it is not evidence of safety, effectiveness, or quality.",
+		searchCutoffAt: "2026-07-03T03:08:54.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:08:54.000Z",
+				kind: "publication",
+				summary:
+					"Initial natural-safety claim page published from NCCIH supplement guidance and herbal/dietary supplement hepatotoxicity review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Using Dietary Supplements Wisely",
+				publisher: "National Center for Complementary and Integrative Health",
+				url: "https://www.nccih.nih.gov/health/using-dietary-supplements-wisely",
+				stance: "supports",
+				note:
+					"NCCIH guidance states that natural does not always mean safe and highlights supplement interactions, inaccurate labels, emergency-department visits, and liver injury.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Are You Considering a Complementary Health Approach?",
+				publisher: "National Center for Complementary and Integrative Health",
+				url: "https://www.nccih.nih.gov/health/are-you-considering-a-complementary-health-approach",
+				stance: "supports",
+				note:
+					"NCCIH decision guidance explains that individual responses vary, natural does not necessarily mean safe, and product quality and interactions matter.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Hepatotoxicity of herbal and dietary supplements: an update",
+				publisher: "Archives of Toxicology",
+				year: 2015,
+				url: "https://doi.org/10.1007/s00204-015-1471-3",
+				doi: "10.1007/s00204-015-1471-3",
+				pmid: "25680499",
+				stance: "supports",
+				note:
+					"Review source documenting unproven efficacy, variable composition, contamination or adulteration concerns, and examples of herbal and dietary supplement liver injury.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do detox diets and cleanses remove toxins or improve health?",
+		slug: "do-detox-diets-and-cleanses-remove-toxins-or-improve-health",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"No, not as they are usually marketed. For healthy people, commercial detox diets and cleanses have little clinical evidence for removing toxins or producing durable health benefits, and some can cause harm.",
+		stableCore: [
+			"Medical detoxification for specific poisonings or substance withdrawal is different from commercial detox diets and cleanses.",
+			"Low-quality or short-term studies do not establish that detox programs remove clinically meaningful toxins or improve long-term health.",
+			"Severe calorie restriction, laxatives, unpasteurized juices, high-oxalate juices, hidden ingredients, and colon cleansing can create avoidable risks."
+		],
+		openQuestions: [
+			"Which specific detox products create the highest adverse-event risk?",
+			"How should public advice distinguish normal evidence-based nutrition from detox-branded marketing?",
+			"Can any narrowly defined intervention improve validated exposure biomarkers enough to matter clinically?"
+		],
+		whatWouldChangeMinds: [
+			"Well-designed randomized trials showing that a defined detox program removes validated toxicants and improves patient-important outcomes beyond ordinary nutrition or calorie reduction.",
+			"Long-term follow-up showing durable benefit and acceptable safety compared with standard dietary guidance."
+		],
+		misconceptions: [
+			"People often assume vague fatigue, bloating, or weight changes prove that toxins are leaving the body.",
+			"Short-term water or glycogen weight loss can be mistaken for sustained fat loss or improved health."
+		],
+		editorSummary:
+			"This page separates legitimate medical detoxification from detox-branded diets, juices, teas, supplements, and colon cleanses marketed with weak toxin-removal claims.",
+		searchCutoffAt: "2026-07-03T03:08:54.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:08:54.000Z",
+				kind: "publication",
+				summary:
+					"Initial detox-diets and cleanses claim page published from NCCIH safety guidance and critical-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "\"Detoxes\" and \"Cleanses\": What You Need To Know",
+				publisher: "National Center for Complementary and Integrative Health",
+				year: 2025,
+				url: "https://www.nccih.nih.gov/health/detoxes-and-cleanses-what-you-need-to-know",
+				stance: "supports",
+				note:
+					"NCCIH guidance distinguishes serious medical chelation from commercial detox claims, reports low-quality evidence, and lists safety concerns.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Detox diets for toxin elimination and weight management: a critical review of the evidence",
+				publisher: "Journal of Human Nutrition and Dietetics",
+				year: 2015,
+				url: "https://doi.org/10.1111/jhn.12286",
+				doi: "10.1111/jhn.12286",
+				pmid: "25522674",
+				stance: "supports",
+				note:
+					"Critical review finding very little clinical evidence for commercial detox diets and no randomized controlled trials assessing their effectiveness in humans.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Dietary Supplements Marketed for Weight Loss, Bodybuilding, and Sexual Enhancement",
+				publisher: "National Center for Complementary and Integrative Health",
+				url:
+					"https://www.nccih.nih.gov/health/providers/digest/dietary-supplements-marketed-for-weight-loss-bodybuilding-and-sexual-enhancement",
+				stance: "context",
+				note:
+					"Provider-facing NCCIH context on quick-fix supplement claims, unproven safety or effectiveness, interactions, toxicities, and hidden pharmaceutical ingredients.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "bias-incentives",
+		title: "Does publication bias skew the published scientific record?",
+		slug: "does-publication-bias-skew-the-published-scientific-record",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. Studies with positive or statistically significant results are more likely to appear in the published record, and missing results can overstate benefits or understate harms if reviews rely only on easily available publications.",
+		stableCore: [
+			"Publication and time-lag bias are real threats because available studies can differ systematically from missing studies.",
+			"Clinical trials with positive results are more likely to be published and tend to be published faster than trials with negative or null results.",
+			"Good evidence reviews try to reduce this problem by searching trial registries, protocols, regulators, manufacturers, unpublished results, and other non-journal sources."
+		],
+		openQuestions: [
+			"How large is publication bias in each field, outcome type, and time period?",
+			"Which registry, protocol-sharing, and results-reporting policies most reduce missing-evidence bias in practice?",
+			"How should public summaries explain publication bias without implying that all published research is unreliable?"
+		],
+		whatWouldChangeMinds: [
+			"Broad, repeated evidence that negative, null, safety, and unfavorable findings are published and indexed as completely and as quickly as favorable findings.",
+			"Systematic-review audits showing that unpublished or delayed evidence rarely changes benefit, harm, or certainty judgments."
+		],
+		misconceptions: [
+			"People can overcorrect from publication bias to the claim that published science is useless.",
+			"Others assume peer-reviewed publication means the available record is complete."
+		],
+		editorSummary:
+			"This page gives readers a reusable explanation for why systematic reviews need comprehensive searches and why absence from journals is not the same as absence of evidence.",
+		searchCutoffAt: "2026-07-03T03:08:54.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:08:54.000Z",
+				kind: "publication",
+				summary:
+					"Initial publication-bias claim page published from Cochrane Handbook guidance and Cochrane methodology-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Chapter 13: Assessing risk of bias due to missing evidence in a meta-analysis",
+				publisher: "Cochrane Handbook for Systematic Reviews of Interventions",
+				year: 2024,
+				url: "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13",
+				stance: "supports",
+				note:
+					"Cochrane guidance states that non-reporting bias occurs when result availability is influenced by P value, magnitude, or direction, and that selective dissemination can overestimate benefits and underestimate harms.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Time to publication for results of clinical trials",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2024,
+				url: "https://doi.org/10.1002/14651858.MR000011.pub3",
+				doi: "10.1002/14651858.MR000011.pub3",
+				pmid: "39601300",
+				pmcid: "PMC11600493",
+				stance: "supports",
+				note:
+					"Updated Cochrane review of 204 research reports tracking 165,135 trials; 53% were published in full and positive trials were more likely to be published.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Publication bias in clinical trials due to statistical significance or direction of trial results",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2009,
+				url: "https://doi.org/10.1002/14651858.MR000006.pub3",
+				doi: "10.1002/14651858.MR000006.pub3",
+				pmid: "19160345",
+				stance: "supports",
+				note:
+					"Cochrane methodology review finding that trials with positive findings were published more often and more quickly than trials with negative or null findings.",
+				order: 3
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
