@@ -7234,6 +7234,288 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Do cell phones and 5G networks increase cancer risk?",
+		slug: "do-cell-phones-and-5g-networks-increase-cancer-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		bottomLine:
+				"Current evidence does not show that cell phone or 5G radiofrequency exposure causes cancer in humans. The answer is still monitored rather than closed forever, because exposure patterns, long-term heavy use, animal findings, and subgroup analyses remain areas where better evidence could matter.",
+		stableCore: [
+			"National cancer and radiation regulators generally say the human evidence to date does not show a cancer increase from ordinary cell-phone radiofrequency exposure.",
+			"A 2024 WHO-commissioned systematic review found moderate-certainty evidence that mobile-phone RF exposure likely does not increase glioma, meningioma, acoustic neuroma, pituitary, salivary-gland, or pediatric brain-tumor risk.",
+			"Some meta-analyses and IARC's Group 2B classification keep the topic in a precautionary and surveillance category, especially for long-term, heavy, and poorly measured exposure."
+		],
+		openQuestions: [
+			"How should studies measure individual exposure as phone technology, hands-free use, data use, Wi-Fi calling, and base-station exposure patterns change?",
+			"Will longer follow-up of very heavy users or people first exposed in childhood change the current cancer-risk assessment?",
+			"How should animal and mechanistic findings be integrated when human population evidence remains the main public-health anchor?"
+		],
+		whatWouldChangeMinds: [
+			"Large prospective studies with measured exposure showing a replicated dose-response for specific cancers after appropriate latency periods.",
+			"Updated WHO, NCI, FDA, IARC, or comparable assessments concluding that ordinary wireless RF exposure causes cancer in humans."
+		],
+		misconceptions: [
+			"Some people treat any radiation as if it behaves like x-rays or radon.",
+			"Others hear 'possibly carcinogenic' as if it means a proven everyday consumer cancer risk.",
+			"No demonstrated cancer increase is sometimes overstated as proof that every future exposure scenario is already fully resolved."
+		],
+		editorSummary:
+				"This page handles a durable anxiety topic by separating the current cancer-risk conclusion from mechanism, hazard classification, and legitimate long-term surveillance questions.",
+		uncertaintySummary:
+				"The main public-health answer leans against a demonstrated cancer increase, but the certainty is not as high as for ionizing-radiation carcinogens. Exposure measurement, technology changes, latency, and subgroup analyses keep the page in broad-qualified rather than strong-closed territory.",
+		searchCutoffAt: "2026-07-03T03:31:12.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:31:12.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:31:12.000Z",
+				kind: "publication",
+				summary:
+						"Initial cell-phone and 5G cancer-risk claim page published from NCI, FDA, IARC, and WHO-commissioned review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Cell Phones and Cancer Risk",
+				publisher: "National Cancer Institute",
+				year: 2024,
+				url:
+						"https://www.cancer.gov/about-cancer/causes-prevention/risk/radiation/cell-phones-fact-sheet",
+				stance: "supports",
+				note:
+						"NCI states that evidence to date suggests cell phone use does not cause brain or other cancers in humans, while explaining non-ionizing RF exposure and ongoing research.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Cell Phones",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2021,
+				url: "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/cell-phones",
+				stance: "supports",
+				note:
+						"FDA public information states that the weight of scientific evidence has not linked cell-phone radiofrequency radiation with health problems and that FDA continues monitoring evidence.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title:
+						"The effect of exposure to radiofrequency fields on cancer risk in the general and working population: A systematic review of human observational studies - Part I: Most researched outcomes",
+				publisher: "Environment International",
+				year: 2024,
+				url: "https://doi.org/10.1016/j.envint.2024.108983",
+				doi: "10.1016/j.envint.2024.108983",
+				pmid: "39241333",
+				stance: "supports",
+				note:
+						"WHO-commissioned systematic review finding moderate-certainty evidence that near-field mobile-phone RF exposure likely does not increase the main adult and pediatric head or brain tumor outcomes studied.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+						"The effect of exposure to radiofrequency fields on cancer risk in the general and working population: A systematic review of human observational studies - Part II: Less researched outcomes",
+				publisher: "Environment International",
+				year: 2025,
+				url: "https://doi.org/10.1016/j.envint.2025.109274",
+				doi: "10.1016/j.envint.2025.109274",
+				pmid: "39904670",
+				stance: "supports",
+				note:
+						"WHO-commissioned companion review finding mobile-phone RF exposure was not associated with increased leukemia, non-Hodgkin lymphoma, or thyroid cancer risk in available human observational studies.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+						"Relationship between radiofrequency-electromagnetic radiation from cellular phones and brain tumor: meta-analyses using various proxies for RF-EMR exposure-outcome assessment",
+				publisher: "Environmental Health",
+				year: 2024,
+				url: "https://doi.org/10.1186/s12940-024-01117-8",
+				doi: "10.1186/s12940-024-01117-8",
+				pmid: "39390576",
+				citationStatus: "corrected",
+				citationCheckedAt: "2026-07-03T03:31:12.000Z",
+				statusSources: ["https://pubmed.ncbi.nlm.nih.gov/39533315/"],
+				stance: "debate",
+				note:
+						"Contrary meta-analysis reporting higher odds in some exposure subcategories; included as debate context because cohort results were less conclusive and the article has a published correction.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "science-communication",
+		title: "Is radiofrequency radiation from phones and 5G too low-energy to damage DNA directly?",
+		slug: "is-radiofrequency-radiation-from-phones-and-5g-too-low-energy-to-damage-dna-directly",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+				"Yes. Radiofrequency radiation used by cell phones, Wi-Fi, Bluetooth, and 5G is non-ionizing, meaning its photons do not carry enough energy to directly ionize atoms or break DNA the way x-rays, radon, or other ionizing radiation can. That does not by itself settle every possible health question, but it rules out a common mechanism claim.",
+		stableCore: [
+			"Cell-phone and 5G frequencies fall in the non-ionizing part of the electromagnetic spectrum.",
+			"Non-ionizing RF exposure does not have enough photon energy to directly damage DNA by ionization.",
+			"The consistently recognized biological effect from sufficiently high RF absorption is heating, so safety standards focus heavily on limiting tissue heating."
+		],
+		openQuestions: [
+			"Which non-thermal biological endpoints, if any, are robust enough to matter under real-world exposure levels?",
+			"How should public explanations distinguish mechanism plausibility from population outcome evidence without oversimplifying either one?",
+			"How should future high-frequency or high-density wireless uses be monitored as exposure patterns change?"
+		],
+		whatWouldChangeMinds: [
+			"Replicated physics and biological evidence showing direct DNA ionization at ordinary RF photon energies.",
+			"High-quality studies demonstrating a coherent non-thermal carcinogenic mechanism at exposure levels relevant to public wireless use."
+		],
+		misconceptions: [
+			"All radiation is often treated as one category, even though ionizing and non-ionizing radiation have different energies and mechanisms.",
+			"Some people infer that 'cannot directly damage DNA' means no biological effect of any kind is possible.",
+			"Others infer that any biological response in a lab proves real-world cancer risk."
+		],
+		editorSummary:
+				"This science-communication page gives readers the mechanism baseline they need before interpreting cell-phone, Wi-Fi, Bluetooth, and 5G health claims.",
+		searchCutoffAt: "2026-07-03T03:31:12.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:31:12.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:31:12.000Z",
+				kind: "publication",
+				summary:
+						"Initial RF non-ionizing mechanism claim page published from NCI, FDA, and 5G state-of-science review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Cell Phones and Cancer Risk",
+				publisher: "National Cancer Institute",
+				year: 2024,
+				url:
+						"https://www.cancer.gov/about-cancer/causes-prevention/risk/radiation/cell-phones-fact-sheet",
+				stance: "supports",
+				note:
+						"NCI explains that 2G through anticipated 5G cell-phone frequencies are non-ionizing and too low in energy to damage DNA directly.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Cell Phones",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2021,
+				url: "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/cell-phones",
+				stance: "supports",
+				note:
+						"FDA public cell-phone page points readers to ionizing versus non-ionizing RF basics and describes the agency's role in monitoring cell-phone RF evidence.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "5G mobile networks and health-a state-of-the-science review of the research into low-level RF fields above 6 GHz",
+				publisher: "Journal of Exposure Science & Environmental Epidemiology",
+				year: 2021,
+				url: "https://doi.org/10.1038/s41370-021-00297-6",
+				doi: "10.1038/s41370-021-00297-6",
+				pmid: "33727687",
+				stance: "supports",
+				note:
+						"State-of-the-science review reporting no confirmed evidence that low-level RF fields above 6 GHz, including those relevant to 5G, are hazardous to human health, while calling for better long-term studies.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		title: "Does 'possibly carcinogenic' mean RF radiation is proven to cause cancer?",
+		slug: "does-possibly-carcinogenic-mean-rf-radiation-is-proven-to-cause-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+				"No. IARC's 'possibly carcinogenic to humans' category means there was limited evidence or unresolved uncertainty, not proof that ordinary RF exposure causes cancer. It is a hazard-classification signal to keep studying the question, not a direct estimate of everyday consumer risk.",
+		stableCore: [
+			"IARC classified radiofrequency electromagnetic fields as Group 2B, 'possibly carcinogenic to humans,' in 2011 based on limited evidence.",
+			"Group 2B does not mean the same thing as 'known to cause cancer' or even 'probably causes cancer' in real-world exposure settings.",
+			"Risk interpretation still needs exposure level, study quality, latency, dose-response, and current synthesis evidence."
+		],
+		openQuestions: [
+			"Will IARC or WHO update the RF classification after newer human, animal, and mechanistic reviews are integrated?",
+			"How should public pages explain hazard categories without either dismissing them or treating them as verdicts?",
+			"Which precautionary steps are proportionate when the evidence is uncertain but exposure is widespread?"
+		],
+		whatWouldChangeMinds: [
+			"A formal IARC or WHO reassessment changing the RF classification after reviewing newer evidence.",
+			"Clearer human dose-response and mechanism evidence showing that ordinary RF exposure either does or does not create a material cancer risk."
+		],
+		misconceptions: [
+			"People often collapse hazard identification and real-world risk into the same thing.",
+			"Group 2B is sometimes presented as if it means a proven carcinogen, when it is a lower-certainty category.",
+			"Others dismiss the classification entirely instead of treating it as a reason for careful surveillance."
+		],
+		editorSummary:
+				"This page supports source literacy by explaining why a scary-sounding hazard label is not the same as a direct consumer-risk estimate.",
+		searchCutoffAt: "2026-07-03T03:31:12.000Z",
+		lastRetractionCheckAt: "2026-07-03T03:31:12.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T03:31:12.000Z",
+				kind: "publication",
+				summary:
+						"Initial RF Group 2B interpretation page published from IARC, WHO, NCI, and current RF cancer-review context."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Non-Ionizing Radiation, Part 2: Radiofrequency Electromagnetic Fields",
+				publisher: "IARC Monographs on the Evaluation of Carcinogenic Risks to Humans",
+				year: 2013,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK304630/",
+				stance: "supports",
+				note:
+						"IARC monograph source for the Group 2B classification of radiofrequency electromagnetic fields based on limited evidence for carcinogenicity.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Electromagnetic fields and mobile technology",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/india/health-topics/electromagnetic-fields",
+				stance: "supports",
+				note:
+						"WHO explainer states that Group 2B is used when a causal association is considered credible but chance, bias, or confounding cannot be ruled out with reasonable confidence.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Cell Phones and Cancer Risk",
+				publisher: "National Cancer Institute",
+				year: 2024,
+				url:
+						"https://www.cancer.gov/about-cancer/causes-prevention/risk/radiation/cell-phones-fact-sheet",
+				stance: "supports",
+				note:
+						"NCI provides current public-health context on the IARC monograph, non-ionizing RF exposure, cancer incidence trends, and expert-organization positions.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+						"The effect of exposure to radiofrequency fields on cancer risk in the general and working population: A systematic review of human observational studies - Part I: Most researched outcomes",
+				publisher: "Environment International",
+				year: 2024,
+				url: "https://doi.org/10.1016/j.envint.2024.108983",
+				doi: "10.1016/j.envint.2024.108983",
+				pmid: "39241333",
+				stance: "context",
+				note:
+						"Current WHO-commissioned synthesis context showing why a 2011 hazard classification should be read alongside newer evidence-review results.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
