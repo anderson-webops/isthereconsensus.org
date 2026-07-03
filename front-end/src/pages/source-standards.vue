@@ -105,11 +105,9 @@ useStaticPageMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	align-items: end;
-	flex-wrap: wrap;
+	display: grid;
+	gap: 6px;
+	align-items: start;
 	margin-bottom: 14px;
 }
 
