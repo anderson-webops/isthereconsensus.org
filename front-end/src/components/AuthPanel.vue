@@ -185,14 +185,22 @@ async function handleChangePassword() {
 							<h3>Email</h3>
 							<p>Change the address used for sign-in and account notices.</p>
 						</div>
-						<div class="field-stack">
-							<label class="field-label" for="email-update">New email</label>
-							<input id="email-update" v-model="emailUpdate" type="email" placeholder="you@email.com" />
-						</div>
-						<div class="setting-card__actions">
-							<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
-								Save email
-							</button>
+						<div class="setting-card__fields setting-card__fields--inline">
+							<div class="field-stack">
+								<label class="field-label" for="email-update">New email</label>
+								<input
+									id="email-update"
+									v-model="emailUpdate"
+									type="email"
+									autocomplete="email"
+									placeholder="you@email.com"
+								/>
+							</div>
+							<div class="setting-card__actions">
+								<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
+									Save email
+								</button>
+							</div>
 						</div>
 					</form>
 
@@ -201,23 +209,25 @@ async function handleChangePassword() {
 							<h3>Password</h3>
 							<p>Use your current password before setting a new one.</p>
 						</div>
-						<div class="field-stack">
-							<label class="field-label" for="current-password">Current password</label>
-							<input
-								id="current-password"
-								v-model="currentPassword"
-								type="password"
-								autocomplete="current-password"
-							/>
-						</div>
-						<div class="field-stack">
-							<label class="field-label" for="new-password">New password</label>
-							<input
-								id="new-password"
-								v-model="newPassword"
-								type="password"
-								autocomplete="new-password"
-							/>
+						<div class="setting-card__fields setting-card__fields--password">
+							<div class="field-stack">
+								<label class="field-label" for="current-password">Current password</label>
+								<input
+									id="current-password"
+									v-model="currentPassword"
+									type="password"
+									autocomplete="current-password"
+								/>
+							</div>
+							<div class="field-stack">
+								<label class="field-label" for="new-password">New password</label>
+								<input
+									id="new-password"
+									v-model="newPassword"
+									type="password"
+									autocomplete="new-password"
+								/>
+							</div>
 						</div>
 						<div class="setting-card__actions">
 							<button class="button button--primary" type="submit" :disabled="busy || !newPassword">
@@ -382,9 +392,9 @@ async function handleChangePassword() {
 .account-details__body {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	align-items: start;
-	gap: 12px;
+	gap: 14px;
 	width: 100%;
-	max-width: 980px;
+	max-width: 1080px;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
@@ -398,10 +408,11 @@ async function handleChangePassword() {
 	gap: 12px;
 	min-width: 0;
 	max-width: none;
-	padding: 16px;
+	padding: 15px;
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 14px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 24%, transparent);
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 44%, transparent);
+	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--consensus-ink) 5%, transparent);
 }
 
 .setting-card__intro {
@@ -428,14 +439,29 @@ async function handleChangePassword() {
 	max-width: none;
 }
 
+.setting-card__fields {
+	display: grid;
+	gap: 10px;
+	align-items: end;
+}
+
+.setting-card__fields--inline {
+	grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.setting-card__fields--password {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
+}
+
 .account-form input {
 	box-sizing: border-box;
 	width: 100%;
-	height: 42px;
+	height: 40px;
 	max-width: 100%;
-	min-height: 42px;
+	min-height: 40px;
 	padding: 0 13px;
-	border-radius: 12px;
+	border-radius: 10px;
 	font-size: 0.96rem;
 	line-height: 1.2;
 }
@@ -444,7 +470,6 @@ async function handleChangePassword() {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	margin-top: 2px;
 }
 
 .account-form .button {
@@ -452,11 +477,12 @@ async function handleChangePassword() {
 	width: fit-content;
 	min-width: 0;
 	max-width: 100%;
-	min-height: 38px;
-	padding: 8px 14px;
-	border-radius: 999px;
+	min-height: 40px;
+	padding: 0 14px;
+	border-radius: 10px;
 	font-size: 0.95rem;
 	line-height: 1.2;
+	white-space: nowrap;
 }
 
 .account-form .button--primary {
@@ -556,6 +582,11 @@ input {
 	.account-details__body {
 		grid-template-columns: 1fr;
 		padding-inline: 0;
+	}
+
+	.setting-card__fields--inline,
+	.setting-card__fields--password {
+		grid-template-columns: 1fr;
 	}
 
 	.setting-card__actions {
