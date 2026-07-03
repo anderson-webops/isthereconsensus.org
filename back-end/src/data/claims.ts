@@ -5481,6 +5481,88 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Are genes destiny for complex human traits?",
+		slug: "are-genes-destiny-for-complex-human-traits",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"No. Genes matter for many complex traits and diseases, but they are not destiny. Heritability describes variation in a population, not how fixed a trait is for one person, and most complex traits reflect many genes interacting with environments, development, behavior, measurement, and chance.",
+		stableCore: [
+			"MedlinePlus explains that heritability is a population statistic: it estimates how much variation in a trait within a population is attributable to genetic differences.",
+			"MedlinePlus also emphasizes that most complex human traits fall between zero and one in heritability, meaning their variation reflects both genetic and environmental factors.",
+			"Common conditions such as heart disease, type 2 diabetes, and obesity are complex or multifactorial: they do not have a single genetic cause and are influenced by multiple genes plus lifestyle and environmental factors.",
+			"A large 2015 Nature Genetics meta-analysis of 17,804 traits from 2,748 twin-study publications reported average heritability around 49%, which supports substantial genetic influence while leaving substantial non-genetic variation."
+		],
+		openQuestions: [
+			"How accurately can polygenic risk scores predict useful outcomes across ancestries, environments, ages, and health systems?",
+			"Which gene-environment interactions matter enough to change prevention, education, or medical decisions?",
+			"How should public communication explain genetic influence without sliding into either determinism or denial?"
+		],
+		whatWouldChangeMinds: [
+			"Broad evidence that common complex traits are controlled by single genes in ways that make environment, development, and measurement largely irrelevant.",
+			"Repeated high-quality evidence showing that heritability estimates reliably determine how fixed or changeable an individual person's trait will be.",
+			"Major genetics institutions revising heritability guidance to treat it as individual destiny rather than a population-level variance statistic."
+		],
+		misconceptions: [
+			"A trait can be heritable without being fixed, inevitable, or impossible to change.",
+			"High heritability does not mean the same thing as 'mostly genetic' for one individual.",
+			"Family clustering can reflect shared environments and lifestyles as well as shared genes."
+		],
+		editorSummary:
+			"This page should lower the temperature of nature-versus-nurture arguments. It should say plainly that genetic influence is real, but that heritability is a population statistic and complex traits are not simple fate.",
+		uncertaintySummary:
+			"The core distinction between genetic influence and determinism is settled. Uncertainty is higher for trait-specific prediction, ancestry portability of polygenic scores, gene-environment interactions, and practical use in individual decisions.",
+		searchCutoffAt: "2026-07-03T02:35:29.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:35:29.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:35:29.000Z",
+				kind: "publication",
+				summary:
+					"Initial genetic determinism claim page published from MedlinePlus genetics guidance and a large twin-study heritability meta-analysis."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "What is heritability?",
+				publisher: "MedlinePlus Genetics",
+				year: 2021,
+				url: "https://medlineplus.gov/genetics/understanding/inheritance/heritability/",
+				stance: "supports",
+				note:
+					"Official NLM/NIH consumer genetics source explaining that heritability is a population-level statistic, not a measure of how genetically determined one person's trait is.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "What are complex or multifactorial disorders?",
+				publisher: "MedlinePlus Genetics",
+				year: 2021,
+				url: "https://medlineplus.gov/genetics/understanding/mutationsanddisorders/complexdisorders/",
+				stance: "supports",
+				note:
+					"Official NLM/NIH source explaining that many common conditions are influenced by multiple genes together with lifestyle and environmental factors.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Meta-analysis of the heritability of human traits based on fifty years of twin studies",
+				publisher: "Nature Genetics",
+				year: 2015,
+				url: "https://doi.org/10.1038/ng.3285",
+				doi: "10.1038/ng.3285",
+				pmid: "25985137",
+				stance: "supports",
+				note:
+					"Meta-analysis covering 17,804 traits from 2,748 publications and more than 14.5 million partly dependent twin pairs; useful for quantifying substantial but non-deterministic genetic influence.",
+				order: 3
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Are people left-brained or right-brained personality types?",
 		slug: "are-people-left-brained-or-right-brained-personality-types",
@@ -5792,6 +5874,176 @@ const rawClaims: SeedClaim[] = [
 				stance: "context",
 				note: "Useful when discussing how correction mechanisms work.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "media-misinformation",
+		title: "Can correlation alone prove causation?",
+		slug: "can-correlation-alone-prove-causation",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"No. Correlation can be an important clue, but it does not by itself prove that one thing caused another. Causal claims usually require stronger evidence about timing, alternative explanations, confounding, bias, consistency across studies, plausible mechanisms, and sometimes experiments or natural experiments.",
+		stableCore: [
+			"Epidemiology distinguishes association from causation because observed associations can arise from chance, bias, confounding, reverse causation, or a common cause.",
+			"Temporality is essential: a proposed cause must come before the effect.",
+			"Bradford Hill's viewpoints remain widely used as a framework for thinking about causal evidence, but they are not a mechanical checklist that can turn one association into proof.",
+			"Modern evidence synthesis often uses causal-assessment approaches to evaluate whether a body of observational evidence supports a causal interpretation."
+		],
+		openQuestions: [
+			"Which causal-inference explanations best help non-specialists avoid both overclaiming and dismissing useful observational evidence?",
+			"When are randomized trials necessary, and when are natural experiments, longitudinal designs, negative controls, or mechanistic evidence enough?",
+			"How should media stories communicate confounding and reverse causation without making every association sound meaningless?"
+		],
+		whatWouldChangeMinds: [
+			"A defensible causal-inference framework showing that a bare correlation, without timing or alternative-explanation analysis, is sufficient to establish causation.",
+			"Major epidemiology or statistics guidance abandoning confounding, temporality, bias, and design considerations when evaluating causal claims.",
+			"Repeated examples where simple correlations alone consistently produced reliable causal conclusions across fields without additional assumptions."
+		],
+		misconceptions: [
+			"'Correlation does not prove causation' does not mean correlations are useless; it means they need design and context.",
+			"An association can be real and still be non-causal if both variables are driven by a third factor.",
+			"A randomized trial is powerful, but it is not the only possible causal evidence; observational evidence can support causality when the broader design and assumptions are strong."
+		],
+		editorSummary:
+			"This page should become a reusable reference for headline literacy. The key message is not 'ignore observational research'; it is 'do not confuse an association with a completed causal case.'",
+		uncertaintySummary:
+			"The core point is settled: correlation alone is not causal proof. Uncertainty is claim-specific and depends on the design quality, temporality, confounding control, mechanism, replication, and whether intervention evidence exists.",
+		searchCutoffAt: "2026-07-03T02:35:29.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:35:29.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:35:29.000Z",
+				kind: "publication",
+				summary:
+					"Initial correlation-versus-causation claim page published from epidemiology causation guidance and causal-assessment review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Causation in epidemiology: association and causation",
+				publisher: "Health Knowledge",
+				url: "https://www.healthknowledge.org.uk/e-learning/epidemiology/practitioners/causation-epidemiology-association-causation",
+				stance: "supports",
+				note:
+					"Epidemiology teaching source explaining that observed associations may reflect chance, bias, or confounding, and that causal judgment requires more than a single study.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Principles of Causation",
+				publisher: "NCBI Bookshelf / StatPearls",
+				year: 2024,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK606119/",
+				stance: "supports",
+				note:
+					"Clinical epidemiology reference defining causation as an exposure affecting the probability of a later outcome and summarizing evolved causal-inference concepts.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Causal assessment in evidence synthesis: A methodological review of reviews",
+				publisher: "Research Synthesis Methods",
+				year: 2022,
+				url: "https://doi.org/10.1002/jrsm.1568",
+				doi: "10.1002/jrsm.1568",
+				stance: "supports",
+				note:
+					"Methodological review of 53 causal reviews showing how systematic reviews incorporate causal-assessment approaches, most often Bradford Hill viewpoints, with variable transparency.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "bias-incentives",
+		title: "Does industry funding automatically make a study false?",
+		slug: "does-industry-funding-automatically-make-a-study-false",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		bottomLine:
+			"No. Industry funding or a financial conflict of interest does not automatically make a study false, but it is a real bias signal that should change how carefully readers inspect the design, comparator, outcome choices, publication record, independence, and conclusions. Transparency and conflict management matter because funding source is associated with more favorable results and conclusions in some research areas.",
+		stableCore: [
+			"A Cochrane methodology review found that industry-sponsored drug and device studies more often had favorable efficacy results and favorable conclusions than non-industry-sponsored studies.",
+			"The same Cochrane review reported risk ratios of 1.27 for favorable efficacy results and 1.34 for favorable conclusions in industry-sponsored drug and device studies.",
+			"ICMJE says transparent disclosure helps readers judge whether relationships and activities are pertinent to a paper's content.",
+			"U.S. PHS financial-conflict rules define a financial conflict of interest as a significant financial interest that could directly and significantly affect the design, conduct, or reporting of PHS-funded research."
+		],
+		openQuestions: [
+			"Which disclosure formats actually help readers calibrate credibility without treating every conflict as automatic disqualification?",
+			"Which conflict-management tools best reduce bias: independent analysis, data access guarantees, protocol registration, third-party monitoring, or eliminating the relationship?",
+			"How do funding effects differ by field, study design, sponsor role, comparator choice, and publication incentives?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated reviews showing no association between sponsor financial interests and favorable results, favorable conclusions, selective reporting, comparator choice, or publication patterns.",
+			"Evidence that disclosure and standard peer review alone reliably eliminate funding-related bias without independent data access or conflict management.",
+			"Major journal, funder, or regulatory guidance concluding that financial conflicts no longer need disclosure or management because they do not threaten trust or bias."
+		],
+		misconceptions: [
+			"Funding bias is not a magic truth detector; a conflicted study can be correct and an unconflicted study can be wrong.",
+			"Disclosure is necessary, but disclosure alone does not remove the possibility of biased design, analysis, interpretation, or nonpublication.",
+			"The most important question is not simply who paid, but what control the sponsor had over design, data access, analysis, publication, and interpretation."
+		],
+		editorSummary:
+			"This page should avoid both naive trust and reflexive dismissal. Readers need a practical rule: financial conflicts are evidence-quality context, not proof of fraud.",
+		uncertaintySummary:
+			"The existence of funding-related bias signals is well supported in drug and device research. The size and mechanism of bias vary by field, sponsor control, study design, and safeguards, so individual studies still need case-by-case appraisal.",
+		searchCutoffAt: "2026-07-03T02:35:29.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:35:29.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:35:29.000Z",
+				kind: "publication",
+				summary:
+					"Initial industry-funding bias claim page published from Cochrane, ICMJE, and PHS financial-conflict policy sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Industry sponsorship and research outcome",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2017,
+				url: "https://www.cochrane.org/evidence/MR000033_industry-sponsorship-and-research-outcome",
+				stance: "supports",
+				note:
+					"Methodology review of 75 papers finding industry-sponsored drug and device studies more often reported favorable efficacy results and conclusions than non-industry-sponsored studies.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Disclosure of Financial and Non-Financial Relationships and Activities, and Conflicts of Interest",
+				publisher: "International Committee of Medical Journal Editors",
+				url:
+					"https://www.icmje.org/recommendations/browse/roles-and-responsibilities/author-responsibilities--conflicts-of-interest.html",
+				stance: "supports",
+				note:
+					"Journal-author responsibility guidance explaining why transparent disclosure is needed for trust and reader judgment, while noting that relationships do not always indicate problematic influence.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "42 CFR Part 50 Subpart F: Promoting Objectivity in Research",
+				publisher: "Electronic Code of Federal Regulations",
+				url: "https://www.ecfr.gov/current/title-42/chapter-I/subchapter-D/part-50/subpart-F",
+				stance: "supports",
+				note:
+					"U.S. PHS rule defining financial conflict of interest and requiring disclosure, review, management plans, public availability, and retrospective review when conflicts are not managed.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Conflict of Interest in Medical Research, Education, and Practice",
+				publisher: "National Academies / NCBI Bookshelf",
+				year: 2009,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK22943/",
+				stance: "context",
+				note:
+					"Institutional context on disclosure and management policies, including the limitation that disclosure alone does not resolve conflicts of interest.",
+				order: 4
 			}
 		]
 	},
