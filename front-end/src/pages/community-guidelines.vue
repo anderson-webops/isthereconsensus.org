@@ -240,11 +240,15 @@ useStaticPageMeta({
 .card-grid {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .guidelines-summary {
 	align-items: start;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-grid {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .summary-card,
@@ -347,6 +351,12 @@ useStaticPageMeta({
 
 	.guidelines-callout__actions {
 		width: 100%;
+	}
+}
+
+@media (max-width: 820px) {
+	.guidelines-summary {
+		grid-template-columns: 1fr;
 	}
 }
 </style>

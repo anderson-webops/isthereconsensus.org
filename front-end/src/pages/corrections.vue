@@ -212,11 +212,15 @@ useStaticPageMeta({
 .card-grid {
 	display: grid;
 	gap: 14px;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 .corrections-summary {
 	align-items: start;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .summary-card,
@@ -318,6 +322,13 @@ useStaticPageMeta({
 
 	.corrections-callout__actions {
 		width: 100%;
+	}
+}
+
+@media (max-width: 820px) {
+	.corrections-summary,
+	.card-grid {
+		grid-template-columns: 1fr;
 	}
 }
 </style>

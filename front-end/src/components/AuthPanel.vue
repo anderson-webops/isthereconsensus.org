@@ -174,7 +174,10 @@ async function handleChangePassword() {
 
 			<section class="account-details" aria-labelledby="account-settings-title">
 				<div class="account-details__summary">
-					<span id="account-settings-title">Account settings</span>
+					<div>
+						<h3 id="account-settings-title">Account settings</h3>
+						<p>Update your sign-in email or password.</p>
+					</div>
 				</div>
 				<div class="account-details__body">
 					<form class="account-form setting-card" @submit.prevent="handleChangeEmail">
@@ -342,53 +345,68 @@ async function handleChangePassword() {
 }
 
 .account-details {
-	margin-top: 2px;
+	margin-top: 0;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	overflow: visible;
 	background: transparent;
 	display: grid;
-	gap: 12px;
+	gap: 14px;
 }
 
 .account-details__summary {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	min-height: 0;
+	justify-content: space-between;
+	gap: 14px;
 	padding: 0;
 	border: 0;
 	background: transparent;
-	font-size: 0.82rem;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+}
+
+.account-details__summary h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+	line-height: 1.2;
+}
+
+.account-details__summary p {
+	margin: 4px 0 0;
 	color: var(--consensus-muted);
+	font-size: 0.95rem;
+	line-height: 1.45;
 }
 
 .account-details__body {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	justify-content: start;
-	align-items: stretch;
-	gap: 14px;
-	max-width: 860px;
+	align-items: start;
+	gap: 0;
+	width: 100%;
+	max-width: 920px;
 	padding: 0;
-	border-top: 0;
-	background: transparent;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	overflow: hidden;
+	background: color-mix(in srgb, var(--consensus-field-surface) 26%, transparent);
 }
 
 .setting-card {
 	width: 100%;
 	height: 100%;
 	align-content: start;
-	gap: 14px;
+	gap: 13px;
 	min-width: 0;
 	max-width: none;
-	padding: 16px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 34%, transparent);
+	padding: 18px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+.setting-card + .setting-card {
+	border-left: 1px solid var(--consensus-soft-line);
 }
 
 .setting-card__intro {
@@ -398,7 +416,7 @@ async function handleChangePassword() {
 
 .setting-card__intro h3 {
 	font-family: "Fraunces", serif;
-	font-size: 1.02rem;
+	font-size: 1rem;
 	line-height: 1.2;
 	margin: 0;
 }
@@ -411,16 +429,16 @@ async function handleChangePassword() {
 }
 
 .field-stack {
-	gap: 7px;
+	gap: 6px;
 	max-width: none;
 }
 
 .account-form input {
 	box-sizing: border-box;
 	width: 100%;
-	height: 44px;
+	height: 42px;
 	max-width: 100%;
-	min-height: 44px;
+	min-height: 42px;
 	padding: 0 13px;
 	border-radius: 12px;
 	font-size: 0.96rem;
@@ -430,14 +448,15 @@ async function handleChangePassword() {
 .setting-card__actions {
 	display: flex;
 	justify-content: flex-start;
+	align-items: center;
 	margin-top: auto;
 }
 
 .account-form .button {
 	justify-self: start;
-	width: auto;
+	width: fit-content;
 	min-width: 0;
-	max-width: max-content;
+	max-width: 100%;
 	min-height: 38px;
 	padding: 8px 14px;
 	border-radius: 999px;
@@ -542,6 +561,11 @@ input {
 	.account-details__body {
 		grid-template-columns: 1fr;
 		padding-inline: 0;
+	}
+
+	.setting-card + .setting-card {
+		border-top: 1px solid var(--consensus-soft-line);
+		border-left: 0;
 	}
 
 	.setting-card__actions {
