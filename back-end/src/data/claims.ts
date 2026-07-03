@@ -3729,6 +3729,102 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Has human influence increased the frequency of concurrent heatwaves and droughts?",
+		slug: "has-human-influence-increased-the-frequency-of-concurrent-heatwaves-and-droughts",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes, at the global scale, but with important regional caveats. IPCC AR6 has high confidence that human influence has increased the frequency of concurrent heatwaves and droughts. That does not mean every drought or every wildfire is caused by climate change; it means warming has shifted the odds toward more compound hot-and-dry conditions, which can amplify risks to crops, water supplies, ecosystems, energy, health, and fire weather.",
+		stableCore: [
+			"IPCC AR6 says the probability of compound events has likely increased because of human-induced climate change and will likely continue to increase with further warming.",
+			"IPCC AR6 has high confidence that human influence has increased the frequency of concurrent heatwaves and droughts.",
+			"Review evidence finds compound drought and hot extremes have increased across regional and global scales in recent decades, mainly because hot extremes have increased.",
+			"Attribution modeling finds anthropogenic emissions increased the global likelihood of concurrent warm and dry months by about 2.7 times."
+		],
+		openQuestions: [
+			"Which regions have the clearest observed signal versus the largest remaining role for natural variability, land management, irrigation, and atmospheric circulation?",
+			"How should compound-event attribution handle different drought definitions, soil moisture, runoff, precipitation, vapor-pressure deficit, and time scales?",
+			"Which adaptation strategies reduce the combined risk to crops, water, health, electricity demand, ecosystems, and fire conditions?"
+		],
+		whatWouldChangeMinds: [
+			"Major IPCC or comparable reassessment downgrading the high-confidence attribution of concurrent heatwave and drought frequency to human influence.",
+			"Global observational syntheses showing no increase in compound hot-and-dry events after accounting for measurement changes and natural variability.",
+			"Climate-model and attribution evidence showing enhanced greenhouse forcing does not raise compound warm-dry risk."
+		],
+		misconceptions: [
+			"Because droughts and heatwaves occurred naturally before industrial warming, people sometimes infer climate change has no role in today's changed odds.",
+			"Some commentary treats every local dry spell as climate proof, even though attribution is stronger for broad frequency shifts than for every single event.",
+			"Compound events are sometimes discussed as if heat and drought risks simply add together, when interactions can amplify impacts."
+		],
+		editorSummary:
+			"This page should model careful climate-attribution language: globally strong and regionally qualified, focused on shifted odds and compounding impacts rather than simplistic blame for every event.",
+		uncertaintySummary:
+			"The IPCC-level conclusion is high-certainty for increased concurrent heatwave and drought frequency under human influence. Uncertainty is concentrated in regional details, drought definitions, land-surface feedbacks, and exact event-by-event attribution.",
+		searchCutoffAt: "2026-07-03T13:02:17.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:02:17.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:02:17.000Z",
+				kind: "publication",
+				summary:
+					"Initial compound heatwave/drought attribution page published from IPCC AR6 and compound-event review and attribution literature."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Weather and Climate Extreme Events in a Changing Climate",
+				publisher: "IPCC",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-11/",
+				doi: "10.1017/9781009157896.013",
+				stance: "supports",
+				note:
+					"IPCC AR6 Chapter 11 anchor: likely increased probability of compound events, high confidence that concurrent heatwaves and droughts are becoming more frequent under enhanced greenhouse forcing, and high confidence in human influence on their frequency.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Compound droughts and hot extremes: Characteristics, drivers, changes, and impacts",
+				publisher: "Earth-Science Reviews",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.earscirev.2022.104241",
+				doi: "10.1016/j.earscirev.2022.104241",
+				stance: "supports",
+				note:
+					"Review source synthesizing compound drought and hot extremes; reports overall increases at regional and global scales, likely attributable to anthropogenic influence, with hot extremes the main driver.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Intensified Likelihood of Concurrent Warm and Dry Months Attributed to Anthropogenic Climate Change",
+				publisher: "Water Resources Research",
+				year: 2022,
+				url: "https://doi.org/10.1029/2021WR030411",
+				doi: "10.1029/2021WR030411",
+				stance: "supports",
+				note:
+					"CMIP6 attribution study found most regions experienced large increases in concurrent warm and dry months in historical simulations with human emissions, and a 2.7-fold global likelihood increase due to anthropogenic emissions.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Anthropogenic climate change doubled the frequency of compound drought and heatwaves in low-income regions",
+				publisher: "Communications Earth & Environment",
+				year: 2024,
+				url: "https://doi.org/10.1038/s43247-024-01894-7",
+				doi: "10.1038/s43247-024-01894-7",
+				stance: "context",
+				note:
+					"Recent inequality-focused attribution study reporting faster increases in compound drought-heatwave frequency in low-income regions and a detectable anthropogenic contribution over many of those regions.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "nutrition-and-diet",
 		title: "Are dietary cholesterol and saturated fat the same kind of risk?",
 		slug: "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
@@ -4185,6 +4281,213 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note:
 					"Recent global burden context estimating air-pollution-attributable deaths worldwide in 2023 and showing why estimates vary by model and year.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Does fine particulate air pollution cause cardiovascular disease and lung cancer?",
+		slug: "does-fine-particulate-air-pollution-cause-cardiovascular-disease-and-lung-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Fine particulate matter, especially PM2.5, is causally linked to cardiovascular harm and premature death, and outdoor air pollution and particulate matter are classified by IARC as carcinogenic to humans because of lung-cancer evidence. The risk is not limited to smokers or visibly dirty air: long-term exposure to lower particle levels still contributes to population risk.",
+		stableCore: [
+			"WHO attributes major ambient-air-pollution mortality to fine particulate matter that causes cardiovascular and respiratory disease and cancers.",
+			"EPA's particulate-matter science assessment identifies causal relationships between short- and long-term PM2.5 exposure and cardiovascular effects, as well as mortality.",
+			"IARC classified outdoor air pollution and particulate matter in outdoor air pollution as Group 1 carcinogens, with sufficient evidence for lung cancer.",
+			"A WHO-commissioned systematic review found PM2.5 significantly associated with all assessed mortality endpoints, including cardiovascular disease and lung cancer."
+		],
+		openQuestions: [
+			"How should risk estimates be updated for changing pollutant mixtures, wildfire smoke, indoor infiltration, and lower-concentration exposures?",
+			"Which interventions most rapidly lower exposure for people near traffic, industry, ports, fires, or other high-particle sources?",
+			"How should individual protective advice be balanced against the much larger benefits of source reduction and clean-air policy?"
+		],
+		whatWouldChangeMinds: [
+			"Major WHO, EPA, IARC, or comparable reassessments withdrawing causal cardiovascular or lung-cancer conclusions for PM2.5 and outdoor particulate pollution.",
+			"Large, high-quality cohort evidence showing the PM2.5 links disappear after better exposure measurement and confounding control.",
+			"Mechanistic and toxicological evidence showing particle exposure at real-world levels is biologically inert for cardiovascular and cancer pathways."
+		],
+		misconceptions: [
+			"Fine particles are sometimes described as just nuisance dust, even though PM2.5 can penetrate deep into the lungs and is linked to systemic effects.",
+			"Lung-cancer risk is sometimes treated as only a smoking issue, even though IARC classifies outdoor air pollution and particulate matter as human carcinogens.",
+			"Clean-looking air is sometimes assumed to be harmless, even when measured PM2.5 remains above health-based guideline levels."
+		],
+		editorSummary:
+			"This page should make the causal evidence concrete: PM2.5 is not just a visibility or asthma issue. It is a cardiovascular and cancer-risk pollutant with strong institutional consensus and measurable burden.",
+		uncertaintySummary:
+			"The causal direction is high-certainty for cardiovascular effects, mortality, and outdoor particulate pollution as a lung-cancer hazard. Remaining uncertainty is mostly about exact risk magnitude by source, mixture, concentration range, vulnerability, and intervention design.",
+		searchCutoffAt: "2026-07-03T13:02:17.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:02:17.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:02:17.000Z",
+				kind: "publication",
+				summary:
+					"Initial PM2.5 cardiovascular and lung-cancer page published from WHO, EPA, IARC, and systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Ambient (outdoor) air pollution",
+				publisher: "World Health Organization",
+				year: 2024,
+				url:
+					"https://www.who.int/news-room/fact-sheets/detail/ambient-%28outdoor%29-air-quality-and-health",
+				stance: "supports",
+				note:
+					"WHO anchor estimating 4.2 million premature deaths from ambient air pollution in 2019 and identifying fine particulate matter as causing cardiovascular and respiratory disease and cancers.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Integrated Science Assessment for Particulate Matter",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2019,
+				url: "https://www.epa.gov/isa/integrated-science-assessment-isa-particulate-matter",
+				stance: "supports",
+				note:
+					"EPA assessment anchor for causal determinations linking short- and long-term PM2.5 exposure with cardiovascular effects and mortality.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "IARC: Outdoor air pollution a leading environmental cause of cancer deaths",
+				publisher: "International Agency for Research on Cancer",
+				year: 2013,
+				url:
+					"https://www.iarc.who.int/news-events/iarc-outdoor-air-pollution-a-leading-environmental-cause-of-cancer-deaths/",
+				stance: "supports",
+				note:
+					"IARC classification anchor: outdoor air pollution and particulate matter in outdoor air pollution are carcinogenic to humans, with sufficient lung-cancer evidence.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Long-term exposure to PM and all-cause and cause-specific mortality: A systematic review and meta-analysis",
+				publisher: "Environment International",
+				year: 2020,
+				url: "https://doi.org/10.1016/j.envint.2020.105974",
+				doi: "10.1016/j.envint.2020.105974",
+				pmid: "32703584",
+				stance: "supports",
+				note:
+					"WHO-commissioned review of 107 mostly cohort studies found PM2.5 associated with all assessed causes of death, including cardiovascular disease and lung cancer; natural-cause mortality RR was 1.08 per 10 ug/m3.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Outdoor Particulate Matter Exposure and Lung Cancer: A Systematic Review and Meta-Analysis",
+				publisher: "Environmental Health Perspectives",
+				year: 2014,
+				url: "https://doi.org/10.1289/ehp.1307494",
+				doi: "10.1289/ehp.1307494",
+				pmid: "24911630",
+				stance: "supports",
+				note:
+					"Meta-analysis of 18 studies estimated lung-cancer relative risk of 1.09 per 10 ug/m3 PM2.5 and supported IARC's Group 1 outdoor particulate matter classification.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Does household air pollution from solid fuels cause major disease burdens, especially in children?",
+		slug: "does-household-air-pollution-from-solid-fuels-cause-major-disease-burdens-especially-in-children",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Burning wood, charcoal, coal, dung, crop waste, kerosene, or other polluting fuels in and around homes is a major global-health risk. WHO estimates household air pollution caused about 2.9 million deaths in 2021, including more than 309,000 deaths among children under five. The burden includes pneumonia and other respiratory disease, but also stroke, ischemic heart disease, COPD, lung cancer, low birth weight, and stillbirth.",
+		stableCore: [
+			"WHO estimates 2.9 million deaths and about 95 million disability-adjusted life years were attributable to household air pollution in 2021.",
+			"Women and children often bear disproportionate exposure because cooking, fuel collection, and time near household fires are unevenly distributed.",
+			"WHO identifies household air pollution as contributing to stroke, ischemic heart disease, COPD, lung cancer, and acute lower respiratory infections in children.",
+			"Meta-analytic evidence links household solid-fuel exposure with elevated childhood pneumonia risk and broader cardiorespiratory, pediatric, and maternal harms."
+		],
+		openQuestions: [
+			"Which clean-energy transitions most reliably reduce measured household PM2.5 exposure at scale and stay adopted over time?",
+			"How much benefit comes from cleaner fuels, better stoves, ventilation, behavior change, or community-level outdoor-air improvements?",
+			"How should policies manage transition fuels such as gas when electricity or other cleaner energy is not yet reliable or affordable?"
+		],
+		whatWouldChangeMinds: [
+			"Major WHO or burden-of-disease reassessments finding household solid-fuel pollution is not a large contributor to respiratory, cardiovascular, cancer, or child-health outcomes.",
+			"Large exposure-measured intervention evidence showing sustained exposure reduction does not improve relevant health outcomes.",
+			"Updated meta-analyses showing childhood pneumonia or major cardiorespiratory associations disappear after better exposure measurement and confounding control."
+		],
+		misconceptions: [
+			"Air pollution is often treated as only an outdoor urban problem, even though household combustion is a major exposure source.",
+			"Smoke from wood or biomass is sometimes seen as natural and therefore harmless.",
+			"Improved stoves are sometimes treated as automatically solving the problem, even when real-world exposure reduction depends on fuel, ventilation, maintenance, and sustained use."
+		],
+		editorSummary:
+			"This page should connect energy access, indoor exposure, and child health without implying that families can solve a structural clean-energy problem by willpower alone.",
+		uncertaintySummary:
+			"The overall disease burden is high-certainty, but intervention effects vary by fuel, stove, ventilation, background outdoor pollution, adoption, and exposure reduction. Clean energy access is the practical bottleneck.",
+		searchCutoffAt: "2026-07-03T13:02:17.000Z",
+		lastRetractionCheckAt: "2026-07-03T13:02:17.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T13:02:17.000Z",
+				kind: "publication",
+				summary:
+					"Initial household-air-pollution disease-burden page published from WHO fact-sheet, WHO household-fuel guidance, and meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Household air pollution",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health",
+				stance: "supports",
+				note:
+					"WHO anchor for the 2021 burden estimate of 2.9 million deaths, more than 309,000 deaths among children under five, 95 million DALYs, and major disease categories.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "WHO guidelines for indoor air quality: household fuel combustion",
+				publisher: "World Health Organization",
+				year: 2014,
+				url: "https://www.who.int/publications/i/item/9789241548885",
+				stance: "supports",
+				note:
+					"Guideline anchor for household fuel-combustion exposure reduction, clean-fuel transition, and health-protective indoor-air recommendations.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Adverse health effects associated with household air pollution: a systematic review, meta-analysis, and burden estimation study",
+				publisher: "The Lancet Global Health",
+				year: 2020,
+				url: "https://doi.org/10.1016/S2214-109X(20)30343-0",
+				doi: "10.1016/S2214-109X(20)30343-0",
+				pmid: "33069303",
+				stance: "supports",
+				note:
+					"Meta-analysis and burden study of 476 studies found household air pollution associated with respiratory, cardiovascular, cancer, pediatric, and maternal outcomes, with burden concentrated in low- and middle-income countries.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Indoor air pollution from solid fuel on children pneumonia in low- and middle-income countries: a systematic review and meta-analysis",
+				publisher: "Environmental Science and Pollution Research",
+				year: 2022,
+				url: "https://doi.org/10.1007/s11356-021-18293-6",
+				doi: "10.1007/s11356-021-18293-6",
+				pmid: "35066845",
+				stance: "supports",
+				note:
+					"Meta-analysis of 16 studies found solid fuel combustion associated with higher childhood pneumonia risk, with pooled odds ratio 1.66.",
 				order: 4
 			}
 		]
