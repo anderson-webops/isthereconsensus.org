@@ -6177,6 +6177,125 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Is cognitive behavioral therapy for insomnia a first-line treatment for chronic insomnia?",
+		slug: "is-cognitive-behavioral-therapy-for-insomnia-a-first-line-treatment-for-chronic-insomnia",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. For adult chronic insomnia, CBT-I is recommended first when it is available. It is not just generic sleep hygiene: evidence-based packages use structured behavioral and cognitive components, including stimulus control, sleep restriction, and cognitive restructuring. Sleeping pills can still help some people short term, but the consensus default for persistent insomnia is CBT-I before a medication-first long-term plan.",
+		stableCore: [
+			"The American College of Physicians recommends CBT-I as the initial treatment for adults with chronic insomnia disorder.",
+			"The American Academy of Sleep Medicine strongly recommends multicomponent CBT-I for adult chronic insomnia and recommends against sleep hygiene as a stand-alone treatment.",
+			"A 2024 JAMA Psychiatry network meta-analysis of 241 trials (31,452 adults) found useful components included cognitive restructuring, third-wave components, sleep restriction, and stimulus control; the best modeled in-person package had a number needed to treat of about 3 compared with psychoeducation.",
+			"A 2025 JAMA Internal Medicine meta-analysis of 67 RCTs (5,232 adults with chronic disease) found CBT-I improved insomnia severity, sleep efficiency, and sleep-onset latency, with high satisfaction, 13.3% mean dropout, and rare treatment-related adverse effects."
+		],
+		openQuestions: [
+			"How can health systems expand access to trained CBT-I clinicians, digital CBT-I, brief behavioral therapy, and primary-care delivery without lowering quality?",
+			"Which adaptations work best for shift workers, older adults, people with severe psychiatric or medical comorbidity, and people with objective short sleep duration?",
+			"When symptoms are severe or access is delayed, how should clinicians balance CBT-I with short-term medication, combination treatment, side-effect risk, and patient preference?"
+		],
+		whatWouldChangeMinds: [
+			"Major guideline updates from ACP, AASM, NICE, or comparable bodies withdrawing CBT-I's first-line status for adult chronic insomnia.",
+			"Large, low-bias trials showing no clinically meaningful CBT-I advantage over credible controls on insomnia severity, sleep continuity, daytime function, or durability.",
+			"Long-term evidence that medication-first strategies consistently outperform CBT-I with fewer harms and better patient-centered outcomes."
+		],
+		misconceptions: [
+			"CBT-I is not just advice to avoid screens or keep a bedtime routine; sleep hygiene alone is not the core evidence-based treatment.",
+			"Calling insomnia treatable with behavioral therapy does not mean the symptoms are imaginary or the person is at fault.",
+			"Sleeping pills helping some people does not make them the default long-term first-line plan for chronic insomnia.",
+			"Digital CBT-I can improve access, but delivery format, adherence, comorbidity, and symptom severity still matter."
+		],
+		editorSummary:
+			"This page should give readers a practical treatment-consensus anchor: chronic insomnia is treatable, CBT-I is first-line, and the main real-world problem is access and matching delivery format to patient needs.",
+		uncertaintySummary:
+			"CBT-I's first-line status for adult chronic insomnia is strongly supported. Remaining uncertainty is mostly about implementation, delivery format, subgroup adaptation, access, and when medication should be added or used short term.",
+		searchCutoffAt: "2026-07-03T20:54:57.000Z",
+		lastRetractionCheckAt: "2026-07-03T20:54:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T20:54:57.000Z",
+				kind: "publication",
+				summary:
+					"Initial CBT-I and chronic-insomnia treatment claim page published from ACP and AASM guideline recommendations plus recent randomized-trial meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title:
+					"Management of Chronic Insomnia Disorder in Adults: A Clinical Practice Guideline From the American College of Physicians",
+				publisher: "Annals of Internal Medicine",
+				year: 2016,
+				url: "https://pubmed.ncbi.nlm.nih.gov/27136449/",
+				doi: "10.7326/M15-2175",
+				pmid: "27136449",
+				stance: "supports",
+				note:
+					"Guideline anchor recommending CBT-I as initial treatment for adult chronic insomnia, with shared decision-making about short-term medication if CBT-I alone is unsuccessful.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title:
+					"Behavioral and psychological treatments for chronic insomnia disorder in adults: an American Academy of Sleep Medicine clinical practice guideline",
+				publisher: "Journal of Clinical Sleep Medicine",
+				year: 2021,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7853203/",
+				doi: "10.5664/jcsm.8986",
+				pmid: "33164742",
+				pmcid: "PMC7853203",
+				stance: "supports",
+				note:
+					"AASM guideline strongly recommending multicomponent CBT-I for adult chronic insomnia and recommending against sleep hygiene alone.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Components and Delivery Formats of Cognitive Behavioral Therapy for Chronic Insomnia in Adults",
+				publisher: "JAMA Psychiatry",
+				year: 2024,
+				url: "https://pubmed.ncbi.nlm.nih.gov/38231522/",
+				doi: "10.1001/jamapsychiatry.2023.5060",
+				pmid: "38231522",
+				stance: "supports",
+				note:
+					"Component network meta-analysis of 241 trials and 31,452 adults identifying useful CBT-I elements, including cognitive restructuring, third-wave components, sleep restriction, stimulus control, and in-person delivery.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Cognitive Behavioral Therapy for Insomnia in People With Chronic Disease: A Systematic Review and Meta-Analysis",
+				publisher: "JAMA Internal Medicine",
+				year: 2025,
+				url: "https://jamanetwork.com/journals/jamainternalmedicine/article-abstract/2839294",
+				doi: "10.1001/jamainternmed.2025.4610",
+				pmid: "40982264",
+				stance: "supports",
+				note:
+					"Meta-analysis of 67 RCTs and 5,232 adults with chronic disease finding improved insomnia severity, sleep efficiency, and sleep-onset latency, with high satisfaction and rare treatment-related adverse effects.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Efficacy of digital cognitive behavioural therapy for insomnia: a meta-analysis of randomised controlled trials",
+				publisher: "Sleep Medicine",
+				year: 2020,
+				url: "https://pubmed.ncbi.nlm.nih.gov/32950013/",
+				doi: "10.1016/j.sleep.2020.08.020",
+				pmid: "32950013",
+				stance: "context",
+				note:
+					"Digital CBT-I meta-analysis of 33 RCTs supporting digital delivery as an access-expanding option, while face-to-face CBT-I showed somewhat larger insomnia-severity improvements.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Do probiotics reliably treat depression or anxiety?",
 		slug: "do-probiotics-reliably-treat-depression-or-anxiety",
 		status: "published",
