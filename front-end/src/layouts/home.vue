@@ -19,7 +19,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/consensus">Browse</NuxtLink>
 					<NuxtLink to="/explainers">Explainers</NuxtLink>
 					<NuxtLink to="/ask">Ask</NuxtLink>
-					<NuxtLink to="/standards">How Reviews Work</NuxtLink>
+					<NuxtLink to="/standards">How reviews work</NuxtLink>
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>

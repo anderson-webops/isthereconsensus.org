@@ -173,35 +173,55 @@ async function handleChangePassword() {
 			</div>
 
 			<details class="account-details">
-				<summary>Account settings</summary>
+				<summary class="account-details__summary">
+					<span>Account settings</span>
+					<span class="account-details__summary-icon" aria-hidden="true"></span>
+				</summary>
 				<div class="account-details__body">
-					<form class="account-form" @submit.prevent="handleChangeEmail">
-						<div class="account-form__intro">
+					<form class="account-form setting-card" @submit.prevent="handleChangeEmail">
+						<div class="setting-card__intro">
 							<h3>Email</h3>
+							<p>Change the address used for sign-in and account notices.</p>
 						</div>
-						<label class="field-label" for="email-update">Update email</label>
-						<input id="email-update" v-model="emailUpdate" type="email" placeholder="you@email.com" />
-						<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
-							Save email
-						</button>
+						<div class="field-stack">
+							<label class="field-label" for="email-update">New email</label>
+							<input id="email-update" v-model="emailUpdate" type="email" placeholder="you@email.com" />
+						</div>
+						<div class="setting-card__actions">
+							<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
+								Save email
+							</button>
+						</div>
 					</form>
 
-					<form class="account-form" @submit.prevent="handleChangePassword">
-						<div class="account-form__intro">
+					<form class="account-form setting-card" @submit.prevent="handleChangePassword">
+						<div class="setting-card__intro">
 							<h3>Password</h3>
+							<p>Use your current password before setting a new one.</p>
 						</div>
-						<label class="field-label" for="current-password">Current password</label>
-						<input
-							id="current-password"
-							v-model="currentPassword"
-							type="password"
-							autocomplete="current-password"
-						/>
-						<label class="field-label" for="new-password">New password</label>
-						<input id="new-password" v-model="newPassword" type="password" autocomplete="new-password" />
-						<button class="button button--primary" type="submit" :disabled="busy || !newPassword">
-							Update password
-						</button>
+						<div class="field-stack">
+							<label class="field-label" for="current-password">Current password</label>
+							<input
+								id="current-password"
+								v-model="currentPassword"
+								type="password"
+								autocomplete="current-password"
+							/>
+						</div>
+						<div class="field-stack">
+							<label class="field-label" for="new-password">New password</label>
+							<input
+								id="new-password"
+								v-model="newPassword"
+								type="password"
+								autocomplete="new-password"
+							/>
+						</div>
+						<div class="setting-card__actions">
+							<button class="button button--primary" type="submit" :disabled="busy || !newPassword">
+								Update password
+							</button>
+						</div>
 					</form>
 				</div>
 			</details>
@@ -304,7 +324,8 @@ async function handleChangePassword() {
 .auth-state,
 .auth-form,
 .account-details__body,
-.account-form {
+.account-form,
+.field-stack {
 	display: grid;
 	gap: 14px;
 }
@@ -323,47 +344,100 @@ async function handleChangePassword() {
 }
 
 .account-details {
-	padding: 14px;
+	padding: 0;
 	border-radius: 18px;
+	overflow: hidden;
 }
 
-.account-details summary {
+.account-details summary::marker,
+.account-details summary::-webkit-details-marker {
+	display: none;
+	content: "";
+}
+
+.account-details__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 16px;
 	cursor: pointer;
 	font-weight: 600;
 	color: var(--consensus-ink);
 }
 
+.account-details__summary-icon {
+	position: relative;
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 82%, transparent);
+}
+
+.account-details__summary-icon::before,
+.account-details__summary-icon::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 8px;
+	height: 2px;
+	border-radius: 999px;
+	background: currentColor;
+	content: "";
+	transform: translate(-50%, -50%);
+}
+
+.account-details__summary-icon::after {
+	transform: translate(-50%, -50%) rotate(90deg);
+	transition: transform 0.18s ease;
+}
+
+.account-details[open] .account-details__summary-icon::after {
+	transform: translate(-50%, -50%) rotate(0deg);
+}
+
 .account-details__body {
-	margin-top: 14px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-template-columns: repeat(2, minmax(260px, 1fr));
 	align-items: start;
-	gap: 12px;
-	padding-top: 12px;
+	gap: 14px;
+	padding: 16px;
 	border-top: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-field-surface) 36%, transparent);
 }
 
-.account-form {
+.setting-card {
 	align-content: start;
-	gap: 9px;
-	padding: 14px;
+	gap: 12px;
+	min-width: 0;
+	padding: 16px;
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 14px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 88%, var(--consensus-surface));
+	border-radius: 16px;
+	background: var(--consensus-surface);
 }
 
-.account-form__intro {
-	margin-bottom: 3px;
+.setting-card__intro {
+	display: grid;
+	gap: 4px;
 }
 
-.account-form__intro h3 {
+.setting-card__intro h3 {
 	font-family: "Fraunces", serif;
 	font-size: 1.02rem;
 	line-height: 1.2;
 	margin: 0;
 }
 
-.account-form .field-label:not(:first-child) {
-	margin-top: 4px;
+.setting-card__intro p {
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.95rem;
+	line-height: 1.45;
+}
+
+.field-stack {
+	gap: 7px;
 }
 
 .account-form input {
@@ -376,11 +450,14 @@ async function handleChangePassword() {
 	line-height: 1.2;
 }
 
+.setting-card__actions {
+	display: flex;
+	justify-content: flex-end;
+}
+
 .account-form .button {
-	justify-self: start;
 	width: auto;
 	min-height: 42px;
-	margin-top: 4px;
 	padding: 9px 16px;
 	border-radius: 999px;
 	font-size: 0.95rem;
@@ -470,6 +547,10 @@ input {
 @media (max-width: 760px) {
 	.account-details__body {
 		grid-template-columns: 1fr;
+	}
+
+	.setting-card__actions {
+		justify-content: stretch;
 	}
 
 	.account-form .button {
