@@ -1,8 +1,13 @@
 <script setup lang="ts">
 const colorMode = useColorMode();
+const hydrated = ref(false);
 
-const isDark = computed(() => colorMode.value === "dark");
+const isDark = computed(() => hydrated.value && colorMode.value === "dark");
 const nextLabel = computed(() => (isDark.value ? "light" : "dark"));
+
+onMounted(() => {
+	hydrated.value = true;
+});
 
 function toggleTheme() {
 	colorMode.preference = isDark.value ? "light" : "dark";

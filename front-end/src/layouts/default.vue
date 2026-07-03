@@ -56,7 +56,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 <style scoped>
 .site-shell {
 	min-height: 100vh;
-	padding: 20px clamp(18px, 3.4vw, 56px) 48px;
+	padding: 18px clamp(18px, 3vw, 48px) 42px;
 	overflow-x: clip;
 }
 
@@ -69,18 +69,19 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 .site-header {
 	display: flex;
 	justify-content: space-between;
-	align-items: start;
+	align-items: center;
 	gap: 16px;
 	padding-bottom: 16px;
 	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .site-header__actions {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
 	gap: 12px;
 	justify-content: end;
-	flex-wrap: wrap;
+	min-width: 0;
 }
 
 .site-brand {
@@ -109,17 +110,18 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 .site-nav {
 	display: flex;
-	gap: 8px;
+	gap: 6px;
 	flex-wrap: wrap;
 	justify-content: end;
+	min-width: 0;
 }
 
 .site-nav a {
-	padding: 8px 12px;
+	padding: 8px 10px;
 	border-radius: 999px;
 	text-decoration: none;
 	font-weight: 600;
-	font-size: 0.95rem;
+	font-size: 0.92rem;
 	transition:
 		background-color 180ms ease,
 		color 180ms ease,
@@ -140,7 +142,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 .site-main {
 	max-width: 1120px;
 	margin: 0 auto;
-	padding-top: 20px;
+	padding-top: 24px;
 }
 
 .site-footer {
@@ -191,7 +193,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-header__actions {
 		width: 100%;
-		justify-content: space-between;
+		align-items: start;
+		justify-content: stretch;
 	}
 
 	.site-nav {
@@ -200,7 +203,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-nav a {
-		padding: 7px 10px;
+		padding: 7px 9px;
+		font-size: 0.9rem;
 	}
 
 	.site-main {
@@ -210,6 +214,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer {
 		margin-top: 32px;
 		padding-top: 14px;
+	}
+
+	.site-footer__links {
+		justify-content: start;
 	}
 }
 </style>

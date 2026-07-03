@@ -57,8 +57,8 @@ useStaticPageMeta({
 			<p class="eyebrow">How reviews work</p>
 			<h1>How reviewed pages show evidence and uncertainty.</h1>
 			<p>
-				This is the one public trust page most readers need. It explains what evidence carries the answer, which
-				trust signals should be visible, and how the site handles uncertainty and updates.
+				This public trust page explains what evidence carries the answer, which signals should be visible, and
+				how the site handles uncertainty and updates.
 			</p>
 		</header>
 
@@ -144,7 +144,7 @@ useStaticPageMeta({
 <style scoped>
 .standards-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .standards-header,
@@ -153,7 +153,7 @@ useStaticPageMeta({
 .standards-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 }
 
 .standards-header,
@@ -172,8 +172,8 @@ useStaticPageMeta({
 
 .standards-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
-	line-height: 1;
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .standards-header p,
@@ -181,7 +181,12 @@ useStaticPageMeta({
 .institution-card p,
 .standards-callout p {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.66;
+}
+
+.standards-header p,
+.standards-callout p {
+	max-width: 68ch;
 }
 
 .section-heading {
@@ -207,7 +212,7 @@ useStaticPageMeta({
 
 .plain-list {
 	margin: 0;
-	padding-left: 20px;
+	padding-left: 19px;
 	display: grid;
 	gap: 8px;
 }
@@ -260,6 +265,7 @@ useStaticPageMeta({
 
 	.standards-callout__actions {
 		justify-content: start;
+		width: 100%;
 	}
 }
 </style>

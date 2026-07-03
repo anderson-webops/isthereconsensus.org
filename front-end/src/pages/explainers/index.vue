@@ -18,8 +18,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Evergreen explainers</p>
 			<h1>Core concepts behind recurring confusion.</h1>
 			<p>
-				These explainers carry the recurring ideas behind the site: evidence hierarchies, risk, causation,
-				replication, falsifiability, and the difference between settled consensus and frontier debate.
+				These explainers cover the recurring ideas behind the site: evidence hierarchies, risk, causation,
+				replication, falsifiability, and the line between settled consensus and frontier debate.
 			</p>
 		</header>
 
@@ -72,7 +72,7 @@ useStaticPageMeta({
 <style scoped>
 .explainer-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .explainer-header,
@@ -80,7 +80,7 @@ useStaticPageMeta({
 .explainer-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 }
 
 .explainer-header,
@@ -98,8 +98,8 @@ useStaticPageMeta({
 
 .explainer-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
-	line-height: 1;
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .explainer-header p,
@@ -107,7 +107,12 @@ useStaticPageMeta({
 .explainer-card li,
 .explainer-callout p {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.66;
+}
+
+.explainer-header p,
+.explainer-callout p {
+	max-width: 68ch;
 }
 
 .explainer-grid {
@@ -117,7 +122,7 @@ useStaticPageMeta({
 }
 
 .explainer-card {
-	padding: 22px;
+	padding: 20px;
 	display: grid;
 	gap: 14px;
 }
@@ -125,6 +130,11 @@ useStaticPageMeta({
 .explainer-card__section {
 	display: grid;
 	gap: 8px;
+}
+
+.explainer-card h2,
+.explainer-card h3 {
+	line-height: 1.2;
 }
 
 .explainer-card__section p,
@@ -194,6 +204,12 @@ useStaticPageMeta({
 @media (max-width: 900px) {
 	.explainer-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.explainer-card,
+	.explainer-header,
+	.explainer-callout {
+		padding: 18px;
 	}
 }
 </style>

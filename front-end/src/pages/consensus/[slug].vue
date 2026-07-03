@@ -184,9 +184,9 @@ function claimCardSummary(claim: ClaimSummary) {
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Reviewed claims</p>
-					<h2>Open the claim that matches your question.</h2>
+					<h2>Open the claim that matches your question</h2>
 				</div>
-				<p>These pages carry the reviewed bottom line, uncertainty, evidence summaries, and source trail.</p>
+				<p>Each reviewed page includes the bottom line, uncertainty, evidence summaries, and source trail.</p>
 			</div>
 
 			<div v-if="!claims.length" class="empty-state">
@@ -223,7 +223,7 @@ function claimCardSummary(claim: ClaimSummary) {
 <style scoped>
 .topic-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .topic-page__header,
@@ -232,7 +232,7 @@ function claimCardSummary(claim: ClaimSummary) {
 .claim-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 }
 
 .topic-page__header,
@@ -255,8 +255,8 @@ function claimCardSummary(claim: ClaimSummary) {
 
 .topic-page__header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.6rem, 5vw, 4.25rem);
-	line-height: 0.98;
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .topic-page__description,
@@ -265,7 +265,12 @@ function claimCardSummary(claim: ClaimSummary) {
 .empty-state,
 .queue-note {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.64;
+}
+
+.topic-page__description,
+.section-heading p {
+	max-width: 68ch;
 }
 
 .topic-page__actions,
@@ -298,6 +303,14 @@ function claimCardSummary(claim: ClaimSummary) {
 	gap: 12px;
 	padding: 18px;
 	text-decoration: none;
+}
+
+.claim-row h3 {
+	line-height: 1.2;
+}
+
+.claim-row p {
+	margin: 0;
 }
 
 .claim-row__meta {
@@ -346,6 +359,7 @@ function claimCardSummary(claim: ClaimSummary) {
 @media (max-width: 820px) {
 	.claim-row {
 		grid-template-columns: 1fr;
+		padding: 16px;
 	}
 
 	.topic-page__actions {

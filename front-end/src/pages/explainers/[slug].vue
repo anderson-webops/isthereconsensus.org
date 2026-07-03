@@ -137,7 +137,7 @@ useSeoMeta({
 <style scoped>
 .explainer-detail-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .explainer-detail-header,
@@ -147,7 +147,7 @@ useSeoMeta({
 .explainer-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 }
 
 .explainer-detail-header,
@@ -167,8 +167,8 @@ useSeoMeta({
 
 .explainer-detail-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
-	line-height: 1;
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .explainer-detail-header p,
@@ -178,7 +178,13 @@ useSeoMeta({
 .explainer-callout p,
 .plain-list {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.66;
+}
+
+.explainer-detail-header p,
+.explainer-detail-panel > p,
+.explainer-callout p {
+	max-width: 68ch;
 }
 
 .explainer-detail-grid,
@@ -194,6 +200,13 @@ useSeoMeta({
 	padding: 18px;
 	display: grid;
 	gap: 10px;
+}
+
+.section-heading h2,
+.example-card h3,
+.module-card h3,
+.explainer-callout h2 {
+	line-height: 1.2;
 }
 
 .explainer-detail-panel--soft {
@@ -259,6 +272,12 @@ useSeoMeta({
 	.example-grid,
 	.module-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.explainer-detail-header,
+	.explainer-detail-panel,
+	.explainer-callout {
+		padding: 18px;
 	}
 }
 </style>

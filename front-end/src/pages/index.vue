@@ -282,7 +282,7 @@ function formatTopicDate(value?: string) {
 				<p class="eyebrow">Find out where the science stands</p>
 				<h1>Search a claim. Read the bottom line.</h1>
 				<p class="hero__lead">
-					Clear, reviewed summaries for scientific questions that are usually louder in public than they are
+					Clear, reviewed summaries for scientific questions that are often louder in public than they are
 					uncertain in the evidence.
 				</p>
 
@@ -293,7 +293,7 @@ function formatTopicDate(value?: string) {
 							id="home-search"
 							v-model="search"
 							type="text"
-							placeholder="Try vaccines, GMOs, climate, or learning styles"
+							placeholder="Try vaccines, climate, or GMOs"
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
@@ -416,17 +416,16 @@ function formatTopicDate(value?: string) {
 <style scoped>
 .home {
 	display: grid;
-	gap: 40px;
+	gap: 36px;
 }
 
 .hero {
 	display: grid;
-	gap: 24px;
+	gap: 20px;
 	grid-template-columns: minmax(0, 1fr);
 	align-items: start;
 }
 
-.hero__copy,
 .search-panel,
 .claim-row,
 .topic-row,
@@ -434,13 +433,13 @@ function formatTopicDate(value?: string) {
 .trust-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 24px;
+	border-radius: 18px;
 }
 
 .hero__copy {
-	padding: 24px;
 	display: grid;
-	gap: 18px;
+	gap: 16px;
+	padding-top: 6px;
 }
 
 .hero h1,
@@ -456,7 +455,7 @@ function formatTopicDate(value?: string) {
 	max-width: 18ch;
 	color: var(--consensus-ink);
 	font-size: var(--consensus-home-title-size);
-	line-height: 1.03;
+	line-height: 1.08;
 	letter-spacing: 0;
 	margin: 0;
 }
@@ -470,8 +469,8 @@ function formatTopicDate(value?: string) {
 
 .hero__lead {
 	font-size: 1.05rem;
-	line-height: 1.7;
-	max-width: 60ch;
+	line-height: 1.68;
+	max-width: 58ch;
 	margin: 0;
 }
 
@@ -496,7 +495,8 @@ function formatTopicDate(value?: string) {
 }
 
 .search-panel {
-	padding: 18px;
+	max-width: 920px;
+	padding: 18px 20px;
 	display: grid;
 	gap: 12px;
 }
@@ -524,6 +524,7 @@ function formatTopicDate(value?: string) {
 
 .search-panel input {
 	width: 100%;
+	min-height: 48px;
 	padding: 14px 16px;
 	border-radius: 16px;
 	border: 1px solid var(--consensus-line);
@@ -613,6 +614,7 @@ function formatTopicDate(value?: string) {
 .explainer-row h3,
 .trust-row h3 {
 	margin: 6px 0 0;
+	line-height: 1.18;
 }
 
 .claim-list,
@@ -629,7 +631,7 @@ function formatTopicDate(value?: string) {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 18px;
-	padding: 18px 20px;
+	padding: 18px;
 	text-decoration: none;
 }
 
@@ -642,7 +644,7 @@ function formatTopicDate(value?: string) {
 .claim-row__main p,
 .topic-row__main p {
 	margin: 0;
-	line-height: 1.65;
+	line-height: 1.62;
 }
 
 .claim-row__meta,
@@ -730,6 +732,10 @@ function formatTopicDate(value?: string) {
 }
 
 @media (max-width: 640px) {
+	.home {
+		gap: 30px;
+	}
+
 	.hero__copy,
 	.hero__aside,
 	.search-panel,
@@ -737,11 +743,10 @@ function formatTopicDate(value?: string) {
 	.topic-row,
 	.explainer-row,
 	.trust-row {
-		border-radius: 20px;
+		border-radius: 16px;
 	}
 
 	.hero__copy {
-		padding: 20px;
 		gap: 16px;
 	}
 
@@ -751,6 +756,10 @@ function formatTopicDate(value?: string) {
 
 	.search-panel__row {
 		grid-template-columns: 1fr;
+	}
+
+	.search-panel .button {
+		width: 100%;
 	}
 }
 </style>

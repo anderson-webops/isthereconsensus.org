@@ -286,7 +286,7 @@ async function submitQuestion() {
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
 			<h1>Search first. Ask what is missing.</h1>
-			<p>Open a reviewed page when it fits. Use the queue when it does not.</p>
+			<p>Open a reviewed page when it fits. Use the queue only when the question is still missing.</p>
 		</header>
 
 		<section class="search-panel">
@@ -438,7 +438,7 @@ async function submitQuestion() {
 <style scoped>
 .ask-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .ask-page__header h1,
@@ -450,7 +450,8 @@ async function submitQuestion() {
 
 .ask-page__header h1 {
 	margin: 8px 0 10px;
-	font-size: clamp(2.5rem, 4.8vw, 4rem);
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .ask-page__header p,
@@ -463,7 +464,13 @@ async function submitQuestion() {
 .error,
 .attached-claim p {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.64;
+}
+
+.ask-page__header p,
+.section-heading p,
+.posting-form__header p {
+	max-width: 68ch;
 }
 
 .search-panel,
@@ -473,7 +480,7 @@ async function submitQuestion() {
 .attached-claim {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 }
 
 .search-panel,
@@ -494,6 +501,8 @@ async function submitQuestion() {
 .posting-form textarea,
 .posting-form input,
 .posting-form select {
+	width: 100%;
+	min-height: 48px;
 	padding: 14px 16px;
 	border-radius: 16px;
 	border: 1px solid var(--consensus-line);
@@ -538,6 +547,11 @@ async function submitQuestion() {
 	display: grid;
 	gap: 14px;
 	padding: 18px;
+}
+
+.match-row h3,
+.posting-form h2 {
+	line-height: 1.2;
 }
 
 .match-row--strong {
@@ -588,5 +602,18 @@ async function submitQuestion() {
 
 .text-link {
 	text-decoration: none;
+}
+
+@media (max-width: 720px) {
+	.search-panel,
+	.results-panel,
+	.posting-form {
+		padding: 18px;
+	}
+
+	.match-row__actions,
+	.posting-form__actions {
+		width: 100%;
+	}
 }
 </style>

@@ -68,7 +68,7 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 .meter__meta strong {
 	font-family: "Fraunces", serif;
 	font-size: 1.02rem;
-	letter-spacing: -0.02em;
+	letter-spacing: 0;
 	line-height: 1;
 }
 

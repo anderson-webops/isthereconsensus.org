@@ -499,7 +499,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 <style scoped>
 .claim-page {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .claim-page__header,
@@ -509,7 +509,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .queue-note {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 18px;
 	padding: 22px;
 }
 
@@ -536,8 +536,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-page__header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.6rem, 5vw, 4.25rem);
-	line-height: 0.98;
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 }
 
 .claim-page__description,
@@ -551,7 +551,13 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .field-label,
 .queue-note {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.64;
+}
+
+.claim-page__description,
+.bottom-line p,
+.section-heading p {
+	max-width: 68ch;
 }
 
 .queue-note {
@@ -575,6 +581,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .bottom-line {
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
+}
+
+.bottom-line h2 {
+	line-height: 1.18;
 }
 
 .bottom-line__actions,
@@ -614,16 +624,28 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: grid;
 	gap: 14px;
 	padding: 18px;
-	border-radius: 18px;
+	border-radius: 16px;
 	background: var(--consensus-field-surface);
 	border: 1px solid var(--consensus-soft-line);
 }
 
 .source-row {
 	padding: 16px;
-	border-radius: 16px;
+	border-radius: 14px;
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
+}
+
+.evidence-summary-card p,
+.source-row p,
+.change-log__entry p {
+	margin: 0;
+}
+
+.evidence-summary-card h3,
+.source-group__header h3,
+.source-row h4 {
+	line-height: 1.22;
 }
 
 .evidence-summary-card__badges,
@@ -683,6 +705,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 @media (max-width: 860px) {
 	.bottom-line {
 		grid-template-columns: 1fr;
+	}
+
+	.claim-page__header,
+	.bottom-line,
+	.uncertainty-strip,
+	.content-panel,
+	.queue-note {
+		padding: 18px;
+	}
+
+	.bottom-line__actions {
+		width: 100%;
 	}
 }
 </style>

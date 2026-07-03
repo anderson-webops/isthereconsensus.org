@@ -189,18 +189,13 @@ function showAllTopics() {
 		<header class="directory__header">
 			<p class="eyebrow">Browse topics</p>
 			<h1>Browse topics. Open a reviewed claim.</h1>
-			<p>Search, filter, and go straight to the closest topic.</p>
+			<p>Search and filter topics, then open the reviewed claim closest to your question.</p>
 		</header>
 
 		<section class="directory__controls">
 			<div class="results-search">
 				<label class="results-search__label" for="directory-search">Search topics</label>
-				<input
-					id="directory-search"
-					v-model="search"
-					type="text"
-					placeholder="Search by topic, question, or keyword"
-				/>
+				<input id="directory-search" v-model="search" type="text" placeholder="Search topic or keyword" />
 			</div>
 			<p class="results-count">{{ resultsCountLabel }}</p>
 			<div class="filter-stack">
@@ -263,7 +258,7 @@ function showAllTopics() {
 <style scoped>
 .directory {
 	display: grid;
-	gap: 24px;
+	gap: 22px;
 }
 
 .directory__header h1,
@@ -273,7 +268,8 @@ function showAllTopics() {
 }
 
 .directory__header h1 {
-	font-size: clamp(2.5rem, 4.8vw, 4rem);
+	font-size: var(--consensus-page-title-size);
+	line-height: 1.08;
 	margin: 8px 0 10px;
 }
 
@@ -283,7 +279,7 @@ function showAllTopics() {
 .empty-state,
 .results-count {
 	color: var(--consensus-muted);
-	line-height: 1.65;
+	line-height: 1.64;
 }
 
 .directory__controls,
@@ -291,17 +287,17 @@ function showAllTopics() {
 .topic-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 20px;
+	border-radius: 18px;
 }
 
 .directory__controls,
 .results-block {
-	padding: 20px;
+	padding: 18px;
 }
 
 .directory__controls {
 	display: grid;
-	gap: 14px;
+	gap: 12px;
 }
 
 .results-search {
@@ -319,6 +315,8 @@ function showAllTopics() {
 }
 
 .results-search input {
+	width: 100%;
+	min-height: 48px;
 	padding: 14px 16px;
 	border-radius: 16px;
 	border: 1px solid var(--consensus-line);
@@ -327,12 +325,13 @@ function showAllTopics() {
 
 .filter-stack {
 	display: flex;
-	gap: 10px;
+	gap: 8px;
 	flex-wrap: wrap;
 }
 
 .filter {
-	padding: 11px 14px;
+	min-height: 42px;
+	padding: 10px 13px;
 	border-radius: 999px;
 	border: 1px solid var(--consensus-line);
 	background: transparent;
@@ -384,14 +383,23 @@ function showAllTopics() {
 
 .topic-list {
 	display: grid;
-	gap: 14px;
+	gap: 12px;
 }
 
 .topic-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 16px;
-	padding: 18px;
+	padding: 18px 20px;
+}
+
+.topic-row h3 {
+	margin: 0 0 6px;
+	line-height: 1.2;
+}
+
+.topic-row p {
+	margin: 0;
 }
 
 .topic-row__meta,
@@ -416,10 +424,15 @@ function showAllTopics() {
 @media (max-width: 760px) {
 	.topic-row {
 		grid-template-columns: 1fr;
+		padding: 16px;
 	}
 
 	.topic-row__side {
 		justify-items: start;
+	}
+
+	.empty-state__action {
+		width: 100%;
 	}
 }
 </style>
