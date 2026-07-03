@@ -6074,6 +6074,197 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Do probiotics reliably treat depression or anxiety?",
+		slug: "do-probiotics-reliably-treat-depression-or-anxiety",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 66,
+		evidenceCertainty: "low",
+		reviewMode: "living",
+		bottomLine:
+			"Not reliably as a standalone treatment. Randomized-trial meta-analyses increasingly find small to moderate symptom improvements, especially in clinically diagnosed samples or as add-ons to usual care. But the evidence is still too heterogeneous by strain, dose, duration, population, and outcome scale to treat 'probiotics' as a proven depression or anxiety treatment. The safest consensus is that they are promising adjuncts to study and discuss with a clinician, not replacements for evidence-based mental-health care.",
+		stableCore: [
+			"Probiotics are live microorganisms intended to provide a health benefit, but effects are strain- and formulation-specific; one product or yogurt cannot stand in for every tested intervention.",
+			"A 2019 meta-analysis of 34 controlled clinical trials found small average probiotic effects for depression and anxiety, while prebiotics did not differ from placebo.",
+			"A 2021 review of clinical depression trials found benefit when probiotics were added to antidepressants, but no significant standalone benefit in the limited standalone evidence.",
+			"A 2025 Nutrition Reviews meta-analysis of clinically diagnosed samples found reductions in depression and anxiety symptoms across 23 RCTs and 1,401 patients, but reported high heterogeneity and variation by duration and formulation.",
+			"Large depression and anxiety guidelines still center psychological therapies, antidepressant medication when appropriate, monitoring, and shared decision-making rather than probiotic products as first-line care."
+		],
+		openQuestions: [
+			"Which strains, combinations, doses, treatment durations, and baseline microbiome profiles matter for specific depression or anxiety subgroups?",
+			"Do symptom-score improvements translate into remission, relapse prevention, functioning, quality of life, or reduced medication burden over long follow-up?",
+			"How much of the apparent benefit depends on adjunctive use with antidepressants, diet changes, expectancy, gastrointestinal comorbidity, or small-study effects?"
+		],
+		whatWouldChangeMinds: [
+			"Large, preregistered, multi-site RCTs showing replicated clinically meaningful benefits for named probiotic formulations on remission or functioning, not only short-term symptom scales.",
+			"Major NICE, APA, ACP, or comparable guideline updates recommending specific probiotic formulations for defined depression or anxiety populations.",
+			"High-quality null trials showing that current positive effects disappear after better blinding, larger samples, longer follow-up, and strain-specific replication."
+		],
+		misconceptions: [
+			"The gut-brain axis is real, but a plausible mechanism does not prove that any probiotic product treats depression or anxiety.",
+			"A positive meta-analysis does not mean every probiotic, food, dose, or supplement brand has the same effect.",
+			"Adjunctive benefit in people already receiving mental-health treatment is not the same as proof that probiotics can replace therapy or medication.",
+			"Natural or food-based products can still have safety, quality-control, interaction, or delay-of-care concerns."
+		],
+		misconceptionTags: [
+			"mechanism-is-not-real-world-effect",
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"does-natural-mean-safer-or-better"
+		],
+		editorSummary:
+			"This page should stop short of both hype and dismissal. The useful answer is that probiotics are biologically plausible and show emerging adjunctive signals, but the current evidence does not justify a generic supplement-as-treatment claim.",
+		uncertaintySummary:
+			"Evidence certainty is low because trials are often small, short, heterogeneous, and product-specific. Confidence is higher that probiotics should not replace established depression or anxiety care outside a clinician-guided plan.",
+		uncertaintyDrivers: [
+			{
+				type: "inconsistency",
+				detail: "Trials use different strains, mixtures, doses, durations, populations, and depression or anxiety scales, so pooled effects are hard to translate into a product recommendation."
+			},
+			{
+				type: "imprecision",
+				detail: "Several clinically focused analyses include relatively few participants, especially for standalone treatment, anxiety disorders, children, and long-term outcomes."
+			},
+			{
+				type: "indirectness",
+				detail: "Many studies measure symptom scales rather than remission, relapse, functioning, or patient-important long-term outcomes."
+			},
+			{
+				type: "bias",
+				detail: "Small-study effects, expectancy, incomplete blinding, publication bias, and supplement-industry incentives can affect interpretation."
+			}
+		],
+		searchDatabases: ["PubMed", "PsycINFO", "Cochrane Library", "Embase", "Consensus"],
+		searchCutoffAt: "2026-07-03T20:04:33.000Z",
+		inclusionRules: [
+			"Prioritize randomized trials, systematic reviews, meta-analyses, and clinical guidelines that specify population, strain or formulation, dose, duration, comparator, and mental-health outcome.",
+			"Separate probiotics, prebiotics, synbiotics, fermented foods, and general diet patterns unless a source explicitly combines them.",
+			"Separate adjunctive use with usual care from standalone treatment claims."
+		],
+		exclusionRules: [
+			"Do not treat gut-brain-axis mechanism papers, animal studies, brand marketing, or testimonials as direct treatment evidence.",
+			"Do not generalize one strain, product, or psychiatric subgroup to all probiotics or all depression and anxiety presentations.",
+			"Do not imply that a supplement can diagnose, treat, cure, or replace care for depression or anxiety without evidence and regulatory support."
+		],
+		institutionalAnchors: [
+			{ name: "NCCIH", role: "U.S. complementary-health source for probiotic definition, safety, and supplement-evidence cautions" },
+			{ name: "NICE", role: "Clinical-guideline anchor for established depression and anxiety treatment pathways" },
+			{ name: "Consensus", role: "Literature-discovery anchor for recent randomized-trial reviews and meta-analyses" }
+		],
+		lastRetractionCheckAt: "2026-07-03T20:04:33.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T20:04:33.000Z",
+				kind: "publication",
+				summary:
+					"Initial probiotics depression/anxiety page published from NCCIH safety and supplement context, NICE clinical-guideline context, and randomized-trial meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Probiotics: Usefulness and Safety",
+				publisher: "National Center for Complementary and Integrative Health",
+				year: 2026,
+				url: "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
+				stance: "context",
+				note:
+					"NCCIH public-health context defining probiotics as live microorganisms intended to have health benefits and noting serious infection risk in vulnerable groups such as premature infants.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Using Dietary Supplements Wisely",
+				publisher: "National Center for Complementary and Integrative Health",
+				year: 2026,
+				url: "https://www.nccih.nih.gov/health/using-dietary-supplements-wisely",
+				stance: "context",
+				note:
+					"Supplement-regulation context: evidence varies by supplement, products can differ from studied products, FDA does not review most supplements for safety and effectiveness before marketing, and disease-treatment claims are not permitted for dietary supplements.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Depression in adults: treatment and management",
+				publisher: "NICE",
+				year: 2026,
+				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
+				stance: "context",
+				note:
+					"Clinical-guideline anchor for depression assessment, shared decision-making, psychological therapies, antidepressant options, and severity-based care; probiotics are not framed as first-line depression treatment.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Generalised anxiety disorder and panic disorder in adults: management",
+				publisher: "NICE",
+				year: 2020,
+				url: "https://www.nice.org.uk/guidance/cg113/chapter/Recommendations",
+				stance: "context",
+				note:
+					"Clinical-guideline anchor for anxiety care, including psychological treatments and SSRI options when drug treatment is chosen.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Prebiotics and probiotics for depression and anxiety: A systematic review and meta-analysis of controlled clinical trials",
+				publisher: "Neuroscience and Biobehavioral Reviews",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.neubiorev.2019.03.023",
+				doi: "10.1016/j.neubiorev.2019.03.023",
+				pmid: "31004628",
+				stance: "debate",
+				note:
+					"Meta-analysis of 34 controlled clinical trials found small significant probiotic effects for depression and anxiety, larger depression effects in clinical or medical samples, and no prebiotic-placebo difference.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Updated Review and Meta-Analysis of Probiotics for the Treatment of Clinical Depression: Adjunctive vs. Stand-Alone Treatment",
+				publisher: "Journal of Clinical Medicine",
+				year: 2021,
+				url: "https://doi.org/10.3390/jcm10040647",
+				doi: "10.3390/jcm10040647",
+				pmid: "33567631",
+				pmcid: "PMC7915600",
+				stance: "debate",
+				note:
+					"Clinical depression review of seven randomized trials and 404 participants found benefit as an adjunct to antidepressants but no significant standalone treatment effect in limited evidence.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effects of Prebiotics and Probiotics on Symptoms of Depression and Anxiety in Clinically Diagnosed Samples: Systematic Review and Meta-analysis of Randomized Controlled Trials",
+				publisher: "Nutrition Reviews",
+				year: 2025,
+				url: "https://doi.org/10.1093/nutrit/nuae177",
+				doi: "10.1093/nutrit/nuae177",
+				pmid: "39731509",
+				pmcid: "PMC12166186",
+				stance: "debate",
+				note:
+					"Systematic review of 23 RCTs and 1,401 clinically diagnosed patients found probiotic-associated reductions in depression and anxiety symptoms but high heterogeneity by duration and formulation.",
+				order: 7
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"The efficacy of probiotics, prebiotics, and synbiotics on anxiety, depression, and sleep: a systematic review and meta-analysis of randomized controlled trials",
+				publisher: "BMC Psychiatry",
+				year: 2025,
+				url: "https://doi.org/10.1186/s12888-025-07644-z",
+				doi: "10.1186/s12888-025-07644-z",
+				pmid: "41310510",
+				stance: "debate",
+				note:
+					"Meta-analysis of 72 RCTs found reductions in depression and anxiety symptom scores, while emphasizing high heterogeneity, limited methodological quality, and need for larger high-quality trials with long-term follow-up.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Do learning styles improve educational outcomes?",
 		slug: "do-learning-styles-improve-educational-outcomes",
 		status: "published",
