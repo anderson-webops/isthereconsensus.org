@@ -8,7 +8,7 @@ const { currentAccount, isLoggedIn, role } = useAuth();
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const roleCopy = computed(() => {
 	if (!isLoggedIn.value) {
-		return "Sign in to post questions, manage your account, and apply for expert review.";
+		return "Sign in to post questions, update account settings, or apply for expert review.";
 	}
 	if (role.value === "admin") {
 		return "Admin accounts can review intake and maintain canonical claim pages from the editorial workspace.";
@@ -37,7 +37,7 @@ const accountFacts = computed(() => {
 		<header class="account-header">
 			<div>
 				<p class="eyebrow">Account</p>
-				<h1>Manage access without crowding the public reading path.</h1>
+				<h1>Manage your account and review access.</h1>
 				<p>{{ roleCopy }}</p>
 			</div>
 			<div v-if="canUseEditorial" class="account-header__actions">

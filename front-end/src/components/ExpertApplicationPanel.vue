@@ -164,81 +164,107 @@ watch(
 			<details class="application-details" :open="!application">
 				<summary>{{ application ? "Update application" : "Apply for expert review" }}</summary>
 				<form class="application-form" @submit.prevent="submitApplication">
-					<label class="field-label" for="credential-label">Credentials</label>
-					<input
-						id="credential-label"
-						v-model="credentialLabel"
-						type="text"
-						placeholder="PhD in biology, climate researcher, science journalist"
-					/>
+					<div class="application-section">
+						<div class="application-section__intro">
+							<h3>Reviewer profile</h3>
+							<p>Use concise credentials and areas of expertise readers can understand quickly.</p>
+						</div>
+						<div class="field-grid">
+							<label class="field-label" for="credential-label">Credentials</label>
+							<input
+								id="credential-label"
+								v-model="credentialLabel"
+								type="text"
+								placeholder="PhD in biology, climate researcher, science journalist"
+							/>
 
-					<label class="field-label" for="affiliation">Affiliation</label>
-					<input
-						id="affiliation"
-						v-model="affiliation"
-						type="text"
-						placeholder="University, lab, institution"
-					/>
+							<label class="field-label" for="affiliation">Affiliation</label>
+							<input
+								id="affiliation"
+								v-model="affiliation"
+								type="text"
+								placeholder="University, lab, institution"
+							/>
 
-					<label class="field-label" for="expertise-areas">Expertise areas</label>
-					<input
-						id="expertise-areas"
-						v-model="expertiseAreas"
-						type="text"
-						placeholder="Comma-separated: epidemiology, climate modeling, statistics"
-					/>
+							<label class="field-label" for="expertise-areas">Expertise areas</label>
+							<input
+								id="expertise-areas"
+								v-model="expertiseAreas"
+								type="text"
+								placeholder="Comma-separated: epidemiology, climate modeling, statistics"
+							/>
+						</div>
+					</div>
 
-					<label class="field-label" for="evidence-links">Evidence links</label>
-					<textarea
-						id="evidence-links"
-						v-model="evidenceLinks"
-						rows="3"
-						placeholder="One link per line: profile page, ORCID, lab page, publications"
-					/>
+					<div class="application-section">
+						<div class="application-section__intro">
+							<h3>Evidence and fit</h3>
+							<p>Link to background material and explain the review lane you can support.</p>
+						</div>
+						<div class="field-grid">
+							<label class="field-label" for="evidence-links">Evidence links</label>
+							<textarea
+								id="evidence-links"
+								v-model="evidenceLinks"
+								rows="3"
+								placeholder="One link per line: profile page, ORCID, lab page, publications"
+							/>
 
-					<label class="field-label" for="statement">Why you should review this lane</label>
-					<textarea
-						id="statement"
-						v-model="statement"
-						rows="5"
-						placeholder="Describe the domain you work in and the kinds of questions you can help review."
-					/>
+							<label class="field-label" for="statement">Why you should review this lane</label>
+							<textarea
+								id="statement"
+								v-model="statement"
+								rows="5"
+								placeholder="Describe the domain you work in and the kinds of questions you can help review."
+							/>
+						</div>
+					</div>
 
-					<label class="field-label" for="conflict-disclosure">Relevant conflicts or advocacy roles</label>
-					<textarea
-						id="conflict-disclosure"
-						v-model="conflictDisclosure"
-						rows="4"
-						placeholder="List any consulting, advocacy, testimony, board roles, litigation, or other interests a reader should know about."
-					/>
+					<div class="application-section">
+						<div class="application-section__intro">
+							<h3>Disclosures</h3>
+							<p>List relevant interests so readers can interpret reviews with the right context.</p>
+						</div>
+						<div class="field-grid">
+							<label class="field-label" for="conflict-disclosure"
+								>Relevant conflicts or advocacy roles</label
+							>
+							<textarea
+								id="conflict-disclosure"
+								v-model="conflictDisclosure"
+								rows="4"
+								placeholder="List any consulting, advocacy, testimony, board roles, litigation, or other interests a reader should know about."
+							/>
 
-					<label class="field-label" for="funding-disclosure"
-						>Relevant funding or sponsorship disclosure</label
-					>
-					<textarea
-						id="funding-disclosure"
-						v-model="fundingDisclosure"
-						rows="4"
-						placeholder="List relevant grants, institutional funding, employer support, or say none known."
-					/>
+							<label class="field-label" for="funding-disclosure"
+								>Relevant funding or sponsorship disclosure</label
+							>
+							<textarea
+								id="funding-disclosure"
+								v-model="fundingDisclosure"
+								rows="4"
+								placeholder="List relevant grants, institutional funding, employer support, or say none known."
+							/>
 
-					<label class="checkbox-row">
-						<input v-model="attestsDisclosurePolicy" type="checkbox" />
-						<span>
-							I have read the
-							<NuxtLink to="/conflicts-and-funding">Conflict and funding disclosure</NuxtLink>
-							page and have disclosed relevant interests accurately.
-						</span>
-					</label>
+							<label class="checkbox-row">
+								<input v-model="attestsDisclosurePolicy" type="checkbox" />
+								<span>
+									I have read the
+									<NuxtLink to="/conflicts-and-funding">Conflict and funding disclosure</NuxtLink>
+									page and have disclosed relevant interests accurately.
+								</span>
+							</label>
 
-					<label class="checkbox-row">
-						<input v-model="attestsReviewStandards" type="checkbox" />
-						<span>
-							I have read the
-							<NuxtLink to="/expert-review-program">Verified expert review program</NuxtLink>
-							and will follow the reviewer standards described there.
-						</span>
-					</label>
+							<label class="checkbox-row">
+								<input v-model="attestsReviewStandards" type="checkbox" />
+								<span>
+									I have read the
+									<NuxtLink to="/expert-review-program">Verified expert review program</NuxtLink>
+									and will follow the reviewer standards described there.
+								</span>
+							</label>
+						</div>
+					</div>
 
 					<p class="muted">
 						Applications are reviewed internally and may be retained with moderation and editorial records.
@@ -352,6 +378,42 @@ watch(
 
 .application-form {
 	margin-top: 14px;
+}
+
+.application-section {
+	display: grid;
+	gap: 12px;
+	padding: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 90%, var(--consensus-surface));
+}
+
+.application-section__intro {
+	display: grid;
+	gap: 4px;
+}
+
+.application-section__intro h3,
+.application-section__intro p {
+	margin: 0;
+}
+
+.application-section__intro h3 {
+	font-family: "Fraunces", serif;
+	font-size: 1.04rem;
+	line-height: 1.2;
+}
+
+.application-section__intro p {
+	color: var(--consensus-muted);
+	font-size: 0.95rem;
+	line-height: 1.55;
+}
+
+.field-grid {
+	display: grid;
+	gap: 10px;
 }
 
 input,

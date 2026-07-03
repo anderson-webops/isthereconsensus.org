@@ -265,13 +265,14 @@ function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
 
-function formatTopicDate(value?: string) {
+function formatTopicUpdateLabel(value?: string) {
 	if (!value) return "Update pending";
-	return new Intl.DateTimeFormat("en-US", {
+	const formattedDate = new Intl.DateTimeFormat("en-US", {
 		month: "short",
 		day: "numeric",
 		year: "numeric"
 	}).format(new Date(value));
+	return `Updated ${formattedDate}`;
 }
 </script>
 
@@ -401,7 +402,7 @@ function formatTopicDate(value?: string) {
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
 							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
-							<span>Updated {{ formatTopicDate(topic.updatedAt) }}</span>
+							<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
 						</div>
 					</div>
 					<div class="topic-row__meter">

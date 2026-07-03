@@ -1,13 +1,7 @@
 <script setup lang="ts">
 const colorMode = useColorMode();
-const hydrated = ref(false);
 
-const isDark = computed(() => hydrated.value && colorMode.value === "dark");
-const nextLabel = computed(() => (isDark.value ? "light" : "dark"));
-
-onMounted(() => {
-	hydrated.value = true;
-});
+const isDark = computed(() => colorMode.value === "dark");
 
 function toggleTheme() {
 	colorMode.preference = isDark.value ? "light" : "dark";
@@ -18,12 +12,12 @@ function toggleTheme() {
 	<button
 		class="theme-toggle"
 		type="button"
-		:aria-pressed="isDark"
-		:aria-label="`Switch to ${nextLabel} mode`"
-		:title="`Switch to ${nextLabel} mode`"
+		aria-label="Toggle color mode"
+		title="Toggle color mode"
 		@click="toggleTheme"
 	>
-		<span :class="isDark ? 'i-carbon-moon' : 'i-carbon-sun'" class="theme-toggle__icon" aria-hidden="true" />
+		<span class="i-carbon-sun theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true" />
+		<span class="i-carbon-moon theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" />
 	</button>
 </template>
 
@@ -61,8 +55,15 @@ function toggleTheme() {
 }
 
 .theme-toggle__icon {
+	display: inline-block;
+	width: 1.05em;
+	height: 1.05em;
 	font-size: 1.05rem;
 	color: var(--consensus-ember);
+}
+
+.theme-toggle__icon--moon {
+	display: none;
 }
 
 :global(.dark) .theme-toggle {
@@ -75,5 +76,13 @@ function toggleTheme() {
 
 :global(.dark) .theme-toggle__icon {
 	color: var(--consensus-moss);
+}
+
+:global(.dark) .theme-toggle__icon--sun {
+	display: none;
+}
+
+:global(.dark) .theme-toggle__icon--moon {
+	display: inline-block;
 }
 </style>
