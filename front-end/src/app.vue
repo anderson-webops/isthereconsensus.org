@@ -425,17 +425,21 @@ dd {
 }
 
 .policy-section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
+	display: grid;
+	gap: 6px;
+	align-items: start;
 	margin-bottom: 12px;
 }
 
 .policy-section-heading--tight h2,
 .policy-section-heading--tight p {
 	margin: 0;
+}
+
+.policy-section-heading p {
+	max-width: 58ch;
+	color: var(--consensus-muted);
+	line-height: 1.55;
 }
 
 .policy-panel--soft {
