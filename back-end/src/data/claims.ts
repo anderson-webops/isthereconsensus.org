@@ -6476,6 +6476,269 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "consensus-foundations",
+		title: "Does a p-value below 0.05 prove a claim is true?",
+		slug: "does-a-p-value-below-005-prove-a-claim-is-true",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		bottomLine:
+			"No. A p-value can be useful evidence about how surprising data are under a statistical model, but it does not prove a hypothesis true, measure effect size, or show that a result is practically important by itself.",
+		stableCore: [
+			"Statistical significance is not the same thing as practical, clinical, or policy significance.",
+			"A p-value does not state the probability that the hypothesis is true or that chance alone produced the result.",
+			"Good inference needs study design, effect size, uncertainty intervals, transparency, multiplicity, and prior evidence, not a single threshold."
+		],
+		openQuestions: [
+			"Which replacement language best helps non-specialists avoid binary significant versus not-significant thinking?",
+			"When should formal decision thresholds still be used because costs, safety, or regulatory rules require an explicit cutoff?",
+			"How should public summaries explain p-values without making readers think statistics are useless?"
+		],
+		whatWouldChangeMinds: [
+			"A major change in statistical guidance showing that single p-value thresholds reliably improve scientific decisions without context.",
+			"Evidence that public and professional audiences consistently interpret p-values correctly without effect sizes, uncertainty, and study context."
+		],
+		misconceptions: [
+			"People often read p < 0.05 as proof that a claim is true.",
+			"Headlines can treat statistically significant as a synonym for large, important, or ready for action."
+		],
+		editorSummary:
+			"Use this page whenever a claim leans on p < 0.05 as if that alone settles truth, importance, or consensus.",
+		searchCutoffAt: "2026-07-03T02:58:35.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:58:35.000Z",
+				kind: "publication",
+				summary:
+					"Initial p-value interpretation claim page published from ASA guidance and statistical-methods review literature."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "The ASA Statement on p-Values: Context, Process, and Purpose",
+				publisher: "The American Statistician",
+				year: 2016,
+				url: "https://doi.org/10.1080/00031305.2016.1154108",
+				doi: "10.1080/00031305.2016.1154108",
+				stance: "supports",
+				note:
+					"American Statistical Association statement: p-values do not measure the probability a hypothesis is true, effect size, importance, or a complete measure of evidence by themselves.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "American Statistical Association Releases Statement on Statistical Significance and P-Values",
+				publisher: "American Statistical Association",
+				year: 2016,
+				url: "https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf",
+				stance: "supports",
+				note:
+					"Official ASA public release listing the six principles and explaining the goal of improving interpretation of quantitative science.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations",
+				publisher: "European Journal of Epidemiology",
+				year: 2016,
+				url: "https://doi.org/10.1007/s10654-016-0149-3",
+				doi: "10.1007/s10654-016-0149-3",
+				pmid: "27209009",
+				pmcid: "PMC4877414",
+				stance: "supports",
+				note:
+					"Methods review cataloging common misinterpretations and warning that selecting analyses by p-value can create misleading small or large p-values.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Scientists rise up against statistical significance",
+				publisher: "Nature",
+				year: 2019,
+				url: "https://doi.org/10.1038/d41586-019-00857-9",
+				doi: "10.1038/d41586-019-00857-9",
+				pmid: "30894741",
+				stance: "context",
+				note:
+					"High-profile commentary with more than 800 signatories calling for less binary use of statistical significance in scientific communication.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "media-misinformation",
+		title: "Does peer review guarantee a study is correct?",
+		slug: "does-peer-review-guarantee-a-study-is-correct",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"No. Peer review is an important quality-control step, but it is not a guarantee that a study is correct. It can improve reporting and catch some problems, while still missing errors, bias, weak design, or overinterpretation.",
+		stableCore: [
+			"Peer review helps journals screen and improve manuscripts before publication.",
+			"Evidence on peer-review interventions shows some improvements, especially from statistical review and open review, but the effects are limited and context-dependent.",
+			"Published, peer-reviewed papers still need critical appraisal, replication, conflict checks, and comparison with the broader evidence base."
+		],
+		openQuestions: [
+			"Which peer-review models best improve error detection, fairness, and reporting quality across fields?",
+			"How should public summaries communicate the value of peer review without implying certification of truth?",
+			"Which post-publication review systems best catch errors that pre-publication peer review misses?"
+		],
+		whatWouldChangeMinds: [
+			"Large multi-field trials showing that routine peer review reliably detects major errors and bias before publication.",
+			"Evidence that post-publication correction, replication, and synthesis add little beyond journal peer review."
+		],
+		misconceptions: [
+			"People often treat peer-reviewed as meaning proven.",
+			"Others overcorrect and treat peer review as worthless because it is imperfect."
+		],
+		editorSummary:
+			"This page should help readers calibrate peer review: valuable signal, not a truth stamp.",
+		searchCutoffAt: "2026-07-03T02:58:35.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:58:35.000Z",
+				kind: "publication",
+				summary:
+					"Initial peer-review calibration claim page published from Cochrane, BMC Medicine, and COPE sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Editorial peer review for improving the quality of reports of biomedical studies",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2007,
+				url: "https://doi.org/10.1002/14651858.MR000016.pub3",
+				doi: "10.1002/14651858.MR000016.pub3",
+				pmid: "17443635",
+				pmcid: "PMC8973931",
+				stance: "supports",
+				note:
+					"Cochrane methodology review finding that editorial peer review may improve readability and reporting quality, but evidence that it ensures research quality is limited.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Impact of interventions to improve the quality of peer review of biomedical journals: a systematic review and meta-analysis",
+				publisher: "BMC Medicine",
+				year: 2016,
+				url: "https://doi.org/10.1186/s12916-016-0631-5",
+				doi: "10.1186/s12916-016-0631-5",
+				pmid: "27287500",
+				pmcid: "PMC4902984",
+				stance: "supports",
+				note:
+					"Review of 22 randomized trial reports: statistical peer review improved final manuscript quality, open peer review modestly improved review-report quality, and several common interventions had limited evidence.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Ethical guidelines for peer reviewers",
+				publisher: "Committee on Publication Ethics",
+				url: "https://publicationethics.org/guidance/guideline/ethical-guidelines-peer-reviewers",
+				stance: "context",
+				note:
+					"Publication-ethics guidance describing standards and responsibilities for reviewers, useful for explaining what peer review is intended to do.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "media-misinformation",
+		title: "Can animal or cell studies prove a treatment works in humans?",
+		slug: "can-animal-or-cell-studies-prove-a-treatment-works-in-humans",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"No. Animal and cell studies can be valuable for mechanism, safety signals, and deciding whether human trials are worth doing, but they do not by themselves prove that a treatment works safely in people.",
+		stableCore: [
+			"Preclinical studies answer basic safety and mechanism questions before human testing.",
+			"Human clinical trials are needed to test dose, safety, efficacy, and clinical benefit in people.",
+			"Translation from animal findings to approved human treatments is uneven; promising preclinical results often shrink or fail in more rigorous human studies."
+		],
+		openQuestions: [
+			"Which preclinical models best predict human outcomes for each disease and intervention class?",
+			"How quickly will validated human-relevant new approach methodologies replace or reduce animal testing in regulatory practice?",
+			"Which public labels best distinguish mechanism evidence from evidence of real patient benefit?"
+		],
+		whatWouldChangeMinds: [
+			"Validated preclinical model systems that consistently predict human safety and efficacy without human clinical trials.",
+			"Regulatory consensus that a class of treatments can be approved for clinical use from nonhuman evidence alone."
+		],
+		misconceptions: [
+			"Headlines often imply that a treatment worked because it affected cells, mice, or another model system.",
+			"People can also dismiss preclinical research entirely, even though it remains useful for mechanism and safety screening."
+		],
+		editorSummary:
+			"This page should be the default evidence-literacy answer when a claim jumps from cells or animals straight to patient benefit.",
+		searchCutoffAt: "2026-07-03T02:58:35.000Z",
+		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
+		changeLog: [
+			{
+				date: "2026-07-03T02:58:35.000Z",
+				kind: "publication",
+				summary:
+					"Initial preclinical-to-human translation claim page published from FDA, NCBI Bookshelf, and PLOS Biology sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Step 3: Clinical Research",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2018,
+				url: "https://www.fda.gov/patients/drug-development-process/step-3-clinical-research",
+				stance: "supports",
+				note:
+					"FDA patient guidance states that preclinical research answers basic safety questions but is not a substitute for studies of how a drug interacts with the human body.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Analysis of animal-to-human translation shows that only 5% of animal-tested therapeutic interventions obtain regulatory approval for human applications",
+				publisher: "PLOS Biology",
+				year: 2024,
+				url: "https://doi.org/10.1371/journal.pbio.3002667",
+				doi: "10.1371/journal.pbio.3002667",
+				pmid: "38870090",
+				pmcid: "PMC11175415",
+				stance: "supports",
+				note:
+					"Umbrella review of 122 articles, 54 diseases, and 367 therapeutic interventions: 50% progressed to human studies, 40% to RCTs, and 5% to regulatory approval.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Drug Trials",
+				publisher: "StatPearls / NCBI Bookshelf",
+				year: 2026,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK546595/",
+				stance: "supports",
+				note:
+					"Clinical-trial overview describing human trials as the studies that evaluate safety, dose-response, efficacy, and clinical benefit.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Roadmap to Reducing Animal Testing in Preclinical Safety Studies",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2025,
+				url: "https://www.fda.gov/files/newsroom/published/roadmap_to_reducing_animal_testing_in_preclinical_safety_studies.pdf",
+				stance: "context",
+				note:
+					"FDA roadmap explaining limitations of animal models and the validation path for human-relevant new approach methodologies such as organ chips, computational models, and advanced in vitro assays.",
+				order: 4
+			}
+		]
+	},
+	{
 		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
