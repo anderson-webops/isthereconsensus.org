@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { defaultClaims } from "../src/data/claims.js";
-import { buildSeedSourceUpdate } from "../src/data/seedClaims.js";
+import { buildSeedClaimUpdate, buildSeedSourceUpdate } from "../src/data/seedClaims.js";
 
 function findSeedSource(claimSlug: string, order: number) {
 	const claim = defaultClaims.find(entry => entry.slug === claimSlug);
@@ -12,6 +12,53 @@ function findSeedSource(claimSlug: string, order: number) {
 }
 
 describe("seedClaims source synchronization", () => {
+	it("refreshes source-controlled claim copy on existing seeded claims", () => {
+		const claim = defaultClaims.find(
+			entry => entry.slug === "were-most-stomach-ulcers-caused-by-stress-rather-than-bacteria"
+		);
+		assert.ok(claim, "Missing seeded ulcer claim");
+
+		const existingClaim = {
+			...claim,
+			bottomLine: "Old public copy.",
+			stableCore: ["Old stable-core bullet."],
+			searchCutoffAt: new Date(claim.searchCutoffAt),
+			lastRetractionCheckAt: new Date(claim.lastRetractionCheckAt),
+			changeLog: claim.changeLog.map(entry => ({
+				...entry,
+				date: new Date(entry.date)
+			}))
+		};
+
+		const update = buildSeedClaimUpdate(existingClaim, claim);
+
+		assert.equal(update.$set?.bottomLine, claim.bottomLine);
+		assert.deepEqual(update.$set?.stableCore, claim.stableCore);
+		assert.equal(update.$set?.searchCutoffAt, undefined);
+		assert.equal(update.$set?.lastRetractionCheckAt, undefined);
+		assert.equal(update.$set?.changeLog, undefined);
+	});
+
+	it("does not refresh claim rows that already match the seed", () => {
+		const claim = defaultClaims.find(entry => entry.slug === "do-learning-styles-improve-educational-outcomes");
+		assert.ok(claim, "Missing seeded learning-styles claim");
+
+		const update = buildSeedClaimUpdate(
+			{
+				...claim,
+				searchCutoffAt: new Date(claim.searchCutoffAt),
+				lastRetractionCheckAt: new Date(claim.lastRetractionCheckAt),
+				changeLog: claim.changeLog.map(entry => ({
+					...entry,
+					date: new Date(entry.date)
+				}))
+			},
+			claim
+		);
+
+		assert.deepEqual(update, {});
+	});
+
 	it("fully refreshes an existing placeholder source row matched by order", () => {
 		const source = findSeedSource("does-saturated-fat-still-raise-ldl-and-heart-risk", 1);
 		const update = buildSeedSourceUpdate(

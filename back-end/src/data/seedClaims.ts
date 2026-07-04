@@ -4,10 +4,15 @@ import { Topic } from "../models/schemas/Topic.js";
 import { defaultClaims } from "./claims.js";
 
 type SeedClaimSource = (typeof defaultClaims)[number]["sources"][number];
+type SeedClaim = (typeof defaultClaims)[number];
 
 interface SeedSourceUpdate {
 	$set?: Record<string, unknown>;
 	$unset?: Record<string, "">;
+}
+
+interface SeedClaimUpdate {
+	$set?: Record<string, unknown>;
 }
 
 interface ExistingClaimSourceForSeedSync {
@@ -31,6 +36,10 @@ interface ExistingClaimSourceForSeedSync {
 
 const optionalSeedStringFields = ["publisher", "url", "doi", "pmid", "pmcid"] as const;
 
+function toSeedDate(value: string) {
+	return new Date(value);
+}
+
 function datesMatch(existingValue: Date | string | undefined, seedValue: Date) {
 	if (!existingValue) return false;
 	const existingDate = existingValue instanceof Date ? existingValue : new Date(existingValue);
@@ -44,6 +53,82 @@ function stringArraysMatch(existingValues: string[] | undefined, seedValues: str
 
 function hasSeedSourceUpdate(update: SeedSourceUpdate) {
 	return Boolean(Object.keys(update.$set ?? {}).length || Object.keys(update.$unset ?? {}).length);
+}
+
+function hasSeedClaimUpdate(update: SeedClaimUpdate) {
+	return Boolean(Object.keys(update.$set ?? {}).length);
+}
+
+function seedClaimFields(seed: SeedClaim) {
+	return {
+		title: seed.title,
+		status: seed.status,
+		consensusBand: seed.consensusBand,
+		agreementLevel: seed.agreementLevel,
+		evidenceCertainty: seed.evidenceCertainty,
+		confidenceScore: seed.confidenceScore,
+		reviewMode: seed.reviewMode,
+		bottomLine: seed.bottomLine,
+		stableCore: seed.stableCore,
+		openQuestions: seed.openQuestions,
+		whatWouldChangeMinds: seed.whatWouldChangeMinds,
+		misconceptions: seed.misconceptions,
+		misconceptionTags: seed.misconceptionTags,
+		editorSummary: seed.editorSummary,
+		uncertaintySummary: seed.uncertaintySummary,
+		uncertaintyDrivers: seed.uncertaintyDrivers,
+		searchDatabases: seed.searchDatabases,
+		searchCutoffAt: toSeedDate(seed.searchCutoffAt),
+		inclusionRules: seed.inclusionRules,
+		exclusionRules: seed.exclusionRules,
+		surveillanceSpec: seed.surveillanceSpec,
+		appraisalTools: seed.appraisalTools,
+		evidenceSummaries: seed.evidenceSummaries,
+		institutionalAnchors: seed.institutionalAnchors,
+		authorLine: seed.authorLine,
+		reviewerLine: seed.reviewerLine,
+		coiSummary: seed.coiSummary,
+		independenceSummary: seed.independenceSummary,
+		lastRetractionCheckAt: toSeedDate(seed.lastRetractionCheckAt),
+		changeLog: seed.changeLog.map(entry => ({
+			...entry,
+			date: toSeedDate(entry.date)
+		}))
+	};
+}
+
+function normalizeSeedValue(value: unknown): unknown {
+	if (value instanceof Date) return value.toISOString();
+	if (Array.isArray(value)) return value.map(normalizeSeedValue);
+	if (value && typeof value === "object") {
+		if ("toObject" in value && typeof value.toObject === "function") {
+			return normalizeSeedValue(value.toObject());
+		}
+
+		return Object.fromEntries(
+			Object.entries(value)
+				.filter(([key]) => key !== "_id")
+				.sort(([left], [right]) => left.localeCompare(right))
+				.map(([key, entryValue]) => [key, normalizeSeedValue(entryValue)])
+		);
+	}
+	return value;
+}
+
+function seedValuesMatch(existingValue: unknown, seedValue: unknown) {
+	return JSON.stringify(normalizeSeedValue(existingValue)) === JSON.stringify(normalizeSeedValue(seedValue));
+}
+
+export function buildSeedClaimUpdate(existingClaim: Record<string, unknown>, seed: SeedClaim): SeedClaimUpdate {
+	const $set: Record<string, unknown> = {};
+
+	for (const [field, seedValue] of Object.entries(seedClaimFields(seed))) {
+		if (!seedValuesMatch(existingClaim[field], seedValue)) {
+			$set[field] = seedValue;
+		}
+	}
+
+	return Object.keys($set).length ? { $set } : {};
 }
 
 export function buildSeedSourceUpdate(
@@ -117,40 +202,8 @@ export async function seedClaims() {
 			{
 				$setOnInsert: {
 					topic: topic._id,
-					title: seed.title,
 					slug: seed.slug,
-					status: seed.status,
-					consensusBand: seed.consensusBand,
-					agreementLevel: seed.agreementLevel,
-					evidenceCertainty: seed.evidenceCertainty,
-					confidenceScore: seed.confidenceScore,
-					reviewMode: seed.reviewMode,
-					bottomLine: seed.bottomLine,
-					stableCore: seed.stableCore,
-					openQuestions: seed.openQuestions,
-					whatWouldChangeMinds: seed.whatWouldChangeMinds,
-					misconceptions: seed.misconceptions,
-					misconceptionTags: seed.misconceptionTags,
-					editorSummary: seed.editorSummary,
-					uncertaintySummary: seed.uncertaintySummary,
-					uncertaintyDrivers: seed.uncertaintyDrivers,
-					searchDatabases: seed.searchDatabases,
-					searchCutoffAt: new Date(seed.searchCutoffAt),
-					inclusionRules: seed.inclusionRules,
-					exclusionRules: seed.exclusionRules,
-					surveillanceSpec: seed.surveillanceSpec,
-					appraisalTools: seed.appraisalTools,
-					evidenceSummaries: seed.evidenceSummaries,
-					institutionalAnchors: seed.institutionalAnchors,
-					authorLine: seed.authorLine,
-					reviewerLine: seed.reviewerLine,
-					coiSummary: seed.coiSummary,
-					independenceSummary: seed.independenceSummary,
-					lastRetractionCheckAt: new Date(seed.lastRetractionCheckAt),
-					changeLog: seed.changeLog.map(entry => ({
-						...entry,
-						date: new Date(entry.date)
-					})),
+					...seedClaimFields(seed),
 					lastReviewedAt: new Date(),
 					nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
 					publishedAt: seed.status === "published" ? new Date() : undefined
@@ -159,36 +212,15 @@ export async function seedClaims() {
 			{ upsert: true, returnDocument: "after" }
 		);
 
-		const missingFields: Record<string, unknown> = {};
+		const claimUpdate = buildSeedClaimUpdate(claim as unknown as Record<string, unknown>, seed);
+		const missingFields: Record<string, unknown> = { ...(claimUpdate.$set ?? {}) };
 		if (!claim.agreementLevel) missingFields.agreementLevel = seed.agreementLevel;
 		if (!claim.evidenceCertainty) missingFields.evidenceCertainty = seed.evidenceCertainty;
 		if (!claim.reviewMode) missingFields.reviewMode = seed.reviewMode;
-		if (!claim.searchDatabases?.length) missingFields.searchDatabases = seed.searchDatabases;
-		if (!claim.searchCutoffAt) missingFields.searchCutoffAt = new Date(seed.searchCutoffAt);
-		if (!claim.inclusionRules?.length) missingFields.inclusionRules = seed.inclusionRules;
-		if (!claim.exclusionRules?.length) missingFields.exclusionRules = seed.exclusionRules;
-		if (!claim.misconceptionTags?.length) missingFields.misconceptionTags = seed.misconceptionTags;
-		if (!claim.uncertaintySummary) missingFields.uncertaintySummary = seed.uncertaintySummary;
-		if (!claim.uncertaintyDrivers?.length) missingFields.uncertaintyDrivers = seed.uncertaintyDrivers;
-		if (!claim.surveillanceSpec?.focus && seed.surveillanceSpec) missingFields.surveillanceSpec = seed.surveillanceSpec;
-		if (!claim.appraisalTools?.length) missingFields.appraisalTools = seed.appraisalTools;
-		if (!claim.evidenceSummaries?.length) missingFields.evidenceSummaries = seed.evidenceSummaries;
-		if (!claim.institutionalAnchors?.length) missingFields.institutionalAnchors = seed.institutionalAnchors;
-		if (!claim.authorLine) missingFields.authorLine = seed.authorLine;
-		if (!claim.reviewerLine) missingFields.reviewerLine = seed.reviewerLine;
-		if (!claim.coiSummary) missingFields.coiSummary = seed.coiSummary;
-		if (!claim.independenceSummary) missingFields.independenceSummary = seed.independenceSummary;
-		if (!claim.lastRetractionCheckAt) missingFields.lastRetractionCheckAt = new Date(seed.lastRetractionCheckAt);
-		if (!claim.changeLog?.length) {
-			missingFields.changeLog = seed.changeLog.map(entry => ({
-				...entry,
-				date: new Date(entry.date)
-			}));
-		}
 		if (!claim.lastReviewedAt) missingFields.lastReviewedAt = new Date();
 		if (!claim.nextReviewAt) missingFields.nextReviewAt = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
 		if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
-		if (Object.keys(missingFields).length) {
+		if (hasSeedClaimUpdate({ $set: missingFields })) {
 			await Claim.updateOne({ _id: claim._id }, { $set: missingFields });
 		}
 
