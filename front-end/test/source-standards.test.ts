@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
-import { getSourceStandard } from "../src/data/sourceStandards";
+import { fileURLToPath } from "node:url";
+import { getSourceStandard, sourceStandardList } from "../src/data/sourceStandards";
+
+const testDir = dirname(fileURLToPath(import.meta.url));
 
 describe("source standards", () => {
 	it("classifies Skeptical Science as supporting climate rebuttal context", () => {
@@ -39,5 +44,16 @@ describe("source standards", () => {
 			)
 		);
 		assert.ok(standard.avoidOverweighting.some((item) => /AI search summaries/.test(item)));
+	});
+
+	it("renders topic-specific source-standard anchors on the reference page", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
+
+		assert.match(source, /sourceStandardList/);
+		assert.match(source, /:id="standard\.slug"/);
+		assert.match(source, /function openHashTarget\(\)/);
+		assert.match(source, /target instanceof HTMLDetailsElement/);
+		assert.ok(sourceStandardList.length > 0);
+		assert.ok(sourceStandardList.every((standard) => standard.slug && standard.summary));
 	});
 });

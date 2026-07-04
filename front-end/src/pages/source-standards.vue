@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { sourceStandardList } from "~/data/sourceStandards";
 
 const crossCuttingRules = [
 	"Start with the current institutional baseline, then check it against an independent synthesis.",
@@ -7,6 +8,24 @@ const crossCuttingRules = [
 	"Use topic-specific source notes when the field has unusual anchor bodies or unusual kinds of disagreement.",
 	"Do not let background papers or media coverage outrank decision-facing reviews."
 ];
+
+function openHashTarget() {
+	const targetId = window.location.hash.slice(1);
+	const target = targetId ? document.getElementById(targetId) : null;
+
+	if (target instanceof HTMLDetailsElement) {
+		target.open = true;
+	}
+}
+
+onMounted(() => {
+	openHashTarget();
+	window.addEventListener("hashchange", openHashTarget);
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener("hashchange", openHashTarget);
+});
 
 useStaticPageMeta({
 	description:
@@ -50,6 +69,93 @@ useStaticPageMeta({
 				<li>Climate topics may lean on assessment bodies and synthesis reports.</li>
 				<li>Evidence-literacy topics may lean more on meta-research and reliability studies.</li>
 			</ul>
+		</section>
+
+		<section class="topic-standards-section">
+			<div class="section-heading section-heading--tight">
+				<h2>Topic notes</h2>
+				<p>Use these field-specific notes when the default evidence hierarchy needs more context.</p>
+			</div>
+			<div class="topic-standard-list">
+				<details
+					v-for="standard in sourceStandardList"
+					:id="standard.slug"
+					:key="standard.slug"
+					class="topic-standard"
+				>
+					<summary>
+						<span>
+							<span class="topic-standard__title">{{ standard.title }}</span>
+							<span class="topic-standard__summary">{{ standard.summary }}</span>
+						</span>
+					</summary>
+					<div class="topic-standard__body">
+						<section class="topic-standard__block">
+							<h3>Two-source baseline</h3>
+							<dl class="source-stack">
+								<div>
+									<dt>Institutional anchor</dt>
+									<dd>{{ standard.twoLayer.anchorA }}</dd>
+								</div>
+								<div>
+									<dt>Independent check</dt>
+									<dd>{{ standard.twoLayer.anchorB }}</dd>
+								</div>
+								<div>
+									<dt>Why both are needed</dt>
+									<dd>{{ standard.twoLayer.why }}</dd>
+								</div>
+							</dl>
+						</section>
+
+						<section class="topic-standard__columns">
+							<div class="topic-standard__block">
+								<h3>Primary anchors</h3>
+								<ul class="plain-list plain-list--compact">
+									<li v-for="anchor in standard.primaryAnchors" :key="anchor.name">
+										<strong>{{ anchor.name }}</strong>
+										<span>{{ anchor.note }}</span>
+									</li>
+								</ul>
+							</div>
+							<div class="topic-standard__block">
+								<h3>Secondary checks</h3>
+								<ul class="plain-list plain-list--compact">
+									<li v-for="anchor in standard.secondaryAnchors" :key="anchor.name">
+										<strong>{{ anchor.name }}</strong>
+										<span>{{ anchor.note }}</span>
+									</li>
+								</ul>
+							</div>
+						</section>
+
+						<section class="topic-standard__block">
+							<h3>Source hierarchy</h3>
+							<ol class="tier-list">
+								<li v-for="tier in standard.sourceHierarchy" :key="tier.title">
+									<strong>{{ tier.title }}</strong>
+									<span>{{ tier.body }}</span>
+								</li>
+							</ol>
+						</section>
+
+						<section class="topic-standard__columns">
+							<div class="topic-standard__block">
+								<h3>Avoid overweighting</h3>
+								<ul class="plain-list plain-list--compact">
+									<li v-for="item in standard.avoidOverweighting" :key="item">{{ item }}</li>
+								</ul>
+							</div>
+							<div class="topic-standard__block">
+								<h3>Update triggers</h3>
+								<ul class="plain-list plain-list--compact">
+									<li v-for="item in standard.updateTriggers" :key="item">{{ item }}</li>
+								</ul>
+							</div>
+						</section>
+					</div>
+				</details>
+			</div>
 		</section>
 
 		<section class="callout">
@@ -140,6 +246,163 @@ useStaticPageMeta({
 	gap: 8px;
 }
 
+.topic-standards-section {
+	display: grid;
+	gap: 14px;
+}
+
+.topic-standards-section > .section-heading {
+	margin-bottom: 0;
+	padding-inline: 2px;
+}
+
+.topic-standards-section > .section-heading h2 {
+	font-size: 1.55rem;
+	line-height: 1.15;
+}
+
+.topic-standard-list {
+	display: grid;
+	gap: 12px;
+}
+
+.topic-standard {
+	scroll-margin-top: 18px;
+	background: var(--consensus-surface);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 18px;
+	overflow: clip;
+}
+
+.topic-standard:target {
+	border-color: color-mix(in srgb, var(--consensus-debate) 42%, var(--consensus-soft-line));
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--consensus-debate) 12%, transparent);
+}
+
+.topic-standard summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	padding: 16px 18px;
+	cursor: pointer;
+}
+
+.topic-standard summary::-webkit-details-marker {
+	display: none;
+}
+
+.topic-standard summary::after {
+	content: "+";
+	display: inline-grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-soft-line);
+	color: var(--consensus-muted);
+	font-weight: 700;
+}
+
+.topic-standard[open] summary {
+	border-bottom: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-elevated-surface);
+}
+
+.topic-standard[open] summary::after {
+	content: "-";
+}
+
+.topic-standard__title,
+.topic-standard__summary {
+	display: block;
+}
+
+.topic-standard__title {
+	margin-bottom: 4px;
+	color: var(--consensus-ink);
+	font-weight: 700;
+}
+
+.topic-standard__summary {
+	max-width: 74ch;
+	color: var(--consensus-muted);
+	line-height: 1.5;
+}
+
+.topic-standard__body {
+	display: grid;
+	gap: 18px;
+	padding: 18px;
+}
+
+.topic-standard__columns {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.topic-standard__block {
+	display: grid;
+	gap: 10px;
+	align-content: start;
+}
+
+.topic-standard__block h3 {
+	margin: 0;
+	font-family: "Fraunces", serif;
+	font-size: 1.05rem;
+	line-height: 1.25;
+}
+
+.source-stack {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+}
+
+.source-stack div,
+.tier-list li {
+	display: grid;
+	gap: 4px;
+}
+
+.source-stack dt,
+.tier-list strong,
+.plain-list strong {
+	color: var(--consensus-ink);
+	font-weight: 700;
+}
+
+.source-stack dd {
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.55;
+}
+
+.plain-list--compact {
+	gap: 7px;
+}
+
+.plain-list--compact li {
+	display: grid;
+	gap: 3px;
+}
+
+.plain-list--compact span,
+.tier-list span {
+	color: var(--consensus-muted);
+	line-height: 1.5;
+}
+
+.tier-list {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding-left: 20px;
+	color: var(--consensus-muted);
+}
+
 .callout {
 	display: flex;
 	justify-content: space-between;
@@ -179,18 +442,51 @@ useStaticPageMeta({
 }
 
 @media (max-width: 720px) {
+	.source-standards-page {
+		gap: 18px;
+	}
+
+	.page-header,
+	.panel,
+	.callout,
+	.topic-standard {
+		border-radius: 16px;
+	}
+
 	.page-header,
 	.panel,
 	.callout {
-		padding: 18px;
+		padding: 16px;
+	}
+
+	.page-header p,
+	.section-heading p,
+	.plain-list,
+	.callout p {
+		line-height: 1.58;
+	}
+
+	.topic-standard summary,
+	.topic-standard__body {
+		padding: 14px;
+	}
+
+	.topic-standard summary {
+		gap: 10px;
 	}
 
 	.callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.callout__actions {
 		width: 100%;
+	}
+
+	.callout .button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 }
 </style>
