@@ -13831,11 +13831,11 @@ const rawClaims: SeedClaim[] = [
 			"Outcome benefits from high-risk Chinese trials should not be pasted uncritically onto every country, diet, or clinical group."
 		],
 		editorSummary:
-			"This page should give a practical, safety-first answer: potassium-enriched salt substitutes can lower blood pressure, but the recommendation belongs in a screened adult context and is strongest where discretionary salt is a major sodium source.",
+			"Potassium-enriched salt substitutes can lower blood pressure, but practical advice belongs in a screened adult context and is strongest where discretionary salt is a major sodium source.",
 		uncertaintySummary:
 			"Blood-pressure evidence is moderate and consistent across trials. Hard-outcome evidence is promising but depends heavily on large Chinese high-risk/discretionary-salt trials, and newer network meta-analysis evidence still finds limited non-Chinese mortality data. Safety evidence is limited for people with impaired potassium excretion, pregnant people, children, and broader food-manufacturing uses.",
-		searchCutoffAt: "2026-07-03T05:21:00.000Z",
-		lastRetractionCheckAt: "2026-07-03T05:21:00.000Z",
+		searchCutoffAt: "2026-07-04T16:12:07.000Z",
+		lastRetractionCheckAt: "2026-07-04T16:12:07.000Z",
 		changeLog: [
 			{
 				date: "2026-07-04T16:12:07.000Z",
