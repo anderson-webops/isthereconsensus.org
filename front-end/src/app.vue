@@ -547,7 +547,21 @@ body
 	}
 
 	.policy-summary-card {
-		padding: 14px;
+		gap: 4px;
+		padding: 12px;
+	}
+
+	.policy-summary-card h2,
+	.policy-summary-card p {
+		font-size: 0.94rem;
+	}
+
+	.policy-summary-card h2 {
+		line-height: 1.18;
+	}
+
+	.policy-summary-card p {
+		line-height: 1.4;
 	}
 
 	.policy-section-heading {
@@ -594,6 +608,10 @@ body
 }
 
 @media (max-width: 520px) {
+	.policy-summary {
+		gap: 8px;
+	}
+
 	:where(.button) {
 		width: 100%;
 	}
