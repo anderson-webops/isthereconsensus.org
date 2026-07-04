@@ -9767,6 +9767,233 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "historical-case-studies",
+		title: "Did asbestos cause mesothelioma and lung cancer?",
+		slug: "did-asbestos-cause-mesothelioma-and-lung-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Asbestos is a known human carcinogen, and the evidence is strongest for mesothelioma and lung cancer. The historical lesson is not that every old material creates the same immediate risk; it is that inhaled asbestos fibres, especially when materials are mined, manufactured, cut, sanded, demolished, or otherwise disturbed, caused a large and preventable burden of disease.",
+		stableCore: [
+			"WHO says all forms of asbestos, including chrysotile, are carcinogenic to humans.",
+			"NCI says asbestos is a known human carcinogen and that IARC finds sufficient evidence that it causes mesothelioma and cancers of the lung, larynx, and ovary.",
+			"WHO estimates occupational asbestos exposure causes more than 200,000 deaths globally every year, representing more than 70% of deaths from work-related cancers.",
+			"CDC reports that asbestos exposure causes most mesothelioma cases and that U.S. exposure potential peaked in the 1970s before declining.",
+			"Meta-analytic and systematic-review evidence supports exposure-response relationships for mesothelioma and lung cancer, while fiber type, cumulative dose, latency, and smoking co-exposure affect risk."
+		],
+		openQuestions: [
+			"How should governments prioritize remaining legacy asbestos in older buildings, schools, industrial sites, waste streams, and disaster debris?",
+			"What is the best way to quantify low-level environmental or household risk when exposure histories are incomplete and diseases have long latency periods?",
+			"How should public summaries explain fiber-type differences without implying that chrysotile or intact legacy materials are harmless?"
+		],
+		whatWouldChangeMinds: [
+			"Major IARC, WHO, NCI, EPA, or occupational-health reassessments withdrawing asbestos as a known human carcinogen.",
+			"Large, well-conducted cohort and exposure-response evidence showing no causal link between asbestos exposure and mesothelioma or lung cancer after cumulative exposure and smoking are handled well.",
+			"A better causal model that explains historical occupational cohorts, mesothelioma incidence, latency, fiber burden, animal evidence, and exposure-response patterns without asbestos as a cause."
+		],
+		misconceptions: [
+			"Some people hear 'old building contains asbestos' as if mere presence always means immediate danger; exposure risk usually rises when fibers are released into air.",
+			"Others hear 'chrysotile may be less potent than some amphiboles' as if chrysotile is safe; major health agencies still treat all asbestos forms as carcinogenic.",
+			"Smoking is sometimes treated as the only lung-cancer issue, but asbestos independently raises lung-cancer risk and co-exposure with smoking is especially hazardous.",
+			"Asbestos bans and phaseouts are sometimes mistaken for a solved problem, even though legacy materials and long latency mean cases continue for decades."
+		],
+		editorSummary:
+			"This page should frame asbestos as a historical consensus case with current relevance: industrial and construction exposures created a clear cancer burden, but practical risk communication still depends on disturbance, dose, fiber type, latency, and safe abatement.",
+		uncertaintySummary:
+			"The causal consensus is very strong for asbestos causing mesothelioma and lung cancer. Remaining uncertainty concerns exact risk size for specific fiber types, products, low-dose exposure settings, and legacy-material scenarios, not whether asbestos is carcinogenic.",
+		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "WHO", "NCI", "CDC", "EPA"],
+		searchCutoffAt: "2026-07-04T18:55:00.000Z",
+		inclusionRules: [
+			"Prioritize IARC/WHO, NCI, CDC, EPA, major occupational-health reviews, and systematic or quantitative reviews of mesothelioma and lung-cancer risk.",
+			"Include sources that distinguish causation from practical exposure management, especially legacy-material disturbance and safe abatement.",
+			"Treat fiber-type and low-dose discussions as caveats on risk magnitude, not as reversals of the carcinogenicity consensus."
+		],
+		exclusionRules: [
+			"Exclude legal marketing pages, compensation-focused summaries, and litigation advocacy as decision-weight evidence.",
+			"Do not treat product-specific or occupational-subgroup uncertainty as evidence that asbestos is not a carcinogen.",
+			"Exclude sources that conflate intact asbestos-containing material with airborne asbestos exposure without explaining disturbance and fiber release."
+		],
+		surveillanceSpec: {
+			focus:
+				"Track WHO/IARC, NCI, CDC, EPA, and major occupational-health reviews for changes in asbestos carcinogenicity, legacy-use risk, and fiber-type risk framing.",
+			cadenceDays: 120,
+			watchTerms: [
+				"asbestos carcinogenic humans",
+				"chrysotile asbestos mesothelioma",
+				"asbestos lung cancer exposure response",
+				"legacy asbestos risk evaluation",
+				"mesothelioma incidence asbestos exposure"
+			],
+			integrityMonitors: ["Crossref update metadata", "PubMed linking", "Manual WHO/NCI/CDC/EPA watch"],
+			guidelineMonitors: [
+				"WHO asbestos fact sheet",
+				"NCI asbestos exposure and cancer risk",
+				"CDC mesothelioma surveillance",
+				"EPA asbestos risk evaluations"
+			],
+			triggerRules: [
+				"Recheck if WHO, NCI, CDC, EPA, or IARC materially changes asbestos carcinogenicity or legacy-risk wording.",
+				"Recheck if a cited systematic review, cohort study, or quantitative assessment receives a correction, expression of concern, or retraction.",
+				"Escalate if a new synthesis materially changes fiber-type potency estimates or low-dose environmental-risk conclusions."
+			]
+		},
+		appraisalTools: [
+			"Occupational epidemiology evidence appraisal",
+			"Public-health source currency check",
+			"Exposure-response and latency caveat check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Did asbestos cause mesothelioma and lung cancer?",
+				population:
+					"Workers, household contacts, building users, and communities exposed to airborne asbestos fibers through occupational, legacy-building, household, or environmental pathways.",
+				finding:
+					"Major health agencies and systematic reviews support asbestos as a known cause of mesothelioma and lung cancer, with risk shaped by cumulative exposure, fiber type, latency, and smoking co-exposure.",
+				effectDirection: "supports",
+				magnitude:
+					"WHO estimates occupational asbestos exposure causes more than 200,000 deaths globally each year; CDC reported 2,669 U.S. mesothelioma cases in 2022, with asbestos exposure causing most cases.",
+				certainty: "high",
+				limitations: [
+					"Risk estimates vary across chrysotile, amosite, crocidolite, mixed exposures, product types, and exposure measurement methods.",
+					"Mesothelioma and some lung cancers can emerge decades after exposure, making individual attribution harder than population-level causation.",
+					"Intact asbestos-containing materials generally differ from disturbed materials that release fibers into air."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{ name: "World Health Organization / IARC", role: "Global carcinogenicity and burden anchor" },
+			{ name: "National Cancer Institute", role: "Cancer-specific public evidence anchor" },
+			{ name: "CDC U.S. Cancer Statistics", role: "U.S. mesothelioma surveillance and historical exposure anchor" },
+			{ name: "U.S. Environmental Protection Agency", role: "Current U.S. legacy and chrysotile risk-evaluation anchor" }
+		],
+		authorLine: "Is There Consensus editorial seed",
+		reviewerLine: "Pending expert review",
+		coiSummary: "No financial conflict identified for this editorial seed.",
+		independenceSummary:
+			"Seeded from WHO, NCI, CDC, and EPA public-health sources plus Consensus-located systematic-review, meta-analysis, and cohort evidence.",
+		lastRetractionCheckAt: "2026-07-04T18:55:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T18:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial asbestos cancer historical case published from WHO, NCI, CDC, EPA, and Consensus-located mesothelioma and lung-cancer evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Asbestos",
+				publisher: "World Health Organization",
+				year: 2024,
+				url: "https://www.who.int/news-room/fact-sheets/detail/asbestos",
+				stance: "supports",
+				note:
+					"Global health anchor stating that all forms of asbestos, including chrysotile, are carcinogenic to humans and estimating more than 200,000 occupational asbestos deaths globally each year.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Asbestos Exposure and Cancer Risk Fact Sheet",
+				publisher: "National Cancer Institute",
+				year: 2021,
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/risk/substances/asbestos/asbestos-fact-sheet",
+				stance: "supports",
+				note:
+					"NCI source identifying asbestos as a known human carcinogen and summarizing IARC evidence for mesothelioma plus cancers of the lung, larynx, and ovary.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Incidence of Malignant Mesothelioma",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/united-states-cancer-statistics/publications/mesothelioma.html",
+				stance: "supports",
+				note:
+					"U.S. surveillance context reporting 2,669 mesothelioma cases in 2022 and explaining that asbestos exposure causes most mesothelioma cases.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "EPA Finalizes Part 2 TSCA Risk Evaluation for Asbestos",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2024,
+				url: "https://www.epa.gov/chemicals-under-tsca/epa-finalizes-part-2-tsca-risk-evaluation-asbestos",
+				stance: "context",
+				note:
+					"Current U.S. legacy-use anchor explaining that asbestos exposure generally occurs when asbestos-containing material is handled or damaged and fibers are released into air.",
+				order: 4
+			},
+			{
+				kind: "guideline",
+				title: "Final Risk Evaluation for Asbestos, Part 1: Chrysotile Asbestos",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2024,
+				url:
+					"https://www.epa.gov/assessing-and-managing-chemicals-under-tsca/final-risk-evaluation-asbestos-part-1-chrysotile",
+				stance: "supports",
+				note:
+					"EPA chrysotile risk-evaluation anchor finding unreasonable risks to human health from relevant chrysotile uses and noting the 2024 rule banning ongoing uses.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Quantitative assessment of mesothelioma and lung cancer risk based on Phase Contrast Microscopy exposure to asbestos",
+				publisher: "Environmental Research",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/quantitative-assessment-of-mesothelioma-and-lung-cancer-darnton/2f11387ce21653f2a6b8231570d5918a/",
+				citationCheckedAt: "2026-07-04T18:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located quantitative update of asbestos worker mortality studies, supporting exposure-response relationships for mesothelioma and lung cancer across fiber types.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Asbestos Exposure and Malignant Pleural Mesothelioma: A Systematic Review of Literature",
+				publisher: "Portuguese Journal of Public Health",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/asbestos-exposure-and-malignant-pleural-mesothelioma-a-santos-dixe/c4091e0dcb9a50919712c52d745ed4a1/",
+				citationCheckedAt: "2026-07-04T18:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located systematic review concluding that high evidence supports the relationship between asbestos exposure and malignant pleural mesothelioma.",
+				order: 7
+			},
+			{
+				kind: "context",
+				title: "Occupational exposure to chrysotile asbestos and cancer risk: a review of the amphibole hypothesis",
+				publisher: "American Journal of Public Health",
+				year: 1996,
+				url:
+					"https://consensus.app/papers/occupational-exposure-to-chrysotile-asbestos-and-cancer-stayner-dankovic/57ba573ab81f51b884d8f2bf49a60507/",
+				citationCheckedAt: "2026-07-04T18:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located review supporting chrysotile-associated lung cancer and mesothelioma risk while discussing possible potency differences from amphibole fibers.",
+				order: 8
+			},
+			{
+				kind: "landmark_study",
+				title: "Mortality and mesothelioma incidence among chrysotile asbestos miners in Balangero, Italy",
+				publisher: "American Journal of Industrial Medicine",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/mortality-and-mesothelioma-incidence-among-chrysotile-ferrante-mirabelli/afa5e660f64d5fcebbea52836a3b6fc0/",
+				citationCheckedAt: "2026-07-04T18:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located cohort study of chrysotile miners and millers reporting increased malignant and nonmalignant asbestos-related disease with dose-response evidence.",
+				order: 9
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
 		title: "Were most stomach ulcers caused by stress rather than bacteria?",
 		slug: "were-most-stomach-ulcers-caused-by-stress-rather-than-bacteria",
 		status: "published",
