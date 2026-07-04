@@ -8117,17 +8117,17 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "low",
 		reviewMode: "living",
 		bottomLine:
-			"Not reliably as a standalone treatment. Randomized-trial meta-analyses increasingly find small to moderate symptom improvements, especially in clinically diagnosed samples or as add-ons to usual care. But the evidence is still too heterogeneous by strain, dose, duration, population, and outcome scale to treat 'probiotics' as a proven depression or anxiety treatment. The safest consensus is that they are promising adjuncts to study and discuss with a clinician, not replacements for evidence-based mental-health care.",
+			"Not reliably as a standalone treatment. Randomized-trial reviews increasingly find small to moderate symptom improvements, especially in clinically diagnosed samples or as add-ons to usual care. But effects vary by strain, dose, duration, population, and outcome scale. Probiotics are best read as promising adjuncts to study and discuss with a clinician, not replacements for evidence-based mental-health care.",
 		stableCore: [
-			"Probiotics are live microorganisms intended to provide a health benefit, but effects are strain- and formulation-specific; one product or yogurt cannot stand in for every tested intervention.",
+			"Probiotics are live microorganisms intended to provide a health benefit, but effects are strain- and formulation-specific; one product cannot stand in for all tested interventions.",
 			"A 2019 meta-analysis of 34 controlled clinical trials found small average probiotic effects for depression and anxiety, while prebiotics did not differ from placebo.",
 			"A 2021 review of clinical depression trials found benefit when probiotics were added to antidepressants, but no significant standalone benefit in the limited standalone evidence.",
-			"A 2025 Nutrition Reviews meta-analysis of clinically diagnosed samples found reductions in depression and anxiety symptoms across 23 RCTs and 1,401 patients, but reported high heterogeneity and variation by duration and formulation.",
-			"Large depression and anxiety guidelines still center psychological therapies, antidepressant medication when appropriate, monitoring, and shared decision-making rather than probiotic products as first-line care."
+			"A 2025 Nutrition Reviews meta-analysis of clinically diagnosed samples found symptom reductions across 23 RCTs and 1,401 patients, with high heterogeneity by duration and formulation.",
+			"Large depression and anxiety guidelines still center psychological therapies, medication when appropriate, monitoring, and shared decision-making rather than probiotics as first-line care."
 		],
 		openQuestions: [
 			"Which strains, combinations, doses, treatment durations, and baseline microbiome profiles matter for specific depression or anxiety subgroups?",
-			"Do symptom-score improvements translate into remission, relapse prevention, functioning, quality of life, or reduced medication burden over long follow-up?",
+			"Do symptom-score improvements translate into remission, relapse prevention, functioning, quality of life, or lower medication burden over long follow-up?",
 			"How much of the apparent benefit depends on adjunctive use with antidepressants, diet changes, expectancy, gastrointestinal comorbidity, or small-study effects?"
 		],
 		whatWouldChangeMinds: [
@@ -8138,7 +8138,7 @@ const rawClaims: SeedClaim[] = [
 		misconceptions: [
 			"The gut-brain axis is real, but a plausible mechanism does not prove that any probiotic product treats depression or anxiety.",
 			"A positive meta-analysis does not mean every probiotic, food, dose, or supplement brand has the same effect.",
-			"Adjunctive benefit in people already receiving mental-health treatment is not the same as proof that probiotics can replace therapy or medication.",
+			"Adjunctive benefit in people already receiving mental-health treatment is not proof that probiotics can replace therapy or medication.",
 			"Natural or food-based products can still have safety, quality-control, interaction, or delay-of-care concerns."
 		],
 		misconceptionTags: [
@@ -8148,7 +8148,7 @@ const rawClaims: SeedClaim[] = [
 			"does-natural-mean-safer-or-better"
 		],
 		editorSummary:
-			"This page should stop short of both hype and dismissal. The useful answer is that probiotics are biologically plausible and show emerging adjunctive signals, but the current evidence does not justify a generic supplement-as-treatment claim.",
+			"Probiotics are biologically plausible and show emerging adjunctive signals, but current evidence does not justify a generic supplement-as-treatment claim.",
 		uncertaintySummary:
 			"Evidence certainty is low because trials are often small, short, heterogeneous, and product-specific. Confidence is higher that probiotics should not replace established depression or anxiety care outside a clinician-guided plan.",
 		uncertaintyDrivers: [
@@ -8204,7 +8204,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
 				stance: "context",
 				note:
-					"NCCIH public-health context defining probiotics as live microorganisms intended to have health benefits and noting serious infection risk in vulnerable groups such as premature infants.",
+					"NCCIH context defining probiotics as live microorganisms intended to have health benefits, with safety cautions for vulnerable groups.",
 				order: 1
 			},
 			{
@@ -8215,7 +8215,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nccih.nih.gov/health/using-dietary-supplements-wisely",
 				stance: "context",
 				note:
-					"Supplement-regulation context: evidence varies by supplement, products can differ from studied products, FDA does not review most supplements for safety and effectiveness before marketing, and disease-treatment claims are not permitted for dietary supplements.",
+					"Supplement-regulation context: evidence varies by product, FDA premarket review is limited, and disease-treatment claims are not permitted for dietary supplements.",
 				order: 2
 			},
 			{
@@ -8226,7 +8226,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
 				stance: "context",
 				note:
-					"Clinical-guideline anchor for depression assessment, shared decision-making, psychological therapies, antidepressant options, and severity-based care; probiotics are not framed as first-line depression treatment.",
+					"Clinical-guideline anchor for depression assessment, shared decision-making, therapy, antidepressant options, and severity-based care.",
 				order: 3
 			},
 			{
@@ -8250,7 +8250,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "31004628",
 				stance: "debate",
 				note:
-					"Meta-analysis of 34 controlled clinical trials found small significant probiotic effects for depression and anxiety, larger depression effects in clinical or medical samples, and no prebiotic-placebo difference.",
+					"Meta-analysis of 34 controlled trials found small probiotic effects for depression and anxiety, larger depression effects in clinical or medical samples, and no prebiotic-placebo difference.",
 				order: 5
 			},
 			{
@@ -8264,7 +8264,7 @@ const rawClaims: SeedClaim[] = [
 				pmcid: "PMC7915600",
 				stance: "debate",
 				note:
-					"Clinical depression review of seven randomized trials and 404 participants found benefit as an adjunct to antidepressants but no significant standalone treatment effect in limited evidence.",
+					"Clinical depression review of seven randomized trials found benefit as an adjunct to antidepressants but no significant standalone effect in limited evidence.",
 				order: 6
 			},
 			{
@@ -8293,7 +8293,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "41310510",
 				stance: "debate",
 				note:
-					"Meta-analysis of 72 RCTs found reductions in depression and anxiety symptom scores, while emphasizing high heterogeneity, limited methodological quality, and need for larger high-quality trials with long-term follow-up.",
+					"Meta-analysis of 72 RCTs found lower depression and anxiety symptom scores, with high heterogeneity and need for larger long-term trials.",
 				order: 8
 			}
 		]
@@ -18089,6 +18089,193 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Consensus-fetched Cochrane review of interventions to increase seat-belt use, useful for implementation caveats rather than effect size.",
 				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do motorcycle helmets reduce deaths and head injuries in crashes?",
+		slug: "do-motorcycle-helmets-reduce-deaths-and-head-injuries-in-crashes",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. DOT-compliant, correctly worn motorcycle helmets reduce death and serious head-injury risk in crashes. They are not crash prevention, and they do not replace sober riding, licensing, speed control, conspicuity, protective clothing, road design, or driver awareness.",
+		stableCore: [
+			"NHTSA says motorcyclists were 16% of U.S. traffic deaths in 2024, and recommends DOT-compliant helmets that meet FMVSS 218.",
+			"NHTSA Countermeasures That Work summarizes research finding helmets reduce motorcycle rider fatalities by 22% to 42% and brain injuries by 41% to 69%.",
+			"CDC says motorcycle helmets greatly reduce deaths and serious head injuries, including traumatic brain injury, and that universal helmet laws increase helmet use and reduce deaths, injuries, and costs.",
+			"A 2025 trauma-surgery systematic review and meta-analysis found helmet use associated with lower mortality odds and lower cervical-spine injury odds, while rating certainty low because the evidence is observational.",
+			"Meta-analyses and trauma-registry studies consistently find lower death, severe head injury, traumatic brain injury, facial injury, or injury severity among helmeted riders."
+		],
+		openQuestions: [
+			"Which combinations of universal laws, enforcement, rider training, affordability, comfort, and helmet quality reduce deaths without creating inequitable enforcement?",
+			"How much additional protection comes from full-face helmets, correct fastening, newer materials, fit standards, and replacement after impacts?",
+			"How should motorcycle-helmet guidance adapt to mopeds, scooters, off-road riding, passengers, children, delivery work, and countries where motorcycles are primary transportation?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-adjusted crash and trauma datasets showing no meaningful reduction in mortality, traumatic brain injury, or severe head injury among riders wearing compliant, correctly fastened helmets.",
+			"Major NHTSA, CDC, CPSTF, Cochrane, or trauma-surgery reassessments withdrawing helmets as a core motorcycle safety recommendation.",
+			"Evidence that helmet-related harms or population-level risk compensation reliably offset the mortality and head-injury reductions seen in crash, registry, and review evidence."
+		],
+		misconceptions: [
+			"Motorcycle helmets do not prevent crashes; they reduce injury severity when a crash happens.",
+			"Novelty helmets are not equivalent to DOT-compliant helmets that meet FMVSS 218.",
+			"Policy disagreement about helmet laws is not the same as evidence that helmets fail to protect individual riders.",
+			"Current reviews do not support the simple claim that helmets increase neck-injury risk enough to outweigh head-injury and mortality benefits."
+		],
+		editorSummary:
+			"The narrow consensus is strong: wear a compliant, well-fitted, fastened helmet every ride. Helmet-law design and enforcement are policy questions; they do not erase the protective evidence.",
+		uncertaintySummary:
+			"The protective direction is strong, but exact effect sizes vary by crash speed, impact angle, impairment, helmet standard and type, fit, fastening, ejection, age, road context, vehicle type, and rider behavior.",
+		searchDatabases: ["Consensus", "NHTSA", "CDC", "The Community Guide"],
+		searchCutoffAt: "2026-07-04T21:33:30.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:33:30.000Z",
+		inclusionRules: [
+			"Prioritize government safety guidance, systematic reviews, meta-analyses, crash/trauma registry studies, and universal-helmet-law reviews.",
+			"Separate individual helmet effectiveness from the policy question of helmet-law adoption and enforcement.",
+			"Distinguish DOT-compliant motorcycle helmets from novelty or noncompliant helmets."
+		],
+		exclusionRules: [
+			"Do not use helmet vendor marketing as effectiveness evidence.",
+			"Do not imply helmets replace sober riding, licensing, rider training, speed management, conspicuity, or other road-safety measures.",
+			"Do not generalize bicycle-helmet evidence to motorcycle helmets when motorcycle-specific evidence is available."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do motorcycle helmets reduce death and serious head injury in crashes?",
+				population: "Motorcycle riders and passengers involved in crashes",
+				finding:
+					"Government guidance, systematic reviews, meta-analyses, and trauma-registry studies support helmet use as a core way to reduce motorcycle crash mortality and serious head injury.",
+				effectDirection: "supports",
+				magnitude:
+					"NHTSA summarizes fatality reductions of 22% to 42% and brain-injury reductions of 41% to 69%; a 2025 meta-analysis estimated mortality OR 0.48 for helmeted riders.",
+				certainty: "moderate",
+				limitations: [
+					"Randomized trials are not realistic, so evidence depends on observational crash, trauma, law-change, and registry data.",
+					"Helmeted and unhelmeted riders can differ in speed, alcohol use, licensing, risk behavior, clothing, and crash circumstances.",
+					"Protection depends on a compliant helmet being correctly fitted, fastened, undamaged, and appropriate for the riding context."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Highway Traffic Safety Administration",
+				role: "Transportation-safety anchor for DOT-compliant helmet guidance, motorcycle fatality statistics, and Countermeasures That Work effect estimates."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health anchor for universal motorcycle helmet laws, serious head-injury prevention, and cost/lives-saved context."
+			},
+			{
+				name: "Community Preventive Services Task Force",
+				role: "Policy-evidence anchor for universal helmet-law reviews and implementation effects on helmet use, deaths, injuries, and costs."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T21:33:30.000Z",
+				kind: "publication",
+				summary:
+					"Initial motorcycle-helmet crash-injury prevention claim page published from NHTSA, CDC, Community Guide, and Consensus-located meta-analysis and trauma-registry evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Motorcycle Safety: Helmets, Motorists, Road Awareness",
+				publisher: "National Highway Traffic Safety Administration",
+				year: 2026,
+				url: "https://www.nhtsa.gov/road-safety/motorcycles",
+				stance: "supports",
+				note:
+					"NHTSA source for 2024 motorcyclist fatalities, DOT-compliant helmet guidance, FMVSS 218, impairment context, and safe-riding measures.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Universal Motorcycle Helmet Use Laws",
+				publisher: "National Highway Traffic Safety Administration",
+				url:
+					"https://www.nhtsa.gov/book/countermeasures-that-work/motorcycle-safety/countermeasures/legislation-and-licensing",
+				stance: "supports",
+				note:
+					"NHTSA Countermeasures That Work anchor for helmet fatality and brain-injury reductions, FMVSS 218, and universal-law effectiveness.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "MV PICCS Intervention: Universal Motorcycle Helmet Laws",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/transportation-safety/calculator/mchelmet.html",
+				stance: "supports",
+				note:
+					"CDC source stating helmets greatly reduce deaths and serious head injuries and summarizing evidence for universal helmet laws.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Systematic review and meta-analysis of efficacy of helmet use and helmet laws to reduce mortality and cervical spine injury in adult motorcycle riders: A practice management guideline from the Eastern Association for the Surgery of Trauma",
+				publisher: "Journal of Trauma and Acute Care Surgery",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/systematic-review-and-metaanalysis-of-efficacy-of-helmet-ratnasekera-seng/726156f54ddd5bffb4d871c663b4ccb0/",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review and meta-analysis estimating lower mortality odds among helmeted adult motorcycle riders and recommending helmet use and universal laws.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Helmet Use and Its Efficacy on Preventing Motorcycle Injuries: A Systematic Review and Meta-analysis",
+				publisher: "Journal of Mazandaran University of Medical Sciences",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/helmet-use-and-its-efficacy-on-preventing-motorcycle-koohi-soori/ab28fc01c5b55841b5be61df09a9021f/",
+				stance: "supports",
+				note:
+					"Consensus-fetched review of 107 studies and meta-analysis estimating lower death and head/face injury risk among helmeted riders.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Universal Motorcycle Helmet Laws to Reduce Injuries: A Community Guide Systematic Review",
+				publisher: "American Journal of Preventive Medicine",
+				year: 2017,
+				url:
+					"https://consensus.app/papers/universal-motorcycle-helmet-laws-to-reduce-injuries-a-peng-vaidya/d3d861effcb259a997685bbb68b31087/",
+				stance: "context",
+				note:
+					"Consensus-fetched Community Guide review finding universal helmet laws increase helmet use and reduce deaths and injuries, while repeals move outcomes in the opposite direction.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Full-face motorcycle helmets to reduce injury and death: A systematic review, meta-analysis, and practice management guideline from the Eastern Association for the Surgery of Trauma",
+				publisher: "American Journal of Surgery",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/fullface-motorcycle-helmets-to-reduce-injury-and-death-a-urrechaga-kodadek/06b2835bc33e524da0d6bc0011b0583c/",
+				stance: "context",
+				note:
+					"Consensus-fetched review supporting full-face helmets for lower traumatic brain injury, facial fracture, and injury-severity outcomes.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Injury patterns and outcomes in motorcycle driver crashes in the United States: The effect of helmet use",
+				publisher: "Injury",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/injury-patterns-and-outcomes-in-motorcycle-driver-crashes-brockhus-liasidis/45fe39cbf8285a779dbaf89dfcd5b3fd/",
+				stance: "supports",
+				note:
+					"Consensus-fetched National Trauma Data Bank study associating helmet use with fewer severe head injuries and lower mortality without increased cervical-spine injury.",
+				order: 8
 			}
 		]
 	},
