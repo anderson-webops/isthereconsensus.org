@@ -2839,7 +2839,7 @@ const rawClaims: SeedClaim[] = [
 			"Evidence gaps for basal-cell carcinoma are sometimes used to dismiss the broader UV-protection and squamous-cell carcinoma evidence."
 		],
 		editorSummary:
-			"This page should answer the practical public question while keeping the evidence gradient visible: sunscreen is recommended and biologically sensible for UV protection, but the direct cancer-outcome evidence is not equally strong for every skin-cancer type.",
+			"Sunscreen is recommended and biologically sensible for UV protection, but the direct cancer-outcome evidence is not equally strong for every skin-cancer type.",
 		uncertaintySummary:
 			"The public-health recommendation is broad and stable, but the direct randomized evidence differs by outcome. Confidence is strongest for reducing UV exposure and squamous-cell carcinoma burden, suggestive for melanoma, and less clear for basal-cell carcinoma.",
 		searchCutoffAt: "2026-07-02T22:11:34.000Z",
@@ -2886,7 +2886,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "27501759",
 				stance: "context",
 				note:
-					"Key caution source: found only one suitable RCT through May 2016 and rated evidence low for BCC/cSCC incidence, so the page should not overstate direct trial certainty for every skin-cancer type.",
+					"Key caution source that found only one suitable RCT through May 2016 and low-certainty evidence for BCC/cSCC incidence, so direct trial certainty varies by skin-cancer type.",
 				order: 3
 			},
 			{
@@ -6208,6 +6208,212 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "climate-and-environment",
+		title: "Do portable HEPA air cleaners reduce indoor fine-particle pollution?",
+		slug: "do-portable-hepa-air-cleaners-reduce-indoor-fine-particle-pollution",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for particle exposure when the device is correctly specified, sized, maintained, and run. Portable HEPA or similarly effective high-CADR air cleaners can substantially reduce indoor PM2.5, including wildfire-smoke particles, in the room where they operate. They do not remove every pollutant, fix pollution sources, guarantee symptom improvement, or replace evacuation or ventilation guidance.",
+		stableCore: [
+			"EPA says filtration can supplement source control and clean ventilation, and that portable air cleaners and HVAC filters can reduce indoor air pollution but cannot remove all pollutants.",
+			"CDC advises setting up a portable air cleaner or filter in a closed-off clean room during wildfire smoke, while avoiding indoor particle sources such as candles, smoking, cooking, and vacuuming.",
+			"A 2023 systematic review and meta-analysis of field studies found fine-particle reductions averaging about 49%, with effectiveness limited when users run devices briefly or on low fan settings.",
+			"Wildfire-smoke field studies and reviews commonly find indoor PM2.5 reductions with portable air cleaners, but the size of benefit depends on building leakage, outdoor smoke, room size, CADR, filter condition, and actual use."
+		],
+		openQuestions: [
+			"How much do portable air cleaners improve clinical outcomes such as asthma symptoms, cardiovascular events, missed school, or medication use across different smoke and pollution settings?",
+			"Which low-cost DIY designs, rebates, filter-replacement programs, and public clean-air spaces produce the greatest exposure reduction for renters, low-income households, schools, and older adults?",
+			"How should guidance compare HEPA units, MERV 13 box-fan filters, HVAC upgrades, source reduction, sealing, cooling needs, noise, electricity cost, and ozone-generating devices?"
+		],
+		whatWouldChangeMinds: [
+			"Large field trials showing no meaningful indoor PM2.5 reduction from correctly sized, maintained, continuously run HEPA or high-CADR portable cleaners.",
+			"Major EPA, CDC, WHO, ASHRAE, or systematic-review reassessments withdrawing filtration as a useful supplement for indoor particle exposure reduction.",
+			"Evidence that real-world device noise, cost, maintenance failure, ozone generation, or risk compensation usually offsets particle-removal benefits."
+		],
+		misconceptions: [
+			"An air purifier is not a complete shield; it works best in a room with doors and windows closed and with indoor particle sources minimized.",
+			"HEPA-style marketing is not the same as a correctly sized device with an adequate clean air delivery rate and a maintained filter.",
+			"Ozone generators are not safer air cleaners; EPA warns ozone is a lung irritant and CARB requires ozone-emission testing for electronic air cleaners.",
+			"Cleaner indoor air during smoke does not replace evacuation orders, medical care, respirators when needed outdoors, or pollution-source control."
+		],
+		editorSummary:
+			"Filtration is one of the best-supported household exposure-reduction tools for fine particles, especially smoke, but it is only one layer of protection.",
+		uncertaintySummary:
+			"Measured PM2.5 reduction is much better supported than broad health-outcome claims. Effect sizes vary with room volume, CADR, fan speed, filter loading, placement, outdoor concentrations, leakage, indoor sources, device use, and whether the pollutant is particulate or gaseous.",
+		searchDatabases: ["Consensus", "EPA", "CDC", "CARB"],
+		searchCutoffAt: "2026-07-04T21:54:45.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:54:45.000Z",
+		inclusionRules: [
+			"Prioritize field studies, randomized or crossover trials, systematic reviews, and current agency guidance on indoor particle filtration.",
+			"Separate measured particle reduction from health-outcome claims.",
+			"Separate mechanical filtration from ozone generators, ionizers, UV devices, and unsupported purifier marketing."
+		],
+		exclusionRules: [
+			"Do not use air-purifier vendor marketing as effectiveness evidence.",
+			"Do not imply filtration removes all pollutants, including gases and volatile organic compounds, unless the source directly supports that pollutant and device type.",
+			"Do not treat one-room portable filtration as a substitute for evacuation, source control, or building-wide clean-air planning."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do portable HEPA air cleaners reduce indoor fine-particle pollution?",
+				population:
+					"People in homes, schools, and clean-room settings exposed to indoor or infiltrating fine particles, including wildfire smoke",
+				finding:
+					"Agency guidance and field evidence support portable HEPA or high-CADR filtration as a useful way to lower indoor PM2.5, especially in the room where the device is run.",
+				effectDirection: "supports",
+				magnitude:
+					"Field-review estimates commonly find PM2.5 reductions around 30% to 90%; one field meta-analysis reported a mean PM2.5 reduction of 49%, and wildfire-specific reviews reported portable-cleaner reductions of roughly 54% to 92%.",
+				certainty: "moderate",
+				limitations: [
+					"Many studies measure indoor particle concentration, not downstream clinical outcomes.",
+					"Benefits fall when devices are undersized, poorly placed, noisy, run on low settings, turned off, or used with dirty filters.",
+					"Portable particle filtration does not address all gases, outdoor exposure, source emissions, heat stress, evacuation needs, or whole-building ventilation."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "U.S. Environmental Protection Agency",
+				role:
+					"Indoor-air anchor for filtration as a supplement to source control and ventilation, CADR concepts, wildfire clean-room advice, and ozone-generator cautions."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role:
+					"Wildfire-smoke public-health anchor for setting up a clean room with a portable cleaner or filter and limiting indoor particle sources."
+			},
+			{
+				name: "California Air Resources Board",
+				role:
+					"Consumer-safety anchor for ozone-emission certification context and distinguishing mechanical filtration from electronic air-cleaning devices."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T21:54:45.000Z",
+				kind: "publication",
+				summary:
+					"Initial portable HEPA air-cleaner and indoor PM2.5 claim page published from EPA, CDC, CARB, and Consensus-located field, systematic-review, meta-analysis, and randomized-trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Air Cleaners and Air Filters in the Home",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url: "https://www.epa.gov/indoor-air-quality-iaq/air-cleaners-and-air-filters-home",
+				stance: "supports",
+				note:
+					"EPA source stating filtration can supplement source control and clean ventilation, and that portable air cleaners and HVAC filters can reduce indoor air pollution but cannot remove all pollutants.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Create a Clean Room to Protect Indoor Air Quality During a Wildfire",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url:
+					"https://www.epa.gov/emergencies-iaq/create-clean-room-protect-indoor-air-quality-during-wildfire",
+				stance: "supports",
+				note:
+					"EPA wildfire clean-room guidance explaining that a clean room can contain a portable air cleaner and should limit smoke and other particles.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Safety Guidelines: Wildfires and Wildfire Smoke",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url:
+					"https://www.cdc.gov/wildfires/safety/how-to-safely-stay-safe-during-a-wildfire.html",
+				stance: "supports",
+				note:
+					"CDC guidance recommending a closed-off clean room with a portable air cleaner or filter during smoke and avoiding indoor particle sources.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "List of CARB-Certified Air Cleaning Devices",
+				publisher: "California Air Resources Board",
+				year: 2026,
+				url: "https://ww2.arb.ca.gov/list-carb-certified-air-cleaning-devices",
+				stance: "context",
+				note:
+					"CARB source for ozone-emission certification context and for distinguishing mechanical filtration from electronic air-cleaning technologies.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"A systematic review and meta-analysis of field studies of portable air cleaners: Performance, user behavior, and by-product emissions",
+				publisher: "The Science of the Total Environment",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/a-systematic-review-and-metaanalysis-of-field-studies-of-ebrahimifakhar-poursadegh/1653f9b8e77a52dc98bb73146c29eb0e/",
+				stance: "supports",
+				note:
+					"Consensus-fetched field-study review reporting an average 49% PM2.5 reduction and highlighting user behavior, noise, airflow setting, and by-product concerns.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Interventions for reducing exposure to air pollution from landscape fires in a changing environment: A systematic review",
+				publisher: "The Science of the Total Environment",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/interventions-for-reducing-exposure-to-air-pollution-from-goodman-campbell/42b74ec5c357538fa9445bca5904293c/",
+				stance: "supports",
+				note:
+					"Consensus-fetched landscape-fire intervention review reporting portable HEPA cleaner PM reductions of 54% to 92% and emphasizing remaining implementation research needs.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Field measurements of PM2.5 infiltration factor and portable air cleaner effectiveness during wildfire episodes in US residences",
+				publisher: "The Science of the Total Environment",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/field-measurements-of-pm25-infiltration-factor-and-xiang-huang/d0049d20aba35d8aba06af0b40d82580/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Seattle wildfire field study finding auto-mode portable air cleaners reduced indoor PM2.5 by 48% to 78% after accounting for outdoor levels and indoor sources.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"The effect of portable HEPA filter air cleaners on indoor PM2.5 concentrations and second hand tobacco smoke exposure among pregnant women in Ulaanbaatar, Mongolia: The UGAAR randomized controlled trial",
+				publisher: "The Science of the Total Environment",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/the-effect-of-portable-hepa-filter-air-cleaners-on-indoor-barn-gombojav/20a4459d781e5f18a8382110c9cd73a0/",
+				stance: "supports",
+				note:
+					"Consensus-fetched randomized trial finding indoor PM2.5 was 29% lower overall in homes assigned portable HEPA cleaners, with stronger effects shortly after deployment.",
+				order: 8
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Effectiveness of portable HEPA air cleaners on reducing indoor PM2.5 and NH3 in an agricultural cohort of children with asthma: A randomized intervention trial",
+				publisher: "Indoor Air",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/effectiveness-of-portable-hepa-air-cleaners-on-reducing-riederer-krenz/14820ada0c265655b47c83a73b63878f/",
+				stance: "supports",
+				note:
+					"Consensus-fetched randomized trial in homes of children with asthma finding lower PM2.5 in sleeping and living areas, but no NH3 reduction.",
+				order: 9
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
 		title: "Does household air pollution from solid fuels cause major disease burdens, especially in children?",
 		slug: "does-household-air-pollution-from-solid-fuels-cause-major-disease-burdens-especially-in-children",
 		status: "published",
@@ -7598,7 +7804,7 @@ const rawClaims: SeedClaim[] = [
 		consensusBand: "broad",
 		confidenceScore: 86,
 		bottomLine:
-			"Yes, with important caveats. The evidence strongly associates cannabis use with later psychosis risk, with the highest risks among frequent users, earlier starters, and people using high-THC products. Because much of the evidence is observational, the page should describe a risk gradient and plausible causal contribution, not claim that cannabis inevitably causes schizophrenia in every user.",
+			"Yes, with important caveats. The evidence strongly associates cannabis use with later psychosis risk, with the highest risks among frequent users, earlier starters, and people using high-THC products. Because much of the evidence is observational, the careful consensus is a risk-gradient claim with plausible causal contribution, not that cannabis inevitably causes schizophrenia in every user.",
 		stableCore: [
 			"National Academies found substantial evidence of a statistical association between cannabis use and developing schizophrenia or other psychoses, with the highest risk among the most frequent users.",
 			"The Marconi meta-analysis reported higher risk among heavier users and a dose-response relationship between cannabis exposure and psychotic outcomes.",
@@ -7621,7 +7827,7 @@ const rawClaims: SeedClaim[] = [
 			"Medical uses of some cannabis-derived products do not erase the psychosis-risk evidence for high-THC recreational exposure."
 		],
 		editorSummary:
-			"This page should be careful but direct: the risk signal is too consistent to dismiss, yet the public explanation should emphasize gradients, susceptibility, adolescent exposure, and high-potency use rather than panic or inevitability.",
+			"The risk signal is too consistent to dismiss, but the practical explanation is about gradients, susceptibility, adolescent exposure, and high-potency use rather than panic or inevitability.",
 		uncertaintySummary:
 			"The association, frequency gradient, and adolescent-risk concern are robust enough for a broad-consensus page. Causal size, product-potency thresholds, and individual susceptibility remain active sources of uncertainty.",
 		searchCutoffAt: "2026-07-02T22:25:42.000Z",
@@ -13402,7 +13608,7 @@ const rawClaims: SeedClaim[] = [
 			"Large later studies can also be wrong, but they usually reduce random error and make some biases easier to detect."
 		],
 		editorSummary:
-			"This page gives readers a calibration rule for early evidence: treat first and small studies as signals, not final estimates. The point is provisional updating, not cynicism.",
+			"Early and small studies are useful signals, not final estimates. The practical rule is provisional updating, not cynicism.",
 		uncertaintySummary:
 			"The direction is well supported: early and small studies often give less stable and sometimes exaggerated estimates. The size of the problem varies by field, outcome, intervention, and review methods, and some early evidence remains useful for urgent decisions.",
 		uncertaintyDrivers: [
@@ -13432,7 +13638,7 @@ const rawClaims: SeedClaim[] = [
 		inclusionRules: [
 			"Prioritize meta-epidemiological studies, systematic reviews of study-design bias, and methods guidance on small-study effects and missing evidence.",
 			"Separate small-study effects from publication bias, early-study effects, and study-design flaws, while explaining how they can overlap.",
-			"Keep the claim about effect-estimate calibration, not about whether any individual small study is true or false."
+			"Focus on effect-estimate calibration, not whether any individual small study is true or false."
 		],
 		exclusionRules: [
 			"Do not dismiss early evidence categorically when urgent decisions require provisional action.",
@@ -13601,7 +13807,7 @@ const rawClaims: SeedClaim[] = [
 			"Registered Reports reduce publication bias pressure, but they do not remove the need for good measurement, adequate power, replication, and transparent analysis."
 		],
 		editorSummary:
-			"This page should calibrate a common open-science shortcut. Registration is a real credibility signal when it is prospective, specific, enforced, and followed, but it is not a substitute for reading the methods and comparing the source to the broader evidence base.",
+			"Registration is a real credibility signal when it is prospective, specific, enforced, and followed, but it is not a substitute for reading the methods or comparing the source to the broader evidence base.",
 		uncertaintySummary:
 			"The direction is fairly clear: preregistration and Registered Reports improve transparency and can reduce bias risk. The remaining uncertainty is about practical enforcement, plan quality, adherence, field-to-field variation, and whether the improvement changes estimates or mainly improves auditability.",
 		uncertaintyDrivers: [
