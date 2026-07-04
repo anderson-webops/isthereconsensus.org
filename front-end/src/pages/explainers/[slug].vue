@@ -156,6 +156,20 @@ useSeoMeta({
 	padding: 22px;
 }
 
+.explainer-detail-header,
+.explainer-detail-panel {
+	display: grid;
+	align-content: start;
+}
+
+.explainer-detail-header {
+	gap: 10px;
+}
+
+.explainer-detail-panel {
+	gap: 14px;
+}
+
 .explainer-detail-header h1,
 .section-heading h2,
 .example-card h3,
@@ -166,7 +180,6 @@ useSeoMeta({
 }
 
 .explainer-detail-header h1 {
-	margin-top: 8px;
 	font-size: var(--consensus-page-title-size);
 	line-height: 1.08;
 }
@@ -187,12 +200,22 @@ useSeoMeta({
 	max-width: 68ch;
 }
 
+.explainer-detail-header p,
+.explainer-detail-panel > p,
+.example-card p,
+.module-card p,
+.explainer-callout p,
+.plain-list {
+	margin: 0;
+}
+
 .explainer-detail-grid,
 .example-grid,
 .module-grid {
 	display: grid;
 	gap: 16px;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
 }
 
 .example-card,
@@ -200,6 +223,7 @@ useSeoMeta({
 	padding: 18px;
 	display: grid;
 	gap: 10px;
+	align-content: start;
 }
 
 .section-heading h2,
@@ -214,16 +238,24 @@ useSeoMeta({
 }
 
 .section-heading {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	flex-wrap: wrap;
-	align-items: end;
+	display: grid;
+	gap: 6px;
+	align-items: start;
 }
 
 .section-heading--tight h2,
 .section-heading--tight p {
 	margin: 0;
+}
+
+.plain-list {
+	padding-left: 20px;
+	display: grid;
+	gap: 10px;
+}
+
+.plain-list--tight {
+	gap: 8px;
 }
 
 .explainer-callout {
@@ -232,6 +264,12 @@ useSeoMeta({
 	gap: 18px;
 	flex-wrap: wrap;
 	align-items: end;
+}
+
+.explainer-callout > div:not(.explainer-callout__actions) {
+	flex: 1 1 360px;
+	display: grid;
+	gap: 8px;
 }
 
 .explainer-callout__actions,
@@ -278,6 +316,14 @@ useSeoMeta({
 	.explainer-detail-panel,
 	.explainer-callout {
 		padding: 18px;
+	}
+
+	.explainer-callout {
+		align-items: stretch;
+	}
+
+	.explainer-callout__actions {
+		width: 100%;
 	}
 }
 </style>
