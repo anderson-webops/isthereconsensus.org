@@ -4389,6 +4389,126 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do condoms reduce HIV and other STI transmission when used correctly and consistently?",
+		slug: "do-condoms-reduce-hiv-and-other-sti-transmission-when-used-correctly-and-consistently",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "moderate",
+		bottomLine:
+				"Yes. Correct and consistent condom use substantially reduces HIV transmission and lowers risk for many sexually transmitted infections, especially infections spread through genital fluids such as gonorrhea and chlamydia. Protection is not absolute: condoms must be used for the whole sex act, can break or slip, and protect less well against infections spread from skin or sores outside the covered area.",
+		stableCore: [
+			"CDC and WHO recommend correct and consistent condom use as an effective way to reduce HIV, STI, and unintended-pregnancy risk, while emphasizing that condoms reduce risk rather than eliminate it.",
+			"CDC says condoms are especially protective against STIs spread by genital fluids, including gonorrhea, chlamydia, trichomoniasis, and HIV, and less protective for infections spread through uncovered skin or sores.",
+			"A systematic review and meta-analysis of 25 studies in 10,676 heterosexual HIV-serodiscordant couples found that always using condoms was associated with substantially lower HIV transmission risk than never or inconsistently using them.",
+			"Evidence for female condoms also supports STI risk reduction; a systematic review found that adding female condoms to male-condom access reduced gonorrhea and chlamydia compared with male condoms alone.",
+			"Behavioral and structural condom-access interventions can increase condom use and reduce STI outcomes, but real-world impact depends on access, acceptability, correct use, and consistent use."
+		],
+		openQuestions: [
+			"Which counseling, access, and distribution strategies improve consistent condom use without stigma, coercion, or ignoring pleasure and relationship dynamics?",
+			"How should condoms be combined with PrEP, U=U, vaccination, testing, treatment, contraception, and harm-reduction services for different people and settings?",
+			"How do real-world effectiveness estimates differ by STI, condom type, lubricant, sex act, anatomy, fit, breakage or slippage, and whether exposed skin or lesions are covered?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-conducted evidence showing no meaningful reduction in HIV or STI transmission when condoms are used correctly and consistently.",
+			"Major CDC, WHO, or infectious-disease guideline reassessments withdrawing condoms as a core HIV and STI prevention tool.",
+			"Evidence that condom failures, harms, or implementation effects outweigh the HIV, STI, and pregnancy-prevention benefits in populations where condoms are recommended."
+		],
+		misconceptions: [
+			"Condoms are neither perfect nor useless. They substantially reduce several risks when used correctly and consistently, but they do not make sex risk-free.",
+			"PrEP prevents HIV, not other STIs or pregnancy, so condoms can still matter for broader sexual-health protection.",
+			"Pregnancy-prevention methods such as pills, implants, or IUDs do not protect against HIV or other STIs.",
+			"Lower protection against skin-to-skin STI transmission does not mean condoms do nothing; it means protection varies by infection and exposure site."
+		],
+		editorSummary:
+				"This page should anchor condoms as a practical, low-cost HIV and STI risk-reduction tool without overselling them. The consensus is strong that correct and consistent use helps, and the caveats are exactly the details readers need.",
+		uncertaintySummary:
+				"The consensus is strongest for HIV and fluid-transmitted STIs when condoms are used correctly and consistently. Exact real-world effectiveness varies by adherence, condom type, fit, lubricant, breakage or slippage, sex act, STI route, and whether exposed skin or lesions are covered.",
+		searchCutoffAt: "2026-07-04T19:56:49.000Z",
+		lastRetractionCheckAt: "2026-07-04T19:56:49.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T19:56:49.000Z",
+				kind: "publication",
+				summary:
+						"Initial condom HIV and STI prevention claim page published from CDC and WHO guidance plus Consensus-located systematic-review and meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Condom Use: An Overview",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/condom-use/index.html",
+				stance: "supports",
+				note:
+						"CDC public-health anchor for condoms reducing HIV and STI risk when used correctly and consistently, with stronger protection for fluid-transmitted STIs and limits for uncovered skin-to-skin exposures.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Condoms",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/fact-sheets/detail/condoms",
+				stance: "supports",
+				note:
+						"WHO fact-sheet source stating that correctly and consistently used condoms are safe and highly effective for preventing most STIs, including HIV, and unplanned pregnancies, while depending on correct use every time.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+						"Condom effectiveness in reducing heterosexual HIV transmission: a systematic review and meta-analysis of studies on HIV serodiscordant couples",
+				publisher: "Expert Review of Pharmacoeconomics & Outcomes Research",
+				year: 2016,
+				url:
+						"https://consensus.app/papers/condom-effectiveness-in-reducing-heterosexual-hiv-giannou-tsiara/3a4cad1c8d565274b612bec0d8dbad18/",
+				stance: "supports",
+				note:
+						"Consensus-fetched meta-analysis of 25 studies and 10,676 HIV-serodiscordant heterosexual couples; always using condoms was associated with much lower HIV transmission risk than never or inconsistent use.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effectiveness of the female condom in preventing HIV and sexually transmitted infections: a systematic review and meta-analysis",
+				publisher: "BMC Public Health",
+				year: 2020,
+				url:
+						"https://consensus.app/papers/effectiveness-of-the-female-condom-in-preventing-hiv-and-wiyeh-mome/90b40263a84c56059f35ee6085845e17/",
+				stance: "supports",
+				note:
+						"Consensus-fetched systematic review and meta-analysis finding that adding female condoms to male-condom availability reduced gonorrhea and chlamydia compared with male condoms alone, while HIV evidence was lower certainty.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy of Behavioral Interventions to Increase Condom Use and Reduce Sexually Transmitted Infections: A Meta-Analysis, 1991 to 2010",
+				publisher: "Journal of Acquired Immune Deficiency Syndromes",
+				year: 2011,
+				url:
+						"https://consensus.app/papers/efficacy-of-behavioral-interventions-to-increase-condom-scott-sheldon-huedo-medina/fbef47986dda500796fbe74f173b5503/",
+				stance: "supports",
+				note:
+						"Consensus-fetched meta-analysis of 42 studies and 67 interventions finding condom-use interventions increased condom use and reduced incident STIs, including HIV.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy of Structural-Level Condom Distribution Interventions: A Meta-Analysis of U.S. and International Studies, 1998-2007",
+				publisher: "AIDS and Behavior",
+				year: 2010,
+				url:
+						"https://consensus.app/papers/efficacy-of-structurallevel-condom-distribution-charania-crepaz/2650493d456d5db2b65a4b37d5ed2b59/",
+				stance: "supports",
+				note:
+						"Consensus-fetched meta-analysis of 21 studies finding structural condom-distribution interventions improved condom-use outcomes and reduced incident STIs.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does modern treatment cure hepatitis C for most people?",
 		slug: "does-modern-treatment-cure-hepatitis-c-for-most-people",
 		status: "published",
