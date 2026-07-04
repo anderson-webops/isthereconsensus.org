@@ -18101,13 +18101,13 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 93,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Yes. Properly fitted, certified bicycle helmets reduce the risk of head, serious head, traumatic brain, facial, and fatal head injury when a cyclist crashes or falls. They are not concussion-proof, do not prevent crashes, and should be paired with safer streets, visibility, predictable riding, sober riding, and age-appropriate equipment.",
+			"Yes. Properly fitted, certified bicycle helmets reduce head, brain, facial, and fatal head-injury risk when a cyclist crashes or falls. They are not concussion-proof and do not prevent crashes, so helmet use should sit alongside safer streets, visibility, predictable riding, sober riding, and age-appropriate equipment.",
 		stableCore: [
-			"CDC says there is no concussion-proof helmet, but properly fitted, certified, well-maintained helmets can help protect children from serious brain or head injury.",
-			"NHTSA says every ride should begin with putting on a helmet and that proper fit matters so the helmet can best protect the rider.",
-			"CPSC bicycle-helmet requirements are designed to protect riders from head injuries caused by falls or crashes, including tests for vision, retention, strap stretch, and impact-force reduction.",
-			"A 2016 systematic review and meta-analysis of more than 64,000 injured cyclists found helmet use associated with lower odds of head injury, serious head injury, facial injury, and fatal head injury.",
-			"A 2018 meta-analysis estimated reductions of 48% for head injury, 60% for serious head injury, 53% for traumatic brain injury, 23% for face injury, and 34% for cyclists killed or seriously injured."
+			"CDC says no helmet is concussion-proof, but certified, well-fitted, well-maintained helmets can help protect children from serious brain or head injury.",
+			"NHTSA recommends starting every ride with a helmet and stresses proper fit so the helmet can protect the rider.",
+			"CPSC bicycle-helmet rules cover falls and crashes through tests for vision, retention, strap stretch, and impact-force reduction.",
+			"A 2016 systematic review of more than 64,000 injured cyclists found helmet use linked to lower odds of head, serious head, facial, and fatal head injury.",
+			"A 2018 meta-analysis estimated reductions of 48% for head injury, 60% for serious head injury, 53% for traumatic brain injury, 23% for face injury, and 34% for killed-or-seriously-injured outcomes."
 		],
 		openQuestions: [
 			"Which helmet designs and test standards best address rotational acceleration, real-world impact angles, e-bike speeds, cargo bikes, and diverse head and body forms?",
@@ -18126,9 +18126,9 @@ const rawClaims: SeedClaim[] = [
 			"Any helmet is not automatically enough; certification, fit, condition, age-appropriateness, and correct use matter."
 		],
 		editorSummary:
-			"This page should separate two questions readers often mix: bicycle helmets reduce head-injury risk in crashes, but helmet promotion and helmet laws are only one part of cycling safety and should not replace safer streets.",
+			"Separate two questions readers often mix: helmets reduce crash head-injury risk, but helmet promotion and helmet laws are only one part of cycling safety and cannot replace safer streets.",
 		uncertaintySummary:
-			"The protective direction is strong, but exact effect size varies by crash type, speed, impact angle, helmet fit and certification, helmet condition, age, riding environment, alcohol or substance use, and confounding in observational crash studies. Policy effects on cycling rates and enforcement are more context-dependent than individual crash protection.",
+			"The protective direction is strong, but exact effect size varies by crash type, speed, impact angle, helmet fit, helmet condition, age, riding environment, substance use, and observational-study confounding. Policy effects on cycling rates and enforcement are more context-dependent than individual crash protection.",
 		searchCutoffAt: "2026-07-04T20:17:58.000Z",
 		lastRetractionCheckAt: "2026-07-04T20:17:58.000Z",
 		changeLog: [
@@ -18148,7 +18148,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/heads-up/safety/index.html",
 				stance: "supports",
 				note:
-					"CDC HEADS UP anchor for the no-concussion-proof-helmet caveat and the importance of certified, age-appropriate, well-maintained, consistently and correctly worn helmets.",
+					"CDC HEADS UP anchor for the no-concussion-proof caveat and for certified, age-appropriate, well-maintained, correctly worn helmets.",
 				order: 1
 			},
 			{
@@ -18158,7 +18158,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nhtsa.gov/road-safety/bicycle-safety",
 				stance: "supports",
 				note:
-					"NHTSA public-safety source for proper helmet fit, every-ride helmet use, visibility, route choice, and the broader crash-prevention context.",
+					"NHTSA public-safety source for helmet fit, every-ride helmet use, visibility, route choice, and broader crash-prevention context.",
 				order: 2
 			},
 			{
@@ -18169,7 +18169,7 @@ const rawClaims: SeedClaim[] = [
 					"https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Bicycle-Helmets",
 				stance: "supports",
 				note:
-					"CPSC source for federal bicycle-helmet performance requirements covering vision, retention, strap stretch, and impact-force attenuation.",
+					"CPSC source for federal helmet performance requirements covering vision, retention, strap stretch, and impact-force attenuation.",
 				order: 3
 			},
 			{
@@ -18181,7 +18181,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/bicycle-injuries-and-helmet-use-a-systematic-review-and-olivier-creighton/ce9233c06e1257ea9fd9d525aed9b95d/",
 				stance: "supports",
 				note:
-					"Consensus-fetched meta-analysis of 40 studies and more than 64,000 injured cyclists finding lower odds of head, serious head, facial, and fatal head injury among helmet users.",
+					"Consensus-fetched meta-analysis of 40 studies and 64,000-plus injured cyclists finding lower odds of head, facial, and fatal head injury among helmet users.",
 				order: 4
 			},
 			{
@@ -18194,7 +18194,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/bicycle-helmets-to-wear-or-not-to-wear-a-metaanalyses-of-the-hye/da0b3c50bac8529b9bff3684e286db2c/",
 				stance: "supports",
 				note:
-					"Consensus-fetched meta-analysis estimating reduced head injury, serious head injury, traumatic brain injury, face injury, and killed-or-seriously-injured outcomes for helmet users.",
+					"Consensus-fetched meta-analysis estimating lower head, serious head, traumatic brain, face, and killed-or-seriously-injured outcomes for helmet users.",
 				order: 5
 			},
 			{
@@ -18206,7 +18206,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/effectiveness-of-bicycle-helmets-and-injury-prevention-a-bth-barbour/4fc588b278e75d6493a3830603214a97/",
 				stance: "supports",
 				note:
-					"Consensus-fetched review of meta-analyses finding benefits across age, crash severity, and crash type, especially for severe head injuries and high-risk shared-road situations.",
+					"Consensus-fetched review of meta-analyses finding benefits across age, crash severity, and crash type, especially for severe head injuries.",
 				order: 6
 			}
 		]
