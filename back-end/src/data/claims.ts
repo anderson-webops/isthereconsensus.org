@@ -8928,6 +8928,205 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "genetics-and-biotechnology",
+		title: "Is CRISPR ready for heritable human embryo editing?",
+		slug: "is-crispr-ready-for-heritable-human-embryo-editing",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"No, not for reproductive use today. CRISPR and related genome-editing tools are already useful in research and some somatic-cell therapies, where edits are not meant to be inherited. But editing human embryos, eggs, or sperm to create a pregnancy remains premature because safety, precision, ethical consent, equity, and governance problems are unresolved.",
+		stableCore: [
+			"Somatic genome editing and heritable embryo or germline editing are different: somatic edits treat an existing person and are not intended to be passed to future generations.",
+			"ISSCR guidelines classify transferring genome-edited human embryos for reproduction as currently not permitted because the approach is unsafe or raises unresolved ethical issues.",
+			"The National Academies/Royal Society commission concluded clinical use should not be considered until precise genomic changes can be made reliably without undesired changes, a criterion not yet met.",
+			"Human embryo studies and reviews report technical barriers including mosaicism, low or context-dependent repair efficiency, off-target effects, large deletions, loss of heterozygosity, and chromosomal changes.",
+			"Potential future therapeutic use is usually discussed, if at all, for serious monogenic disease with no reasonable alternative, not for enhancement or broad 'designer baby' traits."
+		],
+		openQuestions: [
+			"Can genome-editing systems reliably make intended embryo edits without off-target, on-target, mosaic, or chromosomal harms?",
+			"Which serious genetic-disease scenarios, if any, would justify first clinical use when embryo selection, donor gametes, adoption, or other options exist?",
+			"How could any future use obtain meaningful public legitimacy, long-term follow-up, equitable access, and protection for future children who cannot consent?"
+		],
+		whatWouldChangeMinds: [
+			"Replicated preclinical evidence showing reliable, precise embryo editing without undesired genomic changes or developmental harms.",
+			"Robust national and international governance frameworks with transparent public engagement, registries, monitoring, and enforceable limits on premature or unethical use.",
+			"Professional-society, WHO, National Academies, and regulator reassessments concluding that a narrow clinical pathway is safe, ethical, and socially acceptable for specified serious diseases."
+		],
+		misconceptions: [
+			"The approval of a CRISPR-based treatment for sickle cell disease does not mean editing embryos for reproduction is ready or approved.",
+			"Heritable editing is sometimes presented as simple find-and-replace DNA editing, but early embryos can respond with mosaicism, large deletions, or other unintended outcomes.",
+			"Preventing serious disease and selecting cosmetic or cognitive traits raise different scientific and ethical questions."
+		],
+		editorSummary:
+			"This page should make the somatic-versus-heritable distinction clear. CRISPR medicine is real and advancing, but reproductive embryo editing remains outside responsible clinical use under current evidence and governance standards.",
+		uncertaintySummary:
+			"The current consensus is strong that reproductive heritable editing is premature. Uncertainty is future-facing: whether safer editors, better embryo biology, public governance, and narrow disease indications could ever support tightly limited clinical use.",
+		uncertaintyDrivers: [
+			{
+				type: "mechanism",
+				detail:
+					"Embryo DNA repair can produce unintended on-target outcomes, mosaicism, chromosomal abnormalities, and loss of heterozygosity."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Responsible use would require long-term and multigenerational follow-up, enforceable governance, and transparent public engagement."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence from somatic therapies, animal models, or in vitro embryo research cannot be transferred directly to reproductive use."
+			},
+			{
+				type: "other",
+				detail:
+					"Ethical concerns include consent by future persons, justice, equity, enhancement pressure, and eugenics."
+			}
+		],
+		searchDatabases: ["Consensus", "WHO", "National Academies", "ISSCR", "FDA"],
+		searchCutoffAt: "2026-07-04T17:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T17:55:00.000Z",
+		inclusionRules: [
+			"Separate somatic genome editing, research embryo editing, mitochondrial replacement, and heritable nuclear genome editing for reproduction.",
+			"Prioritize professional guidelines, consensus reports, controlled embryo studies, and systematic reviews of safety or ethics arguments.",
+			"Keep future therapeutic scenarios narrow and distinguish serious monogenic disease from enhancement or polygenic trait selection."
+		],
+		exclusionRules: [
+			"Do not use somatic CRISPR therapy approval as evidence that embryo editing for reproduction is safe or permitted.",
+			"Do not imply that all embryo or germline research is the same as implanting edited embryos.",
+			"Do not present speculative enhancement claims as current clinical capability."
+		],
+		evidenceSummaries: [
+			{
+				question: "Is CRISPR ready for heritable human embryo editing?",
+				population:
+					"Prospective reproductive uses of genome editing in human embryos, eggs, sperm, or cells that could create inherited changes.",
+				finding:
+					"Professional guidance and technical evidence agree that reproductive heritable editing is premature, while basic and preclinical research may be permissible under rigorous oversight.",
+				effectDirection: "supports",
+				magnitude:
+					"ISSCR states embryo genome modification for reproduction is premature and should not be permitted at this time; the National Academies/Royal Society commission says clinical use should not be considered until reliable precision without undesired changes is established.",
+				certainty: "high",
+				limitations: [
+					"Genome-editing methods are improving, so the future governance question may change.",
+					"Different countries have different laws and cultural views on embryo research and reproduction.",
+					"Somatic therapies and heritable reproductive editing have different risk-benefit structures."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "International Society for Stem Cell Research",
+				role: "Professional guideline anchor for embryo research categories and heritable genome editing limits."
+			},
+			{
+				name: "National Academies / Royal Society International Commission",
+				role: "Consensus-report anchor for scientific, clinical, and governance prerequisites."
+			},
+			{
+				name: "World Health Organization",
+				role: "Global governance anchor for registries, oversight, international collaboration, and unethical-use safeguards."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T17:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial heritable human embryo editing claim page published from ISSCR, WHO, National Academies/Royal Society, FDA somatic-therapy context, and Consensus-located embryo editing safety and ethics reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Guidelines for Stem Cell Research and Clinical Translation",
+				publisher: "International Society for Stem Cell Research",
+				year: 2025,
+				url: "https://www.isscr.org/guidelines",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Professional guideline source stating that modifying the nuclear genome of human embryos for reproduction is premature and should not be permitted at this time.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Heritable Human Genome Editing",
+				publisher: "National Academies of Sciences, Engineering, and Medicine / Royal Society",
+				year: 2020,
+				url: "https://www.nationalacademies.org/projects/PGA-PGA%20EO-19-01/publication/25665",
+				doi: "10.17226/25665",
+				stance: "supports",
+				note:
+					"International commission report specifying stringent preclinical and clinical requirements, long-term monitoring, and broad dialogue before any country permits clinical use.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Human genome editing: recommendations",
+				publisher: "World Health Organization",
+				year: 2021,
+				url: "https://www.who.int/publications/i/item/9789240030381",
+				stance: "supports",
+				note:
+					"WHO recommendations for institutional, national, regional, and global governance mechanisms, including registries and safeguards against unethical or unsafe activities.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "FDA Approves First Gene Therapies to Treat Patients with Sickle Cell Disease",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2023,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-approves-first-gene-therapies-treat-patients-sickle-cell-disease",
+				stance: "context",
+				note:
+					"Somatic-therapy context: FDA approved Casgevy as the first FDA-approved treatment using CRISPR/Cas9 genome editing in a patient's own blood stem cells, not heritable embryo editing.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "CRISPR-Based Genome Editing in Human Embryos: A Review of Efficiency, Safety, and Ethical Implications",
+				publisher: "Biology of Reproduction",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/crisprbased-genome-editing-in-human-embryos-a-review-of-yin-wen/5c216e4313bf53b79e44d78812fe5702/",
+				stance: "supports",
+				note:
+					"Current review concluding that heritable genome editing remains premature because of unresolved safety risks, off-target effects, mosaicism, on-target damage, and ethical concerns.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "The Ethics of Human Embryo Editing via CRISPR-Cas9 Technology",
+				publisher: "HEC Forum",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/the-ethics-of-human-embryo-editing-via-crisprcas9-wiley-cheek/0b6070ecb551505a869db94e4c408a90/",
+				stance: "supports",
+				note:
+					"Systematic review of 223 publications identifying recurring ethical themes: risk and harm, potential benefit, oversight, consent, justice and equity, and eugenics.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Frequent loss of heterozygosity in CRISPR-Cas9-edited early human embryos",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/frequent-loss-of-heterozygosity-in-crisprcas9edited-alanis-lobato-zohren/3ce4e1cb650d5ea0b9b712aaf3ade815/",
+				stance: "supports",
+				note:
+					"Human embryo study reporting unintended editing outcomes, including loss of heterozygosity and segmental chromosome changes, reinforcing the need for safety research before clinical use.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
 		title: "Are genes destiny for complex human traits?",
 		slug: "are-genes-destiny-for-complex-human-traits",
 		status: "published",
