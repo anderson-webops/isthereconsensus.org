@@ -390,11 +390,11 @@ async function handleChangePassword() {
 }
 
 .account-details__body {
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-template-columns: 1fr;
 	align-items: start;
-	gap: 14px;
+	gap: 0;
 	width: 100%;
-	max-width: 1080px;
+	max-width: 940px;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
@@ -404,15 +404,16 @@ async function handleChangePassword() {
 
 .setting-card {
 	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(180px, 260px) minmax(0, 520px);
 	align-content: start;
-	gap: 12px;
+	column-gap: 24px;
+	row-gap: 12px;
 	min-width: 0;
 	max-width: none;
-	padding: 15px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 12px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 44%, transparent);
-	box-shadow: inset 0 1px 0 color-mix(in srgb, var(--consensus-ink) 5%, transparent);
+	padding: 18px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+	background: transparent;
 }
 
 .setting-card__intro {
@@ -441,12 +442,12 @@ async function handleChangePassword() {
 
 .setting-card__fields {
 	display: grid;
-	gap: 10px;
+	gap: 12px;
 	align-items: end;
 }
 
 .setting-card__fields--inline {
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: 1fr;
 }
 
 .setting-card__fields--password {
@@ -472,9 +473,15 @@ async function handleChangePassword() {
 	align-items: center;
 }
 
+.setting-card__fields + .setting-card__actions {
+	grid-column: 2;
+	margin-top: -2px;
+}
+
 .account-form .button {
 	justify-self: start;
 	width: fit-content;
+	height: 40px;
 	min-width: 0;
 	max-width: 100%;
 	min-height: 40px;
@@ -584,9 +591,18 @@ input {
 		padding-inline: 0;
 	}
 
+	.setting-card {
+		grid-template-columns: 1fr;
+	}
+
 	.setting-card__fields--inline,
 	.setting-card__fields--password {
 		grid-template-columns: 1fr;
+	}
+
+	.setting-card__fields + .setting-card__actions {
+		grid-column: auto;
+		margin-top: 0;
 	}
 
 	.setting-card__actions {
