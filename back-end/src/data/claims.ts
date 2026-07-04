@@ -4372,6 +4372,148 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do FDA-approved smoking-cessation medications help adults quit smoking?",
+		slug: "do-fda-approved-smoking-cessation-medications-help-adults-quit-smoking",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes, for nonpregnant adults who smoke cigarettes. FDA-approved smoking-cessation medicines, including nicotine replacement therapy, varenicline, and bupropion SR, increase the chance of quitting compared with placebo, no medication, or minimal support. They work best when paired with behavioral support, and choice of medicine should account for pregnancy, age, medical history, side effects, drug interactions, cost, and patient preference.",
+		stableCore: [
+			"USPSTF gives an A recommendation for clinicians to ask nonpregnant adults about tobacco use, advise cessation, and offer behavioral support plus FDA-approved pharmacotherapy.",
+			"USPSTF lists FDA-approved pharmacotherapy for adult tobacco-smoking cessation as nicotine replacement therapy, bupropion sustained-release, and varenicline.",
+			"The USPSTF evidence review found higher quit rates at six months or longer for medication plus behavioral support, nicotine replacement therapy, bupropion, varenicline, and clinician advice versus minimal support or placebo.",
+			"A Cochrane component network meta-analysis found high-certainty evidence that varenicline, nicotine patches, fast-acting nicotine replacement therapy, and bupropion each increased quit rates versus control.",
+			"Evidence for pharmacotherapy during pregnancy is less settled; USPSTF recommends behavioral interventions for pregnant persons and concludes evidence is insufficient to assess the benefit-harm balance of pharmacotherapy."
+		],
+		openQuestions: [
+			"How should clinicians match medicines to dependence level, prior quit attempts, psychiatric history, cardiovascular disease, pregnancy or breastfeeding, medication interactions, and cost?",
+			"How can quitlines, primary care, pharmacies, insurance coverage, and text or app support improve access to combined medication and behavioral treatment?",
+			"Which combinations and treatment durations produce the best long-term abstinence with acceptable side effects in real-world settings?"
+		],
+		whatWouldChangeMinds: [
+			"Large, replicated randomized evidence showing nicotine replacement therapy, varenicline, and bupropion do not increase sustained quit rates compared with placebo or minimal support in nonpregnant adults.",
+			"Major USPSTF, CDC, FDA, or Cochrane reassessments withdrawing FDA-approved pharmacotherapy as an effective adult smoking-cessation option.",
+			"High-quality safety evidence showing serious harms from approved cessation medications exceed the health benefits of quitting combustible cigarettes for most eligible adult smokers."
+		],
+		misconceptions: [
+			"Using nicotine replacement therapy to stop smoking is not the same risk as continuing to inhale cigarette smoke.",
+			"Medication does not remove the need for behavioral support, planning, withdrawal management, and relapse prevention.",
+			"E-cigarettes are not FDA-approved smoking-cessation medications in the U.S.; the site's separate e-cigarette page handles that different evidence question.",
+			"Pregnancy and breastfeeding require medical guidance; evidence for cessation pharmacotherapy in pregnancy is not the same as evidence in nonpregnant adults."
+		],
+		editorSummary:
+			"FDA-approved cessation medicines make quitting more likely for nonpregnant adults, especially when paired with behavioral support. The claim stays narrower than a universal recommendation: pregnancy, contraindications, side effects, e-cigarettes, and patient preference still shape clinical choice.",
+		uncertaintySummary:
+			"The adult efficacy claim is high-certainty. The main uncertainty is practical: matching the medicine, combining options, treatment duration, adherence, access, pregnancy and breastfeeding, real-world comparisons, and estimates of uncommon adverse events.",
+		searchCutoffAt: "2026-07-04T16:38:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T16:38:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T16:38:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial FDA-approved smoking-cessation medication claim page published from USPSTF, CDC, FDA, JAMA evidence-review, and Cochrane sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Tobacco Smoking Cessation in Adults, Including Pregnant Persons: Interventions",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2021,
+				url:
+					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/tobacco-use-in-adults-and-pregnant-women-counseling-and-interventions",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source: A recommendation for behavioral interventions plus FDA-approved pharmacotherapy in nonpregnant adults, behavioral interventions in pregnancy, and insufficient evidence for pharmacotherapy in pregnancy.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Quit Smoking Medicines",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url:
+					"https://www.cdc.gov/tobacco/campaign/tips/quit-smoking/quit-smoking-medications/how-to-use-quit-smoking-medicines/index.html",
+				stance: "supports",
+				note:
+					"CDC public-facing source listing FDA-approved adult quit-smoking medicines and directing pregnant, breastfeeding, or under-18 patients to use them only with clinician guidance.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Want to Quit Smoking? FDA-Approved and FDA-Cleared Cessation Products Can Help",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2022,
+				url:
+					"https://www.fda.gov/consumers/consumer-updates/want-quit-smoking-fda-approved-and-fda-cleared-cessation-products-can-help",
+				stance: "supports",
+				note:
+					"Regulatory source identifying approved and cleared cessation products, including nicotine replacement products and the non-nicotine prescription medicines varenicline and bupropion.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Interventions for Tobacco Cessation in Adults, Including Pregnant Persons: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2021,
+				url: "https://doi.org/10.1001/jama.2020.23541",
+				doi: "10.1001/jama.2020.23541",
+				pmid: "33464342",
+				stance: "supports",
+				note:
+					"USPSTF evidence review finding increased six-month-or-longer quit rates for combined pharmacotherapy and behavioral support, NRT, bupropion, varenicline, and clinician advice in adults.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Treatment of Tobacco Smoking: A Review",
+				publisher: "JAMA",
+				year: 2022,
+				url: "https://doi.org/10.1001/jama.2022.0395",
+				doi: "10.1001/jama.2022.0395",
+				pmid: "35133411",
+				stance: "supports",
+				note:
+					"Clinical review summarizing that NRT, varenicline, and bupropion work individually and work best with behavioral counseling, with varenicline or combination NRT as preferred initial options.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Pharmacological and electronic cigarette interventions for smoking cessation in adults: component network meta-analyses",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2023,
+				url: "https://doi.org/10.1002/14651858.CD015226.pub2",
+				doi: "10.1002/14651858.CD015226.pub2",
+				pmid: "37696529",
+				stance: "supports",
+				note:
+					"Large component network meta-analysis of adult smoking-cessation trials finding high-certainty quit-rate benefits for varenicline, nicotine patch, fast-acting NRT, and bupropion versus control.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "Nicotine replacement therapy versus control for smoking cessation",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2018,
+				url: "https://doi.org/10.1002/14651858.CD000146.pub5",
+				doi: "10.1002/14651858.CD000146.pub5",
+				pmid: "29852054",
+				stance: "supports",
+				note:
+					"Cochrane review of 136 studies finding high-quality evidence that licensed NRT forms increase long-term quitting by about 50% to 60% compared with placebo or no NRT.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does HIV cause AIDS?",
 		slug: "does-hiv-cause-aids",
 		status: "published",
@@ -16720,9 +16862,9 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		bottomLine:
-			"Yes, for medically eligible adults using approved medicines under clinical supervision. GLP-1 receptor agonists and dual incretin medicines used for chronic weight management, especially semaglutide and tirzepatide products, produce clinically meaningful average weight loss in randomized trials. They are not casual cosmetic drugs: eligibility, contraindications, side effects, cost, access, nutrition, physical activity, muscle preservation, and long-term maintenance all matter.",
+			"Yes, for medically eligible adults using approved medicines under clinical supervision. GLP-1 receptor agonists and dual incretin medicines used for chronic weight management, especially semaglutide and tirzepatide products, produce clinically meaningful average weight loss in randomized trials. They are medical treatments, not casual cosmetic drugs: eligibility, contraindications, side effects, cost, access, nutrition, physical activity, muscle preservation, and long-term maintenance all matter.",
 		stableCore: [
-			"FDA labeling indicates semaglutide products and tirzepatide for long-term weight reduction and maintenance in adults with obesity, or adults with overweight plus at least one weight-related comorbid condition, alongside diet and physical activity.",
+			"FDA labels indicate Wegovy (semaglutide) and Zepbound (tirzepatide) for long-term weight reduction and maintenance in adults with obesity, or adults with overweight plus at least one weight-related condition, alongside diet and physical activity.",
 			"In STEP 1, once-weekly semaglutide 2.4 mg plus lifestyle intervention reduced body weight by 14.9% at 68 weeks versus 2.4% with placebo.",
 			"In SURMOUNT-1, once-weekly tirzepatide reduced body weight by 15.0% to 20.9% at 72 weeks versus 3.1% with placebo, depending on dose.",
 			"A 2025 head-to-head trial found greater average weight loss with tirzepatide than semaglutide at 72 weeks among adults with obesity but without type 2 diabetes.",
@@ -16740,13 +16882,13 @@ const rawClaims: SeedClaim[] = [
 			"Long-term safety or outcome evidence showing that harms, discontinuation, lean-mass loss, or post-treatment regain generally outweigh benefits in guideline-indicated patients."
 		],
 		misconceptions: [
-			"These medicines are sometimes discussed as vanity drugs, but the clinical evidence concerns obesity or overweight with weight-related complications.",
+			"These medicines are often discussed as vanity drugs, but the clinical evidence concerns obesity or overweight with weight-related complications.",
 			"Large average trial effects do not mean every patient responds, tolerates treatment, or should use the same drug.",
 			"Stopping medication is not the same as completing a short course of antibiotics; weight regain after withdrawal is common.",
 			"Evidence for approved medications does not validate unapproved, counterfeit, or poorly compounded products sold online."
 		],
 		editorSummary:
-			"This page should explain why GLP-1-based obesity medications are a real evidence advance while resisting hype. The strongest claim is clinically meaningful weight loss in eligible adults; broader outcome, access, durability, and safety questions need careful limits.",
+			"GLP-1-based obesity medications are a real evidence advance for eligible adults, but the claim should stay narrow: clinically meaningful average weight loss, not a blanket answer on access, durability, broader outcomes, or long-term safety.",
 		uncertaintySummary:
 			"Short- and medium-term weight-loss efficacy is strongly supported by randomized trials. Certainty is lower for indefinite maintenance, long-term rare harms, use in excluded groups, comparative real-world adherence, lean-mass preservation, affordability, and how broadly cardiovascular-outcome results generalize.",
 		uncertaintyDrivers: [
