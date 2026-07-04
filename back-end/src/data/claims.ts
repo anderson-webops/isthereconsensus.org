@@ -18338,6 +18338,135 @@ const rawClaims: SeedClaim[] = [
 				order: 7
 			}
 		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do working smoke alarms reduce deaths in home fires?",
+		slug: "do-working-smoke-alarms-reduce-deaths-in-home-fires",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Working, properly installed smoke alarms reduce the risk of dying in a home fire by giving earlier warning when escape time is short. They do not prevent fires or guarantee survival, and they only help if people can hear them, respond, and get out. Maintenance, placement, replacement, escape planning, cooking safety, smoking safety, and sprinklers still matter.",
+		stableCore: [
+			"NFPA research reports that the death rate per 1,000 home structure fires is about 60% lower in homes with working smoke alarms than in homes with no alarms.",
+			"USFA recommends smoke alarms inside and outside each bedroom and sleeping area, on every level of the home, preferably interconnected, with monthly testing and replacement at 10 years.",
+			"CPSC says working smoke alarms save lives, should be installed on every level and near sleeping areas, and should be paired with a practiced fire escape plan.",
+			"A 2016 systematic review and meta-analysis found the death rate in households with working smoke alarms was about half the rate in households without working alarms, while injury evidence was not clearly significant.",
+			"Community installation studies in high-risk neighborhoods found lower fire-related death and injury rates after alarms were installed, but benefit declined when alarms stopped working or were not maintained."
+		],
+		openQuestions: [
+			"Which programs most reliably keep alarms installed, powered, audible, interconnected, and replaced over time in high-risk housing?",
+			"How should smoke-alarm messaging adapt for older adults, children, people with hearing loss, disabled residents, renters, mobile homes, and crowded housing?",
+			"Which combinations of smoke alarms, sprinklers, cooking-safety changes, smoking-risk reduction, and escape planning produce the largest mortality reduction?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled residential fire datasets showing no lower death risk in otherwise similar homes with working smoke alarms.",
+			"Major USFA, NFPA, CPSC, or injury-prevention reassessments withdrawing working smoke alarms as a core home-fire safety recommendation.",
+			"Evidence that false alarms, nuisance disconnection, or behavioral responses reliably erase the mortality benefit of properly installed and maintained alarms."
+		],
+		misconceptions: [
+			"Owning a smoke alarm is not enough; dead batteries, missing batteries, disabled alarms, poor placement, or expired units can leave a household unprotected.",
+			"Smoke alarms do not put fires out, so they are not substitutes for sprinklers, safer cooking, safer smoking behavior, or an escape plan.",
+			"Giveaway programs work best when alarms are actually installed and maintained; handing out devices without follow-up can fail.",
+			"One alarm in a hallway may not be enough; guidance calls for alarms in and outside sleeping areas and on every level."
+		],
+		editorSummary:
+			"This page should make the practical consensus visible without overstating the device. Working smoke alarms buy warning time; the public-health gap is often installation, maintenance, audibility, and escape response.",
+		uncertaintySummary:
+			"The direction of mortality benefit is strong, but exact effect size varies by alarm function, placement, interconnection, occupant hearing and mobility, fire source, time of day, housing type, socioeconomic risk, and whether people can respond quickly. Injury evidence is less consistent than death evidence.",
+		searchCutoffAt: "2026-07-04T20:42:09.000Z",
+		lastRetractionCheckAt: "2026-07-04T20:42:09.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T20:42:09.000Z",
+				kind: "publication",
+				summary:
+					"Initial working smoke alarm and home-fire death prevention claim page published from NFPA, USFA, CPSC, and Consensus-located systematic-review and installation-program evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "context",
+				title: "Smoke Alarms in US Home Fires report",
+				publisher: "National Fire Protection Association",
+				url: "https://www.nfpa.org/education-and-research/research/nfpa-research/fire-statistical-reports/smoke-alarms-in-us-home-fires",
+				stance: "supports",
+				note:
+					"NFPA statistical anchor reporting substantially lower death rates in home fires with working smoke alarms compared with homes with no alarms.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Smoke Alarms",
+				publisher: "U.S. Fire Administration / FEMA",
+				year: 2023,
+				url: "https://www.usfa.fema.gov/prevention/home-fires/prepare-for-fire/smoke-alarms/",
+				stance: "supports",
+				note:
+					"Current federal fire-safety guidance for alarm placement, interconnection, monthly testing, battery replacement, 10-year replacement, and escape response.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Fire Safety Information Center",
+				publisher: "Consumer Product Safety Commission",
+				url: "https://www.cpsc.gov/Safety-Education/Safety-Education-Centers/Fire-Safety-Information-Center",
+				stance: "supports",
+				note:
+					"CPSC source for working smoke alarms, annual battery replacement, 10-year alarm replacement, and pairing alarms with a home escape plan.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "The association between smoke alarm presence and injury and death rates: a systematic review and meta-analysis",
+				publisher: "Fire Safety Journal",
+				year: 2016,
+				url:
+					"https://consensus.app/papers/the-association-between-smoke-alarm-presence-and-injury-rohde-corcoran/6b1edccb86cc5cfc8bbf5aebdcc40c67/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis finding household fire death rates were about half as high with working smoke alarms, while injury-rate evidence was not clearly significant.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Surveillance and prevention of residential-fire injuries",
+				publisher: "The New England Journal of Medicine",
+				year: 1996,
+				url:
+					"https://consensus.app/papers/surveillance-and-prevention-of-residentialfire-injuries-mallonee-istre/f43508b7c4e7591b852f3d2c66381b64/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Oklahoma City field study finding an 80% decline in residential fire-injury rates in a high-risk target area after smoke-alarm distribution.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Preventing deaths and injuries from house fires: an outcome evaluation of a community-based smoke alarm installation programme",
+				publisher: "Injury Prevention",
+				year: 2013,
+				url:
+					"https://consensus.app/papers/preventing-deaths-and-injuries-from-house-fires-an-outcome-istre-mccoy/bf26b5c575035779aa60875a964db917/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Dallas installation-program study finding lower house-fire death and injury rates in homes that received installed lithium-powered smoke alarms.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Systematic review of controlled trials of interventions to promote smoke alarms",
+				publisher: "Archives of Disease in Childhood",
+				year: 2000,
+				url:
+					"https://consensus.app/papers/systematic-review-of-controlled-trials-of-interventions-diguiseppi-higgins/85f07aaa32e7562e9b3f9365f5c7ab3d/",
+				stance: "context",
+				note:
+					"Consensus-fetched intervention review showing education alone had modest effects and that giveaway or promotion programs need installation and maintenance to achieve injury outcomes.",
+				order: 7
+			}
+		]
 	}
 ];
 
