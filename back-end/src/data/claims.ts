@@ -4667,12 +4667,12 @@ const rawClaims: SeedClaim[] = [
 		consensusBand: "broad",
 		confidenceScore: 89,
 		bottomLine:
-			"Yes, with implementation caveats. Comprehensive syringe services programs reduce HIV risk, reduce injection risk behaviors, and can connect people to testing, treatment, naloxone, and substance-use care. Evidence for hepatitis C prevention is more qualified when syringe access is studied alone, but stronger when programs have high coverage and are paired with opioid agonist treatment.",
+			"Yes, with implementation caveats. Comprehensive syringe services programs reduce HIV risk and injection risk behaviors, and connect people to testing, treatment, naloxone, and substance-use care. Hepatitis C evidence is more qualified for syringe access alone, but stronger with high coverage and opioid agonist treatment.",
 		stableCore: [
 			"CDC says SSPs provide sterile syringes, safer disposal, testing and vaccination, infectious-disease treatment linkage, and substance-use treatment linkage.",
 			"CDC reports that SSPs are associated with an estimated 50% reduction in HIV and hepatitis C incidence and that nearly 30 years of research does not show increased illegal drug use or crime.",
 			"A 2022 evidence review found sufficient evidence that SSPs prevent HIV transmission and reduce injection risk behaviors, while HCV prevention evidence is more tentative.",
-			"Consensus-located systematic reviews find stronger evidence for HIV and risk-behavior reduction than for NSP-alone HCV prevention, with high coverage and combined opioid agonist treatment improving the evidence picture."
+			"Consensus-located reviews find stronger evidence for HIV and risk-behavior reduction than for NSP-alone HCV prevention; high coverage and opioid agonist treatment improve the evidence picture."
 		],
 		openQuestions: [
 			"Which service models best reach people at highest infection and overdose risk without losing community trust?",
@@ -4691,9 +4691,9 @@ const rawClaims: SeedClaim[] = [
 			"HIV and HCV evidence should not be flattened into one certainty level: HCV transmission is harder to interrupt, and combined services appear more effective than syringe access alone."
 		],
 		editorSummary:
-			"This page should answer the common policy question directly without overselling harm reduction. The practical consensus is that SSPs reduce infectious-disease risk and do not appear to increase drug use or crime, while implementation quality, coverage, and integration with treatment determine how much benefit communities get.",
+			"This page should answer the policy question directly without overselling harm reduction. SSPs reduce infectious-disease risk and do not appear to increase drug use or crime; coverage, implementation quality, and treatment links shape the benefit.",
 		uncertaintySummary:
-			"The consensus is broad rather than absolute: HIV and injection-risk evidence is stronger than HCV evidence for syringe access alone, and most evidence comes from real-world observational settings where randomized withholding is difficult. Available community evidence supports the conclusion that SSPs do not increase drug use or crime.",
+			"The consensus is broad rather than absolute. HIV and injection-risk evidence is stronger than HCV evidence for syringe access alone, and most evidence is observational. Available community evidence does not show increased drug use or crime.",
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		searchCutoffAt: "2026-07-04T18:54:24.000Z",
@@ -4737,7 +4737,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.hsrd.research.va.gov/publications/esp/syringeservice.cfm",
 				stance: "supports",
 				note:
-					"Evidence synthesis including 100 primary studies and 17 systematic reviews, finding SSPs likely lower HIV transmission and injection risk behaviors without increasing injection frequency, unsafe disposal, or neighborhood crime.",
+					"Evidence synthesis including 100 primary studies and 17 systematic reviews, finding lower HIV transmission and injection risk behaviors without increases in injection frequency, unsafe disposal, or neighborhood crime.",
 				order: 3
 			},
 			{
@@ -4749,7 +4749,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/effectiveness-of-needle-and-syringe-programmes-in-people-fernandes-cary/6332a2059382572883c73a32bc682c23/",
 				stance: "supports",
 				note:
-					"Consensus-fetched overview of 13 systematic reviews finding NSPs effective for reducing HIV transmission and injection risk behaviors, with mixed HCV findings and better results from high-coverage, multicomponent programs.",
+					"Consensus-fetched overview of 13 systematic reviews finding reduced HIV transmission and injection risk behaviors, mixed HCV findings, and stronger results from high-coverage, multicomponent programs.",
 				order: 4
 			},
 			{
@@ -4761,7 +4761,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/interventions-to-prevent-hiv-and-hepatitis-c-among-people-palmateer-hamill/459bd160129f51deab2349e75690e16e/",
 				stance: "supports",
 				note:
-					"Consensus-fetched review finding sufficient evidence for needle and syringe programs reducing HIV transmission and injection risk behavior, and for combined opioid agonist treatment plus NSP reducing HCV transmission.",
+					"Consensus-fetched review finding sufficient evidence that needle and syringe programs reduce HIV transmission and injection risk behavior, and that opioid agonist treatment plus NSP reduces HCV transmission.",
 				order: 5
 			},
 			{
