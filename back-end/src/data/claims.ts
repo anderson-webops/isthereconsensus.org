@@ -10427,6 +10427,203 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "bias-incentives",
+		title: "Does preregistration guarantee a study is trustworthy?",
+		slug: "does-preregistration-guarantee-a-study-is-trustworthy",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"No. Preregistration, trial registration, and Registered Reports are useful transparency tools, not trust stamps. They can reduce researcher flexibility, make selective reporting easier to detect, and help readers separate planned tests from exploratory analyses. But preregistrations can be vague, retrospective, ignored, or selectively reported, so study quality still depends on design, measurement, analysis, disclosure, and whether deviations are explained.",
+		stableCore: [
+			"Preregistration helps by declaring hypotheses, methods, outcomes, or analysis plans before results are known, which reduces opportunities for outcome-driven decisions.",
+			"Clinical-trial registration was associated with lower risk of bias in a 2022 Journal of Clinical Epidemiology study of trials included in Cochrane reviews, but many trials were not registered prospectively.",
+			"Comparisons between preregistrations and later psychology papers still find selective reporting: one 2023 study found 60% of assessed studies had at least one omitted, added, or direction-changed hypothesis.",
+			"Registered Reports add a stronger safeguard by reviewing the question and methods before results are known, but even they require adherence checks and transparent reporting of deviations."
+		],
+		openQuestions: [
+			"Which fields, journals, and funders enforce prospective registration well enough for readers to rely on it as a meaningful credibility signal?",
+			"How specific must a preregistration be before it actually limits researcher degrees of freedom?",
+			"Which deviations from a preregistered plan are legitimate updates, and which should lower confidence in a confirmatory claim?",
+			"How much does preregistration improve eventual effect estimates rather than mainly improving transparency and risk-of-bias assessment?"
+		],
+		whatWouldChangeMinds: [
+			"Large cross-field audits showing that preregistered and registered-report studies do not improve transparency, reporting completeness, or risk-of-bias assessment compared with comparable unregistered work.",
+			"Evidence that registration routinely creates false reassurance without detectable gains in selective-reporting detection, publication-bias reduction, or study planning quality.",
+			"Conversely, broad enforcement of prospective, specific, machine-checkable registrations with routine deviation audits would justify stronger public confidence in registration as a quality marker."
+		],
+		misconceptions: [
+			"Preregistered is sometimes misread as proven rigorous, even when the plan is vague, late, or not followed.",
+			"Exploratory analyses are sometimes treated as illegitimate, when the real issue is whether they are labeled honestly instead of presented as preplanned tests.",
+			"A missing preregistration does not automatically make a study false; it mainly makes some selective-reporting and analytic-flexibility risks harder to assess.",
+			"Registered Reports reduce publication bias pressure, but they do not remove the need for good measurement, adequate power, replication, and transparent analysis."
+		],
+		editorSummary:
+			"This page should calibrate a common open-science shortcut. Registration is a real credibility signal when it is prospective, specific, enforced, and followed, but it is not a substitute for reading the methods and comparing the source to the broader evidence base.",
+		uncertaintySummary:
+			"The direction is fairly clear: preregistration and Registered Reports improve transparency and can reduce bias risk. The remaining uncertainty is about practical enforcement, plan quality, adherence, field-to-field variation, and whether the improvement changes estimates or mainly improves auditability.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Benefits depend on whether registries, journals, reviewers, and funders require prospective, specific, and publicly checkable plans."
+			},
+			{
+				type: "bias",
+				detail:
+					"Selective reporting can persist when hypotheses or outcomes are omitted, added, changed, or relabeled between registration and publication."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence is strongest in medicine, psychology, and adjacent meta-research, and may not transfer equally to exploratory, qualitative, or discovery-heavy fields."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Studies vary in whether they measure transparency, risk of bias, statistical-significance rates, publication bias, or actual effect-estimate distortion."
+			}
+		],
+		searchDatabases: ["Consensus", "Crossref", "PubMed"],
+		searchCutoffAt: "2026-07-04T18:15:00.000Z",
+		inclusionRules: [
+			"Prioritize meta-research comparing preregistrations, trial registrations, registered reports, protocols, and final publications.",
+			"Separate clinical-trial registration, general preregistration, and Registered Reports because they address overlapping but different bias pathways.",
+			"Use field-specific evidence only when the page keeps the field boundary visible."
+		],
+		exclusionRules: [
+			"Do not treat open-science advocacy, registry marketing, or isolated anecdotes as evidence that registration works.",
+			"Do not use preregistration as a binary quality label without checking timing, specificity, adherence, and deviations.",
+			"Do not frame exploratory research as bad simply because it was not confirmatory or preregistered."
+		],
+		appraisalTools: [
+			"Registration timing check",
+			"Protocol-publication concordance check",
+			"Risk-of-bias and selective-reporting assessment",
+			"Exploratory-versus-confirmatory labeling check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does preregistration reduce bias enough to make a study automatically trustworthy?",
+				population:
+					"Clinical trials, psychology studies, and meta-research evaluating registrations, preregistrations, Registered Reports, and final publications",
+				finding:
+					"Registration practices improve transparency and are associated with lower bias risk in some settings, but empirical audits show incomplete prospective registration, deviations, and selective reporting remain common.",
+				effectDirection: "mixed",
+				magnitude:
+					"Lindsley 2022 found registered trials had lower high-or-unclear risk in five of six assessed bias domains; van den Akker 2023 found 60% of examined psychology studies had at least one selectively reported hypothesis category.",
+				certainty: "moderate",
+				limitations: [
+					"Much of the evidence is observational meta-research rather than randomized policy evidence.",
+					"Registration quality, timing, specificity, and enforcement vary widely.",
+					"Effects on transparency are easier to show than effects on true effect sizes or downstream decisions."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "ClinicalTrials.gov and trial registries",
+				role: "Primary infrastructure for prospective clinical-trial registration and public protocol/outcome checking"
+			},
+			{
+				name: "Cochrane methods literature",
+				role: "Evidence-synthesis context for missing evidence, risk of bias, and trial-registration interpretation"
+			},
+			{
+				name: "Center for Open Science / Registered Reports ecosystem",
+				role: "Open-science infrastructure and publication-format context for preregistration and results-blind review"
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T18:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T18:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial preregistration trust-calibration page published from Consensus-located open-science, psychology, and clinical-trial registration meta-research."
+			}
+		],
+		sources: [
+			{
+				kind: "context",
+				title: "Reducing bias, increasing transparency and calibrating confidence with preregistration",
+				publisher: "Nature Human Behaviour",
+				year: 2023,
+				url: "https://doi.org/10.1038/s41562-022-01497-2",
+				doi: "10.1038/s41562-022-01497-2",
+				pmid: "36707644",
+				stance: "supports",
+				note:
+					"Perspective explaining the core logic of preregistration: outcome-independent decision-making, transparency, and better calibration of confidence rather than automatic proof of quality.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "The benefits of preregistration and Registered Reports",
+				publisher: "Evidence-Based Toxicology",
+				year: 2024,
+				url: "https://doi.org/10.1080/2833373X.2024.2376046",
+				doi: "10.1080/2833373X.2024.2376046",
+				stance: "supports",
+				note:
+					"Review of metascientific evidence arguing that preregistration and Registered Reports counter selective reporting and publication bias while warning against mindless use of registration as a quality proxy.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Clinical trial registration was associated with lower risk of bias compared with non-registered trials among trials included in systematic reviews",
+				publisher: "Journal of Clinical Epidemiology",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.jclinepi.2022.01.012",
+				doi: "10.1016/j.jclinepi.2022.01.012",
+				pmid: "35081449",
+				stance: "supports",
+				note:
+					"Study of 1,177 clinical trials from 100 Cochrane reviews finding registered trials had lower high-or-unclear risk of bias in five of six domains, with prospective registration associated with lower risk in several domains.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Selective Hypothesis Reporting in Psychology: Comparing Preregistrations and Corresponding Publications",
+				publisher: "Advances in Methods and Practices in Psychological Science",
+				year: 2023,
+				url: "https://doi.org/10.1177/25152459231187988",
+				doi: "10.1177/25152459231187988",
+				stance: "debate",
+				note:
+					"Audit comparing 459 psychology preregistrations with publications; 60% of assessed studies had at least one omitted, added, or direction-changed hypothesis, showing registration alone does not prevent selective reporting.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Study Preregistration: An Evaluation of a Method for Transparent Reporting",
+				publisher: "Journal of Business and Psychology",
+				year: 2020,
+				url: "https://doi.org/10.1007/s10869-020-09695-3",
+				doi: "10.1007/s10869-020-09695-3",
+				stance: "supports",
+				note:
+					"Mixed-methods study finding preregistration improved transparent reporting and that preregistered samples had fewer statistically significant results than non-preregistered samples.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Patterns of pre-registration and publication of trials in Cochrane systematic reviews of interventions",
+				publisher: "Journal of Clinical Epidemiology",
+				year: 2025,
+				url: "https://doi.org/10.1016/j.jclinepi.2025.111958",
+				doi: "10.1016/j.jclinepi.2025.111958",
+				pmid: "40902861",
+				stance: "context",
+				note:
+					"Random sample of 50 Cochrane intervention reviews found only 25.7% of included primary-outcome trials were preregistered, while registered trials covered 60.1% of participants, emphasizing remaining registration gaps.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is the ocean becoming more acidic because of human CO2 emissions?",
 		slug: "is-the-ocean-becoming-more-acidic-because-of-human-co2-emissions",
