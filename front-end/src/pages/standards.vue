@@ -2,43 +2,43 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const sourceStack = [
-	"Current guidelines, consensus statements, regulator reviews, and major assessments carry the most weight.",
-	"Independent systematic reviews and meta-analyses check whether the broader literature supports the same direction.",
-	"Single studies can matter, but they do not outrank the wider evidence base on their own."
+	"Start with current guidelines, consensus statements, regulator reviews, and major assessments.",
+	"Use independent systematic reviews and meta-analyses to check the wider literature.",
+	"Treat single studies as context unless the wider evidence base changes with them."
 ];
 
 const publicationRules = [
-	"Every reviewed page should lead with a short bottom line in plain language.",
-	"Uncertainty should sit next to the answer, not be hidden behind it.",
-	"Readers should be able to inspect the evidence summaries, source stack, and change log without guessing where they are."
+	"Lead with a short bottom line in plain language.",
+	"Place uncertainty beside the answer, not behind it.",
+	"Make evidence summaries, source stacks, and change logs easy to find."
 ];
 
 const updateTriggers = [
-	"A new landmark review materially changes the direction, size, or mechanism of the current summary.",
-	"A major professional society, regulator, or assessment body updates its formal guidance.",
-	"A heavily cited paper used on the page is retracted or materially corrected.",
-	"A scheduled review date passes and the page is flagged for refresh."
+	"A landmark review changes the direction, size, or mechanism of the summary.",
+	"A major society, regulator, or assessment body updates formal guidance.",
+	"A cited paper is retracted or materially corrected.",
+	"A scheduled review date passes and the page is flagged."
 ];
 
 const citationRules = [
-	"Reviewed answers should rely on syntheses and official reports before they rely on isolated papers or commentary.",
-	"When the evidence is early or thin, the page should say so directly.",
-	"Context sources can explain a topic, but they should not carry the main public answer.",
-	"AI research tools such as Consensus.app can help find papers, but the reviewed page should verify and cite the underlying sources directly."
+	"Rely on syntheses and official reports before isolated papers or commentary.",
+	"When evidence is early or thin, say so directly.",
+	"Use context sources to explain a topic, not to carry the public answer.",
+	"Use tools such as Consensus.app for discovery, then cite verified underlying sources."
 ];
 
 const disagreementRules = [
 	"Public discussion does not vote reviewed answers into or out of consensus.",
-	"If the evidence is split, the page should say so instead of forcing false certainty.",
-	"When institutions disagree, the page should explain what the disagreement is actually about."
+	"If evidence is split, say so instead of forcing certainty.",
+	"When institutions disagree, explain what the disagreement is about."
 ];
 
 const pageSignals = [
-	"Original publish date and last evidence review date",
-	"Separate ratings for expert agreement and evidence certainty",
-	"Outcome-level evidence summaries and a visible source stack",
+	"Publish date and last evidence-review date",
+	"Separate expert-agreement and evidence-certainty ratings",
+	"Outcome-level evidence summaries and visible source stack",
 	"A public change log when the page moves",
-	"Clear review, conflict, and disclosure notes when those details matter"
+	"Review, conflict, and disclosure notes when relevant"
 ];
 
 useStaticPageMeta({
@@ -272,7 +272,38 @@ useStaticPageMeta({
 }
 
 @media (max-width: 760px) {
+	.standards-page {
+		gap: 18px;
+	}
+
+	.standards-header,
+	.standards-panel,
 	.standards-callout {
+		border-radius: 16px;
+		padding: 16px;
+	}
+
+	.standards-grid {
+		gap: 12px;
+	}
+
+	.standards-panel {
+		gap: 10px;
+	}
+
+	.standards-header p,
+	.plain-list,
+	.standards-callout p {
+		line-height: 1.56;
+	}
+
+	.plain-list {
+		gap: 6px;
+		padding-left: 18px;
+	}
+
+	.standards-callout {
+		gap: 14px;
 		grid-template-columns: 1fr;
 	}
 
