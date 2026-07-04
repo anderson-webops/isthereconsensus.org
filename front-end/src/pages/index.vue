@@ -379,7 +379,10 @@ function formatTopicUpdateLabel(value?: string) {
 							{{ claimCardSummary(claim) }}
 						</p>
 					</div>
-					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
+					<span class="claim-row__score" :aria-label="`Confidence score ${claim.confidenceScore} out of 100`">
+						<span>Confidence</span>
+						<strong>{{ claim.confidenceScore }}/100</strong>
+					</span>
 				</NuxtLink>
 			</div>
 		</section>
@@ -677,10 +680,32 @@ function formatTopicUpdateLabel(value?: string) {
 }
 
 .claim-row__score {
+	display: inline-grid;
+	gap: 3px;
 	align-self: center;
-	font-size: 1.05rem;
-	font-weight: 700;
+	justify-self: end;
+	min-width: 118px;
+	padding: 9px 12px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
+	text-align: center;
+}
+
+.claim-row__score span {
+	color: var(--consensus-muted);
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.claim-row__score strong {
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+	line-height: 1;
 }
 
 .topic-row__meter {
@@ -748,6 +773,11 @@ function formatTopicUpdateLabel(value?: string) {
 
 	.topic-row__meter {
 		min-width: 0;
+	}
+
+	.claim-row__score {
+		justify-self: start;
+		text-align: left;
 	}
 }
 

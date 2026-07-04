@@ -215,7 +215,10 @@ function claimCardSummary(claim: ClaimSummary) {
 							Caveat: {{ claim.evidenceLandscape.caveatSummary }}
 						</p>
 					</div>
-					<span class="claim-row__score">{{ claim.confidenceScore }}/100</span>
+					<span class="claim-row__score" :aria-label="`Confidence score ${claim.confidenceScore} out of 100`">
+						<span>Confidence</span>
+						<strong>{{ claim.confidenceScore }}/100</strong>
+					</span>
 				</NuxtLink>
 			</div>
 		</section>
@@ -334,8 +337,32 @@ function claimCardSummary(claim: ClaimSummary) {
 }
 
 .claim-row__score {
-	font-size: 1rem;
+	display: inline-grid;
+	gap: 3px;
+	align-self: center;
+	justify-self: end;
+	min-width: 118px;
+	padding: 9px 12px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
+	text-align: center;
+}
+
+.claim-row__score span {
+	color: var(--consensus-muted);
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.claim-row__score strong {
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+	line-height: 1;
 }
 
 .claim-row__caveat {
@@ -369,6 +396,11 @@ function claimCardSummary(claim: ClaimSummary) {
 	.claim-row {
 		grid-template-columns: 1fr;
 		padding: 16px;
+	}
+
+	.claim-row__score {
+		justify-self: start;
+		text-align: left;
 	}
 
 	.topic-page__actions {
