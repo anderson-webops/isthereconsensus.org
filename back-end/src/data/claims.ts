@@ -3658,7 +3658,7 @@ const rawClaims: SeedClaim[] = [
 			"Physical activity reduces risk, but it is not a guarantee against disease and should not be used to blame people for illness."
 		],
 		editorSummary:
-			"This page should help readers act without sounding moralistic. The consensus is strong that movement matters, but the most useful public message is that some activity is better than none and that practical, enjoyable movement is more sustainable than perfection.",
+			"Regular activity has strong prevention support without making health sound moralized. The practical takeaway is simple: some movement is better than none, and activity people can enjoy and repeat is more sustainable than perfection.",
 		uncertaintySummary:
 			"The broad prevention claim is strong across guidelines and very large cohort syntheses. Uncertainty is highest for exact dose, causal size for specific diseases, and how best to increase activity equitably in real communities.",
 		searchCutoffAt: "2026-07-02T23:03:13.000Z",
@@ -3749,7 +3749,7 @@ const rawClaims: SeedClaim[] = [
 			"A positive stool-based test is not the endpoint; colonoscopy follow-up is needed for the screening benefit to be achieved."
 		],
 		editorSummary:
-			"This page should be action-oriented: colorectal screening is a real mortality-reduction intervention, but the practical benefit comes from choosing a feasible test, repeating it at the right interval, and completing follow-up.",
+			"Colorectal screening reduces deaths, but the practical benefit comes from follow-through: choose a feasible test, repeat it on schedule, and complete recommended follow-up after abnormal results.",
 		uncertaintySummary:
 			"The mortality-reduction claim is strong. Remaining uncertainty is mostly comparative and implementation-focused: which test is best for whom, how to maximize adherence and follow-up, and where screening should stop in older adults.",
 		searchCutoffAt: "2026-07-02T23:03:13.000Z",
@@ -3842,7 +3842,7 @@ const rawClaims: SeedClaim[] = [
 			"More frequent screening is not automatically better because false positives, colposcopy, and treatment can cause avoidable harm."
 		],
 		editorSummary:
-			"This page should connect the HPV vaccine page to the practical prevention system: vaccination and screening work together, and the public-health failure is often missed screening or missed follow-up rather than uncertainty about whether screening can prevent deaths.",
+			"Vaccination and screening work together: HPV vaccination lowers future risk, while screening still prevents deaths when eligible people can get tested and complete follow-up after abnormal results.",
 		uncertaintySummary:
 			"The mortality-reduction claim is strong. Remaining uncertainty is about optimal intervals, triage, self-sampling implementation, harms from overtesting, and adapting programs as vaccination changes population risk.",
 		searchCutoffAt: "2026-07-02T23:13:42.000Z",
@@ -3934,7 +3934,7 @@ const rawClaims: SeedClaim[] = [
 			"More screening is not automatically better; annual screening and supplemental imaging can add false positives and overdiagnosis without clear outcome gains for every person."
 		],
 		editorSummary:
-			"This page should be practical rather than celebratory. Mammography has real mortality benefit in the recommended age range, but readers should understand the tradeoffs and the open questions around dense breasts, older adults, and personalized schedules.",
+			"Mammography has a real mortality benefit in recommended age groups, but it is a tradeoff-sensitive screening tool. The benefit sits alongside false positives, overdiagnosis, dense-breast questions, screening after 74, and personalized schedules.",
 		uncertaintySummary:
 			"The direction of breast-cancer mortality benefit is strong enough for population recommendations from ages 40 to 74. Uncertainty is higher for supplemental imaging, screening after 74, annual versus biennial intervals, and overdiagnosis estimates.",
 		searchCutoffAt: "2026-07-02T23:32:58.000Z",
@@ -4027,7 +4027,7 @@ const rawClaims: SeedClaim[] = [
 			"Standard-dose folic acid advice is not the same as high-risk dosing; people with prior affected pregnancies or certain medications need clinician-specific guidance."
 		],
 		editorSummary:
-			"This page should be practical and time-sensitive. The consensus is strong that recommended-dose folic acid prevents neural tube defects, but the prevention window is easy to miss and high-risk situations need individualized medical advice.",
+			"Recommended-dose folic acid before conception and early pregnancy strongly prevents neural tube defects. The practical challenge is timing: the prevention window is easy to miss, and higher-risk situations need individualized medical advice.",
 		uncertaintySummary:
 			"The prevention claim is strong. Remaining uncertainty is mostly about implementation before unplanned pregnancies, the marginal effect in fortified-food settings, optimal strategies for higher-risk groups, and how to improve equitable access without overmedicalizing routine supplementation.",
 		searchCutoffAt: "2026-07-03T21:11:11.000Z",
@@ -4135,7 +4135,7 @@ const rawClaims: SeedClaim[] = [
 			"Most positive findings are not cancer, so a positive screen often means follow-up imaging or evaluation rather than a confirmed diagnosis."
 		],
 		editorSummary:
-			"This page should pair the mortality result with the eligibility guardrails. LDCT is one of the rare cancer screening tests with randomized evidence for lung-cancer mortality reduction, but the public message needs to keep smoking cessation and false-positive harms visible.",
+			"LDCT has randomized evidence for reducing lung-cancer deaths in high-risk adults, but the guardrails matter: eligibility, shared decisions, smoking cessation, false positives, and follow-up harms should stay visible.",
 		uncertaintySummary:
 			"The high-risk mortality benefit is strong. Remaining uncertainty is about best eligibility modeling, screening intervals after negative scans, follow-up protocols, equity, and implementation in real-world programs.",
 		searchCutoffAt: "2026-07-02T23:32:58.000Z",
@@ -4228,7 +4228,7 @@ const rawClaims: SeedClaim[] = [
 			"Declining routine PSA screening after informed discussion is not the same as ignoring symptoms or refusing diagnostic evaluation when symptoms or high-risk findings exist."
 		],
 		editorSummary:
-			"This page should model nuance. PSA screening is not quackery and not a slam dunk: it can prevent a small number of prostate-cancer deaths for some men, but routine population-style testing creates enough downstream harm that shared decision-making is the consensus position.",
+			"PSA screening is neither useless nor a universal default. It can prevent a small number of prostate-cancer deaths for some men, but routine testing creates enough downstream harm that shared decision-making is the consensus position.",
 		uncertaintySummary:
 			"The broad consensus is against routine PSA screening for every older man and for individualized decisions from ages 55 to 69. Uncertainty remains around higher-risk groups, MRI-based pathways, newer biomarkers, and modern active-surveillance strategies.",
 		searchCutoffAt: "2026-07-02T23:32:58.000Z",
@@ -4309,7 +4309,7 @@ const rawClaims: SeedClaim[] = [
 			"Weight gain after quitting can matter, but it usually does not erase the cardiovascular benefit of stopping smoking."
 		],
 		editorSummary:
-			"This page should be both blunt and hopeful: smoking causes major disease, but quitting is one of the highest-value health changes available, and the benefit is not limited to young or light smokers.",
+			"Smoking causes major disease, but quitting is one of the highest-value health changes available. The benefit is not limited to young or light smokers, and some risk starts improving after cessation even when excess risk remains.",
 		uncertaintySummary:
 			"The direction of benefit is settled. Uncertainty is mostly about individual risk trajectories, the best cessation support for different people, and how fast each disease-specific risk approaches that of never-smokers.",
 		searchCutoffAt: "2026-07-02T23:13:42.000Z",
