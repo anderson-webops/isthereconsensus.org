@@ -10136,6 +10136,215 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "science-communication",
+		title: "Does communicating scientific consensus change what people believe?",
+		slug: "does-communicating-scientific-consensus-change-what-people-believe",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Often, but modestly. Accurate consensus messages can correct misperceptions about what scientists think and can slightly shift factual beliefs, especially on topics such as climate change and genetically modified food. They are not stand-alone persuasion tools: effects vary by topic, trust, prior belief, familiarity, identity, message design, and whether the outcome is belief, concern, policy support, or behavior.",
+		stableCore: [
+			"Consensus messaging reliably increases perceived scientific consensus in many experiments.",
+			"Belief changes are usually smaller than perception changes; a 2022 preregistered meta-analysis found a moderate effect on perceived consensus and a small effect on factual belief.",
+			"Climate-change studies show consensus messages can reduce misperceptions across countries and audiences, but direct effects on policy support are less consistent.",
+			"Evidence is mixed across topics. Some GMO and climate studies show movement, while vaccine consensus messages have produced weaker or null belief effects in some experiments.",
+			"Consensus messages work best as one part of communication that also addresses uncertainty, values, trust, mechanisms, risks, and practical decisions."
+		],
+		openQuestions: [
+			"How durable are consensus-message effects after weeks or months, especially in fast-changing media environments?",
+			"Which audiences update because they learned a real expert norm, and which audiences reject the message because of low trust or identity threat?",
+			"How should communicators present consensus without implying that science is a vote or that minority uncertainty has disappeared?",
+			"Which topics outside climate change and GM food have enough evidence to justify strong claims about consensus messaging?"
+		],
+		whatWouldChangeMinds: [
+			"Large preregistered replications across many topics showing that consensus messages do not reliably change perceived consensus or factual belief.",
+			"Evidence that consensus messages routinely polarize audiences, backfire, or reduce trust when compared with similarly careful explanations that omit consensus information.",
+			"Conversely, durable field experiments showing large downstream changes in behavior or policy support would justify stronger claims than the current modest-effect framing."
+		],
+		misconceptions: [
+			"Some people treat consensus messaging as propaganda, when the stronger version simply reports what a field's qualified experts have concluded.",
+			"Others treat a consensus statistic as enough by itself, even though people also need evidence quality, uncertainty, mechanisms, and decision context.",
+			"A small average effect does not mean the message is useless; it may still correct an important false premise for some audiences.",
+			"Scientific consensus is not a vote by the public and not a guarantee that every scientist agrees."
+		],
+		editorSummary:
+			"Accurate consensus communication can calibrate public understanding, especially when it is paired with evidence quality, uncertainty, source credibility, and audience context rather than used as persuasion by number.",
+		uncertaintySummary:
+			"The best-supported effect is correcting perceived consensus. Changes in personal beliefs, worry, policy support, and behavior are smaller, less durable, and more topic-dependent. Climate-change evidence is stronger than evidence for vaccines or many emerging technologies.",
+		uncertaintyDrivers: [
+			{
+				type: "generalizability",
+				detail:
+					"Much of the evidence comes from climate change, GM food, and vaccination; fewer studies test other science topics or non-Western contexts."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Message wording, source credibility, familiarity, trust in scientists, and whether the consensus statistic is connected to evidence all change the likely effect."
+			},
+			{
+				type: "bias",
+				detail:
+					"Prior beliefs, ideology, conspiratorial worldviews, and identity threat can limit updating or shift which outcomes move."
+			},
+			{
+				type: "timing",
+				detail:
+					"Many experiments measure immediate effects, while longer-term studies show decay even when some updated belief remains."
+			}
+		],
+		searchDatabases: ["Consensus", "National Academies"],
+		searchCutoffAt: "2026-07-04T15:49:39.000Z",
+		inclusionRules: [
+			"Prioritize preregistered experiments, meta-analyses, multi-country studies, longitudinal tests, and science-communication consensus reports.",
+			"Separate perceived consensus from personal belief, worry, policy support, and behavior.",
+			"Keep topic boundaries visible when evidence comes mainly from climate change, GM food, vaccination, or COVID-19."
+		],
+		exclusionRules: [
+			"Do not treat consensus messaging as proof that a scientific claim is true; it is evidence about communication effects.",
+			"Do not use advocacy copy, polling alone, or one-off slogans as evidence that consensus messaging works.",
+			"Do not imply that consensus communication can replace transparent evidence explanation or uncertainty communication."
+		],
+		appraisalTools: [
+			"Consensus-perception outcome check",
+			"Belief-versus-behavior distinction",
+			"Audience trust and familiarity assessment",
+			"Message source and wording audit",
+			"Durability and follow-up check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does communicating expert consensus change public understanding or beliefs?",
+				population:
+					"Adults and student samples exposed to consensus messages about contested science topics such as climate change, GM food, vaccines, and COVID-19",
+				finding:
+					"Consensus messages generally increase perceived scientific agreement and can produce smaller shifts in factual belief, while downstream attitudes, policy support, and behavior are less consistent.",
+				effectDirection: "supports",
+				magnitude:
+					"A 2022 preregistered meta-analysis of 43 experiments found effects of g = 0.55 on perceived consensus and g = 0.12 on belief in scientific facts; a 2024 27-country climate experiment found a larger effect on misperceptions than on beliefs or worry.",
+				certainty: "moderate",
+				limitations: [
+					"Many effects are measured immediately after exposure.",
+					"Climate-change evidence is stronger than evidence for vaccines and many other domains.",
+					"Policy support and behavior depend on more than perceived expert agreement."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Academies science-communication research agenda",
+				role: "Institutional context for treating science communication as evidence-based, audience-specific, and more complex than simply giving people more facts."
+			},
+			{
+				name: "Preregistered consensus-communication meta-analysis",
+				role: "Quantitative anchor for the difference between stronger effects on perceived consensus and smaller effects on factual beliefs."
+			},
+			{
+				name: "Gateway Belief Model literature",
+				role: "Theory and evidence context for how perceived expert consensus can cascade into beliefs, worry, and support for action in some domains."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T15:49:39.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T15:49:39.000Z",
+				kind: "publication",
+				summary:
+					"Initial consensus-messaging science-communication page published from Consensus-located meta-analysis, multi-country experiments, and National Academies science-communication guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Communicating Science Effectively: A Research Agenda",
+				publisher: "National Academies Press",
+				year: 2017,
+				url: "https://www.nationalacademies.org/read/23674",
+				doi: "10.17226/23674",
+				stance: "context",
+				note:
+					"Consensus study report on effective science communication, emphasizing contentious topics, audience context, uncertainty, trust, and the limits of the deficit model.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Scientific-Consensus Communication About Contested Science: A Preregistered Meta-Analysis",
+				publisher: "Psychological Science",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/scientificconsensus-communication-about-contested-stekelenburg-schaap/3e82d1775f185e82a0f15953173b8a4b/",
+				stance: "supports",
+				note:
+					"Preregistered meta-analysis of 43 experiments finding consensus messaging increased perceived consensus with g = 0.55 and belief in scientific facts with g = 0.12.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "A 27-country test of communicating the scientific consensus on climate change",
+				publisher: "Nature Human Behaviour",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/a-27country-test-of-communicating-the-scientific-vekalov-geiger/135878ce489651b79d6a0b4eb0da916c/",
+				stance: "supports",
+				note:
+					"Preregistered experiment across 27 countries and 10,527 participants finding a substantial reduction in climate consensus misperceptions and smaller effects on beliefs and worry.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"A meta-analytic structural equation analysis of the Gateway Belief Model: highlighting scientific consensus increases support for public action on climate change",
+				publisher: "Current Opinion in Behavioral Sciences",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/a-metaanalytic-structural-equation-analysis-of-the-rode-remshard/8c62b394ac595dd2bf8b4f63d00d1b63/",
+				stance: "supports",
+				note:
+					"Meta-analytic structural equation analysis of nine climate studies with 12,975 participants supporting indirect effects from consensus messaging through beliefs, worry, and public-action support.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "When experts matter: Variations in consensus messaging for vaccine and genetically modified organism safety",
+				publisher: "Public Understanding of Science",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/when-experts-matter-variations-in-consensus-messaging-for-lyons-mrola/ac9226451949577facefc77c999fb220/",
+				stance: "debate",
+				note:
+					"Preregistered Spanish survey experiments finding consensus messaging improved GMO consensus perception and safety belief but did not influence vaccine beliefs.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title:
+					"A Research Agenda for Climate Change Communication and Public Opinion: The Role of Scientific Consensus Messaging and Beyond",
+				publisher: "Environmental Communication",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/a-research-agenda-for-climate-change-communication-and-bayes-bolsen/97615cfbc0b4580aa0bcc1d2cfb5ee80/",
+				stance: "context",
+				note:
+					"Review context describing ongoing debates about when climate consensus messaging works and calling for more attention to motivations, context, message variation, outcomes, and vulnerable populations.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Communicating the Scientific Consensus on Climate Change: Diverse Audiences and Effects Over Time",
+				publisher: "Environment and Behavior",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/communicating-the-scientific-consensus-on-climate-change-goldberg-gustafson/2f4b4ef47444522f9ecfef41db9c5b0d/",
+				stance: "supports",
+				note:
+					"Two-wave longitudinal study finding consensus beliefs updated across audience segments, with 40% of the original treatment effect remaining after 26 days.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "media-misinformation",
 		title: "Can correlation alone prove causation?",
 		slug: "can-correlation-alone-prove-causation",
