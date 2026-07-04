@@ -10851,6 +10851,193 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "consensus-foundations",
+		title: "Does improving a surrogate endpoint prove patients will benefit?",
+		slug: "does-improving-a-surrogate-endpoint-prove-patients-will-benefit",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"No. A surrogate endpoint, such as a lab value, imaging result, tumor response, viral load, or other intermediate marker, can be useful when it has been validated for a specific context. But improvement in a surrogate does not automatically prove that patients live longer, feel better, function better, or avoid serious outcomes.",
+		stableCore: [
+			"FDA distinguishes direct clinical outcomes from surrogate endpoints, which are expected to predict clinical benefit rather than measuring it directly.",
+			"Validated surrogates can speed useful trials when evidence shows that changing the marker reliably predicts patient benefit in the relevant disease and treatment context.",
+			"Reasonably likely surrogates can support accelerated approval, but confirmatory evidence is still needed because the predicted clinical benefit may not appear.",
+			"Meta-research in oncology and nononcologic chronic disease finds many surrogate markers have low, modest, or insufficient evidence of association with clinical outcomes.",
+			"A headline about a biomarker shift should be read as a signal, not as proof of patient-important benefit unless the surrogate has been validated for that use."
+		],
+		openQuestions: [
+			"Which surrogate endpoints are valid for a specific disease stage, treatment mechanism, population, and outcome?",
+			"How quickly should regulators, journals, and guidelines update conclusions when confirmatory trials fail or show smaller clinical benefit than expected?",
+			"How should public summaries balance faster access to promising therapies against residual uncertainty from surrogate-based evidence?"
+		],
+		whatWouldChangeMinds: [
+			"Large cross-field validation studies showing that most surrogate endpoint improvements reliably predict patient-important outcomes across contexts.",
+			"FDA, EMA, or comparable regulatory guidance treating unvalidated biomarker changes as sufficient proof of clinical benefit without confirmatory evidence.",
+			"Consistent trial-level evidence showing that the specific surrogate in question predicts survival, symptoms, function, or serious morbidity for the same intervention context."
+		],
+		misconceptions: [
+			"Biomarker improvement is often mistaken for proof that a patient-centered outcome improved.",
+			"Surrogate endpoint is sometimes heard as 'fake endpoint,' even though some surrogates are well validated and clinically useful.",
+			"Accelerated approval based on a surrogate endpoint is sometimes mistaken for the same evidentiary state as traditional approval based on demonstrated clinical benefit."
+		],
+		editorSummary:
+			"Surrogate endpoints can be useful shortcuts, but a marker change is not the same as proven patient benefit unless the surrogate is validated for that context and confirmatory outcomes support it.",
+		uncertaintySummary:
+			"The principle is high-certainty: surrogate endpoints require context-specific validation and do not automatically prove patient benefit. Uncertainty is endpoint-specific: some surrogates, such as blood-pressure lowering for stroke risk in appropriate contexts, are much stronger than others, while many oncology and chronic-disease markers remain weakly validated or unvalidated.",
+		uncertaintyDrivers: [
+			{
+				type: "indirectness",
+				detail:
+					"Surrogates sit between an intervention and the outcome people care about, so the causal chain can break at several points."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"A surrogate validated for one disease, population, mechanism, or treatment line may not work in another."
+			},
+			{
+				type: "timing",
+				detail:
+					"Short-term marker changes can appear before long-term benefits, harms, durability, or quality-of-life effects are known."
+			}
+		],
+		searchDatabases: ["Consensus", "FDA", "PubMed"],
+		searchCutoffAt: "2026-07-04T23:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T23:15:00.000Z",
+		inclusionRules: [
+			"Prioritize regulatory definitions, validated-surrogate frameworks, trial-level meta-analyses, and systematic reviews linking surrogate changes to clinical outcomes.",
+			"Separate validated surrogates, reasonably likely surrogates, candidate biomarkers, intermediate clinical endpoints, and direct clinical outcomes.",
+			"Report when evidence is disease-, treatment-, population-, or outcome-specific rather than portable across contexts."
+		],
+		exclusionRules: [
+			"Do not present a biomarker shift, imaging response, or short-term intermediate endpoint as patient benefit without validation evidence.",
+			"Do not imply that all surrogate endpoints are weak or inappropriate.",
+			"Do not use regulatory acceptance of one surrogate in one setting as proof that the same marker works for all related treatments or diseases."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does improving a surrogate endpoint prove patients benefit?",
+				population:
+					"Clinical trials and regulatory decisions using biomarkers, imaging responses, laboratory values, or intermediate endpoints instead of direct patient-important outcomes.",
+				finding:
+					"Validated surrogates can be useful, but many surrogate endpoint-treatment pairs lack high-strength evidence that marker improvement predicts clinical benefit.",
+				effectDirection: "supports",
+				magnitude:
+					"A 2024 JAMA review found 22 of 37 FDA-listed nononcologic surrogate markers had no eligible published meta-analysis; among pairs reporting r or R2, only 10 of 59 had at least one high-strength association. A 2019 oncology umbrella review found most settings had low, modest, or mixed correlations with overall survival.",
+				certainty: "high",
+				limitations: [
+					"Evidence varies sharply by disease, treatment mechanism, endpoint, line of therapy, and clinical outcome.",
+					"Some validated surrogates are strong enough for efficient trials, while candidate markers may be only hypothesis-generating.",
+					"Regulatory use can reflect unmet need and practical tradeoffs, not complete certainty that the surrogate captures final benefit."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Regulatory definition and context-of-use anchor for candidate, reasonably likely, and validated surrogate endpoints."
+			},
+			{
+				name: "Clinical outcome assessment frameworks",
+				role: "Patient-important outcome anchor for how a person feels, functions, survives, or avoids serious disease."
+			},
+			{
+				name: "Trial-level surrogate validation literature",
+				role: "Evidence-synthesis anchor for whether marker changes predict clinical outcomes."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T23:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial surrogate-endpoint calibration page published from FDA surrogate-endpoint resources and Consensus-located clinical-outcome validation reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Surrogate Endpoint Resources for Drug and Biologic Development",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2018,
+				url:
+					"https://www.fda.gov/drugs/development-resources/surrogate-endpoint-resources-drug-and-biologic-development",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"FDA framework distinguishing clinical outcomes from surrogate endpoints and explaining candidate, reasonably likely, and validated surrogate endpoint categories.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Table of Surrogate Endpoints That Were the Basis of Drug Approval or Licensure",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/drugs/development-resources/table-surrogate-endpoints-were-basis-drug-approval-or-licensure",
+				stance: "context",
+				note:
+					"Current FDA table source stating surrogate acceptability is context dependent and that endpoints can become unacceptable if confirmatory trials fail to show expected clinical benefit.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Accelerated Approval",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2023,
+				url:
+					"https://www.fda.gov/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/accelerated-approval",
+				stance: "context",
+				note:
+					"Patient-facing FDA source explaining that accelerated approval can use surrogate or intermediate clinical endpoints and requires confirmation of clinical benefit.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Associations Between Surrogate Markers and Clinical Outcomes for Nononcologic Chronic Disease Treatments",
+				publisher: "JAMA",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/associations-between-surrogate-markers-and-clinical-wallach-yoon/699487c820aa5f88b552cc38ee587996/",
+				stance: "supports",
+				note:
+					"Meta-research review of FDA-listed nononcologic surrogate markers finding most lacked high-strength published evidence of association with clinical outcomes.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"A systematic review of trial-level meta-analyses measuring the strength of association between surrogate end-points and overall survival in oncology",
+				publisher: "European Journal of Cancer",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/a-systematic-review-of-triallevel-metaanalyses-measuring-haslam-hey/5224a68ce0de5149a460765c0f33f34a/",
+				stance: "supports",
+				note:
+					"Umbrella review of oncology surrogate-validation studies finding most surrogate markers had low or modest correlations with overall survival.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Evaluation of pathological complete response as surrogate endpoint in neoadjuvant randomised clinical trials of early stage breast cancer",
+				publisher: "The BMJ",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/evaluation-of-pathological-complete-response-as-conforti-pala/76269155dd775fdd8b96fc810ad64810/",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of 54 randomized trials finding weak trial-level associations between pathological complete response and disease-free or overall survival.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "media-misinformation",
 		title: "Does peer review guarantee a study is correct?",
 		slug: "does-peer-review-guarantee-a-study-is-correct",
