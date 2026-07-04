@@ -3,8 +3,8 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const sourceStack = [
 	"Start with current guidelines, consensus statements, regulator reviews, and major assessments.",
-	"Use independent systematic reviews and meta-analyses to check the wider literature.",
-	"Treat single studies as context unless the wider evidence base changes with them."
+	"Check the wider literature with independent systematic reviews and meta-analyses.",
+	"Treat single studies as context unless the wider evidence base shifts with them."
 ];
 
 const publicationRules = [
@@ -17,7 +17,7 @@ const updateTriggers = [
 	"A landmark review changes the direction, size, or mechanism of the summary.",
 	"A major society, regulator, or assessment body updates formal guidance.",
 	"A cited paper is retracted or materially corrected.",
-	"A scheduled review date passes and the page is flagged."
+	"A scheduled review date passes and the page is flagged for review."
 ];
 
 const citationRules = [
@@ -55,18 +55,18 @@ useStaticPageMeta({
 
 		<header class="standards-header">
 			<p class="eyebrow">How reviews work</p>
-			<h1>How reviewed pages show evidence and uncertainty.</h1>
+			<h1>How reviewed pages weigh evidence.</h1>
 			<p>
-				This public trust page explains what evidence carries the answer, which signals should be visible, and
-				how the site handles uncertainty and updates.
+				This page explains what carries the answer, which trust signals should be visible, and how reviews
+				handle uncertainty and updates.
 			</p>
 		</header>
 
 		<div class="standards-grid" aria-label="Review standards summary">
 			<section class="standards-panel">
 				<div class="section-heading section-heading--tight">
-					<h2>How sources are weighted</h2>
-					<p>The evidence order that carries the public answer.</p>
+					<h2>Evidence order</h2>
+					<p>What carries the public answer.</p>
 				</div>
 				<ul class="plain-list">
 					<li v-for="item in sourceStack" :key="item">{{ item }}</li>
@@ -75,7 +75,7 @@ useStaticPageMeta({
 
 			<section class="standards-panel">
 				<div class="section-heading section-heading--tight">
-					<h2>What a reviewed page should show</h2>
+					<h2>What readers see first</h2>
 					<p>The minimum public reading experience.</p>
 				</div>
 				<ul class="plain-list">
@@ -85,7 +85,7 @@ useStaticPageMeta({
 
 			<section class="standards-panel standards-panel--soft">
 				<div class="section-heading section-heading--tight">
-					<h2>When pages update</h2>
+					<h2>When reviews change</h2>
 					<p>Pages move when the evidence or institutional baseline moves.</p>
 				</div>
 				<ul class="plain-list">
@@ -95,8 +95,8 @@ useStaticPageMeta({
 
 			<section class="standards-panel">
 				<div class="section-heading section-heading--tight">
-					<h2>What can carry the answer</h2>
-					<p>What matters most, and what stays supporting context.</p>
+					<h2>What can support the answer</h2>
+					<p>What matters most, and what stays as context.</p>
 				</div>
 				<ul class="plain-list">
 					<li v-for="item in citationRules" :key="item">{{ item }}</li>
@@ -105,7 +105,7 @@ useStaticPageMeta({
 
 			<section class="standards-panel standards-panel--soft">
 				<div class="section-heading section-heading--tight">
-					<h2>What the site does not do</h2>
+					<h2>What does not decide consensus</h2>
 					<p>Community activity and thin evidence do not get to impersonate certainty.</p>
 				</div>
 				<ul class="plain-list">
@@ -115,7 +115,7 @@ useStaticPageMeta({
 
 			<section class="standards-panel">
 				<div class="section-heading section-heading--tight">
-					<h2>The trust signals readers should see</h2>
+					<h2>Trust signals on each page</h2>
 					<p>The visible cues that make the page inspectable.</p>
 				</div>
 				<ul class="plain-list">
@@ -127,10 +127,10 @@ useStaticPageMeta({
 		<section class="standards-callout">
 			<div>
 				<p class="eyebrow">Why this matters</p>
-				<h2>Readers should not have to learn the internal workflow to trust a page.</h2>
+				<h2>Readers should not need the internal workflow to trust a page.</h2>
 				<p>
-					A reviewed page should make its evidence, uncertainty, and update trail visible on the page itself,
-					not force readers through a maze of process documents.
+					A reviewed page should make its evidence, uncertainty, and update trail visible where the claim is
+					being read.
 				</p>
 			</div>
 			<div class="standards-callout__actions">

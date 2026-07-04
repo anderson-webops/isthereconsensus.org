@@ -36,19 +36,17 @@ useStaticPageMeta({
 
 		<header class="misconception-header">
 			<p class="eyebrow">Misconception modules</p>
-			<h1>Recurring mistakes across claim pages.</h1>
+			<h1>Recurring mistakes on claim pages.</h1>
 			<p>
-				These modules are designed to be short, reusable embeds on claim pages. They correct predictable errors
-				before readers mistake a headline, anecdote, or partial result for the state of the evidence.
+				These short modules correct predictable errors before readers mistake a headline, anecdote, or partial
+				result for the state of the evidence.
 			</p>
 		</header>
 
 		<section class="misconception-panel misconception-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>How to use the library</h2>
-				<p>
-					The short module should fix the mistake fast. The linked explainer carries the deeper method lesson.
-				</p>
+				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
 			</div>
 			<ul class="plain-list">
 				<li>Use the short correction when a claim page keeps attracting the same misunderstanding.</li>
@@ -102,8 +100,8 @@ useStaticPageMeta({
 
 		<section class="misconception-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>Reuse map by topic cluster</h2>
-				<p>Use this to decide which modules belong on which kinds of claim pages.</p>
+				<h2>Where each module fits</h2>
+				<p>Use this map to match recurring mistakes to the right claim pages.</p>
 			</div>
 			<div class="reuse-table-wrap">
 				<table class="reuse-table">
@@ -135,8 +133,8 @@ useStaticPageMeta({
 				<p class="eyebrow">Next step</p>
 				<h2>Use the right module, then return to the claim.</h2>
 				<p>
-					The goal is not to send readers into a side maze. It is to stop the same interpretation mistake from
-					repeating on every claim page.
+					The goal is to stop the same interpretation mistake from repeating without pulling readers away from
+					the claim.
 				</p>
 			</div>
 			<div class="misconception-callout__actions">
@@ -183,7 +181,7 @@ useStaticPageMeta({
 
 .misconception-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 
