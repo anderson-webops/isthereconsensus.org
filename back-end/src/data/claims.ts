@@ -12069,6 +12069,207 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "bias-incentives",
+		title: "Do early or small studies often overestimate effects?",
+		slug: "do-early-or-small-studies-often-overestimate-effects",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Often, but not always. Early and small studies can be useful signals, especially in urgent or emerging areas, but meta-research finds that they often report unstable or larger effects than later, larger, lower-bias evidence. The right response is not to ignore early findings; it is to treat them as provisional, check study size and bias risk, and update as better evidence accumulates.",
+		stableCore: [
+			"Small studies have wider random error and are more vulnerable to selective publication, flexible analyses, single-center protocols, and poorer bias control.",
+			"A 2013 BMJ meta-epidemiological study of 93 meta-analyses and 735 randomized trials found treatment effects were 32% larger in the smallest trials than in the largest trials.",
+			"The same BMJ study found trials with fewer than 50 patients had effects 48% larger than trials with at least 1000 patients.",
+			"A 2021 BMJ Open analysis of 57,162 studies and 98,966 meta-analyses found small-study effects in 19% of large meta-analyses, with adjusted results giving less evidence for efficacy.",
+			"Earlier trials of chronic-condition treatments can be directionally informative, but a 2018 meta-epidemiological study found early effects were frequently larger and unpredictable.",
+			"Design quality matters too: meta-epidemiological reviews find inadequate randomization, concealment, or blinding can exaggerate effects, especially for subjective outcomes."
+		],
+		openQuestions: [
+			"Which fields and intervention types are most vulnerable to small-study and early-study exaggeration?",
+			"How much of the pattern comes from random error, publication bias, selective reporting, poorer methods, or real differences in early populations and protocols?",
+			"When should decision makers act on early evidence because the stakes are urgent, and when should they wait for larger confirmatory studies?",
+			"Which statistical and review methods best flag small-study effects without dismissing genuine early signals?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated meta-epidemiological reviews showing that early or small studies are not systematically more extreme after field, intervention, and risk-of-bias differences are handled.",
+			"Reliable prospective tools that identify which early findings will hold up and which will shrink, across many fields and outcomes.",
+			"Evidence that comprehensive registries, reporting rules, and protocol sharing have made small-study effects rare enough that public summaries no longer need a general caution."
+		],
+		misconceptions: [
+			"Small or early does not mean false; it means the estimate is more fragile and needs more context.",
+			"A peer-reviewed early positive study is not the same thing as an established effect ready to change practice.",
+			"A meta-analysis does not automatically solve this problem if the available evidence is mostly small, biased, unpublished, or heterogeneous.",
+			"Large later studies can also be wrong, but they usually reduce random error and make some biases easier to detect."
+		],
+		editorSummary:
+			"This page gives readers a calibration rule for early evidence: treat first and small studies as signals, not final estimates. The point is provisional updating, not cynicism.",
+		uncertaintySummary:
+			"The direction is well supported: early and small studies often give less stable and sometimes exaggerated estimates. The size of the problem varies by field, outcome, intervention, and review methods, and some early evidence remains useful for urgent decisions.",
+		uncertaintyDrivers: [
+			{
+				type: "imprecision",
+				detail:
+					"Small samples have wider random error, so their estimates naturally scatter more widely around the later evidence base."
+			},
+			{
+				type: "bias",
+				detail:
+					"Publication bias, selective reporting, weaker allocation concealment, inadequate blinding, and flexible analyses can make early or small results look stronger."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Early studies may use selected patients, expert centers, unusually intensive protocols, or outcomes that do not match later real-world use."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Review conclusions depend on whether authors search registries and unpublished results, assess funnel-plot asymmetry carefully, and distinguish urgency from certainty."
+			}
+		],
+		searchDatabases: ["Consensus", "Cochrane", "PubMed"],
+		searchCutoffAt: "2026-07-04T23:45:00.000Z",
+		inclusionRules: [
+			"Prioritize meta-epidemiological studies, systematic reviews of study-design bias, and methods guidance on small-study effects and missing evidence.",
+			"Separate small-study effects from publication bias, early-study effects, and study-design flaws, while explaining how they can overlap.",
+			"Keep the claim about effect-estimate calibration, not about whether any individual small study is true or false."
+		],
+		exclusionRules: [
+			"Do not dismiss early evidence categorically when urgent decisions require provisional action.",
+			"Do not treat funnel-plot asymmetry as proof of publication bias without considering heterogeneity and other small-study effect explanations.",
+			"Do not imply that larger studies are automatically unbiased or that later evidence always reverses early findings."
+		],
+		appraisalTools: [
+			"Small-study effect check",
+			"Funnel-plot and missing-evidence assessment",
+			"Risk-of-bias domain review",
+			"Early-versus-later evidence comparison",
+			"Urgency-versus-certainty decision check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Do early or small studies often overestimate effects?",
+				population:
+					"Randomized trials, meta-analyses, and evidence syntheses comparing small or early studies with larger or later evidence",
+				finding:
+					"Small and early studies are often useful signals, but their effect estimates are less stable and frequently larger than estimates from larger or later evidence.",
+				effectDirection: "supports",
+				magnitude:
+					"Dechartres 2013 found effects 32% larger in the smallest trial quarter and 48% larger in trials with fewer than 50 patients compared with trials with at least 1000 patients. Schwab 2021 found small-study effects in 19% of large meta-analyses. Alahdab 2018 found early exaggerated effects in 37% of chronic-condition meta-analyses.",
+				certainty: "moderate",
+				limitations: [
+					"Small-study effects can arise from multiple mechanisms, not only publication bias.",
+					"Field, outcome type, trial quality, and intervention stage change the size and direction of the problem.",
+					"Some early evidence remains directionally useful, especially when waiting for large studies has serious costs."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Cochrane Handbook missing-evidence guidance",
+				role: "Methods anchor for distinguishing funnel-plot asymmetry, small-study effects, missing evidence, and publication bias."
+			},
+			{
+				name: "Meta-epidemiological study-design bias literature",
+				role: "Quantitative anchor for how sample size, timing, randomization, concealment, and blinding can shift effect estimates."
+			},
+			{
+				name: "Living review and evidence-synthesis practice",
+				role: "Practical anchor for updating conclusions when early signals mature into larger or more complete evidence."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T23:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T23:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial early- and small-study effect calibration page published from Consensus-located meta-epidemiology, Cochrane missing-evidence guidance, and PubMed-indexed methods studies."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Chapter 13: Assessing risk of bias due to missing evidence in a meta-analysis",
+				publisher: "Cochrane Handbook for Systematic Reviews of Interventions",
+				year: 2024,
+				url: "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13",
+				stance: "context",
+				note:
+					"Cochrane methods guidance explaining funnel plots, small-study effects, missing evidence, and why asymmetry can have multiple explanations.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Influence of trial sample size on treatment effect estimates: meta-epidemiological study",
+				publisher: "The BMJ",
+				year: 2013,
+				url: "https://www.bmj.com/content/346/bmj.f2304",
+				doi: "10.1136/bmj.f2304",
+				pmid: "23616031",
+				stance: "supports",
+				note:
+					"Meta-epidemiological study of 93 meta-analyses and 735 randomized trials finding smaller trials reported larger treatment effects than larger trials.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Assessing treatment effects and publication bias across different specialties in medicine: a meta-epidemiological study",
+				publisher: "BMJ Open",
+				year: 2021,
+				url: "https://bmjopen.bmj.com/content/11/9/e045942",
+				doi: "10.1136/bmjopen-2020-045942",
+				pmid: "34521659",
+				stance: "supports",
+				note:
+					"Cochrane-derived analysis of 57,162 studies and 98,966 meta-analyses finding small-study effects in 19% of large meta-analyses.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Treatment Effect in Earlier Trials of Patients With Chronic Medical Conditions: A Meta-Epidemiologic Study",
+				publisher: "Mayo Clinic Proceedings",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/treatment-effect-in-earlier-trials-of-patients-with-alahdab-farah/a5b5c3f147a6506dbb6d1a0088fc4157/",
+				stance: "supports",
+				note:
+					"Meta-epidemiological study of 70 meta-analyses and 930 randomized trials finding early exaggerated effects in 37% of included chronic-condition meta-analyses.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Empirical Evidence of Study Design Biases in Randomized Trials",
+				publisher: "PLoS ONE",
+				year: 2016,
+				url:
+					"https://consensus.app/papers/empirical-evidence-of-study-design-biases-in-randomized-page-higgins/ae712d5f822e53639644cdc47aa7af06/",
+				doi: "10.1371/journal.pone.0159267",
+				stance: "supports",
+				note:
+					"Systematic review of meta-epidemiological studies finding design limitations can exaggerate effects, especially when outcomes are subjective.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Synthesizing evidence from the earliest studies to support decision-making: To what extent could the evidence be reliable?",
+				publisher: "Research Synthesis Methods",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/synthesizing-evidence-from-the-earliest-studies-to-yu-lin/15722fc8229559f590384524c3c098e7/",
+				stance: "debate",
+				note:
+					"Cochrane-data analysis finding early syntheses can preserve direction, but magnitude and confidence often need updating as more studies accrue.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "bias-incentives",
 		title: "Does preregistration guarantee a study is trustworthy?",
 		slug: "does-preregistration-guarantee-a-study-is-trustworthy",
 		status: "published",
