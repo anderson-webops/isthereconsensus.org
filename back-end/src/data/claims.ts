@@ -16711,6 +16711,233 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do GLP-1-based medications produce meaningful weight loss for adults with obesity?",
+		slug: "do-glp-1-based-medications-produce-meaningful-weight-loss-for-adults-with-obesity",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"Yes, for medically eligible adults using approved medicines under clinical supervision. GLP-1 receptor agonists and dual incretin medicines used for chronic weight management, especially semaglutide and tirzepatide products, produce clinically meaningful average weight loss in randomized trials. They are not casual cosmetic drugs: eligibility, contraindications, side effects, cost, access, nutrition, physical activity, muscle preservation, and long-term maintenance all matter.",
+		stableCore: [
+			"FDA labeling indicates semaglutide products and tirzepatide for long-term weight reduction and maintenance in adults with obesity, or adults with overweight plus at least one weight-related comorbid condition, alongside diet and physical activity.",
+			"In STEP 1, once-weekly semaglutide 2.4 mg plus lifestyle intervention reduced body weight by 14.9% at 68 weeks versus 2.4% with placebo.",
+			"In SURMOUNT-1, once-weekly tirzepatide reduced body weight by 15.0% to 20.9% at 72 weeks versus 3.1% with placebo, depending on dose.",
+			"A 2025 head-to-head trial found greater average weight loss with tirzepatide than semaglutide at 72 weeks among adults with obesity but without type 2 diabetes.",
+			"Stopping treatment often leads to weight regain; obesity medication should be framed as chronic disease management, not a short reset."
+		],
+		openQuestions: [
+			"How should clinicians individualize medication choice, dose, duration, and monitoring across age, diabetes status, cardiovascular risk, kidney or gallbladder disease, pregnancy plans, eating-disorder history, and other medicines?",
+			"How much long-term benefit depends on continued access, nutrition quality, resistance training, protein intake, and preservation of lean mass?",
+			"How should health systems handle cost, supply, insurance coverage, and equity so evidence-based treatment reaches patients with medical need?",
+			"Which benefits and harms persist beyond four years, and how do outcomes compare with bariatric surgery or intensive lifestyle programs for different groups?"
+		],
+		whatWouldChangeMinds: [
+			"Large independent randomized trials showing semaglutide, tirzepatide, or comparable incretin medications do not produce clinically meaningful weight loss in medically eligible adults.",
+			"Major FDA, NIH, Endocrine Society, AACE, obesity-medicine, or cardiovascular guideline reassessments withdrawing these medications as evidence-supported chronic weight-management options.",
+			"Long-term safety or outcome evidence showing that harms, discontinuation, lean-mass loss, or post-treatment regain generally outweigh benefits in guideline-indicated patients."
+		],
+		misconceptions: [
+			"These medicines are sometimes discussed as vanity drugs, but the clinical evidence concerns obesity or overweight with weight-related complications.",
+			"Large average trial effects do not mean every patient responds, tolerates treatment, or should use the same drug.",
+			"Stopping medication is not the same as completing a short course of antibiotics; weight regain after withdrawal is common.",
+			"Evidence for approved medications does not validate unapproved, counterfeit, or poorly compounded products sold online."
+		],
+		editorSummary:
+			"This page should explain why GLP-1-based obesity medications are a real evidence advance while resisting hype. The strongest claim is clinically meaningful weight loss in eligible adults; broader outcome, access, durability, and safety questions need careful limits.",
+		uncertaintySummary:
+			"Short- and medium-term weight-loss efficacy is strongly supported by randomized trials. Certainty is lower for indefinite maintenance, long-term rare harms, use in excluded groups, comparative real-world adherence, lean-mass preservation, affordability, and how broadly cardiovascular-outcome results generalize.",
+		uncertaintyDrivers: [
+			{
+				type: "timing",
+				detail:
+					"Regulatory status, labels, availability, and comparative-effectiveness evidence are changing quickly."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Trial populations exclude or underrepresent some patients seen in routine care, including some frail, pregnant, adolescent, and complex-comorbidity groups."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Benefits depend on sustained access, tolerability, nutrition support, physical activity, and clinical monitoring."
+			}
+		],
+		searchDatabases: ["Consensus", "FDA", "PubMed", "ClinicalTrials.gov"],
+		searchCutoffAt: "2026-07-04T23:16:14.000Z",
+		lastRetractionCheckAt: "2026-07-04T23:16:14.000Z",
+		inclusionRules: [
+			"Prioritize FDA labels and approvals, randomized trials, systematic reviews, meta-analyses, and long-term extension studies in adults with obesity or overweight plus weight-related complications.",
+			"Separate weight-loss efficacy from cardiovascular outcomes, medication access, cosmetic use, unapproved products, and non-drug obesity policy questions.",
+			"Report whether evidence applies to semaglutide, tirzepatide, oral semaglutide, higher-dose semaglutide, or another GLP-1-based medicine rather than treating the class as interchangeable."
+		],
+		exclusionRules: [
+			"Do not use anecdotal before-and-after stories as efficacy evidence.",
+			"Do not generalize evidence for FDA-approved medications to unapproved compounded, counterfeit, or research-labeled products.",
+			"Do not imply these medicines are appropriate without clinician screening, contraindication review, dose titration, and monitoring."
+		],
+		surveillanceSpec: {
+			focus:
+				"Monitor FDA label changes, major obesity-medicine guidelines, cardiovascular outcome trials, head-to-head trials, oral GLP-1 approvals, safety alerts, and post-withdrawal maintenance evidence.",
+			cadenceDays: 30,
+			watchTerms: [
+				"semaglutide obesity FDA label",
+				"tirzepatide obesity FDA label",
+				"GLP-1 obesity randomized trial",
+				"GLP-1 weight regain discontinuation",
+				"unapproved compounded GLP-1 FDA warning"
+			],
+			integrityMonitors: ["FDA safety communications", "Retraction Watch", "PubMed retraction notices"],
+			guidelineMonitors: ["FDA", "NIH", "Endocrine Society", "AACE", "Obesity Medicine Association"],
+			triggerRules: [
+				"Update if FDA changes approved indications, contraindications, boxed warnings, or major safety language for semaglutide or tirzepatide obesity products.",
+				"Update if a large randomized trial materially changes estimated weight loss, discontinuation, cardiovascular outcomes, or post-withdrawal maintenance.",
+				"Update if professional guidelines materially change eligibility, monitoring, or duration recommendations."
+			]
+		},
+		appraisalTools: ["Cochrane risk of bias for RCTs", "GRADE", "FDA label review"],
+		evidenceSummaries: [
+			{
+				question:
+					"Do approved GLP-1-based obesity medications produce clinically meaningful weight loss in medically eligible adults?",
+				population:
+					"Adults with obesity, or adults with overweight plus weight-related complications, using approved medicines with lifestyle support and clinical monitoring.",
+				finding:
+					"Randomized trials and comparative reviews consistently show large average weight reductions for semaglutide and tirzepatide relative to placebo, with tirzepatide generally producing larger average reductions than semaglutide in direct and indirect comparisons.",
+				effectDirection: "supports",
+				magnitude:
+					"STEP 1 reported -14.9% body-weight change with semaglutide 2.4 mg versus -2.4% with placebo at 68 weeks. SURMOUNT-1 reported -15.0% to -20.9% with tirzepatide versus -3.1% with placebo at 72 weeks. SURMOUNT-5 reported -20.2% with tirzepatide versus -13.7% with semaglutide at 72 weeks.",
+				certainty: "moderate",
+				limitations: [
+					"Gastrointestinal adverse effects are common and can lead to discontinuation.",
+					"Trial efficacy does not guarantee access, affordability, adherence, or response for every patient.",
+					"Long-term maintenance often requires continued treatment, and post-withdrawal regain is common."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "U.S. Food and Drug Administration",
+				role:
+					"Regulatory anchor for approved obesity indications, contraindications, warnings, dosing, and warnings about unapproved GLP-1 products."
+			},
+			{
+				name: "ClinicalTrials.gov",
+				role:
+					"Trial registry anchor for STEP, SURMOUNT, SELECT, OASIS, and other ongoing obesity-medication outcome studies."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T23:16:14.000Z",
+				kind: "publication",
+				summary:
+					"Initial GLP-1-based obesity medication page published from current FDA labels and alerts plus Consensus-located semaglutide, tirzepatide, withdrawal, and head-to-head trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "WEGOVY (semaglutide) injection and tablets, prescribing information",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/215256s031lbl218316s003lbl.pdf",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Current FDA label source for semaglutide obesity indications, reduced-calorie diet and physical-activity context, cardiovascular indication language, dosing, contraindications, and warnings.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "ZEPBOUND (tirzepatide) injection, prescribing information",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/217806s002lbl.pdf",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Current FDA label source for tirzepatide chronic weight-reduction and maintenance indications, dose escalation, maximum dose, contraindications, and gastrointestinal and other warnings.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "FDA's Concerns with Unapproved GLP-1 Drugs Used for Weight Loss",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url: "https://www.fda.gov/drugs/drug-alerts-and-statements/fdas-concerns-unapproved-glp-1-drugs-used-weight-loss",
+				stance: "context",
+				note:
+					"FDA safety context warning that unapproved GLP-1 products, including some compounded or illegally marketed semaglutide and tirzepatide products, may pose quality and dosing risks.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Comparative effectiveness of glucagon-like peptide-1 receptor agonists for the management of obesity in adults without diabetes: A network meta-analysis of randomized clinical trials",
+				publisher: "Obesity Reviews",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/comparative-effectiveness-of-glucagonlike-peptide1-alkhezi-alahmed/72a39689573c5633a22488b23b977699/",
+				stance: "supports",
+				note:
+					"Bayesian network meta-analysis of seven RCTs and more than 12,300 adults without diabetes found significant weight reduction with GLP-1 receptor agonists, strongest for tirzepatide, with more gastrointestinal adverse events than placebo.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Once-Weekly Semaglutide in Adults with Overweight or Obesity",
+				publisher: "New England Journal of Medicine",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/onceweekly-semaglutide-in-adults-with-overweight-or-wilding-batterham/6d1193478322542dbb491429a70209e2/",
+				stance: "supports",
+				note:
+					"STEP 1 randomized 1,961 adults without diabetes and found semaglutide 2.4 mg plus lifestyle intervention reduced body weight by 14.9% versus 2.4% with placebo at 68 weeks, with more gastrointestinal discontinuations.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Tirzepatide Once Weekly for the Treatment of Obesity",
+				publisher: "New England Journal of Medicine",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/tirzepatide-once-weekly-for-the-treatment-of-obesity-garvey-frias/2647e4e990ac5057b463c3b88ddd3493/",
+				stance: "supports",
+				note:
+					"SURMOUNT-1 randomized 2,539 adults with obesity or overweight plus a complication, excluding diabetes, and found 15.0% to 20.9% mean weight reduction with tirzepatide versus 3.1% with placebo at 72 weeks.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Weight regain and cardiometabolic effects after withdrawal of semaglutide: The STEP 1 trial extension",
+				publisher: "Diabetes, Obesity & Metabolism",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/weight-regain-and-cardiometabolic-effects-after-wilding-batterham/fe7da417998e5aa7bfa1c66c8eae2ec6/",
+				stance: "context",
+				note:
+					"STEP 1 extension found participants regained about two-thirds of prior weight loss one year after semaglutide and lifestyle intervention were withdrawn, supporting the chronic-treatment caveat.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Tirzepatide as Compared with Semaglutide for the Treatment of Obesity",
+				publisher: "New England Journal of Medicine",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/tirzepatide-as-compared-with-semaglutide-for-the-aronne-horn/c0288ab3e47158cdb4e8d64284cacdd3/",
+				stance: "supports",
+				note:
+					"SURMOUNT-5 randomized 751 adults with obesity but without diabetes and found greater 72-week weight loss with tirzepatide than semaglutide, with gastrointestinal adverse events common in both groups.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do COVID-19 vaccines cause menstrual cycle changes, and are the changes temporary?",
 		slug: "do-covid-19-vaccines-cause-menstrual-cycle-changes-and-are-the-changes-temporary",
 		status: "published",
