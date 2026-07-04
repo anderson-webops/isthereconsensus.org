@@ -487,18 +487,66 @@ useStaticPageMeta({
 }
 
 @media (max-width: 720px) {
+	.terms-page {
+		gap: 18px;
+	}
+
+	.terms-header,
+	.terms-panel,
+	.summary-card,
+	.terms-callout {
+		border-radius: 16px;
+	}
+
 	.terms-header,
 	.terms-panel,
 	.terms-callout {
-		padding: 18px;
+		padding: 16px;
+	}
+
+	.summary-card {
+		padding: 14px;
+	}
+
+	.terms-summary {
+		gap: 10px;
+	}
+
+	.terms-header p,
+	.section-heading p,
+	.summary-card p,
+	.plain-list,
+	.prose p,
+	.terms-callout p {
+		line-height: 1.58;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
+	.prose {
+		gap: 10px;
+	}
+
+	.plain-list {
+		gap: 8px;
+		padding-left: 18px;
 	}
 
 	.terms-callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.terms-callout__actions {
 		width: 100%;
+		gap: 10px;
+	}
+
+	.button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 }
 
