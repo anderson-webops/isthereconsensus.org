@@ -814,6 +814,33 @@ function formatTopicUpdateLabel(value?: string) {
 		padding: 16px;
 	}
 
+	.claim-row,
+	.topic-row {
+		gap: 12px;
+		padding: 14px;
+	}
+
+	.claim-row__main,
+	.topic-row__main {
+		gap: 8px;
+	}
+
+	.claim-row__summary {
+		-webkit-line-clamp: 2;
+	}
+
+	.claim-row__score {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 7px;
+		min-width: 0;
+		padding: 7px 10px;
+	}
+
+	.claim-row__score strong {
+		font-size: 1rem;
+	}
+
 	.search-panel__row {
 		grid-template-columns: 1fr;
 	}
