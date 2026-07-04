@@ -310,18 +310,65 @@ useStaticPageMeta({
 }
 
 @media (max-width: 720px) {
+	.corrections-page {
+		gap: 18px;
+	}
+
+	.corrections-header,
+	.corrections-panel,
+	.summary-card,
+	.detail-card,
+	.corrections-callout {
+		border-radius: 16px;
+	}
+
 	.corrections-header,
 	.corrections-panel,
 	.corrections-callout {
-		padding: 18px;
+		padding: 16px;
+	}
+
+	.summary-card,
+	.detail-card {
+		padding: 14px;
+	}
+
+	.corrections-summary,
+	.card-grid {
+		gap: 10px;
+	}
+
+	.corrections-header p,
+	.section-heading p,
+	.summary-card p,
+	.detail-card p,
+	.plain-list,
+	.corrections-callout p {
+		line-height: 1.58;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
+	.plain-list {
+		gap: 8px;
+		padding-left: 18px;
 	}
 
 	.corrections-callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.corrections-callout__actions {
 		width: 100%;
+		gap: 10px;
+	}
+
+	.button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 }
 
