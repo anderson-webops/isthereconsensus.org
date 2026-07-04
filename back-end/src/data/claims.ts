@@ -11242,6 +11242,222 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "bias-incentives",
+		title: "Does sharing data and code guarantee a study is reproducible?",
+		slug: "does-sharing-data-and-code-guarantee-a-study-is-reproducible",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"No. Sharing data, code, materials, and methods is a strong transparency practice: it lets others inspect, rerun, and reuse the work. But it does not guarantee reproducibility. Files can be incomplete, undocumented, non-executable, privacy-limited, or tied to missing software environments, and openness cannot fix weak design or biased measurement.",
+		stableCore: [
+			"Open data and code improve auditability by making it easier to check analyses, reuse materials, detect errors, and distinguish reported findings from hidden analytical choices.",
+			"Computational reproducibility usually requires the same input data, code, software versions, dependencies, processing steps, and documented analytical environment.",
+			"Empirical audits find that even when data or code are shared, independent teams often cannot exactly reproduce the published results without additional documentation or fixes.",
+			"Transparency is not the same as truth: a fully open study can still have confounding, measurement bias, small samples, selective framing, or conclusions that outrun the evidence.",
+			"Ethical, legal, privacy, Indigenous data governance, commercial, and security constraints can justify controlled access or synthetic data rather than fully public raw data."
+		],
+		openQuestions: [
+			"Which journal and funder policies produce shared materials that are actually runnable, documented, preserved, and reusable rather than merely linked?",
+			"How should reviewers balance transparency expectations against privacy, consent, data-sovereignty, and security constraints?",
+			"Which reproducibility checks should happen before publication, and which can realistically happen after publication through repositories, badges, or post-publication review?",
+			"How should public summaries explain open data and code as a credibility signal without making closed data sound automatically suspicious?"
+		],
+		whatWouldChangeMinds: [
+			"Large cross-field audits showing that data and code availability alone reliably produces independent computational reproducibility without metadata, environment capture, or author assistance.",
+			"Evidence that journal, repository, and funder sharing requirements do not improve transparency, error detection, reuse, or reproducibility attempts when compared with similar studies without those requirements.",
+			"Major reproducibility guidance abandoning data, code, workflow, metadata, and environment sharing as important safeguards for computational research."
+		],
+		misconceptions: [
+			"Open data is sometimes treated as a truth stamp, even though shared materials can still support a flawed or overinterpreted study.",
+			"Closed or controlled-access data is sometimes treated as suspicious by default, even when participant privacy, consent, or legal restrictions make open release inappropriate.",
+			"Posting a spreadsheet without analysis code, metadata, version information, or workflow instructions is not the same thing as making a study reproducible.",
+			"Computational reproducibility is not the same as independent replication with new data."
+		],
+		editorSummary:
+			"This page should calibrate open-science shortcuts: data and code sharing make claims easier to audit, but reproducibility still depends on complete files, documentation, environments, and study quality.",
+		uncertaintySummary:
+			"Sharing data, code, workflows, and materials improves transparency and can improve reproducibility. The practical uncertainty is whether the shared package is complete, executable, documented, and ethically shareable; sensitive datasets may need controlled rather than public access.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Benefits depend on whether journals, funders, repositories, and reviewers require complete files, metadata, executable workflows, and preservation."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence comes from psychology, biomedical literature, data repositories, ecology, and computational fields, and practices differ substantially across disciplines."
+			},
+			{
+				type: "bias",
+				detail:
+					"Open materials reduce some hidden-analysis risks but do not remove bias from design, measurement, confounding, selective framing, or interpretation."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Privacy, consent, intellectual-property, security, and data-governance limits can require controlled access rather than public release."
+			}
+		],
+		searchDatabases: ["Consensus", "National Academies", "NIH", "Center for Open Science"],
+		searchCutoffAt: "2026-07-04T15:40:20.000Z",
+		inclusionRules: [
+			"Prioritize institutional reproducibility guidance, open-science policy frameworks, and empirical audits that attempted to rerun analyses from shared materials.",
+			"Separate computational reproducibility from independent replication with new samples or new data.",
+			"Include field-specific audits only when their limits are clear."
+		],
+		exclusionRules: [
+			"Do not treat repository links, badges, or availability statements as proof that analyses are executable.",
+			"Do not imply that sensitive data must always be publicly posted when controlled access is ethically or legally required.",
+			"Do not use open-science advocacy alone as evidence that openness guarantees correctness."
+		],
+		appraisalTools: [
+			"Computational reproducibility check",
+			"Data and code availability audit",
+			"Metadata and workflow completeness check",
+			"Privacy and controlled-access assessment",
+			"Independent replication distinction"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does sharing data and code guarantee reproducible results?",
+				population:
+					"Published studies and replication packages in psychology, language research, biomedical literature, and public data repositories",
+				finding:
+					"Open data and code are associated with better transparency and higher chances of successful reruns, but audits repeatedly find incomplete, non-executable, or only partly reproducible shared materials.",
+				effectDirection: "supports",
+				magnitude:
+					"Examples include 21 of 36 shared data-and-code Registered Reports with reproduced main results, 34% to 56% reproducibility under an open data policy, one exact reproduction among 14 open-data-badged papers, and 74% initial failure among more than 9,000 R files in Harvard Dataverse replication datasets.",
+				certainty: "moderate",
+				limitations: [
+					"Audit samples are field-specific and use different definitions of reproducibility.",
+					"Successful reruns may require author help, package updates, or researcher judgment about acceptable deviations.",
+					"Computational reproducibility does not prove that the underlying scientific claim replicates with new data."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Academies reproducibility and replicability framework",
+				role: "Defines computational reproducibility around consistent results from the same input data, methods, and analysis conditions."
+			},
+			{
+				name: "Center for Open Science TOP Guidelines",
+				role: "Journal and funder policy framework covering data citation, data transparency, materials, code, preregistration, and replication standards."
+			},
+			{
+				name: "NIH Data Management and Sharing Policy",
+				role: "Biomedical-funder policy context for data sharing, reuse, rigor, and reproducibility while preserving responsible access constraints."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T15:40:20.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T15:40:20.000Z",
+				kind: "publication",
+				summary:
+					"Initial open-data and code reproducibility page published from Consensus-located reproducibility audits and institutional open-science guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Reproducibility and Replicability in Science",
+				publisher: "National Academies Press",
+				year: 2019,
+				url: "https://www.nationalacademies.org/read/25303",
+				doi: "10.17226/25303",
+				stance: "supports",
+				note:
+					"Consensus report defining reproducibility as obtaining consistent computational results using the same input data, computational methods, and analysis conditions.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "TOP Guidelines",
+				publisher: "Center for Open Science",
+				url: "https://www.cos.io/initiatives/top-guidelines",
+				stance: "supports",
+				note:
+					"Policy framework for journal and funder standards on data citation, data transparency, material transparency, code transparency, preregistration, and replication.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Data Management & Sharing Policy Overview",
+				publisher: "National Institutes of Health",
+				url: "https://grants.nih.gov/policy-and-compliance/policy-topics/sharing-policies/dms/policy-overview",
+				stance: "supports",
+				note:
+					"NIH policy context explaining that scientific data sharing can accelerate discovery, enhance rigor and reproducibility, and promote responsible reuse.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Analysis of Open Data and Computational Reproducibility in Registered Reports in Psychology",
+				publisher: "Advances in Methods and Practices in Psychological Science",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/analysis-of-open-data-and-computational-reproducibility-obels-lakens/538063e7633a5de28b5014cfe565b0f5/",
+				stance: "supports",
+				note:
+					"Audit of 62 Registered Reports: both data and code were shared for 36 articles, scripts ran for 31 analyses, and main results were reproduced for 21 articles.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Share the code, not just the data: A case study of reproducibility under an open data policy",
+				publisher: "Journal of Memory and Language",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/share-the-code-not-just-the-data-a-case-study-of-the-laurinavichyute-yadav/aca70058758e51ba8248556c028d3595/",
+				stance: "supports",
+				note:
+					"Case study finding an open data policy increased data sharing by more than 50%, while reproducibility ranged from 34% to 56% and analysis code was the strongest predictor of success.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "What's in a Badge? A Computational Reproducibility Investigation of the Open Data Badge Policy",
+				publisher: "Psychological Science",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/whats-in-a-badge-a-computational-reproducibility-crwell-apthorp/6283d1a3c7b65403adcbef14764217fa/",
+				stance: "debate",
+				note:
+					"Reproduction attempt for 14 open-data-badged empirical articles; all provided some data, six provided code, one was exactly reproducible, and three were essentially reproducible with minor deviations.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "A large-scale study on research code quality and execution",
+				publisher: "Scientific Data",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/a-largescale-study-on-research-code-quality-and-execution-trisovic-lau/966d72a5f7055dea93017780d7564063/",
+				stance: "supports",
+				note:
+					"Study of more than 2,000 Harvard Dataverse replication datasets and over 9,000 R files; 74% failed initial execution and 56% still failed after code cleaning.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Assessment of transparency indicators across the biomedical literature: How open is open?",
+				publisher: "PLoS Biology",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/assessment-of-transparency-indicators-across-the-serghiou-contopoulos-ioannidis/5b9310e40cc9547f85339bdbe595a8db/",
+				stance: "context",
+				note:
+					"Automated assessment of 2.75 million open-access biomedical articles found improvements in some transparency indicators, but not in code sharing or protocol registration.",
+				order: 8
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is the ocean becoming more acidic because of human CO2 emissions?",
 		slug: "is-the-ocean-becoming-more-acidic-because-of-human-co2-emissions",
