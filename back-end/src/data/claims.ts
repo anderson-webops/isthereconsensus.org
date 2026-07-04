@@ -9350,6 +9350,174 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "science-communication",
+		title: "Do corrections to misinformation usually backfire?",
+		slug: "do-corrections-to-misinformation-usually-backfire",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		bottomLine:
+			"Usually no. Corrections and fact checks often improve belief accuracy, and strong backfire effects are rare enough that communicators should not avoid correction because of that fear. The caveat is important: corrections can be incomplete, can fade, may not change attitudes or behavior, and work less reliably for polarized science and health claims.",
+		stableCore: [
+			"Recent reviews describe factual corrections as generally improving belief accuracy, with backfire appearing rare rather than typical.",
+			"Experimental work that directly tests correction against no-correction controls often fails to find corrections increasing false beliefs.",
+			"Repeating a false claim inside a clear correction does not automatically make the false claim stronger; familiarity backfire has been hard to reproduce in several tests.",
+			"Corrections do not fully erase misinformation. The original claim can continue to influence reasoning, especially after repetition, delay, or source credibility effects.",
+			"Science-relevant misinformation is harder than the simple version of the story suggests: detailed corrections work better, while health topics and politically polarized topics can be resistant."
+		],
+		openQuestions: [
+			"Which correction formats remain effective after weeks or months rather than immediately after exposure?",
+			"How often do corrections change behavior, sharing, or policy attitudes rather than only belief accuracy?",
+			"Which audiences are most likely to distrust a correction, and how can corrections be designed without triggering defensive processing?",
+			"How should public agencies balance repeating a false claim for clarity against the risk of unnecessary repetition?"
+		],
+		whatWouldChangeMinds: [
+			"Large preregistered reviews showing that ordinary factual corrections generally reduce accuracy or increase belief in the false claim.",
+			"Field evidence showing that avoiding correction usually produces better public belief accuracy than clear, well-sourced correction.",
+			"Replicated evidence that familiarity backfire is common across health, science, and political misinformation rather than limited to special designs or audiences."
+		],
+		misconceptions: [
+			"A correction failing to persuade everyone is not the same as a backfire.",
+			"Backfire is not impossible, but it should not be treated as the normal result of correcting a false claim.",
+			"Repeating a myth inside a correction is not automatically harmful when the message clearly labels it as false and replaces it with an explanation.",
+			"A correction can improve belief accuracy without changing identity, trust, voting, vaccination, or sharing behavior."
+		],
+		editorSummary:
+			"This page should help visitors understand why the site corrects misinformation directly while staying honest about limits. The evidence supports correction, but not the fantasy that one fact check permanently solves a false belief.",
+		uncertaintySummary:
+			"Agreement is broad that communicators should not avoid corrections because of generalized backfire fears. Uncertainty remains higher for durability, behavior change, audience skepticism, highly polarized topics, and science or health misinformation where correction effects are weaker and more context-dependent.",
+		uncertaintyDrivers: [
+			{
+				type: "timing",
+				detail: "Immediate accuracy gains can decay, and corrections may be overwhelmed by later elite, media, or peer cues."
+			},
+			{
+				type: "implementation",
+				detail: "Corrections differ in detail, tone, source, repetition, timing, and whether they offer a coherent alternative explanation."
+			},
+			{
+				type: "generalizability",
+				detail: "Effects vary across political, health, science, consumer, and platform settings, so one correction design should not be treated as universal."
+			}
+		],
+		searchDatabases: ["Consensus"],
+		searchCutoffAt: "2026-07-04T16:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T16:15:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T16:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial correction-backfire claim page published from Consensus-located meta-analyses, reviews, and experimental studies on misinformation correction."
+			}
+		],
+		evidenceSummaries: [
+			{
+				question: "Do factual corrections usually make people believe the false claim more strongly?",
+				population: "General audiences exposed to misinformation corrections in experimental and review literatures",
+				finding:
+					"Reviews and direct tests generally find that corrections improve belief accuracy and that backfire effects are rare or difficult to reproduce.",
+				effectDirection: "supports",
+				magnitude: "Accuracy improvement is common, but the size and durability vary by topic, audience, and correction design.",
+				certainty: "moderate",
+				limitations: [
+					"Many outcomes are immediate belief measures rather than long-term behavior.",
+					"Science, health, and politically polarized topics can be more resistant.",
+					"Some older and niche studies report backfire-like effects, so the claim is not that backfire is impossible."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Current Opinion in Psychology reviews",
+				role: "Summarize the current correction literature and describe backfire as rare while noting limits on durability and downstream behavior."
+			},
+			{
+				name: "Communication Research and Nature Human Behaviour meta-analyses",
+				role: "Quantify continued influence and science-relevant correction effects across many studies rather than relying on isolated examples."
+			},
+			{
+				name: "Experimental backfire and familiarity-backfire studies",
+				role: "Directly test whether corrections increase false belief relative to no-correction or control conditions."
+			}
+		],
+		sources: [
+			{
+				kind: "context",
+				title: "Factual corrections: Concerns and current evidence.",
+				publisher: "Current Opinion in Psychology",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/factual-corrections-concerns-and-current-evidence-porter-wood/5e0fb506460e5d938d2d571005a8b68f/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Review summary finding that factual corrections improve belief accuracy across countries, political beliefs, and demographics, while backfire is rare and downstream attitude or behavior effects are usually small.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Why the backfire effect does not explain the durability of political misperceptions",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/why-the-backfire-effect-does-not-explain-the-durability-of-nyhan/3901a7be594c5ea7b056d917880a308f/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Literature review arguing that corrective information is typically at least somewhat effective at increasing accuracy, while effects often decay or are overwhelmed by elite and media cues.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"A Meta-Analytic Examination of the Continued Influence of Misinformation in the Face of Correction: How Powerful Is It, Why Does It Happen, and How to Stop It?",
+				publisher: "Communication Research",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/a-metaanalytic-examination-of-the-continued-influence-of-walter-tukachinsky/84d2ddd6b1475f1ba8161a278ad3204c/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Meta-analysis of 32 studies with 6,527 participants finding that corrections do not entirely eliminate misinformation effects and are more effective when coherent, worldview-consistent, and source-linked.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "The backfire effect after correcting misinformation is strongly associated with reliability",
+				publisher: "Journal of Experimental Psychology: General",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/the-backfire-effect-after-correcting-misinformation-is-swirethompson-miklaucic/e17092d8d13e5259a8062434bbda6ff9/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Two-experiment test with 388 and 532 participants finding no misinformation items backfired more in the correction condition than control or initial ratings.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Can corrections spread misinformation to new audiences? Testing for the elusive familiarity backfire effect",
+				publisher: "Cognitive Research: Principles and Implications",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/can-corrections-spread-misinformation-to-new-audiences-ecker-lewandowsky/9fde0ce99b0853728488ba40e408e0e4/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Three experiments with 1,718 participants found substantial evidence against familiarity backfire when correcting novel misinformation, including after a one-week delay.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "A meta-analysis of correction effects in science-relevant misinformation",
+				publisher: "Nature Human Behaviour",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/a-metaanalysis-of-correction-effects-in-sciencerelevant-chan-albarracn/649a3a8b1c955ebdba723f0cee3cc8c4/?utm_source=chatgpt",
+				stance: "debate",
+				note:
+					"Meta-analysis of 205 effect sizes from 74 reports with 60,861 participants; average science-relevant correction effects were not statistically successful, with better results for detailed, nonpolarized, non-health corrections.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "media-misinformation",
 		title: "Can correlation alone prove causation?",
 		slug: "can-correlation-alone-prove-causation",
