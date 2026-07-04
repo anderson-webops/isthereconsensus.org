@@ -20,6 +20,21 @@ const quickPoints = [
 	}
 ];
 
+const privacySections = [
+	{ id: "scope", label: "Scope" },
+	{ id: "information-we-collect", label: "Information we collect" },
+	{ id: "how-we-use-information", label: "How we use information" },
+	{ id: "cookies-storage-analytics-captcha", label: "Cookies, storage, analytics, and captcha" },
+	{ id: "public-content-and-visibility", label: "Public content and visibility" },
+	{ id: "sharing-and-disclosure", label: "Sharing and disclosure" },
+	{ id: "retention", label: "Retention" },
+	{ id: "choices-and-rights", label: "Choices and rights" },
+	{ id: "children", label: "Children" },
+	{ id: "security", label: "Security" },
+	{ id: "international-visitors", label: "International visitors" },
+	{ id: "changes-to-this-policy", label: "Changes to this policy" }
+];
+
 const collectionCategories = [
 	{
 		title: "Information you give us",
@@ -126,7 +141,14 @@ useStaticPageMeta({
 			</article>
 		</section>
 
-		<section class="privacy-panel">
+		<section class="privacy-contents" aria-labelledby="privacy-contents-heading">
+			<h2 id="privacy-contents-heading">On this page</h2>
+			<nav class="privacy-contents__links" aria-label="Privacy policy sections">
+				<a v-for="item in privacySections" :key="item.id" :href="`#${item.id}`">{{ item.label }}</a>
+			</nav>
+		</section>
+
+		<section id="scope" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>1. Scope</h2>
 			</div>
@@ -144,7 +166,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="information-we-collect" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>2. Information we collect</h2>
 			</div>
@@ -158,7 +180,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="how-we-use-information" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>3. How we use information</h2>
 			</div>
@@ -167,7 +189,7 @@ useStaticPageMeta({
 			</ul>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="cookies-storage-analytics-captcha" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>4. Cookies, browser storage, analytics, and captcha</h2>
 			</div>
@@ -183,9 +205,11 @@ useStaticPageMeta({
 				<p>
 					On deployed versions of the site, we currently load analytics scripts from
 					<code>analytics.isthereconsensus.org</code> and <code>analytics.jacobdanderson.net</code> to
-					understand site usage and performance. When your browser loads those scripts, the analytics services
-					may receive technical request information such as IP address, browser metadata, referring page, and
-					page usage details.
+					understand site usage and performance.
+				</p>
+				<p>
+					When your browser loads those scripts, the analytics services may receive technical request
+					information such as IP address, browser metadata, referring page, and page usage details.
 				</p>
 				<p>
 					When captcha protection is enabled, the site loads Cloudflare Turnstile in the browser and validates
@@ -199,7 +223,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="public-content-and-visibility" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>5. Public content and visibility</h2>
 			</div>
@@ -221,7 +245,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="sharing-and-disclosure" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>6. When we share or disclose information</h2>
 			</div>
@@ -236,7 +260,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="retention" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>7. Retention</h2>
 			</div>
@@ -248,7 +272,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="choices-and-rights" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>8. Choices and rights</h2>
 			</div>
@@ -259,28 +283,33 @@ useStaticPageMeta({
 				<p>
 					There is not currently a self-serve account deletion portal. If you ask to close an account or
 					delete data, we may still retain some records, including moderation, security, backup, and
-					community-integrity records, where reasonably necessary. The practical handling of public questions,
-					disassociated attribution, and retained records is explained on the
+					community-integrity records, where reasonably necessary.
+				</p>
+				<p>
+					The practical handling of public questions, disassociated attribution, and retained records is
+					explained on the
 					<NuxtLink to="/account-deletion-and-retention">Account deletion and retention</NuxtLink> page.
 				</p>
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="children" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>9. Children</h2>
 			</div>
 			<div class="prose">
 				<p>
 					Public pages may be readable by a general audience, but accounts and community submissions are not
-					intended for children under 13. If we learn that we have created an account for or collected
-					personal information directly from a child under 13 without an appropriate legal basis, we may
-					remove the account and related data.
+					intended for children under 13.
+				</p>
+				<p>
+					If we learn that we have created an account for or collected personal information directly from a
+					child under 13 without an appropriate legal basis, we may remove the account and related data.
 				</p>
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="security" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>10. Security</h2>
 			</div>
@@ -293,7 +322,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="international-visitors" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>11. International visitors</h2>
 			</div>
@@ -306,7 +335,7 @@ useStaticPageMeta({
 			</div>
 		</section>
 
-		<section class="privacy-panel">
+		<section id="changes-to-this-policy" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>12. Changes to this policy</h2>
 			</div>
@@ -346,6 +375,7 @@ useStaticPageMeta({
 
 .privacy-header,
 .privacy-panel,
+.privacy-contents,
 .summary-card,
 .category-card,
 .privacy-callout {
@@ -356,12 +386,14 @@ useStaticPageMeta({
 
 .privacy-header,
 .privacy-panel,
+.privacy-contents,
 .privacy-callout {
 	padding: 22px;
 }
 
 .privacy-header h1,
 .section-heading h2,
+.privacy-contents h2,
 .summary-card h3,
 .category-card h3,
 .privacy-callout h2 {
@@ -380,6 +412,7 @@ useStaticPageMeta({
 .summary-card p,
 .plain-list,
 .prose p,
+.privacy-contents a,
 .category-card p,
 .privacy-callout p {
 	color: var(--consensus-muted);
@@ -406,8 +439,39 @@ useStaticPageMeta({
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.privacy-contents {
+	display: grid;
+	gap: 12px;
+}
+
+.privacy-contents h2 {
+	font-size: 1.08rem;
+	color: var(--consensus-ink);
+}
+
+.privacy-contents__links {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px 18px;
+}
+
+.privacy-contents a {
+	font-weight: 650;
+	text-decoration: none;
+	text-underline-offset: 3px;
+}
+
+.privacy-contents a:hover {
+	color: var(--consensus-link);
+	text-decoration: underline;
+}
+
 .category-grid {
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.privacy-panel {
+	scroll-margin-top: 18px;
 }
 
 .summary-card,
@@ -523,6 +587,7 @@ code {
 
 	.privacy-header,
 	.privacy-panel,
+	.privacy-contents,
 	.summary-card,
 	.category-card,
 	.privacy-callout {
@@ -531,6 +596,7 @@ code {
 
 	.privacy-header,
 	.privacy-panel,
+	.privacy-contents,
 	.privacy-callout {
 		padding: 16px;
 	}
@@ -538,6 +604,7 @@ code {
 	.summary-card,
 	.category-card {
 		padding: 14px;
+		gap: 5px;
 	}
 
 	.privacy-summary,
@@ -550,17 +617,31 @@ code {
 	.summary-card p,
 	.plain-list,
 	.prose p,
+	.privacy-contents a,
 	.category-card p,
 	.privacy-callout p {
 		line-height: 1.58;
 	}
 
-	.prose {
+	.privacy-contents {
 		gap: 10px;
 	}
 
+	.privacy-contents__links {
+		grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+		gap: 6px 12px;
+	}
+
+	.privacy-contents a {
+		font-size: 0.94rem;
+	}
+
+	.prose {
+		gap: 9px;
+	}
+
 	.plain-list {
-		gap: 8px;
+		gap: 6px;
 		padding-left: 18px;
 	}
 

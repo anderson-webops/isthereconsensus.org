@@ -1,0 +1,41 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
+
+const testDir = dirname(fileURLToPath(import.meta.url));
+const privacySource = readFileSync(join(testDir, "..", "src/pages/privacy.vue"), "utf8");
+
+describe("privacy page layout", () => {
+	it("adds compact wayfinding without changing the policy section count", () => {
+		assert.match(privacySource, /const privacySections = \[/);
+		assert.match(privacySource, /<section class="privacy-contents" aria-labelledby="privacy-contents-heading">/);
+		assert.match(privacySource, /<nav class="privacy-contents__links" aria-label="Privacy policy sections">/);
+		assert.match(privacySource, /id="scope"/);
+		assert.match(privacySource, /id="changes-to-this-policy"/);
+		assert.equal((privacySource.match(/class="privacy-panel"/g) || []).length, 12);
+	});
+
+	it("keeps dense privacy copy split into scannable chunks", () => {
+		assert.match(privacySource, /understand site usage and performance\./);
+		assert.match(privacySource, /When your browser loads those scripts, the analytics services may receive/);
+		assert.match(privacySource, /community-integrity records, where reasonably necessary\./);
+		assert.match(privacySource, /The practical handling of public questions, disassociated attribution/);
+		assert.match(privacySource, /intended for children under 13\./);
+		assert.match(privacySource, /If we learn that we have created an account/);
+	});
+
+	it("keeps mobile privacy cards, contents links, and lists compact", () => {
+		assert.match(
+			privacySource,
+			/@media \(max-width: 720px\) \{[\s\S]*\.summary-card,[\s\S]*\.category-card \{[\s\S]*gap: 5px;/
+		);
+		assert.match(
+			privacySource,
+			/\.privacy-contents__links \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(145px, 1fr\)\);[\s\S]*gap: 6px 12px;/
+		);
+		assert.match(privacySource, /\.prose \{[\s\S]*gap: 9px;/);
+		assert.match(privacySource, /\.plain-list \{[\s\S]*gap: 6px;[\s\S]*padding-left: 18px;/);
+	});
+});
