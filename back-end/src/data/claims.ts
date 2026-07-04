@@ -2967,6 +2967,145 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does positive airway pressure help adults with obstructive sleep apnea?",
+		slug: "does-positive-airway-pressure-help-adults-with-obstructive-sleep-apnea",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		bottomLine:
+			"Yes, for many adults with diagnosed obstructive sleep apnea. Positive airway pressure, including CPAP and auto-adjusting PAP, keeps the airway open during sleep and improves apnea severity, daytime sleepiness, and sleep-related quality of life. It can lower blood pressure modestly in some groups, especially with hypertension, but it should not be sold as guaranteed prevention of heart attacks or strokes for every patient.",
+		stableCore: [
+			"AASM recommends PAP rather than no therapy for adults with obstructive sleep apnea and excessive sleepiness, and suggests PAP for impaired sleep-related quality of life or comorbid hypertension.",
+			"NICE recommends fixed-level CPAP plus lifestyle advice for adults with moderate or severe OSAHS and offers CPAP for symptomatic mild OSAHS when symptoms affect quality of life or daytime activities.",
+			"AASM's supporting systematic review found PAP compared with no treatment reduced disease severity, sleepiness, blood pressure, and motor vehicle accidents, and improved sleep-related quality of life.",
+			"Randomized-trial meta-analyses find CPAP improves subjective and objective daytime sleepiness, with larger benefit when baseline sleepiness and nightly adherence are higher.",
+			"Blood-pressure benefits are real but usually modest and vary by baseline hypertension, severity, and nightly use."
+		],
+		openQuestions: [
+			"Which patients get durable cardiovascular-event or mortality benefit, and how much adherence is needed for that benefit?",
+			"Which alternatives, including mandibular advancement devices, positional treatment, weight-loss interventions, surgery, or newer obesity medications, work best for specific phenotypes?",
+			"How can sleep services improve mask fit, comfort, telemonitoring, troubleshooting, and long-term adherence?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias randomized trials showing that PAP does not improve apnea severity, sleepiness, or sleep-related quality of life compared with credible controls in appropriately diagnosed adults.",
+			"Major AASM, NICE, ACP, or comparable guideline updates withdrawing PAP as a recommended treatment for symptomatic adult obstructive sleep apnea.",
+			"Evidence that observed symptom benefits are fully explained by expectation, co-interventions, or biased outcome reporting rather than airway stabilization."
+		],
+		misconceptions: [
+			"CPAP is not just a snoring device; it treats repeated airway collapse during sleep when obstructive sleep apnea is objectively diagnosed.",
+			"Not feeling better immediately does not prove PAP cannot work; pressure settings, mask fit, leaks, nasal symptoms, sleep duration, other sleep disorders, and nightly use all matter.",
+			"Stronger evidence for sleepiness and quality of life does not mean every cardiovascular or metabolic claim about CPAP is equally proven."
+		],
+		editorSummary:
+			"This page should give readers a practical treatment anchor: CPAP/PAP is evidence-based for diagnosed obstructive sleep apnea symptoms and breathing events, but cardiovascular-event prevention and one-size-fits-all benefit claims need caution.",
+		uncertaintySummary:
+			"The symptom and apnea-severity benefit is well supported. Remaining uncertainty is mostly about hard cardiovascular outcomes, which subgroups benefit most, adherence thresholds, and how to personalize PAP versus alternative or adjunctive treatments.",
+		searchCutoffAt: "2026-07-04T04:06:44.000Z",
+		lastRetractionCheckAt: "2026-07-04T04:06:44.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T04:06:44.000Z",
+				kind: "publication",
+				summary:
+					"Initial obstructive sleep apnea PAP treatment claim page published from AASM and NICE guidance, NHLBI treatment context, and randomized-trial meta-analyses identified through Consensus."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title:
+					"Treatment of Adult Obstructive Sleep Apnea with Positive Airway Pressure: An American Academy of Sleep Medicine Clinical Practice Guideline",
+				publisher: "Journal of Clinical Sleep Medicine",
+				year: 2019,
+				url: "https://doi.org/10.5664/jcsm.7640",
+				doi: "10.5664/jcsm.7640",
+				pmid: "30736887",
+				stance: "supports",
+				note:
+					"AASM guideline recommending PAP for adults with OSA and excessive sleepiness, and suggesting PAP for impaired sleep-related quality of life or comorbid hypertension.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Obstructive sleep apnoea/hypopnoea syndrome and obesity hypoventilation syndrome in over 16s",
+				publisher: "National Institute for Health and Care Excellence",
+				year: 2021,
+				url: "https://www.nice.org.uk/guidance/ng202/chapter/1-Obstructive-sleep-apnoeahypopnoea-syndrome",
+				stance: "supports",
+				note:
+					"NICE recommendations offering CPAP for symptomatic mild OSAHS under defined conditions and fixed-level CPAP plus lifestyle advice for moderate or severe OSAHS.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Sleep Apnea Treatment",
+				publisher: "National Heart, Lung, and Blood Institute",
+				year: 2025,
+				url: "https://www.nhlbi.nih.gov/health/sleep-apnea/treatment",
+				stance: "supports",
+				note:
+					"Current NIH patient-facing treatment context describing PAP machines as common treatment that keep airways open during sleep, plus lifestyle and alternative-device context.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Treatment of Adult Obstructive Sleep Apnea With Positive Airway Pressure: An American Academy of Sleep Medicine Systematic Review, Meta-Analysis, and GRADE Assessment",
+				publisher: "Journal of Clinical Sleep Medicine",
+				year: 2019,
+				url: "https://doi.org/10.5664/jcsm.7638",
+				doi: "10.5664/jcsm.7638",
+				pmid: "30736888",
+				stance: "supports",
+				note:
+					"AASM evidence review of 336 included studies, with 184 suitable for meta-analysis, finding PAP improved OSA severity, sleepiness, blood pressure, accidents, and sleep-related quality of life compared with no treatment.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Predictors of the Efficacy for Daytime Sleepiness in Patients With Obstructive Sleep Apnea With Continuous Positive Airway Pressure Therapy",
+				publisher: "Frontiers in Neurology",
+				year: 2022,
+				url: "https://doi.org/10.3389/fneur.2022.911996",
+				doi: "10.3389/fneur.2022.911996",
+				pmid: "35832171",
+				stance: "supports",
+				note:
+					"Meta-analysis of 41 randomized trials and 7,332 patients finding CPAP improved subjective and objective sleepiness, with baseline sleepiness and adherence as stable predictors.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Continuous positive airway pressure for adults with obstructive sleep apnea and cardiovascular disease: a meta-analysis of randomized trials",
+				publisher: "Sleep Medicine",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.sleep.2018.11.013",
+				doi: "10.1016/j.sleep.2018.11.013",
+				pmid: "30529774",
+				stance: "context",
+				note:
+					"Randomized-trial meta-analysis finding no statistically significant survival or major cardiovascular-event prevention in adults with OSA and established cardiovascular disease, supporting cautious cardiovascular claims.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "CPAP for Prevention of Cardiovascular Events in Obstructive Sleep Apnea",
+				publisher: "New England Journal of Medicine",
+				year: 2016,
+				url: "https://doi.org/10.1056/NEJMoa1606599",
+				doi: "10.1056/NEJMoa1606599",
+				pmid: "27571048",
+				stance: "context",
+				note:
+					"SAVE randomized trial in adults with moderate-to-severe OSA and cardiovascular disease; CPAP improved symptoms and quality of life but did not prevent cardiovascular events in the intention-to-treat analysis.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does regular physical activity reduce the risk of early death and chronic disease?",
 		slug: "does-regular-physical-activity-reduce-the-risk-of-early-death-and-chronic-disease",
 		status: "published",
