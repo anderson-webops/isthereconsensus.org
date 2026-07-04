@@ -4545,7 +4545,7 @@ const rawClaims: SeedClaim[] = [
 			"The success of ART is evidence that controlling HIV changes the disease course, not evidence that HIV is irrelevant."
 		],
 		editorSummary:
-			"This page should be a calm foundation for the site's HIV cluster: HIV causes AIDS, AIDS is the severe late stage, and modern ART turns the causal pathway into a preventable clinical outcome for many people when care is accessible and sustained.",
+			"HIV causes AIDS, and AIDS is the severe late stage of untreated or uncontrolled HIV infection. Modern ART can interrupt that pathway for many people when testing, treatment access, and sustained care are in place.",
 		uncertaintySummary:
 			"The causal claim is settled. Remaining uncertainty is about implementation, individual progression speed, long-term treated comorbidity risk, immune recovery after late treatment, resistance, and how best to reach people before advanced HIV disease.",
 		searchCutoffAt: "2026-07-04T04:15:38.000Z",
@@ -4663,7 +4663,7 @@ const rawClaims: SeedClaim[] = [
 			"PrEP effectiveness numbers assume adherence; missed pills, missed injections, or starting during undetected acute HIV infection change the risk picture."
 		],
 		editorSummary:
-			"This page should make a lifesaving prevention tool visible without turning it into a magic shield. The consensus is strong that PrEP works, and the practical caveat is that adherence, testing, and comprehensive sexual-health care matter.",
+			"PrEP is a highly effective HIV prevention tool when used as prescribed. It is not a complete sexual-health shield: adherence, HIV testing, product choice, and STI prevention still matter.",
 		uncertaintySummary:
 			"The core effectiveness claim is strong. Remaining uncertainty is about real-world implementation, adherence support, product choice, resistance after breakthrough infection, pregnancy data for newer products, and access inequities.",
 		searchCutoffAt: "2026-07-02T23:13:42.000Z",
@@ -4771,7 +4771,7 @@ const rawClaims: SeedClaim[] = [
 			"Lower protection against skin-to-skin STI transmission does not mean condoms do nothing; it means protection varies by infection and exposure site."
 		],
 		editorSummary:
-			"This page should present condoms as a practical, low-cost HIV and STI risk-reduction tool without overselling them. Correct and consistent use helps, and the caveats are part of the answer.",
+			"Condoms are a practical, low-cost way to reduce HIV and many STI risks without making sex risk-free. Correct and consistent use is central, and the caveats are part of the answer.",
 		uncertaintySummary:
 			"The consensus is strongest for HIV and fluid-transmitted STIs with correct, consistent use. Real-world effectiveness varies by adherence, condom type, fit, lubricant, breakage or slippage, sex act, STI route, and whether exposed skin or lesions are covered.",
 		searchCutoffAt: "2026-07-04T19:56:49.000Z",
@@ -4888,7 +4888,7 @@ const rawClaims: SeedClaim[] = [
 			"Cure is not the same as immunity. People can be reinfected after successful treatment, so prevention and follow-up still matter."
 		],
 		editorSummary:
-			"This page should make the modern treatment shift explicit: hepatitis C moved from a hard-to-treat chronic infection to one that is usually curable, but testing, access, reinfection prevention, and liver follow-up remain the practical bottlenecks.",
+			"Modern treatment changed hepatitis C from a hard-to-treat chronic infection into one that is usually curable. The main bottlenecks are testing, access, reinfection prevention, and liver follow-up.",
 		uncertaintySummary:
 			"The curability claim is strong for guideline-recommended DAA treatment. Remaining uncertainty is mainly about implementation, access, reinfection, special populations, drug interactions, and long-term outcomes after cure in people with advanced liver disease.",
 		searchCutoffAt: "2026-07-03T21:03:45.000Z",
@@ -4983,7 +4983,7 @@ const rawClaims: SeedClaim[] = [
 			"Lower is not automatically better for every person; targets should reflect overall cardiovascular risk and the chance of adverse effects."
 		],
 		editorSummary:
-			"This page should make hypertension feel like a practical prevention issue rather than an abstract vital sign. The consensus is strong that treating high blood pressure reduces cardiovascular risk, while individualized targets and access remain the hard implementation questions.",
+			"High blood pressure is a practical prevention issue, not just a number on a chart. Treating it reduces cardiovascular risk, while individual targets, side effects, adherence, and access shape the real-world benefit.",
 		uncertaintySummary:
 			"The direction of benefit is high-certainty. Remaining uncertainty is about individualized targets, drug choice, side-effect tradeoffs, adherence, and delivery models that close control gaps.",
 		searchCutoffAt: "2026-07-02T23:24:05.000Z",
@@ -5077,7 +5077,7 @@ const rawClaims: SeedClaim[] = [
 			"Muscle symptoms can occur and should be taken seriously, but blinded trial evidence does not support the idea that severe statin harms are common for most indicated users."
 		],
 		editorSummary:
-			"This page should avoid the usual all-or-nothing statin fight. The consensus is strong that statins reduce cardiovascular events in elevated-risk adults; the practical judgment is who crosses the risk threshold where the absolute benefit is worth daily medication.",
+			"Statins reduce cardiovascular events for elevated-risk adults, but the key question is baseline risk and absolute benefit. The strongest summary avoids both 'everyone needs one' and 'no one benefits' framing.",
 		uncertaintySummary:
 			"The risk-reduction claim is strong for adults aged 40 to 75 at elevated cardiovascular risk. Uncertainty is greater for starting statins after age 75 without prior cardiovascular disease, for very low-risk adults, and for individual tolerance.",
 		searchCutoffAt: "2026-07-02T23:24:05.000Z",
@@ -5161,7 +5161,7 @@ const rawClaims: SeedClaim[] = [
 			"HIV and HCV evidence should not be flattened into one certainty level: HCV transmission is harder to interrupt, and combined services appear more effective than syringe access alone."
 		],
 		editorSummary:
-			"This page should answer the policy question directly without overselling harm reduction. SSPs reduce infectious-disease risk and do not appear to increase drug use or crime; coverage, implementation quality, and treatment links shape the benefit.",
+			"SSPs reduce infectious-disease risk and do not appear to increase drug use or crime. The strength of benefit depends on coverage, implementation quality, and links to testing, treatment, naloxone, and OUD care.",
 		uncertaintySummary:
 			"The consensus is broad rather than absolute. HIV and injection-risk evidence is stronger than HCV evidence for syringe access alone, and most evidence is observational. Available community evidence does not show increased drug use or crime.",
 		evidenceCertainty: "moderate",
@@ -5257,7 +5257,7 @@ const rawClaims: SeedClaim[] = [
 		consensusBand: "strong",
 		confidenceScore: 96,
 		bottomLine:
-				"Yes. Evidence-based medications for opioid use disorder, especially methadone and buprenorphine when people remain in treatment, substantially reduce overdose-related and overall mortality. They are medical treatment, not simply replacing one addiction with another. Naltrexone is also FDA-approved, but mortality evidence is less consistent and depends heavily on successful initiation and retention.",
+			"Yes. Evidence-based medications for opioid use disorder, especially methadone and buprenorphine when people remain in treatment, substantially reduce overdose-related and overall mortality. They are medical treatment, not simply replacing one addiction with another. Naltrexone is also FDA-approved, but mortality evidence is less consistent and depends heavily on successful initiation and retention.",
 		stableCore: [
 			"CDC says medications for opioid use disorder include buprenorphine, methadone, and extended-release naltrexone, and that buprenorphine and methadone substantially reduce overdose-related and overall mortality.",
 			"SAMHSA describes buprenorphine, methadone, and naltrexone as FDA-approved evidence-based OUD medications that relieve cravings and withdrawal, restore normal body functions, and do not just substitute one drug for another.",
@@ -5280,9 +5280,9 @@ const rawClaims: SeedClaim[] = [
 			"Naloxone can reverse an overdose, but it is not a substitute for ongoing OUD treatment."
 		],
 		editorSummary:
-				"This page should connect the naloxone rescue page to longer-term treatment. The strong consensus is that methadone and buprenorphine reduce mortality for people with OUD; the difficult questions are access, retention, medication choice, and safe transitions.",
+			"Methadone and buprenorphine reduce mortality for people with OUD, especially when treatment is retained. The difficult practical questions are access, retention, medication choice, and safer transitions between care settings.",
 		uncertaintySummary:
-				"The mortality direction is strong for methadone and buprenorphine, mostly from large cohort evidence and systematic reviews because randomized withholding would often be unethical. Evidence differs by medication, with naltrexone more sensitive to successful induction and retention, and individual treatment choice should remain clinical and patient-centered.",
+			"The mortality direction is strong for methadone and buprenorphine, mostly from large cohort evidence and systematic reviews because randomized withholding would often be unethical. Evidence differs by medication, with naltrexone more sensitive to successful induction and retention, and individual treatment choice should remain clinical and patient-centered.",
 		searchCutoffAt: "2026-07-04T03:40:21.000Z",
 		lastRetractionCheckAt: "2026-07-04T03:40:21.000Z",
 		changeLog: [
@@ -5391,7 +5391,7 @@ const rawClaims: SeedClaim[] = [
 			"Making naloxone available is harm reduction, not an endorsement of unsafe drug use; it keeps people alive long enough to receive care."
 		],
 		editorSummary:
-			"This page should be practical and urgent. The consensus is strong that naloxone reverses opioid overdose and saves lives, while the implementation questions are access, training, repeat dosing, and linkage to longer-term treatment.",
+			"Naloxone rapidly reverses opioid overdose when given in time and saves lives. The practical questions are access, training, repeat dosing for potent or long-acting opioids, and linkage to longer-term treatment.",
 		uncertaintySummary:
 			"The pharmacologic reversal claim is high-certainty. Community mortality evidence is necessarily more observational because randomized withholding is ethically difficult, but systematic reviews and public-health agencies strongly support naloxone distribution.",
 		searchCutoffAt: "2026-07-02T23:24:05.000Z",
