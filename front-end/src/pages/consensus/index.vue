@@ -501,6 +501,53 @@ function showAllTopics() {
 }
 
 @media (max-width: 760px) {
+	.directory {
+		gap: 18px;
+	}
+
+	.directory__controls,
+	.results-block,
+	.topic-row {
+		border-radius: 16px;
+	}
+
+	.directory__controls,
+	.results-block {
+		padding: 16px;
+	}
+
+	.directory__controls {
+		gap: 10px;
+	}
+
+	.results-search input {
+		min-height: 46px;
+		padding: 12px 14px;
+		border-radius: 14px;
+	}
+
+	.filter-stack {
+		gap: 7px;
+	}
+
+	.filter {
+		min-height: 42px;
+		padding: 9px 12px;
+		line-height: 1.2;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
+	.directory__header p,
+	.section-heading p,
+	.topic-row p,
+	.empty-state,
+	.results-count {
+		line-height: 1.58;
+	}
+
 	.topic-row {
 		grid-template-columns: 1fr;
 		gap: 12px;
