@@ -6083,6 +6083,188 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "biology-and-evolution",
+		title: "Are transitional fossils missing from the fossil record?",
+		slug: "are-transitional-fossils-missing-from-the-fossil-record",
+		status: "published",
+		consensusBand: "strong",
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		confidenceScore: 95,
+		reviewMode: "standard",
+		bottomLine:
+			"No. The fossil record is incomplete, but transitional fossils are not missing in the way this claim implies. Paleontologists have many fossils and fossil sequences with transitional features, including fish-to-tetrapod, reptile-to-mammal, whale, bird, hoofed-mammal, and human-evolution examples. The better caveat is that fossils usually document branching histories and feature transitions, not a perfect frame-by-frame chain of direct ancestors.",
+		stableCore: [
+			"The fossil record is patchy because fossilization, preservation, erosion, exposure, discovery, and sampling are uneven.",
+			"That incompleteness does not erase the many known fossils with transitional combinations of traits.",
+			"National Academies resources state that claims about fossil gaps undermining evolution are false and point to predicted discoveries such as Tiktaalik.",
+			"UC Berkeley describes fossil evidence as incomplete but still clearly showing life changing through evolution over billions of years.",
+			"Modern paleontology often tests transitions of features and branching relationships rather than demanding a single ladder of direct ancestors."
+		],
+		openQuestions: [
+			"Which specific fossils sit closest to important branching points for poorly sampled groups?",
+			"How should paleontologists combine fossil anatomy, stratigraphy, phylogenetics, developmental biology, and molecular evidence when relationships are uncertain?",
+			"How can educators explain transitional features without implying every transitional fossil must be a direct ancestor of a living species?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, well-dated fossil discoveries appearing in impossible geological order, such as mammals before their plausible ancestors or humans with dinosaurs in undisturbed strata.",
+			"A better-supported explanation that fits fossil order, morphology, stratigraphy, genetics, comparative anatomy, and biogeography without common descent.",
+			"Major paleontology and evolutionary-biology institutions abandoning transitional-feature evidence as scientifically useful."
+		],
+		misconceptions: [
+			"'Missing link' makes evolution sound like a straight chain, when evolutionary history is a branching tree.",
+			"A transitional fossil does not need to be half of one modern animal and half of another; it can preserve a mosaic of ancestral and derived features.",
+			"Not knowing every ancestor-descendant link is not the same as having no evidence for evolutionary transitions.",
+			"New fossil discoveries often revise details of timing and relationship without overturning the larger pattern of common descent."
+		],
+		editorSummary:
+			"This page should answer the fossil-gap objection without overstating completeness. The strongest public explanation is that transitional features are common and useful, while the fossil record is still sampled unevenly and usually reconstructs branches rather than direct lineages.",
+		uncertaintySummary:
+			"The existence and scientific value of transitional fossils is settled. Uncertainty remains around exact placements, direct ancestry, timing, and which features evolved in which sequence for particular groups.",
+		uncertaintyDrivers: [
+			{
+				type: "indirectness",
+				detail:
+					"Fossils often preserve transitional features near branching points rather than proving a direct ancestor-descendant chain."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Dating resolution, erosion, preservation, and incomplete sampling can blur the exact sequence of character changes."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Public explanations need to avoid the outdated ladder-like 'missing link' frame while still naming concrete fossil examples."
+			}
+		],
+		searchDatabases: ["Consensus", "National Academies", "UC Berkeley Understanding Evolution", "Cambridge Core"],
+		searchCutoffAt: "2026-07-04T21:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:45:00.000Z",
+		inclusionRules: [
+			"Prioritize institutional evolution-education anchors, paleontology reviews, and landmark fossils that document feature transitions.",
+			"Separate evidence for transitional features from claims that a specific fossil is a direct ancestor.",
+			"Use examples that are placed in geological and phylogenetic context rather than isolated visual resemblance."
+		],
+		exclusionRules: [
+			"Do not use creationist quote-mining as evidence; summarize it only as a misconception when needed.",
+			"Do not imply the fossil record is complete or that every predicted intermediate should already be found.",
+			"Do not present evolution as a linear ladder from primitive to modern forms."
+		],
+		evidenceSummaries: [
+			{
+				question: "Are transitional fossils absent in a way that undermines evolution?",
+				population: "Fossil evidence across major evolutionary transitions and public claims about missing links",
+				finding:
+					"Scientific and educational sources agree that the fossil record is incomplete but contains many transitional-feature fossils and sequences that support evolutionary history.",
+				effectDirection: "supports",
+				magnitude:
+					"Examples span multiple groups, including Tiktaalik in the fish-to-tetrapod transition and documented transitions among hoofed mammals, whales, birds, mammals, and hominins.",
+				certainty: "high",
+				limitations: [
+					"Exact direct ancestry is often uncertain.",
+					"Some intervals and soft-bodied groups remain poorly sampled.",
+					"New fossils can change timing, placement, or sequence without eliminating the broader transitional pattern."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Academies",
+				role: "Consensus education anchor for fossil-order and transitional-fossil evidence."
+			},
+			{
+				name: "UC Berkeley Understanding Evolution",
+				role: "Public education anchor for fossil evidence and transitional forms."
+			},
+			{
+				name: "Paleontological Society and peer-reviewed paleontology literature",
+				role: "Discipline anchor for how paleontologists interpret transitional features in an incomplete record."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T21:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial transitional-fossil claim page published from National Academies, UC Berkeley, Cambridge Core, and Consensus-located paleontology sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Evolution Resources",
+				publisher: "National Academies",
+				year: 2026,
+				url: "https://www.nationalacademies.org/evolution-resources",
+				stance: "supports",
+				note:
+					"Public National Academies source stating that fossil-gap claims undermining evolution are false and citing predicted transitional discoveries such as Tiktaalik.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Fossil evidence",
+				publisher: "UC Berkeley Understanding Evolution",
+				year: 2020,
+				url: "https://evolution.berkeley.edu/lines-of-evidence/fossil-evidence/",
+				stance: "supports",
+				note:
+					"Public education source explaining that the fossil record is incomplete but clearly shows life changing over deep time through evolution.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Are There Transitional Forms in the Fossil Record?",
+				publisher: "The Paleontological Society Papers",
+				year: 1999,
+				url:
+					"https://www.cambridge.org/core/journals/the-paleontological-society-papers/article/abs/are-there-transitional-forms-in-the-fossil-record/2F691101D8309A1F6901AC7554947034",
+				doi: "10.1017/S108933260000053X",
+				stance: "supports",
+				note:
+					"Directly addresses the objection, explaining that the problem is not absence of transitional fossils but unrealistic expectations about complete transitions of forms instead of features.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "A Devonian tetrapod-like fish and the evolution of the tetrapod body plan",
+				publisher: "Nature",
+				year: 2006,
+				url:
+					"https://consensus.app/papers/a-devonian-tetrapodlike-fish-and-the-evolution-of-the-daeschler-shubin/2c7fb09484a8559c8bc8bd112bd0fe07/",
+				stance: "supports",
+				note:
+					"Tiktaalik discovery paper reporting a well-preserved Late Devonian fish intermediate between finned fish and limbed tetrapods, with a mobile neck and functional wrist joint.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Evolutionary Transitions in the Fossil Record of Terrestrial Hoofed Mammals",
+				publisher: "Evolution: Education and Outreach",
+				year: 2009,
+				url:
+					"https://consensus.app/papers/evolutionary-transitions-in-the-fossil-record-of-prothero/5afd50235f975cbcbdced05c96c8f614/",
+				stance: "supports",
+				note:
+					"Review-style education article documenting transitional fossils across hoofed mammals, including horses, rhinos, tapirs, camels, giraffes, elephants, and manatees.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Species in the fossil record: concepts, trends, and transitions",
+				publisher: "Paleobiology",
+				year: 1985,
+				url:
+					"https://consensus.app/papers/species-in-the-fossil-record-concepts-trends-and-gingerich/67187b6137e05257b5b7df82a7d9f8e2/",
+				stance: "context",
+				note:
+					"Paleobiology review describing morphological continuity, fossil-record limits, anagenesis, cladogenesis, and why fossil species boundaries are often time-based and approximate.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "biology-and-evolution",
 		title: "Did humans evolve from chimpanzees living today?",
 		slug: "did-humans-evolve-from-chimpanzees-living-today",
 		status: "published",
@@ -9344,7 +9526,7 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 97,
 		evidenceCertainty: "high",
 		bottomLine:
-			"Yes. Leaded gasoline was a major population source of lead exposure, and phasing it out was followed by large, measured declines in blood lead levels, especially in children. That success did not make lead exposure disappear: old paint, dust, soil, plumbing, aviation fuel, industry, and imported products can still matter locally.",
+			"Yes. Leaded gasoline was a major population source of lead exposure. After phaseout, measured blood lead levels fell sharply, especially in children. Exposure did not disappear: old paint, dust, soil, plumbing, aviation fuel, industry, and imported products can still matter locally.",
 		stableCore: [
 			"Lead is a neurotoxin, and public-health agencies do not identify a safe blood lead level for children.",
 			"Leaded gasoline added lead to air, dust, and soil at population scale, making it more than an individual household problem.",
@@ -9371,7 +9553,7 @@ const rawClaims: SeedClaim[] = [
 		editorSummary:
 			"This historical case should connect the site's existing lead-health page to a concrete public-health success: source removal changed measured exposure, while legacy and local sources still require prevention.",
 		uncertaintySummary:
-			"The core claim is strong: leaded gasoline was a major exposure source, its removal was followed by large blood-lead declines, and childhood lead exposure is harmful. Remaining uncertainty concerns the size of downstream social effects, local source attribution, and how to prioritize remediation where exposure persists.",
+			"The core claim is strong: lead from gasoline was a major exposure source; removing it was followed by large blood-lead declines; and childhood lead exposure is harmful. Remaining uncertainty is local: which sources still drive exposure, how to prioritize cleanup, and the size of downstream social effects.",
 		uncertaintyDrivers: [
 			{
 				type: "implementation",
