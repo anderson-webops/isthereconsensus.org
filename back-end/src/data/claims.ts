@@ -5223,6 +5223,187 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "nutrition-and-diet",
+		title:
+			"Is higher potassium intake from foods or potassium salt substitutes recommended for blood pressure?",
+		slug:
+			"is-higher-potassium-intake-from-foods-or-potassium-salt-substitutes-recommended-for-blood-pressure",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Broadly yes, with clinical caveats. WHO and cardiovascular groups recommend higher potassium intake from foods to help reduce adult blood pressure and cardiovascular risk. Potassium-enriched salt substitutes can lower blood pressure and may reduce cardiovascular events in appropriate adults, especially where much salt is added at home, but people with kidney disease or medications that raise potassium need clinician guidance before using them.",
+		stableCore: [
+			"WHO recommends increasing potassium intake from food to reduce blood pressure and risk of cardiovascular disease, stroke, and coronary heart disease in adults, and suggests at least 90 mmol/day, or 3510 mg/day, for adults.",
+			"The American Heart Association recommends 3500 to 5000 mg of potassium daily, ideally from diet, for people trying to prevent or treat high blood pressure.",
+			"Randomized-trial meta-analyses find potassium-enriched, lower-sodium salt substitutes lower systolic blood pressure by about 4 to 5 mm Hg on average compared with regular salt.",
+			"The largest outcomes trial, SSaSS, found lower rates of stroke, major cardiovascular events, and death among high-risk rural Chinese adults assigned to a 75% sodium chloride and 25% potassium chloride salt substitute.",
+			"Outcome evidence for salt substitutes is strongest in high-risk populations with high discretionary salt use; safety and generalizability are less certain for people with impaired kidney function, hyperkalemia risk, or settings where most sodium comes from packaged and restaurant foods."
+		],
+		openQuestions: [
+			"How well do salt-substitute outcome benefits generalize beyond rural Chinese or other high-discretionary-salt settings?",
+			"Which groups need screening or avoidance because of chronic kidney disease, potassium-sparing medications, ACE inhibitors, ARBs, potassium supplements, or other hyperkalemia risks?",
+			"How should public-health programs combine potassium salt substitutes with iodized-salt policies, food reformulation, processed-food sodium reduction, and clinician counseling?",
+			"How much benefit comes from potassium itself versus sodium reduction, healthier overall dietary patterns, or complete substitution of regular salt?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized or pragmatic trials outside high-discretionary-salt settings showing no meaningful blood-pressure or cardiovascular benefit from potassium salt substitutes.",
+			"Major WHO, AHA, or comparable guideline revisions withdrawing recommendations to increase potassium from foods for adult blood-pressure or cardiovascular-risk reduction.",
+			"Strong safety evidence showing potassium salt substitutes create unacceptable hyperkalemia risk in broad populations even with labeling and clinician screening."
+		],
+		misconceptions: [
+			"'More potassium' does not mean everyone should take potassium pills; food-first guidance and kidney/medication caveats matter.",
+			"Potassium salt substitutes are not the same as simply eating more fruits, vegetables, legumes, nuts, or other potassium-rich foods.",
+			"A benefit in high-risk or high-home-salt populations does not prove every household, restaurant, or packaged-food setting will get the same outcome benefit.",
+			"People with kidney disease or medicines that affect potassium handling can be harmed by potassium-heavy substitutes even when the general population may benefit."
+		],
+		editorSummary:
+			"Potassium-rich foods are part of the cardiovascular consensus, and potassium-enriched salt substitutes are promising for appropriate adults. The practical advice still needs clear kidney, medication, iodization, and setting-specific caveats.",
+		uncertaintySummary:
+			"The blood-pressure direction is fairly stable, especially for adults with elevated blood pressure or high sodium intake. Cardiovascular-outcome evidence for salt substitutes is promising but more dependent on one large Chinese trial and high-discretionary-salt settings, so implementation and safety boundaries should stay visible.",
+		searchDatabases: ["Consensus", "WHO", "American Heart Association"],
+		searchCutoffAt: "2026-07-04T16:04:33.000Z",
+		lastRetractionCheckAt: "2026-07-04T16:04:33.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T16:04:33.000Z",
+				kind: "publication",
+				summary:
+					"Initial potassium intake and salt-substitute blood-pressure page published from WHO, AHA, SSaSS, and Consensus-located meta-analysis evidence."
+			}
+		],
+		inclusionRules: [
+			"Prioritize WHO and cardiovascular-guideline sources, randomized trials, systematic reviews, and meta-analyses that distinguish dietary potassium, supplements, and potassium-enriched salt substitutes.",
+			"Separate blood-pressure effects from harder cardiovascular outcome evidence, and separate general food advice from salt-substitute use.",
+			"Track kidney disease, medication, hyperkalemia, iodization, and food-system caveats as part of the core claim."
+		],
+		exclusionRules: [
+			"Do not generalize potassium supplement evidence to unsupervised high-dose supplement use.",
+			"Do not treat salt substitutes as safe for everyone without kidney and medication caveats.",
+			"Do not infer cardiovascular-event benefits for every food system when the strongest trial evidence comes from high-risk populations with high discretionary salt use."
+		],
+		evidenceSummaries: [
+			{
+				question:
+					"Do higher potassium intake and potassium-enriched salt substitutes lower blood pressure?",
+				population:
+					"Adults, especially those with elevated blood pressure, hypertension, or high sodium intake",
+				finding:
+					"Higher potassium intake from food is recommended for blood-pressure and cardiovascular-risk reduction, and potassium-enriched salt substitutes lower blood pressure in randomized-trial syntheses. Outcome benefits are promising but more setting-dependent.",
+				effectDirection: "supports",
+				magnitude:
+					"Recent salt-substitute meta-analyses report average systolic blood-pressure reductions around 4 to 5 mm Hg; a 2025 dose-response meta-analysis found larger potassium-related blood-pressure reductions among people with hypertension than among those without hypertension.",
+				certainty: "moderate",
+				limitations: [
+					"Salt-substitute outcome effects are heavily influenced by SSaSS, a large high-risk rural Chinese trial.",
+					"People with impaired kidney function or medications affecting potassium handling were often excluded or require special caution.",
+					"Food-system context matters because salt substitutes work best where people control much of the salt added to food."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Global nutrition guideline anchor for food-based potassium intake and lower-sodium salt substitutes."
+			},
+			{
+				name: "American Heart Association",
+				role: "Clinical public-health anchor for dietary potassium, blood-pressure control, and salt-substitute cautions."
+			},
+			{
+				name: "Salt Substitute and Stroke Study / systematic reviews",
+				role: "Randomized-trial and synthesis anchor for blood-pressure and cardiovascular-outcome evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Increasing potassium intake to reduce blood pressure and risk of cardiovascular diseases in adults",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/tools/elena/interventions/potassium-cvd-adults",
+				stance: "supports",
+				note:
+					"WHO anchor recommending increased potassium intake from food to reduce adult blood pressure and cardiovascular risk, with a suggested adult intake of at least 3510 mg/day.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Use of lower-sodium salt substitutes: WHO guideline",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/publications/i/item/9789240105591",
+				stance: "supports",
+				note:
+					"WHO guideline anchor for lower-sodium salt substitutes as a sodium-reduction strategy, including implementation and potassium-safety context.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "How Potassium Can Help Prevent or Treat High Blood Pressure",
+				publisher: "American Heart Association",
+				year: 2025,
+				url:
+					"https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure/how-potassium-can-help-control-high-blood-pressure",
+				stance: "supports",
+				note:
+					"AHA public-health source recommending 3500 to 5000 mg/day potassium, ideally from diet, and cautioning that salt substitutes can raise potassium too much in people with kidney disease or relevant medications.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Effect of Salt Substitution on Cardiovascular Events and Death.",
+				publisher: "The New England Journal of Medicine",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/effect-of-salt-substitution-on-cardiovascular-events-and-neal-wu/d11848e1f5e45901ae1fc1bb8879c2d1/",
+				stance: "supports",
+				note:
+					"SSaSS randomized 20,995 high-risk rural Chinese adults and found lower stroke, major cardiovascular-event, and all-cause mortality rates with a 75% sodium chloride and 25% potassium chloride salt substitute.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Comparative effects of salt substitutes on blood pressure, cardiovascular events and mortality: a systematic review and network meta-analysis",
+				publisher: "BMC Medicine",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/comparative-effects-of-salt-substitutes-on-blood-pressure-lai-nesrallah/bd155b44e4885f3da6a4aa343b3182e4/",
+				stance: "supports",
+				note:
+					"Network meta-analysis of 34 randomized trials and 37,063 participants finding blood-pressure and likely outcome benefits for moderate-potassium, low-sodium substitutes, while emphasizing SSaSS dominance and limited generalizability beyond Chinese high-discretionary-salt settings.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effects of salt substitutes on clinical outcomes: a systematic review and meta-analysis",
+				publisher: "Heart",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/effects-of-salt-substitutes-on-clinical-outcomes-a-yin-rodgers/cd26bac51d215a7290923bda33f3243a/",
+				stance: "supports",
+				note:
+					"Meta-analysis of 21 trials and 31,949 participants finding systolic blood-pressure reduction of 4.61 mm Hg and protective associations for total mortality, cardiovascular mortality, and cardiovascular events.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effect of changes in potassium intake on blood pressure: a dose-response meta-analysis of randomized clinical trials (2000-2024)",
+				publisher: "Clinical Kidney Journal",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/effect-of-changes-in-potassium-intake-on-blood-pressure-a-granal-sourd/6fed7122dddd5a9696f6261d0e26cc6a/",
+				stance: "supports",
+				note:
+					"RCT dose-response meta-analysis reporting larger blood-pressure reductions from increased potassium among people with hypertension than among those without hypertension, while cautioning that the number of trials was limited.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is the Sun causing recent global warming?",
 		slug: "is-the-sun-causing-recent-global-warming",
