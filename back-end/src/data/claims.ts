@@ -12071,13 +12071,13 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 85,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Usually no. Honest uncertainty communication does not reliably destroy trust in science, and in some settings it can protect trust by showing transparency and preparing people for updates. The caveat is important: vague uncertainty, conflict framing, politicized topics, and uncertainty about low-quality evidence can reduce confidence or be exploited by motivated actors. The best-supported approach is specific, quantified, decision-relevant uncertainty paired with what is known, what is not known, and what will be updated.",
+			"Usually no. Honest uncertainty communication does not reliably destroy trust in science, and it can protect trust by showing what is known, what is not known, and what may change. The caveat matters: vague caveats, conflict framing, politicized topics, and weak evidence can reduce confidence. The best-supported approach is specific, quantified, decision-relevant uncertainty.",
 		stableCore: [
-			"Communicating uncertainty often makes people perceive more uncertainty, but large experiments and reviews generally find little or no overall damage to trust in the communicator or source.",
-			"A 2026 systematic review of 24 articles found uncertainty communication generally had a positive impact on trust in science, while downplaying uncertainty may foster distrust.",
-			"A 2026 systematic review and meta-analysis of 28 experimental studies found no overall effect of uncertainty communication on trust in the source, with most studies yielding null results.",
-			"A 2025 Science Communication meta-analysis of 43 empirical articles found small positive credibility effects for epistemic uncertainty, while consensus and technical uncertainty had slightly negative attitude effects without reducing credibility.",
-			"Reviews distinguish uncertainty about measurement ranges or probabilities from uncertainty framed as scientific disagreement or conflict; disagreement framing is more likely to harm credibility or beliefs.",
+			"Uncertainty messages often make people perceive more uncertainty, but large experiments and reviews find little or no overall damage to source trust.",
+			"A 2026 systematic review of 24 articles found uncertainty communication generally improved trust in science, while downplaying uncertainty may foster distrust.",
+			"A 2026 systematic review and meta-analysis of 28 experiments found no overall effect on source trust, with most studies yielding null results.",
+			"A 2025 Science Communication meta-analysis found small positive credibility effects for epistemic uncertainty; consensus and technical uncertainty slightly lowered attitudes without reducing credibility.",
+			"Reviews distinguish measurement ranges or probabilities from disagreement or conflict framing, which is more likely to harm credibility or beliefs.",
 			"Vague statements that uncertainty exists can perform worse than quantified ranges or clear explanations of why evidence is uncertain."
 		],
 		openQuestions: [
@@ -12087,7 +12087,7 @@ const rawClaims: SeedClaim[] = [
 			"How durable are trust effects after evidence changes, public agencies revise advice, or opponents attack the uncertainty language?"
 		],
 		whatWouldChangeMinds: [
-			"Large preregistered field experiments showing that transparent, specific uncertainty communication routinely lowers trust more than clear but less transparent communication across science domains.",
+			"Large preregistered field experiments showing that transparent, specific uncertainty communication routinely lowers trust across science domains.",
 			"Meta-analyses showing consistent negative trust effects for quantified or well-explained uncertainty, not just vague caveats or conflict framing.",
 			"Evidence that downplaying uncertainty produces better long-term trust after evidence updates, corrections, or policy changes."
 		],
@@ -12098,9 +12098,9 @@ const rawClaims: SeedClaim[] = [
 			"Scientific disagreement is not the same type of uncertainty as a confidence interval, and audiences respond differently to those frames."
 		],
 		editorSummary:
-			"This page should support the site's tone: credible summaries should not pretend certainty is higher than it is, but uncertainty needs structure, context, and decision relevance rather than vague hedging.",
+			"Credible summaries should not inflate certainty. They should make uncertainty specific, contextual, and useful for decisions rather than leaving readers with vague hedging.",
 		uncertaintySummary:
-			"The broad conclusion is that transparent uncertainty communication usually does not destroy source trust. Effects vary by uncertainty type, wording, topic politicization, prior beliefs, evidence quality, and whether the uncertainty is quantified or merely asserted.",
+			"Transparent uncertainty communication usually does not destroy source trust. Effects vary by uncertainty type, wording, topic politicization, prior beliefs, evidence quality, and whether uncertainty is quantified or merely asserted.",
 		uncertaintyDrivers: [
 			{
 				type: "implementation",
@@ -12193,7 +12193,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/how-communication-of-scientific-uncertainty-affects-schuster-scheu/e9c39ed915db57c780c95165c940e5c0/",
 				stance: "supports",
 				note:
-					"Systematic review of 24 articles finding uncertainty communication generally had a positive impact on trust in science, while warning about sensitive and politicized topics.",
+					"Systematic review of 24 articles finding uncertainty communication generally improved trust in science, with caveats for sensitive and politicized topics.",
 				order: 1
 			},
 			{
@@ -12205,7 +12205,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/the-impact-of-uncertainty-communication-on-trust-in-its-dries-schneider/74b8c3f387d1570e83d88b1df9c42612/",
 				stance: "supports",
 				note:
-					"Random-effects meta-analysis of 28 studies finding no overall effect of uncertainty communication on source trust, with most studies yielding null results.",
+					"Random-effects meta-analysis of 28 studies finding no overall effect on source trust, with most studies yielding null results.",
 				order: 2
 			},
 			{
@@ -12217,7 +12217,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/a-metaanalysis-synthesizing-the-effects-of-three-guo-liu/866c2359099e5514a7a5077e0d29fca2/",
 				stance: "supports",
 				note:
-					"Meta-analysis of 43 empirical articles distinguishing epistemic, consensus, and technical uncertainty effects on credibility and attitudes.",
+					"Meta-analysis of 43 empirical articles separating epistemic, consensus, and technical uncertainty effects on credibility and attitudes.",
 				order: 3
 			},
 			{
@@ -12229,7 +12229,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/the-effects-of-communicating-uncertainty-on-public-trust-bles-linden/ea014a4798f2566085340c5dc1c14a1b/",
 				stance: "supports",
 				note:
-					"Five experiments including a BBC News field experiment with 5,780 participants found communicated uncertainty increased perceived uncertainty but caused only small trust decreases, mostly for verbal uncertainty.",
+					"Five experiments, including a BBC News field experiment with 5,780 participants, found only small trust decreases, mostly for verbal uncertainty.",
 				order: 4
 			},
 			{
@@ -12241,7 +12241,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/a-review-of-the-effects-of-uncertainty-in-public-science-gustafson-rice/e1d4bda6eed856b28a95e6e301a90c48/",
 				stance: "context",
 				note:
-					"Review of 48 experimental findings showing negative effects were concentrated in disagreement or conflict framing, while quantified ranges and probabilities had positive or null effects.",
+					"Review of 48 experimental findings: negative effects clustered in disagreement or conflict framing; quantified ranges were positive or null.",
 				order: 5
 			},
 			{
@@ -12253,7 +12253,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/the-effects-of-communicating-uncertainty-around-kerr-bles/c0a6ccdaa0d25e628349917f3b6a8124/",
 				stance: "debate",
 				note:
-					"Large COVID-19 statistics experiments found numeric ranges minimally affected source trust, while vague statements about uncertainty reduced trust in both numbers and source.",
+					"Large COVID-19 statistics experiments found numeric ranges barely affected trust, while vague uncertainty reduced trust in numbers and source.",
 				order: 6
 			},
 			{
@@ -18089,6 +18089,147 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Consensus-fetched Cochrane review of interventions to increase seat-belt use; useful for implementation caveats rather than crash-injury effect size.",
 				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do child car seats and booster seats reduce crash injuries and deaths?",
+		slug: "do-child-car-seats-and-booster-seats-reduce-crash-injuries-and-deaths",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Age- and size-appropriate child restraints reduce crash injury and death risk when they are correctly installed and used. Infants and toddlers need car seats, older children often need booster seats until the vehicle belt fits, and children younger than 13 should ride in the back seat. The benefit depends on fit, installation, harnessing, seating position, and not moving children to the next stage too early.",
+		stableCore: [
+			"CDC says car seats reduce crash-injury risk by 71% to 82% compared with seat belts alone, and booster seats reduce serious-injury risk by 45% for children ages 4 to 8.",
+			"NHTSA estimates correctly used child restraints reduce fatalities by 71% for infants and 54% for children ages 1 to 4 in passenger cars.",
+			"NHTSA and CDC both emphasize progression by age, size, seat limits, and belt fit: rear-facing, forward-facing harness, booster, then lap-and-shoulder belt.",
+			"AAP recommends rear-facing seats as long as possible, forward-facing harnesses after that, belt-positioning boosters until belts fit, and rear-seat riding for children younger than 13.",
+			"Crash-study evidence supports child restraints and boosters over premature seat-belt-only use, while booster-seat estimates vary across observational designs."
+		],
+		openQuestions: [
+			"How can families get affordable seats, installation help, and clear fit checks without turning safety guidance into blame?",
+			"Which laws, distribution programs, and enforcement approaches increase correct use without worsening racial, income, or rural access disparities?",
+			"How should guidance adapt for older children, small adults, ride shares, taxis, school transport, children with disabilities, and vehicles with unusual belt geometry?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled crash datasets showing no injury or death reduction from age- and size-appropriate child restraints compared with otherwise similar seat-belt-only or unrestrained travel.",
+			"Major CDC, NHTSA, AAP, or injury-prevention reassessments withdrawing staged child passenger restraints as best practice.",
+			"Evidence that misuse, premature transitions, or inequitable implementation erase the population benefit of child passenger restraint systems under real-world conditions."
+		],
+		misconceptions: [
+			"A regular adult seat belt is not automatically safe just because a child can buckle it; lap and shoulder belt fit matters.",
+			"Moving a child to the next seat stage is not a milestone to rush. AAP notes that every transition is associated with some decrease in protection.",
+			"Car seats and boosters only work as intended when they are the right type, installed tightly, used on every trip, and matched to the child and vehicle.",
+			"State law is often a minimum, not the same thing as best-practice guidance."
+		],
+		editorSummary:
+			"This page should complement the seat-belt page by making child-specific restraint staging explicit. Keep the public answer practical: the right seat, fitted and installed correctly, in the back seat, for every ride.",
+		uncertaintySummary:
+			"The direction of benefit is strong, but exact effect size varies by age, height, weight, crash type, seating position, restraint type, installation quality, harness fit, premature transition, and whether studies compare against no restraint or seat belts alone. Booster-seat evidence is directionally supportive but more mixed across observational analyses than infant and toddler car-seat fatality estimates.",
+		searchCutoffAt: "2026-07-04T21:06:44.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:06:44.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T21:06:44.000Z",
+				kind: "publication",
+				summary:
+					"Initial child passenger restraint claim page published from CDC, NHTSA, AAP, and Consensus-located child-restraint and booster-seat effectiveness evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Preventing Child Passenger Injury",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/child-passenger-safety/prevention/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor for child restraint injury reductions, booster-seat serious-injury reduction, staged restraint guidance, rear-seat guidance, and prevention-program evidence.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Seat Belts and Child Restraints",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/book/countermeasures-that-work/seat-belts-and-child-restraints",
+				stance: "supports",
+				note:
+					"NHTSA Countermeasures That Work chapter summarizing infant and toddler fatality reductions, booster-seat injury reduction, premature transitions, and correct age-size restraint use.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Car Seat & Booster Seat Safety, Ratings, Guidelines",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/vehicle-safety/car-seats-and-booster-seats",
+				stance: "supports",
+				note:
+					"NHTSA practical guidance for rear-facing seats, forward-facing harnesses, booster seats, seat-belt fit, back-seat use, and installation checks.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Child Passenger Safety",
+				publisher: "Pediatrics",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/child-passenger-safety-durbin-hoffman/68daa84ae51c5918bece4d08dd4751e2/",
+				stance: "supports",
+				note:
+					"Consensus-fetched AAP policy statement recommending staged restraints from rear-facing seats through boosters, plus rear-seat riding for children younger than 13.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Effectiveness of child safety seats vs seat belts in reducing risk for death in children in passenger vehicle crashes",
+				publisher: "Archives of Pediatrics & Adolescent Medicine",
+				year: 2006,
+				url:
+					"https://consensus.app/papers/effectiveness-of-child-safety-seats-vs-seat-belts-in-elliott-kallan/848f31e5a8a95cf1989742938b6d32b2/",
+				stance: "supports",
+				note:
+					"Consensus-fetched cohort study finding properly used child restraints reduced death risk for children ages 2 to 6 compared with seat belts alone.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Effectiveness of Belt Positioning Booster Seats: An Updated Assessment",
+				publisher: "Pediatrics",
+				year: 2009,
+				url:
+					"https://consensus.app/papers/effectiveness-of-belt-positioning-booster-seats-an-arbogast-jermakian/7a17092dcad050f7b18350a064bf4be4/",
+				stance: "supports",
+				note:
+					"Consensus-fetched crash-study update finding belt-positioning booster seats reduced injury risk for children ages 4 to 8 compared with seat belts alone.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Systematic review of child passenger safety laws and their associations with child restraint system use, injuries and deaths",
+				publisher: "Injury Prevention",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/systematic-review-of-child-passenger-safety-laws-and-their-sartin-lombardi/151e10e265425d8b8a762b5e84c2b269/",
+				stance: "context",
+				note:
+					"Consensus-fetched review finding child passenger safety laws generally improve restraint use and injuries or deaths, while noting equity and correct-use caveats.",
+				order: 7
+			},
+			{
+				kind: "meta_analysis",
+				title: "The impact of booster seat use on child injury and mortality: Systematic review and meta-analysis of observational studies of booster seat effectiveness",
+				publisher: "Accident Analysis & Prevention",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/the-impact-of-booster-seat-use-on-child-injury-and-mortality-asbridge-ogilvie/d987cb6b5cb058a88d8e6ba972299236/",
+				stance: "context",
+				note:
+					"Consensus-fetched booster-seat meta-analysis finding limited and mixed observational evidence, useful for tempering exact booster effect-size claims.",
+				order: 8
 			}
 		]
 	},
