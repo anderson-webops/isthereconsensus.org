@@ -8380,13 +8380,13 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 92,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Yes. Handwashing with soap is a well-supported public-health measure that reduces diarrheal illness and can reduce some respiratory infections, especially when people have reliable access to water, soap, and practical places to wash at key moments. It is not a stand-alone shield against every infection, and benefits depend on consistent behavior and setting.",
+			"Yes. Handwashing with soap reduces diarrheal illness and can reduce some respiratory infections, especially when people have reliable water, soap, and places to wash at key moments. It is not a stand-alone shield against every infection; benefits depend on consistent behavior and setting.",
 		stableCore: [
-			"CDC says handwashing with soap removes germs from hands and helps prevent infections by reducing transfer to the mouth, nose, eyes, food, drinks, surfaces, and other people.",
+			"CDC says soap handwashing removes germs from hands and reduces transfer to the mouth, nose, eyes, food, drinks, surfaces, and other people.",
 			"CDC summarizes community handwashing education as reducing diarrhea by 23% to 40% and respiratory illnesses such as colds by 16% to 21%.",
-			"WHO and UNICEF's 2025 community hand-hygiene guidelines describe hand hygiene as an important public-health measure and report reductions of about 30% for diarrhea and 17% for acute respiratory infections.",
-			"A 2023 systematic review and meta-analysis of low- and middle-income countries found handwashing-with-soap interventions reduced acute respiratory infection risk, with RR 0.83 and moderate-certainty evidence.",
-			"An updated WASH meta-analysis found interventions promoting handwashing with soap reduced childhood diarrheal morbidity by about 30%, while noting sensitivity to study methods and blinding."
+			"WHO and UNICEF's 2025 community hand-hygiene guidelines describe hand hygiene as an important public-health measure, with about 30% lower diarrhea and 17% lower acute respiratory infections.",
+			"A 2023 systematic review in low- and middle-income countries found handwashing-with-soap interventions reduced acute respiratory infection risk, with RR 0.83 and moderate-certainty evidence.",
+			"An updated WASH meta-analysis found handwashing-with-soap promotion reduced childhood diarrheal morbidity by about 30%, with sensitivity to study methods and blinding."
 		],
 		openQuestions: [
 			"Which behavior-change strategies sustain handwashing habits after campaigns, outbreaks, or school programs end?",
@@ -8404,9 +8404,9 @@ const rawClaims: SeedClaim[] = [
 			"Antibacterial consumer soap is often assumed to be better, but CDC notes no added health benefit for consumers compared with plain soap and water."
 		],
 		editorSummary:
-			"This page should keep the claim practical rather than magical. Handwashing with soap is one of the clearest everyday infection-prevention behaviors, with stronger evidence for diarrheal illness and more qualified but still useful evidence for respiratory infections.",
+			"This page should keep the claim practical, not magical: handwashing with soap is a clear everyday prevention behavior, with stronger evidence for diarrheal illness and more qualified evidence for respiratory infections.",
 		uncertaintySummary:
-			"The direction of benefit is strong, especially for diarrheal disease. Exact effect sizes vary by setting, baseline access, adherence, outcome measurement, pathogen, and whether handwashing is bundled with other water, sanitation, hygiene, school, or public-health interventions.",
+			"The benefit is strongest for diarrheal disease. Exact effect sizes vary by setting, baseline access, adherence, outcome measurement, pathogen, and whether handwashing is bundled with other water, sanitation, school, or public-health interventions.",
 		searchCutoffAt: "2026-07-04T19:44:25.000Z",
 		lastRetractionCheckAt: "2026-07-04T19:44:25.000Z",
 		changeLog: [
@@ -8426,7 +8426,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/clean-hands/data-research/facts-stats/index.html",
 				stance: "supports",
 				note:
-					"CDC public-health anchor for why soap handwashing prevents illness, community effect estimates for diarrhea and respiratory illness, and the lack of added consumer benefit from antibacterial soap.",
+					"CDC anchor for soap handwashing, illness-prevention pathways, community effect estimates, and the lack of added consumer benefit from antibacterial soap.",
 				order: 1
 			},
 			{
@@ -8438,7 +8438,7 @@ const rawClaims: SeedClaim[] = [
 					"https://www.who.int/news/item/15-10-2025-new-guidelines-on-community-hand-hygiene-to-help-governments-reduce-the-spread-of-infectious-diseases",
 				stance: "supports",
 				note:
-					"Current global guidance source for hand hygiene as a community public-health measure, key washing moments, soap-and-water preference, alcohol-rub alternative, and 30% diarrhea / 17% ARI effect estimates.",
+					"Current global guidance source for community hand hygiene, key washing moments, soap-and-water preference, alcohol-rub alternatives, and 30% diarrhea / 17% ARI estimates.",
 				order: 2
 			},
 			{
