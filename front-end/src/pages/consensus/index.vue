@@ -481,6 +481,15 @@ function showAllTopics() {
 
 .topic-row__claims a,
 .topic-row__open {
+	display: inline-flex;
+	align-items: center;
+	align-self: start;
+	justify-content: center;
+	justify-self: end;
+	min-height: 40px;
+	padding: 9px 14px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
 	font-weight: 600;
 	text-decoration: none;
 }
@@ -494,11 +503,41 @@ function showAllTopics() {
 @media (max-width: 760px) {
 	.topic-row {
 		grid-template-columns: 1fr;
-		padding: 16px;
+		gap: 12px;
+		padding: 14px;
+	}
+
+	.topic-row__main {
+		gap: 8px;
+	}
+
+	.topic-row__description {
+		-webkit-line-clamp: 2;
+	}
+
+	.topic-row__claims {
+		gap: 6px;
 	}
 
 	.topic-row__side {
-		justify-items: start;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		justify-items: stretch;
+		gap: 10px;
+		width: 100%;
+	}
+
+	.topic-row__open {
+		align-self: center;
+	}
+
+	.topic-row__side :deep(.meter-card) {
+		gap: 7px;
+	}
+
+	.topic-row__side :deep(.meter__meta span) {
+		display: none;
 	}
 
 	.empty-state__action {
