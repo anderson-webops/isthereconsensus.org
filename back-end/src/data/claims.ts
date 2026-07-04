@@ -1551,11 +1551,11 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "standard",
 		bottomLine:
-			"Generally yes. Breastfeeding is associated with lower risks of several infant infections, especially gastrointestinal infections, ear infections, and some severe respiratory infections. The evidence is strongest as a population-level benefit, while individual outcomes still depend on exposure, prematurity, vaccination, childcare, housing, parental leave, and access to feeding support.",
+			"Generally yes. Breastfeeding is associated with lower rates of several infant infections, especially gastrointestinal illness, ear infections, and some severe respiratory infections. The clearest signal is population-level; individual outcomes still depend on exposure, prematurity, vaccination, childcare, housing, parental leave, and feeding support.",
 		stableCore: [
-			"CDC, AAP, WHO, and major pediatric reviews recommend exclusive breastfeeding for about the first 6 months when possible, followed by complementary foods and continued breastfeeding.",
-			"Human milk contains antibodies, immune cells, antimicrobial factors, anti-inflammatory factors, and prebiotic components that plausibly support infant immune protection.",
-			"Systematic reviews consistently associate more breastfeeding with lower risk of moderate-to-severe gastrointestinal infections, lower respiratory infections, RSV severity, and acute otitis media.",
+			"CDC, AAP, WHO, and major pediatric reviews recommend exclusive breastfeeding for about the first 6 months when possible, then complementary foods with continued breastfeeding.",
+			"Human milk contains antibodies, immune cells, antimicrobial and anti-inflammatory factors, and prebiotic components that plausibly support infant immune protection.",
+			"Systematic reviews associate more breastfeeding with lower risk of moderate-to-severe gastrointestinal infections, lower respiratory infections, RSV severity, and acute otitis media.",
 			"The evidence is not a guarantee for any individual baby: breastfed infants can still get infections, and formula-fed infants can be healthy.",
 			"Public-health messaging should support breastfeeding without shaming families who cannot or choose not to breastfeed."
 		],
@@ -1570,14 +1570,14 @@ const rawClaims: SeedClaim[] = [
 			"Randomized or quasi-experimental support-intervention evidence showing that large increases in breastfeeding do not reduce infant infection outcomes in any setting."
 		],
 		misconceptions: [
-			"Breastfeeding benefits are sometimes presented as if they make formula unsafe; regulated infant formula is an essential safe nutrition option when breastfeeding is not used or not enough.",
+			"Breastfeeding benefits are sometimes framed as if formula is unsafe; regulated infant formula is an essential safe nutrition option when breastfeeding is not used or not enough.",
 			"Observed lower infection risk is sometimes overstated as perfect protection, even though breastfed infants still need vaccination, safe sleep, medical care, and infection precautions.",
 			"Because many studies are observational, some people dismiss the finding entirely; the better reading is that the direction is consistent but exact effect sizes need caution."
 		],
 		editorSummary:
-			"This page should support a practical middle line: breastfeeding has real population-level infection benefits, especially early in life, but the evidence should not be turned into shame or a guarantee for individual families.",
+			"This page should hold a practical middle line: breastfeeding has real population-level infection benefits, especially early in life, without treating them as shame or a guarantee for individual families.",
 		uncertaintySummary:
-			"The direction of association is consistent for several infant infection outcomes. The main uncertainty is exact causal effect size, because feeding decisions are linked with healthcare access, parental leave, childcare exposure, socioeconomic conditions, and measurement differences.",
+			"The association is consistent across several infant infection outcomes. The main uncertainty is exact causal effect size because feeding decisions track healthcare access, parental leave, childcare exposure, socioeconomic conditions, and measurement differences.",
 		uncertaintyDrivers: [
 			{
 				type: "bias",
@@ -1622,7 +1622,7 @@ const rawClaims: SeedClaim[] = [
 					"More breastfeeding is consistently associated with lower risk of several infant infection outcomes, especially gastrointestinal infections, acute otitis media, and some severe respiratory infections.",
 				effectDirection: "supports",
 				magnitude:
-					"A 2025 Pediatrics review included 29 existing systematic reviews and 145 primary studies. A 2015 otitis media meta-analysis found exclusive breastfeeding for 6 months associated with lower odds of acute otitis media in the first 2 years (OR 0.57, 95% CI 0.44-0.75).",
+					"A 2025 Pediatrics review covered 29 existing systematic reviews and 145 primary studies. A 2015 otitis media meta-analysis found lower odds with 6 months of exclusive breastfeeding (OR 0.57, 95% CI 0.44-0.75).",
 				certainty: "moderate",
 				limitations: [
 					"Many studies are observational and can be affected by residual confounding.",
@@ -1696,7 +1696,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/breastfeeding-and-health-outcomes-for-infants-and-patnode-henrikson/96f14f8ad9c95cc28e9c834246c9c775/",
 				stance: "supports",
 				note:
-					"Systematic review including 29 existing systematic reviews and 145 primary studies, finding lower risk signals for moderate-to-severe respiratory and gastrointestinal infections and otitis media, while emphasizing observational limitations.",
+					"Systematic review covering 29 existing systematic reviews and 145 primary studies, finding lower-risk signals for respiratory and gastrointestinal infections and otitis media while emphasizing observational limits.",
 				order: 4
 			},
 			{
@@ -1708,7 +1708,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/breastfeeding-and-childhood-acute-otitis-media-a-bowatte-tham/9e07e138973057789d7be69e8e39c54c/",
 				stance: "supports",
 				note:
-					"Meta-analysis of 24 studies finding breastfeeding protective against acute otitis media in the first 2 years, with the largest association for exclusive breastfeeding during the first 6 months.",
+					"Meta-analysis of 24 studies finding lower acute otitis media risk in the first 2 years, with the largest association for exclusive breastfeeding during the first 6 months.",
 				order: 5
 			},
 			{
@@ -8368,6 +8368,128 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note: "Helpful for showing that the question is about reducing a known risk, not discovering whether the risk exists.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does handwashing with soap reduce infections?",
+		slug: "does-handwashing-with-soap-reduce-infections",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Handwashing with soap is a well-supported public-health measure that reduces diarrheal illness and can reduce some respiratory infections, especially when people have reliable access to water, soap, and practical places to wash at key moments. It is not a stand-alone shield against every infection, and benefits depend on consistent behavior and setting.",
+		stableCore: [
+			"CDC says handwashing with soap removes germs from hands and helps prevent infections by reducing transfer to the mouth, nose, eyes, food, drinks, surfaces, and other people.",
+			"CDC summarizes community handwashing education as reducing diarrhea by 23% to 40% and respiratory illnesses such as colds by 16% to 21%.",
+			"WHO and UNICEF's 2025 community hand-hygiene guidelines describe hand hygiene as an important public-health measure and report reductions of about 30% for diarrhea and 17% for acute respiratory infections.",
+			"A 2023 systematic review and meta-analysis of low- and middle-income countries found handwashing-with-soap interventions reduced acute respiratory infection risk, with RR 0.83 and moderate-certainty evidence.",
+			"An updated WASH meta-analysis found interventions promoting handwashing with soap reduced childhood diarrheal morbidity by about 30%, while noting sensitivity to study methods and blinding."
+		],
+		openQuestions: [
+			"Which behavior-change strategies sustain handwashing habits after campaigns, outbreaks, or school programs end?",
+			"How large are benefits in high-income settings where baseline hygiene, sanitation, vaccination, ventilation, and healthcare access differ?",
+			"How should hand hygiene be combined with vaccination, clean water, sanitation, food safety, staying home when sick, and ventilation for specific pathogens?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-conducted community trials showing no meaningful reduction in diarrheal or respiratory infections when handwashing with soap is made accessible and practiced at key times.",
+			"Major CDC, WHO, UNICEF, Cochrane, or public-health guideline reassessments withdrawing handwashing with soap as a recommended infection-prevention measure.",
+			"Evidence that observed benefits are fully explained by study bias, co-interventions, or confounding across multiple settings and outcomes."
+		],
+		misconceptions: [
+			"Handwashing is sometimes dismissed as only hygiene theater, even though fecal-oral and contact transmission are real routes for many infections.",
+			"Handwashing cannot replace vaccination, clean water, sanitation, ventilation, masks when indicated, or staying home while sick.",
+			"Antibacterial consumer soap is often assumed to be better, but CDC notes no added health benefit for consumers compared with plain soap and water."
+		],
+		editorSummary:
+			"This page should keep the claim practical rather than magical. Handwashing with soap is one of the clearest everyday infection-prevention behaviors, with stronger evidence for diarrheal illness and more qualified but still useful evidence for respiratory infections.",
+		uncertaintySummary:
+			"The direction of benefit is strong, especially for diarrheal disease. Exact effect sizes vary by setting, baseline access, adherence, outcome measurement, pathogen, and whether handwashing is bundled with other water, sanitation, hygiene, school, or public-health interventions.",
+		searchCutoffAt: "2026-07-04T19:44:25.000Z",
+		lastRetractionCheckAt: "2026-07-04T19:44:25.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T19:44:25.000Z",
+				kind: "publication",
+				summary:
+					"Initial handwashing-with-soap infection-prevention claim page published from CDC, WHO/UNICEF community guidance, and Consensus-located systematic review, meta-analysis, and randomized-trial sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Handwashing Facts",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/clean-hands/data-research/facts-stats/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor for why soap handwashing prevents illness, community effect estimates for diarrhea and respiratory illness, and the lack of added consumer benefit from antibacterial soap.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "New guidelines on community hand hygiene to help governments reduce the spread of infectious diseases",
+				publisher: "World Health Organization / UNICEF",
+				year: 2025,
+				url:
+					"https://www.who.int/news/item/15-10-2025-new-guidelines-on-community-hand-hygiene-to-help-governments-reduce-the-spread-of-infectious-diseases",
+				stance: "supports",
+				note:
+					"Current global guidance source for hand hygiene as a community public-health measure, key washing moments, soap-and-water preference, alcohol-rub alternative, and 30% diarrhea / 17% ARI effect estimates.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effectiveness of handwashing with soap for preventing acute respiratory infections in low-income and middle-income countries: a systematic review and meta-analysis",
+				publisher: "Lancet",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/effectiveness-of-handwashing-with-soap-for-preventing-ross-bick/e73980b281ee5b7fbc1aa944859b67fe/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis of 26 studies and 161,659 participants; handwashing-with-soap interventions reduced any acute respiratory infection with RR 0.83 and moderate-certainty evidence.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Impact of drinking water, sanitation and handwashing with soap on childhood diarrhoeal disease: updated meta-analysis and meta-regression",
+				publisher: "Tropical Medicine & International Health",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/impact-of-drinking-water-sanitation-and-handwashing-with-wolf-hunter/e771b6803c2b582296a15972a8b9e3af/",
+				stance: "supports",
+				note:
+					"Consensus-fetched WASH meta-analysis of 135 studies finding interventions promoting handwashing with soap reduced childhood diarrheal morbidity by about 30%, with method-sensitivity caveats.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effect of hand hygiene on infectious disease risk in the community setting: a meta-analysis",
+				publisher: "American Journal of Public Health",
+				year: 2008,
+				url:
+					"https://consensus.app/papers/effect-of-hand-hygiene-on-infectious-disease-risk-in-the-aiello-coulborn/8250998591b65a41be16dbd64399c4fd/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis of 30 community hand-hygiene trials finding reductions in gastrointestinal illness and, to a lesser extent, respiratory illness; nonantibacterial soap performed well.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Effect of handwashing on child health: a randomised controlled trial",
+				publisher: "Lancet",
+				year: 2005,
+				url:
+					"https://consensus.app/papers/effect-of-handwashing-on-child-health-a-randomised-luby-agboatwalla/419ef055db5a5e4dbde61478578d5785/",
+				stance: "supports",
+				note:
+					"Consensus-fetched randomized trial in Karachi neighborhoods finding handwashing promotion with plain soap reduced pneumonia, diarrhea, and impetigo outcomes in children.",
+				order: 6
 			}
 		]
 	},
