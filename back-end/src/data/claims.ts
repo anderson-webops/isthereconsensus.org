@@ -18210,6 +18210,134 @@ const rawClaims: SeedClaim[] = [
 				order: 6
 			}
 		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does placing babies on their backs to sleep reduce SIDS risk?",
+		slug: "does-placing-babies-on-their-backs-to-sleep-reduce-sids-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. For infants under 1 year, back sleeping for every nap and night sleep is a core safe-sleep recommendation that lowers SIDS and other sleep-related death risk. It is not a guarantee, and it works best with the full setup: firm, flat surface; no soft bedding; room-sharing without bed-sharing; and avoiding smoke, substances, overheating, and unsafe sleep products.",
+		stableCore: [
+			"CDC supports the AAP 2022 recommendations: back for every sleep, firm flat surface, room-sharing, and no soft bedding.",
+			"NIH's Safe to Sleep campaign calls back sleeping the most effective caregiver action for reducing SIDS and sleep-related death risk.",
+			"Safe to Sleep says back sleeping is safest until age 1, including for preterm infants and reflux; side sleeping is not recommended.",
+			"A 2022 systematic review of 54 studies found supine sleep linked to lower SIDS odds than non-supine sleep, with low to very low certainty.",
+			"A historical review found front sleeping linked to higher SIDS odds years before recommendations changed, showing why sleep-position advice became a public-health correction."
+		],
+		openQuestions: [
+			"Which supports improve safe-sleep adherence without shaming exhausted parents or ignoring poverty, housing, childcare, and night-feeding realities?",
+			"How should clinicians discuss safer choices when families report bed-sharing, couch feeding, preterm birth, reflux concerns, or cultural sleep practices?",
+			"Which interventions reduce racial, ethnic, and socioeconomic disparities in sleep-related infant deaths?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled infant-mortality surveillance showing no lower SIDS or sleep-related death risk with consistent supine sleep versus prone or side sleep.",
+			"Major AAP, CDC, NIH, WHO, or pediatric-safety reassessments withdrawing back-sleeping as a core recommendation for infants under 1 year.",
+			"Strong evidence that another sleep-position recommendation lowers total sleep-related infant deaths without raising suffocation, entrapment, overheating, or other harms."
+		],
+		misconceptions: [
+			"Side sleeping is not a safe compromise; babies placed on their sides can roll onto their stomachs.",
+			"Reflux or spit-up usually is not a reason to place a baby prone; AAP and Safe to Sleep still recommend flat back sleeping unless a clinician gives specific medical instructions.",
+			"Back sleeping does not replace the rest of safe sleep: the surface, bedding, smoke exposure, substances, overheating, and bed-sharing risks still matter.",
+			"Tummy time is for awake, supervised time; it is not the recommended sleep position."
+		],
+		editorSummary:
+			"Keep this practical and nonjudgmental: SIDS is not fully preventable, but back sleeping plus a safe sleep environment lowers risk and should be taught to every caregiver.",
+		uncertaintySummary:
+			"The benefit direction is strong, but exact effect size is hard to estimate because randomized sleep-position trials are ethically limited, SIDS classification has changed, and risk also depends on bedding, bed-sharing, smoke exposure, substances, prematurity, caregiver fatigue, and caregiver consistency.",
+		searchCutoffAt: "2026-07-04T20:31:58.000Z",
+		lastRetractionCheckAt: "2026-07-04T20:31:58.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T20:31:58.000Z",
+				kind: "publication",
+				summary:
+					"Initial infant back-sleeping and SIDS-risk claim page published from CDC, NIH Safe to Sleep, AAP guidance, and Consensus-located systematic-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Providing Care for Babies to Sleep Safely",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/sudden-infant-death/sleep-safely/index.html",
+				stance: "supports",
+				note:
+					"CDC source for AAP 2022 safe-sleep recommendations: back for every sleep, firm flat surface, room-sharing, and no soft bedding.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About Back Sleeping",
+				publisher: "NIH / NICHD Safe to Sleep",
+				url: "https://safetosleep.nichd.nih.gov/reduce-risk/back-sleeping",
+				stance: "supports",
+				note:
+					"Safe to Sleep source for back sleeping as the most effective caregiver action, plus guidance on preterm infants, reflux, side sleeping, rolling, and supervised tummy time.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "How to Keep Your Sleeping Baby Safe: AAP Policy Explained",
+				publisher: "American Academy of Pediatrics / HealthyChildren.org",
+				url: "https://www.healthychildren.org/English/ages-stages/baby/sleep/Pages/a-parents-guide-to-safe-sleep.aspx",
+				stance: "supports",
+				note:
+					"AAP public guidance on back sleeping for naps and night, firm flat surfaces, room-sharing without bed-sharing, and avoiding soft bedding and unsafe products.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Sleep-Related Infant Deaths: Updated 2022 Recommendations for Reducing Infant Deaths in the Sleep Environment",
+				publisher: "Pediatrics",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/sleeprelated-infant-deaths-updated-2022-recommendations-moon-carlin/4e6fbd9870c55a0f9a3152b20857d334/",
+				stance: "supports",
+				note:
+					"Consensus-fetched AAP statement identifying supine positioning, firm noninclined surfaces, room-sharing without bed-sharing, and avoiding soft bedding and overheating.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Effect of sleep position in term healthy newborns on sudden infant death syndrome and other infant outcomes: A systematic review",
+				publisher: "Journal of Global Health",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/effect-of-sleep-position-in-term-healthy-newborns-on-sudden-priyadarshi-balachander/b59aaa76776b59088b3cf52c97f275d2/",
+				stance: "supports",
+				note:
+					"Consensus-fetched review of 54 studies and 474,672 participants finding supine sleep linked to lower SIDS and SUDI odds, with low-to-very-low certainty.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Infant sleeping position and the sudden infant death syndrome: systematic review of observational studies and historical review of recommendations from 1940 to 2002",
+				publisher: "International Journal of Epidemiology",
+				year: 2005,
+				url:
+					"https://consensus.app/papers/infant-sleeping-position-and-the-sudden-infant-death-gilbert-salanti/241ad52607335588888552754ad78a72/",
+				stance: "supports",
+				note:
+					"Consensus-fetched historical review finding higher SIDS odds for front sleeping and showing earlier synthesis could have prevented many deaths.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Sudden infant death syndrome prevention",
+				publisher: "BMC Pediatrics",
+				year: 2021,
+				url: "https://consensus.app/papers/sudden-infant-death-syndrome-prevention-jullien/b181e7411b1b5dfd9ad33acb9d30f81a/",
+				stance: "supports",
+				note:
+					"Consensus-fetched prevention review summarizing the Back to Sleep decline and safe-sleep package: supine position, firm surface, no soft bedding, no overheating, and room-sharing.",
+				order: 7
+			}
+		]
 	}
 ];
 
