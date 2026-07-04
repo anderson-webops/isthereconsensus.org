@@ -166,9 +166,22 @@ const filteredTopics = computed(() =>
 	})
 );
 const totalTopicCount = computed(() => enrichedTopics.value.length);
+const totalReviewedClaimCount = computed(() =>
+	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
+);
+const filteredReviewedClaimCount = computed(() =>
+	filteredTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
+);
 const resultsCountLabel = computed(() => {
-	if (filteredTopics.value.length === totalTopicCount.value) return formatCountLabel(totalTopicCount.value, "topic");
-	return `${filteredTopics.value.length} of ${formatCountLabel(totalTopicCount.value, "topic")}`;
+	const topicLabel =
+		filteredTopics.value.length === totalTopicCount.value
+			? formatCountLabel(totalTopicCount.value, "topic")
+			: `${filteredTopics.value.length} of ${formatCountLabel(totalTopicCount.value, "topic")}`;
+	const claimLabel =
+		filteredTopics.value.length === totalTopicCount.value
+			? `${formatCountLabel(totalReviewedClaimCount.value, "claim review")} available`
+			: `${formatCountLabel(filteredReviewedClaimCount.value, "claim review")} shown`;
+	return `${topicLabel} / ${claimLabel}`;
 });
 
 function formatTopicClaimCount(topic: Topic) {
