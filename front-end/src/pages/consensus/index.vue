@@ -181,7 +181,7 @@ const resultsCountLabel = computed(() => {
 		filteredTopics.value.length === totalTopicCount.value
 			? `${formatCountLabel(totalReviewedClaimCount.value, "claim review")} available`
 			: `${formatCountLabel(filteredReviewedClaimCount.value, "claim review")} shown`;
-	return `${topicLabel} / ${claimLabel}`;
+	return `${topicLabel}, ${claimLabel}`;
 });
 
 function formatTopicClaimCount(topic: Topic) {
