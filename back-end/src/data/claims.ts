@@ -797,7 +797,7 @@ const rawClaims: SeedClaim[] = [
 			"MMRV and MMR are sometimes discussed as if all schedule choices have the same risk-benefit details; first-dose MMRV has a specific febrile-seizure context."
 		],
 		editorSummary:
-			"This page complements the MMR-autism page by answering the positive claim: MMR is not merely unrelated to autism, it is a highly effective routine vaccine against a dangerous and highly contagious disease.",
+			"MMR is not merely unrelated to autism; it is a highly effective routine vaccine against a dangerous, highly contagious disease.",
 		uncertaintySummary:
 			"The consensus is strong for routine MMR safety and high measles effectiveness. Remaining nuance is about schedule choices, rare adverse events such as febrile seizures, and maintaining enough coverage to prevent outbreaks.",
 		searchCutoffAt: "2026-07-02T21:55:00.000Z",
@@ -876,7 +876,7 @@ const rawClaims: SeedClaim[] = [
 			"Calling measles 'just a rash' misses pneumonia, encephalitis, death risk, and the post-infection immune-memory problem."
 		],
 		editorSummary:
-			"This page should help readers understand why measles prevention matters beyond avoiding the acute illness. Keep the wording clear: immune amnesia is a real post-measles concern, while the exact duration and clinical size vary by setting.",
+			"Measles prevention matters beyond the acute illness: immune amnesia is a real post-measles concern, while its duration and clinical size vary by setting.",
 		uncertaintySummary:
 			"The direction is well supported: measles can damage immune memory after infection. The remaining uncertainty is about duration, magnitude, subgroup risk, and which downstream infections are most affected in different populations.",
 		searchCutoffAt: "2026-07-03T16:45:00.000Z",
@@ -969,7 +969,7 @@ const rawClaims: SeedClaim[] = [
 			"Adult catch-up benefit is sometimes presented as identical to early adolescent vaccination, even though protection is strongest before exposure."
 		],
 		editorSummary:
-			"This page should make the cancer-prevention chain visible: vaccine-type infection falls first, cervical precancer falls next, and invasive cervical cancer reduction is now visible in long follow-up.",
+			"The prevention chain is visible: vaccine-type infection falls first, cervical precancer falls next, and invasive cervical cancer reduction now appears in long follow-up.",
 		uncertaintySummary:
 			"The prevention claim is strong. Remaining uncertainty is mostly about implementation, coverage, catch-up benefit after possible exposure, and how screening policy should adapt as vaccinated cohorts age.",
 		searchCutoffAt: "2026-07-02T22:11:34.000Z",
@@ -1066,7 +1066,7 @@ const rawClaims: SeedClaim[] = [
 			"Fertility fears often ignore that HPV-related disease and its treatment can be a real fertility risk."
 		],
 		editorSummary:
-			"This page should be a direct myth-correction companion to the HPV cancer-prevention page. The safest wording is not 'impossible,' but 'the evidence does not support a causal link and major safety bodies continue to monitor it.'",
+			"The evidence does not support a causal link between HPV vaccination and fertility problems, and major safety bodies continue to monitor rare-event signals.",
 		uncertaintySummary:
 			"The practical answer is high-confidence: major safety bodies and large studies do not find a fertility harm signal. Remaining uncertainty is mostly rare-event surveillance and communication, not a balanced dispute over causation.",
 		searchCutoffAt: "2026-07-02T22:42:05.000Z",
@@ -1163,7 +1163,7 @@ const rawClaims: SeedClaim[] = [
 			"Maternal testing helps target extra protection, but missed testing, late results, or incomplete follow-up can leave newborns unprotected."
 		],
 		editorSummary:
-			"This page should make the cancer-prevention chain plain: HBV can become chronic, chronic HBV causes cirrhosis and liver cancer, and vaccination before exposure prevents many of those later outcomes. Keep U.S. birth-dose policy caveats separate from the core vaccine-effectiveness claim.",
+			"HBV can become chronic, chronic HBV causes cirrhosis and liver cancer, and vaccination before exposure prevents many later outcomes; birth-dose policy caveats are separate from the core effectiveness claim.",
 		uncertaintySummary:
 			"The vaccine-effectiveness and chronic-infection prevention claim is high-confidence. The policy question of exactly when to give the first infant dose depends on maternal screening reliability, local prevalence, health-system follow-up, and equity; WHO and some national policies may differ on timing while agreeing that vaccination prevents HBV disease.",
 		searchCutoffAt: "2026-07-04T19:03:18.000Z",
@@ -1374,7 +1374,7 @@ const rawClaims: SeedClaim[] = [
 			"COVID infection effects on reproductive health are sometimes conflated with vaccine effects, even when studies separate the two."
 		],
 		editorSummary:
-			"This page should answer a common reproductive-health fear directly while keeping the scope narrow: fertility outcomes, not every question about COVID vaccine policy.",
+			"The direct answer is about fertility outcomes, not every question about COVID vaccine policy: available evidence does not support a fertility-harm claim.",
 		searchCutoffAt: "2026-07-02T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
 		changeLog: [
@@ -1465,7 +1465,7 @@ const rawClaims: SeedClaim[] = [
 			"Changes in policy language are sometimes presented as proof of harm, even when the underlying safety evidence remains broadly consistent."
 		],
 		editorSummary:
-			"This maternal-child health page should distinguish evidence about safety and benefit from current policy wording, because readers need both pieces to make sense of the public dispute.",
+			"Readers need two pieces kept separate: the safety and benefit evidence for pregnancy and breastfeeding, and the current policy wording that shapes public debate.",
 		uncertaintySummary:
 			"The safety signal is reassuring across large observational datasets, but recommendations remain sensitive to variant era, baseline risk, vaccine product, prior immunity, and jurisdiction-specific policy updates.",
 		searchCutoffAt: "2026-07-02T12:00:00.000Z",
@@ -1575,7 +1575,7 @@ const rawClaims: SeedClaim[] = [
 			"Because many studies are observational, some people dismiss the finding entirely; the better reading is that the direction is consistent but exact effect sizes need caution."
 		],
 		editorSummary:
-			"This page should hold a practical middle line: breastfeeding has real population-level infection benefits, especially early in life, without treating them as shame or a guarantee for individual families.",
+			"Breastfeeding has real population-level infection benefits, especially early in life, without being a guarantee for individual families or a reason to shame feeding decisions.",
 		uncertaintySummary:
 			"The association is consistent across several infant infection outcomes. The main uncertainty is exact causal effect size because feeding decisions track healthcare access, parental leave, childcare exposure, socioeconomic conditions, and measurement differences.",
 		uncertaintyDrivers: [
@@ -1757,7 +1757,7 @@ const rawClaims: SeedClaim[] = [
 			"Saying VAERS cannot prove causation is not dismissing VAERS; it is explaining why signals need investigation."
 		],
 		editorSummary:
-			"This page should become the reusable safety-surveillance explainer for vaccine pages. Keep the balance clear: VAERS is important because it can flag signals, but raw reports are not causal proof.",
+			"VAERS is important because it can flag safety signals, but raw reports are not causal proof; they need clinical review and stronger follow-up evidence.",
 		uncertaintySummary:
 			"The core interpretation principle is settled: passive reports can generate signals but cannot by themselves prove causation or incidence. Uncertainty is about specific signals, how quickly they should escalate, and which follow-up system is best suited to each safety question.",
 		searchCutoffAt: "2026-07-03T20:33:03.000Z",
@@ -1858,7 +1858,7 @@ const rawClaims: SeedClaim[] = [
 			"Using population-average rates can hide the higher risk in young males, while using only the highest-risk subgroup can exaggerate risk for everyone else."
 		],
 		editorSummary:
-			"This page should treat myocarditis as a real subgroup safety issue while resisting both minimization and denominator-free alarm.",
+			"Myocarditis is a real subgroup safety issue after mRNA COVID-19 vaccination, best explained with age and sex denominators rather than minimization or alarm.",
 		uncertaintySummary:
 			"The highest-risk subgroup and early-dose signal are clear, but precise current-season risk depends on vaccine product, schedule, prior immunity, variant era, case definition, and follow-up duration.",
 		searchCutoffAt: "2026-07-02T12:00:00.000Z",
@@ -1964,7 +1964,7 @@ const rawClaims: SeedClaim[] = [
 			"Evidence that e-cigarettes can help adult smokers quit does not imply that non-smokers, youth, or pregnant people should start vaping."
 		],
 		editorSummary:
-			"This page should model a two-truths-at-once answer: nicotine e-cigarettes can be harm-reducing and useful for some adult smokers, while still being addictive, non-safe products that require strong youth protections and complete-switching caveats.",
+			"Nicotine e-cigarettes can reduce harm and help some adults stop smoking when they switch completely, but they remain addictive products that are not safe and need strong youth-protection caveats.",
 		uncertaintySummary:
 			"The relative toxicant and adult cessation direction is fairly consistent, but long-term exclusive-use outcomes, real-world dual-use patterns, product variation, and youth initiation make the public-health answer qualified rather than simple.",
 		searchCutoffAt: "2026-07-02T22:33:57.000Z",
@@ -2059,7 +2059,7 @@ const rawClaims: SeedClaim[] = [
 			"Some teens believe vaping only water vapor, but e-cigarette aerosol can contain nicotine, ultrafine particles, volatile organic compounds, heavy metals, and other harmful substances."
 		],
 		editorSummary:
-			"This page should be less ambivalent than the adult-smoker page. The consensus boundary is clear: youth and non-smokers should not use e-cigarettes, even though separate adult cessation evidence can be favorable in a complete-switching context.",
+			"The youth boundary is clear: youth and non-smokers should not use e-cigarettes, even though adult cessation evidence can be favorable in a complete-switching context.",
 		uncertaintySummary:
 			"The main youth-safety answer is high-certainty. The moving pieces are product markets, enforcement, flavor/device shifts, and the exact size of long-term harms for newer product generations.",
 		searchCutoffAt: "2026-07-02T22:33:57.000Z",
