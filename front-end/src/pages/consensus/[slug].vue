@@ -278,8 +278,13 @@ function claimCardSummary(claim: ClaimSummary) {
 	max-width: 68ch;
 }
 
-.topic-page__actions,
 .section-heading {
+	display: grid;
+	gap: 6px;
+	align-items: start;
+}
+
+.topic-page__actions {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
