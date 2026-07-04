@@ -8827,6 +8827,165 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Do polygenic risk scores work equally well across ancestry groups?",
+		slug: "do-polygenic-risk-scores-work-equally-well-across-ancestry-groups",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"No. Polygenic risk scores can add useful risk information for some conditions, but scores built and calibrated mostly in European-ancestry datasets often transfer less well to underrepresented and admixed ancestry groups. Multi-ancestry methods and more diverse datasets are improving the situation, but the equity problem is not solved.",
+		stableCore: [
+			"Polygenic risk scores combine many genetic variants into a relative, probabilistic risk estimate; they are not deterministic diagnoses.",
+			"GWAS and PRS research has historically overrepresented people of European ancestry, leaving weaker data for many global and admixed populations.",
+			"Scores derived mainly from European-ancestry data often show lower predictive performance when applied to non-European ancestry samples.",
+			"Portability depends on linkage disequilibrium patterns, allele frequencies, phenotype definitions, environment, clinical calibration, and the target health-care setting.",
+			"Clinical use requires condition-specific validation, calibrated risk communication, integration with family history and standard risk factors, and access to follow-up care."
+		],
+		openQuestions: [
+			"Which disease, ancestry, and health-system combinations have enough validation for routine clinical use?",
+			"Which multi-ancestry, ancestry-aware, or locally calibrated methods most reliably reduce performance gaps?",
+			"How should clinicians explain genetic ancestry without treating socially defined race as a genetic category?",
+			"Does returning PRS information improve outcomes equitably once follow-up care, cost, and communication are included?"
+		],
+		whatWouldChangeMinds: [
+			"Large external validations showing comparable calibration, discrimination, and clinical utility across many global and admixed populations.",
+			"Diverse GWAS and biobank resources closing performance gaps for major disease PRS without worsening access or follow-up disparities.",
+			"Conversely, pragmatic trials showing no added benefit beyond standard clinical risk tools for the populations where PRS is being offered."
+		],
+		misconceptions: [
+			"A polygenic risk score is a probability aid, not destiny.",
+			"A score validated in one ancestry group or biobank does not automatically work equally well for everyone.",
+			"Genetic ancestry is not the same thing as socially defined race or ethnicity.",
+			"Improving model accuracy alone cannot fix disparities if follow-up care is unavailable or unequally delivered."
+		],
+		editorSummary:
+			"This page should keep both truths visible: polygenic scores are scientifically real and sometimes useful, but current clinical use can widen inequities if ancestry portability and health-system access are treated as afterthoughts.",
+		uncertaintySummary:
+			"The direction of the portability problem is well supported. Uncertainty is higher for specific diseases, locally calibrated scores, multi-ancestry methods, and whether returning scores improves outcomes equitably in real health systems.",
+		searchDatabases: ["Consensus", "PubMed", "NHGRI / Genome.gov", "Crossref"],
+		searchCutoffAt: "2026-07-04T18:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T18:45:00.000Z",
+		evidenceSummaries: [
+			{
+				question: "Do polygenic risk scores work equally well across ancestry groups?",
+				population:
+					"People receiving or being evaluated for polygenic risk scores across diverse and admixed ancestry groups.",
+				finding:
+					"Scores can stratify risk for some diseases, but current performance is often strongest in European-ancestry samples and less reliable in underrepresented populations unless the score is specifically validated and calibrated.",
+				effectDirection: "supports",
+				magnitude:
+					"The performance gap is large enough to be treated as a clinical-equity issue, not a minor technical footnote.",
+				certainty: "moderate",
+				limitations: [
+					"Performance varies by disease, score construction method, ancestry mix, phenotype definition, and validation cohort.",
+					"Many implementation studies still measure prediction more directly than downstream health outcomes.",
+					"Better prediction does not guarantee equitable benefit without access to counseling, prevention, and treatment."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Human Genome Research Institute",
+				role: "Primary U.S. genomics anchor for PRS interpretation and diverse-population methods"
+			},
+			{
+				name: "PRIMED Consortium",
+				role: "Research infrastructure anchor for improving PRS methods in diverse populations"
+			},
+			{
+				name: "eMERGE Network",
+				role: "Clinical implementation anchor for validating and returning PRS in diverse U.S. populations"
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T18:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial polygenic risk score ancestry-portability claim page published from NHGRI guidance, diverse-population PRS reviews, and clinical implementation studies."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Polygenic Risk Scores",
+				publisher: "National Human Genome Research Institute",
+				url: "https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores",
+				stance: "supports",
+				note:
+					"Explains that PRS estimates relative risk, not diagnosis, and that limited non-European data raises disparity concerns.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Polygenic RIsk MEthods in Diverse populations (PRIMED) Consortium",
+				publisher: "National Human Genome Research Institute",
+				url: "https://www.genome.gov/Funded-Programs-Projects/PRIMED-Consortium",
+				stance: "supports",
+				note:
+					"Describes the NIH/NHGRI effort to improve PRS methods, datasets, and application across diverse populations.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Current clinical use of polygenic scores will risk exacerbating health disparities",
+				publisher: "Nature Genetics",
+				year: 2019,
+				url: "https://doi.org/10.1038/s41588-019-0379-x",
+				doi: "10.1038/s41588-019-0379-x",
+				pmid: "30926966",
+				stance: "supports",
+				note:
+					"Argues that clinical PRS use can widen disparities because available scores were several times more accurate in European-ancestry populations.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Analysis of polygenic risk score usage and performance in diverse human populations",
+				publisher: "Nature Communications",
+				year: 2019,
+				url: "https://doi.org/10.1038/s41467-019-11112-0",
+				doi: "10.1038/s41467-019-11112-0",
+				pmid: "31346163",
+				pmcid: "PMC6658471",
+				stance: "supports",
+				note:
+					"Review of 2008-2017 PRS studies found heavy European-ancestry concentration and lower performance for European-derived scores in non-European samples.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Principles and methods for transferring polygenic risk scores across global populations",
+				publisher: "Nature Reviews Genetics",
+				year: 2024,
+				url: "https://doi.org/10.1038/s41576-023-00637-2",
+				doi: "10.1038/s41576-023-00637-2",
+				pmid: "37620596",
+				stance: "supports",
+				note:
+					"Reviews why transferability is limited and which methodological changes may improve PRS performance across populations.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Selection, optimization and validation of ten chronic disease polygenic risk scores for clinical implementation in diverse US populations",
+				publisher: "Nature Medicine",
+				year: 2024,
+				url: "https://doi.org/10.1038/s41591-024-02796-z",
+				doi: "10.1038/s41591-024-02796-z",
+				pmid: "38374346",
+				stance: "context",
+				note:
+					"eMERGE implementation study showing how PRS can be selected, optimized, validated, and communicated for diverse U.S. populations while acknowledging portability limits.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Are people left-brained or right-brained personality types?",
 		slug: "are-people-left-brained-or-right-brained-personality-types",
