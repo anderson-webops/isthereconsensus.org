@@ -817,6 +817,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 @media (max-width: 860px) {
+	.claim-page {
+		gap: 18px;
+	}
+
 	.bottom-line {
 		grid-template-columns: 1fr;
 	}
@@ -830,7 +834,77 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.uncertainty-strip,
 	.content-panel,
 	.queue-note {
-		padding: 18px;
+		padding: 16px;
+		border-radius: 16px;
+	}
+
+	.claim-page__header,
+	.bottom-line,
+	.uncertainty-strip {
+		gap: 14px;
+	}
+
+	.claim-page__description,
+	.claim-page__meta,
+	.bottom-line p,
+	.section-heading p,
+	.section-subheading p,
+	.plain-list,
+	.source-row p,
+	.empty-state,
+	.muted,
+	.field-label,
+	.queue-note {
+		line-height: 1.56;
+	}
+
+	.bottom-line .bottom-line__text {
+		line-height: 1.54;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
+	.content-stack,
+	.outcome-summary-section,
+	.evidence-summary-list,
+	.source-groups,
+	.source-list,
+	.change-log {
+		gap: 12px;
+	}
+
+	.claim-snapshot-grid {
+		gap: 12px;
+	}
+
+	.evidence-summary-card,
+	.claim-snapshot-block,
+	.source-group,
+	.change-log__entry {
+		gap: 11px;
+		padding: 14px;
+		border-radius: 14px;
+	}
+
+	.source-row {
+		gap: 12px;
+		padding: 14px;
+		border-radius: 12px;
+	}
+
+	.plain-list {
+		gap: 8px;
+		padding-left: 18px;
+	}
+
+	.plain-list--tight {
+		gap: 6px;
+	}
+
+	.tag {
+		padding: 5px 8px;
 	}
 
 	.bottom-line__actions {
