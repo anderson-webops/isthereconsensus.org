@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { defaultClaims } from "../src/data/claims.js";
-import { buildSeedClaimUpdate, buildSeedSourceUpdate } from "../src/data/seedClaims.js";
+import {
+	buildRetiredSeedClaimUpdate,
+	buildSeedClaimUpdate,
+	buildSeedSourceUpdate,
+	retiredSeedClaims
+} from "../src/data/seedClaims.js";
 
 function findSeedSource(claimSlug: string, order: number) {
 	const claim = defaultClaims.find(entry => entry.slug === claimSlug);
@@ -12,6 +17,38 @@ function findSeedSource(claimSlug: string, order: number) {
 }
 
 describe("seedClaims source synchronization", () => {
+	it("keeps retired seed claims out of the active seed list", () => {
+		const activeKeys = new Set(defaultClaims.map(claim => `${claim.topicSlug}/${claim.slug}`));
+		assert.ok(
+			retiredSeedClaims.some(
+				claim =>
+					claim.slug
+					=== "is-higher-potassium-intake-from-foods-or-potassium-salt-substitutes-recommended-for-blood-pressure"
+			),
+			"Missing retired duplicate potassium claim"
+		);
+
+		for (const retired of retiredSeedClaims) {
+			assert.equal(activeKeys.has(`${retired.topicSlug}/${retired.slug}`), false);
+		}
+	});
+
+	it("builds an archive update for retired seed claims", () => {
+		const retired = retiredSeedClaims.find(
+			claim =>
+				claim.slug
+				=== "is-higher-potassium-intake-from-foods-or-potassium-salt-substitutes-recommended-for-blood-pressure"
+		);
+		assert.ok(retired, "Missing retired duplicate potassium claim");
+
+		const update = buildRetiredSeedClaimUpdate(retired);
+
+		assert.equal(update.$set.status, "archived");
+		assert.equal(update.$addToSet.changeLog.kind, "update");
+		assert.equal(update.$addToSet.changeLog.summary, retired.summary);
+		assert.equal(update.$addToSet.changeLog.date.toISOString(), retired.archivedAt);
+	});
+
 	it("refreshes source-controlled claim copy on existing seeded claims", () => {
 		const claim = defaultClaims.find(
 			entry => entry.slug === "were-most-stomach-ulcers-caused-by-stress-rather-than-bacteria"

@@ -6,6 +6,13 @@ import { defaultClaims } from "./claims.js";
 type SeedClaimSource = (typeof defaultClaims)[number]["sources"][number];
 type SeedClaim = (typeof defaultClaims)[number];
 
+interface RetiredSeedClaim {
+	topicSlug: string;
+	slug: string;
+	archivedAt: string;
+	summary: string;
+}
+
 interface SeedSourceUpdate {
 	$set?: Record<string, unknown>;
 	$unset?: Record<string, "">;
@@ -13,6 +20,19 @@ interface SeedSourceUpdate {
 
 interface SeedClaimUpdate {
 	$set?: Record<string, unknown>;
+}
+
+interface RetiredSeedClaimUpdate {
+	$set: {
+		status: "archived";
+	};
+	$addToSet: {
+		changeLog: {
+			date: Date;
+			kind: "update";
+			summary: string;
+		};
+	};
 }
 
 interface ExistingClaimSourceForSeedSync {
@@ -35,6 +55,17 @@ interface ExistingClaimSourceForSeedSync {
 }
 
 const optionalSeedStringFields = ["publisher", "url", "doi", "pmid", "pmcid"] as const;
+
+export const retiredSeedClaims: RetiredSeedClaim[] = [
+	{
+		topicSlug: "nutrition-and-diet",
+		slug:
+			"is-higher-potassium-intake-from-foods-or-potassium-salt-substitutes-recommended-for-blood-pressure",
+		archivedAt: "2026-07-04T16:12:07.000Z",
+		summary:
+			"Archived the overlapping combined potassium page so coverage stays split between food-based potassium and potassium-enriched salt substitutes."
+	}
+];
 
 function toSeedDate(value: string) {
 	return new Date(value);
@@ -131,6 +162,21 @@ export function buildSeedClaimUpdate(existingClaim: Record<string, unknown>, see
 	return Object.keys($set).length ? { $set } : {};
 }
 
+export function buildRetiredSeedClaimUpdate(retired: RetiredSeedClaim): RetiredSeedClaimUpdate {
+	return {
+		$set: {
+			status: "archived"
+		},
+		$addToSet: {
+			changeLog: {
+				date: toSeedDate(retired.archivedAt),
+				kind: "update",
+				summary: retired.summary
+			}
+		}
+	};
+}
+
 export function buildSeedSourceUpdate(
 	existingSource: ExistingClaimSourceForSeedSync,
 	source: SeedClaimSource
@@ -192,7 +238,31 @@ export function buildSeedSourceUpdate(
 	};
 }
 
+function seedKey(topicSlug: string, slug: string) {
+	return `${topicSlug}/${slug}`;
+}
+
+async function archiveRetiredSeedClaims(activeSeedKeys: Set<string>) {
+	for (const retired of retiredSeedClaims) {
+		if (activeSeedKeys.has(seedKey(retired.topicSlug, retired.slug))) continue;
+
+		const topic = await Topic.findOne({ slug: retired.topicSlug });
+		if (!topic) continue;
+
+		await Claim.updateOne(
+			{
+				topic: topic._id,
+				slug: retired.slug,
+				status: { $ne: "archived" }
+			},
+			buildRetiredSeedClaimUpdate(retired)
+		);
+	}
+}
+
 export async function seedClaims() {
+	const activeSeedKeys = new Set(defaultClaims.map(seed => seedKey(seed.topicSlug, seed.slug)));
+
 	for (const seed of defaultClaims) {
 		const topic = await Topic.findOne({ slug: seed.topicSlug });
 		if (!topic) continue;
@@ -244,4 +314,6 @@ export async function seedClaims() {
 			}
 		}
 	}
+
+	await archiveRetiredSeedClaims(activeSeedKeys);
 }
