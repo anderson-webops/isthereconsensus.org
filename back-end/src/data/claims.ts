@@ -10146,6 +10146,207 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "historical-case-studies",
+		title: "Did vaccination eradicate smallpox?",
+		slug: "did-vaccination-eradicate-smallpox",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes, with an important qualifier. Smallpox was eradicated through a coordinated global program that depended on effective vaccination, active surveillance, case investigation, isolation, and ring vaccination around cases and contacts. WHO declared smallpox eradicated in 1980 after the last known natural case in Somalia in 1977.",
+		stableCore: [
+			"Smallpox was caused by variola virus, spread only among humans, and had no nonhuman reservoir, making eradication biologically possible in a way many infections are not.",
+			"Vaccination was essential, but the final campaign was not simply blanket vaccination everywhere; surveillance and containment made it possible to find outbreaks and stop chains of transmission.",
+			"WHO's intensified eradication effort began in 1967, using widespread immunization, surveillance, case-finding, and ring vaccination.",
+			"The last known naturally occurring case was identified in Somalia on October 26, 1977, followed by intensive searching before the World Health Assembly declared eradication achieved on May 8, 1980.",
+			"Routine vaccination stopped after eradication because the disease no longer circulated naturally while the live vaccinia vaccine carried rare but real risks; current smallpox vaccination is reserved for outbreak preparedness or specific occupational groups."
+		],
+		openQuestions: [
+			"Which smallpox-era lessons generalize to diseases with animal reservoirs, asymptomatic spread, waning immunity, or weaker vaccines?",
+			"How should public summaries credit vaccination without erasing surveillance, logistics, local health workers, and political coordination?",
+			"How should countries maintain smallpox preparedness after eradication while avoiding unnecessary routine vaccine risk?"
+		],
+		whatWouldChangeMinds: [
+			"Credible historical evidence showing that vaccination and surveillance-containment were not central to interrupting smallpox transmission.",
+			"A better account that explains the timing, geography, field records, and certification process without coordinated vaccination, case finding, and containment as the core intervention package.",
+			"Major WHO, CDC, or historical public-health reassessments withdrawing smallpox as a vaccination-led eradication success."
+		],
+		misconceptions: [
+			"The shorthand 'vaccines eradicated smallpox' is true only if it includes the surveillance, containment, field logistics, and ring-vaccination system that made vaccination targeted and effective.",
+			"Smallpox eradication does not mean every infectious disease can be eradicated by the same strategy; disease biology and program feasibility matter.",
+			"Stopping routine smallpox vaccination does not mean the vaccine failed. It means the risk-benefit balance changed after eradication.",
+			"Calling smallpox vaccination a public-health success does not require pretending the older live vaccinia vaccines were risk-free."
+		],
+		editorSummary:
+			"This page should be a clean historical case study: smallpox is the strongest example of vaccine-enabled eradication, but the accurate lesson is vaccination plus surveillance-containment, not a simplistic technology-only story.",
+		uncertaintySummary:
+			"The historical conclusion is settled: smallpox was eradicated through a global vaccination-centered public-health campaign. Remaining uncertainty is about attribution among program components in specific regions, how far the lessons generalize to other diseases, and how to communicate vaccine risk after eradication.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Eradication depended on vaccine supply, field surveillance, outbreak investigation, contact tracing, isolation, and local program execution."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Smallpox had features that favored eradication, including visible illness, limited asymptomatic transmission, effective vaccine, and no animal reservoir."
+			},
+			{
+				type: "other",
+				detail:
+					"Post-eradication policy focuses on preparedness, laboratory security, stockpiles, and rare vaccine harms rather than routine public vaccination."
+			}
+		],
+		searchDatabases: ["WHO", "CDC", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-04T22:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:15:00.000Z",
+		inclusionRules: [
+			"Prioritize WHO eradication history, CDC vaccination guidance, peer-reviewed reviews by eradication program leaders, and sources that distinguish mass vaccination from surveillance-containment.",
+			"Include sources that explain why routine public vaccination stopped after eradication.",
+			"Treat smallpox as a historical eradication case, not as a template that automatically applies to every vaccine-preventable disease."
+		],
+		exclusionRules: [
+			"Exclude sources that imply vaccination worked without surveillance, isolation, contact tracing, or field logistics.",
+			"Do not use general anti-vaccine or pro-vaccine advocacy summaries as decision-weight evidence.",
+			"Do not treat post-eradication preparedness debates as evidence against historical eradication."
+		],
+		evidenceSummaries: [
+			{
+				question: "Did vaccination eradicate smallpox?",
+				population:
+					"Global populations exposed to smallpox before and during the WHO-led eradication campaign, especially countries where smallpox remained endemic in the 1960s and 1970s.",
+				finding:
+					"Smallpox eradication was achieved through an effective vaccine embedded in a global surveillance-containment program that found cases, isolated outbreaks, and vaccinated contacts and surrounding communities.",
+				effectDirection: "supports",
+				magnitude:
+					"WHO reports the last known natural case occurred in Somalia in 1977 and that smallpox was declared eradicated in 1980, making it the only infectious disease to have achieved that status.",
+				certainty: "high",
+				limitations: [
+					"Historical attribution can vary by region because mass vaccination, ring vaccination, surveillance quality, and local infrastructure contributed differently across settings.",
+					"The smallpox lesson does not automatically generalize to infections with animal reservoirs, substantial asymptomatic spread, or less durable vaccines.",
+					"Current vaccine policy differs from eradication-era policy because routine risk-benefit calculations changed once natural disease circulation ended."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Global eradication, certification, and historical program anchor"
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current smallpox vaccine and preparedness guidance anchor"
+			},
+			{
+				name: "WHO Smallpox Eradication Programme history",
+				role: "Primary historical account of surveillance-containment and field implementation"
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial smallpox eradication historical case published from WHO eradication history, CDC vaccine guidance, and peer-reviewed eradication-program reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Smallpox",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/health-topics/smallpox",
+				stance: "supports",
+				note:
+					"WHO public-health anchor stating that intensified eradication began in 1967, used immunization and surveillance, and culminated in the last natural case in 1977 and eradication declaration in 1980.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Statue commemorates smallpox eradication",
+				publisher: "World Health Organization",
+				year: 2010,
+				url: "https://www.who.int/news/item/17-05-2010-statue-commemorates-smallpox-eradication",
+				stance: "supports",
+				note:
+					"WHO historical account describing the two-part strategy of monitored mass vaccination plus surveillance and containment, the 1977 last natural case, and the 1980 World Health Assembly declaration.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Smallpox vaccines",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/news-room/feature-stories/detail/smallpox-vaccines",
+				stance: "supports",
+				note:
+					"WHO vaccine history explaining the shift from mass vaccination targets to case-finding and ring vaccination around known and possible contacts.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Smallpox Vaccine",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/smallpox/vaccines/index.html",
+				stance: "context",
+				note:
+					"Current CDC guidance explaining that smallpox vaccines are not recommended for the general public because smallpox has been eradicated, while vaccines would be used to control an outbreak.",
+				order: 4
+			},
+			{
+				kind: "guideline",
+				title: "Vaccinia (Smallpox) Vaccine: Recommendations of the Immunization Practices Advisory Committee",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 1991,
+				url: "https://www.cdc.gov/mmwr/preview/mmwrhtml/00042032.htm",
+				stance: "context",
+				note:
+					"CDC/ACIP context on routine vaccination being discontinued as importation risk fell and later use narrowing to selected laboratory, health-care, and military groups.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Smallpox and its eradication",
+				publisher: "World Health Organization",
+				year: 1988,
+				url: "https://iris.who.int/items/ba4ab312-1c43-4304-8235-969979499717",
+				stance: "supports",
+				note:
+					"WHO's definitive historical volume by Fenner, Henderson, Arita, Jezek, and Ladnyi, documenting the disease, vaccination, surveillance, containment, and certification process.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "The eradication of smallpox - an overview of the past, present, and future",
+				publisher: "Vaccine",
+				year: 2011,
+				url: "https://doi.org/10.1016/j.vaccine.2011.06.080",
+				doi: "10.1016/j.vaccine.2011.06.080",
+				pmid: "22188929",
+				stance: "supports",
+				note:
+					"Review by Donald A. Henderson summarizing the eradication program, its execution, and post-eradication implications.",
+				order: 7
+			},
+			{
+				kind: "context",
+				title: "Mass vaccination and surveillance/containment in the eradication of smallpox",
+				publisher: "Current Topics in Microbiology and Immunology",
+				year: 2006,
+				url: "https://doi.org/10.1007/3-540-36583-4_2",
+				doi: "10.1007/3-540-36583-4_2",
+				pmid: "16989262",
+				pmcid: "PMC7120753",
+				stance: "supports",
+				note:
+					"Review focused on how the eradication program combined mass vaccination with surveillance-containment and ring vaccination.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
 		title: "Did removing lead from gasoline really lower children's lead exposure?",
 		slug: "did-removing-lead-from-gasoline-lower-childrens-lead-exposure",
 		status: "published",
