@@ -19034,6 +19034,207 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "other-questions",
+		title: "Do speed cameras reduce speeding, crashes, injuries, and deaths?",
+		slug: "do-speed-cameras-reduce-speeding-crashes-injuries-and-deaths",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes, when they are placed and operated as safety tools. Speed cameras and other automated speed-enforcement systems reduce speeding and are associated with fewer crashes, injuries, or deaths in many evaluations. The size of the benefit depends on site selection, visibility, enforcement thresholds, publicity, road design, legal rules, and whether programs are run transparently rather than as revenue traps.",
+		stableCore: [
+			"Speeding is a major road-safety risk: NHTSA reports 11,288 U.S. speeding-related traffic deaths in 2024, representing 29% of all traffic fatalities.",
+			"CDC says automated speed camera enforcement is effective in reducing speed and speed-related crashes, and can aid traditional enforcement where traffic stops are impractical or unsafe.",
+			"FHWA lists speed safety cameras as a proven safety countermeasure and recommends data-driven deployment at locations with demonstrated speeding-related crash problems.",
+			"NHTSA Countermeasures That Work summarizes evidence that conspicuous fixed speed-camera sites often reduce injury crashes by about 20% to 25%, with other studies reporting crash and speed reductions.",
+			"Systematic reviews and meta-analyses consistently find reductions in speeding, crashes, injury crashes, or fatalities, while warning that effect sizes vary and many studies are observational."
+		],
+		openQuestions: [
+			"Which combinations of visible cameras, mobile cameras, point-to-point cameras, signage, publicity, road redesign, and lower speed limits work best by road type?",
+			"How should jurisdictions design fines, warnings, revenue use, appeals, placement, and data reporting so programs are equitable and trusted?",
+			"How far do benefits spill over beyond camera sites, and when do drivers simply slow briefly near cameras before speeding again?",
+			"How should automated enforcement be balanced with engineering changes that make safer speeds self-enforcing?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled before-after and quasi-experimental evaluations showing no reduction in speeding, crashes, injuries, or fatalities after properly implemented speed-camera programs.",
+			"Major NHTSA, FHWA, CDC, WHO, or road-safety reassessments withdrawing speed safety cameras as an evidence-supported safety countermeasure.",
+			"Evidence that ticketing, diversion, rear-end crashes, public distrust, or inequitable fines consistently offset the crash and injury reductions seen in the better evaluations."
+		],
+		misconceptions: [
+			"Policy fights over fines or privacy do not by themselves show that speed cameras fail as a safety intervention.",
+			"Speed cameras are not a substitute for safer street design, lower-risk speed limits, driver education, or conventional enforcement where it is needed.",
+			"A camera program can be poorly designed even if the general countermeasure is evidence-based.",
+			"Counting tickets or revenue alone is not a safety evaluation; crash, injury, speed, equity, and placement data matter."
+		],
+		editorSummary:
+			"The practical consensus is clear: speed cameras can reduce speeding and crash harm, especially at data-selected high-risk locations. The main policy question is program design: safety purpose, transparent placement, equitable fines, public engagement, and ongoing evaluation.",
+		uncertaintySummary:
+			"The direction of effect is well supported, but exact benefit size is context-dependent. Evidence is mostly observational or quasi-experimental, and results vary by camera type, road geometry, enforcement threshold, publicity, baseline speeding, comparison sites, spillover assumptions, and whether programs are adjusted over time.",
+		searchDatabases: ["Consensus", "CDC", "NHTSA", "FHWA", "PubMed"],
+		searchCutoffAt: "2026-07-04T23:20:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T23:20:00.000Z",
+		inclusionRules: [
+			"Prioritize government road-safety guidance, systematic reviews, meta-analyses, controlled before-after studies, interrupted time-series studies, and quasi-experimental evaluations.",
+			"Separate automated speed enforcement from red-light cameras, general police enforcement, and speed-display feedback signs unless a source evaluates combined programs.",
+			"Keep crash and injury outcomes separate from ticket counts, revenue, and public acceptance outcomes."
+		],
+		exclusionRules: [
+			"Do not use camera-vendor marketing as effectiveness evidence.",
+			"Do not treat a politically unpopular program, a revenue-focused contract, or a single weak site evaluation as proof the intervention generally fails.",
+			"Do not imply speed cameras alone can fix roads where design, visibility, speed limits, or pedestrian and cyclist protection remain unsafe."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do speed cameras reduce speeding, crashes, injuries, and deaths?",
+				population:
+					"Drivers, passengers, pedestrians, cyclists, and other road users exposed to automated speed enforcement on roads with speeding or crash problems.",
+				finding:
+					"Official guidance, systematic reviews, meta-analyses, and newer quasi-experimental studies support speed cameras as a safety countermeasure that reduces speeding and often reduces crashes, injuries, or deaths.",
+				effectDirection: "supports",
+				magnitude:
+					"NHTSA summarizes best-controlled fixed-camera studies as roughly 20% to 25% site-specific injury-crash reductions; the 2010 Cochrane review found reductions across all speed and crash studies it included, and a 2025 NYC quasi-experiment estimated 30% fewer collisions and 16% fewer injuries over seven months.",
+				certainty: "moderate",
+				limitations: [
+					"Randomized trials are rare or unrealistic, so most evidence comes from observational, before-after, interrupted time-series, and quasi-experimental designs.",
+					"Effect sizes vary by site selection, enforcement threshold, baseline speeding, publicity, camera visibility, road type, and comparison method.",
+					"Equity, privacy, fine burden, public trust, and revenue use are implementation questions that can affect whether a program is legitimate and sustainable."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Highway Traffic Safety Administration",
+				role: "U.S. transportation-safety anchor for speeding burden and Countermeasures That Work effectiveness summaries."
+			},
+			{
+				name: "Federal Highway Administration",
+				role: "Roadway-safety anchor for speed safety cameras as a proven safety countermeasure and for deployment guidance."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health anchor for motor-vehicle injury prevention and automated speed camera effectiveness summaries."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T23:20:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial speed-camera road-safety claim page published from CDC, NHTSA, FHWA, and Consensus-located systematic-review, meta-analysis, and quasi-experimental evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Speeding and Aggressive Driving Prevention",
+				publisher: "National Highway Traffic Safety Administration",
+				year: 2026,
+				url: "https://www.nhtsa.gov/risky-driving/speeding",
+				stance: "supports",
+				note:
+					"NHTSA source for 2024 U.S. speeding-related death counts, the share of traffic deaths involving speeding, and why speed raises crash severity.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "MV PICCS Intervention: Automated Speed Camera Enforcement",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/transportation-safety/calculator/speed.html/",
+				stance: "supports",
+				note:
+					"CDC motor-vehicle injury source stating that automated speed camera enforcement is effective in reducing speed and speed-related crashes.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Speed Safety Cameras",
+				publisher: "Federal Highway Administration",
+				year: 2021,
+				url: "https://highways.dot.gov/safety/proven-safety-countermeasures/speed-safety-cameras",
+				stance: "supports",
+				note:
+					"FHWA proven-safety-countermeasure source describing speed safety cameras, data-driven location selection, deployment types, and regular evaluation.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Speed Safety Camera Enforcement",
+				publisher: "National Highway Traffic Safety Administration",
+				year: 2023,
+				url:
+					"https://www.nhtsa.gov/book/countermeasures-that-work/speeding-and-speed-management/countermeasures/enforcement/speed",
+				stance: "supports",
+				note:
+					"NHTSA Countermeasures That Work source summarizing safety benefits, including likely 20% to 25% injury-crash reductions at conspicuous fixed-camera sites.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Speed cameras for the prevention of road traffic injuries and deaths",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2010,
+				url:
+					"https://consensus.app/papers/speed-cameras-for-the-prevention-of-road-traffic-injuries-wilson-willis/e00e456b1fee5de0ac93973a73d0be1d/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Cochrane review of 35 studies finding consistent reductions in speed and crash outcomes, while warning that magnitude was hard to estimate because of heterogeneity and methodological limits.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Speed cameras, section control, and kangaroo jumps-a meta-analysis",
+				publisher: "Accident Analysis & Prevention",
+				year: 2014,
+				url:
+					"https://consensus.app/papers/speed-cameras-section-control-and-kangaroo-jumpsa-hye/3a64419fce445218adda24057879435c/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis estimating about 20% fewer total crashes at speed-camera sites and larger reductions for section-control systems, with caveats about fatal-crash estimates.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Safety Effects of Automated Speed Enforcement Programs",
+				publisher: "Transportation Research Record",
+				year: 2008,
+				url:
+					"https://consensus.app/papers/safety-effects-of-automated-speed-enforcement-programs-thomas-srinivasan/de4a6035d06a55b49b5a7c1cddc07b86/",
+				stance: "supports",
+				note:
+					"Consensus-fetched critical review finding 20% to 25% injury-crash reductions as a reasonable estimate for the better-controlled fixed-camera evaluations.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Can speed cameras make streets safer? Quasi-experimental evidence from New York City",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/can-speed-cameras-make-streets-safer-quasiexperimental-stagoff-belfort-ben-menachem/c8efde29d4a15d719bac3084cd6c1e91/",
+				stance: "supports",
+				note:
+					"Consensus-fetched difference-in-differences study of NYC camera rollout estimating 30% fewer collisions and 16% fewer injuries over seven months after introduction.",
+				order: 8
+			},
+			{
+				kind: "systematic_review",
+				title: "Effectiveness of speed cameras in reducing speed: a systematic review",
+				publisher: "Accident Analysis & Prevention",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/effectiveness-of-speed-cameras-in-reducing-speed-a-amancio-gadda/0a07e0321dbe5620a76c8dcf97ee728e/",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review of 94 studies finding speed cameras reduce driving speed while noting road type, geometry, and other contextual factors shape effectiveness.",
+				order: 9
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
 		title: "Do four-sided pool fences reduce drowning risk for young children?",
 		slug: "do-four-sided-pool-fences-reduce-drowning-risk-for-young-children",
 		status: "published",
