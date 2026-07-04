@@ -13907,6 +13907,198 @@ const rawClaims: SeedClaim[] = [
 				order: 2
 			}
 		]
+	},
+	{
+		topicSlug: "active-debates",
+		title: "Is social media proven to be the main cause of worsening teen mental health?",
+		slug: "is-social-media-proven-to-be-the-main-cause-of-worsening-teen-mental-health",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 68,
+		evidenceCertainty: "low",
+		reviewMode: "living",
+		bottomLine:
+			"Not as a single proven main cause. The evidence supports real concern: problematic use, online harassment, sleep displacement, social comparison, and some high-use patterns are associated with worse adolescent mental-health outcomes. But broad claims that social media is the primary population-level cause of the teen mental-health crisis remain unsettled because effects vary, measurement is messy, and many studies cannot separate cause from consequence.",
+		stableCore: [
+			"Social media is nearly universal among teens, so small average effects can still matter, but ubiquity also makes causal research difficult.",
+			"Evidence is stronger for riskier patterns such as problematic or compulsive use, cyberbullying, body comparison, harmful content exposure, and sleep displacement than for simple screen-time totals.",
+			"Reviews commonly find positive associations with depressive or anxiety symptoms, but effect sizes are often small, heterogeneous, and sensitive to measurement choices.",
+			"The National Academies concluded that the evidence does not support a population-level causal claim, while still finding enough potential harm and benefit to justify safety standards and more rigorous research.",
+			"Social media can also provide connection, identity support, health information, and peer support for some adolescents, so the practical question is not only 'how much' but 'what kind, for whom, and under what safeguards?'"
+		],
+		openQuestions: [
+			"Which platform features, recommendation systems, content types, and interaction patterns cause harm rather than merely correlate with distress?",
+			"Which adolescents are most vulnerable or most likely to benefit, and how do age, sex, puberty timing, disability, LGBTQ+ status, family context, and baseline mental health change effects?",
+			"How much do sleep loss, bullying, body image, social comparison, fear of missing out, and displacement of offline activity mediate the relationship?",
+			"What safety standards, design changes, age-appropriate defaults, school policies, and family practices reduce harm without removing useful social support?",
+			"How should studies use platform data, natural experiments, randomized designs, and within-person longitudinal methods while protecting youth privacy?"
+		],
+		whatWouldChangeMinds: [
+			"Large, independent longitudinal, quasi-experimental, or randomized evidence showing that specific social-media exposures explain a large share of population-level adolescent mental-health changes after accounting for confounders.",
+			"Platform-data studies showing that changing specific design features reliably improves or worsens adolescent mental-health outcomes.",
+			"Conversely, rigorous evidence showing that social-media exposure adds little risk after sleep, bullying, body image, family stress, offline social support, and baseline mental health are measured well."
+		],
+		misconceptions: [
+			"'Social media is associated with depression' does not automatically mean social media caused the depression.",
+			"'Not proven as the main cause' does not mean harmless; some uses and some adolescents carry higher risk.",
+			"Screen-time totals are a rough signal, not a diagnosis of the experience, content, social context, or platform design.",
+			"Benefits for isolated or marginalized teens do not erase harms from harassment, comparison, addictive design, or sleep disruption."
+		],
+		editorSummary:
+			"This page should keep the public debate honest: there is a meaningful risk signal and good reason for safeguards, but the evidence does not justify a simple single-cause story for the teen mental-health crisis.",
+		uncertaintySummary:
+			"Certainty is low for population-level causal attribution and moderate for associations between problematic social media use and internalizing symptoms. The key uncertainty is not whether some adolescents can be harmed; it is effect size, direction of causation, vulnerable subgroups, and which platform features or behaviors are most responsible.",
+		uncertaintyDrivers: [
+			{
+				type: "bias",
+				detail:
+					"Many studies rely on self-reported use, cross-sectional designs, and unmeasured family, school, health, and offline-social factors."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Time spent on social media can combine very different experiences, from supportive messaging to harassment, body comparison, or harmful content."
+			},
+			{
+				type: "timing",
+				detail:
+					"Longitudinal studies help with ordering, but mental-health symptoms can begin before they are measured and can change later social-media use."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Average associations may hide large person-specific differences by age, sex, developmental stage, vulnerability, platform, and use pattern."
+			}
+		],
+		searchDatabases: ["Consensus", "National Academies", "HHS"],
+		searchCutoffAt: "2026-07-04T19:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T19:45:00.000Z",
+		inclusionRules: [
+			"Prioritize umbrella reviews, systematic reviews, meta-analyses, longitudinal studies, and institutional reviews focused on adolescents.",
+			"Separate general time spent from problematic use, passive browsing, harassment, social comparison, sleep displacement, and harmful-content exposure.",
+			"Treat policy and clinical recommendations as safeguards under uncertainty unless they are backed by causal effect estimates."
+		],
+		exclusionRules: [
+			"Do not use litigation claims, platform statements, opinion essays, or viral anecdotes as evidence of causal effect size.",
+			"Do not generalize adult, college-student, gaming-only, or smartphone-only evidence to adolescent social-media effects unless the source supports it.",
+			"Do not present social media as either uniformly toxic or uniformly beneficial."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does social media use explain worsening adolescent mental health?",
+				population: "Children and adolescents, especially ages 10 to 18",
+				finding:
+					"Evidence syntheses find associations with depression, anxiety, and internalizing symptoms, especially for problematic use, but the National Academies found the evidence insufficient for a population-level causal conclusion.",
+				effectDirection: "mixed",
+				magnitude:
+					"Recent syntheses range from weak or inconsistent average associations to moderate correlations for problematic use; a 2024 JAMA Pediatrics meta-analysis reported small positive correlations for time spent and user engagement.",
+				certainty: "low",
+				limitations: [
+					"Cross-sectional designs and self-reported exposure remain common.",
+					"Effects differ by use pattern, person, content, platform design, and offline context.",
+					"Potential benefits such as connection and support can coexist with harms such as harassment, sleep disruption, and social comparison."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Academies of Sciences, Engineering, and Medicine",
+				role: "Consensus-study anchor for the current evidence boundary and the call for more rigorous platform and causal research."
+			},
+			{
+				name: "U.S. Surgeon General",
+				role: "Public-health anchor for acting on youth social-media risks while acknowledging major evidence gaps."
+			},
+			{
+				name: "Adolescent mental-health evidence syntheses",
+				role: "Research anchor for the difference between broad average associations and higher-risk use patterns."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T19:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial social-media and teen mental-health active-debate page published from Consensus-located reviews, a large longitudinal cohort, the National Academies review, and the U.S. Surgeon General advisory."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title:
+					"To Minimize Harms and Maximize Benefits of Social Media to Adolescent Health, New Report Recommends Setting Industrywide Standards, New Protections Against Harassment",
+				publisher: "National Academies of Sciences, Engineering, and Medicine",
+				year: 2024,
+				url:
+					"https://www.nationalacademies.org/news/to-minimize-harms-and-maximize-benefits-of-social-media-to-adolescent-health-new-report-recommends-setting-industrywide-standards-new-protections-against-harassment",
+				doi: "10.17226/27396",
+				stance: "debate",
+				note:
+					"Consensus-study summary stating that evidence is insufficient for population-level causal claims, while social media has potential to harm and benefit adolescents and warrants safeguards plus better research.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Social Media and Youth Mental Health",
+				publisher: "U.S. Surgeon General / HHS",
+				year: 2023,
+				url:
+					"https://www.hhs.gov/surgeongeneral/reports-and-publications/youth-mental-health/social-media/index.html",
+				stance: "context",
+				note:
+					"Public-health advisory source for near-universal teen social-media use, the precautionary safety framing, and risk-reduction actions for families, platforms, policymakers, and researchers.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Social media use and its impact on adolescent mental health: An umbrella review of the evidence",
+				publisher: "Current Opinion in Psychology",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/social-media-use-and-its-impact-on-adolescent-mental-health-valkenburg-meier/fdac706f34865008897b154ea3602095/",
+				stance: "debate",
+				note:
+					"Umbrella review of 25 reviews finding that most reviews characterized associations as weak or inconsistent, while some interpreted the evidence as substantial and harmful.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Problematic Social Media Use in Adolescents and Young Adults: Systematic Review and Meta-analysis",
+				publisher: "JMIR Mental Health",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/problematic-social-media-use-in-adolescents-and-young-shannon-bush/fba2069e99295b17b3a66d9fc2a19027/",
+				stance: "supports",
+				note:
+					"Meta-analysis of 18 studies and 9,269 participants finding moderate correlations between problematic social media use and depression, anxiety, and stress symptoms.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Social Media Use and Internalizing Symptoms in Clinical and Community Adolescent Samples: A Systematic Review and Meta-Analysis",
+				publisher: "JAMA Pediatrics",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/social-media-use-and-internalizing-symptoms-in-clinical-fassi-thomas/1ed622e6b8415b8bbe516a5dd648f81c/",
+				stance: "supports",
+				note:
+					"Meta-analysis of 143 studies, 1,094,890 adolescents, and 886 effect sizes finding small positive associations between social media measures and internalizing symptoms, with limited clinical-sample evidence.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Social Media Use and Depressive Symptoms During Early Adolescence",
+				publisher: "JAMA Network Open",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/social-media-use-and-depressive-symptoms-during-early-nagata-otmar/a6be4ebb1c2e5057b6f717f80a69c8e0/",
+				stance: "supports",
+				note:
+					"Longitudinal ABCD cohort study of 11,876 children and adolescents finding that within-person increases above usual social-media use predicted higher depressive symptoms the following year.",
+				order: 6
+			}
+		]
 	}
 ];
 
