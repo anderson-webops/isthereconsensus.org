@@ -12543,6 +12543,133 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does pasteurization make milk safer than drinking raw milk?",
+		slug: "does-pasteurization-make-milk-safer-than-drinking-raw-milk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Pasteurization makes milk substantially safer by killing disease-causing germs while preserving milk's nutritional benefits. Raw milk can carry Salmonella, E. coli, Listeria, Campylobacter, Brucella, Cryptosporidium, and other pathogens. Clean farms and testing can reduce risk, but they do not make raw milk as safe as pasteurized milk.",
+		stableCore: [
+			"CDC says pasteurization is crucial for milk safety, that raw milk can cause serious illness, and that pasteurized milk and dairy products are the best way to safely get milk's nutritional benefits.",
+			"FDA says raw milk can carry dangerous germs such as Salmonella, E. coli, Listeria, and Campylobacter, and cites CDC data linking 202 outbreaks, 2,645 illnesses, and 228 hospitalizations to raw milk during 1998-2018.",
+			"FDA's raw-milk myth review states that pasteurization kills raw-milk pathogens without significant impact on milk nutritional quality and that raw milk is not nutritionally superior to pasteurized milk.",
+			"A 2022 Canada/U.S. systematic review found 20 unpasteurized-dairy outbreaks, causing 449 confirmed illnesses, 124 hospitalizations, and five deaths. Pasteurized-dairy outbreaks also occurred, mainly involving Listeria, so pasteurization reduces risk rather than eliminating it.",
+			"U.S. surveillance for 2013-2018 found 75 outbreaks and 675 illnesses linked to unpasteurized milk; 48% of illnesses were among people ages 0-19, and outbreaks were more common where retail sale was allowed.",
+			"A 2025 CDC MMWR described 171 Salmonella Typhimurium cases linked to commercially distributed raw milk and cream; 70% were children or adolescents, and the outbreak strain was found in raw milk and 60-day-aged raw milk cheese."
+		],
+		openQuestions: [
+			"How much can modern farm sanitation, pathogen testing, rapid recalls, and cold-chain controls lower but not eliminate raw-milk risk?",
+			"Which labeling, retail-sale, and education policies best protect children, pregnant people, older adults, and immunocompromised people without making risk communication sound punitive?",
+			"How should emerging risks, including novel animal pathogens, change monitoring of raw dairy products and raw-milk cheeses?"
+		],
+		whatWouldChangeMinds: [
+			"Large, independently replicated surveillance showing modern raw milk under realistic distribution has illness and severe-outcome risk comparable to pasteurized milk.",
+			"Evidence that farm-level testing and sanitation reliably prevent key pathogens before consumer exposure at scale.",
+			"Major CDC, FDA, WHO, or comparable food-safety reassessments withdrawing pasteurization as a core milk-safety recommendation."
+		],
+		misconceptions: [
+			"Natural or local does not automatically mean microbiologically safer.",
+			"Healthy animals, clean-looking milk, or careful farmers cannot guarantee that raw milk is free of pathogens.",
+			"Raw milk is not nutritionally superior to pasteurized milk and does not cure lactose intolerance.",
+			"Raw-milk cheese aged for 60 days is not guaranteed safe from every outbreak strain or emerging pathogen.",
+			"Outbreaks linked to pasteurized dairy show that food safety is not perfect; they do not make raw milk equally safe."
+		],
+		editorSummary:
+			"This page should answer a high-confusion food-safety claim without turning it into lifestyle shaming. The practical consensus is that pasteurization is a proven safety step and raw milk is an avoidable pathogen risk, especially for children and medically vulnerable groups.",
+		uncertaintySummary:
+			"The direction of risk is high-certainty. Uncertainty is mainly about exact risk under specific farm practices, local laws, testing frequency, distribution scale, pathogen type, and how best to communicate risk without implying pasteurized products are perfectly risk-free.",
+		searchCutoffAt: "2026-07-04T04:40:14.000Z",
+		lastRetractionCheckAt: "2026-07-04T04:40:14.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T04:40:14.000Z",
+				kind: "publication",
+				summary:
+					"Initial raw-milk and pasteurization safety page published from CDC, FDA, North American outbreak systematic review, U.S. outbreak surveillance, and 2025 CDC Salmonella outbreak evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Raw Milk",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/food-safety/foods/raw-milk.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor stating that pasteurization is crucial for milk safety, raw milk can cause serious illness, and pasteurized dairy is the safest way to get milk's nutritional benefits.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "The Dangers of Raw Milk: Unpasteurized Milk Can Pose a Serious Health Risk",
+				publisher: "U.S. Food and Drug Administration",
+				url:
+					"https://www.fda.gov/food/buy-store-serve-safe-food/dangers-raw-milk-unpasteurized-milk-can-pose-serious-health-risk",
+				stance: "supports",
+				note:
+					"FDA consumer-safety source for raw-milk pathogen examples, vulnerable groups, the 1998-2018 CDC outbreak count, and the explanation that pasteurization kills harmful germs.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Raw Milk Misconceptions and the Danger of Raw Milk Consumption",
+				publisher: "U.S. Food and Drug Administration",
+				url:
+					"https://www.fda.gov/food/buy-store-serve-safe-food/raw-milk-misconceptions-and-danger-raw-milk-consumption",
+				stance: "supports",
+				note:
+					"FDA myth-review source stating that pasteurization kills raw-milk pathogens without significant nutritional-quality loss and that raw milk is not nutritionally superior.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Disease outbreaks linked to pasteurized and unpasteurized dairy products in Canada and the United States: a systematic review",
+				publisher: "Canadian Journal of Public Health",
+				year: 2022,
+				url: "https://doi.org/10.17269/s41997-022-00614-y",
+				doi: "10.17269/s41997-022-00614-y",
+				pmid: "35277846",
+				stance: "supports",
+				note:
+					"Systematic review of 32 Canada/U.S. dairy outbreaks from 2007 onward; supports raw-dairy risk while keeping the caveat that pasteurized-product outbreaks can still occur.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Foodborne illness outbreaks linked to unpasteurised milk and relationship to changes in state laws - United States, 1998-2018",
+				publisher: "Epidemiology and Infection",
+				year: 2022,
+				url: "https://doi.org/10.1017/S0950268822001649",
+				doi: "10.1017/S0950268822001649",
+				pmid: "36280604",
+				stance: "supports",
+				note:
+					"U.S. outbreak-surveillance analysis linking unpasteurized-milk availability with more outbreaks and reporting 75 outbreaks with 675 illnesses during 2013-2018.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Outbreak of Salmonella Typhimurium Infections Linked to Commercially Distributed Raw Milk - California and Four Other States, September 2023-March 2024",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 2025,
+				url: "https://www.cdc.gov/mmwr/volumes/74/wr/mm7427a1.htm",
+				doi: "10.15585/mmwr.mm7427a1",
+				pmid: "40705671",
+				stance: "supports",
+				note:
+					"Recent CDC outbreak report describing 171 Salmonella Typhimurium cases linked to raw milk and cream, with most cases among children and adolescents.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "climate-and-environment",
 		title: "Is heavy rainfall becoming more frequent and intense because of human-caused climate change?",
 		slug: "is-heavy-rainfall-becoming-more-frequent-and-intense-because-of-human-caused-climate-change",
