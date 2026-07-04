@@ -2871,6 +2871,102 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does routine imaging improve uncomplicated low back pain?",
+		slug: "does-routine-imaging-improve-uncomplicated-low-back-pain",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		bottomLine:
+			"Usually no. For low back pain without red flags, routine early X-rays, CT scans, or MRI do not improve pain or function compared with usual care. Imaging is still important when symptoms suggest cancer, infection, fracture, cauda equina syndrome, severe or progressive neurologic deficits, or when a specialist result is likely to change management.",
+		stableCore: [
+			"The American College of Radiology rates initial lumbar radiography, CT, and MRI as usually not appropriate for acute, subacute, or chronic low back pain with no red flags and no prior management.",
+			"NICE recommends against routine imaging in non-specialist settings and says specialist imaging should be considered only when the result is likely to change management.",
+			"A Lancet systematic review and meta-analysis of six randomized trials with 1,804 participants found no clinically meaningful improvement in pain, function, quality of life, mental health, or overall improvement from immediate routine lumbar imaging.",
+			"A later systematic review found low back pain imaging may be associated with higher direct costs, increased health care utilization, and possibly more absence from work."
+		],
+		openQuestions: [
+			"Which red-flag combinations best identify the small subgroup who need urgent imaging without causing broad overuse?",
+			"Which decision-support and patient-communication tools reduce low-value imaging while preserving trust and follow-up safety?",
+			"What is the best timing and modality for persistent radiculopathy, spinal stenosis, or surgical/interventional planning?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias randomized trials showing that routine early imaging for uncomplicated low back pain improves patient-important outcomes enough to outweigh costs and downstream harms.",
+			"Evidence that serious spinal conditions are commonly missed when clinicians defer immediate imaging after a careful red-flag assessment.",
+			"A major ACR, ACP, NICE, Cochrane, or comparable guideline reassessment recommending routine initial imaging for uncomplicated low back pain."
+		],
+		misconceptions: [
+			"Not ordering an early scan does not mean the pain is imaginary or unimportant.",
+			"MRI and CT can find age-related disc or spine changes that are common even in people without back pain, so a visible finding is not always the cause.",
+			"Red flags, severe or progressive neurologic deficits, trauma risk, cancer risk, infection concern, and cauda equina symptoms are different from uncomplicated low back pain."
+		],
+		editorSummary:
+			"This page should help readers understand why deferring early imaging can be evidence-based care, while making the safety exceptions explicit enough that the advice is not read as blanket imaging denial.",
+		uncertaintySummary:
+			"The core claim is strong for uncomplicated low back pain without red flags. Uncertainty is mostly about implementation, red-flag accuracy, persistent symptoms, and how to communicate watchful waiting without making patients feel dismissed.",
+		searchCutoffAt: "2026-07-04T03:59:49.000Z",
+		lastRetractionCheckAt: "2026-07-04T03:59:49.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T03:59:49.000Z",
+				kind: "publication",
+				summary:
+					"Initial uncomplicated low back pain imaging claim page published from ACR and NICE guideline anchors plus randomized-trial and utilization systematic reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "ACR Appropriateness Criteria Low Back Pain",
+				publisher: "American College of Radiology",
+				year: 2021,
+				url: "https://acsearch.acr.org/docs/69483/narrative/",
+				stance: "supports",
+				note:
+					"ACR appropriateness table rates initial radiography, CT, and MRI as usually not appropriate for low back pain without red flags and no prior management, while listing scenarios where imaging becomes appropriate.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Low back pain and sciatica in over 16s: assessment and management",
+				publisher: "National Institute for Health and Care Excellence",
+				year: 2016,
+				url: "https://www.nice.org.uk/guidance/ng59/chapter/recommendations",
+				stance: "supports",
+				note:
+					"NICE recommendation not to routinely offer imaging in non-specialist settings and to consider specialist imaging only if the result is likely to change management.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Imaging strategies for low-back pain: systematic review and meta-analysis",
+				publisher: "The Lancet",
+				year: 2009,
+				url: "https://doi.org/10.1016/S0140-6736(09)60172-0",
+				doi: "10.1016/S0140-6736(09)60172-0",
+				pmid: "19200918",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of six randomized trials and 1,804 participants finding immediate routine lumbar imaging did not improve pain, function, quality of life, mental health, or overall improvement.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Imaging versus no imaging for low back pain: a systematic review, measuring costs, healthcare utilization and absence from work",
+				publisher: "European Spine Journal",
+				year: 2019,
+				url: "https://doi.org/10.1007/s00586-019-05918-1",
+				doi: "10.1007/s00586-019-05918-1",
+				pmid: "30796513",
+				stance: "supports",
+				note:
+					"Systematic review finding low back pain imaging may be associated with higher medical costs, increased health care utilization, and indications of more absence from work.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does regular physical activity reduce the risk of early death and chronic disease?",
 		slug: "does-regular-physical-activity-reduce-the-risk-of-early-death-and-chronic-disease",
 		status: "published",
