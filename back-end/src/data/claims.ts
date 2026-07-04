@@ -11830,6 +11830,191 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "historical-case-studies",
+		title: "Did chlorinating and filtering drinking water reduce typhoid and other waterborne disease?",
+		slug: "did-chlorinating-and-filtering-drinking-water-reduce-typhoid-and-other-waterborne-disease",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Municipal drinking-water treatment, especially filtration plus disinfection, sharply reduced typhoid and other waterborne infections where it was implemented well. Chlorination was a major part of the public-health success, but it worked best as part of a treatment system that also included filtration, sanitation, source protection, monitoring, and regulation.",
+		stableCore: [
+			"CDC treats U.S. drinking-water chlorination and treatment as one of the major public-health achievements of the 20th century.",
+			"Chlorine or chloramine disinfection kills germs in public tap water, while filtration removes particles and pathogens that chemical disinfection alone may not handle reliably.",
+			"Historical city data link water purification to large declines in typhoid, diarrheal disease, infant mortality, and overall urban mortality.",
+			"Modern WASH evidence still supports treated water, sanitation, and hygiene as protective against typhoid fever, especially where centralized infrastructure is incomplete.",
+			"The historical lesson is infrastructure plus surveillance, not a claim that chlorine alone makes any water source safe or that disinfection byproducts no longer need regulation."
+		],
+		openQuestions: [
+			"How much of a specific city's mortality decline came from water treatment versus sewage control, milk safety, nutrition, medical care, antibiotics, vaccination, or economic change?",
+			"Which communities still face unacceptable waterborne-disease risk because treatment, distribution, household storage, or sanitation systems fail?",
+			"How should utilities optimize microbial protection while controlling disinfection byproducts, corrosion, lead and copper release, taste, and distribution-system biofilms?"
+		],
+		whatWouldChangeMinds: [
+			"Credible historical reanalyses showing that treated municipal water was not materially associated with typhoid or diarrheal mortality declines after accounting for timing and confounding.",
+			"Modern outbreak and WASH evidence showing treated water does not reduce enteric infection risk when implementation quality is measured well.",
+			"Major CDC, EPA, WHO, or National Academies reassessments concluding that filtration and disinfection are not central to public drinking-water pathogen control."
+		],
+		misconceptions: [
+			"Chlorination is sometimes retold as if chlorine alone solved waterborne disease, when filtration, sanitation, source protection, and monitoring were also central.",
+			"Disinfection byproducts are sometimes used to imply treated public water is generally more dangerous than untreated water.",
+			"Some people treat a U.S. historical success as if safe water is now solved everywhere, even though infrastructure gaps and outbreaks still occur.",
+			"Private wells, emergency water storage, and household treatment need different risk management than regulated municipal systems."
+		],
+		editorSummary:
+			"Treated-water history is a population-scale infrastructure case: filtration and disinfection reduced disease, but the public-health lesson is a managed system rather than a single-chemical fix.",
+		uncertaintySummary:
+			"The core conclusion is strong: treated municipal water reduced waterborne disease risk and helped drive major mortality declines. Remaining uncertainty is mostly about attribution size in particular cities, implementation quality, current equity gaps, and balancing microbial control with chemical byproduct and distribution-system risks.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Water treatment works only when source control, filtration, disinfection, distribution, monitoring, and maintenance are implemented reliably."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Historical mortality declines reflect several public-health changes at once, so attribution is stronger for the broad treatment package than for any single technology in isolation."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence from early 20th-century U.S. cities does not automatically solve present-day risks in low-resource settings, private wells, emergencies, or aging distribution systems."
+			}
+		],
+		searchDatabases: ["Consensus", "CDC Stacks", "EPA", "National Academies / NCBI Bookshelf"],
+		searchCutoffAt: "2026-07-04T22:35:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:35:00.000Z",
+		inclusionRules: [
+			"Prioritize municipal water-treatment history, typhoid and diarrheal mortality evidence, systematic reviews of WASH and typhoid, and current public-water regulation sources.",
+			"Separate centralized treatment evidence from household point-of-use chlorination, emergency response, private wells, and outbreak-control settings.",
+			"Keep disinfection byproducts, filtration limits, and distribution-system risks visible as implementation caveats."
+		],
+		exclusionRules: [
+			"Do not use industry advocacy as a primary evidence anchor for chlorination benefits.",
+			"Do not treat chlorination alone as a substitute for filtration when water is particle-heavy, fecally contaminated, or poorly sourced.",
+			"Do not use broad sanitation improvements as proof of chlorination effects unless timing and mechanism are separated."
+		],
+		evidenceSummaries: [
+			{
+				question: "Did municipal water treatment reduce typhoid and other waterborne disease?",
+				population:
+					"Communities served by treated public water systems, especially early 20th-century cities and modern settings with measurable WASH differences.",
+				finding:
+					"Historical and modern evidence supports treated water as a major protective intervention against typhoid and other enteric infections, with the strongest public-health story involving filtration, disinfection, sanitation, and monitoring together.",
+				effectDirection: "supports",
+				magnitude:
+					"One Chicago analysis attributed 30% to 50% of the 1850-1925 crude death-rate decline to water purification and disease reductions; a 2022 typhoid WASH meta-analysis found treated water associated with lower typhoid odds.",
+				certainty: "high",
+				limitations: [
+					"Historical estimates vary by city, baseline water quality, intervention timing, and concurrent public-health changes.",
+					"Point-of-use chlorination benefits depend on correct, consistent, and sustained use.",
+					"Microbial safety must be balanced with regulated disinfection byproducts and distribution-system corrosion risks."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Historical and current public-health anchor for U.S. water disinfection and treatment."
+			},
+			{
+				name: "U.S. Environmental Protection Agency",
+				role: "Current drinking-water regulatory anchor for filtration, disinfection, and pathogen-control rules."
+			},
+			{
+				name: "National Academies / National Research Council",
+				role: "Mechanism and public-water disinfection evidence anchor."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:35:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial treated-water historical case published from CDC, EPA, National Academies, and Consensus-located water-treatment and typhoid evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title:
+					"History of drinking water treatment: a century of U.S. water chlorination and treatment",
+				publisher: "CDC Stacks",
+				year: 2012,
+				url: "https://stacks.cdc.gov/view/cdc/92155",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"CDC historical anchor describing U.S. routine drinking-water disinfection beginning in 1908 and the broad disease decline that followed.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About Water Disinfection with Chlorine and Chloramine",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url:
+					"https://www.cdc.gov/drinking-water/about/about-water-disinfection-with-chlorine-and-chloramine.html",
+				stance: "supports",
+				note:
+					"Current CDC public-water source explaining that utilities add chlorine or chloramine to kill germs, maintain residual protection, and meet safety standards.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Surface Water Treatment Rules",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2026,
+				url: "https://www.epa.gov/dwreginfo/surface-water-treatment-rules",
+				stance: "supports",
+				note:
+					"Current EPA regulatory source stating that surface-water treatment rules protect against pathogens and include disinfection and, in most cases, filtration.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Water and Chicago's mortality transition, 1850-1925",
+				publisher: "Explorations in Economic History",
+				year: 2007,
+				url:
+					"https://consensus.app/papers/water-and-chicagos-mortality-transition-18501925-ferrie-troesken/0f6c22972a465029bb6cbe86347d8e0b/",
+				stance: "supports",
+				note:
+					"Historical city analysis estimating that 30% to 50% of Chicago's crude death-rate decline from 1850 to 1925 was attributable to water purification and reduced typhoid and diarrheal disease.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Associations of water, sanitation, and hygiene with typhoid fever in case-control studies",
+				publisher: "BMC Infectious Diseases",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/associations-of-water-sanitation-and-hygiene-with-typhoid-kim-goucher/034cab38d39d55ee973e8662dc94f743/",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of 27 case-control studies finding treated water, improved water sources, and basic hygiene generally protective against typhoid fever.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Role of disinfection in suppressing the spread of pathogens with drinking water",
+				publisher: "Water Research",
+				year: 2002,
+				url:
+					"https://consensus.app/papers/role-of-disinfection-in-suppressing-the-spread-of-schoenen/1d986ab8adda5947ba2eeaee0fad08c8/",
+				stance: "context",
+				note:
+					"Review context emphasizing that chlorine disinfection contributed to typhoid mortality reduction but cannot replace reliable filtration and source-water control.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "historical-case-studies",
 		title: "Is the ozone layer recovering because of the Montreal Protocol?",
 		slug: "is-the-ozone-layer-recovering-because-of-the-montreal-protocol",
 		status: "published",
