@@ -3849,6 +3849,126 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does HIV cause AIDS?",
+		slug: "does-hiv-cause-aids",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 99,
+		bottomLine:
+			"Yes. HIV infection causes AIDS when the virus is not controlled and immune damage becomes severe. AIDS is the late, most severe stage of HIV infection, not a separate unrelated disease. Modern antiretroviral therapy can suppress HIV, preserve or restore immune function, prevent progression for most people who can access and adhere to treatment, and prevent sexual transmission when viral suppression is sustained.",
+		stableCore: [
+			"NIH HIVinfo says untreated HIV advances in stages, destroys CD4 immune cells, and can eventually cause AIDS.",
+			"CDC says HIV attacks the immune system and, without treatment, can cause AIDS; CDC also defines AIDS by severe immune damage such as CD4 count below 200 cells/mm3 or specified opportunistic illnesses.",
+			"WHO says CD4 counts progressively decrease over time in people not receiving or not responding well to ART, and that a CD4 count below 200 leaves immunity severely compromised.",
+			"U.S. HIV treatment guidelines recommend ART for all people with HIV to reduce morbidity and mortality and to prevent transmission, with initiation as soon as possible after diagnosis.",
+			"Evidence synthesis of untreated HIV cohorts found median untreated survival after seroconversion fell with older age, from about 12.5 years at ages 15 to 24 to about 7.2 years at ages 45 to 54."
+		],
+		openQuestions: [
+			"How can testing, linkage to care, drug access, adherence support, and stigma reduction reach people before immune damage becomes advanced?",
+			"How should clinicians explain rare elite controllers or long-term nonprogressors without implying that untreated HIV is usually harmless?",
+			"How can long-term treated HIV care address residual inflammation, comorbidities, mental health, aging, drug resistance, and treatment interruptions?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated, high-quality natural-history evidence showing that untreated HIV infection does not predict progressive CD4 loss, opportunistic illness, or excess mortality.",
+			"Major CDC, NIH, WHO, IAS-USA, or comparable guideline revisions withdrawing HIV as the cause of AIDS or withdrawing ART as the central treatment for HIV infection.",
+			"A stronger causal model explaining AIDS epidemiology, CD4 depletion, viral load, opportunistic infections, treatment response, and mother-to-child or bloodborne transmission without HIV."
+		],
+		misconceptions: [
+			"Testing positive for HIV does not mean a person already has AIDS; AIDS is the most severe stage of HIV infection.",
+			"Feeling well for years after infection does not prove HIV is harmless, because untreated chronic HIV can progress slowly before advanced immune damage appears.",
+			"Rare long-term nonprogressors and elite controllers are important scientifically, but they are exceptions and still need clinical monitoring.",
+			"The success of ART is evidence that controlling HIV changes the disease course, not evidence that HIV is irrelevant."
+		],
+		editorSummary:
+			"This page should be a calm foundation for the site's HIV cluster: HIV causes AIDS, AIDS is the severe late stage, and modern ART turns the causal pathway into a preventable clinical outcome for many people when care is accessible and sustained.",
+		uncertaintySummary:
+			"The causal claim is settled. Remaining uncertainty is about implementation, individual progression speed, long-term treated comorbidity risk, immune recovery after late treatment, resistance, and how best to reach people before advanced HIV disease.",
+		searchCutoffAt: "2026-07-04T04:15:38.000Z",
+		lastRetractionCheckAt: "2026-07-04T04:15:38.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T04:15:38.000Z",
+				kind: "publication",
+				summary:
+					"Initial HIV-causes-AIDS claim page published from current CDC, NIH, WHO, U.S. treatment-guideline, and untreated natural-history evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "The Stages of HIV Infection",
+				publisher: "NIH HIVinfo",
+				year: 2025,
+				url: "https://hivinfo.nih.gov/understanding-hiv/fact-sheets/stages-hiv-infection",
+				stance: "supports",
+				note:
+					"NIH public-health anchor stating that untreated HIV destroys CD4 cells, advances through acute and chronic infection to AIDS, and can be slowed or prevented from progressing with ART.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About HIV",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/hiv/about/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor for HIV attacking the immune system, causing AIDS without treatment, and AIDS being defined by severe immune damage or opportunistic illnesses.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "HIV",
+				publisher: "World Health Organization",
+				url: "https://www.who.int/health-topics/hiv-aids",
+				stance: "supports",
+				note:
+					"WHO source for HIV attacking CD4 cells, CD4 decline in people not receiving or responding to ART, severe immune compromise below 200 cells/mm3, and lifelong ART suppressing replication.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Initiation of Antiretroviral Therapy",
+				publisher: "NIH ClinicalInfo HIV.gov",
+				year: 2026,
+				url:
+					"https://clinicalinfo.hiv.gov/en/guidelines/hiv-clinical-guidelines-adult-and-adolescent-arv/initiation-antiretroviral-therapy",
+				stance: "supports",
+				note:
+					"Current U.S. treatment-guideline source recommending ART for all people with HIV to reduce morbidity and mortality and prevent transmission, with initiation as soon as possible after diagnosis.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Disease progression and mortality with untreated HIV infection: evidence synthesis of HIV seroconverter cohorts, antiretroviral treatment clinical cohorts and population-based survey data",
+				publisher: "Journal of the International AIDS Society",
+				year: 2021,
+				url: "https://doi.org/10.1002/jia2.25784",
+				doi: "10.1002/jia2.25784",
+				pmid: "34546644",
+				stance: "supports",
+				note:
+					"Evidence synthesis estimating untreated HIV natural history from seroconverter cohorts, ART cohorts, and population survey CD4 data; found shorter untreated survival with older age at seroconversion.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "HIV infection",
+				publisher: "Nature Reviews Disease Primers",
+				year: 2023,
+				url: "https://doi.org/10.1038/s41572-023-00452-3",
+				doi: "10.1038/s41572-023-00452-3",
+				pmid: "37591865",
+				stance: "supports",
+				note:
+					"Recent disease-primer review source for HIV pathogenesis, progression to AIDS, ART-mediated viral suppression, immune recovery, and remaining long-term care issues.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does PrEP prevent HIV infection when taken as prescribed?",
 		slug: "does-prep-prevent-hiv-infection-when-taken-as-prescribed",
 		status: "published",
