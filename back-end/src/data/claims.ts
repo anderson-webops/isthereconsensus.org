@@ -4346,6 +4346,126 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do syringe services programs reduce infection risk without increasing drug use?",
+		slug: "do-syringe-services-programs-reduce-infection-risk-without-increasing-drug-use",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 89,
+		bottomLine:
+			"Yes, with implementation caveats. Comprehensive syringe services programs reduce HIV risk, reduce injection risk behaviors, and can connect people to testing, treatment, naloxone, and substance-use care. Evidence for hepatitis C prevention is more qualified when syringe access is studied alone, but stronger when programs have high coverage and are paired with opioid agonist treatment.",
+		stableCore: [
+			"CDC says SSPs provide sterile syringes, safer disposal, testing and vaccination, infectious-disease treatment linkage, and substance-use treatment linkage.",
+			"CDC reports that SSPs are associated with an estimated 50% reduction in HIV and hepatitis C incidence and that nearly 30 years of research does not show increased illegal drug use or crime.",
+			"A 2022 evidence review found sufficient evidence that SSPs prevent HIV transmission and reduce injection risk behaviors, while HCV prevention evidence is more tentative.",
+			"Consensus-located systematic reviews find stronger evidence for HIV and risk-behavior reduction than for NSP-alone HCV prevention, with high coverage and combined opioid agonist treatment improving the evidence picture."
+		],
+		openQuestions: [
+			"Which service models best reach people at highest infection and overdose risk without losing community trust?",
+			"How much coverage is needed in different drug-use, housing, policing, and rural or urban settings to reduce HCV transmission?",
+			"How should programs balance one-for-one exchange, needs-based distribution, safe disposal, naloxone, infectious-disease treatment, and linkage to opioid-use-disorder care?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated systematic reviews showing that SSP access does not reduce HIV transmission or injection risk behavior after accounting for baseline risk.",
+			"High-quality community studies showing that well-implemented SSPs increase injection frequency, unsafe syringe disposal, or neighborhood crime compared with similar communities without SSPs.",
+			"Major CDC, WHO, UNAIDS, or VA evidence reviews withdrawing SSPs from evidence-based harm-reduction recommendations."
+		],
+		misconceptions: [
+			"SSPs are sometimes described as simply handing out needles; comprehensive programs also offer disposal, testing, vaccination, overdose prevention, and treatment referrals.",
+			"The evidence does not support the claim that SSPs increase illegal drug use or neighborhood crime.",
+			"SSPs are not a replacement for opioid-use-disorder treatment, HIV prevention, HCV treatment, housing, or mental-health care; they are one entry point in a broader harm-reduction system.",
+			"HIV and HCV evidence should not be flattened into one certainty level: HCV transmission is harder to interrupt, and combined services appear more effective than syringe access alone."
+		],
+		editorSummary:
+			"This page should answer the common policy question directly without overselling harm reduction. The practical consensus is that SSPs reduce infectious-disease risk and do not appear to increase drug use or crime, while implementation quality, coverage, and integration with treatment determine how much benefit communities get.",
+		uncertaintySummary:
+			"The consensus is broad rather than absolute: HIV and injection-risk evidence is stronger than HCV evidence for syringe access alone, and most evidence comes from real-world observational settings where randomized withholding is difficult. Available community evidence supports the conclusion that SSPs do not increase drug use or crime.",
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		searchCutoffAt: "2026-07-04T18:54:24.000Z",
+		lastRetractionCheckAt: "2026-07-04T18:54:24.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T18:54:24.000Z",
+				kind: "publication",
+				summary:
+					"Initial syringe services program claim page published from CDC, WHO, VA, and Consensus-located systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Strengthening Syringe Services Programs (SSPs)",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/hepatitis-syringe-services/php/about/index.html",
+				stance: "supports",
+				note:
+					"Current CDC public-health anchor stating that SSPs are associated with an estimated 50% reduction in HIV and hepatitis C incidence and do not increase illegal drug use or crime.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Needle and syringe programmes for people who inject drugs",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/publications/i/item/9789240116214",
+				stance: "supports",
+				note:
+					"WHO operational guide describing NSPs as evidence-based harm reduction and providing practical guidance for planning, implementing, and scaling programs.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Effectiveness of Syringe Services Programs: A Systematic Review",
+				publisher: "Department of Veterans Affairs Evidence Synthesis Program",
+				year: 2023,
+				url: "https://www.hsrd.research.va.gov/publications/esp/syringeservice.cfm",
+				stance: "supports",
+				note:
+					"Evidence synthesis including 100 primary studies and 17 systematic reviews, finding SSPs likely lower HIV transmission and injection risk behaviors without increasing injection frequency, unsafe disposal, or neighborhood crime.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Effectiveness of needle and syringe Programmes in people who inject drugs - An overview of systematic reviews",
+				publisher: "BMC Public Health",
+				year: 2017,
+				url:
+					"https://consensus.app/papers/effectiveness-of-needle-and-syringe-programmes-in-people-fernandes-cary/6332a2059382572883c73a32bc682c23/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched overview of 13 systematic reviews finding NSPs effective for reducing HIV transmission and injection risk behaviors, with mixed HCV findings and better results from high-coverage, multicomponent programs.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Interventions to prevent HIV and Hepatitis C among people who inject drugs: Latest evidence of effectiveness from a systematic review (2011 to 2020).",
+				publisher: "International Journal on Drug Policy",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/interventions-to-prevent-hiv-and-hepatitis-c-among-people-palmateer-hamill/459bd160129f51deab2349e75690e16e/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched review finding sufficient evidence for needle and syringe programs reducing HIV transmission and injection risk behavior, and for combined opioid agonist treatment plus NSP reducing HCV transmission.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Needle and syringe programmes and opioid substitution therapy for preventing HCV transmission among people who inject drugs: findings from a Cochrane Review and meta-analysis",
+				publisher: "Addiction",
+				year: 2017,
+				url:
+					"https://consensus.app/papers/needle-and-syringe-programmes-and-opioid-substitution-platt-minozzi/7333047581cf5f0198409e920b5e5c8d/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis finding lower HCV acquisition risk with opioid substitution therapy and stronger protection when combined with NSP, while NSP-alone HCV evidence was weaker and heterogeneous.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do medications for opioid use disorder reduce overdose deaths?",
 		slug: "do-medications-for-opioid-use-disorder-reduce-overdose-deaths",
 		status: "published",
