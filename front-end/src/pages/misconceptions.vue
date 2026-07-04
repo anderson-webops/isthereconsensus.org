@@ -115,8 +115,8 @@ useStaticPageMeta({
 					</thead>
 					<tbody>
 						<tr v-for="item in misconceptionModules" :key="item.slug">
-							<td>{{ item.title }}</td>
-							<td v-for="cluster in clusterLabels" :key="cluster.slug">
+							<td data-label="Module">{{ item.title }}</td>
+							<td v-for="cluster in clusterLabels" :key="cluster.slug" :data-label="cluster.label">
 								{{
 									formatRelevance(
 										item.clusterUse.find((entry) => entry.slug === cluster.slug)?.relevance ||
@@ -437,6 +437,62 @@ useStaticPageMeta({
 
 	.misconception-callout__actions {
 		width: 100%;
+	}
+
+	.reuse-table {
+		min-width: 0;
+	}
+
+	.reuse-table thead {
+		display: none;
+	}
+
+	.reuse-table,
+	.reuse-table tbody,
+	.reuse-table tr,
+	.reuse-table td {
+		display: block;
+	}
+
+	.reuse-table tr {
+		padding: 14px 0;
+		border-bottom: 1px solid var(--consensus-soft-line);
+	}
+
+	.reuse-table tr:last-child {
+		border-bottom: 0;
+	}
+
+	.reuse-table td {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 12px;
+		padding: 5px 0;
+		border-bottom: 0;
+		text-align: right;
+	}
+
+	.reuse-table td::before {
+		content: attr(data-label);
+		color: var(--consensus-ink);
+		font-weight: 700;
+		text-align: left;
+	}
+
+	.reuse-table td:first-child {
+		grid-template-columns: 1fr;
+		gap: 4px;
+		padding-bottom: 8px;
+		text-align: left;
+		color: var(--consensus-ink);
+		font-weight: 700;
+	}
+
+	.reuse-table td:first-child::before {
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--consensus-muted);
 	}
 }
 </style>
