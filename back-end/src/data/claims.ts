@@ -9448,7 +9448,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Current Opinion in Psychology",
 				year: 2023,
 				url:
-					"https://consensus.app/papers/factual-corrections-concerns-and-current-evidence-porter-wood/5e0fb506460e5d938d2d571005a8b68f/?utm_source=chatgpt",
+					"https://consensus.app/papers/factual-corrections-concerns-and-current-evidence-porter-wood/5e0fb506460e5d938d2d571005a8b68f/",
 				stance: "supports",
 				note:
 					"Review summary finding that factual corrections improve belief accuracy across countries, political beliefs, and demographics, while backfire is rare and downstream attitude or behavior effects are usually small.",
@@ -9460,7 +9460,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Proceedings of the National Academy of Sciences",
 				year: 2021,
 				url:
-					"https://consensus.app/papers/why-the-backfire-effect-does-not-explain-the-durability-of-nyhan/3901a7be594c5ea7b056d917880a308f/?utm_source=chatgpt",
+					"https://consensus.app/papers/why-the-backfire-effect-does-not-explain-the-durability-of-nyhan/3901a7be594c5ea7b056d917880a308f/",
 				stance: "supports",
 				note:
 					"Literature review arguing that corrective information is typically at least somewhat effective at increasing accuracy, while effects often decay or are overwhelmed by elite and media cues.",
@@ -9473,7 +9473,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Communication Research",
 				year: 2019,
 				url:
-					"https://consensus.app/papers/a-metaanalytic-examination-of-the-continued-influence-of-walter-tukachinsky/84d2ddd6b1475f1ba8161a278ad3204c/?utm_source=chatgpt",
+					"https://consensus.app/papers/a-metaanalytic-examination-of-the-continued-influence-of-walter-tukachinsky/84d2ddd6b1475f1ba8161a278ad3204c/",
 				stance: "supports",
 				note:
 					"Meta-analysis of 32 studies with 6,527 participants finding that corrections do not entirely eliminate misinformation effects and are more effective when coherent, worldview-consistent, and source-linked.",
@@ -9485,7 +9485,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Journal of Experimental Psychology: General",
 				year: 2022,
 				url:
-					"https://consensus.app/papers/the-backfire-effect-after-correcting-misinformation-is-swirethompson-miklaucic/e17092d8d13e5259a8062434bbda6ff9/?utm_source=chatgpt",
+					"https://consensus.app/papers/the-backfire-effect-after-correcting-misinformation-is-swirethompson-miklaucic/e17092d8d13e5259a8062434bbda6ff9/",
 				stance: "supports",
 				note:
 					"Two-experiment test with 388 and 532 participants finding no misinformation items backfired more in the correction condition than control or initial ratings.",
@@ -9497,7 +9497,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Cognitive Research: Principles and Implications",
 				year: 2020,
 				url:
-					"https://consensus.app/papers/can-corrections-spread-misinformation-to-new-audiences-ecker-lewandowsky/9fde0ce99b0853728488ba40e408e0e4/?utm_source=chatgpt",
+					"https://consensus.app/papers/can-corrections-spread-misinformation-to-new-audiences-ecker-lewandowsky/9fde0ce99b0853728488ba40e408e0e4/",
 				stance: "supports",
 				note:
 					"Three experiments with 1,718 participants found substantial evidence against familiarity backfire when correcting novel misinformation, including after a one-week delay.",
@@ -9509,7 +9509,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Nature Human Behaviour",
 				year: 2023,
 				url:
-					"https://consensus.app/papers/a-metaanalysis-of-correction-effects-in-sciencerelevant-chan-albarracn/649a3a8b1c955ebdba723f0cee3cc8c4/?utm_source=chatgpt",
+					"https://consensus.app/papers/a-metaanalysis-of-correction-effects-in-sciencerelevant-chan-albarracn/649a3a8b1c955ebdba723f0cee3cc8c4/",
 				stance: "debate",
 				note:
 					"Meta-analysis of 205 effect sizes from 74 reports with 60,861 participants; average science-relevant correction effects were not statistically successful, with better results for detailed, nonpolarized, non-health corrections.",
@@ -13202,6 +13202,206 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"NCA5 chapter source for U.S. climate-trend framing, Hurricane Harvey rainfall attribution examples, and the distinction between storm hazards and exposure.",
 				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "active-debates",
+		title: "Is psilocybin-assisted therapy an established treatment for depression?",
+		slug: "is-psilocybin-assisted-therapy-an-established-treatment-for-depression",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 72,
+		evidenceCertainty: "low",
+		reviewMode: "living",
+		bottomLine:
+			"Not yet. Supervised psilocybin-assisted therapy has shown promising short-term antidepressant effects in randomized trials and meta-analyses, but it is not an established routine treatment for depression. The active debate is about durability, blinding and expectancy bias, safety monitoring, therapy protocols, patient selection, and whether larger phase 3 trials will confirm the signal.",
+		stableCore: [
+			"Several randomized trials and meta-analyses find larger short-term reductions in depression symptoms after psilocybin with psychological support than after comparator conditions.",
+			"The evidence is not the same as evidence for self-treating with mushrooms or unsupervised psychedelic use; studied protocols include screening, preparation, monitored dosing, and integration support.",
+			"Most trial populations are selective, commonly excluding people with psychosis, mania, active substance use disorder, or active suicidal intent, so generalization to routine care is limited.",
+			"Blinding is difficult because psychedelic effects are noticeable, and control-group outcomes in psilocybin trials may differ from control outcomes in SSRI or esketamine trials.",
+			"FDA actions as of 2026 support further development and expedited review of psilocybin programs, but study authorization and priority review are not the same as approval or proof of safety and effectiveness."
+		],
+		openQuestions: [
+			"Will larger phase 3 trials replicate the antidepressant effects with stronger blinding, active controls, and longer follow-up?",
+			"Which depression subgroups, doses, preparation models, therapy components, and integration protocols matter most?",
+			"How durable are benefits beyond six weeks or a few months, and what retreatment or maintenance model would be safe?",
+			"How should trials measure and reduce expectancy effects when participants and therapists can often infer treatment assignment?",
+			"What safeguards are needed for suicidality, bipolar disorder, psychosis risk, cardiovascular risk, abuse potential, and therapist misconduct?"
+		],
+		whatWouldChangeMinds: [
+			"Multiple large, independent phase 3 trials showing durable benefit, acceptable safety, and reproducible protocols in clearly defined depression populations.",
+			"Regulatory approval paired with evidence-based clinical guidelines specifying patient selection, dosing, monitoring, therapist training, and adverse-event handling.",
+			"Conversely, rigorous trials showing that observed effects mostly disappear under stronger blinding, better active controls, or longer follow-up."
+		],
+		misconceptions: [
+			"Promising trial results do not mean psilocybin is already a proven routine depression treatment.",
+			"Psilocybin-assisted therapy is not the same thing as microdosing, recreational use, or taking mushrooms without medical screening and supervision.",
+			"A fast or large short-term symptom change does not settle durability, safety, access, training, or real-world implementation.",
+			"Regulatory interest, breakthrough status, or priority review does not mean a product has been approved or found safe and effective."
+		],
+		editorSummary:
+			"This page should give readers a useful active-debate example: there is a real antidepressant signal, but the clinical, regulatory, safety, and implementation questions are still too large for routine-treatment claims.",
+		uncertaintySummary:
+			"Evidence supports a promising short-term antidepressant signal in supervised research settings. Certainty remains low for routine care because trials are small, follow-up is short, blinding is difficult, controls vary, protocols bundle drug effects with psychological support, and regulatory approval plus practice standards are still evolving.",
+		uncertaintyDrivers: [
+			{
+				type: "bias",
+				detail:
+					"Psychedelic effects make treatment assignment hard to mask, increasing concern about expectancy and functional unblinding."
+			},
+			{
+				type: "timing",
+				detail: "Most controlled evidence focuses on symptom changes over days to weeks rather than long-term maintenance."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Protocols depend on screening, monitored dosing sessions, therapist support, training standards, and adverse-event safeguards that are not yet routine."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Trial exclusions limit conclusions for people with psychosis or mania history, active substance use disorder, high suicide risk, or complex comorbidity."
+			}
+		],
+		searchDatabases: ["Consensus", "FDA"],
+		searchCutoffAt: "2026-07-04T16:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T16:45:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T16:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial psilocybin-assisted therapy active-debate page published from Consensus-located randomized-trial/meta-analysis evidence and current FDA development guidance."
+			}
+		],
+		inclusionRules: [
+			"Prioritize randomized trials, meta-analyses, regulatory guidance, and clinical-guideline context for adult depression.",
+			"Separate psilocybin-assisted therapy in supervised trials from recreational use, microdosing, or unsupervised self-treatment.",
+			"Track whether evidence addresses major depressive disorder, treatment-resistant depression, or secondary depression separately."
+		],
+		exclusionRules: [
+			"Do not use anecdotal reports, wellness marketing, or legal adult-use programs as clinical efficacy evidence.",
+			"Do not generalize ketamine, MDMA, LSD, ibogaine, or non-psilocybin psychedelic findings to psilocybin for depression.",
+			"Do not treat regulatory priority vouchers or investigational access as approval, safety, or effectiveness findings."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does supervised psilocybin-assisted therapy improve depression symptoms compared with control conditions?",
+				population: "Adults with clinically significant depression, major depressive disorder, treatment-resistant depression, or secondary depression in controlled trials",
+				finding:
+					"Meta-analyses and phase 2 randomized trials generally find short-term symptom improvement favoring psilocybin, but the certainty is limited by small samples, short follow-up, and trial-design constraints.",
+				effectDirection: "mixed",
+				magnitude:
+					"2024 meta-analyses reported medium-to-large short-term effects, including Hedges' g around 0.66 in BMJ and SMD around -0.72 at about one week in an RCT-only meta-analysis.",
+				certainty: "low",
+				limitations: [
+					"Functional unblinding and participant expectancy are hard to eliminate.",
+					"Long-term durability and retreatment models remain uncertain.",
+					"Trial populations and supervised protocols do not map cleanly onto routine care or self-treatment."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Regulatory anchor showing psychedelic treatments are being studied under clinical-development rules, with priority review not equivalent to approval."
+			},
+			{
+				name: "BMJ and Acta Psychiatrica Scandinavica meta-analyses",
+				role: "Evidence-synthesis anchors for the short-term antidepressant signal and the limits of current trial evidence."
+			},
+			{
+				name: "NICE depression guideline",
+				role: "Clinical-care context for established depression treatment pathways while psilocybin protocols remain investigational."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Psychedelic Drugs: Considerations for Clinical Investigations",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2023,
+				url:
+					"https://www.fda.gov/regulatory-information/search-fda-guidance-documents/psychedelic-drugs-considerations-clinical-investigations",
+				stance: "context",
+				note:
+					"FDA draft guidance for sponsors studying psychedelic drugs, including psilocybin, for medical conditions; useful for trial-design, monitoring, and investigational-status context.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "FDA Accelerates Action on Treatments for Serious Mental Illness Following Executive Order",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-accelerates-action-treatments-serious-mental-illness-following-executive-order",
+				stance: "context",
+				note:
+					"Current FDA regulatory context: priority vouchers for psilocybin programs in treatment-resistant depression and major depressive disorder, while FDA says clinical-study authorization does not mean approval or safety/effectiveness findings.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy of psilocybin for treating symptoms of depression: systematic review and meta-analysis",
+				publisher: "The BMJ",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/efficacy-of-psilocybin-for-treating-symptoms-of-metaxa-clarke/15d30409f10a5c958b006241062bbe81/",
+				stance: "supports",
+				note:
+					"Meta-analysis of randomized trials finding a significant depression-symptom benefit compared with placebo or non-psychoactive comparators, while calling for research on expectancy effects, moderators, and treatment delivery.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Randomized Controlled Trials of Psilocybin-Assisted Therapy in the Treatment of Major Depressive Disorder: Systematic Review and Meta-Analysis",
+				publisher: "Acta Psychiatrica Scandinavica",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/randomized-controlled-trials-of-psilocybinassisted-menon-ramamurthy/87fcd88288305f6bbe681fa5d6016eda/",
+				stance: "supports",
+				note:
+					"RCT-only meta-analysis of six trials with 427 participants finding medium-or-larger antidepressant effects up to about six weeks and higher risks of some adverse events such as headache and dizziness.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Single-Dose Psilocybin Treatment for Major Depressive Disorder: A Randomized Clinical Trial.",
+				publisher: "JAMA",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/singledose-psilocybin-treatment-for-major-depressive-raison-sanacora/617fd4403c2c58be9fdc7dec9b9fb935/",
+				stance: "supports",
+				note:
+					"Phase 2 randomized trial of 104 adults finding reduced MADRS depression scores through day 43 after a 25 mg psilocybin dose with psychological support, with no serious treatment-emergent adverse events but more overall and severe adverse events.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Control Group Outcomes in Trials of Psilocybin, SSRIs, or Esketamine for Depression",
+				publisher: "JAMA Network Open",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/control-group-outcomes-in-trials-of-psilocybin-ssris-or-hieronymus-lpez/2c5831e6b3b75317be8d29e441328887/",
+				stance: "debate",
+				note:
+					"Meta-analysis warning that lower control-group improvement in psilocybin trials than in SSRI or esketamine trials may mean psilocybin efficacy is overestimated because of control and blinding challenges.",
+				order: 6
+			},
+			{
+				kind: "guideline",
+				title: "Depression in adults: treatment and management",
+				publisher: "NICE",
+				year: 2026,
+				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
+				stance: "context",
+				note:
+					"Clinical-care context for established depression assessment, shared decision-making, psychological therapies, antidepressant options, and severity-based treatment pathways.",
+				order: 7
 			}
 		]
 	},
