@@ -6367,6 +6367,212 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "biology-and-evolution",
+		title: "Can evolution be observed happening today?",
+		slug: "can-evolution-be-observed-happening-today",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		bottomLine:
+			"Yes. Evolution means heritable change in populations over generations, and scientists observe it today in microbes, pests, viruses, and wild animal populations. Direct observation of short-term evolution is not the same as watching every deep historical transition happen in real time, and some changes can reverse when environments change. But the claim that evolution is only a past-tense inference is false.",
+		stableCore: [
+			"National Academies resources define evolution as changes in heritable population traits across generations and state that evolution is continuing to occur.",
+			"National Academies teaching guidance says many key aspects of evolution occur over short periods that can be observed directly, including bacteria evolving antibiotic resistance.",
+			"UC Berkeley's Understanding Evolution lists directly observed wild cases, including pesticide resistance, bacteria evolving antibiotic resistance, climate-related responses, and Galapagos finches diverging into lineages with distinct traits.",
+			"Lenski's long-term E. coli experiment directly observed adaptation by natural selection, genome evolution, mutation-rate changes, ecotype divergence, and a new ability to use citrate across more than 60,000 generations.",
+			"Long-running Darwin's finch work documented repeated changes in body size and beak traits under fluctuating selection, and later genome sequencing linked beak-size evolution to allele-frequency changes at major loci."
+		],
+		openQuestions: [
+			"Which observed short-term changes will persist, reverse, or contribute to longer-term divergence?",
+			"How repeatable are evolutionary outcomes when environments, starting genetic variation, chance mutation, and population structure differ?",
+			"How should educators separate directly observed evolutionary processes from deep-time evolutionary history, which also rests on fossils, genetics, and comparative biology?"
+		],
+		whatWouldChangeMinds: [
+			"Repeated controlled experiments and field studies showing that heritable population traits do not change under mutation, selection, drift, or migration.",
+			"A better biological framework that explains antibiotic resistance, experimental microbial adaptation, wild-population trait change, fossils, and genomics without evolutionary change.",
+			"Major National Academies, AAAS, or comparable evolutionary-biology reassessments withdrawing evolution as the organizing explanation for observed biological change."
+		],
+		misconceptions: [
+			"Short-term evolution is sometimes dismissed as 'only adaptation,' but adaptation by natural selection is one of evolution's core mechanisms.",
+			"Directly observing evolution does not require watching a modern animal turn into a radically different species during one human lifetime.",
+			"Some observed changes can reverse when environments change; reversibility does not make the evolutionary process unreal.",
+			"Laboratory microbe studies are not the only evidence for evolution, but they clearly show evolutionary mechanisms under controlled conditions."
+		],
+		editorSummary:
+			"This page answers the common 'no one has seen evolution happen' objection without overclaiming. The center is simple: evolutionary processes are directly observable now, while deep-time common ancestry is supported by the convergence of experiments, field observations, fossils, genetics, and comparative biology.",
+		uncertaintySummary:
+			"The consensus that evolution can be observed is very strong. Uncertainty is mainly about the durability, repeatability, and long-term implications of particular short-term examples, not about whether heritable population change occurs.",
+		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "National Academies"],
+		searchCutoffAt: "2026-07-04T05:23:57.000Z",
+		inclusionRules: [
+			"Prioritize institutional science-education anchors, experimental evolution records, and long-running field studies with genetic or trait-level evidence.",
+			"Use examples only when the source ties observed change to heritable population traits, natural selection, allele-frequency change, or genome evolution.",
+			"Separate direct observation of evolutionary processes from broader historical inference about deep-time common ancestry."
+		],
+		exclusionRules: [
+			"Exclude creationist or advocacy arguments unless they are being summarized as misconceptions, not as evidence.",
+			"Exclude examples of individual acclimation or learning unless the source connects them to heritable population-level change.",
+			"Exclude unsourced popular examples when stronger institutional or peer-reviewed examples cover the same point."
+		],
+		surveillanceSpec: {
+			focus:
+				"Track institutional evolution-education updates, landmark experimental-evolution reviews, and long-term field/genomic studies that change how observed evolution should be explained.",
+			cadenceDays: 120,
+			watchTerms: [
+				"observed evolution",
+				"experimental evolution",
+				"long-term evolution experiment",
+				"Darwin finches evolution",
+				"antibiotic resistance evolution"
+			],
+			integrityMonitors: ["Crossref update metadata", "PubMed linking", "Manual institutional watch"],
+			guidelineMonitors: [
+				"National Academies evolution education resources",
+				"UC Berkeley Understanding Evolution updates",
+				"Major evolutionary biology reviews"
+			],
+			triggerRules: [
+				"Recheck if a major institutional source changes its explanation of directly observed evolution.",
+				"Recheck if a cited Science or ISME Journal paper receives a correction, retraction, or major methodological critique.",
+				"Escalate if a new review changes the standard examples used to explain observable evolution to the public."
+			]
+		},
+		appraisalTools: [
+			"Evolution education consensus-source check",
+			"Experimental evolution evidence appraisal",
+			"Field study and genomics triangulation check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Can evolution be observed happening today?",
+				population:
+					"Microbial experimental populations, antimicrobial resistance contexts, and wild populations such as Darwin's finches.",
+				finding:
+					"Institutional science sources and peer-reviewed lab, field, and genomic studies support that evolution can be directly observed as heritable population change over generations.",
+				effectDirection: "supports",
+				magnitude:
+					"Examples range from tens of thousands of microbial generations in the lab to decades of measurable finch trait and allele-frequency change in the wild.",
+				certainty: "high",
+				limitations: [
+					"Short-term observed evolution does not by itself show every deep historical transition in real time.",
+					"Some observed trait changes can reverse or oscillate when selection pressures change.",
+					"Field examples are more ecologically realistic but harder to control than laboratory experiments."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{ name: "National Academies", role: "Consensus and science-education anchor for evolution evidence" },
+			{ name: "UC Berkeley Understanding Evolution", role: "Public education anchor for observed evolution examples" },
+			{ name: "Peer-reviewed evolutionary biology literature", role: "Experimental, field, and genomic evidence anchor" }
+		],
+		authorLine: "Is There Consensus editorial seed",
+		reviewerLine: "Pending expert review",
+		coiSummary: "No financial conflict identified for this editorial seed.",
+		independenceSummary:
+			"Seeded from National Academies and UC Berkeley public science-education sources plus peer-reviewed evolutionary biology records located through Consensus and PubMed metadata checks.",
+		lastRetractionCheckAt: "2026-07-04T05:23:57.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T05:23:57.000Z",
+				kind: "publication",
+				summary:
+					"Initial observed-evolution claim page published from National Academies, UC Berkeley, E. coli experimental evolution, and Darwin's finch field/genomic evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Evolution Resources",
+				publisher: "National Academies",
+				url: "https://www.nationalacademies.org/evolution-resources",
+				stance: "supports",
+				note:
+					"Public National Academies anchor defining evolution as heritable population change and explaining that evolution is continuing to occur, including influenza change, antibiotic-resistant bacteria, and insecticide-resistant mosquitoes.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Teaching About Evolution and the Nature of Science: Frequently Asked Questions",
+				publisher: "National Academy of Sciences / National Academies Press",
+				year: 1998,
+				url: "https://www.nationalacademies.org/read/5787/chapter/6",
+				doi: "10.17226/5787",
+				stance: "supports",
+				note:
+					"Teaching guidance explaining that past events can be studied scientifically and that many key aspects of evolution can be observed directly, including bacteria evolving antibiotic resistance.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Observations of evolution in the wild",
+				publisher: "University of California Museum of Paleontology",
+				year: 2020,
+				url: "https://evolution.berkeley.edu/lines-of-evidence/observations-of-evolution-in-the-wild/",
+				stance: "supports",
+				note:
+					"Public education source cataloging directly observed evolution in wild populations, including pesticide resistance, antibiotic resistance, climate responses, and Galapagos finches.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Experimental evolution and the dynamics of adaptation and genome evolution in microbial populations",
+				publisher: "The ISME Journal",
+				year: 2017,
+				url: "https://doi.org/10.1038/ismej.2017.69",
+				doi: "10.1038/ismej.2017.69",
+				pmid: "28509909",
+				pmcid: "PMC5607360",
+				citationCheckedAt: "2026-07-04T05:23:57.000Z",
+				stance: "supports",
+				note:
+					"Review of the long-term E. coli experiment, summarizing directly observed adaptation, genome evolution, ecotype divergence, mutation-rate changes, and citrate use across more than 60,000 generations.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Unpredictable Evolution in a 30-Year Study of Darwin's Finches",
+				publisher: "Science",
+				year: 2002,
+				url: "https://doi.org/10.1126/science.1070315",
+				doi: "10.1126/science.1070315",
+				pmid: "11976447",
+				citationCheckedAt: "2026-07-04T05:23:57.000Z",
+				stance: "supports",
+				note:
+					"Thirty-year field study on Daphne Major documenting repeated body-size and beak-trait changes under fluctuating natural selection and occasional hybridization.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "A beak size locus in Darwin's finches facilitated character displacement during a drought",
+				publisher: "Science",
+				year: 2016,
+				url: "https://doi.org/10.1126/science.aad8786",
+				doi: "10.1126/science.aad8786",
+				pmid: "27102486",
+				citationCheckedAt: "2026-07-04T05:23:57.000Z",
+				stance: "supports",
+				note:
+					"Genomic study linking a documented drought-driven finch beak-size shift to HMGA2-region variation, including strong selection against large-beak genotypes in medium ground finches.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Community-wide genome sequencing reveals 30 years of Darwin's finch evolution",
+				publisher: "Science",
+				year: 2023,
+				url: "https://doi.org/10.1126/science.adf6218",
+				doi: "10.1126/science.adf6218",
+				pmid: "37769091",
+				citationCheckedAt: "2026-07-04T05:23:57.000Z",
+				stance: "supports",
+				note:
+					"Genome study of 3,955 Darwin's finches linking beak-size evolution over 30 years to allele-frequency changes at major loci, including abrupt shifts during drought-driven natural selection.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Does nicotine harm brain development into the mid-20s?",
 		slug: "does-nicotine-harm-brain-development-into-the-mid-20s",
