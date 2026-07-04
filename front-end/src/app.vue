@@ -529,6 +529,23 @@ body
 		padding: 18px;
 	}
 
+	.policy-card-grid {
+		gap: 10px;
+	}
+
+	.policy-detail-card {
+		padding: 14px;
+		border-radius: 12px;
+	}
+
+	.policy-detail-card h3 {
+		font-size: 1rem;
+	}
+
+	.policy-detail-card p {
+		line-height: 1.52;
+	}
+
 	.policy-callout {
 		align-items: stretch;
 	}
