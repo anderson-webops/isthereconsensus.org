@@ -1542,6 +1542,192 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does breastfeeding reduce infants' risk of infections?",
+		slug: "does-breastfeeding-reduce-infants-risk-of-infections",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 89,
+		agreementLevel: "broad_qualified",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Generally yes. Breastfeeding is associated with lower risks of several infant infections, especially gastrointestinal infections, ear infections, and some severe respiratory infections. The evidence is strongest as a population-level benefit, while individual outcomes still depend on exposure, prematurity, vaccination, childcare, housing, parental leave, and access to feeding support.",
+		stableCore: [
+			"CDC, AAP, WHO, and major pediatric reviews recommend exclusive breastfeeding for about the first 6 months when possible, followed by complementary foods and continued breastfeeding.",
+			"Human milk contains antibodies, immune cells, antimicrobial factors, anti-inflammatory factors, and prebiotic components that plausibly support infant immune protection.",
+			"Systematic reviews consistently associate more breastfeeding with lower risk of moderate-to-severe gastrointestinal infections, lower respiratory infections, RSV severity, and acute otitis media.",
+			"The evidence is not a guarantee for any individual baby: breastfed infants can still get infections, and formula-fed infants can be healthy.",
+			"Public-health messaging should support breastfeeding without shaming families who cannot or choose not to breastfeed."
+		],
+		openQuestions: [
+			"How much of the observed protection is biological versus shaped by socioeconomic, childcare, household crowding, parental leave, and healthcare-access differences?",
+			"How do outcomes differ between direct breastfeeding, expressed parent milk, donor milk, mixed feeding, and different durations of exclusive breastfeeding?",
+			"Which support policies most improve breastfeeding rates without increasing stigma, stress, or unsafe feeding practices?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled prospective studies showing no infection-risk differences by breastfeeding exposure after careful adjustment for confounding and exposure measurement.",
+			"Updated AAP, CDC, WHO, or USPSTF evidence reviews withdrawing infection-risk reduction as a breastfeeding-associated infant benefit.",
+			"Randomized or quasi-experimental support-intervention evidence showing that large increases in breastfeeding do not reduce infant infection outcomes in any setting."
+		],
+		misconceptions: [
+			"Breastfeeding benefits are sometimes presented as if they make formula unsafe; regulated infant formula is an essential safe nutrition option when breastfeeding is not used or not enough.",
+			"Observed lower infection risk is sometimes overstated as perfect protection, even though breastfed infants still need vaccination, safe sleep, medical care, and infection precautions.",
+			"Because many studies are observational, some people dismiss the finding entirely; the better reading is that the direction is consistent but exact effect sizes need caution."
+		],
+		editorSummary:
+			"This page should support a practical middle line: breastfeeding has real population-level infection benefits, especially early in life, but the evidence should not be turned into shame or a guarantee for individual families.",
+		uncertaintySummary:
+			"The direction of association is consistent for several infant infection outcomes. The main uncertainty is exact causal effect size, because feeding decisions are linked with healthcare access, parental leave, childcare exposure, socioeconomic conditions, and measurement differences.",
+		uncertaintyDrivers: [
+			{
+				type: "bias",
+				detail:
+					"Most evidence is observational, so residual confounding by family, healthcare, childcare, and social conditions remains possible."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Studies define breastfeeding exposure differently, including exclusive, partial, ever, duration-based, direct nursing, expressed milk, or human milk from other sources."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Effect sizes can differ between high-income and low-resource settings, term and preterm infants, vaccinated and unvaccinated populations, and households with different infection exposures."
+			}
+		],
+		searchDatabases: ["Consensus", "PubMed", "CDC", "American Academy of Pediatrics", "WHO"],
+		searchCutoffAt: "2026-07-04T19:33:41.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, meta-analyses, pediatric policy statements, and public-health guidance that distinguish infection outcomes from broader breastfeeding claims.",
+			"Separate associations with infection risk from broader claims about cognition, allergy, obesity, bonding, or maternal outcomes.",
+			"Keep observational-study limitations and nonjudgmental feeding support visible."
+		],
+		exclusionRules: [
+			"Do not use breastfeeding advocacy material unless it is backed by guideline or systematic-review evidence.",
+			"Do not imply that formula feeding is unsafe, neglectful, or incompatible with healthy infant development.",
+			"Do not treat a single infection outcome, population, or feeding definition as applying identically to all infants."
+		],
+		appraisalTools: [
+			"Confounding and socioeconomic-context check",
+			"Breastfeeding exposure definition check",
+			"Outcome-specific infection check",
+			"Population and setting applicability check",
+			"Nonjudgmental feeding-support language check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does breastfeeding reduce infant infection risk?",
+				population: "Term infants and young children in systematic reviews, pediatric guidance, and cohort studies",
+				finding:
+					"More breastfeeding is consistently associated with lower risk of several infant infection outcomes, especially gastrointestinal infections, acute otitis media, and some severe respiratory infections.",
+				effectDirection: "supports",
+				magnitude:
+					"A 2025 Pediatrics review included 29 existing systematic reviews and 145 primary studies. A 2015 otitis media meta-analysis found exclusive breastfeeding for 6 months associated with lower odds of acute otitis media in the first 2 years (OR 0.57, 95% CI 0.44-0.75).",
+				certainty: "moderate",
+				limitations: [
+					"Many studies are observational and can be affected by residual confounding.",
+					"Breastfeeding definitions, outcome severity, and follow-up windows vary across studies.",
+					"Evidence is stronger for some outcomes, such as otitis media and gastrointestinal infection, than for broad claims about all infections."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current U.S. public-health guidance on breastfeeding benefits and infant feeding recommendations."
+			},
+			{
+				name: "American Academy of Pediatrics",
+				role: "Pediatric policy and clinician guidance on breastfeeding, human milk, infection outcomes, and nonjudgmental support."
+			},
+			{
+				name: "World Health Organization",
+				role: "Global infant-feeding recommendation for exclusive breastfeeding for 6 months and continued breastfeeding with complementary foods."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T19:33:41.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T19:33:41.000Z",
+				kind: "publication",
+				summary:
+					"Initial breastfeeding and infant-infection claim published from CDC, AAP, WHO, and Consensus-located systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Breastfeeding Benefits Both Baby and Mom",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/breastfeeding/features/breastfeeding-benefits.html",
+				stance: "supports",
+				note:
+					"CDC public-health anchor stating that breastfeeding can help protect babies against some illnesses and that breastfed babies are less likely to have ear infections and stomach bugs.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Breastfeeding",
+				publisher: "American Academy of Pediatrics",
+				year: 2026,
+				url: "https://www.aap.org/en/patient-care/newborn-infant-and-early-childhood-nutrition/newborn-and-infant-breastfeeding/",
+				stance: "supports",
+				note:
+					"AAP clinician resource recommending exclusive breastfeeding for about 6 months and noting decreased rates of lower respiratory tract infections, severe diarrhea, and otitis media.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Breastfeeding and complementary feeding",
+				publisher: "Pan American Health Organization / World Health Organization",
+				url: "https://www.paho.org/en/topics/breastfeeding-and-complementary-feeding",
+				stance: "supports",
+				note:
+					"WHO/PAHO global recommendation for exclusive breastfeeding for the first 6 months, followed by safe complementary foods and continued breastfeeding to 2 years or beyond.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Breastfeeding and Health Outcomes for Infants and Children: A Systematic Review",
+				publisher: "Pediatrics",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/breastfeeding-and-health-outcomes-for-infants-and-patnode-henrikson/96f14f8ad9c95cc28e9c834246c9c775/",
+				stance: "supports",
+				note:
+					"Systematic review including 29 existing systematic reviews and 145 primary studies, finding lower risk signals for moderate-to-severe respiratory and gastrointestinal infections and otitis media, while emphasizing observational limitations.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Breastfeeding and childhood acute otitis media: a systematic review and meta-analysis",
+				publisher: "Acta Paediatrica",
+				year: 2015,
+				url:
+					"https://consensus.app/papers/breastfeeding-and-childhood-acute-otitis-media-a-bowatte-tham/9e07e138973057789d7be69e8e39c54c/",
+				stance: "supports",
+				note:
+					"Meta-analysis of 24 studies finding breastfeeding protective against acute otitis media in the first 2 years, with the largest association for exclusive breastfeeding during the first 6 months.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Impact of breastfeeding on the incidence and severity of respiratory syncytial virus-associated acute lower respiratory infections in infants",
+				publisher: "BMJ Global Health",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/impact-of-breastfeeding-on-the-incidence-and-severity-of-mineva-purtill/7dd2c6daf84656d1b0ee5808871a6922/",
+				stance: "supports",
+				note:
+					"Systematic review of 19 articles across 12 countries reporting that breastfeeding was associated with lower frequency and severity of RSV-associated acute lower respiratory infections.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Can VAERS reports prove that a vaccine caused an adverse event?",
 		slug: "can-vaers-reports-prove-that-a-vaccine-caused-an-adverse-event",
 		status: "published",
