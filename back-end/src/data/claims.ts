@@ -19142,6 +19142,189 @@ const rawClaims: SeedClaim[] = [
 				order: 7
 			}
 		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do carbon monoxide alarms reduce poisoning risk?",
+		slug: "do-carbon-monoxide-alarms-reduce-poisoning-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, with practical caveats. Working carbon monoxide alarms can warn people about a dangerous, odorless gas before exposure becomes severe, and they are recommended by CDC, CPSC, EPA, and USFA. They are a backstop, not a substitute for safe generator placement, appliance maintenance, ventilation, or immediate evacuation when an alarm sounds.",
+		stableCore: [
+			"CDC says more than 400 Americans die each year from unintentional non-fire CO poisoning, with more than 100,000 emergency department visits and more than 14,000 hospitalizations.",
+			"CDC recommends battery-operated or battery-backup CO detectors near every sleeping area and extra caution when using generators.",
+			"CPSC recommends CO alarms on every level and outside sleeping areas, and says interconnected alarms are best.",
+			"EPA says CO alarms warn of unusual indoor CO buildup but should be treated as a backup, not a replacement for proper installation, use, and maintenance of fuel-burning appliances.",
+			"A Wisconsin poison-center study found exposed people without a CO detector had higher poisoning odds and more severe outcomes than people whose detector alarmed; law-level mortality studies are mixed."
+		],
+		openQuestions: [
+			"Which laws, landlord requirements, grants, and education programs get working alarms into rental, low-income, older-adult, and high-risk homes?",
+			"How should guidance balance alarms with stronger prevention, including generator distance, appliance servicing, vent clearing, chimney maintenance, and never burning charcoal indoors?",
+			"How often do alarms fail because they are expired, disabled, poorly placed, missing batteries, not interconnected, or ignored after nuisance signals?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled exposure or mortality studies showing no lower poisoning severity or no meaningful detection benefit from working, properly placed CO alarms.",
+			"Major CDC, CPSC, EPA, USFA, or poison-control reassessments withdrawing CO alarms as a recommended home safety measure.",
+			"Evidence that reliance on CO alarms consistently increases risky generator or appliance behavior enough to outweigh alarm benefits."
+		],
+		misconceptions: [
+			"Carbon monoxide cannot be seen or smelled, so symptoms or odor are not reliable warning systems.",
+			"Having an alarm somewhere in the home is not enough if it is expired, disabled, missing batteries, poorly placed, or too quiet to wake sleeping people.",
+			"A CO alarm does not make indoor generator use safe; generators belong outdoors and away from doors, windows, and vents.",
+			"Population studies of alarm laws are mixed, but that does not mean a working alarm cannot warn a household during an actual CO buildup."
+		],
+		editorSummary:
+			"Working CO alarms are a recommended warning layer for an invisible hazard. Prevention still starts with fuel-burning equipment safety, generator placement, and fast evacuation when alarms sound.",
+		uncertaintySummary:
+			"Agency guidance and the warning mechanism are strong, and exposure-level evidence supports lower poisoning severity. Population mortality effects are less certain because CO deaths are rare, exposures and alarm laws vary, and results can be shaped by detection bias, enforcement gaps, maintenance failures, and risk behavior.",
+		searchDatabases: ["Consensus", "CDC", "CPSC", "EPA", "USFA"],
+		searchCutoffAt: "2026-07-04T21:43:43.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:43:43.000Z",
+		inclusionRules: [
+			"Prioritize public-health guidance, product-safety guidance, poison-center data, mortality surveillance, and law or installation studies.",
+			"Separate alarm ownership from working, correctly placed, audible, maintained alarms.",
+			"Separate household alarm warnings from source-control measures such as generator placement, appliance servicing, and venting."
+		],
+		exclusionRules: [
+			"Do not use CO alarm vendor marketing as effectiveness evidence.",
+			"Do not imply alarms eliminate the need to leave immediately and call emergency services when they sound.",
+			"Do not treat mixed law-level mortality findings as proof that working alarms have no household warning value."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do carbon monoxide alarms reduce poisoning risk?",
+				population: "People in homes and other indoor settings with potential non-fire carbon monoxide exposure",
+				finding:
+					"Major agencies recommend CO alarms because CO is invisible and can kill before symptoms are recognized. Exposure-level studies support lower poisoning odds or severity when alarms sound; population law studies are less definitive.",
+				effectDirection: "supports",
+				magnitude:
+					"A Wisconsin study found odds of CO poisoning were 3.2 times higher among exposed people without a CO detector than among those whose detector alarmed; NYC's alarm law increased detection of hazardous indoor CO nearly seven-fold.",
+				certainty: "moderate",
+				limitations: [
+					"Evidence is mostly observational, with confounding by housing quality, appliance maintenance, generator behavior, alarm placement, and socioeconomic factors.",
+					"Law-level studies can miss effects when alarms are absent, expired, untested, disabled, poorly placed, or when outcome counts are small.",
+					"Alarms warn after CO is present; they do not prevent CO production or replace source-control measures."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health anchor for CO burden, symptoms, sleeping-risk caveat, generator safety, and detector placement."
+			},
+			{
+				name: "Consumer Product Safety Commission",
+				role: "Product-safety anchor for consumer-product CO deaths, generator warnings, and alarm placement on every level and outside sleeping areas."
+			},
+			{
+				name: "U.S. Fire Administration",
+				role: "Fire-service public education anchor for installing and maintaining CO alarms as early warning devices."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T21:43:43.000Z",
+				kind: "publication",
+				summary:
+					"Initial carbon monoxide alarm and poisoning-risk claim page published from CDC, CPSC, EPA, USFA, and Consensus-located poison-center, mortality, law, and disaster-surveillance evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Carbon Monoxide Poisoning Basics",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/carbon-monoxide/about/index.html",
+				stance: "supports",
+				note:
+					"CDC source for CO symptoms, U.S. burden estimates, sleeping/intoxication risk, detector placement near sleeping areas, generator distance, and appliance maintenance.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Carbon Monoxide",
+				publisher: "Consumer Product Safety Commission",
+				url: "https://www.cpsc.gov/Safety-Education/Safety-Education-Centers/Carbon-Monoxide-Information-Center",
+				stance: "supports",
+				note:
+					"CPSC source for consumer-product CO deaths, generator hazards, and recommendation to install battery-backed CO alarms on every level and outside sleeping areas.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "What about carbon monoxide detectors?",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2025,
+				url: "https://www.epa.gov/indoor-air-quality-iaq/what-about-carbon-monoxide-detectors",
+				stance: "supports",
+				note:
+					"EPA source for CO alarms as warning devices and backup protection, not replacements for safe installation, use, and maintenance of fuel-burning appliances.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Carbon Monoxide Poisoning Prevention",
+				publisher: "U.S. Fire Administration / FEMA",
+				year: 2024,
+				url: "https://www.usfa.fema.gov/prevention/life-safety-hazards/carbon-monoxide/",
+				stance: "supports",
+				note:
+					"USFA source recommending CO alarms outside each sleeping area and on every level, plus generator, vent, and appliance-safety messaging.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Carbon monoxide detector effectiveness in reducing poisoning, Wisconsin 2014-2016",
+				publisher: "Clinical Toxicology",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/carbon-monoxide-detector-effectiveness-in-reducing-christensen-creswell/db7aa6ee5bb755bc88015af0f6516a94/",
+				stance: "supports",
+				note:
+					"Consensus-fetched poison-center study associating an alarming detector with lower poisoning odds and less severe medical outcomes after residential CO exposure.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Impact of Mandatory Carbon Monoxide Alarms: An Investigation of the Effects on Detection and Poisoning Rates in New York City",
+				publisher: "American Journal of Public Health",
+				year: 2015,
+				url:
+					"https://consensus.app/papers/impact-of-mandatory-carbon-monoxide-alarms-an-wheeler-martin-soghoian/94fd0f5d224c5a089b79dad52b8c61bc/",
+				stance: "context",
+				note:
+					"Consensus-fetched NYC before-after law study finding much greater detection of hazardous indoor CO, with nonsignificant protective trends for hospitalization and death.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "Carbon monoxide poisoning mortality in the United States from 2015-2021",
+				publisher: "Clinical Toxicology",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/carbon-monoxide-poisoning-mortality-in-the-united-states-hampson/014715f158115ffd8dc0b9a513ed307a/",
+				stance: "context",
+				note:
+					"Consensus-fetched U.S. mortality surveillance showing recent accidental CO poisoning trends and no demonstrated protective effect of state alarm laws.",
+				order: 7
+			},
+			{
+				kind: "systematic_review",
+				title: "A review of disaster-related carbon monoxide poisoning: surveillance, epidemiology, and opportunities for prevention",
+				publisher: "American Journal of Public Health",
+				year: 2012,
+				url:
+					"https://consensus.app/papers/a-review-of-disasterrelated-carbon-monoxide-poisoning-iqbal-clower/85c9cc41afbd5bb09f27c602b0c1f59c/",
+				stance: "context",
+				note:
+					"Consensus-fetched disaster-related CO review identifying generators and indoor placement as major fatal-exposure drivers and supporting preparedness messaging.",
+				order: 8
+			}
+		]
 	}
 ];
 
