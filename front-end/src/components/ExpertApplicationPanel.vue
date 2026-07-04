@@ -122,8 +122,8 @@ watch(
 			<div>
 				<h2>Expert review</h2>
 				<p>
-					Verified reviewers help shape the curated consensus lane. This is slower and more manual than
-					posting.
+					Verified reviewers support reviewed claim pages. Applications are reviewed manually, so approval is
+					slower than ordinary posting.
 				</p>
 			</div>
 		</header>
@@ -167,7 +167,7 @@ watch(
 					<div class="application-section">
 						<div class="application-section__intro">
 							<h3>Reviewer profile</h3>
-							<p>Use concise credentials and areas of expertise readers can understand quickly.</p>
+							<p>Use plain credentials and expertise areas readers can scan quickly.</p>
 						</div>
 						<div class="field-grid">
 							<label class="field-label" for="credential-label">Credentials</label>
@@ -210,7 +210,7 @@ watch(
 								placeholder="One link per line: profile page, ORCID, lab page, publications"
 							/>
 
-							<label class="field-label" for="statement">Why you should review this lane</label>
+							<label class="field-label" for="statement">Why this review lane fits you</label>
 							<textarea
 								id="statement"
 								v-model="statement"
@@ -223,7 +223,7 @@ watch(
 					<div class="application-section">
 						<div class="application-section__intro">
 							<h3>Disclosures</h3>
-							<p>List relevant interests so readers can interpret reviews with the right context.</p>
+							<p>Disclose interests that could affect how readers interpret your reviews.</p>
 						</div>
 						<div class="field-grid">
 							<label class="field-label" for="conflict-disclosure"
