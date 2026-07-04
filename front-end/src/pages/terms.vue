@@ -87,8 +87,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Terms of Service</p>
 			<h1>Ground rules for using isthereconsensus.org.</h1>
 			<p>
-				Effective April 11, 2026. These terms govern your use of the public website, member accounts, question
-				submissions, expert applications, and editorial tools made available through isthereconsensus.org.
+				Effective April 11, 2026. These terms govern public browsing, member accounts, question submissions,
+				expert applications, and editorial tools made available through isthereconsensus.org.
 			</p>
 		</header>
 
@@ -112,9 +112,8 @@ useStaticPageMeta({
 			</div>
 			<div class="prose">
 				<p>
-					By accessing or using isthereconsensus.org, creating an account, posting a question, applying for an
-					expert role, or using any editorial/admin feature made available to you, you agree to these Terms of
-					Service.
+					By using isthereconsensus.org, creating an account, posting a question, applying for an expert role,
+					or using any editorial/admin feature made available to you, you agree to these Terms of Service.
 				</p>
 				<p>
 					If you do not agree to these terms, do not create an account, submit content, or use the site beyond
@@ -147,7 +146,7 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					You are responsible for accurate account information, confidential login credentials, and activity
-					through your account unless the activity was caused by our own security failure.
+					under your account unless the activity was caused by our own security failure.
 				</p>
 				<p>
 					You may not share your credentials, create accounts through deceptive means, or use another person’s

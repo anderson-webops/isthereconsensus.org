@@ -12,11 +12,11 @@ const quickPoints = [
 	},
 	{
 		title: "Analytics and abuse prevention",
-		body: "When enabled, bot protection and production analytics from analytics.isthereconsensus.org and analytics.jacobdanderson.net keep the service usable and show how deployed pages are used."
+		body: "When enabled, bot protection and production analytics help keep the service usable and show how deployed pages are used."
 	},
 	{
 		title: "Privacy requests",
-		body: "There is not currently a self-serve account deletion tool. Privacy requests can be sent to consensus@isthereconsensus.org."
+		body: "Privacy requests currently go through consensus@isthereconsensus.org rather than a self-serve deletion tool."
 	}
 ];
 
@@ -129,8 +129,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Privacy Policy</p>
 			<h1>How we handle personal information.</h1>
 			<p>
-				Effective April 11, 2026. This policy explains what information the site collects, how that information
-				is used, when it may be disclosed, and what practical choices users currently have.
+				Effective April 11, 2026. This policy explains what the site collects, how it is used, when it may be
+				disclosed, and what practical choices users currently have.
 			</p>
 		</header>
 
@@ -154,9 +154,8 @@ useStaticPageMeta({
 			</div>
 			<div class="prose">
 				<p>
-					This policy applies to the public website, member accounts, community question features, expert
-					application workflow, editorial/admin tools, and related operational services used to run
-					isthereconsensus.org.
+					This policy covers the public website, member accounts, community question features, expert
+					application workflow, editorial/admin tools, and related services used to run isthereconsensus.org.
 				</p>
 				<p>
 					The site discusses health, medicine, psychology, climate, and other consequential subjects.
@@ -217,8 +216,8 @@ useStaticPageMeta({
 					signals used for anti-abuse purposes.
 				</p>
 				<p>
-					The site does not currently provide a separate, browser-specific response to “Do Not Track” signals.
-					We also do not currently use the site to serve third-party ads.
+					The site currently does not provide a separate, browser-specific response to “Do Not Track” signals.
+					It also does not serve third-party ads.
 				</p>
 			</div>
 		</section>
@@ -255,7 +254,7 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					We do not currently use the site to run third-party display advertising. If the product model
-					changes, we should update this policy before rolling those changes out.
+					changes, this policy should be updated before those changes roll out.
 				</p>
 			</div>
 		</section>
@@ -281,8 +280,8 @@ useStaticPageMeta({
 			</ul>
 			<div class="prose">
 				<p>
-					There is not currently a self-serve account deletion portal. If you ask to close an account or
-					delete data, we may still retain some records, including moderation, security, backup, and
+					Account closure is request-based rather than self-serve. If you ask to close an account or delete
+					data, we may still retain some records, including moderation, security, backup, and
 					community-integrity records, where reasonably necessary.
 				</p>
 				<p>
