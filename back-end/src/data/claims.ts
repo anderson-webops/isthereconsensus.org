@@ -6092,7 +6092,7 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 95,
 		reviewMode: "standard",
 		bottomLine:
-			"No. The fossil record is incomplete, but transitional fossils are not missing in the way this claim implies. Paleontologists have many fossils and fossil sequences with transitional features, including fish-to-tetrapod, reptile-to-mammal, whale, bird, hoofed-mammal, and human-evolution examples. The better caveat is that fossils usually document branching histories and feature transitions, not a perfect frame-by-frame chain of direct ancestors.",
+			"No. The fossil record is incomplete, but transitional fossils are not missing as claimed. Paleontologists have many examples, including fish-to-tetrapod, reptile-to-mammal, whale, bird, hoofed-mammal, and human-evolution fossils. The caveat: fossils usually show branching histories and feature transitions, not a perfect chain of direct ancestors.",
 		stableCore: [
 			"The fossil record is patchy because fossilization, preservation, erosion, exposure, discovery, and sampling are uneven.",
 			"That incompleteness does not erase the many known fossils with transitional combinations of traits.",
@@ -6117,7 +6117,7 @@ const rawClaims: SeedClaim[] = [
 			"New fossil discoveries often revise details of timing and relationship without overturning the larger pattern of common descent."
 		],
 		editorSummary:
-			"This page should answer the fossil-gap objection without overstating completeness. The strongest public explanation is that transitional features are common and useful, while the fossil record is still sampled unevenly and usually reconstructs branches rather than direct lineages.",
+			"This page should answer the fossil-gap objection without overstating completeness: transitional features are common and useful, but the fossil record is unevenly sampled and usually reconstructs branches rather than direct lineages.",
 		uncertaintySummary:
 			"The existence and scientific value of transitional fossils is settled. Uncertainty remains around exact placements, direct ancestry, timing, and which features evolved in which sequence for particular groups.",
 		uncertaintyDrivers: [
