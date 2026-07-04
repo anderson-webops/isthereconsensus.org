@@ -6755,6 +6755,207 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "biology-and-evolution",
+		title: "Is antibiotic resistance an example of evolution?",
+		slug: "is-antibiotic-resistance-an-example-of-evolution",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Antibiotic resistance is one of the clearest modern examples of evolution by mutation, gene transfer, drift, and natural selection. Antibiotics do not make a person's body resistant; they create selection pressure under which resistant microbes survive, multiply, and spread. The details can be complex, but the basic evolutionary interpretation is not controversial.",
+		stableCore: [
+			"CDC explains that antimicrobial resistance happens when germs develop the ability to defeat drugs, survive treatment pressure, multiply, and spread resistance traits in their DNA.",
+			"WHO describes AMR as a natural process through genetic changes in pathogens that is accelerated by misuse and overuse of antimicrobials in humans, animals, and plants.",
+			"Clinical Microbiology Reviews describes antibiotic resistance evolution as involving mutation, drift, and natural selection across genes, plasmids, clones, species, and microbial communities.",
+			"Recent reviews emphasize that whole-genome sequencing now lets researchers record resistance evolution beyond the lab, including within patients and host populations.",
+			"Experimental evolution work shows that the speed and stability of resistance adaptation depend on selection strength and prior drug-exposure history."
+		],
+		openQuestions: [
+			"Which resistance pathways are most predictable for a given pathogen, drug, dose pattern, and ecological setting?",
+			"How can stewardship, infection prevention, diagnostics, vaccination, and treatment sequencing slow resistance without withholding needed care?",
+			"Which resistance genes present in environmental microbes are most likely to become clinically important in human, animal, or plant pathogens?"
+		],
+		whatWouldChangeMinds: [
+			"Robust genomic and experimental evidence showing that resistant microbes do not increase through heritable variation, selection, transmission, or gene transfer.",
+			"A better framework that explains laboratory resistance evolution, hospital outbreaks, plasmid-mediated spread, and historical resistance emergence without evolutionary mechanisms.",
+			"Major CDC, WHO, or comparable scientific reassessments withdrawing genetic change and selection pressure as central explanations for antimicrobial resistance."
+		],
+		misconceptions: [
+			"Antibiotic resistance does not mean the patient's body becomes resistant to antibiotics; the microbes become harder to kill.",
+			"Resistance is not proof that a bacterium 'wanted' to adapt. Resistant variants can arise through mutation or acquired genes and then become more common under selection.",
+			"Antibiotic resistance can spread even to germs that were not directly exposed to the drug, because resistance genes can move between microbes.",
+			"Calling resistance 'natural' does not mean human behavior is irrelevant; drug pressure, infection control, agriculture, travel, and sanitation shape how fast it spreads."
+		],
+		editorSummary:
+			"This page connects the observed-evolution topic to a concrete public-health case. Keep the claim focused on evolutionary mechanisms and the body-versus-microbe misconception rather than turning it into a full antibiotic stewardship guide.",
+		uncertaintySummary:
+			"The evolutionary basis of antibiotic resistance is very strong. Uncertainty is mainly about forecasting which pathway will dominate in a particular pathogen, patient, hospital, farm, community, or environment.",
+		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "CDC", "WHO"],
+		searchCutoffAt: "2026-07-04T18:41:00.000Z",
+		inclusionRules: [
+			"Prioritize official public-health sources, major microbiology reviews, and experimental or genomic studies that directly connect resistance to evolutionary mechanisms.",
+			"Use burden statistics only from current CDC, WHO, or peer-reviewed global-burden sources.",
+			"Separate the mechanism claim from clinical advice about when an individual patient should or should not receive antibiotics."
+		],
+		exclusionRules: [
+			"Exclude sources that discuss antibiotic prescribing without explaining resistance mechanisms or population spread.",
+			"Exclude speculative evolutionary forecasts unless they are clearly framed as uncertain modeling or laboratory evidence.",
+			"Do not use animal, agricultural, or environmental examples to overstate the exact risk pathway for a specific human infection."
+		],
+		surveillanceSpec: {
+			focus:
+				"Track CDC/WHO AMR fact-sheet updates, major global burden estimates, and microbiology reviews that change how antibiotic resistance should be framed as observed evolution.",
+			cadenceDays: 90,
+			watchTerms: [
+				"antimicrobial resistance evolution",
+				"antibiotic resistance natural selection",
+				"resistance gene transfer",
+				"AMR global burden",
+				"within-patient resistance evolution"
+			],
+			integrityMonitors: ["Crossref update metadata", "PubMed linking", "Manual CDC and WHO watch"],
+			guidelineMonitors: [
+				"CDC Antimicrobial Resistance",
+				"WHO antimicrobial resistance fact sheet",
+				"Clinical Microbiology Reviews AMR reviews"
+			],
+			triggerRules: [
+				"Recheck if CDC or WHO substantially revises AMR mechanism or burden wording.",
+				"Recheck if a cited review or experimental paper receives a correction, expression of concern, or retraction.",
+				"Escalate if a new synthesis changes the standard view of mutation, horizontal gene transfer, selection, or transmission in AMR emergence."
+			]
+		},
+		appraisalTools: [
+			"Public-health source currency check",
+			"Microbiology review evidence appraisal",
+			"Evolutionary mechanism consistency check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Is antibiotic resistance an example of evolution?",
+				population:
+					"Bacteria, fungi, and other pathogens in laboratory, clinical, community, agricultural, and environmental settings.",
+				finding:
+					"Official public-health sources and microbiology reviews describe antimicrobial resistance as genetic change and spread shaped by selection pressure, mutation, drift, transmission, and gene transfer.",
+				effectDirection: "supports",
+				magnitude:
+					"CDC reports more than 2.8 million antimicrobial-resistant infections and more than 35,000 deaths each year in the United States; WHO cites 1.27 million global deaths directly attributable to bacterial AMR in 2019.",
+				certainty: "high",
+				limitations: [
+					"The burden statistics are public-health context, not direct proof of any single resistance pathway.",
+					"Resistance evolution can involve both new mutations and acquired genes, so the same drug pressure can produce different genetic routes.",
+					"Predicting a specific pathogen's next resistance trajectory remains harder than explaining resistance after it emerges."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{ name: "Centers for Disease Control and Prevention", role: "U.S. public-health anchor for AMR definitions, spread, and burden" },
+			{ name: "World Health Organization", role: "Global public-health anchor for AMR mechanisms, drivers, and global burden" },
+			{ name: "Peer-reviewed microbiology literature", role: "Evolutionary mechanism and experimental-evolution evidence anchor" }
+		],
+		authorLine: "Is There Consensus editorial seed",
+		reviewerLine: "Pending expert review",
+		coiSummary: "No financial conflict identified for this editorial seed.",
+		independenceSummary:
+			"Seeded from CDC and WHO public-health sources plus peer-reviewed microbiology reviews and experimental evolution studies located through Consensus.",
+		lastRetractionCheckAt: "2026-07-04T18:41:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T18:41:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial antibiotic-resistance evolution claim page published from CDC, WHO, and Consensus-located microbiology review and experimental evolution sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "About Antimicrobial Resistance",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/antimicrobial-resistance/about/index.html",
+				stance: "supports",
+				note:
+					"Primary public-health anchor explaining that resistant germs survive treatment pressure, multiply, spread DNA-based resistance traits, and can share resistance mechanisms with other germs.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Antimicrobial resistance",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
+				stance: "supports",
+				note:
+					"Global public-health anchor describing AMR as a natural process through genetic changes in pathogens, accelerated by antimicrobial misuse and overuse.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Antimicrobial Resistance Facts and Stats",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/antimicrobial-resistance/data-research/facts-stats/index.html",
+				stance: "context",
+				note:
+					"Burden context reporting more than 2.8 million antimicrobial-resistant infections and more than 35,000 deaths each year in the United States.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Evolutionary Pathways and Trajectories in Antibiotic Resistance",
+				publisher: "Clinical Microbiology Reviews",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/evolutionary-pathways-and-trajectories-in-antibiotic-baquero-martnez/d79f2778349752f897f7f71b8083bdbd/",
+				citationCheckedAt: "2026-07-04T18:41:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located review explaining AMR evolution through mutation, drift, and directional selection across resistance genes, plasmids, clones, species, microbiotas, and ecosystems.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "From Petri Dishes to Patients to Populations: Scales and Evolutionary Mechanisms Driving Antibiotic Resistance",
+				publisher: "Annual Review of Microbiology",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/from-petri-dishes-to-patients-to-populations-scales-and-souque-ojeda/e96cc6e851bd58859ae34d99cc5121dd/",
+				citationCheckedAt: "2026-07-04T18:41:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located review summarizing how variation and selection drive resistance evolution from laboratory experiments to within-patient and population-level genomic records.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Antimicrobial Resistance in Bacteria: Mechanisms, Evolution, and Persistence",
+				publisher: "Journal of Molecular Evolution",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/antimicrobial-resistance-in-bacteria-mechanisms-christaki-marcou/b882c8780b7a58b7bc36af24ede91e27/",
+				citationCheckedAt: "2026-07-04T18:41:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located review covering evolved resistance mechanisms and the role of antimicrobial use, overuse, and misuse in the modern spread of AMR.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Evolutionary History and Strength of Selection Determine the Rate of Antibiotic Resistance Adaptation",
+				publisher: "Molecular Biology and Evolution",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/evolutionary-history-and-strength-of-selection-determine-cisneros-mayoral-graa-miraglia/57df21d185085fa0b8a9460f1d44d943/",
+				citationCheckedAt: "2026-07-04T18:41:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-located experimental evolution and modeling study showing that resistance adaptation rate and mutation stability depend on selection strength and prior drug exposure.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "neuroscience-and-psychology",
 		title: "Does nicotine harm brain development into the mid-20s?",
 		slug: "does-nicotine-harm-brain-development-into-the-mid-20s",
