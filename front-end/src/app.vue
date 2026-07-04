@@ -523,19 +523,47 @@ body
 }
 
 @media (max-width: 720px) {
+	.policy-page {
+		gap: 18px;
+	}
+
+	.policy-header,
+	.policy-panel,
+	.policy-summary-card,
+	.policy-detail-card,
+	.policy-callout {
+		border-radius: 16px;
+	}
+
 	.policy-header,
 	.policy-panel,
 	.policy-callout {
-		padding: 18px;
+		padding: 16px;
 	}
 
+	.policy-summary,
 	.policy-card-grid {
 		gap: 10px;
 	}
 
+	.policy-summary-card {
+		padding: 14px;
+	}
+
+	.policy-section-heading {
+		margin-bottom: 10px;
+	}
+
+	.policy-header p,
+	.policy-detail-card p,
+	.policy-list,
+	.policy-prose p,
+	.policy-callout p {
+		line-height: 1.58;
+	}
+
 	.policy-detail-card {
 		padding: 14px;
-		border-radius: 12px;
 	}
 
 	.policy-detail-card h3 {
@@ -548,10 +576,16 @@ body
 
 	.policy-callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.policy-callout__actions {
 		width: 100%;
+	}
+
+	.policy-callout .button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 
 	:where(.button) {
