@@ -413,7 +413,7 @@ useStaticPageMeta({
 
 @media (max-width: 640px) {
 	.misconception-page {
-		gap: 18px;
+		gap: 16px;
 	}
 
 	.misconception-header,
@@ -427,7 +427,7 @@ useStaticPageMeta({
 	.misconception-panel,
 	.misconception-callout,
 	.misconception-card {
-		padding: 16px;
+		padding: 15px;
 	}
 
 	.misconception-header h1 {
@@ -445,8 +445,12 @@ useStaticPageMeta({
 		line-height: 1.55;
 	}
 
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
 	.misconception-card {
-		gap: 10px;
+		gap: 9px;
 	}
 
 	.misconception-card h2 {
@@ -458,7 +462,7 @@ useStaticPageMeta({
 	}
 
 	.misconception-card__section--correction {
-		padding: 11px 12px;
+		padding: 10px 11px;
 		border-radius: 12px;
 	}
 
@@ -482,8 +486,8 @@ useStaticPageMeta({
 	}
 
 	.chip {
-		padding: 6px 8px;
-		font-size: 0.92rem;
+		padding: 5px 8px;
+		font-size: 0.9rem;
 		line-height: 1.25;
 	}
 
@@ -511,7 +515,7 @@ useStaticPageMeta({
 	}
 
 	.reuse-table tr {
-		padding: 10px 0;
+		padding: 8px 0;
 		border-bottom: 1px solid var(--consensus-soft-line);
 	}
 
@@ -523,7 +527,7 @@ useStaticPageMeta({
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
 		gap: 8px;
-		padding: 3px 0;
+		padding: 2px 0;
 		border-bottom: 0;
 		font-size: 0.94rem;
 		line-height: 1.42;
