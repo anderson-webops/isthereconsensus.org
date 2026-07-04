@@ -339,18 +339,66 @@ useStaticPageMeta({
 }
 
 @media (max-width: 720px) {
+	.guidelines-page {
+		gap: 18px;
+	}
+
+	.guidelines-header,
+	.guidelines-panel,
+	.summary-card,
+	.detail-card,
+	.guidelines-callout {
+		border-radius: 16px;
+	}
+
 	.guidelines-header,
 	.guidelines-panel,
 	.guidelines-callout {
-		padding: 18px;
+		padding: 16px;
+	}
+
+	.summary-card,
+	.detail-card {
+		padding: 14px;
+	}
+
+	.guidelines-summary,
+	.card-grid {
+		gap: 10px;
+	}
+
+	.guidelines-header p,
+	.section-heading p,
+	.summary-card p,
+	.detail-card p,
+	.plain-list,
+	.prose p,
+	.guidelines-callout p {
+		line-height: 1.58;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
+	}
+
+	.plain-list {
+		gap: 8px;
+		padding-left: 18px;
 	}
 
 	.guidelines-callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.guidelines-callout__actions {
 		width: 100%;
+		gap: 10px;
+	}
+
+	.button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 }
 
