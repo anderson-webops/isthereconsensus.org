@@ -713,7 +713,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-snapshot-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	align-items: start;
 	gap: 16px;
 }
@@ -818,6 +818,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 @media (max-width: 860px) {
 	.bottom-line {
+		grid-template-columns: 1fr;
+	}
+
+	.claim-snapshot-grid {
 		grid-template-columns: 1fr;
 	}
 

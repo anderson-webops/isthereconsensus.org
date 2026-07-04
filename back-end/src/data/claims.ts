@@ -6376,11 +6376,11 @@ const rawClaims: SeedClaim[] = [
 		bottomLine:
 			"Yes. Evolution is heritable change in populations over generations, and scientists observe it today in microbes, pests, viruses, and wild animal populations. These observations do not show every deep historical transition in real time, and some short-term changes reverse when environments change. But evolution is not only a past-tense inference.",
 		stableCore: [
-			"National Academies resources define evolution as changes in heritable population traits across generations and state that evolution is still occurring.",
-			"National Academies teaching guidance says key evolutionary processes can occur over short periods and be observed directly, including bacteria evolving antibiotic resistance.",
-			"UC Berkeley's Understanding Evolution lists directly observed wild cases, including pesticide resistance, antibiotic resistance, climate-related responses, and Galapagos finch lineages with distinct traits.",
-			"Lenski's long-term E. coli experiment directly observed natural-selection adaptation, genome evolution, mutation-rate changes, ecotype divergence, and citrate use across more than 60,000 generations.",
-			"Long-running Darwin's finch work documented repeated body-size and beak-trait shifts under fluctuating selection; later genome sequencing linked beak-size evolution to allele-frequency changes at major loci."
+			"National Academies resources define evolution as heritable population-trait change across generations and say it is still occurring.",
+			"National Academies teaching guidance says short-term evolutionary processes can be observed directly, including antibiotic resistance.",
+			"UC Berkeley's Understanding Evolution lists directly observed cases: pesticide and antibiotic resistance, climate responses, and Galapagos finch divergence.",
+			"Lenski's long-term E. coli experiment directly observed adaptation, genome evolution, mutation-rate changes, ecotype divergence, and citrate use across 60,000+ generations.",
+			"Darwin's finch studies tracked repeated body-size and beak-trait shifts under selection; later genomics linked beak-size evolution to allele-frequency changes."
 		],
 		openQuestions: [
 			"Which observed short-term changes will persist, reverse, or contribute to longer-term divergence?",
