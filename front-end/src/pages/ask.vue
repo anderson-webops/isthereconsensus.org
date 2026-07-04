@@ -533,7 +533,12 @@ async function submitQuestion() {
 }
 
 .section-heading,
-.posting-form__header,
+.posting-form__header {
+	display: grid;
+	gap: 6px;
+	align-items: start;
+}
+
 .match-row__actions,
 .posting-form__actions,
 .attached-claim {
