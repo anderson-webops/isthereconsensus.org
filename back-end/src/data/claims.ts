@@ -14077,6 +14077,188 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Can COVID-19 cause long-term symptoms even after mild infection?",
+		slug: "can-covid-19-cause-long-term-symptoms-even-after-mild-infection",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Long COVID, also called post-COVID condition, is a real infection-associated chronic condition that can follow SARS-CoV-2 infection, including infections that were not severe enough to require hospitalization. The exact risk varies by variant era, vaccination, reinfection, study design, age, sex, and acute severity, and there is still no single curative treatment.",
+		stableCore: [
+			"CDC describes Long COVID as an infection-associated chronic condition that can affect one or more organ systems for at least 3 months.",
+			"WHO describes post COVID-19 condition as symptoms that usually start within 3 months of illness, last at least 2 months, and can affect daily activities, work, and social participation.",
+			"National Academies evidence review concludes that even people with mild acute COVID-19 can develop severe Long COVID, though risk is higher after hospitalization or ICU-level illness.",
+			"Controlled meta-analysis evidence finds higher risks of long-term symptoms after SARS-CoV-2 infection than in uninfected comparators, especially loss of smell or taste, poor concentration, impaired memory, and fatigue-related symptoms.",
+			"Long COVID should not be treated as proof that every symptom after infection has the same cause; alternative diagnoses, symptom clusters, disability impact, and patient-centered care still matter."
+		],
+		openQuestions: [
+			"Which mechanisms explain different Long COVID clusters, including post-exertional malaise, dysautonomia, cognitive symptoms, respiratory symptoms, and organ complications?",
+			"How much do vaccination, prior infection, antiviral treatment, variant era, and repeated infections change risk and recovery?",
+			"Which treatments improve function, quality of life, and symptom burden in well-defined Long COVID subgroups?"
+		],
+		whatWouldChangeMinds: [
+			"Large controlled cohorts showing no excess long-term symptom or functional burden after SARS-CoV-2 infection compared with uninfected comparators.",
+			"Major CDC, WHO, National Academies, or comparable reassessments withdrawing Long COVID as an infection-associated chronic condition.",
+			"Repeated high-quality treatment trials showing that a single mechanism or curative treatment explains nearly all persistent post-COVID symptoms."
+		],
+		misconceptions: [
+			"A mild acute infection does not rule out Long COVID, although severe acute illness increases risk.",
+			"The lack of one definitive lab test does not mean symptoms are imaginary; it means diagnosis and care often require clinical assessment and exclusion of other causes.",
+			"Long COVID is not a single symptom and not every post-infection symptom has the same mechanism or prognosis."
+		],
+		editorSummary:
+			"This page should validate the settled point without overstating precision: SARS-CoV-2 infection can lead to persistent, sometimes disabling symptoms, but prevalence, mechanisms, recovery, and treatment evidence remain heterogeneous.",
+		uncertaintySummary:
+			"The existence and potential functional impact of Long COVID are well supported. Uncertainty remains high for exact prevalence in the current variant/vaccination era, mechanisms, pediatric burden, subgroup definitions, and which interventions produce durable improvement.",
+		uncertaintyDrivers: [
+			{
+				type: "imprecision",
+				detail:
+					"Studies use different symptom lists, follow-up times, infection confirmation methods, control groups, and Long COVID definitions."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Risk estimates from early-pandemic cohorts may not transfer cleanly to later variant, vaccination, treatment, and reinfection contexts."
+			},
+			{
+				type: "mechanism",
+				detail:
+					"Long COVID likely includes multiple pathways and symptom clusters rather than one uniform disease process."
+			}
+		],
+		searchDatabases: ["Consensus", "CDC", "WHO", "National Academies"],
+		searchCutoffAt: "2026-07-04T17:40:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T17:40:00.000Z",
+		inclusionRules: [
+			"Prioritize controlled cohort studies, systematic reviews, clinical definitions, and consensus reports that separate infection-attributable symptoms from background symptom prevalence.",
+			"Distinguish existence and functional impact from exact prevalence, mechanism, treatment efficacy, and disability adjudication.",
+			"Report whether evidence comes from early-pandemic, pre-Omicron, Omicron-era, vaccinated, pediatric, adult, hospitalized, or community cohorts when that context matters."
+		],
+		exclusionRules: [
+			"Do not use anecdotal symptom lists as prevalence estimates.",
+			"Do not present Long COVID as one uniform mechanism or imply a single proven curative treatment.",
+			"Do not dismiss persistent symptoms because routine labs or imaging can be normal."
+		],
+		evidenceSummaries: [
+			{
+				question: "Can COVID-19 cause long-term symptoms after the acute infection?",
+				population:
+					"People with confirmed or probable SARS-CoV-2 infection, including non-hospitalized adults and mixed general-population cohorts.",
+				finding:
+					"SARS-CoV-2 infection is associated with excess risk of multiple persistent symptoms and functional effects compared with uninfected controls, while exact prevalence depends strongly on definitions and context.",
+				effectDirection: "supports",
+				magnitude:
+					"A 2025 controlled-study meta-analysis covering 50 studies and more than 14 million people found increased risk for 39 of 40 long-term symptoms after infection; a 2022 Nature Medicine matched cohort found 62 symptoms associated with confirmed infection beyond 12 weeks in non-hospitalized adults.",
+				certainty: "moderate",
+				limitations: [
+					"Risk estimates change with variant era, vaccination, reinfection, acute severity, and study design.",
+					"Some symptoms are common in uninfected populations, making control groups and baseline health important.",
+					"Mechanism and treatment evidence is less settled than the existence and functional-impact claim."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current U.S. clinical and public-health anchor for Long COVID definition, symptoms, care framing, and prevention."
+			},
+			{
+				name: "World Health Organization",
+				role: "International case-definition and public-health anchor for post COVID-19 condition."
+			},
+			{
+				name: "National Academies of Sciences, Engineering, and Medicine",
+				role: "Consensus-report anchor for diagnosis, risk, functional impact, disability, and evidence limits."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T17:40:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial Long COVID claim page published from CDC, WHO, National Academies, and Consensus-located controlled cohort and meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Clinical Overview of Long COVID",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/long-covid/hcp/clinical-overview/index.html",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"CDC clinical source defining Long COVID as an infection-associated chronic condition affecting one or more organ systems and emphasizing validation, symptom-focused care, and prevention.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Post COVID-19 condition (long COVID)",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/news-room/fact-sheets/detail/post-covid-19-condition-%28long-covid%29",
+				stance: "supports",
+				note:
+					"WHO public-health anchor for post COVID-19 condition timing, common symptoms, functional impact, risk factors, and ongoing treatment-evidence gaps.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Long-Term Health Effects of COVID-19: Disability and Function Following SARS-CoV-2 Infection",
+				publisher: "National Academies of Sciences, Engineering, and Medicine",
+				year: 2024,
+				url: "https://www.nationalacademies.org/publications/27756",
+				doi: "10.17226/27756",
+				stance: "supports",
+				note:
+					"Consensus study report on Long COVID diagnosis, risk, symptoms, functional impact, disability, and evidence limits; useful for mild-infection and functioning caveats.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "The risk of Long Covid symptoms: a systematic review and meta-analysis of controlled studies",
+				publisher: "Nature Communications",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/the-risk-of-long-covid-symptoms-a-systematic-review-and-omahoney-routen/181da0aac5f953ca846cd56829652b78/",
+				stance: "supports",
+				note:
+					"Controlled-study synthesis of 50 studies and more than 14 million people finding increased risk of 39 of 40 long-term symptoms after SARS-CoV-2 infection.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Symptoms and risk factors for long COVID in non-hospitalized adults",
+				publisher: "Nature Medicine",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/symptoms-and-risk-factors-for-long-covid-in-subramanian-nirantharakumar/ecbe706e73c959bd8ce8b2f3bd1f6569/",
+				stance: "supports",
+				note:
+					"Matched UK primary-care cohort of 486,149 adults with confirmed SARS-CoV-2 infection and 1,944,580 matched controls, finding 62 symptoms associated with infection beyond 12 weeks.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Risk of long COVID main symptoms after SARS-CoV-2 infection: a systematic review and meta-analysis",
+				publisher: "Scientific Reports",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/risk-of-long-covid-main-symptoms-after-sarscov2-infection-a-marjenberg-leng/13b1113e78a4514382db80c07476daab/",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of controlled symptom-risk studies finding higher risks of fatigue, shortness of breath, memory difficulties, and concentration difficulties after infection.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "nutrition-and-diet",
 		title: "Is higher potassium intake from food recommended to reduce blood pressure and cardiovascular risk?",
 		slug: "is-higher-potassium-intake-from-food-recommended-to-reduce-blood-pressure-and-cardiovascular-risk",
