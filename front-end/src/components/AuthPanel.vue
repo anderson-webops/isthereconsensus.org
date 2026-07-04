@@ -205,6 +205,7 @@ async function handleChangePassword() {
 					</form>
 
 					<form class="account-form setting-card" @submit.prevent="handleChangePassword">
+						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden />
 						<div class="setting-card__intro">
 							<h3>Password</h3>
 							<p>Use your current password before setting a new one.</p>
