@@ -517,18 +517,75 @@ code {
 }
 
 @media (max-width: 720px) {
+	.privacy-page {
+		gap: 18px;
+	}
+
+	.privacy-header,
+	.privacy-panel,
+	.summary-card,
+	.category-card,
+	.privacy-callout {
+		border-radius: 16px;
+	}
+
 	.privacy-header,
 	.privacy-panel,
 	.privacy-callout {
-		padding: 18px;
+		padding: 16px;
+	}
+
+	.summary-card,
+	.category-card {
+		padding: 14px;
+	}
+
+	.privacy-summary,
+	.category-grid {
+		gap: 10px;
+	}
+
+	.privacy-header p,
+	.section-heading p,
+	.summary-card p,
+	.plain-list,
+	.prose p,
+	.category-card p,
+	.privacy-callout p {
+		line-height: 1.58;
+	}
+
+	.prose {
+		gap: 10px;
+	}
+
+	.plain-list {
+		gap: 8px;
+		padding-left: 18px;
+	}
+
+	.plain-list--tight {
+		gap: 6px;
+		padding-left: 17px;
+	}
+
+	.section-heading {
+		margin-bottom: 12px;
 	}
 
 	.privacy-callout {
 		align-items: stretch;
+		gap: 16px;
 	}
 
 	.privacy-callout__actions {
 		width: 100%;
+		gap: 10px;
+	}
+
+	.button {
+		padding: 10px 14px;
+		line-height: 1.25;
 	}
 }
 
