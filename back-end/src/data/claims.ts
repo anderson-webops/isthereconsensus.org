@@ -1216,7 +1216,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Cancer Letters",
 				year: 2022,
 				url:
-					"https://consensus.app/papers/long-term-outcome-of-prevention-of-liver-cancer-by-cao-fan/83f14cf6833c5002af5fcbd5bb897015/?utm_source=chatgpt",
+					"https://consensus.app/papers/long-term-outcome-of-prevention-of-liver-cancer-by-cao-fan/83f14cf6833c5002af5fcbd5bb897015/",
 				stance: "supports",
 				note:
 					"Consensus-fetched 37-year follow-up of a birth-vaccination trial reporting lower liver-cancer incidence and mortality and lower liver-disease mortality in the vaccinated group.",
@@ -1228,7 +1228,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Journal of the National Cancer Institute",
 				year: 2009,
 				url:
-					"https://consensus.app/papers/decreased-incidence-of-hepatocellular-carcinoma-in-chang-you/5b59fb79f4b25c12bd762461297db6f9/?utm_source=chatgpt",
+					"https://consensus.app/papers/decreased-incidence-of-hepatocellular-carcinoma-in-chang-you/5b59fb79f4b25c12bd762461297db6f9/",
 				stance: "supports",
 				note:
 					"Consensus-fetched Taiwan population follow-up finding lower hepatocellular carcinoma incidence among vaccinated birth cohorts and higher risk with incomplete vaccination or highly infectious maternal HBV.",
@@ -1240,7 +1240,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Alimentary Pharmacology & Therapeutics",
 				year: 2022,
 				url:
-					"https://consensus.app/papers/universal-hbv-vaccination-dramatically-reduces-the-wong-hui/ba459b4918185847885a926eb530b8d7/?utm_source=chatgpt",
+					"https://consensus.app/papers/universal-hbv-vaccination-dramatically-reduces-the-wong-hui/ba459b4918185847885a926eb530b8d7/",
 				stance: "supports",
 				note:
 					"Consensus-fetched Hong Kong cohort reporting a marked drop in chronic HBV prevalence after universal vaccination and numerically lower HCC and hepatic event rates in vaccinated cohorts.",
@@ -1252,7 +1252,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Journal of Infectious Diseases",
 				year: 2021,
 				url:
-					"https://consensus.app/papers/hepatitis-b-vaccines-pattyn-hendrickx/6f1187034216512fb5b0548e5cf98287/?utm_source=chatgpt",
+					"https://consensus.app/papers/hepatitis-b-vaccines-pattyn-hendrickx/6f1187034216512fb5b0548e5cf98287/",
 				stance: "supports",
 				note:
 					"Consensus-fetched review summarizing hepatitis B vaccines as safe, effective tools that reduce carrier rates and hepatitis B-related morbidity and mortality.",
@@ -4560,7 +4560,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "BMC Public Health",
 				year: 2017,
 				url:
-					"https://consensus.app/papers/effectiveness-of-needle-and-syringe-programmes-in-people-fernandes-cary/6332a2059382572883c73a32bc682c23/?utm_source=chatgpt",
+					"https://consensus.app/papers/effectiveness-of-needle-and-syringe-programmes-in-people-fernandes-cary/6332a2059382572883c73a32bc682c23/",
 				stance: "supports",
 				note:
 					"Consensus-fetched overview of 13 systematic reviews finding NSPs effective for reducing HIV transmission and injection risk behaviors, with mixed HCV findings and better results from high-coverage, multicomponent programs.",
@@ -4572,7 +4572,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "International Journal on Drug Policy",
 				year: 2022,
 				url:
-					"https://consensus.app/papers/interventions-to-prevent-hiv-and-hepatitis-c-among-people-palmateer-hamill/459bd160129f51deab2349e75690e16e/?utm_source=chatgpt",
+					"https://consensus.app/papers/interventions-to-prevent-hiv-and-hepatitis-c-among-people-palmateer-hamill/459bd160129f51deab2349e75690e16e/",
 				stance: "supports",
 				note:
 					"Consensus-fetched review finding sufficient evidence for needle and syringe programs reducing HIV transmission and injection risk behavior, and for combined opioid agonist treatment plus NSP reducing HCV transmission.",
@@ -4585,7 +4585,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Addiction",
 				year: 2017,
 				url:
-					"https://consensus.app/papers/needle-and-syringe-programmes-and-opioid-substitution-platt-minozzi/7333047581cf5f0198409e920b5e5c8d/?utm_source=chatgpt",
+					"https://consensus.app/papers/needle-and-syringe-programmes-and-opioid-substitution-platt-minozzi/7333047581cf5f0198409e920b5e5c8d/",
 				stance: "supports",
 				note:
 					"Consensus-fetched meta-analysis finding lower HCV acquisition risk with opioid substitution therapy and stronger protection when combined with NSP, while NSP-alone HCV evidence was weaker and heterogeneous.",
@@ -10922,7 +10922,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "International Journal of Epidemiology",
 				year: 2010,
 				url:
-					"https://consensus.app/papers/the-effect-of-oral-rehydration-solution-and-recommended-munos-walker/05d7f9527d8f5ca4822309a64bf1530c/?utm_source=chatgpt",
+					"https://consensus.app/papers/the-effect-of-oral-rehydration-solution-and-recommended-munos-walker/05d7f9527d8f5ca4822309a64bf1530c/",
 				doi: "10.1093/ije/dyq025",
 				pmid: "20348131",
 				pmcid: "PMC2845864",
@@ -10938,7 +10938,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Bulletin of the World Health Organization",
 				year: 2000,
 				url:
-					"https://consensus.app/papers/reducing-deaths-from-diarrhoea-through-oral-rehydration-victora-bryce/894deef1a46156b1823b14647f187730/?utm_source=chatgpt",
+					"https://consensus.app/papers/reducing-deaths-from-diarrhoea-through-oral-rehydration-victora-bryce/894deef1a46156b1823b14647f187730/",
 				citationCheckedAt: "2026-07-04T22:55:00.000Z",
 				stance: "supports",
 				note:
@@ -10951,7 +10951,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "BMJ",
 				year: 2001,
 				url:
-					"https://consensus.app/papers/reduced-osmolarity-oral-rehydration-solution-for-hahn-kim/9f8f28f16ae75feea3e27c46e872bac9/?utm_source=chatgpt",
+					"https://consensus.app/papers/reduced-osmolarity-oral-rehydration-solution-for-hahn-kim/9f8f28f16ae75feea3e27c46e872bac9/",
 				doi: "10.1136/bmj.323.7304.81",
 				pmid: "11451782",
 				pmcid: "PMC34348",
@@ -10967,7 +10967,7 @@ const rawClaims: SeedClaim[] = [
 				publisher: "PLOS ONE",
 				year: 2021,
 				url:
-					"https://consensus.app/papers/barriers-and-facilitators-to-implementation-of-oral-ezezika-ragunathan/9391a1e7589159c3b83526a4bfd56cab/?utm_source=chatgpt",
+					"https://consensus.app/papers/barriers-and-facilitators-to-implementation-of-oral-ezezika-ragunathan/9391a1e7589159c3b83526a4bfd56cab/",
 				citationCheckedAt: "2026-07-04T22:55:00.000Z",
 				stance: "context",
 				note:
@@ -13639,12 +13639,12 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "high",
 		reviewMode: "living",
 		bottomLine:
-			"Yes. Unusually warm ocean conditions and marine heatwaves are a major cause of mass coral bleaching. Bleaching is not always immediate death, but prolonged or severe heat stress can kill corals, alter reef communities, and reduce the services reefs provide.",
+			"Yes. Marine heatwaves and unusually warm ocean conditions are major causes of mass coral bleaching. Bleaching can be reversible, but prolonged or severe heat stress can kill corals, shift reef communities, and reduce reef services.",
 		stableCore: [
 			"Coral bleaching happens when stressed corals lose the symbiotic algae that supply much of their food and color.",
 			"Heat stress from elevated sea-surface temperatures is one of the best-established drivers of mass bleaching events.",
-			"Corals can recover if stressful conditions ease quickly enough, but repeated, intense, or prolonged bleaching raises the risk of disease, mortality, and long-term reef degradation.",
-			"Global datasets and reef surveys show strong links between marine heatwaves, bleaching, and mortality across ocean basins, while species and regions differ in vulnerability.",
+			"Corals can recover if stressful conditions ease quickly enough, but repeated or prolonged bleaching raises the risk of disease, death, and long-term reef degradation.",
+			"Global datasets and reef surveys link marine heatwaves with bleaching and mortality across ocean basins, while species and regions vary in vulnerability.",
 			"Local reef protection can reduce pollution, overfishing, and physical damage, but it cannot by itself prevent bleaching caused by global ocean warming."
 		],
 		openQuestions: [
@@ -13653,8 +13653,8 @@ const rawClaims: SeedClaim[] = [
 			"Which reefs should be prioritized as refugia, restoration sites, or monitoring sentinels as marine heatwave patterns shift?"
 		],
 		whatWouldChangeMinds: [
-			"Long-term reef observations showing that bleaching is not strongly tied to thermal stress after accounting for local water quality, disease, storms, and survey timing.",
-			"Global assessments finding that marine heatwaves are not becoming more severe for coral reefs or are no longer a major driver of mass bleaching events.",
+			"Long-term reef observations showing bleaching is weakly tied to thermal stress after accounting for local water quality, disease, storms, and survey timing.",
+			"Global assessments finding marine heatwaves are not intensifying for coral reefs or are no longer a major cause of mass bleaching.",
 			"Large-scale evidence that local protection alone reliably prevents bleaching and mortality during severe ocean-heat events."
 		],
 		misconceptions: [
@@ -13664,9 +13664,9 @@ const rawClaims: SeedClaim[] = [
 			"Marine protected areas can help reef resilience, but they are not a substitute for limiting heat stress from climate change."
 		],
 		editorSummary:
-			"This page connects climate change to a concrete ecological outcome: warming-driven marine heatwaves cause mass coral bleaching, with mortality and reef loss depending on duration, severity, species, and local context.",
+			"This page connects climate change to a concrete ecological outcome: warming-driven marine heatwaves cause mass coral bleaching, while mortality and reef loss depend on duration, severity, species, and local context.",
 		uncertaintySummary:
-			"The causal link between heat stress and coral bleaching is strong. Remaining uncertainty is mainly about recovery, adaptation, local resilience, and how much damage specific reefs will suffer under different warming and management pathways.",
+			"The heat-stress link is strong. The main uncertainty is how much recovery, adaptation, local resilience, and warming-pathway differences will change damage on specific reefs.",
 		uncertaintyDrivers: [
 			{
 				type: "generalizability",
@@ -13712,7 +13712,7 @@ const rawClaims: SeedClaim[] = [
 					"Elevated sea-surface temperatures and marine heatwaves consistently predict coral bleaching, and severe or prolonged events can produce widespread coral mortality and reef-community change.",
 				effectDirection: "supports",
 				magnitude:
-					"Shlesinger and van Woesik analyzed 23,288 surveys at 11,058 sites in 88 countries and found high sea-surface temperatures strongly related to bleaching in all oceans. Eakin and colleagues estimated that the 2014-2017 global event caused moderate or greater bleaching on 51% of the world's reefs and moderate or greater mortality on 15%.",
+					"One 40-year analysis covered 23,288 surveys at 11,058 sites in 88 countries. Another estimated the 2014-2017 global event caused moderate-or-worse bleaching on 51% of reefs and mortality on 15%.",
 				certainty: "high",
 				limitations: [
 					"Bleaching response and mortality differ by coral taxa, prior exposure, symbionts, reef condition, and ocean basin.",
@@ -13764,7 +13764,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://coralreefwatch.noaa.gov/satellite/research/coral_bleaching_report.php",
 				stance: "supports",
 				note:
-					"NOAA Coral Reef Watch reports that bleaching-level heat stress affected about 84.4% of the world's coral reef area from January 2023 through September 2025, with mass bleaching documented in at least 83 countries and territories.",
+					"NOAA Coral Reef Watch reports bleaching-level heat stress across 84.4% of global reef area from January 2023 through September 2025, with mass bleaching in at least 83 countries and territories.",
 				order: 2
 			},
 			{
@@ -13775,7 +13775,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.ipcc.ch/site/assets/uploads/sites/2/2022/06/SR15_Chapter_3_LR.pdf",
 				stance: "supports",
 				note:
-					"IPCC SR1.5 states with very high confidence that most existing warm-water coral reefs are projected to disappear even if warming is limited to 1.5 C, with greater losses at 2 C.",
+					"IPCC SR1.5 reports very high confidence that most existing warm-water coral reefs are projected to disappear at 1.5 C warming, with greater losses at 2 C.",
 				order: 3
 			},
 			{
@@ -13784,10 +13784,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Science of the Total Environment",
 				year: 2023,
 				url:
-					"https://consensus.app/papers/oceanic-differences-in-coralbleaching-responses-to-shlesinger-woesik/d2a9fbe00ae55259bd2b81e22d38d19e/?utm_source=chatgpt",
+					"https://consensus.app/papers/oceanic-differences-in-coralbleaching-responses-to-shlesinger-woesik/d2a9fbe00ae55259bd2b81e22d38d19e/",
 				stance: "supports",
 				note:
-					"Global 40-year dataset of 23,288 surveys at 11,058 sites in 88 countries finding high sea-surface temperatures consistently and strongly related to coral bleaching in all oceans, with regional differences in response.",
+					"Global 40-year dataset of 23,288 surveys at 11,058 sites in 88 countries linking high sea-surface temperatures to coral bleaching in all oceans, with regional differences.",
 				order: 4
 			},
 			{
@@ -13796,10 +13796,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Nature Communications",
 				year: 2026,
 				url:
-					"https://consensus.app/papers/severe-and-widespread-coral-reef-damage-during-the-eakin-heron/605535025a3a5c33bc0950a2911640b4/?utm_source=chatgpt",
+					"https://consensus.app/papers/severe-and-widespread-coral-reef-damage-during-the-eakin-heron/605535025a3a5c33bc0950a2911640b4/",
 				stance: "supports",
 				note:
-					"Global reef-survey and remote-sensing analysis estimating that 51% of the world's reefs suffered moderate or greater bleaching and 15% suffered moderate or greater mortality during the 2014-2017 global event.",
+					"Global reef-survey and remote-sensing analysis estimating that the 2014-2017 event caused moderate-or-worse bleaching on 51% of reefs and mortality on 15%.",
 				order: 5
 			},
 			{
@@ -13808,10 +13808,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Nature",
 				year: 2018,
 				url:
-					"https://consensus.app/papers/global-warming-transforms-coral-reef-assemblages-hughes-kerry/ac38e126288d5629867586da8da93917/?utm_source=chatgpt",
+					"https://consensus.app/papers/global-warming-transforms-coral-reef-assemblages-hughes-kerry/ac38e126288d5629867586da8da93917/",
 				stance: "supports",
 				note:
-					"Great Barrier Reef study finding immediate coral death above heat-exposure thresholds and regional-scale assemblage change after the 2016 marine heatwave, including transformation of 29% of the system's 3,863 reefs.",
+					"Great Barrier Reef study finding immediate coral death above heat-exposure thresholds and system-scale assemblage change after the 2016 marine heatwave.",
 				order: 6
 			}
 		]

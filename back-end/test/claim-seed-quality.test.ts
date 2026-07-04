@@ -64,6 +64,19 @@ describe("default claim seed quality", () => {
 		}
 	});
 
+	it("keeps public source links free of chat-specific tracking parameters", () => {
+		for (const claim of defaultClaims) {
+			for (const source of claim.sources) {
+				if (!source.url) continue;
+				assert.doesNotMatch(
+					source.url,
+					/[?&]utm_source=chatgpt\b/,
+					`${claim.slug} source "${source.title}" exposes a chat-specific tracking parameter`
+				);
+			}
+		}
+	});
+
 	it("keeps launch-sensitive claim cards backed by linked source stacks", () => {
 		for (const slug of launchSensitiveClaimSlugs) {
 			const claim = defaultClaims.find(entry => entry.slug === slug);
