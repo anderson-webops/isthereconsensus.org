@@ -21,23 +21,23 @@ const quickPoints = [
 ];
 
 const allowedUses = [
-	"evidence-monitoring tasks such as retraction checks, guideline-watch queues, citation integrity scans, and update-trigger alerts",
-	"search and routing support such as duplicate detection, misconception-module matching, or query-shape classification",
-	"internal drafting aids that help summarize existing material for editors, provided a human reviewer checks the output before publication",
-	"operational dashboards that surface likely intake pressure without automatically changing the reviewed page"
+	"retraction checks, guideline-watch queues, citation-integrity scans, and update-trigger alerts",
+	"duplicate detection, misconception-module matching, and query-shape classification",
+	"drafting aids that summarize existing material after a human checks the output",
+	"dashboards that surface intake pressure without changing reviewed pages automatically"
 ];
 
 const disallowedUses = [
 	"auto-publishing or materially changing a reviewed bottom line without human editorial approval",
 	"final moderation decisions that cannot be meaningfully appealed to a human reviewer",
-	"using confidential reviewer or applicant materials in external tools without an explicit security and confidentiality basis",
+	"putting confidential reviewer or applicant materials into outside tools without a clear security basis",
 	"presenting generated text as if it were an institutional source, independent expert judgment, or peer-reviewed evidence"
 ];
 
 const humanGates = [
 	{
 		title: "Publication gate",
-		body: "A human editor remains responsible for the published claim, the visible uncertainty framing, and the public source stack even when automation assisted earlier steps."
+		body: "A human editor remains responsible for the published claim, uncertainty framing, and public source stack."
 	},
 	{
 		title: "Moderation gate",
@@ -45,13 +45,13 @@ const humanGates = [
 	},
 	{
 		title: "Disclosure gate",
-		body: "When automation materially affects a page, queue, or review step, the site explains the role of that automation in plain language."
+		body: "When automation materially affects a page, queue, or review step, the site explains its role in plain language."
 	}
 ];
 
 const contributorRules = [
-	"Do not upload private drafts, sensitive user data, or reviewer materials to outside tools unless the site can actually stand behind that confidentiality choice.",
-	"Treat generated summaries as fallible working material, not as a substitute for reading the evidence or checking the source stack.",
+	"Do not upload private drafts, sensitive user data, or reviewer materials to outside tools unless the site can defend that confidentiality choice.",
+	"Treat generated summaries as fallible working material, not as a substitute for evidence review.",
 	"If AI assistance shaped reviewer or editorial output in a meaningful way, disclose that use internally and, where relevant, on the public page."
 ];
 
@@ -129,7 +129,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related trust pages</p>
-				<h2>Readers should be able to inspect the human gate without learning the whole ops stack.</h2>
+				<h2>Readers should see the human gate without learning the whole ops stack.</h2>
 				<p>Use How Reviews Work for the public standard and Corrections for the visible change path.</p>
 			</div>
 			<div class="policy-callout__actions">

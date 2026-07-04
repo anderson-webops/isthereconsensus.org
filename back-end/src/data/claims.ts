@@ -4396,16 +4396,16 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 94,
 		evidenceCertainty: "moderate",
 		bottomLine:
-				"Yes. Correct and consistent condom use substantially reduces HIV transmission and lowers risk for many sexually transmitted infections, especially infections spread through genital fluids such as gonorrhea and chlamydia. Protection is not absolute: condoms must be used for the whole sex act, can break or slip, and protect less well against infections spread from skin or sores outside the covered area.",
+			"Yes. Correct and consistent condom use substantially reduces HIV transmission and lowers risk for many STIs, especially infections spread through genital fluids such as gonorrhea and chlamydia. Protection is not absolute: condoms must be used for the whole sex act, can break or slip, and protect less well against infections spread by uncovered skin or sores.",
 		stableCore: [
 			"CDC and WHO recommend correct and consistent condom use as an effective way to reduce HIV, STI, and unintended-pregnancy risk, while emphasizing that condoms reduce risk rather than eliminate it.",
 			"CDC says condoms are especially protective against STIs spread by genital fluids, including gonorrhea, chlamydia, trichomoniasis, and HIV, and less protective for infections spread through uncovered skin or sores.",
-			"A systematic review and meta-analysis of 25 studies in 10,676 heterosexual HIV-serodiscordant couples found that always using condoms was associated with substantially lower HIV transmission risk than never or inconsistently using them.",
-			"Evidence for female condoms also supports STI risk reduction; a systematic review found that adding female condoms to male-condom access reduced gonorrhea and chlamydia compared with male condoms alone.",
-			"Behavioral and structural condom-access interventions can increase condom use and reduce STI outcomes, but real-world impact depends on access, acceptability, correct use, and consistent use."
+			"A meta-analysis of 25 studies in 10,676 heterosexual HIV-serodiscordant couples found much lower HIV transmission risk with always-use than with never or inconsistent use.",
+			"Female-condom evidence also supports STI risk reduction; one review found reduced gonorrhea and chlamydia when female condoms were added to male-condom access.",
+			"Behavioral and structural access interventions can increase condom use and reduce STI outcomes, but impact depends on access, acceptability, and correct, consistent use."
 		],
 		openQuestions: [
-			"Which counseling, access, and distribution strategies improve consistent condom use without stigma, coercion, or ignoring pleasure and relationship dynamics?",
+			"Which counseling, access, and distribution strategies improve consistent condom use without stigma, coercion, or ignoring relationship dynamics?",
 			"How should condoms be combined with PrEP, U=U, vaccination, testing, treatment, contraception, and harm-reduction services for different people and settings?",
 			"How do real-world effectiveness estimates differ by STI, condom type, lubricant, sex act, anatomy, fit, breakage or slippage, and whether exposed skin or lesions are covered?"
 		],
@@ -4421,9 +4421,9 @@ const rawClaims: SeedClaim[] = [
 			"Lower protection against skin-to-skin STI transmission does not mean condoms do nothing; it means protection varies by infection and exposure site."
 		],
 		editorSummary:
-				"This page should anchor condoms as a practical, low-cost HIV and STI risk-reduction tool without overselling them. The consensus is strong that correct and consistent use helps, and the caveats are exactly the details readers need.",
+			"This page should present condoms as a practical, low-cost HIV and STI risk-reduction tool without overselling them. Correct and consistent use helps, and the caveats are part of the answer.",
 		uncertaintySummary:
-				"The consensus is strongest for HIV and fluid-transmitted STIs when condoms are used correctly and consistently. Exact real-world effectiveness varies by adherence, condom type, fit, lubricant, breakage or slippage, sex act, STI route, and whether exposed skin or lesions are covered.",
+			"The consensus is strongest for HIV and fluid-transmitted STIs with correct, consistent use. Real-world effectiveness varies by adherence, condom type, fit, lubricant, breakage or slippage, sex act, STI route, and whether exposed skin or lesions are covered.",
 		searchCutoffAt: "2026-07-04T19:56:49.000Z",
 		lastRetractionCheckAt: "2026-07-04T19:56:49.000Z",
 		changeLog: [
@@ -4431,7 +4431,7 @@ const rawClaims: SeedClaim[] = [
 				date: "2026-07-04T19:56:49.000Z",
 				kind: "publication",
 				summary:
-						"Initial condom HIV and STI prevention claim page published from CDC and WHO guidance plus Consensus-located systematic-review and meta-analysis sources."
+					"Initial condom HIV and STI prevention claim page published from CDC and WHO guidance plus Consensus-located systematic-review and meta-analysis sources."
 			}
 		],
 		sources: [
@@ -4443,7 +4443,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/condom-use/index.html",
 				stance: "supports",
 				note:
-						"CDC public-health anchor for condoms reducing HIV and STI risk when used correctly and consistently, with stronger protection for fluid-transmitted STIs and limits for uncovered skin-to-skin exposures.",
+					"CDC public-health anchor for condoms reducing HIV and STI risk with correct, consistent use, with stronger protection for fluid-transmitted STIs than uncovered skin-to-skin exposures.",
 				order: 1
 			},
 			{
@@ -4453,20 +4453,20 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.who.int/news-room/fact-sheets/detail/condoms",
 				stance: "supports",
 				note:
-						"WHO fact-sheet source stating that correctly and consistently used condoms are safe and highly effective for preventing most STIs, including HIV, and unplanned pregnancies, while depending on correct use every time.",
+					"WHO fact-sheet source stating that correctly and consistently used condoms are safe and highly effective for preventing most STIs, including HIV, and unplanned pregnancies.",
 				order: 2
 			},
 			{
 				kind: "meta_analysis",
 				title:
-						"Condom effectiveness in reducing heterosexual HIV transmission: a systematic review and meta-analysis of studies on HIV serodiscordant couples",
+					"Condom effectiveness in reducing heterosexual HIV transmission: a systematic review and meta-analysis of studies on HIV serodiscordant couples",
 				publisher: "Expert Review of Pharmacoeconomics & Outcomes Research",
 				year: 2016,
 				url:
-						"https://consensus.app/papers/condom-effectiveness-in-reducing-heterosexual-hiv-giannou-tsiara/3a4cad1c8d565274b612bec0d8dbad18/",
+					"https://consensus.app/papers/condom-effectiveness-in-reducing-heterosexual-hiv-giannou-tsiara/3a4cad1c8d565274b612bec0d8dbad18/",
 				stance: "supports",
 				note:
-						"Consensus-fetched meta-analysis of 25 studies and 10,676 HIV-serodiscordant heterosexual couples; always using condoms was associated with much lower HIV transmission risk than never or inconsistent use.",
+					"Consensus-fetched meta-analysis of 25 studies and 10,676 HIV-serodiscordant heterosexual couples; always-use was associated with much lower HIV transmission risk.",
 				order: 3
 			},
 			{
@@ -4475,10 +4475,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "BMC Public Health",
 				year: 2020,
 				url:
-						"https://consensus.app/papers/effectiveness-of-the-female-condom-in-preventing-hiv-and-wiyeh-mome/90b40263a84c56059f35ee6085845e17/",
+					"https://consensus.app/papers/effectiveness-of-the-female-condom-in-preventing-hiv-and-wiyeh-mome/90b40263a84c56059f35ee6085845e17/",
 				stance: "supports",
 				note:
-						"Consensus-fetched systematic review and meta-analysis finding that adding female condoms to male-condom availability reduced gonorrhea and chlamydia compared with male condoms alone, while HIV evidence was lower certainty.",
+					"Consensus-fetched review finding reduced gonorrhea and chlamydia when female condoms were added to male-condom availability; HIV evidence was lower certainty.",
 				order: 4
 			},
 			{
@@ -4487,10 +4487,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Journal of Acquired Immune Deficiency Syndromes",
 				year: 2011,
 				url:
-						"https://consensus.app/papers/efficacy-of-behavioral-interventions-to-increase-condom-scott-sheldon-huedo-medina/fbef47986dda500796fbe74f173b5503/",
+					"https://consensus.app/papers/efficacy-of-behavioral-interventions-to-increase-condom-scott-sheldon-huedo-medina/fbef47986dda500796fbe74f173b5503/",
 				stance: "supports",
 				note:
-						"Consensus-fetched meta-analysis of 42 studies and 67 interventions finding condom-use interventions increased condom use and reduced incident STIs, including HIV.",
+					"Consensus-fetched meta-analysis of 42 studies and 67 interventions finding increased condom use and reduced incident STIs, including HIV.",
 				order: 5
 			},
 			{
@@ -4499,10 +4499,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "AIDS and Behavior",
 				year: 2010,
 				url:
-						"https://consensus.app/papers/efficacy-of-structurallevel-condom-distribution-charania-crepaz/2650493d456d5db2b65a4b37d5ed2b59/",
+					"https://consensus.app/papers/efficacy-of-structurallevel-condom-distribution-charania-crepaz/2650493d456d5db2b65a4b37d5ed2b59/",
 				stance: "supports",
 				note:
-						"Consensus-fetched meta-analysis of 21 studies finding structural condom-distribution interventions improved condom-use outcomes and reduced incident STIs.",
+					"Consensus-fetched meta-analysis of 21 studies finding structural condom-distribution interventions improved condom-use outcomes and reduced incident STIs.",
 				order: 6
 			}
 		]
@@ -17970,6 +17970,124 @@ const rawClaims: SeedClaim[] = [
 				stance: "supports",
 				note:
 					"Longitudinal ABCD cohort study of 11,876 children and adolescents finding that within-person increases above usual social-media use predicted higher depressive symptoms the following year.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do seat belts reduce death and serious injury in crashes?",
+		slug: "do-seat-belts-reduce-death-and-serious-injury-in-crashes",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Correctly worn seat belts substantially reduce death and serious-injury risk for passenger-vehicle occupants. They keep people positioned, spread crash forces across stronger body areas, help airbags work as intended, and reduce ejection. They do not prevent crashes, and children still need age- and size-appropriate restraints or belt fit.",
+		stableCore: [
+			"CDC says seat belts are the most effective way for adults and older children to prevent injury or death in crashes, reducing serious crash-related injuries and deaths by about half.",
+			"NHTSA estimates lap-and-shoulder belts reduce fatal injury risk for front-seat passenger-car occupants by 45% and moderate-to-critical injury risk by 50%; for light-truck occupants, the corresponding reductions are 60% and 65%.",
+			"Airbags add protection but do not replace belts; NHTSA and CDC describe the safest setup as using seat belts in vehicles equipped with airbags.",
+			"A 2018 meta-analysis of cohort studies found lower major-injury risk among belted occupants, while noting heterogeneity and less certain estimates for some body regions.",
+			"Another meta-analysis estimated fatal and non-fatal injury reductions of about 60% for front-seat occupants and 44% for rear-seat occupants, while noting behavior-related confounding."
+		],
+		openQuestions: [
+			"Which combinations of reminders, vehicle design, education, and law enforcement increase belt use without creating inequitable enforcement harms?",
+			"How should restraint systems be improved for rear seats, older adults, pregnant occupants, people with disabilities, and occupants whose body size makes standard belts fit poorly?",
+			"How do effectiveness estimates vary by vehicle type, seating position, crash direction, rollover risk, belt fit, and whether a child should be in a booster or child restraint instead?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-adjusted crash datasets showing no meaningful reduction in death or serious injury among correctly belted occupants compared with otherwise similar unbelted occupants.",
+			"Major NHTSA, CDC, WHO, or transportation-safety reassessments withdrawing seat belts as a core occupant-protection recommendation.",
+			"Evidence that belt-related harms or population-level risk compensation offset the fatal and serious-injury reductions seen in crash, surveillance, and meta-analytic evidence."
+		],
+		misconceptions: [
+			"Airbags are not a substitute for seat belts; they are designed to work with belts.",
+			"Short or familiar trips still carry crash risk, and NHTSA notes many fatal crashes occur close to home.",
+			"Seat belts can cause some injuries in severe crashes, but that does not erase their much larger overall protective effect.",
+			"Adult seat belts are not enough for children who need a car seat or booster to make the belt fit correctly."
+		],
+		editorSummary:
+			"This page should make the everyday safety consensus visible without implying that belts prevent crashes or guarantee survival. The public message is simple: every occupant, every trip, with the right restraint for age and size.",
+		uncertaintySummary:
+			"The direction of benefit is very strong. Effect size varies by crash severity, crash direction, vehicle type, seating position, belt fit, correct use, age, body size, airbags, and confounding from other risky driving behaviors.",
+		searchCutoffAt: "2026-07-04T20:08:01.000Z",
+		lastRetractionCheckAt: "2026-07-04T20:08:01.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T20:08:01.000Z",
+				kind: "publication",
+				summary:
+					"Initial seat-belt crash-injury prevention claim page published from NHTSA and CDC safety guidance plus Consensus-located meta-analysis and Cochrane intervention-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Seat Belt Safety: Buckle Up America",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/vehicle-safety/seat-belts",
+				stance: "supports",
+				note:
+					"NHTSA public-safety anchor for fatal and moderate-to-critical injury reductions, airbag complementarity, short-trip myths, and proper child seat-belt fit.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Facts About Seat Belt Use",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/seat-belts/facts/index.html",
+				stance: "supports",
+				note:
+					"CDC public-health source stating that seat belts are the most effective way for adults and older children to prevent crash injury or death, reducing serious injuries and deaths by about half.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Seat Belts and Child Restraints",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/book/countermeasures-that-work/seat-belts-and-child-restraints",
+				stance: "supports",
+				note:
+					"NHTSA Countermeasures That Work chapter summarizing belt and child-restraint effectiveness, implementation gaps, rear-seat use, and correct restraint fit.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Seatbelt use and risk of major injuries sustained by vehicle occupants during motor-vehicle crashes: a systematic review and meta-analysis of cohort studies",
+				publisher: "BMC Public Health",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/seatbelt-use-and-risk-of-major-injuries-sustained-by-mbarga-abubakari/151933849df45b9597a9cae2808ad6e3/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis of 11 cohort studies finding lower major-injury risk among belted occupants, with high heterogeneity and some body-region uncertainty.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "How would increasing seat belt use affect the number of killed or seriously injured light vehicle occupants?",
+				publisher: "Accident Analysis & Prevention",
+				year: 2016,
+				url:
+					"https://consensus.app/papers/how-would-increasing-seat-belt-use-affect-the-number-of-hye/e907de24af9d50498fc0e5c0805d7967/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis estimating fatal and non-fatal injury reductions of about 60% for front-seat occupants and 44% for rear-seat occupants.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Education, incentive, and engineering-based interventions to promote the use of seat belts",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/education-incentive-and-engineeringbased-interventions-lourens-sinclair/51a596d68410533db65779127006f7a6/",
+				stance: "context",
+				note:
+					"Consensus-fetched Cochrane review of interventions to increase seat-belt use; useful for implementation caveats rather than crash-injury effect size.",
 				order: 6
 			}
 		]

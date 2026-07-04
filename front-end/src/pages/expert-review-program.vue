@@ -21,8 +21,8 @@ const quickPoints = [
 ];
 
 const eligibility = [
-	"relevant domain experience, credentials, publication history, or comparable professional track record tied to the claim area",
-	"a verifiable identity and enough external evidence to confirm affiliation, body of work, or subject-matter standing",
+	"domain experience, credentials, publications, or comparable professional work tied to the claim area",
+	"a verifiable identity and enough external evidence to confirm affiliation or subject-matter standing",
 	"agreement to the site's disclosure, conduct, and review-quality expectations",
 	"willingness to stay within scope rather than treating every review as a platform for unrelated position-taking"
 ];
@@ -42,7 +42,7 @@ const disagreementFlow = [
 	},
 	{
 		title: "Structured disagreement handling",
-		body: "When reviewers disagree, the site logs whether the disagreement is about scope, missing sources, certainty language, or the actual conclusion."
+		body: "When reviewers disagree, the site logs whether the issue is scope, missing sources, certainty language, or the conclusion."
 	},
 	{
 		title: "Replacement or escalation",
@@ -131,7 +131,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Apply with disclosures</p>
-				<h2>Expert review only works when assignment, disclosure, and public trust stay aligned.</h2>
+				<h2>Expert review works only when assignment, disclosure, and trust stay aligned.</h2>
 				<p>
 					Applications should include affiliation, evidence of expertise, and relevant funding or conflict
 					notes so editors can assign reviewers responsibly.

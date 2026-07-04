@@ -31,7 +31,7 @@ const noticeRequirements = [
 const workflow = [
 	{
 		title: "Intake and triage",
-		body: "The site logs the notice, checks whether the complaint is complete enough to evaluate, and routes it to the appropriate legal or admin review queue."
+		body: "The site logs the notice, checks whether it is complete enough to evaluate, and routes it to the right review queue."
 	},
 	{
 		title: "Interim action if needed",
@@ -39,17 +39,17 @@ const workflow = [
 	},
 	{
 		title: "Notice to the affected contributor",
-		body: "If user-submitted content is involved, the contributor may be notified and given a chance to respond unless the issue is clearly fraudulent, urgent, or legally constrained."
+		body: "If user content is involved, the contributor may be notified and allowed to respond unless the issue is fraudulent, urgent, or legally constrained."
 	},
 	{
 		title: "Resolution and repeat-abuse handling",
-		body: "The site may restore, edit, leave removed, or permanently restrict access to content, and repeat rights abuse can be treated as an account-enforcement issue."
+		body: "The site may restore, edit, leave removed, or restrict access to content. Repeat rights abuse may become an account-enforcement issue."
 	}
 ];
 
 const scopeNotes = [
-	"Defamation, factual disagreement, and policy complaints are usually not copyright complaints; they should be routed through corrections, moderation, or direct policy contact instead.",
-	"Limited quoting for commentary, source explanation, or educational criticism may still be reviewed under a fair-use analysis, but the site may act conservatively when a complaint is credible.",
+	"Defamation, factual disagreement, and policy complaints usually belong in corrections, moderation, or direct policy contact instead.",
+	"Limited quoting for commentary, source explanation, or educational criticism may still be reviewed under fair use, but the site may act conservatively when a complaint is credible.",
 	"Trademark or impersonation complaints should explain the confusing use, not just assert ownership in the abstract."
 ];
 
@@ -127,7 +127,7 @@ useStaticPageMeta({
 				<h2>Factual disputes, moderation appeals, and rights notices are not the same workflow.</h2>
 				<p>
 					Use corrections for scientific errors, moderation for community enforcement, and this page for
-					actual rights assertions.
+					rights assertions.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

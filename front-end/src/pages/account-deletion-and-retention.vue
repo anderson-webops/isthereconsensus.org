@@ -8,7 +8,7 @@ const quickPoints = [
 	},
 	{
 		title: "Public content differs",
-		body: "Public questions and threads are different from private account data: some may be removed, disassociated, or retained for integrity reasons."
+		body: "Public questions and threads are not ordinary profile data. They may be removed, disassociated, or retained for integrity reasons."
 	},
 	{
 		title: "Records may remain",
@@ -23,15 +23,15 @@ const quickPoints = [
 const retentionMatrix = [
 	{
 		title: "Account profile and login data",
-		body: "The site deletes or disables direct account access and removes routine profile data unless specific records must be kept for security, legal, or abuse-prevention reasons."
+		body: "The site deletes or disables access and removes routine profile data unless security, legal, or abuse-prevention records must remain."
 	},
 	{
 		title: "Public questions and community content",
-		body: "Public contributions may be removed, left visible but disassociated from the account, or retained in a reduced form when doing so is necessary to preserve thread continuity or moderation records."
+		body: "Public contributions may be removed, disassociated, or retained in reduced form to preserve thread continuity or moderation records."
 	},
 	{
 		title: "Moderation and safety records",
-		body: "Flags, enforcement history, appeal logs, and abuse-prevention records may be retained longer than ordinary account data because they support community integrity and repeat-abuse handling."
+		body: "Flags, enforcement history, appeal logs, and abuse-prevention records may remain longer to support integrity and repeat-abuse handling."
 	},
 	{
 		title: "Backups and operational logs",
@@ -40,16 +40,16 @@ const retentionMatrix = [
 ];
 
 const requestSteps = [
-	"email the site operator from the address associated with the account or provide enough information to verify ownership",
-	"state whether you are requesting account closure, deletion of specific public contributions, or both",
-	"identify any public question URLs or text you want reviewed for removal, redaction, or disassociation",
-	"allow time for identity verification and for the site to check what records must be retained under safety, fraud, or legal exceptions"
+	"email from the account address or provide enough information to verify ownership",
+	"state whether you want account closure, public-content deletion, or both",
+	"identify any question URLs or text you want reviewed for removal, redaction, or disassociation",
+	"allow time for identity checks and review of safety, fraud, or legal retention exceptions"
 ];
 
 const expectationNotes = [
-	"Deleting an account does not guarantee removal of search-engine snippets, archived pages, or other third-party copies outside the site’s control.",
-	"If public contributions remain visible, the site may reduce attribution when that is compatible with integrity and moderation needs.",
-	"Deletion and erasure rights can be limited by legal, fraud-prevention, security, and recordkeeping exceptions."
+	"Account deletion cannot remove search snippets, archived pages, or third-party copies outside the site’s control.",
+	"If public contributions remain visible, the site may reduce attribution when integrity and moderation needs allow it.",
+	"Deletion and erasure rights may be limited by legal, fraud-prevention, security, and recordkeeping exceptions."
 ];
 
 useStaticPageMeta({
@@ -123,10 +123,10 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related rights pages</p>
-				<h2>Use Privacy for the data map and this page for the product behavior.</h2>
+				<h2>Use Privacy for the data map and this page for closure behavior.</h2>
 				<p>
-					The Privacy Policy explains collection and legal request channels. This page explains the practical
-					effect of account closure on public contributions and retained records.
+					The Privacy Policy explains collection and legal request channels. This page explains what account
+					closure does to public contributions and retained records.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

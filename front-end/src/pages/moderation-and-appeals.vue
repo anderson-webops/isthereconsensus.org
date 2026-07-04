@@ -23,7 +23,7 @@ const quickPoints = [
 const actionTypes = [
 	"content labels, moves, merges, or archival routing for threads that are salvageable",
 	"hides, locks, or slow-mode actions when a thread becomes repetitive, abusive, or impossible to moderate well",
-	"topic-specific restrictions for users who repeatedly derail one claim area without requiring a sitewide ban",
+	"topic-specific restrictions for repeated derailment in one claim area, without requiring a sitewide ban",
 	"temporary suspensions or permanent removal for severe abuse, doxxing, threats, coordinated manipulation, or repeated rule-breaking"
 ];
 
@@ -37,11 +37,11 @@ const noticeElements = [
 const appealFlow = [
 	{
 		title: "Initial submission",
-		body: "The appeal should identify the challenged action, the affected content, and any new context or evidence that was not part of the original review."
+		body: "The appeal should identify the challenged action, affected content, and any new context not included in the original review."
 	},
 	{
 		title: "Second-look review",
-		body: "Appeals should be reviewed by a moderator or admin who can revisit the decision rather than simply rubber-stamp the first action."
+		body: "A moderator or admin should be able to revisit the decision, not simply rubber-stamp the first action."
 	},
 	{
 		title: "Outcome logging",
@@ -52,7 +52,7 @@ const appealFlow = [
 const transparencyCommitments = [
 	"Maintain a moderation taxonomy so reports, actions, and appeals use the same categories.",
 	"Aim to publish aggregate moderation and appeal counts once the community volume makes those numbers meaningful.",
-	"Keep conduct enforcement distinct from scientific corrections so users do not confuse moderation power with editorial truth claims."
+	"Keep conduct enforcement distinct from scientific corrections so moderation power is not confused with editorial truth claims."
 ];
 
 useStaticPageMeta({

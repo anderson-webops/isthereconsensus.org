@@ -23,9 +23,9 @@ const quickPoints = [
 const conflictTypes = [
 	"direct financial stakes such as employment, consulting, grants, paid testimony, advisory fees, equity, or board roles",
 	"institutional interests, including affiliation with an organization that publicly campaigns on the claim at issue",
-	"public advocacy, litigation, or organized lobbying that could reasonably change how readers interpret neutrality",
-	"close professional or personal relationships that create a realistic risk of bias in assignment or review",
-	"strong nonfinancial commitments when they are central enough that a reasonable reader would want to know about them"
+	"public advocacy, litigation, or organized lobbying that could affect perceived neutrality",
+	"close professional or personal relationships that create a realistic assignment or review risk",
+	"strong nonfinancial commitments that a reasonable reader would want to know about"
 ];
 
 const disclosureFields = [
@@ -33,7 +33,7 @@ const disclosureFields = [
 	"recent or ongoing funding that bears on the claim area or source stack",
 	"paid advisory, consulting, board, or expert-witness roles",
 	"public advocacy, litigation participation, or campaign leadership tied to the topic",
-	"a short plain-language summary suitable for publication on the claim page when disclosure is relevant"
+	"a short plain-language summary for publication when disclosure is relevant"
 ];
 
 const recusalRules = [
@@ -43,11 +43,11 @@ const recusalRules = [
 	},
 	{
 		title: "Managed participation",
-		body: "A disclosed interest can sometimes be managed through additional independent review, narrower scope, or a public note when the person still provides useful subject-matter expertise."
+		body: "A disclosed interest can sometimes be managed through independent review, narrower scope, or a public note."
 	},
 	{
 		title: "Post-publication discovery",
-		body: "If an undisclosed conflict is discovered after publication, the site logs it, assesses whether it changes confidence in the page, and adds a visible correction or reviewer change when needed."
+		body: "If an undisclosed conflict appears after publication, the site logs it, checks whether page confidence changes, and adds a correction or reviewer change when needed."
 	}
 ];
 
@@ -132,7 +132,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related standards</p>
-				<h2>Disclosure is only useful when it changes assignment and review behavior.</h2>
+				<h2>Disclosure matters when it changes assignment and review behavior.</h2>
 				<p>
 					Use the expert program page for reviewer standards and How Reviews Work for the public publishing
 					bar.
