@@ -98,7 +98,7 @@ useStaticPageMeta({
 
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>Required disclosure fields</h2>
+				<h2>What reviewers disclose</h2>
 				<p>These fields are captured before assignment, not discovered after publication.</p>
 			</div>
 			<ul class="policy-list">
@@ -108,7 +108,7 @@ useStaticPageMeta({
 
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>Recusal and management rules</h2>
+				<h2>Recusal and management</h2>
 				<p>Disclosure is the start of the process, not the end of it.</p>
 			</div>
 			<div class="policy-card-grid">
@@ -121,8 +121,8 @@ useStaticPageMeta({
 
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>Public disclosure commitments</h2>
-				<p>Readers should not have to guess where relevant interests sit.</p>
+				<h2>What readers can see</h2>
+				<p>Relevant interests should be visible where they matter.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in publicCommitments" :key="item">{{ item }}</li>

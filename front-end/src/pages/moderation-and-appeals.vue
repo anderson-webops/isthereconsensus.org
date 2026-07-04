@@ -8,7 +8,7 @@ const quickPoints = [
 	},
 	{
 		title: "Appeals need new context",
-		body: "Appeals challenge an enforcement decision or add new context; they are not for retrying the same argument indefinitely."
+		body: "Appeals challenge an enforcement decision or add new context; they are not a place to repeat the same argument indefinitely."
 	},
 	{
 		title: "Use the right lane",
@@ -70,10 +70,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Moderation and appeals</p>
 			<h1>Moderation decisions and appeals.</h1>
-			<p>
-				This page operationalizes the community rules by defining notices, action types, and appeal
-				expectations.
-			</p>
+			<p>This page defines the notices, action types, and appeal expectations behind the community rules.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -95,7 +92,7 @@ useStaticPageMeta({
 
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>What a user should be told</h2>
+				<h2>What users should be told</h2>
 				<p>Users should receive reasons, not just outcomes.</p>
 			</div>
 			<ul class="policy-list">
@@ -106,7 +103,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Appeal flow</h2>
-				<p>The site can revisit decisions without turning appeals into endless relitigation.</p>
+				<p>Appeals should allow review without endless relitigation.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in appealFlow" :key="item.title" class="policy-detail-card">
@@ -119,7 +116,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Transparency commitments</h2>
-				<p>Fairness gets more believable when the process can be audited later.</p>
+				<p>Fairness is easier to trust when the process can be audited later.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in transparencyCommitments" :key="item">{{ item }}</li>
@@ -136,7 +133,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Keep the lanes separate</p>
-				<h2>Moderation appeals are not the same as asking to change the science summary.</h2>
+				<h2>Use corrections for facts and appeals for enforcement.</h2>
 				<p>
 					If the problem is factual, use corrections. If the problem is conduct enforcement, use this page and
 					the community-guideline framework.

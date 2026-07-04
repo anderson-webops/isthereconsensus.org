@@ -11,7 +11,7 @@ const quickPoints = [
 		body: "Rights complaints should identify the exact material, who owns the asserted right, and what action is being requested."
 	},
 	{
-		title: "Interim limits",
+		title: "Temporary limits",
 		body: "The site may temporarily limit access to disputed material while a complaint is reviewed."
 	},
 	{
@@ -69,8 +69,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Copyright and trademark complaints</p>
 			<h1>Rights complaints and takedown requests.</h1>
 			<p>
-				This page describes the site’s current complaint intake workflow for copyright, trademark, and related
-				rights issues.
+				This page explains how the site receives, reviews, and resolves copyright, trademark, and related rights
+				issues.
 			</p>
 		</header>
 
@@ -106,8 +106,8 @@ useStaticPageMeta({
 
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>What this page does not cover well</h2>
-				<p>Not every complaint belongs in a copyright lane.</p>
+				<h2>What belongs elsewhere</h2>
+				<p>Some disputes belong in corrections, moderation, or direct policy contact.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in scopeNotes" :key="item">{{ item }}</li>
@@ -124,7 +124,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Use the right lane</p>
-				<h2>Factual disputes, moderation appeals, and rights notices are not the same workflow.</h2>
+				<h2>Use the right workflow for the dispute.</h2>
 				<p>
 					Use corrections for scientific errors, moderation for community enforcement, and this page for
 					rights assertions.
