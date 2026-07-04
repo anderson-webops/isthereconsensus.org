@@ -15640,13 +15640,13 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 68,
 		evidenceCertainty: "low",
 		bottomLine:
-			"The honest answer is disputed and exposure-specific. IARC classifies glyphosate as probably carcinogenic to humans as a hazard judgment, based on limited human non-Hodgkin lymphoma evidence plus animal and mechanistic evidence. EPA, EFSA/ECHA, and JMPR do not classify glyphosate as likely to cause cancer under regulatory risk-assessment frameworks for approved uses or dietary exposure. Human studies are mixed: some high-exposure meta-analyses report higher non-Hodgkin lymphoma risk, while the large Agricultural Health Study and later meta-analyses do not show a clear overall association.",
+			"Disputed and exposure-specific. IARC classifies glyphosate as probably carcinogenic in a hazard judgment, based on limited human non-Hodgkin lymphoma evidence plus animal and mechanistic evidence. EPA, EFSA/ECHA, and JMPR do not classify approved-use or dietary exposure as likely to cause cancer under risk frameworks. Human studies are mixed: some high-exposure analyses report higher non-Hodgkin lymphoma risk; large cohort and later meta-analysis evidence does not show a clear overall association.",
 		stableCore: [
 			"IARC's Group 2A classification is a hazard classification, not a direct estimate of consumer or dietary risk.",
-			"EPA says its withdrawn 2020 interim decision does not automatically invalidate its longstanding not-likely-carcinogenic finding while the agency updates its carcinogenicity explanation after the Ninth Circuit decision.",
-			"EFSA's 2023 peer review did not identify critical areas of concern, and ECHA did not classify glyphosate as carcinogenic, mutagenic, or toxic for reproduction under EU criteria.",
-			"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk through dietary exposure, while acknowledging occupational non-Hodgkin lymphoma evidence and high-dose animal uncertainty.",
-			"The direct human epidemiology is mixed: Zhang 2019 reported increased non-Hodgkin lymphoma risk in highest-exposure groups, while Andreotti 2018 and Boffetta 2021 did not find a clear overall non-Hodgkin lymphoma association."
+			"EPA maintains a not-likely-carcinogenic finding while updating its explanation after the Ninth Circuit decision on the withdrawn 2020 interim decision.",
+			"EFSA's 2023 peer review found no critical areas of concern, and ECHA did not classify glyphosate as carcinogenic, mutagenic, or toxic for reproduction under EU criteria.",
+			"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk through dietary exposure, while acknowledging occupational lymphoma evidence and high-dose animal uncertainty.",
+			"Human epidemiology is mixed: Zhang 2019 reported increased non-Hodgkin lymphoma risk in highest-exposure groups, while Andreotti 2018 and Boffetta 2021 did not find a clear overall association."
 		],
 		openQuestions: [
 			"How should assessments weigh occupational exposure to glyphosate-based formulations against dietary exposure to glyphosate residues?",
@@ -15672,9 +15672,9 @@ const rawClaims: SeedClaim[] = [
 			"cherry-picking-distorts-the-evidence"
 		],
 		editorSummary:
-			"This page should explain why credible bodies disagree without flattening the answer into either 'safe' or 'proven carcinogen.' Keep hazard classification, dietary risk, occupational formulation exposure, and cancer-subtype evidence separate.",
+			"Explain why credible bodies disagree without flattening the answer into 'safe' or 'proven carcinogen.' Keep hazard classification, dietary risk, occupational formulation exposure, and cancer-subtype evidence separate.",
 		uncertaintySummary:
-			"Confidence is moderate that the disagreement is real and framework-dependent, but low for the exact cancer risk from high occupational or formulation exposure. Evidence is split by hazard versus risk framing, exposure scenario, latency, cancer-subtype definition, and study design.",
+			"The disagreement is real and framework-dependent. Confidence is lower for exact cancer risk from high occupational or formulation exposure because evidence differs by hazard/risk framing, exposure scenario, latency, cancer subtype, and study design.",
 		uncertaintyDrivers: [
 			{
 				type: "inconsistency",
@@ -15729,7 +15729,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.iarc.who.int/featured-news/media-centre-iarc-news-glyphosate/",
 				stance: "debate",
 				note:
-					"IARC classified glyphosate as probably carcinogenic to humans, citing limited human evidence, sufficient animal evidence, and strong mechanistic evidence of genotoxicity.",
+					"IARC classified glyphosate as probably carcinogenic, citing limited human evidence, sufficient animal evidence, and strong mechanistic evidence of genotoxicity.",
 				order: 1
 			},
 			{
@@ -15740,7 +15740,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.epa.gov/ingredients-used-pesticide-products/glyphosate",
 				stance: "context",
 				note:
-					"EPA says it is updating the carcinogenicity explanation after the Ninth Circuit decision while maintaining that glyphosate is not likely carcinogenic to humans based on current evidence.",
+					"EPA is updating its carcinogenicity explanation after the Ninth Circuit decision while maintaining that glyphosate is not likely carcinogenic based on current evidence.",
 				order: 2
 			},
 			{
@@ -15751,7 +15751,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.efsa.europa.eu/en/news/glyphosate-no-critical-areas-concern-data-gaps-identified",
 				stance: "context",
 				note:
-					"EFSA's peer review found no critical areas of concern and used ECHA's conclusion that glyphosate did not meet EU criteria for carcinogenic classification, while noting data gaps.",
+					"EFSA found no critical areas of concern and used ECHA's conclusion that glyphosate did not meet EU carcinogenic-classification criteria, while noting data gaps.",
 				order: 3
 			},
 			{
@@ -15762,7 +15762,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/2016_JMPR_Summary_Special.pdf",
 				stance: "context",
 				note:
-					"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk to humans through dietary exposure, despite some occupational and high-dose animal uncertainty.",
+					"JMPR concluded glyphosate is unlikely to pose a carcinogenic risk through dietary exposure, despite occupational and high-dose animal uncertainty.",
 				order: 4
 			},
 			{
@@ -15774,7 +15774,7 @@ const rawClaims: SeedClaim[] = [
 				doi: "10.1093/jnci/djx233",
 				stance: "context",
 				note:
-					"Large prospective applicator cohort reported no statistically significant association with cancer at any site or with non-Hodgkin lymphoma overall, while noting an AML signal needing confirmation.",
+					"Large prospective applicator cohort found no statistically significant cancer or overall non-Hodgkin lymphoma association, while noting an AML signal needing confirmation.",
 				order: 5
 			},
 			{
@@ -18088,6 +18088,125 @@ const rawClaims: SeedClaim[] = [
 				stance: "context",
 				note:
 					"Consensus-fetched Cochrane review of interventions to increase seat-belt use; useful for implementation caveats rather than crash-injury effect size.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do bicycle helmets reduce head and brain injuries in crashes?",
+		slug: "do-bicycle-helmets-reduce-head-and-brain-injuries-in-crashes",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Properly fitted, certified bicycle helmets reduce the risk of head, serious head, traumatic brain, facial, and fatal head injury when a cyclist crashes or falls. They are not concussion-proof, do not prevent crashes, and should be paired with safer streets, visibility, predictable riding, sober riding, and age-appropriate equipment.",
+		stableCore: [
+			"CDC says there is no concussion-proof helmet, but properly fitted, certified, well-maintained helmets can help protect children from serious brain or head injury.",
+			"NHTSA says every ride should begin with putting on a helmet and that proper fit matters so the helmet can best protect the rider.",
+			"CPSC bicycle-helmet requirements are designed to protect riders from head injuries caused by falls or crashes, including tests for vision, retention, strap stretch, and impact-force reduction.",
+			"A 2016 systematic review and meta-analysis of more than 64,000 injured cyclists found helmet use associated with lower odds of head injury, serious head injury, facial injury, and fatal head injury.",
+			"A 2018 meta-analysis estimated reductions of 48% for head injury, 60% for serious head injury, 53% for traumatic brain injury, 23% for face injury, and 34% for cyclists killed or seriously injured."
+		],
+		openQuestions: [
+			"Which helmet designs and test standards best address rotational acceleration, real-world impact angles, e-bike speeds, cargo bikes, and diverse head and body forms?",
+			"How can communities raise helmet use without discouraging cycling or shifting attention away from protected lanes, slower traffic, lighting, and driver behavior?",
+			"How should policy balance adult autonomy, child protection, enforcement equity, free or subsidized helmets, and safer street design?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled crash and injury datasets showing no reduction in serious head, traumatic brain, or fatal head injury with certified, correctly fitted helmets.",
+			"Major CDC, CPSC, NHTSA, FHWA, or injury-prevention reassessments withdrawing helmet use as recommended cyclist protection.",
+			"Evidence that helmet promotion materially worsens net health or safety outcomes by deterring cycling or increasing risk taking enough to offset head-injury reductions."
+		],
+		misconceptions: [
+			"Helmets are not concussion-proof; they reduce some serious head-injury risks but cannot eliminate brain-injury risk.",
+			"Helmets do not make safer infrastructure, vehicle speeds, lighting, sober riding, or driver behavior unnecessary.",
+			"Debates about helmet laws are not the same question as whether helmets protect an individual rider in a crash.",
+			"Any helmet is not automatically enough; certification, fit, condition, age-appropriateness, and correct use matter."
+		],
+		editorSummary:
+			"This page should separate two questions readers often mix: bicycle helmets reduce head-injury risk in crashes, but helmet promotion and helmet laws are only one part of cycling safety and should not replace safer streets.",
+		uncertaintySummary:
+			"The protective direction is strong, but exact effect size varies by crash type, speed, impact angle, helmet fit and certification, helmet condition, age, riding environment, alcohol or substance use, and confounding in observational crash studies. Policy effects on cycling rates and enforcement are more context-dependent than individual crash protection.",
+		searchCutoffAt: "2026-07-04T20:17:58.000Z",
+		lastRetractionCheckAt: "2026-07-04T20:17:58.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T20:17:58.000Z",
+				kind: "publication",
+				summary:
+					"Initial bicycle-helmet head-injury prevention claim page published from CDC, NHTSA, and CPSC safety guidance plus Consensus-located systematic-review and meta-analysis sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Safety Guidelines: Helmets",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/heads-up/safety/index.html",
+				stance: "supports",
+				note:
+					"CDC HEADS UP anchor for the no-concussion-proof-helmet caveat and the importance of certified, age-appropriate, well-maintained, consistently and correctly worn helmets.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Bicycle Safety: Bike Safety Tips for Kids and Adults",
+				publisher: "National Highway Traffic Safety Administration",
+				url: "https://www.nhtsa.gov/road-safety/bicycle-safety",
+				stance: "supports",
+				note:
+					"NHTSA public-safety source for proper helmet fit, every-ride helmet use, visibility, route choice, and the broader crash-prevention context.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Bicycle Helmets Business Guidance",
+				publisher: "Consumer Product Safety Commission",
+				url:
+					"https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Bicycle-Helmets",
+				stance: "supports",
+				note:
+					"CPSC source for federal bicycle-helmet performance requirements covering vision, retention, strap stretch, and impact-force attenuation.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Bicycle injuries and helmet use: a systematic review and meta-analysis",
+				publisher: "International Journal of Epidemiology",
+				year: 2016,
+				url:
+					"https://consensus.app/papers/bicycle-injuries-and-helmet-use-a-systematic-review-and-olivier-creighton/ce9233c06e1257ea9fd9d525aed9b95d/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis of 40 studies and more than 64,000 injured cyclists finding lower odds of head, serious head, facial, and fatal head injury among helmet users.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Bicycle helmets - To wear or not to wear? A meta-analyses of the effects of bicycle helmets on injuries",
+				publisher: "Accident Analysis & Prevention",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/bicycle-helmets-to-wear-or-not-to-wear-a-metaanalyses-of-the-hye/da0b3c50bac8529b9bff3684e286db2c/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis estimating reduced head injury, serious head injury, traumatic brain injury, face injury, and killed-or-seriously-injured outcomes for helmet users.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Effectiveness of bicycle helmets and injury prevention: a systematic review of meta-analyses",
+				publisher: "Scientific Reports",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/effectiveness-of-bicycle-helmets-and-injury-prevention-a-bth-barbour/4fc588b278e75d6493a3830603214a97/",
+				stance: "supports",
+				note:
+					"Consensus-fetched review of meta-analyses finding benefits across age, crash severity, and crash type, especially for severe head injuries and high-risk shared-road situations.",
 				order: 6
 			}
 		]
