@@ -6374,13 +6374,13 @@ const rawClaims: SeedClaim[] = [
 		consensusBand: "strong",
 		confidenceScore: 97,
 		bottomLine:
-			"Yes. Evolution means heritable change in populations over generations, and scientists observe it today in microbes, pests, viruses, and wild animal populations. Direct observation of short-term evolution is not the same as watching every deep historical transition happen in real time, and some changes can reverse when environments change. But the claim that evolution is only a past-tense inference is false.",
+			"Yes. Evolution is heritable change in populations over generations, and scientists observe it today in microbes, pests, viruses, and wild animal populations. These observations do not show every deep historical transition in real time, and some short-term changes reverse when environments change. But evolution is not only a past-tense inference.",
 		stableCore: [
-			"National Academies resources define evolution as changes in heritable population traits across generations and state that evolution is continuing to occur.",
-			"National Academies teaching guidance says many key aspects of evolution occur over short periods that can be observed directly, including bacteria evolving antibiotic resistance.",
-			"UC Berkeley's Understanding Evolution lists directly observed wild cases, including pesticide resistance, bacteria evolving antibiotic resistance, climate-related responses, and Galapagos finches diverging into lineages with distinct traits.",
-			"Lenski's long-term E. coli experiment directly observed adaptation by natural selection, genome evolution, mutation-rate changes, ecotype divergence, and a new ability to use citrate across more than 60,000 generations.",
-			"Long-running Darwin's finch work documented repeated changes in body size and beak traits under fluctuating selection, and later genome sequencing linked beak-size evolution to allele-frequency changes at major loci."
+			"National Academies resources define evolution as changes in heritable population traits across generations and state that evolution is still occurring.",
+			"National Academies teaching guidance says key evolutionary processes can occur over short periods and be observed directly, including bacteria evolving antibiotic resistance.",
+			"UC Berkeley's Understanding Evolution lists directly observed wild cases, including pesticide resistance, antibiotic resistance, climate-related responses, and Galapagos finch lineages with distinct traits.",
+			"Lenski's long-term E. coli experiment directly observed natural-selection adaptation, genome evolution, mutation-rate changes, ecotype divergence, and citrate use across more than 60,000 generations.",
+			"Long-running Darwin's finch work documented repeated body-size and beak-trait shifts under fluctuating selection; later genome sequencing linked beak-size evolution to allele-frequency changes at major loci."
 		],
 		openQuestions: [
 			"Which observed short-term changes will persist, reverse, or contribute to longer-term divergence?",
@@ -6399,7 +6399,7 @@ const rawClaims: SeedClaim[] = [
 			"Laboratory microbe studies are not the only evidence for evolution, but they clearly show evolutionary mechanisms under controlled conditions."
 		],
 		editorSummary:
-			"This page answers the common 'no one has seen evolution happen' objection without overclaiming. The center is simple: evolutionary processes are directly observable now, while deep-time common ancestry is supported by the convergence of experiments, field observations, fossils, genetics, and comparative biology.",
+			"This page answers the common 'no one has seen evolution happen' objection without overclaiming. The central distinction: evolutionary processes are directly observable now, while deep-time common ancestry is supported by experiments, field observations, fossils, genetics, and comparative biology.",
 		uncertaintySummary:
 			"The consensus that evolution can be observed is very strong. Uncertainty is mainly about the durability, repeatability, and long-term implications of particular short-term examples, not about whether heritable population change occurs.",
 		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "National Academies"],
@@ -6448,7 +6448,7 @@ const rawClaims: SeedClaim[] = [
 				population:
 					"Microbial experimental populations, antimicrobial resistance contexts, and wild populations such as Darwin's finches.",
 				finding:
-					"Institutional science sources and peer-reviewed lab, field, and genomic studies support that evolution can be directly observed as heritable population change over generations.",
+					"Institutional science sources and peer-reviewed lab, field, and genomic studies show that evolution can be directly observed as heritable population change over generations.",
 				effectDirection: "supports",
 				magnitude:
 					"Examples range from tens of thousands of microbial generations in the lab to decades of measurable finch trait and allele-frequency change in the wild.",
