@@ -19235,6 +19235,196 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "other-questions",
+		title: "Do graduated driver licensing laws reduce teen driver crashes and deaths?",
+		slug: "do-graduated-driver-licensing-laws-reduce-teen-driver-crashes-and-deaths",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes, especially for the youngest novice drivers. Graduated driver licensing programs reduce teen crash risk by phasing teens from supervised driving to restricted independent driving before full licensure. The strongest evidence is for comprehensive programs that limit high-risk situations such as late-night driving and teen passengers; effects are smaller or less certain for older novice drivers and depend on the details of the law.",
+		stableCore: [
+			"CDC describes graduated driver licensing as a way to let new drivers gain early experience under lower-risk, legally enforceable conditions.",
+			"NHTSA rates graduated driver licensing as a five-star young-driver countermeasure and says its crash and fatality benefits are well documented.",
+			"GDL programs usually include a learner permit, an intermediate license with restrictions, and later full licensure.",
+			"The best-supported restrictions address novice-driver exposure to night driving, teen passengers, and very early unrestricted licensure.",
+			"Systematic reviews and meta-analyses find the clearest crash reductions among 16-year-old drivers, with smaller benefits for 17-year-olds and little direct evidence of benefit for 18-year-olds unless the law covers older novices."
+		],
+		openQuestions: [
+			"Which exact combinations of minimum ages, supervised practice, permit holding periods, night restrictions, passenger limits, phone restrictions, and enforcement rules produce the largest gains?",
+			"How should states reduce inequitable enforcement, transportation burden, and work or family hardship while preserving the safety benefits of staged licensing?",
+			"Should GDL protections apply to older first-time drivers, and if so which restrictions are effective for 18- to 20-year-old novice drivers?",
+			"How can states monitor whether restrictions prevent crashes rather than merely shifting risk to a later age?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evaluations showing comprehensive GDL laws no longer reduce novice-driver crashes, injuries, or deaths after accounting for licensing age, exposure, enforcement, and secular crash trends.",
+			"Major CDC, NHTSA, IIHS, Cochrane, or road-safety reassessments withdrawing graduated driver licensing as an evidence-supported teen-driver countermeasure.",
+			"Evidence that delayed licensure, inequitable enforcement, or crash displacement consistently offsets the reductions seen among 16- and 17-year-old drivers."
+		],
+		misconceptions: [
+			"GDL is not just driver education; it changes when and how novice drivers are exposed to higher-risk driving conditions.",
+			"Passing a road test does not mean a new teen driver has adult-level crash risk.",
+			"Supervised-practice hours are only one part of GDL; nighttime restrictions, passenger limits, and delayed unrestricted licensing are central pieces in many stronger programs.",
+			"Policy disagreement about curfews, passenger limits, or enforcement does not mean the overall crash-prevention evidence is weak."
+		],
+		editorSummary:
+			"The practical consensus is that graduated driver licensing is one of the better-supported policies for reducing crashes among young novice drivers. The claim should stay specific: strongest for 16-year-old drivers and stronger programs, not a guarantee that every state provision or every older novice-driver rule works equally well.",
+		uncertaintySummary:
+			"The direction of effect is well supported, but the evidence is mostly observational or quasi-experimental because states, not randomized trials, set licensing laws. Estimates vary by state, baseline crash risk, licensing age, enforcement, exposure, program strength, and whether analysts look at 16-year-olds, all teen drivers, or older novice drivers.",
+		searchDatabases: ["Consensus", "CDC", "NHTSA", "IIHS", "PubMed"],
+		searchCutoffAt: "2026-07-04T22:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:55:00.000Z",
+		inclusionRules: [
+			"Prioritize government road-safety guidance, systematic reviews, meta-analyses, national evaluations, and age-stratified quasi-experimental studies.",
+			"Separate GDL policy effects from general driver education, parent-teen agreements, vehicle safety, alcohol laws, and unrelated teen-driver campaigns unless sources explicitly evaluate combined programs.",
+			"Report age-specific effects when available rather than assuming identical benefits for 16-, 17-, 18-, and 19-year-old drivers."
+		],
+		exclusionRules: [
+			"Do not use driver-training vendor marketing as effectiveness evidence.",
+			"Do not treat a single weak state program as proof that stronger GDL programs fail.",
+			"Do not imply that GDL removes the need for seat belts, sober driving, safe vehicles, parental supervision, or safer road design."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do graduated driver licensing laws reduce teen driver crashes and deaths?",
+				population:
+					"Young novice drivers, especially 16- and 17-year-old drivers covered by learner-permit and intermediate-license restrictions.",
+				finding:
+					"Official guidance and review literature support graduated driver licensing as a crash- and fatality-reduction policy, with the clearest benefits for 16-year-old drivers and for stronger programs with nighttime and passenger restrictions.",
+				effectDirection: "supports",
+				magnitude:
+					"The 2011 Cochrane review reported a median 15.5% decrease in adjusted overall crash rates and a median 21% decrease in adjusted injury crash rates for 16-year-olds during the first post-GDL year; a 2012 meta-analysis estimated pooled adjusted crash-rate ratios of 0.78 for age 16, 0.94 for age 17, and 1.00 for age 18.",
+				certainty: "moderate",
+				limitations: [
+					"Evidence is largely observational or quasi-experimental because licensing laws are implemented at the state or jurisdiction level.",
+					"Program effects vary by age, minimum licensing ages, permit duration, night restrictions, passenger restrictions, enforcement, and how exposure is measured.",
+					"Some studies raise possible age-displacement concerns, especially if risk shifts from 16-year-olds to older newly licensed drivers."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health anchor for teen-driver risk, GDL components, and injury-prevention framing."
+			},
+			{
+				name: "National Highway Traffic Safety Administration",
+				role: "U.S. transportation-safety anchor for Countermeasures That Work ratings and young-driver safety guidance."
+			},
+			{
+				name: "Insurance Institute for Highway Safety",
+				role: "Road-safety research anchor for state GDL law tracking and component-level safety estimates."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial graduated-driver-licensing claim page published from CDC, NHTSA, IIHS, and Consensus-located systematic-review, meta-analysis, and national-evaluation evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Teen Drivers",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/teen-drivers/about/index.html",
+				stance: "supports",
+				note:
+					"CDC source for teen crash burden, higher per-mile fatal crash rates among drivers 16 to 19, and links to GDL planning resources.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Graduated Driver Licensing",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url:
+					"https://www.cdc.gov/phlp/php/publications/graduated-driver-licensing-motor-vehicle-injuries-1.html",
+				stance: "supports",
+				note:
+					"CDC public-health-law source describing GDL stages, common components, and evidence that GDL decreases fatal teen crash risk among 16- to 17-year-old drivers.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Graduated Driver Licensing",
+				publisher: "National Highway Traffic Safety Administration",
+				year: 2026,
+				url:
+					"https://www.nhtsa.gov/book/countermeasures-that-work/young-drivers/countermeasures/legislation-and-licensing/graduated",
+				stance: "supports",
+				note:
+					"NHTSA Countermeasures That Work source rating GDL as a five-star countermeasure and summarizing well-documented reductions in young-driver crashes and fatalities.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Graduated licensing laws",
+				publisher: "Insurance Institute for Highway Safety",
+				year: 2026,
+				url: "https://www.iihs.org/research-areas/teenagers/graduated-licensing-laws-table",
+				stance: "supports",
+				note:
+					"IIHS source for current state-by-state GDL components and the practical claim that GDL reduces driving risk for teens.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Graduated driver licensing for reducing motor vehicle crashes among young drivers",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2011,
+				url:
+					"https://consensus.app/papers/graduated-driver-licensing-for-reducing-motor-vehicle-russell-vandermeer/e4859ed627725440a4878524723f811c/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Cochrane review of 34 studies finding reductions in crash rates across jurisdictions and crash types, with stronger programs appearing to produce larger fatality reductions.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Graduated driver licensing and motor vehicle crashes involving teenage drivers: an exploratory age-stratified meta-analysis",
+				publisher: "Injury Prevention",
+				year: 2012,
+				url:
+					"https://consensus.app/papers/graduated-driver-licensing-and-motor-vehicle-crashes-zhu-cummings/3c5965c5407f59729458336b1128e60d/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis estimating crash-rate reductions for 16- and 17-year-old drivers but no association for 18-year-old drivers.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Graduated Licensing Laws and Fatal Crashes of Teenage Drivers: A National Study",
+				publisher: "Traffic Injury Prevention",
+				year: 2010,
+				url:
+					"https://consensus.app/papers/graduated-licensing-laws-and-fatal-crashes-of-teenage-mccartt-teoh/b59ddf47c7da566dba7e4cae2afb3f4b/",
+				stance: "supports",
+				note:
+					"Consensus-fetched national study associating good GDL laws with 30% lower fatal crash rates among 15- to 17-year-olds than poor laws, with nighttime and passenger restrictions among important components.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Graduated driver licensing and fatal crashes involving 16- to 19-year-old drivers",
+				publisher: "JAMA",
+				year: 2011,
+				url:
+					"https://consensus.app/papers/graduated-driver-licensing-and-fatal-crashes-involving-16-masten-foss/effb06e8689752989574874a3f6f41de/",
+				stance: "context",
+				note:
+					"Consensus-fetched national time-series study finding lower fatal-crash incidence for 16-year-old drivers under stronger GDL programs, while raising a possible 18-year-old displacement concern.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
 		title: "Do four-sided pool fences reduce drowning risk for young children?",
 		slug: "do-four-sided-pool-fences-reduce-drowning-risk-for-young-children",
 		status: "published",
