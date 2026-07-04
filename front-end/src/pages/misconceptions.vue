@@ -412,23 +412,79 @@ useStaticPageMeta({
 }
 
 @media (max-width: 640px) {
+	.misconception-page {
+		gap: 18px;
+	}
+
 	.misconception-header,
 	.misconception-panel,
 	.misconception-card,
 	.misconception-callout {
-		border-radius: 18px;
+		border-radius: 16px;
 	}
 
 	.misconception-header,
 	.misconception-panel,
 	.misconception-callout,
 	.misconception-card {
-		padding: 18px;
+		padding: 16px;
 	}
 
 	.misconception-header h1 {
 		font-size: 2.35rem;
 		line-height: 1.05;
+	}
+
+	.misconception-header p,
+	.misconception-card p,
+	.misconception-card li,
+	.misconception-callout p,
+	.section-heading p,
+	.plain-list,
+	.reuse-table {
+		line-height: 1.55;
+	}
+
+	.misconception-card {
+		gap: 10px;
+	}
+
+	.misconception-card h2 {
+		line-height: 1.12;
+	}
+
+	.misconception-card__section {
+		gap: 7px;
+	}
+
+	.misconception-card__section--correction {
+		padding: 11px 12px;
+		border-radius: 12px;
+	}
+
+	.misconception-card__section ul,
+	.plain-list {
+		gap: 6px;
+		padding-left: 18px;
+	}
+
+	.misconception-card__details {
+		gap: 8px;
+	}
+
+	.misconception-card__details-body {
+		gap: 10px;
+		padding-top: 8px;
+	}
+
+	.chip-row {
+		gap: 6px;
+	}
+
+	.chip {
+		padding: 6px 8px;
+		font-size: 0.92rem;
+		line-height: 1.25;
 	}
 
 	.misconception-callout {
@@ -455,7 +511,7 @@ useStaticPageMeta({
 	}
 
 	.reuse-table tr {
-		padding: 14px 0;
+		padding: 10px 0;
 		border-bottom: 1px solid var(--consensus-soft-line);
 	}
 
@@ -466,9 +522,11 @@ useStaticPageMeta({
 	.reuse-table td {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
-		gap: 12px;
-		padding: 5px 0;
+		gap: 8px;
+		padding: 3px 0;
 		border-bottom: 0;
+		font-size: 0.94rem;
+		line-height: 1.42;
 		text-align: right;
 	}
 
@@ -482,7 +540,7 @@ useStaticPageMeta({
 	.reuse-table td:first-child {
 		grid-template-columns: 1fr;
 		gap: 4px;
-		padding-bottom: 8px;
+		padding-bottom: 6px;
 		text-align: left;
 		color: var(--consensus-ink);
 		font-weight: 700;
