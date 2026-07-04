@@ -1133,6 +1133,135 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does hepatitis B vaccination prevent chronic infection and liver cancer?",
+		slug: "does-hepatitis-b-vaccination-prevent-chronic-infection-and-liver-cancer",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+			"Yes. Hepatitis B vaccination prevents hepatitis B virus infection, which prevents many chronic infections and downstream cases of cirrhosis and liver cancer. The strongest prevention logic is early vaccination before exposure, especially around birth in settings where mother-to-child or early-childhood transmission is a risk.",
+		stableCore: [
+			"WHO states that hepatitis B can cause chronic infection, cirrhosis, and hepatocellular carcinoma, and that safe, effective vaccines offer nearly 100% protection against the virus.",
+			"WHO recommends that all babies receive hepatitis B vaccine as soon as possible after birth, within 24 hours, followed by two or three additional doses.",
+			"CDC says vaccination within 24 hours of birth followed by 2 to 3 additional doses protects children for life and that global hepatitis B vaccines are projected to prevent millions of deaths.",
+			"Long-follow-up population studies and a 37-year trial follow-up link infant hepatitis B vaccination to lower chronic HBV infection and lower liver-cancer incidence or mortality."
+		],
+		openQuestions: [
+			"How should countries maximize timely birth-dose coverage when births occur outside facilities or where vaccine cold-chain logistics are difficult?",
+			"How should policy differ in low-prevalence settings with reliable prenatal screening compared with settings where maternal screening or follow-up is incomplete?",
+			"How can vaccination programs be paired with maternal testing, hepatitis B immune globulin when indicated, antiviral treatment, and adult catch-up vaccination?"
+		],
+		whatWouldChangeMinds: [
+			"Large long-term cohort or trial evidence showing that well-delivered hepatitis B vaccination does not reduce chronic HBV infection after accounting for exposure risk.",
+			"High-quality evidence showing that reductions in HBV-related liver cancer after universal infant vaccination are better explained by unrelated changes.",
+			"Major WHO, CDC, or hepatology-guideline reassessments finding that hepatitis B vaccination no longer has a favorable benefit-risk profile."
+		],
+		misconceptions: [
+			"Hepatitis B vaccination is sometimes discussed only as infection prevention, but preventing chronic HBV also prevents a major cause of liver cancer.",
+			"A debate over exact birth-dose policy in a specific country is not evidence that the vaccine fails to prevent HBV or HBV-related cancer.",
+			"The vaccine prevents new infection; it does not cure existing chronic hepatitis B, so screening and antiviral treatment still matter.",
+			"Maternal testing helps target extra protection, but missed testing, late results, or incomplete follow-up can leave newborns unprotected."
+		],
+		editorSummary:
+			"This page should make the cancer-prevention chain plain: HBV can become chronic, chronic HBV causes cirrhosis and liver cancer, and vaccination before exposure prevents many of those later outcomes. Keep U.S. birth-dose policy caveats separate from the core vaccine-effectiveness claim.",
+		uncertaintySummary:
+			"The vaccine-effectiveness and chronic-infection prevention claim is high-confidence. The policy question of exactly when to give the first infant dose depends on maternal screening reliability, local prevalence, health-system follow-up, and equity; WHO and some national policies may differ on timing while agreeing that vaccination prevents HBV disease.",
+		searchCutoffAt: "2026-07-04T19:03:18.000Z",
+		lastRetractionCheckAt: "2026-07-04T19:03:18.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T19:03:18.000Z",
+				kind: "publication",
+				summary:
+					"Initial hepatitis B vaccination and liver-cancer prevention claim page published from WHO, CDC, and Consensus-located long-follow-up vaccination evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Hepatitis B",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/hepatitis-b",
+				stance: "supports",
+				note:
+					"Current WHO fact sheet stating that hepatitis B can cause chronic infection, cirrhosis, and liver cancer; vaccines are safe and effective; and all babies should receive vaccine within 24 hours of birth.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Fast Facts: Global Hepatitis B Vaccination",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/global-hepatitis-b-vaccination/data-research/index.html",
+				stance: "supports",
+				note:
+					"CDC global vaccination context stating that vaccination within 24 hours of birth followed by additional doses protects children for life and that hepatitis B vaccines save lives and money.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Fact Sheet Hepatitis B Immunization",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/media/releases/2025/fact-sheet-hepatitis-b-immunization.html",
+				stance: "context",
+				note:
+					"CDC U.S. policy context noting shared decision-making for birth doses when mothers test negative, while infants of positive or unknown-status mothers should still receive vaccine within 12 hours.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Long term outcome of prevention of liver cancer by hepatitis B vaccine: Results from an RCT with 37 years",
+				publisher: "Cancer Letters",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/long-term-outcome-of-prevention-of-liver-cancer-by-cao-fan/83f14cf6833c5002af5fcbd5bb897015/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched 37-year follow-up of a birth-vaccination trial reporting lower liver-cancer incidence and mortality and lower liver-disease mortality in the vaccinated group.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Decreased incidence of hepatocellular carcinoma in hepatitis B vaccinees: a 20-year follow-up study",
+				publisher: "Journal of the National Cancer Institute",
+				year: 2009,
+				url:
+					"https://consensus.app/papers/decreased-incidence-of-hepatocellular-carcinoma-in-chang-you/5b59fb79f4b25c12bd762461297db6f9/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched Taiwan population follow-up finding lower hepatocellular carcinoma incidence among vaccinated birth cohorts and higher risk with incomplete vaccination or highly infectious maternal HBV.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Universal HBV vaccination dramatically reduces the prevalence of HBV infection and incidence of hepatocellular carcinoma",
+				publisher: "Alimentary Pharmacology & Therapeutics",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/universal-hbv-vaccination-dramatically-reduces-the-wong-hui/ba459b4918185847885a926eb530b8d7/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched Hong Kong cohort reporting a marked drop in chronic HBV prevalence after universal vaccination and numerically lower HCC and hepatic event rates in vaccinated cohorts.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "Hepatitis B Vaccines",
+				publisher: "Journal of Infectious Diseases",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/hepatitis-b-vaccines-pattyn-hendrickx/6f1187034216512fb5b0548e5cf98287/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Consensus-fetched review summarizing hepatitis B vaccines as safe, effective tools that reduce carrier rates and hepatitis B-related morbidity and mortality.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do mRNA COVID-19 vaccines change your DNA?",
 		slug: "do-mrna-covid-19-vaccines-change-your-dna",
 		status: "published",
