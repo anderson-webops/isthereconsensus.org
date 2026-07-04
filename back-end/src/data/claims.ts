@@ -13630,6 +13630,194 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "climate-and-environment",
+		title: "Does ocean warming cause coral bleaching and reef loss?",
+		slug: "does-ocean-warming-cause-coral-bleaching-and-reef-loss",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "living",
+		bottomLine:
+			"Yes. Unusually warm ocean conditions and marine heatwaves are a major cause of mass coral bleaching. Bleaching is not always immediate death, but prolonged or severe heat stress can kill corals, alter reef communities, and reduce the services reefs provide.",
+		stableCore: [
+			"Coral bleaching happens when stressed corals lose the symbiotic algae that supply much of their food and color.",
+			"Heat stress from elevated sea-surface temperatures is one of the best-established drivers of mass bleaching events.",
+			"Corals can recover if stressful conditions ease quickly enough, but repeated, intense, or prolonged bleaching raises the risk of disease, mortality, and long-term reef degradation.",
+			"Global datasets and reef surveys show strong links between marine heatwaves, bleaching, and mortality across ocean basins, while species and regions differ in vulnerability.",
+			"Local reef protection can reduce pollution, overfishing, and physical damage, but it cannot by itself prevent bleaching caused by global ocean warming."
+		],
+		openQuestions: [
+			"Which coral species, symbionts, and reef regions are most likely to acclimatize or adapt quickly enough under different warming pathways?",
+			"How much can local management, restoration, assisted evolution, or protected-area networks reduce losses when heat stress continues to intensify?",
+			"Which reefs should be prioritized as refugia, restoration sites, or monitoring sentinels as marine heatwave patterns shift?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term reef observations showing that bleaching is not strongly tied to thermal stress after accounting for local water quality, disease, storms, and survey timing.",
+			"Global assessments finding that marine heatwaves are not becoming more severe for coral reefs or are no longer a major driver of mass bleaching events.",
+			"Large-scale evidence that local protection alone reliably prevents bleaching and mortality during severe ocean-heat events."
+		],
+		misconceptions: [
+			"Bleached coral is sometimes described as already dead, but bleaching is a stress response that can be reversible if conditions improve.",
+			"Local stressors such as pollution and overfishing matter, but they do not explain away the global heat-stress signal.",
+			"A cooler season or a recovering reef does not overturn the long-term risk from repeated marine heatwaves.",
+			"Marine protected areas can help reef resilience, but they are not a substitute for limiting heat stress from climate change."
+		],
+		editorSummary:
+			"This page connects climate change to a concrete ecological outcome: warming-driven marine heatwaves cause mass coral bleaching, with mortality and reef loss depending on duration, severity, species, and local context.",
+		uncertaintySummary:
+			"The causal link between heat stress and coral bleaching is strong. Remaining uncertainty is mainly about recovery, adaptation, local resilience, and how much damage specific reefs will suffer under different warming and management pathways.",
+		uncertaintyDrivers: [
+			{
+				type: "generalizability",
+				detail:
+					"Bleaching and mortality vary across coral taxa, reef histories, thermal regimes, ocean basins, and local stressors."
+			},
+			{
+				type: "timing",
+				detail:
+					"Survey timing affects measured bleaching and mortality because reefs can bleach, partially recover, die, or shift composition over months."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Local management can reduce non-climate stressors, but benefits depend on enforcement, water quality, connectivity, restoration choices, and the severity of heat stress."
+			}
+		],
+		searchDatabases: ["Consensus", "NOAA Coral Reef Watch", "IPCC assessment reports"],
+		searchCutoffAt: "2026-07-04T19:15:26.000Z",
+		inclusionRules: [
+			"Prioritize global coral-bleaching datasets, IPCC or NOAA assessment material, and studies that link heat exposure to bleaching, mortality, or community change.",
+			"Distinguish reversible bleaching from coral death, reef-community change, and ecosystem-service loss.",
+			"Use regional event studies only when they clarify mechanisms, thresholds, or limits of local protection rather than standing in for global evidence."
+		],
+		exclusionRules: [
+			"Do not treat a single reef recovery, cool year, or species-specific tolerance result as evidence against the global heat-stress relationship.",
+			"Do not imply that all coral bleaching is caused only by temperature; pollution, disease, freshwater, sediment, and other stressors can contribute.",
+			"Do not use advocacy claims about reef collapse unless they are anchored to measured heat stress, observed bleaching, or assessment-grade projections."
+		],
+		appraisalTools: [
+			"Thermal-stress exposure check",
+			"Bleaching-versus-mortality distinction",
+			"Survey timing and detection-window check",
+			"Species and region vulnerability check",
+			"Local stressor and management-context assessment"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does ocean warming cause coral bleaching and reef loss?",
+				population:
+					"Tropical coral reefs monitored through global bleaching datasets, satellite heat-stress products, and field surveys",
+				finding:
+					"Elevated sea-surface temperatures and marine heatwaves consistently predict coral bleaching, and severe or prolonged events can produce widespread coral mortality and reef-community change.",
+				effectDirection: "supports",
+				magnitude:
+					"Shlesinger and van Woesik analyzed 23,288 surveys at 11,058 sites in 88 countries and found high sea-surface temperatures strongly related to bleaching in all oceans. Eakin and colleagues estimated that the 2014-2017 global event caused moderate or greater bleaching on 51% of the world's reefs and moderate or greater mortality on 15%.",
+				certainty: "high",
+				limitations: [
+					"Bleaching response and mortality differ by coral taxa, prior exposure, symbionts, reef condition, and ocean basin.",
+					"Global and regional datasets use different survey methods and observation timing.",
+					"Projected future loss depends strongly on emissions, local stressors, adaptation, restoration, and recovery intervals."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "NOAA Coral Reef Watch",
+				role: "Operational satellite monitoring and public status updates for coral bleaching heat stress."
+			},
+			{
+				name: "NOAA National Ocean Service",
+				role: "Public explanation of bleaching biology and the role of stressors such as increased ocean temperature."
+			},
+			{
+				name: "Intergovernmental Panel on Climate Change",
+				role: "Assessment-grade synthesis of climate-change risks to warm-water coral reefs."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T19:15:26.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T19:15:26.000Z",
+				kind: "publication",
+				summary:
+					"Initial coral bleaching claim published from NOAA, IPCC, and Consensus-located global reef survey evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "What is coral bleaching?",
+				publisher: "NOAA National Ocean Service",
+				year: 2024,
+				url: "https://oceanservice.noaa.gov/facts/coral_bleach.html",
+				stance: "supports",
+				note:
+					"NOAA explains the bleaching mechanism: stressed corals lose symbiotic algae, including when the relationship is stressed by increased ocean temperature or pollution.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Current Global Bleaching: Status Update & Data Submission",
+				publisher: "NOAA Coral Reef Watch",
+				year: 2026,
+				url: "https://coralreefwatch.noaa.gov/satellite/research/coral_bleaching_report.php",
+				stance: "supports",
+				note:
+					"NOAA Coral Reef Watch reports that bleaching-level heat stress affected about 84.4% of the world's coral reef area from January 2023 through September 2025, with mass bleaching documented in at least 83 countries and territories.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Impacts of 1.5 C of Global Warming on Natural and Human Systems",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2018,
+				url: "https://www.ipcc.ch/site/assets/uploads/sites/2/2022/06/SR15_Chapter_3_LR.pdf",
+				stance: "supports",
+				note:
+					"IPCC SR1.5 states with very high confidence that most existing warm-water coral reefs are projected to disappear even if warming is limited to 1.5 C, with greater losses at 2 C.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Oceanic differences in coral-bleaching responses to marine heatwaves",
+				publisher: "Science of the Total Environment",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/oceanic-differences-in-coralbleaching-responses-to-shlesinger-woesik/d2a9fbe00ae55259bd2b81e22d38d19e/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Global 40-year dataset of 23,288 surveys at 11,058 sites in 88 countries finding high sea-surface temperatures consistently and strongly related to coral bleaching in all oceans, with regional differences in response.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Severe and widespread coral reef damage during the 2014-2017 Global Coral Bleaching Event",
+				publisher: "Nature Communications",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/severe-and-widespread-coral-reef-damage-during-the-eakin-heron/605535025a3a5c33bc0950a2911640b4/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Global reef-survey and remote-sensing analysis estimating that 51% of the world's reefs suffered moderate or greater bleaching and 15% suffered moderate or greater mortality during the 2014-2017 global event.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Global warming transforms coral reef assemblages",
+				publisher: "Nature",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/global-warming-transforms-coral-reef-assemblages-hughes-kerry/ac38e126288d5629867586da8da93917/?utm_source=chatgpt",
+				stance: "supports",
+				note:
+					"Great Barrier Reef study finding immediate coral death above heat-exposure thresholds and regional-scale assemblage change after the 2016 marine heatwave, including transformation of 29% of the system's 3,863 reefs.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
 		title: "Do electric vehicles usually have lower lifetime greenhouse gas emissions than gasoline cars?",
 		slug: "do-electric-vehicles-usually-have-lower-lifetime-greenhouse-gas-emissions-than-gasoline-cars",
 		status: "published",
