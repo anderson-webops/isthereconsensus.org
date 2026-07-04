@@ -8,7 +8,7 @@ const quickPoints = [
 	},
 	{
 		title: "Public content differs",
-		body: "Public questions and threads are not ordinary profile data. They may be removed, disassociated, or retained for integrity reasons."
+		body: "Public questions and threads may need different handling. They can be removed, disassociated, or retained for integrity reasons."
 	},
 	{
 		title: "Records may remain",
@@ -83,7 +83,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>What happens to different data types</h2>
-				<p>Account deletion is not one uniform action across every record type.</p>
+				<p>Account deletion affects each record type differently.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in retentionMatrix" :key="item.title" class="policy-detail-card">
@@ -113,7 +113,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Important limitations</h2>
-				<p>This page is meant to prevent false expectations, not to bury them.</p>
+				<p>Know what account deletion can and cannot reach before you submit a request.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in expectationNotes" :key="item">{{ item }}</li>
@@ -123,7 +123,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related rights pages</p>
-				<h2>Use Privacy for the data map and this page for closure behavior.</h2>
+				<h2>Use Privacy for the data map and this page for account closure.</h2>
 				<p>
 					The Privacy Policy explains collection and legal request channels. This page explains what account
 					closure does to public contributions and retained records.

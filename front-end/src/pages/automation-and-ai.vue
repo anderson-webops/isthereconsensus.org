@@ -96,7 +96,7 @@ useStaticPageMeta({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Disallowed uses</h2>
-				<p>These are the lines the site does not cross.</p>
+				<p>These uses stay outside the workflow.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in disallowedUses" :key="item">{{ item }}</li>
@@ -106,7 +106,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Human review gates</h2>
-				<p>Automation should accelerate judgment, not hide who owns it.</p>
+				<p>Automation should accelerate judgment while keeping ownership visible.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in humanGates" :key="item.title" class="policy-detail-card">
@@ -129,7 +129,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related trust pages</p>
-				<h2>Readers should see the human gate without learning the whole ops stack.</h2>
+				<h2>Readers should see the human gate without learning the full operations stack.</h2>
 				<p>Use How Reviews Work for the public standard and Corrections for the visible change path.</p>
 			</div>
 			<div class="policy-callout__actions">

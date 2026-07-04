@@ -43,10 +43,7 @@ useStaticPageMeta({
 		<header class="page-header">
 			<p class="eyebrow">Topic sourcing notes</p>
 			<h1>Topic-specific source stacks.</h1>
-			<p>
-				This page is a low-profile reference, not part of the main public reading path. Most readers only need
-				the main How Reviews Work page.
-			</p>
+			<p>This reference supports source-stack review. Most readers only need the main How Reviews Work page.</p>
 		</header>
 
 		<section class="panel panel--soft">
@@ -199,7 +196,7 @@ useStaticPageMeta({
 
 .page-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 

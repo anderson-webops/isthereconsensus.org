@@ -56,7 +56,7 @@ useHead({
 .not-found h1 {
 	margin: 0;
 	font-family: "Fraunces", serif;
-	font-size: clamp(2rem, 4.2vw, 3.2rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1.02;
 	max-width: 14ch;
 }

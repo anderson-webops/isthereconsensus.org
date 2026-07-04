@@ -653,7 +653,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	max-width: 72ch;
 	margin: 8px 0 0;
 	color: var(--consensus-ink);
-	font-size: clamp(1.04rem, 1.2vw, 1.2rem);
+	font-size: 1.08rem;
 	line-height: 1.62;
 }
 

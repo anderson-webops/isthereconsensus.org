@@ -105,7 +105,7 @@ const accountFacts = computed(() => {
 }
 
 .account-header h1 {
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 

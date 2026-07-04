@@ -75,10 +75,7 @@ useStaticPageMeta({
 		<header class="corrections-header">
 			<p class="eyebrow">Corrections policy</p>
 			<h1>Corrections and major updates.</h1>
-			<p>
-				The goal is a visible scholarly record, not silent copy edits that make it impossible to tell what
-				changed or why a page moved.
-			</p>
+			<p>The goal is a visible record that shows what changed, why it changed, and when a page moved.</p>
 		</header>
 
 		<section class="corrections-summary">
@@ -116,7 +113,7 @@ useStaticPageMeta({
 		<section class="corrections-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>How the site responds</h2>
-				<p>Corrections should move through a bounded workflow, not an ad hoc argument thread.</p>
+				<p>Corrections move through a bounded workflow with a visible result.</p>
 			</div>
 			<ol class="step-list">
 				<li v-for="item in responseFlow" :key="item">{{ item }}</li>
@@ -185,7 +182,7 @@ useStaticPageMeta({
 
 .corrections-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 

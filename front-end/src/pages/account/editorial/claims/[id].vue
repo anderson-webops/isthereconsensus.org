@@ -2144,7 +2144,7 @@ watch(
 
 .editor-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 

@@ -19250,10 +19250,10 @@ const rawClaims: SeedClaim[] = [
 			"NHTSA rates graduated driver licensing as a five-star young-driver countermeasure and says its crash and fatality benefits are well documented.",
 			"GDL programs usually include a learner permit, an intermediate license with restrictions, and later full licensure.",
 			"The best-supported restrictions address novice-driver exposure to night driving, teen passengers, and very early unrestricted licensure.",
-			"Systematic reviews and meta-analyses find the clearest crash reductions among 16-year-old drivers, with smaller benefits for 17-year-olds and little direct evidence of benefit for 18-year-olds unless the law covers older novices."
+			"Reviews find the clearest crash reductions among 16-year-old drivers, smaller benefits for 17-year-olds, and little direct benefit for 18-year-olds unless the law covers older novices."
 		],
 		openQuestions: [
-			"Which exact combinations of minimum ages, supervised practice, permit holding periods, night restrictions, passenger limits, phone restrictions, and enforcement rules produce the largest gains?",
+			"Which mix of minimum ages, supervised practice, permit periods, night restrictions, passenger limits, phone restrictions, and enforcement rules produces the largest gains?",
 			"How should states reduce inequitable enforcement, transportation burden, and work or family hardship while preserving the safety benefits of staged licensing?",
 			"Should GDL protections apply to older first-time drivers, and if so which restrictions are effective for 18- to 20-year-old novice drivers?",
 			"How can states monitor whether restrictions prevent crashes rather than merely shifting risk to a later age?"
@@ -19270,9 +19270,9 @@ const rawClaims: SeedClaim[] = [
 			"Policy disagreement about curfews, passenger limits, or enforcement does not mean the overall crash-prevention evidence is weak."
 		],
 		editorSummary:
-			"The practical consensus is that graduated driver licensing is one of the better-supported policies for reducing crashes among young novice drivers. The claim should stay specific: strongest for 16-year-old drivers and stronger programs, not a guarantee that every state provision or every older novice-driver rule works equally well.",
+			"Graduated driver licensing is one of the better-supported policies for reducing crashes among young novice drivers. The clearest support is for 16-year-old drivers and stronger programs; the evidence does not show that every state provision or every older-novice rule works equally well.",
 		uncertaintySummary:
-			"The direction of effect is well supported, but the evidence is mostly observational or quasi-experimental because states, not randomized trials, set licensing laws. Estimates vary by state, baseline crash risk, licensing age, enforcement, exposure, program strength, and whether analysts look at 16-year-olds, all teen drivers, or older novice drivers.",
+			"The direction of effect is well supported, but the evidence is mostly observational or quasi-experimental because states set licensing laws. Estimates vary by state, baseline crash risk, licensing age, enforcement, exposure, program strength, and whether analysts look at 16-year-olds, all teen drivers, or older novice drivers.",
 		searchDatabases: ["Consensus", "CDC", "NHTSA", "IIHS", "PubMed"],
 		searchCutoffAt: "2026-07-04T22:55:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:55:00.000Z",
@@ -19340,7 +19340,7 @@ const rawClaims: SeedClaim[] = [
 			},
 			{
 				kind: "guideline",
-				title: "Graduated Driver Licensing",
+				title: "Graduated Driver Licensing: Motor Vehicle Injuries",
 				publisher: "Centers for Disease Control and Prevention",
 				year: 2024,
 				url:

@@ -192,7 +192,7 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 
 .setup__copy h1 {
 	font-family: "Fraunces", serif;
-	font-size: clamp(2.6rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1.05;
 	margin: 10px 0 14px;
 }

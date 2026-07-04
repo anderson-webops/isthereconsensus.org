@@ -24,7 +24,7 @@ const eligibility = [
 	"domain experience, credentials, publications, or comparable professional work tied to the claim area",
 	"a verifiable identity and enough external evidence to confirm affiliation or subject-matter standing",
 	"agreement to the site's disclosure, conduct, and review-quality expectations",
-	"willingness to stay within scope rather than treating every review as a platform for unrelated position-taking"
+	"willingness to stay within scope rather than using reviews for unrelated advocacy"
 ];
 
 const responsibilities = [
@@ -32,7 +32,7 @@ const responsibilities = [
 	"flag missing major reviews, assessments, or consensus statements before publication",
 	"push back on wording that outruns the evidence or collapses unsettled edge cases into the bottom line",
 	"use uncertainty language that is specific and plain, not vague hedging or performative certainty",
-	"avoid confidentiality breaches, citation gaming, credential theater, and ad hominem review conduct"
+	"avoid confidentiality breaches, citation gaming, credential-focused arguments, and ad hominem review conduct"
 ];
 
 const disagreementFlow = [
@@ -46,7 +46,7 @@ const disagreementFlow = [
 	},
 	{
 		title: "Replacement or escalation",
-		body: "A conflicted, nonresponsive, or repeatedly low-quality reviewer can be replaced without turning reviewer status into a lifetime entitlement."
+		body: "A conflicted, nonresponsive, or repeatedly low-quality reviewer can be replaced without treating reviewer status as permanent."
 	}
 ];
 
@@ -88,7 +88,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Eligibility and verification</h2>
-				<p>Verification is about real review usefulness, not prestige signaling for its own sake.</p>
+				<p>Verification is about useful review work, not status on its own.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in eligibility" :key="item">{{ item }}</li>
@@ -98,7 +98,7 @@ useStaticPageMeta({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Reviewer responsibilities</h2>
-				<p>The role is quality control, not personality branding.</p>
+				<p>The role is quality control, not personal promotion.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in responsibilities" :key="item">{{ item }}</li>
@@ -108,7 +108,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Disagreement and replacement</h2>
-				<p>The workflow should make reviewer disagreement legible instead of pretending it never happens.</p>
+				<p>The workflow should make reviewer disagreement clear enough for editors to resolve.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in disagreementFlow" :key="item.title" class="policy-detail-card">

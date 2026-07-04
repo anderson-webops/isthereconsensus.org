@@ -256,7 +256,7 @@ function formatDate(value?: string) {
 .evidence-landscape-panel h2 {
 	margin: 6px 0 0;
 	font-family: "Fraunces", serif;
-	font-size: clamp(1.7rem, 3vw, 2.45rem);
+	font-size: 2rem;
 	line-height: 1.05;
 }
 

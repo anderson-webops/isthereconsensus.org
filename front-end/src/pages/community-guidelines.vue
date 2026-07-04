@@ -22,7 +22,7 @@ const quickPoints = [
 
 const conductRules = [
 	"Stay on the claim, source, or question. Do not turn threads into general culture-war fights.",
-	"Argue from evidence, scope, and method instead of personal attacks or credential theater.",
+	"Argue from evidence, scope, and method instead of personal attacks or unsupported credential claims.",
 	"Do not post private personal information, threats, targeted harassment, or material that puts another person at risk.",
 	"Do not flood the site with repetitive submissions, duplicate claims, or coordinated manipulation.",
 	"Do not fabricate sources, fake credentials, or present manipulated material as legitimate evidence."
@@ -45,7 +45,7 @@ const enforcementLadder = [
 	},
 	{
 		title: "Content-level action",
-		body: "Moderators may relabel, move, merge, hide, lock, or reroute content when the thread is still salvageable."
+		body: "Moderators may relabel, move, merge, hide, lock, or reroute content when a thread can be redirected."
 	},
 	{
 		title: "Temporary restrictions",
@@ -90,8 +90,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Community guidelines</p>
 			<h1>Rules for public discussion, flags, and moderation.</h1>
 			<p>
-				The site is not built to reward the loudest thread. Public discussion is useful when it helps clarify a
-				claim, surface credible sources, or identify a real error.
+				Public discussion is most useful when it clarifies a claim, surfaces credible sources, or identifies a
+				real error.
 			</p>
 		</header>
 
@@ -105,7 +105,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Expected conduct</h2>
-				<p>Good threads help the editorial layer think more clearly; bad threads just generate heat.</p>
+				<p>Good threads help the editorial layer think clearly; poor threads add noise.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in conductRules" :key="item">{{ item }}</li>
@@ -125,7 +125,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Enforcement ladder</h2>
-				<p>The goal is proportional, explainable enforcement, not surprise punishment.</p>
+				<p>The goal is proportional, explainable enforcement.</p>
 			</div>
 			<div class="card-grid">
 				<article v-for="item in enforcementLadder" :key="item.title" class="detail-card">
@@ -138,7 +138,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>High-conflict topic controls</h2>
-				<p>Some topics need narrower participation rules so the site does not drift into forum warfare.</p>
+				<p>Some topics need narrower participation rules so discussion stays useful.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in highConflictControls" :key="item">{{ item }}</li>
@@ -148,7 +148,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel guidelines-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Appeals and correction paths</h2>
-				<p>Conduct disputes and factual disputes should not be forced into the same pipe.</p>
+				<p>Conduct disputes and factual disputes need different workflows.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in appeals" :key="item">{{ item }}</li>
@@ -212,7 +212,7 @@ useStaticPageMeta({
 
 .guidelines-header h1 {
 	margin-top: 8px;
-	font-size: clamp(2.4rem, 5vw, 4rem);
+	font-size: var(--consensus-page-title-size);
 	line-height: 1;
 }
 
