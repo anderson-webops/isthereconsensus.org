@@ -18101,34 +18101,34 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 92,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Yes. Age- and size-appropriate child restraints reduce crash injury and death risk when they are correctly installed and used. Infants and toddlers need car seats, older children often need booster seats until the vehicle belt fits, and children younger than 13 should ride in the back seat. The benefit depends on fit, installation, harnessing, seating position, and not moving children to the next stage too early.",
+			"Yes. Age- and size-appropriate child restraints reduce crash injury and death risk when correctly installed and used. Infants and toddlers need car seats, many older children need boosters until the vehicle belt fits, and children younger than 13 should ride in the back seat. The benefit depends on fit, installation, harnessing, seating position, and not moving up too early.",
 		stableCore: [
-			"CDC says car seats reduce crash-injury risk by 71% to 82% compared with seat belts alone, and booster seats reduce serious-injury risk by 45% for children ages 4 to 8.",
+			"CDC says car seats reduce crash-injury risk by 71% to 82% versus seat belts alone, and boosters reduce serious-injury risk by 45% for ages 4 to 8.",
 			"NHTSA estimates correctly used child restraints reduce fatalities by 71% for infants and 54% for children ages 1 to 4 in passenger cars.",
-			"NHTSA and CDC both emphasize progression by age, size, seat limits, and belt fit: rear-facing, forward-facing harness, booster, then lap-and-shoulder belt.",
-			"AAP recommends rear-facing seats as long as possible, forward-facing harnesses after that, belt-positioning boosters until belts fit, and rear-seat riding for children younger than 13.",
-			"Crash-study evidence supports child restraints and boosters over premature seat-belt-only use, while booster-seat estimates vary across observational designs."
+			"NHTSA and CDC emphasize progression by age, size, seat limits, and belt fit: rear-facing, forward-facing harness, booster, then adult belt.",
+			"AAP recommends rear-facing seats as long as possible, then forward-facing harnesses, boosters until belts fit, and rear-seat riding for children under 13.",
+			"Crash-study evidence supports restraints and boosters over early seat-belt-only use, though booster-seat estimates vary by observational design."
 		],
 		openQuestions: [
 			"How can families get affordable seats, installation help, and clear fit checks without turning safety guidance into blame?",
-			"Which laws, distribution programs, and enforcement approaches increase correct use without worsening racial, income, or rural access disparities?",
-			"How should guidance adapt for older children, small adults, ride shares, taxis, school transport, children with disabilities, and vehicles with unusual belt geometry?"
+			"Which laws, distribution programs, and enforcement approaches increase correct use without worsening access disparities?",
+			"How should guidance adapt for older children, small adults, ride shares, taxis, school transport, disabilities, and unusual belt geometry?"
 		],
 		whatWouldChangeMinds: [
-			"Large, well-controlled crash datasets showing no injury or death reduction from age- and size-appropriate child restraints compared with otherwise similar seat-belt-only or unrestrained travel.",
+			"Large, well-controlled crash datasets showing no injury or death reduction from age- and size-appropriate restraints versus similar seat-belt-only or unrestrained travel.",
 			"Major CDC, NHTSA, AAP, or injury-prevention reassessments withdrawing staged child passenger restraints as best practice.",
-			"Evidence that misuse, premature transitions, or inequitable implementation erase the population benefit of child passenger restraint systems under real-world conditions."
+			"Evidence that misuse, premature transitions, or inequitable implementation erase the real-world population benefit of child passenger restraints."
 		],
 		misconceptions: [
 			"A regular adult seat belt is not automatically safe just because a child can buckle it; lap and shoulder belt fit matters.",
-			"Moving a child to the next seat stage is not a milestone to rush. AAP notes that every transition is associated with some decrease in protection.",
-			"Car seats and boosters only work as intended when they are the right type, installed tightly, used on every trip, and matched to the child and vehicle.",
+			"Moving to the next seat stage is not a milestone to rush. AAP notes that every transition is associated with some decrease in protection.",
+			"Car seats and boosters work as intended only when they are the right type, installed tightly, used every trip, and matched to the child and vehicle.",
 			"State law is often a minimum, not the same thing as best-practice guidance."
 		],
 		editorSummary:
-			"This page should complement the seat-belt page by making child-specific restraint staging explicit. Keep the public answer practical: the right seat, fitted and installed correctly, in the back seat, for every ride.",
+			"Child passenger safety is staged: the right seat or booster, fitted and installed correctly, in the back seat, for every ride.",
 		uncertaintySummary:
-			"The direction of benefit is strong, but exact effect size varies by age, height, weight, crash type, seating position, restraint type, installation quality, harness fit, premature transition, and whether studies compare against no restraint or seat belts alone. Booster-seat evidence is directionally supportive but more mixed across observational analyses than infant and toddler car-seat fatality estimates.",
+			"The benefit direction is strong, but exact size varies by age, height, weight, crash type, seating position, restraint type, installation quality, harness fit, early transitions, and comparison group. Booster evidence is supportive but more mixed than infant and toddler car-seat fatality estimates.",
 		searchCutoffAt: "2026-07-04T21:06:44.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:06:44.000Z",
 		changeLog: [
@@ -18148,7 +18148,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/child-passenger-safety/prevention/index.html",
 				stance: "supports",
 				note:
-					"CDC public-health anchor for child restraint injury reductions, booster-seat serious-injury reduction, staged restraint guidance, rear-seat guidance, and prevention-program evidence.",
+					"CDC anchor for child-restraint and booster injury reductions, staged restraint guidance, rear-seat guidance, and prevention-program evidence.",
 				order: 1
 			},
 			{
@@ -18158,7 +18158,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nhtsa.gov/book/countermeasures-that-work/seat-belts-and-child-restraints",
 				stance: "supports",
 				note:
-					"NHTSA Countermeasures That Work chapter summarizing infant and toddler fatality reductions, booster-seat injury reduction, premature transitions, and correct age-size restraint use.",
+					"NHTSA Countermeasures That Work chapter on infant and toddler fatality reductions, booster injury reduction, premature transitions, and correct use.",
 				order: 2
 			},
 			{
@@ -18168,7 +18168,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nhtsa.gov/vehicle-safety/car-seats-and-booster-seats",
 				stance: "supports",
 				note:
-					"NHTSA practical guidance for rear-facing seats, forward-facing harnesses, booster seats, seat-belt fit, back-seat use, and installation checks.",
+					"NHTSA practical guidance for rear-facing seats, forward-facing harnesses, boosters, belt fit, back-seat use, and installation checks.",
 				order: 3
 			},
 			{
@@ -18180,7 +18180,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/child-passenger-safety-durbin-hoffman/68daa84ae51c5918bece4d08dd4751e2/",
 				stance: "supports",
 				note:
-					"Consensus-fetched AAP policy statement recommending staged restraints from rear-facing seats through boosters, plus rear-seat riding for children younger than 13.",
+					"Consensus-fetched AAP policy statement recommending staged restraints from rear-facing seats through boosters, plus rear-seat riding under age 13.",
 				order: 4
 			},
 			{
@@ -18192,7 +18192,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/effectiveness-of-child-safety-seats-vs-seat-belts-in-elliott-kallan/848f31e5a8a95cf1989742938b6d32b2/",
 				stance: "supports",
 				note:
-					"Consensus-fetched cohort study finding properly used child restraints reduced death risk for children ages 2 to 6 compared with seat belts alone.",
+					"Consensus-fetched cohort study finding properly used child restraints reduced death risk for ages 2 to 6 versus seat belts alone.",
 				order: 5
 			},
 			{
@@ -18204,7 +18204,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/effectiveness-of-belt-positioning-booster-seats-an-arbogast-jermakian/7a17092dcad050f7b18350a064bf4be4/",
 				stance: "supports",
 				note:
-					"Consensus-fetched crash-study update finding belt-positioning booster seats reduced injury risk for children ages 4 to 8 compared with seat belts alone.",
+					"Consensus-fetched crash-study update finding belt-positioning boosters reduced injury risk for ages 4 to 8 versus seat belts alone.",
 				order: 6
 			},
 			{
@@ -18216,7 +18216,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/systematic-review-of-child-passenger-safety-laws-and-their-sartin-lombardi/151e10e265425d8b8a762b5e84c2b269/",
 				stance: "context",
 				note:
-					"Consensus-fetched review finding child passenger safety laws generally improve restraint use and injuries or deaths, while noting equity and correct-use caveats.",
+					"Consensus-fetched review finding child passenger safety laws generally improve restraint use and injuries or deaths, with equity and correct-use caveats.",
 				order: 7
 			},
 			{
@@ -18228,8 +18228,181 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/the-impact-of-booster-seat-use-on-child-injury-and-mortality-asbridge-ogilvie/d987cb6b5cb058a88d8e6ba972299236/",
 				stance: "context",
 				note:
-					"Consensus-fetched booster-seat meta-analysis finding limited and mixed observational evidence, useful for tempering exact booster effect-size claims.",
+					"Consensus-fetched booster-seat meta-analysis finding limited, mixed observational evidence, useful for tempering exact effect-size claims.",
 				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do four-sided pool fences reduce drowning risk for young children?",
+		slug: "do-four-sided-pool-fences-reduce-drowning-risk-for-young-children",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Four-sided isolation fencing with a self-closing, self-latching gate reduces young children's unsupervised access to pools and is a core drowning-prevention measure. It works as a physical layer of protection, not as a replacement for close supervision, swim skills, life jackets where appropriate, CPR readiness, and safe behavior around water.",
+		stableCore: [
+			"CDC recommends a four-sided fence at least four feet high that fully encloses the pool, separates it from the house, and uses self-closing, self-latching gates.",
+			"AAP recommends isolating pools from the house and yard with a four-foot, four-sided fence and emphasizes multiple prevention layers because no single method prevents drowning.",
+			"A Cochrane review found lower drowning or near-drowning odds for fenced versus unfenced pools, and lower odds for isolation fencing than three-sided property-line fencing.",
+			"CPSC guidance says barriers are not child-proof but add time when supervision lapses; a fence completely surrounding the pool is better than using the house as the fourth side.",
+			"Newer reviews support barriers around water bodies and regulations requiring pool fencing, while noting that evidence is strongest for young children and residential pools."
+		],
+		openQuestions: [
+			"How can local codes, inspections, subsidies, and rental-property rules increase compliant fencing without leaving lower-income families behind?",
+			"Which combinations of fences, alarms, covers, swim lessons, supervision, life jackets, CPR training, and lifeguards work best in different communities?",
+			"How should prevention guidance adapt for portable pools, above-ground pools, hot tubs, natural water, children with autism or wandering risk, and settings outside the child's own home?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled drowning surveillance showing no reduction in child drowning or near-drowning risk with compliant four-sided isolation fencing.",
+			"Major CDC, AAP, CPSC, WHO, or injury-prevention reassessments withdrawing four-sided pool fencing as a recommended drowning-prevention layer.",
+			"Evidence that another passive barrier strategy reliably outperforms four-sided fencing without increasing access, maintenance, equity, or false-security problems."
+		],
+		misconceptions: [
+			"Three-sided fencing that uses the house as one side is not the same as isolating the pool from the house and yard.",
+			"A fence lowers risk but does not make a pool safe by itself; children still need close, attentive supervision around water.",
+			"Swimming lessons help, but they do not make toddlers drown-proof or remove the need for barriers.",
+			"Alarms, covers, or door locks can add layers, but they are not simple substitutes for a maintained, self-latching isolation fence."
+		],
+		editorSummary:
+			"Pool fencing is a practical consensus page: the strongest claim is about limiting unsupervised access by young children, while the public guidance should keep the full layers-of-protection message intact.",
+		uncertaintySummary:
+			"The direction of benefit is strong for young children and residential pools, but exact effect size depends on fence design, gate function, maintenance, local enforcement, supervision, pool type, child age, exposure time, and whether studies compare against no fence or three-sided perimeter fencing.",
+		searchDatabases: ["Consensus", "CDC", "AAP", "CPSC"],
+		searchCutoffAt: "2026-07-04T22:05:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:05:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, pediatric policy statements, public-health guidance, CPSC barrier guidance, and drowning-prevention surveillance.",
+			"Separate four-sided isolation fencing from property-line or three-sided fencing that still allows access from the house.",
+			"Treat supervision, swim lessons, life jackets, CPR, alarms, and covers as complementary layers unless a source directly evaluates them as substitutes."
+		],
+		exclusionRules: [
+			"Do not use pool-fence vendor marketing as evidence of effectiveness.",
+			"Do not generalize pool-fencing effect estimates to every natural-water hazard without direct evidence.",
+			"Do not imply that fencing, swim lessons, or supervision alone can eliminate drowning risk."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does pool fencing reduce child drowning risk?",
+				population: "Young children with access to residential swimming pools",
+				finding:
+					"Systematic-review and policy evidence supports four-sided isolation fencing as a passive barrier that reduces access to pools and lowers drowning or near-drowning risk.",
+				effectDirection: "supports",
+				magnitude:
+					"The Cochrane review estimated an odds ratio of 0.27 for fenced versus unfenced pools and 0.17 for isolation fencing versus three-sided fencing, based on case-control studies.",
+				certainty: "moderate",
+				limitations: [
+					"No randomized trials were identified in the Cochrane review.",
+					"Evidence is strongest for young children and swimming pools, not all water hazards.",
+					"Real-world protection depends on gate function, maintenance, compliance, supervision, and broader water-safety layers."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "CDC",
+				role: "Public-health guidance anchor for four-sided pool fencing, supervision, swim skills, and life jackets."
+			},
+			{
+				name: "American Academy of Pediatrics",
+				role: "Pediatric guidance anchor for four-sided pool fencing and multiple layers of drowning prevention."
+			},
+			{
+				name: "Consumer Product Safety Commission",
+				role: "Residential pool barrier design anchor for fence height, openings, gates, covers, and alarms."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:05:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial pool-fencing drowning-prevention claim page published from CDC, AAP, CPSC, and Consensus-located systematic-review and drowning-prevention sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Preventing Drowning",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/drowning/prevention/index.html",
+				stance: "supports",
+				note:
+					"CDC guidance recommending four-sided pool fencing, self-closing and self-latching gates, close supervision, swim skills, and life jackets.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Prevention of Drowning: Policy Statement",
+				publisher: "Pediatrics",
+				year: 2026,
+				url:
+					"https://publications.aap.org/pediatrics/article/158/1/e2026077410/207630/Prevention-of-Drowning-Policy-Statement",
+				stance: "supports",
+				note:
+					"AAP policy source recommending four-sided isolation fencing with self-closing, self-latching gates and multiple prevention layers.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Safety Barrier Guidelines for Residential Pools",
+				publisher: "Consumer Product Safety Commission",
+				url: "https://www.cpsc.gov/s3fs-public/362%20Safety%20Barrier%20Guidelines%20for%20Pools.pdf",
+				stance: "supports",
+				note:
+					"CPSC barrier-design guidance explaining why a fence fully surrounding the pool is better than using the house as the fourth side, with gate and opening specifications.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Pool fencing for preventing drowning in children",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 1998,
+				url:
+					"https://consensus.app/papers/pool-fencing-for-preventing-drowning-in-children-thompson-rivara/e40e766208f856a3ba9b2b4281267eae/",
+				stance: "supports",
+				note:
+					"Consensus-fetched Cochrane review estimating lower drowning or near-drowning odds for fenced pools and stronger protection from four-sided isolation fencing.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Effectiveness of interventions to prevent drowning among children under age 20 years: a global scoping review",
+				publisher: "Frontiers in Public Health",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/effectiveness-of-interventions-to-prevent-drowning-among-ashraf-zia/c17b8852361d505483547e8c5199abbb/",
+				stance: "context",
+				note:
+					"Consensus-fetched scoping review supporting barriers around water bodies, first-responder training, personal flotation devices, and regulations while calling for more implementation evidence.",
+				order: 5
+			},
+			{
+				kind: "consensus_statement",
+				title: "Prevention of Drowning: Technical Report",
+				publisher: "Pediatrics",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/prevention-of-drowning-technical-report-shenoi-mccallin/f49ed3f3e42950d2a8b2e02f0fe3d293/",
+				stance: "supports",
+				note:
+					"Consensus-fetched AAP technical report stating that no single method prevents drowning and listing four-sided isolation fencing among proven prevention strategies.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "Unrealised potential of pool fencing and life jackets to prevent US drownings",
+				publisher: "Injury Prevention",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/unrealised-potential-of-pool-fencing-and-life-jackets-to-peterson-ayangunna/245a2a21fff3527e9ca2f9df055aa79b/",
+				stance: "context",
+				note:
+					"Consensus-fetched modeling study estimating the preventable U.S. burden from inadequate pool isolation fencing and life-jacket nonuse, useful for public-health context rather than primary effect size.",
+				order: 7
 			}
 		]
 	},
