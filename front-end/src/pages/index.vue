@@ -786,6 +786,16 @@ function formatTopicUpdateLabel(value?: string) {
 		gap: 30px;
 	}
 
+	.section-heading {
+		display: grid;
+		gap: 8px;
+		align-items: start;
+	}
+
+	.section-heading .text-link {
+		justify-self: start;
+	}
+
 	.hero__copy,
 	.hero__aside,
 	.search-panel,
