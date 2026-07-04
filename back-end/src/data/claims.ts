@@ -15848,6 +15848,204 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "active-debates",
+		title: "Is intermittent fasting better than daily calorie restriction for weight loss?",
+		slug: "is-intermittent-fasting-better-than-daily-calorie-restriction-for-weight-loss",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 76,
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"Not generally. Intermittent fasting can help some adults lose weight, especially when it reduces total energy intake, but randomized trials and meta-analyses usually find weight loss and cardiometabolic changes similar to continuous calorie restriction. Alternate-day fasting, early time-restricted eating, or simple eating-window rules may help some people, but the average evidence does not support a universal metabolic shortcut.",
+		stableCore: [
+			"Intermittent fasting is an umbrella term; alternate-day fasting, 5:2 diets, whole-day fasting, and time-restricted eating are different interventions.",
+			"Compared with no structured diet or ad-libitum eating, intermittent fasting can reduce body weight, usually by reducing energy intake.",
+			"Compared with continuous calorie restriction, most fasting schedules produce similar average weight loss and cardiometabolic changes when total energy restriction is similar.",
+			"A 2025 BMJ network meta-analysis of 99 randomized trials and 6,582 adults found only alternate-day fasting had a modest body-weight advantage over continuous energy restriction, about 1.29 kg, and called for longer trials.",
+			"In a 12-month NEJM trial of 139 adults with obesity, adding an 8 a.m. to 4 p.m. eating window to calorie restriction did not significantly improve weight, body fat, or metabolic-risk outcomes compared with daily calorie restriction alone."
+		],
+		openQuestions: [
+			"Which fasting pattern, if any, is most sustainable beyond one year for different people?",
+			"Does early time-restricted eating improve glucose metabolism independently of weight loss in people at risk for type 2 diabetes?",
+			"How should clinicians adapt fasting schedules for people using insulin, sulfonylureas, blood-pressure medicines, eating-disorder treatment, pregnancy care, or athletic training?",
+			"Are observed benefits mostly from calorie reduction, meal timing, circadian alignment, adherence, or some combination?"
+		],
+		whatWouldChangeMinds: [
+			"Large independent trials lasting at least 12 to 24 months showing that a specific fasting pattern produces larger maintained weight loss or patient-important cardiometabolic benefit than matched calorie restriction.",
+			"Energy-matched trials showing durable benefits from meal timing itself, not just reduced intake or better adherence.",
+			"Conversely, high-quality evidence showing worse long-term adherence, lean-mass loss, adverse events, or disordered-eating risk for common fasting patterns."
+		],
+		misconceptions: [
+			"Fasting is sometimes marketed as if meal timing bypasses calorie balance.",
+			"All intermittent-fasting plans are sometimes treated as one diet, even though alternate-day fasting and an eight-hour eating window are not the same exposure.",
+			"Short-term scale changes can reflect water, glycogen, and adherence rather than durable fat loss.",
+			"A schedule that works for one adult does not make fasting safe or appropriate for everyone."
+		],
+		editorSummary:
+			"This page should give readers a practical active-debate answer: fasting schedules can be legitimate weight-loss tools, but the stronger evidence points to adherence and energy restriction rather than a universal advantage over ordinary calorie restriction.",
+		uncertaintySummary:
+			"Certainty is moderate that intermittent fasting and continuous calorie restriction have similar average weight-loss effects. Certainty is lower for long-term maintenance, individual matching, diabetes-medication safety, early-versus-late eating windows, lean mass, and whether any meal-timing effects persist after weight loss is controlled.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Adherence, eating-window timing, counseling intensity, and whether calories are prescribed differ across trials."
+			},
+			{
+				type: "timing",
+				detail: "Many trials are short, and longer studies often show smaller or less certain differences between diet patterns."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Most evidence concerns adults with overweight, obesity, or metabolic risk; it should not be generalized to pregnancy, adolescents, frail older adults, or people with eating disorders."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Weight loss, glucose tolerance, lipids, blood pressure, appetite, and adherence can move differently, so one outcome cannot summarize the whole intervention."
+			}
+		],
+		searchDatabases: ["Consensus", "PubMed", "ClinicalTrials.gov"],
+		searchCutoffAt: "2026-07-04T17:47:22.000Z",
+		lastRetractionCheckAt: "2026-07-04T17:47:22.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T17:47:22.000Z",
+				kind: "publication",
+				summary:
+					"Initial intermittent-fasting active-debate page published from Consensus-located randomized-trial meta-analyses and head-to-head calorie-restriction trials."
+			}
+		],
+		inclusionRules: [
+			"Prioritize randomized trials and meta-analyses comparing intermittent fasting, time-restricted eating, continuous calorie restriction, and ad-libitum control diets.",
+			"Separate alternate-day fasting, 5:2 or whole-day fasting, early time-restricted eating, and late time-restricted eating when the source does.",
+			"Track whether trials matched calorie targets, provided dietary counseling, included diabetes medications, and followed participants beyond six months."
+		],
+		exclusionRules: [
+			"Do not use fasting-mimicking-product marketing, influencer anecdotes, or before-and-after testimonials as efficacy evidence.",
+			"Do not treat short-term biomarker changes as proof of durable clinical benefit.",
+			"Do not generalize fasting safety to people at high risk from hypoglycemia, undernutrition, pregnancy, or active eating-disorder symptoms."
+		],
+		appraisalTools: [
+			"Energy-matching check",
+			"Adherence and dropout assessment",
+			"Medication-safety review",
+			"Follow-up duration check",
+			"Lean-mass and adverse-event review"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does intermittent fasting outperform continuous calorie restriction for weight loss?",
+				population:
+					"Adults with overweight, obesity, metabolic abnormalities, or elevated type 2 diabetes risk in randomized trials",
+				finding:
+					"Most syntheses find intermittent fasting produces weight loss compared with no structured restriction, but does not reliably beat continuous calorie restriction when energy restriction is similar.",
+				effectDirection: "mixed",
+				magnitude:
+					"Recent network meta-analyses report broadly similar effects; BMJ 2025 found alternate-day fasting about 1.29 kg lower than continuous energy restriction, while NEJM 2022 and Annals 2023 head-to-head trials found no significant advantage for time-restricted eating over calorie restriction.",
+				certainty: "moderate",
+				limitations: [
+					"Different fasting schedules are often pooled despite different behavioral and metabolic demands.",
+					"Blinding is impossible and adherence is a central part of the intervention.",
+					"Long-term maintenance, medication safety, and individual matching remain less certain than short-term weight change."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "BMJ and Nutrition Reviews network meta-analyses",
+				role: "Evidence-synthesis anchors comparing fasting patterns, continuous energy restriction, and ad-libitum diets."
+			},
+			{
+				name: "NEJM and Annals of Internal Medicine randomized trials",
+				role: "Head-to-head trial anchors for time-restricted eating versus daily calorie restriction over 12 months."
+			},
+			{
+				name: "ClinicalTrials.gov",
+				role: "Trial-registration anchor for tracking ongoing and completed diet-pattern trials."
+			}
+		],
+		sources: [
+			{
+				kind: "meta_analysis",
+				title:
+					"Intermittent fasting strategies and their effects on body weight and other cardiometabolic risk factors: systematic review and network meta-analysis of randomised clinical trials",
+				publisher: "The BMJ",
+				year: 2025,
+				url: "https://www.bmj.com/content/389/bmj-2024-082007",
+				doi: "10.1136/bmj-2024-082007",
+				stance: "supports",
+				note:
+					"Network meta-analysis of 99 randomized trials and 6,582 adults finding broadly similar benefits to continuous energy restriction, with a modest alternate-day-fasting advantage in shorter-duration evidence.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Comparison of Different Intermittent Fasting Patterns or Different Extents of Calorie Restriction for Weight Loss and Metabolic Improvement in Adults: A Systematic Review and Network Meta-Analysis of Randomized Controlled Trials",
+				publisher: "Nutrition Reviews",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/comparison-of-different-intermittent-fasting-patterns-or-wu-ding/1eabe229100a540cbd1d83974cc4b982/",
+				stance: "supports",
+				note:
+					"Network meta-analysis of 167 randomized trials concluding weight-loss effectiveness mainly depends on energy-restriction extent rather than meal-timing pattern.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Calorie Restriction with or without Time-Restricted Eating in Weight Loss",
+				publisher: "The New England Journal of Medicine",
+				year: 2022,
+				url: "https://www.nejm.org/doi/full/10.1056/NEJMoa2114833",
+				doi: "10.1056/NEJMoa2114833",
+				stance: "supports",
+				note:
+					"12-month randomized trial of 139 adults with obesity finding time-restricted eating plus calorie restriction did not significantly outperform daily calorie restriction alone.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Time-Restricted Eating Without Calorie Counting for Weight Loss in a Racially Diverse Population",
+				publisher: "Annals of Internal Medicine",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/timerestricted-eating-without-calorie-counting-for-lin-cienfuegos/e420250bced050dbab9657d061d2b271/",
+				stance: "supports",
+				note:
+					"12-month randomized trial of 90 adults with obesity finding time-restricted eating and calorie restriction both reduced weight versus control, with no significant difference between them.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Does time-restricted eating add benefits to calorie restriction? A systematic review",
+				publisher: "Obesity",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/does-timerestricted-eating-add-benefits-to-calorie-ezzati-mclaren/cd545691d8735e0d9f5f5953cb161d03/",
+				stance: "debate",
+				note:
+					"Systematic review of seven energy-matched trials finding some studies favored calorie restriction plus time-restricted eating, but most outcomes showed no added benefit.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Intermittent fasting plus early time-restricted eating versus calorie restriction and standard care in adults at risk of type 2 diabetes: a randomized controlled trial",
+				publisher: "Nature Medicine",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/intermittent-fasting-plus-early-timerestricted-eating-teong-liu/0da3ce50ff5651a7b37bef0431451b44/",
+				stance: "debate",
+				note:
+					"RCT of 209 adults at elevated type 2 diabetes risk finding greater six-month postprandial glucose improvement with intermittent fasting plus early time-restricted eating, but the difference was lost at 18 months.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "active-debates",
 		title: "What counts as an active scientific debate?",
 		slug: "what-counts-as-an-active-scientific-debate",
 		status: "published",
