@@ -4,19 +4,19 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Visible record",
-		body: "Reviewed pages should not be silently rewritten when the bottom line changes in a meaningful way."
+		body: "Reviewed pages should not change materially without a public record of what moved and why."
 	},
 	{
 		title: "Labeled changes",
-		body: "Corrections, updates, routine reviews, and archival actions should be labeled differently in the public change log."
+		body: "Corrections, updates, routine reviews, and archival actions get different public labels."
 	},
 	{
 		title: "Specific requests",
-		body: "Credible correction requests should identify the exact claim text, the evidence problem, and the best supporting sources."
+		body: "A useful request names the exact claim text, evidence problem, and strongest supporting sources."
 	},
 	{
 		title: "Fast review triggers",
-		body: "A flagged citation, major correction, or retraction should trigger fast editorial review rather than waiting for the next routine review date."
+		body: "A flagged citation, major correction, or retraction can trigger review before the next scheduled date."
 	}
 ];
 
@@ -118,9 +118,9 @@ useStaticPageMeta({
 				<h2>How the site responds</h2>
 				<p>Corrections should move through a bounded workflow, not an ad hoc argument thread.</p>
 			</div>
-			<ul class="plain-list">
+			<ol class="step-list">
 				<li v-for="item in responseFlow" :key="item">{{ item }}</li>
-			</ul>
+			</ol>
 		</section>
 
 		<section class="corrections-panel">
@@ -194,6 +194,7 @@ useStaticPageMeta({
 .summary-card p,
 .detail-card p,
 .plain-list,
+.step-list,
 .corrections-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.65;
@@ -261,10 +262,39 @@ useStaticPageMeta({
 	background: var(--consensus-elevated-surface);
 }
 
-.plain-list {
+.plain-list,
+.step-list {
 	padding-left: 20px;
 	display: grid;
 	gap: 10px;
+}
+
+.step-list {
+	padding-left: 0;
+	list-style: none;
+	counter-reset: correction-step;
+}
+
+.step-list li {
+	position: relative;
+	padding-left: 38px;
+	counter-increment: correction-step;
+}
+
+.step-list li::before {
+	position: absolute;
+	left: 0;
+	top: 0.1em;
+	display: inline-grid;
+	width: 24px;
+	height: 24px;
+	place-items: center;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--consensus-ember) 16%, transparent);
+	color: var(--consensus-ink);
+	font-size: 0.78rem;
+	font-weight: 700;
+	content: counter(correction-step);
 }
 
 .corrections-callout {
@@ -343,6 +373,7 @@ useStaticPageMeta({
 	.summary-card p,
 	.detail-card p,
 	.plain-list,
+	.step-list,
 	.corrections-callout p {
 		line-height: 1.58;
 	}
@@ -351,9 +382,23 @@ useStaticPageMeta({
 		margin-bottom: 12px;
 	}
 
-	.plain-list {
+	.plain-list,
+	.step-list {
 		gap: 8px;
+	}
+
+	.plain-list {
 		padding-left: 18px;
+	}
+
+	.step-list li {
+		padding-left: 34px;
+	}
+
+	.step-list li::before {
+		width: 22px;
+		height: 22px;
+		font-size: 0.74rem;
 	}
 
 	.corrections-callout {
@@ -368,6 +413,7 @@ useStaticPageMeta({
 
 	.button {
 		padding: 10px 14px;
+		flex: 1 1 160px;
 		line-height: 1.25;
 	}
 }
