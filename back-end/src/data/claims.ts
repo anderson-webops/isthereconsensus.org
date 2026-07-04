@@ -1542,6 +1542,214 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does flu vaccination during pregnancy protect pregnant people and young infants?",
+		slug: "does-flu-vaccination-during-pregnancy-protect-pregnant-people-and-young-infants",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Seasonal flu vaccination during pregnancy is recommended because pregnancy raises the risk of severe influenza, and vaccination can protect both the pregnant person and the infant during the first months of life when the baby is too young for a flu vaccine. The benefit is not perfect or identical every season; it depends on circulating strains, vaccine match, timing, and individual risk, and the nasal-spray flu vaccine is not used during pregnancy.",
+		stableCore: [
+			"CDC says pregnant and postpartum women are at higher risk for severe illness and complications from influenza, and that people who are or will be pregnant during flu season should receive inactivated or recombinant influenza vaccine.",
+			"CDC states that flu shots given during pregnancy help protect both the pregnant mother and the baby, and that vaccination can be given during any trimester.",
+			"WHO identifies pregnant women as the highest-priority group for countries introducing or expanding seasonal influenza vaccination programs.",
+			"Meta-analysis evidence finds maternal influenza vaccination reduces laboratory-confirmed influenza in infants younger than 6 months, with stronger evidence for lab-confirmed outcomes than for broad influenza-like illness.",
+			"Safety reviews and CDC surveillance do not show an increased risk of major adverse birth outcomes from seasonal inactivated flu vaccination, though observational safety evidence still has confounding and timing-bias limits."
+		],
+		openQuestions: [
+			"How should vaccination timing balance early protection for the pregnant person against stronger antibody transfer closer to delivery and local flu-season timing?",
+			"How much does protection change by vaccine match, prior infection, prior vaccination, trimester, immune status, and local influenza circulation?",
+			"Which communication and access strategies best improve vaccination uptake without minimizing patient questions about safety or timing?"
+		],
+		whatWouldChangeMinds: [
+			"Major CDC, ACIP, ACOG, WHO, or comparable reassessments withdrawing flu vaccination during pregnancy after reviewing updated effectiveness and safety evidence.",
+			"Large, well-controlled studies across multiple seasons showing no meaningful protection for pregnant people or infants despite adequate vaccine match and timing.",
+			"Repeated high-quality safety studies showing a reproducible vaccine-attributable increase in serious maternal, fetal, or infant outcomes that outweighs influenza-prevention benefits."
+		],
+		misconceptions: [
+			"Protection for infants is sometimes overlooked because babies younger than 6 months cannot receive their own flu vaccine.",
+			"Flu vaccination in pregnancy is sometimes treated as a one-time childhood-vaccine-style decision, but it is seasonal because influenza viruses and vaccines change.",
+			"A flu shot is not a guarantee against all respiratory illness; studies show stronger protection for laboratory-confirmed influenza than for nonspecific influenza-like symptoms.",
+			"The nasal-spray flu vaccine is different from the recommended injectable inactivated or recombinant vaccines and is not used during pregnancy."
+		],
+		editorSummary:
+			"Flu vaccination during pregnancy is recommended for maternal protection and partial infant protection, while effectiveness varies by season, vaccine match, and timing.",
+		uncertaintySummary:
+			"The recommendation is strongly supported by public-health bodies. Certainty is moderate for exact effect sizes because influenza seasons vary, maternal-infant timing matters, and safety estimates come largely from observational evidence that must handle confounding and temporal bias.",
+		uncertaintyDrivers: [
+			{
+				type: "timing",
+				detail:
+					"Protection depends on gestational timing, delivery timing, local seasonality, and how long maternal antibodies persist in the infant."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Effectiveness estimates differ by outcome definition, including lab-confirmed influenza, hospitalization, emergency visits, and influenza-like illness."
+			},
+			{
+				type: "bias",
+				detail:
+					"Safety studies are mostly observational and need careful control for healthcare access, underlying risk, season timing, and immortal time bias."
+			}
+		],
+		searchDatabases: ["Consensus", "CDC", "ACIP", "WHO"],
+		searchCutoffAt: "2026-07-04T22:31:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:31:00.000Z",
+		inclusionRules: [
+			"Prioritize current public-health recommendations, systematic reviews, meta-analyses, randomized trials, and test-negative or cohort evidence for pregnant people and infants younger than 6 months.",
+			"Distinguish injectable inactivated or recombinant flu vaccines from live attenuated nasal-spray vaccine during pregnancy.",
+			"Separate lab-confirmed influenza, hospitalization, emergency visits, influenza-like illness, birth outcomes, and serious adverse events."
+		],
+		exclusionRules: [
+			"Do not imply that flu vaccination prevents all respiratory infections or all flu-like symptoms.",
+			"Do not use a single season's vaccine-effectiveness estimate as a universal effect size.",
+			"Do not generalize safety or efficacy evidence for other maternal vaccines to influenza vaccine unless the source directly addresses influenza."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does influenza vaccination during pregnancy protect infants too young to be vaccinated?",
+				population:
+					"Pregnant people receiving seasonal inactivated or recombinant influenza vaccine and their infants younger than 6 months.",
+				finding:
+					"Maternal vaccination reduces laboratory-confirmed influenza in infants, with evidence also supporting lower infant flu-associated hospitalizations in several syntheses and recent test-negative studies.",
+				effectDirection: "supports",
+				magnitude:
+					"A 2018 systematic review and meta-analysis estimated 48% lower infant laboratory-confirmed influenza risk and 72% lower influenza-associated hospitalization risk; a 2023 JAMA Pediatrics test-negative study estimated 39% effectiveness against infant influenza-associated hospitalization.",
+				certainty: "moderate",
+				limitations: [
+					"Protection varies by season, vaccine match, trimester, and infant age.",
+					"Influenza-like illness is less specific than laboratory-confirmed influenza.",
+					"Safety evidence is reassuring but mostly observational and sensitive to confounding and season-timing bias."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current U.S. public-health anchor for pregnancy flu vaccination, safety, timing, and infant protection."
+			},
+			{
+				name: "Advisory Committee on Immunization Practices",
+				role: "Annual U.S. recommendation anchor for seasonal influenza vaccine use and product considerations."
+			},
+			{
+				name: "World Health Organization",
+				role: "Global policy anchor identifying pregnant women as a priority group for seasonal influenza vaccination programs."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:31:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial pregnancy flu-vaccination page published from CDC, ACIP, WHO, and Consensus-located maternal and infant effectiveness and safety evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Flu Vaccine Safety and Pregnancy",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/flu/vaccine-safety/vaccine-pregnant.html",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"CDC public-health source explaining pregnancy risk, any-trimester flu-shot guidance, infant antibody protection, hospitalization reduction, and safety surveillance.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Guidelines for Vaccinating Pregnant Women",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/vaccines-pregnancy/hcp/vaccination-guidelines/index.html",
+				stance: "supports",
+				note:
+					"CDC clinician guidance stating that pregnant or postpartum women are at higher risk from influenza and should receive inactivated or recombinant vaccine during flu season, while live attenuated vaccine is contraindicated.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title:
+					"Prevention and Control of Seasonal Influenza with Vaccines: Recommendations of ACIP, United States, 2025-26 Influenza Season",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 2025,
+				url: "https://www.cdc.gov/mmwr/volumes/74/wr/mm7432a2.htm",
+				stance: "supports",
+				note:
+					"Current ACIP seasonal-influenza recommendation context, including routine annual vaccination and 2025-26 product guidance for pregnant women.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Influenza immunization: Guidance to inform introduction of influenza vaccine",
+				publisher: "World Health Organization",
+				year: 2016,
+				url:
+					"https://www.who.int/teams/immunization-vaccines-and-biologicals/diseases/seasonal-influenza/guidance-intro-vaccine-mic",
+				stance: "supports",
+				note:
+					"WHO implementation guidance noting the 2012 position that pregnant women should have highest priority in countries introducing or expanding seasonal influenza vaccination.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Influenza vaccination during pregnancy for prevention of influenza confirmed illness in the infants: A systematic review and meta-analysis",
+				publisher: "Human Vaccines & Immunotherapeutics",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/influenza-vaccination-during-pregnancy-for-prevention-of-nunes-madhi/6df91b7b80305b3db45f17dc068e012d/",
+				stance: "supports",
+				note:
+					"Meta-analysis finding maternal influenza vaccination was associated with lower laboratory-confirmed influenza and influenza-associated hospitalization in infants younger than 6 months.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"The effectiveness of influenza vaccination in pregnancy in relation to child health outcomes: Systematic review and meta-analysis",
+				publisher: "Vaccine",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/the-effectiveness-of-influenza-vaccination-in-pregnancy-jarvis-dorey/81f0de3ce6b55fe68946a22d3410168e/",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis supporting maternal influenza vaccination as a strategy to reduce laboratory-confirmed influenza and flu-related hospitalizations in young infants.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Safety of influenza vaccination during pregnancy: a systematic review",
+				publisher: "BMJ Open",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/safety-of-influenza-vaccination-during-pregnancy-a-wolfe-fell/fef71eaf5b22598d8827d3f18ab74d86/",
+				stance: "supports",
+				note:
+					"Systematic review of 63 studies finding no significant association between seasonal influenza vaccination and prioritized adverse birth outcomes or maternal non-obstetric serious adverse events, while rating evidence certainty very low.",
+				order: 7
+			},
+			{
+				kind: "landmark_study",
+				title: "Maternal Vaccine Effectiveness Against Influenza-Associated Hospitalizations and Emergency Department Visits in Infants",
+				publisher: "JAMA Pediatrics",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/maternal-vaccine-effectiveness-against-sahni-olson/2d927d8611945013836cbb45dbb6c210/",
+				stance: "supports",
+				note:
+					"Prospective test-negative study finding maternal vaccination associated with lower influenza-associated hospitalization and emergency-care outcomes in infants younger than 6 months, strongest for hospitalization and infants younger than 3 months.",
+				order: 8
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does breastfeeding reduce infants' risk of infections?",
 		slug: "does-breastfeeding-reduce-infants-risk-of-infections",
 		status: "published",
@@ -2147,7 +2355,7 @@ const rawClaims: SeedClaim[] = [
 			"Evidence about high naturally occurring fluoride levels is often presented as if it directly proves harm at the recommended community level."
 		],
 		editorSummary:
-			"This page should help readers separate three different questions: whether fluoride prevents tooth decay, whether the modern incremental benefit is smaller, and whether recommended-level exposure is the same as high-fluoride exposure.",
+			"The key distinction is between three questions: whether fluoride prevents tooth decay, how large the modern incremental benefit is, and whether recommended-level exposure is the same as high-fluoride exposure.",
 		uncertaintySummary:
 			"Agreement remains broad that guideline-level fluoridation prevents tooth decay and is supported by major dental and public-health bodies, but the size of modern benefit and interpretation of high-exposure neurodevelopment evidence deserve careful qualification.",
 		searchCutoffAt: "2026-07-02T21:45:00.000Z",
@@ -2236,7 +2444,7 @@ const rawClaims: SeedClaim[] = [
 			"Lead in drinking water is sometimes treated as safe if a system is below an action level, even though the health goal for lead in water is zero."
 		],
 		editorSummary:
-			"This page should be blunt and practical: the consensus is not that every trace means an emergency, but that prevention and exposure reduction matter because no safe child threshold has been identified, including for lead contributed by plumbing or service lines.",
+			"The practical consensus is not that every trace means an emergency; it is that prevention and exposure reduction matter because no safe child threshold has been identified, including for lead from plumbing or service lines.",
 		searchCutoffAt: "2026-07-03T03:57:42.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:57:42.000Z",
 		changeLog: [
@@ -2355,7 +2563,7 @@ const rawClaims: SeedClaim[] = [
 			"Relative-risk headlines can make low-dose risks sound huge; absolute-risk context is still needed for individual decision-making."
 		],
 		editorSummary:
-			"This page should clarify the cancer-specific consensus while avoiding overreach into every possible alcohol-health debate. The public answer is not that one drink is an emergency; it is that alcohol is a causal cancer risk and lower intake lowers that risk.",
+			"The cancer-specific consensus is narrower than every alcohol-health debate: one drink is not an emergency, but alcohol is a causal cancer risk and lower intake lowers that risk.",
 		uncertaintySummary:
 			"The causal cancer-risk conclusion is strong, including for low levels of drinking. Uncertainty is mainly about communicating absolute risk, individual baseline risk, drinking patterns, and how cancer-specific guidance interacts with other health outcomes.",
 		searchCutoffAt: "2026-07-02T21:55:00.000Z",
@@ -2443,7 +2651,7 @@ const rawClaims: SeedClaim[] = [
 			"Standard drink examples can be misread as typical serving sizes, even though actual pours often contain more alcohol."
 		],
 		editorSummary:
-			"This page should be the beverage-type answer linked from the broader alcohol-cancer page. The key is not that every beverage is identical in every health respect; it is that ethanol-containing drinks share the cancer-risk exposure.",
+			"The beverage-type answer is not that every drink is identical in every health respect; it is that ethanol-containing drinks share the cancer-risk exposure.",
 		uncertaintySummary:
 			"The shared ethanol and cancer-risk conclusion is strong. Uncertainty is mostly about beverage-specific confounding, actual serving sizes, drinking patterns, and whether non-ethanol compounds have small effects that are outweighed by ethanol in real-world intake.",
 		searchCutoffAt: "2026-07-03T13:42:00.000Z",
@@ -2537,7 +2745,7 @@ const rawClaims: SeedClaim[] = [
 			"Potential cardiovascular findings are sometimes used to dismiss the separate and causal alcohol-cancer evidence."
 		],
 		editorSummary:
-			"This page should make threshold language usable. The public answer is a dose-response and risk-minimization answer, not an alarmist claim that all drinking patterns have equal consequences.",
+			"The usable threshold answer is dose-response and risk minimization, not an alarmist claim that all drinking patterns have equal consequences.",
 		uncertaintySummary:
 			"Agreement is broad for cancer-specific no-zero-risk-threshold framing, but exact low-dose risk estimates are still affected by observational confounding, exposure measurement, drinking patterns, cancer site, genetics, and baseline absolute risk.",
 		searchCutoffAt: "2026-07-03T13:42:00.000Z",
@@ -2643,7 +2851,7 @@ const rawClaims: SeedClaim[] = [
 			"Relative-risk numbers can sound small, but population impact is large because exposure is common and heart disease is common."
 		],
 		editorSummary:
-			"This page should be direct about causation while separating individual risk from population burden. The consensus is not just that smoke is unpleasant; it causes cancer, cardiovascular disease, respiratory illness, and preventable deaths in people who do not smoke.",
+			"The consensus is not just that secondhand smoke is unpleasant; it causes cancer, cardiovascular disease, respiratory illness, and preventable deaths in people who do not smoke.",
 		uncertaintySummary:
 			"The causal conclusion is strong. Remaining uncertainty is mostly about residual exposure measurement, setting-specific policy effectiveness, and how best to communicate risk without overstating precision for every disease endpoint.",
 		searchCutoffAt: "2026-07-02T22:51:14.000Z",
@@ -2736,7 +2944,7 @@ const rawClaims: SeedClaim[] = [
 			"Action levels are practical mitigation thresholds, not a bright line between safe and unsafe exposure."
 		],
 		editorSummary:
-			"This page should make the practical consensus clear: radon is measurable, reducible, and causally linked to lung cancer. The main public action is testing and mitigation, especially in homes with elevated levels and households with smokers.",
+			"Radon is measurable, reducible, and causally linked to lung cancer. The main public action is testing and mitigation, especially in homes with elevated levels and households with smokers.",
 		uncertaintySummary:
 			"The lung-cancer causal link is strong. Uncertainty is mainly about exact local exposure, individual lifetime risk, how risk behaves at very low levels, and how aggressively to mitigate below national action thresholds.",
 		searchCutoffAt: "2026-07-02T22:51:14.000Z",
@@ -2949,7 +3157,7 @@ const rawClaims: SeedClaim[] = [
 			"Homemade oils, beef tallow, or tanning routines are sometimes promoted as safer substitutes even though they do not provide regulated broad-spectrum UV protection."
 		],
 		editorSummary:
-			"This page should reduce fear without flattening the regulatory nuance. The useful answer is: keep using regulated sunscreen, choose mineral sunscreen if preferred, and do not treat 'more data needed' as a reason to abandon UV protection.",
+			"The useful answer is to keep using regulated sunscreen, choose mineral sunscreen if preferred, and not treat ingredient data gaps as a reason to abandon UV protection.",
 		uncertaintySummary:
 			"The recommendation to use sunscreen remains broad and stable. Uncertainty is concentrated in ingredient-specific data gaps, long-term exposure monitoring, and environmental effects, not in whether UV protection is beneficial.",
 		searchCutoffAt: "2026-07-02T22:42:05.000Z",
@@ -3042,7 +3250,7 @@ const rawClaims: SeedClaim[] = [
 			"Shade is sometimes treated as complete protection, but reflected and scattered UV can still reach skin."
 		],
 		editorSummary:
-			"This page should help users act, not just believe. It should make sunscreen feel like one useful tool in a simple hierarchy: avoid peak UV when possible, cover up, seek shade, and use sunscreen on exposed skin.",
+			"Sunscreen is one useful tool in a simple hierarchy: avoid peak UV when possible, cover up, seek shade, and use sunscreen on exposed skin.",
 		uncertaintySummary:
 			"The layered-protection recommendation is high-certainty. Remaining uncertainty is mostly behavioral: what people will actually do consistently, and how to tailor guidance without overcomplicating it.",
 		searchCutoffAt: "2026-07-02T22:42:05.000Z",
@@ -3122,7 +3330,7 @@ const rawClaims: SeedClaim[] = [
 			"Saving leftover antibiotics for a future cold can delay correct care and expose people to side effects or resistant bacteria."
 		],
 		editorSummary:
-			"This page should be useful at the moment someone wants antibiotics for a cold: antibiotics are not anti-virus drugs, but the page should also avoid implying that antibiotics are bad when they are genuinely indicated.",
+			"Antibiotics are not anti-virus drugs and do not treat colds or flu, but they remain important when a bacterial infection is suspected or confirmed.",
 		uncertaintySummary:
 			"The core viral-infection claim is settled. Uncertainty is mainly diagnostic and clinical: which symptoms, tests, patient risks, and follow-up plans justify antibiotics for a possible bacterial infection.",
 		searchCutoffAt: "2026-07-02T23:03:13.000Z",
@@ -3215,7 +3423,7 @@ const rawClaims: SeedClaim[] = [
 			"Red flags, severe or progressive neurologic deficits, trauma risk, cancer risk, infection concern, and cauda equina symptoms are different from uncomplicated low back pain."
 		],
 		editorSummary:
-			"This page should help readers understand why deferring early imaging can be evidence-based care, while making the safety exceptions explicit enough that the advice is not read as blanket imaging denial.",
+			"Deferring early imaging can be evidence-based care for uncomplicated low back pain, while red flags and result-changing specialist questions remain real safety exceptions.",
 		uncertaintySummary:
 			"The core claim is strong for uncomplicated low back pain without red flags. Uncertainty is mostly about implementation, red-flag accuracy, persistent symptoms, and how to communicate watchful waiting without making patients feel dismissed.",
 		searchCutoffAt: "2026-07-04T03:59:49.000Z",
@@ -3312,7 +3520,7 @@ const rawClaims: SeedClaim[] = [
 			"Stronger evidence for sleepiness and quality of life does not mean every cardiovascular or metabolic claim about CPAP is equally proven."
 		],
 		editorSummary:
-			"This page should give readers a practical treatment anchor: CPAP/PAP is evidence-based for diagnosed obstructive sleep apnea symptoms and breathing events, but cardiovascular-event prevention and one-size-fits-all benefit claims need caution.",
+			"CPAP/PAP is evidence-based for diagnosed obstructive sleep apnea symptoms and breathing events, but cardiovascular-event prevention and one-size-fits-all benefit claims need caution.",
 		uncertaintySummary:
 			"The symptom and apnea-severity benefit is well supported. Remaining uncertainty is mostly about hard cardiovascular outcomes, which subgroups benefit most, adherence thresholds, and how to personalize PAP versus alternative or adjunctive treatments.",
 		searchCutoffAt: "2026-07-04T04:06:44.000Z",
