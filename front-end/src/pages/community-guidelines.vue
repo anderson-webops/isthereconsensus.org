@@ -21,11 +21,11 @@ const quickPoints = [
 ];
 
 const conductRules = [
-	"Stay on the claim, the source, or the question. Do not use threads as general culture-war battlegrounds.",
-	"Argue from evidence, scope, and method rather than personal attacks or credential theater.",
+	"Stay on the claim, source, or question. Do not turn threads into general culture-war fights.",
+	"Argue from evidence, scope, and method instead of personal attacks or credential theater.",
 	"Do not post private personal information, threats, targeted harassment, or material that puts another person at risk.",
-	"Do not flood the site with repetitive submissions, duplicate claims, or coordinated attempts to distort attention or moderation.",
-	"Do not fabricate sources, fake credentials, or present clearly manipulated material as legitimate evidence."
+	"Do not flood the site with repetitive submissions, duplicate claims, or coordinated manipulation.",
+	"Do not fabricate sources, fake credentials, or present manipulated material as legitimate evidence."
 ];
 
 const flagReasons = [
@@ -41,15 +41,15 @@ const flagReasons = [
 const enforcementLadder = [
 	{
 		title: "Guidance or no action",
-		body: "Use this when the report is weak, unsubstantiated, or better handled by clarification rather than punishment."
+		body: "Use this when a report is weak, unsubstantiated, or better handled by clarification."
 	},
 	{
 		title: "Content-level action",
-		body: "Moderators may relabel, move, merge, hide, lock, or otherwise route specific content when the thread is still salvageable."
+		body: "Moderators may relabel, move, merge, hide, lock, or reroute content when the thread is still salvageable."
 	},
 	{
 		title: "Temporary restrictions",
-		body: "Posting cooldowns, slow mode, topic-specific limits, or restricted participation can be used when behavior is disruptive but not yet severe enough for removal."
+		body: "Cooldowns, slow mode, topic limits, or restricted participation can handle disruptive behavior before removal."
 	},
 	{
 		title: "Topic or interaction bans",
@@ -57,21 +57,21 @@ const enforcementLadder = [
 	},
 	{
 		title: "Suspension or removal",
-		body: "Serious or repeated abuse, coordinated manipulation, threats, or privacy violations can lead to account suspension or permanent removal."
+		body: "Serious or repeated abuse, coordinated manipulation, threats, or privacy violations can lead to suspension or removal."
 	}
 ];
 
 const highConflictControls = [
-	"slow mode or temporary locks when a thread becomes too fast or repetitive to moderate well",
+	"slow mode or temporary locks when a thread moves too fast or repeats itself",
 	"expert-only or editorial-summary windows when a factual dispute needs controlled synthesis",
 	"topic bans for repeat offenders who derail the same subject area",
 	"quarantine or admin-only escalation for legal, safety, or severe harassment cases"
 ];
 
 const appeals = [
-	"Moderation appeals should explain what action is being challenged and provide new context rather than repeating the same argument.",
-	"Accuracy disputes about reviewed pages should usually go through the corrections path rather than the abuse-appeal path.",
-	"The site may decline repeated appeals that do not add new information or that are obviously abusive."
+	"Explain what action is being challenged and provide new context instead of repeating the same argument.",
+	"Send accuracy disputes about reviewed pages through corrections, not abuse appeals.",
+	"The site may decline repeated appeals that add no new information or are obviously abusive."
 ];
 
 useStaticPageMeta({
@@ -367,6 +367,10 @@ useStaticPageMeta({
 		gap: 10px;
 	}
 
+	.summary-card {
+		gap: 5px;
+	}
+
 	.guidelines-header p,
 	.section-heading p,
 	.summary-card p,
@@ -382,7 +386,7 @@ useStaticPageMeta({
 	}
 
 	.plain-list {
-		gap: 8px;
+		gap: 6px;
 		padding-left: 18px;
 	}
 
