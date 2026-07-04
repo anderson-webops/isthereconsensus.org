@@ -18242,18 +18242,18 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 92,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Yes. Four-sided isolation fencing with a self-closing, self-latching gate reduces young children's unsupervised access to pools and is a core drowning-prevention measure. It works as a physical layer of protection, not as a replacement for close supervision, swim skills, life jackets where appropriate, CPR readiness, and safe behavior around water.",
+			"Yes. Four-sided isolation fencing with a self-closing, self-latching gate reduces young children's unsupervised pool access and is a core drowning-prevention layer. It does not replace close supervision, swim skills, life jackets where appropriate, CPR readiness, and safe behavior around water.",
 		stableCore: [
-			"CDC recommends a four-sided fence at least four feet high that fully encloses the pool, separates it from the house, and uses self-closing, self-latching gates.",
-			"AAP recommends isolating pools from the house and yard with a four-foot, four-sided fence and emphasizes multiple prevention layers because no single method prevents drowning.",
-			"A Cochrane review found lower drowning or near-drowning odds for fenced versus unfenced pools, and lower odds for isolation fencing than three-sided property-line fencing.",
-			"CPSC guidance says barriers are not child-proof but add time when supervision lapses; a fence completely surrounding the pool is better than using the house as the fourth side.",
-			"Newer reviews support barriers around water bodies and regulations requiring pool fencing, while noting that evidence is strongest for young children and residential pools."
+			"CDC recommends a four-sided fence at least four feet high that encloses the pool, separates it from the house, and has self-closing, self-latching gates.",
+			"AAP recommends isolating pools from the house and yard with a four-foot, four-sided fence and using multiple prevention layers because no single method prevents drowning.",
+			"A Cochrane review found lower drowning or near-drowning odds for fenced pools than unfenced pools, and lower odds for isolation fencing than three-sided fencing.",
+			"CPSC says barriers are not child-proof but add time when supervision lapses; fully surrounding the pool is better than using the house as one side.",
+			"Newer reviews support barriers and pool-fencing rules, while noting evidence is strongest for young children and residential pools."
 		],
 		openQuestions: [
-			"How can local codes, inspections, subsidies, and rental-property rules increase compliant fencing without leaving lower-income families behind?",
-			"Which combinations of fences, alarms, covers, swim lessons, supervision, life jackets, CPR training, and lifeguards work best in different communities?",
-			"How should prevention guidance adapt for portable pools, above-ground pools, hot tubs, natural water, children with autism or wandering risk, and settings outside the child's own home?"
+			"How can codes, inspections, subsidies, and rental-property rules increase compliant fencing without leaving lower-income families behind?",
+			"Which combinations of fences, alarms, covers, swim lessons, supervision, life jackets, CPR training, and lifeguards work best by setting?",
+			"How should guidance adapt for portable pools, above-ground pools, hot tubs, natural water, autism or wandering risk, and settings away from home?"
 		],
 		whatWouldChangeMinds: [
 			"Large, well-controlled drowning surveillance showing no reduction in child drowning or near-drowning risk with compliant four-sided isolation fencing.",
@@ -18267,9 +18267,9 @@ const rawClaims: SeedClaim[] = [
 			"Alarms, covers, or door locks can add layers, but they are not simple substitutes for a maintained, self-latching isolation fence."
 		],
 		editorSummary:
-			"Pool fencing is a practical consensus page: the strongest claim is about limiting unsupervised access by young children, while the public guidance should keep the full layers-of-protection message intact.",
+			"Four-sided pool fencing is best presented as a passive access barrier for young children, used with supervision and other water-safety layers.",
 		uncertaintySummary:
-			"The direction of benefit is strong for young children and residential pools, but exact effect size depends on fence design, gate function, maintenance, local enforcement, supervision, pool type, child age, exposure time, and whether studies compare against no fence or three-sided perimeter fencing.",
+			"The benefit direction is strongest for young children and residential pools. Exact size depends on fence design, gate function, maintenance, enforcement, supervision, pool type, child age, exposure time, and whether studies compare against no fence or three-sided fencing.",
 		searchDatabases: ["Consensus", "CDC", "AAP", "CPSC"],
 		searchCutoffAt: "2026-07-04T22:05:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:05:00.000Z",
@@ -18331,7 +18331,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/drowning/prevention/index.html",
 				stance: "supports",
 				note:
-					"CDC guidance recommending four-sided pool fencing, self-closing and self-latching gates, close supervision, swim skills, and life jackets.",
+					"CDC guidance recommending four-sided pool fencing, self-closing and self-latching gates, supervision, swim skills, and life jackets.",
 				order: 1
 			},
 			{
@@ -18343,7 +18343,7 @@ const rawClaims: SeedClaim[] = [
 					"https://publications.aap.org/pediatrics/article/158/1/e2026077410/207630/Prevention-of-Drowning-Policy-Statement",
 				stance: "supports",
 				note:
-					"AAP policy source recommending four-sided isolation fencing with self-closing, self-latching gates and multiple prevention layers.",
+					"AAP policy recommending four-sided isolation fencing with self-closing, self-latching gates and multiple prevention layers.",
 				order: 2
 			},
 			{
@@ -18353,7 +18353,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cpsc.gov/s3fs-public/362%20Safety%20Barrier%20Guidelines%20for%20Pools.pdf",
 				stance: "supports",
 				note:
-					"CPSC barrier-design guidance explaining why a fence fully surrounding the pool is better than using the house as the fourth side, with gate and opening specifications.",
+					"CPSC barrier guidance explaining why fully surrounding the pool is safer than using the house as one side, with gate and opening specifications.",
 				order: 3
 			},
 			{
@@ -18365,7 +18365,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/pool-fencing-for-preventing-drowning-in-children-thompson-rivara/e40e766208f856a3ba9b2b4281267eae/",
 				stance: "supports",
 				note:
-					"Consensus-fetched Cochrane review estimating lower drowning or near-drowning odds for fenced pools and stronger protection from four-sided isolation fencing.",
+					"Consensus-fetched Cochrane review estimating lower drowning or near-drowning odds for fenced pools and four-sided isolation fencing.",
 				order: 4
 			},
 			{
@@ -18377,7 +18377,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/effectiveness-of-interventions-to-prevent-drowning-among-ashraf-zia/c17b8852361d505483547e8c5199abbb/",
 				stance: "context",
 				note:
-					"Consensus-fetched scoping review supporting barriers around water bodies, first-responder training, personal flotation devices, and regulations while calling for more implementation evidence.",
+					"Consensus-fetched scoping review supporting barriers, first-responder training, flotation devices, and regulations while calling for implementation evidence.",
 				order: 5
 			},
 			{
@@ -18389,7 +18389,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/prevention-of-drowning-technical-report-shenoi-mccallin/f49ed3f3e42950d2a8b2e02f0fe3d293/",
 				stance: "supports",
 				note:
-					"Consensus-fetched AAP technical report stating that no single method prevents drowning and listing four-sided isolation fencing among proven prevention strategies.",
+					"Consensus-fetched AAP technical report stating no single method prevents drowning and listing four-sided fencing among proven strategies.",
 				order: 6
 			},
 			{
@@ -18401,7 +18401,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/unrealised-potential-of-pool-fencing-and-life-jackets-to-peterson-ayangunna/245a2a21fff3527e9ca2f9df055aa79b/",
 				stance: "context",
 				note:
-					"Consensus-fetched modeling study estimating the preventable U.S. burden from inadequate pool isolation fencing and life-jacket nonuse, useful for public-health context rather than primary effect size.",
+					"Consensus-fetched modeling study estimating preventable U.S. drowning burden from inadequate pool isolation fencing and life-jacket nonuse.",
 				order: 7
 			}
 		]
