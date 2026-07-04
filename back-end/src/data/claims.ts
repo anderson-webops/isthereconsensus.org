@@ -9189,28 +9189,79 @@ const rawClaims: SeedClaim[] = [
 		slug: "were-most-stomach-ulcers-caused-by-stress-rather-than-bacteria",
 		status: "published",
 		consensusBand: "strong",
-		confidenceScore: 95,
+		confidenceScore: 96,
+		evidenceCertainty: "high",
 		bottomLine:
-			"No. The dominant consensus shifted when strong evidence showed that many peptic ulcers are caused by Helicobacter pylori infection rather than by stress or spicy food alone.",
+			"No. The dominant medical view shifted when evidence showed that Helicobacter pylori infection is a common cause of peptic ulcers and that NSAIDs are another major cause. Stress and spicy foods can worsen symptoms for some people, but they are not the main causal explanation that replaced the bacterial model.",
 		stableCore: [
-			"H. pylori transformed ulcer treatment because it explained a large share of cases that older narratives did not handle well.",
+			"NIDDK identifies H. pylori infection and NSAID use as the most common causes of peptic ulcers, with other causes uncommon or rare.",
+			"H. pylori transformed ulcer treatment because it explained many cases that older stress-and-acid narratives did not handle well.",
 			"This was not a case of science randomly flipping; it was a case of new evidence outperforming an older model.",
-			"The old stress-and-lifestyle story had some intuitive appeal, but the bacterial evidence changed the causal center of the field."
+			"Modern H. pylori guidance focuses on diagnosing infection, choosing eradication therapy in light of antibiotic resistance, and confirming eradication after treatment.",
+			"The old stress-and-lifestyle story had intuitive appeal, but the bacterial evidence changed the causal center of the field while leaving room for symptom triggers and noninfectious ulcer pathways."
 		],
 		openQuestions: [
 			"How should historical reversals be explained so people learn from them without assuming every modern consensus is equally fragile?",
-			"Which institutional or cultural habits made the older ulcer model so sticky?"
+			"Which institutional or cultural habits made the older ulcer model so sticky?",
+			"How should public summaries explain H. pylori without implying that every ulcer is infectious or that NSAID risk is secondary?"
 		],
 		whatWouldChangeMinds: [
-			"Strong contradictory evidence showing H. pylori is not a major causal contributor across ulcer populations.",
-			"A better model that explains treatment success and ulcer recurrence without bacterial infection playing a central role."
+			"Strong contradictory evidence showing H. pylori is not a major causal contributor across ulcer populations and that eradication does not meaningfully affect recurrence or complications.",
+			"A better model that explains treatment success, ulcer recurrence, gastritis, and guideline practice without bacterial infection playing a central role.",
+			"Major gastroenterology guidelines abandoning H. pylori testing and eradication for relevant ulcer patients."
 		],
 		misconceptions: [
 			"People often retell this case as if stress had nothing to do with symptoms or healing, when the real shift was about the primary cause of many ulcers.",
+			"The bacterial model is sometimes overstated as if NSAIDs, critical illness, cancer, and rare idiopathic ulcers do not exist.",
 			"A real historical correction is sometimes used to imply that current expert consensus is always likely to be overturned just as easily."
 		],
 		editorSummary:
 			"This is one of the clearest examples of evidence changing minds for the right reason: the new explanation fit the data and changed treatment outcomes.",
+		uncertaintySummary:
+			"The historical correction is settled: H. pylori is a major cause of peptic ulcer disease and eradication changed routine care. Remaining uncertainty is mostly about regional resistance, best treatment regimens, non-H. pylori ulcers, and how to teach the case without making all consensus sound fragile.",
+		searchDatabases: ["Consensus", "PubMed", "NIDDK / NIH", "ACG guidance"],
+		searchCutoffAt: "2026-07-04T19:10:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T19:10:00.000Z",
+		evidenceSummaries: [
+			{
+				question: "Were most stomach ulcers caused by stress rather than bacteria?",
+				population:
+					"People with peptic ulcer disease and historical claims about the stress-versus-infection explanation for ulcers.",
+				finding:
+					"H. pylori infection and NSAID exposure are now treated as central causal pathways for peptic ulcer disease; stress and spicy foods may affect symptoms but do not explain the major causal shift.",
+				effectDirection: "supports",
+				magnitude:
+					"The shift was large enough to change routine diagnosis and treatment from symptom suppression alone toward infection testing, eradication therapy when present, and confirmation of cure.",
+				certainty: "high",
+				limitations: [
+					"H. pylori prevalence, antibiotic resistance, and preferred treatment regimens vary by region.",
+					"Not every ulcer is caused by H. pylori; NSAIDs and other uncommon causes remain clinically important.",
+					"Historical case studies need care because genuine reversals do not mean every current consensus is weak."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "NIDDK / NIH",
+				role: "Current public-health explanation of peptic-ulcer causes"
+			},
+			{
+				name: "American College of Gastroenterology",
+				role: "Clinical guideline anchor for H. pylori treatment and eradication confirmation"
+			},
+			{
+				name: "Nobel Prize",
+				role: "Historical anchor for the Warren and Marshall discovery"
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T19:10:00.000Z",
+				kind: "update",
+				summary:
+					"Expanded the ulcer historical case with current NIDDK, ACG, Nobel, Lancet, and global-guideline context while preserving the historical correction framing."
+			}
+		],
 		sources: [
 			{
 				kind: "landmark_study",
@@ -9226,15 +9277,61 @@ const rawClaims: SeedClaim[] = [
 			},
 			{
 				kind: "guideline",
+				title: "Symptoms & Causes of Peptic Ulcers (Stomach or Duodenal Ulcers)",
+				publisher: "National Institute of Diabetes and Digestive and Kidney Diseases",
+				year: 2022,
+				url: "https://www.niddk.nih.gov/health-information/digestive-diseases/peptic-ulcers-stomach-ulcers/symptoms-causes",
+				stance: "supports",
+				note:
+					"NIDDK identifies H. pylori infection and NSAID use as the most common causes of peptic ulcers and distinguishes them from uncommon causes.",
+				order: 2
+			},
+			{
+				kind: "guideline",
 				title: "ACG Clinical Guideline: Treatment of Helicobacter pylori Infection",
 				publisher: "American Journal of Gastroenterology",
-				year: 2017,
-				url: "https://doi.org/10.1038/ajg.2016.563",
-				doi: "10.1038/ajg.2016.563",
-				pmid: "28071659",
+				year: 2024,
+				url: "https://doi.org/10.14309/ajg.0000000000002968",
+				doi: "10.14309/ajg.0000000000002968",
+				pmid: "39626064",
 				stance: "supports",
-				note: "Helpful for showing how the new causal model became routine clinical practice.",
-				order: 2
+				note:
+					"Current ACG treatment guideline context; ACG summary emphasizes optimized bismuth quadruple therapy, avoiding empiric clarithromycin triple therapy without susceptibility, and confirming eradication.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Barry J. Marshall - Facts",
+				publisher: "NobelPrize.org",
+				year: 2005,
+				url: "https://www.nobelprize.org/prizes/medicine/2005/marshall/facts/",
+				stance: "supports",
+				note:
+					"Nobel Prize historical context for Warren and Marshall's discovery of H. pylori and its role in gastritis and peptic ulcer disease.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Peptic ulcer disease",
+				publisher: "The Lancet",
+				year: 2024,
+				url: "https://consensus.app/papers/peptic-ulcer-disease-almadi-lu/3c2e12426a91505bb19b4e7bb5f8701b/",
+				stance: "supports",
+				note:
+					"Current review summarizing peptic ulcer disease as usually attributable to H. pylori infection, medications such as aspirin and NSAIDs, critical illness, or idiopathic causes.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "A scoping review of worldwide guidelines for diagnosis and treatment of Helicobacter pylori infection",
+				publisher: "Systematic Reviews",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/a-scoping-review-of-worldwide-guidelines-for-diagnosis-and-sun-liu/d290c96e0ee652d58128ef1f7f5153ce/",
+				stance: "context",
+				note:
+					"Review of 25 global guidelines finding foundational consensus around diagnosis and treatment while preserving regional differences in indications, diagnostics, and regimens.",
+				order: 6
 			}
 		]
 	},
