@@ -9336,6 +9336,186 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "historical-case-studies",
+		title: "Did removing lead from gasoline really lower children's lead exposure?",
+		slug: "did-removing-lead-from-gasoline-lower-childrens-lead-exposure",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 97,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Leaded gasoline was a major population source of lead exposure, and phasing it out was followed by large, measured declines in blood lead levels, especially in children. That success did not make lead exposure disappear: old paint, dust, soil, plumbing, aviation fuel, industry, and imported products can still matter locally.",
+		stableCore: [
+			"Lead is a neurotoxin, and public-health agencies do not identify a safe blood lead level for children.",
+			"Leaded gasoline added lead to air, dust, and soil at population scale, making it more than an individual household problem.",
+			"U.S. NHANES data show children's average blood lead levels fell dramatically after major source controls, including the phaseout of leaded gasoline.",
+			"An updated international systematic review found that removing lead from automotive gasoline was associated with population blood lead declines in all countries examined.",
+			"The historical lesson is not that regulation solved every lead problem; it is that removing a large environmental source produced measurable public-health benefit."
+		],
+		openQuestions: [
+			"Which remaining sources drive exposure in a specific community: older housing, contaminated soil, drinking-water plumbing, industrial emissions, aviation gasoline, spices, ceramics, cosmetics, or informal recycling?",
+			"How should cities prioritize remediation when population averages are low but exposure remains concentrated by poverty, race, housing age, and local industry?",
+			"How much did lower lead exposure affect long-term outcomes beyond blood lead levels, such as school performance, behavior, earnings, or crime?"
+		],
+		whatWouldChangeMinds: [
+			"High-quality time-series and exposure evidence showing that blood lead declines occurred independently of gasoline lead removal and were better explained by unrelated factors.",
+			"International evidence showing no consistent population blood lead response after leaded gasoline phaseouts.",
+			"A toxicology reassessment showing that childhood lead exposure at the observed levels was not harmful after all."
+		],
+		misconceptions: [
+			"People sometimes treat leaded gasoline as a minor historical nuisance rather than a major population exposure source.",
+			"A successful gasoline phaseout is sometimes mistaken for proof that childhood lead exposure is no longer a serious issue.",
+			"Blood lead reference values and drinking-water action levels are often misread as safe thresholds rather than triggers for public-health action.",
+			"Claims about broad social effects of lead exposure can be more uncertain than the core claims that lead harms children and that gasoline phaseout reduced exposure."
+		],
+		editorSummary:
+			"This historical case should connect the site's existing lead-health page to a concrete public-health success: source removal changed measured exposure, while legacy and local sources still require prevention.",
+		uncertaintySummary:
+			"The core claim is strong: leaded gasoline was a major exposure source, its removal was followed by large blood-lead declines, and childhood lead exposure is harmful. Remaining uncertainty concerns the size of downstream social effects, local source attribution, and how to prioritize remediation where exposure persists.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Gasoline phaseout reduced a large shared source, but communities still need local source identification and remediation."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Population averages can hide remaining high exposure in older housing, lower-income communities, and places near ongoing sources."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Blood lead declines are direct exposure evidence; broader social outcomes require more assumptions and are more debated in magnitude."
+			}
+		],
+		searchDatabases: ["Consensus", "CDC", "EPA", "WHO", "NHANES"],
+		searchCutoffAt: "2026-07-04T21:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T21:00:00.000Z",
+		inclusionRules: [
+			"Prioritize population blood lead data, systematic reviews of gasoline phaseout, public-health agency summaries, and child-development evidence.",
+			"Distinguish measured exposure declines from broader social-effect claims that depend on longer causal chains.",
+			"Keep legacy lead paint, plumbing, soil, industrial, aviation, and imported-product exposure in view."
+		],
+		exclusionRules: [
+			"Do not use crime-trend claims as primary evidence that gasoline lead phaseout worked.",
+			"Do not treat a falling national average as proof that every community is now protected.",
+			"Do not use action levels, reference values, or regulatory thresholds as if they defined a safe level."
+		],
+		evidenceSummaries: [
+			{
+				question: "Did removing lead from gasoline lower population blood lead exposure?",
+				population: "Children and adults exposed before, during, and after automotive leaded-gasoline phaseouts",
+				finding:
+					"Population blood lead levels fell sharply after major source controls, and a 2022 systematic review found declines associated with leaded-gasoline removal in every country it examined.",
+				effectDirection: "supports",
+				magnitude:
+					"U.S. children ages 1 to 5 had geometric mean blood lead levels fall from 15.2 micrograms per deciliter in 1976-1980 to 0.83 in 2011-2016.",
+				certainty: "high",
+				limitations: [
+					"Other source controls, including lead-soldered cans and paint restrictions, also contributed to declines.",
+					"National trends do not identify every local source that still exposes children.",
+					"Evidence for downstream life-course outcomes is important but less direct than blood lead measurements."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health anchor for childhood lead exposure, no-safe-level framing, and blood lead surveillance."
+			},
+			{
+				name: "U.S. Environmental Protection Agency",
+				role: "Regulatory and historical anchor for the U.S. on-road leaded-gasoline phaseout."
+			},
+			{
+				name: "World Health Organization",
+				role: "Global public-health anchor for lead toxicity and child-development risk."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T21:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial leaded-gasoline historical case published from CDC, EPA, WHO, NHANES, and Consensus-located review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Relation of blood lead levels and lead in gasoline: an updated systematic review",
+				publisher: "Environmental Health",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/relation-of-blood-lead-levels-and-lead-in-gasoline-an-angrand-collins/73fbf53be91857219da29fc2eaf19633/",
+				stance: "supports",
+				note:
+					"International review finding that automotive leaded-gasoline removal was associated with population blood lead declines in all countries examined.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "The decline in blood lead levels in the United States. The National Health and Nutrition Examination Surveys",
+				publisher: "JAMA",
+				year: 1994,
+				url:
+					"https://consensus.app/papers/the-decline-in-blood-lead-levels-in-the-united-states-pirkle-brody/07d98749784c5c6cb6782704dd37849a/",
+				stance: "supports",
+				note:
+					"NHANES analysis reporting a 78% U.S. population blood-lead decline from 1976-1980 to 1988-1991, most likely driven by removal of lead from gasoline and soldered cans.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Blood Lead Levels in U.S. Children Ages 1-11 Years, 1976-2016",
+				publisher: "Environmental Health Perspectives",
+				year: 2021,
+				url: "https://doi.org/10.1289/EHP7932",
+				doi: "10.1289/EHP7932",
+				pmid: "33439082",
+				pmcid: "PMC8115408",
+				stance: "supports",
+				note:
+					"Forty-year NHANES analysis showing U.S. children's geometric mean blood lead levels fell by about 95%, while remaining risk clustered by race, poverty, and housing age.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "EPA Takes Final Step in Phaseout of Leaded Gasoline",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 1996,
+				url: "https://www.epa.gov/archive/epa/aboutepa/epa-takes-final-step-phaseout-leaded-gasoline.html",
+				stance: "supports",
+				note:
+					"EPA historical source for the U.S. Clean Air Act ban on remaining on-road leaded gasoline effective January 1, 1996, and the agency's phaseout timeline.",
+				order: 4
+			},
+			{
+				kind: "guideline",
+				title: "About Childhood Lead Poisoning Prevention",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/lead-prevention/about/index.html",
+				stance: "context",
+				note:
+					"Current CDC context that no safe blood lead level has been identified for children and that common exposures include paint, dust, food, water, and contaminated soil.",
+				order: 5
+			},
+			{
+				kind: "guideline",
+				title: "Lead poisoning",
+				publisher: "World Health Organization",
+				year: 2026,
+				url: "https://www.who.int/news-room/fact-sheets/detail/lead-poisoning-and-health",
+				stance: "context",
+				note:
+					"Global public-health context for lead's effects on children's brain development and the absence of a known safe blood lead concentration.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "consensus-foundations",
 		title: "How does scientific consensus form?",
 		slug: "how-does-scientific-consensus-form",
