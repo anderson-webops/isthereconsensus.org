@@ -17983,23 +17983,23 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 96,
 		evidenceCertainty: "high",
 		bottomLine:
-			"Yes. Correctly worn seat belts substantially reduce death and serious-injury risk for passenger-vehicle occupants. They keep people positioned, spread crash forces across stronger body areas, help airbags work as intended, and reduce ejection. They do not prevent crashes, and children still need age- and size-appropriate restraints or belt fit.",
+			"Yes. Correctly worn seat belts substantially reduce death and serious-injury risk for passenger-vehicle occupants. They keep people positioned, spread crash forces across stronger body areas, help airbags work, and reduce ejection. They do not prevent crashes, and children still need age- and size-appropriate restraints or belt fit.",
 		stableCore: [
-			"CDC says seat belts are the most effective way for adults and older children to prevent injury or death in crashes, reducing serious crash-related injuries and deaths by about half.",
+			"CDC says seat belts are the most effective way for adults and older children to prevent crash injury or death, reducing serious injuries and deaths by about half.",
 			"NHTSA estimates lap-and-shoulder belts reduce fatal injury risk for front-seat passenger-car occupants by 45% and moderate-to-critical injury risk by 50%; for light-truck occupants, the corresponding reductions are 60% and 65%.",
 			"Airbags add protection but do not replace belts; NHTSA and CDC describe the safest setup as using seat belts in vehicles equipped with airbags.",
-			"A 2018 meta-analysis of cohort studies found lower major-injury risk among belted occupants, while noting heterogeneity and less certain estimates for some body regions.",
-			"Another meta-analysis estimated fatal and non-fatal injury reductions of about 60% for front-seat occupants and 44% for rear-seat occupants, while noting behavior-related confounding."
+			"A 2018 cohort-study meta-analysis found lower major-injury risk among belted occupants, with heterogeneity and less certain estimates for some body regions.",
+			"Another meta-analysis estimated fatal and non-fatal injury reductions of about 60% for front-seat occupants and 44% for rear-seat occupants, with behavior-related confounding caveats."
 		],
 		openQuestions: [
 			"Which combinations of reminders, vehicle design, education, and law enforcement increase belt use without creating inequitable enforcement harms?",
-			"How should restraint systems be improved for rear seats, older adults, pregnant occupants, people with disabilities, and occupants whose body size makes standard belts fit poorly?",
-			"How do effectiveness estimates vary by vehicle type, seating position, crash direction, rollover risk, belt fit, and whether a child should be in a booster or child restraint instead?"
+			"How should restraint systems improve for rear seats, older adults, pregnant occupants, disabilities, and body sizes that standard belts fit poorly?",
+			"How do estimates vary by vehicle type, seating position, crash direction, rollover risk, belt fit, and whether a child needs a booster or car seat?"
 		],
 		whatWouldChangeMinds: [
-			"Large, well-adjusted crash datasets showing no meaningful reduction in death or serious injury among correctly belted occupants compared with otherwise similar unbelted occupants.",
+			"Large, well-adjusted crash datasets showing no meaningful death or serious-injury reduction among correctly belted occupants versus similar unbelted occupants.",
 			"Major NHTSA, CDC, WHO, or transportation-safety reassessments withdrawing seat belts as a core occupant-protection recommendation.",
-			"Evidence that belt-related harms or population-level risk compensation offset the fatal and serious-injury reductions seen in crash, surveillance, and meta-analytic evidence."
+			"Evidence that belt-related harms or population-level risk compensation offset the fatal and serious-injury reductions seen in crash and review evidence."
 		],
 		misconceptions: [
 			"Airbags are not a substitute for seat belts; they are designed to work with belts.",
@@ -18008,7 +18008,7 @@ const rawClaims: SeedClaim[] = [
 			"Adult seat belts are not enough for children who need a car seat or booster to make the belt fit correctly."
 		],
 		editorSummary:
-			"This page should make the everyday safety consensus visible without implying that belts prevent crashes or guarantee survival. The public message is simple: every occupant, every trip, with the right restraint for age and size.",
+			"The consensus is practical: every occupant, every trip, with the right restraint for age and size. Belts reduce injury severity; they do not prevent crashes or guarantee survival.",
 		uncertaintySummary:
 			"The direction of benefit is very strong. Effect size varies by crash severity, crash direction, vehicle type, seating position, belt fit, correct use, age, body size, airbags, and confounding from other risky driving behaviors.",
 		searchCutoffAt: "2026-07-04T20:08:01.000Z",
@@ -18029,7 +18029,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.nhtsa.gov/vehicle-safety/seat-belts",
 				stance: "supports",
 				note:
-					"NHTSA public-safety anchor for fatal and moderate-to-critical injury reductions, airbag complementarity, short-trip myths, and proper child seat-belt fit.",
+					"NHTSA anchor for fatal and moderate-to-critical injury reductions, airbag complementarity, short-trip myths, and child belt fit.",
 				order: 1
 			},
 			{
@@ -18040,7 +18040,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/seat-belts/facts/index.html",
 				stance: "supports",
 				note:
-					"CDC public-health source stating that seat belts are the most effective way for adults and older children to prevent crash injury or death, reducing serious injuries and deaths by about half.",
+					"CDC source stating that seat belts are the most effective way for adults and older children to prevent crash injury or death.",
 				order: 2
 			},
 			{
@@ -18087,7 +18087,7 @@ const rawClaims: SeedClaim[] = [
 					"https://consensus.app/papers/education-incentive-and-engineeringbased-interventions-lourens-sinclair/51a596d68410533db65779127006f7a6/",
 				stance: "context",
 				note:
-					"Consensus-fetched Cochrane review of interventions to increase seat-belt use; useful for implementation caveats rather than crash-injury effect size.",
+					"Consensus-fetched Cochrane review of interventions to increase seat-belt use, useful for implementation caveats rather than effect size.",
 				order: 6
 			}
 		]
@@ -18402,6 +18402,180 @@ const rawClaims: SeedClaim[] = [
 				stance: "context",
 				note:
 					"Consensus-fetched modeling study estimating preventable U.S. drowning burden from inadequate pool isolation fencing and life-jacket nonuse.",
+				order: 7
+			}
+		]
+	},
+	{
+		topicSlug: "other-questions",
+		title: "Do life jackets reduce drowning deaths while boating?",
+		slug: "do-life-jackets-reduce-drowning-deaths-while-boating",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Properly fitted, serviceable, U.S. Coast Guard-approved life jackets reduce drowning risk while boating, especially when someone unexpectedly enters the water. Protection depends on wearing the right device for the person and activity; it does not replace sober operation, boating instruction, weather checks, supervision, or rescue readiness.",
+		stableCore: [
+			"CDC says life jackets reduce drowning risk while boating for people of all ages and swimming abilities, and that children should use them around natural water.",
+			"The U.S. Coast Guard's 2024 recreational boating report said drowning accounted for three-quarters of boating deaths and 87% of drowning victims were not wearing life jackets.",
+			"Coast Guard guidance requires an approved wearable PFD for each person onboard and says wearable PFDs save lives only when worn, sized, accessible, and serviceable.",
+			"A matched cohort analysis of Coast Guard data estimated an adjusted risk ratio of 0.51 for drowning death among recreational boaters wearing a PFD, with missing-data limitations.",
+			"Life-jacket wear reviews and mandatory-PFD policy studies show that design, comfort, alcohol use, adult modeling, regulation, and enforcement shape real-world protection."
+		],
+		openQuestions: [
+			"Which mandates, loaner programs, designs, and education campaigns increase adult wear without making life jackets unaffordable or poorly fitted?",
+			"How should guidance differ for paddling, standup paddleboards, cold water, offshore boating, children, weak swimmers, and inflatable life jackets?",
+			"How can boating safety messages connect life jackets with sober operation, weather checks, engine cutoff switches, supervision, and boating instruction?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled boating datasets showing no lower drowning risk among people wearing appropriate, serviceable life jackets in otherwise similar incidents.",
+			"Major CDC, U.S. Coast Guard, AAP, or water-safety reassessments withdrawing life jackets as a core boating-drowning prevention measure.",
+			"Evidence that life-jacket promotion or mandates reliably increase risky behavior enough to offset drowning reductions."
+		],
+		misconceptions: [
+			"Having life jackets stored on the boat is not the same as wearing them when conditions change suddenly.",
+			"Swimming ability does not remove boating drowning risk; injury, cold, fatigue, alcohol, waves, and distance from help can overwhelm strong swimmers.",
+			"Air-filled toys, noodles, and water wings are not life jackets or approved boating safety devices.",
+			"Adult-sized life jackets do not work properly for children; fit, label, activity type, and condition matter."
+		],
+		editorSummary:
+			"Life jackets are clearest as a worn, fitted, activity-appropriate drowning-prevention layer for boating, not as generic flotation or a substitute for safer boating behavior.",
+		uncertaintySummary:
+			"The benefit direction is strong, but exact size is observational and depends on incident severity, boat type, water temperature, alcohol use, swimming ability, injury, device fit, whether the jacket was worn and fastened, and incomplete incident records.",
+		searchDatabases: ["Consensus", "CDC", "U.S. Coast Guard", "AAP"],
+		searchCutoffAt: "2026-07-04T22:27:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:27:00.000Z",
+		inclusionRules: [
+			"Prioritize public-health guidance, U.S. Coast Guard boating statistics, matched incident analyses, systematic reviews of life-jacket wear, and evaluated policy changes.",
+			"Separate wearing a life jacket from merely having one onboard.",
+			"Separate Coast Guard-approved life jackets and buoyancy aids from air-filled toys or unsupported flotation products."
+		],
+		exclusionRules: [
+			"Do not use life-jacket vendor marketing as effectiveness evidence.",
+			"Do not imply life jackets eliminate the need for supervision, sober operation, weather checks, boating instruction, or rescue preparation.",
+			"Do not generalize boating evidence to every swimming, flood, or occupational-water setting without direct support."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do life jackets reduce boating drowning deaths?",
+				population: "Recreational boaters and passengers, including children and weak swimmers",
+				finding:
+					"Public-health guidance, Coast Guard statistics, and incident-based observational studies support wearing appropriate life jackets as a core way to reduce boating drowning risk.",
+				effectDirection: "supports",
+				magnitude:
+					"A matched cohort analysis of U.S. Coast Guard data estimated adjusted RR 0.51 for drowning death when wearing a PFD; the 2024 Coast Guard report found 87% of boating drowning victims with known jacket status were not wearing one.",
+				certainty: "moderate",
+				limitations: [
+					"Randomized trials are not realistic for this question, so evidence relies on observational and policy-change data.",
+					"Incident datasets can have missing life-jacket status and confounding by weather, alcohol, boat type, risk behavior, and swimming ability.",
+					"Protection depends on the device being worn, fitted, fastened, approved, serviceable, and suitable for the activity."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "CDC",
+				role: "Public-health guidance anchor for drowning prevention, life jackets, supervision, swim skills, and alcohol avoidance."
+			},
+			{
+				name: "U.S. Coast Guard",
+				role: "Boating-safety anchor for recreational boating fatality statistics, PFD carriage rules, child-wear rules, fit, serviceability, and wear guidance."
+			},
+			{
+				name: "American Academy of Pediatrics",
+				role: "Pediatric guidance anchor for children's life-jacket use on watercraft and layered drowning prevention."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:27:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial life-jacket boating-drowning prevention claim page published from CDC, U.S. Coast Guard, AAP, and Consensus-located incident, review, and policy sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Preventing Drowning",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/drowning/prevention/index.html",
+				stance: "supports",
+				note:
+					"CDC guidance stating life jackets reduce boating drowning risk for all ages and swimming abilities, with supervision and alcohol-avoidance context.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Coast Guard reports fewest boating fatalities in more than 50 years",
+				publisher: "U.S. Coast Guard",
+				year: 2025,
+				url:
+					"https://www.news.uscg.mil/Press-Releases/Article/4231745/coast-guard-reports-fewest-boating-fatalities-in-more-than-50-years/",
+				stance: "supports",
+				note:
+					"Official 2024 recreational boating statistics release reporting 556 deaths, three-quarters from drowning, and 87% of drowning victims not wearing life jackets.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Life Jacket Wear / Wearing your Life Jacket",
+				publisher: "U.S. Coast Guard Boating Safety Division",
+				url: "https://uscgboating.org/recreational-boaters/life-jacket-wear-wearing-your-life-jacket.php",
+				stance: "supports",
+				note:
+					"Coast Guard guidance on approved wearable PFDs, child-wear rules, fit, serviceability, accessibility, and why wearing matters.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Association between wearing a personal floatation device and death by drowning among recreational boaters: a matched cohort analysis of United States Coast Guard data",
+				publisher: "Injury Prevention",
+				year: 2010,
+				url:
+					"https://consensus.app/papers/association-between-wearing-a-personal-floatation-device-cummings-mueller/9301604c52085552b92320c195c34358/",
+				stance: "supports",
+				note:
+					"Consensus-fetched matched cohort analysis estimating adjusted RR 0.51 for drowning death among recreational boaters wearing a PFD.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Personal, social, and environmental factors associated with lifejacket wear in adults and children: A systematic literature review",
+				publisher: "PLoS ONE",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/personal-social-and-environmental-factors-associated-peden-demant/cda252ed0de951d1a4a6669df0e1866c/",
+				stance: "context",
+				note:
+					"Consensus-fetched review of factors linked to life-jacket wear, including age, boat type, adult role modeling, discomfort, cost, alcohol use, and access.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Effectiveness of the 2005 compulsory personal flotation device (PFD) wearing regulations in reducing drowning deaths among recreational boaters in Victoria, Australia",
+				publisher: "Injury Prevention",
+				year: 2014,
+				url:
+					"https://consensus.app/papers/effectiveness-of-the-2005-compulsory-personal-flotation-bugeja-cassell/c3798bf397295e4bbd1ea2c52122220e/",
+				stance: "supports",
+				note:
+					"Consensus-fetched before-after policy study finding fewer recreational boating drowning deaths after compulsory PFD-wearing rules in Victoria, Australia.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "Unrealised potential of pool fencing and life jackets to prevent US drownings",
+				publisher: "Injury Prevention",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/unrealised-potential-of-pool-fencing-and-life-jackets-to-peterson-ayangunna/245a2a21fff3527e9ca2f9df055aa79b/",
+				stance: "context",
+				note:
+					"Consensus-fetched modeling study estimating preventable U.S. drowning burden from pool isolation fencing and life-jacket wear while boating.",
 				order: 7
 			}
 		]
