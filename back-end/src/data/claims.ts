@@ -16992,6 +16992,204 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does iodized salt prevent iodine deficiency disorders?",
+		slug: "does-iodized-salt-prevent-iodine-deficiency-disorders",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Iodized salt is a safe, low-cost population strategy for preventing iodine deficiency disorders, including goiter and preventable neurodevelopmental harm. The practical caveat is monitoring: iodization should be calibrated alongside sodium-reduction goals so iodine intake is adequate but not excessive, and pregnant or breastfeeding people may still need individualized supplement guidance.",
+		stableCore: [
+			"WHO recommends that all food-grade salt used in households and food processing be fortified with iodine as a safe and effective strategy to prevent and control iodine deficiency disorders.",
+			"WHO says iodine is essential for healthy brain development in fetuses and young children, and that salt-reduction goals are compatible with iodization when iodine concentration and population iodine status are monitored.",
+			"UNICEF describes universal salt iodization as the most widely used strategy for improving population iodine intake and preventing iodine deficiency disorders over the last 30 years.",
+			"NIH ODS states that iodine deficiency is the most common cause of preventable intellectual disability worldwide and that deficiency during pregnancy and early infancy can have irreversible effects.",
+			"Systematic review and meta-analysis evidence found iodized salt reduced goiter, cretinism, low cognitive-function outcomes, and low urinary iodine, while rating the evidence from very low to moderate depending on outcome and study design."
+		],
+		openQuestions: [
+			"How should countries adjust iodine concentration in salt as sodium-reduction policies change the amount of salt people eat?",
+			"Which monitoring systems best identify both iodine deficiency and excess in pregnant people, infants, children, and other vulnerable groups?",
+			"How should public-health programs reach people who use little iodized salt, mostly eat processed foods made with noniodized salt, or prefer specialty salts that are not fortified?"
+		],
+		whatWouldChangeMinds: [
+			"Major WHO, UNICEF, NIH, or comparable public-health reassessments withdrawing universal or population salt-iodization guidance after reviewing newer evidence.",
+			"High-quality evidence showing that monitored iodized-salt programs do not improve iodine status or iodine-deficiency outcomes compared with no iodization.",
+			"Strong evidence that monitored population iodization causes net harms greater than the benefits of preventing deficiency disorders."
+		],
+		misconceptions: [
+			"Iodized salt is not a reason to eat more salt; the goal is adequate iodine intake while still reducing excess sodium.",
+			"Iodine deficiency is not only a thyroid-neck issue; fetal and early-child brain development are central reasons for prevention.",
+			"More iodine is not automatically better, which is why WHO emphasizes monitoring that keeps intake adequate but not excessive.",
+			"Pregnancy and breastfeeding can require more iodine than usual, so iodized salt alone may not be enough for every person."
+		],
+		editorSummary:
+			"Iodized salt is a major iodine-deficiency prevention tool, not an argument against sodium reduction; both goals depend on coordinated monitoring.",
+		uncertaintySummary:
+			"The public-health direction is strong: iodized salt improves iodine status and prevents iodine-deficiency disorders. The exact cognitive effect size, best iodine level, excess-risk monitoring, and pregnancy/lactation supplementation needs vary by population, baseline iodine status, diet, and salt policy.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Program effects depend on salt coverage, iodine concentration, enforcement, dietary salt sources, and whether processed-food salt is iodized."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence from historically iodine-deficient regions may not transfer directly to already iodine-sufficient populations."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Direct cognitive-outcome estimates come from heterogeneous study designs and are less precise than iodine-status and goiter outcomes."
+			}
+		],
+		searchDatabases: ["Consensus", "WHO", "UNICEF", "NIH ODS", "CDC"],
+		searchCutoffAt: "2026-07-04T22:06:55.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:06:55.000Z",
+		inclusionRules: [
+			"Prioritize public-health guidelines, systematic reviews, population-monitoring evidence, and sources that distinguish deficiency prevention from permission to increase sodium intake.",
+			"Separate population salt-iodization policy from individualized iodine supplementation advice during pregnancy or breastfeeding.",
+			"Report iodine-deficiency outcomes such as goiter, cretinism, urinary iodine status, neurodevelopment, and pregnancy-related risks without treating all populations as equally deficient."
+		],
+		exclusionRules: [
+			"Do not frame iodized salt as a reason to increase total salt intake.",
+			"Do not use commercial supplement or specialty-salt marketing as evidence.",
+			"Do not imply that iodine supplementation is universally appropriate without pregnancy, lactation, diet, thyroid disease, and excess-intake context."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does iodized salt prevent iodine deficiency disorders?",
+				population:
+					"Populations with inadequate iodine intake or iodine-deficiency risk, including children, pregnant people, and communities covered by salt-iodization programs.",
+				finding:
+					"Iodized salt improves iodine status and reduces classic iodine-deficiency outcomes, while safe implementation requires iodine-status monitoring and coordination with sodium-reduction programs.",
+				effectDirection: "supports",
+				magnitude:
+					"A WHO systematic review with meta-analyses reported lower goiter risk across nonrandomized, cohort, and repeated cross-sectional evidence, lower cretinism and low cognitive-function outcomes in cross-sectional or quasi-experimental evidence, and higher urinary iodine after iodized-salt exposure.",
+				certainty: "moderate",
+				limitations: [
+					"Evidence quality varied by outcome and study design, from very low to moderate.",
+					"Most direct evidence comes from settings where iodine deficiency was common or program coverage changed substantially.",
+					"Population benefit depends on monitoring so intake is neither too low nor too high."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Primary global guideline anchor for food-grade salt iodization, monitoring, and compatibility with sodium reduction."
+			},
+			{
+				name: "UNICEF",
+				role: "Global child-nutrition and salt-iodization coverage anchor for iodine-deficiency prevention."
+			},
+			{
+				name: "National Institutes of Health Office of Dietary Supplements",
+				role: "U.S. clinical-nutrition anchor for iodine physiology, deficiency effects, pregnancy risk, and excess-intake context."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "U.S. public-health anchor for iodine needs during pregnancy and breastfeeding."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:06:55.000Z",
+				kind: "publication",
+				summary:
+					"Initial iodized-salt and iodine-deficiency disorders page published from WHO, UNICEF, NIH ODS, CDC, and Consensus-located systematic review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Iodization of salt for the prevention and control of iodine deficiency disorders",
+				publisher: "World Health Organization",
+				year: 2023,
+				url: "https://www.who.int/tools/elena/interventions/salt-iodization",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"WHO eLENA source recommending iodine fortification of food-grade salt and explaining that sodium reduction and adequate iodine intake are compatible with monitoring.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Iodine",
+				publisher: "UNICEF Data",
+				year: 2023,
+				url: "https://data.unicef.org/topic/nutrition/iodine/",
+				stance: "supports",
+				note:
+					"UNICEF source describing iodine-deficiency harms, global iodized-salt coverage, and universal salt iodization as the dominant strategy for improving population iodine intake.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Iodine: Fact Sheet for Health Professionals",
+				publisher: "National Institutes of Health Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/Iodine-HealthProfessional/",
+				stance: "supports",
+				note:
+					"NIH ODS clinical-nutrition source for iodine physiology, deficiency consequences, pregnancy-risk groups, and the need for continued monitoring.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Iodine and Breastfeeding",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url:
+					"https://www.cdc.gov/breastfeeding-special-circumstances/hcp/diet-micronutrients/iodine.html",
+				stance: "context",
+				note:
+					"CDC source for pregnancy and breastfeeding iodine needs, deficiency risks, and supplement guidance from professional societies.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effect and safety of salt iodization to prevent iodine deficiency disorders: a systematic review with meta-analyses",
+				publisher: "World Health Organization",
+				year: 2014,
+				url:
+					"https://consensus.app/papers/effect-and-safety-of-salt-iodization-to-prevent-iodine-aburto-abudou/03d975e78abc5ca9ac92cbdd9db8937d/",
+				stance: "supports",
+				note:
+					"WHO systematic review with meta-analyses finding iodized salt reduced goiter, cretinism, low cognitive-function outcomes, and iodine deficiency, with evidence quality varying by study design and outcome.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "The remarkable impact of iodisation programmes on global public health",
+				publisher: "Proceedings of the Nutrition Society",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/the-remarkable-impact-of-iodisation-programmes-on-global-zimmermann/46466c3cc96a5ad58889500489422751/",
+				stance: "supports",
+				note:
+					"Review of global salt-iodization programs describing widespread iodized-salt use, improved national iodine sufficiency, and the need for careful monitoring.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "Iodine and Mental Development of Children 5 Years Old and Under: A Systematic Review and Meta-Analysis",
+				publisher: "Nutrients",
+				year: 2013,
+				url:
+					"https://consensus.app/papers/iodine-and-mental-development-of-children-5-years-old-and-bougma-aboud/769d0afe76865d009b0d72e4c2b88aad/",
+				stance: "context",
+				note:
+					"Systematic review and meta-analysis linking iodine deficiency with lower mental-development measures in children five and under, while noting methodological limits and the need for better trials.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "health-and-medicine",
 		title: "Does sustained HIV viral suppression prevent sexual transmission?",
 		slug: "does-sustained-hiv-viral-suppression-prevent-sexual-transmission",
