@@ -3991,6 +3991,117 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do medications for opioid use disorder reduce overdose deaths?",
+		slug: "do-medications-for-opioid-use-disorder-reduce-overdose-deaths",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		bottomLine:
+				"Yes. Evidence-based medications for opioid use disorder, especially methadone and buprenorphine when people remain in treatment, substantially reduce overdose-related and overall mortality. They are medical treatment, not simply replacing one addiction with another. Naltrexone is also FDA-approved, but mortality evidence is less consistent and depends heavily on successful initiation and retention.",
+		stableCore: [
+			"CDC says medications for opioid use disorder include buprenorphine, methadone, and extended-release naltrexone, and that buprenorphine and methadone substantially reduce overdose-related and overall mortality.",
+			"SAMHSA describes buprenorphine, methadone, and naltrexone as FDA-approved evidence-based OUD medications that relieve cravings and withdrawal, restore normal body functions, and do not just substitute one drug for another.",
+			"A BMJ meta-analysis of cohort studies found much lower all-cause and overdose mortality while people were in methadone or buprenorphine treatment than when they were out of treatment.",
+			"A JAMA Psychiatry systematic review and meta-analysis found all-cause mortality during opioid agonist treatment was less than half the mortality observed outside treatment, with lower drug-related mortality as well."
+		],
+		openQuestions: [
+			"Which medication and delivery model works best for a specific patient, including people using fentanyl, people with unstable housing, pregnant patients, and people leaving jail or prison?",
+			"How can health systems improve treatment retention and reduce risk during induction, missed doses, discontinuation, and transitions between care settings?",
+			"How can access barriers, stigma, pharmacy stocking limits, prior authorization, treatment-program availability, and racial or geographic disparities be reduced?"
+		],
+		whatWouldChangeMinds: [
+			"Large updated reviews showing that methadone and buprenorphine no longer reduce overdose-related or overall mortality when compared with no medication or non-medication treatment.",
+			"Major CDC, SAMHSA, FDA, WHO, or addiction-medicine guideline revisions withdrawing medications as evidence-based OUD treatment.",
+			"Strong evidence that harms from guideline-concordant methadone or buprenorphine treatment outweigh mortality and retention benefits for most indicated patients."
+		],
+		misconceptions: [
+			"MOUD is often dismissed as replacing one addiction with another; public-health agencies describe these medications as evidence-based treatment that normalizes function and reduces cravings and overdose risk.",
+			"Detoxification without ongoing medication can leave people at higher overdose risk after tolerance falls, especially after treatment interruption or release from controlled settings.",
+			"Naloxone can reverse an overdose, but it is not a substitute for ongoing OUD treatment."
+		],
+		editorSummary:
+				"This page should connect the naloxone rescue page to longer-term treatment. The strong consensus is that methadone and buprenorphine reduce mortality for people with OUD; the difficult questions are access, retention, medication choice, and safe transitions.",
+		uncertaintySummary:
+				"The mortality direction is strong for methadone and buprenorphine, mostly from large cohort evidence and systematic reviews because randomized withholding would often be unethical. Evidence differs by medication, with naltrexone more sensitive to successful induction and retention, and individual treatment choice should remain clinical and patient-centered.",
+		searchCutoffAt: "2026-07-04T03:40:21.000Z",
+		lastRetractionCheckAt: "2026-07-04T03:40:21.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T03:40:21.000Z",
+				kind: "publication",
+				summary:
+						"Initial MOUD mortality claim page published from CDC, SAMHSA, and mortality meta-analysis/cohort sources."
+			}
+		],
+		sources: [
+			{
+				kind: "context",
+				title: "Treatment for Opioid Use Disorder: Population Estimates — United States, 2022",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/mmwr/volumes/73/wr/mm7325a1.htm",
+				stance: "supports",
+				note:
+						"MMWR anchor reporting that buprenorphine and methadone substantially reduce overdose-related and overall mortality, while only 25.1% of U.S. adults needing OUD treatment received medications in 2022.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Medications for Substance Use Disorders",
+				publisher: "Substance Abuse and Mental Health Services Administration",
+				year: 2025,
+				url: "https://www.samhsa.gov/substance-use/treatment/options",
+				stance: "supports",
+				note:
+						"Current SAMHSA treatment overview stating that buprenorphine, methadone, and naltrexone are FDA-approved evidence-based OUD medications that relieve cravings and withdrawal and do not just substitute one drug for another.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Mortality risk during and after opioid substitution treatment: systematic review and meta-analysis of cohort studies",
+				publisher: "The BMJ",
+				year: 2017,
+				url: "https://doi.org/10.1136/bmj.j1550",
+				doi: "10.1136/bmj.j1550",
+				pmid: "28446428",
+				pmcid: "PMC5421454",
+				stance: "supports",
+				note:
+						"Meta-analysis of 19 cohorts finding substantially lower all-cause and overdose mortality during methadone and buprenorphine treatment than out of treatment, with high-risk periods around induction and after cessation.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+						"Association of Opioid Agonist Treatment With All-Cause Mortality and Specific Causes of Death Among People With Opioid Dependence",
+				publisher: "JAMA Psychiatry",
+				year: 2021,
+				url: "https://doi.org/10.1001/jamapsychiatry.2021.0976",
+				doi: "10.1001/jamapsychiatry.2021.0976",
+				pmid: "34076676",
+				stance: "supports",
+				note:
+						"Systematic review and meta-analysis of RCTs and cohort studies finding all-cause mortality during opioid agonist treatment was less than half that observed outside treatment, with lower drug-related mortality.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Medication for Opioid Use Disorder After Nonfatal Opioid Overdose and Association With Mortality",
+				publisher: "Annals of Internal Medicine",
+				year: 2018,
+				url: "https://doi.org/10.7326/M17-3107",
+				doi: "10.7326/M17-3107",
+				pmid: "29913516",
+				pmcid: "PMC6387681",
+				stance: "supports",
+				note:
+						"Massachusetts cohort of 17,568 adults after nonfatal overdose finding methadone maintenance and buprenorphine were associated with lower all-cause and opioid-related mortality; naltrexone estimates were too sparse for confident conclusions.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does naloxone reverse opioid overdoses and save lives?",
 		slug: "does-naloxone-reverse-opioid-overdoses-and-save-lives",
 		status: "published",
