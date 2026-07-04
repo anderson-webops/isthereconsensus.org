@@ -10526,6 +10526,219 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "historical-case-studies",
+		title: "Did oral rehydration therapy save lives from diarrheal disease?",
+		slug: "did-oral-rehydration-therapy-save-lives-from-diarrheal-disease",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 98,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Oral rehydration solution and therapy are among the clearest low-cost public-health successes: they prevent and treat the dehydration that kills many children with diarrheal disease. The caveat is practical, not conceptual: ORS has to be available, mixed correctly with safe water, paired with feeding and zinc where recommended, and escalated to medical care when dehydration is severe or complicated.",
+		stableCore: [
+			"Most deaths from acute diarrheal illness are caused by dehydration, which can often be prevented or reversed by replacing water and salts.",
+			"WHO estimates that ORS alone can prevent 93% of deaths due to diarrhea in children under five, and that zinc supplementation can further reduce diarrheal mortality.",
+			"WHO and UNICEF recommend lower-osmolarity ORS and zinc as core parts of childhood diarrhea management, alongside continued feeding, breastfeeding when applicable, and selective antibiotic use only when indicated.",
+			"CDC guidance says oral rehydration plus early nutritional support has proven effective worldwide for treating acute diarrhea in children.",
+			"Historical and implementation studies link ORT scale-up with large declines in under-five diarrheal mortality, while also showing that coverage remains incomplete in many settings."
+		],
+		openQuestions: [
+			"How can health systems close persistent gaps in ORS and zinc access, caregiver knowledge, correct mixing, and timely use?",
+			"Which packaging, co-packing, supply-chain, and behavior-change strategies best increase use without replacing safe-water, sanitation, vaccination, and nutrition programs?",
+			"How should guidance adapt for severe acute malnutrition, cholera outbreaks, shock, persistent vomiting, or other situations where standard home ORS may not be enough?"
+		],
+		whatWouldChangeMinds: [
+			"Major WHO, UNICEF, CDC, or pediatric guideline bodies withdrawing ORS as a first-line treatment for uncomplicated mild-to-moderate diarrheal dehydration.",
+			"Large, high-quality mortality and clinical evidence showing that correctly used ORS does not prevent dehydration deaths or reduce need for intravenous rehydration.",
+			"A better physiological and clinical model explaining diarrheal dehydration outcomes without sodium-glucose oral rehydration as an effective treatment pathway."
+		],
+		misconceptions: [
+			"ORS is not just 'any sugary drink.' The salt, glucose, and water balance matters, and incorrect mixing can be dangerous.",
+			"ORS treats dehydration; it does not automatically treat the infection or toxin causing diarrhea.",
+			"Using ORS does not mean withholding food. Modern guidance emphasizes continued feeding and breastfeeding when appropriate.",
+			"Severe dehydration, shock, severe malnutrition, bloody diarrhea, cholera, or persistent vomiting can require urgent clinical care and sometimes intravenous fluids or antibiotics."
+		],
+		editorSummary:
+			"This page should present oral rehydration therapy as a high-confidence historical public-health case: simple physiology, strong mortality relevance, and a continuing implementation gap.",
+		uncertaintySummary:
+			"The core clinical and public-health conclusion is strong: ORS/ORT saves lives by preventing and treating diarrheal dehydration. Remaining uncertainty is mostly implementation and special populations: coverage, correct preparation, water safety, zinc uptake, severe malnutrition, cholera, shock, and when to escalate to facility-based care.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Effectiveness depends on access, caregiver knowledge, correct mixing, safe water, zinc availability, continued feeding, and timely escalation for danger signs."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Standard ORS guidance is strongest for mild-to-moderate dehydration; severe malnutrition, shock, cholera, or persistent vomiting can require modified protocols or intravenous care."
+			},
+			{
+				type: "other",
+				detail:
+					"Historical mortality attribution is strong but not isolated from simultaneous improvements in vaccination, nutrition, sanitation, health access, and case management."
+			}
+		],
+		searchDatabases: ["Consensus", "WHO", "UNICEF", "CDC", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-04T22:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T22:55:00.000Z",
+		inclusionRules: [
+			"Prioritize WHO/UNICEF guidance, CDC pediatric gastroenteritis guidance, mortality meta-analysis, and implementation reviews.",
+			"Keep ORS effectiveness separate from broader diarrheal-disease prevention measures such as vaccines, WASH, nutrition, and antibiotics when indicated.",
+			"Include caveats for severe dehydration, severe acute malnutrition, cholera, and other high-risk presentations."
+		],
+		exclusionRules: [
+			"Do not equate ORS with sports drinks, soda, juice, or unmeasured homemade mixtures.",
+			"Do not imply that ORS cures every cause of diarrhea or replaces urgent care for danger signs.",
+			"Do not use charity or product-marketing pages as decision-weight evidence unless they cite primary guidance or systematic reviews."
+		],
+		evidenceSummaries: [
+			{
+				question: "Did oral rehydration therapy save lives from diarrheal disease?",
+				population:
+					"Children and adults with acute diarrheal illness, with highest mortality relevance for children under five in low-resource settings.",
+				finding:
+					"ORS and ORT prevent and treat dehydration, reduce need for escalation in many children with diarrheal dehydration, and are linked with large reductions in diarrheal mortality when scaled through public-health programs.",
+				effectDirection: "supports",
+				magnitude:
+					"WHO cites an estimate that ORS alone can prevent 93% of deaths due to diarrhea; a 2010 mortality meta-analysis reached the same 93% estimate for children under five.",
+				certainty: "high",
+				limitations: [
+					"Mortality impact depends on correct use, access, and timely escalation for severe illness.",
+					"Historical mortality declines also reflect other child-survival improvements, so exact attribution varies by setting.",
+					"Special populations such as severely malnourished children need additional protocol-specific evidence and monitoring."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Global ORS, zinc, diarrhea-treatment, and child-survival indicator anchor"
+			},
+			{
+				name: "UNICEF",
+				role: "Supply, implementation, and child-survival program anchor"
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Clinical guidance anchor for pediatric acute gastroenteritis and oral rehydration"
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-04T22:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial oral rehydration therapy historical case published from WHO, UNICEF, CDC, and Consensus-located mortality and implementation reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Children <5 years with diarrhoea receiving oral rehydration solution (ORS)",
+				publisher: "World Health Organization",
+				url:
+					"https://www.who.int/data/nutrition/nlis/info/children-5-years-with-diarrhoea-receiving-oral-rehydration-solution-%28ors%29",
+				stance: "supports",
+				note:
+					"WHO child-health indicator page stating that most childhood diarrheal deaths could be averted with ORS, zinc, and WASH, and citing the 93% ORS mortality-prevention estimate.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical management of acute diarrhoea: WHO/UNICEF joint statement",
+				publisher: "World Health Organization / UNICEF",
+				year: 2004,
+				url: "https://www.who.int/publications/i/item/WHO_FCH_CAH_04.7",
+				stance: "supports",
+				note:
+					"Joint guidance recommending lower-osmolarity ORS and zinc, with continued feeding, breastfeeding, dehydration prevention and treatment, and selective antibiotic use.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Managing Acute Gastroenteritis Among Children: Oral Rehydration, Maintenance, and Nutritional Therapy",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2003,
+				url: "https://www.cdc.gov/mmwr/preview/mmwrhtml/rr5216a1.htm",
+				pmid: "14627948",
+				stance: "supports",
+				note:
+					"CDC clinical guidance reviewing the physiologic basis for ORT and stating that oral rehydration plus early nutritional support has proven effective worldwide.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "The effect of oral rehydration solution and recommended home fluids on diarrhoea mortality",
+				publisher: "International Journal of Epidemiology",
+				year: 2010,
+				url:
+					"https://consensus.app/papers/the-effect-of-oral-rehydration-solution-and-recommended-munos-walker/05d7f9527d8f5ca4822309a64bf1530c/?utm_source=chatgpt",
+				doi: "10.1093/ije/dyq025",
+				pmid: "20348131",
+				pmcid: "PMC2845864",
+				citationCheckedAt: "2026-07-04T22:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review and meta-analysis estimating that ORS may prevent 93% of diarrhea deaths in children under five.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Reducing deaths from diarrhoea through oral rehydration therapy",
+				publisher: "Bulletin of the World Health Organization",
+				year: 2000,
+				url:
+					"https://consensus.app/papers/reducing-deaths-from-diarrhoea-through-oral-rehydration-victora-bryce/894deef1a46156b1823b14647f187730/?utm_source=chatgpt",
+				citationCheckedAt: "2026-07-04T22:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-fetched WHO Bulletin review linking ORT program scale-up with a fall in under-five diarrhea deaths from about 4.6 million in 1980 to about 1.5 million by 2000.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Reduced osmolarity oral rehydration solution for treating dehydration due to diarrhoea in children: systematic review",
+				publisher: "BMJ",
+				year: 2001,
+				url:
+					"https://consensus.app/papers/reduced-osmolarity-oral-rehydration-solution-for-hahn-kim/9f8f28f16ae75feea3e27c46e872bac9/?utm_source=chatgpt",
+				doi: "10.1136/bmj.323.7304.81",
+				pmid: "11451782",
+				pmcid: "PMC34348",
+				citationCheckedAt: "2026-07-04T22:55:00.000Z",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review of 15 randomized trials finding reduced-osmolarity ORS lowered unscheduled intravenous infusion, stool output, and vomiting versus older WHO ORS.",
+				order: 6
+			},
+			{
+				kind: "systematic_review",
+				title: "Barriers and facilitators to implementation of oral rehydration therapy in low- and middle-income countries",
+				publisher: "PLOS ONE",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/barriers-and-facilitators-to-implementation-of-oral-ezezika-ragunathan/9391a1e7589159c3b83526a4bfd56cab/?utm_source=chatgpt",
+				citationCheckedAt: "2026-07-04T22:55:00.000Z",
+				stance: "context",
+				note:
+					"Consensus-fetched implementation systematic review identifying availability, accessibility, awareness, partnerships, and acceptability as key barriers and facilitators.",
+				order: 7
+			},
+			{
+				kind: "context",
+				title: "Oral rehydration salts (ORS) and zinc",
+				publisher: "UNICEF Supply Division",
+				year: 2026,
+				url: "https://www.unicef.org/supply/oral-rehydration-salts-ors-and-zinc",
+				stance: "context",
+				note:
+					"Current UNICEF supply context describing ORS and zinc as low-cost treatments, giving affordability and delivery context, and reporting 2024 ORS supply volumes.",
+				order: 8
+			}
+		]
+	},
+	{
 		topicSlug: "consensus-foundations",
 		title: "How does scientific consensus form?",
 		slug: "how-does-scientific-consensus-form",
