@@ -394,7 +394,7 @@ async function handleChangePassword() {
 	align-items: start;
 	gap: 0;
 	width: 100%;
-	max-width: 940px;
+	max-width: 1040px;
 	padding: 0;
 	border: 0;
 	border-radius: 0;
@@ -405,9 +405,9 @@ async function handleChangePassword() {
 .setting-card {
 	width: 100%;
 	display: grid;
-	grid-template-columns: minmax(180px, 260px) minmax(0, 520px);
+	grid-template-columns: minmax(230px, 300px) minmax(0, 640px);
 	align-content: start;
-	column-gap: 24px;
+	column-gap: 28px;
 	row-gap: 12px;
 	min-width: 0;
 	max-width: none;
@@ -433,6 +433,8 @@ async function handleChangePassword() {
 	color: var(--consensus-muted);
 	font-size: 0.95rem;
 	line-height: 1.45;
+	overflow-wrap: normal;
+	hyphens: none;
 }
 
 .field-stack {
@@ -447,12 +449,14 @@ async function handleChangePassword() {
 }
 
 .setting-card__fields--inline {
-	grid-template-columns: 1fr;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: end;
 }
 
 .setting-card__fields--password {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	align-items: start;
+	max-width: 640px;
 }
 
 .account-form input {
@@ -485,7 +489,7 @@ async function handleChangePassword() {
 	min-width: 0;
 	max-width: 100%;
 	min-height: 40px;
-	padding: 0 14px;
+	padding: 0 16px;
 	border-radius: 10px;
 	font-size: 0.95rem;
 	line-height: 1.2;
@@ -493,9 +497,15 @@ async function handleChangePassword() {
 }
 
 .account-form .button--primary {
-	background: color-mix(in srgb, var(--consensus-ember) 18%, var(--consensus-surface));
-	border-color: color-mix(in srgb, var(--consensus-ember) 58%, var(--consensus-line));
-	color: var(--consensus-ink);
+	background: var(--consensus-ember);
+	border-color: var(--consensus-ember);
+	color: var(--consensus-on-accent);
+}
+
+.account-form .button:disabled {
+	opacity: 0.48;
+	cursor: not-allowed;
+	transform: none;
 }
 
 .auth-form .button {
