@@ -398,14 +398,72 @@ function claimCardSummary(claim: ClaimSummary) {
 }
 
 @media (max-width: 820px) {
+	.topic-page {
+		gap: 18px;
+	}
+
+	.topic-page__header,
+	.claim-lane,
+	.queue-note {
+		padding: 18px;
+		border-radius: 16px;
+	}
+
+	.claim-list {
+		gap: 10px;
+		margin-top: 14px;
+	}
+
 	.claim-row {
 		grid-template-columns: 1fr;
-		padding: 16px;
+		gap: 10px;
+		padding: 14px;
+		border-radius: 14px;
+	}
+
+	.claim-row h3 {
+		line-height: 1.16;
+	}
+
+	.claim-row p {
+		line-height: 1.5;
+	}
+
+	.claim-row__meta {
+		gap: 6px 8px;
+		font-size: 0.74rem;
+		letter-spacing: 0.05em;
+		line-height: 1.35;
+	}
+
+	.claim-row__summary {
+		-webkit-line-clamp: 2;
 	}
 
 	.claim-row__score {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
 		justify-self: start;
+		min-width: 0;
+		padding: 7px 10px;
+		border-radius: 999px;
 		text-align: left;
+	}
+
+	.claim-row__score strong {
+		font-size: 1rem;
+	}
+
+	.claim-row__caveat {
+		display: -webkit-box;
+		overflow: hidden;
+		margin-top: 7px;
+		padding-top: 7px;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		font-size: 0.9rem;
+		line-height: 1.45;
 	}
 
 	.topic-page__actions {
