@@ -10972,6 +10972,214 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "science-communication",
+		title: "Does communicating uncertainty destroy public trust in science?",
+		slug: "does-communicating-uncertainty-destroy-public-trust-in-science",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 85,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Usually no. Honest uncertainty communication does not reliably destroy trust in science, and in some settings it can protect trust by showing transparency and preparing people for updates. The caveat is important: vague uncertainty, conflict framing, politicized topics, and uncertainty about low-quality evidence can reduce confidence or be exploited by motivated actors. The best-supported approach is specific, quantified, decision-relevant uncertainty paired with what is known, what is not known, and what will be updated.",
+		stableCore: [
+			"Communicating uncertainty often makes people perceive more uncertainty, but large experiments and reviews generally find little or no overall damage to trust in the communicator or source.",
+			"A 2026 systematic review of 24 articles found uncertainty communication generally had a positive impact on trust in science, while downplaying uncertainty may foster distrust.",
+			"A 2026 systematic review and meta-analysis of 28 experimental studies found no overall effect of uncertainty communication on trust in the source, with most studies yielding null results.",
+			"A 2025 Science Communication meta-analysis of 43 empirical articles found small positive credibility effects for epistemic uncertainty, while consensus and technical uncertainty had slightly negative attitude effects without reducing credibility.",
+			"Reviews distinguish uncertainty about measurement ranges or probabilities from uncertainty framed as scientific disagreement or conflict; disagreement framing is more likely to harm credibility or beliefs.",
+			"Vague statements that uncertainty exists can perform worse than quantified ranges or clear explanations of why evidence is uncertain."
+		],
+		openQuestions: [
+			"Which uncertainty formats work best for different audiences, topics, cultures, and levels of numeracy?",
+			"When does uncertainty disclosure help people make better decisions, and when does it mainly lower uptake of useful guidance?",
+			"How should communicators handle uncertainty in politicized settings where interest groups may weaponize normal scientific caveats?",
+			"How durable are trust effects after evidence changes, public agencies revise advice, or opponents attack the uncertainty language?"
+		],
+		whatWouldChangeMinds: [
+			"Large preregistered field experiments showing that transparent, specific uncertainty communication routinely lowers trust more than clear but less transparent communication across science domains.",
+			"Meta-analyses showing consistent negative trust effects for quantified or well-explained uncertainty, not just vague caveats or conflict framing.",
+			"Evidence that downplaying uncertainty produces better long-term trust after evidence updates, corrections, or policy changes."
+		],
+		misconceptions: [
+			"Some communicators assume that any admission of uncertainty makes the public stop trusting science.",
+			"The opposite error is dumping caveats without structure, leaving people with the impression that nothing is known.",
+			"Uncertainty does not mean ignorance; it can mean a measured range, limited evidence quality, unresolved mechanism, or a known boundary on current confidence.",
+			"Scientific disagreement is not the same type of uncertainty as a confidence interval, and audiences respond differently to those frames."
+		],
+		editorSummary:
+			"This page should support the site's tone: credible summaries should not pretend certainty is higher than it is, but uncertainty needs structure, context, and decision relevance rather than vague hedging.",
+		uncertaintySummary:
+			"The broad conclusion is that transparent uncertainty communication usually does not destroy source trust. Effects vary by uncertainty type, wording, topic politicization, prior beliefs, evidence quality, and whether the uncertainty is quantified or merely asserted.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Numeric ranges, evidence-quality labels, explanations of why evidence is uncertain, and vague statements that uncertainty exists can produce different audience reactions."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Much of the experimental evidence uses online samples, hypothetical messages, or specific topics such as COVID-19, climate, vaccines, statistics, or nuclear power."
+			},
+			{
+				type: "bias",
+				detail:
+					"Prior beliefs, identity, politicization, and motivated actors can shape whether uncertainty is read as transparency or as a reason to dismiss the message."
+			},
+			{
+				type: "timing",
+				detail:
+					"Immediate trust ratings may differ from longer-term trust after evidence changes, guidance updates, or public controversy."
+			}
+		],
+		searchDatabases: ["Consensus", "Crossref"],
+		searchCutoffAt: "2026-07-04T18:35:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, meta-analyses, preregistered experiments, and large survey or field experiments on uncertainty communication and trust.",
+			"Separate epistemic, technical, consensus, and evidence-quality uncertainty because they can move trust, attitudes, and decisions differently.",
+			"Distinguish source trust, number trust, perceived credibility, factual belief, attitudes, policy support, and behavior."
+		],
+		exclusionRules: [
+			"Do not treat uncertainty communication as a universal trust-builder or a universal trust-destroyer.",
+			"Do not collapse normal quantified uncertainty into conflict framing or false balance.",
+			"Do not imply that transparency alone solves distrust when the audience is affected, polarized, or exposed to organized misinformation."
+		],
+		appraisalTools: [
+			"Uncertainty type classification",
+			"Source-trust versus message-trust distinction",
+			"Numeric range and evidence-quality label check",
+			"Prior-belief and politicization assessment",
+			"Evidence-update resilience check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does communicating uncertainty destroy public trust in science?",
+				population:
+					"Adults exposed to scientific, statistical, public-health, climate, vaccine, nuclear-power, or general science messages in experiments and reviews",
+				finding:
+					"Uncertainty communication usually does not produce a large overall loss of trust, but effects depend on uncertainty type, wording, topic, prior beliefs, and whether uncertainty is quantified or framed as conflict.",
+				effectDirection: "supports",
+				magnitude:
+					"Dries 2026 synthesized 28 studies and found no overall trust effect, with 23 null studies. Guo 2025 synthesized 43 empirical articles and found epistemic uncertainty had a small positive credibility effect (d = 0.09), while consensus uncertainty (d = -0.12) and technical uncertainty (d = -0.15) slightly lowered attitudes without reducing credibility.",
+				certainty: "moderate",
+				limitations: [
+					"Many studies measure immediate trust, not long-term behavior or institutional trust.",
+					"Control conditions and uncertainty manipulations vary across studies.",
+					"Highly politicized topics and personally threatening risks may require more careful follow-up communication."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Science-communication uncertainty review literature",
+				role: "Conceptual anchor for distinguishing types of uncertainty and their different trust effects."
+			},
+			{
+				name: "Large public-trust experiments",
+				role: "Empirical anchor for testing whether uncertainty ranges, evidence quality, and balanced messages damage source trust."
+			},
+			{
+				name: "Risk communication practice",
+				role: "Decision anchor for pairing uncertainty with what is known, why it matters, and when evidence will be updated."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-04T18:35:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T18:35:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial uncertainty-communication trust page published from Consensus-located systematic reviews, meta-analyses, and large experiments on uncertainty and public trust."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "How Communication of Scientific Uncertainty Affects Trust in Science-A Systematic Review",
+				publisher: "Risk Analysis",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/how-communication-of-scientific-uncertainty-affects-schuster-scheu/e9c39ed915db57c780c95165c940e5c0/",
+				stance: "supports",
+				note:
+					"Systematic review of 24 articles finding uncertainty communication generally had a positive impact on trust in science, while warning about sensitive and politicized topics.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "The impact of uncertainty communication on trust in its sources: a systematic review and meta-analysis",
+				publisher: "Royal Society Open Science",
+				year: 2026,
+				url:
+					"https://consensus.app/papers/the-impact-of-uncertainty-communication-on-trust-in-its-dries-schneider/74b8c3f387d1570e83d88b1df9c42612/",
+				stance: "supports",
+				note:
+					"Random-effects meta-analysis of 28 studies finding no overall effect of uncertainty communication on source trust, with most studies yielding null results.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "A Meta-Analysis Synthesizing the Effects of Three Uncertainty Types in Science Communication",
+				publisher: "Science Communication",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/a-metaanalysis-synthesizing-the-effects-of-three-guo-liu/866c2359099e5514a7a5077e0d29fca2/",
+				stance: "supports",
+				note:
+					"Meta-analysis of 43 empirical articles distinguishing epistemic, consensus, and technical uncertainty effects on credibility and attitudes.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "The effects of communicating uncertainty on public trust in facts and numbers",
+				publisher: "Proceedings of the National Academy of Sciences",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/the-effects-of-communicating-uncertainty-on-public-trust-bles-linden/ea014a4798f2566085340c5dc1c14a1b/",
+				stance: "supports",
+				note:
+					"Five experiments including a BBC News field experiment with 5,780 participants found communicated uncertainty increased perceived uncertainty but caused only small trust decreases, mostly for verbal uncertainty.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "A review of the effects of uncertainty in public science communication",
+				publisher: "Public Understanding of Science",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/a-review-of-the-effects-of-uncertainty-in-public-science-gustafson-rice/e1d4bda6eed856b28a95e6e301a90c48/",
+				stance: "context",
+				note:
+					"Review of 48 experimental findings showing negative effects were concentrated in disagreement or conflict framing, while quantified ranges and probabilities had positive or null effects.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "The effects of communicating uncertainty around statistics, on public trust",
+				publisher: "Royal Society Open Science",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/the-effects-of-communicating-uncertainty-around-kerr-bles/c0a6ccdaa0d25e628349917f3b6a8124/",
+				stance: "debate",
+				note:
+					"Large COVID-19 statistics experiments found numeric ranges minimally affected source trust, while vague statements about uncertainty reduced trust in both numbers and source.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Transparent communication of evidence does not undermine public trust in evidence",
+				publisher: "PNAS Nexus",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/transparent-communication-of-evidence-does-not-undermine-kerr-schneider/f066900a77f75892b86d1bc84231abf8/",
+				stance: "supports",
+				note:
+					"Two preregistered experiments found balanced evidence communication was as trustworthy as persuasive messaging for COVID-19 vaccines and more trustworthy for nuclear power.",
+				order: 7
+			}
+		]
+	},
+	{
 		topicSlug: "media-misinformation",
 		title: "Can correlation alone prove causation?",
 		slug: "can-correlation-alone-prove-causation",
