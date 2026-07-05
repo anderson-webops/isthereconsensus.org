@@ -24,7 +24,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
-				<div class="site-header__controls">
+				<div class="site-header__controls" aria-label="Appearance controls">
 					<PaletteSwitcher />
 					<ThemeToggle />
 				</div>
@@ -43,15 +43,13 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					creep in.
 				</p>
 			</div>
-			<div class="site-footer__links">
-				<NuxtLink to="/consensus">Browse topics</NuxtLink>
-				<NuxtLink to="/ask">Ask a question</NuxtLink>
-				<NuxtLink to="/explainers">Explainers</NuxtLink>
-				<NuxtLink to="/standards">How reviews work</NuxtLink>
-				<NuxtLink to="/community-guidelines">Community guidelines</NuxtLink>
-				<NuxtLink to="/corrections">Corrections policy</NuxtLink>
-				<NuxtLink to="/terms">Terms of service</NuxtLink>
-				<NuxtLink to="/privacy">Privacy policy</NuxtLink>
+			<div class="site-footer__meta">
+				<div class="site-footer__links">
+					<NuxtLink to="/corrections">Corrections</NuxtLink>
+					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
+					<NuxtLink to="/terms">Terms</NuxtLink>
+					<NuxtLink to="/privacy">Privacy</NuxtLink>
+				</div>
 			</div>
 		</footer>
 	</div>
@@ -160,10 +158,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	margin-top: 48px;
 	padding-top: 18px;
 	border-top: 1px solid var(--consensus-soft-line);
-	display: flex;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: start;
 	gap: 20px;
-	flex-wrap: wrap;
 	font-size: 0.95rem;
 }
 
@@ -177,13 +175,20 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	line-height: 1.6;
 }
 
+.site-footer__meta {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	gap: 12px;
+	min-width: min(100%, 320px);
+}
+
 .site-footer__links {
 	display: flex;
-	gap: 10px 12px;
+	gap: 8px 14px;
 	flex-wrap: wrap;
-	align-items: start;
 	justify-content: end;
-	max-width: 420px;
+	font-size: 0.9rem;
 }
 
 .site-footer__links a {
@@ -228,8 +233,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-footer {
+		grid-template-columns: 1fr;
 		margin-top: 32px;
 		padding-top: 14px;
+	}
+
+	.site-footer__meta {
+		align-items: start;
+		min-width: 0;
 	}
 
 	.site-footer__links {
