@@ -670,6 +670,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.62;
 }
 
+.uncertainty-strip > div > p:not(.eyebrow):not(.field-label) {
+	max-width: 68ch;
+}
+
 .bottom-line__actions,
 .evidence-summary-card__top,
 .source-row {

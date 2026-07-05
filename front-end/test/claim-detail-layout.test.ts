@@ -15,4 +15,9 @@ describe("claim detail layout", () => {
 		assert.match(source, /class="source-list"[\s\S]*<article v-for="source in group\.items"/);
 		assert.doesNotMatch(source, /<section v-for="group in sourceGroups"/);
 	});
+
+	it("keeps the uncertainty summary at a readable measure", () => {
+		assert.match(source, /\.uncertainty-strip > div > p:not\(\.eyebrow\):not\(\.field-label\) \{/);
+		assert.match(source, /max-width: 68ch;/);
+	});
 });
