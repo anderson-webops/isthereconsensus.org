@@ -92,6 +92,22 @@ describe("default claim seed quality", () => {
 		}
 	});
 
+	it("keeps the dental sealant claim readable for parents and general readers", () => {
+		const claim = defaultClaims.find(
+			entry => entry.slug === "do-dental-sealants-prevent-cavities-in-childrens-back-teeth"
+		);
+		assert.ok(claim, "Missing dental sealant claim seed");
+
+		const visibleSummary = [claim.bottomLine, claim.editorSummary, ...claim.stableCore].join(" ");
+
+		assert.match(claim.bottomLine, /They work as a barrier over pits and fissures/);
+		assert.match(claim.bottomLine, /They do not replace fluoride toothpaste, brushing, diet, dental care/);
+		assert.match(claim.editorSummary, /cavities in pits and fissures of children's molars/);
+		assert.match(visibleSummary, /tooth decay compared with no sealant/);
+		assert.doesNotMatch(visibleSummary, /occlusal caries/i);
+		assert.doesNotMatch(visibleSummary, /CDC says/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);

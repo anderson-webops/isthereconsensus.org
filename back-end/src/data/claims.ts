@@ -2427,32 +2427,32 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "standard",
 		bottomLine:
-			"Yes. Dental sealants painted onto the chewing surfaces of back teeth prevent cavities in children and adolescents, especially on permanent molars soon after they erupt. They are a targeted barrier for pits and fissures, not a replacement for fluoride toothpaste, brushing, diet, dental care, or follow-up checks when sealants wear down.",
+			"Yes. Dental sealants placed on the chewing surfaces of back teeth help prevent cavities in children and adolescents, especially on permanent molars soon after they erupt. They work as a barrier over pits and fissures. They do not replace fluoride toothpaste, brushing, diet, dental care, or follow-up checks when sealants wear down.",
 		stableCore: [
-			"CDC says dental sealants are thin coatings placed on back teeth and can prevent cavities for many years.",
+			"Sealants are thin coatings placed on back teeth, where grooves can trap food and bacteria.",
 			"CDC reports that sealants prevent about 80% of cavities over two years in back teeth, where most cavities occur.",
-			"The ADA/AAPD guideline recommends sealants over nonuse for primary and permanent molars with sound or noncavitated occlusal surfaces in children and adolescents.",
-			"The Community Preventive Services Task Force recommends school-based dental sealant programs for preventing tooth decay among children.",
-			"Cochrane found moderate-quality evidence that resin-based sealants reduce caries compared with no sealant at 24 months."
+			"The ADA/AAPD guideline recommends sealants, rather than no sealants, for sound or noncavitated molar chewing surfaces in children and adolescents.",
+			"The Community Preventive Services Task Force recommends school-based sealant programs to prevent tooth decay among children.",
+			"Cochrane found moderate-quality evidence that resin-based sealants reduce tooth decay compared with no sealant at 24 months."
 		],
 		openQuestions: [
-			"How should programs prioritize children at highest cavity risk while avoiding stigma or missed access for children outside targeted schools?",
-			"Which sealant materials, placement techniques, and maintenance schedules work best in different clinical and school settings?",
-			"How do sealants compare with or combine with fluoride varnish, silver diamine fluoride, fluoridated water, and regular dental care for different risk groups?"
+			"How should programs prioritize children at highest cavity risk without stigma or missed access for children outside targeted schools?",
+			"Which sealant materials, placement techniques, and maintenance schedules work best across clinical and school settings?",
+			"How do sealants work alongside fluoride varnish, silver diamine fluoride, fluoridated water, and regular dental care for different risk groups?"
 		],
 		whatWouldChangeMinds: [
-			"Large, high-quality randomized or program studies showing no meaningful reduction in occlusal caries among children receiving well-placed sealants compared with no sealants.",
+			"Large, high-quality randomized or program studies showing no meaningful cavity reduction among children receiving well-placed sealants compared with no sealants.",
 			"Major CDC, CPSTF, ADA, AAPD, or Cochrane reassessments withdrawing sealants as an effective cavity-prevention intervention for children and adolescents.",
-			"Evidence of common serious harms from properly placed dental sealants that outweigh cavity-prevention benefits."
+			"Evidence that serious harms from properly placed dental sealants are common enough to outweigh cavity-prevention benefits."
 		],
 		misconceptions: [
 			"Sealants are not only cosmetic; they physically block food and bacteria from grooves in molars that are hard to clean.",
 			"Sealants do not make brushing, fluoride toothpaste, diet, or dental visits unnecessary.",
-			"The best-supported claim is about chewing surfaces of molars, not every type of tooth decay everywhere in the mouth.",
+			"The strongest evidence is about molar chewing surfaces, not every type of tooth decay everywhere in the mouth.",
 			"Children without regular dental access may benefit especially from school sealant programs."
 		],
 		editorSummary:
-			"Dental sealants are a practical prevention claim adjacent to fluoridation: the consensus is strong that they reduce pit-and-fissure cavities in children, while implementation questions concern access, timing, retention, and maintenance.",
+			"Dental sealants are a practical prevention claim adjacent to fluoridation: the consensus is strong that they reduce cavities in pits and fissures of children's molars, while implementation questions concern access, timing, retention, and maintenance.",
 		uncertaintySummary:
 			"The direction of benefit is well supported, especially for permanent molars in children and adolescents. Uncertainty is greater for exact durability, material comparisons, low-risk groups, adult extrapolation, maintenance schedules, and how much school programs reduce disparities.",
 		searchCutoffAt: "2026-07-04T20:08:00.000Z",
@@ -3826,6 +3826,120 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Decision-weight synthesis of 196 articles and 94 cohorts with more than 30 million participants; 8.75 mMET-hours/week was associated with lower all-cause, cardiovascular, and cancer mortality.",
 				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Do structured lifestyle programs prevent or delay type 2 diabetes in adults with prediabetes?",
+		slug: "do-structured-lifestyle-programs-prevent-or-delay-type-2-diabetes-in-adults-with-prediabetes",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 95,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. In adults with prediabetes or high diabetes risk, structured lifestyle programs that combine weight loss, healthier eating, physical activity, and behavior support can substantially reduce or delay progression to type 2 diabetes. The strongest evidence comes from intensive Diabetes Prevention Program-style interventions, not from vague advice to try harder.",
+		stableCore: [
+			"USPSTF recommends offering or referring adults with prediabetes found through screening to effective preventive interventions.",
+			"The original Diabetes Prevention Program trial found lifestyle intervention reduced diabetes incidence by 58% and metformin by 31% compared with placebo over about 2.8 years.",
+			"Fifteen-year DPP Outcomes Study follow-up found diabetes development remained lower in the original lifestyle and metformin groups, though the gap narrowed over time.",
+			"Effective programs combine modest weight loss goals, dietary change, physical activity, self-monitoring, and repeated behavioral support; generic one-time advice is not equivalent.",
+			"Evidence is strongest for delaying or preventing diabetes diagnosis. Long-term cardiovascular-event and mortality effects are harder to prove and depend on longer follow-up."
+		],
+		openQuestions: [
+			"How can health systems improve access, completion, and long-term maintenance for people and communities at highest diabetes risk?",
+			"Which delivery formats, contact hours, coaching models, and maintenance strategies keep benefits durable outside trial settings?",
+			"Which people should receive metformin in addition to or instead of lifestyle programs, especially by age, BMI, gestational diabetes history, and rising A1c?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-run trials or real-world studies showing no diabetes-incidence reduction from well-delivered structured lifestyle programs in adults with prediabetes.",
+			"Major USPSTF, CDC, ADA, or evidence-review reassessments withdrawing referral to structured lifestyle intervention as a diabetes-prevention recommendation.",
+			"Evidence that common serious harms or inequitable implementation burdens outweigh the diabetes-prevention benefits."
+		],
+		misconceptions: [
+			"Prediabetes does not mean type 2 diabetes is inevitable; risk can often be delayed or reduced.",
+			"The evidence is about structured programs with repeated support, not about blaming individuals or giving unsupported willpower advice.",
+			"Metformin helps some higher-risk people, but it is not usually framed as a full replacement for intensive lifestyle programs.",
+			"Weight regain or relapse does not mean the intervention never worked; maintenance support and access are part of the implementation problem."
+		],
+		editorSummary:
+			"This page should distinguish evidence-based diabetes-prevention programs from vague lifestyle slogans. The consensus is strong that structured DPP-style programs prevent or delay diabetes in high-risk adults, with access and durability as practical limits.",
+		uncertaintySummary:
+			"Diabetes-incidence reduction is well supported. Certainty is lower for long-term cardiovascular events and mortality, which delivery format works best for whom, how to sustain maintenance, and how to deliver programs equitably.",
+		searchCutoffAt: "2026-07-05T03:12:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T03:12:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T03:12:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial diabetes-prevention lifestyle-program claim page published from USPSTF, CDC, DPP trial, DPPOS follow-up, and JAMA evidence-review sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Prediabetes and Type 2 Diabetes: Screening",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2021,
+				url:
+					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/screening-for-prediabetes-and-type-2-diabetes",
+				stance: "supports",
+				note:
+					"USPSTF recommendation to screen adults 35 to 70 with overweight or obesity and offer or refer adults with prediabetes to effective preventive interventions.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Preventing Type 2 Diabetes with the Lifestyle Change Program",
+				publisher: "Centers for Disease Control and Prevention",
+				url: "https://www.cdc.gov/diabetes-prevention/lifestyle-change-program/index.html",
+				stance: "supports",
+				note:
+					"CDC description of the National Diabetes Prevention Program lifestyle-change program for people with prediabetes or high risk of type 2 diabetes.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Reduction in the Incidence of Type 2 Diabetes with Lifestyle Intervention or Metformin",
+				publisher: "New England Journal of Medicine",
+				year: 2002,
+				url: "https://doi.org/10.1056/NEJMoa012512",
+				doi: "10.1056/NEJMoa012512",
+				pmid: "11832527",
+				stance: "supports",
+				note:
+					"Original DPP randomized trial of 3,234 high-risk adults finding lifestyle intervention reduced diabetes incidence by 58% and metformin by 31% versus placebo.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Long-term effects of lifestyle intervention or metformin on diabetes development and microvascular complications: the DPP Outcomes Study",
+				publisher: "The Lancet Diabetes & Endocrinology",
+				year: 2015,
+				url: "https://doi.org/10.1016/S2213-8587(15)00291-0",
+				doi: "10.1016/S2213-8587(15)00291-0",
+				pmid: "26377054",
+				stance: "supports",
+				note:
+					"Fifteen-year follow-up showing diabetes development remained lower in the original lifestyle and metformin groups, with smaller but persistent cumulative differences.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Screening for Prediabetes and Type 2 Diabetes: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2021,
+				url: "https://doi.org/10.1001/jama.2021.10403",
+				doi: "10.1001/jama.2021.10403",
+				stance: "supports",
+				note:
+					"USPSTF-commissioned evidence review supporting preventive interventions for people with prediabetes while separating diabetes incidence from longer-term clinical outcomes.",
+				order: 5
 			}
 		]
 	},
