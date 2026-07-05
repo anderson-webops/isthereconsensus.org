@@ -15485,7 +15485,7 @@ const rawClaims: SeedClaim[] = [
 			"Observational hearing-aid benefits can be inflated if people who get aids also differ in healthcare access, income, education, or other health behaviors."
 		],
 		editorSummary:
-				"This page should give older adults and families a practical middle answer: treat hearing loss because it matters now, and present the dementia-risk evidence as real but still qualified by trial subgroup results and confounding concerns.",
+				"Treating hearing loss matters now for communication, safety, and quality of life. Dementia-risk evidence is real but still qualified by trial subgroup results and confounding concerns.",
 		uncertaintySummary:
 				"The association between adult hearing loss and later cognitive outcomes is consistent and moderately strong. Causality and intervention benefit are more qualified: ACHIEVE did not show a total-cohort cognitive benefit over 3 years, while higher-risk subgroups and observational studies suggest possible cognitive protection.",
 		searchCutoffAt: "2026-07-03T18:15:00.000Z",
@@ -15934,7 +15934,7 @@ const rawClaims: SeedClaim[] = [
 			"All PFAS are sometimes treated as identical, even though persistence, mobility, exposure, evidence strength, and toxicity differ by compound."
 		],
 		editorSummary:
-				"This page should help readers separate real health concern from vague toxin language. The consensus answer is broad and qualified: several PFAS are linked to important outcomes and justify exposure reduction, but individual prediction and compound-specific regulation remain more complicated.",
+				"PFAS health concern is real but should stay specific. Several PFAS are linked to important outcomes and justify exposure reduction, while individual prediction and compound-specific regulation remain more complicated.",
 		uncertaintySummary:
 				"Evidence is strongest for several outcomes and older, well-studied PFAS such as PFOA and PFOS. Uncertainty remains around mixtures, newer replacement PFAS, causal mechanisms for every endpoint, and how evolving federal rules will treat compounds beyond PFOA and PFOS.",
 		searchCutoffAt: "2026-07-03T03:57:42.000Z",
@@ -16135,7 +16135,7 @@ const rawClaims: SeedClaim[] = [
 			"People sometimes expect a blood test to identify the source of exposure, even though blood results alone cannot do that."
 		],
 		editorSummary:
-			"This page should be practical and non-alarmist: PFAS testing can matter for likely elevated exposure, but readers need to understand what the number can and cannot do before seeking individual testing.",
+			"PFAS blood testing can matter after likely elevated exposure, but the number has limits. It can show exposure context, not diagnose a specific disease or automatically change medical care.",
 		uncertaintySummary:
 			"The guidance is actionable but still incomplete. Evidence supports testing for likely elevated exposure and clinical interpretation tiers, while outcome benefit, repeat-testing intervals, equity, and care pathways remain unsettled.",
 		searchCutoffAt: "2026-07-03T04:47:09.000Z",
@@ -16407,7 +16407,7 @@ const rawClaims: SeedClaim[] = [
 			"High-dose animal, cell, or modeled studies are sometimes treated as direct evidence of harm from typical drinking-water exposure."
 		],
 		editorSummary:
-			"This page should resist both panic and dismissal. The best answer is that harm at current drinking-water levels is not proven, while the research gaps and pollution-reduction rationale are real.",
+			"Harm from current drinking-water microplastic exposure is not proven, but the research gaps and pollution-reduction rationale are real. The useful stance is neither panic nor dismissal.",
 		uncertaintySummary:
 			"Evidence certainty is low because exposure measurement is inconsistent, nanoplastics are difficult to quantify, human outcome evidence is sparse, and toxicology often uses particles or doses that do not map cleanly onto real drinking-water exposure.",
 		searchCutoffAt: "2026-07-03T04:47:09.000Z",
@@ -16503,7 +16503,7 @@ const rawClaims: SeedClaim[] = [
 			"All detected particles are sometimes treated as interchangeable despite differences in size, chemistry, dose, and biological behavior."
 		],
 		editorSummary:
-			"This page should teach a reusable risk-literacy principle: detection matters, but safety decisions require exposure, hazard, dose, and uncertainty. It should not minimize plastic pollution or overstate food-level harm.",
+			"Detection is not the same as danger. Safety decisions require exposure, hazard, dose, and uncertainty while still taking plastic pollution seriously.",
 		uncertaintySummary:
 			"Evidence certainty is low because methods remain variable, nanoplastic detection is especially difficult, occurrence data are uneven across foods, and toxicology and human outcome evidence are not mature enough for a complete dietary risk characterization.",
 		searchCutoffAt: "2026-07-03T04:47:09.000Z",
@@ -16596,7 +16596,7 @@ const rawClaims: SeedClaim[] = [
 			"Some people blame one ingredient, such as seed oils or an additive, when the evidence points more broadly to food pattern, palatability, excess calories, and displacement of minimally processed foods."
 		],
 		editorSummary:
-			"This page should give readers a balanced nutrition answer: the association is real enough to matter, and the trial evidence supports a plausible intake mechanism, but the page should not imply that NOVA category alone perfectly ranks every food or explains every outcome.",
+			"Ultra-processed foods are linked to worse health outcomes strongly enough to matter, and trial evidence supports a plausible intake mechanism. The caveat is that NOVA category alone does not perfectly rank every food or explain every outcome.",
 		uncertaintySummary:
 			"The evidence is broad but not fully causal for every endpoint. Confidence is strongest for consistent associations and short-term intake/weight-gain mechanisms; uncertainty is larger for individual foods, long-term intervention effects, and separating processing from overall diet quality and social context.",
 		searchCutoffAt: "2026-07-03T04:29:00.000Z",
@@ -16692,7 +16692,7 @@ const rawClaims: SeedClaim[] = [
 			"Screening and treatment are sometimes assumed to cause stigma; USPSTF found no evidence that behavioral interventions increased stigma, self-esteem harm, body dissatisfaction, or disordered eating in trials."
 		],
 		editorSummary:
-			"This page should be family-practical and stigma-aware. The evidence supports intensive structured treatment, but the real implementation gap is access to enough contact hours and multidisciplinary support.",
+			"Intensive structured treatment can help children with obesity, and dose matters. The practical gap is access to enough contact hours and multidisciplinary support without stigma.",
 		uncertaintySummary:
 			"The short-term benefit of comprehensive intensive behavioral intervention is well supported. Uncertainty is mainly about long-term maintenance, equitable implementation, component selection, medication discontinuation, and outcomes beyond BMI.",
 		searchCutoffAt: "2026-07-03T04:29:00.000Z",
@@ -16787,7 +16787,7 @@ const rawClaims: SeedClaim[] = [
 			"Obesity is sometimes framed as a simple willpower issue, even though major health agencies describe complex biological, environmental, social, and market drivers."
 		],
 		editorSummary:
-			"This page should be explicit and non-moralizing: the consensus is that obesity is a major population health risk, while individual health assessment needs more than BMI and public-health solutions need to reduce stigma and structural barriers.",
+			"Obesity is a major population health risk, but individual health assessment needs more than BMI. Public-health solutions should reduce stigma and address structural barriers.",
 		uncertaintySummary:
 			"The population-level risk relationship is strong. Uncertainty is concentrated in individual diagnosis, causal pathways for specific outcomes, thresholds across ancestry and age groups, and which interventions best reduce harm equitably.",
 		searchCutoffAt: "2026-07-03T04:29:00.000Z",
@@ -17109,7 +17109,7 @@ const rawClaims: SeedClaim[] = [
 			"Anecdotes after vaccination can be real and still require denominators, baseline cycle variability, and comparison groups to interpret."
 		],
 		editorSummary:
-			"This page should model a trust-building answer: acknowledge the temporary menstrual signal clearly, quantify the average size where possible, and separate it from unsupported infertility claims.",
+			"COVID-19 vaccines can be linked to small, temporary menstrual-cycle changes. The trust-building answer separates that signal from unsupported infertility claims.",
 		uncertaintySummary:
 			"The direction of evidence supports small temporary menstrual changes, but precision varies by outcome because early trials did not collect menstruation data and many later studies used self-report designs. The evidence against fertility harm remains stronger than the evidence for any lasting menstrual effect.",
 		searchCutoffAt: "2026-07-03T05:21:00.000Z",
@@ -17209,7 +17209,7 @@ const rawClaims: SeedClaim[] = [
 			"Long COVID is not a single symptom and not every post-infection symptom has the same mechanism or prognosis."
 		],
 		editorSummary:
-			"This page should validate the settled point without overstating precision: SARS-CoV-2 infection can lead to persistent, sometimes disabling symptoms, but prevalence, mechanisms, recovery, and treatment evidence remain heterogeneous.",
+			"SARS-CoV-2 infection can lead to persistent, sometimes disabling symptoms even after mild infection. Prevalence, mechanisms, recovery, and treatment evidence remain heterogeneous.",
 		uncertaintySummary:
 			"The existence and potential functional impact of Long COVID are well supported. Uncertainty remains high for exact prevalence in the current variant/vaccination era, mechanisms, pediatric burden, subgroup definitions, and which interventions produce durable improvement.",
 		uncertaintyDrivers: [
@@ -17388,7 +17388,7 @@ const rawClaims: SeedClaim[] = [
 			"A normal-looking diet can still be low in potassium if it is dominated by refined grains, processed foods, and few fruits, vegetables, beans, or nuts."
 		],
 		editorSummary:
-			"This page should complement the sodium page by explaining why potassium-rich foods matter for blood pressure while keeping kidney disease, medication, and supplement caveats prominent.",
+			"Potassium-rich foods can support blood-pressure and cardiovascular-risk guidance, complementing sodium reduction. Kidney disease, medications, and supplement risks still need prominent caveats.",
 		uncertaintySummary:
 			"The blood-pressure effect is well supported, especially for adults with hypertension. Outcome evidence is strongest for stroke association and less direct for coronary heart disease; food-pattern confounding and safety tailoring remain important caveats.",
 		searchCutoffAt: "2026-07-03T05:21:00.000Z",
@@ -17797,7 +17797,7 @@ const rawClaims: SeedClaim[] = [
 			"The evidence is about sustained viral suppression, not simply having a prescription or having started treatment recently."
 		],
 		editorSummary:
-			"This page should be clear and stigma-reducing: the consensus is strong that sustained viral suppression prevents sexual HIV transmission, while the practical work is access, adherence, monitoring, and STI context.",
+			"Sustained HIV viral suppression prevents sexual HIV transmission. The practical work is access, adherence, monitoring, and STI context, not stigma.",
 		uncertaintySummary:
 			"The central U=U conclusion is high-certainty for sexual HIV transmission when viral load is sustained below 200 copies/mL. Uncertainty is mostly implementation-related: treatment access, monitoring cadence, adherence interruptions, and communicating the boundary with other STI risks.",
 		searchCutoffAt: "2026-07-03T14:31:39.000Z",
@@ -17880,7 +17880,7 @@ const rawClaims: SeedClaim[] = [
 			"Using tanning beds for vitamin D is not necessary when diet, supplements, and ordinary clinical guidance can address deficiency without intentional UV damage."
 		],
 		editorSummary:
-			"This page should be direct because the consensus is unusually practical: indoor tanning increases cancer risk, especially with early and repeated use, and a cosmetic tan should not be framed as a health behavior.",
+			"Indoor tanning increases skin-cancer risk, especially with early and repeated use. A cosmetic tan should not be framed as a health behavior.",
 		uncertaintySummary:
 			"The direction of risk is high-certainty. Remaining uncertainty is mostly about the exact size of risk for particular device types, user histories, and skin-cancer subtypes, not whether indoor tanning is a credible carcinogenic exposure.",
 		searchCutoffAt: "2026-07-03T14:31:39.000Z",
@@ -17975,7 +17975,7 @@ const rawClaims: SeedClaim[] = [
 			"Removing industrial trans fats does not mean every replacement ingredient is automatically healthy; the replacement pattern still matters."
 		],
 		editorSummary:
-			"This page should be one of the site's clearest nutrition consensus examples. Unlike many diet debates, industrial trans fats have a strong harm signal, no known health benefit, and broad policy consensus around elimination.",
+			"Industrial trans fats are one of the clearest nutrition consensus examples: strong harm signal, no known health benefit, and broad policy consensus around elimination.",
 		uncertaintySummary:
 			"The harm direction is high-certainty for industrial trans fats. Remaining uncertainty is mainly policy and substitution: enforcement, replacement fats, residual exposure, and how different food systems complete elimination.",
 		searchCutoffAt: "2026-07-03T14:31:39.000Z",
@@ -18062,7 +18062,7 @@ const rawClaims: SeedClaim[] = [
 			"Outbreaks linked to pasteurized dairy show that food safety is not perfect; they do not make raw milk equally safe."
 		],
 		editorSummary:
-			"This page should answer a high-confusion food-safety claim without turning it into lifestyle shaming. The practical consensus is that pasteurization is a proven safety step and raw milk is an avoidable pathogen risk, especially for children and medically vulnerable groups.",
+			"Pasteurization is a proven safety step, and raw milk is an avoidable pathogen risk, especially for children and medically vulnerable groups. The point is food-safety clarity, not lifestyle shaming.",
 		uncertaintySummary:
 			"The direction of risk is high-certainty. Uncertainty is mainly about exact risk under specific farm practices, local laws, testing frequency, distribution scale, pathogen type, and how best to communicate risk without implying pasteurized products are perfectly risk-free.",
 		searchCutoffAt: "2026-07-04T04:40:14.000Z",
@@ -18184,7 +18184,7 @@ const rawClaims: SeedClaim[] = [
 			"Average annual precipitation and the heaviest precipitation events can move differently, so a region can face more intense downpours even if total rainfall changes less."
 		],
 		editorSummary:
-			"This page should make the physical signal visible without turning every flood into a single-cause story: the broad consensus is strong for heavier precipitation in a warmer climate, while local damages depend on many non-climate factors too.",
+			"A warmer climate strengthens the physical signal for heavier precipitation, but not every flood is a single-cause story. Local damages still depend on many climate and non-climate factors.",
 		uncertaintySummary:
 			"The global and U.S. direction is high-certainty in well-observed regions. Uncertainty grows at smaller spatial scales, in regions with sparse records, and when converting rainfall trends into flood damages or design standards.",
 		searchCutoffAt: "2026-07-03T14:31:39.000Z",
@@ -18265,7 +18265,7 @@ const rawClaims: SeedClaim[] = [
 			"Storm damage trends cannot be read as climate trends without accounting for coastal development, wealth, building standards, insurance, and preparedness."
 		],
 		editorSummary:
-			"This page should model the site's best nuance: readers need the consensus that warmer climate worsens hurricane hazards through rain and sea level, while also seeing that total storm counts are not the settled or most useful claim.",
+			"Warming worsens hurricane hazards through rainfall and sea level, while total storm counts are not the most settled or useful claim. That nuance is the practical consensus.",
 		uncertaintySummary:
 			"Confidence is high for increased tropical-cyclone rainfall rates with warming and for sea-level rise amplifying coastal inundation. Confidence is lower for simple claims about total Atlantic hurricane frequency, basin-specific tracks, and individual-event attribution.",
 		searchCutoffAt: "2026-07-03T14:31:39.000Z",
@@ -18352,7 +18352,7 @@ const rawClaims: SeedClaim[] = [
 			"Regulatory interest, breakthrough status, or priority review does not mean a product has been approved or found safe and effective."
 		],
 		editorSummary:
-			"This page should give readers a useful active-debate example: there is a real antidepressant signal, but the clinical, regulatory, safety, and implementation questions are still too large for routine-treatment claims.",
+			"Psilocybin has a meaningful antidepressant signal, but the clinical, regulatory, safety, and implementation questions remain too large for routine-treatment claims.",
 		uncertaintySummary:
 			"Evidence supports a promising short-term antidepressant signal in supervised research settings. Certainty remains low for routine care because trials are small, follow-up is short, blinding is difficult, controls vary, protocols bundle drug effects with psychological support, and regulatory approval plus practice standards are still evolving.",
 		uncertaintyDrivers: [
@@ -18551,7 +18551,7 @@ const rawClaims: SeedClaim[] = [
 			"A schedule that works for one adult does not make fasting safe or appropriate for everyone."
 		],
 		editorSummary:
-			"This page should give readers a practical active-debate answer: fasting schedules can be legitimate weight-loss tools, but the stronger evidence points to adherence and energy restriction rather than a universal advantage over ordinary calorie restriction.",
+			"Fasting schedules can be legitimate weight-loss tools, but current evidence points more to adherence and energy restriction than a universal advantage over daily calorie restriction.",
 		uncertaintySummary:
 			"Certainty is moderate that intermittent fasting and continuous calorie restriction have similar average weight-loss effects. Certainty is lower for long-term maintenance, individual matching, diabetes-medication safety, early-versus-late eating windows, lean mass, and whether any meal-timing effects persist after weight loss is controlled.",
 		uncertaintyDrivers: [
@@ -18800,7 +18800,7 @@ const rawClaims: SeedClaim[] = [
 			"Benefits for isolated or marginalized teens do not erase harms from harassment, comparison, addictive design, or sleep disruption."
 		],
 		editorSummary:
-			"This page should keep the public debate honest: there is a meaningful risk signal and good reason for safeguards, but the evidence does not justify a simple single-cause story for the teen mental-health crisis.",
+			"Social media has a meaningful risk signal and good reason for safeguards, but the evidence does not support a simple single-cause story for the teen mental-health crisis.",
 		uncertaintySummary:
 			"Certainty is low for population-level causal attribution and moderate for associations between problematic social media use and internalizing symptoms. The key uncertainty is not whether some adolescents can be harmed; it is effect size, direction of causation, vulnerable subgroups, and which platform features or behaviors are most responsible.",
 		uncertaintyDrivers: [
