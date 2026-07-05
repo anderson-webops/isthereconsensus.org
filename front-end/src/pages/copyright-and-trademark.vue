@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Rights lane",
-		body: "The rights lane covers copyright, trademark, logo, impersonation, and other intellectual-property concerns tied to site content or submissions."
+		body: "This lane covers copyright, trademark, logo, impersonation, and related rights concerns tied to site content or submissions."
 	},
 	{
 		title: "Make notices specific",
@@ -23,23 +23,23 @@ const quickPoints = [
 const noticeRequirements = [
 	"your name, organization if relevant, and a contact email where the site can reach you",
 	"the exact URL or content description of the material you want reviewed",
-	"what right you believe is implicated: copyright, trademark, impersonation, or another specific legal concern",
-	"a statement of the basis for the complaint, including ownership or authorized-representative status where applicable",
+	"the right involved: copyright, trademark, impersonation, or another specific legal concern",
+	"why you can make the complaint, including ownership or authorized-representative status where applicable",
 	"any supporting documents or links that help the site evaluate the notice quickly"
 ];
 
 const workflow = [
 	{
 		title: "Intake and triage",
-		body: "The site logs the notice, checks whether it is complete enough to evaluate, and routes it to the right review queue."
+		body: "The site logs the notice, checks whether it is complete enough to evaluate, and routes it to the right queue."
 	},
 	{
 		title: "Interim action if needed",
-		body: "When the risk looks credible, the site may hide, disable, or otherwise limit access to the disputed material while the review is underway."
+		body: "When risk looks credible, the site may hide, disable, or limit access to disputed material during review."
 	},
 	{
 		title: "Notice to the affected contributor",
-		body: "If user content is involved, the contributor may be notified and allowed to respond unless the issue is fraudulent, urgent, or legally constrained."
+		body: "If user content is involved, the contributor may be notified and allowed to respond unless the issue is urgent, fraudulent, or legally constrained."
 	},
 	{
 		title: "Resolution and repeat-abuse handling",
@@ -49,7 +49,7 @@ const workflow = [
 
 const scopeNotes = [
 	"Defamation, factual disagreement, and policy complaints usually belong in corrections, moderation, or direct policy contact instead.",
-	"Limited quoting for commentary, source explanation, or educational criticism may still be reviewed under fair use, but the site may act conservatively when a complaint is credible.",
+	"Fair-use quoting for commentary, source explanation, or educational criticism can still be reviewed; credible complaints may lead the site to act cautiously.",
 	"Trademark or impersonation complaints should explain the confusing use, not just assert ownership in the abstract."
 ];
 
@@ -68,7 +68,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Copyright and trademark complaints</p>
 			<h1>Rights complaints and takedown requests.</h1>
-			<p>This process receives, reviews, and resolves copyright, trademark, and related rights issues.</p>
+			<p>Use this lane for copyright, trademark, and related rights issues.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -120,7 +120,7 @@ useStaticPageMeta({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Right lane</p>
+				<p class="eyebrow">Rights lane</p>
 				<h2>Choose the right workflow for the dispute.</h2>
 				<p>
 					Send scientific errors to corrections, community enforcement to moderation, and rights assertions
