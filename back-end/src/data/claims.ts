@@ -2418,6 +2418,179 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does fluoride toothpaste prevent cavities?",
+		slug: "does-fluoride-toothpaste-prevent-cavities",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Brushing with fluoride toothpaste helps prevent tooth decay in children and adults, especially when used consistently at an age-appropriate fluoride concentration and amount. The benefit is about fluoride exposure on teeth, not just brushing mechanics; swallowing too much toothpaste is a separate young-child fluorosis concern.",
+		stableCore: [
+			"Fluoride toothpaste is a core caries-prevention tool because fluoride helps remineralize early enamel damage and makes teeth more resistant to acid attack.",
+			"Cochrane found high-certainty evidence that toothpaste with 1000 to 1250 ppm fluoride reduces caries more than non-fluoride toothpaste in children and adolescents.",
+			"Cochrane also found higher-concentration toothpaste, such as 1450 to 1500 ppm fluoride, prevents more caries than 1000 to 1250 ppm toothpaste, with moderate-certainty evidence.",
+			"AAPD and ADA guidance support twice-daily brushing with fluoride toothpaste while tailoring toothpaste amount, supervision, and concentration to age and caries risk.",
+			"For young children, the practical safety issue is not that fluoride toothpaste is ineffective; it is using the right amount and minimizing swallowing while permanent teeth are developing."
+		],
+		openQuestions: [
+			"Which fluoride concentration and brushing-support strategy gives the best balance of cavity prevention and fluorosis risk for very young children at different caries-risk levels?",
+			"How can families with low dental access, disability, caregiver burden, or limited health literacy get practical support for consistent brushing?",
+			"How much added benefit comes from toothpaste when a person also has fluoridated water, sealants, varnish, silver diamine fluoride, and regular dental care?"
+		],
+		whatWouldChangeMinds: [
+			"Large high-quality randomized or systematic-review evidence showing no meaningful caries reduction from fluoride toothpaste compared with non-fluoride toothpaste at standard concentrations.",
+			"Major Cochrane, ADA, AAPD, CDC, WHO, or comparable reassessments withdrawing fluoride toothpaste as a routine caries-prevention recommendation.",
+			"Evidence that common supervised use at recommended amounts causes harms large enough to outweigh cavity-prevention benefits."
+		],
+		misconceptions: [
+			"Fluoride toothpaste is not the same policy question as community water fluoridation; toothpaste is a direct topical product used during brushing.",
+			"Plain brushing without fluoride does not provide the same cavity-prevention evidence as brushing with fluoride toothpaste.",
+			"More toothpaste is not automatically better for young children; age-appropriate amounts and supervision matter.",
+			"Fluoride toothpaste does not replace diet, sealants, flossing where appropriate, dental visits, or treatment of active decay."
+		],
+		editorSummary:
+			"Fluoride toothpaste is one of the strongest everyday dental-prevention claims: the evidence supports routine use, while the caveats are concentration, age, swallowing, supervision, and access.",
+		uncertaintySummary:
+			"The core preventive effect is well supported, especially in children and adolescents. Remaining uncertainty is practical: optimal concentration by age and risk, adherence, young-child fluorosis tradeoffs, and how much additional benefit toothpaste provides in people already receiving other fluoride and dental-prevention measures.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Real-world benefit depends on consistent brushing, caregiver support, affordable toothpaste, and dental-access context."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Trial evidence is strongest in children and adolescents; adult prevention is supported by mechanism and guidance but has less direct randomized evidence."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"The best concentration and amount for very young children depends on caries risk, swallowing risk, and total fluoride exposure."
+			}
+		],
+		searchDatabases: ["Consensus", "Cochrane Library", "PubMed", "CDC", "ADA", "AAPD"],
+		searchCutoffAt: "2026-07-05T12:30:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T12:30:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, dental association guidelines, pediatric dentistry guidance, and public-health sources about fluoride toothpaste and caries prevention.",
+			"Separate fluoride toothpaste from water fluoridation, fluoride varnish, supplements, sealants, and silver diamine fluoride unless comparing combined prevention strategies.",
+			"Report fluoride concentration, age group, caries risk, supervision, and fluorosis caveats when the evidence source provides them."
+		],
+		exclusionRules: [
+			"Do not use anti-fluoride or toothpaste marketing pages as decision-weight evidence.",
+			"Do not imply that toothpaste alone treats active cavities or replaces dental care.",
+			"Do not generalize child-dose guidance to adults, or adult toothpaste amounts to toddlers.",
+			"Do not present high-dose fluoride ingestion concerns as if they negate supervised topical toothpaste benefit."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does fluoride toothpaste prevent cavities compared with non-fluoride toothpaste?",
+				population:
+					"Children, adolescents, and adults using toothpaste as part of routine oral hygiene, with the most direct randomized evidence in children and adolescents.",
+				finding:
+					"Fluoride toothpaste reduces caries compared with non-fluoride toothpaste, with stronger evidence at standard 1000 ppm and above concentrations than at very low concentrations.",
+				effectDirection: "supports",
+				magnitude:
+					"ADA summaries report prevented fractions in children and adolescents ranging from about 16% to 31% versus placebo or no toothpaste; Cochrane finds greater caries reduction at higher fluoride concentrations.",
+				certainty: "high",
+				limitations: [
+					"Exact effect size varies by baseline caries risk, fluoride concentration, brushing frequency, supervision, and other fluoride exposure.",
+					"Young-child guidance must balance caries prevention against fluorosis risk from swallowing excess toothpaste.",
+					"Adult evidence is less directly trial-heavy than child and adolescent evidence, though routine adult use remains broadly recommended."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Cochrane Oral Health",
+				role: "Systematic-review anchor for fluoride concentration and caries-prevention evidence."
+			},
+			{
+				name: "American Dental Association",
+				role: "Dental-professional anchor for routine home brushing and fluoride toothpaste recommendations."
+			},
+			{
+				name: "American Academy of Pediatric Dentistry",
+				role: "Pediatric guidance anchor for child-specific fluoride therapy, toothpaste amount, and fluorosis caveats."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T12:30:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial fluoride-toothpaste caries-prevention claim page published from Cochrane, ADA, AAPD, CDC, and FDI dental-public-health sources."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Fluoride toothpastes of different concentrations for preventing dental caries",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2019,
+				url: "https://doi.org/10.1002/14651858.CD007868.pub3",
+				doi: "10.1002/14651858.CD007868.pub3",
+				pmid: "30829399",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Systematic review evidence that fluoride toothpaste prevents caries compared with non-fluoride toothpaste, with benefits depending on fluoride concentration.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Policy on Use of Fluoride",
+				publisher: "American Academy of Pediatric Dentistry",
+				year: 2023,
+				url: "https://www.aapd.org/research/oral-health-policies--recommendations/fluoride-therapy/",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Pediatric dental guidance supporting fluoride toothpaste use while emphasizing age, amount, caries risk, supervision, and fluorosis considerations.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Home Oral Care",
+				publisher: "American Dental Association",
+				url: "https://www.ada.org/resources/ada-library/oral-health-topics/home-care",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Current ADA public guidance recommending twice-daily brushing with fluoride toothpaste as a basic home-care step.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Recommendations for Using Fluoride to Prevent and Control Dental Caries in the United States",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2001,
+				url: "https://www.cdc.gov/mmwr/preview/mmwrhtml/rr5014a1.htm",
+				stance: "supports",
+				note:
+					"CDC recommendations explaining fluoride's role in caries prevention and distinguishing toothpaste, drinking water, supplements, varnish, and other fluoride vehicles.",
+				order: 4
+			},
+			{
+				kind: "consensus_statement",
+				title: "Promoting Dental Health through Fluoride Toothpaste",
+				publisher: "FDI World Dental Federation / International Dental Journal",
+				year: 2019,
+				url: "https://doi.org/10.1111/idj.12469",
+				doi: "10.1111/idj.12469",
+				stance: "supports",
+				note:
+					"International dental policy context treating affordable, effective fluoride toothpaste as a central population caries-prevention tool.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do dental sealants prevent cavities in children's back teeth?",
 		slug: "do-dental-sealants-prevent-cavities-in-childrens-back-teeth",
 		status: "published",

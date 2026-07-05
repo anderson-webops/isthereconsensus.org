@@ -112,6 +112,31 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /CDC says/i);
 	});
 
+	it("keeps the fluoride toothpaste claim scoped to caries prevention and child-use caveats", () => {
+		const claim = defaultClaims.find(entry => entry.slug === "does-fluoride-toothpaste-prevent-cavities");
+		assert.ok(claim, "Missing fluoride toothpaste claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.misconceptions,
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "strong");
+		assert.equal(claim.evidenceCertainty, "high");
+		assert.match(claim.bottomLine, /helps prevent tooth decay/);
+		assert.match(visibleSummary, /1000 to 1250 ppm fluoride/);
+		assert.match(visibleSummary, /1450 to 1500 ppm fluoride/);
+		assert.match(visibleSummary, /swallowing too much toothpaste/);
+		assert.match(visibleSummary, /age-appropriate amounts and supervision/);
+		assert.match(visibleSummary, /non-fluoride toothpaste/);
+		assert.doesNotMatch(visibleSummary, /treats active cavities/i);
+		assert.doesNotMatch(visibleSummary, /more toothpaste is always better/i);
+	});
+
 	it("keeps the diabetes prevention claim clear about structured programs", () => {
 		const slug = "do-structured-lifestyle-programs-prevent-or-delay-type-2-diabetes-in-adults-with-prediabetes";
 		const claim = defaultClaims.find(entry => entry.slug === slug);
