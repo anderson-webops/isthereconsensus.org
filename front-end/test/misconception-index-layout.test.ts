@@ -11,9 +11,14 @@ describe("misconception and explainer index layout copy", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
 
 		assert.match(source, /Recurring mistakes around science claims\./);
+		assert.match(source, /Common mistake/);
+		assert.match(source, /Quick checks and why it persists/);
 		assert.match(source, /same misunderstanding keeps returning/);
 		assert.match(source, /method behind the correction/);
 		assert.match(source, /science claims where they often appear/);
+		assert.match(source, /Use the right correction, then return to the claim\./);
+		assert.doesNotMatch(source, /<p class="eyebrow">Module<\/p>/);
+		assert.doesNotMatch(source, />Checks and context</);
 		assert.doesNotMatch(source, /claim pages/i);
 		assert.doesNotMatch(source, /reuse it elsewhere/i);
 	});

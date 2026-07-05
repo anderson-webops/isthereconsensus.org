@@ -59,7 +59,7 @@ useStaticPageMeta({
 		<section class="misconception-grid">
 			<article v-for="item in misconceptionModules" :key="item.slug" class="misconception-card">
 				<div>
-					<p class="eyebrow">Module</p>
+					<p class="eyebrow">Common mistake</p>
 					<h2>{{ item.title }}</h2>
 				</div>
 				<p class="misconception-card__diagnosis">{{ item.diagnosis }}</p>
@@ -68,7 +68,7 @@ useStaticPageMeta({
 					<p>{{ item.shortCorrection }}</p>
 				</section>
 				<details class="misconception-card__details">
-					<summary>Checks and context</summary>
+					<summary>Quick checks and why it persists</summary>
 					<div class="misconception-card__details-body">
 						<section class="misconception-card__section">
 							<h3>Quick check</h3>
@@ -131,7 +131,7 @@ useStaticPageMeta({
 		<section class="misconception-callout">
 			<div>
 				<p class="eyebrow">Next step</p>
-				<h2>Pick the right module, then return to the claim.</h2>
+				<h2>Use the right correction, then return to the claim.</h2>
 				<p>
 					The goal is to stop the same interpretation mistake from repeating without pulling readers away from
 					the claim.
