@@ -3593,27 +3593,27 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		bottomLine:
-			"Yes, but not as complete protection. Well-fitting masks and respirators can reduce the infectious particles people breathe out and breathe in, with higher-quality respirators generally offering more wearer protection. The practical benefit depends on fit, filtration, consistency, exposure setting, and whether people actually wear them.",
+			"Yes, but as risk reduction rather than complete protection. Well-fitting masks and respirators can reduce infectious particles that people breathe out and inhale. Higher-quality respirators generally offer more wearer protection. Real-world benefit depends on fit, filtration, consistent use, exposure setting, and whether people actually wear them.",
 		stableCore: [
-			"CDC says wearing a mask can help lower respiratory-virus transmission risk, including by reducing spread from an infected person and reducing what the wearer inhales.",
-			"Mask type and fit matter: cloth masks generally offer lower protection, surgical or disposable masks more, international respirators such as KN95 more, and NIOSH-approved N95 respirators the most when they fit well.",
-			"Cochrane's 2023 randomized-trial review did not find a clear pooled reduction from medical or surgical masks, and highlighted high or unclear risk of bias, heterogeneous settings, and low adherence as major limits.",
-			"A Bangladesh cluster-randomized trial in 600 villages increased proper mask-wearing from 13.3% to 42.3% and reduced symptomatic SARS-CoV-2 seroprevalence, with the clearest signal in surgical-mask villages.",
-			"A 2022 RCT meta-analysis found no statistically significant overall unadjusted association, but did find lower respiratory-infection risk in adult and community subgroups while emphasizing heterogeneity, adherence problems, and contamination between trial arms."
+			"CDC guidance says masks can lower respiratory-virus transmission risk by reducing what infected people release and what wearers inhale.",
+			"Fit and filtration matter: cloth masks generally protect less, surgical or disposable masks more, KN95-style respirators more, and well-fitting NIOSH-approved N95s the most.",
+			"Cochrane's 2023 randomized-trial review did not find a clear pooled reduction from medical or surgical masks; it also flagged high or unclear bias, varied settings, and low adherence as major limits.",
+			"In a Bangladesh cluster-randomized trial across 600 villages, proper mask-wearing rose from 13.3% to 42.3%, and symptomatic SARS-CoV-2 seroprevalence fell, with the clearest signal in surgical-mask villages.",
+			"A 2022 RCT meta-analysis found no statistically significant overall unadjusted association, but did find lower respiratory-infection risk in adult and community subgroups; heterogeneity, adherence, and contamination limited certainty."
 		],
 		openQuestions: [
-			"Which combinations of mask quality, fit support, free distribution, reminders, ventilation, vaccination, and stay-home-when-sick policies produce the most real-world benefit?",
-			"How much do respirators outperform surgical masks outside healthcare settings when people are not professionally fit-tested?",
-			"How should recommendations change by virus, community illness level, crowding, age, disability, communication needs, and risk of severe disease?"
+			"Which mix of better masks, fit support, free distribution, reminders, ventilation, vaccination, and staying home when sick produces the most real-world benefit?",
+			"How much do respirators outperform surgical masks in community settings when people are not professionally fit-tested?",
+			"How should guidance vary by virus, illness level, crowding, age, disability, communication needs, and severe-disease risk?"
 		],
 		whatWouldChangeMinds: [
-			"Large, well-run trials with high adherence showing no reduction in respiratory-virus exposure, infection, or illness across mask types and high-risk settings.",
+			"Large, well-run high-adherence trials showing no reduction in respiratory-virus exposure, infection, or illness across mask types and high-risk settings.",
 			"Repeated exposure and filtration studies showing that well-fitting masks and respirators do not meaningfully reduce emitted or inhaled infectious particles.",
 			"Major CDC, WHO, NIOSH, Cochrane, or infection-prevention reassessments concluding that mask fit and filtration do not matter for respiratory-virus risk reduction."
 		],
 		misconceptions: [
 			"Cochrane uncertainty is not proof that masks cannot work; the review found trial evidence was hard to interpret, especially because adherence was often low.",
-			"A mask is sometimes treated as either perfect protection or useless, when the realistic claim is layered risk reduction.",
+			"Masks are sometimes treated as either perfect protection or useless; the realistic claim is layered risk reduction.",
 			"Cloth masks, surgical masks, KN95s, and N95 respirators are sometimes discussed as if they offer the same protection, even though fit and filtration differ.",
 			"Masks do not replace staying home when sick, vaccination where indicated, ventilation, testing, treatment, or other prevention steps."
 		],
@@ -3637,15 +3637,15 @@ const rawClaims: SeedClaim[] = [
 				population:
 					"People in community, household, workplace, school, and healthcare-adjacent settings where respiratory viruses may be spreading.",
 				finding:
-					"Masks and respirators can reduce risk, but observed illness reduction depends strongly on fit, filtration, adherence, setting, and whether the outcome is source control, wearer exposure, infection, or symptoms.",
+					"Masks and respirators can reduce risk, but observed illness reduction depends on fit, filtration, adherence, setting, and whether the outcome is source control, wearer exposure, infection, or symptoms.",
 				effectDirection: "supports",
 				magnitude:
-					"Bangladesh's cluster RCT found symptomatic seroprevalence lower after a community promotion intervention raised observed masking; Cochrane's pooled RCT estimate did not show a clear community mask effect, partly because trial adherence and designs were weak.",
+					"Bangladesh's cluster RCT found lower symptomatic seroprevalence after a community promotion intervention raised observed masking; Cochrane's pooled RCT estimate did not show a clear community mask effect, partly because trial adherence and designs were weak.",
 				certainty: "moderate",
 				limitations: [
 					"Community trials often measure policies or promotion packages, not perfect mask use.",
 					"Low adherence, control-group masking, changing virus circulation, and mixed mask types can dilute estimated effects.",
-					"Evidence for respirators outside healthcare and without fit testing is less direct than filtration physics suggests."
+					"Respirator evidence outside healthcare and without fit testing is less direct than filtration physics suggests."
 				]
 			}
 		],

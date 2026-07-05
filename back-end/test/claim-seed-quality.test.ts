@@ -394,10 +394,11 @@ describe("default claim seed quality", () => {
 
 		assert.equal(claim.consensusBand, "broad");
 		assert.equal(claim.evidenceCertainty, "moderate");
-		assert.match(claim.bottomLine, /fit, filtration, consistency/);
+		assert.match(claim.bottomLine, /risk reduction rather than complete protection/);
+		assert.match(claim.bottomLine, /fit, filtration, consistent use/);
 		assert.ok(claim.bottomLine.length <= 360, "Masks bottom line should stay scannable");
-		assert.match(visibleSummary, /CDC says wearing a mask can help lower respiratory-virus transmission risk/);
-		assert.match(visibleSummary, /proper mask-wearing from 13\.3% to 42\.3%/);
+		assert.match(visibleSummary, /CDC guidance says masks can lower respiratory-virus transmission risk/);
+		assert.match(visibleSummary, /proper mask-wearing rose from 13\.3% to 42\.3%/);
 		assert.match(visibleSummary, /600 villages and 342,183 adults/);
 		assert.match(visibleSummary, /Cochrane/);
 		assert.match(visibleSummary, /low adherence/);
