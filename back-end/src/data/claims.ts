@@ -6013,7 +6013,7 @@ const rawClaims: SeedClaim[] = [
 			"Single nutrition studies are often reported as if they erase decades of guidance all at once."
 		],
 		editorSummary:
-			"This page should show how real scientific updating works: the broad dietary picture changes by refinement more often than by total reversal.",
+			"Nutrition guidance has changed by refinement, not total reversal. Saturated fat still matters for cardiovascular risk, while dietary cholesterol alone is a weaker proxy for blood cholesterol than older public messaging implied.",
 		sources: [
 			{
 				kind: "guideline",
@@ -6069,7 +6069,7 @@ const rawClaims: SeedClaim[] = [
 			"Claims that sodium is essential can obscure the distinction between needing some sodium and consuming far more than recommended."
 		],
 		editorSummary:
-			"This page should give readers the basic sodium consensus: average intake is high, blood pressure is a key outcome, and the main policy problem is the food environment rather than only the salt shaker.",
+			"Most people consume more sodium than recommended, and lowering sodium reduces blood pressure on average. The practical issue is the broader food environment, not only table salt.",
 		uncertaintySummary:
 			"The direction is strong: high sodium intake raises blood pressure, and reduction lowers it on average. Remaining uncertainty is about effect size for a given individual, the best implementation tools, and how to tailor advice for special clinical situations.",
 		searchCutoffAt: "2026-07-02T21:55:00.000Z",
@@ -6794,7 +6794,7 @@ const rawClaims: SeedClaim[] = [
 			"Improved stoves are sometimes treated as automatically solving the problem, even when real-world exposure reduction depends on fuel, ventilation, maintenance, and sustained use."
 		],
 		editorSummary:
-			"This page should connect energy access, indoor exposure, and child health without implying that families can solve a structural clean-energy problem by willpower alone.",
+			"Household combustion from solid fuels is a major health burden, especially for women and children. The practical bottleneck is clean-energy access, not individual willpower alone.",
 		uncertaintySummary:
 			"The overall disease burden is high-certainty, but intervention effects vary by fuel, stove, ventilation, background outdoor pollution, adoption, and exposure reduction. Clean energy access is the practical bottleneck.",
 		searchCutoffAt: "2026-07-03T13:02:17.000Z",
@@ -6892,7 +6892,7 @@ const rawClaims: SeedClaim[] = [
 			"Not every symptom in a damp building is necessarily caused by mold; the strongest public-health answer concerns respiratory and allergic outcomes plus moisture control."
 		],
 		editorSummary:
-			"This page should be practical and bounded: dampness and visible or smelled mold are real respiratory-risk signals, but the answer should steer away from species-name panic, unsupported toxin narratives, and diagnostic overreach.",
+			"Dampness and visible or smelled mold are real respiratory-risk signals. The most useful guidance is moisture control and remediation, without species-name panic, unsupported toxin narratives, or diagnostic overreach.",
 		uncertaintySummary:
 			"The direction of the association is stable across guidance and reviews, especially for respiratory and allergic outcomes. Remaining uncertainty is about exact causal agents, dose thresholds, hidden exposures, individual attribution, and the health effect size of specific remediation strategies.",
 		searchCutoffAt: "2026-07-03T16:59:04.000Z",
@@ -7026,7 +7026,7 @@ const rawClaims: SeedClaim[] = [
 			"A recirculating range hood may trap some particles or grease, but it does not vent nitrogen dioxide outdoors the way an outdoor-vented hood does."
 		],
 		editorSummary:
-			"This page should answer a politicized indoor-air question without becoming a ban debate: gas stoves are a real combustion-pollution source, the child-asthma signal is concerning but not perfectly causal, and the most useful guidance is exposure reduction.",
+			"Gas stoves are a real indoor combustion-pollution source, and the child-asthma evidence is concerning but not perfectly causal. The practical guidance is exposure reduction rather than a political ban frame.",
 		uncertaintySummary:
 			"The exposure evidence is strong, especially for nitrogen dioxide from gas combustion. The child-asthma evidence is directionally concerning but moderate-certainty because many studies are observational, exposure definitions vary, and intervention evidence is still limited.",
 		searchCutoffAt: "2026-07-03T17:18:30.000Z",
@@ -9080,7 +9080,7 @@ const rawClaims: SeedClaim[] = [
 			"Antibacterial consumer soap is often assumed to be better, but CDC notes no added health benefit for consumers compared with plain soap and water."
 		],
 		editorSummary:
-			"This page should keep the claim practical, not magical: handwashing with soap is a clear everyday prevention behavior, with stronger evidence for diarrheal illness and more qualified evidence for respiratory infections.",
+			"Handwashing with soap is a practical everyday prevention behavior. Evidence is strongest for diarrheal illness and more qualified for respiratory infections, so it should complement other prevention tools.",
 		uncertaintySummary:
 			"The benefit is strongest for diarrheal disease. Exact effect sizes vary by setting, baseline access, adherence, outcome measurement, pathogen, and whether handwashing is bundled with other water, sanitation, school, or public-health interventions.",
 		searchCutoffAt: "2026-07-04T19:44:25.000Z",
@@ -9200,7 +9200,7 @@ const rawClaims: SeedClaim[] = [
 			"Processed meat is sometimes lumped together with all meat; the evidence is clearer for processed meat than for unprocessed red meat."
 		],
 		editorSummary:
-			"This page should be precise: processed meat is a supported colorectal-cancer risk factor, but readers also need classification and absolute-risk context so the claim does not become nutrition fearmongering.",
+			"Processed meat is a supported colorectal-cancer risk factor, but classification and absolute-risk context matter. The evidence is strong without making occasional intake sound equivalent to smoking.",
 		uncertaintySummary:
 			"The direction of evidence is strong for processed meat and colorectal cancer. Uncertainty is mainly about exact dose-response shape at low intakes, product-specific risks, residual confounding in observational nutrition studies, and how much risk changes after substitution with healthier foods.",
 		searchCutoffAt: "2026-07-02T22:51:14.000Z",
@@ -9317,7 +9317,7 @@ const rawClaims: SeedClaim[] = [
 			"cherry-picking-distorts-the-evidence"
 		],
 		editorSummary:
-			"This page should help readers interpret the IARC/JECFA split without turning it into either 'aspartame causes cancer' or 'there is nothing to study.' Keep hazard classification, acceptable daily intake, ordinary exposure, and observational-study limits separate.",
+			"The aspartame debate depends on keeping hazard classification, acceptable daily intake, ordinary exposure, and observational limits separate. The current answer is cautious study, not proof of typical-intake cancer risk.",
 		uncertaintySummary:
 			"Evidence certainty is low for a cancer effect at typical intake levels because the positive epidemiology is limited and inconsistent, exposure measurement is difficult, and residual confounding or reverse causality can affect artificial-sweetener studies. Confidence is higher that current regulators treat intake below ADI as acceptable for the general population.",
 		uncertaintyDrivers: [
@@ -9496,7 +9496,7 @@ const rawClaims: SeedClaim[] = [
 			"does-natural-mean-safer-or-better"
 		],
 		editorSummary:
-			"This page should answer the supplement claim without mocking deficiency concerns. The useful framing is: treat deficiency for ordinary health reasons, but do not treat vitamin D as a proven broad COVID-19 prevention or treatment intervention.",
+			"Vitamin D deficiency should be treated for ordinary health reasons, but supplementation is not proven as a broad COVID-19 prevention or treatment. The evidence needs clinical-outcome framing, not supplement hype.",
 		uncertaintySummary:
 			"Evidence certainty is low because the stronger prevention and early-treatment trials are mostly null, while hospitalized-treatment reviews remain heterogeneous by baseline vitamin D status, severity, dose, formulation, timing, and standard of care. Confidence is higher that vitamin D should not replace established COVID-19 prevention or treatment.",
 		uncertaintyDrivers: [
@@ -9678,7 +9678,7 @@ const rawClaims: SeedClaim[] = [
 			"Nutrition headlines regularly hide what food or nutrient is actually replacing the saturated fat in question."
 		],
 		editorSummary:
-			"This page should model how to explain a broad mainstream conclusion without pretending nutrition science is cleaner than it is.",
+			"The mainstream conclusion remains that saturated fat can raise LDL and cardiovascular risk, while real-world diet patterns and substitutions matter. Nutrition nuance is not the same as reversal.",
 		sources: [
 			{
 				kind: "guideline",
@@ -9824,7 +9824,7 @@ const rawClaims: SeedClaim[] = [
 			"Mechanistic concern about oxidation or omega-6 pathways is often presented as if it already proves real-world disease harm."
 		],
 		editorSummary:
-			"This page should be careful rather than dismissive: seed-oil panic is overconfident, but the most honest answer still separates oils, processing, dose, and replacement foods.",
+			"Seed-oil panic is overconfident, but the best answer still separates oils, processing, dose, and replacement foods. Overall diet quality is more supported than treating seed oils as uniquely toxic.",
 		searchCutoffAt: "2026-07-02T21:33:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
 		changeLog: [
