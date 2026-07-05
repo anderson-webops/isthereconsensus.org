@@ -15,15 +15,21 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<span class="site-brand__name">Is There Consensus?</span>
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
-			<nav class="site-nav" aria-label="Primary">
-				<NuxtLink to="/">Home</NuxtLink>
-				<NuxtLink to="/consensus">Browse</NuxtLink>
-				<NuxtLink to="/explainers">Explainers</NuxtLink>
-				<NuxtLink to="/ask">Ask</NuxtLink>
-				<NuxtLink to="/standards">How reviews work</NuxtLink>
-				<NuxtLink to="/account">Account</NuxtLink>
-				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
-			</nav>
+			<div class="site-header__actions">
+				<nav class="site-nav" aria-label="Primary">
+					<NuxtLink to="/">Home</NuxtLink>
+					<NuxtLink to="/consensus">Browse</NuxtLink>
+					<NuxtLink to="/explainers">Explainers</NuxtLink>
+					<NuxtLink to="/ask">Ask</NuxtLink>
+					<NuxtLink to="/standards">How reviews work</NuxtLink>
+					<NuxtLink to="/account">Account</NuxtLink>
+					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
+				</nav>
+				<div class="site-header__controls" aria-label="Appearance controls">
+					<PaletteSwitcher />
+					<ThemeToggle />
+				</div>
+			</div>
 		</header>
 
 		<main class="site-main">
@@ -39,15 +45,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<div class="site-footer__appearance" aria-label="Appearance controls">
-					<span class="site-footer__appearance-label">Appearance</span>
-					<div class="site-footer__appearance-controls">
-						<PaletteSwitcher />
-						<ThemeToggle />
-					</div>
-				</div>
 				<nav class="site-footer__links" aria-label="Support and policy">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
+					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
 				</nav>
@@ -77,6 +77,22 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	gap: 16px;
 	padding-bottom: 16px;
 	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.site-header__actions {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 12px;
+	justify-content: end;
+	min-width: 0;
+}
+
+.site-header__controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
 }
 
 .site-brand {
@@ -145,8 +161,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	padding-top: 18px;
 	border-top: 1px solid var(--consensus-soft-line);
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(240px, auto);
-	align-items: start;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
 	gap: 24px;
 	font-size: 0.95rem;
 }
@@ -165,38 +181,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	display: flex;
 	flex-direction: column;
 	align-items: end;
-	gap: 12px;
-	min-width: min(100%, 320px);
-}
-
-.site-footer__appearance {
-	display: inline-flex;
-	align-items: center;
-	justify-content: end;
 	gap: 10px;
-	width: max-content;
-	max-width: 100%;
-	padding: 6px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 88%, transparent);
-}
-
-.site-footer__appearance-label {
-	padding-left: 10px;
-	color: var(--consensus-muted);
-	font-size: 0.72rem;
-	font-weight: 800;
-	letter-spacing: 0.14em;
-	line-height: 1;
-	text-transform: uppercase;
-	white-space: nowrap;
-}
-
-.site-footer__appearance-controls {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
+	min-width: min(100%, 300px);
 }
 
 .site-footer__links {
@@ -229,6 +215,17 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		padding-bottom: 12px;
 	}
 
+	.site-header__actions {
+		grid-template-columns: 1fr;
+		width: 100%;
+		align-items: start;
+		justify-content: stretch;
+	}
+
+	.site-header__controls {
+		justify-content: start;
+	}
+
 	.site-nav {
 		justify-content: start;
 		gap: 6px;
@@ -252,10 +249,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer__meta {
 		align-items: start;
 		min-width: 0;
-	}
-
-	.site-footer__appearance {
-		justify-content: start;
 	}
 
 	.site-footer__links {

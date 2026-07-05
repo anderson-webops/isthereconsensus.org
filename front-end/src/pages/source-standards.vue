@@ -293,6 +293,11 @@ useStaticPageMeta({
 	display: none;
 }
 
+.topic-standard summary:focus-visible {
+	outline: none;
+	box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--consensus-debate) 22%, transparent);
+}
+
 .topic-standard summary::after {
 	content: "+";
 	display: inline-grid;

@@ -71,6 +71,10 @@ describe("source standards", () => {
 	it("keeps source hierarchy tiers visually separated for scanning", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
 
+		assert.match(
+			source,
+			/\.topic-standard summary:focus-visible \{[\s\S]*outline: none;[\s\S]*box-shadow: inset 0 0 0 3px/
+		);
 		assert.match(source, /\.tier-list li \{[\s\S]*padding-left: 12px;[\s\S]*border-left: 3px solid/);
 		assert.match(source, /\.tier-list li::marker \{[\s\S]*font-weight: 700;/);
 		assert.match(source, /\.tier-list \{[\s\S]*gap: 12px;[\s\S]*padding-left: 22px;/);
