@@ -21,7 +21,11 @@ describe("misconception and explainer index layout copy", () => {
 	it("uses public navigation labels from evergreen explainers", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
 
+		assert.match(source, /Use the concept, then return to the claim\./);
+		assert.match(source, /shorter page would not leave enough room for the method/);
 		assert.match(source, />How reviews work</);
 		assert.doesNotMatch(source, /Read editorial standards/);
+		assert.doesNotMatch(source, /support pages/i);
+		assert.doesNotMatch(source, /not a detour/i);
 	});
 });

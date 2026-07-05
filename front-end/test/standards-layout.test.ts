@@ -15,6 +15,14 @@ describe("standards page layout", () => {
 		assert.doesNotMatch(standardsSource, /without guessing where they are/);
 	});
 
+	it("keeps the trust callout written for readers", () => {
+		assert.match(
+			standardsSource,
+			/Readers can judge a claim faster when the evidence, uncertainty, and update trail stay visible\s+beside the answer\./
+		);
+		assert.doesNotMatch(standardsSource, /A reviewed page should make/);
+	});
+
 	it("keeps mobile standards panels compact without changing the page flow", () => {
 		assert.match(standardsSource, /@media \(max-width: 760px\) \{[\s\S]*\.standards-grid \{[\s\S]*gap: 12px;/);
 		assert.match(standardsSource, /\.standards-panel \{[\s\S]*gap: 10px;/);

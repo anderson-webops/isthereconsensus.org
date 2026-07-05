@@ -129,8 +129,8 @@ useStaticPageMeta({
 				<p class="eyebrow">Why this matters</p>
 				<h2>Trust comes from visible evidence, uncertainty, and updates.</h2>
 				<p>
-					A reviewed page should make its evidence, uncertainty, and update trail visible where the claim is
-					being read.
+					Readers can judge a claim faster when the evidence, uncertainty, and update trail stay visible
+					beside the answer.
 				</p>
 			</div>
 			<div class="standards-callout__actions">
