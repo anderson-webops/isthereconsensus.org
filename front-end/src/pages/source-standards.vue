@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
 });
 
 useStaticPageMeta({
-	description: "Topic-specific sourcing notes help reviewers check how source stacks are weighted in unusual fields.",
+	description: "Topic-specific sourcing notes explain why reviewed claims weigh source types differently by field.",
 	path: "/source-standards",
 	robots: "noindex,follow",
 	title: "Topic sourcing notes - Is There Consensus?"
@@ -41,14 +41,17 @@ useStaticPageMeta({
 
 		<header class="page-header">
 			<p class="eyebrow">Topic sourcing notes</p>
-			<h1>Topic-specific source stacks.</h1>
-			<p>This reference supports source-stack review. Most readers only need the main How Reviews Work page.</p>
+			<h1>How source stacks change by topic.</h1>
+			<p>
+				Use this reference to see why a reviewed claim may weigh guidelines, assessments, datasets, syntheses,
+				or individual studies differently by field.
+			</p>
 		</header>
 
 		<section class="panel panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Cross-cutting rules</h2>
-				<p>The default sourcing rules that apply before any topic-specific adjustment.</p>
+				<p>The baseline rules that apply before topic-specific evidence needs change the weighting.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in crossCuttingRules" :key="item">{{ item }}</li>
@@ -57,8 +60,8 @@ useStaticPageMeta({
 
 		<section class="panel">
 			<div class="section-heading section-heading--tight">
-				<h2>When this page matters</h2>
-				<p>Usually only when a reader or reviewer is checking why a source stack was built a certain way.</p>
+				<h2>When to use this reference</h2>
+				<p>Use it when you want to audit why a claim gave more weight to one source type than another.</p>
 			</div>
 			<ul class="plain-list">
 				<li>Medicine may lean on guideline bodies and clinical review programs.</li>
@@ -70,7 +73,9 @@ useStaticPageMeta({
 		<section class="topic-standards-section">
 			<div class="section-heading section-heading--tight">
 				<h2>Topic notes</h2>
-				<p>These field-specific notes add context when the default evidence hierarchy is too general.</p>
+				<p>
+					These field-specific notes explain what gets more weight when the default hierarchy is too general.
+				</p>
 			</div>
 			<div class="topic-standard-list">
 				<details
@@ -156,11 +161,11 @@ useStaticPageMeta({
 
 		<section class="callout">
 			<div>
-				<p class="eyebrow">Start simpler</p>
-				<h2>Start with the main public trust page.</h2>
+				<p class="eyebrow">Shorter overview</p>
+				<h2>For the public version, start with How Reviews Work.</h2>
 				<p>
-					If you only want to understand what reviewed pages show and why they are trustworthy, go back to How
-					Reviews Work.
+					That page explains what reviewed claims show first. This reference is for readers who want the
+					topic-by-topic sourcing detail.
 				</p>
 			</div>
 			<div class="callout__actions">

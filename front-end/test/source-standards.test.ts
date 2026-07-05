@@ -56,4 +56,15 @@ describe("source standards", () => {
 		assert.ok(sourceStandardList.length > 0);
 		assert.ok(sourceStandardList.every((standard) => standard.slug && standard.summary));
 	});
+
+	it("keeps the reference framing readable for first-time visitors", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
+
+		assert.match(source, /How source stacks change by topic\./);
+		assert.match(source, /why a reviewed claim may weigh guidelines, assessments, datasets, syntheses/);
+		assert.match(source, /When to use this reference/);
+		assert.match(source, /For the public version, start with How Reviews Work\./);
+		assert.doesNotMatch(source, /This reference supports source-stack review/);
+		assert.doesNotMatch(source, /Start with the main public trust page/);
+	});
 });

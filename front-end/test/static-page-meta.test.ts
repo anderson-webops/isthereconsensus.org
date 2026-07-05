@@ -80,7 +80,7 @@ const publicStaticPages = [
 	{
 		file: "src/pages/source-standards.vue",
 		path: "/source-standards",
-		description: "Topic-specific sourcing notes help reviewers"
+		description: "Topic-specific sourcing notes explain why reviewed claims"
 	}
 ];
 
