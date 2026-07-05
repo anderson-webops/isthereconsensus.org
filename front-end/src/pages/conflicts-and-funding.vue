@@ -12,7 +12,7 @@ const quickPoints = [
 	},
 	{
 		title: "Managed participation",
-		body: "Disclosure does not automatically disqualify someone, but it can trigger recusal, added review controls, or public explanation."
+		body: "Disclosure can trigger recusal, added review controls, or public explanation; it does not automatically disqualify someone."
 	},
 	{
 		title: "No veto power",
@@ -39,7 +39,7 @@ const disclosureFields = [
 const recusalRules = [
 	{
 		title: "Automatic recusal",
-		body: "A reviewer or editor steps out when they have a direct financial or strategic stake in the exact conclusion, source, product, or organization under review."
+		body: "A reviewer or editor steps out for a direct financial or strategic stake in the conclusion, source, product, or organization under review."
 	},
 	{
 		title: "Managed participation",
@@ -47,14 +47,14 @@ const recusalRules = [
 	},
 	{
 		title: "Post-publication discovery",
-		body: "If an undisclosed conflict appears after publication, the site logs it, checks whether page confidence changes, and adds a correction or reviewer change when needed."
+		body: "If an undisclosed conflict appears after publication, the site logs it, checks page confidence, and adds a correction or reviewer change when needed."
 	}
 ];
 
 const publicCommitments = [
-	"Reviewed pages show reviewer or author lines when those roles materially influenced the final synthesis.",
+	"Reviewed pages show reviewer or author lines when those roles shaped the final synthesis.",
 	"Claim pages show a short conflict summary and editorial-independence note when disclosure is relevant.",
-	"Internal records preserve recusals, waivers, and review decisions even when the full details are not shown publicly.",
+	"Internal records preserve recusals, waivers, and review decisions even when details are not public.",
 	"If a conflict could affect confidence, the site prefers replacement review over private reassurance."
 ];
 
@@ -74,8 +74,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Conflict and funding disclosure</p>
 			<h1>Influence, funding, and disclosures.</h1>
 			<p>
-				This policy covers interests disclosed by staff editors, verified experts, and anyone with approval
-				power over reviewed claim pages.
+				This policy covers interests disclosed by staff editors, verified experts, and anyone who can approve
+				reviewed claim pages.
 			</p>
 		</header>
 
@@ -132,7 +132,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related standards</p>
-				<h2>Disclosure matters when it changes assignment and review behavior.</h2>
+				<h2>Disclosure matters when it changes assignments or reviews.</h2>
 				<p>The expert program covers reviewer standards; How Reviews Work covers the public publishing bar.</p>
 			</div>
 			<div class="policy-callout__actions">

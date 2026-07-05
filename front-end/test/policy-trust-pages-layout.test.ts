@@ -43,9 +43,16 @@ describe("policy trust pages layout", () => {
 		const source = readPage("src/pages/conflicts-and-funding.vue");
 
 		assert.match(source, /Anyone who can shape reviewed pages discloses relevant financial/);
+		assert.match(source, /anyone who can approve\s+reviewed claim pages/);
+		assert.match(source, /Disclosure can trigger recusal, added review controls, or public explanation/);
 		assert.match(source, /Recent or ongoing funding tied to the claim area or source stack\./);
+		assert.match(source, /checks page confidence/);
 		assert.match(source, /prefers replacement review over private reassurance\./);
+		assert.match(source, /Disclosure matters when it changes assignments or reviews\./);
 		assert.doesNotMatch(source, /must be disclosed by staff editors/);
+		assert.doesNotMatch(source, /anyone with approval power over reviewed claim pages/);
+		assert.doesNotMatch(source, /checks whether page confidence changes/);
+		assert.doesNotMatch(source, /full details are not shown publicly/);
 		assert.doesNotMatch(source, /private hand-waving/);
 	});
 
