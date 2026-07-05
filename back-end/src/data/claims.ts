@@ -7069,34 +7069,34 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "high",
 		reviewMode: "living",
 		bottomLine:
-			"Yes. Methane is a powerful but shorter-lived greenhouse gas, so cutting methane emissions can slow warming over the next few decades and reduce ozone-related air-pollution harms. It is not a substitute for cutting carbon dioxide, which dominates long-term warming, but it is one of the fastest climate-risk reduction levers.",
+			"Yes. Methane is a powerful but shorter-lived greenhouse gas, so cutting methane emissions can slow warming over the next few decades and reduce ozone-related air-pollution harms. It does not replace carbon dioxide cuts, which shape long-term warming, but it is one of the fastest ways to lower near-term climate risk.",
 		stableCore: [
-			"Methane warms the climate much more strongly per tonne than CO2 over the first decades after release, but it stays in the atmosphere for a much shorter time.",
+			"Methane warms the climate far more per tonne than CO2 in the first decades after release, but it leaves the atmosphere much faster.",
 			"IPCC assessments say strong, rapid, sustained methane reductions would limit near-term warming and improve air quality.",
 			"UNEP and the Climate and Clean Air Coalition estimate that available measures could cut human-caused methane emissions about 45% by 2030 and avoid about 0.3 C of warming by the 2040s.",
 			"IEA reports that methane has contributed around 30% of the rise in global temperature since the Industrial Revolution and that large energy-sector cuts are technically feasible with existing technologies.",
-			"Methane cuts complement deep CO2 reductions rather than replacing them because CO2 accumulates and sets the long-term warming floor."
+			"Methane cuts complement deep CO2 reductions rather than replacing them because CO2 accumulates and drives long-term warming."
 		],
 		openQuestions: [
-			"Which policies most quickly scale methane cuts across oil and gas, coal, landfills, manure, rice production, and livestock systems?",
-			"How should inventories incorporate satellite-detected super-emitters, undercounted leaks, and fast-changing measurement methods?",
-			"How can methane action be verified without weakening the larger need for rapid CO2 reductions?"
+			"Which policies can scale methane cuts fastest across oil and gas, coal, landfills, manure, rice production, and livestock systems?",
+			"How should inventories account for satellite-detected super-emitters, undercounted leaks, and changing measurement methods?",
+			"How can methane action be verified while keeping the larger need for rapid CO2 reductions clear?"
 		],
 		whatWouldChangeMinds: [
 			"Major assessment updates showing methane reductions do not meaningfully affect near-term warming or ozone-related air pollution.",
 			"Verified global emissions data showing available methane-control measures cannot reduce emissions at anything close to current assessment estimates.",
-			"A stronger climate-forcing account showing that methane cuts are no longer an important complement to CO2 mitigation."
+			"Assessment evidence showing methane reductions no longer materially complement CO2 mitigation."
 		],
 		misconceptions: [
 			"Methane's shorter lifetime is sometimes misread as meaning methane is harmless.",
-			"Some arguments frame methane action as a distraction from CO2 cuts; the consensus position is both-and, not either-or.",
+			"Some arguments frame methane action as a distraction from CO2 cuts; the consensus treats them as complementary, not competing.",
 			"Methane pledges are sometimes treated as already achieved reductions, even when measurement, enforcement, and leak repair remain unresolved.",
 			"Reducing methane does not erase past CO2 emissions or remove the need to reach net-zero CO2."
 		],
 		editorSummary:
 			"Methane mitigation is one of the clearest near-term climate levers because methane is powerful and shorter-lived. The evidence does not make it a substitute for CO2 cuts; it makes it a high-value complement.",
 		uncertaintySummary:
-			"The physics and direction are high-confidence. The uncertainty is mostly practical: how much verified reduction policies can achieve by sector, how inventories handle super-emitters and undercounting, and whether methane action is paired with deep CO2 cuts rather than used to delay them.",
+			"The physics and direction are high-confidence. The practical uncertainty is how much verified reduction policies can deliver by sector, how inventories handle super-emitters and undercounting, and whether methane action comes alongside deep CO2 cuts rather than delaying them.",
 		uncertaintyDrivers: [
 			{
 				type: "implementation",
@@ -7111,7 +7111,7 @@ const rawClaims: SeedClaim[] = [
 			{
 				type: "other",
 				detail:
-					"Climate benefit depends on methane cuts happening alongside CO2 reductions, not instead of long-lived greenhouse-gas mitigation."
+					"The climate benefit depends on methane cuts happening alongside CO2 reductions, not instead of long-lived greenhouse-gas mitigation."
 			}
 		],
 		searchDatabases: ["Consensus", "IPCC", "UNEP", "Climate and Clean Air Coalition", "IEA"],
@@ -7139,7 +7139,7 @@ const rawClaims: SeedClaim[] = [
 				population:
 					"Global anthropogenic methane emissions from energy, agriculture, and waste sectors assessed in climate-science and mitigation literature",
 				finding:
-					"Rapid methane reductions would lower near-term warming pressure and ozone-related air-pollution harms, while still needing to be paired with deep CO2 reductions for long-term climate stabilization.",
+					"Rapid methane reductions would lower near-term warming and ozone-related air-pollution harms, while still needing to be paired with deep CO2 reductions for long-term climate stabilization.",
 				effectDirection: "supports",
 				magnitude:
 					"UNEP and the Climate and Clean Air Coalition estimate available measures could reduce human-caused methane emissions about 45% by 2030 and avoid about 0.3 C of warming by the 2040s; IEA reports methane has contributed around 30% of observed warming since the Industrial Revolution.",

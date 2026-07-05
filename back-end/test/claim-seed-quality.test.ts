@@ -334,7 +334,8 @@ describe("default claim seed quality", () => {
 		assert.equal(claim.consensusBand, "strong");
 		assert.equal(claim.evidenceCertainty, "high");
 		assert.match(claim.bottomLine, /shorter-lived greenhouse gas/);
-		assert.match(claim.bottomLine, /not a substitute for cutting carbon dioxide/);
+		assert.match(claim.bottomLine, /does not replace carbon dioxide cuts/);
+		assert.ok(claim.bottomLine.length <= 330, "Methane mitigation bottom line should stay scannable");
 		assert.match(visibleSummary, /45% by 2030/);
 		assert.match(visibleSummary, /0\.3 C/);
 		assert.match(visibleSummary, /30%/);
