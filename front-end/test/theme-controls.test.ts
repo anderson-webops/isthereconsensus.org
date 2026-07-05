@@ -10,23 +10,31 @@ const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
+		it(`keeps the palette switcher next to the compact color-mode toggle in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 			const paletteImportIndex = source.indexOf('import PaletteSwitcher from "~/components/PaletteSwitcher.vue"');
 			const themeImportIndex = source.indexOf('import ThemeToggle from "~/components/ThemeToggle.vue"');
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
+			const footerAppearanceIndex = source.indexOf(
+				'class="site-footer__appearance" aria-label="Appearance controls"'
+			);
+			const footerStart = source.indexOf('<footer class="site-footer">');
 
 			assert.notEqual(paletteImportIndex, -1);
 			assert.notEqual(themeImportIndex, -1);
 			assert.notEqual(paletteRenderIndex, -1);
 			assert.notEqual(themeRenderIndex, -1);
+			assert.notEqual(footerStart, -1);
+			assert.notEqual(footerAppearanceIndex, -1);
+			assert.ok(footerAppearanceIndex > footerStart);
+			assert.ok(paletteRenderIndex > footerAppearanceIndex);
 			assert.ok(paletteRenderIndex < themeRenderIndex);
 			assert.match(
 				source,
-				/class="site-header__controls" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
+				/class="site-footer__appearance" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
 			);
-			assert.doesNotMatch(source, /site-footer__appearance/);
+			assert.doesNotMatch(source, /site-header__controls/);
 		});
 
 		it(`keeps the footer focused on support and policy links in ${file}`, () => {
@@ -36,12 +44,12 @@ describe("theme controls", () => {
 
 			assert.notEqual(footerStart, -1);
 			assert.match(footer, /to="\/corrections"[\s\S]*Corrections/);
-			assert.match(footer, /to="\/community-guidelines"[\s\S]*Guidelines/);
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
 			assert.match(footer, /&copy; \{\{ year \}\} Is There Consensus\?/);
-			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
-			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
+			assert.match(footer, /PaletteSwitcher|ThemeToggle/);
+			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work|Guidelines/);
+			assert.doesNotMatch(footer, /to="\/community-guidelines"/);
 		});
 	}
 
@@ -62,7 +70,7 @@ describe("theme controls", () => {
 	it("keeps the light and dark toggle visually compact", () => {
 		const source = readFileSync(join(testDir, "..", "src/components/ThemeToggle.vue"), "utf8");
 
-		assert.match(source, /\.theme-toggle \{[\s\S]*width: 42px;[\s\S]*height: 42px;/);
+		assert.match(source, /\.theme-toggle \{[\s\S]*width: 38px;[\s\S]*height: 38px;/);
 		assert.match(source, /const toggleLabel = computed/);
 		assert.match(source, /:aria-label="toggleLabel"/);
 	});

@@ -25,28 +25,25 @@ function toggleTheme() {
 .theme-toggle {
 	display: inline-grid;
 	place-items: center;
-	width: 42px;
-	height: 42px;
+	width: 38px;
+	height: 38px;
 	padding: 0;
 	border-radius: 999px;
-	border: 1px solid var(--consensus-line);
-	background: var(--consensus-elevated-surface);
+	border: 1px solid var(--consensus-soft-line);
+	background: var(--consensus-field-surface);
 	color: var(--consensus-ink);
-	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.1);
-	backdrop-filter: blur(16px);
 	cursor: pointer;
 	transition:
 		background-color 180ms ease,
 		border-color 180ms ease,
-		box-shadow 180ms ease,
 		color 180ms ease,
 		transform 180ms ease;
 }
 
 .theme-toggle:hover {
 	transform: translateY(-1px);
-	border-color: var(--consensus-soft-line);
-	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.14);
+	border-color: var(--consensus-interactive);
+	background: var(--consensus-soft-accent);
 }
 
 .theme-toggle:focus-visible {
@@ -67,11 +64,7 @@ function toggleTheme() {
 }
 
 :global(.dark) .theme-toggle {
-	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
-}
-
-:global(.dark) .theme-toggle:hover {
-	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+	background: var(--consensus-field-surface);
 }
 
 :global(.dark) .theme-toggle__icon {
