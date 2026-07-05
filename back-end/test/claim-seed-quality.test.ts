@@ -485,6 +485,38 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /drug interactions do not matter/i);
 	});
 
+	it("keeps the homeopathy claim placebo-scoped and safety-aware", () => {
+		const slug = "does-homeopathy-reliably-work-beyond-placebo-for-treating-health-conditions";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing homeopathy claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.exclusionRules,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.match(claim.bottomLine, /Not reliably/);
+		assert.ok(claim.bottomLine.length <= 520, "Homeopathy bottom line should stay scannable");
+		assert.match(visibleSummary, /little evidence to support homeopathy as an effective treatment/);
+		assert.match(visibleSummary, /beyond placebo/);
+		assert.match(visibleSummary, /38% of registered trials remained unpublished/);
+		assert.match(visibleSummary, /without FDA review/);
+		assert.match(visibleSummary, /delay effective diagnosis or treatment|effective care is delayed/);
+		assert.match(visibleSummary, /not enough to establish treatment effects/);
+		assert.doesNotMatch(visibleSummary, /homeopathy works/i);
+		assert.doesNotMatch(visibleSummary, /cures/i);
+		assert.doesNotMatch(visibleSummary, /impossible for any condition/i);
+		assert.doesNotMatch(visibleSummary, /always safe/i);
+	});
+
 	it("keeps the masks and respirators claim evidence-balanced", () => {
 		const slug = "do-masks-and-respirators-reduce-the-spread-of-respiratory-viruses";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

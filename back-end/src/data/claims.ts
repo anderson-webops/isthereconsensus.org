@@ -22690,6 +22690,200 @@ const rawClaims: SeedClaim[] = [
 				order: 8
 			}
 		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does homeopathy reliably work beyond placebo for treating health conditions?",
+		slug: "does-homeopathy-reliably-work-beyond-placebo-for-treating-health-conditions",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Not reliably. Major evidence reviews and public-health bodies do not support homeopathy as an effective treatment for specific health conditions beyond placebo-compatible effects. Some small or lower-quality trials report positive results, but those findings weaken when bias, registration, publication, and higher-quality evidence are considered. Homeopathy should not replace evidence-based care, especially for serious or time-sensitive conditions.",
+		stableCore: [
+			"NCCIH says there is little evidence to support homeopathy as an effective treatment for any specific health condition.",
+			"Placebo-controlled trial syntheses generally find that apparent homeopathy benefits shrink when higher-quality and less biased evidence is emphasized.",
+			"Reporting-bias research found many registered homeopathy trials were unpublished, many published trials were unregistered, and unregistered trials showed larger effects than registered trials.",
+			"FDA warns that homeopathic products are marketed without FDA review and may not meet modern standards for safety, effectiveness, quality, or labeling."
+		],
+		openQuestions: [
+			"Are any condition-specific signals robust after prospective registration, low risk of bias, adequate sample size, and independent replication?",
+			"How often do people delay effective diagnosis or treatment because they rely on homeopathy for serious symptoms?",
+			"How should regulators balance consumer choice with truthful efficacy claims, manufacturing quality, and safety monitoring?"
+		],
+		whatWouldChangeMinds: [
+			"Large, prospectively registered, independently replicated randomized trials showing clinically meaningful benefits beyond placebo for a specific condition.",
+			"Updated NCCIH, FDA, EASAC, Cochrane, or comparable assessments concluding that homeopathy has reliable condition-specific efficacy.",
+			"Transparent trial registries and publication records showing that positive findings are not explained by reporting bias, outcome switching, or selective publication."
+		],
+		misconceptions: [
+			"Homeopathy is sometimes confused with herbal medicine, even though many homeopathic products are diluted so heavily that no molecules of the original substance remain.",
+			"Some people treat 'natural' or 'individualized' as if it automatically means safe and effective.",
+			"Anecdotal improvement after taking a remedy can reflect placebo effects, regression to the mean, normal recovery, or concurrent evidence-based care.",
+			"Evidence against reliable homeopathic efficacy does not mean every user is lying; it means personal experience is not enough to establish treatment effects."
+		],
+		editorSummary:
+			"Homeopathy is a high-value pseudoscience page because the public question is common and clinically consequential: personal experiences exist, but reliable evidence does not support replacing evidence-based care with homeopathic remedies.",
+		uncertaintySummary:
+			"The main uncertainty is not whether homeopathy is a well-supported general treatment; it is not. The remaining uncertainty is narrower: whether any specific product-condition pair can show a replicable benefit beyond placebo under modern trial-registration and bias-control standards.",
+		uncertaintyDrivers: [
+			{
+				type: "bias",
+				detail:
+					"Selective publication, retrospective registration, outcome changes, small trials, and inadequate blinding can inflate apparent treatment effects."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Homeopathy trials cover many different conditions and individualized prescriptions, so positive signals in one setting should not be generalized to unrelated conditions."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Safety risk often comes from delayed effective care or poor product quality rather than from an active ingredient in highly diluted preparations."
+			}
+		],
+		searchDatabases: ["PubMed", "NCCIH", "FDA", "EASAC"],
+		searchCutoffAt: "2026-07-05T13:30:25.000Z",
+		lastRetractionCheckAt: "2026-07-05T13:30:25.000Z",
+		inclusionRules: [
+			"Prioritize public-health agency summaries, systematic reviews, meta-analyses, Cochrane review overviews, and trial-registration or reporting-bias studies.",
+			"Separate evidence for homeopathy as a general system from evidence for any specific product, condition, and outcome.",
+			"Treat personal testimonials and uncontrolled before-after reports as context only, not efficacy evidence."
+		],
+		exclusionRules: [
+			"Do not treat herbal medicine, dietary supplements, or naturopathy evidence as evidence for homeopathy.",
+			"Do not use practitioner marketing pages, case reports, or anecdotes as decision-weight sources.",
+			"Do not imply that highly diluted products are automatically safe when manufacturing quality, toxic ingredients, drug interactions, or delayed care can matter."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does homeopathy produce reliable clinical benefits beyond placebo?",
+				population:
+					"People using homeopathic products for specific health conditions across randomized trials, systematic reviews, and public-health evaluations.",
+				finding:
+					"The reliable-evidence signal does not support homeopathy as an effective treatment beyond placebo for specific health conditions, although small or lower-quality trials can show positive results.",
+				effectDirection: "mixed",
+				magnitude:
+					"Shang 2005 found placebo-compatible effects after accounting for trial bias; Ernst 2010 found available Cochrane reviews did not show effects beyond placebo; Gartlehner 2022 found 38% of registered trials remained unpublished and unregistered trials had larger effects than registered trials.",
+				certainty: "moderate",
+				limitations: [
+					"Trials span many conditions, remedies, and individualized protocols, making broad pooling imperfect.",
+					"Some positive findings remain possible at the product-condition level but need stronger prospective replication.",
+					"Safety and public-health risk depend on what condition is being treated and whether effective care is delayed."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "National Center for Complementary and Integrative Health",
+				role: "U.S. public-health evidence summary for homeopathy effectiveness and safety limits."
+			},
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Regulatory and safety anchor for homeopathic product review, labeling, quality, and risk-based enforcement."
+			},
+			{
+				name: "European Academies' Science Advisory Council",
+				role: "European scientific-advisory anchor for evidence-based regulation of homeopathic claims."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T13:30:25.000Z",
+				kind: "publication",
+				summary:
+					"Initial homeopathy efficacy page published from NCCIH, FDA, EASAC, PubMed-indexed placebo-controlled review, Cochrane-review overview, and reporting-bias evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Homeopathy: What You Need To Know",
+				publisher: "National Center for Complementary and Integrative Health",
+				url: "https://www.nccih.nih.gov/health/homeopathy",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"NCCIH public-health anchor stating there is little evidence to support homeopathy as an effective treatment for any specific health condition and explaining high-dilution principles and safety concerns.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Some Homeopathic Products May Put You at Risk",
+				publisher: "U.S. Food and Drug Administration",
+				url:
+					"https://www.fda.gov/drugs/understanding-over-counter-medicines/some-homeopathic-products-may-put-you-risk",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"FDA safety and regulatory source stating homeopathic products are marketed without FDA review and may not meet modern standards for safety, effectiveness, quality, and labeling.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title:
+					"Homeopathic products and practices: assessing the evidence and ensuring consistency in regulating medical claims in the EU",
+				publisher: "European Academies' Science Advisory Council",
+				year: 2017,
+				url: "https://easac.eu/publications/details/homeopathic-products-and-practices",
+				stance: "supports",
+				note:
+					"EASAC statement criticizing unsupported health and scientific claims for homeopathic products and calling for evidence-based, accurate consumer information and regulation.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Are the clinical effects of homoeopathy placebo effects? Comparative study of placebo-controlled trials of homoeopathy and allopathy",
+				publisher: "The Lancet",
+				year: 2005,
+				url: "https://pubmed.ncbi.nlm.nih.gov/16125589/",
+				doi: "10.1016/S0140-6736(05)67177-2",
+				pmid: "16125589",
+				stance: "supports",
+				note:
+					"Comparative meta-analysis reporting weak evidence for specific homeopathic effects after accounting for bias and concluding the findings were compatible with placebo effects.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Homeopathy: what does the 'best' evidence tell us?",
+				publisher: "Medical Journal of Australia",
+				year: 2010,
+				url: "https://pubmed.ncbi.nlm.nih.gov/20402610/",
+				pmid: "20402610",
+				stance: "supports",
+				note:
+					"Overview of available Cochrane reviews reporting that homeopathic medicines did not show effects beyond placebo across the reviewed conditions.",
+				order: 5
+			},
+			{
+				kind: "meta_analysis",
+				title: "Assessing the magnitude of reporting bias in trials of homeopathy: a cross-sectional study and meta-analysis",
+				publisher: "BMJ Evidence-Based Medicine",
+				year: 2022,
+				url: "https://pubmed.ncbi.nlm.nih.gov/35292534/",
+				pmid: "35292534",
+				stance: "supports",
+				note:
+					"Trial-registry and meta-analysis study finding frequent nonpublication, unregistered published trials, primary-outcome changes, and larger effects in unregistered than registered RCTs.",
+				order: 6
+			},
+			{
+				kind: "meta_analysis",
+				title: "Randomised placebo-controlled trials of individualised homeopathic treatment: systematic review and meta-analysis",
+				publisher: "Systematic Reviews",
+				year: 2014,
+				url: "https://pubmed.ncbi.nlm.nih.gov/25480654/",
+				pmid: "25480654",
+				stance: "debate",
+				note:
+					"Included as debate context because it reported possible small effects for individualized homeopathy while warning that low or unclear evidence quality requires cautious interpretation.",
+				order: 7
+			}
+		]
 	}
 ];
 
