@@ -265,6 +265,39 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /risk-free/i);
 	});
 
+	it("keeps the spinal manipulation claim bounded to modest low-back-pain evidence", () => {
+		const slug = "does-spinal-manipulation-help-low-back-pain";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing spinal manipulation low back pain claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.exclusionRules,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.equal(claim.evidenceCertainty, "moderate");
+		assert.match(claim.bottomLine, /Sometimes, modestly/);
+		assert.ok(claim.bottomLine.length <= 430, "Spinal manipulation bottom line should stay scannable");
+		assert.match(visibleSummary, /low back pain/);
+		assert.match(visibleSummary, /76 studies and 11,866 people/);
+		assert.match(visibleSummary, /4\.7-point pain difference/);
+		assert.match(visibleSummary, /15 randomized trials and 1,699 participants/);
+		assert.match(visibleSummary, /non-musculoskeletal/);
+		assert.match(visibleSummary, /red-flag/);
+		assert.doesNotMatch(visibleSummary, /can treat asthma/i);
+		assert.doesNotMatch(visibleSummary, /can treat high blood pressure/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed cure/i);
+		assert.doesNotMatch(visibleSummary, /realigns/i);
+	});
+
 	it("keeps the later school start time claim focused on adolescent sleep", () => {
 		const slug = "do-later-school-start-times-help-teenagers-get-more-sleep";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

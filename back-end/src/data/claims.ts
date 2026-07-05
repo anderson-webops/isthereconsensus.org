@@ -4042,6 +4042,194 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does spinal manipulation help low back pain?",
+		slug: "does-spinal-manipulation-help-low-back-pain",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Sometimes, modestly. Spinal manipulation can be a reasonable non-drug option for some acute or chronic low back pain. Average benefits are usually small to moderate and similar to other conservative treatments. It is not a cure, does not replace red-flag evaluation, and is not evidence for asthma, infections, high blood pressure, or other non-musculoskeletal disease claims.",
+		stableCore: [
+			"ACP lists spinal manipulation among non-drug options for acute, subacute, or chronic low back pain, alongside exercise, heat, massage, acupuncture, yoga, and cognitive behavioral therapy.",
+			"A 2026 Cochrane review of 76 studies and 11,866 people with chronic low back pain found small pain and function benefits versus sham manipulation and somewhat larger benefits versus no treatment. The pain difference versus other conservative care was about 4.7 points on a 0-to-100 scale.",
+			"A 2017 JAMA review of 15 randomized trials and 1,699 participants with acute low back pain found spinal manipulation associated with modest pain and function improvements up to six weeks, with mostly transient minor musculoskeletal harms.",
+			"The strongest support is for low back pain as part of conservative care; systematic-review evidence does not support spinal manipulation for preventing or treating non-musculoskeletal disorders."
+		],
+		openQuestions: [
+			"Which patients are most likely to benefit enough to make spinal manipulation worth the time, cost, and inconvenience?",
+			"How should clinicians compare manipulation with exercise, physical therapy, NSAIDs, heat, acupuncture, massage, psychological therapies, and usual advice for different back-pain presentations?",
+			"Which red-flag checks are needed before manual treatment, including fracture risk, cancer, infection, cauda equina symptoms, severe neurologic deficits, inflammatory disease, and other serious causes?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias randomized trials showing no meaningful low-back-pain benefit compared with credible sham, usual care, or other recommended conservative treatments.",
+			"Conversely, strong replicated evidence showing large durable benefits on pain, function, return to work, or medication reduction for specific low-back-pain subgroups.",
+			"High-quality systematic reviews showing benefit for specific non-musculoskeletal diseases, with plausible controls and independently replicated clinical outcomes."
+		],
+		misconceptions: [
+			"Evidence for low back pain is sometimes overstated as proof that spinal manipulation treats unrelated diseases.",
+			"Small average benefits are sometimes dismissed as nothing, even though some patients may value a non-drug option when risks and costs are acceptable.",
+			"Low back pain without red flags is different from back pain with trauma, cancer risk, infection concern, cauda equina symptoms, or severe or progressive neurologic deficits."
+		],
+		editorSummary:
+			"This page should stay narrow and practical: spinal manipulation can be one conservative low-back-pain option, but the evidence does not support broader chiropractic claims about unrelated diseases.",
+		uncertaintySummary:
+			"The low-back-pain signal is credible but modest. It remains unclear which patients benefit most, how long effects last, how much benefit exceeds expectation and hands-on care effects, and how safety screening works in routine practice.",
+		uncertaintyDrivers: [
+			{
+				type: "imprecision",
+				detail:
+					"Average effects are small to moderate, and patient-important benefit depends on baseline pain, function, comparison treatment, and follow-up time."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Technique, practitioner training, visit number, co-interventions, exercise advice, and red-flag screening vary across studies and clinics."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Evidence for low back pain should not be generalized to neck manipulation safety, pediatric conditions, visceral disease, infections, asthma, or cardiovascular claims."
+			}
+		],
+		searchDatabases: ["PubMed", "Cochrane", "NCCIH", "ACP"],
+		searchCutoffAt: "2026-07-05T13:43:31.000Z",
+		lastRetractionCheckAt: "2026-07-05T13:43:31.000Z",
+		inclusionRules: [
+			"Prioritize low-back-pain clinical guidelines, systematic reviews, meta-analyses, and randomized trials with pain, function, adverse-event, and disability outcomes.",
+			"Separate acute, subacute, and chronic low back pain; distinguish spinal manipulation from broad chiropractic wellness or non-musculoskeletal disease claims.",
+			"Track comparator carefully: sham manipulation, no treatment, usual care, exercise, physical therapy, medication, and multimodal conservative care answer different questions."
+		],
+		exclusionRules: [
+			"Do not generalize low-back-pain evidence to asthma, hypertension, infections, immunity, organ function, or other non-musculoskeletal conditions.",
+			"Do not use practitioner marketing pages, testimonials, or before-after videos as efficacy evidence.",
+			"Do not apply uncomplicated low-back-pain advice to red-flag symptoms or progressive neurologic deficits."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does spinal manipulation improve low back pain and function?",
+				population:
+					"Adults with acute, subacute, or chronic low back pain in randomized trials and clinical-practice guidelines.",
+				finding:
+					"Spinal manipulation can modestly improve low-back-pain outcomes for some patients, especially compared with sham or no treatment, but benefits are usually not large compared with other recommended conservative care.",
+				effectDirection: "supports",
+				magnitude:
+					"Cochrane 2026 reported a 4.7-point pain difference on a 0-to-100 scale versus other conservative interventions for chronic low back pain. JAMA 2017 found modest acute low-back-pain improvements up to six weeks across 15 trials and 1,699 participants.",
+				certainty: "moderate",
+				limitations: [
+					"Benefits are average effects, not a guarantee for every patient.",
+					"Trials differ in technique, dose, practitioner, co-interventions, and comparator.",
+					"Evidence for low back pain does not validate non-musculoskeletal disease claims."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "American College of Physicians",
+				role: "Clinical-guideline anchor for noninvasive low-back-pain treatment options."
+			},
+			{
+				name: "Cochrane",
+				role: "Evidence-synthesis anchor for chronic low-back-pain spinal manipulative therapy."
+			},
+			{
+				name: "National Center for Complementary and Integrative Health",
+				role: "U.S. public-health anchor for spinal manipulation evidence and safety limits."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T13:43:31.000Z",
+				kind: "publication",
+				summary:
+					"Initial spinal-manipulation and low-back-pain page published from ACP guidance, Cochrane chronic low-back-pain evidence, JAMA acute low-back-pain review, NCCIH context, and non-musculoskeletal evidence review."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Spinal Manipulation: What You Need To Know",
+				publisher: "National Center for Complementary and Integrative Health",
+				url: "https://www.nccih.nih.gov/health/spinal-manipulation-what-you-need-to-know",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"NCCIH public-health anchor describing spinal manipulation evidence, low-back-pain use, safety considerations, and the need to tell health care providers about complementary approaches.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title:
+					"Noninvasive Treatments for Acute, Subacute, and Chronic Low Back Pain: A Clinical Practice Guideline From the American College of Physicians",
+				publisher: "Annals of Internal Medicine",
+				year: 2017,
+				url: "https://doi.org/10.7326/M16-2367",
+				doi: "10.7326/M16-2367",
+				pmid: "28192789",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"ACP guideline includes spinal manipulation among non-drug treatment options for acute, subacute, and chronic low back pain, while emphasizing shared decisions and conservative care.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "What are the benefits and risks of spinal manipulative therapy for chronic low back pain?",
+				publisher: "Cochrane",
+				year: 2026,
+				url:
+					"https://www.cochrane.org/evidence/CD008112_what-are-benefits-and-risks-spinal-manipulative-therapy-chronic-low-back-pain",
+				doi: "10.1002/14651858.CD008112.pub3",
+				pmid: "41494147",
+				stance: "supports",
+				note:
+					"Cochrane review of 76 studies and 11,866 people with chronic low back pain finding small to moderate benefits depending on comparator and limited certainty about rare or serious harms.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Association of Spinal Manipulative Therapy With Clinical Benefit and Harm for Acute Low Back Pain",
+				publisher: "JAMA",
+				year: 2017,
+				url: "https://doi.org/10.1001/jama.2017.3086",
+				doi: "10.1001/jama.2017.3086",
+				pmid: "28399251",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of 15 randomized trials and 1,699 participants finding modest acute low-back-pain and function improvement up to six weeks, with mostly transient minor musculoskeletal harms.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Benefits and harms of spinal manipulative therapy for the treatment of chronic low back pain",
+				publisher: "BMJ",
+				year: 2019,
+				url: "https://doi.org/10.1136/bmj.l689",
+				doi: "10.1136/bmj.l689",
+				pmid: "30867144",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis finding similar effects to recommended therapies and better short-term function than nonrecommended therapies, while noting mostly transient adverse events.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"The global summit on the efficacy and effectiveness of spinal manipulative therapy for the prevention and treatment of non-musculoskeletal disorders",
+				publisher: "Chiropractic & Manual Therapies",
+				year: 2021,
+				url: "https://doi.org/10.1186/s12998-021-00362-9",
+				doi: "10.1186/s12998-021-00362-9",
+				pmid: "33596925",
+				stance: "context",
+				note:
+					"Systematic-review summit found no evidence supporting spinal manipulation for preventing or treating non-musculoskeletal disorders, bounding the low-back-pain claim.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Does positive airway pressure help adults with obstructive sleep apnea?",
 		slug: "does-positive-airway-pressure-help-adults-with-obstructive-sleep-apnea",
 		status: "published",
