@@ -24,6 +24,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
+				<div class="site-header__controls" aria-label="Appearance controls">
+					<PaletteSwitcher />
+					<ThemeToggle />
+				</div>
 			</div>
 		</header>
 
@@ -40,16 +44,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<div class="site-footer__appearance-block">
-					<p class="site-footer__eyebrow">Appearance</p>
-					<div class="site-footer__appearance" role="group" aria-label="Appearance controls">
-						<span class="i-carbon-color-palette site-footer__appearance-icon" aria-hidden="true" />
-						<PaletteSwitcher />
-						<ThemeToggle />
-					</div>
-				</div>
 				<div class="site-footer__links">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
+					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
 				</div>
@@ -81,10 +78,19 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 .site-header__actions {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
+	gap: 12px;
 	justify-content: end;
 	min-width: 0;
+}
+
+.site-header__controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
 }
 
 .site-brand {
@@ -177,58 +183,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	min-width: min(100%, 320px);
 }
 
-.site-footer__appearance-block {
-	display: grid;
-	gap: 7px;
-	justify-items: end;
-}
-
-.site-footer__eyebrow {
-	margin: 0;
-	max-width: none;
-	color: var(--consensus-muted);
-	font-size: 0.72rem;
-	font-weight: 700;
-	letter-spacing: 0.15em;
-	line-height: 1;
-	text-transform: uppercase;
-}
-
-.site-footer__appearance {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	padding: 4px 5px 4px 9px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--consensus-elevated-surface) 92%, transparent);
-	box-shadow: 0 18px 48px rgba(21, 17, 13, 0.12);
-	backdrop-filter: blur(18px);
-}
-
-.site-footer__appearance-icon {
-	width: 1.05rem;
-	height: 1.05rem;
-	color: var(--consensus-ember);
-}
-
-.site-footer__appearance :deep(.palette-switcher),
-.site-footer__appearance :deep(.theme-toggle) {
-	border-color: transparent;
-	background: transparent;
-	box-shadow: none;
-	backdrop-filter: none;
-}
-
-.site-footer__appearance :deep(.palette-switcher) {
-	padding: 0;
-}
-
-.site-footer__appearance :deep(.theme-toggle:hover),
-.site-footer__appearance :deep(.palette-switcher__button:hover) {
-	box-shadow: none;
-}
-
 .site-footer__links {
 	display: flex;
 	gap: 8px 14px;
@@ -254,9 +208,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-header__actions {
+		grid-template-columns: 1fr;
 		width: 100%;
 		align-items: start;
 		justify-content: stretch;
+	}
+
+	.site-header__controls {
+		justify-content: start;
 	}
 
 	.site-nav {
@@ -282,14 +241,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer__meta {
 		align-items: start;
 		min-width: 0;
-	}
-
-	.site-footer__appearance-block {
-		justify-items: start;
-	}
-
-	.site-footer__appearance {
-		max-width: 100%;
 	}
 
 	.site-footer__links {
