@@ -348,6 +348,41 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /guaranteed/i);
 	});
 
+	it("keeps the insecticide-treated bed-net claim focused on malaria prevention and implementation limits", () => {
+		const slug = "do-insecticide-treated-bed-nets-reduce-malaria-in-endemic-regions";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing insecticide-treated bed-net claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.institutionalAnchors.map(anchor => anchor.role),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "strong");
+		assert.equal(claim.evidenceCertainty, "high");
+		assert.match(claim.bottomLine, /malaria-endemic areas/);
+		assert.match(claim.bottomLine, /not a complete malaria-control program/);
+		assert.ok(claim.bottomLine.length <= 360, "Bed-net bottom line should stay scannable");
+		assert.match(visibleSummary, /23 trials/);
+		assert.match(visibleSummary, /275,000/);
+		assert.match(visibleSummary, /5\.6 child lives per 1000/);
+		assert.match(visibleSummary, /20%/);
+		assert.match(visibleSummary, /282 million malaria cases and 610,000 deaths/);
+		assert.match(visibleSummary, /pyrethroid resistance/i);
+		assert.match(visibleSummary, /consistent use|nightly use/i);
+		assert.match(visibleSummary, /diagnosis, treatment, chemoprevention, vaccines/);
+		assert.doesNotMatch(visibleSummary, /eliminate malaria by themselves/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed/i);
+		assert.doesNotMatch(visibleSummary, /obsolete everywhere/i);
+	});
+
 	it("keeps the carbon monoxide alarm claim clear for household readers", () => {
 		const slug = "do-carbon-monoxide-alarms-reduce-poisoning-risk";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

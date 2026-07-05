@@ -10374,6 +10374,181 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "health-and-medicine",
+		title: "Do insecticide-treated bed nets reduce malaria in endemic regions?",
+		slug: "do-insecticide-treated-bed-nets-reduce-malaria-in-endemic-regions",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "living",
+		bottomLine:
+			"Yes. In malaria-endemic areas, sleeping under insecticide-treated nets reduces mosquito bites, malaria illness, severe disease, and child deaths. The effect depends on high coverage, consistent use, intact nets, and insecticides that still work against local mosquitoes; nets are a core prevention tool, not a complete malaria-control program by themselves.",
+		stableCore: [
+			"Cochrane's 2018 review included 23 trials and more than 275,000 adults and children; compared with no nets, ITNs saved an estimated 5.6 lives each year for every 1000 children protected and reduced P. falciparum cases and infection.",
+			"CDC describes ITNs as one of the most effective malaria-prevention methods and says community-wide African trials reduced all-cause deaths among children under 5 by about 20%.",
+			"WHO identifies vector control as a highly effective malaria-control and elimination component, with insecticide-treated nets and indoor residual spraying as the two core interventions.",
+			"Current malaria burden remains large: WHO estimated 282 million malaria cases and 610,000 deaths globally in 2024, with children under 5 carrying most deaths in the African Region.",
+			"Pyrethroid resistance, net durability, cost, access, consistent use, and changing mosquito behavior can reduce impact; WHO now recommends newer net types in some pyrethroid-resistant settings."
+		],
+		openQuestions: [
+			"Which net type gives the best protection and value in each setting as pyrethroid resistance, mosquito species, and biting behavior change?",
+			"How can programs sustain high coverage, correct hanging, nightly use, replacement, and repair without leaving lower-income or remote households behind?",
+			"How should ITNs be combined with indoor residual spraying, rapid diagnosis, effective treatment, chemoprevention, vaccines, larval control, housing improvements, and surveillance?"
+		],
+		whatWouldChangeMinds: [
+			"Large contemporary trials or surveillance studies showing no meaningful malaria, severe-disease, or child-mortality benefit from correctly used ITNs in endemic areas with suitable mosquito exposure.",
+			"Major WHO, CDC, or Cochrane reassessments withdrawing ITNs as a core malaria vector-control intervention.",
+			"Evidence that insecticide resistance or behavioral adaptation has made available ITN types ineffective across most endemic settings despite high coverage and proper use."
+		],
+		misconceptions: [
+			"A net in the house does not provide the same protection as an intact net that is hung correctly and used consistently while people sleep.",
+			"Untreated nets can be a physical barrier, but insecticide-treated nets are more protective because they also kill or repel mosquitoes and can reduce community mosquito survival.",
+			"Insecticide resistance does not mean nets have stopped working everywhere; it means programs need resistance monitoring and sometimes newer dual-ingredient nets.",
+			"Bed nets are not a substitute for diagnosis, treatment, chemoprevention, vaccines where available, or broader vector-control programs."
+		],
+		editorSummary:
+			"Insecticide-treated nets are a high-certainty malaria-prevention tool with clear mortality and illness benefits. The useful caveat is implementation: coverage, use, durability, local resistance, and complementary interventions determine realized impact.",
+		uncertaintySummary:
+			"The main benefit direction is high-certainty, especially for child mortality and P. falciparum illness in endemic settings. Remaining uncertainty is about current effect size under pyrethroid resistance, newer net mixes, local vector behavior, durability, coverage, and how nets combine with vaccines, treatment, and other prevention tools.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Real-world benefit depends on household access, correct hanging, nightly use, replacement timing, physical durability, community coverage, and program financing."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Effect sizes vary by malaria species, transmission intensity, mosquito species, indoor versus outdoor biting, housing, seasonality, and health-system context."
+			},
+			{
+				type: "mechanism",
+				detail:
+					"Insecticide resistance can weaken pyrethroid-only net performance, making local resistance monitoring and newer net choices important."
+			}
+		],
+		searchDatabases: ["Consensus", "Cochrane Library", "WHO Global Malaria Programme", "CDC"],
+		searchCutoffAt: "2026-07-05T10:20:38.000Z",
+		lastRetractionCheckAt: "2026-07-05T10:20:38.000Z",
+		inclusionRules: [
+			"Prioritize randomized trials, Cochrane or comparable systematic reviews, WHO malaria guidance, and CDC or national public-health summaries.",
+			"Separate insecticide-treated nets from untreated nets, indoor residual spraying, chemoprevention, vaccines, diagnosis, and treatment unless comparing intervention packages.",
+			"Track whether evidence applies to pyrethroid-only, PBO, pyrethroid-chlorfenapyr, or pyrethroid-pyriproxyfen nets."
+		],
+		exclusionRules: [
+			"Do not imply bed nets alone eliminate malaria or protect people who are not using them during exposure periods.",
+			"Do not treat insecticide resistance as proof that all ITNs are obsolete.",
+			"Do not generalize traveler mosquito nets to community-wide malaria-control evidence without endemic-setting data."
+		],
+		appraisalTools: [
+			"Endemic-setting applicability check",
+			"Net type and insecticide-resistance check",
+			"Coverage and adherence check",
+			"Complementary malaria-control intervention check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Do insecticide-treated bed nets reduce malaria illness and child deaths in endemic regions?",
+				population:
+					"People living in malaria-endemic areas, with strongest mortality evidence for children in sub-Saharan African community trials",
+				finding:
+					"Insecticide-treated nets reduce child mortality and malaria illness compared with no nets, and they remain a core vector-control intervention despite resistance and implementation challenges.",
+				effectDirection: "supports",
+				magnitude:
+					"Cochrane included 23 trials and more than 275,000 participants; compared with no nets, ITNs saved about 5.6 child lives per 1000 protected each year. CDC summarizes African community trials as reducing all-cause deaths among children under 5 by about 20%.",
+				certainty: "high",
+				limitations: [
+					"Many mortality trials predate widespread pyrethroid resistance and newer dual-ingredient net types.",
+					"Benefits depend on access, correct use, intact nets, replacement cycles, and community coverage.",
+					"Nets are one part of malaria control and should be paired with diagnosis, treatment, chemoprevention, vaccines where available, and surveillance."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Global malaria guidance anchor for vector control, ITN deployment, insecticide resistance, and newer net recommendations."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Public-health explanation anchor for how ITNs work, what they reduce, and practical barriers to effective use."
+			},
+			{
+				name: "Cochrane Infectious Diseases Group",
+				role: "Randomized-trial synthesis anchor for mortality and malaria-illness effect estimates."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T10:20:38.000Z",
+				kind: "publication",
+				summary:
+					"Initial insecticide-treated bed-net malaria-prevention claim published from CDC, WHO, and Cochrane systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Insecticide-treated nets for preventing malaria",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2018,
+				url: "https://www.cochrane.org/evidence/CD000363_insecticide-treated-nets-preventing-malaria",
+				doi: "10.1002/14651858.CD000363.pub3",
+				stance: "supports",
+				note:
+					"Decision-weight review of 23 trials and more than 275,000 participants; compared with no nets, ITNs saved an estimated 5.6 child lives per 1000 protected each year and reduced P. falciparum illness and infection with high-certainty evidence.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Insecticide-Treated Nets",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/malaria/php/public-health-strategy/insecticide-treated-nets.html",
+				stance: "supports",
+				note:
+					"CDC explains ITNs as one of the most effective malaria-prevention methods, reducing malaria illness, severe disease, and death, with African community trials reducing all-cause under-5 deaths by about 20%.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Vector control",
+				publisher: "World Health Organization Global Malaria Programme",
+				year: 2026,
+				url: "https://www.who.int/teams/global-malaria-programme/prevention/vector-control",
+				stance: "supports",
+				note:
+					"WHO guidance page identifying ITNs and indoor residual spraying as the two core vector-control interventions in most at-risk areas, while emphasizing monitoring, coverage, use, durability, and insecticide resistance.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Malaria",
+				publisher: "World Health Organization",
+				year: 2025,
+				url: "https://www.who.int/news-room/fact-sheets/detail/malaria",
+				stance: "supports",
+				note:
+					"Current WHO fact sheet reporting an estimated 282 million malaria cases and 610,000 deaths globally in 2024, identifying ITNs and indoor residual spraying as core vector-control interventions and noting resistance threats.",
+				order: 4
+			},
+			{
+				kind: "guideline",
+				title: "WHO publishes recommendations on two new types of insecticide-treated nets",
+				publisher: "World Health Organization",
+				year: 2023,
+				url:
+					"https://www.who.int/news/item/14-03-2023-who-publishes-recommendations-on-two-new-types-of-insecticide-treated-nets",
+				stance: "supports",
+				note:
+					"WHO recommendation update for pyrethroid-resistant settings, including a strong recommendation for pyrethroid-chlorfenapyr ITNs over pyrethroid-only nets and conditional guidance on other dual-ingredient nets.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "nutrition-and-diet",
 		title: "Does eating processed meat increase colorectal cancer risk?",
 		slug: "does-eating-processed-meat-increase-colorectal-cancer-risk",
