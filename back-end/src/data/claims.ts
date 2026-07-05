@@ -2418,6 +2418,117 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do dental sealants prevent cavities in children's back teeth?",
+		slug: "do-dental-sealants-prevent-cavities-in-childrens-back-teeth",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 93,
+		agreementLevel: "strong",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Dental sealants painted onto the chewing surfaces of back teeth prevent cavities in children and adolescents, especially on permanent molars soon after they erupt. They are a targeted barrier for pits and fissures, not a replacement for fluoride toothpaste, brushing, diet, dental care, or follow-up checks when sealants wear down.",
+		stableCore: [
+			"CDC says dental sealants are thin coatings placed on back teeth and can prevent cavities for many years.",
+			"CDC reports that sealants prevent about 80% of cavities over two years in back teeth, where most cavities occur.",
+			"The ADA/AAPD guideline recommends sealants over nonuse for primary and permanent molars with sound or noncavitated occlusal surfaces in children and adolescents.",
+			"The Community Preventive Services Task Force recommends school-based dental sealant programs for preventing tooth decay among children.",
+			"Cochrane found moderate-quality evidence that resin-based sealants reduce caries compared with no sealant at 24 months."
+		],
+		openQuestions: [
+			"How should programs prioritize children at highest cavity risk while avoiding stigma or missed access for children outside targeted schools?",
+			"Which sealant materials, placement techniques, and maintenance schedules work best in different clinical and school settings?",
+			"How do sealants compare with or combine with fluoride varnish, silver diamine fluoride, fluoridated water, and regular dental care for different risk groups?"
+		],
+		whatWouldChangeMinds: [
+			"Large, high-quality randomized or program studies showing no meaningful reduction in occlusal caries among children receiving well-placed sealants compared with no sealants.",
+			"Major CDC, CPSTF, ADA, AAPD, or Cochrane reassessments withdrawing sealants as an effective cavity-prevention intervention for children and adolescents.",
+			"Evidence of common serious harms from properly placed dental sealants that outweigh cavity-prevention benefits."
+		],
+		misconceptions: [
+			"Sealants are not only cosmetic; they physically block food and bacteria from grooves in molars that are hard to clean.",
+			"Sealants do not make brushing, fluoride toothpaste, diet, or dental visits unnecessary.",
+			"The best-supported claim is about chewing surfaces of molars, not every type of tooth decay everywhere in the mouth.",
+			"Children without regular dental access may benefit especially from school sealant programs."
+		],
+		editorSummary:
+			"Dental sealants are a practical prevention claim adjacent to fluoridation: the consensus is strong that they reduce pit-and-fissure cavities in children, while implementation questions concern access, timing, retention, and maintenance.",
+		uncertaintySummary:
+			"The direction of benefit is well supported, especially for permanent molars in children and adolescents. Uncertainty is greater for exact durability, material comparisons, low-risk groups, adult extrapolation, maintenance schedules, and how much school programs reduce disparities.",
+		searchCutoffAt: "2026-07-04T20:08:00.000Z",
+		lastRetractionCheckAt: "2026-07-04T20:08:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-04T20:08:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial dental-sealant cavity-prevention claim page published from CDC, CPSTF, ADA/AAPD guideline, and Cochrane sources."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Dental Sealant Facts",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/oral-health/data-research/facts-stats/fast-facts-dental-sealants.html",
+				stance: "supports",
+				note:
+					"CDC public-health summary reporting that sealants prevent 80% of cavities over two years in back teeth, remain underused, and are associated with fewer first-molar cavities.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "About Dental Sealants",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/oral-health/prevention/about-dental-sealants.html",
+				stance: "supports",
+				note:
+					"CDC practical source explaining what sealants are, why early placement after molar eruption matters, and how school sealant programs improve access.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Dental Caries (Cavities): School-Based Dental Sealant Delivery Programs",
+				publisher: "Community Preventive Services Task Force",
+				year: 2013,
+				url:
+					"https://www.thecommunityguide.org/findings/dental-caries-cavities-school-based-dental-sealant-delivery-programs.html",
+				stance: "supports",
+				note:
+					"CPSTF recommendation source for school-based sealant programs, summarizing strong evidence for increased sealant use and lower tooth decay.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Evidence-based Clinical Practice Guideline for the Use of Pit-and-Fissure Sealants",
+				publisher: "American Academy of Pediatric Dentistry / American Dental Association",
+				year: 2016,
+				url: "https://www.aapd.org/research/oral-health-policies--recommendations/pit_and_fissure_sealants/",
+				pmid: "27470525",
+				stance: "supports",
+				note:
+					"ADA/AAPD guideline recommending sealants over nonuse for primary and permanent molars with sound or noncavitated occlusal surfaces in children and adolescents.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Pit and fissure sealants for preventing dental decay in permanent teeth",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2017,
+				url: "https://doi.org/10.1002/14651858.CD001830.pub5",
+				doi: "10.1002/14651858.CD001830.pub5",
+				pmid: "28759120",
+				stance: "supports",
+				note:
+					"Systematic review finding moderate-quality evidence that resin-based sealants reduce caries in children and adolescents compared with no sealant at 24 months.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Is there no safe level of lead exposure for children, including from drinking water?",
 		slug: "is-there-no-safe-level-of-lead-exposure-for-children",
 		status: "published",
