@@ -72,10 +72,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Verified expert review program</p>
 			<h1>Expert reviewer verification.</h1>
-			<p>
-				This page defines the verified-expert layer that sits between community discussion and reviewed
-				editorial publication.
-			</p>
+			<p>The verified-expert layer sits between community discussion and reviewed editorial publication.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -108,7 +105,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Disagreement and replacement</h2>
-				<p>The workflow should make reviewer disagreement clear enough for editors to resolve.</p>
+				<p>The workflow makes reviewer disagreement clear enough for editors to resolve.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in disagreementFlow" :key="item.title" class="policy-detail-card">

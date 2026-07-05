@@ -101,7 +101,7 @@ useStaticPageMeta({
 		<section class="misconception-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Where each module fits</h2>
-				<p>Use this map to match recurring mistakes to the right claim pages.</p>
+				<p>This map matches recurring mistakes to the right claim pages.</p>
 			</div>
 			<div class="reuse-table-wrap">
 				<table class="reuse-table">

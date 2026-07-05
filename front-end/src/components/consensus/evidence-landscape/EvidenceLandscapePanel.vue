@@ -203,8 +203,8 @@ function formatDate(value?: string) {
 		</section>
 
 		<p v-if="landscape.publicFlags?.showFalseBalanceWarning" class="landscape-warning">
-			This page can describe unsupported or fringe versions of a claim, but it does not give them equal visual
-			weight with stronger evidence.
+			Unsupported or fringe versions of a claim can be described, but they do not receive equal visual weight with
+			stronger evidence.
 		</p>
 
 		<p v-if="showSafetyContext" class="landscape-warning">

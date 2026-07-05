@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Human gate",
-		body: "Automation can support monitoring, routing, and prioritization, but it should not publish reviewed bottom lines on its own."
+		body: "Automation can support monitoring, routing, and prioritization, but it does not publish reviewed bottom lines on its own."
 	},
 	{
 		title: "Named owner",
@@ -41,7 +41,7 @@ const humanGates = [
 	},
 	{
 		title: "Moderation gate",
-		body: "Risk scoring or abuse detection can prioritize review, but a person should be able to inspect and reverse meaningful enforcement actions."
+		body: "Risk scoring or abuse detection can prioritize review, but a person can inspect and reverse meaningful enforcement actions."
 	},
 	{
 		title: "Disclosure gate",
@@ -71,8 +71,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Automation and AI disclosure</p>
 			<h1>Automation support and human review.</h1>
 			<p>
-				This page explains the site’s operating rules for automation, AI-assisted drafting, and decision-support
-				tools.
+				These rules cover automation, AI-assisted drafting, and decision-support tools while keeping publication
+				accountable to people.
 			</p>
 		</header>
 
@@ -129,8 +129,8 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related trust pages</p>
-				<h2>Readers should see the human gate without learning the full operations stack.</h2>
-				<p>Use How Reviews Work for the public standard and Corrections for the visible change path.</p>
+				<h2>Make the human gate visible without exposing operational detail.</h2>
+				<p>How Reviews Work covers the public standard; Corrections covers the visible change path.</p>
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>

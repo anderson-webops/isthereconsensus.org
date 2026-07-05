@@ -57,7 +57,7 @@ useStaticPageMeta({
 			<p class="eyebrow">How reviews work</p>
 			<h1>How reviewed pages weigh evidence.</h1>
 			<p>
-				This page explains what carries the answer, which trust signals should be visible, and how reviews
+				These standards explain what carries the answer, which trust signals stay visible, and how reviews
 				handle uncertainty and updates.
 			</p>
 		</header>
@@ -127,7 +127,7 @@ useStaticPageMeta({
 		<section class="standards-callout">
 			<div>
 				<p class="eyebrow">Why this matters</p>
-				<h2>Readers should not need the internal workflow to trust a page.</h2>
+				<h2>Trust comes from visible evidence, uncertainty, and updates.</h2>
 				<p>
 					A reviewed page should make its evidence, uncertainty, and update trail visible where the claim is
 					being read.

@@ -68,8 +68,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Account deletion and retention</p>
 			<h1>Account deletion and retained records.</h1>
 			<p>
-				This page explains the site’s current request-based approach to account closure, public-content
-				handling, and retained operational records.
+				The current request-based process covers account closure, public-content handling, and retained
+				operational records.
 			</p>
 		</header>
 
@@ -123,10 +123,10 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related rights pages</p>
-				<h2>Use Privacy for the data map and this page for account closure.</h2>
+				<h2>Privacy maps data; account closure covers retained records.</h2>
 				<p>
-					The Privacy Policy explains collection and legal request channels. This page explains what account
-					closure does to public contributions and retained records.
+					The Privacy Policy explains collection and legal request channels. Account-closure guidance explains
+					what happens to public contributions and retained records.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Visible record",
-		body: "Reviewed pages should not change materially without a public record of what moved and why."
+		body: "Reviewed pages do not change materially without a public record of what moved and why."
 	},
 	{
 		title: "Labeled changes",
@@ -23,19 +23,19 @@ const quickPoints = [
 const correctionTypes = [
 	{
 		title: "Correction",
-		body: "Use when the published page contains a factual error, a materially misleading statement, or a citation problem that changes how the current page should be read."
+		body: "For factual errors, materially misleading statements, or citation problems that change how the current page should be read."
 	},
 	{
 		title: "Update",
-		body: "Use when new evidence, a guideline change, or a major assessment justifies revising the current synthesis without the old version being treated as an outright error."
+		body: "For new evidence, guideline changes, or major assessments that justify revising the current synthesis without treating the old version as an outright error."
 	},
 	{
 		title: "Review",
-		body: "Use for scheduled maintenance checks where the team re-runs the evidence scan and confirms or lightly refreshes the page."
+		body: "For scheduled maintenance checks where the team re-runs the evidence scan and confirms or lightly refreshes the page."
 	},
 	{
 		title: "Archive or withdraw",
-		body: "Use when a claim page should stay in the public record but is no longer the correct live destination, or when a serious issue makes the page unsuitable to present as current."
+		body: "For claim pages that should stay in the public record but are no longer the correct live destination, or when a serious issue makes the page unsuitable to present as current."
 	}
 ];
 
@@ -100,7 +100,7 @@ useStaticPageMeta({
 
 		<section class="corrections-panel corrections-panel--soft">
 			<div class="section-heading section-heading--tight">
-				<h2>What a strong correction request should include</h2>
+				<h2>What to include in a correction request</h2>
 				<p>
 					Specific requests are easier to review than general accusations that a page is “biased” or “wrong.”
 				</p>

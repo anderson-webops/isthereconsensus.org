@@ -106,7 +106,7 @@ useSeoMeta({
 		<section v-if="relatedModules.length" class="explainer-detail-panel explainer-detail-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Related misconception modules</h2>
-				<p>These are the shorter embeds that should point back to this explainer.</p>
+				<p>These shorter embeds point back to this explainer.</p>
 			</div>
 			<div class="module-grid">
 				<article v-for="item in relatedModules" :key="item.slug" class="module-card">
@@ -122,7 +122,7 @@ useSeoMeta({
 		<section class="explainer-callout">
 			<div>
 				<p class="eyebrow">Back to claim pages</p>
-				<h2>Use this once, then return to the claim.</h2>
+				<h2>Read the frame, then return to the claim.</h2>
 				<p>{{ explainer?.whyItMatters }}</p>
 			</div>
 			<div class="explainer-callout__actions">

@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Use the rights lane",
-		body: "Use this path for copyright, trademark, logo, impersonation, or other intellectual-property concerns tied to site content or submissions."
+		body: "The rights lane covers copyright, trademark, logo, impersonation, and other intellectual-property concerns tied to site content or submissions."
 	},
 	{
 		title: "Make notices specific",
@@ -68,10 +68,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Copyright and trademark complaints</p>
 			<h1>Rights complaints and takedown requests.</h1>
-			<p>
-				This page explains how the site receives, reviews, and resolves copyright, trademark, and related rights
-				issues.
-			</p>
+			<p>This process receives, reviews, and resolves copyright, trademark, and related rights issues.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -124,10 +121,10 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Use the right lane</p>
-				<h2>Use the right workflow for the dispute.</h2>
+				<h2>Choose the right workflow for the dispute.</h2>
 				<p>
-					Use corrections for scientific errors, moderation for community enforcement, and this page for
-					rights assertions.
+					Send scientific errors to corrections, community enforcement to moderation, and rights assertions
+					through this process.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

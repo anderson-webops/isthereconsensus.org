@@ -41,7 +41,7 @@ const flagReasons = [
 const enforcementLadder = [
 	{
 		title: "Guidance or no action",
-		body: "Use this when a report is weak, unsubstantiated, or better handled by clarification."
+		body: "Best for weak, unsubstantiated reports or cases better handled by clarification."
 	},
 	{
 		title: "Content-level action",
@@ -164,10 +164,10 @@ useStaticPageMeta({
 		<section class="guidelines-callout">
 			<div>
 				<p class="eyebrow">Related pages</p>
-				<h2>Use the right path for the right problem.</h2>
+				<h2>Choose the right path for the problem.</h2>
 				<p>
-					Use corrections for factual problems, moderation for enforcement questions, and How Reviews Work for
-					the publishing standard.
+					Send factual problems to corrections, enforcement questions to moderation, and publishing-standard
+					questions to How Reviews Work.
 				</p>
 			</div>
 			<div class="guidelines-callout__actions">

@@ -11,7 +11,7 @@ describe("corrections page layout", () => {
 	it("keeps the corrections summary concise and trust-focused", () => {
 		assert.match(
 			correctionsSource,
-			/Reviewed pages should not change materially without a public record of what moved and why\./
+			/Reviewed pages do not change materially without a public record of what moved and why\./
 		);
 		assert.match(
 			correctionsSource,

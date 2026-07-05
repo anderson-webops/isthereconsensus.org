@@ -986,8 +986,8 @@ watch(
 							<div>
 								<span class="field-label">Evidence landscape</span>
 								<p>
-									Use this for the support range, credible disagreement, and limits. It appears
-									publicly only when the workflow is published and the public flag is enabled.
+									Captures the support range, credible disagreement, and limits. It appears publicly
+									only when the workflow is published and the public flag is enabled.
 								</p>
 							</div>
 							<div class="workflow-actions">

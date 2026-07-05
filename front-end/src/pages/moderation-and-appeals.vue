@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Explain the action",
-		body: "Moderation actions should include enough explanation for the affected user to understand what happened and why."
+		body: "Moderation actions include enough explanation for the affected user to understand what happened and why."
 	},
 	{
 		title: "Appeals need new context",
@@ -41,7 +41,7 @@ const appealFlow = [
 	},
 	{
 		title: "Second-look review",
-		body: "A moderator or admin should be able to revisit the decision, not simply rubber-stamp the first action."
+		body: "A moderator or admin can revisit the decision, not simply rubber-stamp the first action."
 	},
 	{
 		title: "Outcome logging",
@@ -70,7 +70,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Moderation and appeals</p>
 			<h1>Moderation decisions and appeals.</h1>
-			<p>This page defines the notices, action types, and appeal expectations behind the community rules.</p>
+			<p>These notices, action types, and appeal expectations support the community rules.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -92,8 +92,8 @@ useStaticPageMeta({
 
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>What users should be told</h2>
-				<p>Users should receive reasons, not just outcomes.</p>
+				<h2>What the notice includes</h2>
+				<p>Affected users receive reasons, not just outcomes.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in noticeElements" :key="item">{{ item }}</li>
@@ -103,7 +103,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Appeal flow</h2>
-				<p>Appeals should allow review without endless relitigation.</p>
+				<p>Appeals allow review without endless relitigation.</p>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in appealFlow" :key="item.title" class="policy-detail-card">

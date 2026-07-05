@@ -105,7 +105,7 @@ const uncertaintySummary = computed(() => {
 	if (claim.value?.evidenceCertainty === "very_low") {
 		return "Very low certainty means this is an unstable evidence base and should be read as a careful snapshot, not a durable settled answer.";
 	}
-	return "This page does not yet expose a plain-language uncertainty summary.";
+	return "A plain-language uncertainty summary is not available yet.";
 });
 
 const uncertaintyLimits = computed(() => {
@@ -354,7 +354,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<p class="eyebrow">Reviewed claim</p>
 				<h1>{{ claim?.title || "Claim review" }}</h1>
 				<p class="claim-page__description">
-					{{ claim?.editorSummary || "This page summarizes the reviewed evidence for the claim." }}
+					{{ claim?.editorSummary || "This review summarizes the available evidence for the claim." }}
 				</p>
 			</div>
 			<p class="claim-page__meta">
