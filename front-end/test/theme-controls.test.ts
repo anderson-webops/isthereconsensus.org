@@ -28,12 +28,16 @@ describe("theme controls", () => {
 
 	it("keeps the restored green, blue, and warm background palettes", () => {
 		const source = readFileSync(join(testDir, "..", "src/components/PaletteSwitcher.vue"), "utf8");
+		const appSource = readFileSync(join(testDir, "..", "src/app.vue"), "utf8");
 
 		assert.match(source, /type PaletteValue = "green" \| "blue" \| "warm"/);
 		assert.match(source, /label: "Green", value: "green"/);
 		assert.match(source, /label: "Blue", value: "blue"/);
 		assert.match(source, /label: "Warm", value: "warm"/);
 		assert.match(source, /document\.documentElement\.dataset\.consensusPalette = value/);
+		assert.match(appSource, /:root\[data-consensus-palette="blue"\]/);
+		assert.match(appSource, /:root\[data-consensus-palette="warm"\]/);
+		assert.match(appSource, /--consensus-page-background/);
 	});
 
 	it("keeps the light and dark toggle visually compact", () => {

@@ -63,7 +63,7 @@ useStaticPageMeta({
 			<div class="explainer-callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/misconceptions">View misconception modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">Read editorial standards</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>
 	</div>

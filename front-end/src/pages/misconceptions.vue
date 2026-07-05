@@ -36,7 +36,7 @@ useStaticPageMeta({
 
 		<header class="misconception-header">
 			<p class="eyebrow">Misconception modules</p>
-			<h1>Recurring mistakes on claim pages.</h1>
+			<h1>Recurring mistakes around science claims.</h1>
 			<p>
 				These short modules correct predictable errors before readers mistake a headline, anecdote, or partial
 				result for the state of the evidence.
@@ -49,9 +49,9 @@ useStaticPageMeta({
 				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
 			</div>
 			<ul class="plain-list">
-				<li>The short correction fits claim pages that keep attracting the same misunderstanding.</li>
+				<li>The short correction helps when the same misunderstanding keeps returning.</li>
 				<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
-				<li>One linked explainer lets readers learn the method once and reuse it elsewhere.</li>
+				<li>One linked explainer gives readers the method behind the correction.</li>
 				<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
 			</ul>
 		</section>
@@ -101,7 +101,7 @@ useStaticPageMeta({
 		<section class="misconception-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Where each module fits</h2>
-				<p>This map matches recurring mistakes to the right claim pages.</p>
+				<p>This map connects recurring mistakes to the science claims where they often appear.</p>
 			</div>
 			<div class="reuse-table-wrap">
 				<table class="reuse-table">
