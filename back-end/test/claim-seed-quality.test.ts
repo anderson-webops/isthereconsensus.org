@@ -134,6 +134,32 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /try harder/i);
 	});
 
+	it("keeps the exercise and depression claim useful without blaming patients", () => {
+		const slug = "does-exercise-reduce-symptoms-of-depression";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing exercise and depression claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /reasonable evidence-based treatment option or add-on/);
+		assert.match(visibleSummary, /73 studies with 4,985 adults/);
+		assert.match(visibleSummary, /218 unique studies and 14,170 participants/);
+		assert.match(visibleSummary, /does not mean depression is laziness/);
+		assert.match(visibleSummary, /should not replace urgent care/);
+		assert.doesNotMatch(visibleSummary, /just exercise/i);
+		assert.doesNotMatch(visibleSummary, /snap out of it/i);
+		assert.doesNotMatch(visibleSummary, /try harder/i);
+	});
+
 	it("keeps the wind and solar lifecycle claim bounded to greenhouse gas evidence", () => {
 		const slug = "do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

@@ -8771,6 +8771,164 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Does exercise reduce symptoms of depression?",
+		slug: "does-exercise-reduce-symptoms-of-depression",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes, exercise can reduce depressive symptoms for many adults and is a reasonable evidence-based treatment option or add-on. The important caveat is that this is not a blame-the-patient message or a guaranteed cure: depression severity, access, motivation, physical limitations, safety, psychotherapy, medication, and crisis care still matter.",
+		stableCore: [
+			"Cochrane's 2026 review of 73 studies with 4,985 adults found exercise had a moderate effect in reducing depression symptoms compared with control conditions.",
+			"A 2024 BMJ network meta-analysis of 218 unique studies and 14,170 participants found symptom improvement across several exercise modes, including walking or jogging, yoga, strength training, and mixed aerobic activity.",
+			"NICE includes group exercise as a treatment option for less severe depression, while keeping treatment choice tied to symptoms, preferences, access, risk, and follow-up.",
+			"WHO says physical activity can reduce symptoms of depression and anxiety and also has broader physical-health benefits."
+		],
+		openQuestions: [
+			"Which exercise type, dose, intensity, supervision level, and social support work best for particular people and severity levels?",
+			"How can clinicians support people whose depression makes activity initiation, adherence, transportation, cost, pain, disability, or safety difficult?",
+			"How durable are benefits after programs end, and when is exercise best used with psychotherapy, medication, sleep treatment, or other care?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias randomized trials showing no clinically meaningful symptom benefit from well-supported exercise programs across depression severity groups.",
+			"Major Cochrane, BMJ, NICE, WHO, ACP, APA, or comparable guideline reassessments withdrawing exercise or structured physical activity as a treatment option.",
+			"Evidence that common implementation harms, injury risk, stigma, or delayed clinical care outweigh symptom benefits in routine use."
+		],
+		misconceptions: [
+			"Evidence that exercise can help depression does not mean depression is laziness, weak will, or a failure to try hard enough.",
+			"Exercise advice is not the same as a supported treatment plan; safety, pacing, access, social support, and follow-up can change whether it is realistic.",
+			"Exercise should not replace urgent care for suicidality, psychosis, severe impairment, or depression that needs psychotherapy, medication, or combined treatment.",
+			"One exercise mode is not proven best for everyone; preference and adherence often matter as much as the exact activity."
+		],
+		editorSummary:
+			"Exercise has credible evidence as a depression symptom treatment option, but the page should avoid implying that activity alone is enough or that depression reflects poor effort.",
+		uncertaintySummary:
+			"The direction of benefit is reasonably consistent, but certainty is moderate because trials vary in exercise type, comparator, severity, adherence, blinding, follow-up, and study quality. The most useful public answer is 'yes, often helpful,' with visible limits around dose, access, severity, and combination care.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Exercise can be hard to start and sustain during depression, so supervision, social support, safety, and access can determine whether the evidence translates to real life."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Effect sizes vary by exercise mode, intensity, comparator, study quality, and depression severity."
+			},
+			{
+				type: "timing",
+				detail:
+					"Long-term maintenance and relapse prevention after exercise programs end are less certain than short-term symptom change."
+			}
+		],
+		searchDatabases: ["Consensus", "PubMed", "Cochrane", "NICE", "WHO"],
+		searchCutoffAt: "2026-07-05T06:10:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T06:10:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, network meta-analyses, randomized trials, and clinical guidelines about exercise or structured physical activity for depressive symptoms.",
+			"Separate treatment of diagnosed depression or depressive symptoms from general wellness claims about mood.",
+			"Keep exercise framed as an option or add-on, not as a substitute for urgent care, psychotherapy, medication, or combined treatment when those are needed."
+		],
+		exclusionRules: [
+			"Do not use fitness marketing, influencer advice, or anecdotal recovery stories as evidence.",
+			"Do not imply that exercise is risk-free, easy to implement, or equally accessible for people with disability, pain, severe depression, unsafe environments, or limited time and money.",
+			"Do not treat biomarker, animal, or mechanistic evidence as proof of real-world symptom improvement."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does exercise reduce symptoms of depression?",
+				population: "Adults with depression or elevated depressive symptoms in randomized trials and clinical guideline populations.",
+				finding:
+					"Exercise reduces depressive symptoms on average compared with control conditions, and guidelines treat structured physical activity as a legitimate treatment option, especially when matched to severity, preference, and safety.",
+				effectDirection: "supports",
+				magnitude:
+					"Cochrane found a moderate symptom-reduction effect across 73 studies and 4,985 adults; the 2024 BMJ network meta-analysis synthesized 218 unique studies and 14,170 participants but rated certainty as low or very low for many exercise-comparison estimates.",
+				certainty: "moderate",
+				limitations: [
+					"Trials differ in activity type, intensity, comparator, supervision, adherence, and outcome timing.",
+					"Blinding is difficult in exercise trials, and people who can enroll in exercise studies may differ from people with severe depression or major access barriers.",
+					"Evidence is stronger for symptom reduction than for long-term relapse prevention or replacing other indicated depression treatments."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Cochrane",
+				role: "Evidence-synthesis anchor for randomized exercise treatment studies."
+			},
+			{
+				name: "NICE",
+				role: "Clinical-guideline anchor for offering group exercise as one option for less severe depression."
+			},
+			{
+				name: "World Health Organization",
+				role: "Public-health anchor for physical activity benefits, including lower depression and anxiety symptoms."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T06:10:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial exercise and depression claim page published from Cochrane review evidence, BMJ network meta-analysis, NICE depression guidance, and WHO physical-activity guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "systematic_review",
+				title: "Exercise for depression",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2026,
+				url: "https://doi.org/10.1002/14651858.CD004366.pub7",
+				doi: "10.1002/14651858.CD004366.pub7",
+				pmid: "41500513",
+				stance: "supports",
+				note:
+					"Cochrane review of 73 studies and 4,985 adults finding exercise produced a moderate reduction in depression symptoms compared with control conditions, with limited long-term evidence.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Effect of exercise for depression: systematic review and network meta-analysis of randomised controlled trials",
+				publisher: "BMJ",
+				year: 2024,
+				url: "https://www.bmj.com/content/384/bmj-2023-075847",
+				doi: "10.1136/bmj-2023-075847",
+				pmid: "38355154",
+				stance: "supports",
+				note:
+					"Network meta-analysis of 218 unique studies and 14,170 participants finding symptom benefits across multiple exercise modes, while rating certainty low or very low for many comparisons.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Depression in adults: treatment and management",
+				publisher: "NICE",
+				year: 2022,
+				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
+				stance: "supports",
+				note:
+					"NICE guideline context for group exercise as an option for less severe depression, alongside shared decision-making, severity assessment, monitoring, and other treatments.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "Physical activity",
+				publisher: "World Health Organization",
+				year: 2024,
+				url: "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+				stance: "context",
+				note:
+					"WHO public-health source stating that physical activity reduces symptoms of depression and anxiety while also supporting broader physical health.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Is cognitive behavioral therapy for insomnia a first-line treatment for chronic insomnia?",
 		slug: "is-cognitive-behavioral-therapy-for-insomnia-a-first-line-treatment-for-chronic-insomnia",
 		status: "published",
