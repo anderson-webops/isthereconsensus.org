@@ -5479,7 +5479,7 @@ const rawClaims: SeedClaim[] = [
 			"Public discussions regularly treat fringe contrarian voices as if they reflected the center of the expert literature."
 		],
 		editorSummary:
-			"This should be treated as a canonical strong-consensus page where public misunderstanding comes largely from media distortion and fake-expert framing.",
+			"Human activity is the main driver of recent global warming. The evidence comes from physics, observations, and attribution studies, while serious debate is mostly about timing, impacts, feedbacks, and policy choices.",
 		sources: [
 			{
 				kind: "consensus_statement",
@@ -5555,7 +5555,7 @@ const rawClaims: SeedClaim[] = [
 			"Sea-level rise is sometimes framed as only a future issue, even though the observed rise is already measured in the modern record."
 		],
 		editorSummary:
-			"This page should separate the stable global answer from local planning details: the global rise and human contribution are assessed strongly, while local flood risk still needs local land-motion and exposure data.",
+			"Global sea level is rising, the rate has accelerated, and human-caused warming is the main driver of the modern increase. Local flood risk still depends on land motion, exposure, and regional ocean conditions.",
 		uncertaintySummary:
 			"The observed global direction and human contribution are high-certainty. The largest remaining uncertainty is not whether sea level is rising, but how fast ice sheets, emissions pathways, and local land motion will shape regional risk.",
 		searchCutoffAt: "2026-07-02T22:11:34.000Z",
@@ -5650,7 +5650,7 @@ const rawClaims: SeedClaim[] = [
 			"Global mean sea level is sometimes confused with local relative sea level, which also depends on land subsidence, uplift, currents, and coastal processes."
 		],
 		editorSummary:
-			"This page should be a measurement-literacy companion to the main sea-level page. It should inoculate against cherry-picked annual changes while making clear that variability is real and scientifically useful.",
+			"Short-term sea-level changes can move above or below the long-term path because climate cycles shift heat and water between land and ocean. Those annual wiggles do not erase the multi-decade rise.",
 		uncertaintySummary:
 			"The existence of short-term variability around a rising global mean trend is high-certainty. Uncertainty is mostly about the exact partitioning among thermal expansion, land-water storage, ice melt, and internal climate variability over short windows.",
 		searchCutoffAt: "2026-07-03T13:42:00.000Z",
@@ -5756,7 +5756,7 @@ const rawClaims: SeedClaim[] = [
 			"Urban heat islands can worsen local heat risk, but they do not explain the assessed global pattern of hotter extremes across most land regions."
 		],
 		editorSummary:
-			"This page should connect climate attribution to lived experience without overclaiming every individual event. The strongest phrasing is about shifted odds, frequency, intensity, and public-health exposure, not a guarantee that every place warms at the same rate.",
+			"Human-caused warming has made extreme heat more frequent and intense across most land regions. The clearest answer is about shifted odds, frequency, intensity, and exposure, not a guarantee that every place changes at the same pace.",
 		uncertaintySummary:
 			"The global direction and human contribution are high-certainty. Remaining uncertainty is mostly local and operational: exact event attribution, regional humidity and land-use effects, and how much adaptation reduces harm.",
 		searchCutoffAt: "2026-07-02T22:25:42.000Z",
@@ -5838,7 +5838,7 @@ const rawClaims: SeedClaim[] = [
 			"Compound events are sometimes discussed as if heat and drought risks simply add together, when interactions can amplify impacts."
 		],
 		editorSummary:
-			"This page should model careful climate-attribution language: globally strong and regionally qualified, focused on shifted odds and compounding impacts rather than simplistic blame for every event.",
+			"Human influence has increased the global frequency of concurrent heatwaves and droughts, with regional caveats. The practical risk is compounding hot-and-dry stress, not a simple claim that every drought has one cause.",
 		uncertaintySummary:
 			"The IPCC-level conclusion is high-certainty for increased concurrent heatwave and drought frequency under human influence. Uncertainty is concentrated in regional details, drought definitions, land-surface feedbacks, and exact event-by-event attribution.",
 		searchCutoffAt: "2026-07-03T13:02:17.000Z",
@@ -5934,7 +5934,7 @@ const rawClaims: SeedClaim[] = [
 			"Global burned area trends can be misused as a simple proxy for climate-driven fire weather, even though savanna land-use changes and human suppression strongly affect total burned area."
 		],
 		editorSummary:
-			"This page should hold the middle line: climate change has increased fire-weather risk in some regions, but fire outcomes are not climate-only. The public value is careful attribution language, not a one-cause wildfire story.",
+			"Climate change has increased fire-weather risk in some regions, especially hot and dry conditions that make fires easier to spread. Wildfire outcomes also depend on fuels, ignition, land management, suppression, and exposure.",
 		uncertaintySummary:
 			"Agreement is broad but regionally qualified. The clearest signal is for fire weather, especially hot/dry conditions; uncertainty is larger for burned area, severity, smoke, structural loss, and individual events because fuels, ignitions, land management, suppression, and exposure can dominate local outcomes.",
 		searchCutoffAt: "2026-07-03T13:42:00.000Z",
@@ -6304,7 +6304,7 @@ const rawClaims: SeedClaim[] = [
 			"Arguments over the exact consensus percentage are often used to distract from the robust conclusion that agreement is overwhelming."
 		],
 		editorSummary:
-			"This page should answer the site's namesake climate question directly: the climate attribution consensus is real, high, and repeatedly measured.",
+			"The scientific consensus on human-caused climate change is strong and repeatedly measured. Public controversy should not be mistaken for an evenly divided expert field.",
 		searchCutoffAt: "2026-07-02T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T12:00:00.000Z",
 		changeLog: [
@@ -6386,7 +6386,7 @@ const rawClaims: SeedClaim[] = [
 			"Because attributable deaths are modeled, people sometimes mistake uncertainty ranges for evidence that the risk is speculative."
 		],
 		editorSummary:
-			"This page should make the scale legible without pretending the exact global number is a direct body count. The durable answer is that air pollution is a major, measurable mortality risk.",
+			"Air pollution is a major, measurable mortality risk, even though exact annual death estimates vary by model, pollutant mix, and year. The burden is consistently measured in millions, not thousands.",
 		uncertaintySummary:
 			"Attributable-death estimates depend on exposure modeling, baseline disease rates, counterfactual assumptions, and overlapping risks, but the direction and large scale of the burden are not fringe claims.",
 		searchCutoffAt: "2026-07-02T21:45:00.000Z",
@@ -6479,7 +6479,7 @@ const rawClaims: SeedClaim[] = [
 			"Clean-looking air is sometimes assumed to be harmless, even when measured PM2.5 remains above health-based guideline levels."
 		],
 		editorSummary:
-			"This page should make the causal evidence concrete: PM2.5 is not just a visibility or asthma issue. It is a cardiovascular and cancer-risk pollutant with strong institutional consensus and measurable burden.",
+			"PM2.5 is not just a visibility or asthma issue. Fine particulate pollution is linked to cardiovascular harm and lung-cancer risk, with strong institutional consensus and measurable population burden.",
 		uncertaintySummary:
 			"The causal direction is high-certainty for cardiovascular effects, mortality, and outdoor particulate pollution as a lung-cancer hazard. Remaining uncertainty is mostly about exact risk magnitude by source, mixture, concentration range, vulnerability, and intervention design.",
 		searchCutoffAt: "2026-07-03T13:02:17.000Z",
