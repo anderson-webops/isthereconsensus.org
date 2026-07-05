@@ -1465,7 +1465,7 @@ const rawClaims: SeedClaim[] = [
 			"Changes in policy language are sometimes presented as proof of harm, even when the underlying safety evidence remains broadly consistent."
 		],
 		editorSummary:
-			"Readers need two pieces kept separate: the safety and benefit evidence for pregnancy and breastfeeding, and the current policy wording that shapes public debate.",
+			"The key distinction is between the safety and benefit evidence for pregnancy and breastfeeding and the current policy wording shaping public debate.",
 		uncertaintySummary:
 			"The safety signal is reassuring across large observational datasets, but recommendations remain sensitive to variant era, baseline risk, vaccine product, prior immunity, and jurisdiction-specific policy updates.",
 		searchCutoffAt: "2026-07-02T12:00:00.000Z",
@@ -4135,7 +4135,7 @@ const rawClaims: SeedClaim[] = [
 			"Most positive findings are not cancer, so a positive screen often means follow-up imaging or evaluation rather than a confirmed diagnosis."
 		],
 		editorSummary:
-			"LDCT has randomized evidence for reducing lung-cancer deaths in high-risk adults, but the guardrails matter: eligibility, shared decisions, smoking cessation, false positives, and follow-up harms should stay visible.",
+			"LDCT has randomized evidence for reducing lung-cancer deaths in high-risk adults, but the guardrails matter: eligibility, shared decisions, smoking cessation, false positives, and follow-up harms.",
 		uncertaintySummary:
 			"The high-risk mortality benefit is strong. Remaining uncertainty is about best eligibility modeling, screening intervals after negative scans, follow-up protocols, equity, and implementation in real-world programs.",
 		searchCutoffAt: "2026-07-02T23:32:58.000Z",
@@ -7692,7 +7692,7 @@ const rawClaims: SeedClaim[] = [
 			"Laboratory microbe studies are not the only evidence for evolution, but they clearly show evolutionary mechanisms under controlled conditions."
 		],
 		editorSummary:
-			"This page answers the common 'no one has seen evolution happen' objection without overclaiming. The central distinction: evolutionary processes are directly observable now, while deep-time common ancestry is supported by experiments, field observations, fossils, genetics, and comparative biology.",
+			"Evolutionary processes are directly observable today. Deep-time common ancestry is supported by experiments, field observations, fossils, genetics, and comparative biology, so the common 'no one has seen evolution happen' objection misses the scale distinction.",
 		uncertaintySummary:
 			"The consensus that evolution can be observed is very strong. Uncertainty is mainly about the durability, repeatability, and long-term implications of particular short-term examples, not about whether heritable population change occurs.",
 		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "National Academies"],
@@ -7898,7 +7898,7 @@ const rawClaims: SeedClaim[] = [
 			"Calling resistance 'natural' does not mean human behavior is irrelevant; drug pressure, infection control, agriculture, travel, and sanitation shape how fast it spreads."
 		],
 		editorSummary:
-			"This page connects the observed-evolution topic to a concrete public-health case. Keep the claim focused on evolutionary mechanisms and the body-versus-microbe misconception rather than turning it into a full antibiotic stewardship guide.",
+			"Antibiotic resistance is a concrete public-health example of evolution in action. The key is evolutionary mechanisms in microbes, not a claim that the human body becomes antibiotic resistant.",
 		uncertaintySummary:
 			"The evolutionary basis of antibiotic resistance is very strong. Uncertainty is mainly about forecasting which pathway will dominate in a particular pathogen, patient, hospital, farm, community, or environment.",
 		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "CDC", "WHO"],
@@ -8881,7 +8881,7 @@ const rawClaims: SeedClaim[] = [
 			"Teacher training often repeated the concept long after the research support failed to materialize."
 		],
 		editorSummary:
-			"This is a flagship neuromyth page. It should model how an intuitive idea can spread widely without earning strong empirical support.",
+			"Learning styles are a flagship neuromyth: intuitive and widely repeated, but lacking strong empirical support when tested against educational outcomes.",
 		sources: [
 			{
 				kind: "systematic_review",
@@ -9080,7 +9080,7 @@ const rawClaims: SeedClaim[] = [
 			"Antibacterial consumer soap is often assumed to be better, but CDC notes no added health benefit for consumers compared with plain soap and water."
 		],
 		editorSummary:
-			"Handwashing with soap is a practical everyday prevention behavior. Evidence is strongest for diarrheal illness and more qualified for respiratory infections, so it should complement other prevention tools.",
+			"Handwashing with soap is a practical everyday prevention behavior. Evidence is strongest for diarrheal illness and more qualified for respiratory infections, so it works best alongside other prevention tools.",
 		uncertaintySummary:
 			"The benefit is strongest for diarrheal disease. Exact effect sizes vary by setting, baseline access, adherence, outcome measurement, pathogen, and whether handwashing is bundled with other water, sanitation, school, or public-health interventions.",
 		searchCutoffAt: "2026-07-04T19:44:25.000Z",
@@ -9496,7 +9496,7 @@ const rawClaims: SeedClaim[] = [
 			"does-natural-mean-safer-or-better"
 		],
 		editorSummary:
-			"Vitamin D deficiency should be treated for ordinary health reasons, but supplementation is not proven as a broad COVID-19 prevention or treatment. The evidence needs clinical-outcome framing, not supplement hype.",
+			"Treat vitamin D deficiency for ordinary health reasons, but supplementation is not proven as broad COVID-19 prevention or treatment. The evidence needs clinical-outcome framing, not supplement hype.",
 		uncertaintySummary:
 			"Evidence certainty is low because the stronger prevention and early-treatment trials are mostly null, while hospitalized-treatment reviews remain heterogeneous by baseline vitamin D status, severity, dose, formulation, timing, and standard of care. Confidence is higher that vitamin D should not replace established COVID-19 prevention or treatment.",
 		uncertaintyDrivers: [
@@ -9742,7 +9742,7 @@ const rawClaims: SeedClaim[] = [
 			"Replacing butter or fatty meat with refined starch or added sugar is not the same intervention as replacing it with plant oils, nuts, fish, or other unsaturated-fat sources."
 		],
 		editorSummary:
-			"This page makes the nutrition nuance explicit: the public argument is often framed as saturated fat yes-or-no, while the evidence is largely about replacement patterns.",
+			"The key nutrition nuance is replacement pattern: public debate often asks whether saturated fat is good or bad, while evidence depends on what replaces it.",
 		searchCutoffAt: "2026-07-02T21:33:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
 		changeLog: [
@@ -10028,7 +10028,7 @@ const rawClaims: SeedClaim[] = [
 			"People often treat 'supports immune health' and 'treats viral infection' as similar claims, but they live in different regulatory categories."
 		],
 		editorSummary:
-			"This page clarifies a common supplement-marketing confusion: supplements are regulated products, but disease-treatment claims move a product into drug-claim territory.",
+			"Supplement marketing often blurs a key legal line: supplements are regulated products, but disease-treatment claims move a product into drug-claim territory.",
 		searchCutoffAt: "2026-07-02T22:15:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
 		changeLog: [
@@ -10104,7 +10104,7 @@ const rawClaims: SeedClaim[] = [
 			"Food sources of vitamin E should not be treated as equivalent to high-dose vitamin E supplements marketed for heart or cancer prevention."
 		],
 		editorSummary:
-			"This page captures a clean supplement-prevention claim with useful numbers: a large evidence review, no vitamin E prevention benefit, and beta-carotene harm signals in high-risk groups.",
+			"Supplement-prevention evidence is clearest when numbers are visible: large reviews find no vitamin E prevention benefit and beta-carotene harm signals in high-risk groups.",
 		searchCutoffAt: "2026-07-03T18:35:00.000Z",
 		lastRetractionCheckAt: "2026-07-03T18:35:00.000Z",
 		changeLog: [
@@ -10313,7 +10313,7 @@ const rawClaims: SeedClaim[] = [
 			"Food-safety review, pesticide regulation, plant-pest risk, labeling, and environmental release are different questions handled through different legal authorities."
 		],
 		editorSummary:
-			"This page helps separate a real governance debate from the inaccurate shortcut that GMOs are simply unregulated in the United States.",
+			"The U.S. GMO regulation debate is real, but the claim that GMOs are simply unregulated is the wrong shortcut.",
 		searchCutoffAt: "2026-07-02T22:15:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
 		changeLog: [
@@ -10827,7 +10827,7 @@ const rawClaims: SeedClaim[] = [
 			"People often treat classroom learning preferences or career stereotypes as if they were direct brain-imaging evidence."
 		],
 		editorSummary:
-			"This page is a useful companion to the learning-styles and 10-percent-brain pages because it shows how a real neuroscience fact can become an overconfident pop-psychology label.",
+			"A real neuroscience fact can become an overconfident pop-psychology label. This claim pairs naturally with learning-styles and 10-percent-brain myths.",
 		searchCutoffAt: "2026-07-02T22:15:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T22:15:00.000Z",
 		changeLog: [
@@ -11612,7 +11612,7 @@ const rawClaims: SeedClaim[] = [
 			"Claims about broad social effects of lead exposure can be more uncertain than the core claims that lead harms children and that gasoline phaseout reduced exposure."
 		],
 		editorSummary:
-			"This historical case should connect the site's existing lead-health page to a concrete public-health success: source removal changed measured exposure, while legacy and local sources still require prevention.",
+			"Removing lead from gasoline is a concrete public-health success: source removal changed measured exposure, while legacy and local sources still require prevention.",
 		uncertaintySummary:
 			"The core claim is strong: lead from gasoline was a major exposure source; removing it was followed by large blood-lead declines; and childhood lead exposure is harmful. Remaining uncertainty is local: which sources still drive exposure, how to prioritize cleanup, and the size of downstream social effects.",
 		uncertaintyDrivers: [
@@ -11998,7 +11998,7 @@ const rawClaims: SeedClaim[] = [
 			"Disagreement at the frontier is often misread as if it invalidates the settled center."
 		],
 		editorSummary:
-			"Use this claim as the public-facing explanation of how science moves from uncertainty to reliable consensus.",
+			"Scientific consensus moves from uncertainty to reliability when evidence survives repeated testing, criticism, and time.",
 		sources: [
 			{
 				kind: "context",
@@ -12654,7 +12654,7 @@ const rawClaims: SeedClaim[] = [
 			"Scientific disagreement is not the same type of uncertainty as a confidence interval, and audiences respond differently to those frames."
 		],
 		editorSummary:
-			"Credible summaries should not inflate certainty. They should make uncertainty specific, contextual, and useful for decisions rather than leaving readers with vague hedging.",
+			"Credible summaries do not need inflated certainty. Specific, contextual uncertainty is more useful for decisions than vague hedging.",
 		uncertaintySummary:
 			"Transparent uncertainty communication usually does not destroy source trust. Effects vary by uncertainty type, wording, topic politicization, prior beliefs, evidence quality, and whether uncertainty is quantified or merely asserted.",
 		uncertaintyDrivers: [
@@ -12857,7 +12857,7 @@ const rawClaims: SeedClaim[] = [
 			"A randomized trial is powerful, but it is not the only possible causal evidence; observational evidence can support causality when the broader design and assumptions are strong."
 		],
 		editorSummary:
-			"Observational research can be useful, but association is not a completed causal case. Readers need to check timing, confounding, bias, mechanisms, and stronger designs before accepting causal headlines.",
+			"Observational research can be useful, but association is not a completed causal case. Causal headlines need timing, confounding, bias, mechanism, and stronger-design checks.",
 		uncertaintySummary:
 			"The core point is settled: correlation alone is not causal proof. Uncertainty is claim-specific and depends on the design quality, temporality, confounding control, mechanism, replication, and whether intervention evidence exists.",
 		searchCutoffAt: "2026-07-03T02:35:29.000Z",
@@ -12937,7 +12937,7 @@ const rawClaims: SeedClaim[] = [
 			"Number needed to treat or harm can help some readers, but it still depends on baseline risk and can confuse others when used alone."
 		],
 		editorSummary:
-			"This page gives readers a reusable denominator check for health, environment, and technology claims. It should not dismiss relative risk; it should explain why relative and absolute framing need to travel together.",
+			"Relative risk is useful, but it needs baseline risk and absolute framing to show real-world scale. The denominator check travels with the comparison.",
 		uncertaintySummary:
 			"The core communication principle is high-certainty: relative effects need baseline and absolute context for practical interpretation. Uncertainty is about the best format for different audiences and whether natural frequencies, percentages, icon arrays, or decision aids work best in a given setting.",
 		searchCutoffAt: "2026-07-03T20:26:27.000Z",
@@ -13190,7 +13190,7 @@ const rawClaims: SeedClaim[] = [
 			"Headlines can treat preliminary manuscripts as settled evidence because the uncertainty label is inconvenient."
 		],
 		editorSummary:
-			"This page strengthens the site's research-literacy layer by giving readers a simple rule for fast-moving claims: preprints may be useful evidence signals, but they are not final evidence.",
+			"Preprints can be useful fast-moving evidence signals, but they are public drafts, not final peer-reviewed evidence.",
 		searchCutoffAt: "2026-07-02T21:33:00.000Z",
 		lastRetractionCheckAt: "2026-07-02T21:33:00.000Z",
 		changeLog: [
@@ -13268,7 +13268,7 @@ const rawClaims: SeedClaim[] = [
 			"Headlines can treat statistically significant as a synonym for large, important, or ready for action."
 		],
 		editorSummary:
-			"Use this page whenever a claim leans on p < 0.05 as if that alone settles truth, importance, or consensus.",
+			"A p < 0.05 result does not settle truth, importance, or consensus by itself; it needs effect size, design, uncertainty, and replication context.",
 		searchCutoffAt: "2026-07-03T02:58:35.000Z",
 		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
 		changeLog: [
@@ -13547,7 +13547,7 @@ const rawClaims: SeedClaim[] = [
 			"Others overcorrect and treat peer review as worthless because it is imperfect."
 		],
 		editorSummary:
-			"Peer review is a useful quality signal, not a truth stamp. It should raise confidence only alongside methods, evidence strength, replication, and post-publication scrutiny.",
+			"Peer review is a useful quality signal, not a truth stamp. It raises confidence only alongside methods, evidence strength, replication, and post-publication scrutiny.",
 		searchCutoffAt: "2026-07-03T02:58:35.000Z",
 		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
 		changeLog: [
@@ -13718,7 +13718,7 @@ const rawClaims: SeedClaim[] = [
 			"Marketing can imply that plant-derived, traditional, or supplement products are automatically safer than medicines."
 		],
 		editorSummary:
-			"Use this page when a claim relies on the naturalistic fallacy: natural may be relevant context, but it is not evidence of safety, effectiveness, or quality.",
+			"Natural may be relevant context, but it is not evidence of safety, effectiveness, or quality by itself.",
 		searchCutoffAt: "2026-07-03T03:08:54.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
 		changeLog: [
@@ -13793,7 +13793,7 @@ const rawClaims: SeedClaim[] = [
 			"Short-term water or glycogen weight loss can be mistaken for sustained fat loss or improved health."
 		],
 		editorSummary:
-			"This page separates legitimate medical detoxification from detox-branded diets, juices, teas, supplements, and colon cleanses marketed with weak toxin-removal claims.",
+			"Legitimate medical detoxification is different from detox-branded diets, juices, teas, supplements, and colon cleanses marketed with weak toxin-removal claims.",
 		searchCutoffAt: "2026-07-03T03:08:54.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
 		changeLog: [
@@ -13870,7 +13870,7 @@ const rawClaims: SeedClaim[] = [
 			"Others assume peer-reviewed publication means the available record is complete."
 		],
 		editorSummary:
-			"This page gives readers a reusable explanation for why systematic reviews need comprehensive searches and why absence from journals is not the same as absence of evidence.",
+			"Publication bias explains why systematic reviews need comprehensive searches and why absence from journals is not the same as absence of evidence.",
 		searchCutoffAt: "2026-07-03T03:08:54.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:08:54.000Z",
 		changeLog: [
@@ -14564,7 +14564,7 @@ const rawClaims: SeedClaim[] = [
 			"Others treat uncertainty about ecosystem impact size as uncertainty about the basic CO2 chemistry."
 		],
 		editorSummary:
-				"This page gives readers a compact answer to a common climate-adjacent claim: the chemistry is settled even though local impacts and adaptation questions remain active research areas.",
+			"Ocean acidification has settled chemistry even though local impacts and adaptation questions remain active research areas.",
 		searchCutoffAt: "2026-07-03T03:21:50.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:21:50.000Z",
 		changeLog: [
@@ -14648,7 +14648,7 @@ const rawClaims: SeedClaim[] = [
 			"Marine protected areas can help reef resilience, but they are not a substitute for limiting heat stress from climate change."
 		],
 		editorSummary:
-			"This page connects climate change to a concrete ecological outcome: warming-driven marine heatwaves cause mass coral bleaching, while mortality and reef loss depend on duration, severity, species, and local context.",
+			"Warming-driven marine heatwaves cause mass coral bleaching. Mortality and reef loss depend on duration, severity, species, and local context.",
 		uncertaintySummary:
 			"The heat-stress link is strong. The main uncertainty is how much recovery, adaptation, local resilience, and warming-pathway differences will change damage on specific reefs.",
 		uncertaintyDrivers: [
@@ -14828,7 +14828,7 @@ const rawClaims: SeedClaim[] = [
 			"Others treat zero tailpipe emissions as if electric vehicles have zero life-cycle emissions."
 		],
 		editorSummary:
-				"This page answers the practical climate question without flattening the tradeoffs: EVs generally reduce greenhouse gas emissions, but the size of the benefit depends on vehicle, grid, and lifetime assumptions.",
+			"EVs generally reduce lifetime greenhouse gas emissions compared with gasoline cars, while the size of the benefit depends on vehicle, grid, and lifetime assumptions.",
 		searchCutoffAt: "2026-07-03T03:21:50.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:21:50.000Z",
 		changeLog: [
@@ -15201,7 +15201,7 @@ const rawClaims: SeedClaim[] = [
 			"No demonstrated cancer increase is sometimes overstated as proof that every future exposure scenario is already fully resolved."
 		],
 		editorSummary:
-				"This page handles a durable anxiety topic by separating the current cancer-risk conclusion from mechanism, hazard classification, and legitimate long-term surveillance questions.",
+			"Cell-phone and 5G cancer concerns need a separation between the current cancer-risk conclusion, mechanism, hazard classification, and long-term surveillance.",
 		uncertaintySummary:
 				"The main public-health answer leans against a demonstrated cancer increase, but the certainty is not as high as for ionizing-radiation carcinogens. Exposure measurement, technology changes, latency, and subgroup analyses keep the page in broad-qualified rather than strong-closed territory.",
 		searchCutoffAt: "2026-07-03T03:31:12.000Z",
@@ -15393,7 +15393,7 @@ const rawClaims: SeedClaim[] = [
 			"Others dismiss the classification entirely instead of treating it as a reason for careful surveillance."
 		],
 		editorSummary:
-				"This page supports source literacy by explaining why a scary-sounding hazard label is not the same as a direct consumer-risk estimate.",
+			"A scary-sounding hazard label is not the same as a direct consumer-risk estimate. 'Possibly carcinogenic' marks evidence classification, not proof of harm at ordinary exposure.",
 		searchCutoffAt: "2026-07-03T03:31:12.000Z",
 		lastRetractionCheckAt: "2026-07-03T03:31:12.000Z",
 		changeLog: [
@@ -15605,7 +15605,7 @@ const rawClaims: SeedClaim[] = [
 			"A childhood ADHD diagnosis is sometimes assumed to disappear automatically by adulthood."
 		],
 		editorSummary:
-				"This page gives readers a stigma-resistant baseline: ADHD is real and often persistent, while diagnosis still needs careful clinical boundaries.",
+			"ADHD is real and often persistent, while diagnosis still needs careful clinical boundaries and stigma-resistant communication.",
 		uncertaintySummary:
 				"The consensus is strongest for ADHD as a valid and often persistent neurodevelopmental disorder. Estimates of prevalence and adult persistence are less exact because studies differ in diagnostic method, sampling, impairment requirements, and access to evaluation.",
 		searchCutoffAt: "2026-07-03T03:41:57.000Z",
@@ -15711,7 +15711,7 @@ const rawClaims: SeedClaim[] = [
 			"Short-term symptom efficacy is sometimes overstated as proof that every long-term outcome is solved."
 		],
 		editorSummary:
-				"This page separates the well-supported short-term medication signal from harder questions about individual fit, adverse effects, and long-term functional outcomes.",
+			"ADHD medications have a well-supported short-term symptom signal compared with placebo, while individual fit, adverse effects, and long-term functional outcomes remain harder questions.",
 		uncertaintySummary:
 				"Medication efficacy for short-term symptom reduction is well supported, especially for stimulants. Evidence is thinner and more mixed for long-term patient-important outcomes, head-to-head individualization, and some adult non-medication comparisons.",
 		searchCutoffAt: "2026-07-03T03:41:57.000Z",
@@ -15815,7 +15815,7 @@ const rawClaims: SeedClaim[] = [
 			"Behavior therapy is sometimes oversold as a stand-alone cure for all children, even though many children need combined supports."
 		],
 		editorSummary:
-				"This treatment page gives families a practical middle path: parent training is evidence-based and useful, but it should not be framed as blame or as a universal replacement for medication.",
+			"Parent training is evidence-based and useful in ADHD care, but it is not blame and not a universal replacement for medication.",
 		uncertaintySummary:
 				"Evidence is strongest for parenting practices, conduct problems, and family functioning, with some supportive longer-term child findings. Effects on blinded core ADHD symptom ratings vary more by study design, rater, age, and intervention package.",
 		searchCutoffAt: "2026-07-03T03:41:57.000Z",
@@ -16025,7 +16025,7 @@ const rawClaims: SeedClaim[] = [
 			"A PFAS blood result is sometimes interpreted as a personalized forecast of future illness, which ATSDR explicitly cautions against."
 		],
 		editorSummary:
-				"This page gives concrete examples of what PFAS evidence does and does not show. It should avoid vague alarm while making clear that cholesterol and vaccine antibody response are not fringe concerns.",
+			"PFAS evidence is clearest when concrete outcomes are named. Cholesterol and vaccine antibody response are not fringe concerns, but vague alarm still overstates what the evidence can show.",
 		uncertaintySummary:
 				"The association signal is broad but not a one-size-fits-all causal prediction. Remaining uncertainty involves compound specificity, mixtures, life stage, vaccine type, clinical magnitude, and whether lipid changes translate into cardiovascular outcomes.",
 		searchCutoffAt: "2026-07-03T03:57:42.000Z",
@@ -16888,7 +16888,7 @@ const rawClaims: SeedClaim[] = [
 			"Evidence for approved medications does not validate unapproved, counterfeit, or poorly compounded products sold online."
 		],
 		editorSummary:
-			"GLP-1-based obesity medications are a real evidence advance for eligible adults, but the claim should stay narrow: clinically meaningful average weight loss, not a blanket answer on access, durability, broader outcomes, or long-term safety.",
+			"GLP-1-based obesity medications are a real evidence advance for eligible adults, but the claim stays narrow: clinically meaningful average weight loss, not a blanket answer on access, durability, broader outcomes, or long-term safety.",
 		uncertaintySummary:
 			"Short- and medium-term weight-loss efficacy is strongly supported by randomized trials. Certainty is lower for indefinite maintenance, long-term rare harms, use in excluded groups, comparative real-world adherence, lean-mass preservation, affordability, and how broadly cardiovascular-outcome results generalize.",
 		uncertaintyDrivers: [
@@ -18741,7 +18741,7 @@ const rawClaims: SeedClaim[] = [
 			"People assume an active debate means experts have no useful provisional view."
 		],
 		editorSummary:
-			"Use this as the main explainer for how frontier disagreement differs from the stable core of consensus.",
+			"Active scientific debates sit at the frontier, where real expert disagreement remains outside the stable core of consensus.",
 		sources: [
 			{
 				kind: "context",
@@ -20292,7 +20292,7 @@ const rawClaims: SeedClaim[] = [
 			"Tummy time is for awake, supervised time; it is not the recommended sleep position."
 		],
 		editorSummary:
-			"Keep this practical and nonjudgmental: SIDS is not fully preventable, but back sleeping plus a safe sleep environment lowers risk and should be taught to every caregiver.",
+			"SIDS is not fully preventable, but back sleeping plus a safe sleep environment lowers risk. The guidance is practical, universal, and nonjudgmental.",
 		uncertaintySummary:
 			"The benefit direction is strong, but exact effect size is hard to estimate because randomized sleep-position trials are ethically limited, SIDS classification has changed, and risk also depends on bedding, bed-sharing, smoke exposure, substances, prematurity, caregiver fatigue, and caregiver consistency.",
 		searchCutoffAt: "2026-07-04T20:31:58.000Z",
