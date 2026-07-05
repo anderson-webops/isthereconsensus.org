@@ -428,8 +428,8 @@ describe("default claim seed quality", () => {
 
 		assert.equal(claim.consensusBand, "broad");
 		assert.equal(claim.evidenceCertainty, "moderate");
-		assert.match(claim.bottomLine, /risk-reduction layer/);
-		assert.match(claim.bottomLine, /infectious respiratory particles/);
+		assert.match(claim.bottomLine, /one layer of risk reduction/);
+		assert.match(claim.bottomLine, /virus-carrying particles/);
 		assert.ok(claim.bottomLine.length <= 380, "Ventilation bottom line should stay scannable");
 		assert.match(visibleSummary, /39% lower COVID-19 incidence/);
 		assert.match(visibleSummary, /48% lower incidence/);
@@ -437,6 +437,7 @@ describe("default claim seed quality", () => {
 		assert.match(visibleSummary, /90%/);
 		assert.match(visibleSummary, /CO2 monitors.*not virus detectors/);
 		assert.match(visibleSummary, /Opening a window is not always enough/);
+		assert.match(visibleSummary, /clean-air delivery rate \(CADR\)/);
 		assert.match(visibleSummary, /observational design limits causal certainty/);
 		assert.doesNotMatch(visibleSummary, /guaranteed/i);
 		assert.doesNotMatch(visibleSummary, /sterilize/i);

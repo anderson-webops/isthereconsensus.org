@@ -3713,11 +3713,11 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		bottomLine:
-			"Yes, as a risk-reduction layer. Bringing in more outdoor air, improving filtration, and using well-chosen portable HEPA cleaners can lower concentrations of infectious respiratory particles indoors. The strongest consensus is about reducing exposure; direct illness-reduction evidence is more indirect and depends on building design, occupancy, maintenance, and airflow.",
+			"Yes, as one layer of risk reduction. More outdoor air, better filtration, and well-chosen portable HEPA cleaners can lower virus-carrying particles in shared indoor air. The strongest consensus is about reducing exposure; direct evidence for fewer illnesses is more indirect and depends on building design, occupancy, maintenance, and airflow.",
 		stableCore: [
 			"CDC, EPA, and ASHRAE guidance treat cleaner indoor air as a layered respiratory-virus prevention measure, not as a stand-alone guarantee.",
-			"Ventilation dilutes shared indoor air with outdoor or cleaner air; filtration and portable HEPA air cleaners remove particles when enough air passes through effective filters.",
-			"ASHRAE Standard 241 formalized infectious-aerosol risk management around equivalent clean airflow, filtration, and air-cleaning system operation during higher-risk periods.",
+			"Ventilation dilutes shared indoor air with outdoor or cleaner air; filtration and portable HEPA air cleaners remove particles when enough room air passes through effective filters.",
+			"ASHRAE Standard 241 formalized infectious-aerosol risk management around equivalent clean airflow, a way to compare ventilation, filtration, and air cleaning during higher-risk periods.",
 			"A Georgia elementary-school study found 39% lower COVID-19 incidence where ventilation improvements were reported, with 48% lower incidence where dilution was combined with filtration; the study was observational.",
 			"Laboratory simulation data found two portable HEPA cleaners reduced simulated aerosol exposure by about 65%, and HEPA cleaners plus universal masking reduced exposure by about 90%."
 		],
@@ -3734,11 +3734,11 @@ const rawClaims: SeedClaim[] = [
 		misconceptions: [
 			"CO2 monitors can be useful ventilation proxies, but they are not virus detectors and cannot show whether infectious particles are present.",
 			"Opening a window is not always enough; benefit depends on airflow path, outdoor conditions, room size, weather, and whether air actually moves through the occupied space.",
-			"Portable air cleaners are not all equivalent; CADR, filter type, placement, maintenance, noise, and avoiding ozone-generating devices matter.",
+			"Portable air cleaners are not all equivalent; clean-air delivery rate (CADR), filter type, placement, maintenance, noise, and avoiding ozone-generating devices matter.",
 			"Cleaner indoor air does not replace vaccination where indicated, staying home when sick, testing and treatment, hand hygiene, or masks in higher-risk settings."
 		],
 		editorSummary:
-			"Cleaner indoor air is a credible exposure-reduction layer for respiratory viruses, strongest when ventilation or filtration is sized, maintained, and operated for the room people actually share.",
+			"Cleaner indoor air is a credible exposure-reduction layer for respiratory viruses, strongest when ventilation or filtration is sized, maintained, and operated for the rooms people actually share.",
 		uncertaintySummary:
 			"The physics and guidance consensus are broad, and field studies support exposure reduction. Direct illness-reduction estimates are less certain because real buildings, behavior, maintenance, and simultaneous interventions are hard to isolate.",
 		searchCutoffAt: "2026-07-05T15:54:19.000Z",
