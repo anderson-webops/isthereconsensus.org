@@ -10262,7 +10262,7 @@ const rawClaims: SeedClaim[] = [
 			"Arguments about industrial agriculture are often treated like direct proof that the food itself is unsafe."
 		],
 		editorSummary:
-			"This page should separate biotechnology safety from the broader political and ecological debates that often get bundled into the same public argument.",
+			"Commercial GMO food safety is best judged product by product. Currently approved GMO foods are not treated as inherently unsafe to eat, while ecological, pesticide, patent, and agricultural-policy debates remain separate questions.",
 		sources: [
 			{
 				kind: "consensus_statement",
@@ -10395,7 +10395,7 @@ const rawClaims: SeedClaim[] = [
 			"Preventing serious disease and selecting cosmetic or cognitive traits raise different scientific and ethical questions."
 		],
 		editorSummary:
-			"This page should make the somatic-versus-heritable distinction clear. CRISPR medicine is real and advancing, but reproductive embryo editing remains outside responsible clinical use under current evidence and governance standards.",
+			"CRISPR medicine is real and advancing, but somatic treatment and heritable embryo editing are different questions. Reproductive embryo editing remains outside responsible clinical use under current evidence and governance standards.",
 		uncertaintySummary:
 			"The current consensus is strong that reproductive heritable editing is premature. Uncertainty is future-facing: whether safer editors, better embryo biology, public governance, and narrow disease indications could ever support tightly limited clinical use.",
 		uncertaintyDrivers: [
@@ -10590,7 +10590,7 @@ const rawClaims: SeedClaim[] = [
 			"Family clustering can reflect shared environments and lifestyles as well as shared genes."
 		],
 		editorSummary:
-			"This page should lower the temperature of nature-versus-nurture arguments. It should say plainly that genetic influence is real, but that heritability is a population statistic and complex traits are not simple fate.",
+			"Genetic influence is real, but genes are not simple fate for complex traits. Heritability is a population statistic, and individual outcomes still depend on environment, development, behavior, measurement, and chance.",
 		uncertaintySummary:
 			"The core distinction between genetic influence and determinism is settled. Uncertainty is higher for trait-specific prediction, ancestry portability of polygenic scores, gene-environment interactions, and practical use in individual decisions.",
 		searchCutoffAt: "2026-07-03T02:35:29.000Z",
@@ -10677,7 +10677,7 @@ const rawClaims: SeedClaim[] = [
 			"Improving model accuracy alone cannot fix disparities if follow-up care is unavailable or unequally delivered."
 		],
 		editorSummary:
-			"This page should keep both truths visible: polygenic scores are scientifically real and sometimes useful, but current clinical use can widen inequities if ancestry portability and health-system access are treated as afterthoughts.",
+			"Polygenic risk scores are scientifically real and can be useful in some settings, but they do not work equally well for every ancestry group. Clinical use can widen inequities if portability, calibration, and follow-up access are afterthoughts.",
 		uncertaintySummary:
 			"The direction of the portability problem is well supported. Uncertainty is higher for specific diseases, locally calibrated scores, multi-ancestry methods, and whether returning scores improves outcomes equitably in real health systems.",
 		searchDatabases: ["Consensus", "PubMed", "NHGRI / Genome.gov", "Crossref"],
@@ -10973,7 +10973,7 @@ const rawClaims: SeedClaim[] = [
 			"Historical controversy is often confused with the absence of a strong eventual evidence base."
 		],
 		editorSummary:
-			"This page should show how consensus can harden over time despite organized campaigns to manufacture uncertainty.",
+			"The smoking and lung-cancer record shows how consensus can harden over time despite organized campaigns to manufacture doubt. The useful lesson is how evidence accumulates, not that every public controversy reflects equal expert uncertainty.",
 		sources: [
 			{
 				kind: "landmark_study",
@@ -11032,7 +11032,7 @@ const rawClaims: SeedClaim[] = [
 			"Asbestos bans and phaseouts are sometimes mistaken for a solved problem, even though legacy materials and long latency mean cases continue for decades."
 		],
 		editorSummary:
-			"This page should frame asbestos as a historical consensus case with current relevance: industrial and construction exposures created a clear cancer burden, but practical risk communication still depends on disturbance, dose, fiber type, latency, and safe abatement.",
+			"Asbestos is a historical consensus case with current relevance: industrial and construction exposures created a clear cancer burden. Practical risk communication still depends on disturbance, dose, fiber type, latency, and safe abatement.",
 		uncertaintySummary:
 			"The causal consensus is very strong for asbestos causing mesothelioma and lung cancer. Remaining uncertainty concerns exact risk size for specific fiber types, products, low-dose exposure settings, and legacy-material scenarios, not whether asbestos is carcinogenic.",
 		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "WHO", "NCI", "CDC", "EPA"],
@@ -11411,7 +11411,7 @@ const rawClaims: SeedClaim[] = [
 			"Calling smallpox vaccination a public-health success does not require pretending the older live vaccinia vaccines were risk-free."
 		],
 		editorSummary:
-			"This page should be a clean historical case study: smallpox is the strongest example of vaccine-enabled eradication, but the accurate lesson is vaccination plus surveillance-containment, not a simplistic technology-only story.",
+			"Smallpox is the clearest vaccine-enabled eradication example, but the accurate lesson is vaccination plus surveillance and containment. It is not a simple technology-only success story.",
 		uncertaintySummary:
 			"The historical conclusion is settled: smallpox was eradicated through a global vaccination-centered public-health campaign. Remaining uncertainty is about attribution among program components in specific regions, how far the lessons generalize to other diseases, and how to communicate vaccine risk after eradication.",
 		uncertaintyDrivers: [
@@ -11792,7 +11792,7 @@ const rawClaims: SeedClaim[] = [
 			"Severe dehydration, shock, severe malnutrition, bloody diarrhea, cholera, or persistent vomiting can require urgent clinical care and sometimes intravenous fluids or antibiotics."
 		],
 		editorSummary:
-			"This page should present oral rehydration therapy as a high-confidence historical public-health case: simple physiology, strong mortality relevance, and a continuing implementation gap.",
+			"Oral rehydration therapy is a high-confidence public-health case: simple physiology, strong mortality relevance, and a continuing implementation gap.",
 		uncertaintySummary:
 			"The core clinical and public-health conclusion is strong: ORS/ORT saves lives by preventing and treating diarrheal dehydration. Remaining uncertainty is mostly implementation and special populations: coverage, correct preparation, water safety, zinc uptake, severe malnutrition, cholera, shock, and when to escalate to facility-based care.",
 		uncertaintyDrivers: [
@@ -12064,7 +12064,7 @@ const rawClaims: SeedClaim[] = [
 			"Consensus can coexist with uncertainty about mechanisms, effect size, timing, scope, or edge cases."
 		],
 		editorSummary:
-			"This page should make the site's own language clearer: consensus is neither groupthink nor unanimity. It is the public-facing name for a strong expert-evidence convergence that still leaves room for technical dispute.",
+			"Consensus is neither groupthink nor unanimity. On this site it means strong expert-evidence convergence that can still leave room for technical dispute.",
 		uncertaintySummary:
 			"The concept-level point is strong: consensus does not mean every scientist agrees. Practical uncertainty is about how to measure expert agreement fairly, communicate minority dissent, and avoid turning consensus language into either overclaiming or false balance.",
 		searchCutoffAt: "2026-07-03T02:46:15.000Z",
@@ -12162,7 +12162,7 @@ const rawClaims: SeedClaim[] = [
 			"Calling an intervention evidence-based does not mean it works equally well for every audience or every topic."
 		],
 		editorSummary:
-			"This page should help the site explain how to respond to misinformation without sounding naive. The evidence supports using corrections and prebunking, but the durable public-health lesson is layered defenses, not one perfect message.",
+			"Corrections and prebunking can help, but misinformation response works best as layered defense. No single message is a perfect or permanent fix.",
 		uncertaintySummary:
 			"Evidence supports modest-to-useful effects for several misinformation interventions, especially on belief and discernment outcomes. Uncertainty is higher for long-term durability, behavior change, cross-cultural generalization, polarized topics, and whether digital games or videos always work through the mechanisms claimed by inoculation theory.",
 		searchCutoffAt: "2026-07-03T02:46:15.000Z",
@@ -12275,7 +12275,7 @@ const rawClaims: SeedClaim[] = [
 			"A correction can improve belief accuracy without changing identity, trust, voting, vaccination, or sharing behavior."
 		],
 		editorSummary:
-			"This page should help visitors understand why the site corrects misinformation directly while staying honest about limits. The evidence supports correction, but not the fantasy that one fact check permanently solves a false belief.",
+			"Corrections often improve belief accuracy, but one fact check does not permanently solve a false belief. The honest lesson is that correction helps while limits remain.",
 		uncertaintySummary:
 			"Agreement is broad that communicators should not avoid corrections because of generalized backfire fears. Uncertainty remains higher for durability, behavior change, audience skepticism, highly polarized topics, and science or health misinformation where correction effects are weaker and more context-dependent.",
 		uncertaintyDrivers: [
@@ -12857,7 +12857,7 @@ const rawClaims: SeedClaim[] = [
 			"A randomized trial is powerful, but it is not the only possible causal evidence; observational evidence can support causality when the broader design and assumptions are strong."
 		],
 		editorSummary:
-			"This page should become a reusable reference for headline literacy. The key message is not 'ignore observational research'; it is 'do not confuse an association with a completed causal case.'",
+			"Observational research can be useful, but association is not a completed causal case. Readers need to check timing, confounding, bias, mechanisms, and stronger designs before accepting causal headlines.",
 		uncertaintySummary:
 			"The core point is settled: correlation alone is not causal proof. Uncertainty is claim-specific and depends on the design quality, temporality, confounding control, mechanism, replication, and whether intervention evidence exists.",
 		searchCutoffAt: "2026-07-03T02:35:29.000Z",
@@ -13053,7 +13053,7 @@ const rawClaims: SeedClaim[] = [
 			"The most important question is not simply who paid, but what control the sponsor had over design, data access, analysis, publication, and interpretation."
 		],
 		editorSummary:
-			"This page should avoid both naive trust and reflexive dismissal. Readers need a practical rule: financial conflicts are evidence-quality context, not proof of fraud.",
+			"Financial conflicts are evidence-quality context, not automatic proof of fraud. The practical rule is to weigh funding, design, transparency, and replication together.",
 		uncertaintySummary:
 			"The existence of funding-related bias signals is well supported in drug and device research. The size and mechanism of bias vary by field, sponsor control, study design, and safeguards, so individual studies still need case-by-case appraisal.",
 		searchCutoffAt: "2026-07-03T02:35:29.000Z",
@@ -13139,7 +13139,7 @@ const rawClaims: SeedClaim[] = [
 			"Correction stories usually travel less than the original overstatement."
 		],
 		editorSummary:
-			"Anchor the basketball-versus-bumps framing here. This page should explain why media spikes are not the same thing as consensus shifts.",
+			"Media spikes are not the same thing as consensus shifts. A new study can be a useful bump without moving the broader evidence baseline.",
 		sources: [
 			{
 				kind: "landmark_study",
@@ -13547,7 +13547,7 @@ const rawClaims: SeedClaim[] = [
 			"Others overcorrect and treat peer review as worthless because it is imperfect."
 		],
 		editorSummary:
-			"This page should help readers calibrate peer review: valuable signal, not a truth stamp.",
+			"Peer review is a useful quality signal, not a truth stamp. It should raise confidence only alongside methods, evidence strength, replication, and post-publication scrutiny.",
 		searchCutoffAt: "2026-07-03T02:58:35.000Z",
 		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
 		changeLog: [
@@ -13628,7 +13628,7 @@ const rawClaims: SeedClaim[] = [
 			"People can also dismiss preclinical research entirely, even though it remains useful for mechanism and safety screening."
 		],
 		editorSummary:
-			"This page should be the default evidence-literacy answer when a claim jumps from cells or animals straight to patient benefit.",
+			"Cell and animal studies can explain mechanisms and guide research, but they do not by themselves prove patient benefit. Translation requires human-relevant outcomes and stronger clinical evidence.",
 		searchCutoffAt: "2026-07-03T02:58:35.000Z",
 		lastRetractionCheckAt: "2026-07-03T02:58:35.000Z",
 		changeLog: [
@@ -14355,7 +14355,7 @@ const rawClaims: SeedClaim[] = [
 			"Computational reproducibility is not the same as independent replication with new data."
 		],
 		editorSummary:
-			"This page should calibrate open-science shortcuts: data and code sharing make claims easier to audit, but reproducibility still depends on complete files, documentation, environments, and study quality.",
+			"Data and code sharing make claims easier to audit, but they do not guarantee reproducibility by themselves. Complete files, documentation, environments, and study quality still matter.",
 		uncertaintySummary:
 			"Sharing data, code, workflows, and materials improves transparency and can improve reproducibility. The practical uncertainty is whether the shared package is complete, executable, documented, and ethically shareable; sensitive datasets may need controlled rather than public access.",
 		uncertaintyDrivers: [
