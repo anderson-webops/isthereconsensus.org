@@ -18,11 +18,11 @@ const quickPoints = [
 	},
 	{
 		title: "Analytics and abuse prevention",
-		body: "When enabled, bot protection and production analytics help keep the service usable and show how deployed pages are used."
+		body: "When enabled, analytics and bot checks help keep pages usable and show how deployed pages perform."
 	},
 	{
-		title: "Privacy requests",
-		body: "Privacy requests currently go through consensus@isthereconsensus.org rather than a self-serve deletion tool."
+		title: "Requests by email",
+		body: "Email consensus@isthereconsensus.org for access, correction, closure, or deletion requests."
 	}
 ];
 
@@ -30,7 +30,7 @@ const privacySections = [
 	{ id: "scope", label: "Scope" },
 	{ id: "information-we-collect", label: "Information we collect" },
 	{ id: "how-we-use-information", label: "How we use information" },
-	{ id: "cookies-storage-analytics-captcha", label: "Cookies, storage, analytics, and captcha" },
+	{ id: "cookies-storage-analytics-captcha", label: "Cookies, storage, analytics, and bot checks" },
 	{ id: "public-content-and-visibility", label: "Public content and visibility" },
 	{ id: "sharing-and-disclosure", label: "Sharing and disclosure" },
 	{ id: "retention", label: "Retention" },
@@ -59,7 +59,7 @@ const collectionCategories = [
 			"basic server and security logs such as IP address, browser headers, timestamps, and request paths",
 			"analytics and usage data on deployed versions of the site, including page usage and technical request metadata",
 			"theme or interface preferences stored in your browser",
-			"captcha and anti-abuse signals when Turnstile or similar protections are enabled"
+			"Turnstile and anti-abuse signals when bot checks or similar protections are enabled"
 		]
 	},
 	{
@@ -140,8 +140,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Privacy Policy</p>
 			<h1>How we handle personal information.</h1>
 			<p>
-				Effective April 11, 2026. This policy explains what the site collects, how it is used, when it may be
-				disclosed, and what practical choices users currently have.
+				Effective April 11, 2026. This policy explains what the site collects, how it uses that information,
+				when it may be disclosed, and what practical choices users currently have.
 			</p>
 		</header>
 
@@ -201,9 +201,10 @@ useStaticPageMeta({
 
 		<section id="cookies-storage-analytics-captcha" class="privacy-panel">
 			<div class="section-heading section-heading--tight">
-				<h2>4. Cookies, browser storage, analytics, and captcha</h2>
+				<h2>4. Cookies, browser storage, analytics, and bot checks</h2>
 			</div>
 			<div class="prose">
+				<h3>Sessions and preferences</h3>
 				<p>
 					The site uses secure session cookies to keep signed-in users authenticated. If you choose “remember
 					me,” the session can last longer than the default session window.
@@ -212,6 +213,7 @@ useStaticPageMeta({
 					The site may also store interface preferences, such as color theme choice, in your browser so the
 					interface behaves consistently the next time you return.
 				</p>
+				<h3>Analytics</h3>
 				<p>
 					On deployed versions of the site, we currently load analytics scripts from
 					<code>analytics.isthereconsensus.org</code> and <code>analytics.jacobdanderson.net</code> to
@@ -221,6 +223,7 @@ useStaticPageMeta({
 					When your browser loads those scripts, the analytics services may receive technical request
 					information such as IP address, browser metadata, referring page, and page usage details.
 				</p>
+				<h3>Bot checks</h3>
 				<p>
 					When captcha protection is enabled, the site loads Cloudflare Turnstile in the browser and validates
 					captcha responses server-side.
@@ -229,6 +232,7 @@ useStaticPageMeta({
 					That process can involve IP address and standard browser/device signals used for anti-abuse
 					purposes.
 				</p>
+				<h3>Current limits</h3>
 				<p>
 					The site currently does not provide a separate, browser-specific response to “Do Not Track” signals.
 					It also does not serve third-party ads.
@@ -413,6 +417,7 @@ useStaticPageMeta({
 .privacy-header h1,
 .section-heading h2,
 .privacy-contents h2,
+.prose h3,
 .summary-card h3,
 .category-card h3,
 .privacy-callout h2 {
@@ -465,6 +470,11 @@ useStaticPageMeta({
 
 .privacy-contents h2 {
 	font-size: 1.08rem;
+	color: var(--consensus-ink);
+}
+
+.prose h3 {
+	font-size: 0.98rem;
 	color: var(--consensus-ink);
 }
 

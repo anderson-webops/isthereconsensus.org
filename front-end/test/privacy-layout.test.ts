@@ -29,10 +29,20 @@ describe("privacy page layout", () => {
 		assert.match(privacySource, /<nav class="privacy-contents__links" aria-label="Privacy policy sections">/);
 		assert.match(privacySource, /id="scope"/);
 		assert.match(privacySource, /id="changes-to-this-policy"/);
+		assert.match(privacySource, /Cookies, storage, analytics, and bot checks/);
 		assert.equal((privacySource.match(/class="privacy-panel"/g) || []).length, 12);
 	});
 
 	it("keeps dense privacy copy split into scannable chunks", () => {
+		assert.match(privacySource, /Requests by email/);
+		assert.match(
+			privacySource,
+			/Email consensus@isthereconsensus\.org for access, correction, closure, or deletion requests\./
+		);
+		assert.match(privacySource, />Sessions and preferences</);
+		assert.match(privacySource, />Analytics</);
+		assert.match(privacySource, />Bot checks</);
+		assert.match(privacySource, />Current limits</);
 		assert.match(privacySource, /understand site usage and performance\./);
 		assert.match(privacySource, /When your browser loads those scripts, the analytics services may receive/);
 		assert.match(privacySource, /some records where reasonably necessary\./);
@@ -44,6 +54,8 @@ describe("privacy page layout", () => {
 		assert.match(privacySource, /Browser-side preference storage may remain until you clear it\./);
 		assert.match(privacySource, /Backups, logs, or external caches may persist for longer\./);
 		assert.match(privacySource, /<ul v-if="item\.details\?\.length" class="plain-list plain-list--tight">/);
+		assert.doesNotMatch(privacySource, /Privacy requests currently go through/);
+		assert.doesNotMatch(privacySource, /Cookies, browser storage, analytics, and captcha/);
 		assert.doesNotMatch(
 			privacySource,
 			/If you choose “remember me,” the session may last longer, currently up to about 30 days\./
