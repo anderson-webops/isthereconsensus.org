@@ -134,6 +134,33 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /try harder/i);
 	});
 
+	it("keeps the wind and solar lifecycle claim bounded to greenhouse gas evidence", () => {
+		const slug = "do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing wind and solar lifecycle claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.misconceptions,
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(visibleSummary, /43 g CO2e\/kWh for solar photovoltaics/);
+		assert.match(visibleSummary, /13 for wind/);
+		assert.match(visibleSummary, /486 for natural gas/);
+		assert.match(visibleSummary, /1001 for coal/);
+		assert.match(visibleSummary, /not literally zero-emission/);
+		assert.match(visibleSummary, /coal and natural gas power without carbon capture/);
+		assert.match(visibleSummary, /land use, wildlife, mining, reliability, cost, siting, or local consent/);
+		assert.doesNotMatch(visibleSummary, /zero lifecycle emissions/i);
+		assert.doesNotMatch(visibleSummary, /solves all energy/i);
+		assert.doesNotMatch(visibleSummary, /\bunabated\b/i);
+		assert.doesNotMatch(visibleSummary, /accounting boundary/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);

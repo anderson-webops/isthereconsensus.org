@@ -15112,6 +15112,128 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Do wind and solar power have lower lifecycle greenhouse gas emissions than fossil-fuel electricity?",
+		slug: "do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Across full lifecycle accounting, wind and solar electricity produce much lower greenhouse-gas emissions than coal or natural gas power. Panels, turbines, construction, supply chains, and end-of-life handling still have emissions, so the technologies are not literally zero-emission. The typical gap remains large because coal and gas emissions are dominated by fuel extraction and combustion.",
+		stableCore: [
+			"NREL's 2021 lifecycle update reports median values of about 43 g CO2e/kWh for solar photovoltaics, 13 for wind, 486 for natural gas, and 1001 for coal.",
+			"Wind and solar emissions mostly come from manufacturing, construction, maintenance, and end-of-life handling rather than burning fuel to generate electricity.",
+			"Coal and gas power plants emit greenhouse gases during operation, with additional emissions from mining, drilling, processing, and transport.",
+			"Storage, transmission, curtailment of unused power, backup generation, and supply chains can change system-level estimates, but they do not erase the large gap in typical comparisons.",
+			"Low lifecycle greenhouse gas emissions do not settle separate debates about land use, wildlife, mining, reliability, cost, siting, or local consent."
+		],
+		openQuestions: [
+			"How should system-level comparisons count storage, transmission, curtailment of unused power, and backup generation as grids add more variable renewable electricity?",
+			"How quickly will cleaner manufacturing, recycling, mineral supply chains, and longer turbine or panel lifetimes improve lifecycle estimates?",
+			"How should natural gas comparisons handle methane leakage, plant efficiency, carbon capture, and fuel sourcing?"
+		],
+		whatWouldChangeMinds: [
+			"Updated lifecycle assessments showing that typical wind or solar electricity emits about as much greenhouse gas as coal or natural gas power without carbon capture.",
+			"System-level evidence showing that storage, transmission, backup, or curtailment emissions usually eliminate wind and solar's lifecycle greenhouse gas advantage.",
+			"Verified large-scale fossil-fuel generation with full lifecycle emissions consistently near wind or solar levels without moving emissions outside the comparison."
+		],
+		misconceptions: [
+			"Calling wind or solar low-carbon does not mean turbines, panels, concrete, metals, transport, or recycling have no emissions.",
+			"Because panels and turbines take energy and materials to build, their emissions are not zero; that does not make them similar to coal or gas generation.",
+			"One poorly sited or unusually manufactured project does not summarize the median lifecycle evidence for a whole technology.",
+			"Greenhouse-gas comparisons should not be used to dismiss real siting, wildlife, labor, mining, reliability, or community concerns."
+		],
+		editorSummary:
+			"Wind and solar are not emission-free, but full lifecycle accounting still shows a large greenhouse-gas gap compared with coal and natural gas power without carbon capture. Keep this claim focused on greenhouse gases, not every energy-system tradeoff.",
+		uncertaintySummary:
+			"The direction of the lifecycle comparison is high-confidence. The exact numbers vary by project design, manufacturing supply chains, grid integration, storage assumptions, methane leakage, plant efficiency, recycling, and local non-climate impacts.",
+		searchCutoffAt: "2026-07-05T03:31:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T03:31:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T03:31:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial wind and solar lifecycle greenhouse-gas comparison page published from IPCC, NREL, and peer-reviewed lifecycle sources."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2022: Mitigation of Climate Change, Chapter 6: Energy Systems",
+				publisher: "IPCC",
+				year: 2022,
+				url: "https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-6/",
+				stance: "supports",
+				note:
+					"Assessment anchor for energy-system mitigation, including low-carbon electricity technologies and broader tradeoffs beyond greenhouse-gas emissions.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Life Cycle Greenhouse Gas Emissions from Electricity Generation: Update",
+				publisher: "National Renewable Energy Laboratory",
+				year: 2021,
+				url: "https://www.osti.gov/biblio/1820320",
+				stance: "supports",
+				note:
+					"NREL update reporting median lifecycle emissions of 43 g CO2e/kWh for solar photovoltaics, 13 for wind, 486 for natural gas, and 1001 for coal generation.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Life Cycle Greenhouse Gas Emissions of Crystalline Silicon Photovoltaic Electricity Generation",
+				publisher: "Journal of Industrial Ecology",
+				year: 2012,
+				url: "https://doi.org/10.1111/j.1530-9290.2011.00439.x",
+				doi: "10.1111/j.1530-9290.2011.00439.x",
+				stance: "supports",
+				note:
+					"Review and harmonization source for crystalline silicon solar photovoltaic lifecycle emissions used in NREL's solar evidence base.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Life Cycle Greenhouse Gas Emissions of Utility-Scale Wind Power",
+				publisher: "Journal of Industrial Ecology",
+				year: 2012,
+				url: "https://doi.org/10.1111/j.1530-9290.2012.00464.x",
+				doi: "10.1111/j.1530-9290.2012.00464.x",
+				stance: "supports",
+				note:
+					"Review and harmonization source for utility-scale wind lifecycle emissions, supporting the low median values reported by NREL.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Life Cycle Greenhouse Gas Emissions of Electricity Generated from Conventionally Produced Natural Gas",
+				publisher: "Journal of Industrial Ecology",
+				year: 2014,
+				url: "https://doi.org/10.1111/jiec.12084",
+				doi: "10.1111/jiec.12084",
+				stance: "supports",
+				note:
+					"Natural-gas lifecycle source for comparing upstream fuel-supply and power-plant emissions with low-carbon electricity technologies.",
+				order: 5
+			},
+			{
+				kind: "systematic_review",
+				title: "Life Cycle Greenhouse Gas Emissions of Coal-Fired Electricity Generation",
+				publisher: "Journal of Industrial Ecology",
+				year: 2012,
+				url: "https://doi.org/10.1111/j.1530-9290.2012.00465.x",
+				doi: "10.1111/j.1530-9290.2012.00465.x",
+				stance: "supports",
+				note:
+					"Coal lifecycle source showing why fossil generation with high combustion emissions remains much higher-emitting than wind or solar in typical comparisons.",
+				order: 6
+			}
+		]
+	},
+	{
 		topicSlug: "historical-case-studies",
 		title: "Did chlorinating and filtering drinking water reduce typhoid and other waterborne disease?",
 		slug: "did-chlorinating-and-filtering-drinking-water-reduce-typhoid-and-other-waterborne-disease",
