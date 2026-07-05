@@ -18082,6 +18082,193 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does nirmatrelvir-ritonavir reduce severe COVID-19 risk for high-risk outpatients?",
+		slug: "does-nirmatrelvir-ritonavir-reduce-severe-covid-19-risk-for-high-risk-outpatients",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"Yes, for the right patients and timing. Nirmatrelvir-ritonavir, sold as Paxlovid, reduces hospitalization and death risk most clearly when started within 5 days in nonhospitalized people at high risk of severe COVID-19. It is not a general symptom cure for low-risk adults, and benefit is smaller or harder to prove when baseline risk is already low.",
+		stableCore: [
+			"CDC and IDSA treat ritonavir-boosted nirmatrelvir as a preferred early outpatient option for eligible patients at elevated risk of severe COVID-19.",
+			"The original EPIC-HR randomized trial in unvaccinated high-risk outpatients found a large reduction in COVID-19-related hospitalization or death when treatment started early.",
+			"Real-world Omicron-era studies generally support lower severe-outcome risk in higher-risk groups, but absolute benefit depends on age, immune status, comorbidities, vaccination, prior infection, and variant era.",
+			"Ritonavir creates important drug-drug interactions, and kidney or liver disease can require dose adjustment or make treatment inappropriate.",
+			"Later randomized trials in vaccinated higher-risk participants found already-low hospitalization and death rates and did not show a clear severe-outcome reduction, so the claim should stay risk-stratified."
+		],
+		openQuestions: [
+			"Which vaccinated, previously infected, or lower-risk patients still get enough absolute benefit to justify treatment?",
+			"How should clinicians balance treatment speed against medication reconciliation, renal dosing, and drug-interaction management?",
+			"Does nirmatrelvir-ritonavir meaningfully reduce Long COVID risk in specific subgroups, and is any effect durable?",
+			"How should recommendations adapt as variants, population immunity, and baseline hospitalization risk continue to change?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized or high-quality target-trial evidence showing no severe-outcome benefit in clearly high-risk patients treated within 5 days.",
+			"Major CDC, IDSA, FDA, WHO, or comparable guideline updates withdrawing nirmatrelvir-ritonavir as a preferred outpatient antiviral for high-risk COVID-19.",
+			"Evidence that drug-interaction harms, resistance, rebound, or implementation harms outweigh severe-outcome prevention in the groups now recommended for treatment."
+		],
+		misconceptions: [
+			"Paxlovid is not a substitute for vaccination, testing, isolation guidance, or clinical evaluation.",
+			"A low-risk vaccinated adult not benefiting much does not prove the drug is useless for an older, immunocompromised, or otherwise high-risk patient.",
+			"Rebound symptoms or a positive test after treatment can occur, but rebound reports do not by themselves erase severe-outcome benefit in high-risk groups.",
+			"Because ritonavir affects drug metabolism, clinicians cannot safely ignore other medications just because the COVID-19 course is short."
+		],
+		editorSummary:
+			"The useful answer is risk-stratified: nirmatrelvir-ritonavir is an evidence-based early outpatient antiviral for eligible high-risk patients, but it should not be oversold as a universal COVID symptom cure.",
+		uncertaintySummary:
+			"The original high-risk unvaccinated trial and many observational studies support benefit against severe outcomes. Uncertainty is higher in the vaccination and Omicron era, where baseline severe-outcome risk is lower and some newer randomized trials did not detect a hospitalization or death reduction.",
+		uncertaintyDrivers: [
+			{
+				type: "generalizability",
+				detail:
+					"Evidence transfers unevenly from unvaccinated Delta-era trial populations to vaccinated, previously infected, Omicron-era outpatients."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Absolute benefit depends strongly on baseline hospitalization or death risk, so results differ across age, immune status, comorbidities, and variant periods."
+			},
+			{
+				type: "implementation",
+				detail:
+					"Medication interactions, renal dosing, access within 5 days, and prescribing workflow shape real-world effectiveness and safety."
+			}
+		],
+		searchDatabases: ["Consensus", "CDC", "IDSA", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-05T10:45:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T10:45:00.000Z",
+		inclusionRules: [
+			"Prioritize current CDC and IDSA outpatient treatment guidance, randomized trials, target-trial emulations, and large Omicron-era observational studies.",
+			"Separate severe outcomes from symptom duration, viral load, rebound, Long COVID, and transmission questions.",
+			"Report baseline risk, vaccination or prior-infection context, timing from symptom onset, and risk factors whenever the evidence source provides them."
+		],
+		exclusionRules: [
+			"Do not generalize high-risk trial results to low-risk adults without risk-factor caveats.",
+			"Do not present observational estimates as if they remove confounding concerns.",
+			"Do not ignore drug-drug interactions, kidney function, liver disease, or access timing.",
+			"Do not use manufacturer marketing pages as decision-weight evidence."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does nirmatrelvir-ritonavir reduce severe COVID-19 risk for high-risk outpatients?",
+				population:
+					"Nonhospitalized people with mild-to-moderate COVID-19 who are eligible for early antiviral treatment because age, immune status, comorbidities, or other factors raise severe-disease risk.",
+				finding:
+					"Early nirmatrelvir-ritonavir reduces hospitalization and death risk most clearly in high-risk patients, while lower-risk or highly immune populations have lower absolute event rates and less certain severe-outcome benefit.",
+				effectDirection: "supports",
+				magnitude:
+					"CDC summarizes the original high-risk unvaccinated trial as an 87% reduction in hospitalization and death; 2026 vaccinated higher-risk trials reported hospitalization or death in roughly 0.6% to 1.2% of participants and did not show a clear reduction.",
+				certainty: "moderate",
+				limitations: [
+					"Randomized evidence is strongest for unvaccinated high-risk adults early in illness.",
+					"Vaccination, prior infection, Omicron-era severity, and treatment access lower event rates and make absolute benefit harder to estimate.",
+					"Drug interactions and renal or hepatic contraindications mean eligibility requires patient-specific review."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Centers for Disease Control and Prevention",
+				role: "Current U.S. outpatient treatment anchor for timing, eligibility, and preferred antiviral options."
+			},
+			{
+				name: "Infectious Diseases Society of America",
+				role: "Clinical guideline anchor for risk-stratified outpatient antiviral recommendations and interaction caveats."
+			},
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Regulatory anchor for adult approval, pediatric emergency authorization, labeling, interactions, and contraindications."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T10:45:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial nirmatrelvir-ritonavir outpatient COVID-19 claim page published from CDC, IDSA, randomized trial, real-world cohort, and vaccination-era trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "COVID-19 Treatment Clinical Care for Outpatients",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/covid/hcp/clinical-care/outpatient-treatment.html",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Current CDC outpatient-treatment anchor for treatment within 5 days, the 87% high-risk trial summary, Omicron-era real-world support, and interaction or contraindication cautions.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "IDSA Guidelines on the Treatment and Management of Patients with COVID-19",
+				publisher: "Infectious Diseases Society of America",
+				year: 2026,
+				url: "https://www.idsociety.org/practice-guideline/covid-19-guideline-treatment-and-management/",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Current IDSA guidance treating nirmatrelvir-ritonavir as a first option for ambulatory mild-to-moderate COVID-19 when risk and interaction review support its use.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Oral Nirmatrelvir for High-Risk, Nonhospitalized Adults with Covid-19",
+				publisher: "New England Journal of Medicine",
+				year: 2022,
+				url: "https://www.nejm.org/doi/full/10.1056/NEJMoa2118542",
+				doi: "10.1056/NEJMoa2118542",
+				stance: "supports",
+				note:
+					"EPIC-HR randomized trial forming the original efficacy anchor in unvaccinated high-risk outpatients treated early in symptomatic COVID-19.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Effectiveness of nirmatrelvir-ritonavir in preventing hospital admissions and deaths in people with COVID-19",
+				publisher: "The Lancet Infectious Diseases",
+				year: 2023,
+				url: "https://doi.org/10.1016/S1473-3099(23)00118-4",
+				doi: "10.1016/S1473-3099(23)00118-4",
+				stance: "supports",
+				note:
+					"Large U.S. health-system cohort supporting lower hospital-admission and death risk in real-world outpatient use during Omicron-era care.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Nirmatrelvir for Vaccinated or Unvaccinated Adult Outpatients with Covid-19",
+				publisher: "New England Journal of Medicine",
+				year: 2024,
+				url: "https://www.nejm.org/doi/full/10.1056/NEJMoa2309003",
+				doi: "10.1056/NEJMoa2309003",
+				stance: "context",
+				note:
+					"EPIC-SR vaccination-era randomized trial useful for bounding claims in standard-risk and vaccinated populations where symptom and severe-outcome benefits were harder to show.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Oral Nirmatrelvir-Ritonavir for Covid-19 in Higher-Risk Outpatients",
+				publisher: "New England Journal of Medicine",
+				year: 2026,
+				url: "https://pubmed.ncbi.nlm.nih.gov/42019019/",
+				doi: "10.1056/NEJMoa2502457",
+				pmid: "42019019",
+				stance: "context",
+				note:
+					"PANORAMIC and CanTreatCOVID randomized trials in vaccinated higher-risk outpatients found low hospitalization and death rates and no clear severe-outcome reduction, preserving current uncertainty.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Can COVID-19 cause long-term symptoms even after mild infection?",
 		slug: "can-covid-19-cause-long-term-symptoms-even-after-mild-infection",
 		status: "published",

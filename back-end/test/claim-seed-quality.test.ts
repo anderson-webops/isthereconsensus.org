@@ -316,6 +316,38 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /CO detector/i);
 	});
 
+	it("keeps the nirmatrelvir-ritonavir claim scoped to high-risk early outpatient treatment", () => {
+		const slug = "does-nirmatrelvir-ritonavir-reduce-severe-covid-19-risk-for-high-risk-outpatients";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing nirmatrelvir-ritonavir claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.exclusionRules,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /started within 5 days/);
+		assert.match(claim.bottomLine, /nonhospitalized people at high risk/);
+		assert.ok(claim.bottomLine.length <= 380, "Nirmatrelvir-ritonavir bottom line should stay scannable");
+		assert.match(visibleSummary, /87% reduction in hospitalization and death/);
+		assert.match(visibleSummary, /0\.6% to 1\.2%/);
+		assert.match(visibleSummary, /drug-drug interactions/);
+		assert.match(visibleSummary, /kidney or liver disease/);
+		assert.match(visibleSummary, /low-risk vaccinated adult/);
+		assert.match(visibleSummary, /Long COVID risk/);
+		assert.doesNotMatch(visibleSummary, /works for everyone/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed cure/i);
+		assert.doesNotMatch(visibleSummary, /low-risk adults should take/i);
+		assert.doesNotMatch(visibleSummary, /drug interactions do not matter/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);
