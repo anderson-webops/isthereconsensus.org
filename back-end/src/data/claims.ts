@@ -8779,33 +8779,33 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "standard",
 		bottomLine:
-			"Yes, exercise can reduce depressive symptoms for many adults and is a reasonable evidence-based treatment option or add-on. The important caveat is that this is not a blame-the-patient message or a guaranteed cure: depression severity, access, motivation, physical limitations, safety, psychotherapy, medication, and crisis care still matter.",
+			"Yes. Exercise can reduce depressive symptoms for many adults and is a reasonable evidence-based treatment option or add-on. It is not a guaranteed cure or a blame-the-patient message; severity, access, motivation, physical limits, safety, therapy, medication, and crisis care still matter.",
 		stableCore: [
-			"Cochrane's 2026 review of 73 studies with 4,985 adults found exercise had a moderate effect in reducing depression symptoms compared with control conditions.",
-			"A 2024 BMJ network meta-analysis of 218 unique studies and 14,170 participants found symptom improvement across several exercise modes, including walking or jogging, yoga, strength training, and mixed aerobic activity.",
-			"NICE includes group exercise as a treatment option for less severe depression, while keeping treatment choice tied to symptoms, preferences, access, risk, and follow-up.",
-			"WHO says physical activity can reduce symptoms of depression and anxiety and also has broader physical-health benefits."
+			"Cochrane's 2026 review found moderate symptom reduction across 73 studies and 4,985 adults.",
+			"A 2024 BMJ network meta-analysis synthesized 218 unique studies and 14,170 participants and found improvement across walking or jogging, yoga, strength training, and mixed aerobic activity.",
+			"NICE includes group exercise for less severe depression, with treatment choice tied to symptoms, preferences, access, risk, and follow-up.",
+			"WHO says physical activity can reduce symptoms of depression and anxiety and supports broader physical health."
 		],
 		openQuestions: [
 			"Which exercise type, dose, intensity, supervision level, and social support work best for particular people and severity levels?",
-			"How can clinicians support people whose depression makes activity initiation, adherence, transportation, cost, pain, disability, or safety difficult?",
-			"How durable are benefits after programs end, and when is exercise best used with psychotherapy, medication, sleep treatment, or other care?"
+			"How can care teams support people when depression, access, cost, pain, disability, or safety makes activity difficult?",
+			"How durable are benefits after programs end, and when should exercise be paired with psychotherapy, medication, sleep treatment, or other care?"
 		],
 		whatWouldChangeMinds: [
-			"Large, low-bias randomized trials showing no clinically meaningful symptom benefit from well-supported exercise programs across depression severity groups.",
+			"Large, low-bias randomized trials showing no clinically meaningful symptom benefit from well-supported exercise programs across severity groups.",
 			"Major Cochrane, BMJ, NICE, WHO, ACP, APA, or comparable guideline reassessments withdrawing exercise or structured physical activity as a treatment option.",
 			"Evidence that common implementation harms, injury risk, stigma, or delayed clinical care outweigh symptom benefits in routine use."
 		],
 		misconceptions: [
-			"Evidence that exercise can help depression does not mean depression is laziness, weak will, or a failure to try hard enough.",
-			"Exercise advice is not the same as a supported treatment plan; safety, pacing, access, social support, and follow-up can change whether it is realistic.",
+			"Evidence that exercise can help does not mean depression is laziness, weak will, or a failure to try hard enough.",
+			"Exercise advice is not a treatment plan by itself; safety, pacing, access, social support, and follow-up can change whether it is realistic.",
 			"Exercise should not replace urgent care for suicidality, psychosis, severe impairment, or depression that needs psychotherapy, medication, or combined treatment.",
-			"One exercise mode is not proven best for everyone; preference and adherence often matter as much as the exact activity."
+			"No single exercise mode is proven best for everyone; preference and adherence often matter as much as the exact activity."
 		],
 		editorSummary:
-			"Exercise has credible evidence as a depression symptom treatment option, but the page should avoid implying that activity alone is enough or that depression reflects poor effort.",
+			"Exercise has credible evidence as a depression symptom treatment option, but activity alone is not always enough and depression does not reflect poor effort.",
 		uncertaintySummary:
-			"The direction of benefit is reasonably consistent, but certainty is moderate because trials vary in exercise type, comparator, severity, adherence, blinding, follow-up, and study quality. The most useful public answer is 'yes, often helpful,' with visible limits around dose, access, severity, and combination care.",
+			"The direction of benefit is reasonably consistent, but certainty is moderate because trials vary by exercise type, comparator, severity, adherence, blinding, follow-up, and quality. The public answer should be 'yes, often helpful,' with visible limits around dose, access, severity, and combination care.",
 		uncertaintyDrivers: [
 			{
 				type: "implementation",
@@ -8841,7 +8841,7 @@ const rawClaims: SeedClaim[] = [
 				question: "Does exercise reduce symptoms of depression?",
 				population: "Adults with depression or elevated depressive symptoms in randomized trials and clinical guideline populations.",
 				finding:
-					"Exercise reduces depressive symptoms on average compared with control conditions, and guidelines treat structured physical activity as a legitimate treatment option, especially when matched to severity, preference, and safety.",
+					"Exercise reduces depressive symptoms on average compared with control conditions, and guidelines treat structured physical activity as a legitimate option when matched to severity, preference, and safety.",
 				effectDirection: "supports",
 				magnitude:
 					"Cochrane found a moderate symptom-reduction effect across 73 studies and 4,985 adults; the 2024 BMJ network meta-analysis synthesized 218 unique studies and 14,170 participants but rated certainty as low or very low for many exercise-comparison estimates.",

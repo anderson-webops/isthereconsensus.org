@@ -151,9 +151,12 @@ describe("default claim seed quality", () => {
 		].join(" ");
 
 		assert.match(claim.bottomLine, /reasonable evidence-based treatment option or add-on/);
-		assert.match(visibleSummary, /73 studies with 4,985 adults/);
+		assert.match(claim.bottomLine, /not a guaranteed cure or a blame-the-patient message/);
+		assert.ok(claim.bottomLine.length <= 300, "Exercise/depression bottom line should stay scannable");
+		assert.match(visibleSummary, /73 studies (?:with|and) 4,985 adults/);
 		assert.match(visibleSummary, /218 unique studies and 14,170 participants/);
 		assert.match(visibleSummary, /does not mean depression is laziness/);
+		assert.match(visibleSummary, /not a treatment plan by itself/);
 		assert.match(visibleSummary, /should not replace urgent care/);
 		assert.doesNotMatch(visibleSummary, /just exercise/i);
 		assert.doesNotMatch(visibleSummary, /snap out of it/i);
