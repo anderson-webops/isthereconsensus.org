@@ -482,26 +482,6 @@ function formatTopicUpdateLabel(value?: string) {
 	margin: 0;
 }
 
-.hero__aside {
-	padding: 24px;
-	display: grid;
-	gap: 16px;
-}
-
-.hero__aside ol {
-	margin: 0;
-	padding-left: 18px;
-	display: grid;
-	gap: 12px;
-	line-height: 1.6;
-}
-
-.hero__aside-links {
-	display: flex;
-	gap: 12px;
-	flex-wrap: wrap;
-}
-
 .search-panel {
 	max-width: 920px;
 	padding: 18px 20px;
@@ -797,7 +777,6 @@ function formatTopicUpdateLabel(value?: string) {
 	}
 
 	.hero__copy,
-	.hero__aside,
 	.search-panel,
 	.claim-row,
 	.topic-row,
@@ -811,7 +790,14 @@ function formatTopicUpdateLabel(value?: string) {
 	}
 
 	.search-panel {
-		padding: 16px;
+		gap: 10px;
+		padding: 14px;
+	}
+
+	.search-panel input {
+		min-height: 46px;
+		padding: 12px 14px;
+		border-radius: 14px;
 	}
 
 	.claim-row,
@@ -842,11 +828,19 @@ function formatTopicUpdateLabel(value?: string) {
 	}
 
 	.search-panel__row {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 8px;
 	}
 
 	.search-panel .button {
-		width: 100%;
+		min-height: 46px;
+		width: auto;
+		padding: 10px 14px;
+	}
+
+	.search-panel__hint {
+		font-size: 0.92rem;
+		line-height: 1.5;
 	}
 }
 </style>

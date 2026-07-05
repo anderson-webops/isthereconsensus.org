@@ -526,11 +526,11 @@ function showAllTopics() {
 
 	.directory__controls,
 	.results-block {
-		padding: 16px;
+		padding: 14px;
 	}
 
 	.directory__controls {
-		gap: 10px;
+		gap: 8px;
 	}
 
 	.results-search input {
@@ -540,12 +540,17 @@ function showAllTopics() {
 	}
 
 	.filter-stack {
+		flex-wrap: nowrap;
 		gap: 7px;
+		overflow-x: auto;
+		padding-bottom: 2px;
+		scrollbar-width: thin;
 	}
 
 	.filter {
-		min-height: 42px;
-		padding: 9px 12px;
+		flex: 0 0 auto;
+		min-height: 40px;
+		padding: 8px 11px;
 		line-height: 1.2;
 	}
 
