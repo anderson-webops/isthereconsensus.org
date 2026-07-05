@@ -10,37 +10,37 @@ const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
+		it(`keeps the palette switcher next to the compact color-mode toggle in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 			const paletteImportIndex = source.indexOf('import PaletteSwitcher from "~/components/PaletteSwitcher.vue"');
 			const themeImportIndex = source.indexOf('import ThemeToggle from "~/components/ThemeToggle.vue"');
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
+			const footerAppearanceIndex = source.indexOf(
+				'class="site-footer__appearance" aria-label="Appearance controls"'
+			);
 
 			assert.notEqual(paletteImportIndex, -1);
 			assert.notEqual(themeImportIndex, -1);
+			assert.notEqual(footerAppearanceIndex, -1);
 			assert.notEqual(paletteRenderIndex, -1);
 			assert.notEqual(themeRenderIndex, -1);
+			assert.ok(footerAppearanceIndex < paletteRenderIndex);
 			assert.ok(paletteRenderIndex < themeRenderIndex);
-			assert.match(
-				source,
-				/class="site-header__controls" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
-			);
-			assert.doesNotMatch(source, /site-footer__appearance/);
+			assert.doesNotMatch(source, /site-header__controls/);
 		});
 
-		it(`keeps the footer focused on support and policy links in ${file}`, () => {
+		it(`keeps the footer focused on appearance, support, and policy links in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 			const footerStart = source.indexOf('<footer class="site-footer">');
 			const footer = source.slice(footerStart);
 
 			assert.notEqual(footerStart, -1);
 			assert.match(footer, /to="\/corrections"[\s\S]*Corrections/);
-			assert.match(footer, /to="\/community-guidelines"[\s\S]*Guidelines/);
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
-			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
-			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
+			assert.match(footer, /PaletteSwitcher[\s\S]*ThemeToggle/);
+			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work|Guidelines/);
 		});
 	}
 
@@ -61,6 +61,8 @@ describe("theme controls", () => {
 	it("keeps the light and dark toggle visually compact", () => {
 		const source = readFileSync(join(testDir, "..", "src/components/ThemeToggle.vue"), "utf8");
 
-		assert.match(source, /\.theme-toggle \{[\s\S]*width: 42px;[\s\S]*height: 42px;/);
+		assert.match(source, /\.theme-toggle \{[\s\S]*width: 40px;[\s\S]*height: 40px;/);
+		assert.match(source, /Switch to light mode/);
+		assert.match(source, /Switch to dark mode/);
 	});
 });

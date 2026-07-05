@@ -53,7 +53,7 @@ onMounted(() => {
 	border: 1px solid var(--consensus-line);
 	border-radius: 999px;
 	background: var(--consensus-elevated-surface);
-	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.08);
+	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.06);
 	backdrop-filter: blur(16px);
 }
 
@@ -114,7 +114,7 @@ onMounted(() => {
 }
 
 :global(.dark) .palette-switcher {
-	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
 }
 
 :global(.dark) .palette-switcher__swatch {
