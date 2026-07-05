@@ -286,18 +286,23 @@ async function submitQuestion() {
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
 			<h1>Search first. Ask what is missing.</h1>
-			<p>Open a reviewed page when it fits. The queue is for questions that are still missing.</p>
+			<p>
+				Start with the closest reviewed page. If it does not answer the question, submit the specific gap for
+				review.
+			</p>
 		</header>
 
 		<section class="search-panel">
-			<label class="field-label" for="claim-question">Ask a question or type a claim</label>
+			<label class="field-label" for="claim-question">Search a claim or question first</label>
 			<textarea
 				id="claim-question"
 				v-model="question"
 				rows="3"
-				placeholder="Does X cause Y? Is X safe? What is the difference between hazard and risk?"
+				placeholder="Does X cause Y? Is X safe? What does this new study show?"
 			/>
-			<p class="search-panel__hint">Start typing to see the closest reviewed page.</p>
+			<p class="search-panel__hint">
+				Use one clear claim when possible. Matching reviews, topics, and explainers appear as you type.
+			</p>
 		</section>
 
 		<section class="results-panel">
@@ -306,13 +311,15 @@ async function submitQuestion() {
 					<p class="eyebrow">Closest reviewed pages</p>
 					<h2>Start with the strongest match</h2>
 				</div>
-				<p>Open the reviewed page if it already answers the question.</p>
+				<p>Use the match if it answers your question. Post only what remains unclear.</p>
 			</div>
 
 			<div v-if="!searchReady" class="empty-state">Type at least three characters to start matching.</div>
 			<div v-else-if="loadingSuggestions" class="empty-state">Checking reviewed pages...</div>
 			<div v-else-if="suggestionError" class="empty-state">{{ suggestionError }}</div>
-			<div v-else-if="!suggestions.claims.length" class="empty-state">No close claim review yet.</div>
+			<div v-else-if="!suggestions.claims.length" class="empty-state">
+				No close claim review yet. Check related topics or submit a focused question.
+			</div>
 			<div v-else class="match-list">
 				<article
 					v-for="claim in suggestions.claims"
@@ -342,7 +349,7 @@ async function submitQuestion() {
 							Open review
 						</button>
 						<button class="button button--ghost" type="button" @click="attachClaim(claim)">
-							Ask about a gap
+							Close, but different
 						</button>
 					</div>
 				</article>
@@ -362,9 +369,12 @@ async function submitQuestion() {
 			<div class="posting-form__header">
 				<div>
 					<p class="eyebrow">Submit to the queue</p>
-					<h2>If nothing close fits, ask here.</h2>
+					<h2>If the matches miss your question, ask here.</h2>
 				</div>
-				<p>Keep it short. The closest existing page is attached automatically when one exists.</p>
+				<p>
+					Use a neutral, testable question. Add context only when it helps explain what the reviewed page did
+					not cover.
+				</p>
 			</div>
 
 			<AuthPanel
@@ -377,7 +387,7 @@ async function submitQuestion() {
 
 			<div v-if="selectedClaimRecord" class="attached-claim">
 				<div>
-					<p class="field-label">Attached reviewed claim</p>
+					<p class="field-label">Closest reviewed claim attached</p>
 					<p>{{ selectedClaimRecord.title }}</p>
 				</div>
 				<button class="button button--ghost" type="button" @click="selectedClaimSlug = ''">Clear</button>
@@ -391,6 +401,10 @@ async function submitQuestion() {
 					type="text"
 					placeholder="Example: Do vaccines change human DNA?"
 				/>
+				<p class="field-help">
+					One sentence is enough. Prefer a neutral form such as "Does X cause Y?" or "What evidence supports
+					X?"
+				</p>
 			</div>
 
 			<div class="field-stack">
@@ -403,7 +417,7 @@ async function submitQuestion() {
 			</div>
 
 			<details class="posting-form__optional">
-				<summary>Add context or source</summary>
+				<summary>Add context, source, or difference</summary>
 				<div class="posting-form__optional-body">
 					<div class="field-stack">
 						<label class="field-label" for="post-context">Context, quote, or local detail</label>
@@ -411,7 +425,7 @@ async function submitQuestion() {
 							id="post-context"
 							v-model="context"
 							rows="4"
-							placeholder="Optional. Paste the quote, describe what felt off, or explain the confusion."
+							placeholder="Optional. Paste the quote, describe what differs from the closest match, or explain the confusion."
 						/>
 					</div>
 
@@ -463,6 +477,7 @@ async function submitQuestion() {
 
 .ask-page__header p,
 .search-panel__hint,
+.field-help,
 .section-heading p,
 .match-row p,
 .empty-state,
@@ -475,6 +490,7 @@ async function submitQuestion() {
 }
 
 .ask-page__header p,
+.field-help,
 .section-heading p,
 .posting-form__header p {
 	max-width: 68ch;
@@ -523,6 +539,11 @@ async function submitQuestion() {
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	color: var(--consensus-muted);
+}
+
+.field-help {
+	margin: -2px 0 0;
+	font-size: 0.94rem;
 }
 
 .match-row__meta {

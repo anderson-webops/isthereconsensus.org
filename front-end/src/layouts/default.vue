@@ -14,15 +14,21 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<span class="site-brand__name">Is There Consensus?</span>
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
-			<nav class="site-nav" aria-label="Primary">
-				<NuxtLink to="/">Home</NuxtLink>
-				<NuxtLink to="/consensus">Browse</NuxtLink>
-				<NuxtLink to="/explainers">Explainers</NuxtLink>
-				<NuxtLink to="/ask">Ask</NuxtLink>
-				<NuxtLink to="/standards">How reviews work</NuxtLink>
-				<NuxtLink to="/account">Account</NuxtLink>
-				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
-			</nav>
+			<div class="site-header__actions">
+				<nav class="site-nav" aria-label="Primary">
+					<NuxtLink to="/">Home</NuxtLink>
+					<NuxtLink to="/consensus">Browse</NuxtLink>
+					<NuxtLink to="/explainers">Explainers</NuxtLink>
+					<NuxtLink to="/ask">Ask</NuxtLink>
+					<NuxtLink to="/standards">How reviews work</NuxtLink>
+					<NuxtLink to="/account">Account</NuxtLink>
+					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
+				</nav>
+				<div class="site-header__controls" aria-label="Appearance controls">
+					<PaletteSwitcher />
+					<ThemeToggle />
+				</div>
+			</div>
 		</header>
 
 		<main class="site-main">
@@ -38,21 +44,12 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<ClientOnly>
-					<div class="site-footer__appearance" aria-label="Appearance controls">
-						<PaletteSwitcher />
-						<span class="site-footer__appearance-divider" aria-hidden="true" />
-						<ThemeToggle />
-					</div>
-					<template #fallback>
-						<span class="site-footer__appearance-fallback" aria-hidden="true" />
-					</template>
-				</ClientOnly>
-				<nav class="site-footer__links" aria-label="Footer links">
+				<div class="site-footer__links">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
+					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
-				</nav>
+				</div>
 			</div>
 		</footer>
 	</div>
@@ -78,6 +75,22 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	gap: 16px;
 	padding-bottom: 16px;
 	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.site-header__actions {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 12px;
+	justify-content: end;
+	min-width: 0;
+}
+
+.site-header__controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
 }
 
 .site-brand {
@@ -167,36 +180,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	flex-direction: column;
 	align-items: end;
 	gap: 12px;
-	min-width: min(100%, 220px);
-}
-
-.site-footer__appearance {
-	display: inline-flex;
-	align-items: center;
-	justify-content: end;
-	gap: 8px;
-	padding: 5px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	background: var(--consensus-elevated-surface);
-	box-shadow: 0 18px 54px rgba(21, 17, 13, 0.1);
-	backdrop-filter: blur(18px);
-}
-
-.site-footer__appearance-divider {
-	width: 1px;
-	height: 24px;
-	background: var(--consensus-soft-line);
-}
-
-.site-footer__appearance-fallback {
-	display: inline-block;
-	width: 158px;
-	height: 52px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	background: var(--consensus-elevated-surface);
-	box-shadow: 0 18px 54px rgba(21, 17, 13, 0.1);
+	min-width: min(100%, 320px);
 }
 
 .site-footer__links {
@@ -212,17 +196,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	font-weight: 600;
 }
 
-:deep(.site-footer__appearance .palette-switcher) {
-	border: 0;
-	background: transparent;
-	box-shadow: none;
-	backdrop-filter: none;
-}
-
-:deep(.site-footer__appearance .theme-toggle) {
-	box-shadow: none;
-}
-
 @media (max-width: 700px) {
 	.site-shell {
 		padding: 14px 14px 28px;
@@ -232,6 +205,17 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		align-items: stretch;
 		flex-direction: column;
 		padding-bottom: 12px;
+	}
+
+	.site-header__actions {
+		grid-template-columns: 1fr;
+		width: 100%;
+		align-items: start;
+		justify-content: stretch;
+	}
+
+	.site-header__controls {
+		justify-content: start;
 	}
 
 	.site-nav {
@@ -257,10 +241,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer__meta {
 		align-items: start;
 		min-width: 0;
-	}
-
-	.site-footer__appearance {
-		justify-content: start;
 	}
 
 	.site-footer__links {
