@@ -410,6 +410,40 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /Cochrane proved masks do not work/i);
 	});
 
+	it("keeps the ventilation and filtration respiratory-virus claim evidence-balanced", () => {
+		const slug = "does-improving-indoor-ventilation-and-filtration-reduce-respiratory-virus-spread";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing ventilation and filtration respiratory-virus claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.equal(claim.evidenceCertainty, "moderate");
+		assert.match(claim.bottomLine, /risk-reduction layer/);
+		assert.match(claim.bottomLine, /infectious respiratory particles/);
+		assert.ok(claim.bottomLine.length <= 380, "Ventilation bottom line should stay scannable");
+		assert.match(visibleSummary, /39% lower COVID-19 incidence/);
+		assert.match(visibleSummary, /48% lower incidence/);
+		assert.match(visibleSummary, /65% lower simulated aerosol exposure/);
+		assert.match(visibleSummary, /90%/);
+		assert.match(visibleSummary, /CO2 monitors.*not virus detectors/);
+		assert.match(visibleSummary, /Opening a window is not always enough/);
+		assert.match(visibleSummary, /observational design limits causal certainty/);
+		assert.doesNotMatch(visibleSummary, /guaranteed/i);
+		assert.doesNotMatch(visibleSummary, /sterilize/i);
+		assert.doesNotMatch(visibleSummary, /CO2 monitor detects virus/i);
+		assert.doesNotMatch(visibleSummary, /replaces vaccination/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);

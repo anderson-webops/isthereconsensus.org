@@ -3705,6 +3705,154 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Does improving indoor ventilation and filtration reduce respiratory-virus spread?",
+		slug: "does-improving-indoor-ventilation-and-filtration-reduce-respiratory-virus-spread",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"Yes, as a risk-reduction layer. Bringing in more outdoor air, improving filtration, and using well-chosen portable HEPA cleaners can lower concentrations of infectious respiratory particles indoors. The strongest consensus is about reducing exposure; direct illness-reduction evidence is more indirect and depends on building design, occupancy, maintenance, and airflow.",
+		stableCore: [
+			"CDC, EPA, and ASHRAE guidance treat cleaner indoor air as a layered respiratory-virus prevention measure, not as a stand-alone guarantee.",
+			"Ventilation dilutes shared indoor air with outdoor or cleaner air; filtration and portable HEPA air cleaners remove particles when enough air passes through effective filters.",
+			"ASHRAE Standard 241 formalized infectious-aerosol risk management around equivalent clean airflow, filtration, and air-cleaning system operation during higher-risk periods.",
+			"A Georgia elementary-school study found 39% lower COVID-19 incidence where ventilation improvements were reported, with 48% lower incidence where dilution was combined with filtration; the study was observational.",
+			"Laboratory simulation data found two portable HEPA cleaners reduced simulated aerosol exposure by about 65%, and HEPA cleaners plus universal masking reduced exposure by about 90%."
+		],
+		openQuestions: [
+			"What clean-air targets are sufficient for different pathogens, room sizes, occupancies, and building types?",
+			"Which combinations of ventilation, filtration, UV disinfection, masking, vaccination, and staying home when sick produce the best clinical outcomes in schools, shelters, workplaces, homes, and healthcare-adjacent spaces?",
+			"How should buildings balance infection-risk reduction with energy use, noise, humidity, outdoor pollution, wildfire smoke, pollen, maintenance capacity, and cost?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled intervention studies showing that meaningful improvements in clean airflow do not reduce respiratory-virus exposure or illness in shared indoor spaces.",
+			"Repeated aerosol and field studies showing that properly sized filtration or portable HEPA systems do not reduce indoor infectious-particle concentrations.",
+			"Major CDC, EPA, ASHRAE, WHO, or infection-prevention reassessments concluding that ventilation and filtration are not useful respiratory-virus risk-reduction layers."
+		],
+		misconceptions: [
+			"CO2 monitors can be useful ventilation proxies, but they are not virus detectors and cannot show whether infectious particles are present.",
+			"Opening a window is not always enough; benefit depends on airflow path, outdoor conditions, room size, weather, and whether air actually moves through the occupied space.",
+			"Portable air cleaners are not all equivalent; CADR, filter type, placement, maintenance, noise, and avoiding ozone-generating devices matter.",
+			"Cleaner indoor air does not replace vaccination where indicated, staying home when sick, testing and treatment, hand hygiene, or masks in higher-risk settings."
+		],
+		editorSummary:
+			"Cleaner indoor air is a credible exposure-reduction layer for respiratory viruses, strongest when ventilation or filtration is sized, maintained, and operated for the room people actually share.",
+		uncertaintySummary:
+			"The physics and guidance consensus are broad, and field studies support exposure reduction. Direct illness-reduction estimates are less certain because real buildings, behavior, maintenance, and simultaneous interventions are hard to isolate.",
+		searchCutoffAt: "2026-07-05T15:54:19.000Z",
+		lastRetractionCheckAt: "2026-07-05T15:54:19.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T15:54:19.000Z",
+				kind: "publication",
+				summary:
+					"Initial ventilation and filtration respiratory-virus page published from CDC, EPA, ASHRAE, MMWR, and systematic-review evidence."
+			}
+		],
+		evidenceSummaries: [
+			{
+				question: "Do indoor ventilation and filtration reduce respiratory-virus spread?",
+				population:
+					"People sharing indoor air in schools, workplaces, homes, public buildings, and other occupied spaces where respiratory viruses may circulate.",
+				finding:
+					"Improving clean airflow can reduce indoor infectious-particle exposure, but the size of illness reduction depends on implementation, occupancy, pathogen, behavior, and other prevention layers.",
+				effectDirection: "supports",
+				magnitude:
+					"Observed and simulated evidence includes 39% lower COVID-19 incidence in Georgia schools reporting ventilation improvements, 48% lower incidence when dilution and filtration were combined, and about 65% lower simulated aerosol exposure from two HEPA cleaners.",
+				certainty: "moderate",
+				limitations: [
+					"Many field studies are observational and cannot isolate ventilation from other mitigation choices.",
+					"Simulation studies measure aerosol exposure rather than confirmed infections.",
+					"Effect sizes depend on room airflow, CADR, filter maintenance, occupancy, placement, outdoor air quality, and whether systems are actually operating."
+				]
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Ventilation and Respiratory Viruses",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2024,
+				url: "https://www.cdc.gov/respiratory-viruses/prevention/air-quality.html",
+				stance: "supports",
+				note:
+					"Current CDC respiratory-virus guidance describing ventilation, filtration, and other clean-air steps as ways to reduce viral particles in indoor air.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Preventing the Spread of Respiratory Viruses in Public Indoor Spaces",
+				publisher: "U.S. Environmental Protection Agency",
+				year: 2024,
+				url:
+					"https://www.epa.gov/indoor-air-quality-iaq/preventing-spread-respiratory-viruses-public-indoor-spaces",
+				stance: "supports",
+				note:
+					"EPA indoor-air guidance for public spaces emphasizing ventilation, filtration, and air cleaning as layered controls for respiratory-virus particles.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "ASHRAE Standard 241, Control of Infectious Aerosols",
+				publisher: "ASHRAE",
+				year: 2023,
+				url:
+					"https://www.ashrae.org/technical-resources/bookstore/ashrae-standard-241-control-of-infectious-aerosols",
+				stance: "supports",
+				note:
+					"Engineering anchor for infectious-aerosol control using equivalent clean airflow, filtration, air cleaning, and system readiness planning.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Role of ventilation in airborne transmission of infectious agents in the built environment - a multidisciplinary systematic review",
+				publisher: "Indoor Air",
+				year: 2007,
+				url: "https://doi.org/10.1111/j.1600-0668.2006.00445.x",
+				doi: "10.1111/j.1600-0668.2006.00445.x",
+				pmid: "17257148",
+				stance: "supports",
+				note:
+					"Systematic-review anchor concluding that insufficient ventilation is associated with airborne infectious-disease transmission and control, while exact ventilation requirements remain uncertain.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Mask Use and Ventilation Improvements to Reduce COVID-19 Incidence in Elementary Schools - Georgia, November 16-December 11, 2020",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 2021,
+				url: "https://www.cdc.gov/mmwr/volumes/70/wr/mm7021e1.htm",
+				doi: "10.15585/mmwr.mm7021e1",
+				pmid: "34043610",
+				pmcid: "PMC8158891",
+				stance: "supports",
+				note:
+					"Georgia elementary-school study reporting 39% lower COVID-19 incidence with ventilation improvements and 48% lower incidence with dilution plus filtration, but observational design limits causal certainty.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Efficacy of Portable Air Cleaners and Masking for Reducing Indoor Exposure to Simulated Exhaled SARS-CoV-2 Aerosols - United States, 2021",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 2021,
+				url: "https://www.cdc.gov/mmwr/volumes/70/wr/mm7027e1.htm",
+				doi: "10.15585/mmwr.mm7027e1",
+				pmid: "34237047",
+				pmcid: "PMC8312755",
+				stance: "supports",
+				note:
+					"Simulation study finding two HEPA air cleaners reduced simulated aerosol exposure by about 65%, and HEPA cleaners plus universal masking reduced exposure by about 90%.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do antibiotics treat colds, flu, or most viral respiratory infections?",
 		slug: "do-antibiotics-treat-colds-flu-or-most-viral-respiratory-infections",
 		status: "published",
