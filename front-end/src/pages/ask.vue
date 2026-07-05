@@ -349,7 +349,7 @@ async function submitQuestion() {
 							Open review
 						</button>
 						<button class="button button--ghost" type="button" @click="attachClaim(claim)">
-							Close, but different
+							Related, but different
 						</button>
 					</div>
 				</article>
@@ -387,7 +387,7 @@ async function submitQuestion() {
 
 			<div v-if="selectedClaimRecord" class="attached-claim">
 				<div>
-					<p class="field-label">Closest reviewed claim attached</p>
+					<p class="field-label">Related reviewed claim attached</p>
 					<p>{{ selectedClaimRecord.title }}</p>
 				</div>
 				<button class="button button--ghost" type="button" @click="selectedClaimSlug = ''">Clear</button>
@@ -417,7 +417,7 @@ async function submitQuestion() {
 			</div>
 
 			<details class="posting-form__optional">
-				<summary>Add context, source, or difference</summary>
+				<summary>Add context, source, or what differs</summary>
 				<div class="posting-form__optional-body">
 					<div class="field-stack">
 						<label class="field-label" for="post-context">Context, quote, or local detail</label>
@@ -585,6 +585,8 @@ async function submitQuestion() {
 
 .match-row {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: start;
 	gap: 14px;
 	padding: 18px;
 }
@@ -604,6 +606,16 @@ async function submitQuestion() {
 	overflow: hidden;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 3;
+}
+
+.match-row__actions {
+	flex-direction: column;
+	align-items: stretch;
+	min-width: 176px;
+}
+
+.match-row__actions .button {
+	width: 100%;
 }
 
 .support-links {
@@ -710,6 +722,10 @@ async function submitQuestion() {
 	.results-panel,
 	.posting-form {
 		padding: 18px;
+	}
+
+	.match-row {
+		grid-template-columns: 1fr;
 	}
 
 	.match-row__actions,
