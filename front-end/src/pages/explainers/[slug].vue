@@ -45,7 +45,7 @@ useSeoMeta({
 		<section class="explainer-detail-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>What people often get wrong</h2>
-				<p>Start with the misunderstanding before you try to decode the correction.</p>
+				<p>The common shortcut that makes the topic harder to read.</p>
 			</div>
 			<p>{{ explainer?.whatPeopleGetWrong }}</p>
 		</section>
@@ -53,7 +53,7 @@ useSeoMeta({
 		<section class="explainer-detail-panel explainer-detail-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Core concept</h2>
-				<p>This is the part you should reuse across claim pages.</p>
+				<p>The stable idea that helps the rest of the page make sense.</p>
 			</div>
 			<p>{{ explainer?.coreConcept }}</p>
 		</section>
@@ -61,7 +61,7 @@ useSeoMeta({
 		<section class="explainer-detail-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>How scientists handle this in practice</h2>
-				<p>These are the workflow habits behind the public explanation.</p>
+				<p>The habits that keep the explanation tied to evidence.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in explainer?.howScientistsHandleIt || []" :key="item">{{ item }}</li>
@@ -93,7 +93,7 @@ useSeoMeta({
 		<section class="explainer-detail-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Worked examples</h2>
-				<p>Use one timeless example and one topic-shaped example when you explain this elsewhere.</p>
+				<p>Concrete patterns that make the concept easier to recognize.</p>
 			</div>
 			<div class="example-grid">
 				<article v-for="item in explainer?.workedExamples || []" :key="item.title" class="example-card">
@@ -106,7 +106,7 @@ useSeoMeta({
 		<section v-if="relatedModules.length" class="explainer-detail-panel explainer-detail-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Related misconception modules</h2>
-				<p>These shorter embeds point back to this explainer.</p>
+				<p>Shorter entries that connect this concept to recurring mistakes.</p>
 			</div>
 			<div class="module-grid">
 				<article v-for="item in relatedModules" :key="item.slug" class="module-card">
@@ -121,7 +121,7 @@ useSeoMeta({
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Back to claim pages</p>
+				<p class="eyebrow">Back to reviewed claims</p>
 				<h2>Read the frame, then return to the claim.</h2>
 				<p>{{ explainer?.whyItMatters }}</p>
 			</div>

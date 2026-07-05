@@ -205,7 +205,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		keyPoints: [
 			"Single studies are vulnerable to noise and bias.",
 			"Replication helps separate durable findings from fragile ones.",
-			"Corrections should change confidence, but not automatically erase an entire literature."
+			"Corrections can change confidence without automatically erasing an entire literature."
 		],
 		whatPeopleGetWrong:
 			"The existence of weak papers or retractions is sometimes used as proof that science has no quality control. In practice, the presence of correction systems is part of the quality control.",
@@ -224,7 +224,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		workedExamples: [
 			{
 				title: "Retraction changes a source stack",
-				body: "A retracted paper should trigger review of any page that cites it, but the page may still stand if the broader evidence remains strong without that source."
+				body: "A retracted paper triggers review of any page that cites it, but the page may still stand if the broader evidence remains strong without that source."
 			},
 			{
 				title: "Replication narrows confidence",
@@ -246,7 +246,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		slug: "falsifiability-and-mind-changes",
 		title: "Falsifiability and what would change minds",
 		summary:
-			"A strong claim should say what evidence could prove it wrong. This is how science avoids turning into dogma.",
+			"A strong scientific claim names what evidence could prove it wrong. This is how science avoids turning into dogma.",
 		whyItMatters:
 			"Readers trust explanations more when the conditions for revision are explicit rather than hidden.",
 		keyPoints: [
@@ -257,7 +257,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		whatPeopleGetWrong:
 			"People sometimes imagine that a consensus claim must be defended no matter what. Good scientific claims instead name the kind of evidence that would lower confidence or force a rewrite.",
 		coreConcept:
-			"Scientific confidence is strongest when a claim has survived serious opportunities to fail. That is why pages should say what would actually change the current conclusion.",
+			"Scientific confidence is strongest when a claim has survived serious opportunities to fail. Trustworthy pages say what would actually change the current conclusion.",
 		howScientistsHandleIt: [
 			"They make claims specific enough to be challenged.",
 			"They separate stable core from unresolved edge cases.",
@@ -317,7 +317,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 			},
 			{
 				title: "Preprint to policy leap",
-				body: "A preliminary paper can be used rhetorically as if it should immediately change behavior long before it survives scrutiny."
+				body: "A preliminary paper can be used rhetorically as if it needs to change behavior immediately, long before it survives scrutiny."
 			}
 		],
 		goodSources: [
@@ -452,11 +452,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 				body: "A risk headline may sound alarming until you translate the claim into absolute numbers and see the scale."
 			}
 		],
-		goodSources: [
-			"science communication research",
-			"media literacy guidance",
-			"editorial standards for evidence-heavy reporting"
-		],
+		goodSources: ["science communication research", "media literacy guidance", "evidence-reporting standards"],
 		relatedMisconceptions: [
 			"one-study-doesnt-overturn-evidence",
 			"correlation-isnt-causation",
