@@ -10,23 +10,31 @@ const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
+		it(`keeps the compact appearance controls in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 			const paletteImportIndex = source.indexOf('import PaletteSwitcher from "~/components/PaletteSwitcher.vue"');
 			const themeImportIndex = source.indexOf('import ThemeToggle from "~/components/ThemeToggle.vue"');
+			const headerStart = source.indexOf('<header class="site-header">');
+			const mainStart = source.indexOf('<main class="site-main">');
+			const header = source.slice(headerStart, mainStart);
+			const footerStart = source.indexOf('<footer class="site-footer">');
+			const footer = source.slice(footerStart);
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
 
 			assert.notEqual(paletteImportIndex, -1);
 			assert.notEqual(themeImportIndex, -1);
+			assert.notEqual(headerStart, -1);
+			assert.notEqual(mainStart, -1);
+			assert.notEqual(footerStart, -1);
 			assert.notEqual(paletteRenderIndex, -1);
 			assert.notEqual(themeRenderIndex, -1);
 			assert.ok(paletteRenderIndex < themeRenderIndex);
+			assert.doesNotMatch(header, /PaletteSwitcher|ThemeToggle|site-header__controls/);
 			assert.match(
-				source,
-				/class="site-header__controls" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
+				footer,
+				/class="site-footer__appearance" aria-label="Appearance controls"[\s\S]*<ClientOnly>[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
 			);
-			assert.doesNotMatch(source, /site-footer__appearance/);
 		});
 
 		it(`keeps the footer focused on support and policy links in ${file}`, () => {
@@ -40,7 +48,6 @@ describe("theme controls", () => {
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
 			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
-			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
 		});
 	}
 
