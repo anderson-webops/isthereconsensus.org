@@ -7228,7 +7228,7 @@ const rawClaims: SeedClaim[] = [
 			"New fossil discoveries often revise details of timing and relationship without overturning the larger pattern of common descent."
 		],
 		editorSummary:
-			"This page should answer the fossil-gap objection without overstating completeness: transitional features are common and useful, but the fossil record is unevenly sampled and usually reconstructs branches rather than direct lineages.",
+			"The fossil record is incomplete, but transitional fossils with useful feature combinations are common. The evidence supports branching evolutionary histories, not a complete chain of direct ancestors.",
 		uncertaintySummary:
 			"The existence and scientific value of transitional fossils is settled. Uncertainty remains around exact placements, direct ancestry, timing, and which features evolved in which sequence for particular groups.",
 		uncertaintyDrivers: [
@@ -7405,7 +7405,7 @@ const rawClaims: SeedClaim[] = [
 			"Living species can share a common ancestor without one living species being the parent form of another."
 		],
 		editorSummary:
-			"This page should handle a persistent evolution misconception in a low-temperature way: modern chimpanzees are cousins, not ancestors, and the evidence is a branching pattern across DNA, fossils, anatomy, and geography.",
+			"Modern chimpanzees are humans' close living relatives, not our ancestors. The evidence points to a branching pattern across DNA, fossils, anatomy, and geography.",
 		uncertaintySummary:
 			"The common-ancestry point is settled. Uncertainty remains about the exact fossil placement, traits, and population structure near the human-chimpanzee branching point, and about the best way to explain genome-similarity percentages without oversimplifying.",
 		searchCutoffAt: "2026-07-03T02:46:15.000Z",
@@ -7502,7 +7502,7 @@ const rawClaims: SeedClaim[] = [
 			"Cultural change can be much faster than genetic evolution while still changing which genetic variants become more or less common."
 		],
 		editorSummary:
-			"This page should handle the common 'humans stopped evolving' claim without sensational predictions. Keep the center simple: evolution is allele-frequency change, and modern conditions redirect rather than abolish evolutionary forces.",
+			"Modern humans have not stopped evolving. Evolution is allele-frequency change, and culture, medicine, and technology redirect evolutionary pressures rather than abolishing mutation, migration, drift, or selection.",
 		uncertaintySummary:
 			"The core answer is stable: humans have not stopped evolving. The main uncertainty is not whether evolutionary processes still operate, but how large, fast, trait-specific, and generalizable contemporary selection signals are.",
 		uncertaintyDrivers: [
@@ -8097,7 +8097,7 @@ const rawClaims: SeedClaim[] = [
 			"Adult cessation use of nicotine replacement is sometimes conflated with recreational youth nicotine exposure."
 		],
 		editorSummary:
-			"This page should anchor the youth vaping and nicotine-pouch pages. Keep the wording on 'can harm' and 'development continues until about 25' rather than overstating irreversible outcomes for every user.",
+			"Nicotine can harm adolescent and young-adult brain development, which continues until about age 25. The practical message is prevention-focused without implying irreversible harm for every user.",
 		uncertaintySummary:
 			"The prevention consensus is strong, but exact effect sizes, reversibility, and product-specific risk levels are still harder to pin down in humans because exposure patterns, co-use, and social context vary.",
 		searchCutoffAt: "2026-07-02T22:33:57.000Z",
@@ -8273,7 +8273,7 @@ const rawClaims: SeedClaim[] = [
 			"CUD risk does not mean every use is addiction, and it does not mean people using cannabis medically are automatically misusing it."
 		],
 		editorSummary:
-			"This page should be frank without sounding punitive: cannabis can be addictive, risk rises with frequency and early initiation, and the goal is practical risk literacy rather than a blanket moral judgment about every adult or medical use.",
+			"Cannabis can be addictive, and risk rises with frequency and earlier initiation. The goal is practical risk literacy without turning every adult or medical use into a moral judgment.",
 		uncertaintySummary:
 			"The existence of CUD and the frequency/early-initiation risk gradient are well supported. The more uncertain parts are the exact modern risk by product potency, route, legal-market context, individual vulnerability, and treatment pathway.",
 		searchCutoffAt: "2026-07-03T14:53:10.000Z",
@@ -8371,7 +8371,7 @@ const rawClaims: SeedClaim[] = [
 			"Blood THC is not as straightforward as blood alcohol concentration; a test result can be hard to map to impairment in a specific person."
 		],
 		editorSummary:
-			"This page should separate the strong safety message from the harder enforcement science. Cannabis impairs driving-relevant skills and is linked to crash risk, but THC cutoffs, impairment duration, and individual variability require careful wording.",
+			"Cannabis impairs driving-relevant skills and is linked to crash risk. The safety message is clear, while THC cutoffs, impairment duration, and individual variability need careful wording.",
 		uncertaintySummary:
 			"The impairment and crash-risk direction is well supported, while the exact magnitude, duration, dose-response curve, route-specific risk, and best roadside threshold remain more uncertain than alcohol impairment standards.",
 		searchCutoffAt: "2026-07-03T14:53:10.000Z",
@@ -8479,7 +8479,7 @@ const rawClaims: SeedClaim[] = [
 			"Medication and psychotherapy are often presented as rivals even though guidelines commonly support shared decision-making and, for some patients, combined treatment."
 		],
 		editorSummary:
-			"This page should avoid both miracle-cure and total-dismissal framing. The consensus answer is yes-with-qualifiers: antidepressants beat placebo on average in adult acute MDD trials, but average effects are modest, heterogeneity is substantial, and treatment choice should stay clinical and preference-sensitive.",
+			"Antidepressants beat placebo on average in acute adult MDD trials, but the average benefit is modest and individual response varies. Treatment choices should stay clinical, preference-sensitive, and attentive to side effects and alternatives.",
 		uncertaintySummary:
 			"The existence of average efficacy over placebo is well supported, but clinical interpretation is moderate-certainty because effect size, individual response prediction, trial design, and adverse-effect tradeoffs remain contested and patient-specific.",
 		searchCutoffAt: "2026-07-02T22:25:42.000Z",
@@ -8577,7 +8577,7 @@ const rawClaims: SeedClaim[] = [
 			"Digital CBT-I can improve access, but delivery format, adherence, comorbidity, and symptom severity still matter."
 		],
 		editorSummary:
-			"This page should give readers a practical treatment-consensus anchor: chronic insomnia is treatable, CBT-I is first-line, and the main real-world problem is access and matching delivery format to patient needs.",
+			"Chronic insomnia is treatable, and CBT-I is the first-line default when available. The main practical problem is access and matching delivery format to patient needs.",
 		uncertaintySummary:
 			"CBT-I's first-line status for adult chronic insomnia is strongly supported. Remaining uncertainty is mostly about implementation, delivery format, subgroup adaptation, access, and when medication should be added or used short term.",
 		searchCutoffAt: "2026-07-03T20:54:57.000Z",
