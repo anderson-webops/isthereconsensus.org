@@ -3,6 +3,7 @@ const colorMode = useColorMode();
 const hydrated = ref(false);
 
 const isDark = computed(() => hydrated.value && colorMode.value === "dark");
+const toggleLabel = computed(() => (isDark.value ? "Switch to light mode" : "Switch to dark mode"));
 
 onMounted(() => {
 	hydrated.value = true;
@@ -14,13 +15,7 @@ function toggleTheme() {
 </script>
 
 <template>
-	<button
-		class="theme-toggle"
-		type="button"
-		aria-label="Toggle color mode"
-		title="Toggle color mode"
-		@click="toggleTheme"
-	>
+	<button class="theme-toggle" type="button" :aria-label="toggleLabel" :title="toggleLabel" @click="toggleTheme">
 		<span class="i-carbon-sun theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true" />
 		<span class="i-carbon-moon theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" />
 	</button>

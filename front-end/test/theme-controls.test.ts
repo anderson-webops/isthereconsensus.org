@@ -39,6 +39,7 @@ describe("theme controls", () => {
 			assert.match(footer, /to="\/community-guidelines"[\s\S]*Guidelines/);
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
+			assert.match(footer, /&copy; \{\{ year \}\} Is There Consensus\?/);
 			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
 			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
 		});
@@ -62,5 +63,7 @@ describe("theme controls", () => {
 		const source = readFileSync(join(testDir, "..", "src/components/ThemeToggle.vue"), "utf8");
 
 		assert.match(source, /\.theme-toggle \{[\s\S]*width: 42px;[\s\S]*height: 42px;/);
+		assert.match(source, /const toggleLabel = computed/);
+		assert.match(source, /:aria-label="toggleLabel"/);
 	});
 });

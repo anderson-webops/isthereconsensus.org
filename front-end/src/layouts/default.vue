@@ -4,6 +4,7 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 
 const { currentAccount, role } = useAuth();
 
+const year = new Date().getFullYear();
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 </script>
 
@@ -36,20 +37,21 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		</main>
 
 		<footer class="site-footer">
-			<div>
+			<div class="site-footer__brand">
 				<p class="site-footer__title">Is There Consensus?</p>
-				<p>
+				<p class="site-footer__description">
 					Clear summaries of where the science stands, what is still open, and where public confusion tends to
 					creep in.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<div class="site-footer__links">
+				<nav class="site-footer__links" aria-label="Support and policy">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
 					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
-				</div>
+				</nav>
+				<p class="site-footer__copyright">&copy; {{ year }} Is There Consensus?</p>
 			</div>
 		</footer>
 	</div>
@@ -160,8 +162,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	border-top: 1px solid var(--consensus-soft-line);
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: start;
-	gap: 20px;
+	align-items: center;
+	gap: 24px;
 	font-size: 0.95rem;
 }
 
@@ -169,7 +171,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	margin: 0 0 6px;
 }
 
-.site-footer p {
+.site-footer__description {
 	margin: 0;
 	max-width: 560px;
 	line-height: 1.6;
@@ -179,13 +181,13 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	display: flex;
 	flex-direction: column;
 	align-items: end;
-	gap: 12px;
-	min-width: min(100%, 320px);
+	gap: 10px;
+	min-width: min(100%, 300px);
 }
 
 .site-footer__links {
 	display: flex;
-	gap: 8px 14px;
+	gap: 8px 12px;
 	flex-wrap: wrap;
 	justify-content: end;
 	font-size: 0.9rem;
@@ -194,6 +196,12 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 .site-footer__links a {
 	text-decoration: none;
 	font-weight: 600;
+}
+
+.site-footer__copyright {
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.86rem;
 }
 
 @media (max-width: 700px) {
