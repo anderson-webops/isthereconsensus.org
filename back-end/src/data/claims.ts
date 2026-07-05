@@ -2509,7 +2509,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "27470525",
 				stance: "supports",
 				note:
-					"ADA/AAPD guideline recommending sealants over nonuse for primary and permanent molars with sound or noncavitated occlusal surfaces in children and adolescents.",
+					"ADA/AAPD guideline recommending sealants rather than no sealants for sound or noncavitated molar chewing surfaces in children and adolescents.",
 				order: 4
 			},
 			{
@@ -2522,7 +2522,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "28759120",
 				stance: "supports",
 				note:
-					"Systematic review finding moderate-quality evidence that resin-based sealants reduce caries in children and adolescents compared with no sealant at 24 months.",
+					"Systematic review finding moderate-quality evidence that resin-based sealants reduce tooth decay in children and adolescents compared with no sealant at 24 months.",
 				order: 5
 			}
 		]
@@ -3938,7 +3938,7 @@ const rawClaims: SeedClaim[] = [
 				doi: "10.1001/jama.2021.10403",
 				stance: "supports",
 				note:
-					"USPSTF-commissioned evidence review supporting preventive interventions for people with prediabetes while separating diabetes incidence from longer-term clinical outcomes.",
+					"USPSTF-commissioned evidence review supporting preventive interventions for people with prediabetes while separating new diabetes diagnoses from longer-term clinical outcomes.",
 				order: 5
 			}
 		]

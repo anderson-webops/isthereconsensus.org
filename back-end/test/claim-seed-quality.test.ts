@@ -98,13 +98,17 @@ describe("default claim seed quality", () => {
 		);
 		assert.ok(claim, "Missing dental sealant claim seed");
 
-		const visibleSummary = [claim.bottomLine, claim.editorSummary, ...claim.stableCore].join(" ");
+		const visibleSummary = [claim.bottomLine, claim.editorSummary, ...claim.stableCore, ...claim.sources.map(source => source.note)].join(
+			" "
+		);
 
 		assert.match(claim.bottomLine, /They work as a barrier over pits and fissures/);
 		assert.match(claim.bottomLine, /They do not replace fluoride toothpaste, brushing, diet, dental care/);
 		assert.match(claim.editorSummary, /cavities in pits and fissures of children's molars/);
 		assert.match(visibleSummary, /tooth decay compared with no sealant/);
 		assert.doesNotMatch(visibleSummary, /occlusal caries/i);
+		assert.doesNotMatch(visibleSummary, /occlusal surfaces/i);
+		assert.doesNotMatch(visibleSummary, /\bcaries\b/i);
 		assert.doesNotMatch(visibleSummary, /CDC says/i);
 	});
 
@@ -113,14 +117,19 @@ describe("default claim seed quality", () => {
 		const claim = defaultClaims.find(entry => entry.slug === slug);
 		assert.ok(claim, "Missing diabetes prevention claim seed");
 
-		const visibleSummary = [claim.bottomLine, claim.editorSummary, claim.uncertaintySummary, ...claim.stableCore].join(
-			" "
-		);
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.sources.map(source => source.note)
+		].join(" ");
 
 		assert.match(claim.bottomLine, /organized Diabetes Prevention Program-style interventions/);
 		assert.match(visibleSummary, /new diabetes diagnoses/);
 		assert.match(visibleSummary, /heart attacks, strokes, and mortality/);
 		assert.doesNotMatch(visibleSummary, /diabetes-incidence/i);
+		assert.doesNotMatch(visibleSummary, /diabetes incidence/i);
 		assert.doesNotMatch(visibleSummary, /cardiovascular-event/i);
 		assert.doesNotMatch(visibleSummary, /try harder/i);
 	});
