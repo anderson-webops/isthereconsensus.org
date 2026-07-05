@@ -267,10 +267,12 @@ useStaticPageMeta({
 				</p>
 				<p>
 					Third-party articles, paper abstracts, logos, and linked materials remain the property of their
-					respective owners. If you believe content on the site infringes your copyright or other rights,
-					email
+					respective owners.
+				</p>
+				<p>
+					If you believe content on the site infringes your copyright or other rights, email
 					<a href="mailto:consensus@isthereconsensus.org">consensus@isthereconsensus.org</a> with enough
-					detail for us to review the issue. The current complaint workflow is described on the
+					detail for us to review the issue. The complaint workflow is described on the
 					<NuxtLink to="/copyright-and-trademark">Copyright and trademark complaints</NuxtLink> page.
 				</p>
 			</div>
@@ -283,8 +285,11 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					The site may rely on third-party services for analytics, email delivery, bot protection, hosting,
-					security, and outbound links. Those services operate under their own terms and policies. We are not
-					responsible for third-party sites or services we do not control.
+					security, and outbound links.
+				</p>
+				<p>
+					Those services operate under their own terms and policies. We are not responsible for third-party
+					sites or services we do not control.
 				</p>
 			</div>
 		</section>
@@ -313,8 +318,11 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					To the fullest extent permitted by law, isthereconsensus.org and its operators will not be liable
-					for indirect, incidental, special, consequential, exemplary, or punitive damages, or for loss of
-					data, goodwill, profits, or business opportunities arising from or related to your use of the site.
+					for indirect, incidental, special, consequential, exemplary, or punitive damages.
+				</p>
+				<p>
+					That includes loss of data, goodwill, profits, or business opportunities arising from or related to
+					your use of the site.
 				</p>
 				<p>
 					Where the law does not allow a full exclusion of liability, liability is limited to the narrowest
@@ -330,9 +338,9 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					We may update these terms as the product, law, or operational model changes. The current version
-					will be posted on this page with an updated effective date. Continued use of the site after a
-					material update means you accept the revised terms.
+					will be posted on this page with an updated effective date.
 				</p>
+				<p>Continued use of the site after a material update means you accept the revised terms.</p>
 			</div>
 		</section>
 

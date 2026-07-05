@@ -7,6 +7,21 @@ import { fileURLToPath } from "node:url";
 const testDir = dirname(fileURLToPath(import.meta.url));
 const privacySource = readFileSync(join(testDir, "..", "src/pages/privacy.vue"), "utf8");
 
+function publicParagraphText(source: string) {
+	const template = source.match(/<template[\s\S]*<\/template>/)?.[0] || "";
+
+	return [...template.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+		.map((match) =>
+			match[1]
+				.replace(/<[^>]+>/g, " ")
+				.replace(/\{\{[^}]+\}\}/g, " ")
+				.replace(/&[a-z]+;/gi, " ")
+				.replace(/\s+/g, " ")
+				.trim()
+		)
+		.filter(Boolean);
+}
+
 describe("privacy page layout", () => {
 	it("adds compact wayfinding without changing the policy section count", () => {
 		assert.match(privacySource, /const privacySections = \[/);
@@ -20,7 +35,8 @@ describe("privacy page layout", () => {
 	it("keeps dense privacy copy split into scannable chunks", () => {
 		assert.match(privacySource, /understand site usage and performance\./);
 		assert.match(privacySource, /When your browser loads those scripts, the analytics services may receive/);
-		assert.match(privacySource, /community-integrity records, where reasonably necessary\./);
+		assert.match(privacySource, /some records where reasonably necessary\./);
+		assert.match(privacySource, /community-integrity records\./);
 		assert.match(privacySource, /The practical handling of public questions, disassociated attribution/);
 		assert.match(privacySource, /intended for children under 13\./);
 		assert.match(privacySource, /If we learn that we have created an account/);
@@ -32,6 +48,14 @@ describe("privacy page layout", () => {
 			privacySource,
 			/If you choose “remember me,” the session may last longer, currently up to about 30 days\./
 		);
+	});
+
+	it("keeps public privacy paragraphs short enough to scan", () => {
+		const longParagraphs = publicParagraphText(privacySource).filter((text) => text.length > 230);
+
+		assert.deepEqual(longParagraphs, []);
+		assert.match(privacySource, /That process can involve IP address and standard browser\/device signals/);
+		assert.match(privacySource, /No internet service can guarantee perfect security\./);
 	});
 
 	it("keeps mobile privacy cards, contents links, and lists compact", () => {

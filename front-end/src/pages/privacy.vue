@@ -223,8 +223,11 @@ useStaticPageMeta({
 				</p>
 				<p>
 					When captcha protection is enabled, the site loads Cloudflare Turnstile in the browser and validates
-					captcha responses server-side. That process can involve IP address and standard browser/device
-					signals used for anti-abuse purposes.
+					captcha responses server-side.
+				</p>
+				<p>
+					That process can involve IP address and standard browser/device signals used for anti-abuse
+					purposes.
 				</p>
 				<p>
 					The site currently does not provide a separate, browser-specific response to “Do Not Track” signals.
@@ -238,10 +241,10 @@ useStaticPageMeta({
 				<h2>5. Public content and visibility</h2>
 			</div>
 			<div class="prose">
+				<p>Questions posted through the community features are public by design.</p>
 				<p>
-					Questions posted through the community features are public by design. Titles, body text, source
-					URLs, and your displayed author information may be visible to other users and may be indexed by
-					search engines.
+					Titles, body text, source URLs, and your displayed author information may be visible to other users
+					and may be indexed by search engines.
 				</p>
 				<p>
 					If you contribute publicly as a reviewer, editor, or author on a claim page, the site may display
@@ -295,9 +298,9 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					Account closure is request-based rather than self-serve. If you ask to close an account or delete
-					data, we may still retain some records, including moderation, security, backup, and
-					community-integrity records, where reasonably necessary.
+					data, we may still retain some records where reasonably necessary.
 				</p>
+				<p>That can include moderation, security, backup, and community-integrity records.</p>
 				<p>
 					The practical handling of public questions, disassociated attribution, and retained records is
 					explained on the
@@ -329,8 +332,11 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					We use administrative, technical, and operational measures intended to protect the information we
-					maintain, including account authentication controls, secure session handling, moderation controls,
-					and anti-abuse tooling. No internet service can guarantee perfect security.
+					maintain.
+				</p>
+				<p>
+					Those measures include account authentication controls, secure session handling, moderation
+					controls, and anti-abuse tooling. No internet service can guarantee perfect security.
 				</p>
 			</div>
 		</section>
@@ -342,9 +348,9 @@ useStaticPageMeta({
 			<div class="prose">
 				<p>
 					The site is operated from infrastructure that may be located in the United States and in other
-					places where our service providers operate. If you use the site from outside those locations, your
-					information may be processed there.
+					places where our service providers operate.
 				</p>
+				<p>If you use the site from outside those locations, your information may be processed there.</p>
 			</div>
 		</section>
 
