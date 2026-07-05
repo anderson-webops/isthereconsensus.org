@@ -23072,6 +23072,944 @@ const rawClaims: SeedClaim[] = [
 				order: 7
 			}
 		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does ivermectin reliably improve COVID-19 outcomes?",
+		slug: "does-ivermectin-reliably-improve-covid-19-outcomes",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"No reliable benefit has been shown for clinically important COVID-19 outcomes. Larger, better-controlled trials and later reviews do not support ivermectin as COVID-19 treatment outside proper trials; early positive signals were fragile and bias-prone.",
+		stableCore: [
+			"Major treatment guidance has not adopted ivermectin as a standard COVID-19 therapy.",
+			"Large outpatient randomized trials and later systematic reviews did not find meaningful reductions in hospitalization, death, mechanical ventilation, or viral clearance.",
+			"Some early meta-analyses suggested benefit, but those conclusions weakened when high-risk, withdrawn, or questionable trials were scrutinized.",
+			"Ivermectin remains useful for approved parasitic infections; that does not establish antiviral benefit for COVID-19 at safe human doses."
+		],
+		openQuestions: [
+			"Are there narrow parasite-endemic settings where treating undiagnosed strongyloidiasis changes outcomes mistaken for COVID-19 benefit?",
+			"How should guideline bodies communicate reversals when early low-quality evidence was amplified before stronger trials arrived?",
+			"What safeguards best prevent trial-fraud, preprint, and meta-analysis artifacts from shaping emergency treatment practice?"
+		],
+		whatWouldChangeMinds: [
+			"Large, prospectively registered, blinded randomized trials showing clinically important reductions in hospitalization, death, or progression with safe dosing.",
+			"Updated WHO, NIH, IDSA, or comparable treatment guidelines recommending ivermectin for defined COVID-19 populations based on strong evidence.",
+			"Transparent individual-patient-data meta-analysis showing robust benefit after excluding high-risk, withdrawn, and unverifiable trials."
+		],
+		misconceptions: [
+			"A drug being safe and effective for parasites does not mean it is effective against SARS-CoV-2.",
+			"In vitro antiviral activity at high concentrations does not prove a clinically useful dose exists in humans.",
+			"Early positive meta-analyses are not stronger than later high-quality randomized trials if the early evidence base was biased or unreliable.",
+			"Warnings against unsupervised ivermectin use are not claims that the medicine has no legitimate medical uses."
+		],
+		editorSummary:
+			"Ivermectin is a useful COVID-era evidence-integrity page because the public controversy came less from one definitive trial than from how weak early signals, preprints, and meta-analyses were amplified before higher-quality trials arrived.",
+		uncertaintySummary:
+			"The main uncertainty is not whether ivermectin is established COVID-19 care; it is not. Remaining nuance concerns unusual parasite-endemic confounding, changing background immunity and variants, and whether future antiviral or host-response hypotheses could justify new trials.",
+		searchDatabases: ["Consensus", "PubMed", "WHO", "FDA", "NIH COVID-19 Treatment Guidelines"],
+		searchCutoffAt: "2026-07-05T16:15:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:15:00.000Z",
+		inclusionRules: [
+			"Prioritize randomized trials, systematic reviews of randomized trials, living clinical guidelines, and integrity analyses of the COVID-19 ivermectin evidence base.",
+			"Separate COVID-19 treatment claims from ivermectin's approved antiparasitic uses.",
+			"Distinguish early pandemic evidence from later trials conducted with better controls and larger samples."
+		],
+		exclusionRules: [
+			"Do not use in vitro antiviral studies as decision-weight clinical evidence.",
+			"Do not treat withdrawn, unverifiable, or high-risk-of-bias trials as equally reliable with blinded placebo-controlled trials.",
+			"Do not log or cite social-media anecdotes, political claims, or pharmacy availability as efficacy evidence."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does ivermectin improve clinically important COVID-19 outcomes?",
+				population: "Adults with COVID-19 in outpatient or inpatient randomized treatment studies",
+				finding:
+					"Better-controlled randomized evidence and later systematic reviews do not show reliable reductions in hospitalization, death, mechanical ventilation, or viral clearance.",
+				effectDirection: "mixed",
+				magnitude:
+					"A 2024 systematic review of 12 outpatient RCTs with 7,035 participants found no reduction in hospitalization or mortality; ACTIV-6 found no meaningful shortening of symptom duration at the tested dose.",
+				certainty: "moderate",
+				limitations: [
+					"COVID-19 variants, background immunity, and standard care changed over time.",
+					"Earlier meta-analyses were vulnerable to small-study effects, bias, and trial integrity problems.",
+					"Some subgroup hypotheses, such as parasite-endemic confounding, are relevant context but do not establish routine COVID-19 benefit."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "World Health Organization",
+				role: "Living-guideline anchor for COVID-19 therapeutics and recommendation thresholds."
+			},
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Medication-safety and approved-use anchor for ivermectin public warnings."
+			},
+			{
+				name: "NIH COVID-19 Treatment Guidelines",
+				role: "U.S. treatment-guideline anchor for randomized-trial interpretation and clinical-use recommendations."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:15:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial ivermectin and COVID-19 claim page published from WHO/FDA/NIH guidance, Consensus-located systematic reviews, ACTIV-6, and trial-integrity context."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Therapeutics and COVID-19: living guideline",
+				publisher: "World Health Organization / BMJ",
+				year: 2020,
+				url: "https://www.bmj.com/content/370/bmj.m3379",
+				stance: "supports",
+				note:
+					"Living guideline source for how WHO evaluates COVID-19 therapeutics and recommendation certainty, including ivermectin evidence thresholds.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Why You Should Not Use Ivermectin to Treat or Prevent COVID-19",
+				publisher: "U.S. Food and Drug Administration",
+				url: "https://www.fda.gov/consumers/consumer-updates/why-you-should-not-use-ivermectin-treat-or-prevent-covid-19",
+				stance: "supports",
+				note:
+					"FDA public-safety source distinguishing approved antiparasitic uses from unsupported COVID-19 treatment or prevention use.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Efficacy and safety of ivermectin for treatment of non-hospitalized COVID-19 patients: a systematic review and meta-analysis of 12 randomized controlled trials with 7,035 participants",
+				publisher: "International Journal of Antimicrobial Agents",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/efficacy-and-safety-of-ivermectin-for-treatment-of-hernandez-roman/c74ddad3437253a79544309ed6367aae/",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review finding no effect on hospitalization, all-cause mortality, adverse events, clinical worsening, or viral clearance in non-hospitalized patients.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Systematic review and meta-analysis of ivermectin for treatment of COVID-19: evidence beyond the hype",
+				publisher: "BMC Infectious Diseases",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/systematic-review-and-metaanalysis-of-ivermectin-for-marcolino-maia/e331890288ce5691a0385246a854f3fe/",
+				stance: "supports",
+				note:
+					"Consensus-fetched review finding ivermectin did not reduce mortality or mechanical ventilation requirement, with risk-of-bias concerns in the evidence base.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Effect of Higher-Dose Ivermectin for 6 Days vs Placebo on Time to Sustained Recovery in Outpatients With COVID-19",
+				publisher: "JAMA",
+				year: 2023,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2801828",
+				stance: "supports",
+				note:
+					"ACTIV-6 randomized platform-trial source finding higher-dose ivermectin did not significantly improve time to sustained recovery in outpatients.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "The lesson of ivermectin: meta-analyses based on summary data alone are inherently unreliable",
+				publisher: "Nature Medicine",
+				year: 2021,
+				url:
+					"https://consensus.app/papers/the-lesson-of-ivermectin-metaanalyses-based-on-lawrence-meyerowitzkatz/8206f4d3c563518fbf820cb4fc0df42e/",
+				stance: "context",
+				note:
+					"Consensus-fetched evidence-integrity commentary explaining how flawed or questionable early trials distorted COVID-19 ivermectin meta-analyses.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do vitamin C supplements prevent or cure the common cold?",
+		slug: "do-vitamin-c-supplements-prevent-or-cure-the-common-cold",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Not for most people as advertised. Regular vitamin C does not meaningfully prevent colds in the general population; it may slightly shorten colds, and prevention benefit looks most plausible during brief extreme physical or cold stress.",
+		stableCore: [
+			"Cochrane-reviewed randomized trials do not support routine high-dose vitamin C as a cold-prevention strategy for the general population.",
+			"Regular supplementation is associated with small average reductions in cold duration, roughly measured in hours rather than a dramatic cure.",
+			"Trials that start vitamin C after cold symptoms begin have not shown consistent effects on duration or severity.",
+			"Extreme-exertion or cold-exposure subgroups, such as marathon runners, skiers, or soldiers in cold conditions, show more plausible prevention benefit than the general population."
+		],
+		openQuestions: [
+			"Which baseline vitamin C status, age, dose, symptom severity, and timing patterns identify people most likely to notice a clinically useful effect?",
+			"Would better trials of early high-dose treatment after symptom onset change the therapeutic conclusion?",
+			"How should advice balance low cost and usual safety against gastrointestinal side effects, kidney-stone risk in susceptible people, and exaggerated marketing?"
+		],
+		whatWouldChangeMinds: [
+			"Large, blinded randomized trials showing that starting vitamin C after symptom onset reliably shortens or reduces colds by a clinically meaningful amount.",
+			"Updated Cochrane or NIH reviews showing prevention benefit in ordinary community populations rather than only specific stress-exposure subgroups.",
+			"Evidence that baseline deficiency screening identifies a large population with substantial cold-prevention benefit from supplementation."
+		],
+		misconceptions: [
+			"Small average reductions in duration are often advertised as if vitamin C cures colds.",
+			"A supplement being essential for immune function does not mean extra dosing prevents infection in people who already get enough.",
+			"Evidence in marathon runners or cold-stress settings should not be generalized to every adult or child.",
+			"Taking vitamin C after a cold starts is a different question from taking it regularly before getting sick."
+		],
+		editorSummary:
+			"Vitamin C and colds is a useful nutrition page because the truthful answer is not simply 'works' or 'doesn't work'; it separates prevention, treatment, duration, severity, baseline diet, and special high-stress settings.",
+		uncertaintySummary:
+			"The prevention conclusion is fairly stable for ordinary community use. More uncertainty remains around high-dose early treatment, people with low baseline intake, children, and physically stressed subgroups.",
+		searchDatabases: ["Consensus", "PubMed", "Cochrane", "NIH Office of Dietary Supplements"],
+		searchCutoffAt: "2026-07-05T16:20:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:20:00.000Z",
+		inclusionRules: [
+			"Prioritize placebo-controlled randomized trials, Cochrane reviews, NIH fact sheets, and meta-analyses that separate prevention from treatment.",
+			"Separate general-population results from brief extreme physical-exertion or cold-exposure subgroups.",
+			"Report effect sizes in practical terms, not just statistical significance."
+		],
+		exclusionRules: [
+			"Do not use supplement marketing, testimonials, or immune-function mechanism claims as clinical effectiveness evidence.",
+			"Do not mix evidence for correcting deficiency with evidence for megadose supplementation in already replete people.",
+			"Do not imply vitamin C replaces vaccination, rest, hydration, or medical care for severe respiratory symptoms."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does vitamin C prevent or treat common colds?",
+				population: "Adults and children in placebo-controlled vitamin C trials",
+				finding:
+					"Routine regular supplementation does not meaningfully prevent colds in the general population, may slightly shorten duration, and has not shown consistent benefit when started after symptoms begin.",
+				effectDirection: "mixed",
+				magnitude:
+					"Cochrane-reviewed evidence found no general-population incidence reduction, about 8% shorter colds in adults and 14% in children with regular supplementation, and no consistent therapeutic benefit after onset.",
+				certainty: "moderate",
+				limitations: [
+					"Cold definitions, dose, baseline diet, and timing vary across trials.",
+					"Few high-quality therapeutic trials test very early symptom-onset dosing.",
+					"Average effects can hide subgroups with unusually low intake or extreme physical stress."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "NIH Office of Dietary Supplements",
+				role: "U.S. nutrient evidence anchor for vitamin C intake, safety, and common-cold trial interpretation."
+			},
+			{
+				name: "Cochrane",
+				role: "Systematic-review anchor for vitamin C prevention and treatment trials."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:20:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial vitamin C and common-cold claim page published from NIH ODS, Cochrane, and Consensus-located systematic review and meta-analysis evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Vitamin C: Fact Sheet for Health Professionals",
+				publisher: "NIH Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/",
+				stance: "supports",
+				note:
+					"NIH ODS fact sheet summarizing vitamin C intake, safety, and common-cold evidence, including small duration effects and limited prevention value.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Vitamin C for preventing and treating the common cold",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2013,
+				url: "https://www.cochrane.org/CD000980/ARI_vitamin-c-for-preventing-and-treating-the-common-cold",
+				doi: "10.1002/14651858.CD000980.pub4",
+				pmid: "23440782",
+				stance: "supports",
+				note:
+					"Cochrane review separating incidence, duration, severity, treatment-after-onset, and extreme-exertion subgroup findings.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Vitamin C reduces the severity of common colds: a meta-analysis",
+				publisher: "BMC Public Health",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/vitamin-c-reduces-the-severity-of-common-colds-a-hemil%C3%A4-chalker/8aaf5cce87ba56fabfc86c560ef2d76b/",
+				stance: "context",
+				note:
+					"Consensus-fetched meta-analysis suggesting vitamin C may reduce more severe cold symptoms, while reinforcing that effects are modest and outcome-specific.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Does vitamin C prevent the common cold?",
+				publisher: "Medwave",
+				year: 2018,
+				url:
+					"https://consensus.app/papers/does-vitamin-c-prevent-the-common-cold-g%C3%B3mez-rada/f2bf64356d6b52b9aee94d97d781667f/",
+				stance: "supports",
+				note:
+					"Consensus-fetched evidence summary concluding vitamin C does not prevent common-cold incidence in the general population.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does creatine monohydrate improve strength training, and is it generally safe?",
+		slug: "does-creatine-monohydrate-improve-strength-training-and-is-it-generally-safe",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for repeated high-intensity and resistance-training outcomes. Creatine monohydrate can modestly improve strength or lean-mass gains and is generally well tolerated at usual doses in healthy people, but it is not a universal endurance booster or medical substitute.",
+		stableCore: [
+			"Creatine monohydrate can increase intramuscular creatine stores and improve repeated high-intensity performance.",
+			"Meta-analyses generally find greater strength or lean-mass gains when creatine is combined with resistance training than with training alone.",
+			"Evidence for endurance performance is weaker and often null in trained endurance populations.",
+			"Short- and longer-term studies in healthy people have not shown the kidney-damage signal often claimed online, but medical context still matters."
+		],
+		openQuestions: [
+			"How large are benefits for women, older adults, adolescents, vegetarians, and people with chronic disease under different dosing patterns?",
+			"Which outcomes outside sport, such as cognition, rehabilitation, or aging-related function, are supported enough for routine advice?",
+			"How should supplement quality, contamination risk, kidney disease, pregnancy, and medication interactions be handled in consumer guidance?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized trials and safety surveillance showing a consistent clinically important kidney, liver, hydration, or cardiovascular harm signal at standard doses in healthy users.",
+			"Updated sports-nutrition or medical reviews finding no meaningful resistance-training or high-intensity performance benefit after accounting for bias.",
+			"Evidence that alternative creatine forms outperform monohydrate in meaningful outcomes with comparable safety and cost."
+		],
+		misconceptions: [
+			"Creatine is often confused with anabolic steroids; it is not a hormone or steroid.",
+			"Water-weight gain is sometimes misread as fat gain or organ damage.",
+			"Creatinine lab changes can complicate interpretation but do not automatically mean kidney damage.",
+			"Creatine helps most with repeated high-intensity work, not every endurance or weight-loss goal."
+		],
+		editorSummary:
+			"Creatine is a good example of a supplement claim where the mainstream answer is more favorable than the public stereotype, but only when the claim is bounded to monohydrate, resistance/high-intensity outcomes, usual doses, and healthy-user safety.",
+		uncertaintySummary:
+			"Benefit is strongest for strength, power, lean mass, and repeated high-intensity work. Safety confidence is best for healthy users at standard doses; it is weaker for pregnancy, kidney disease, long-term pediatric use, contaminated products, and some clinical populations.",
+		searchDatabases: ["Consensus", "PubMed", "NIH Office of Dietary Supplements", "ISSN"],
+		searchCutoffAt: "2026-07-05T16:25:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:25:00.000Z",
+		inclusionRules: [
+			"Prioritize randomized trials, systematic reviews, sports-nutrition position stands, and safety reviews of creatine monohydrate.",
+			"Separate creatine monohydrate from proprietary blends and other supplement stacks.",
+			"Separate resistance/high-intensity outcomes from endurance, weight-loss, cognition, and clinical-treatment claims."
+		],
+		exclusionRules: [
+			"Do not use supplement-company marketing as efficacy or safety evidence.",
+			"Do not generalize healthy-adult safety evidence to kidney disease, pregnancy, or medically complex users without specific support.",
+			"Do not treat muscle mass, body weight, or surrogate lab changes as standalone proof of broad health benefit or harm."
+		],
+		evidenceSummaries: [
+			{
+				question: "Does creatine monohydrate improve strength training outcomes?",
+				population: "Healthy adults and athletes using creatine monohydrate, often with resistance training",
+				finding:
+					"Creatine monohydrate improves repeated high-intensity performance and modestly improves strength or lean-mass outcomes when paired with resistance training.",
+				effectDirection: "supports",
+				magnitude:
+					"Recent meta-analyses report small-to-moderate added gains in lean mass, body composition, and strength outcomes, while endurance-performance effects in trained populations are generally not significant.",
+				certainty: "moderate",
+				limitations: [
+					"Effects vary by training status, sex, age, dose, outcome, adherence, diet, and training program.",
+					"Many studies are short and use performance or body-composition outcomes rather than long-term health outcomes.",
+					"Supplement quality and medical context are important but are not always captured in trials."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "International Society of Sports Nutrition",
+				role: "Sports-nutrition evidence anchor for creatine monohydrate efficacy and healthy-user safety."
+			},
+			{
+				name: "NIH Office of Dietary Supplements",
+				role: "U.S. supplement-evidence anchor for exercise-performance claims and safety caveats."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:25:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial creatine monohydrate claim page published from ISSN, NIH ODS, and Consensus-located performance, body-composition, endurance, and safety reviews."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine",
+				publisher: "Journal of the International Society of Sports Nutrition",
+				year: 2017,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/",
+				doi: "10.1186/s12970-017-0173-z",
+				pmid: "28615996",
+				stance: "supports",
+				note:
+					"ISSN position stand summarizing creatine monohydrate performance effects and safety evidence across exercise, sport, and selected medical contexts.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Dietary Supplements for Exercise and Athletic Performance",
+				publisher: "NIH Office of Dietary Supplements",
+				url: "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/",
+				stance: "supports",
+				note:
+					"NIH ODS fact sheet summarizing creatine as an exercise-performance supplement, with dosing, possible benefits, and safety cautions.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "The Effect of Creatine Supplementation on Resistance Training-Based Changes to Body Composition",
+				publisher: "Journal of Strength and Conditioning Research",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/the-effect-of-creatine-supplementation-on-resistance-desai-wewege/b895b841f9a45682a44620b5fddbd25b/",
+				stance: "supports",
+				note:
+					"Consensus-fetched meta-analysis finding creatine added to resistance training increased lean body mass and modestly improved body-composition outcomes.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effects of Creatine Monohydrate on Endurance Performance in a Trained Population",
+				publisher: "Sports Medicine",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/effects-of-creatine-monohydrate-on-endurance-performance-fern%C3%A1ndezlanda-sagastume/e001ead777255b9887fad997809f31d6/",
+				stance: "context",
+				note:
+					"Consensus-fetched review finding creatine monohydrate was not effective for endurance performance in trained populations, helping bound the claim.",
+				order: 4
+			},
+			{
+				kind: "systematic_review",
+				title: "Risk of Adverse Outcomes in Females Taking Oral Creatine Monohydrate",
+				publisher: "Nutrients",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/risk-of-adverse-outcomes-in-females-taking-oral-de-guingand-palmer/99af081fb4a852cd8bddf8d06a33e00e/",
+				stance: "context",
+				note:
+					"Consensus-fetched safety review finding no serious adverse outcomes signal in female creatine trials, while noting the need for better adverse-event reporting.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "A short review of the most common safety concerns regarding creatine ingestion",
+				publisher: "Frontiers in Nutrition",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/details/bba2c00c078b5841bea0ca804d453003/",
+				stance: "context",
+				note:
+					"Consensus-fetched safety-context review addressing common kidney, dehydration, cramping, gastrointestinal, and cancer concerns.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Is EMDR an evidence-based treatment for PTSD?",
+		slug: "is-emdr-an-evidence-based-treatment-for-ptsd",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 83,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, with boundaries. EMDR is an evidence-based PTSD psychotherapy and appears broadly comparable to other trauma-focused therapies. It should not be presented as a universal cure, uniquely proven mechanism, or substitute for careful diagnosis and safety planning.",
+		stableCore: [
+			"Major PTSD guidelines include EMDR among recommended or conditionally recommended trauma-focused psychological treatments.",
+			"Systematic reviews find EMDR reduces PTSD symptoms compared with waitlist or usual-care controls.",
+			"Comparisons with trauma-focused CBT often find no clear superiority for EMDR, so treatment choice should consider availability, preference, fit, and clinician competence.",
+			"Evidence is strongest for PTSD; claims for broad use across unrelated mental-health conditions need separate evidence."
+		],
+		openQuestions: [
+			"Which PTSD populations, trauma histories, comorbidities, and delivery formats benefit most from EMDR versus other trauma-focused therapies?",
+			"How durable are EMDR effects in complex PTSD, refugees, children, military populations, and people with severe comorbid conditions?",
+			"Which parts of EMDR protocols are active ingredients, and how much do eye movements add beyond exposure, memory reconsolidation, and therapeutic structure?"
+		],
+		whatWouldChangeMinds: [
+			"Updated high-quality network meta-analyses showing EMDR performs no better than credible controls across PTSD outcomes.",
+			"Major VA/DoD, APA, NICE, WHO, or ISTSS guideline updates removing EMDR from evidence-based PTSD options.",
+			"Large pragmatic trials showing unacceptable harm, dropout, or inferior outcomes compared with other trauma-focused options in routine care."
+		],
+		misconceptions: [
+			"Evidence that EMDR can help PTSD does not mean every advertised EMDR use is evidence-based.",
+			"Being comparable to trauma-focused CBT is not the same as being uniquely superior to all other therapies.",
+			"Debate over mechanism is not the same as evidence that the therapy has no clinical effect.",
+			"PTSD treatment should be individualized; no single psychotherapy fits every patient, trauma type, or readiness level."
+		],
+		editorSummary:
+			"EMDR is a good psychology-consensus page because the evidence-backed answer sits between dismissal and hype: it is a legitimate PTSD treatment, but claims about uniqueness, mechanism, and broad non-PTSD applications need tighter boundaries.",
+		uncertaintySummary:
+			"EMDR's PTSD benefit versus inactive controls is reasonably supported. Greater uncertainty remains around relative advantage versus other trauma-focused therapies, long-term outcomes in complex populations, and the specific contribution of eye movements.",
+		searchDatabases: ["Consensus", "PubMed", "VA/DoD", "APA", "NICE"],
+		searchCutoffAt: "2026-07-05T16:30:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:30:00.000Z",
+		inclusionRules: [
+			"Prioritize PTSD clinical guidelines, randomized trials, systematic reviews, network meta-analyses, and individual-participant-data meta-analyses.",
+			"Separate PTSD treatment evidence from claims for anxiety, depression, pain, performance, or general wellness.",
+			"Compare EMDR against both inactive controls and credible trauma-focused psychotherapies."
+		],
+		exclusionRules: [
+			"Do not use therapist marketing pages, testimonials, or training-company claims as decision-weight evidence.",
+			"Do not equate uncertain mechanism with no clinical effect.",
+			"Do not generalize adult PTSD evidence to children, acute trauma prevention, complex PTSD, or non-PTSD conditions without direct support."
+		],
+		evidenceSummaries: [
+			{
+				question: "Is EMDR effective for PTSD?",
+				population: "Adults with PTSD in randomized trials and clinical guideline evidence reviews",
+				finding:
+					"EMDR is supported as an evidence-based PTSD psychotherapy, especially compared with waitlist or usual care, and often appears similar to other trauma-focused therapies.",
+				effectDirection: "supports",
+				magnitude:
+					"Large systematic reviews and network meta-analyses identify EMDR and trauma-focused CBT among the better-supported PTSD psychotherapies, while individual-participant-data comparison found no significant difference from other psychological treatments.",
+				certainty: "moderate",
+				limitations: [
+					"Many trials are small or have risk-of-bias concerns.",
+					"Long-term comparative evidence is thinner than short-term symptom evidence.",
+					"Mechanism and population-specific fit remain active research questions."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "VA/DoD PTSD Clinical Practice Guideline",
+				role: "Guideline anchor for trauma-focused PTSD psychotherapy options used in U.S. veteran and defense care."
+			},
+			{
+				name: "American Psychological Association",
+				role: "Clinical-practice guideline anchor for adult PTSD psychotherapy recommendations."
+			},
+			{
+				name: "International Society for Traumatic Stress Studies",
+				role: "Specialty-guideline anchor for PTSD treatment evidence."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:30:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial EMDR and PTSD claim page published from VA/DoD and APA guideline anchors plus Consensus-located systematic, network, and individual-participant-data meta-analyses."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "VA/DoD Clinical Practice Guideline for Management of Posttraumatic Stress Disorder and Acute Stress Disorder",
+				publisher: "U.S. Department of Veterans Affairs / Department of Defense",
+				year: 2023,
+				url: "https://www.healthquality.va.gov/guidelines/MH/ptsd/",
+				stance: "supports",
+				note:
+					"VA/DoD PTSD guideline source for trauma-focused psychotherapy recommendations, including EMDR in the treatment landscape.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Practice Guideline for the Treatment of Posttraumatic Stress Disorder",
+				publisher: "American Psychological Association",
+				year: 2017,
+				url: "https://www.apa.org/ptsd-guideline",
+				stance: "supports",
+				note:
+					"APA guideline source for adult PTSD treatment recommendations and conditional EMDR recommendation context.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Psychological therapies for post-traumatic stress disorder in adults",
+				publisher: "European Journal of Psychotraumatology",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/psychological-therapies-for-posttraumatic-stress-lewis-roberts/7075986b331c515e830822c6b14d52c7/",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review of 114 RCTs finding robust evidence for trauma-focused CBT and EMDR as first-line PTSD treatments.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Psychological treatments for post-traumatic stress disorder in adults: a network meta-analysis",
+				publisher: "Psychological Medicine",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/psychological-treatments-for-posttraumatic-stress-mavranezouli-meader/6fb991871e5150b09b4127bcc7bd7065/",
+				stance: "supports",
+				note:
+					"Consensus-fetched network meta-analysis identifying EMDR and trauma-focused CBT among the most effective adult PTSD psychological interventions.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "EMDR v. other psychological therapies for PTSD: a systematic review and individual participant data meta-analysis",
+				publisher: "Psychological Medicine",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/emdr-v-other-psychological-therapies-for-ptsd-a-wright-bisson/942a9200c54050f98b772e659811f495/",
+				stance: "context",
+				note:
+					"Consensus-fetched IPD meta-analysis finding no significant difference between EMDR and other psychological treatments for PTSD outcomes.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Eye Movement Desensitization and Reprocessing (EMDR) for PTSD",
+				publisher: "VA National Center for PTSD",
+				url: "https://www.ptsd.va.gov/understand_tx/emdr.asp",
+				stance: "supports",
+				note:
+					"VA patient-facing source explaining EMDR as a PTSD treatment option and distinguishing it from broader unsupported claims.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can direct-to-consumer genetic tests reliably predict most common diseases?",
+		slug: "can-direct-to-consumer-genetic-tests-reliably-predict-most-common-diseases",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Not reliably enough to treat most results as diagnosis or destiny. DTC genetic tests can offer some risk clues, but common-disease risk is polygenic, environment-dependent, ancestry-sensitive, and should be confirmed with qualified clinical support before medical decisions.",
+		stableCore: [
+			"Health-related DTC genetic reports are generally not diagnostic tests for most common diseases.",
+			"Risk estimates can vary by company because tests use different variants, algorithms, reference populations, and update cycles.",
+			"Rare high-risk variants and third-party raw-data interpretations can produce false positives or misleading results without clinical confirmation.",
+			"Polygenic risk scores are improving, but performance and interpretation often vary across ancestry groups and clinical settings."
+		],
+		openQuestions: [
+			"Which polygenic scores are ready for clinical use, for which ancestries, and with what absolute-risk communication?",
+			"How often do DTC results lead to appropriate prevention versus unnecessary anxiety, testing, cost, or false reassurance?",
+			"What regulatory and privacy rules best protect consumers while preserving useful access to genetic information?"
+		],
+		whatWouldChangeMinds: [
+			"Large prospective implementation studies showing DTC common-disease reports improve health outcomes without excessive false positives, false reassurance, inequity, or unnecessary care.",
+			"Regulatory and clinical evidence showing broad analytic validity, clinical validity, and clinical utility across diverse populations for common DTC disease-risk panels.",
+			"Professional-society statements endorsing routine use of DTC common-disease predictions as standalone medical decision tools."
+		],
+		misconceptions: [
+			"A higher genetic risk estimate is not a diagnosis, and a lower estimate does not mean a person cannot get the disease.",
+			"Raw genotype files interpreted by third-party tools are not the same as validated clinical genetic testing.",
+			"Ancestry reports, wellness traits, pharmacogenomic clues, rare-variant screens, and polygenic scores have different evidence standards.",
+			"Genetic risk is only one part of common-disease risk; age, family history, environment, behavior, and medical history often matter more."
+		],
+		editorSummary:
+			"DTC genetic testing is a high-interest biotechnology page because it is neither useless nor clinically equivalent to medical genetics. The public answer needs to separate curiosity, screening, ancestry, raw data, rare variants, polygenic scores, and diagnosis.",
+		uncertaintySummary:
+			"The technology is improving, especially for selected polygenic scores and clinically supervised pathways. The uncertain part is whether broad consumer-facing use delivers accurate, equitable, useful medical decisions across diverse people and conditions.",
+		searchDatabases: ["Consensus", "PubMed", "FDA", "MedlinePlus", "ACOG", "AHA"],
+		searchCutoffAt: "2026-07-05T16:35:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:35:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, professional society statements, FDA/MedlinePlus consumer guidance, and studies separating analytic validity, clinical validity, and clinical utility.",
+			"Separate rare monogenic variants from polygenic common-disease risk scores.",
+			"Separate company-reported results from third-party interpretation of raw data."
+		],
+		exclusionRules: [
+			"Do not use DTC company marketing as evidence of clinical utility.",
+			"Do not imply that ancestry or wellness-trait accuracy proves common-disease prediction accuracy.",
+			"Do not present unconfirmed DTC findings as diagnoses or as reasons to start, stop, or avoid medical care."
+		],
+		evidenceSummaries: [
+			{
+				question: "Can DTC genetic tests predict most common diseases reliably?",
+				population: "Consumers receiving health risk reports or raw-data interpretations from direct-to-consumer genetic testing services",
+				finding:
+					"DTC tests can produce some useful genetic information, but common-disease prediction is limited by clinical validity, ancestry calibration, algorithm variation, false positives, and interpretation challenges.",
+				effectDirection: "mixed",
+				magnitude:
+					"Systematic-review evidence finds consumer value and some healthcare follow-up, but also false-positive or misinterpreted findings, variable risk reports, and professional concern about clinical validity and utility.",
+				certainty: "moderate",
+				limitations: [
+					"DTC products and reporting algorithms change quickly.",
+					"Evidence is stronger for some medically actionable variants than for broad common-disease prediction.",
+					"Clinical utility depends on confirmation, counseling, absolute-risk framing, and equitable ancestry performance."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Regulatory anchor for direct-to-consumer genetic health-risk tests and consumer-test oversight."
+			},
+			{
+				name: "MedlinePlus Genetics",
+				role: "Patient-education anchor for DTC genetic testing limits and medical interpretation."
+			},
+			{
+				name: "American College of Obstetricians and Gynecologists",
+				role: "Clinical guidance anchor for counseling, confirmation, and interpretation of consumer genetic disease-risk results."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:35:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial DTC genetic disease-risk claim page published from FDA, MedlinePlus, ACOG, AHA, and Consensus-located systematic-review evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Direct-to-Consumer Tests",
+				publisher: "U.S. Food and Drug Administration",
+				url: "https://www.fda.gov/medical-devices/in-vitro-diagnostics/direct-consumer-tests",
+				stance: "supports",
+				note:
+					"FDA source for regulatory framing of direct-to-consumer tests, including genetic health-risk information and limits on consumer interpretation.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "What is direct-to-consumer genetic testing?",
+				publisher: "MedlinePlus Genetics",
+				url: "https://medlineplus.gov/genetics/understanding/dtcgenetictesting/directtoconsumer/",
+				stance: "supports",
+				note:
+					"MedlinePlus patient-education source explaining DTC genetic testing, limitations, privacy questions, and the role of healthcare professionals.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Consumer Testing for Disease Risk: ACOG Committee Opinion, Number 816",
+				publisher: "Obstetrics & Gynecology",
+				year: 2021,
+				url: "https://pubmed.ncbi.nlm.nih.gov/33399425/",
+				pmid: "33399425",
+				stance: "supports",
+				note:
+					"Professional guidance source explaining disease-risk consumer testing limits and recommending counseling plus confirmatory testing when results may affect care.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Direct-to-consumer genetic tests providing health risk information",
+				publisher: "Clinical Genetics",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/details/43b67c16cbf150dd8a595d1283899ffc/",
+				stance: "supports",
+				note:
+					"Consensus-fetched systematic review identifying consumer value alongside false positives, third-party interpretation concerns, and complex healthcare consultations.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Concordance study of 3 direct-to-consumer genetic-testing services",
+				publisher: "Clinical Chemistry",
+				year: 2011,
+				url:
+					"https://consensus.app/papers/concordance-study-of-3-directtoconsumer-genetictesting-imai-kricka/1b46db70ae115d6e9c5a5f446182f9bb/",
+				stance: "context",
+				note:
+					"Consensus-fetched study showing high SNP concordance but substantial variation in disease-risk estimates due to variant and reference-population choices.",
+				order: 5
+			},
+			{
+				kind: "consensus_statement",
+				title: "Direct-to-Consumer Genetic Testing for Cardiovascular Disease",
+				publisher: "Circulation",
+				year: 2025,
+				url:
+					"https://consensus.app/papers/directtoconsumer-genetic-testing-for-cardiovascular-hull-lee/36a1e354521b588aa7dc9d02c253af3b/",
+				stance: "context",
+				note:
+					"Consensus-fetched AHA statement noting insufficient evidence for routine clinical care use and advising careful contextualization and corroboration of actionable findings.",
+				order: 6
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Can planting trees alone solve climate change?",
+		slug: "can-planting-trees-alone-solve-climate-change",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "high",
+		bottomLine:
+			"No. Forest protection, restoration, and planting can help when done well, but they cannot replace rapid fossil-fuel emissions cuts. Net benefit depends on site, species, permanence, albedo, water, fire, biodiversity, and additional durable carbon storage.",
+		stableCore: [
+			"IPCC mitigation pathways rely primarily on rapid emissions reductions; land carbon removal is complementary, not a replacement.",
+			"Tree planting can store carbon, but storage can be reversed by fire, drought, harvest, pests, land-use change, or project failure.",
+			"Poorly planned afforestation can harm biodiversity, water availability, food systems, grasslands, peatlands, or local communities.",
+			"In snow-covered or high-latitude regions, darker tree cover can reduce albedo and offset or reverse carbon-storage cooling benefits."
+		],
+		openQuestions: [
+			"Which restoration locations, species mixes, ownership models, and monitoring systems deliver durable carbon, biodiversity, water, and livelihood benefits together?",
+			"How should carbon markets measure additionality, leakage, permanence, and reversal risk for forest projects?",
+			"How should governments prioritize forest protection, natural regeneration, agroforestry, plantations, fire management, and fossil-fuel phase-down under limited land?"
+		],
+		whatWouldChangeMinds: [
+			"Authoritative integrated-assessment evidence showing tree planting alone can keep warming goals within reach without rapid fossil-fuel emissions reductions.",
+			"Large-scale verified projects demonstrating durable, additional, leakage-free forest carbon removal at a scale comparable to ongoing global emissions.",
+			"IPCC or National Academies reassessments concluding afforestation can replace deep decarbonization rather than complement it."
+		],
+		misconceptions: [
+			"Counting trees is not the same as measuring durable net climate benefit.",
+			"Restoration of degraded forests is not the same as planting monoculture trees in naturally treeless ecosystems.",
+			"Buying a tree-planting offset does not automatically cancel out fossil-fuel emissions.",
+			"Forest protection and restoration are important climate tools even though they cannot solve the problem alone."
+		],
+		editorSummary:
+			"Tree planting is a high-interest climate page because it lets the site affirm a real nature-based solution while rejecting the oversimplified claim that planting enough trees can replace emissions cuts.",
+		uncertaintySummary:
+			"The core answer is stable: tree planting alone is insufficient. Project-level benefit is more uncertain and depends heavily on local ecology, baseline assumptions, permanence, governance, and whether carbon-only accounting ignores albedo, water, fire, biodiversity, and social trade-offs.",
+		searchDatabases: ["Consensus", "IPCC", "UNEP", "OpenAlex", "Crossref"],
+		searchCutoffAt: "2026-07-05T16:40:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T16:40:00.000Z",
+		inclusionRules: [
+			"Prioritize IPCC assessment reports, systematic reviews, carbon-accounting studies, and papers that include albedo, permanence, leakage, and biodiversity trade-offs.",
+			"Separate forest protection, natural regeneration, reforestation, afforestation, agroforestry, plantations, and carbon offsets.",
+			"Compare tree-planting potential against the scale and timing of fossil-fuel emissions reductions."
+		],
+		exclusionRules: [
+			"Do not use tree-planting campaign claims or offset marketing as evidence of net climate benefit.",
+			"Do not count planted seedlings as durable carbon removal without survival, growth, additionality, and reversal-risk evidence.",
+			"Do not treat carbon-only estimates as complete when albedo, water, soil carbon, fire, biodiversity, or social effects are material."
+		],
+		evidenceSummaries: [
+			{
+				question: "Can tree planting solve climate change by itself?",
+				population: "Global mitigation pathways and forest restoration or afforestation projects",
+				finding:
+					"Tree planting and forest restoration can contribute to mitigation but cannot replace rapid emissions reductions, and climate benefit varies by site and project quality.",
+				effectDirection: "supports",
+				magnitude:
+					"IPCC mitigation assessments treat land-based carbon removal as a complement to emissions cuts; recent reviews warn carbon-only tree-cover estimates can be substantially overstated when albedo, permanence, and land-system trade-offs are included.",
+				certainty: "high",
+				limitations: [
+					"Project-level estimates depend on baseline, survival, governance, disturbance, leakage, and long time horizons.",
+					"Carbon, biodiversity, water, food, and livelihood goals can conflict if projects are poorly designed.",
+					"Net climate effects differ by latitude, prior land cover, species, soil carbon, and fire or drought risk."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Intergovernmental Panel on Climate Change",
+				role: "Global assessment anchor for mitigation pathways, land-sector carbon removal, and emissions-reduction priorities."
+			},
+			{
+				name: "UN Environment Programme",
+				role: "Emissions-gap anchor for the scale of mitigation needed and limits of offsets or removals as substitutes for emissions cuts."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T16:40:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial tree-planting and climate-change claim page published from IPCC/UNEP assessment anchors and Consensus-located restoration, albedo, and forest-offset evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2022: Mitigation of Climate Change",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2022,
+				url: "https://www.ipcc.ch/report/ar6/wg3/",
+				stance: "supports",
+				note:
+					"IPCC AR6 WGIII assessment anchor for mitigation pathways, land-sector mitigation, carbon dioxide removal, and the central need for emissions reductions.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Climate Change and Land",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2019,
+				url: "https://www.ipcc.ch/srccl/",
+				stance: "supports",
+				note:
+					"IPCC special report source for land-based mitigation, food security, desertification, degradation, and trade-offs in land responses.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Emissions Gap Report 2025",
+				publisher: "UN Environment Programme",
+				year: 2025,
+				url: "https://www.unep.org/resources/emissions-gap-report-2025",
+				stance: "context",
+				note:
+					"UNEP emissions-gap anchor for the scale and urgency of emissions cuts relative to removals and offset-style claims.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Is tree planting an effective strategy for climate change mitigation?",
+				publisher: "Science of the Total Environment",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/is-tree-planting-an-effective-strategy-for-climate-kirschbaum-saggar/ce0da0f4bb395b26b2ba424fe758816c/",
+				stance: "supports",
+				note:
+					"Consensus-fetched review explaining why tree-planting climate value depends on permanence, albedo, wood use, ecosystem services, and local conditions.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "Accounting for albedo change to identify climate-positive tree cover restoration",
+				publisher: "Nature Communications",
+				year: 2024,
+				url:
+					"https://consensus.app/papers/accounting-for-albedo-change-to-identify-hasler-williams/03b51bec23e95e64817b2d62aedc8854/",
+				stance: "context",
+				note:
+					"Consensus-fetched study showing carbon-only estimates can overstate tree-cover restoration climate benefits when albedo change is omitted.",
+				order: 5
+			},
+			{
+				kind: "context",
+				title: "Ten golden rules for reforestation to optimize carbon sequestration, biodiversity recovery and livelihood benefits",
+				publisher: "Global Change Biology",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/ten-golden-rules-for-reforestation-to-optimize-carbon-di-sacco-hardwick/99e66a2a7afb5cf7a0c9a288dbdfd05b/",
+				stance: "context",
+				note:
+					"Consensus-fetched restoration guidance emphasizing forest protection first, natural regeneration, biodiversity, local communities, and long-term project viability.",
+				order: 6
+			},
+			{
+				kind: "landmark_study",
+				title: "Action needed to make carbon offsets from forest conservation work for climate change mitigation",
+				publisher: "Science",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/action-needed-to-make-carbon-offsets-from-forest-west-wunder/7b76689d85db5ca8a437165b367f1894/",
+				stance: "context",
+				note:
+					"Consensus-fetched forest-offset evaluation showing many avoided-deforestation projects reduced deforestation less than claimed, relevant to tree-offset misconceptions.",
+				order: 7
+			}
+		]
 	}
 ];
 
