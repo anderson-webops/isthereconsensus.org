@@ -5279,12 +5279,14 @@ const rawClaims: SeedClaim[] = [
 		consensusBand: "strong",
 		confidenceScore: 93,
 		bottomLine:
-			"Yes, for appropriately selected adults at elevated cardiovascular risk. Statins reduce heart attacks, strokes, and composite cardiovascular events, with larger absolute benefit as baseline risk rises. They are not automatically indicated for every low-risk adult, and evidence is less certain for starting statins after age 75 without known cardiovascular disease.",
+			"Yes, for appropriately selected adults at elevated cardiovascular risk. Statins reduce heart attacks, strokes, and combined cardiovascular events; absolute benefit is larger at higher baseline risk. They are not automatic for every low-risk adult, and evidence is less certain for starting after age 75 without known cardiovascular disease.",
 		stableCore: [
-			"USPSTF recommends prescribing a statin for adults aged 40 to 75 who have at least one cardiovascular risk factor and an estimated 10-year cardiovascular disease risk of 10% or greater.",
-			"USPSTF recommends selectively offering a statin to similar adults with estimated 10-year risk from 7.5% to less than 10%, because the expected benefit is smaller.",
-			"The 2022 USPSTF evidence review included 22 statin-versus-control trials with 90,624 participants and found significantly lower risk of all-cause mortality, stroke, myocardial infarction, and composite cardiovascular outcomes.",
-			"The same evidence review did not find a statistically significant increase in serious adverse events or myalgias overall, while noting sparse evidence for adults older than 75 and a diabetes signal in one high-intensity statin trial."
+			"USPSTF recommends statins for adults aged 40 to 75 with at least one cardiovascular risk factor and a 10-year cardiovascular disease risk of 10% or higher.",
+			"USPSTF recommends selectively offering statins at 7.5% to less than 10% risk, because the expected benefit is smaller.",
+			"The 2022 USPSTF evidence review covered 22 trials and 90,624 participants; statins reduced all-cause mortality, stroke, myocardial infarction, and composite cardiovascular outcomes.",
+			"Reported relative risks were 0.92 for all-cause mortality, 0.78 for stroke, 0.67 for myocardial infarction, and 0.72 for composite cardiovascular outcomes. The composite-event absolute risk difference was about -1.28%.",
+			"Cholesterol Treatment Trialists' meta-analysis found about one-fifth fewer major vascular events per 1 mmol/L LDL cholesterol reduction; absolute benefit rose with baseline risk.",
+			"The same evidence review did not find a statistically significant increase in serious adverse events or myalgias overall. Evidence was sparse for adults older than 75 and noted a diabetes signal in one high-intensity trial."
 		],
 		openQuestions: [
 			"How should statin decisions be individualized for adults older than 75 without known cardiovascular disease?",
@@ -5305,14 +5307,20 @@ const rawClaims: SeedClaim[] = [
 			"Statins reduce cardiovascular events for elevated-risk adults, but the key question is baseline risk and absolute benefit. The strongest summary avoids both 'everyone needs one' and 'no one benefits' framing.",
 		uncertaintySummary:
 			"The risk-reduction claim is strong for adults aged 40 to 75 at elevated cardiovascular risk. Uncertainty is greater for starting statins after age 75 without prior cardiovascular disease, for very low-risk adults, and for individual tolerance.",
-		searchCutoffAt: "2026-07-02T23:24:05.000Z",
-		lastRetractionCheckAt: "2026-07-02T23:24:05.000Z",
+		searchCutoffAt: "2026-07-05T07:05:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T07:05:00.000Z",
 		changeLog: [
 			{
 				date: "2026-07-02T23:24:05.000Z",
 				kind: "publication",
 				summary:
 					"Initial statin primary-prevention claim page published from USPSTF recommendation and updated evidence-review sources."
+			},
+			{
+				date: "2026-07-05T07:05:00.000Z",
+				kind: "update",
+				summary:
+					"Added CTT individual-participant meta-analysis, ACC/AHA primary-prevention guidance, and explicit absolute-benefit caveats."
 			}
 		],
 		sources: [
@@ -5351,6 +5359,31 @@ const rawClaims: SeedClaim[] = [
 				note:
 					"Cochrane review finding lower all-cause mortality and major vascular events among primary-prevention participants treated with statins, while emphasizing benefit-harm assessment.",
 				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"The effects of lowering LDL cholesterol with statin therapy in people at low risk of vascular disease",
+				publisher: "The Lancet",
+				year: 2012,
+				url: "https://doi.org/10.1016/S0140-6736(12)60367-5",
+				doi: "10.1016/S0140-6736(12)60367-5",
+				stance: "supports",
+				note:
+					"Individual-participant meta-analysis of 27 trials finding about one-fifth fewer major vascular events per 1 mmol/L LDL reduction and about 11 fewer events per 1000 lower-risk people treated for 5 years.",
+				order: 4
+			},
+			{
+				kind: "guideline",
+				title: "2019 ACC/AHA Guideline on the Primary Prevention of Cardiovascular Disease",
+				publisher: "Journal of the American College of Cardiology",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.jacc.2019.03.009",
+				doi: "10.1016/j.jacc.2019.03.009",
+				stance: "supports",
+				note:
+					"ACC/AHA guideline making statin therapy first-line for selected primary-prevention groups and emphasizing risk estimation, risk enhancers, and clinician-patient discussion before starting therapy.",
+				order: 5
 			}
 		]
 	},

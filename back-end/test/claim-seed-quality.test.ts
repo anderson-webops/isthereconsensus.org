@@ -163,6 +163,42 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /try harder/i);
 	});
 
+	it("keeps the primary-prevention statin claim scoped to elevated-risk adults", () => {
+		const slug = "do-statins-reduce-heart-attacks-and-strokes-for-people-at-elevated-cardiovascular-risk";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing primary-prevention statin claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /appropriately selected adults at elevated cardiovascular risk/);
+		assert.ok(claim.bottomLine.length <= 360, "Statin bottom line should stay scannable");
+		assert.ok(
+			claim.stableCore.every(item => item.length <= 240),
+			"Statin stable-core bullets should stay short enough to scan"
+		);
+		assert.match(visibleSummary, /10-year cardiovascular disease risk of 10% or higher/);
+		assert.match(visibleSummary, /7\.5% to less than 10%/);
+		assert.match(visibleSummary, /0\.92 for all-cause mortality/);
+		assert.match(visibleSummary, /0\.78 for stroke/);
+		assert.match(visibleSummary, /0\.67 for myocardial infarction/);
+		assert.match(visibleSummary, /0\.72 for composite cardiovascular outcomes/);
+		assert.match(visibleSummary, /one-fifth fewer/);
+		assert.match(visibleSummary, /11 fewer events per 1000/);
+		assert.match(visibleSummary, /older than 75/);
+		assert.match(visibleSummary, /not automatic for every low-risk adult/);
+		assert.doesNotMatch(visibleSummary, /everyone should take statins/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed prevention/i);
+	});
+
 	it("keeps the later school start time claim focused on adolescent sleep", () => {
 		const slug = "do-later-school-start-times-help-teenagers-get-more-sleep";
 		const claim = defaultClaims.find(entry => entry.slug === slug);
