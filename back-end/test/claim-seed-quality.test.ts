@@ -112,7 +112,7 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /CDC says/i);
 	});
 
-	it("keeps the fluoride toothpaste claim scoped to caries prevention and child-use caveats", () => {
+	it("keeps the fluoride toothpaste claim scoped to cavity prevention and child-use caveats", () => {
 		const claim = defaultClaims.find(entry => entry.slug === "does-fluoride-toothpaste-prevent-cavities");
 		assert.ok(claim, "Missing fluoride toothpaste claim seed");
 
@@ -133,6 +133,7 @@ describe("default claim seed quality", () => {
 		assert.match(visibleSummary, /swallowing too much toothpaste/);
 		assert.match(visibleSummary, /age-appropriate amounts and supervision/);
 		assert.match(visibleSummary, /non-fluoride toothpaste/);
+		assert.doesNotMatch(visibleSummary, /\bcaries\b/i);
 		assert.doesNotMatch(visibleSummary, /treats active cavities/i);
 		assert.doesNotMatch(visibleSummary, /more toothpaste is always better/i);
 	});
