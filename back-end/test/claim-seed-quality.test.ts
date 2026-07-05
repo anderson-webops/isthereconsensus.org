@@ -225,6 +225,46 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /guaranteed prevention/i);
 	});
 
+	it("keeps the primary-prevention aspirin claim selective and bleeding-aware", () => {
+		const slug = "should-adults-take-daily-low-dose-aspirin-to-prevent-a-first-heart-attack-or-stroke";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing primary-prevention aspirin claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.match(claim.bottomLine, /Not routinely/);
+		assert.ok(claim.bottomLine.length <= 430, "Aspirin bottom line should stay scannable");
+		assert.ok(
+			claim.stableCore.every(item => item.length <= 240),
+			"Aspirin stable-core bullets should stay short enough to scan"
+		);
+		assert.ok(
+			claim.openQuestions.every(item => item.length <= 220),
+			"Aspirin open-question bullets should stay short enough to scan"
+		);
+		assert.match(visibleSummary, /40 to 59/);
+		assert.match(visibleSummary, /10% or greater 10-year cardiovascular disease risk/);
+		assert.match(visibleSummary, /against initiating low-dose aspirin for primary prevention in adults 60 years or older/);
+		assert.match(visibleSummary, /should be used infrequently for routine primary prevention/);
+		assert.match(visibleSummary, /13 trials and 164,225 participants/);
+		assert.match(visibleSummary, /19,114 healthy older adults/);
+		assert.match(visibleSummary, /gastrointestinal and intracranial bleeding/);
+		assert.match(visibleSummary, /Primary prevention is not the same as secondary prevention/);
+		assert.doesNotMatch(visibleSummary, /everyone should take aspirin/i);
+		assert.doesNotMatch(visibleSummary, /no one benefits/i);
+		assert.doesNotMatch(visibleSummary, /risk-free/i);
+	});
+
 	it("keeps the later school start time claim focused on adolescent sleep", () => {
 		const slug = "do-later-school-start-times-help-teenagers-get-more-sleep";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

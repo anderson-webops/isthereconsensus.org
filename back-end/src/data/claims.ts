@@ -5830,6 +5830,125 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Should adults take daily low-dose aspirin to prevent a first heart attack or stroke?",
+		slug: "should-adults-take-daily-low-dose-aspirin-to-prevent-a-first-heart-attack-or-stroke",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		agreementLevel: "broad_qualified",
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Not routinely. Current guidance says starting low-dose aspirin to prevent a first heart attack or stroke has only a small possible net benefit for selected adults aged 40 to 59 with at least 10% 10-year cardiovascular risk and low bleeding risk. USPSTF recommends against starting it at age 60 or older. This page does not apply to people prescribed aspirin after a heart attack, stroke, stent, or other cardiovascular disease.",
+		stableCore: [
+			"USPSTF recommends individualized decision-making, not routine initiation, for adults aged 40 to 59 with a 10% or greater 10-year cardiovascular disease risk and no increased bleeding risk.",
+			"USPSTF recommends against initiating low-dose aspirin for primary prevention in adults 60 years or older because the expected net benefit is absent.",
+			"ACC/AHA says aspirin should be used infrequently for routine primary prevention. It may be considered only for select higher-risk adults 40 to 70 with low bleeding risk, and should be avoided after 70 or with elevated bleeding risk.",
+			"A 2019 JAMA meta-analysis of 13 trials and 164,225 participants found fewer cardiovascular events with aspirin, but also more major bleeding; the absolute effects were similar in size.",
+			"In the ASPREE randomized trial of 19,114 healthy older adults, low-dose aspirin did not significantly reduce cardiovascular disease and increased major bleeding."
+		],
+		openQuestions: [
+			"Which adults aged 40 to 59 have enough cardiovascular risk, low enough bleeding risk, and strong enough personal preference to justify starting aspirin?",
+			"How should clinicians reassess older adults who are already taking aspirin for primary prevention while avoiding abrupt changes to medication that may have another indication?",
+			"Can better bleeding-risk tools, coronary calcium scoring, or subgroup evidence identify a narrower group with clearer net benefit?"
+		],
+		whatWouldChangeMinds: [
+			"Large contemporary randomized trials showing a clear net reduction in death, myocardial infarction, or stroke without a comparable increase in major bleeding for people using aspirin before a first cardiovascular event.",
+			"Major USPSTF, ACC/AHA, or comparable guideline revisions recommending routine aspirin initiation for a broad primary-prevention population.",
+			"Validated decision tools showing reproducible subgroups where primary-prevention aspirin has a substantially better benefit-harm balance than current estimates."
+		],
+		misconceptions: [
+			"Over-the-counter availability does not make daily aspirin low-risk; gastrointestinal and intracranial bleeding are central to the current recommendation.",
+			"Primary prevention is not the same as secondary prevention. People prescribed aspirin after a heart attack, stroke, stent, bypass surgery, or other cardiovascular event should not treat this page as advice to stop.",
+			"A lower relative risk of first cardiovascular events does not settle the question if the absolute benefit is small and bleeding risk rises at the same time.",
+			"People already taking aspirin should discuss changes with a clinician rather than stopping suddenly based on a headline."
+		],
+		editorSummary:
+			"Daily low-dose aspirin used to be framed as a simple preventive habit. The current consensus is more selective: the benefit for first-event prevention is small, bleeding risk is real, and routine initiation is discouraged, especially after age 60.",
+		uncertaintySummary:
+			"The evidence is strongest against routine initiation in older adults and against use in people with elevated bleeding risk. Uncertainty remains around carefully selected 40-to-59-year-old adults with high cardiovascular risk, low bleeding risk, and preferences that favor a small possible net benefit.",
+		searchCutoffAt: "2026-07-05T11:55:00.000Z",
+		lastRetractionCheckAt: "2026-07-05T11:55:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T11:55:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial primary-prevention aspirin claim page published from USPSTF, ACC/AHA, JAMA meta-analysis, and ASPREE trial evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Aspirin Use to Prevent Cardiovascular Disease: Preventive Medication",
+				publisher: "U.S. Preventive Services Task Force",
+				year: 2022,
+				url:
+					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/aspirin-to-prevent-cardiovascular-disease-preventive-medication",
+				doi: "10.1001/jama.2022.4983",
+				pmid: "35471505",
+				stance: "supports",
+				note:
+					"Primary U.S. recommendation source: individual initiation decision for adults 40 to 59 with 10% or greater 10-year CVD risk, and a recommendation against initiation at age 60 or older.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "2019 ACC/AHA Guideline on the Primary Prevention of Cardiovascular Disease",
+				publisher: "Journal of the American College of Cardiology",
+				year: 2019,
+				url: "https://doi.org/10.1016/j.jacc.2019.03.009",
+				doi: "10.1016/j.jacc.2019.03.009",
+				stance: "supports",
+				note:
+					"Specialty guideline saying aspirin should be used infrequently for routine primary prevention and only selectively considered for higher-risk adults without increased bleeding risk.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Aspirin Use to Prevent Cardiovascular Disease and Colorectal Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				publisher: "JAMA",
+				year: 2022,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2791401",
+				doi: "10.1001/jama.2022.3337",
+				pmid: "35471507",
+				stance: "supports",
+				note:
+					"USPSTF evidence review finding small absolute reductions in major cardiovascular events and small absolute increases in major bleeding; colorectal cancer results were less robust and variable.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Association of Aspirin Use for Primary Prevention With Cardiovascular Events and Bleeding Events: A Systematic Review and Meta-analysis",
+				publisher: "JAMA",
+				year: 2019,
+				url: "https://jamanetwork.com/journals/jama/fullarticle/2721178",
+				doi: "10.1001/jama.2018.20578",
+				pmid: "30667501",
+				stance: "supports",
+				note:
+					"Meta-analysis of 13 trials and 164,225 participants finding lower cardiovascular events with aspirin but higher major bleeding, with absolute risk changes of similar size.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title: "Effect of Aspirin on Cardiovascular Events and Bleeding in the Healthy Elderly",
+				publisher: "New England Journal of Medicine",
+				year: 2018,
+				url: "https://www.nejm.org/doi/full/10.1056/NEJMoa1805819",
+				doi: "10.1056/NEJMoa1805819",
+				pmid: "30221597",
+				stance: "supports",
+				note:
+					"ASPREE randomized trial in 19,114 healthy older adults finding no significant cardiovascular disease reduction and significantly higher major hemorrhage with low-dose aspirin.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do syringe services programs reduce infection risk without increasing drug use?",
 		slug: "do-syringe-services-programs-reduce-infection-risk-without-increasing-drug-use",
 		status: "published",
