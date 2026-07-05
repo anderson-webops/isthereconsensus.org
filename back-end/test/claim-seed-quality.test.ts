@@ -333,13 +333,15 @@ describe("default claim seed quality", () => {
 			...claim.sources.map(source => source.note)
 		].join(" ");
 
+		assert.match(claim.title, /Paxlovid/);
+		assert.match(claim.bottomLine, /Paxlovid \(nirmatrelvir-ritonavir\)/);
 		assert.match(claim.bottomLine, /started within 5 days/);
 		assert.match(claim.bottomLine, /nonhospitalized people at high risk/);
 		assert.ok(claim.bottomLine.length <= 380, "Nirmatrelvir-ritonavir bottom line should stay scannable");
 		assert.match(visibleSummary, /87% reduction in hospitalization and death/);
 		assert.match(visibleSummary, /0\.6% to 1\.2%/);
 		assert.match(visibleSummary, /drug-drug interactions/);
-		assert.match(visibleSummary, /kidney or liver disease/);
+		assert.match(visibleSummary, /kidney or liver/);
 		assert.match(visibleSummary, /low-risk vaccinated adult/);
 		assert.match(visibleSummary, /Long COVID risk/);
 		assert.doesNotMatch(visibleSummary, /works for everyone/i);

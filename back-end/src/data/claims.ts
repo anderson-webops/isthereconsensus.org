@@ -18082,7 +18082,7 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
-		title: "Does nirmatrelvir-ritonavir reduce severe COVID-19 risk for high-risk outpatients?",
+		title: "Does Paxlovid reduce severe COVID-19 risk for high-risk outpatients?",
 		slug: "does-nirmatrelvir-ritonavir-reduce-severe-covid-19-risk-for-high-risk-outpatients",
 		status: "published",
 		consensusBand: "broad",
@@ -18090,35 +18090,35 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		bottomLine:
-			"Yes, for the right patients and timing. Nirmatrelvir-ritonavir, sold as Paxlovid, reduces hospitalization and death risk most clearly when started within 5 days in nonhospitalized people at high risk of severe COVID-19. It is not a general symptom cure for low-risk adults, and benefit is smaller or harder to prove when baseline risk is already low.",
+			"Yes, for the right patients, started early. Paxlovid (nirmatrelvir-ritonavir) reduces hospitalization and death risk most clearly when started within 5 days in nonhospitalized people at high risk of severe COVID-19. It is not a general symptom cure for low-risk adults, and the benefit is smaller or harder to prove when baseline risk is already low.",
 		stableCore: [
-			"CDC and IDSA treat ritonavir-boosted nirmatrelvir as a preferred early outpatient option for eligible patients at elevated risk of severe COVID-19.",
+			"CDC and IDSA list ritonavir-boosted nirmatrelvir as a preferred early outpatient option for eligible patients at elevated risk of severe COVID-19.",
 			"The original EPIC-HR randomized trial in unvaccinated high-risk outpatients found a large reduction in COVID-19-related hospitalization or death when treatment started early.",
 			"Real-world Omicron-era studies generally support lower severe-outcome risk in higher-risk groups, but absolute benefit depends on age, immune status, comorbidities, vaccination, prior infection, and variant era.",
-			"Ritonavir creates important drug-drug interactions, and kidney or liver disease can require dose adjustment or make treatment inappropriate.",
+			"Because ritonavir can interact with many medicines, clinicians must review other medications and kidney or liver function before prescribing.",
 			"Later randomized trials in vaccinated higher-risk participants found already-low hospitalization and death rates and did not show a clear severe-outcome reduction, so the claim should stay risk-stratified."
 		],
 		openQuestions: [
 			"Which vaccinated, previously infected, or lower-risk patients still get enough absolute benefit to justify treatment?",
-			"How should clinicians balance treatment speed against medication reconciliation, renal dosing, and drug-interaction management?",
+			"How should clinicians balance treatment speed against medication review, kidney dosing, and drug-interaction management?",
 			"Does nirmatrelvir-ritonavir meaningfully reduce Long COVID risk in specific subgroups, and is any effect durable?",
 			"How should recommendations adapt as variants, population immunity, and baseline hospitalization risk continue to change?"
 		],
 		whatWouldChangeMinds: [
-			"Large randomized or high-quality target-trial evidence showing no severe-outcome benefit in clearly high-risk patients treated within 5 days.",
+			"Large randomized trials or well-controlled observational studies showing no severe-outcome benefit in clearly high-risk patients treated within 5 days.",
 			"Major CDC, IDSA, FDA, WHO, or comparable guideline updates withdrawing nirmatrelvir-ritonavir as a preferred outpatient antiviral for high-risk COVID-19.",
 			"Evidence that drug-interaction harms, resistance, rebound, or implementation harms outweigh severe-outcome prevention in the groups now recommended for treatment."
 		],
 		misconceptions: [
 			"Paxlovid is not a substitute for vaccination, testing, isolation guidance, or clinical evaluation.",
-			"A low-risk vaccinated adult not benefiting much does not prove the drug is useless for an older, immunocompromised, or otherwise high-risk patient.",
+			"Limited benefit for a low-risk vaccinated adult does not prove the drug is useless for an older, immunocompromised, or otherwise high-risk patient.",
 			"Rebound symptoms or a positive test after treatment can occur, but rebound reports do not by themselves erase severe-outcome benefit in high-risk groups.",
-			"Because ritonavir affects drug metabolism, clinicians cannot safely ignore other medications just because the COVID-19 course is short."
+			"Because ritonavir changes how the body processes many drugs, clinicians cannot safely ignore other medications just because the COVID-19 course is short."
 		],
 		editorSummary:
-			"The useful answer is risk-stratified: nirmatrelvir-ritonavir is an evidence-based early outpatient antiviral for eligible high-risk patients, but it should not be oversold as a universal COVID symptom cure.",
+			"The useful answer is risk-stratified: Paxlovid is an evidence-based early outpatient antiviral for eligible high-risk patients, but it should not be oversold as a universal COVID symptom cure.",
 		uncertaintySummary:
-			"The original high-risk unvaccinated trial and many observational studies support benefit against severe outcomes. Uncertainty is higher in the vaccination and Omicron era, where baseline severe-outcome risk is lower and some newer randomized trials did not detect a hospitalization or death reduction.",
+			"The strongest trial evidence comes from high-risk unvaccinated outpatients. In vaccinated Omicron-era groups, baseline severe-outcome risk is lower, and some newer randomized trials did not detect a hospitalization or death reduction.",
 		uncertaintyDrivers: [
 			{
 				type: "generalizability",
@@ -18133,7 +18133,7 @@ const rawClaims: SeedClaim[] = [
 			{
 				type: "implementation",
 				detail:
-					"Medication interactions, renal dosing, access within 5 days, and prescribing workflow shape real-world effectiveness and safety."
+					"Medication interactions, kidney dosing, access fast enough to start within 5 days, and prescribing workflow shape real-world effectiveness and safety."
 			}
 		],
 		searchDatabases: ["Consensus", "CDC", "IDSA", "PubMed", "Crossref"],
@@ -18152,11 +18152,11 @@ const rawClaims: SeedClaim[] = [
 		],
 		evidenceSummaries: [
 			{
-				question: "Does nirmatrelvir-ritonavir reduce severe COVID-19 risk for high-risk outpatients?",
+				question: "Does Paxlovid reduce severe COVID-19 risk for high-risk outpatients?",
 				population:
 					"Nonhospitalized people with mild-to-moderate COVID-19 who are eligible for early antiviral treatment because age, immune status, comorbidities, or other factors raise severe-disease risk.",
 				finding:
-					"Early nirmatrelvir-ritonavir reduces hospitalization and death risk most clearly in high-risk patients, while lower-risk or highly immune populations have lower absolute event rates and less certain severe-outcome benefit.",
+					"Early Paxlovid treatment reduces hospitalization and death risk most clearly in high-risk patients, while lower-risk or highly immune populations have lower absolute event rates and less certain severe-outcome benefit.",
 				effectDirection: "supports",
 				magnitude:
 					"CDC summarizes the original high-risk unvaccinated trial as an 87% reduction in hospitalization and death; 2026 vaccinated higher-risk trials reported hospitalization or death in roughly 0.6% to 1.2% of participants and did not show a clear reduction.",
@@ -18164,7 +18164,7 @@ const rawClaims: SeedClaim[] = [
 				limitations: [
 					"Randomized evidence is strongest for unvaccinated high-risk adults early in illness.",
 					"Vaccination, prior infection, Omicron-era severity, and treatment access lower event rates and make absolute benefit harder to estimate.",
-					"Drug interactions and renal or hepatic contraindications mean eligibility requires patient-specific review."
+					"Drug interactions and kidney or liver contraindications mean eligibility requires patient-specific review."
 				]
 			}
 		],
@@ -18187,7 +18187,7 @@ const rawClaims: SeedClaim[] = [
 				date: "2026-07-05T10:45:00.000Z",
 				kind: "publication",
 				summary:
-					"Initial nirmatrelvir-ritonavir outpatient COVID-19 claim page published from CDC, IDSA, randomized trial, real-world cohort, and vaccination-era trial evidence."
+					"Initial Paxlovid outpatient COVID-19 claim page published from CDC, IDSA, randomized trial, real-world cohort, and vaccination-era trial evidence."
 			}
 		],
 		sources: [
@@ -18200,7 +18200,7 @@ const rawClaims: SeedClaim[] = [
 				isAnchor: true,
 				stance: "supports",
 				note:
-					"Current CDC outpatient-treatment anchor for treatment within 5 days, the 87% high-risk trial summary, Omicron-era real-world support, and interaction or contraindication cautions.",
+					"Current CDC outpatient-treatment anchor for treatment within 5 days, the 87% high-risk trial summary, Omicron-era real-world support, and interaction or contraindication cautions for Paxlovid.",
 				order: 1
 			},
 			{
