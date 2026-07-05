@@ -24,6 +24,14 @@ describe("privacy page layout", () => {
 		assert.match(privacySource, /The practical handling of public questions, disassociated attribution/);
 		assert.match(privacySource, /intended for children under 13\./);
 		assert.match(privacySource, /If we learn that we have created an account/);
+		assert.match(privacySource, /Remember me sessions can last up to about 30 days\./);
+		assert.match(privacySource, /Browser-side preference storage may remain until you clear it\./);
+		assert.match(privacySource, /Backups, logs, or external caches may persist for longer\./);
+		assert.match(privacySource, /<ul v-if="item\.details\?\.length" class="plain-list plain-list--tight">/);
+		assert.doesNotMatch(
+			privacySource,
+			/If you choose “remember me,” the session may last longer, currently up to about 30 days\./
+		);
 	});
 
 	it("keeps mobile privacy cards, contents links, and lists compact", () => {

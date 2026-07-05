@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
+interface RetentionRow {
+	title: string;
+	body: string;
+	details?: string[];
+}
+
 const quickPoints = [
 	{
 		title: "Account data",
@@ -83,18 +89,23 @@ const sharingCategories = [
 	"courts, regulators, law enforcement, or other third parties when legally required or reasonably necessary to protect users or the service"
 ];
 
-const retentionRows = [
+const retentionRows: RetentionRow[] = [
 	{
 		title: "Account records",
 		body: "We generally keep account information for as long as the account remains active, and for a reasonable period afterward when needed for security, fraud prevention, or legal compliance."
 	},
 	{
 		title: "Session and preference data",
-		body: "Standard session cookies are short-lived. If you choose “remember me,” the session may last longer, currently up to about 30 days. Browser-side preference storage may remain until you clear it."
+		body: "Standard session cookies are short-lived.",
+		details: [
+			"Remember me sessions can last up to about 30 days.",
+			"Browser-side preference storage may remain until you clear it."
+		]
 	},
 	{
 		title: "Public questions and thread records",
-		body: "Questions remain on the site until they are deleted by the author or an admin, or otherwise removed through moderation or operational cleanup. Backups, logs, or external caches may persist for longer."
+		body: "Questions remain until they are deleted by the author or an admin, or removed through moderation or operational cleanup.",
+		details: ["Backups, logs, or external caches may persist for longer."]
 	},
 	{
 		title: "Moderation, expert review, and security records",
@@ -267,6 +278,9 @@ useStaticPageMeta({
 				<article v-for="item in retentionRows" :key="item.title" class="category-card">
 					<h3>{{ item.title }}</h3>
 					<p>{{ item.body }}</p>
+					<ul v-if="item.details?.length" class="plain-list plain-list--tight">
+						<li v-for="detail in item.details" :key="detail">{{ detail }}</li>
+					</ul>
 				</article>
 			</div>
 		</section>
