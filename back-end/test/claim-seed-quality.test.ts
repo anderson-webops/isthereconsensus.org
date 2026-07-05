@@ -163,6 +163,39 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /try harder/i);
 	});
 
+	it("keeps the later school start time claim focused on adolescent sleep", () => {
+		const slug = "do-later-school-start-times-help-teenagers-get-more-sleep";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing later school start time claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.institutionalAnchors.map(anchor => anchor.role),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /Later middle and high school start times/);
+		assert.match(visibleSummary, /adolescent sleep/i);
+		assert.ok(claim.bottomLine.length <= 380, "Later school start time bottom line should stay concise");
+		assert.match(claim.bottomLine, /clearest consensus is on sleep timing and duration/);
+		assert.match(visibleSummary, /8:30 a\.m\. or later/);
+		assert.match(visibleSummary, /8 to 10 hours/);
+		assert.match(visibleSummary, /28 studies and 1,774,509 participants/);
+		assert.match(visibleSummary, /only 17\.7%/);
+		assert.match(visibleSummary, /depend on implementation/);
+		assert.match(visibleSummary, /do not guarantee better grades/);
+		assert.doesNotMatch(visibleSummary, /will guarantee better grades/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed grade gains/i);
+		assert.doesNotMatch(visibleSummary, /lazy/i);
+		assert.doesNotMatch(visibleSummary, /just sleep in/i);
+	});
+
 	it("keeps the wind and solar lifecycle claim bounded to greenhouse gas evidence", () => {
 		const slug = "do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

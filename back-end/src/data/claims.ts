@@ -8929,6 +8929,188 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "neuroscience-and-psychology",
+		title: "Do later school start times help teenagers get more sleep?",
+		slug: "do-later-school-start-times-help-teenagers-get-more-sleep",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Yes. Later middle and high school start times usually help students sleep longer by better matching adolescent sleep biology. Pediatric and sleep-medicine groups recommend starts no earlier than 8:30 a.m. The clearest consensus is on sleep timing and duration; effects on grades, mood, attendance, crashes, activities, jobs, buses, and family schedules depend on implementation.",
+		stableCore: [
+			"AAP and AASM both identify 8:30 a.m. or later as the target for middle and high school start times.",
+			"Adolescents tend to shift toward later sleep timing during puberty, while still needing roughly 8 to 10 hours of sleep per night.",
+			"A 2022 Pediatrics meta-analysis covering 28 studies and 1,774,509 participants found later start times associated with longer sleep duration and less negative mood.",
+			"A CDC survey before the AAP recommendation found only 17.7% of U.S. public middle, high, and combined schools started at 8:30 a.m. or later in 2011-12.",
+			"Evidence is clearest for sleep duration and sleepiness; academic, physical-health, behavior, and other downstream outcomes are less settled."
+		],
+		openQuestions: [
+			"How should districts handle transportation, athletics, jobs, after-school activities, childcare, teacher schedules, and family routines?",
+			"Which students benefit most, and which students face new burdens because of work, caregiving, long commutes, or unsafe early/late travel?",
+			"How durable are effects on grades, attendance, mental health, crash risk, and health behavior after the first year of a schedule change?",
+			"How should later start times be paired with homework load, evening screen use, extracurricular schedules, and sleep-health education?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled studies showing that implemented later start times do not improve sleep duration, sleepiness, or circadian alignment in middle and high school students.",
+			"Major AAP, AASM, CDC, or comparable public-health reassessments withdrawing the 8:30 a.m. school-start recommendation.",
+			"Evidence that common implementation costs and harms usually outweigh sleep and health benefits across diverse districts."
+		],
+		misconceptions: [
+			"Later start recommendations are not about blaming students or parents; they respond to adolescent circadian timing and chronic sleep restriction.",
+			"Later starts do not guarantee better grades for every student, school, or district.",
+			"Students may stay up somewhat later, but the evidence does not support assuming the sleep gain simply disappears.",
+			"Changing the bell schedule alone does not solve homework load, evening work, athletics, screen use, transportation, or household stress."
+		],
+		editorSummary:
+			"Later middle and high school start times are a practical sleep-health intervention with strong institutional support. The sleep-duration case is clearer than the case for every downstream school or health outcome.",
+		uncertaintySummary:
+			"The main uncertainty is not whether early start times can restrict adolescent sleep. It is how much benefit each district gets after implementation, which outcomes improve beyond sleep, and whether tradeoffs are handled equitably.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Transportation, athletics, jobs, childcare, commute safety, staffing, and family schedules can change the net impact of a later-start policy."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Effects may differ by school level, public versus private school setting, socioeconomic conditions, commute length, and local schedule constraints."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Sleep duration is the most direct outcome; grades, mood, crashes, behavior, and physical-health outcomes sit farther downstream and have thinner evidence."
+			}
+		],
+		searchDatabases: ["PubMed", "Europe PMC", "Crossref", "CDC MMWR", "AAP", "AASM"],
+		searchCutoffAt: "2026-07-05T05:54:13.000Z",
+		lastRetractionCheckAt: "2026-07-05T05:54:13.000Z",
+		inclusionRules: [
+			"Prioritize middle and high school students, adolescent sleep biology, and studies or guidelines that directly evaluate school start times.",
+			"Separate direct sleep outcomes from downstream developmental, academic, safety, and health outcomes.",
+			"Use guideline and public-health sources for policy recommendations, and systematic reviews or meta-analyses for effect-direction evidence."
+		],
+		exclusionRules: [
+			"Do not treat adult workplace schedules, college class timing, or generic sleep-hygiene advice as direct evidence for middle and high school start-time policy.",
+			"Do not count opinion pieces or advocacy materials unless they cite primary evidence and are used only as implementation context.",
+			"Do not present local logistics, cost, or athletics tradeoffs as settled by sleep-duration studies alone."
+		],
+		evidenceSummaries: [
+			{
+				question: "Do later school start times improve adolescent sleep duration?",
+				population:
+					"Middle and high school students in school-start-time studies and public-health guidance.",
+				finding:
+					"Later start times are associated with longer sleep duration and better alignment with adolescent circadian timing.",
+				effectDirection: "supports",
+				magnitude:
+					"The 2022 Pediatrics meta-analysis synthesized 28 studies and 1,774,509 participants and found longer sleep duration with later start times, especially when new start times were between 8:30 and 8:59.",
+				certainty: "moderate",
+				limitations: [
+					"Many studies are observational, quasi-experimental, or self-report-heavy rather than randomized district-level trials.",
+					"School schedules change alongside transportation, homework, extracurricular, and household routines.",
+					"Evidence is more direct for sleep duration than for grades, physical health, or long-term mental-health outcomes."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "American Academy of Pediatrics",
+				role: "Pediatric policy anchor for middle and high schools aiming for start times that allow adequate adolescent sleep."
+			},
+			{
+				name: "American Academy of Sleep Medicine",
+				role: "Sleep-medicine anchor calling for middle and high school start times of 8:30 a.m. or later."
+			},
+			{
+				name: "Centers for Disease Control and Prevention",
+				role:
+					"Public-health surveillance anchor describing early school starts as common before the AAP recommendation and naming local implementation barriers."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T05:54:13.000Z",
+				kind: "publication",
+				summary:
+					"Initial adolescent school-start-time claim page published from AAP and AASM recommendations, CDC MMWR surveillance context, Cochrane review evidence, and a Pediatrics meta-analysis."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "School start times for adolescents",
+				publisher: "Pediatrics",
+				year: 2014,
+				url: "https://pubmed.ncbi.nlm.nih.gov/25156998/",
+				doi: "10.1542/peds.2014-1697",
+				pmid: "25156998",
+				pmcid: "PMC8194457",
+				stance: "supports",
+				note:
+					"AAP policy statement recognizing starts before 8:30 a.m. as a modifiable contributor to insufficient adolescent sleep and urging middle and high schools to aim for schedules that support adequate sleep.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title:
+					"Delaying Middle School and High School Start Times Promotes Student Health and Performance",
+				publisher: "Journal of Clinical Sleep Medicine",
+				year: 2017,
+				url: "https://pubmed.ncbi.nlm.nih.gov/28416043/",
+				doi: "10.5664/jcsm.6558",
+				pmid: "28416043",
+				pmcid: "PMC5359340",
+				stance: "supports",
+				note:
+					"AASM position statement calling for middle and high schools to start at 8:30 a.m. or later so students arrive healthy, awake, alert, and ready to learn.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "School Start Times, Sleep, and Youth Outcomes: A Meta-analysis",
+				publisher: "Pediatrics",
+				year: 2022,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9665092/",
+				doi: "10.1542/peds.2021-054068",
+				pmid: "35593065",
+				pmcid: "PMC9665092",
+				stance: "supports",
+				note:
+					"Meta-analysis of 28 studies and 1,774,509 participants finding later school start times associated with longer sleep duration, less negative mood, and better overall developmental outcomes, while noting limited research for several downstream outcomes.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"Later school start times for supporting the education, health, and well-being of high school students",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2017,
+				url: "https://pubmed.ncbi.nlm.nih.gov/28670711/",
+				doi: "10.1002/14651858.CD009467.pub2",
+				pmid: "28670711",
+				pmcid: "PMC6483483",
+				stance: "supports",
+				note:
+					"Cochrane review supporting likely sleep-duration benefits from later high school start times while emphasizing limited and low-certainty evidence for broader education, health, and well-being outcomes.",
+				order: 4
+			},
+			{
+				kind: "context",
+				title: "School Start Times for Middle School and High School Students - United States, 2011-12 School Year",
+				publisher: "CDC Morbidity and Mortality Weekly Report",
+				year: 2015,
+				url: "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6430a1.htm",
+				stance: "context",
+				note:
+					"CDC MMWR baseline finding that only 17.7% of U.S. public middle, high, and combined schools started at 8:30 a.m. or later in 2011-12, with discussion of common implementation barriers.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
 		title: "Is cognitive behavioral therapy for insomnia a first-line treatment for chronic insomnia?",
 		slug: "is-cognitive-behavioral-therapy-for-insomnia-a-first-line-treatment-for-chronic-insomnia",
 		status: "published",
