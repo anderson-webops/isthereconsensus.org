@@ -203,19 +203,23 @@ useStaticPageMeta({
 				<h2>7. Moderation, routing, and enforcement</h2>
 			</div>
 			<div class="prose">
+				<h3>Moderation actions</h3>
 				<p>
 					We may review, flag, route, merge, hide, archive, or remove content to enforce these terms, protect
 					users, keep claim pages coherent, reduce duplication, or preserve editorial integrity.
 				</p>
+				<h3>Related policies</h3>
 				<p>
 					The public-facing conduct rules and moderation model are described in the
 					<NuxtLink to="/community-guidelines">Community Guidelines</NuxtLink> and
 					<NuxtLink to="/moderation-and-appeals">Moderation and Appeals</NuxtLink> pages.
 				</p>
+				<h3>Account consequences</h3>
 				<p>
 					We may suspend or terminate accounts or editorial access if we believe a user has violated these
 					terms, created legal risk, attempted manipulation, or interfered with normal operations.
 				</p>
+				<h3>Records we may retain</h3>
 				<p>
 					We may preserve moderation, abuse-prevention, and operational logs as reasonably necessary for
 					safety, integrity, legal compliance, and dispute handling.
@@ -240,14 +244,17 @@ useStaticPageMeta({
 				<li v-for="item in editorialPoints" :key="item">{{ item }}</li>
 			</ul>
 			<div class="prose">
+				<h3>Professional advice</h3>
 				<p>
 					The site discusses consequential topics such as health, medicine, nutrition, psychology, and
 					climate. It is not a substitute for a licensed professional who knows your circumstances.
 				</p>
+				<h3>Corrections path</h3>
 				<p>
 					The public corrections path, including how factual changes are labeled and surfaced, is described in
 					the <NuxtLink to="/corrections">Corrections Policy</NuxtLink>.
 				</p>
+				<h3>Emergencies</h3>
 				<p>
 					If you believe you are experiencing a medical or mental health emergency, do not rely on the site.
 					Contact an appropriate clinician or emergency service.
@@ -260,15 +267,18 @@ useStaticPageMeta({
 				<h2>10. Intellectual property and copyright concerns</h2>
 			</div>
 			<div class="prose">
+				<h3>Site materials</h3>
 				<p>
 					The site’s original text, layout, brand elements, and editorial compilations are protected by
 					intellectual property laws. Do not copy substantial portions or republish site materials beyond fair
 					use or written permission.
 				</p>
+				<h3>Third-party materials</h3>
 				<p>
 					Third-party articles, paper abstracts, logos, and linked materials remain the property of their
 					respective owners.
 				</p>
+				<h3>Rights complaints</h3>
 				<p>
 					If you believe content on the site infringes your copyright or other rights, email
 					<a href="mailto:consensus@isthereconsensus.org">consensus@isthereconsensus.org</a> with enough
@@ -299,11 +309,13 @@ useStaticPageMeta({
 				<h2>12. Disclaimers</h2>
 			</div>
 			<div class="prose">
+				<h3>Service availability</h3>
 				<p>
 					To the fullest extent permitted by law, the site is provided on an “as is” and “as available” basis.
 					We do not guarantee uninterrupted availability, perfect accuracy, or that the site will always be
 					free of errors, omissions, or outdated material.
 				</p>
+				<h3>Community content</h3>
 				<p>
 					We do not guarantee that community content is accurate, lawful, or useful. Community content
 					reflects the views of the people who submitted it, not necessarily the views of the site.
@@ -316,6 +328,7 @@ useStaticPageMeta({
 				<h2>13. Limitation of liability</h2>
 			</div>
 			<div class="prose">
+				<h3>Excluded damages</h3>
 				<p>
 					To the fullest extent permitted by law, isthereconsensus.org and its operators will not be liable
 					for indirect, incidental, special, consequential, exemplary, or punitive damages.
@@ -324,6 +337,7 @@ useStaticPageMeta({
 					That includes loss of data, goodwill, profits, or business opportunities arising from or related to
 					your use of the site.
 				</p>
+				<h3>Legal limits</h3>
 				<p>
 					Where the law does not allow a full exclusion of liability, liability is limited to the narrowest
 					extent the law permits.
@@ -390,6 +404,7 @@ useStaticPageMeta({
 .terms-header h1,
 .section-heading h2,
 .terms-contents h2,
+.prose h3,
 .summary-card h3,
 .terms-callout h2 {
 	margin: 0;
@@ -475,9 +490,16 @@ useStaticPageMeta({
 .summary-card p,
 .plain-list,
 .prose p,
+.prose h3,
 .summary-card h3,
 .section-heading h2 {
 	margin: 0;
+}
+
+.prose h3 {
+	color: var(--consensus-ink);
+	font-size: 0.98rem;
+	line-height: 1.25;
 }
 
 .section-heading {

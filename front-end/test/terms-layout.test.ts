@@ -36,6 +36,28 @@ describe("terms page layout", () => {
 		assert.doesNotMatch(termsSource, /attempted to manipulate the site/);
 	});
 
+	it("uses subheads to make dense legal sections scannable", () => {
+		for (const label of [
+			"Moderation actions",
+			"Related policies",
+			"Account consequences",
+			"Records we may retain",
+			"Professional advice",
+			"Corrections path",
+			"Emergencies",
+			"Site materials",
+			"Third-party materials",
+			"Rights complaints",
+			"Service availability",
+			"Community content",
+			"Excluded damages",
+			"Legal limits"
+		]) {
+			assert.match(termsSource, new RegExp(`>${label}<`));
+		}
+		assert.match(termsSource, /\.prose h3 \{[\s\S]*font-size: 0\.98rem;/);
+	});
+
 	it("keeps public terms paragraphs short enough to scan", () => {
 		const longParagraphs = publicParagraphText(termsSource).filter((text) => text.length > 250);
 
