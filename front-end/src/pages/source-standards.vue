@@ -365,7 +365,17 @@ useStaticPageMeta({
 .source-stack div,
 .tier-list li {
 	display: grid;
-	gap: 4px;
+	gap: 5px;
+}
+
+.tier-list li {
+	padding-left: 12px;
+	border-left: 3px solid color-mix(in srgb, var(--consensus-debate) 28%, var(--consensus-soft-line));
+}
+
+.tier-list li::marker {
+	color: var(--consensus-muted);
+	font-weight: 700;
 }
 
 .source-stack dt,
@@ -398,9 +408,9 @@ useStaticPageMeta({
 
 .tier-list {
 	display: grid;
-	gap: 10px;
+	gap: 12px;
 	margin: 0;
-	padding-left: 20px;
+	padding-left: 22px;
 	color: var(--consensus-muted);
 }
 
@@ -474,6 +484,19 @@ useStaticPageMeta({
 
 	.topic-standard summary {
 		gap: 10px;
+	}
+
+	.topic-standard__body {
+		gap: 14px;
+	}
+
+	.tier-list {
+		gap: 8px;
+		padding-left: 18px;
+	}
+
+	.tier-list li {
+		padding-left: 10px;
 	}
 
 	.callout {

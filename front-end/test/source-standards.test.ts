@@ -67,4 +67,16 @@ describe("source standards", () => {
 		assert.doesNotMatch(source, /This reference supports source-stack review/);
 		assert.doesNotMatch(source, /Start with the main public trust page/);
 	});
+
+	it("keeps source hierarchy tiers visually separated for scanning", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
+
+		assert.match(source, /\.tier-list li \{[\s\S]*padding-left: 12px;[\s\S]*border-left: 3px solid/);
+		assert.match(source, /\.tier-list li::marker \{[\s\S]*font-weight: 700;/);
+		assert.match(source, /\.tier-list \{[\s\S]*gap: 12px;[\s\S]*padding-left: 22px;/);
+		assert.match(
+			source,
+			/@media \(max-width: 720px\) \{[\s\S]*\.topic-standard__body \{[\s\S]*gap: 14px;[\s\S]*\.tier-list \{[\s\S]*gap: 8px;[\s\S]*padding-left: 18px;/
+		);
+	});
 });
