@@ -10,7 +10,7 @@ const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
+		it(`keeps the compact palette and color-mode controls in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 			const paletteImportIndex = source.indexOf('import PaletteSwitcher from "~/components/PaletteSwitcher.vue"');
 			const themeImportIndex = source.indexOf('import ThemeToggle from "~/components/ThemeToggle.vue"');
@@ -24,9 +24,9 @@ describe("theme controls", () => {
 			assert.ok(paletteRenderIndex < themeRenderIndex);
 			assert.match(
 				source,
-				/class="site-header__controls" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
+				/class="site-footer__appearance" role="group" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
 			);
-			assert.doesNotMatch(source, /site-footer__appearance/);
+			assert.doesNotMatch(source, /site-header__controls/);
 		});
 
 		it(`keeps the footer focused on support and policy links in ${file}`, () => {
@@ -36,11 +36,9 @@ describe("theme controls", () => {
 
 			assert.notEqual(footerStart, -1);
 			assert.match(footer, /to="\/corrections"[\s\S]*Corrections/);
-			assert.match(footer, /to="\/community-guidelines"[\s\S]*Guidelines/);
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
-			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
-			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
+			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work|Guidelines/);
 		});
 	}
 
