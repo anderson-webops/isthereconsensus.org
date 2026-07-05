@@ -4,15 +4,15 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Manual request path",
-		body: "There is not currently a self-serve deletion portal, so account closure and deletion requests go to the site operator."
+		body: "There is no self-serve deletion portal yet; account closure and deletion requests go to the site operator."
 	},
 	{
 		title: "Public content differs",
-		body: "Public questions and threads may need different handling. They can be removed, disassociated, or retained for integrity reasons."
+		body: "Public questions and threads can be removed, disassociated, or retained when integrity requires it."
 	},
 	{
 		title: "Records may remain",
-		body: "Moderation, security, abuse-prevention, and backup records may persist beyond account closure when reasonably necessary."
+		body: "Moderation, security, abuse-prevention, and backup records may remain after account closure when necessary."
 	},
 	{
 		title: "External caches",
@@ -23,7 +23,7 @@ const quickPoints = [
 const retentionMatrix = [
 	{
 		title: "Account profile and login data",
-		body: "The site deletes or disables access and removes routine profile data unless security, legal, or abuse-prevention records must remain."
+		body: "The site deletes or disables access and removes routine profile data unless security, legal, or abuse-prevention records need to remain."
 	},
 	{
 		title: "Public questions and community content",
@@ -42,7 +42,7 @@ const retentionMatrix = [
 const requestSteps = [
 	"email from the account address or provide enough information to verify ownership",
 	"state whether you want account closure, public-content deletion, or both",
-	"identify any question URLs or text you want reviewed for removal, redaction, or disassociation",
+	"identify question URLs or text you want reviewed for removal, redaction, or disassociation",
 	"allow time for identity checks and review of safety, fraud, or legal retention exceptions"
 ];
 
@@ -67,10 +67,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Account deletion and retention</p>
 			<h1>Account deletion and retained records.</h1>
-			<p>
-				The current request-based process covers account closure, public-content handling, and retained
-				operational records.
-			</p>
+			<p>Use this request-based process for account closure, public-content handling, and retained records.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -96,7 +93,7 @@ useStaticPageMeta({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>How to make a request</h2>
-				<p>The current workflow is manual, so precise requests are easier to honor correctly.</p>
+				<p>The workflow is manual, so precise requests are easier to review correctly.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in requestSteps" :key="item">{{ item }}</li>
@@ -126,7 +123,7 @@ useStaticPageMeta({
 				<h2>Privacy maps data; account closure covers retained records.</h2>
 				<p>
 					The Privacy Policy explains collection and legal request channels. Account-closure guidance explains
-					what happens to public contributions and retained records.
+					what can happen to public contributions and retained records.
 				</p>
 			</div>
 			<div class="policy-callout__actions">
