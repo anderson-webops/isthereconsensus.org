@@ -77,7 +77,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		whatPeopleGetWrong:
 			"Readers often imagine that 'a study is a study.' In practice, different designs answer different questions and carry different bias risks.",
 		coreConcept:
-			"A literature should be read as a stack: context and mechanism at the base, higher-quality human studies above that, and systematic summaries near the top. The best public summary usually starts from the top of that stack.",
+			"A literature is easiest to read as a stack: context and mechanism at the base, higher-quality human studies above that, and systematic summaries near the top. The best public summary usually starts from the top of that stack.",
 		howScientistsHandleIt: [
 			"They ask what kind of study each source is and what it can actually show.",
 			"They use systematic search and inclusion rules to avoid cherry-picking.",
@@ -252,7 +252,7 @@ export const evergreenExplainers: ExplainerItem[] = [
 		keyPoints: [
 			"Good claims identify what would count against them.",
 			"A claim that can explain any result is hard to test.",
-			"Revision thresholds should be explicit."
+			"Revision thresholds are explicit."
 		],
 		whatPeopleGetWrong:
 			"People sometimes imagine that a consensus claim must be defended no matter what. Good scientific claims instead name the kind of evidence that would lower confidence or force a rewrite.",

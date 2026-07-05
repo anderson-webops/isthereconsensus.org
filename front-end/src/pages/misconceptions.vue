@@ -45,14 +45,14 @@ useStaticPageMeta({
 
 		<section class="misconception-panel misconception-panel--soft">
 			<div class="section-heading section-heading--tight">
-				<h2>How to use the library</h2>
+				<h2>How the library fits</h2>
 				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
 			</div>
 			<ul class="plain-list">
-				<li>Use the short correction when a claim page keeps attracting the same misunderstanding.</li>
-				<li>Keep the correction neutral and plain-language instead of turning it into a scolding.</li>
-				<li>Link to one explainer page so readers can learn the method once and reuse it elsewhere.</li>
-				<li>Use topic-shaped examples, but keep the conceptual logic consistent across clusters.</li>
+				<li>The short correction fits claim pages that keep attracting the same misunderstanding.</li>
+				<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
+				<li>One linked explainer lets readers learn the method once and reuse it elsewhere.</li>
+				<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
 			</ul>
 		</section>
 
@@ -131,7 +131,7 @@ useStaticPageMeta({
 		<section class="misconception-callout">
 			<div>
 				<p class="eyebrow">Next step</p>
-				<h2>Use the right module, then return to the claim.</h2>
+				<h2>Pick the right module, then return to the claim.</h2>
 				<p>
 					The goal is to stop the same interpretation mistake from repeating without pulling readers away from
 					the claim.

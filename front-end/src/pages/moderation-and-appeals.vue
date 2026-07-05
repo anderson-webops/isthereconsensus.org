@@ -11,7 +11,7 @@ const quickPoints = [
 		body: "Appeals challenge an enforcement decision or add new context; they are not a place to repeat the same argument indefinitely."
 	},
 	{
-		title: "Use the right lane",
+		title: "Use corrections for fact disputes",
 		body: "Fact disputes about reviewed pages usually belong in corrections, not the abuse-enforcement lane."
 	},
 	{
@@ -83,7 +83,7 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Action types</h2>
-				<p>Moderation should use the smallest accurate tool before escalating further.</p>
+				<p>Moderation starts with the smallest accurate tool before escalating further.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in actionTypes" :key="item">{{ item }}</li>
@@ -133,10 +133,10 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Keep the lanes separate</p>
-				<h2>Use corrections for facts and appeals for enforcement.</h2>
+				<h2>Corrections handle facts; appeals handle enforcement.</h2>
 				<p>
-					If the problem is factual, use corrections. If the problem is conduct enforcement, use this page and
-					the community-guideline framework.
+					Factual problems belong in corrections. Conduct-enforcement problems belong here and in the
+					community-guideline framework.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

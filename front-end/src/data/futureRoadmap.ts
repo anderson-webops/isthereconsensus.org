@@ -94,7 +94,7 @@ export const highestLeverageImprovements: FutureImprovement[] = [
 		rank: 8,
 		title: "Show the agreement × certainty rubric earlier and more consistently",
 		whyItMatters:
-			"Readers should be able to tell quickly whether a page is stable, qualified, or frontier territory before they reach the long-form nuance.",
+			"Readers need to tell quickly whether a page is stable, qualified, or frontier territory before they reach the long-form nuance.",
 		implementation:
 			"Keep agreement and certainty visible above the fold, and make uncertainty typed rather than vague.",
 		successMetric: "Reader testing shows better recall of what is settled versus what is still open."

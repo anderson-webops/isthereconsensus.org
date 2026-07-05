@@ -286,7 +286,7 @@ async function submitQuestion() {
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
 			<h1>Search first. Ask what is missing.</h1>
-			<p>Open a reviewed page when it fits. Use the queue only when the question is still missing.</p>
+			<p>Open a reviewed page when it fits. The queue is for questions that are still missing.</p>
 		</header>
 
 		<section class="search-panel">

@@ -61,7 +61,7 @@ const accountFacts = computed(() => {
 
 		<section v-if="canUseEditorial" class="next-step">
 			<p class="eyebrow">Editorial access</p>
-			<h2>Use the separate editorial workspace for intake routing and claim maintenance.</h2>
+			<h2>The editorial workspace handles intake routing and claim maintenance.</h2>
 			<p>
 				The public account page stays intentionally light. Draft claims, review queues, and moderation tools
 				live in a separate workspace so they do not complicate normal account management.

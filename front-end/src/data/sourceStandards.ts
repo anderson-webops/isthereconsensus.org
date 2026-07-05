@@ -43,11 +43,11 @@ export const fallbackSourceStandard: SourceStandard = {
 	primaryAnchors: [
 		{
 			name: "Primary guideline or assessment bodies",
-			note: "Use the institutions that already synthesize the field."
+			note: "Institutions that already synthesize the field."
 		}
 	],
 	secondaryAnchors: [
-		{ name: "Independent systematic review programs", note: "Use these to validate direction and certainty." }
+		{ name: "Independent systematic review programs", note: "Independent checks on direction and certainty." }
 	],
 	sourceHierarchy: [
 		{
@@ -60,7 +60,7 @@ export const fallbackSourceStandard: SourceStandard = {
 		},
 		{
 			title: "Tier 3 - Pivotal primary studies",
-			body: "Use landmark trials or major studies only when they materially changed the field or clarify a live disagreement."
+			body: "Landmark trials or major studies matter most when they materially changed the field or clarify a live disagreement."
 		},
 		{
 			title: "Tier 4 - Context",
@@ -68,13 +68,13 @@ export const fallbackSourceStandard: SourceStandard = {
 		},
 		{
 			title: "Tier 5 - Discovery tools and AI research assistants",
-			body: "Use tools such as Consensus.app to find candidate papers and citation trails, then verify the underlying sources directly before they influence a reviewed answer."
+			body: "Tools such as Consensus.app can find candidate papers and citation trails, but the underlying sources need direct verification before they influence a reviewed answer."
 		}
 	],
 	anchorSourceRule:
-		"Anchor sources should be institutional, explicit, and decision-facing. They should define the population, outcome, and update path.",
+		"Anchor sources are institutional, explicit, and decision-facing. They define the population, outcome, and update path.",
 	supportContextRule:
-		"Single studies, preprints, conference abstracts, mechanism papers, commentary, and AI-generated literature summaries can explain context or help discovery but should not carry the public bottom line by themselves.",
+		"Single studies, preprints, conference abstracts, mechanism papers, commentary, and AI-generated literature summaries can explain context or help discovery, but they do not carry the public bottom line by themselves.",
 	avoidOverweighting: [
 		"Small underpowered studies",
 		"Subgroup claims treated as the main finding",
@@ -109,7 +109,7 @@ export const sourceStandards: SourceStandard[] = [
 		slug: "health-and-medicine",
 		title: "Health and medicine",
 		summary:
-			"Health pages should be anchored by evidence-based guidelines, regulator lifecycle decisions, and independent syntheses rather than isolated trials or commentary.",
+			"Health pages rely on evidence-based guidelines, regulator lifecycle decisions, and independent syntheses rather than isolated trials or commentary.",
 		twoLayer: {
 			anchorA:
 				"Current guideline, recommendation, or regulator assessment from WHO, CDC, USPSTF, FDA, EMA, NICE, or a similar primary body.",
@@ -312,13 +312,13 @@ export const sourceStandards: SourceStandard[] = [
 			},
 			{
 				title: "Tier 5 - Rebuttal explainers and myth libraries",
-				body: "Use resources such as Skeptical Science to explain recurring objections and denial techniques; do not let rebuttal pages outrank assessments, datasets, or synthesis papers."
+				body: "Resources such as Skeptical Science can explain recurring objections and denial techniques, but rebuttal pages do not outrank assessments, datasets, or synthesis papers."
 			}
 		],
 		anchorSourceRule:
-			"Anchor sources should be official assessments or science assessments that summarize the field and expose their uncertainty language.",
+			"Anchor sources are official assessments or science assessments that summarize the field and expose their uncertainty language.",
 		supportContextRule:
-			"Skeptical Science rebuttals, single event studies, advocacy explainers, short trend windows, or localized analyses should stay contextual unless a formal assessment elevates them.",
+			"Skeptical Science rebuttals, single event studies, advocacy explainers, short trend windows, and localized analyses stay contextual unless a formal assessment elevates them.",
 		avoidOverweighting: [
 			"Single-year anomalies",
 			"Single-region impacts extrapolated globally",
@@ -376,15 +376,15 @@ export const sourceStandards: SourceStandard[] = [
 		sourceHierarchy: [
 			{
 				title: "Tier 1 - Regulator and governance outputs",
-				body: "Use formal approvals, safety frameworks, governance reports, and interpretation standards to define the public baseline."
+				body: "Formal approvals, safety frameworks, governance reports, and interpretation standards define the public baseline."
 			},
 			{
 				title: "Tier 2 - Independent synthesis and curated frameworks",
-				body: "Use systematic reviews or formal curation frameworks to check whether the same direction holds up independently."
+				body: "Systematic reviews or formal curation frameworks check whether the same direction holds up independently."
 			},
 			{
 				title: "Tier 3 - Registries and pivotal trials",
-				body: "Use when long-term follow-up, durability, or rare harms matter to the claim."
+				body: "Most relevant when long-term follow-up, durability, or rare harms matter to the claim."
 			},
 			{
 				title: "Tier 4 - Mechanism and early translation",
@@ -448,11 +448,11 @@ export const sourceStandards: SourceStandard[] = [
 		sourceHierarchy: [
 			{
 				title: "Tier 1 - Evidence-based guidelines",
-				body: "Use treatment and practice recommendations with explicit evidence grading and scope."
+				body: "Treatment and practice recommendations work best when they include explicit evidence grading and scope."
 			},
 			{
 				title: "Tier 2 - Systematic reviews and network meta-analyses",
-				body: "Use these for comparative effectiveness and harms instead of one favorite study or modality."
+				body: "Best for comparative effectiveness and harms, rather than one favorite study or modality."
 			},
 			{
 				title: "Tier 3 - Large preregistered randomized trials",
@@ -505,7 +505,7 @@ export const sourceStandards: SourceStandard[] = [
 				"A consensus definition or policy source from National Academies, NIH, ICMJE, EQUATOR, COS, or another norms-setting institution.",
 			anchorB:
 				"Empirical meta-research or standards documentation that shows how the norm performs or why it exists.",
-			why: "Method pages should be built on institutions that define norms, not on essays that merely comment on them."
+			why: "Method pages work best when grounded in institutions that define norms, not essays that merely comment on them."
 		},
 		primaryAnchors: [
 			{ name: "National Academies", note: "Consensus definitions for reproducibility and replicability." },
@@ -527,11 +527,11 @@ export const sourceStandards: SourceStandard[] = [
 		sourceHierarchy: [
 			{
 				title: "Tier 1 - Consensus definitions and policy norms",
-				body: "Use these to define the method rule itself."
+				body: "Defines the method rule itself."
 			},
 			{
 				title: "Tier 2 - Registration and reporting standards",
-				body: "Use these to show what good research disclosure should look like in practice."
+				body: "Shows what good research disclosure looks like in practice."
 			},
 			{
 				title: "Tier 3 - Meta-research",

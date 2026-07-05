@@ -134,7 +134,7 @@ useStaticPageMeta({
 				<p class="eyebrow">Related standards</p>
 				<h2>Disclosure matters when it changes assignment and review behavior.</h2>
 				<p>
-					Use the expert program page for reviewer standards and How Reviews Work for the public publishing
+					The expert program page covers reviewer standards; How Reviews Work covers the public publishing
 					bar.
 				</p>
 			</div>

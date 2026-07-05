@@ -53,11 +53,11 @@ useStaticPageMeta({
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Use the library, then return to the claim</p>
+				<p class="eyebrow">Support the claim, then return</p>
 				<h2>These are support pages, not a detour.</h2>
 				<p>
-					Use them when a topic page references evidence hierarchies, uncertainty, or media distortion and you
-					want the fuller explanation once, in one place.
+					They fit when a topic page references evidence hierarchies, uncertainty, or media distortion and the
+					fuller explanation belongs in one reusable place.
 				</p>
 			</div>
 			<div class="explainer-callout__actions">

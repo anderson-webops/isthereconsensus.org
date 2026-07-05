@@ -105,7 +105,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel">
 			<div class="section-heading section-heading--tight">
 				<h2>Expected conduct</h2>
-				<p>Good threads help the editorial layer think clearly; poor threads add noise.</p>
+				<p>Good threads help the review process stay clear; poor threads add noise.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in conductRules" :key="item">{{ item }}</li>
@@ -115,7 +115,7 @@ useStaticPageMeta({
 		<section class="guidelines-panel guidelines-panel--soft">
 			<div class="section-heading section-heading--tight">
 				<h2>Standard flag reasons</h2>
-				<p>Use the smallest accurate category so moderators can act quickly and consistently.</p>
+				<p>Choose the smallest accurate category so moderators can act quickly and consistently.</p>
 			</div>
 			<ul class="plain-list">
 				<li v-for="item in flagReasons" :key="item">{{ item }}</li>

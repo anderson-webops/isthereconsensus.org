@@ -23,8 +23,8 @@ const updateTriggers = [
 const citationRules = [
 	"Rely on syntheses and official reports before isolated papers or commentary.",
 	"When evidence is early or thin, say so directly.",
-	"Use context sources to explain a topic, not to carry the public answer.",
-	"Use tools such as Consensus.app for discovery, then cite verified underlying sources."
+	"Context sources can explain a topic, but they do not carry the public answer.",
+	"Tools such as Consensus.app can support discovery; reviewed pages cite verified underlying sources."
 ];
 
 const disagreementRules = [

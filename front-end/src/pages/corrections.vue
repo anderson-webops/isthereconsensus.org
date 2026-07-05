@@ -133,7 +133,7 @@ useStaticPageMeta({
 		<section class="corrections-callout">
 			<div>
 				<p class="eyebrow">Report a problem</p>
-				<h2>Send correction evidence to the editorial layer.</h2>
+				<h2>Send correction evidence to the review team.</h2>
 				<p>
 					For factual correction requests, source-stack problems, or major update triggers, email
 					<a href="mailto:consensus@isthereconsensus.org">consensus@isthereconsensus.org</a> with the claim

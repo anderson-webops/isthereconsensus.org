@@ -28,8 +28,7 @@ onBeforeUnmount(() => {
 });
 
 useStaticPageMeta({
-	description:
-		"Reference topic-specific sourcing notes for reviewers checking how source stacks should be weighted in unusual fields.",
+	description: "Topic-specific sourcing notes help reviewers check how source stacks are weighted in unusual fields.",
 	path: "/source-standards",
 	robots: "noindex,follow",
 	title: "Topic sourcing notes - Is There Consensus?"
@@ -71,7 +70,7 @@ useStaticPageMeta({
 		<section class="topic-standards-section">
 			<div class="section-heading section-heading--tight">
 				<h2>Topic notes</h2>
-				<p>Use these field-specific notes when the default evidence hierarchy needs more context.</p>
+				<p>These field-specific notes add context when the default evidence hierarchy is too general.</p>
 			</div>
 			<div class="topic-standard-list">
 				<details
@@ -158,7 +157,7 @@ useStaticPageMeta({
 		<section class="callout">
 			<div>
 				<p class="eyebrow">Start simpler</p>
-				<h2>Use the main public trust page first.</h2>
+				<h2>Start with the main public trust page.</h2>
 				<p>
 					If you only want to understand what reviewed pages show and why they are trustworthy, go back to How
 					Reviews Work.

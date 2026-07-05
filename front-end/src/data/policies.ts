@@ -28,7 +28,7 @@ export const policyGroups: PolicyGroup[] = [
 				title: "Privacy policy",
 				to: "/privacy",
 				summary:
-					"What personal data the site collects, how it is used, what is public, and how privacy requests should be submitted.",
+					"What personal data the site collects, how it is used, what is public, and how to submit privacy requests.",
 				status: "core"
 			},
 			{
@@ -89,8 +89,7 @@ export const policyGroups: PolicyGroup[] = [
 			{
 				title: "Moderation and appeals",
 				to: "/moderation-and-appeals",
-				summary:
-					"Defines notices, action types, appeal expectations, and how moderation transparency should work.",
+				summary: "Defines notices, action types, appeal expectations, and how moderation transparency works.",
 				status: "operational"
 			},
 			{
@@ -113,7 +112,7 @@ export const policyGroups: PolicyGroup[] = [
 
 export const policyPrinciples = [
 	"Start with the narrowest page that matches the problem you actually have.",
-	"Use legal pages for rights and privacy questions, and the trust pages for how reviewed answers are built.",
+	"Legal pages cover rights and privacy questions; trust pages explain how reviewed answers are built.",
 	"Keep community discussion, reviewed pages, and correction paths separate.",
-	"Do not treat planning notes or internal workflow details like everyday reading."
+	"Planning notes stay separate from everyday reading."
 ];

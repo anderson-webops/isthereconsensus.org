@@ -20,7 +20,7 @@ const fallbackGuide: TopicGuide = {
 	slug: "fallback",
 	consensusScore: 50,
 	consensusLabel: "Mixed and still taking shape",
-	snapshot: "This topic needs a clearer consensus summary before it should be treated as settled.",
+	snapshot: "This topic still needs a clearer consensus summary before it can be treated as settled.",
 	stableCore: [
 		"Separate the broad claim from the exact mechanism being debated.",
 		"Look for replication and synthesis before treating a new result as decisive."
@@ -187,7 +187,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Public fear around GMOs and biotechnology often blends safety, agriculture, business practices, and ethics into one argument, even when the scientific questions are more specific.",
 		stableCore: [
 			"Major scientific and public-health bodies treat currently approved GM foods as no more inherently dangerous to eat than comparable conventional foods.",
-			"Safety claims about biotechnology should be separated from wider debates about patents, farming policy, or corporate power.",
+			"Safety claims about biotechnology belong apart from wider debates about patents, farming policy, or corporate power.",
 			"Gene-editing tools can have real benefits and real risks, but those risks need to be assessed claim by claim rather than by panic about the category itself."
 		],
 		openQuestions: [

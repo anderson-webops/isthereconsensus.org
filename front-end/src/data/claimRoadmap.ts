@@ -25,7 +25,7 @@ export interface ClaimRoadmapEntry {
 export const backlogPrinciples = [
 	"Bias toward claims where public confusion, real-world harm, and strong institutional anchors all overlap.",
 	"Prefer pages that can cleanly separate what is settled, what remains qualified, and what evidence would actually move expert views.",
-	"Use canonical claim pages for stable propositions, evergreen explainers for recurring concepts, and topic-hub sections for narrower follow-ons.",
+	"Canonical claim pages fit stable propositions, evergreen explainers fit recurring concepts, and topic-hub sections fit narrower follow-ons.",
 	"Delay pages that still need unusually heavy uncertainty framing unless the site can explain the open questions without overstating certainty."
 ];
 
@@ -208,7 +208,7 @@ export const topPriorityClaims: ClaimRoadmapEntry[] = [
 		cluster: "Environmental health & global burden",
 		topicSlug: "climate-and-environment",
 		whyItMatters:
-			"Air pollution remains one of the largest preventable global risk factors, yet many people still treat it as only an aesthetic or respiratory issue. This page can anchor the population-level burden clearly.",
+			"Air pollution remains one of the largest preventable global risk factors, yet many people still treat it as only an aesthetic or respiratory issue. A claim page can anchor the population-level burden clearly.",
 		consensusTier: "strong consensus",
 		evidenceCertainty: "high",
 		anchors: ["WHO", "EPA", "Health Effects Institute"],
@@ -519,7 +519,7 @@ export const backlogClaims: ClaimRoadmapEntry[] = [
 		cluster: "Public health & metabolic disease",
 		topicSlug: "health-and-medicine",
 		whyItMatters:
-			"This page can cut through moralizing and denial while staying focused on population-level risk rather than individual blame.",
+			"A claim page can cut through moralizing and denial while staying focused on population-level risk rather than individual blame.",
 		consensusTier: "strong consensus",
 		evidenceCertainty: "high",
 		anchors: ["WHO"],

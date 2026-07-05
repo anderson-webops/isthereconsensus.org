@@ -52,7 +52,7 @@ const humanGates = [
 const contributorRules = [
 	"Do not upload private drafts, sensitive user data, or reviewer materials to outside tools unless the site can defend that confidentiality choice.",
 	"Treat generated summaries as fallible working material, not as a substitute for evidence review.",
-	"If AI assistance shaped reviewer or editorial output in a meaningful way, disclose that use internally and, where relevant, on the public page."
+	"If AI assistance shaped reviewer or editorial output in a meaningful way, disclose that use internally and, where relevant, on the reviewed page."
 ];
 
 useStaticPageMeta({

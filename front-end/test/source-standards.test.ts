@@ -26,7 +26,7 @@ describe("source standards", () => {
 		assert.match(standard.supportContextRule, /Skeptical Science rebuttals/);
 		assert.ok(
 			standard.sourceHierarchy.some(
-				(tier) => /Rebuttal explainers/.test(tier.title) && /do not let rebuttal pages outrank/i.test(tier.body)
+				(tier) => /Rebuttal explainers/.test(tier.title) && /rebuttal pages do not outrank/i.test(tier.body)
 			)
 		);
 	});
@@ -40,7 +40,7 @@ describe("source standards", () => {
 				(tier) =>
 					/Discovery tools/.test(tier.title) &&
 					/Consensus\.app/.test(tier.body) &&
-					/verify the underlying sources directly/i.test(tier.body)
+					/underlying sources need direct verification/i.test(tier.body)
 			)
 		);
 		assert.ok(standard.avoidOverweighting.some((item) => /AI search summaries/.test(item)));

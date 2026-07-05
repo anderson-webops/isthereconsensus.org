@@ -3,7 +3,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
 	{
-		title: "Use the rights lane",
+		title: "Rights lane",
 		body: "The rights lane covers copyright, trademark, logo, impersonation, and other intellectual-property concerns tied to site content or submissions."
 	},
 	{
@@ -120,7 +120,7 @@ useStaticPageMeta({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Use the right lane</p>
+				<p class="eyebrow">Right lane</p>
 				<h2>Choose the right workflow for the dispute.</h2>
 				<p>
 					Send scientific errors to corrections, community enforcement to moderation, and rights assertions

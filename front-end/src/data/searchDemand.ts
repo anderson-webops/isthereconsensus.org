@@ -32,7 +32,7 @@ export interface PublishingPlanRow {
 
 export const demandPrinciples = [
 	"Prioritize claims that combine stable expert consensus, recurring misinformation pressure, and durable query phrasing.",
-	"Use claim pages for binary yes-no propositions with clear institutional anchors and explainers for reasoning gaps that recur across many topics.",
+	"Claim pages fit binary yes-no propositions with clear institutional anchors; explainers fit reasoning gaps that recur across many topics.",
 	"Treat search phrasing as product input: the exact wording people type should shape titles, aliases, and routing behavior.",
 	"Do not force fast-moving or method-sensitive topics into a simple claim page when the stronger product answer is an explainer with visible uncertainty."
 ];
