@@ -3,7 +3,6 @@ const colorMode = useColorMode();
 const hydrated = ref(false);
 
 const isDark = computed(() => hydrated.value && colorMode.value === "dark");
-const themeToggleLabel = computed(() => (isDark.value ? "Switch to light mode" : "Switch to dark mode"));
 
 onMounted(() => {
 	hydrated.value = true;
@@ -18,12 +17,12 @@ function toggleTheme() {
 	<button
 		class="theme-toggle"
 		type="button"
-		:aria-label="themeToggleLabel"
-		:title="themeToggleLabel"
+		aria-label="Toggle color mode"
+		title="Toggle color mode"
 		@click="toggleTheme"
 	>
-		<span v-if="isDark" class="i-carbon-sun theme-toggle__icon" aria-hidden="true" />
-		<span v-else class="i-carbon-moon theme-toggle__icon" aria-hidden="true" />
+		<span class="i-carbon-sun theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true" />
+		<span class="i-carbon-moon theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" />
 	</button>
 </template>
 
@@ -31,14 +30,14 @@ function toggleTheme() {
 .theme-toggle {
 	display: inline-grid;
 	place-items: center;
-	width: 40px;
-	height: 40px;
+	width: 42px;
+	height: 42px;
 	padding: 0;
 	border-radius: 999px;
 	border: 1px solid var(--consensus-line);
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
-	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.08);
+	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.1);
 	backdrop-filter: blur(16px);
 	cursor: pointer;
 	transition:
@@ -52,7 +51,7 @@ function toggleTheme() {
 .theme-toggle:hover {
 	transform: translateY(-1px);
 	border-color: var(--consensus-soft-line);
-	box-shadow: 0 14px 28px rgba(21, 17, 13, 0.12);
+	box-shadow: 0 16px 32px rgba(21, 17, 13, 0.14);
 }
 
 .theme-toggle:focus-visible {
@@ -68,15 +67,27 @@ function toggleTheme() {
 	color: var(--consensus-ember);
 }
 
+.theme-toggle__icon--moon {
+	display: none;
+}
+
 :global(.dark) .theme-toggle {
-	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
 }
 
 :global(.dark) .theme-toggle:hover {
-	box-shadow: 0 16px 34px rgba(0, 0, 0, 0.38);
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
 
 :global(.dark) .theme-toggle__icon {
 	color: var(--consensus-moss);
+}
+
+:global(.dark) .theme-toggle__icon--sun {
+	display: none;
+}
+
+:global(.dark) .theme-toggle__icon--moon {
+	display: inline-block;
 }
 </style>
