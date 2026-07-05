@@ -314,6 +314,39 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /accounting boundary/i);
 	});
 
+	it("keeps the methane mitigation claim scoped to near-term warming and CO2 complementarity", () => {
+		const slug = "can-cutting-methane-emissions-slow-warming-in-the-near-term";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing methane mitigation claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.institutionalAnchors.map(anchor => anchor.role),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "strong");
+		assert.equal(claim.evidenceCertainty, "high");
+		assert.match(claim.bottomLine, /shorter-lived greenhouse gas/);
+		assert.match(claim.bottomLine, /not a substitute for cutting carbon dioxide/);
+		assert.match(visibleSummary, /45% by 2030/);
+		assert.match(visibleSummary, /0\.3 C/);
+		assert.match(visibleSummary, /30%/);
+		assert.match(visibleSummary, /ozone|air quality/i);
+		assert.match(visibleSummary, /super-emitters|undercounting/i);
+		assert.match(visibleSummary, /CO2 reductions rather than replacing them/);
+		assert.doesNotMatch(visibleSummary, /replaces CO2 reductions/i);
+		assert.doesNotMatch(visibleSummary, /methane cuts alone/i);
+		assert.doesNotMatch(visibleSummary, /solves climate change/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed/i);
+	});
+
 	it("keeps the carbon monoxide alarm claim clear for household readers", () => {
 		const slug = "do-carbon-monoxide-alarms-reduce-poisoning-risk";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

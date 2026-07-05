@@ -7060,6 +7060,171 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "climate-and-environment",
+		title: "Can cutting methane emissions slow warming in the near term?",
+		slug: "can-cutting-methane-emissions-slow-warming-in-the-near-term",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		agreementLevel: "strong",
+		evidenceCertainty: "high",
+		reviewMode: "living",
+		bottomLine:
+			"Yes. Methane is a powerful but shorter-lived greenhouse gas, so cutting methane emissions can slow warming over the next few decades and reduce ozone-related air-pollution harms. It is not a substitute for cutting carbon dioxide, which dominates long-term warming, but it is one of the fastest climate-risk reduction levers.",
+		stableCore: [
+			"Methane warms the climate much more strongly per tonne than CO2 over the first decades after release, but it stays in the atmosphere for a much shorter time.",
+			"IPCC assessments say strong, rapid, sustained methane reductions would limit near-term warming and improve air quality.",
+			"UNEP and the Climate and Clean Air Coalition estimate that available measures could cut human-caused methane emissions about 45% by 2030 and avoid about 0.3 C of warming by the 2040s.",
+			"IEA reports that methane has contributed around 30% of the rise in global temperature since the Industrial Revolution and that large energy-sector cuts are technically feasible with existing technologies.",
+			"Methane cuts complement deep CO2 reductions rather than replacing them because CO2 accumulates and sets the long-term warming floor."
+		],
+		openQuestions: [
+			"Which policies most quickly scale methane cuts across oil and gas, coal, landfills, manure, rice production, and livestock systems?",
+			"How should inventories incorporate satellite-detected super-emitters, undercounted leaks, and fast-changing measurement methods?",
+			"How can methane action be verified without weakening the larger need for rapid CO2 reductions?"
+		],
+		whatWouldChangeMinds: [
+			"Major assessment updates showing methane reductions do not meaningfully affect near-term warming or ozone-related air pollution.",
+			"Verified global emissions data showing available methane-control measures cannot reduce emissions at anything close to current assessment estimates.",
+			"A stronger climate-forcing account showing that methane cuts are no longer an important complement to CO2 mitigation."
+		],
+		misconceptions: [
+			"Methane's shorter lifetime is sometimes misread as meaning methane is harmless.",
+			"Some arguments frame methane action as a distraction from CO2 cuts; the consensus position is both-and, not either-or.",
+			"Methane pledges are sometimes treated as already achieved reductions, even when measurement, enforcement, and leak repair remain unresolved.",
+			"Reducing methane does not erase past CO2 emissions or remove the need to reach net-zero CO2."
+		],
+		editorSummary:
+			"Methane mitigation is one of the clearest near-term climate levers because methane is powerful and shorter-lived. The evidence does not make it a substitute for CO2 cuts; it makes it a high-value complement.",
+		uncertaintySummary:
+			"The physics and direction are high-confidence. The uncertainty is mostly practical: how much verified reduction policies can achieve by sector, how inventories handle super-emitters and undercounting, and whether methane action is paired with deep CO2 cuts rather than used to delay them.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Abatement depends on leak detection and repair, fossil-fuel operations, waste management, agricultural practices, regulation, enforcement, and finance."
+			},
+			{
+				type: "imprecision",
+				detail:
+					"Bottom-up inventories, aircraft campaigns, and satellites can disagree, especially around intermittent super-emitters and underreported fossil-fuel leaks."
+			},
+			{
+				type: "other",
+				detail:
+					"Climate benefit depends on methane cuts happening alongside CO2 reductions, not instead of long-lived greenhouse-gas mitigation."
+			}
+		],
+		searchDatabases: ["Consensus", "IPCC", "UNEP", "Climate and Clean Air Coalition", "IEA"],
+		searchCutoffAt: "2026-07-05T10:08:44.000Z",
+		lastRetractionCheckAt: "2026-07-05T10:08:44.000Z",
+		inclusionRules: [
+			"Prioritize assessment-grade sources, international agency reports, and peer-reviewed synthesis or modeling papers that directly address methane emissions, near-term warming, ozone, or sector abatement.",
+			"Distinguish methane mitigation from CO2 mitigation and avoid wording that implies methane cuts solve long-term warming by themselves.",
+			"Use sector-specific or satellite evidence when it clarifies feasibility, measurement uncertainty, or super-emitter detection."
+		],
+		exclusionRules: [
+			"Do not use methane's short atmospheric lifetime to imply methane emissions are harmless.",
+			"Do not count pledges, voluntary announcements, or detection capability as verified emissions reductions.",
+			"Do not present methane cuts as a substitute for net-zero CO2 or fossil-fuel decarbonization."
+		],
+		appraisalTools: [
+			"Near-term versus long-term forcing check",
+			"CO2 complementarity check",
+			"Sector abatement feasibility check",
+			"Measurement and super-emitter uncertainty check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Can cutting methane emissions slow warming in the near term?",
+				population:
+					"Global anthropogenic methane emissions from energy, agriculture, and waste sectors assessed in climate-science and mitigation literature",
+				finding:
+					"Rapid methane reductions would lower near-term warming pressure and ozone-related air-pollution harms, while still needing to be paired with deep CO2 reductions for long-term climate stabilization.",
+				effectDirection: "supports",
+				magnitude:
+					"UNEP and the Climate and Clean Air Coalition estimate available measures could reduce human-caused methane emissions about 45% by 2030 and avoid about 0.3 C of warming by the 2040s; IEA reports methane has contributed around 30% of observed warming since the Industrial Revolution.",
+				certainty: "high",
+				limitations: [
+					"Realized reductions depend on policy adoption, sector implementation, enforcement, financing, and verification.",
+					"Inventories can miss intermittent super-emitters and undercount some fossil-fuel methane sources.",
+					"Methane mitigation slows near-term warming but does not replace the need for rapid CO2 reductions."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "Intergovernmental Panel on Climate Change",
+				role: "Assessment anchor for methane reductions limiting near-term warming and improving air quality."
+			},
+			{
+				name: "UN Environment Programme and Climate and Clean Air Coalition",
+				role: "Global methane assessment anchor for available mitigation measures, 2030 reduction potential, and avoided warming estimates."
+			},
+			{
+				name: "International Energy Agency",
+				role: "Current energy-sector methane tracking, satellite-detection, and abatement-feasibility anchor."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-05T10:08:44.000Z",
+				kind: "publication",
+				summary:
+					"Initial methane mitigation claim page published from IPCC, UNEP/CCAC, IEA, and peer-reviewed rapid-deployment evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2023: Synthesis Report",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2023,
+				url: "https://www.ipcc.ch/report/ar6/syr/",
+				stance: "supports",
+				note:
+					"Assessment anchor stating with high confidence that strong, rapid, and sustained methane reductions can limit near-term warming and improve air quality by reducing surface ozone.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Global Methane Assessment: Benefits and Costs of Mitigating Methane Emissions",
+				publisher: "UN Environment Programme and Climate and Clean Air Coalition",
+				year: 2021,
+				url:
+					"https://www.unep.org/resources/report/global-methane-assessment-benefits-and-costs-mitigating-methane-emissions",
+				stance: "supports",
+				note:
+					"Assessment estimating that available measures could cut anthropogenic methane emissions about 45% by 2030 and avoid roughly 0.3 C of warming by the 2040s, with health and crop-yield co-benefits.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Global Methane Tracker 2026",
+				publisher: "International Energy Agency",
+				year: 2026,
+				url: "https://www.iea.org/reports/global-methane-tracker-2026",
+				stance: "supports",
+				note:
+					"Current energy-sector tracker reporting methane's major contribution to warming, large technically feasible abatement potential with existing technologies, and the growing role of satellite detection.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Acting rapidly to deploy readily available methane mitigation measures by sector can immediately slow global warming",
+				publisher: "Environmental Research Letters",
+				year: 2021,
+				url: "https://doi.org/10.1088/1748-9326/abf9c8",
+				doi: "10.1088/1748-9326/abf9c8",
+				stance: "supports",
+				note:
+					"Peer-reviewed synthesis/modeling paper supporting rapid deployment of available methane mitigation measures as a way to slow near-term warming across sectors.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
 		title: "Does air pollution cause millions of premature deaths each year?",
 		slug: "does-air-pollution-cause-millions-of-premature-deaths-each-year",
 		status: "published",
