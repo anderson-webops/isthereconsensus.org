@@ -169,6 +169,18 @@ const totalTopicCount = computed(() => enrichedTopics.value.length);
 const totalReviewedClaimCount = computed(() =>
 	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
 );
+const topicsWithReviewedClaimsCount = computed(
+	() => enrichedTopics.value.filter((topic) => (topic.claimCount ?? 0) > 0).length
+);
+const coverageLeaders = computed(() =>
+	enrichedTopics.value
+		.filter((topic) => (topic.claimCount ?? 0) > 0)
+		.slice()
+		.sort(
+			(left, right) => (right.claimCount ?? 0) - (left.claimCount ?? 0) || left.title.localeCompare(right.title)
+		)
+		.slice(0, 3)
+);
 const filteredReviewedClaimCount = computed(() =>
 	filteredTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
 );
@@ -208,6 +220,27 @@ function showAllTopics() {
 			<h1>Browse topics. Open a reviewed claim.</h1>
 			<p>Search and filter topics, then open the reviewed claim closest to your question.</p>
 		</header>
+
+		<section class="directory__snapshot" aria-label="Library snapshot">
+			<div class="directory__stat">
+				<strong>{{ formatCountLabel(totalReviewedClaimCount, "reviewed claim") }}</strong>
+				<span>public claim library</span>
+			</div>
+			<div class="directory__stat">
+				<strong>{{ formatCountLabel(totalTopicCount, "topic") }}</strong>
+				<span>browseable clusters</span>
+			</div>
+			<div class="directory__stat">
+				<strong>{{ formatCountLabel(topicsWithReviewedClaimsCount, "active topic") }}</strong>
+				<span>with live reviews</span>
+			</div>
+			<p v-if="coverageLeaders.length" class="directory__coverage">
+				Most covered:
+				<NuxtLink v-for="topic in coverageLeaders" :key="topic.slug" :to="`/consensus/${topic.slug}`">
+					{{ topic.title }} ({{ topic.claimCount }})
+				</NuxtLink>
+			</p>
+		</section>
 
 		<section class="directory__controls">
 			<div class="results-search">
@@ -311,6 +344,7 @@ function showAllTopics() {
 	max-width: 56ch;
 }
 
+.directory__snapshot,
 .directory__controls,
 .results-block,
 .topic-row {
@@ -319,9 +353,55 @@ function showAllTopics() {
 	border-radius: 18px;
 }
 
+.directory__snapshot,
 .directory__controls,
 .results-block {
 	padding: 18px;
+}
+
+.directory__snapshot {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	align-items: center;
+	gap: 12px;
+}
+
+.directory__stat {
+	display: grid;
+	gap: 4px;
+}
+
+.directory__stat strong {
+	color: var(--consensus-ink);
+	font-family: "Fraunces", serif;
+	font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+	line-height: 1.1;
+}
+
+.directory__stat span {
+	color: var(--consensus-muted);
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.directory__coverage {
+	grid-column: 1 / -1;
+	display: flex;
+	gap: 8px 12px;
+	flex-wrap: wrap;
+	margin: 2px 0 0;
+	color: var(--consensus-muted);
+	font-size: 0.92rem;
+	line-height: 1.5;
+}
+
+.directory__coverage a {
+	color: var(--consensus-ink);
+	font-weight: 700;
+	text-decoration: none;
 }
 
 .directory__controls {
@@ -519,14 +599,25 @@ function showAllTopics() {
 	}
 
 	.directory__controls,
+	.directory__snapshot,
 	.results-block,
 	.topic-row {
 		border-radius: 16px;
 	}
 
 	.directory__controls,
+	.directory__snapshot,
 	.results-block {
 		padding: 14px;
+	}
+
+	.directory__snapshot {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.directory__coverage {
+		gap: 6px 10px;
 	}
 
 	.directory__controls {

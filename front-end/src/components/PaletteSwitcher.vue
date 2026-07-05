@@ -50,11 +50,9 @@ onMounted(() => {
 	align-items: center;
 	gap: 3px;
 	padding: 4px;
-	border: 1px solid var(--consensus-line);
+	border: 1px solid var(--consensus-soft-line);
 	border-radius: 999px;
-	background: var(--consensus-elevated-surface);
-	box-shadow: 0 10px 24px rgba(21, 17, 13, 0.08);
-	backdrop-filter: blur(16px);
+	background: var(--consensus-field-surface);
 }
 
 .palette-switcher__button {
@@ -114,7 +112,7 @@ onMounted(() => {
 }
 
 :global(.dark) .palette-switcher {
-	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+	background: var(--consensus-field-surface);
 }
 
 :global(.dark) .palette-switcher__swatch {

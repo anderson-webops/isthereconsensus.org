@@ -120,6 +120,21 @@ const featuredClaims = computed(() => {
 		.slice(0, 5);
 });
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
+const totalTopicCount = computed(() => enrichedTopics.value.length);
+const topicsWithReviewedClaimsCount = computed(
+	() => enrichedTopics.value.filter((topic) => (topic.claimCount ?? 0) > 0).length
+);
+const totalReviewedClaimCount = computed(() =>
+	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
+);
+const mostCoveredTopic = computed(() =>
+	enrichedTopics.value
+		.filter((topic) => (topic.claimCount ?? 0) > 0)
+		.reduce<Topic | null>((current, topic) => {
+			if (!current) return topic;
+			return (topic.claimCount ?? 0) > (current.claimCount ?? 0) ? topic : current;
+		}, null)
+);
 const faqEntries = [
 	{
 		answer: "Search the claim first, read the short bottom line, and then open the evidence stack only if you need the deeper explanation or source trail.",
@@ -286,6 +301,29 @@ function formatTopicUpdateLabel(value?: string) {
 					Clear, reviewed summaries for scientific questions that are often louder in public than they are
 					uncertain in the evidence.
 				</p>
+
+				<div class="library-snapshot" aria-label="Library snapshot">
+					<NuxtLink class="library-snapshot__item" to="/consensus">
+						<strong>{{ formatCountLabel(totalReviewedClaimCount, "reviewed claim") }}</strong>
+						<span>in the public library</span>
+					</NuxtLink>
+					<NuxtLink class="library-snapshot__item" to="/consensus">
+						<strong>{{ formatCountLabel(totalTopicCount, "topic") }}</strong>
+						<span>ready to browse</span>
+					</NuxtLink>
+					<NuxtLink
+						v-if="mostCoveredTopic"
+						class="library-snapshot__item"
+						:to="`/consensus/${mostCoveredTopic.slug}`"
+					>
+						<strong>{{ formatCountLabel(mostCoveredTopic.claimCount, "review") }}</strong>
+						<span>{{ mostCoveredTopic.title }}</span>
+					</NuxtLink>
+					<NuxtLink v-else class="library-snapshot__item" to="/consensus">
+						<strong>{{ formatCountLabel(topicsWithReviewedClaimsCount, "active topic") }}</strong>
+						<span>with live reviews</span>
+					</NuxtLink>
+				</div>
 
 				<form class="search-panel" @submit.prevent="submitSearch">
 					<label class="search-panel__label" for="home-search">Search a claim, headline, or topic</label>
@@ -480,6 +518,39 @@ function formatTopicUpdateLabel(value?: string) {
 	line-height: 1.68;
 	max-width: 58ch;
 	margin: 0;
+}
+
+.library-snapshot {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	max-width: 920px;
+}
+
+.library-snapshot__item {
+	display: inline-grid;
+	gap: 3px;
+	min-width: 170px;
+	padding: 10px 12px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	background: color-mix(in srgb, var(--consensus-field-surface) 82%, transparent);
+	text-decoration: none;
+}
+
+.library-snapshot__item strong {
+	color: var(--consensus-ink);
+	font-family: "Fraunces", serif;
+	font-size: 1.05rem;
+	line-height: 1.1;
+}
+
+.library-snapshot__item span {
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	font-weight: 700;
+	line-height: 1.25;
+	text-transform: uppercase;
 }
 
 .search-panel {
@@ -792,6 +863,17 @@ function formatTopicUpdateLabel(value?: string) {
 	.search-panel {
 		gap: 10px;
 		padding: 14px;
+	}
+
+	.library-snapshot {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.library-snapshot__item {
+		min-width: 0;
+		padding: 9px 11px;
 	}
 
 	.search-panel input {

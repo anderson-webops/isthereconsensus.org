@@ -28,4 +28,5 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	const publicConfig = config.runtimeConfig?.public;
 	assert.equal(typeof publicConfig?.deployment?.commit, "string");
 	assert.equal(typeof publicConfig?.deployment?.ref, "string");
+	assert.deepEqual(config.nitro?.prerender?.routes, []);
 });

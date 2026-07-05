@@ -20,6 +20,16 @@ describe("consensus directory metadata", () => {
 		assert.match(source, /key:\s*"consensus-directory-jsonld"/);
 	});
 
+	it("makes the reviewed claim library size visible before filtering", () => {
+		assert.match(source, /const totalReviewedClaimCount = computed/);
+		assert.match(source, /const topicsWithReviewedClaimsCount = computed/);
+		assert.match(source, /const coverageLeaders = computed/);
+		assert.match(source, /class="directory__snapshot" aria-label="Library snapshot"/);
+		assert.match(source, /formatCountLabel\(totalReviewedClaimCount, "reviewed claim"\)/);
+		assert.match(source, /formatCountLabel\(topicsWithReviewedClaimsCount, "active topic"\)/);
+		assert.match(source, /Most covered:/);
+	});
+
 	it("keeps mobile directory filters compact without changing the page flow", () => {
 		assert.match(source, /@media \(max-width: 760px\) \{[\s\S]*\.directory__controls \{[\s\S]*gap: 8px;/);
 		assert.match(source, /\.directory__controls,\s*\.results-block \{[\s\S]*padding: 14px;/);
