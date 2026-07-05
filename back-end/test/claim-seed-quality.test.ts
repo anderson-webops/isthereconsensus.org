@@ -108,6 +108,23 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /CDC says/i);
 	});
 
+	it("keeps the diabetes prevention claim clear about structured programs", () => {
+		const slug = "do-structured-lifestyle-programs-prevent-or-delay-type-2-diabetes-in-adults-with-prediabetes";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing diabetes prevention claim seed");
+
+		const visibleSummary = [claim.bottomLine, claim.editorSummary, claim.uncertaintySummary, ...claim.stableCore].join(
+			" "
+		);
+
+		assert.match(claim.bottomLine, /organized Diabetes Prevention Program-style interventions/);
+		assert.match(visibleSummary, /new diabetes diagnoses/);
+		assert.match(visibleSummary, /heart attacks, strokes, and mortality/);
+		assert.doesNotMatch(visibleSummary, /diabetes-incidence/i);
+		assert.doesNotMatch(visibleSummary, /cardiovascular-event/i);
+		assert.doesNotMatch(visibleSummary, /try harder/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);

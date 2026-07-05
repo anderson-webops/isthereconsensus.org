@@ -3840,21 +3840,21 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "high",
 		reviewMode: "standard",
 		bottomLine:
-			"Yes. In adults with prediabetes or high diabetes risk, structured lifestyle programs that combine weight loss, healthier eating, physical activity, and behavior support can substantially reduce or delay progression to type 2 diabetes. The strongest evidence comes from intensive Diabetes Prevention Program-style interventions, not from vague advice to try harder.",
+			"Yes. In adults with prediabetes or high diabetes risk, structured lifestyle programs that combine weight loss, healthier eating, physical activity, and behavior support can substantially reduce or delay progression to type 2 diabetes. The strongest evidence is about organized Diabetes Prevention Program-style interventions, not one-time advice or willpower slogans.",
 		stableCore: [
-			"USPSTF recommends offering or referring adults with prediabetes found through screening to effective preventive interventions.",
-			"The original Diabetes Prevention Program trial found lifestyle intervention reduced diabetes incidence by 58% and metformin by 31% compared with placebo over about 2.8 years.",
-			"Fifteen-year DPP Outcomes Study follow-up found diabetes development remained lower in the original lifestyle and metformin groups, though the gap narrowed over time.",
-			"Effective programs combine modest weight loss goals, dietary change, physical activity, self-monitoring, and repeated behavioral support; generic one-time advice is not equivalent.",
-			"Evidence is strongest for delaying or preventing diabetes diagnosis. Long-term cardiovascular-event and mortality effects are harder to prove and depend on longer follow-up."
+			"The USPSTF recommends that adults whose screening shows prediabetes be offered or referred to effective prevention programs.",
+			"The original Diabetes Prevention Program trial found the lifestyle program reduced new diabetes diagnoses by 58% and metformin by 31% compared with placebo over about 2.8 years.",
+			"Fifteen-year DPP Outcomes Study follow-up found new diabetes diagnoses stayed lower in the original lifestyle and metformin groups, though the difference narrowed over time.",
+			"Effective programs combine realistic weight loss goals, dietary change, physical activity, self-monitoring, and repeated behavioral support; generic one-time advice is not equivalent.",
+			"Evidence is strongest for delaying or preventing a diabetes diagnosis. Effects on heart attacks, strokes, and mortality are harder to prove and depend on longer follow-up."
 		],
 		openQuestions: [
 			"How can health systems improve access, completion, and long-term maintenance for people and communities at highest diabetes risk?",
-			"Which delivery formats, contact hours, coaching models, and maintenance strategies keep benefits durable outside trial settings?",
-			"Which people should receive metformin in addition to or instead of lifestyle programs, especially by age, BMI, gestational diabetes history, and rising A1c?"
+			"Which delivery formats, program intensity, coaching models, and maintenance strategies keep benefits durable outside trial settings?",
+			"Which people should receive metformin in addition to or instead of lifestyle programs, especially by age, BMI, gestational diabetes history, and rising blood sugar measures such as A1c?"
 		],
 		whatWouldChangeMinds: [
-			"Large, well-run trials or real-world studies showing no diabetes-incidence reduction from well-delivered structured lifestyle programs in adults with prediabetes.",
+			"Large, well-run trials or real-world studies showing no reduction in new diabetes diagnoses from well-delivered structured lifestyle programs in adults with prediabetes.",
 			"Major USPSTF, CDC, ADA, or evidence-review reassessments withdrawing referral to structured lifestyle intervention as a diabetes-prevention recommendation.",
 			"Evidence that common serious harms or inequitable implementation burdens outweigh the diabetes-prevention benefits."
 		],
@@ -3867,7 +3867,7 @@ const rawClaims: SeedClaim[] = [
 		editorSummary:
 			"This page should distinguish evidence-based diabetes-prevention programs from vague lifestyle slogans. The consensus is strong that structured DPP-style programs prevent or delay diabetes in high-risk adults, with access and durability as practical limits.",
 		uncertaintySummary:
-			"Diabetes-incidence reduction is well supported. Certainty is lower for long-term cardiovascular events and mortality, which delivery format works best for whom, how to sustain maintenance, and how to deliver programs equitably.",
+			"Fewer new diabetes diagnoses are well supported. Certainty is lower for long-term heart attacks, strokes, and mortality, which delivery format works best for whom, how to sustain maintenance, and how to deliver programs equitably.",
 		searchCutoffAt: "2026-07-05T03:12:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T03:12:00.000Z",
 		changeLog: [
@@ -3888,7 +3888,7 @@ const rawClaims: SeedClaim[] = [
 					"https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/screening-for-prediabetes-and-type-2-diabetes",
 				stance: "supports",
 				note:
-					"USPSTF recommendation to screen adults 35 to 70 with overweight or obesity and offer or refer adults with prediabetes to effective preventive interventions.",
+					"USPSTF recommendation to screen adults 35 to 70 with overweight or obesity and offer or refer adults with prediabetes to effective prevention programs.",
 				order: 1
 			},
 			{
@@ -3911,7 +3911,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "11832527",
 				stance: "supports",
 				note:
-					"Original DPP randomized trial of 3,234 high-risk adults finding lifestyle intervention reduced diabetes incidence by 58% and metformin by 31% versus placebo.",
+					"Original DPP randomized trial of 3,234 high-risk adults finding the lifestyle program reduced new diabetes diagnoses by 58% and metformin by 31% versus placebo.",
 				order: 3
 			},
 			{
@@ -3925,7 +3925,7 @@ const rawClaims: SeedClaim[] = [
 				pmid: "26377054",
 				stance: "supports",
 				note:
-					"Fifteen-year follow-up showing diabetes development remained lower in the original lifestyle and metformin groups, with smaller but persistent cumulative differences.",
+					"Fifteen-year follow-up showing new diabetes diagnoses remained lower in the original lifestyle and metformin groups, with smaller but persistent cumulative differences.",
 				order: 4
 			},
 			{
