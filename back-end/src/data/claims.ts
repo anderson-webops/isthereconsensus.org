@@ -20871,13 +20871,13 @@ const rawClaims: SeedClaim[] = [
 		confidenceScore: 84,
 		evidenceCertainty: "moderate",
 		bottomLine:
-			"Yes, with practical caveats. Working carbon monoxide alarms can warn people about a dangerous, odorless gas before exposure becomes severe, and they are recommended by CDC, CPSC, EPA, and USFA. They are a backstop, not a substitute for safe generator placement, appliance maintenance, ventilation, or immediate evacuation when an alarm sounds.",
+			"Yes, but only as a warning layer. Working carbon monoxide alarms can warn people about a dangerous, odorless gas before exposure becomes severe, and they are recommended by CDC, CPSC, EPA, and USFA. They are a backstop, not a substitute for safe generator placement, appliance maintenance, ventilation, or leaving immediately when an alarm sounds.",
 		stableCore: [
 			"CDC says more than 400 Americans die each year from unintentional non-fire CO poisoning, with more than 100,000 emergency department visits and more than 14,000 hospitalizations.",
-			"CDC recommends battery-operated or battery-backup CO detectors near every sleeping area and extra caution when using generators.",
+			"CDC recommends battery-operated or battery-backup carbon monoxide alarms near every sleeping area and extra caution when using generators.",
 			"CPSC recommends CO alarms on every level and outside sleeping areas, and says interconnected alarms are best.",
 			"EPA says CO alarms warn of unusual indoor CO buildup but should be treated as a backup, not a replacement for proper installation, use, and maintenance of fuel-burning appliances.",
-			"A Wisconsin poison-center study found exposed people without a CO detector had higher poisoning odds and more severe outcomes than people whose detector alarmed; law-level mortality studies are mixed."
+			"A Wisconsin poison-center study found exposed people without a carbon monoxide alarm had higher poisoning odds and more severe outcomes than people whose alarm sounded; studies of alarm laws and death rates are mixed."
 		],
 		openQuestions: [
 			"Which laws, landlord requirements, grants, and education programs get working alarms into rental, low-income, older-adult, and high-risk homes?",
@@ -20898,19 +20898,19 @@ const rawClaims: SeedClaim[] = [
 		editorSummary:
 			"Working CO alarms are a recommended warning layer for an invisible hazard. Prevention still starts with fuel-burning equipment safety, generator placement, and fast evacuation when alarms sound.",
 		uncertaintySummary:
-			"Agency guidance and the warning mechanism are strong, and exposure-level evidence supports lower poisoning severity. Population mortality effects are less certain because CO deaths are rare, exposures and alarm laws vary, and results can be shaped by detection bias, enforcement gaps, maintenance failures, and risk behavior.",
+			"Agency guidance and the warning mechanism are strong, and household exposure evidence supports lower poisoning severity when alarms sound. Effects on community death rates are less certain because CO deaths are rare, exposures and alarm laws vary, and homes with alarms may be more likely to detect and report incidents.",
 		searchDatabases: ["Consensus", "CDC", "CPSC", "EPA", "USFA"],
 		searchCutoffAt: "2026-07-04T21:43:43.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:43:43.000Z",
 		inclusionRules: [
 			"Prioritize public-health guidance, product-safety guidance, poison-center data, mortality surveillance, and law or installation studies.",
 			"Separate alarm ownership from working, correctly placed, audible, maintained alarms.",
-			"Separate household alarm warnings from source-control measures such as generator placement, appliance servicing, and venting."
+			"Separate household alarm warnings from steps that prevent CO buildup, such as generator placement, appliance servicing, and venting."
 		],
 		exclusionRules: [
 			"Do not use CO alarm vendor marketing as effectiveness evidence.",
 			"Do not imply alarms eliminate the need to leave immediately and call emergency services when they sound.",
-			"Do not treat mixed law-level mortality findings as proof that working alarms have no household warning value."
+			"Do not treat mixed studies of alarm laws and death rates as proof that working alarms have no household warning value."
 		],
 		evidenceSummaries: [
 			{
@@ -20920,19 +20920,19 @@ const rawClaims: SeedClaim[] = [
 					"Major agencies recommend CO alarms because CO is invisible and can kill before symptoms are recognized. Exposure-level studies support lower poisoning odds or severity when alarms sound; population law studies are less definitive.",
 				effectDirection: "supports",
 				magnitude:
-					"A Wisconsin study found odds of CO poisoning were 3.2 times higher among exposed people without a CO detector than among those whose detector alarmed; NYC's alarm law increased detection of hazardous indoor CO nearly seven-fold.",
+					"A Wisconsin study found odds of CO poisoning were 3.2 times higher among exposed people without a carbon monoxide alarm than among those whose alarm sounded; NYC's alarm law increased detection of hazardous indoor CO nearly seven-fold.",
 				certainty: "moderate",
 				limitations: [
-					"Evidence is mostly observational, with confounding by housing quality, appliance maintenance, generator behavior, alarm placement, and socioeconomic factors.",
-					"Law-level studies can miss effects when alarms are absent, expired, untested, disabled, poorly placed, or when outcome counts are small.",
-					"Alarms warn after CO is present; they do not prevent CO production or replace source-control measures."
+					"Most evidence is observational, so it can be hard to separate alarm effects from housing quality, appliance maintenance, generator behavior, alarm placement, and income or housing conditions.",
+					"Studies of alarm laws can miss benefits when alarms are absent, expired, untested, disabled, poorly placed, or when poisoning deaths are too rare to measure precisely.",
+					"Alarms warn after CO is present; they do not prevent CO production or replace steps that stop CO from building up."
 				]
 			}
 		],
 		institutionalAnchors: [
 			{
 				name: "Centers for Disease Control and Prevention",
-				role: "Public-health anchor for CO burden, symptoms, sleeping-risk caveat, generator safety, and detector placement."
+				role: "Public-health anchor for CO burden, symptoms, sleeping-risk caveat, generator safety, and alarm placement."
 			},
 			{
 				name: "Consumer Product Safety Commission",
@@ -20960,7 +20960,7 @@ const rawClaims: SeedClaim[] = [
 				url: "https://www.cdc.gov/carbon-monoxide/about/index.html",
 				stance: "supports",
 				note:
-					"CDC source for CO symptoms, U.S. burden estimates, sleeping/intoxication risk, detector placement near sleeping areas, generator distance, and appliance maintenance.",
+						"CDC source for CO symptoms, U.S. burden estimates, sleeping and intoxication risk, alarm placement near sleeping areas, generator distance, and appliance maintenance.",
 				order: 1
 			},
 			{
@@ -21001,10 +21001,10 @@ const rawClaims: SeedClaim[] = [
 				publisher: "Clinical Toxicology",
 				year: 2020,
 				url:
-					"https://consensus.app/papers/carbon-monoxide-detector-effectiveness-in-reducing-christensen-creswell/db7aa6ee5bb755bc88015af0f6516a94/",
+						"https://consensus.app/papers/carbon-monoxide-detector-effectiveness-in-reducing-christensen-creswell/db7aa6ee5bb755bc88015af0f6516a94/",
 				stance: "supports",
 				note:
-					"Consensus-fetched poison-center study associating an alarming detector with lower poisoning odds and less severe medical outcomes after residential CO exposure.",
+						"Consensus-fetched poison-center study associating a sounding alarm with lower poisoning odds and less severe medical outcomes after residential CO exposure.",
 				order: 5
 			},
 			{

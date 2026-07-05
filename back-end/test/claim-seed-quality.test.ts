@@ -161,6 +161,34 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /accounting boundary/i);
 	});
 
+	it("keeps the carbon monoxide alarm claim clear for household readers", () => {
+		const slug = "do-carbon-monoxide-alarms-reduce-poisoning-risk";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing carbon monoxide alarm claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.exclusionRules,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.institutionalAnchors.map(anchor => anchor.role),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /only as a warning layer/);
+		assert.match(visibleSummary, /carbon monoxide alarms near every sleeping area/);
+		assert.match(visibleSummary, /studies of alarm laws and death rates are mixed/);
+		assert.match(visibleSummary, /steps that stop CO from building up/);
+		assert.doesNotMatch(visibleSummary, /law-level/i);
+		assert.doesNotMatch(visibleSummary, /source-control/i);
+		assert.doesNotMatch(visibleSummary, /detection bias/i);
+		assert.doesNotMatch(visibleSummary, /confounding/i);
+		assert.doesNotMatch(visibleSummary, /CO detector/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);
