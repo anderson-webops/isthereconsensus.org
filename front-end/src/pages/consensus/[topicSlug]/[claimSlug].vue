@@ -467,11 +467,24 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
 				<div v-else class="source-groups">
-					<section v-for="group in sourceGroups" :key="group.key" class="source-group">
-						<div class="source-group__header">
-							<h3>{{ group.title }}</h3>
-							<p>{{ group.description }}</p>
-						</div>
+					<details
+						v-for="group in sourceGroups"
+						:key="group.key"
+						class="source-group"
+						:open="group.key === 'tier1'"
+					>
+						<summary class="source-group__summary">
+							<span class="source-group__summary-copy">
+								<span class="source-group__title">{{ group.title }}</span>
+								<span class="source-group__description">{{ group.description }}</span>
+							</span>
+							<span class="source-group__summary-meta">
+								<span class="source-group__count">
+									{{ formatCountLabel(group.items.length, "source") }}
+								</span>
+								<span class="source-group__toggle" aria-hidden="true" />
+							</span>
+						</summary>
 						<div class="source-list">
 							<article v-for="source in group.items" :key="source._id || source.title" class="source-row">
 								<div>
@@ -521,7 +534,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 								</a>
 							</article>
 						</div>
-					</section>
+					</details>
 				</div>
 			</section>
 
@@ -589,7 +602,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .section-heading h2,
 .section-subheading h3,
 .claim-snapshot-block h3,
-.source-group__header h3,
+.source-group__title,
 .source-row h4 {
 	margin: 0;
 	font-family: "Fraunces", serif;
@@ -684,7 +697,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .section-heading p,
 .section-subheading p,
-.source-group__header p {
+.source-group__description {
 	max-width: 58ch;
 	color: var(--consensus-muted);
 	line-height: 1.55;
@@ -737,9 +750,77 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	border: 1px solid var(--consensus-soft-line);
 }
 
-.source-group__header {
+.source-group__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: start;
+	cursor: pointer;
+	list-style: none;
+}
+
+.source-group__summary::-webkit-details-marker {
+	display: none;
+}
+
+.source-group__summary-copy {
 	display: grid;
 	gap: 6px;
+	min-width: 0;
+}
+
+.source-group__title {
+	color: var(--consensus-ink);
+	line-height: 1.22;
+}
+
+.source-group__description {
+	display: block;
+}
+
+.source-group__summary-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
+}
+
+.source-group__count {
+	display: inline-flex;
+	align-items: center;
+	min-height: 28px;
+	padding: 5px 9px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-muted);
+	font-size: 0.78rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.source-group__toggle {
+	display: inline-grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	border: 1px solid var(--consensus-line);
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	font-weight: 800;
+}
+
+.source-group__toggle::before {
+	content: "+";
+}
+
+.source-group[open] .source-group__toggle::before {
+	content: "-";
+}
+
+.source-group[open] .source-list {
+	margin-top: 14px;
 }
 
 .evidence-summary-card p,
@@ -752,7 +833,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .evidence-summary-card h3,
 .section-subheading h3,
 .claim-snapshot-block h3,
-.source-group__header h3,
+.source-group__title,
 .source-row h4 {
 	line-height: 1.22;
 }
@@ -892,6 +973,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		gap: 12px;
 		padding: 14px;
 		border-radius: 12px;
+	}
+
+	.source-group__summary {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.source-group__summary-meta {
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.source-group[open] .source-list {
+		margin-top: 12px;
 	}
 
 	.plain-list {
