@@ -3585,6 +3585,126 @@ const rawClaims: SeedClaim[] = [
 	},
 	{
 		topicSlug: "health-and-medicine",
+		title: "Do masks and respirators reduce the spread of respiratory viruses?",
+		slug: "do-masks-and-respirators-reduce-the-spread-of-respiratory-viruses",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 78,
+		evidenceCertainty: "moderate",
+		reviewMode: "living",
+		bottomLine:
+			"Yes, but not as complete protection. Well-fitting masks and respirators can reduce the infectious particles people breathe out and breathe in, with higher-quality respirators generally offering more wearer protection. The practical benefit depends on fit, filtration, consistency, exposure setting, and whether people actually wear them.",
+		stableCore: [
+			"CDC says wearing a mask can help lower respiratory-virus transmission risk, including by reducing spread from an infected person and reducing what the wearer inhales.",
+			"Mask type and fit matter: cloth masks generally offer lower protection, surgical or disposable masks more, international respirators such as KN95 more, and NIOSH-approved N95 respirators the most when they fit well.",
+			"Cochrane's 2023 randomized-trial review did not find a clear pooled reduction from medical or surgical masks, and highlighted high or unclear risk of bias, heterogeneous settings, and low adherence as major limits.",
+			"A Bangladesh cluster-randomized trial in 600 villages increased proper mask-wearing from 13.3% to 42.3% and reduced symptomatic SARS-CoV-2 seroprevalence, with the clearest signal in surgical-mask villages.",
+			"A 2022 RCT meta-analysis found no statistically significant overall unadjusted association, but did find lower respiratory-infection risk in adult and community subgroups while emphasizing heterogeneity, adherence problems, and contamination between trial arms."
+		],
+		openQuestions: [
+			"Which combinations of mask quality, fit support, free distribution, reminders, ventilation, vaccination, and stay-home-when-sick policies produce the most real-world benefit?",
+			"How much do respirators outperform surgical masks outside healthcare settings when people are not professionally fit-tested?",
+			"How should recommendations change by virus, community illness level, crowding, age, disability, communication needs, and risk of severe disease?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-run trials with high adherence showing no reduction in respiratory-virus exposure, infection, or illness across mask types and high-risk settings.",
+			"Repeated exposure and filtration studies showing that well-fitting masks and respirators do not meaningfully reduce emitted or inhaled infectious particles.",
+			"Major CDC, WHO, NIOSH, Cochrane, or infection-prevention reassessments concluding that mask fit and filtration do not matter for respiratory-virus risk reduction."
+		],
+		misconceptions: [
+			"Cochrane uncertainty is not proof that masks cannot work; the review found trial evidence was hard to interpret, especially because adherence was often low.",
+			"A mask is sometimes treated as either perfect protection or useless, when the realistic claim is layered risk reduction.",
+			"Cloth masks, surgical masks, KN95s, and N95 respirators are sometimes discussed as if they offer the same protection, even though fit and filtration differ.",
+			"Masks do not replace staying home when sick, vaccination where indicated, ventilation, testing, treatment, or other prevention steps."
+		],
+		editorSummary:
+			"Masks and respirators are a conditional risk-reduction layer: most useful when they fit well, filter well, are worn consistently, and are used during higher-risk exposure periods.",
+		uncertaintySummary:
+			"The direction is broad but qualified. Filtration mechanics, CDC guidance, and some trials support benefit, especially when mask use actually rises. Community RCT evidence is mixed and adherence-sensitive, so exact effect sizes should not be oversold.",
+		searchCutoffAt: "2026-07-05T08:43:09.000Z",
+		lastRetractionCheckAt: "2026-07-05T08:43:09.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T08:43:09.000Z",
+				kind: "publication",
+				summary:
+					"Initial masks and respirators respiratory-virus page published from CDC guidance, Cochrane randomized-trial evidence, the Bangladesh cluster-randomized trial, and an RCT meta-analysis."
+			}
+		],
+		evidenceSummaries: [
+			{
+				question: "Do masks and respirators reduce respiratory-virus exposure or infection risk?",
+				population:
+					"People in community, household, workplace, school, and healthcare-adjacent settings where respiratory viruses may be spreading.",
+				finding:
+					"Masks and respirators can reduce risk, but observed illness reduction depends strongly on fit, filtration, adherence, setting, and whether the outcome is source control, wearer exposure, infection, or symptoms.",
+				effectDirection: "supports",
+				magnitude:
+					"Bangladesh's cluster RCT found symptomatic seroprevalence lower after a community promotion intervention raised observed masking; Cochrane's pooled RCT estimate did not show a clear community mask effect, partly because trial adherence and designs were weak.",
+				certainty: "moderate",
+				limitations: [
+					"Community trials often measure policies or promotion packages, not perfect mask use.",
+					"Low adherence, control-group masking, changing virus circulation, and mixed mask types can dilute estimated effects.",
+					"Evidence for respirators outside healthcare and without fit testing is less direct than filtration physics suggests."
+				]
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "Masks and Respiratory Viruses Prevention",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2025,
+				url: "https://www.cdc.gov/respiratory-viruses/prevention/masks.html",
+				stance: "supports",
+				note:
+					"Current CDC guidance stating that masks can lower respiratory-virus transmission risk, reduce spread from infected people, protect wearers from inhaling germs, and work best when protective and well fitting.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Physical interventions to interrupt or reduce the spread of respiratory viruses",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2023,
+				url: "https://doi.org/10.1002/14651858.CD006207.pub6",
+				doi: "10.1002/14651858.CD006207.pub6",
+				pmid: "36715243",
+				stance: "debate",
+				note:
+					"Decision-weight RCT review finding no clear pooled reduction from community medical or surgical masks, while emphasizing high or unclear bias, heterogeneous settings, and low adherence that limit firm conclusions.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Impact of community masking on COVID-19: A cluster-randomized trial in Bangladesh",
+				publisher: "Science",
+				year: 2022,
+				url: "https://doi.org/10.1126/science.abi9069",
+				doi: "10.1126/science.abi9069",
+				pmid: "34855513",
+				pmcid: "PMC9036942",
+				stance: "supports",
+				note:
+					"Cluster-randomized trial in 600 villages and 342,183 adults; proper mask use rose from 13.3% to 42.3%, and symptomatic SARS-CoV-2 seroprevalence fell, especially in surgical-mask villages.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title:
+					"Face masks to prevent transmission of respiratory infections: Systematic review and meta-analysis of randomized controlled trials on face mask use",
+				publisher: "PLOS ONE",
+				year: 2022,
+				url: "https://doi.org/10.1371/journal.pone.0271517",
+				doi: "10.1371/journal.pone.0271517",
+				stance: "supports",
+				note:
+					"RCT meta-analysis of 18 articles finding adult and community-setting signals for reduced respiratory infections, but no statistically significant overall unadjusted association and substantial heterogeneity.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		title: "Do antibiotics treat colds, flu, or most viral respiratory infections?",
 		slug: "do-antibiotics-treat-colds-flu-or-most-viral-respiratory-infections",
 		status: "published",

@@ -376,6 +376,39 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /drug interactions do not matter/i);
 	});
 
+	it("keeps the masks and respirators claim evidence-balanced", () => {
+		const slug = "do-masks-and-respirators-reduce-the-spread-of-respiratory-viruses";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing masks and respirators claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.equal(claim.evidenceCertainty, "moderate");
+		assert.match(claim.bottomLine, /fit, filtration, consistency/);
+		assert.ok(claim.bottomLine.length <= 360, "Masks bottom line should stay scannable");
+		assert.match(visibleSummary, /CDC says wearing a mask can help lower respiratory-virus transmission risk/);
+		assert.match(visibleSummary, /proper mask-wearing from 13\.3% to 42\.3%/);
+		assert.match(visibleSummary, /600 villages and 342,183 adults/);
+		assert.match(visibleSummary, /Cochrane/);
+		assert.match(visibleSummary, /low adherence/);
+		assert.match(visibleSummary, /not proof that masks cannot work/);
+		assert.match(visibleSummary, /Cloth masks, surgical masks, KN95s, and N95 respirators/);
+		assert.doesNotMatch(visibleSummary, /masks are useless/i);
+		assert.doesNotMatch(visibleSummary, /masks provide perfect protection/i);
+		assert.doesNotMatch(visibleSummary, /guaranteed protection/i);
+		assert.doesNotMatch(visibleSummary, /Cochrane proved masks do not work/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);
