@@ -8,7 +8,7 @@ const quickPoints = [
 	},
 	{
 		title: "Named owner",
-		body: "Any materially consequential use should have a human owner who can explain the decision path."
+		body: "Consequential uses need a human owner who can explain the decision path."
 	},
 	{
 		title: "Separate lanes",
@@ -21,17 +21,17 @@ const quickPoints = [
 ];
 
 const allowedUses = [
-	"retraction checks, guideline-watch queues, citation-integrity scans, and update-trigger alerts",
-	"duplicate detection, misconception-module matching, and query-shape classification",
-	"drafting aids that summarize existing material after a human checks the output",
-	"dashboards that surface intake pressure without changing reviewed pages automatically"
+	"Retraction checks, guideline-watch queues, citation-integrity scans, and update alerts.",
+	"Duplicate detection, misconception matching, and query-shape classification.",
+	"Drafting aids that summarize existing material for human review.",
+	"Dashboards that show intake pressure without changing reviewed pages automatically."
 ];
 
 const disallowedUses = [
-	"auto-publishing or materially changing a reviewed bottom line without human editorial approval",
-	"final moderation decisions that cannot be meaningfully appealed to a human reviewer",
-	"putting confidential reviewer or applicant materials into outside tools without a clear security basis",
-	"presenting generated text as if it were an institutional source, independent expert judgment, or peer-reviewed evidence"
+	"Auto-publishing or changing a reviewed bottom line without human editorial approval.",
+	"Final moderation decisions that cannot be meaningfully appealed to a human reviewer.",
+	"Putting confidential reviewer or applicant materials into outside tools without a clear security basis.",
+	"Presenting generated text as institutional evidence, expert judgment, or peer-reviewed research."
 ];
 
 const humanGates = [
@@ -52,7 +52,7 @@ const humanGates = [
 const contributorRules = [
 	"Do not upload private drafts, sensitive user data, or reviewer materials to outside tools unless the site can defend that confidentiality choice.",
 	"Treat generated summaries as fallible working material, not as a substitute for evidence review.",
-	"If AI assistance shaped reviewer or editorial output in a meaningful way, disclose that use internally and, where relevant, on the reviewed page."
+	"Disclose meaningful AI assistance internally and, where relevant, on the reviewed page."
 ];
 
 useStaticPageMeta({
@@ -70,10 +70,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Automation and AI disclosure</p>
 			<h1>Automation support and human review.</h1>
-			<p>
-				These rules cover automation, AI-assisted drafting, and decision-support tools while keeping publication
-				accountable to people.
-			</p>
+			<p>These rules keep automation, AI-assisted drafting, and decision support accountable to people.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -129,7 +126,7 @@ useStaticPageMeta({
 		<section class="policy-callout">
 			<div>
 				<p class="eyebrow">Related trust pages</p>
-				<h2>Make the human gate visible without exposing operational detail.</h2>
+				<h2>Make the human gate visible without exposing private operations.</h2>
 				<p>How Reviews Work covers the public standard; Corrections covers the visible change path.</p>
 			</div>
 			<div class="policy-callout__actions">

@@ -21,17 +21,17 @@ const quickPoints = [
 ];
 
 const actionTypes = [
-	"content labels, moves, merges, or archival routing for threads that are salvageable",
-	"hides, locks, or slow-mode actions when a thread becomes repetitive, abusive, or impossible to moderate well",
-	"topic-specific restrictions for repeated derailment in one claim area, without requiring a sitewide ban",
-	"temporary suspensions or permanent removal for severe abuse, doxxing, threats, coordinated manipulation, or repeated rule-breaking"
+	"Content labels, moves, merges, or archival routing for threads that are salvageable.",
+	"Hides, locks, or slow-mode actions when a thread becomes repetitive, abusive, or hard to moderate.",
+	"Topic-specific restrictions for repeated derailment in one claim area, without a sitewide ban.",
+	"Temporary suspensions or permanent removal for severe abuse, doxxing, threats, manipulation, or repeated rule-breaking."
 ];
 
 const noticeElements = [
-	"the action taken and whether it applies to one post, one topic, or the entire account",
-	"the rule or category that triggered the action",
-	"the content excerpt, URL, or thread reference involved when practical",
-	"where to appeal and what new information would make the appeal useful"
+	"The action taken and whether it applies to one post, one topic, or the account.",
+	"The rule or category that triggered the action.",
+	"The content excerpt, URL, or thread reference involved when practical.",
+	"Where to appeal and what new information would make the appeal useful."
 ];
 
 const appealFlow = [
@@ -52,7 +52,7 @@ const appealFlow = [
 const transparencyCommitments = [
 	"Maintain a moderation taxonomy so reports, actions, and appeals use the same categories.",
 	"Aim to publish aggregate moderation and appeal counts once the community volume makes those numbers meaningful.",
-	"Keep conduct enforcement distinct from scientific corrections so moderation power is not confused with editorial truth claims."
+	"Keep conduct enforcement separate from scientific corrections so moderation is not confused with editorial truth claims."
 ];
 
 useStaticPageMeta({
@@ -70,7 +70,7 @@ useStaticPageMeta({
 		<header class="policy-header">
 			<p class="eyebrow">Moderation and appeals</p>
 			<h1>Moderation decisions and appeals.</h1>
-			<p>These notices, action types, and appeal expectations support the community rules.</p>
+			<p>These notice, action, and appeal rules support the community guidelines.</p>
 		</header>
 
 		<section class="policy-summary">
@@ -136,7 +136,7 @@ useStaticPageMeta({
 				<h2>Corrections handle facts; appeals handle enforcement.</h2>
 				<p>
 					Factual problems belong in corrections. Conduct-enforcement problems belong here and in the
-					community-guideline framework.
+					community guidelines.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

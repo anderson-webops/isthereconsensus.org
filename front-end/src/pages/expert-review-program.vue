@@ -21,18 +21,18 @@ const quickPoints = [
 ];
 
 const eligibility = [
-	"domain experience, credentials, publications, or comparable professional work tied to the claim area",
-	"a verifiable identity and enough external evidence to confirm affiliation or subject-matter standing",
-	"agreement to the site's disclosure, conduct, and review-quality expectations",
-	"willingness to stay within scope rather than using reviews for unrelated advocacy"
+	"Domain experience, credentials, publications, or comparable work tied to the claim area.",
+	"A verifiable identity and enough external evidence to confirm affiliation or subject-matter standing.",
+	"Agreement to the site's disclosure, conduct, and review-quality expectations.",
+	"Willingness to stay within scope instead of using reviews for unrelated advocacy."
 ];
 
 const responsibilities = [
-	"check whether the claim statement matches the evidence base and institutional anchors actually cited",
-	"flag missing major reviews, assessments, or consensus statements before publication",
-	"push back on wording that outruns the evidence or collapses unsettled edge cases into the bottom line",
-	"use uncertainty language that is specific and plain, not vague hedging or performative certainty",
-	"avoid confidentiality breaches, citation gaming, credential-focused arguments, and ad hominem review conduct"
+	"Check whether the claim statement matches the cited evidence base and institutional anchors.",
+	"Flag missing major reviews, assessments, or consensus statements before publication.",
+	"Push back on wording that outruns the evidence or hides unsettled edge cases.",
+	"Use uncertainty language that is specific and plain, not vague hedging or false certainty.",
+	"Avoid confidentiality breaches, citation gaming, credential fights, and ad hominem review conduct."
 ];
 
 const disagreementFlow = [
@@ -51,10 +51,10 @@ const disagreementFlow = [
 ];
 
 const removalTriggers = [
-	"material misrepresentation of credentials or affiliations",
-	"failure to disclose a relevant conflict when assigned",
-	"repeated review behavior that ignores the evidence hierarchy or pushes unsupported claims",
-	"harassment, confidentiality breaches, or abusive use of draft access"
+	"Material misrepresentation of credentials or affiliations.",
+	"Failure to disclose a relevant conflict when assigned.",
+	"Repeated review behavior that ignores the evidence hierarchy or pushes unsupported claims.",
+	"Harassment, confidentiality breaches, or abusive use of draft access."
 ];
 
 useStaticPageMeta({
@@ -130,8 +130,8 @@ useStaticPageMeta({
 				<p class="eyebrow">Apply with disclosures</p>
 				<h2>Expert review works only when assignment, disclosure, and trust stay aligned.</h2>
 				<p>
-					Applications should include affiliation, evidence of expertise, and relevant funding or conflict
-					notes so editors can assign reviewers responsibly.
+					Applications include affiliation, evidence of expertise, and relevant funding or conflict notes so
+					editors can assign reviewers responsibly.
 				</p>
 			</div>
 			<div class="policy-callout__actions">

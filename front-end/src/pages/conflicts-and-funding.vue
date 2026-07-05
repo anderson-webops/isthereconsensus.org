@@ -4,7 +4,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 const quickPoints = [
 	{
 		title: "Who discloses",
-		body: "Anyone who can shape reviewed pages should disclose relevant financial, professional, advocacy, and litigation-related interests."
+		body: "Anyone who can shape reviewed pages discloses relevant financial, professional, advocacy, and litigation interests."
 	},
 	{
 		title: "Perception matters",
@@ -21,19 +21,19 @@ const quickPoints = [
 ];
 
 const conflictTypes = [
-	"direct financial stakes such as employment, consulting, grants, paid testimony, advisory fees, equity, or board roles",
-	"institutional interests, including affiliation with an organization that publicly campaigns on the claim at issue",
-	"public advocacy, litigation, or organized lobbying that could affect perceived neutrality",
-	"close professional or personal relationships that create a realistic assignment or review risk",
-	"strong nonfinancial commitments that a reasonable reader would want to know about"
+	"Direct financial stakes, including employment, consulting, grants, paid testimony, advisory fees, equity, or board roles.",
+	"Institutional interests, including affiliation with an organization campaigning on the claim.",
+	"Public advocacy, litigation, or organized lobbying that could affect perceived neutrality.",
+	"Close professional or personal relationships that create assignment or review risk.",
+	"Strong nonfinancial commitments that a reasonable reader would want disclosed."
 ];
 
 const disclosureFields = [
-	"current employer or institutional affiliation relevant to the topic",
-	"recent or ongoing funding that bears on the claim area or source stack",
-	"paid advisory, consulting, board, or expert-witness roles",
-	"public advocacy, litigation participation, or campaign leadership tied to the topic",
-	"a short plain-language summary for publication when disclosure is relevant"
+	"Current employer or institutional affiliation relevant to the topic.",
+	"Recent or ongoing funding tied to the claim area or source stack.",
+	"Paid advisory, consulting, board, or expert-witness roles.",
+	"Public advocacy, litigation participation, or campaign leadership tied to the topic.",
+	"A short plain-language summary for publication when disclosure is relevant."
 ];
 
 const recusalRules = [
@@ -53,9 +53,9 @@ const recusalRules = [
 
 const publicCommitments = [
 	"Reviewed pages show reviewer or author lines when those roles materially influenced the final synthesis.",
-	"Claim pages expose a short conflict-of-interest summary and editorial-independence note when disclosure is relevant.",
+	"Claim pages show a short conflict summary and editorial-independence note when disclosure is relevant.",
 	"Internal records preserve recusals, waivers, and review decisions even when the full details are not shown publicly.",
-	"If a conflict is serious enough to affect confidence, the site prefers replacement review over private hand-waving."
+	"If a conflict could affect confidence, the site prefers replacement review over private reassurance."
 ];
 
 useStaticPageMeta({
@@ -74,8 +74,8 @@ useStaticPageMeta({
 			<p class="eyebrow">Conflict and funding disclosure</p>
 			<h1>Influence, funding, and disclosures.</h1>
 			<p>
-				This policy governs the interests that must be disclosed by staff editors, verified experts, and anyone
-				with approval power over reviewed claim pages.
+				This policy covers interests disclosed by staff editors, verified experts, and anyone with approval
+				power over reviewed claim pages.
 			</p>
 		</header>
 
@@ -133,10 +133,7 @@ useStaticPageMeta({
 			<div>
 				<p class="eyebrow">Related standards</p>
 				<h2>Disclosure matters when it changes assignment and review behavior.</h2>
-				<p>
-					The expert program page covers reviewer standards; How Reviews Work covers the public publishing
-					bar.
-				</p>
+				<p>The expert program covers reviewer standards; How Reviews Work covers the public publishing bar.</p>
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/expert-review-program"
