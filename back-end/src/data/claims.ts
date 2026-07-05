@@ -10384,11 +10384,11 @@ const rawClaims: SeedClaim[] = [
 		evidenceCertainty: "high",
 		reviewMode: "living",
 		bottomLine:
-			"Yes. In malaria-endemic areas, sleeping under insecticide-treated nets reduces mosquito bites, malaria illness, severe disease, and child deaths. The effect depends on high coverage, consistent use, intact nets, and insecticides that still work against local mosquitoes; nets are a core prevention tool, not a complete malaria-control program by themselves.",
+			"Yes. In malaria-endemic areas, insecticide-treated bed nets reduce mosquito bites, malaria illness, severe disease, and child deaths. Benefits are strongest when coverage is high, nets are intact and used consistently, and the insecticide still works locally. Nets are a core prevention tool, not a complete malaria-control program.",
 		stableCore: [
 			"Cochrane's 2018 review included 23 trials and more than 275,000 adults and children; compared with no nets, ITNs saved an estimated 5.6 lives each year for every 1000 children protected and reduced P. falciparum cases and infection.",
 			"CDC describes ITNs as one of the most effective malaria-prevention methods and says community-wide African trials reduced all-cause deaths among children under 5 by about 20%.",
-			"WHO identifies vector control as a highly effective malaria-control and elimination component, with insecticide-treated nets and indoor residual spraying as the two core interventions.",
+			"WHO identifies vector control as a highly effective part of malaria control and elimination; insecticide-treated nets and indoor residual spraying are the two core interventions.",
 			"Current malaria burden remains large: WHO estimated 282 million malaria cases and 610,000 deaths globally in 2024, with children under 5 carrying most deaths in the African Region.",
 			"Pyrethroid resistance, net durability, cost, access, consistent use, and changing mosquito behavior can reduce impact; WHO now recommends newer net types in some pyrethroid-resistant settings."
 		],
@@ -10398,9 +10398,9 @@ const rawClaims: SeedClaim[] = [
 			"How should ITNs be combined with indoor residual spraying, rapid diagnosis, effective treatment, chemoprevention, vaccines, larval control, housing improvements, and surveillance?"
 		],
 		whatWouldChangeMinds: [
-			"Large contemporary trials or surveillance studies showing no meaningful malaria, severe-disease, or child-mortality benefit from correctly used ITNs in endemic areas with suitable mosquito exposure.",
-			"Major WHO, CDC, or Cochrane reassessments withdrawing ITNs as a core malaria vector-control intervention.",
-			"Evidence that insecticide resistance or behavioral adaptation has made available ITN types ineffective across most endemic settings despite high coverage and proper use."
+			"Large contemporary trials or surveillance studies showing no meaningful malaria, severe-disease, or child-mortality benefit from correctly used insecticide-treated nets in endemic areas where people are exposed while sleeping.",
+			"Major WHO, CDC, or Cochrane reassessments withdrawing insecticide-treated nets as a core malaria vector-control intervention.",
+			"Evidence that insecticide resistance or behavioral adaptation has made available insecticide-treated net types ineffective across most endemic settings despite high coverage and proper use."
 		],
 		misconceptions: [
 			"A net in the house does not provide the same protection as an intact net that is hung correctly and used consistently while people sleep.",
@@ -10409,14 +10409,14 @@ const rawClaims: SeedClaim[] = [
 			"Bed nets are not a substitute for diagnosis, treatment, chemoprevention, vaccines where available, or broader vector-control programs."
 		],
 		editorSummary:
-			"Insecticide-treated nets are a high-certainty malaria-prevention tool with clear mortality and illness benefits. The useful caveat is implementation: coverage, use, durability, local resistance, and complementary interventions determine realized impact.",
+			"Insecticide-treated nets are a high-certainty malaria-prevention tool with clear mortality and illness benefits. The main caveat is implementation: coverage, use, durability, local resistance, and complementary interventions determine realized impact.",
 		uncertaintySummary:
-			"The main benefit direction is high-certainty, especially for child mortality and P. falciparum illness in endemic settings. Remaining uncertainty is about current effect size under pyrethroid resistance, newer net mixes, local vector behavior, durability, coverage, and how nets combine with vaccines, treatment, and other prevention tools.",
+			"The benefit direction is high-certainty, especially for child mortality and P. falciparum illness in endemic settings. Remaining uncertainty is about effect size where pyrethroid resistance is common, how newer net types perform, local mosquito behavior, durability, coverage, and how nets combine with vaccines, treatment, and other tools.",
 		uncertaintyDrivers: [
 			{
 				type: "implementation",
 				detail:
-					"Real-world benefit depends on household access, correct hanging, nightly use, replacement timing, physical durability, community coverage, and program financing."
+					"Real-world benefit depends on household access, correct hanging, nightly use, replacement timing, durability, community coverage, and program financing."
 			},
 			{
 				type: "generalizability",
@@ -10426,7 +10426,7 @@ const rawClaims: SeedClaim[] = [
 			{
 				type: "mechanism",
 				detail:
-					"Insecticide resistance can weaken pyrethroid-only net performance, making local resistance monitoring and newer net choices important."
+					"Insecticide resistance can weaken pyrethroid-only nets, making local resistance monitoring and newer net choices important."
 			}
 		],
 		searchDatabases: ["Consensus", "Cochrane Library", "WHO Global Malaria Programme", "CDC"],
@@ -10454,14 +10454,14 @@ const rawClaims: SeedClaim[] = [
 				population:
 					"People living in malaria-endemic areas, with strongest mortality evidence for children in sub-Saharan African community trials",
 				finding:
-					"Insecticide-treated nets reduce child mortality and malaria illness compared with no nets, and they remain a core vector-control intervention despite resistance and implementation challenges.",
+					"Insecticide-treated nets reduce child mortality and malaria illness compared with no nets. They remain a core vector-control intervention, even as resistance and implementation challenges shape the size of benefit.",
 				effectDirection: "supports",
 				magnitude:
 					"Cochrane included 23 trials and more than 275,000 participants; compared with no nets, ITNs saved about 5.6 child lives per 1000 protected each year. CDC summarizes African community trials as reducing all-cause deaths among children under 5 by about 20%.",
 				certainty: "high",
 				limitations: [
 					"Many mortality trials predate widespread pyrethroid resistance and newer dual-ingredient net types.",
-					"Benefits depend on access, correct use, intact nets, replacement cycles, and community coverage.",
+					"Realized benefits depend on access, correct use, intact nets, replacement cycles, and community coverage.",
 					"Nets are one part of malaria control and should be paired with diagnosis, treatment, chemoprevention, vaccines where available, and surveillance."
 				]
 			}
@@ -10498,7 +10498,7 @@ const rawClaims: SeedClaim[] = [
 				doi: "10.1002/14651858.CD000363.pub3",
 				stance: "supports",
 				note:
-					"Decision-weight review of 23 trials and more than 275,000 participants; compared with no nets, ITNs saved an estimated 5.6 child lives per 1000 protected each year and reduced P. falciparum illness and infection with high-certainty evidence.",
+					"Decision-relevant review of 23 trials and more than 275,000 participants; compared with no nets, ITNs saved an estimated 5.6 child lives per 1000 protected each year and reduced P. falciparum illness and infection with high-certainty evidence.",
 				order: 1
 			},
 			{

@@ -369,7 +369,7 @@ describe("default claim seed quality", () => {
 		assert.equal(claim.evidenceCertainty, "high");
 		assert.match(claim.bottomLine, /malaria-endemic areas/);
 		assert.match(claim.bottomLine, /not a complete malaria-control program/);
-		assert.ok(claim.bottomLine.length <= 360, "Bed-net bottom line should stay scannable");
+		assert.ok(claim.bottomLine.length <= 340, "Bed-net bottom line should stay scannable");
 		assert.match(visibleSummary, /23 trials/);
 		assert.match(visibleSummary, /275,000/);
 		assert.match(visibleSummary, /5\.6 child lives per 1000/);
