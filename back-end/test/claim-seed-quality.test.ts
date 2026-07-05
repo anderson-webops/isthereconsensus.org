@@ -196,6 +196,35 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /just sleep in/i);
 	});
 
+	it("keeps the heat pump emissions claim bounded to emissions, not household cost promises", () => {
+		const slug = "do-heat-pumps-usually-cut-home-heating-emissions-compared-with-fossil-fuel-heating";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing heat pump emissions claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.match(claim.bottomLine, /Usually yes/);
+		assert.match(claim.bottomLine, /costs, comfort, and installation difficulty are separate questions/);
+		assert.ok(claim.bottomLine.length <= 320, "Heat pump bottom line should stay scannable");
+		assert.match(visibleSummary, /3-to-5 times/);
+		assert.match(visibleSummary, /53 of 59 regions/);
+		assert.match(visibleSummary, /5%-9%/);
+		assert.match(visibleSummary, /cleaner grids/);
+		assert.match(visibleSummary, /refrigerant leaks/);
+		assert.doesNotMatch(visibleSummary, /guaranteed lower bills/i);
+		assert.doesNotMatch(visibleSummary, /every household will save money/i);
+		assert.doesNotMatch(visibleSummary, /zero-emission heat pumps/i);
+	});
+
 	it("keeps the wind and solar lifecycle claim bounded to greenhouse gas evidence", () => {
 		const slug = "do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity";
 		const claim = defaultClaims.find(entry => entry.slug === slug);

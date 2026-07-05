@@ -15574,6 +15574,192 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	{
+		topicSlug: "climate-and-environment",
+		title: "Do heat pumps usually cut home-heating emissions compared with fossil-fuel heating?",
+		slug: "do-heat-pumps-usually-cut-home-heating-emissions-compared-with-fossil-fuel-heating",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 90,
+		agreementLevel: "broad_qualified",
+		evidenceCertainty: "high",
+		reviewMode: "standard",
+		bottomLine:
+			"Usually yes. In most current settings, heat pumps cut home-heating emissions compared with fossil-fuel boilers or furnaces because they move heat instead of burning fuel. The benefit is strongest on cleaner grids and in efficient homes; costs, comfort, and installation difficulty are separate questions.",
+		stableCore: [
+			"IEA reports that available heat pumps are about 3-to-5 times more energy efficient than natural-gas boilers and reduce greenhouse gas emissions in all major heating markets, even with current electricity mixes.",
+			"In a 59-region life-cycle study, electric heat pumps and cars were less emission-intensive than fossil-fuel alternatives in 53 regions under current electricity mixes, covering 95% of transport and heating demand.",
+			"A 2024 Joule/NREL analysis of 550,000 representative U.S. households found lower heating emissions in every state across five 2022-2038 grid scenarios; full adoption cut modeled national emissions by 5%-9%.",
+			"The emissions advantage grows as grids decarbonize, but the result still depends on the home, climate, electricity price, refrigerant, backup heat, and installation quality.",
+			"Heat pumps are lower-emission tools, not zero-emission devices: manufacturing, power generation, refrigerant leaks, backup heat, and peak-demand impacts still matter."
+		],
+		openQuestions: [
+			"How quickly will local grids decarbonize, and how should analyses count marginal winter peak generation rather than annual average emissions?",
+			"Which homes need insulation, duct sealing, panel upgrades, backup heat changes, or cold-climate equipment before a heat pump performs well?",
+			"How should policy compare upfront costs, operating bills, refrigerant management, renter access, installer quality, and grid upgrades across households?",
+			"Which low-global-warming-potential refrigerants and leak-prevention practices can preserve the climate benefit as deployment scales?"
+		],
+		whatWouldChangeMinds: [
+			"Large life-cycle analyses showing that typical modern heat pumps on current and expected grids usually emit as much greenhouse gas as fossil-fuel heating after refrigerants, backup heat, and grid effects are counted.",
+			"Measured field data showing widespread cold-climate or retrofit performance so poor that the modeled emissions benefits disappear across most homes.",
+			"Major IEA, IPCC, or national laboratory reassessments concluding that heat pumps are not a central building-decarbonization option."
+		],
+		misconceptions: [
+			"Heat pumps are sometimes dismissed as electric resistance heaters, even though their core advantage is moving more than one unit of heat per unit of electricity.",
+			"Cold weather is sometimes treated as a universal disqualifier, even though performance depends on equipment type, sizing, installation, building envelope, and backup strategy.",
+			"The word electric can make people assume emissions simply moved to a power plant; the relevant comparison is full system emissions, including the grid mix and fuel combustion avoided.",
+			"Lower emissions do not guarantee lower bills, lower upfront costs, easy installation, or enough trained contractors for every household."
+		],
+		editorSummary:
+			"Heat pumps usually lower home-heating greenhouse gas emissions compared with fossil-fuel heating, but the size of the benefit depends on grid mix, climate, building efficiency, equipment choice, refrigerants, and installation quality.",
+		uncertaintySummary:
+			"The emissions direction is well supported for typical comparisons, especially as grids decarbonize. The harder questions are local bills, winter peak demand, cold-climate performance, refrigerant leakage, retrofit needs, equity, and implementation quality.",
+		uncertaintyDrivers: [
+			{
+				type: "implementation",
+				detail:
+					"Installation quality, sizing, duct sealing, controls, backup heat, and building insulation can strongly change performance and cost."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Climate, housing stock, fuel prices, electricity tariffs, and grid emissions vary enough that household-level results can differ from national or global averages."
+			},
+			{
+				type: "timing",
+				detail:
+					"Future benefits depend partly on grid decarbonization, winter peak demand, refrigerant phase-downs, and equipment lifetimes."
+			},
+			{
+				type: "indirectness",
+				detail:
+					"Many estimates come from modeled life-cycle or building-stock simulations rather than randomized household experiments."
+			}
+		],
+		searchDatabases: ["Consensus", "OpenAlex", "Crossref", "IEA", "IPCC assessment reports"],
+		searchCutoffAt: "2026-07-05T06:25:00.000Z",
+		inclusionRules: [
+			"Prioritize life-cycle studies, building-stock simulations, assessment reports, and reviews that compare heat pumps with fossil-fuel boilers, furnaces, or direct combustion heating.",
+			"Separate greenhouse-gas emissions from bill savings, upfront cost, comfort, installer availability, and grid-planning questions.",
+			"Keep grid mix, marginal winter generation, refrigerant leakage, backup heat, and building-envelope quality visible as caveats."
+		],
+		exclusionRules: [
+			"Do not compare heat-pump electricity use with fossil-fuel heating without counting both avoided combustion and electricity-generation emissions.",
+			"Do not imply every household will save money or that every existing home can switch without retrofit work.",
+			"Do not use a single poorly installed system, a mild-climate case study, or a clean-grid scenario as proof of universal performance."
+		],
+		appraisalTools: [
+			"Life-cycle greenhouse-gas comparison",
+			"Grid emissions and marginal generation check",
+			"Cold-climate and building-envelope performance check",
+			"Refrigerant leakage and backup heat check",
+			"Cost versus emissions distinction"
+		],
+		evidenceSummaries: [
+			{
+				question: "Do heat pumps usually cut home-heating emissions compared with fossil-fuel heating?",
+				population:
+					"Residential heating systems compared across global regions, major heating markets, and U.S. housing-stock simulations",
+				finding:
+					"Heat pumps usually reduce greenhouse-gas emissions compared with fossil-fuel heating because they deliver heat more efficiently and can use progressively cleaner electricity.",
+				effectDirection: "supports",
+				magnitude:
+					"IEA estimates at least 20% lower greenhouse-gas emissions than gas boilers even with emissions-intensive electricity, and up to 80% on cleaner grids. A global study found lower emissions in 53 of 59 regions; a U.S. simulation found 5%-9% national reductions under full adoption.",
+				certainty: "high",
+				limitations: [
+					"Household-level cost and emissions depend on grid mix, climate, energy prices, insulation, equipment efficiency, backup heating, and installer quality.",
+					"Modeled results can miss real-world failures from oversizing, undersizing, duct losses, poor controls, or inadequate maintenance.",
+					"Refrigerant leaks and winter peak electricity demand can reduce the climate benefit if not managed."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "International Energy Agency",
+				role: "Global heating-decarbonization and policy anchor for heat-pump efficiency, emissions, cost, and deployment barriers."
+			},
+			{
+				name: "Intergovernmental Panel on Climate Change",
+				role: "Assessment anchor for buildings-sector mitigation, electrification of thermal energy, and the role of heat pumps in decarbonized buildings."
+			},
+			{
+				name: "National Renewable Energy Laboratory",
+				role: "U.S. building-stock simulation anchor for household-level heat-pump cost and emissions distributions."
+			}
+		],
+		lastRetractionCheckAt: "2026-07-05T06:25:00.000Z",
+		changeLog: [
+			{
+				date: "2026-07-05T06:25:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial residential heat-pump emissions claim published from IEA, IPCC, review, global life-cycle, and NREL/Joule evidence."
+			}
+		],
+		sources: [
+			{
+				kind: "guideline",
+				title: "The Future of Heat Pumps",
+				publisher: "International Energy Agency",
+				year: 2022,
+				url: "https://www.iea.org/reports/the-future-of-heat-pumps",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"IEA reports that heat pumps are 3-to-5 times more efficient than natural-gas boilers and can cut greenhouse gas emissions by at least 20% versus gas boilers even with emissions-intensive electricity, with larger cuts on cleaner grids.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2022: Mitigation of Climate Change, Chapter 9: Buildings",
+				publisher: "IPCC",
+				year: 2022,
+				url: "https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-9/",
+				doi: "10.1017/9781009157926.011",
+				stance: "supports",
+				note:
+					"IPCC buildings chapter describes electricity for thermal services, increased penetration of heat pumps, and electrification of heat as a building-decarbonization pathway with grid and upfront-cost caveats.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Heat pumps and our low-carbon future: A comprehensive review",
+				publisher: "Energy Research & Social Science",
+				year: 2021,
+				url: "https://doi.org/10.1016/j.erss.2020.101764",
+				doi: "10.1016/j.erss.2020.101764",
+				stance: "supports",
+				note:
+					"Comprehensive review finding heat pumps can help decarbonize heating, while emissions abatement depends on technology type, location, electricity mix, costs, regulation, and infrastructure.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Net emission reductions from electric cars and heat pumps in 59 world regions over time",
+				publisher: "Nature Sustainability",
+				year: 2020,
+				url: "https://doi.org/10.1038/s41893-020-0488-7",
+				doi: "10.1038/s41893-020-0488-7",
+				stance: "supports",
+				note:
+					"Life-cycle and integrated-assessment study finding electric cars and heat pumps less emission-intensive than fossil-fuel alternatives in 53 of 59 regions under current electricity mixes, representing 95% of global transport and heating demand.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Heat pumps for all? Distributions of the costs and benefits of residential air-source heat pumps in the United States",
+				publisher: "Joule",
+				year: 2024,
+				url: "https://www.osti.gov/biblio/2405069",
+				doi: "10.1016/j.joule.2024.01.022",
+				stance: "supports",
+				note:
+					"NREL-linked Joule study using physics simulations of 550,000 statistically representative U.S. households; it found positive greenhouse-gas reductions in every state and 5%-9% lower national emissions under full adoption.",
+				order: 5
+			}
+		]
+	},
+	{
 		topicSlug: "historical-case-studies",
 		title: "Did chlorinating and filtering drinking water reduce typhoid and other waterborne disease?",
 		slug: "did-chlorinating-and-filtering-drinking-water-reduce-typhoid-and-other-waterborne-disease",
