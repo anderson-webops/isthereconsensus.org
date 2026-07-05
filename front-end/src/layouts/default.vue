@@ -14,21 +14,15 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				<span class="site-brand__name">Is There Consensus?</span>
 				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
-			<div class="site-header__actions">
-				<nav class="site-nav" aria-label="Primary">
-					<NuxtLink to="/">Home</NuxtLink>
-					<NuxtLink to="/consensus">Browse</NuxtLink>
-					<NuxtLink to="/explainers">Explainers</NuxtLink>
-					<NuxtLink to="/ask">Ask</NuxtLink>
-					<NuxtLink to="/standards">How reviews work</NuxtLink>
-					<NuxtLink to="/account">Account</NuxtLink>
-					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
-				</nav>
-				<div class="site-header__controls" aria-label="Appearance controls">
-					<PaletteSwitcher />
-					<ThemeToggle />
-				</div>
-			</div>
+			<nav class="site-nav" aria-label="Primary">
+				<NuxtLink to="/">Home</NuxtLink>
+				<NuxtLink to="/consensus">Browse</NuxtLink>
+				<NuxtLink to="/explainers">Explainers</NuxtLink>
+				<NuxtLink to="/ask">Ask</NuxtLink>
+				<NuxtLink to="/standards">How reviews work</NuxtLink>
+				<NuxtLink to="/account">Account</NuxtLink>
+				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
+			</nav>
 		</header>
 
 		<main class="site-main">
@@ -44,12 +38,20 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<div class="site-footer__links">
+				<ClientOnly>
+					<div class="site-footer__appearance" aria-label="Appearance controls">
+						<PaletteSwitcher />
+						<ThemeToggle />
+					</div>
+					<template #fallback>
+						<span class="site-footer__appearance-fallback" aria-hidden="true" />
+					</template>
+				</ClientOnly>
+				<nav class="site-footer__links" aria-label="Footer links">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
-					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
-				</div>
+				</nav>
 			</div>
 		</footer>
 	</div>
@@ -75,22 +77,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	gap: 16px;
 	padding-bottom: 16px;
 	border-bottom: 1px solid var(--consensus-soft-line);
-}
-
-.site-header__actions {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: center;
-	gap: 12px;
-	justify-content: end;
-	min-width: 0;
-}
-
-.site-header__controls {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	justify-content: end;
 }
 
 .site-brand {
@@ -180,12 +166,27 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	flex-direction: column;
 	align-items: end;
 	gap: 12px;
-	min-width: min(100%, 320px);
+	min-width: min(100%, 220px);
+}
+
+.site-footer__appearance {
+	display: inline-flex;
+	align-items: center;
+	justify-content: end;
+	gap: 8px;
+}
+
+.site-footer__appearance-fallback {
+	display: inline-block;
+	width: 104px;
+	height: 42px;
+	border-radius: 999px;
+	background: var(--consensus-soft-line);
 }
 
 .site-footer__links {
 	display: flex;
-	gap: 8px 14px;
+	gap: 8px 12px;
 	flex-wrap: wrap;
 	justify-content: end;
 	font-size: 0.9rem;
@@ -205,17 +206,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		align-items: stretch;
 		flex-direction: column;
 		padding-bottom: 12px;
-	}
-
-	.site-header__actions {
-		grid-template-columns: 1fr;
-		width: 100%;
-		align-items: start;
-		justify-content: stretch;
-	}
-
-	.site-header__controls {
-		justify-content: start;
 	}
 
 	.site-nav {
@@ -241,6 +231,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer__meta {
 		align-items: start;
 		min-width: 0;
+	}
+
+	.site-footer__appearance {
+		justify-content: start;
 	}
 
 	.site-footer__links {
