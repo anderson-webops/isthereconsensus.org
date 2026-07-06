@@ -67,21 +67,21 @@ useStaticPageMeta({
 							<h3>Why it persists</h3>
 							<p>{{ item.whyItPersists }}</p>
 						</section>
+						<section class="misconception-card__section misconception-card__section--links">
+							<h3>Related explainers</h3>
+							<div class="chip-row">
+								<NuxtLink
+									v-for="slug in item.relatedExplainers"
+									:key="slug"
+									class="chip"
+									:to="`/explainers/${slug}`"
+								>
+									{{ explainerTitle(slug) }}
+								</NuxtLink>
+							</div>
+						</section>
 					</div>
 				</details>
-				<section class="misconception-card__section misconception-card__section--links">
-					<h3>Related explainers</h3>
-					<div class="chip-row">
-						<NuxtLink
-							v-for="slug in item.relatedExplainers"
-							:key="slug"
-							class="chip"
-							:to="`/explainers/${slug}`"
-						>
-							{{ explainerTitle(slug) }}
-						</NuxtLink>
-					</div>
-				</section>
 			</article>
 		</section>
 

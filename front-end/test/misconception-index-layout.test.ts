@@ -28,6 +28,21 @@ describe("misconception and explainer index layout copy", () => {
 		assert.ok(gridIndex < libraryFitIndex);
 	});
 
+	it("keeps deeper misconception context inside the optional detail area", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
+		const detailsBodyIndex = source.indexOf('<div class="misconception-card__details-body">');
+		const linksIndex = source.indexOf(
+			'<section class="misconception-card__section misconception-card__section--links">'
+		);
+		const detailsCloseIndex = source.indexOf("</details>", detailsBodyIndex);
+
+		assert.notEqual(detailsBodyIndex, -1);
+		assert.notEqual(linksIndex, -1);
+		assert.notEqual(detailsCloseIndex, -1);
+		assert.ok(detailsBodyIndex < linksIndex);
+		assert.ok(linksIndex < detailsCloseIndex);
+	});
+
 	it("uses public navigation labels from evergreen explainers", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
 
