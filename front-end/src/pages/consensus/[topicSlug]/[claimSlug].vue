@@ -80,6 +80,22 @@ const claimMeta = computed(() => [
 	formatCountLabel(sourceCount.value, "source"),
 	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
 ]);
+const bottomLineParts = computed(() => {
+	const text = claim.value?.bottomLine?.trim() || "";
+	const sentenceEnd = text.match(/[.!?](?:\s|$)/);
+	if (!sentenceEnd) {
+		return {
+			lead: text,
+			context: ""
+		};
+	}
+
+	const leadEnd = (sentenceEnd.index ?? 0) + sentenceEnd[0].trimEnd().length;
+	return {
+		lead: text.slice(0, leadEnd).trim(),
+		context: text.slice(leadEnd).trim()
+	};
+});
 const evidenceSectionTitle = computed(() =>
 	claimSnapshotGroups.value.length ? "Claim snapshot" : "Evidence summaries by outcome"
 );
@@ -365,7 +381,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		<section class="bottom-line">
 			<div>
 				<h2>Bottom line</h2>
-				<p class="bottom-line__text">{{ claim?.bottomLine }}</p>
+				<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
+				<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
 			</div>
 			<div class="bottom-line__actions">
 				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
@@ -670,6 +687,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.62;
 }
 
+.bottom-line__text--lead {
+	font-weight: 700;
+}
+
+.bottom-line__context {
+	max-width: 72ch;
+	margin: 8px 0 0;
+	color: var(--consensus-muted);
+	line-height: 1.58;
+}
+
 .uncertainty-strip > div > p:not(.eyebrow):not(.field-label) {
 	max-width: 68ch;
 }
@@ -903,7 +931,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 @media (max-width: 860px) {
 	.claim-page {
-		gap: 18px;
+		gap: 14px;
 	}
 
 	.bottom-line {
@@ -919,14 +947,24 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.uncertainty-strip,
 	.content-panel,
 	.queue-note {
-		padding: 16px;
+		padding: 14px;
 		border-radius: 16px;
 	}
 
 	.claim-page__header,
 	.bottom-line,
 	.uncertainty-strip {
-		gap: 14px;
+		gap: 10px;
+	}
+
+	.claim-page__hero {
+		gap: 7px;
+	}
+
+	.claim-page__header h1 {
+		margin-top: 4px;
+		font-size: clamp(1.72rem, 7.2vw, 2.05rem);
+		line-height: 1.02;
 	}
 
 	.claim-page__description,
@@ -940,11 +978,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.muted,
 	.field-label,
 	.queue-note {
-		line-height: 1.56;
+		line-height: 1.5;
 	}
 
 	.bottom-line .bottom-line__text {
-		line-height: 1.54;
+		margin-top: 6px;
+		font-size: 1.02rem;
+		line-height: 1.48;
+	}
+
+	.bottom-line__context {
+		margin-top: 6px;
+		line-height: 1.46;
 	}
 
 	.section-heading {
@@ -1009,17 +1054,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.bottom-line__actions {
 		width: 100%;
 		justify-content: start;
+		gap: 8px;
 	}
 }
 
 @media (max-width: 560px) {
 	.bottom-line__actions {
-		display: grid;
-		grid-template-columns: 1fr;
+		display: flex;
+		flex-wrap: wrap;
 	}
 
 	.bottom-line__actions .button {
-		width: 100%;
+		flex: 1 1 140px;
+		min-height: 40px;
+		padding: 10px 12px;
 	}
 }
 </style>

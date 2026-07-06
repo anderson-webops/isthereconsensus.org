@@ -33,7 +33,7 @@ describe("consensus directory metadata", () => {
 	it("keeps mobile directory filters compact without changing the page flow", () => {
 		assert.match(source, /@media \(max-width: 760px\) \{[\s\S]*\.directory__controls \{[\s\S]*gap: 8px;/);
 		assert.match(source, /\.directory__controls,\s*\.results-block \{[\s\S]*padding: 14px;/);
-		assert.match(source, /\.filter-stack \{[\s\S]*flex-wrap: nowrap;[\s\S]*overflow-x: auto;/);
-		assert.match(source, /\.filter \{[\s\S]*flex: 0 0 auto;[\s\S]*min-height: 40px;/);
+		assert.match(source, /\.filter-stack \{[\s\S]*flex-wrap: wrap;[\s\S]*overflow-x: visible;/);
+		assert.match(source, /\.filter \{[\s\S]*flex: 0 1 auto;[\s\S]*min-height: 40px;/);
 	});
 });

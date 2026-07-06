@@ -48,28 +48,6 @@ useStaticPageMeta({
 			</p>
 		</header>
 
-		<section class="panel panel--soft">
-			<div class="section-heading section-heading--tight">
-				<h2>Cross-cutting rules</h2>
-				<p>The baseline rules that apply before topic-specific evidence needs change the weighting.</p>
-			</div>
-			<ul class="plain-list">
-				<li v-for="item in crossCuttingRules" :key="item">{{ item }}</li>
-			</ul>
-		</section>
-
-		<section class="panel">
-			<div class="section-heading section-heading--tight">
-				<h2>When to use this reference</h2>
-				<p>Use it when you want to audit why a claim gave more weight to one source type than another.</p>
-			</div>
-			<ul class="plain-list">
-				<li>Medicine may lean on guideline bodies and clinical review programs.</li>
-				<li>Climate topics may lean on assessment bodies and synthesis reports.</li>
-				<li>Evidence-literacy topics may lean more on meta-research and reliability studies.</li>
-			</ul>
-		</section>
-
 		<section class="topic-standards-section">
 			<div class="section-heading section-heading--tight">
 				<h2>Topic notes</h2>
@@ -157,6 +135,28 @@ useStaticPageMeta({
 					</div>
 				</details>
 			</div>
+		</section>
+
+		<section class="panel panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>Cross-cutting rules</h2>
+				<p>The baseline rules that apply before topic-specific evidence needs change the weighting.</p>
+			</div>
+			<ul class="plain-list">
+				<li v-for="item in crossCuttingRules" :key="item">{{ item }}</li>
+			</ul>
+		</section>
+
+		<section class="panel">
+			<div class="section-heading section-heading--tight">
+				<h2>When to use this reference</h2>
+				<p>Use it when you want to audit why a claim gave more weight to one source type than another.</p>
+			</div>
+			<ul class="plain-list">
+				<li>Medicine may lean on guideline bodies and clinical review programs.</li>
+				<li>Climate topics may lean on assessment bodies and synthesis reports.</li>
+				<li>Evidence-literacy topics may lean more on meta-research and reliability studies.</li>
+			</ul>
 		</section>
 
 		<section class="callout">

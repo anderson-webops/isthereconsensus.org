@@ -210,30 +210,33 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-header {
-		align-items: stretch;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: start;
+		gap: 12px 14px;
 		padding-bottom: 12px;
 	}
 
 	.site-header__actions {
-		grid-template-columns: 1fr;
-		width: 100%;
-		align-items: start;
-		justify-content: stretch;
+		display: contents;
 	}
 
 	.site-header__controls {
-		justify-content: start;
+		grid-column: 2;
+		grid-row: 1;
+		justify-content: end;
 	}
 
 	.site-nav {
+		grid-column: 1 / -1;
 		justify-content: start;
-		gap: 6px;
+		gap: 4px;
+		flex-wrap: wrap;
 	}
 
 	.site-nav a {
-		padding: 7px 9px;
-		font-size: 0.9rem;
+		padding: 6px 8px;
+		font-size: 0.84rem;
 	}
 
 	.site-main {
@@ -253,6 +256,12 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-footer__links {
 		justify-content: start;
+	}
+}
+
+@media (max-width: 480px) {
+	.site-brand__tag {
+		display: none;
 	}
 }
 </style>
