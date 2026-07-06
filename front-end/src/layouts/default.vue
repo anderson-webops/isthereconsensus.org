@@ -25,6 +25,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/account">Account</NuxtLink>
 					<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
 				</nav>
+				<div class="site-header__controls" aria-label="Appearance controls">
+					<PaletteSwitcher />
+					<ThemeToggle />
+				</div>
 			</div>
 		</header>
 
@@ -41,10 +45,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 				</p>
 			</div>
 			<div class="site-footer__meta">
-				<div class="site-footer__appearance" aria-label="Appearance controls">
-					<PaletteSwitcher />
-					<ThemeToggle />
-				</div>
 				<nav class="site-footer__links" aria-label="Support and policy">
 					<NuxtLink to="/corrections">Corrections</NuxtLink>
 					<NuxtLink to="/community-guidelines">Guidelines</NuxtLink>
@@ -80,10 +80,19 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 .site-header__actions {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
+	gap: 12px;
 	justify-content: end;
 	min-width: 0;
+}
+
+.site-header__controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: end;
 }
 
 .site-brand {
@@ -176,13 +185,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	min-width: min(100%, 300px);
 }
 
-.site-footer__appearance {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	justify-content: end;
-}
-
 .site-footer__links {
 	display: flex;
 	gap: 8px 12px;
@@ -214,8 +216,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	}
 
 	.site-header__actions {
+		grid-template-columns: 1fr;
 		width: 100%;
+		align-items: start;
 		justify-content: stretch;
+	}
+
+	.site-header__controls {
+		justify-content: start;
 	}
 
 	.site-nav {
@@ -241,10 +249,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-footer__meta {
 		align-items: start;
 		min-width: 0;
-	}
-
-	.site-footer__appearance {
-		justify-content: start;
 	}
 
 	.site-footer__links {
