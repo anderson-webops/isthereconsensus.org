@@ -200,14 +200,14 @@ function claimCardSummary(claim: ClaimSummary) {
 					class="claim-row"
 					:to="`/consensus/${slug}/${claim.slug}`"
 				>
-					<div>
+					<div class="claim-row__content">
+						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__meta">
 							<span>{{ claimSupportLabel(claim) }}</span>
 							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
 						</p>
-						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__summary" :title="claimCardSummary(claim)">
 							{{ claimCardSummary(claim) }}
 						</p>
@@ -313,6 +313,12 @@ function claimCardSummary(claim: ClaimSummary) {
 	gap: 12px;
 	padding: 18px;
 	text-decoration: none;
+}
+
+.claim-row__content {
+	display: grid;
+	gap: 8px;
+	align-content: start;
 }
 
 .claim-row h3 {
@@ -423,6 +429,10 @@ function claimCardSummary(claim: ClaimSummary) {
 
 	.claim-row h3 {
 		line-height: 1.16;
+	}
+
+	.claim-row__content {
+		gap: 7px;
 	}
 
 	.claim-row p {
