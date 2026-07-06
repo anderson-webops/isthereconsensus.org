@@ -43,6 +43,28 @@ describe("theme controls", () => {
 			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
 			assert.doesNotMatch(footer, /PaletteSwitcher|ThemeToggle/);
 		});
+
+		it(`keeps mobile appearance controls beside the brand without adding a footer control row in ${file}`, () => {
+			const source = readFileSync(join(testDir, "..", file), "utf8");
+
+			assert.match(
+				source,
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-header \{[\s\S]*grid-template-columns: minmax\(0, 1fr\) auto;/
+			);
+			assert.match(
+				source,
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-header__actions \{[\s\S]*display: contents;/
+			);
+			assert.match(
+				source,
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-header__controls \{[\s\S]*grid-column: 2;/
+			);
+			assert.match(
+				source,
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-nav \{[\s\S]*grid-column: 1 \/ -1;[\s\S]*flex-wrap: wrap;/
+			);
+			assert.doesNotMatch(source, /site-footer__appearance/);
+		});
 	}
 
 	it("keeps the restored green, blue, and warm background palettes", () => {
