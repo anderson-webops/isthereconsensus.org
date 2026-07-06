@@ -21,3 +21,20 @@ describe("claim detail layout", () => {
 		assert.match(source, /max-width: 68ch;/);
 	});
 });
+
+describe("breadcrumbs layout", () => {
+	const breadcrumbsSource = readFileSync(join(testDir, "..", "src/components/PageBreadcrumbs.vue"), "utf8");
+
+	it("keeps long current-page labels from widening mobile breadcrumbs", () => {
+		assert.match(breadcrumbsSource, /:title="item\.label"/);
+		assert.match(breadcrumbsSource, /\.breadcrumbs__current \{[\s\S]*text-overflow: ellipsis;/);
+		assert.match(
+			breadcrumbsSource,
+			/@media \(max-width: 560px\) \{[\s\S]*\.breadcrumbs__item--current \{[\s\S]*position: absolute;/
+		);
+		assert.match(
+			breadcrumbsSource,
+			/\.breadcrumbs li:nth-last-child\(2\) \.breadcrumbs__divider \{[\s\S]*display: none;/
+		);
+	});
+});

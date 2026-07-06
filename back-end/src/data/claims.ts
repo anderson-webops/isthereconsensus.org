@@ -25271,6 +25271,889 @@ const rawClaims: SeedClaim[] = [
 				order: 4
 			}
 		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does emergency contraception end an established pregnancy?",
+		slug: "does-emergency-contraception-end-an-established-pregnancy",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "high",
+		bottomLine:
+			"No. Emergency contraception reduces the chance of pregnancy after sex, mainly by delaying or preventing ovulation and, for copper IUDs, impairing fertilization. It does not end an established pregnancy and is different from medication abortion.",
+		stableCore: [
+			"ACOG states that emergency contraception works only before pregnancy is established and is not abortifacient.",
+			"Morning-after pills are time-sensitive backup contraception, not ongoing contraception and not protection from sexually transmitted infections.",
+			"The copper IUD is the most effective emergency-contraception option for medically eligible patients and can also provide continuing contraception.",
+			"Levonorgestrel and ulipristal evidence is strongest for delaying or inhibiting ovulation before fertilization risk has passed."
+		],
+		openQuestions: [
+			"How should public labels and counseling describe mechanisms without overstating implantation effects that are not supported by current evidence?",
+			"How can health systems reduce delays for ulipristal prescriptions or copper-IUD placement after contraceptive failure or unprotected sex?",
+			"How should guidance discuss body weight, timing in the cycle, repeated exposure, and follow-up pregnancy testing in plain language?"
+		],
+		whatWouldChangeMinds: [
+			"Replicated human evidence showing that emergency-contraception methods disrupt established pregnancies at ordinary clinical doses.",
+			"Major ACOG, FDA, WHO, or family-planning guidance reclassifying emergency contraception as an abortion method based on human outcome evidence.",
+			"Well-controlled studies showing post-implantation effects large enough to explain the observed pregnancy-prevention benefit."
+		],
+		misconceptions: [
+			"Emergency contraception is often confused with mifepristone-based medication abortion, but they are different drugs and different clinical actions.",
+			"Using emergency contraception after ovulation is less effective; that timing limit is not evidence that it ends pregnancy.",
+			"Emergency contraception does not provide STI protection or reliable pregnancy prevention for later sex acts unless an ongoing method such as an IUD is placed.",
+			"Being less effective than regular contraception does not mean it is unsafe or useless as backup contraception."
+		],
+		editorSummary:
+			"This is a high-value reproductive-health clarity page: the consensus answer separates emergency contraception from abortion while keeping timing, access, and method differences visible.",
+		uncertaintySummary:
+			"The established-pregnancy boundary is high-confidence. More uncertainty remains around practical access, comparative effectiveness by timing and body weight, and how labels should communicate mechanism without confusing patients.",
+		searchDatabases: ["ACOG", "PubMed", "FDA", "WHO", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Access to Emergency Contraception",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2017,
+				url:
+					"https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/07/access-to-emergency-contraception",
+				stance: "supports",
+				note:
+					"Professional guidance anchor stating that emergency contraception is effective only before pregnancy is established and therefore is not abortifacient.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Emergency Contraception",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2026,
+				url: "https://www.acog.org/womens-health/faqs/emergency-contraception",
+				stance: "supports",
+				note:
+					"Patient-facing ACOG source explaining that emergency contraception prevents pregnancy from occurring and does not cause abortion.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Emergency contraception review: evidence-based recommendations for clinicians",
+				publisher: "Clinical Obstetrics and Gynecology",
+				year: 2014,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4216625/",
+				stance: "supports",
+				note:
+					"Review source summarizing mechanism and effectiveness, including levonorgestrel data showing no effect on an existing pregnancy or miscarriage rates after implantation.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Effect of levonorgestrel emergency contraception on implantation and fertility",
+				publisher: "Contraception",
+				year: 2022,
+				url: "https://pubmed.ncbi.nlm.nih.gov/35081389/",
+				pmid: "35081389",
+				stance: "supports",
+				note:
+					"Focused review supporting that levonorgestrel emergency contraception taken after ovulation does not affect implantation and produces conception rates similar to placebo.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		title: "Does the recombinant shingles vaccine prevent shingles in older adults?",
+		slug: "does-the-recombinant-shingles-vaccine-prevent-shingles-in-older-adults",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. The two-dose recombinant zoster vaccine substantially reduces shingles risk and related complications in recommended adults. It is preventive, not a treatment for active shingles, and side effects such as arm soreness, fatigue, fever, and aches are common but usually short-lived.",
+		stableCore: [
+			"CDC recommends two doses of recombinant zoster vaccine for adults 50 and older and for immunocompromised adults 19 and older.",
+			"Phase 3 trials found high efficacy against shingles in adults 50 and older and in adults 70 and older.",
+			"Real-world studies generally confirm meaningful effectiveness, though estimates can be lower than tightly controlled trial efficacy.",
+			"Vaccination lowers shingles and postherpetic neuralgia risk; it does not treat a current shingles episode."
+		],
+		openQuestions: [
+			"How durable is protection beyond a decade, and when, if ever, should booster doses be recommended?",
+			"How should clinicians time vaccination around immunosuppressive therapy, active shingles, or recent zoster vaccination?",
+			"How can coverage improve among eligible adults who are not reached by routine adult immunization systems?"
+		],
+		whatWouldChangeMinds: [
+			"Large post-licensure safety evidence showing serious vaccine harms outweigh shingles and postherpetic-neuralgia prevention in recommended groups.",
+			"Major CDC or ACIP recommendations withdrawing routine recombinant zoster vaccination for adults 50 and older.",
+			"Long-term effectiveness evidence showing protection fades so rapidly that the recommended two-dose series no longer prevents meaningful disease burden."
+		],
+		misconceptions: [
+			"Shingles vaccination is not only for people who remember having chickenpox; many adults do not know their varicella history.",
+			"Reactogenic side effects after vaccination are not the same as shingles infection.",
+			"Vaccination is still recommended for many adults who previously had shingles, but timing should be discussed with a clinician.",
+			"Possible research on other outcomes, such as dementia, should not be confused with the established shingles-prevention indication."
+		],
+		editorSummary:
+			"Adult immunization pages help the library feel practical, not only controversy-driven. Shingles vaccine is a clear example where efficacy, eligibility, and side-effect expectations all matter.",
+		uncertaintySummary:
+			"The prevention effect is strong. The main uncertainty is operational: durability, booster policy, immunocompromised subgroups, timing after shingles, and how to improve adult vaccine uptake.",
+		searchDatabases: ["CDC", "ACIP", "PubMed", "ClinicalTrials.gov", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Shingles Vaccine Recommendations",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/shingles/hcp/vaccine-considerations/index.html",
+				stance: "supports",
+				note:
+					"Current CDC clinical anchor for two-dose recombinant zoster vaccine recommendations in adults 50 and older and immunocompromised adults 19 and older.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Recommendations of the Advisory Committee on Immunization Practices for Use of Herpes Zoster Vaccines",
+				publisher: "Morbidity and Mortality Weekly Report",
+				year: 2018,
+				url: "https://www.cdc.gov/mmwr/volumes/67/wr/mm6703a5.htm",
+				stance: "supports",
+				note:
+					"ACIP recommendation source for recombinant zoster vaccine use in immunocompetent adults aged 50 years and older and preference over the older live vaccine.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Efficacy of an Adjuvanted Herpes Zoster Subunit Vaccine in Older Adults",
+				publisher: "New England Journal of Medicine",
+				year: 2015,
+				url: "https://pubmed.ncbi.nlm.nih.gov/25916341/",
+				pmid: "25916341",
+				stance: "supports",
+				note:
+					"ZOE-50 randomized trial source reporting high efficacy of the adjuvanted recombinant zoster vaccine against herpes zoster in adults aged 50 years or older.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Effectiveness of the Adjuvanted Recombinant Zoster Vaccine in Adults Aged 50 Years and Older",
+				publisher: "Clinical Infectious Diseases",
+				year: 2026,
+				url: "https://pubmed.ncbi.nlm.nih.gov/40581370/",
+				pmid: "40581370",
+				stance: "supports",
+				note:
+					"Recent real-world effectiveness source finding two doses effective against herpes zoster and postherpetic neuralgia, with durable protection in adults 50 and older.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can carrier screening identify reproductive risk for some inherited conditions?",
+		slug: "can-carrier-screening-identify-reproductive-risk-for-some-inherited-conditions",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 88,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Carrier screening can identify people or couples with increased chance of having a child with selected autosomal recessive or X-linked genetic conditions. It is useful risk information, not a guarantee: panels differ, results need counseling, and a negative screen does not rule out every inherited condition.",
+		stableCore: [
+			"Carrier screening tests people who usually have no symptoms to estimate reproductive risk for selected genetic conditions.",
+			"ACOG supports carrier screening before pregnancy or during pregnancy, with counseling about residual risk and reproductive options.",
+			"ACMG recommends more consistent, ethnicity-neutral approaches to reduce inequities created by ancestry-based screening only.",
+			"Screening one partner alone can miss couple-level risk if follow-up testing, counseling, or partner access fails."
+		],
+		openQuestions: [
+			"Which genes and variants belong on broad panels when severity, penetrance, actionability, and ancestry coverage vary?",
+			"How should systems deliver equitable preconception screening when many people first present after pregnancy begins?",
+			"How can counseling explain variants, residual risk, false reassurance, and reproductive choices without coercion?"
+		],
+		whatWouldChangeMinds: [
+			"Guideline reversals from ACOG, ACMG, or comparable bodies concluding that carrier screening should no longer be offered in reproductive care.",
+			"Large evidence showing broad carrier screening creates more clinical harm than benefit after counseling quality and follow-up access are improved.",
+			"Technical evidence showing carrier screening cannot reliably identify known pathogenic carrier states for the conditions it claims to test."
+		],
+		misconceptions: [
+			"A negative carrier screen does not mean a child cannot have any genetic condition.",
+			"Carrier status usually does not mean the tested person is sick.",
+			"Expanded panels are not automatically better if they include poorly understood or poorly counseled findings.",
+			"Carrier screening is different from prenatal diagnostic testing, newborn screening, ancestry testing, and embryo selection."
+		],
+		editorSummary:
+			"Carrier screening adds a practical genetics page that distinguishes useful preconception risk information from deterministic or overbroad genetic promises.",
+		uncertaintySummary:
+			"The clinical utility of well-counseled carrier screening for selected conditions is well supported. Uncertainty remains around panel design, equitable access, residual-risk communication, reproductive autonomy, and ancestry portability of variant interpretation.",
+		searchDatabases: ["ACOG", "ACMG", "PubMed", "GeneReviews", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Carrier Screening for Genetic Conditions",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2017,
+				url:
+					"https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/03/carrier-screening-for-genetic-conditions",
+				stance: "supports",
+				note:
+					"ACOG guidance defining carrier screening, offering timing before or during pregnancy, and emphasizing counseling plus residual-risk limits.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Carrier Screening in the Age of Genomic Medicine",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2017,
+				url:
+					"https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/03/carrier-screening-in-the-age-of-genomic-medicine",
+				stance: "supports",
+				note:
+					"Professional guidance on expanded carrier screening strategy, counseling, residual risk, and informed patient choice.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Screening for autosomal recessive and X-linked conditions during pregnancy and preconception",
+				publisher: "Genetics in Medicine",
+				year: 2021,
+				url: "https://pubmed.ncbi.nlm.nih.gov/34285390/",
+				pmid: "34285390",
+				stance: "supports",
+				note:
+					"ACMG practice resource recommending a more consistent carrier-screening approach and discussing tiered screening, equity, and implementation questions.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Carrier Screening",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2026,
+				url: "https://www.acog.org/womens-health/faqs/carrier-screening",
+				stance: "supports",
+				note:
+					"Patient-facing ACOG source explaining that carrier screening estimates the chance of having a child with a genetic disorder and can be done before or during pregnancy.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does the DASH eating plan lower blood pressure?",
+		slug: "does-the-dash-eating-plan-lower-blood-pressure",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. The DASH eating plan lowers blood pressure, especially when paired with reduced sodium intake. It is a food pattern, not a branded supplement: fruits, vegetables, low-fat dairy, whole grains, beans, nuts, and lower saturated fat and sodium are the central pieces.",
+		stableCore: [
+			"Original DASH randomized feeding trials showed clinically meaningful blood-pressure reductions within weeks.",
+			"DASH-Sodium showed blood pressure was lower on DASH at each tested sodium level, with the largest reductions when DASH was combined with lower sodium.",
+			"NHLBI describes DASH as rich in potassium, calcium, magnesium, fiber, and protein and lower in saturated fat and sodium.",
+			"People with kidney disease or potassium restrictions should adapt DASH with clinician or dietitian guidance."
+		],
+		openQuestions: [
+			"Which implementation supports best help people sustain DASH when cost, culture, cooking time, food access, or kidney-disease restrictions matter?",
+			"How much benefit comes from sodium reduction versus the whole dietary pattern in different hypertension subgroups?",
+			"How should DASH advice be personalized with medication decisions, weight management, diabetes, heart failure, and chronic kidney disease?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized feeding or pragmatic trials showing DASH does not lower blood pressure compared with usual diets after sodium and adherence are measured well.",
+			"Major NHLBI, AHA, ACC, or hypertension-guideline updates withdrawing DASH as a recommended blood-pressure dietary pattern.",
+			"Evidence that the pattern's harms outweigh blood-pressure benefit in the general hypertensive or prehypertensive adult population."
+		],
+		misconceptions: [
+			"DASH is not a crash diet or a single food; it is a pattern that still has to fit calorie needs and medical context.",
+			"Adding a few fruits or vegetables does not reproduce the full DASH pattern if sodium and saturated fat stay high.",
+			"Lower blood pressure from diet does not mean medication can be stopped without medical advice.",
+			"Very low sodium or high potassium targets are not automatically safe for every kidney or medication situation."
+		],
+		editorSummary:
+			"DASH is a useful nutrition consensus page because it is one of the clearest diet-pattern trials: practical, evidence-based, and less fad-driven than many nutrition claims.",
+		uncertaintySummary:
+			"The blood-pressure effect is high-confidence. Uncertainty is mostly about long-term adherence, personalization, equity, sodium targets, kidney-disease adaptation, and translation from feeding trials to ordinary food environments.",
+		searchDatabases: ["NHLBI", "PubMed", "AHA", "ACC", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "DASH Eating Plan",
+				publisher: "National Heart, Lung, and Blood Institute",
+				year: 2026,
+				url: "https://www.nhlbi.nih.gov/health/dash-eating-plan",
+				stance: "supports",
+				note:
+					"Current NHLBI public-health source describing DASH serving targets, food pattern, and lower sodium options for blood-pressure reduction.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "A Clinical Trial of the Effects of Dietary Patterns on Blood Pressure",
+				publisher: "New England Journal of Medicine",
+				year: 1997,
+				url: "https://pubmed.ncbi.nlm.nih.gov/9099655/",
+				pmid: "9099655",
+				stance: "supports",
+				note:
+					"Original DASH randomized feeding trial showing a diet rich in fruits, vegetables, and low-fat dairy with reduced saturated and total fat substantially lowered blood pressure.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Effects on Blood Pressure of Reduced Dietary Sodium and the Dietary Approaches to Stop Hypertension Diet",
+				publisher: "New England Journal of Medicine",
+				year: 2001,
+				url: "https://pubmed.ncbi.nlm.nih.gov/11136953/",
+				pmid: "11136953",
+				stance: "supports",
+				note:
+					"DASH-Sodium trial source showing DASH lowered systolic blood pressure at each sodium level and that combining DASH with lower sodium produced larger reductions.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "DASH Eating Plan",
+				publisher: "MedlinePlus",
+				year: 2025,
+				url: "https://medlineplus.gov/dasheatingplan.html",
+				stance: "supports",
+				note:
+					"Patient-facing NIH/NLM source summarizing DASH as an NHLBI-supported eating plan that lowers high blood pressure and improves cholesterol levels.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do omega-3 fish oil supplements broadly prevent first heart attacks or strokes?",
+		slug: "do-omega-3-fish-oil-supplements-broadly-prevent-first-heart-attacks-or-strokes",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 68,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Not as a blanket claim for healthy adults. Omega-3 supplements can lower triglycerides, and some trials suggest small coronary benefits, but large primary-prevention evidence does not show clear reductions in major cardiovascular events or stroke for everyone. Eating fish and prescription omega-3 use for selected patients are separate questions.",
+		stableCore: [
+			"NIH ODS summarizes that protective evidence is stronger for people with existing coronary heart disease than for healthy individuals.",
+			"The VITAL trial found 1 gram per day of marine omega-3 did not lower the primary composite of major cardiovascular events in a general primary-prevention population.",
+			"Cochrane evidence finds long-chain omega-3 supplements have little or no effect on mortality, cardiovascular events, stroke, or arrhythmia, with possible very small coronary benefits.",
+			"High-dose prescription EPA for selected high-risk patients with elevated triglycerides is not the same claim as over-the-counter fish oil for everyone."
+		],
+		openQuestions: [
+			"Which dose, EPA/DHA formulation, baseline fish intake, triglyceride level, diabetes status, and cardiovascular risk profile predict meaningful benefit?",
+			"How should clinicians explain differences between dietary fish, over-the-counter supplements, prescription omega-3 products, and enriched foods?",
+			"How should small coronary-event signals be weighed against cost, pill burden, atrial-fibrillation signals in some high-dose trials, and product quality variation?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias primary-prevention trials showing ordinary-dose omega-3 supplements clearly reduce major cardiovascular events and stroke in generally healthy adults.",
+			"Major AHA, NIH, USPSTF, or Cochrane reassessments recommending routine omega-3 supplementation for general primary prevention.",
+			"Consistent evidence that over-the-counter omega-3 products deliver clinically important benefits comparable to prescription products in the same risk groups."
+		],
+		misconceptions: [
+			"'Fish is heart-healthy' does not automatically mean fish oil capsules prevent heart attacks for everyone.",
+			"Lower triglycerides are a risk-marker effect; they do not prove every supplement lowers heart attack or stroke risk.",
+			"Prescription omega-3 products studied in high-risk patients should not be generalized to all retail supplements.",
+			"Null or small supplement effects do not mean omega-3 fatty acids are biologically irrelevant."
+		],
+		editorSummary:
+			"This nutrition page is deliberately qualified: it helps users distinguish food guidance, supplements, prescription products, primary prevention, and secondary prevention instead of collapsing them into one 'fish oil works' answer.",
+		uncertaintySummary:
+			"Evidence is mixed because trial populations, doses, formulations, baseline intake, and endpoints differ. Confidence is moderate that routine low-dose supplementation is not a broad primary-prevention solution for everyone.",
+		searchDatabases: ["NIH ODS", "PubMed", "Cochrane", "AHA", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Omega-3 Fatty Acids: Health Professional Fact Sheet",
+				publisher: "NIH Office of Dietary Supplements",
+				year: 2026,
+				url: "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+				stance: "context",
+				note:
+					"NIH ODS source distinguishing stronger evidence in people with existing coronary heart disease from weaker evidence for healthy individuals and summarizing supplement evidence.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Marine n-3 Fatty Acids and Prevention of Cardiovascular Disease and Cancer",
+				publisher: "New England Journal of Medicine",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/30415637/",
+				pmid: "30415637",
+				stance: "context",
+				note:
+					"VITAL primary-prevention trial source finding 1 g/day marine omega-3 did not reduce the primary endpoint of major cardiovascular events or invasive cancer versus placebo.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Omega-3 fatty acids for the primary and secondary prevention of cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2018,
+				url: "https://pubmed.ncbi.nlm.nih.gov/30019766/",
+				pmid: "30019766",
+				stance: "context",
+				note:
+					"Cochrane review concluding that increasing EPA and DHA has little or no effect on mortality or cardiovascular health, with most evidence from supplement trials.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy and Safety of Omega-3 Fatty Acids in the Prevention of Cardiovascular Disease",
+				publisher: "Mayo Clinic Proceedings",
+				year: 2022,
+				url: "https://pubmed.ncbi.nlm.nih.gov/36103100/",
+				pmid: "36103100",
+				stance: "debate",
+				note:
+					"More favorable meta-analysis source finding moderate evidence for reductions in some cardiovascular endpoints, useful for explaining why the claim remains qualified rather than simply settled as no effect.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Are ketogenic diets a proven superior long-term weight-loss strategy for most adults?",
+		slug: "are-ketogenic-diets-a-proven-superior-long-term-weight-loss-strategy-for-most-adults",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 66,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"No, not as a universal long-term winner. Ketogenic and very-low-carbohydrate diets can produce weight loss, especially short term, and can help selected patients under supervision. But long-term advantages over other calorie-reducing diets are usually modest, adherence is difficult, and lipid, kidney, medication, pregnancy, and eating-disorder contexts matter.",
+		stableCore: [
+			"Ketogenic diets can reduce calorie intake and body weight, but much of the long-term question depends on adherence and total dietary quality.",
+			"Meta-analyses comparing very-low-carbohydrate ketogenic diets with low-fat diets often find small average long-term weight differences, not a universal or magic effect.",
+			"Some ketogenic patterns improve triglycerides and HDL cholesterol while raising LDL cholesterol in some groups.",
+			"Medical supervision matters for diabetes medications, kidney disease, pregnancy, eating disorders, lipid disorders, and very-low-calorie ketogenic protocols."
+		],
+		openQuestions: [
+			"Which patients can sustain a ketogenic pattern safely and prefer it enough for long-term benefit?",
+			"How do ketogenic diets affect cardiovascular events, kidney outcomes, eating behavior, micronutrient status, and quality of life over many years?",
+			"Which version of 'keto' is being tested: whole-food low carbohydrate, very-low-calorie medical protocol, high saturated fat, or commercial supplement-driven dieting?"
+		],
+		whatWouldChangeMinds: [
+			"Large long-term randomized trials showing ketogenic diets produce clearly superior sustained weight loss and better hard health outcomes than other evidence-based diets for most adults.",
+			"Guideline updates from major obesity, diabetes, or cardiovascular organizations recommending ketogenic diets as the default first-line diet for most adults seeking weight loss.",
+			"High-quality safety data showing lipid, kidney, micronutrient, pregnancy, and eating-disorder concerns are negligible across broad populations."
+		],
+		misconceptions: [
+			"Ketosis is sometimes treated as if it bypasses energy balance; weight loss still depends on sustained intake and expenditure.",
+			"Short-term water-weight changes can be mistaken for durable fat loss.",
+			"Keto used in pediatric epilepsy is not the same claim as commercial keto for weight loss.",
+			"Low carbohydrate does not automatically mean high-quality food choices."
+		],
+		editorSummary:
+			"Keto belongs in the library because the evidence is neither dismissive nor hype-confirming: it can work for some people, but the universal long-term superiority claim is too strong.",
+		uncertaintySummary:
+			"Evidence supports weight loss for some adults, especially short-term. The uncertain part is comparative durability, safety, diet quality, lipid response, adherence, and whether clinical outcomes improve more than with other sustainable dietary patterns.",
+		searchDatabases: ["PubMed", "Consensus", "Obesity guidelines", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "meta_analysis",
+				title: "Very-low-carbohydrate ketogenic diet versus low-fat diet for long-term weight loss",
+				publisher: "British Journal of Nutrition",
+				year: 2013,
+				url: "https://pubmed.ncbi.nlm.nih.gov/23651522/",
+				pmid: "23651522",
+				stance: "context",
+				note:
+					"Meta-analysis of randomized trials with at least 12 months follow-up finding greater long-term weight loss versus low-fat diet, but the average difference was less than 1 kg.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Effects of ketogenic diet on health outcomes: an umbrella review of meta-analyses of randomized clinical trials",
+				publisher: "BMC Medicine",
+				year: 2023,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10210275/",
+				stance: "context",
+				note:
+					"Umbrella review finding moderate evidence for lower body weight in adults with overweight or obesity and high-quality evidence for increased LDL cholesterol in some ketogenic-diet comparisons.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Ketogenic Diets for Body Weight Loss: A Comparison with Other Diets",
+				publisher: "Nutrients",
+				year: 2025,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11945412/",
+				stance: "context",
+				note:
+					"Recent review summarizing that ketogenic diets can reduce weight but that superiority depends on comparator, adherence, metabolic context, and safety monitoring.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Ketogenic Diet",
+				publisher: "NCBI Bookshelf",
+				year: 2025,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK499830/",
+				stance: "context",
+				note:
+					"Clinical overview source for ketogenic-diet definition, medical uses, contraindications, adverse effects, and need for individualized supervision.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does melatonin reliably treat chronic insomnia in adults?",
+		slug: "does-melatonin-reliably-treat-chronic-insomnia-in-adults",
+		status: "published",
+		consensusBand: "mixed",
+		confidenceScore: 64,
+		evidenceCertainty: "low",
+		bottomLine:
+			"Not reliably as a broad chronic-insomnia treatment for adults. Melatonin can help circadian-timing problems such as jet lag or delayed sleep phase, and some studies find small sleep-onset benefits. But adult chronic-insomnia evidence is mixed, product quality varies, and CBT-I remains the better-established first-line treatment.",
+		stableCore: [
+			"Melatonin is a hormone involved in circadian timing, so timing and dose matter more than the common idea of a generic sedative.",
+			"NCCIH says melatonin may help jet lag and shift-work sleep problems and may improve sleep-onset latency in insomnia, but not all insomnia outcomes.",
+			"Recent meta-analyses find small or inconsistent adult chronic-insomnia effects, with stronger evidence in some circadian rhythm and pediatric neurodevelopmental contexts.",
+			"Melatonin supplements are regulated as dietary supplements in the United States, so actual contents and purity can vary by product."
+		],
+		openQuestions: [
+			"Which adults with insomnia benefit from melatonin because their problem is primarily circadian timing rather than hyperarousal, pain, mood, apnea, medication, or behavior?",
+			"What timing, dose, formulation, and duration optimize benefit while minimizing next-day drowsiness or drug interactions?",
+			"How should clinicians advise children, pregnancy, breastfeeding, dementia, epilepsy, anticoagulant use, and older adults where safety questions differ?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias adult chronic-insomnia trials showing clinically meaningful improvements in sleep latency, total sleep time, daytime functioning, and durability.",
+			"Major sleep-medicine guidelines recommending melatonin as routine first-line treatment for adult chronic insomnia.",
+			"Stronger product-quality regulation plus trial evidence showing commonly available supplement products match tested formulations and doses."
+		],
+		misconceptions: [
+			"More melatonin is not automatically better; timing and indication matter.",
+			"Natural hormone does not mean risk-free or appropriate for every age, medication, or medical condition.",
+			"Feeling sleepy after a supplement does not prove it treats chronic insomnia's cause.",
+			"Melatonin for jet lag or delayed sleep phase is not the same claim as melatonin curing chronic insomnia."
+		],
+		editorSummary:
+			"Melatonin is a practical sleep page because the public question is common and the answer is neither blanket dismissal nor supplement hype.",
+		uncertaintySummary:
+			"Evidence is mixed for adult chronic insomnia. Confidence is higher for circadian timing uses than for treating chronic insomnia broadly, and product variability makes real-world translation harder.",
+		searchDatabases: ["NCCIH", "AASM", "PubMed", "Consensus", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Sleep Disorders and Complementary Health Approaches",
+				publisher: "National Center for Complementary and Integrative Health",
+				year: 2026,
+				url: "https://www.nccih.nih.gov/health/sleep-disorders-and-complementary-health-approaches",
+				stance: "context",
+				note:
+					"NCCIH source summarizing possible usefulness for jet lag, shift work, and sleep-onset latency in insomnia, while noting guideline cautions for chronic insomnia.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Melatonin: What You Need To Know",
+				publisher: "National Center for Complementary and Integrative Health",
+				year: 2026,
+				url: "https://www.nccih.nih.gov/health/melatonin-what-you-need-to-know",
+				stance: "context",
+				note:
+					"Patient-facing safety and product-quality anchor, including short-term side effects, uncertain long-term safety, and dietary-supplement regulation limits.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy of melatonin for chronic insomnia: systematic reviews and meta-analyses",
+				publisher: "Sleep Medicine Reviews",
+				year: 2022,
+				url: "https://doi.org/10.1016/j.smrv.2022.101692",
+				doi: "10.1016/j.smrv.2022.101692",
+				stance: "context",
+				note:
+					"Meta-analysis finding melatonin did not appear effective for adult non-comorbid chronic insomnia outcomes, while pediatric and comorbid contexts differed.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Efficacy of melatonin and ramelteon for insomnia disorder in adults",
+				publisher: "Journal of Sleep Research",
+				year: 2023,
+				url: "https://pubmed.ncbi.nlm.nih.gov/37434463/",
+				doi: "10.1111/jsr.13739",
+				pmid: "37434463",
+				stance: "debate",
+				note:
+					"More favorable synthesis finding prolonged-release melatonin had small to medium effects on selected sleep-onset and sleep-efficiency outcomes, supporting qualified rather than dismissive wording.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does bright light therapy help seasonal affective disorder?",
+		slug: "does-bright-light-therapy-help-seasonal-affective-disorder",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 80,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, bright white light therapy can help seasonal affective disorder for many people, especially winter-pattern depression, but it is not a do-it-yourself substitute for diagnosis, safety screening, or broader mental-health care. Timing, intensity, duration, eye safety, bipolar risk, and consistency matter.",
+		stableCore: [
+			"Bright light therapy is an established non-drug treatment option for seasonal affective disorder, usually using a bright light box in the morning.",
+			"Meta-analyses of randomized trials generally find bright light therapy improves SAD symptoms compared with control light conditions.",
+			"Evidence quality is limited by small studies, blinding challenges, heterogeneous devices, and short follow-up.",
+			"People with bipolar disorder, eye disease, photosensitizing medications, or severe depression should use clinician guidance before starting."
+		],
+		openQuestions: [
+			"Which timing, lux level, duration, device type, and maintenance schedule works best for each patient?",
+			"How does bright light therapy compare with CBT-SAD, antidepressants, outdoor morning light, dawn simulation, and combination treatment over multiple winters?",
+			"How can consumer light boxes be assessed for adequate brightness, UV filtering, glare, and safe use?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-blinded, multi-season randomized trials showing no clinically meaningful benefit from bright white light therapy over credible controls.",
+			"Major psychiatric guideline updates removing bright light therapy from evidence-based SAD treatment options.",
+			"Safety evidence showing properly used bright light boxes create harms that outweigh seasonal-depression benefits in ordinary clinical use."
+		],
+		misconceptions: [
+			"Any lamp is not automatically a therapeutic light box.",
+			"Light therapy should not be treated as harmless for everyone; mania risk and eye or medication issues can matter.",
+			"Feeling better in sunlight does not prove SAD is the only diagnosis or that depression care is unnecessary.",
+			"Blue-light marketing is not the same as evidence for standard bright white light therapy."
+		],
+		editorSummary:
+			"Seasonal depression is a high-search psychology topic where the consensus is useful and bounded: bright light can help, but the details and safety screening matter.",
+		uncertaintySummary:
+			"The treatment signal is supportive but not perfect. Uncertainty remains around long-term comparative effectiveness, prevention of recurrence, device parameters, adherence, and how to manage bipolar or ocular-risk subgroups.",
+		searchDatabases: ["PubMed", "Consensus", "APA", "Cochrane", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "context",
+				title: "Seasonal Affective Disorder",
+				publisher: "American Psychiatric Association",
+				year: 2026,
+				url: "https://www.psychiatry.org/patients-families/seasonal-affective-disorder",
+				stance: "supports",
+				note:
+					"Patient-facing psychiatric source describing light therapy, common timing, expected response window, and need to continue treatment through the winter.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "The Efficacy of Light Therapy in the Treatment of Seasonal Affective Disorder",
+				publisher: "Psychotherapy and Psychosomatics",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/31574513/",
+				pmid: "31574513",
+				stance: "supports",
+				note:
+					"Meta-analysis of randomized controlled trials finding bright light therapy superior to placebo for depression ratings and response, with heterogeneity and bias cautions.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Treatment measures for seasonal affective disorder: a network meta-analysis",
+				publisher: "Journal of Affective Disorders",
+				year: 2024,
+				url: "https://pubmed.ncbi.nlm.nih.gov/38220102/",
+				pmid: "38220102",
+				stance: "supports",
+				note:
+					"Network meta-analysis source finding phototherapy promising for SAD while emphasizing low evidence quality and the need for larger high-quality trials.",
+				order: 3
+			},
+			{
+				kind: "systematic_review",
+				title: "Bright Light Therapy: Seasonal Affective Disorder and Beyond",
+				publisher: "Einstein Journal of Biology and Medicine",
+				year: 2019,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6746555/",
+				stance: "context",
+				note:
+					"Clinical review context for standard bright-light use, patient selection, adverse effects, and the broader evidence landscape beyond SAD.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Are neonicotinoid insecticides harmful to bees and other pollinators?",
+		slug: "are-neonicotinoid-insecticides-harmful-to-bees-and-other-pollinators",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, neonicotinoids can harm bees and some other pollinators, especially through lethal and sublethal effects on survival, reproduction, foraging, and colony performance. The real-world impact varies by compound, crop, dose, exposure route, landscape, species, and other stressors, so it is not the only pollinator problem.",
+		stableCore: [
+			"Neonicotinoids are systemic insecticides that can expose pollinators through treated crops, pollen, nectar, dust, soil, water, or nearby plants.",
+			"IPBES concluded evidence shows lethal and sublethal effects on bees and some field-realistic impacts on wild pollinator survival and reproduction.",
+			"Field and population studies support real pollinator-risk concerns, especially for wild bees, while managed honey bee colony findings can be more variable.",
+			"Pollinator decline has multiple drivers, including habitat loss, intensive agriculture, pathogens, invasive species, climate change, and other pesticides."
+		],
+		openQuestions: [
+			"Which restrictions, seed-treatment policies, integrated pest-management practices, and habitat protections best reduce harm while preserving crop protection where needed?",
+			"How do combined stressors such as mites, disease, nutrition, drought, fungicides, and habitat loss interact with neonicotinoid exposure?",
+			"How should evidence for honey bees, bumble bees, solitary bees, butterflies, flies, and other pollinators be weighted separately?"
+		],
+		whatWouldChangeMinds: [
+			"Large field-realistic studies across pollinator groups showing no meaningful lethal, sublethal, reproductive, or population effects from neonicotinoid exposure.",
+			"Major IPBES, EFSA, EPA, or independent systematic reassessments withdrawing neonicotinoids as a pollinator-risk concern.",
+			"Compelling evidence that observed field impacts are fully explained by unrelated stressors even when exposure and residues are measured well."
+		],
+		misconceptions: [
+			"Neonicotinoids are not the sole cause of all bee or pollinator decline.",
+			"Managed honey bee colony counts do not fully represent wild pollinator health.",
+			"Laboratory toxicity alone is not the whole question; field exposure, residues, and ecology matter.",
+			"Pollinator protection is broader than banning one pesticide class."
+		],
+		editorSummary:
+			"This page gives the climate/environment section an agricultural-ecology claim with the right balance: real pesticide risk without pretending one chemical class explains all pollinator decline.",
+		uncertaintySummary:
+			"The hazard and pollinator-risk direction is credible, especially for bees and wild pollinators. Uncertainty is larger for exact population impacts by crop, landscape, compound, species, mitigation policy, and combined stressors.",
+		searchDatabases: ["IPBES", "PubMed", "EFSA", "EPA", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "The assessment report on pollinators, pollination and food production",
+				publisher: "IPBES",
+				year: 2016,
+				url: "https://files.ipbes.net/ipbes-web-prod-public-files/spm_deliverable_3a_pollination_20170222.pdf",
+				stance: "supports",
+				note:
+					"Global assessment summary stating evidence for lethal and sublethal effects of neonicotinoids on bees and impacts on wild pollinator survival and reproduction at actual field exposure.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Neonicotinoid Insecticides and Their Impacts on Bees",
+				publisher: "PLOS ONE",
+				year: 2015,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4552548/",
+				stance: "supports",
+				note:
+					"Systematic review mapping research approaches, controversy, and evidence gaps for neonicotinoid impacts on bees.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Country-specific effects of neonicotinoid pesticides on honey bees and wild bees",
+				publisher: "Science",
+				year: 2017,
+				url: "https://pubmed.ncbi.nlm.nih.gov/28663502/",
+				pmid: "28663502",
+				doi: "10.1126/science.aaa1190",
+				stance: "supports",
+				note:
+					"Large field study source finding neonicotinoid seed treatments had country-specific effects and reduced capacity of bee species to establish new populations after exposure.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Impacts of neonicotinoid use on long-term population changes in wild bees in England",
+				publisher: "Nature Communications",
+				year: 2016,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4990702/",
+				stance: "supports",
+				note:
+					"Long-term wild bee study associating neonicotinoid use on oilseed rape with population declines among wild bee species in England.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Is current biodiversity loss largely driven by human activity?",
+		slug: "is-current-biodiversity-loss-largely-driven-by-human-activity",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Global assessments conclude that biodiversity is declining rapidly and that human activities are the dominant drivers. The biggest direct drivers include land and sea use change, direct exploitation of organisms, climate change, pollution, and invasive alien species.",
+		stableCore: [
+			"IPBES estimates around one million animal and plant species are threatened with extinction, many within decades, unless drivers are reduced.",
+			"Land and sea use change, exploitation, climate change, pollution, and invasive alien species are the major direct global drivers.",
+			"Biodiversity loss affects ecosystems and human well-being through food, water, disease regulation, climate resilience, cultural value, and livelihoods.",
+			"Local conservation successes can be real while the global aggregate trend remains negative."
+		],
+		openQuestions: [
+			"Which policy mixes best reduce biodiversity loss while supporting food security, Indigenous rights, poverty reduction, and climate goals?",
+			"How can biodiversity indicators better capture insects, soil life, fungi, freshwater systems, genetic diversity, and poorly monitored regions?",
+			"How much can restoration reverse losses compared with preventing habitat conversion and overexploitation in the first place?"
+		],
+		whatWouldChangeMinds: [
+			"Major global assessments showing biodiversity is stable or improving overall after better monitoring and taxonomic coverage.",
+			"Evidence that observed global biodiversity decline is mostly natural background turnover rather than land use, exploitation, climate change, pollution, and invasive species.",
+			"Replicated monitoring showing threatened-species risk and ecosystem degradation are no longer driven primarily by human pressures."
+		],
+		misconceptions: [
+			"Biodiversity loss is not only about charismatic mammals; insects, plants, fungi, freshwater species, and genetic diversity matter too.",
+			"Climate change is one driver, but habitat conversion and direct exploitation are also major drivers.",
+			"Protected areas help, but poorly managed or badly placed protections do not solve the problem alone.",
+			"Finding one species recovery success does not overturn global trends."
+		],
+		editorSummary:
+			"Biodiversity loss is a foundational environmental consensus page. It connects climate, agriculture, conservation, and human well-being without treating the issue as only a species-count story.",
+		uncertaintySummary:
+			"The direction and human-driver conclusion are high-confidence. Uncertainty remains around exact counts for poorly monitored taxa, regional trends, future scenarios, restoration effectiveness, and policy tradeoffs.",
+		searchDatabases: ["IPBES", "IUCN", "OpenAlex", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Global Assessment Report on Biodiversity and Ecosystem Services: Summary for Policymakers",
+				publisher: "IPBES",
+				year: 2019,
+				url:
+					"https://files.ipbes.net/ipbes-web-prod-public-files/inline/files/ipbes_global_assessment_report_summary_for_policymakers.pdf",
+				stance: "supports",
+				note:
+					"Global assessment anchor for the one-million-species threat estimate, major direct drivers, human well-being links, and transformative-change framing.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "The direct drivers of recent global anthropogenic biodiversity loss",
+				publisher: "Science Advances",
+				year: 2022,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9645725/",
+				doi: "10.1126/sciadv.abm9982",
+				pmid: "36351024",
+				stance: "supports",
+				note:
+					"Global synthesis identifying land and sea use change as the dominant direct driver of recent biodiversity loss, with other drivers varying by ecosystem and region.",
+				order: 2
+			},
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2022: Impacts, Adaptation and Vulnerability, Summary for Policymakers",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2022,
+				url: "https://www.ipcc.ch/report/ar6/wg2/chapter/summary-for-policymakers/",
+				stance: "context",
+				note:
+					"IPCC context for climate change as a growing biodiversity and ecosystem risk alongside non-climate drivers.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "The IUCN Red List of Threatened Species",
+				publisher: "International Union for Conservation of Nature",
+				year: 2026,
+				url: "https://iucn.org/resources/conservation-tool/iucn-red-list-threatened-species",
+				stance: "context",
+				note:
+					"Current threatened-species monitoring context, useful for explaining that global status depends on assessed taxa, data quality, and category definitions.",
+				order: 4
+			}
+		]
 	}
 ];
 

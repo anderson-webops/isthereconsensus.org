@@ -24,6 +24,7 @@ defineProps<{
 					v-else
 					class="breadcrumbs__current"
 					:aria-current="index === items.length - 1 ? 'page' : undefined"
+					:title="item.label"
 				>
 					{{ item.label }}
 				</span>
@@ -42,6 +43,8 @@ defineProps<{
 	flex-wrap: wrap;
 	gap: 6px;
 	align-items: center;
+	max-width: 100%;
+	min-width: 0;
 	font-size: 0.88rem;
 	color: var(--consensus-muted);
 }
@@ -50,6 +53,7 @@ defineProps<{
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
+	min-width: 0;
 }
 
 .breadcrumbs__link,
@@ -66,11 +70,34 @@ defineProps<{
 }
 
 .breadcrumbs__current {
+	display: inline-block;
+	max-width: min(100%, 36ch);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: bottom;
+	white-space: nowrap;
 	color: var(--consensus-ink);
 	font-weight: 600;
 }
 
 .breadcrumbs__divider {
 	opacity: 0.45;
+}
+
+@media (max-width: 560px) {
+	.breadcrumbs__item--current {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		border: 0;
+	}
+
+	.breadcrumbs li:nth-last-child(2) .breadcrumbs__divider {
+		display: none;
+	}
 }
 </style>
