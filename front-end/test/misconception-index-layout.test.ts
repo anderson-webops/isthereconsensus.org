@@ -38,4 +38,18 @@ describe("misconception and explainer index layout copy", () => {
 		assert.doesNotMatch(source, /support pages/i);
 		assert.doesNotMatch(source, /not a detour/i);
 	});
+
+	it("keeps explainer index cards summary-first with optional depth", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
+		const actionsIndex = source.indexOf('<div class="explainer-card__actions">');
+		const detailsIndex = source.indexOf('<details class="explainer-card__details">');
+
+		assert.match(source, /<summary>Why it matters and key points<\/summary>/);
+		assert.ok(source.includes("<p>{{ explainer.whyItMatters }}</p>"));
+		assert.match(source, /<li v-for="point in explainer\.keyPoints"/);
+		assert.notEqual(actionsIndex, -1);
+		assert.notEqual(detailsIndex, -1);
+		assert.ok(actionsIndex < detailsIndex);
+		assert.doesNotMatch(source, /class="explainer-card__section"/);
+	});
 });
