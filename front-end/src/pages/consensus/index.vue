@@ -631,15 +631,14 @@ function showAllTopics() {
 	}
 
 	.filter-stack {
-		flex-wrap: nowrap;
+		flex-wrap: wrap;
 		gap: 7px;
-		overflow-x: auto;
-		padding-bottom: 2px;
-		scrollbar-width: thin;
+		overflow-x: visible;
+		padding-bottom: 0;
 	}
 
 	.filter {
-		flex: 0 0 auto;
+		flex: 0 1 auto;
 		min-height: 40px;
 		padding: 8px 11px;
 		line-height: 1.2;
