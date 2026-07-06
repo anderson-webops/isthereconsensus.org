@@ -24010,6 +24010,1267 @@ const rawClaims: SeedClaim[] = [
 				order: 7
 			}
 		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can CRISPR-based gene therapy treat sickle cell disease in eligible patients?",
+		slug: "can-crispr-based-gene-therapy-treat-sickle-cell-disease-in-eligible-patients",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for carefully selected patients in specialized care. FDA-approved ex vivo CRISPR therapy can greatly reduce severe sickle cell vaso-occlusive crises in eligible patients. It is not a simple outpatient cure: treatment involves stem-cell collection, editing outside the body, myeloablative conditioning, transplant-style monitoring, and long-term follow-up.",
+		stableCore: [
+			"Casgevy is an FDA-approved autologous cell therapy that uses CRISPR/Cas9 editing in a patient's own blood stem cells.",
+			"Clinical-trial evidence shows many treated patients became free of severe vaso-occlusive crises for at least 12 months after infusion.",
+			"The treatment is somatic and ex vivo, not heritable embryo editing.",
+			"Access, eligibility, fertility preservation, transplant risks, conditioning toxicity, and long-term follow-up are central to the real-world answer."
+		],
+		openQuestions: [
+			"How durable are benefits and risks over decades, especially when treatment occurs earlier in childhood?",
+			"How can health systems expand access for the communities most affected by sickle cell disease without widening inequities?",
+			"How should patients compare CRISPR-based therapy, lentiviral gene therapy, matched-donor transplant, newer medicines, and supportive care?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term follow-up showing loss of benefit, unacceptable serious late effects, or recurrent off-target safety problems in treated patients.",
+			"Regulatory withdrawal or major restriction of the approved indication based on safety or effectiveness concerns.",
+			"Large comparative evidence showing another curative strategy is clearly safer and more effective for the same eligible population."
+		],
+		misconceptions: [
+			"Approval of a somatic CRISPR therapy does not mean embryo editing for reproduction is safe or approved.",
+			"Gene therapy for eligible patients is not the same as a quick, risk-free cure for everyone with sickle cell disease.",
+			"High trial response rates do not remove the need for conditioning, hospitalization, fertility counseling, and long-term monitoring.",
+			"Access and affordability are implementation problems, not evidence that the therapy has no biological effect."
+		],
+		editorSummary:
+			"This biotechnology claim adds a concrete example of gene editing moving from hype to regulated medicine while preserving the practical caveats that matter to patients.",
+		uncertaintySummary:
+			"The short-term efficacy signal is strong for eligible trial populations, but real-world access, earlier pediatric use, transplant-related harms, fertility effects, durability, and rare late safety outcomes remain active surveillance questions.",
+		searchDatabases: ["FDA", "PubMed", "Consensus", "ClinicalTrials.gov", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "FDA Approves First Gene Therapy for Young Children with Sickle Cell Disease",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-approves-first-gene-therapy-young-children-sickle-cell-disease",
+				stance: "supports",
+				note:
+					"Current FDA regulatory anchor for Casgevy's expanded indication, CRISPR/Cas9 mechanism, conditioning requirements, and safety warnings including off-target genome-editing risk.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "FDA Approves First Gene Therapies to Treat Patients with Sickle Cell Disease",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2023,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-approves-first-gene-therapies-treat-patients-sickle-cell-disease",
+				stance: "supports",
+				note:
+					"Original FDA approval source for Casgevy as the first FDA-approved therapy using CRISPR/Cas9 genome editing and for the separate lentiviral Lyfgenia approval.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Exagamglogene Autotemcel for Severe Sickle Cell Disease",
+				publisher: "New England Journal of Medicine",
+				year: 2024,
+				url: "https://pubmed.ncbi.nlm.nih.gov/38661449/",
+				doi: "10.1056/NEJMoa2309676",
+				pmid: "38661449",
+				stance: "supports",
+				note:
+					"Trial publication reporting that exa-cel eliminated vaso-occlusive crises for at least 12 months in 97% of evaluated sickle cell participants, with safety consistent with myeloablation and autologous transplant.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can a non-invasive prenatal screening test diagnose fetal chromosomal conditions by itself?",
+		slug: "can-a-noninvasive-prenatal-screening-test-diagnose-fetal-chromosomal-conditions-by-itself",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 94,
+		evidenceCertainty: "high",
+		bottomLine:
+			"No. Cell-free DNA or non-invasive prenatal screening can be a highly sensitive screening tool for common aneuploidies, but it is still screening, not diagnosis. Positive results need counseling and diagnostic confirmation before irreversible pregnancy or medical decisions.",
+		stableCore: [
+			"Cell-free DNA screening estimates risk; diagnostic tests such as chorionic villus sampling or amniocentesis are used to confirm or rule out many chromosomal conditions.",
+			"Performance is strongest for common aneuploidies and generally weaker for rarer microdeletions, duplications, or conditions with low prevalence.",
+			"False positives and false negatives can occur because screening may reflect placental DNA, maternal factors, low fetal fraction, mosaicism, or test limitations.",
+			"Professional guidance emphasizes pretest counseling, result interpretation, and confirmatory testing after a positive screen."
+		],
+		openQuestions: [
+			"How should labs communicate positive predictive value for rare conditions in plain language?",
+			"Which expanded screening panels provide enough clinical value to justify added false-positive risk and follow-up burden?",
+			"How can patients get timely genetic counseling and diagnostic follow-up after confusing or high-risk screening results?"
+		],
+		whatWouldChangeMinds: [
+			"Validated tests with diagnostic-level performance across the screened conditions and major guideline endorsement as standalone diagnostic tools.",
+			"FDA, ACOG, SMFM, or comparable guidance stating that positive NIPS results no longer require confirmatory diagnostic testing.",
+			"Large implementation studies showing safe pregnancy decision-making based on screening results alone."
+		],
+		misconceptions: [
+			"'Highly accurate' does not mean diagnostic, especially for rare conditions.",
+			"A positive screen is not proof that the fetus has the condition.",
+			"A negative screen does not rule out every genetic condition or birth defect.",
+			"More conditions on a panel can increase confusing or false-positive results if the condition is rare."
+		],
+		editorSummary:
+			"NIPT is a useful biotechnology page because the practical consensus is not anti-testing. It is pro-accurate counseling: use good screening tools, but do not let screening language turn into diagnostic certainty.",
+		uncertaintySummary:
+			"The diagnostic boundary is settled. Remaining uncertainty is about expanded panels, laboratory oversight, condition-specific predictive value, and how best to communicate residual risk.",
+		searchDatabases: ["ACOG", "SMFM", "FDA", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Current ACOG Guidance",
+				publisher: "American College of Obstetricians and Gynecologists",
+				year: 2026,
+				url: "https://www.acog.org/advocacy/policy-priorities/non-invasive-prenatal-testing/current-acog-guidance",
+				stance: "supports",
+				note:
+					"ACOG guidance anchor describing cell-free DNA as the most sensitive and specific screening test for common fetal aneuploidies while emphasizing false-positive and false-negative potential.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "ACOG Practice Bulletin #226: Screening for Chromosomal Abnormalities",
+				publisher: "Society for Maternal-Fetal Medicine",
+				year: 2020,
+				url: "https://publications.smfm.org/publications/328-acog-practice-bulletin-226-screening-for-chromosomal-abnormalities/",
+				stance: "supports",
+				note:
+					"Professional guidance source describing prenatal screening and diagnostic-test options, their limits, and the need for individualized counseling.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "FDA Warns of Risks Associated with Non-Invasive Prenatal Screening Tests",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2022,
+				url: "https://content.govdelivery.com/accounts/USFDA/bulletins/3142524",
+				stance: "supports",
+				note:
+					"FDA communication warning that NIPS tests are screening tests, not diagnostic tests, and should not be used alone for critical pregnancy decisions.",
+				order: 3
+			},
+			{
+				kind: "consensus_statement",
+				title: "Screening for Fetal Chromosomal Abnormalities: ACOG Practice Bulletin, Number 226",
+				publisher: "Obstetrics & Gynecology",
+				year: 2020,
+				url: "https://pubmed.ncbi.nlm.nih.gov/32804883/",
+				pmid: "32804883",
+				stance: "supports",
+				note:
+					"PubMed-indexed practice bulletin abstract summarizing the screening-versus-diagnostic-test framework for fetal chromosomal abnormalities.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Do harmful BRCA1 or BRCA2 variants substantially raise breast and ovarian cancer risk?",
+		slug: "do-harmful-brca1-or-brca2-variants-substantially-raise-breast-and-ovarian-cancer-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 96,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Inherited harmful variants in BRCA1 or BRCA2 substantially raise breast and ovarian cancer risk and can affect several other cancers. A positive result is not destiny, and a negative result is not zero risk, but BRCA testing is medically meaningful with genetic counseling and risk management.",
+		stableCore: [
+			"BRCA1 and BRCA2 are DNA-repair genes; inherited harmful variants reduce tumor-suppression capacity.",
+			"NCI summarizes lifetime female breast-cancer risk as more than 60% for people with harmful BRCA1 or BRCA2 variants, compared with about 13% in the general population.",
+			"Ovarian cancer risk is also much higher, especially for BRCA1, while absolute risks differ by gene, family history, sex, ancestry, and age.",
+			"Genetic counseling helps interpret pathogenic variants, negative results, and variants of uncertain significance."
+		],
+		openQuestions: [
+			"How should risk estimates be individualized by family history, ancestry, modifier genes, reproductive history, and prevention choices?",
+			"Which screening, medication, and surgical prevention choices best match each person's values and risk profile?",
+			"How can access to genetic counseling and testing improve without overtesting people unlikely to benefit?"
+		],
+		whatWouldChangeMinds: [
+			"Large prospective studies showing no substantial elevation in breast or ovarian cancer risk for confirmed pathogenic BRCA1 or BRCA2 variants.",
+			"Major NCI, USPSTF, NCCN, ACMG, or comparable guidance withdrawing BRCA1/2 pathogenic variants from hereditary cancer risk assessment.",
+			"Evidence showing current BRCA risk-management pathways produce more harm than benefit across appropriately selected patients."
+		],
+		misconceptions: [
+			"A harmful BRCA variant does not mean cancer is certain.",
+			"A negative DTC or limited panel result does not rule out hereditary cancer risk when family history is concerning.",
+			"A variant of uncertain significance should not usually be treated like a pathogenic variant.",
+			"BRCA risks can matter for men and for cancers beyond breast and ovarian cancer."
+		],
+		editorSummary:
+			"BRCA1/2 is a high-value genetics page because it explains a real, clinically actionable genetic risk while avoiding deterministic language.",
+		uncertaintySummary:
+			"The direction of risk is settled. The uncertainty is in individualized risk prediction, variant interpretation, prevention choices, and equitable access to counseling and high-quality testing.",
+		searchDatabases: ["NCI", "PubMed", "USPSTF", "GeneReviews", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "BRCA Gene Changes: Cancer Risk and Genetic Testing Fact Sheet",
+				publisher: "National Cancer Institute",
+				url: "https://www.cancer.gov/about-cancer/causes-prevention/genetics/brca-fact-sheet",
+				stance: "supports",
+				note:
+					"NCI patient-facing anchor for markedly increased breast and ovarian cancer risks, risk-management choices, genetic counseling, and test-result interpretation.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Risks of Breast, Ovarian, and Contralateral Breast Cancer for BRCA1 and BRCA2 Mutation Carriers",
+				publisher: "JAMA",
+				year: 2017,
+				url: "https://pubmed.ncbi.nlm.nih.gov/28632866/",
+				pmid: "28632866",
+				stance: "supports",
+				note:
+					"Prospective cohort evidence estimating cumulative breast-cancer risk to age 80 as 72% for BRCA1 and 69% for BRCA2 carriers, with elevated ovarian and contralateral breast-cancer risks.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title:
+					"Risk Assessment, Genetic Counseling, and Genetic Testing for BRCA-Related Cancer: US Preventive Services Task Force Recommendation Statement",
+				publisher: "JAMA",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/31429903/",
+				pmid: "31429903",
+				stance: "supports",
+				note:
+					"USPSTF recommendation anchor for risk assessment, genetic counseling, and testing in people with personal or family histories associated with BRCA1/2 variants.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can pharmacogenomic testing improve prescribing decisions for some drugs?",
+		slug: "can-pharmacogenomic-testing-improve-prescribing-decisions-for-some-drugs",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 80,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes for selected gene-drug pairs, but not as a universal medication oracle. Pharmacogenomic results can guide dosing, drug choice, or adverse-reaction risk for some medications when the gene-drug evidence is actionable and the result is interpreted in clinical context.",
+		stableCore: [
+			"FDA maintains a table of evaluated pharmacogenetic associations, and CPIC publishes gene-drug prescribing guidelines for actionable pairs.",
+			"Usefulness varies widely by drug, gene, ancestry representation, clinical situation, and whether the result changes a real prescribing choice.",
+			"Some strong examples involve drug metabolism or serious adverse-reaction risk, but broad commercial panels can overstate certainty.",
+			"Pharmacogenomics complements clinical judgment; it does not replace diagnosis, monitoring, drug interactions, kidney or liver function, age, pregnancy status, or patient preference."
+		],
+		openQuestions: [
+			"Which preemptive panel strategies improve outcomes enough to justify cost and workflow burden?",
+			"How should evidence be updated when CPIC guidance, FDA labels, and payer policies differ?",
+			"How can clinical decision support prevent misinterpretation and avoid widening ancestry-related evidence gaps?"
+		],
+		whatWouldChangeMinds: [
+			"Large pragmatic trials showing actionable pharmacogenomic testing does not improve prescribing safety, efficacy, or patient-centered outcomes for any major gene-drug pair.",
+			"FDA, CPIC, DPWG, or major specialty groups withdrawing the clinical actionability of currently established gene-drug associations.",
+			"Evidence that broad PGx implementation routinely causes harmful prescribing changes that outweigh benefits."
+		],
+		misconceptions: [
+			"A pharmacogenomic result does not tell whether every medicine will work.",
+			"Commercial panel color categories are not the same thing as clinical certainty.",
+			"Gene-drug associations are specific; evidence for one drug or gene should not be generalized to an entire drug class.",
+			"Normal metabolism does not guarantee benefit, and altered metabolism does not automatically prohibit a medicine."
+		],
+		editorSummary:
+			"Pharmacogenomics is useful for the site because it sits between precision-medicine hype and real clinical utility: some gene-drug pairs are actionable, while many broad claims need restraint.",
+		uncertaintySummary:
+			"Evidence is strongest for selected actionable pairs and weaker for broad panel-driven outcome claims. Implementation quality, decision support, ancestry diversity, and clinical workflow determine whether testing improves care.",
+		searchDatabases: ["FDA", "CPIC", "Consensus", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Table of Pharmacogenetic Associations",
+				publisher: "U.S. Food and Drug Administration",
+				url: "https://www.fda.gov/medical-devices/precision-medicine/table-pharmacogenetic-associations",
+				stance: "supports",
+				note:
+					"FDA source listing pharmacogenetic associations the agency has evaluated while noting the table is not exhaustive and is updated as evidence changes.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Clinical Pharmacogenetics Implementation Consortium Guidelines",
+				publisher: "Clinical Pharmacogenetics Implementation Consortium",
+				url: "https://cpicpgx.org/guidelines/",
+				stance: "supports",
+				note:
+					"CPIC guideline anchor for translating specific genetic test results into prescribing recommendations when a gene-drug pair is actionable.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"A systematic review of real-world evidence on the clinical relevance, characterization, and utility of CYP2D6 biomarker testing",
+				publisher: "Journal of Pharmacy & Pharmaceutical Sciences",
+				year: 2025,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12425829/",
+				pmid: "40949723",
+				stance: "context",
+				note:
+					"Consensus-located systematic review finding clinically relevant CYP2D6 drug-pair evidence while highlighting interpretation variation, implementation barriers, and limited clinical-outcome reporting.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "Comparison of FDA Table of Pharmacogenetic Associations and CPIC Guidelines",
+				publisher: "American Journal of Health-System Pharmacy",
+				year: 2022,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9171570/",
+				stance: "context",
+				note:
+					"Open-access comparison explaining why FDA pharmacogenetic associations and CPIC prescribing guidelines overlap but are developed for different purposes.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can FDA-approved RPE65 gene therapy improve vision-related function in a rare inherited retinal disease?",
+		slug: "can-fda-approved-rpe65-gene-therapy-improve-vision-related-function-in-a-rare-inherited-retinal-disease",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for the approved condition. Voretigene neparvovec-rzyl, marketed as Luxturna, treats confirmed biallelic RPE65 mutation-associated retinal dystrophy when enough viable retinal cells remain. It can improve functional vision for some patients, but it is not a cure for blindness or a treatment for most inherited eye diseases.",
+		stableCore: [
+			"Luxturna is approved for confirmed biallelic RPE65 mutation-associated retinal dystrophy, not for inherited retinal disease in general.",
+			"The pivotal randomized trial found improved functional vision, especially navigation under lower light, compared with the control group.",
+			"Patient selection requires genetic confirmation and enough viable retinal cells.",
+			"Durability, surgical risks, retinal health, age, disease stage, and cost affect real-world benefit."
+		],
+		openQuestions: [
+			"How durable are functional gains over many years as retinal degeneration continues?",
+			"Which ages, disease stages, and retinal-function profiles benefit most from treatment?",
+			"How should outcomes that matter to patients, such as mobility and independence, be measured in rare retinal diseases?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term follow-up showing functional benefits disappear quickly or serious harms outweigh vision-related gains.",
+			"Regulatory withdrawal or major narrowing of the RPE65 indication based on safety or effectiveness concerns.",
+			"Large real-world registries showing little patient-centered benefit in appropriately selected patients."
+		],
+		misconceptions: [
+			"One gene therapy for one rare retinal condition does not mean gene therapy can treat all blindness.",
+			"Genetic confirmation matters because similar symptoms can have different genetic causes.",
+			"Improved navigation in low light is a meaningful functional outcome, but it is not the same as restoring normal vision.",
+			"FDA approval does not remove surgical, durability, access, and cost questions."
+		],
+		editorSummary:
+			"RPE65 gene therapy gives the biotechnology section a concrete rare-disease success story while keeping scope tight enough to avoid generic gene-therapy hype.",
+		uncertaintySummary:
+			"The evidence supports functional benefit in the approved rare condition. Uncertainty is mainly about durability, long-term retinal change, patient selection, and generalizability to other genes or diseases.",
+		searchDatabases: ["FDA", "PubMed", "Crossref", "ClinicalTrials.gov"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "LUXTURNA",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2022,
+				url: "https://www.fda.gov/vaccines-blood-biologics/cellular-gene-therapy-products/luxturna",
+				stance: "supports",
+				note:
+					"FDA product source for the approved indication: confirmed biallelic RPE65 mutation-associated retinal dystrophy.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Efficacy and safety of voretigene neparvovec in RPE65-mediated inherited retinal dystrophy: a randomised, controlled, open-label, phase 3 trial",
+				publisher: "Lancet",
+				year: 2017,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5726391/",
+				pmid: "28712537",
+				stance: "supports",
+				note:
+					"Open-access pivotal phase 3 trial source reporting improved functional vision on multi-luminance mobility testing in treated participants.",
+				order: 2
+			},
+			{
+				kind: "context",
+				title: "Clinical Perspective: Treating RPE65-Associated Retinal Dystrophy",
+				publisher: "Asia-Pacific Journal of Ophthalmology",
+				year: 2021,
+				url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7854308/",
+				stance: "context",
+				note:
+					"Clinical-context review explaining diagnosis, mechanism, treatment workflow, and expectations for voretigene neparvovec.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do sugar-sweetened beverages contribute to weight gain and type 2 diabetes risk?",
+		slug: "do-sugar-sweetened-beverages-contribute-to-weight-gain-and-type-2-diabetes-risk",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 90,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Habitual sugar-sweetened beverage intake adds sugar, is linked to weight gain, and is associated with higher type 2 diabetes risk. The strongest public-health advice is not that one soda causes disease, but that regularly drinking sugary beverages is a modifiable risk factor.",
+		stableCore: [
+			"Sugary drinks are a leading source of added sugars and deliver calories with weak satiety compared with many solid foods.",
+			"Systematic reviews and meta-analyses link sugar-sweetened beverages with higher body weight in both children and adults.",
+			"Prospective cohort syntheses associate habitual sugary-drink consumption with higher type 2 diabetes risk, partly but not entirely through body weight.",
+			"WHO and U.S. guidance recommend limiting free or added sugars, with sugary drinks a major target."
+		],
+		openQuestions: [
+			"How much of the diabetes association is mediated by weight gain versus independent metabolic pathways?",
+			"Which policies most effectively reduce sugary-drink intake without inequitable substitution or burden?",
+			"How should guidance handle fruit juice, sweetened coffees, sports drinks, and culturally important beverages?"
+		],
+		whatWouldChangeMinds: [
+			"Large, high-quality evidence showing sugar-sweetened beverage intake does not promote weight gain when total diet, substitution, and measurement error are addressed.",
+			"Prospective evidence showing no type 2 diabetes association after better long-term dietary measurement and confounding control.",
+			"Major WHO, CDC, Dietary Guidelines, AHA, or diabetes-guideline reassessments withdrawing sugary-drink reduction as a nutrition priority."
+		],
+		misconceptions: [
+			"Natural sugar in whole fruit is not the same exposure as added sugar in beverages.",
+			"The claim is about habitual intake and population risk, not moral judgment about an occasional drink.",
+			"Replacing sugary drinks with water or unsweetened options helps most when it lowers total added sugar and calories.",
+			"Association with diabetes risk does not mean every person who drinks soda will develop diabetes."
+		],
+		editorSummary:
+			"Sugary beverages are a high-value nutrition claim because they connect dietary guidance, public-health policy, and everyday choices without turning nutrition into purity language.",
+		uncertaintySummary:
+			"The direction of evidence is strong. Remaining uncertainty is mostly about magnitude, substitution patterns, policy design, and how much of diabetes risk is mediated by adiposity versus other pathways.",
+		searchDatabases: ["WHO", "CDC", "PubMed", "Crossref", "Dietary Guidelines for Americans"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Guideline: sugars intake for adults and children",
+				publisher: "World Health Organization",
+				year: 2015,
+				url: "https://www.who.int/publications/i/item/9789241549028",
+				stance: "supports",
+				note:
+					"WHO guidance anchor recommending reduced free-sugar intake to reduce noncommunicable disease risk, especially unhealthy weight gain and dental caries.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Get the Facts: Added Sugars",
+				publisher: "Centers for Disease Control and Prevention",
+				year: 2026,
+				url: "https://www.cdc.gov/nutrition/php/data-research/added-sugars.html",
+				stance: "supports",
+				note:
+					"CDC public-health source identifying sugar-sweetened beverages as a leading added-sugar source and excess added sugar as contributing to weight gain, obesity, type 2 diabetes, and heart disease.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Sugar-sweetened beverage consumption and weight gain in children and adults",
+				publisher: "American Journal of Clinical Nutrition",
+				year: 2013,
+				url: "https://pubmed.ncbi.nlm.nih.gov/23966427/",
+				pmid: "23966427",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis of prospective cohorts and randomized trials concluding that sugar-sweetened beverage consumption promotes weight gain.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Sugar-Sweetened Beverages and Risk of Metabolic Syndrome and Type 2 Diabetes",
+				publisher: "Diabetes Care",
+				year: 2010,
+				url: "https://pubmed.ncbi.nlm.nih.gov/20693348/",
+				pmid: "20693348",
+				stance: "supports",
+				note:
+					"Meta-analysis linking higher sugar-sweetened beverage consumption with development of metabolic syndrome and type 2 diabetes.",
+				order: 4
+			},
+			{
+				kind: "meta_analysis",
+				title: "Sugar-sweetened beverage consumption and weight gain in children and adults: an updated systematic review and meta-analysis",
+				publisher: "American Journal of Clinical Nutrition",
+				year: 2023,
+				url: "https://pubmed.ncbi.nlm.nih.gov/36789935/",
+				pmid: "36789935",
+				stance: "supports",
+				note:
+					"Updated systematic review and meta-analysis confirming that sugar-sweetened beverage consumption promotes higher BMI and body weight in children and adults.",
+				order: 5
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does a Mediterranean-style diet reduce cardiovascular events in high-risk adults?",
+		slug: "does-a-mediterranean-style-diet-reduce-cardiovascular-events-in-high-risk-adults",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, with context. A Mediterranean-style dietary pattern, especially when it replaces a lower-quality diet in adults at elevated cardiovascular risk, is supported by randomized-trial and guideline evidence for reducing major cardiovascular events. The claim is about the whole pattern, not olive oil, nuts, wine, or any single food alone.",
+		stableCore: [
+			"Mediterranean-style patterns emphasize vegetables, fruits, legumes, whole grains, nuts, olive oil, and fish, with lower intake of processed meats and refined carbohydrates.",
+			"The corrected PREDIMED trial reported fewer major cardiovascular events in high-risk adults assigned to Mediterranean diets supplemented with extra-virgin olive oil or nuts.",
+			"Benefit depends on the whole pattern and what it replaces, not a magic ingredient.",
+			"Evidence is strongest for high-risk adult cardiovascular prevention, not for every disease claim sometimes attached to the diet."
+		],
+		openQuestions: [
+			"How large is the benefit in lower-risk populations, different cultural food patterns, and lower-resource settings?",
+			"Which substitutions matter most: unsaturated fats for saturated fats, whole foods for refined carbohydrates, or broader diet quality?",
+			"How should alcohol-containing Mediterranean-diet descriptions be handled given cancer and addiction risks?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized or quasi-randomized evidence showing no cardiovascular benefit from Mediterranean-style patterns in comparable high-risk adults.",
+			"Major AHA, ESC, USPSTF, WHO, or dietary-guideline reassessments withdrawing Mediterranean-style diets from cardioprotective dietary-pattern guidance.",
+			"Evidence showing the PREDIMED benefit was fully explained by non-dietary confounding despite corrected analyses and supportive external evidence."
+		],
+		misconceptions: [
+			"Mediterranean diet evidence does not mean unlimited olive oil, nuts, or wine are automatically healthy.",
+			"The pattern is not one fixed traditional menu; it can be adapted across cultures.",
+			"A diet pattern can reduce risk without being a treatment substitute for statins, blood-pressure control, smoking cessation, or diabetes care.",
+			"The PREDIMED correction matters, but it did not erase the overall cardiovascular signal."
+		],
+		editorSummary:
+			"The Mediterranean-diet claim strengthens nutrition coverage by showing a positive dietary-pattern consensus, not only debunking supplement and fad-diet claims.",
+		uncertaintySummary:
+			"The cardiovascular direction is reasonably supported for high-risk adults. Uncertainty remains around exact active ingredients, lower-risk populations, cultural translation, adherence, and alcohol messaging.",
+		searchDatabases: ["PubMed", "AHA", "Cochrane", "Crossref", "Dietary Guidelines for Americans"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "landmark_study",
+				title:
+					"Primary Prevention of Cardiovascular Disease with a Mediterranean Diet Supplemented with Extra-Virgin Olive Oil or Nuts",
+				publisher: "New England Journal of Medicine",
+				year: 2018,
+				url: "https://pubmed.ncbi.nlm.nih.gov/29897866/",
+				pmid: "29897866",
+				stance: "supports",
+				note:
+					"Corrected PREDIMED publication reporting lower incidence of major cardiovascular events among high-risk adults assigned to Mediterranean diet groups.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "2021 Dietary Guidance to Improve Cardiovascular Health: A Scientific Statement From the American Heart Association",
+				publisher: "Circulation",
+				year: 2021,
+				url: "https://pubmed.ncbi.nlm.nih.gov/34724806/",
+				pmid: "34724806",
+				stance: "supports",
+				note:
+					"AHA dietary-pattern guidance supporting vegetables, fruits, legumes, whole grains, fish, nuts, and liquid plant oils as part of cardiovascular health promotion.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Mediterranean-style diet for the primary and secondary prevention of cardiovascular disease",
+				publisher: "Cochrane Database of Systematic Reviews",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/30864165/",
+				pmid: "30864165",
+				stance: "context",
+				note:
+					"Cochrane review source for the broader randomized evidence base and certainty caveats around Mediterranean-style diet and cardiovascular outcomes.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Do mindfulness meditation programs reduce anxiety or depression symptoms?",
+		slug: "do-mindfulness-meditation-programs-reduce-anxiety-or-depression-symptoms",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 78,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Usually modestly, for some people and programs. Mindfulness meditation programs can reduce anxiety or depression symptoms on average, but the effects are not magic, not instant, and not a replacement for urgent mental-health care or evidence-based treatment when symptoms are severe.",
+		stableCore: [
+			"Systematic-review evidence finds small to moderate improvements in anxiety and depression symptoms for mindfulness meditation programs compared with nonspecific active controls.",
+			"NICE includes mindfulness-based cognitive therapy among options for less severe depression and for relapse-prevention contexts.",
+			"Program structure, instructor quality, practice time, baseline symptoms, comorbidities, and comparator choice affect the result.",
+			"Mindfulness can be a useful tool while still being overmarketed when sold as a cure-all."
+		],
+		openQuestions: [
+			"Which people benefit most from mindfulness-based programs compared with CBT, medication, exercise, or combined care?",
+			"How durable are benefits when practice declines after a structured course?",
+			"How should clinicians screen for people who may need trauma-informed adaptation or more intensive care?"
+		],
+		whatWouldChangeMinds: [
+			"Large high-quality trials and meta-analyses showing no anxiety or depression benefit over credible active controls across structured mindfulness programs.",
+			"Major NICE, APA, ACP, or psychiatric guideline updates recommending against mindfulness-based programs because harms or ineffectiveness outweigh benefits.",
+			"Evidence that mindfulness programs routinely delay needed evidence-based care for moderate to severe symptoms."
+		],
+		misconceptions: [
+			"Mindfulness is not a substitute for crisis care, diagnosis, therapy, or medication when those are needed.",
+			"A modest average effect does not mean every app, class, or self-guided routine is evidence-based.",
+			"Difficulty meditating is not a personal failure or proof that someone cannot recover.",
+			"Mindfulness research does not prove all wellness claims attached to meditation."
+		],
+		editorSummary:
+			"Mindfulness is a good psychology page because it avoids both dismissal and wellness hype: structured programs can help, but the benefit is modest and context-dependent.",
+		uncertaintySummary:
+			"The direction is supportive for modest symptom improvement. Uncertainty remains around active ingredients, comparator quality, long-term adherence, app-based delivery, trauma adaptation, and who should use mindfulness as adjunctive versus primary care.",
+		searchDatabases: ["PubMed", "NICE", "AHRQ", "Consensus", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "meta_analysis",
+				title: "Meditation programs for psychological stress and well-being",
+				publisher: "JAMA Internal Medicine",
+				year: 2014,
+				url: "https://pubmed.ncbi.nlm.nih.gov/24395196/",
+				pmid: "24395196",
+				stance: "supports",
+				note:
+					"Systematic review and meta-analysis finding moderate evidence of small improvements in anxiety, depression, and pain from mindfulness meditation programs.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title: "Meditation Programs for Psychological Stress and Well-Being",
+				publisher: "Agency for Healthcare Research and Quality",
+				year: 2014,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK180102/",
+				stance: "supports",
+				note:
+					"AHRQ evidence report underlying the JAMA review, useful for scope, methods, comparators, and evidence-strength caveats.",
+				order: 2
+			},
+			{
+				kind: "guideline",
+				title: "Depression in adults: treatment and management",
+				publisher: "National Institute for Health and Care Excellence",
+				year: 2022,
+				url: "https://www.nice.org.uk/guidance/ng222/chapter/recommendations",
+				stance: "context",
+				note:
+					"NICE clinical-guideline context for where mindfulness-based cognitive therapy fits among depression treatment options and relapse-prevention planning.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Have climate models generally predicted the broad warming trend?",
+		slug: "have-climate-models-generally-predicted-the-broad-warming-trend",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Climate models are not perfect weather forecasts, but past projections have generally captured the broad global warming trend, especially when evaluated against the greenhouse-gas and aerosol forcing that actually occurred. The useful question is whether the physics-based warming signal has been reliable, not whether every regional detail was exact.",
+		stableCore: [
+			"IPCC assessments use models together with observations, theory, paleoclimate evidence, and attribution studies, not as a standalone black box.",
+			"Evaluations of historical projections find many past models were close to observed warming, especially after accounting for actual emissions and other climate drivers.",
+			"Regional precipitation, cloud feedbacks, extremes, and near-term variability are harder than global mean temperature direction.",
+			"Scenario uncertainty is different from model failure: future emissions choices change the path models are asked to project."
+		],
+		openQuestions: [
+			"How should model spread and climate sensitivity uncertainty be communicated without implying ignorance?",
+			"Which regional hazards need more local observations, downscaling, and impact-model validation?",
+			"How should policymakers use ensembles when emissions pathways, aerosols, land use, and socioeconomic choices remain uncertain?"
+		],
+		whatWouldChangeMinds: [
+			"Independent evaluations showing past climate-model projections systematically failed to capture global mean warming after actual forcings were used.",
+			"Major IPCC reassessments concluding model-based projections are unreliable for global temperature change.",
+			"Observed multi-decade climate behavior outside the physically plausible range of mainstream model projections and attribution evidence."
+		],
+		misconceptions: [
+			"Climate models are sometimes dismissed because they cannot predict tomorrow's weather exactly, but climate projections and weather forecasts are different tasks.",
+			"A model scenario based on emissions that did not happen is not a failed prediction of the emissions path that did happen.",
+			"Model uncertainty does not mean equal odds of no warming or catastrophic warming.",
+			"Disagreement among models about details does not erase agreement on the greenhouse-gas warming direction."
+		],
+		editorSummary:
+			"Climate-model reliability is a central public-confusion page because many objections mix up weather forecasting, emissions scenarios, regional details, and global mean warming.",
+		uncertaintySummary:
+			"Confidence is high for broad global warming under greenhouse-gas forcing. Uncertainty is larger for regional details, cloud and aerosol feedbacks, internal variability, and the emissions pathway society chooses.",
+		searchDatabases: ["IPCC", "NASA", "Crossref", "OpenAlex"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Climate Change 2021: The Physical Science Basis",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/",
+				stance: "supports",
+				note:
+					"IPCC AR6 WGI assessment anchor for the physical science basis, observations, attribution, model evaluation, and future climate projections.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Study Confirms Climate Models are Getting Future Warming Projections Right",
+				publisher: "NASA Goddard Institute for Space Studies",
+				year: 2020,
+				url: "https://www.giss.nasa.gov/research/features/202001_accuracy/",
+				stance: "supports",
+				note:
+					"NASA summary of a historical model-evaluation study reporting no evidence that evaluated models systematically overestimated or underestimated warming.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Evaluating the Performance of Past Climate Model Projections",
+				publisher: "Geophysical Research Letters",
+				year: 2020,
+				url: "https://www.giss.nasa.gov/pubs/abs/ha08910q.html",
+				doi: "10.1029/2019GL085378",
+				stance: "supports",
+				note:
+					"Historical model-evaluation study finding climate models published over the prior five decades were generally accurate in projecting global warming after accounting for actual forcings.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Does newborn screening help find serious treatable conditions before babies become sick?",
+		slug: "does-newborn-screening-help-find-serious-treatable-conditions-before-babies-become-sick",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 91,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Newborn screening is a public-health program for finding rare but serious conditions before symptoms appear, so babies can receive confirmatory testing, treatment, or intervention early. Screening is not diagnosis: abnormal results need follow-up, and new conditions should be added only when early detection has net benefit.",
+		stableCore: [
+			"Newborn screening uses blood spot, hearing, and pulse oximetry screens to flag conditions that may not be visible at birth.",
+			"Early detection can prevent death, disability, or irreversible harm for conditions where timely treatment changes outcomes.",
+			"Screen-positive results require confirmatory testing and care coordination rather than immediate certainty.",
+			"Screening panels should be updated carefully because rare-disease evidence, false positives, follow-up capacity, and long-term outcomes matter."
+		],
+		openQuestions: [
+			"Which new conditions have enough evidence of actionability, test accuracy, follow-up capacity, and net benefit to join screening panels?",
+			"How can newborn screening programs reduce state-by-state inequities in timing, confirmatory testing, and access to treatment?",
+			"How should genomic newborn screening pilots handle uncertain results, later-onset conditions, privacy, and family anxiety?"
+		],
+		whatWouldChangeMinds: [
+			"Evidence showing that existing newborn screening programs do not improve outcomes for conditions with effective early treatment.",
+			"Major HRSA, CDC, AAP, ACMG, or National Academies reassessments concluding that population newborn screening no longer has a favorable benefit-harm balance.",
+			"Large program evaluations showing false positives, overdiagnosis, or follow-up failures routinely outweigh benefits across established screening conditions."
+		],
+		misconceptions: [
+			"A positive newborn screen is not a diagnosis by itself.",
+			"Newborn screening does not test for every genetic or childhood condition.",
+			"Adding more conditions is not automatically better unless early detection changes outcomes and follow-up is available.",
+			"Screening value depends on the whole system: specimen collection, lab quality, communication, confirmatory testing, treatment access, and long-term monitoring."
+		],
+		editorSummary:
+			"Newborn screening is a practical biotechnology and public-health page: it shows how early genetic or metabolic detection can save lives while keeping the screening-versus-diagnosis boundary visible.",
+		uncertaintySummary:
+			"The value of established newborn screening is high-confidence. Uncertainty is concentrated in expansion decisions, genomic screening, long-term follow-up, false-positive burden, and unequal access to confirmatory care or treatment.",
+		searchDatabases: ["HRSA", "National Academies", "PubMed", "Consensus", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "About Newborn Screening",
+				publisher: "Health Resources and Services Administration",
+				year: 2025,
+				url: "https://newbornscreening.hrsa.gov/about-newborn-screening",
+				stance: "supports",
+				note:
+					"HRSA public-health anchor explaining that newborn screening can identify serious but treatable health problems before symptoms begin, when early care can work best.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Newborn Screening in the United States: A Vision for Sustaining and Advancing Excellence",
+				publisher: "National Academies Press",
+				year: 2025,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK618103/",
+				doi: "10.17226/29102",
+				pmid: "40966374",
+				stance: "supports",
+				note:
+					"National Academies report describing newborn screening as a major public-health system while emphasizing modernization, equity, autonomy, evidence, and follow-up challenges.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Methods and mechanisms for measuring and monitoring outcomes from newborn bloodspot screening: a scoping review",
+				publisher: "Health Technology Assessment",
+				year: 2026,
+				url: "https://pubmed.ncbi.nlm.nih.gov/41582671/",
+				doi: "10.3310/GJJD1717",
+				pmid: "41582671",
+				stance: "context",
+				note:
+					"Consensus-located scoping review finding that newborn bloodspot screening can enable timely treatment that reduces mortality and morbidity, while outcome monitoring and harm assessment need improvement.",
+				order: 3
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can SMN gene therapy improve outcomes for some children with spinal muscular atrophy?",
+		slug: "can-smn-gene-therapy-improve-outcomes-for-some-children-with-spinal-muscular-atrophy",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 86,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for eligible patients, especially with early treatment. Onasemnogene abeparvovec delivers a functional SMN1 transgene and has improved survival and motor milestones in infants with spinal muscular atrophy. It is not a universal cure: eligibility, SMA type, SMN2 copy number, baseline function, liver safety, cost, and long-term follow-up all matter.",
+		stableCore: [
+			"SMA is commonly caused by loss or dysfunction of SMN1, leading to motor neuron degeneration.",
+			"FDA-approved SMN gene therapies use an AAV vector to deliver a functional SMN1 copy to eligible patients.",
+			"Trials and clinical reviews show large survival and motor-function gains compared with the natural history of infantile SMA, particularly with early treatment.",
+			"Treatment requires specialized evaluation, safety monitoring, and long-term follow-up; it does not reverse all established damage."
+		],
+		openQuestions: [
+			"How durable are benefits and safety outcomes over decades after one-time gene therapy?",
+			"Which patients benefit most from intravenous versus intrathecal products, and how should older or heavier patients be selected?",
+			"How should systems combine newborn screening, rapid genetic confirmation, treatment timing, and equitable access?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term follow-up showing loss of benefit or unacceptable late harms that outweigh early survival and motor gains.",
+			"Regulatory withdrawal or major restriction of onasemnogene products because of effectiveness or safety concerns.",
+			"Comparative evidence showing another disease-modifying strategy consistently produces better outcomes with lower risk for the same eligible patients."
+		],
+		misconceptions: [
+			"Gene therapy for SMA is not the same as editing embryos or changing inherited DNA.",
+			"One-time treatment does not mean no monitoring, no adverse effects, or no remaining disability risk.",
+			"Better outcomes with early treatment do not mean late diagnosis is hopeless, but timing strongly affects what can be preserved.",
+			"Approval for a defined genetic disease does not imply gene therapy works for all neuromuscular disorders."
+		],
+		editorSummary:
+			"SMA gene therapy adds a concrete rare-disease biotechnology page that is more mature than hype but still bounded by eligibility, timing, safety, cost, and long-term uncertainty.",
+		uncertaintySummary:
+			"Short- and medium-term benefit is credible for eligible patients, especially infants treated early. The main uncertainties are long-term durability, safety surveillance, comparative sequencing with other SMA therapies, and equitable access after newborn screening.",
+		searchDatabases: ["FDA", "PubMed", "ClinicalTrials.gov", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "FDA approves innovative gene therapy to treat pediatric patients with spinal muscular atrophy",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2019,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-approves-innovative-gene-therapy-treat-pediatric-patients-spinal-muscular-atrophy-rare-disease",
+				stance: "supports",
+				note:
+					"FDA approval anchor for Zolgensma as an AAV vector-based gene therapy for pediatric patients with SMA caused by biallelic SMN1 mutations.",
+				order: 1
+			},
+			{
+				kind: "landmark_study",
+				title: "Onasemnogene abeparvovec gene therapy for symptomatic infantile-onset spinal muscular atrophy type 1",
+				publisher: "The Lancet Neurology",
+				year: 2021,
+				url: "https://pubmed.ncbi.nlm.nih.gov/33743238/",
+				pmid: "33743238",
+				stance: "supports",
+				note:
+					"STR1VE-US trial source evaluating safety and efficacy of onasemnogene abeparvovec in symptomatic infantile-onset SMA type 1.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Clinical Review Report: Onasemnogene Abeparvovec (Zolgensma)",
+				publisher: "Canadian Agency for Drugs and Technologies in Health",
+				year: 2021,
+				url: "https://www.ncbi.nlm.nih.gov/books/NBK584042/",
+				stance: "context",
+				note:
+					"Health-technology review summarizing STR1VE, START, and supportive evidence, including survival, ventilation-free survival, independent sitting, and uncertainty in longer-term outcomes.",
+				order: 3
+			},
+			{
+				kind: "guideline",
+				title: "FDA Approves Gene Therapy for Treatment of Spinal Muscular Atrophy",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2025,
+				url:
+					"https://www.fda.gov/news-events/press-announcements/fda-approves-gene-therapy-treatment-spinal-muscular-atrophy",
+				stance: "context",
+				note:
+					"Current regulatory context for an intrathecal onasemnogene product in adult and pediatric patients aged 2 years and older with confirmed SMN1 mutation.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "genetics-and-biotechnology",
+		title: "Can CAR T-cell therapy produce durable remissions for some blood cancers?",
+		slug: "can-car-t-cell-therapy-produce-durable-remissions-for-some-blood-cancers",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 84,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, for some eligible patients with specific relapsed or refractory blood cancers. CAR T-cell therapies can produce deep and sometimes durable remissions, but they are not a guaranteed cure and they carry serious risks, including cytokine release syndrome, neurologic toxicity, prolonged cytopenias, infection risk, and rare secondary T-cell malignancies.",
+		stableCore: [
+			"CAR T-cell therapy engineers a patient's T cells to recognize a cancer target and then returns those cells to the patient.",
+			"FDA-approved CAR T products are used for specific leukemias, lymphomas, and multiple myeloma indications, not for all cancers.",
+			"Clinical trials and long-term follow-up show durable remissions in subsets of patients with B-cell malignancies.",
+			"Treatment requires specialized centers, eligibility review, toxicity management, and long-term monitoring."
+		],
+		openQuestions: [
+			"Which patient, tumor, manufacturing, persistence, and prior-treatment factors best predict durable remission?",
+			"How should CAR T be sequenced against bispecific antibodies, transplant, targeted therapy, and newer cellular therapies?",
+			"How can safety monitoring, access, manufacturing time, and cost improve without lowering standards?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term evidence showing that apparent remissions after CAR T rarely persist beyond ordinary comparator therapy in approved indications.",
+			"Regulatory reassessment showing serious late harms outweigh benefits across currently approved blood-cancer uses.",
+			"Large comparative trials showing newer alternatives are consistently safer and more effective for the same relapsed or refractory populations."
+		],
+		misconceptions: [
+			"CAR T-cell therapy is not chemotherapy, but it is also not risk-free or simple.",
+			"Success in blood cancers does not prove the same approach works equally well for most solid tumors.",
+			"Durable remission in some patients does not mean every patient is cured.",
+			"FDA boxed warnings are safety signals to manage and discuss, not proof that the treatment has no benefit."
+		],
+		editorSummary:
+			"CAR T-cell therapy is a high-interest biotechnology claim because it has real clinical successes and real toxicity. The public summary should neither flatten it into miracle language nor dismiss durable remissions.",
+		uncertaintySummary:
+			"Evidence supports meaningful and sometimes durable remission for selected blood cancers, but estimates differ by product, cancer type, line of therapy, disease burden, follow-up length, and toxicity management. Solid-tumor translation remains more uncertain.",
+		searchDatabases: ["NCI", "FDA", "PubMed", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "CAR T Cells: Engineering Immune Cells to Treat Cancer",
+				publisher: "National Cancer Institute",
+				year: 2025,
+				url: "https://www.cancer.gov/about-cancer/treatment/research/car-t-cells",
+				stance: "supports",
+				note:
+					"NCI patient-facing anchor explaining CAR T-cell mechanism, FDA approvals beginning in 2017, blood-cancer indications, and treatment risks.",
+				order: 1
+			},
+			{
+				kind: "guideline",
+				title: "Approved Cellular and Gene Therapy Products",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url:
+					"https://www.fda.gov/vaccines-blood-biologics/cellular-gene-therapy-products/approved-cellular-and-gene-therapy-products",
+				stance: "supports",
+				note:
+					"Current FDA list of approved cellular and gene therapy products, including CAR T-cell products and their regulated indications.",
+				order: 2
+			},
+			{
+				kind: "systematic_review",
+				title: "Long-term outcomes following CAR T cell therapy",
+				publisher: "Bone Marrow Transplantation",
+				year: 2023,
+				url: "https://pubmed.ncbi.nlm.nih.gov/37055515/",
+				pmid: "37055515",
+				stance: "supports",
+				note:
+					"Review source summarizing long-term follow-up and the ability of CD19-targeted CAR T cells to induce prolonged remissions in B-cell malignancies.",
+				order: 3
+			},
+			{
+				kind: "context",
+				title: "FDA Requires Boxed Warning for T cell Malignancies Following Treatment with BCMA-Directed or CD19-Directed CAR T cell Immunotherapies",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2024,
+				url:
+					"https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/fda-requires-boxed-warning-t-cell-malignancies-following-treatment-bcma-directed-or-cd19-directed",
+				stance: "context",
+				note:
+					"FDA safety communication anchoring the serious but rare secondary T-cell malignancy warning that must be included in benefit-risk discussions.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "neuroscience-and-psychology",
+		title: "Does cognitive behavioral therapy help adults with anxiety disorders?",
+		slug: "does-cognitive-behavioral-therapy-help-adults-with-anxiety-disorders",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 83,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes. Cognitive behavioral therapy is one of the best-supported psychological treatments for adult anxiety disorders, including generalized anxiety disorder and panic disorder. The benefit is not identical for every diagnosis or person, and access, therapist skill, exposure practice, comorbidity, severity, and patient preference affect outcomes.",
+		stableCore: [
+			"CBT targets patterns of avoidance, threat appraisal, safety behaviors, and coping skills that can maintain anxiety symptoms.",
+			"Guidelines commonly recommend CBT as a first-line or core psychological treatment for several adult anxiety disorders.",
+			"Meta-analyses find CBT improves anxiety outcomes versus waitlist, treatment as usual, or placebo-like psychological controls, though effect sizes vary by diagnosis and comparator.",
+			"Medication, applied relaxation, exposure-focused therapy, and combined care can also be appropriate depending on the person and condition."
+		],
+		openQuestions: [
+			"Which delivery formats, session doses, and therapist supports work best for each anxiety diagnosis?",
+			"How durable are CBT gains when symptoms are severe, comorbid depression or substance use is present, or access is mostly digital?",
+			"How should clinicians match CBT, medication, combined treatment, and alternative psychological therapies to patient preference and risk?"
+		],
+		whatWouldChangeMinds: [
+			"Large, low-bias meta-analyses showing CBT is not meaningfully better than credible controls for adult anxiety disorders.",
+			"Major NICE, APA, ACP, or specialty guideline updates withdrawing CBT as a recommended anxiety treatment.",
+			"Evidence that routine CBT implementation produces harms or delays effective care enough to outweigh symptom benefits."
+		],
+		misconceptions: [
+			"CBT is not just positive thinking or generic advice to calm down.",
+			"Psychological treatment evidence does not mean anxiety is imaginary.",
+			"CBT does not have to be the only treatment; medication or combined care can be evidence-based too.",
+			"Exposure-based components should be planned and supported, not forced or improvised."
+		],
+		editorSummary:
+			"CBT for anxiety adds a mainstream psychology treatment page with stronger evidence than many wellness claims, while keeping diagnosis, comparator, access, and individual fit visible.",
+		uncertaintySummary:
+			"The overall CBT benefit signal is reliable, but estimates vary by anxiety diagnosis, comparator, delivery format, therapist fidelity, comorbidity, and follow-up duration. Implementation quality is central to the public answer.",
+		searchDatabases: ["NICE", "PubMed", "Consensus", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Generalised anxiety disorder and panic disorder in adults: management",
+				publisher: "National Institute for Health and Care Excellence",
+				year: 2020,
+				url: "https://www.nice.org.uk/guidance/cg113/chapter/Recommendations",
+				stance: "supports",
+				note:
+					"NICE guideline anchor recommending CBT within stepped care for generalized anxiety disorder and panic disorder.",
+				order: 1
+			},
+			{
+				kind: "meta_analysis",
+				title: "Long-term Outcomes of Cognitive Behavioral Therapy for Anxiety-Related Disorders",
+				publisher: "JAMA Psychiatry",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/31758858/",
+				pmid: "31758858",
+				stance: "supports",
+				note:
+					"Meta-analysis source reporting that CBT for anxiety-related disorders is associated with improved long-term outcomes compared with control conditions.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Psychotherapies for Generalized Anxiety Disorder in Adults",
+				publisher: "JAMA Psychiatry",
+				year: 2023,
+				url: "https://pubmed.ncbi.nlm.nih.gov/37851421/",
+				pmid: "37851421",
+				stance: "supports",
+				note:
+					"Network meta-analysis finding CBT may represent first-line therapy for generalized anxiety disorder, with third-wave CBTs and relaxation also showing short-term effectiveness.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Cognitive-behavioral therapy for adult anxiety disorders: a meta-analysis of randomized placebo-controlled trials",
+				publisher: "Journal of Clinical Psychiatry",
+				year: 2008,
+				url: "https://pubmed.ncbi.nlm.nih.gov/18363421/",
+				pmid: "18363421",
+				doi: "10.4088/jcp.v69n0415",
+				stance: "context",
+				note:
+					"Placebo-controlled trial meta-analysis concluding that CBT is efficacious for adult anxiety disorders while noting room for improvement.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Do whole grains and dietary fiber help lower colorectal cancer risk?",
+		slug: "do-whole-grains-and-dietary-fiber-help-lower-colorectal-cancer-risk",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 82,
+		evidenceCertainty: "moderate",
+		bottomLine:
+			"Yes, as part of an overall diet pattern. Higher dietary fiber intake, especially cereal fiber and whole grains, is associated with lower colorectal cancer risk. It is not a guarantee for any individual, and fiber does not cancel risks from processed meat, alcohol, obesity, smoking, or missed screening.",
+		stableCore: [
+			"Whole grains contain fiber plus other nutrients and plant compounds; refined grains are not the same exposure.",
+			"World Cancer Research Fund and AICR treat foods containing dietary fiber and whole grains as part of colorectal cancer prevention guidance.",
+			"Prospective-study meta-analyses generally find lower colorectal cancer risk with higher dietary fiber, cereal fiber, and whole-grain intake.",
+			"Screening still matters; diet can reduce risk but does not replace recommended colorectal cancer screening."
+		],
+		openQuestions: [
+			"How much benefit comes from fiber itself versus broader replacement of refined grains, processed foods, or higher-risk dietary patterns?",
+			"Which fiber sources, whole-grain types, and substitutions matter most for different populations?",
+			"How should guidance balance observational nutrition evidence with practical advice that is easy to follow?"
+		],
+		whatWouldChangeMinds: [
+			"Large high-quality prospective evidence showing no association between whole grains, cereal fiber, or dietary fiber and colorectal cancer after better measurement and confounding control.",
+			"Major WCRF/AICR, WHO, dietary-guideline, or cancer-prevention reassessments withdrawing fiber-rich food guidance for colorectal cancer prevention.",
+			"Randomized prevention evidence showing fiber-rich dietary changes create no colorectal risk marker or outcome benefit despite sustained adherence."
+		],
+		misconceptions: [
+			"Fiber is not a treatment for colorectal cancer.",
+			"Whole-grain benefit does not mean all grain products with health claims are equally healthy.",
+			"Taking a fiber supplement is not automatically the same as eating a fiber-rich dietary pattern.",
+			"Lower risk is not zero risk, so symptoms and screening recommendations still matter."
+		],
+		editorSummary:
+			"This nutrition claim gives the site a constructive cancer-prevention page that complements existing processed-meat coverage and keeps food-pattern advice separate from cure claims.",
+		uncertaintySummary:
+			"The direction is supportive, but nutrition evidence is mostly observational for cancer endpoints. Uncertainty remains around effect size, sources of fiber, substitution patterns, residual confounding, and how fiber-rich diets interact with screening and other risk factors.",
+		searchDatabases: ["WCRF", "PubMed", "Crossref", "Dietary Guidelines for Americans"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "guideline",
+				title: "Fibre, wholegrains and cancer",
+				publisher: "World Cancer Research Fund",
+				year: 2026,
+				url: "https://www.wcrf.org/preventing-cancer/topics/fibre-wholegrains-and-cancer/",
+				stance: "supports",
+				note:
+					"WCRF public guidance anchor explaining why fiber and whole grains are included in colorectal cancer prevention advice.",
+				order: 1
+			},
+			{
+				kind: "consensus_statement",
+				title: "Diet, nutrition, physical activity and colorectal cancer",
+				publisher: "World Cancer Research Fund / American Institute for Cancer Research",
+				year: 2018,
+				url: "https://www.wcrf.org/wp-content/uploads/2024/10/Colorectal-cancer-report.pdf",
+				stance: "supports",
+				note:
+					"Continuous Update Project report source for colorectal cancer prevention evidence, including whole grains and foods containing dietary fiber.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "Dietary fibre, whole grains, and risk of colorectal cancer",
+				publisher: "BMJ",
+				year: 2011,
+				url: "https://pubmed.ncbi.nlm.nih.gov/22074852/",
+				pmid: "22074852",
+				stance: "supports",
+				note:
+					"Prospective-study meta-analysis concluding that high dietary fiber intake, particularly cereal fiber and whole grains, was associated with reduced colorectal cancer risk.",
+				order: 3
+			},
+			{
+				kind: "meta_analysis",
+				title: "Carbohydrate quality and human health: a series of systematic reviews and meta-analyses",
+				publisher: "The Lancet",
+				year: 2019,
+				url: "https://pubmed.ncbi.nlm.nih.gov/30638909/",
+				pmid: "30638909",
+				stance: "context",
+				note:
+					"WHO-commissioned carbohydrate-quality review linking higher fiber and whole-grain intake with lower risk across several noncommunicable disease outcomes, while supporting food-pattern framing.",
+				order: 4
+			}
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
+		title: "Are glaciers and major ice sheets losing mass as the climate warms?",
+		slug: "are-glaciers-and-major-ice-sheets-losing-mass-as-the-climate-warms",
+		status: "published",
+		consensusBand: "strong",
+		confidenceScore: 92,
+		evidenceCertainty: "high",
+		bottomLine:
+			"Yes. Global glaciers and the Greenland and Antarctic ice sheets are losing mass overall as the atmosphere and oceans warm, contributing to sea-level rise. Individual regions and short periods can gain snow or ice, but those fluctuations do not overturn the multi-decade global loss signal.",
+		stableCore: [
+			"Satellite gravimetry, altimetry, input-output methods, and field measurements all support broad ice loss across glaciers and major ice sheets.",
+			"IPCC AR6 reports very likely global glacier mass loss and high-confidence increases in loss rate from the 2000s to the 2010s.",
+			"NASA GRACE and GRACE-FO indicators show continuing mass loss from Greenland and Antarctica since 2002.",
+			"Ice loss contributes to sea-level rise, but regional sea-level effects vary with land motion, ocean circulation, and gravitational effects."
+		],
+		openQuestions: [
+			"How fast will ice sheets lose mass under different emissions pathways and ice-shelf or grounding-line feedbacks?",
+			"How should short-term snowfall gains or regional variability be communicated without hiding the long-term trend?",
+			"Which mountain regions face the largest water-supply, hazard, and ecosystem impacts as glaciers shrink?"
+		],
+		whatWouldChangeMinds: [
+			"Multiple independent satellite and field datasets showing sustained global glacier and ice-sheet mass gain over multi-decade periods.",
+			"Major IPCC, NASA, ESA, NOAA, or IMBIE reassessments withdrawing the conclusion that glaciers and major ice sheets are losing mass overall.",
+			"A physical explanation and observations showing current ice loss is not linked to warming atmosphere and ocean conditions."
+		],
+		misconceptions: [
+			"A snowy year or temporary regional mass gain does not reverse a multi-decade global loss trend.",
+			"Sea ice, mountain glaciers, and land ice sheets are related climate indicators but not the same thing.",
+			"Local glacier behavior can differ from the global average because snowfall, elevation, debris cover, and ocean contact vary.",
+			"Ice loss is measured by multiple methods, not only by photographs of retreating glacier fronts."
+		],
+		editorSummary:
+			"This climate page turns a visible but often cherry-picked indicator into a source-backed claim about mass balance, trend scale, and sea-level relevance.",
+		uncertaintySummary:
+			"The observed mass-loss direction is high-confidence. Uncertainty is larger for future acceleration, regional freshwater impacts, Antarctic ice-sheet dynamics, and the exact sea-level contribution under each emissions pathway.",
+		searchDatabases: ["IPCC", "NASA", "NOAA", "OpenAlex", "Crossref"],
+		searchCutoffAt: "2026-07-06T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
+		sources: [
+			{
+				kind: "consensus_statement",
+				title: "Chapter 9: Ocean, Cryosphere and Sea Level Change",
+				publisher: "Intergovernmental Panel on Climate Change",
+				year: 2021,
+				url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-9/",
+				stance: "supports",
+				note:
+					"IPCC AR6 chapter anchor for glacier mass loss, ice-sheet changes, ocean warming, cryosphere observations, and sea-level contribution.",
+				order: 1
+			},
+			{
+				kind: "context",
+				title: "Ice Sheets - Earth Indicator",
+				publisher: "NASA Science",
+				year: 2026,
+				url: "https://science.nasa.gov/earth/explore/earth-indicators/ice-sheets/",
+				stance: "supports",
+				note:
+					"NASA GRACE and GRACE-FO indicator showing mass loss from Greenland and Antarctica and explaining the sea-level relevance of land-ice melt.",
+				order: 2
+			},
+			{
+				kind: "landmark_study",
+				title: "Mass balance of the Greenland and Antarctic ice sheets from 1992 to 2020",
+				publisher: "Earth System Science Data",
+				year: 2023,
+				url: "https://essd.copernicus.org/articles/15/1597/2023/",
+				doi: "10.5194/essd-15-1597-2023",
+				stance: "supports",
+				note:
+					"IMBIE satellite intercomparison combining independent estimates and finding accelerated ice loss from Greenland and Antarctic ice sheets from 1992 to 2020.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Community estimate of global glacier mass changes from 2000 to 2023",
+				publisher: "Nature",
+				year: 2025,
+				url: "https://www.nature.com/articles/s41586-024-08545-z",
+				doi: "10.1038/s41586-024-08545-z",
+				stance: "supports",
+				note:
+					"Global glacier intercomparison estimating annual mass loss from 2000 to 2023 and increased loss in the second half of the period.",
+				order: 4
+			}
+		]
 	}
 ];
 
