@@ -150,6 +150,62 @@ function claimCertaintyLabel(claim: ClaimSummary) {
 function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
+
+function splitSummaryLead(text: string) {
+	const cleaned = text.trim();
+	const sentenceEnd = cleaned.match(/[.!?](?:\s|$)/);
+	if (!sentenceEnd) {
+		return {
+			lead: cleaned,
+			context: ""
+		};
+	}
+
+	const leadEnd = (sentenceEnd.index ?? 0) + sentenceEnd[0].trimEnd().length;
+	return {
+		lead: cleaned.slice(0, leadEnd).trim(),
+		context: cleaned.slice(leadEnd).trim()
+	};
+}
+
+function truncateWords(text: string, maxWords = 24) {
+	const words = text.trim().split(/\s+/).filter(Boolean);
+	if (words.length <= maxWords) return text.trim();
+	const previewWords = words.slice(0, maxWords);
+	const weakEndings = new Set([
+		"a",
+		"an",
+		"and",
+		"are",
+		"as",
+		"because",
+		"but",
+		"for",
+		"of",
+		"or",
+		"the",
+		"to",
+		"with"
+	]);
+	while (previewWords.length > 1 && weakEndings.has(previewWords[previewWords.length - 1].toLowerCase())) {
+		previewWords.pop();
+	}
+	return `${previewWords.join(" ")}...`;
+}
+
+function compactContextPreview(text: string) {
+	return truncateWords(splitSummaryLead(text).lead || text);
+}
+
+function claimCardPreview(claim: ClaimSummary) {
+	const full = claimCardSummary(claim);
+	const { lead, context } = splitSummaryLead(full);
+	return {
+		full,
+		lead,
+		context: compactContextPreview(context)
+	};
+}
 </script>
 
 <template>
@@ -208,8 +264,11 @@ function claimCardSummary(claim: ClaimSummary) {
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
 						</p>
-						<p class="claim-row__summary" :title="claimCardSummary(claim)">
-							{{ claimCardSummary(claim) }}
+						<p class="claim-row__summary" :title="claimCardPreview(claim).full">
+							<span class="claim-row__summary-lead">{{ claimCardPreview(claim).lead }}</span>
+							<span v-if="claimCardPreview(claim).context" class="claim-row__summary-context">
+								{{ claimCardPreview(claim).context }}
+							</span>
 						</p>
 						<p v-if="claim.evidenceLandscape?.caveatSummary" class="claim-row__caveat">
 							Caveat: {{ claim.evidenceLandscape.caveatSummary }}
@@ -330,10 +389,20 @@ function claimCardSummary(claim: ClaimSummary) {
 }
 
 .claim-row__summary {
+	display: grid;
+	gap: 4px;
+}
+
+.claim-row__summary-lead {
+	color: var(--consensus-ink);
+	font-weight: 700;
+}
+
+.claim-row__summary-context {
 	display: -webkit-box;
 	overflow: hidden;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 3;
+	-webkit-line-clamp: 2;
 }
 
 .claim-row__meta {
@@ -447,7 +516,7 @@ function claimCardSummary(claim: ClaimSummary) {
 	}
 
 	.claim-row__summary {
-		-webkit-line-clamp: 2;
+		gap: 3px;
 	}
 
 	.claim-row__score {
