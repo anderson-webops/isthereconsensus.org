@@ -258,4 +258,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		justify-content: start;
 	}
 }
+
+@media (max-width: 480px) {
+	.site-brand__tag {
+		display: none;
+	}
+}
 </style>

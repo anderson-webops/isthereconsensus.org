@@ -63,6 +63,7 @@ describe("theme controls", () => {
 				source,
 				/@media \(max-width: 700px\) \{[\s\S]*\.site-nav \{[\s\S]*grid-column: 1 \/ -1;[\s\S]*flex-wrap: wrap;/
 			);
+			assert.match(source, /@media \(max-width: 480px\) \{[\s\S]*\.site-brand__tag \{[\s\S]*display: none;/);
 			assert.doesNotMatch(source, /site-footer__appearance/);
 		});
 	}
