@@ -903,7 +903,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 @media (max-width: 860px) {
 	.claim-page {
-		gap: 18px;
+		gap: 14px;
 	}
 
 	.bottom-line {
@@ -919,14 +919,24 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.uncertainty-strip,
 	.content-panel,
 	.queue-note {
-		padding: 16px;
+		padding: 14px;
 		border-radius: 16px;
 	}
 
 	.claim-page__header,
 	.bottom-line,
 	.uncertainty-strip {
-		gap: 14px;
+		gap: 10px;
+	}
+
+	.claim-page__hero {
+		gap: 7px;
+	}
+
+	.claim-page__header h1 {
+		margin-top: 4px;
+		font-size: clamp(1.72rem, 7.2vw, 2.05rem);
+		line-height: 1.02;
 	}
 
 	.claim-page__description,
@@ -940,11 +950,13 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.muted,
 	.field-label,
 	.queue-note {
-		line-height: 1.56;
+		line-height: 1.5;
 	}
 
 	.bottom-line .bottom-line__text {
-		line-height: 1.54;
+		margin-top: 6px;
+		font-size: 1.02rem;
+		line-height: 1.48;
 	}
 
 	.section-heading {
@@ -1009,17 +1021,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.bottom-line__actions {
 		width: 100%;
 		justify-content: start;
+		gap: 8px;
 	}
 }
 
 @media (max-width: 560px) {
 	.bottom-line__actions {
-		display: grid;
-		grid-template-columns: 1fr;
+		display: flex;
+		flex-wrap: wrap;
 	}
 
 	.bottom-line__actions .button {
-		width: 100%;
+		flex: 1 1 140px;
+		min-height: 40px;
+		padding: 10px 12px;
 	}
 }
 </style>
