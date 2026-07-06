@@ -9,6 +9,8 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 describe("misconception and explainer index layout copy", () => {
 	it("keeps misconception library framing reader-facing", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
+		const gridIndex = source.indexOf('<section class="misconception-grid">');
+		const libraryFitIndex = source.indexOf('<section class="misconception-panel misconception-panel--soft">');
 
 		assert.match(source, /Recurring mistakes around science claims\./);
 		assert.match(source, /Common mistake/);
@@ -21,6 +23,9 @@ describe("misconception and explainer index layout copy", () => {
 		assert.doesNotMatch(source, />Checks and context</);
 		assert.doesNotMatch(source, /claim pages/i);
 		assert.doesNotMatch(source, /reuse it elsewhere/i);
+		assert.notEqual(gridIndex, -1);
+		assert.notEqual(libraryFitIndex, -1);
+		assert.ok(gridIndex < libraryFitIndex);
 	});
 
 	it("uses public navigation labels from evergreen explainers", () => {
