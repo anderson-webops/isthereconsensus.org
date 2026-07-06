@@ -38,6 +38,15 @@ describe("claim detail layout", () => {
 		assert.match(source, /formatCountLabel\(sourceCount\.value, "source"\)/);
 		assert.match(source, /`Reviewed \$\{formatDate\(claim\.value\?\.lastReviewedAt, "Pending"\)\}`/);
 	});
+
+	it("splits long bottom-line copy into a lead answer and supporting context", () => {
+		assert.match(source, /const bottomLineParts = computed/);
+		assert.ok(source.includes("const sentenceEnd = text.match(/[.!?](?:\\s|$)/);"));
+		assert.match(source, /class="bottom-line__text bottom-line__text--lead"/);
+		assert.match(source, /v-if="bottomLineParts\.context" class="bottom-line__context"/);
+		assert.match(source, /\.bottom-line__text--lead \{[\s\S]*font-weight: 700;/);
+		assert.match(source, /\.bottom-line__context \{[\s\S]*color: var\(--consensus-muted\);/);
+	});
 });
 
 describe("breadcrumbs layout", () => {

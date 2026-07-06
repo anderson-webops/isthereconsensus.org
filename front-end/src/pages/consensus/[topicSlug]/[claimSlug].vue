@@ -80,6 +80,22 @@ const claimMeta = computed(() => [
 	formatCountLabel(sourceCount.value, "source"),
 	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
 ]);
+const bottomLineParts = computed(() => {
+	const text = claim.value?.bottomLine?.trim() || "";
+	const sentenceEnd = text.match(/[.!?](?:\s|$)/);
+	if (!sentenceEnd) {
+		return {
+			lead: text,
+			context: ""
+		};
+	}
+
+	const leadEnd = (sentenceEnd.index ?? 0) + sentenceEnd[0].trimEnd().length;
+	return {
+		lead: text.slice(0, leadEnd).trim(),
+		context: text.slice(leadEnd).trim()
+	};
+});
 const evidenceSectionTitle = computed(() =>
 	claimSnapshotGroups.value.length ? "Claim snapshot" : "Evidence summaries by outcome"
 );
@@ -365,7 +381,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		<section class="bottom-line">
 			<div>
 				<h2>Bottom line</h2>
-				<p class="bottom-line__text">{{ claim?.bottomLine }}</p>
+				<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
+				<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
 			</div>
 			<div class="bottom-line__actions">
 				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
@@ -670,6 +687,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.62;
 }
 
+.bottom-line__text--lead {
+	font-weight: 700;
+}
+
+.bottom-line__context {
+	max-width: 72ch;
+	margin: 8px 0 0;
+	color: var(--consensus-muted);
+	line-height: 1.58;
+}
+
 .uncertainty-strip > div > p:not(.eyebrow):not(.field-label) {
 	max-width: 68ch;
 }
@@ -957,6 +985,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		margin-top: 6px;
 		font-size: 1.02rem;
 		line-height: 1.48;
+	}
+
+	.bottom-line__context {
+		margin-top: 6px;
+		line-height: 1.46;
 	}
 
 	.section-heading {
