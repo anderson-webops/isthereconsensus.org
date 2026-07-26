@@ -26154,6 +26154,273 @@ const rawClaims: SeedClaim[] = [
 				order: 4
 			}
 		]
+	},
+	{
+		topicSlug: "nutrition-and-diet",
+		title: "Does caffeine become less effective with regular daily use?",
+		slug: "does-caffeine-become-less-effective-with-regular-daily-use",
+		status: "published",
+		consensusBand: "broad",
+		confidenceScore: 87,
+		evidenceCertainty: "moderate",
+		reviewMode: "standard",
+		bottomLine:
+			"Partly. Daily caffeine use produces tolerance to some effects, so the noticeable boost can shrink and may partly become relief from withdrawal. But tolerance is incomplete and depends on the outcome: alertness or exercise benefits can persist, while sleep disruption, nervousness, and dependence can remain. The evidence does not support either “caffeine always works like the first dose” or “it eventually does nothing.”",
+		stableCore: [
+			"Caffeine reliably improves alertness, vigilance, attention, and reaction time in the short term; effects on memory and higher-order judgment are less consistent.",
+			"Repeated daily use can reduce the size of some effects, but tolerance does not develop equally to cognition, exercise performance, blood pressure, sleep, or side effects.",
+			"A meta-analysis of 60 exercise studies found that habitual caffeine intake did not significantly change caffeine's overall acute benefit for endurance, power, or strength.",
+			"Smaller repeated-use trials found progressive tolerance to some exercise and blood-pressure effects, while nervousness, insomnia, gastrointestinal complaints, and other effects sometimes persisted.",
+			"Regular use can produce physical dependence. Stopping abruptly can cause headache, fatigue, sleepiness, irritability, and difficulty concentrating."
+		],
+		openQuestions: [
+			"How much of the everyday alertness boost in habitual users is a net improvement rather than reversal of overnight withdrawal?",
+			"Which doses, schedules, genetic differences, medications, sleep patterns, and baseline consumption levels predict stronger or weaker tolerance?",
+			"How well do short laboratory studies represent years of ordinary coffee, tea, energy-drink, or supplement use?",
+			"Does strategically intermittent use preserve meaningful benefits better than daily use without worsening sleep or encouraging dose escalation?"
+		],
+		whatWouldChangeMinds: [
+			"Large, preregistered long-term trials showing that habitual caffeine users retain the same response as caffeine-naive users across alertness, cognition, sleep, blood pressure, and exercise outcomes.",
+			"Conversely, high-quality studies showing complete tolerance across those outcomes, with no remaining acute benefit, adverse effect, dependence, or withdrawal.",
+			"An updated systematic review that resolves the current difference between small repeated-dosing experiments and broader exercise meta-analysis."
+		],
+		misconceptions: [
+			"Feeling less of a buzz does not mean caffeine has stopped affecting sleep, blood pressure, anxiety, or performance.",
+			"Feeling normal after a morning coffee does not by itself prove a net benefit; it may partly reflect reversal of overnight withdrawal.",
+			"Habitual use does not automatically erase exercise benefits, and taking ever-larger doses is not a proven solution to tolerance.",
+			"Coffee's long-term health associations are not interchangeable with the acute effects of caffeine alone."
+		],
+		editorSummary:
+			"The durable public answer is partial, effect-specific tolerance. Daily users often notice less stimulation, but caffeine can still change alertness, exercise performance, sleep, and side effects. The page should keep withdrawal reversal and the mixed exercise-tolerance evidence visible rather than forcing a universal yes or no.",
+		uncertaintySummary:
+			"Tolerance itself is well established, but its practical size varies by outcome and study design. The strongest disagreement concerns net cognitive benefit in habitual users and whether daily use meaningfully reduces exercise benefits. Short repeated-dose trials often find attenuation, while a larger exercise meta-analysis did not find habitual intake changed the overall acute benefit.",
+		uncertaintyDrivers: [
+			{
+				type: "inconsistency",
+				detail:
+					"Small repeated-dosing trials report declining exercise effects, while a meta-analysis of 60 studies found no significant influence of habitual intake on the acute exercise benefit."
+			},
+			{
+				type: "bias",
+				detail:
+					"Overnight abstinence can place habitual users into withdrawal, making a post-dose improvement look larger because caffeine restores their usual baseline."
+			},
+			{
+				type: "generalizability",
+				detail:
+					"Response varies with dose, timing, baseline use, sleep pressure, genetics, medications, pregnancy, age, anxiety sensitivity, and the outcome being measured."
+			}
+		],
+		searchDatabases: ["Consensus", "PubMed", "EFSA", "FDA"],
+		searchCutoffAt: "2026-07-26T12:00:00.000Z",
+		lastRetractionCheckAt: "2026-07-26T12:00:00.000Z",
+		inclusionRules: [
+			"Prioritize systematic reviews, meta-analyses, randomized repeated-dosing studies, controlled withdrawal studies, and current public-health guidance.",
+			"Separate subjective stimulation, objective attention, complex cognition, exercise performance, blood pressure, sleep, adverse effects, dependence, and withdrawal.",
+			"Distinguish habitual caffeine exposure from coffee as a multi-compound beverage and from a single acute caffeine dose."
+		],
+		exclusionRules: [
+			"Do not treat a stronger or weaker felt buzz as proof of every physiological or performance effect.",
+			"Do not generalize from one small repeated-dose trial to all doses, outcomes, populations, or years of use.",
+			"Do not present the FDA or EFSA adult safety ceiling as an optimal intake target or as protection against sleep disruption."
+		],
+		appraisalTools: [
+			"Repeated-dose and habitual-use design check",
+			"Withdrawal-confounding check",
+			"Outcome-specific tolerance check",
+			"Dose, timing, and population applicability check"
+		],
+		evidenceSummaries: [
+			{
+				question: "Does habitual use erase caffeine's alertness and cognitive effects?",
+				population: "Healthy adult habitual and lower-use caffeine consumers in controlled cognitive studies",
+				finding:
+					"Not uniformly. Acute caffeine reliably improves basic alertness and attention, but habitual users develop tolerance to some subjective and cognitive effects, and part of the apparent benefit can be withdrawal reversal.",
+				effectDirection: "supports",
+				magnitude:
+					"A controlled study of 369 consumers found caffeine reduced sleepiness and improved physical-speed measures, while frequent consumption did not produce a clear net improvement in mental alertness or mental performance.",
+				certainty: "moderate",
+				limitations: [
+					"Studies define habitual intake and abstinence differently.",
+					"Simple reaction time and vigilance do not represent memory, judgment, or every real-world task.",
+					"Withdrawal, sleep pressure, anxiety, and expectancy can change both baseline performance and the post-dose response."
+				]
+			},
+			{
+				question: "Does habitual use erase caffeine's exercise-performance benefit?",
+				population: "Trained and untrained adults in endurance, power, and strength studies",
+				finding:
+					"The best pooled evidence does not show that habitual intake eliminates the acute exercise benefit, although small repeated-use trials show that the magnitude can decline over days or weeks.",
+				effectDirection: "supports",
+				magnitude:
+					"A meta-analysis of 60 studies found a small overall benefit (SMD 0.25, 95% CI 0.20 to 0.30) with no significant influence of habitual intake; an 11-person 20-day trial found the first dose produced the largest benefit and later effects progressively declined.",
+				certainty: "moderate",
+				limitations: [
+					"Many exercise studies report habitual caffeine intake inconsistently.",
+					"The repeated-use trial was small and cannot settle effects across sports, doses, sexes, or long-term use.",
+					"Performance outcomes and caffeine doses differ substantially across studies."
+				]
+			},
+			{
+				question: "Do adverse effects and dependence disappear as tolerance develops?",
+				population: "Healthy adults using caffeine repeatedly or stopping habitual use",
+				finding:
+					"No. Some effects attenuate, but tolerance is incomplete. Sleep disruption and other adverse effects can persist, and regular use can produce a well-characterized withdrawal syndrome.",
+				effectDirection: "supports",
+				magnitude:
+					"In one 20-day trial, the blood-pressure rise attenuated after 8 days while several reported side effects persisted. A review of 57 experimental and 9 survey studies found withdrawal commonly begins 12 to 24 hours after stopping, peaks at 20 to 51 hours, and lasts 2 to 9 days.",
+				certainty: "moderate",
+				limitations: [
+					"The 20-day adverse-effect study included only 11 participants.",
+					"Individual sensitivity and caffeine clearance vary widely.",
+					"Sleep effects depend strongly on dose, timing, baseline sleep, and the person's ability to perceive disruption."
+				]
+			}
+		],
+		institutionalAnchors: [
+			{
+				name: "European Food Safety Authority",
+				role: "Safety anchor for dose boundaries, individual sensitivity, and sleep effects."
+			},
+			{
+				name: "U.S. Food and Drug Administration",
+				role: "Public-health anchor for adult intake context, adverse effects, concentrated-caffeine risk, and gradual reduction."
+			}
+		],
+		changeLog: [
+			{
+				date: "2026-07-26T12:00:00.000Z",
+				kind: "publication",
+				summary:
+					"Initial caffeine-tolerance claim page published from Consensus-located reviews, repeated-dosing studies, withdrawal evidence, and current FDA and EFSA guidance."
+			}
+		],
+		sources: [
+			{
+				kind: "meta_analysis",
+				title:
+					"Can I Have My Coffee and Drink It? A Systematic Review and Meta-analysis to Determine Whether Habitual Caffeine Consumption Affects the Ergogenic Effect of Caffeine",
+				publisher: "Sports Medicine",
+				year: 2022,
+				url:
+					"https://consensus.app/papers/can-i-have-my-coffee-and-drink-it-a-systematic-review-and-carvalho-marticorena/a1384279adc05c01b0973e58b87a1dd6/",
+				doi: "10.1007/s40279-022-01685-0",
+				isAnchor: true,
+				stance: "supports",
+				note:
+					"Meta-analysis of 60 studies finding a small acute exercise benefit and no significant influence of relative habitual caffeine consumption across endurance, power, strength, sex, or training status.",
+				order: 1
+			},
+			{
+				kind: "systematic_review",
+				title:
+					"A critical review of caffeine withdrawal: empirical validation of symptoms and signs, incidence, severity, and associated features",
+				publisher: "Psychopharmacology",
+				year: 2004,
+				url:
+					"https://consensus.app/papers/a-critical-review-of-caffeine-withdrawal-empirical-juliano-griffiths/3a88790a639351ae9fafd98f820e90ce/",
+				doi: "10.1007/s00213-004-2000-x",
+				pmid: "15448977",
+				stance: "supports",
+				note:
+					"Review of 57 experimental and 9 survey studies validating caffeine withdrawal symptoms, timing, dose response, and clinically meaningful impairment.",
+				order: 2
+			},
+			{
+				kind: "meta_analysis",
+				title: "The effect of caffeine on subsequent sleep: A systematic review and meta-analysis",
+				publisher: "Sleep Medicine Reviews",
+				year: 2023,
+				url:
+					"https://consensus.app/papers/the-effect-of-caffeine-on-subsequent-sleep-a-systematic-gardiner-weakley/4f125f6d58645632a196890a7585b214/",
+				doi: "10.1016/j.smrv.2023.101764",
+				pmid: "36870101",
+				stance: "supports",
+				note:
+					"Meta-analysis of 24 studies finding less total sleep, lower sleep efficiency and deep sleep, and longer sleep onset after caffeine, with strong dose-and-timing implications.",
+				order: 3
+			},
+			{
+				kind: "landmark_study",
+				title: "Time course of tolerance to the performance benefits of caffeine",
+				publisher: "PLOS ONE",
+				year: 2019,
+				url:
+					"https://consensus.app/papers/time-course-of-tolerance-to-the-performance-benefits-of-lara-ruz-moreno/82dfef5562d1500391f2ebe6b8423228/",
+				doi: "10.1371/journal.pone.0210275",
+				pmid: "30673725",
+				pmcid: "PMC6343867",
+				stance: "supports",
+				note:
+					"Small randomized crossover trial in 11 active adults: 3 mg/kg daily for 20 days retained some exercise benefit for 15 to 18 days, but the largest effect occurred on day 1 and progressively declined.",
+				order: 4
+			},
+			{
+				kind: "landmark_study",
+				title:
+					"Time course of tolerance to adverse effects associated with the ingestion of a moderate dose of caffeine",
+				publisher: "European Journal of Nutrition",
+				year: 2020,
+				url:
+					"https://consensus.app/papers/time-course-of-tolerance-to-adverse-effects-associated-ruz-moreno-lara/d48334d2f2fc51feaab7d7d73024d2d0/",
+				doi: "10.1007/s00394-019-02167-2",
+				pmid: "31900579",
+				stance: "supports",
+				note:
+					"Small 20-day crossover trial finding the blood-pressure effect attenuated after 8 days while nervousness, vigor, irritability, insomnia, gastrointestinal complaints, and diuresis did not uniformly disappear.",
+				order: 5
+			},
+			{
+				kind: "landmark_study",
+				title: "Faster but not smarter: effects of caffeine and caffeine withdrawal on alertness and performance",
+				publisher: "Psychopharmacology",
+				year: 2013,
+				url:
+					"https://consensus.app/papers/faster-but-not-smarter-effects-of-caffeine-and-caffeine-rogers-heatherley/3f090abb5e845eefbff7c006efabd93e/",
+				doi: "10.1007/s00213-012-2889-4",
+				pmid: "23108937",
+				stance: "debate",
+				note:
+					"Controlled study of 369 consumers supporting withdrawal reversal and tolerance for mental alertness while still finding reduced sleepiness and improved physical-speed measures.",
+				order: 6
+			},
+			{
+				kind: "context",
+				title: "A review of caffeine's effects on cognitive, physical and occupational performance",
+				publisher: "Neuroscience & Biobehavioral Reviews",
+				year: 2016,
+				url:
+					"https://consensus.app/papers/a-review-of-caffeines-effects-on-cognitive-physical-and-mclellan-caldwell/7cdfdc2e6e17535b81ab4340634de0f4/",
+				doi: "10.1016/j.neubiorev.2016.09.001",
+				pmid: "27612937",
+				stance: "context",
+				note:
+					"Broad performance review supporting reliable acute effects on alertness, vigilance, attention, and reaction time, with less consistent effects on memory and higher-order executive function.",
+				order: 7
+			},
+			{
+				kind: "consensus_statement",
+				title: "Caffeine",
+				publisher: "European Food Safety Authority",
+				year: 2026,
+				url: "https://www.efsa.europa.eu/en/topics/topic/caffeine",
+				stance: "context",
+				note:
+					"Current safety context: up to 400 mg per day does not raise safety concerns for most healthy adults, but even 100 mg may affect sleep in some people and pregnancy has a lower 200 mg daily boundary.",
+				order: 8
+			},
+			{
+				kind: "guideline",
+				title: "Spilling the Beans: How Much Caffeine is Too Much?",
+				publisher: "U.S. Food and Drug Administration",
+				year: 2026,
+				url: "https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much",
+				stance: "context",
+				note:
+					"Current public-health guidance on the 400 mg adult safety context, wide individual sensitivity, sleep and anxiety effects, concentrated-caffeine danger, and gradual reduction to limit withdrawal.",
+				order: 9
+			}
+		]
 	}
 ];
 

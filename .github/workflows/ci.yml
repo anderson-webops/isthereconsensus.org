@@ -19,24 +19,24 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Guard header appearance controls
+      - name: Guard footer appearance controls
         run: |
           set -euo pipefail
 
-          grep -R --fixed-strings --line-number 'class="site-header__controls" aria-label="Appearance controls"' \
+          grep -R --fixed-strings --line-number 'class="site-footer__appearance" aria-label="Appearance controls"' \
             front-end/src/layouts/default.vue \
             front-end/src/layouts/home.vue
 
-          ! grep -R --fixed-strings --line-number 'class="site-footer__appearance" aria-label="Appearance controls"' \
+          ! grep -R --fixed-strings --line-number 'class="site-header__controls" aria-label="Appearance controls"' \
             front-end/src/layouts/default.vue \
             front-end/src/layouts/home.vue
 
-          ! grep -R -E --line-number 'palette footer regression|keeps the palette switcher next to the compact color-mode toggle in the footer' \
-            front-end/test/palette-header-regression.test.ts \
+          ! grep -R -E --line-number 'palette header regression|keeps the palette switcher next to the compact color-mode toggle in the header' \
+            front-end/test/palette-footer-regression.test.ts \
             front-end/test/theme-controls.test.ts
 
-          grep -R -E --line-number 'palette header regression|keeps the palette switcher next to the compact color-mode toggle in the header' \
-            front-end/test/palette-header-regression.test.ts \
+          grep -R -E --line-number 'palette footer regression|keeps the palette switcher next to the compact color-mode toggle in the footer' \
+            front-end/test/palette-footer-regression.test.ts \
             front-end/test/theme-controls.test.ts
 
   lint:
