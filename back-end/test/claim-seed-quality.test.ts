@@ -619,6 +619,41 @@ describe("default claim seed quality", () => {
 		assert.doesNotMatch(visibleSummary, /replaces vaccination/i);
 	});
 
+	it("keeps the caffeine tolerance claim outcome-specific and withdrawal-aware", () => {
+		const slug = "does-caffeine-become-less-effective-with-regular-daily-use";
+		const claim = defaultClaims.find(entry => entry.slug === slug);
+		assert.ok(claim, "Missing caffeine tolerance claim seed");
+
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			claim.uncertaintySummary,
+			...claim.stableCore,
+			...claim.openQuestions,
+			...claim.misconceptions,
+			...claim.exclusionRules,
+			...claim.evidenceSummaries.flatMap(summary => [summary.finding, summary.magnitude, ...summary.limitations]),
+			...claim.sources.map(source => source.note)
+		].join(" ");
+
+		assert.equal(claim.consensusBand, "broad");
+		assert.equal(claim.evidenceCertainty, "moderate");
+		assert.match(claim.bottomLine, /^Partly\./);
+		assert.ok(claim.bottomLine.length <= 450, "Caffeine tolerance bottom line should stay scannable");
+		assert.match(visibleSummary, /partial, effect-specific tolerance/i);
+		assert.match(visibleSummary, /withdrawal reversal/i);
+		assert.match(visibleSummary, /60 (?:exercise )?studies/i);
+		assert.match(visibleSummary, /SMD 0\.25, 95% CI 0\.20 to 0\.30/);
+		assert.match(visibleSummary, /11-person 20-day trial|11 active adults/);
+		assert.match(visibleSummary, /12 to 24 hours/);
+		assert.match(visibleSummary, /2 to 9 days/);
+		assert.match(visibleSummary, /does not automatically erase exercise benefits/i);
+		assert.match(visibleSummary, /does not mean caffeine has stopped affecting sleep/i);
+		assert.match(visibleSummary, /taking ever-larger doses is not a proven solution/i);
+		assert.doesNotMatch(visibleSummary, /complete tolerance develops/i);
+		assert.doesNotMatch(visibleSummary, /habitual users get no benefit/i);
+	});
+
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
 		const titlePath = ClaimSource.schema.path("title") as { options: { maxlength?: number } };
 		assert.equal(titlePath.options.maxlength, CLAIM_SOURCE_TITLE_MAX_LENGTH);

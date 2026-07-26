@@ -7,6 +7,7 @@ import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/co
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
+import { claimReviewTimestamp, selectRecentClaims } from "~/utils/recent-claims";
 
 definePageMeta({
 	layout: "home"
@@ -103,22 +104,15 @@ const searchAnalysis = computed(() => analyzeAskQuery(searchQuery.value));
 const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
 const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
 const explainerSuggestions = computed(() => matchExplainers(searchQuery.value).slice(0, 2));
-const featuredClaims = computed(() => {
-	const seen = new Set<string>();
-	return enrichedTopics.value
-		.flatMap((topic) =>
-			(topic.featuredClaims ?? []).map((claim) => ({
-				...claim,
-				topic
-			}))
-		)
-		.filter((claim) => {
-			if (seen.has(claim._id)) return false;
-			seen.add(claim._id);
-			return true;
-		})
-		.slice(0, 5);
-});
+const recentClaimCandidates = computed(() =>
+	enrichedTopics.value.flatMap((topic) =>
+		(topic.featuredClaims ?? []).map((claim) => ({
+			...claim,
+			topic
+		}))
+	)
+);
+const recentlyReviewedClaims = computed(() => selectRecentClaims(recentClaimCandidates.value, 5));
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
 const totalTopicCount = computed(() => enrichedTopics.value.length);
 const topicsWithReviewedClaimsCount = computed(
@@ -280,6 +274,17 @@ function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
 
+function formatClaimReviewLabel(claim: ClaimSummary) {
+	const timestamp = claimReviewTimestamp(claim);
+	if (!timestamp) return "";
+	const formattedDate = new Intl.DateTimeFormat("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric"
+	}).format(new Date(timestamp));
+	return `Reviewed ${formattedDate}`;
+}
+
 function formatTopicUpdateLabel(value?: string) {
 	if (!value) return "Update pending";
 	const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -389,18 +394,18 @@ function formatTopicUpdateLabel(value?: string) {
 			</div>
 		</section>
 
-		<section v-if="featuredClaims.length" class="home-section">
+		<section v-if="recentlyReviewedClaims.length" class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Featured reviews</p>
-					<h2>Start with a reviewed claim</h2>
+					<p class="eyebrow">Recently reviewed</p>
+					<h2>New and refreshed claim reviews</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
 			</div>
 
 			<div class="claim-list">
 				<NuxtLink
-					v-for="claim in featuredClaims"
+					v-for="claim in recentlyReviewedClaims"
 					:key="claim._id"
 					class="claim-row"
 					:to="`/consensus/${claim.topic.slug}/${claim.slug}`"
@@ -411,6 +416,7 @@ function formatTopicUpdateLabel(value?: string) {
 							<span>{{ claimSupportLabel(claim) }}</span>
 							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
+							<span v-if="formatClaimReviewLabel(claim)">{{ formatClaimReviewLabel(claim) }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__summary" :title="claimCardSummary(claim)">

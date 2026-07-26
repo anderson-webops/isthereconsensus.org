@@ -30,16 +30,6 @@ useStaticPageMeta({
 					<h2>{{ explainer.title }}</h2>
 				</div>
 				<p>{{ explainer.summary }}</p>
-				<section class="explainer-card__section">
-					<h3>Why it matters</h3>
-					<p>{{ explainer.whyItMatters }}</p>
-				</section>
-				<details class="explainer-card__details">
-					<summary>Key points</summary>
-					<ul>
-						<li v-for="point in explainer.keyPoints" :key="point">{{ point }}</li>
-					</ul>
-				</details>
 				<div class="explainer-card__actions">
 					<span class="explainer-card__meta">
 						{{ explainer.relatedMisconceptions.length }} linked module{{
@@ -48,6 +38,13 @@ useStaticPageMeta({
 					</span>
 					<NuxtLink class="text-link" :to="`/explainers/${explainer.slug}`">Open explainer</NuxtLink>
 				</div>
+				<details class="explainer-card__details">
+					<summary>Why it matters and key points</summary>
+					<p>{{ explainer.whyItMatters }}</p>
+					<ul>
+						<li v-for="point in explainer.keyPoints" :key="point">{{ point }}</li>
+					</ul>
+				</details>
 			</article>
 		</section>
 
@@ -133,7 +130,6 @@ useStaticPageMeta({
 	align-content: start;
 }
 
-.explainer-card__section,
 .explainer-card__details {
 	display: grid;
 	gap: 8px;
@@ -141,12 +137,11 @@ useStaticPageMeta({
 }
 
 .explainer-card h2,
-.explainer-card h3,
 .explainer-card__details summary {
 	line-height: 1.2;
 }
 
-.explainer-card__section p,
+.explainer-card__details p,
 .explainer-card__details ul {
 	margin: 0;
 }

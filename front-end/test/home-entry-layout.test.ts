@@ -39,4 +39,13 @@ describe("home entry layout", () => {
 		assert.match(source, /ready to browse/);
 		assert.match(source, /with live reviews/);
 	});
+
+	it("shows genuinely recent claim reviews across multiple topics", () => {
+		assert.match(source, /const recentClaimCandidates = computed/);
+		assert.match(source, /selectRecentClaims\(recentClaimCandidates\.value, 5\)/);
+		assert.match(source, /<p class="eyebrow">Recently reviewed<\/p>/);
+		assert.match(source, /<h2>New and refreshed claim reviews<\/h2>/);
+		assert.match(source, /formatClaimReviewLabel\(claim\)/);
+		assert.match(source, /return `Reviewed \$\{formattedDate\}`/);
+	});
 });

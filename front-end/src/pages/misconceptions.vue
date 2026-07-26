@@ -43,19 +43,6 @@ useStaticPageMeta({
 			</p>
 		</header>
 
-		<section class="misconception-panel misconception-panel--soft">
-			<div class="section-heading section-heading--tight">
-				<h2>How the library fits</h2>
-				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
-			</div>
-			<ul class="plain-list">
-				<li>The short correction helps when the same misunderstanding keeps returning.</li>
-				<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
-				<li>One linked explainer gives readers the method behind the correction.</li>
-				<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
-			</ul>
-		</section>
-
 		<section class="misconception-grid">
 			<article v-for="item in misconceptionModules" :key="item.slug" class="misconception-card">
 				<div>
@@ -80,22 +67,35 @@ useStaticPageMeta({
 							<h3>Why it persists</h3>
 							<p>{{ item.whyItPersists }}</p>
 						</section>
+						<section class="misconception-card__section misconception-card__section--links">
+							<h3>Related explainers</h3>
+							<div class="chip-row">
+								<NuxtLink
+									v-for="slug in item.relatedExplainers"
+									:key="slug"
+									class="chip"
+									:to="`/explainers/${slug}`"
+								>
+									{{ explainerTitle(slug) }}
+								</NuxtLink>
+							</div>
+						</section>
 					</div>
 				</details>
-				<section class="misconception-card__section misconception-card__section--links">
-					<h3>Related explainers</h3>
-					<div class="chip-row">
-						<NuxtLink
-							v-for="slug in item.relatedExplainers"
-							:key="slug"
-							class="chip"
-							:to="`/explainers/${slug}`"
-						>
-							{{ explainerTitle(slug) }}
-						</NuxtLink>
-					</div>
-				</section>
 			</article>
+		</section>
+
+		<section class="misconception-panel misconception-panel--soft">
+			<div class="section-heading section-heading--tight">
+				<h2>How the library fits</h2>
+				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
+			</div>
+			<ul class="plain-list">
+				<li>The short correction helps when the same misunderstanding keeps returning.</li>
+				<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
+				<li>One linked explainer gives readers the method behind the correction.</li>
+				<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
+			</ul>
 		</section>
 
 		<section class="misconception-panel">

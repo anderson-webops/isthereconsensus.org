@@ -59,6 +59,9 @@ describe("source standards", () => {
 
 	it("keeps the reference framing readable for first-time visitors", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
+		const topicNotesIndex = source.indexOf('<section class="topic-standards-section">');
+		const crossCuttingIndex = source.indexOf('<section class="panel panel--soft">');
+		const usageIndex = source.indexOf('<section class="panel">');
 
 		assert.match(source, /How source stacks change by topic\./);
 		assert.match(source, /why a reviewed claim may weigh guidelines, assessments, datasets, syntheses/);
@@ -66,6 +69,11 @@ describe("source standards", () => {
 		assert.match(source, /For the public version, start with How Reviews Work\./);
 		assert.doesNotMatch(source, /This reference supports source-stack review/);
 		assert.doesNotMatch(source, /Start with the main public trust page/);
+		assert.notEqual(topicNotesIndex, -1);
+		assert.notEqual(crossCuttingIndex, -1);
+		assert.notEqual(usageIndex, -1);
+		assert.ok(topicNotesIndex < crossCuttingIndex);
+		assert.ok(crossCuttingIndex < usageIndex);
 	});
 
 	it("keeps source hierarchy tiers visually separated for scanning", () => {
