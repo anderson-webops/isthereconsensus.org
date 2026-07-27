@@ -1504,6 +1504,117 @@ async function main() {
 		}
 	});
 
+	api.get("/claims", async (req, res) => {
+		try {
+			const query = normalizeText(req.query.q, 160).toLowerCase();
+			const topicSlug = normalizeText(req.query.topic, 80);
+			const requestedBand = normalizeText(req.query.consensusBand, 24);
+			const consensusBand = ["strong", "broad", "mixed", "unclear"].includes(requestedBand)
+				? (requestedBand as ClaimConsensusBand)
+				: "";
+			const page = normalizeInteger(req.query.page, 1, 10_000, 1);
+			const pageSize = normalizeInteger(req.query.limit, 1, 500, 24);
+
+			const filter: QueryFilter<IClaim> = { status: "published" };
+			if (consensusBand) filter.consensusBand = consensusBand;
+			if (topicSlug) {
+				const topic = await Topic.findOne({ slug: topicSlug }).select("_id").lean();
+				if (!topic) return res.status(404).json({ error: "Topic not found." });
+				filter.topic = topic._id;
+			}
+
+			const claims = await Claim.find(filter).populate("topic").lean();
+			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
+			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
+			const rankedClaims = publicReadyClaims
+				.map((claim) => {
+					const topic = claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
+						? claim.topic
+						: null;
+					const haystack = [
+						claim.title,
+						claim.bottomLine,
+						claim.editorSummary,
+						...(claim.misconceptions || []),
+						...(claim.misconceptionTags || []),
+						topic?.title ?? "",
+						topic?.description ?? ""
+					]
+						.join(" ")
+						.trim();
+
+					return {
+						claim,
+						match: query
+							? analyzeMatch(query, haystack)
+							: {
+									matchReason: "",
+									matchScore: 0
+								},
+						topic
+					};
+				})
+				.filter(entry => !query || entry.match.matchScore > 0)
+				.sort((left, right) => {
+					if (query && left.match.matchScore !== right.match.matchScore) {
+						return right.match.matchScore - left.match.matchScore;
+					}
+					return (
+						(left.topic?.title ?? "").localeCompare(right.topic?.title ?? "")
+						|| left.claim.title.localeCompare(right.claim.title)
+					);
+				});
+
+			const total = rankedClaims.length;
+			const totalPages = Math.max(Math.ceil(total / pageSize), 1);
+			const boundedPage = Math.min(page, totalPages);
+			const start = (boundedPage - 1) * pageSize;
+			const claimsPage = rankedClaims.slice(start, start + pageSize).map(({ claim, match, topic }) => ({
+				_id: claim._id,
+				title: claim.title,
+				slug: claim.slug,
+				status: claim.status,
+				consensusBand: claim.consensusBand,
+				agreementLevel: claim.agreementLevel,
+				evidenceCertainty: claim.evidenceCertainty,
+				confidenceScore: claim.confidenceScore,
+				reviewMode: claim.reviewMode,
+				bottomLine: claim.bottomLine,
+				sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
+				searchCutoffAt: claim.searchCutoffAt,
+				lastReviewedAt: claim.lastReviewedAt,
+				publishedAt: claim.publishedAt,
+				lastRetractionCheckAt: claim.lastRetractionCheckAt,
+				matchReason: match.matchReason || undefined,
+				matchScore: query ? match.matchScore : undefined,
+				topic: topic
+					? {
+							_id: topic._id,
+							title: topic.title,
+							slug: topic.slug,
+							description: topic.description,
+							accent: topic.accent
+						}
+					: null
+			}));
+
+			return res.json({
+				claims: claimsPage,
+				pagination: {
+					page: boundedPage,
+					pageSize,
+					total,
+					totalPages,
+					hasMore: boundedPage < totalPages
+				}
+			});
+		}
+		catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: "Failed to load claims." });
+		}
+	});
+
 	api.get("/topics/:topicSlug/claims/:claimSlug", async (req, res) => {
 		try {
 			const topic = await findTopicOr404(res, req.params.topicSlug);

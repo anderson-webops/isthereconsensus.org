@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { Topic, TopicResponse } from "~/types/board";
+import type { ClaimConsensusBand, ClaimsResponse, Topic, TopicResponse } from "~/types/board";
 import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
+import { interleaveClaimsByTopic } from "~/utils/claim-directory";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 
@@ -14,16 +15,22 @@ const { apiUrl } = useApi();
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
+const { data: claimsData, status: claimsStatus } = await useAsyncData("claim-directory", () =>
+	$fetch<ClaimsResponse>(apiUrl("/claims?limit=500"))
+);
 
 const search = ref(typeof route.query.q === "string" ? route.query.q : "");
-const filter = ref<"all" | "settled" | "debated" | "exploratory">("all");
+const claimBand = ref<"all" | ClaimConsensusBand>("all");
+const claimsPageSize = 12;
+const visibleClaimCount = ref(claimsPageSize);
 
 const starterOrder = [
 	"climate-and-environment",
 	"health-and-medicine",
 	"biology-and-evolution",
 	"nutrition-and-diet",
-	"neuroscience-and-psychology"
+	"neuroscience-and-psychology",
+	"genetics-and-biotechnology"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const fallbackTopics = computed<Topic[]>(() =>
@@ -70,6 +77,9 @@ const enrichedTopics = computed(() =>
 			return leftRank - rightRank || left.title.localeCompare(right.title);
 		})
 );
+
+const claims = computed(() => interleaveClaimsByTopic(claimsData.value?.claims ?? [], starterOrder));
+
 const directoryStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "CollectionPage",
@@ -149,25 +159,29 @@ watch(search, (value) => {
 	});
 });
 
-function matchesFilter(score: number) {
-	if (filter.value === "settled") return score >= 75;
-	if (filter.value === "debated") return score >= 45 && score < 75;
-	if (filter.value === "exploratory") return score < 45;
-	return true;
-}
-
 const query = computed(() => search.value.trim().toLowerCase());
 const filteredTopics = computed(() =>
 	enrichedTopics.value.filter((topic) => {
-		const haystack = [topic.title, topic.description, topic.guide.snapshot, topic.guide.consensusLabel]
+		const topicClaimText = claims.value
+			.filter((claim) => claim.topic?.slug === topic.slug)
+			.flatMap((claim) => [claim.title, claim.bottomLine]);
+		const haystack = [
+			topic.title,
+			topic.description,
+			topic.guide.snapshot,
+			topic.guide.consensusLabel,
+			...topicClaimText
+		]
 			.join(" ")
 			.toLowerCase();
-		return matchesFilter(topic.guide.consensusScore) && (!query.value || haystack.includes(query.value));
+		return !query.value || haystack.includes(query.value);
 	})
 );
 const totalTopicCount = computed(() => enrichedTopics.value.length);
-const totalReviewedClaimCount = computed(() =>
-	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
+const totalReviewedClaimCount = computed(
+	() =>
+		claimsData.value?.pagination?.total ??
+		enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
 );
 const topicsWithReviewedClaimsCount = computed(
 	() => enrichedTopics.value.filter((topic) => (topic.claimCount ?? 0) > 0).length
@@ -181,19 +195,25 @@ const coverageLeaders = computed(() =>
 		)
 		.slice(0, 3)
 );
-const filteredReviewedClaimCount = computed(() =>
-	filteredTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
+const filteredClaims = computed(() =>
+	claims.value.filter((claim) => {
+		const matchesBand = claimBand.value === "all" || claim.consensusBand === claimBand.value;
+		const haystack = [claim.title, claim.bottomLine, claim.topic?.title ?? "", claim.topic?.description ?? ""]
+			.join(" ")
+			.toLowerCase();
+		return matchesBand && (!query.value || haystack.includes(query.value));
+	})
 );
+const visibleClaims = computed(() => filteredClaims.value.slice(0, visibleClaimCount.value));
+const remainingClaimCount = computed(() => Math.max(filteredClaims.value.length - visibleClaims.value.length, 0));
+const hasActiveDirectoryFilter = computed(() => Boolean(query.value) || claimBand.value !== "all");
 const resultsCountLabel = computed(() => {
-	const topicLabel =
-		filteredTopics.value.length === totalTopicCount.value
-			? formatCountLabel(totalTopicCount.value, "topic")
-			: `${filteredTopics.value.length} of ${formatCountLabel(totalTopicCount.value, "topic")}`;
-	const claimLabel =
-		filteredTopics.value.length === totalTopicCount.value
-			? `${formatCountLabel(totalReviewedClaimCount.value, "claim review")} available`
-			: `${formatCountLabel(filteredReviewedClaimCount.value, "claim review")} shown`;
-	return `${topicLabel}, ${claimLabel}`;
+	const reviewLabel = formatCountLabel(
+		filteredClaims.value.length,
+		hasActiveDirectoryFilter.value ? "matching review" : "review"
+	);
+	const topicLabel = formatCountLabel(filteredTopics.value.length, query.value ? "matching topic" : "topic");
+	return `${reviewLabel}, ${topicLabel}`;
 });
 
 function formatTopicClaimCount(topic: Topic) {
@@ -205,10 +225,30 @@ function topicDirectoryDescription(topic: Topic & { guide: ReturnType<typeof get
 	return topic.description || topic.guide.snapshot;
 }
 
-function showAllTopics() {
-	search.value = "";
-	filter.value = "all";
+function formatClaimBand(band: ClaimConsensusBand) {
+	if (band === "strong") return "Strong consensus";
+	if (band === "broad") return "Broad consensus";
+	if (band === "mixed") return "Mixed evidence";
+	return "Still unclear";
 }
+
+function formatEvidenceCertainty(value?: string) {
+	if (!value) return "Certainty under review";
+	return `${formatSlugTitle(value)} certainty`;
+}
+
+function showMoreClaims() {
+	visibleClaimCount.value += claimsPageSize;
+}
+
+function clearDirectoryFilters() {
+	search.value = "";
+	claimBand.value = "all";
+}
+
+watch([query, claimBand], () => {
+	visibleClaimCount.value = claimsPageSize;
+});
 </script>
 
 <template>
@@ -218,7 +258,7 @@ function showAllTopics() {
 		<header class="directory__header">
 			<p class="eyebrow">Browse topics</p>
 			<h1>Browse topics. Open a reviewed claim.</h1>
-			<p>Search and filter topics, then open the reviewed claim closest to your question.</p>
+			<p>Search the reviewed claim library, or browse every topic by subject.</p>
 		</header>
 
 		<section class="directory__snapshot" aria-label="Library snapshot">
@@ -228,7 +268,7 @@ function showAllTopics() {
 			</div>
 			<div class="directory__stat">
 				<strong>{{ formatCountLabel(totalTopicCount, "topic") }}</strong>
-				<span>browseable clusters</span>
+				<span>topic areas</span>
 			</div>
 			<div class="directory__stat">
 				<strong>{{ formatCountLabel(topicsWithReviewedClaimsCount, "active topic") }}</strong>
@@ -242,70 +282,150 @@ function showAllTopics() {
 			</p>
 		</section>
 
-		<section class="directory__controls">
+		<section class="directory__controls" aria-label="Search and filter reviewed claims">
 			<div class="results-search">
-				<label class="results-search__label" for="directory-search">Search topics</label>
-				<input id="directory-search" v-model="search" type="text" placeholder="Search topic or keyword" />
+				<label class="results-search__label" for="directory-search">Search topics and reviewed claims</label>
+				<input
+					id="directory-search"
+					v-model="search"
+					type="search"
+					placeholder="Try caffeine, vaccines, climate, sleep..."
+				/>
 			</div>
-			<p class="results-count">{{ resultsCountLabel }}</p>
-			<div class="filter-stack">
-				<button class="filter" :class="{ active: filter === 'all' }" @click="filter = 'all'">All topics</button>
-				<button class="filter" :class="{ active: filter === 'settled' }" @click="filter = 'settled'">
-					Strong consensus
+			<p class="results-count" aria-live="polite">{{ resultsCountLabel }}</p>
+			<div class="filter-stack" aria-label="Filter reviewed claims by consensus">
+				<button class="filter" :class="{ active: claimBand === 'all' }" @click="claimBand = 'all'">
+					All reviews
 				</button>
-				<button class="filter" :class="{ active: filter === 'debated' }" @click="filter = 'debated'">
-					Active debate
+				<button class="filter" :class="{ active: claimBand === 'strong' }" @click="claimBand = 'strong'">
+					Strong
 				</button>
-				<button class="filter" :class="{ active: filter === 'exploratory' }" @click="filter = 'exploratory'">
-					Exploratory
+				<button class="filter" :class="{ active: claimBand === 'broad' }" @click="claimBand = 'broad'">
+					Broad
+				</button>
+				<button class="filter" :class="{ active: claimBand === 'mixed' }" @click="claimBand = 'mixed'">
+					Mixed
+				</button>
+				<button class="filter" :class="{ active: claimBand === 'unclear' }" @click="claimBand = 'unclear'">
+					Still unclear
 				</button>
 			</div>
 		</section>
 
-		<section class="results-block">
-			<div class="section-heading section-heading--tight">
-				<h2>Topic directory</h2>
-				<p>Each topic page leads with reviewed claims, not general discussion.</p>
+		<section id="reviewed-claims" class="results-block claim-directory">
+			<div class="section-heading claim-directory__heading">
+				<div>
+					<p class="eyebrow">Every public review</p>
+					<h2>Reviewed claim directory</h2>
+				</div>
+				<p>
+					Browse {{ formatCountLabel(totalReviewedClaimCount, "claim") }} directly. Each review shows its
+					bottom line, uncertainty, and source trail.
+				</p>
 			</div>
 
-			<div v-if="!filteredTopics.length" class="empty-state">
-				<p>No topics match that search yet.</p>
-				<button class="empty-state__action" type="button" @click="showAllTopics">
-					Show all {{ formatCountLabel(totalTopicCount, "topic") }}
+			<div v-if="claimsStatus === 'pending'" class="empty-state" aria-live="polite">
+				<p>Loading reviewed claims…</p>
+			</div>
+			<div v-else-if="!filteredClaims.length" class="empty-state">
+				<p>No reviewed claims match that search and evidence filter.</p>
+				<button class="empty-state__action" type="button" @click="clearDirectoryFilters">
+					Show all claim reviews
 				</button>
 			</div>
-			<div v-else class="topic-list">
-				<article v-for="topic in filteredTopics" :key="topic.slug" class="topic-row">
-					<div class="topic-row__main">
-						<h3>{{ topic.title }}</h3>
-						<p class="topic-row__description" :title="topicDirectoryDescription(topic)">
-							{{ topicDirectoryDescription(topic) }}
-						</p>
-						<div class="topic-row__meta">
-							<span>{{ topic.guide.consensusLabel }}</span>
-							<span>{{ formatTopicClaimCount(topic) }}</span>
-							<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
-						</div>
-						<details v-if="topic.featuredClaims?.length" class="topic-row__claims">
-							<summary>Start with reviewed claims</summary>
-							<div class="topic-row__claims-list">
-								<NuxtLink
-									v-for="claim in topic.featuredClaims.slice(0, 2)"
-									:key="claim._id"
-									:to="`/consensus/${topic.slug}/${claim.slug}`"
-								>
-									{{ claim.title }}
-								</NuxtLink>
-							</div>
-						</details>
+			<div v-else class="claim-grid">
+				<article
+					v-for="claim in visibleClaims"
+					:key="claim._id"
+					class="claim-card"
+					:data-consensus-band="claim.consensusBand"
+				>
+					<div class="claim-card__meta">
+						<NuxtLink v-if="claim.topic" :to="`/consensus/${claim.topic.slug}`">
+							{{ claim.topic.title }}
+						</NuxtLink>
+						<span>{{ formatClaimBand(claim.consensusBand) }}</span>
 					</div>
-					<div class="topic-row__side">
-						<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
-						<NuxtLink class="topic-row__open" :to="`/consensus/${topic.slug}`">Open topic</NuxtLink>
+					<h3>
+						<NuxtLink :to="`/consensus/${claim.topic?.slug ?? 'other-questions'}/${claim.slug}`">
+							{{ claim.title }}
+						</NuxtLink>
+					</h3>
+					<p>{{ claim.bottomLine }}</p>
+					<div class="claim-card__footer">
+						<span>{{ formatCountLabel(claim.sourceCount ?? 0, "source") }}</span>
+						<span>{{ formatEvidenceCertainty(claim.evidenceCertainty) }}</span>
+						<NuxtLink
+							class="claim-card__open"
+							:to="`/consensus/${claim.topic?.slug ?? 'other-questions'}/${claim.slug}`"
+						>
+							Open review
+						</NuxtLink>
 					</div>
 				</article>
 			</div>
+
+			<div v-if="remainingClaimCount" class="claim-directory__more">
+				<button class="empty-state__action" type="button" @click="showMoreClaims">
+					Show {{ Math.min(remainingClaimCount, claimsPageSize) }} more
+				</button>
+				<span>{{ formatCountLabel(remainingClaimCount, "review") }} remaining</span>
+			</div>
 		</section>
+
+		<details id="topic-directory" class="results-block topic-directory">
+			<summary class="topic-directory__summary">
+				<div>
+					<p class="eyebrow">Browse by subject</p>
+					<h2>Browse all {{ formatCountLabel(totalTopicCount, "topic") }}</h2>
+				</div>
+				<span>
+					{{ query ? formatCountLabel(filteredTopics.length, "matching topic") : "Open topic directory" }}
+				</span>
+			</summary>
+
+			<div class="topic-directory__body">
+				<p>Each topic page leads with reviewed claims, not general discussion.</p>
+
+				<div v-if="!filteredTopics.length" class="empty-state">
+					<p>No topics match that search yet.</p>
+					<button class="empty-state__action" type="button" @click="clearDirectoryFilters">
+						Show all {{ formatCountLabel(totalTopicCount, "topic") }}
+					</button>
+				</div>
+				<div v-else class="topic-list">
+					<article v-for="topic in filteredTopics" :key="topic.slug" class="topic-row">
+						<div class="topic-row__main">
+							<h3>{{ topic.title }}</h3>
+							<p class="topic-row__description" :title="topicDirectoryDescription(topic)">
+								{{ topicDirectoryDescription(topic) }}
+							</p>
+							<div class="topic-row__meta">
+								<span>{{ topic.guide.consensusLabel }}</span>
+								<span>{{ formatTopicClaimCount(topic) }}</span>
+								<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
+							</div>
+							<details v-if="topic.featuredClaims?.length" class="topic-row__claims">
+								<summary>Start with reviewed claims</summary>
+								<div class="topic-row__claims-list">
+									<NuxtLink
+										v-for="claim in topic.featuredClaims.slice(0, 2)"
+										:key="claim._id"
+										:to="`/consensus/${topic.slug}/${claim.slug}`"
+									>
+										{{ claim.title }}
+									</NuxtLink>
+								</div>
+							</details>
+						</div>
+						<div class="topic-row__side">
+							<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
+							<NuxtLink class="topic-row__open" :to="`/consensus/${topic.slug}`">Open topic</NuxtLink>
+						</div>
+					</article>
+				</div>
+			</div>
+		</details>
 	</div>
 </template>
 
@@ -317,7 +437,9 @@ function showAllTopics() {
 
 .directory__header h1,
 .section-heading h2,
-.topic-row h3 {
+.topic-directory__summary h2,
+.topic-row h3,
+.claim-card h3 {
 	font-family: "Fraunces", serif;
 }
 
@@ -593,6 +715,194 @@ function showAllTopics() {
 	justify-items: end;
 }
 
+.results-block.topic-directory {
+	overflow: hidden;
+	padding: 0;
+}
+
+.topic-directory__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: 14px;
+	padding: 18px;
+	list-style: none;
+	cursor: pointer;
+}
+
+.topic-directory__summary::-webkit-details-marker {
+	display: none;
+}
+
+.topic-directory__summary > div {
+	display: grid;
+	gap: 6px;
+}
+
+.topic-directory__summary h2,
+.topic-directory__summary p {
+	margin: 0;
+}
+
+.topic-directory__summary .eyebrow,
+.topic-directory__summary > span,
+.topic-directory__body > p {
+	color: var(--consensus-muted);
+}
+
+.topic-directory__summary > span {
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.topic-directory__summary::after {
+	display: grid;
+	width: 30px;
+	height: 30px;
+	place-items: center;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	color: var(--consensus-ink);
+	content: "+";
+}
+
+.topic-directory[open] .topic-directory__summary::after {
+	content: "−";
+}
+
+.topic-directory__body {
+	display: grid;
+	gap: 14px;
+	padding: 18px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.topic-directory__body > p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.claim-directory {
+	display: grid;
+	gap: 16px;
+}
+
+.claim-directory__heading {
+	display: grid;
+	grid-template-columns: minmax(0, 0.8fr) minmax(280px, 1.2fr);
+	align-items: end;
+	gap: 16px;
+	margin-bottom: 0;
+}
+
+.claim-directory__heading > div {
+	display: grid;
+	gap: 6px;
+}
+
+.claim-directory__heading .eyebrow {
+	color: var(--consensus-muted);
+	margin: 0;
+}
+
+.claim-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.claim-card {
+	display: grid;
+	align-content: start;
+	gap: 12px;
+	min-width: 0;
+	padding: 18px;
+	border: 1px solid var(--consensus-soft-line);
+	border-left: 4px solid var(--consensus-ember);
+	border-radius: 16px;
+	background: var(--consensus-field-surface);
+}
+
+.claim-card[data-consensus-band="broad"] {
+	border-left-color: color-mix(in srgb, var(--consensus-ember) 72%, var(--consensus-ink));
+}
+
+.claim-card[data-consensus-band="mixed"] {
+	border-left-color: color-mix(in srgb, var(--consensus-muted) 75%, var(--consensus-ember));
+}
+
+.claim-card[data-consensus-band="unclear"] {
+	border-left-color: var(--consensus-muted);
+}
+
+.claim-card__meta,
+.claim-card__footer {
+	display: flex;
+	align-items: center;
+	gap: 8px 12px;
+	flex-wrap: wrap;
+	color: var(--consensus-muted);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.claim-card__meta {
+	justify-content: space-between;
+}
+
+.claim-card__meta a,
+.claim-card h3 a,
+.claim-card__open {
+	color: inherit;
+	text-decoration: none;
+}
+
+.claim-card__meta a:hover,
+.claim-card h3 a:hover,
+.claim-card__open:hover {
+	color: var(--consensus-ember);
+}
+
+.claim-card h3 {
+	margin: 0;
+	font-size: clamp(1.1rem, 2vw, 1.35rem);
+	line-height: 1.25;
+}
+
+.claim-card > p {
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+}
+
+.claim-card__footer {
+	align-self: end;
+	padding-top: 2px;
+	border-top: 1px solid var(--consensus-soft-line);
+	letter-spacing: 0.03em;
+	text-transform: none;
+}
+
+.claim-card__open {
+	margin-left: auto;
+	color: var(--consensus-ink);
+}
+
+.claim-directory__more {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+}
+
 @media (max-width: 760px) {
 	.directory {
 		gap: 18px;
@@ -693,6 +1003,46 @@ function showAllTopics() {
 
 	.topic-row__side :deep(.meter__meta span) {
 		display: none;
+	}
+
+	.claim-directory__heading {
+		grid-template-columns: 1fr;
+		align-items: start;
+		gap: 8px;
+	}
+
+	.topic-directory__summary {
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 10px;
+		padding: 14px;
+	}
+
+	.topic-directory__summary > span {
+		display: none;
+	}
+
+	.topic-directory__body {
+		padding: 14px;
+	}
+
+	.claim-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.claim-card {
+		gap: 10px;
+		padding: 14px;
+		border-radius: 14px;
+	}
+
+	.claim-card > p {
+		-webkit-line-clamp: 5;
+	}
+
+	.claim-directory__more {
+		align-items: stretch;
+		flex-direction: column;
+		text-align: center;
 	}
 
 	.empty-state__action {

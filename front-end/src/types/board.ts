@@ -381,6 +381,13 @@ export interface SingleTopicResponse {
 
 export interface ClaimsResponse {
 	claims: ClaimSummary[];
+	pagination?: {
+		page: number;
+		pageSize: number;
+		total: number;
+		totalPages: number;
+		hasMore: boolean;
+	};
 }
 
 export interface ClaimResponse {
