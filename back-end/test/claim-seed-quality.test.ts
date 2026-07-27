@@ -20,6 +20,39 @@ const launchSensitiveClaimSlugs = [
 	"is-nuclear-power-more-dangerous-than-fossil-fuel-energy"
 ];
 
+const july2026ExpansionSlugs = [
+	"do-routine-childhood-vaccines-overwhelm-or-weaken-the-immune-system",
+	"does-induced-abortion-increase-breast-cancer-risk",
+	"does-vasectomy-cause-prostate-cancer",
+	"does-bariatric-surgery-reduce-mortality-and-major-cardiovascular-risk-in-severe-obesity",
+	"do-long-term-opioids-provide-sustained-benefit-for-chronic-non-cancer-pain",
+	"should-menopausal-hormone-therapy-be-used-to-prevent-chronic-disease-in-most-postmenopausal-adults",
+	"is-water-vapor-the-main-cause-of-current-global-warming",
+	"is-arctic-sea-ice-declining-because-of-human-caused-warming",
+	"does-deforestation-significantly-contribute-to-climate-change-and-biodiversity-loss",
+	"can-electricity-grids-remain-reliable-with-high-shares-of-wind-and-solar",
+	"does-livestock-production-contribute-substantially-to-greenhouse-gas-emissions",
+	"do-high-protein-diets-damage-kidney-function-in-healthy-adults",
+	"does-a-gluten-free-diet-improve-health-for-people-without-celiac-disease-or-gluten-sensitivity",
+	"does-protein-supplementation-improve-muscle-and-strength-gains-during-resistance-training",
+	"does-eating-organic-food-clearly-improve-long-term-health-outcomes",
+	"do-non-sugar-sweeteners-reliably-help-with-long-term-weight-control",
+	"does-psychotherapy-help-adults-with-depression",
+	"is-exposure-and-response-prevention-effective-for-obsessive-compulsive-disorder",
+	"does-chronic-sleep-loss-worsen-depression-and-anxiety-risk",
+	"do-violent-video-games-cause-serious-real-world-violence",
+	"does-physical-punishment-improve-child-behavior-without-harmful-effects",
+	"can-recovered-memory-techniques-reliably-reveal-accurate-hidden-trauma-memories",
+	"are-unapproved-stem-cell-treatments-proven-safe-and-effective-for-most-advertised-conditions",
+	"can-genome-or-exome-sequencing-improve-diagnosis-for-children-with-suspected-rare-genetic-disorders",
+	"are-multicancer-early-detection-blood-tests-proven-to-reduce-cancer-deaths-in-average-risk-people",
+	"are-biosimilars-as-safe-and-effective-as-their-reference-biologic-medicines",
+	"can-consumer-microbiome-tests-reliably-diagnose-disease-or-prescribe-personalized-diets",
+	"does-evolution-have-a-predetermined-goal-or-always-produce-perfect-organisms",
+	"is-evolution-entirely-random",
+	"are-socially-defined-human-racial-groups-discrete-biological-subspecies"
+];
+
 function primarySourceLink(source: (typeof defaultClaims)[number]["sources"][number]) {
 	return source.url || source.doi || source.pmid || source.pmcid || "";
 }
@@ -90,6 +123,125 @@ describe("default claim seed quality", () => {
 
 			assert.ok(claim.sources.every(primarySourceLink), `${slug} must expose only linked source rows`);
 		}
+	});
+
+	it("publishes the July 2026 expansion as 30 source-backed, cross-topic claim reviews", () => {
+		const expansionClaims = july2026ExpansionSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing July 2026 expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(new Set(july2026ExpansionSlugs).size, 30);
+		assert.equal(expansionClaims.length, 30);
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"biology-and-evolution": 3,
+				"climate-and-environment": 5,
+				"genetics-and-biotechnology": 5,
+				"health-and-medicine": 6,
+				"neuroscience-and-psychology": 6,
+				"nutrition-and-diet": 5
+			}
+		);
+
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-07-26T12:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-07-26T12:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(
+				claim.sources.some(source => source.isAnchor),
+				`${claim.slug} needs a visible anchor source`
+			);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+		}
+	});
+
+	it("keeps the expansion's contested claims inside their evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing expansion claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		const abortion = visibleClaimText("does-induced-abortion-increase-breast-cancer-risk");
+		assert.match(abortion, /prospective/i);
+		assert.match(abortion, /retrospective/i);
+		assert.match(abortion, /recall|disclosure/i);
+
+		const vasectomy = visibleClaimText("does-vasectomy-cause-prostate-cancer");
+		assert.match(vasectomy, /aggressive|high-grade/i);
+		assert.match(vasectomy, /fatal|lethal/i);
+		assert.match(vasectomy, /screening|detection/i);
+
+		const opioids = visibleClaimText("do-long-term-opioids-provide-sustained-benefit-for-chronic-non-cancer-pain");
+		assert.match(opioids, /abrupt|rapid/i);
+		assert.match(opioids, /selected|individual/i);
+		assert.match(opioids, /very low|uncertain|limited/i);
+
+		const violentGames = visibleClaimText("do-violent-video-games-cause-serious-real-world-violence");
+		assert.match(violentGames, /laboratory|aggression/i);
+		assert.match(violentGames, /criminal|serious|lethal/i);
+		assert.doesNotMatch(violentGames, /proven cause of (?:crime|mass violence)/i);
+
+		const recoveredMemory = visibleClaimText(
+			"can-recovered-memory-techniques-reliably-reveal-accurate-hidden-trauma-memories"
+		);
+		assert.match(recoveredMemory, /corroborat/i);
+		assert.match(recoveredMemory, /suggest/i);
+		assert.match(recoveredMemory, /not.*all.*false|both|either truth or falsity/i);
+
+		const multicancer = visibleClaimText(
+			"are-multicancer-early-detection-blood-tests-proven-to-reduce-cancer-deaths-in-average-risk-people"
+		);
+		assert.match(multicancer, /no completed controlled|not yet|unknown/i);
+		assert.match(multicancer, /mortality|cancer deaths/i);
+		assert.match(multicancer, /standard screening|established.*screening/i);
+
+		const microbiome = visibleClaimText(
+			"can-consumer-microbiome-tests-reliably-diagnose-disease-or-prescribe-personalized-diets"
+		);
+		assert.match(microbiome, /standard/i);
+		assert.match(microbiome, /clinical|diagnos/i);
+		assert.match(microbiome, /different|discrepanc|vary/i);
+
+		const evolutionRandomness = visibleClaimText("is-evolution-entirely-random");
+		assert.match(evolutionRandomness, /chance|stochastic/i);
+		assert.match(evolutionRandomness, /selection.*non-random|non-random.*selection/i);
+		assert.match(evolutionRandomness, /not.*planned|does not imply.*planning/i);
+
+		const humanRace = visibleClaimText(
+			"are-socially-defined-human-racial-groups-discrete-biological-subspecies"
+		);
+		assert.match(humanRace, /ancestry|population/i);
+		assert.match(humanRace, /not.*discrete|do not form discrete/i);
+		assert.match(humanRace, /racism.*(?:health|biological)|biological.*consequences/i);
 	});
 
 	it("keeps the dental sealant claim readable for parents and general readers", () => {

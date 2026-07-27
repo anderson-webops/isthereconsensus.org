@@ -16,6 +16,7 @@ import type {
 	ClaimSourceKind,
 	ClaimSourceStance
 } from "../models/schemas/ClaimSource.js";
+import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
@@ -26421,7 +26422,8 @@ const rawClaims: SeedClaim[] = [
 				order: 9
 			}
 		]
-	}
+	},
+	...july2026ExpansionClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);

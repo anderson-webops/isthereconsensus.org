@@ -30,10 +30,43 @@ describe("consensus directory metadata", () => {
 		assert.match(source, /Most covered:/);
 	});
 
+	it("exposes the full reviewed-claim directory instead of only topic previews", () => {
+		assert.match(source, /apiUrl\("\/claims\?limit=500"\)/);
+		assert.match(source, /id="reviewed-claims"/);
+		assert.match(source, /Reviewed claim directory/);
+		assert.match(source, /v-for="claim in visibleClaims"/);
+		assert.match(source, /claimBand === 'strong'/);
+		assert.match(source, /claimBand === 'broad'/);
+		assert.match(source, /claimBand === 'mixed'/);
+		assert.match(source, /claimBand === 'unclear'/);
+		assert.match(source, /showMoreClaims/);
+		assert.match(source, /formatCountLabel\(totalReviewedClaimCount, "claim"\)/);
+		assert.match(source, /interleaveClaimsByTopic/);
+		assert.match(source, /filteredClaims\.value\.length/);
+		assert.match(source, /const claimsPageSize = 12/);
+	});
+
+	it("puts reviewed claims before a compact, count-labeled topic disclosure", () => {
+		const claimDirectoryIndex = source.indexOf('id="reviewed-claims"');
+		const topicDirectoryIndex = source.indexOf('id="topic-directory"');
+
+		assert.ok(claimDirectoryIndex >= 0);
+		assert.ok(topicDirectoryIndex > claimDirectoryIndex);
+		assert.match(source, /<details id="topic-directory"/);
+		assert.match(source, /Browse all \{\{ formatCountLabel\(totalTopicCount, "topic"\) \}\}/);
+		assert.match(source, /\.results-block\.topic-directory \{[\s\S]*padding: 0;/);
+		assert.match(source, /\.topic-directory__summary::after \{[\s\S]*content: "\+";/);
+	});
+
 	it("keeps mobile directory filters compact without changing the page flow", () => {
 		assert.match(source, /@media \(max-width: 760px\) \{[\s\S]*\.directory__controls \{[\s\S]*gap: 8px;/);
-		assert.match(source, /\.directory__controls,\s*\.results-block \{[\s\S]*padding: 14px;/);
+		assert.match(
+			source,
+			/\.directory__controls,\s*\.directory__snapshot,\s*\.results-block \{[\s\S]*padding: 14px;/
+		);
 		assert.match(source, /\.filter-stack \{[\s\S]*flex-wrap: wrap;[\s\S]*overflow-x: visible;/);
 		assert.match(source, /\.filter \{[\s\S]*flex: 0 1 auto;[\s\S]*min-height: 40px;/);
+		assert.match(source, /\.claim-grid \{[\s\S]*grid-template-columns: 1fr;/);
+		assert.match(source, /\.topic-directory__summary > span \{[\s\S]*display: none;/);
 	});
 });
