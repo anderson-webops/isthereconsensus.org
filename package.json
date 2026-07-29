@@ -3,7 +3,11 @@
 	"type": "module",
 	"version": "1.0.0",
 	"private": true,
-	"packageManager": "npm@11.12.0",
+	"packageManager": "npm@11.16.0",
+	"engines": {
+		"node": ">=24.18.0 <25",
+		"npm": ">=11.16.0 <12"
+	},
 	"description": "Monorepo for isthereconsensus.org",
 	"author": "Jacob Anderson",
 	"license": "ISC",
@@ -43,7 +47,7 @@
 		"eslint-plugin-vue": "^10.8.0",
 		"globals": "^17.5.0",
 		"h3": "1.15.11",
-		"minimatch": "10.2.5",
+    "minimatch": "10.2.6",
 		"prettier": "^3.8.3",
 		"puppeteer": "^24.43.1",
 		"taze": "^19.11.0",
@@ -65,7 +69,7 @@
 		"node-forge": "1.4.0",
 		"path-to-regexp": "8.4.0",
 		"picomatch": "4.0.4",
-		"qs": "6.15.2",
+		"qs": "6.15.3",
 		"readdirp": {
 			"picomatch": "2.3.2"
 		},
@@ -73,7 +77,7 @@
 		"srvx": "0.11.13",
 		"@cypress/request": {
 			"uuid": "14.0.0",
-			"qs": "6.15.2"
+			"qs": "6.15.3"
 		},
 		"nitropack": "2.13.4",
 		"simple-git": "3.36.0",
@@ -87,6 +91,6 @@
 		"valibot": "1.4.2"
 	},
 	"dependencies": {
-		"qs": "6.15.2"
+		"qs": "6.15.3"
 	}
 }
