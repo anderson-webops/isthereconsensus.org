@@ -20,8 +20,8 @@ describe("live smoke workflow", () => {
 	});
 
 	it("runs the live smoke script with caller-supplied inputs", () => {
-		assert.match(workflowSource, /actions\/checkout@v6/);
-		assert.match(workflowSource, /actions\/setup-node@v6/);
+		assert.match(workflowSource, /actions\/checkout@v7/);
+		assert.match(workflowSource, /actions\/setup-node@v7/);
 		assert.match(workflowSource, /LIVE_SMOKE_BASE_URL: \$\{\{ inputs\.base_url \}\}/);
 		assert.match(workflowSource, /LIVE_SMOKE_PROFILE: \$\{\{ inputs\.profile \}\}/);
 		assert.match(workflowSource, /LIVE_SMOKE_EXPECT_COMMIT: \$\{\{ inputs\.expected_commit \}\}/);

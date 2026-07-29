@@ -16,8 +16,8 @@ describe("CI workflow", () => {
 	it("uses GitHub JavaScript actions that target the Node 24 runtime", () => {
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v4/);
 		assert.doesNotMatch(workflowSource, /FORCE_JAVASCRIPT_ACTIONS_TO_NODE24/);
-		assert.match(workflowSource, /actions\/checkout@v6/);
-		assert.match(workflowSource, /actions\/setup-node@v6/);
+		assert.match(workflowSource, /actions\/checkout@v7/);
+		assert.match(workflowSource, /actions\/setup-node@v7/);
 	});
 
 	it("smoke tests built SSR public assets and route rules after the production build", () => {
