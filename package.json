@@ -76,7 +76,15 @@
 			"qs": "6.15.2"
 		},
 		"nitropack": "2.13.4",
-		"simple-git": "3.36.0"
+		"simple-git": "3.36.0",
+		"brace-expansion": "5.0.8",
+		"fast-uri": "3.1.4",
+		"js-yaml": "4.3.0",
+		"postcss": "8.5.24",
+		"shell-quote": "1.10.0",
+		"svgo": "4.0.2",
+		"tar": "7.5.22",
+		"valibot": "1.4.2"
 	},
 	"dependencies": {
 		"qs": "6.15.2"
