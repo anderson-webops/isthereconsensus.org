@@ -1,9 +1,6 @@
 export type ClaimRoadmapPageType = "canonical claim page" | "evergreen explainer" | "topic-hub-only section";
 export type ClaimRoadmapTier =
-	| "strong consensus"
-	| "broad but qualified agreement"
-	| "mixed evidence"
-	| "frontier debate";
+	"strong consensus" | "broad but qualified agreement" | "mixed evidence" | "frontier debate";
 export type ClaimRoadmapCertainty = "high" | "moderate" | "low" | "very low";
 
 export interface ClaimRoadmapEntry {

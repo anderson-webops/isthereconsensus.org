@@ -42,13 +42,7 @@ export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | 
 export type QuestionAskKind = "claim" | "topic" | "concept" | "discussion";
 export type QuestionClosestMatchType = "claim" | "topic" | "explainer" | "question" | "none";
 export type QuestionSourceContextType =
-	| "article"
-	| "social"
-	| "video"
-	| "podcast"
-	| "conversation"
-	| "classroom"
-	| "other";
+	"article" | "social" | "video" | "podcast" | "conversation" | "classroom" | "other";
 
 export interface ClaimChangeLogEntry {
 	date: string;
