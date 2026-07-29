@@ -21,7 +21,7 @@ on:
         default: ""
 
 env:
-  NODE_VERSION: 24.x
+  NODE_VERSION: 24.18.0
 
 jobs:
   live-smoke:

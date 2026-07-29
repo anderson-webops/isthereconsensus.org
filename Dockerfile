@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build-stage
+FROM node:24.18.0-alpine AS build-stage
 
 WORKDIR /app
 RUN corepack enable
@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # SSR
-FROM node:24-alpine AS production-stage
+FROM node:24.18.0-alpine AS production-stage
 
 WORKDIR /app
 
