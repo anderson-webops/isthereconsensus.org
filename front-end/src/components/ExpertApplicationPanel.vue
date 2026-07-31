@@ -62,9 +62,8 @@ async function refreshApplication() {
 		});
 		application.value = response.application;
 		hydrateForm(response.application);
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to load expert application status.";
-		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -99,9 +98,8 @@ async function submitApplication() {
 		application.value = response.application;
 		successMessage.value = "Application submitted for review.";
 		await refreshAuth();
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to submit the expert application.";
-		console.error(error);
 	} finally {
 		saving.value = false;
 	}

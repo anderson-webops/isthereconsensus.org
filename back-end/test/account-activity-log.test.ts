@@ -18,8 +18,10 @@ const originals = {
 	accountActivityCountDocuments: AccountActivityLog.countDocuments,
 	adminFindById: Admin.findById,
 	adminFindOne: Admin.findOne,
+	adminExists: Admin.exists,
 	userCreate: User.create,
-	userFindOne: User.findOne
+	userFindOne: User.findOne,
+	userExists: User.exists
 };
 
 function mockResponse() {
@@ -86,8 +88,10 @@ afterEach(() => {
 	AccountActivityLog.countDocuments = originals.accountActivityCountDocuments;
 	Admin.findById = originals.adminFindById;
 	Admin.findOne = originals.adminFindOne;
+	Admin.exists = originals.adminExists;
 	User.create = originals.userCreate;
 	User.findOne = originals.userFindOne;
+	User.exists = originals.userExists;
 });
 
 describe("account activity logging", () => {
@@ -95,8 +99,8 @@ describe("account activity logging", () => {
 		delete process.env.CAPTCHA_SECRET;
 		const createdLogs: any[] = [];
 		const user = testUser("new.member@example.com");
-		User.findOne = (async () => null) as any;
-		Admin.findOne = (async () => null) as any;
+		User.exists = (async () => null) as any;
+		Admin.exists = (async () => null) as any;
 		User.create = (async () => user) as any;
 		AccountActivityLog.create = (async (entry: any) => {
 			createdLogs.push(entry);
@@ -108,7 +112,7 @@ describe("account activity logging", () => {
 				acceptTerms: true,
 				email: "New.Member@Example.com",
 				name: "A Member",
-				password: "not-logged"
+				password: "not-logged-password"
 			},
 			headers: { "user-agent": "test-agent", "x-request-id": "req-register" },
 			session: {}

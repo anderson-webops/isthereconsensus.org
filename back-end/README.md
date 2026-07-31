@@ -29,6 +29,20 @@ Minimum local development environment:
 
 Production also needs the deployment variables documented in `../DEPLOYMENT.md`.
 
+Production refuses to start without a strong session secret and captcha secret. Vault AppRole credentials must be supplied as a complete pair; once Vault is configured, a Vault outage fails closed rather than falling back to another database URI.
+
+`SEED_CONTENT_MODE=insert` is the safe startup default. It creates missing source-controlled records but does not overwrite editorial database changes. Use `SEED_CONTENT_MODE=sync` only as a reviewed, backup-protected content promotion, then return the service to `insert`.
+
+Admin creation and evidence migrations use the same Vault-or-`MONGODB_URI` selection as the API:
+
+```bash
+npm run -w back-end build
+npm run -w back-end create-admin
+npm run -w back-end migrate:evidence-landscape:v1
+```
+
+Interactive publication and demotion are stateful workflows. Verified experts edit drafts; admins explicitly publish, record completed reviews, request updates, archive or restore claims, approve or demote evidence landscapes, and provide the required public or private rationale.
+
 ## Scripts
 
 ```bash
@@ -43,7 +57,8 @@ npm run -w back-end test
 Run root-level validation before shipping a backend change:
 
 ```bash
-npm ci
+npm ci --include=optional --strict-allow-scripts
+npm run verify:native-lock
 npm run lint
 npm run typecheck
 npm run build
@@ -53,7 +68,7 @@ npm audit
 
 ## Diagnostics
 
-`GET /api/setup/status` is for internal launch and deployment checks. In production, callers must supply `x-internal-diagnostics-key` matching `INTERNAL_DIAGNOSTICS_KEY`. Do not expose that key to browser runtime config or public logs.
+`GET /api/setup/status` is for internal launch and deployment checks. In production it is disabled unless `ENABLE_INTERNAL_DIAGNOSTICS=true`; enabled callers must supply `x-internal-diagnostics-key` matching a strong `INTERNAL_DIAGNOSTICS_KEY`. Loopback and forwarded addresses never grant access. Do not expose that key to browser runtime config, the public proxy, or logs.
 
 ## Evidence Boundary
 

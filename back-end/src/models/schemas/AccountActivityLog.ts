@@ -12,11 +12,14 @@ export const ACCOUNT_ACTIVITY_ACTIONS = [
 	"password.changed",
 	"email.changed",
 	"expert_application.created",
-	"expert_application.reviewed"
+	"expert_application.reviewed",
+	"question.deleted",
+	"question.moderated",
+	"question_flag.reviewed"
 ] as const;
 
 export const ACCOUNT_ACTIVITY_ACTOR_TYPES = ["user", "admin", "system", "anonymous"] as const;
-export const ACCOUNT_ACTIVITY_TARGET_TYPES = ["user", "admin", "expert_application", "unknown"] as const;
+export const ACCOUNT_ACTIVITY_TARGET_TYPES = ["user", "admin", "expert_application", "question", "unknown"] as const;
 
 export type AccountActivityAction = (typeof ACCOUNT_ACTIVITY_ACTIONS)[number];
 export type AccountActivityActorType = (typeof ACCOUNT_ACTIVITY_ACTOR_TYPES)[number];

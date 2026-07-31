@@ -268,9 +268,7 @@ failures.push(await runCheck("/readyz responds ready", async () => {
 if (profile === "production") {
 	failures.push(await runCheck("backend setup diagnostics reject unauthenticated public requests", async () => {
 		const result = await fetchRoute("/api/setup/status");
-		expectStatus(result, 403);
-		expectContentType(result, "application/json");
-		expectIncludes(result, ["forbidden"]);
+		expectStatus(result, 404);
 	}));
 
 	failures.push(await runCheck("public claim cards expose source stacks", async () => {

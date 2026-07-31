@@ -67,6 +67,7 @@ const routeId = computed(() => {
 	return Array.isArray(value) ? value[0] : String(value ?? "new");
 });
 const isNew = computed(() => routeId.value === "new");
+const isAdmin = computed(() => role.value === "admin");
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 
 const loading = ref(false);
@@ -74,6 +75,7 @@ const saving = ref(false);
 const actionMessage = ref("");
 const errorMessage = ref("");
 const claim = ref<Claim | null>(null);
+const canEditClaim = computed(() => isNew.value || isAdmin.value || claim.value?.status === "draft");
 const revisions = ref<ClaimRevision[]>([]);
 const topics = ref<Topic[]>([]);
 const sourceRows = ref<ClaimSource[]>([]);
@@ -85,7 +87,7 @@ const form = reactive({
 	topic: "",
 	title: "",
 	slug: "",
-	status: "draft" as Claim["status"],
+	status: "draft" as NonNullable<Claim["status"]>,
 	consensusBand: "unclear" as Claim["consensusBand"],
 	agreementLevel: "frontier" as NonNullable<Claim["agreementLevel"]>,
 	evidenceCertainty: "low" as NonNullable<Claim["evidenceCertainty"]>,
@@ -122,6 +124,7 @@ const form = reactive({
 	landscapeLastAssessedAt: "",
 	landscapeNextReviewDueAt: "",
 	landscapeEditorialNotes: "",
+	landscapeWorkflowNote: "",
 	landscapeApplicabilityPopulation: "",
 	landscapeApplicabilityExposureOrIntervention: "",
 	landscapeApplicabilityComparator: "",
@@ -221,9 +224,7 @@ function defaultSourceEvidenceProfile(existing?: Partial<ClaimSourceEvidenceProf
 			}
 		},
 		reviewer: {
-			codedById: existing?.reviewer?.codedById,
 			codedAt: existing?.reviewer?.codedAt,
-			reviewedById: existing?.reviewer?.reviewedById,
 			reviewedAt: existing?.reviewer?.reviewedAt,
 			notes: existing?.reviewer?.notes ?? ""
 		}
@@ -286,6 +287,34 @@ function sourceEvidenceProfileChanged(source: ClaimSource) {
 		JSON.stringify(sourceEvidenceProfilePayload(source)) !==
 		JSON.stringify(sourceEvidenceProfilePayload(originalSource))
 	);
+}
+
+function sourceMetadataPayload(source: ClaimSource) {
+	return {
+		kind: source.kind,
+		title: source.title.trim(),
+		publisher: source.publisher?.trim() || "",
+		year: source.year || undefined,
+		url: source.url?.trim() || "",
+		doi: source.doi?.trim() || "",
+		pmid: source.pmid?.trim() || "",
+		pmcid: source.pmcid?.trim() || "",
+		isAnchor: !!source.isAnchor,
+		appraisal: source.appraisal || "not_appraised",
+		citationStatus: source.citationStatus || "current",
+		citationCheckedAt: source.citationCheckedAt || undefined,
+		statusSources: (source.statusSources || []).map((item) => item.trim()).filter(Boolean),
+		stance: source.stance,
+		note: source.note?.trim() || "",
+		order: source.order ?? 0
+	};
+}
+
+function sourceMetadataChanged(source: ClaimSource) {
+	if (!source._id) return true;
+	const originalSource = claim.value?.sources?.find((record) => record._id === source._id);
+	if (!originalSource) return true;
+	return JSON.stringify(sourceMetadataPayload(source)) !== JSON.stringify(sourceMetadataPayload(originalSource));
 }
 
 function landscapePayload() {
@@ -380,6 +409,7 @@ function hydrateClaim(record: Claim | null) {
 	form.landscapeLastAssessedAt = formatDateInput(record?.evidenceLandscape?.workflow?.lastAssessedAt);
 	form.landscapeNextReviewDueAt = formatDateInput(record?.evidenceLandscape?.workflow?.nextReviewDueAt);
 	form.landscapeEditorialNotes = record?.evidenceLandscape?.workflow?.editorialNotes || "";
+	form.landscapeWorkflowNote = "";
 	form.landscapeApplicabilityPopulation = record?.evidenceLandscape?.applicability?.population || "";
 	form.landscapeApplicabilityExposureOrIntervention =
 		record?.evidenceLandscape?.applicability?.exposureOrIntervention || "";
@@ -455,8 +485,7 @@ async function loadClaim() {
 		]);
 		hydrateClaim(claimResponse.claim);
 		revisions.value = revisionsResponse.revisions;
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to load the claim editor.";
 	} finally {
 		loading.value = false;
@@ -468,7 +497,6 @@ function claimPayload() {
 		topic: form.topic,
 		title: form.title.trim(),
 		slug: form.slug.trim(),
-		status: form.status,
 		consensusBand: form.consensusBand,
 		agreementLevel: form.agreementLevel,
 		evidenceCertainty: form.evidenceCertainty,
@@ -544,31 +572,16 @@ async function syncSources(claimId: string) {
 	}
 
 	for (const source of sourceRows.value) {
-		const body = {
-			kind: source.kind,
-			title: source.title.trim(),
-			publisher: source.publisher?.trim() || "",
-			year: source.year || undefined,
-			url: source.url?.trim() || "",
-			doi: source.doi?.trim() || "",
-			pmid: source.pmid?.trim() || "",
-			pmcid: source.pmcid?.trim() || "",
-			isAnchor: !!source.isAnchor,
-			appraisal: source.appraisal || "not_appraised",
-			citationStatus: source.citationStatus || "current",
-			citationCheckedAt: source.citationCheckedAt || undefined,
-			statusSources: (source.statusSources || []).map((item) => item.trim()).filter(Boolean),
-			stance: source.stance,
-			note: source.note?.trim() || "",
-			order: source.order ?? 0
-		};
+		const body = sourceMetadataPayload(source);
 
 		if (source._id) {
-			await $fetch(apiUrl(`/editorial/claims/${claimId}/sources/${source._id}`), {
-				method: "PATCH",
-				credentials: "include",
-				body
-			});
+			if (sourceMetadataChanged(source)) {
+				await $fetch(apiUrl(`/editorial/claims/${claimId}/sources/${source._id}`), {
+					method: "PATCH",
+					credentials: "include",
+					body
+				});
+			}
 			if (sourceEvidenceProfileChanged(source)) {
 				await $fetch(apiUrl(`/editorial/claim-sources/${source._id}/evidence-profile`), {
 					method: "PATCH",
@@ -630,7 +643,6 @@ async function saveClaim() {
 		await loadClaim();
 		return true;
 	} catch (error) {
-		console.error(error);
 		errorMessage.value = readApiError(error, "Unable to save the claim.");
 		return false;
 	} finally {
@@ -638,21 +650,30 @@ async function saveClaim() {
 	}
 }
 
-async function runLandscapeAction(action: "recompute" | "submit-review" | "approve" | "publish") {
+type LandscapeAction = "recompute" | "submit-review" | "request-changes" | "approve" | "publish";
+
+async function runLandscapeAction(action: LandscapeAction) {
 	if (isNew.value) {
 		errorMessage.value = "Save the draft before running evidence landscape workflow actions.";
 		return;
 	}
 
-	const saved = await saveClaim();
-	if (!saved) return;
+	if (action === "request-changes" && !form.landscapeWorkflowNote.trim()) {
+		errorMessage.value = "Add a private workflow note explaining the requested changes.";
+		return;
+	}
+	if (action === "recompute" || action === "submit-review") {
+		const saved = await saveClaim();
+		if (!saved) return;
+	}
 
 	const actionCopy = {
 		recompute: "Evidence distribution recomputed.",
 		"submit-review": "Evidence landscape submitted for review.",
+		"request-changes": "Evidence landscape changes requested.",
 		approve: "Evidence landscape approved.",
 		publish: "Evidence landscape published."
-	} satisfies Record<"recompute" | "submit-review" | "approve" | "publish", string>;
+	} satisfies Record<LandscapeAction, string>;
 
 	saving.value = true;
 	errorMessage.value = "";
@@ -662,13 +683,13 @@ async function runLandscapeAction(action: "recompute" | "submit-review" | "appro
 			method: "POST",
 			credentials: "include",
 			body: {
-				notes: form.revisionNote.trim() || undefined
+				notes: form.landscapeWorkflowNote.trim() || undefined
 			}
 		});
 		actionMessage.value = actionCopy[action];
+		form.landscapeWorkflowNote = "";
 		await loadClaim();
 	} catch (error) {
-		console.error(error);
 		errorMessage.value = readApiError(error, "Unable to update the evidence landscape workflow.");
 	} finally {
 		saving.value = false;
@@ -690,40 +711,59 @@ async function publishClaim() {
 			body: {
 				lastReviewedAt: form.lastReviewedAt || undefined,
 				nextReviewAt: form.nextReviewAt || undefined,
-				revisionNote: form.revisionNote.trim() || "Published claim."
+				revisionNote: form.revisionNote.trim() || undefined
 			}
 		});
 		actionMessage.value = "Claim published.";
 		await loadClaim();
 	} catch (error) {
-		console.error(error);
-		errorMessage.value = "Unable to publish the claim.";
+		errorMessage.value = readApiError(error, "Unable to publish the claim.");
+	} finally {
+		saving.value = false;
+	}
+}
+
+type ClaimStatusAction = "archive" | "request-update" | "restore-draft" | "review";
+
+async function runClaimStatusAction(action: ClaimStatusAction) {
+	if (isNew.value) return;
+	const revisionNote = form.revisionNote.trim();
+	if (!revisionNote) {
+		errorMessage.value = "Add a public change summary before changing the claim workflow state.";
+		return;
+	}
+
+	const successCopy = {
+		archive: "Claim archived.",
+		"request-update": "Claim marked for update.",
+		"restore-draft": "Claim restored to draft.",
+		review: "Claim review recorded."
+	} satisfies Record<ClaimStatusAction, string>;
+
+	saving.value = true;
+	errorMessage.value = "";
+	actionMessage.value = "";
+	try {
+		await $fetch<ClaimResponse>(apiUrl(`/editorial/claims/${routeId.value}/${action}`), {
+			method: "POST",
+			credentials: "include",
+			body: {
+				lastReviewedAt: form.lastReviewedAt || undefined,
+				nextReviewAt: form.nextReviewAt || undefined,
+				revisionNote
+			}
+		});
+		actionMessage.value = successCopy[action];
+		await loadClaim();
+	} catch (error) {
+		errorMessage.value = readApiError(error, "Unable to update the claim workflow.");
 	} finally {
 		saving.value = false;
 	}
 }
 
 async function archiveClaim() {
-	if (isNew.value) return;
-	saving.value = true;
-	errorMessage.value = "";
-	actionMessage.value = "";
-	try {
-		await $fetch<ClaimResponse>(apiUrl(`/editorial/claims/${routeId.value}/archive`), {
-			method: "POST",
-			credentials: "include",
-			body: {
-				revisionNote: form.revisionNote.trim() || "Archived claim."
-			}
-		});
-		actionMessage.value = "Claim archived.";
-		await loadClaim();
-	} catch (error) {
-		console.error(error);
-		errorMessage.value = "Unable to archive the claim.";
-	} finally {
-		saving.value = false;
-	}
+	await runClaimStatusAction("archive");
 }
 
 function addSource() {
@@ -871,15 +911,10 @@ watch(
 						</select>
 					</label>
 
-					<label class="field">
+					<div class="field">
 						<span class="field-label">Status</span>
-						<select v-model="form.status">
-							<option value="draft">Draft</option>
-							<option value="published">Published</option>
-							<option value="needs_update">Needs update</option>
-							<option value="archived">Archived</option>
-						</select>
-					</label>
+						<strong>{{ form.status?.replace("_", " ") || "draft" }}</strong>
+					</div>
 
 					<label class="field field--full">
 						<span class="field-label">Claim title</span>
@@ -964,11 +999,11 @@ watch(
 					</label>
 
 					<label class="field field--full">
-						<span class="field-label">Editor summary</span>
+						<span class="field-label">Public editor summary</span>
 						<textarea
 							v-model="form.editorSummary"
 							rows="4"
-							placeholder="Internal framing note for the public page and future reviewers."
+							placeholder="Reader-facing context that explains how the evidence was interpreted."
 						/>
 					</label>
 
@@ -995,6 +1030,11 @@ watch(
 									{{ formatLandscapeWorkflowStatus(form.landscapeWorkflowStatus) }}
 								</p>
 								<button
+									v-if="
+										['not_started', 'draft', 'changes_requested'].includes(
+											form.landscapeWorkflowStatus
+										)
+									"
 									class="button button--ghost"
 									type="button"
 									:disabled="saving || isNew"
@@ -1003,6 +1043,11 @@ watch(
 									Recompute
 								</button>
 								<button
+									v-if="
+										['not_started', 'draft', 'changes_requested'].includes(
+											form.landscapeWorkflowStatus
+										)
+									"
 									class="button button--ghost"
 									type="button"
 									:disabled="saving || isNew"
@@ -1011,6 +1056,19 @@ watch(
 									Submit review
 								</button>
 								<button
+									v-if="
+										isAdmin &&
+										['ready_for_review', 'approved'].includes(form.landscapeWorkflowStatus)
+									"
+									class="button button--ghost button--danger"
+									type="button"
+									:disabled="saving || isNew"
+									@click="runLandscapeAction('request-changes')"
+								>
+									Request changes
+								</button>
+								<button
+									v-if="isAdmin && form.landscapeWorkflowStatus === 'ready_for_review'"
 									class="button button--ghost"
 									type="button"
 									:disabled="saving || isNew"
@@ -1019,6 +1077,7 @@ watch(
 									Approve
 								</button>
 								<button
+									v-if="isAdmin && form.landscapeWorkflowStatus === 'approved'"
 									class="button button--primary"
 									type="button"
 									:disabled="saving || isNew"
@@ -1028,6 +1087,19 @@ watch(
 								</button>
 							</div>
 						</div>
+
+						<label class="field field--full">
+							<span class="field-label">Private evidence-workflow note</span>
+							<textarea
+								v-model="form.landscapeWorkflowNote"
+								rows="3"
+								placeholder="Internal handoff, approval, or requested-change rationale."
+							/>
+							<span class="helper-note">
+								This note is retained in the protected evidence-review history and is not copied to the
+								public claim change log. A note is required when requesting changes.
+							</span>
+						</label>
 
 						<div class="structured-card__grid">
 							<label class="field">
@@ -1764,8 +1836,12 @@ watch(
 								</label>
 
 								<label class="field field--full">
-									<span class="field-label">Note</span>
+									<span class="field-label">Public source note</span>
 									<textarea v-model="source.note" rows="3" />
+									<span class="helper-note">
+										This note appears with the source on public claim pages. Use evidence-coding
+										reviewer notes for private analysis.
+									</span>
 								</label>
 							</div>
 
@@ -2043,19 +2119,31 @@ watch(
 				</section>
 
 				<label class="field field--full">
-					<span class="field-label">Revision note</span>
-					<textarea v-model="form.revisionNote" rows="3" placeholder="What changed in this edit?" />
+					<span class="field-label">Public change summary</span>
+					<textarea
+						v-model="form.revisionNote"
+						rows="3"
+						placeholder="Describe the reader-visible change without private reviewer details."
+					/>
+					<span class="helper-note">
+						This summary appears in the public claim change log after publication. Use the private
+						evidence-workflow note above for internal handoffs.
+					</span>
 				</label>
 
+				<p v-if="!canEditClaim" class="muted">
+					Published and archived records are read-only. An admin must move the claim through the update or
+					restore workflow before its content can be edited.
+				</p>
 				<p v-if="actionMessage" class="success">{{ actionMessage }}</p>
 				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
 				<div class="editor-actions">
-					<button class="button button--primary" type="submit" :disabled="saving">
+					<button class="button button--primary" type="submit" :disabled="saving || !canEditClaim">
 						{{ saving ? "Saving..." : isNew ? "Create draft" : "Save claim" }}
 					</button>
 					<button
-						v-if="!isNew"
+						v-if="isAdmin && !isNew && ['draft', 'needs_update'].includes(form.status)"
 						class="button button--ghost"
 						type="button"
 						:disabled="saving"
@@ -2064,7 +2152,34 @@ watch(
 						Publish
 					</button>
 					<button
-						v-if="!isNew"
+						v-if="isAdmin && !isNew && form.status === 'published'"
+						class="button button--ghost"
+						type="button"
+						:disabled="saving"
+						@click="runClaimStatusAction('review')"
+					>
+						Record review
+					</button>
+					<button
+						v-if="isAdmin && !isNew && form.status === 'published'"
+						class="button button--ghost"
+						type="button"
+						:disabled="saving"
+						@click="runClaimStatusAction('request-update')"
+					>
+						Request update
+					</button>
+					<button
+						v-if="isAdmin && !isNew && ['archived', 'needs_update'].includes(form.status)"
+						class="button button--ghost"
+						type="button"
+						:disabled="saving"
+						@click="runClaimStatusAction('restore-draft')"
+					>
+						Restore draft
+					</button>
+					<button
+						v-if="isAdmin && !isNew && form.status !== 'archived'"
 						class="button button--ghost button--danger"
 						type="button"
 						:disabled="saving"

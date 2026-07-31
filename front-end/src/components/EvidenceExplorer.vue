@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { EvidenceSearchResponse } from "~/types/platform";
+import { safeExternalHttpUrl } from "~/utils/external-links";
 
 const props = defineProps<{
 	topicSlug: string;
@@ -29,9 +30,8 @@ async function search() {
 				q: value
 			}
 		});
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to load literature results right now.";
-		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -82,7 +82,14 @@ watch(
 				<h3>{{ result.title }}</h3>
 				<p v-if="result.journal" class="result-meta">{{ result.journal }}</p>
 				<p v-if="result.authors.length" class="result-meta">{{ result.authors.join(", ") }}</p>
-				<a v-if="result.url" :href="result.url" target="_blank" rel="noreferrer">Open source</a>
+				<a
+					v-if="safeExternalHttpUrl(result.url)"
+					:href="safeExternalHttpUrl(result.url)"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Open source
+				</a>
 			</article>
 		</div>
 		<div v-else-if="response && !response.results.length" class="muted">

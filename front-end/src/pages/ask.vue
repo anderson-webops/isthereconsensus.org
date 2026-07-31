@@ -202,8 +202,7 @@ watchDebounced(
 			suggestions.value = await $fetch<SuggestionResponse>(
 				apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`)
 			);
-		} catch (error) {
-			console.error(error);
+		} catch {
 			suggestionError.value = "Unable to load suggestions right now.";
 			suggestions.value = { claims: [], topics: [], questions: [] };
 		} finally {
@@ -270,8 +269,7 @@ async function submitQuestion() {
 			path: `/consensus/${selectedTopic.value}`,
 			query: { posted: "1" }
 		});
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to post right now. Please try again.";
 	} finally {
 		submitting.value = false;

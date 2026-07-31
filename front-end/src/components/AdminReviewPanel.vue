@@ -17,6 +17,7 @@ const flagQueue = ref<QuestionFlag[]>([]);
 const activityLogs = ref<AccountActivityLog[]>([]);
 const errorMessage = ref("");
 const reviewNotes = ref<Record<string, string>>({});
+const flagReviewNotes = ref<Record<string, string>>({});
 
 const isAdmin = computed(() => role.value === "admin");
 const activityLabels: Record<AccountActivityAction, string> = {
@@ -30,7 +31,10 @@ const activityLabels: Record<AccountActivityAction, string> = {
 	"password.changed": "Password changed",
 	"email.changed": "Email changed",
 	"expert_application.created": "Expert application created",
-	"expert_application.reviewed": "Expert application reviewed"
+	"expert_application.reviewed": "Expert application reviewed",
+	"question.deleted": "Question deleted",
+	"question.moderated": "Question moderated",
+	"question_flag.reviewed": "Question flag reviewed"
 };
 
 function formatActivityDate(value?: string) {
@@ -72,9 +76,8 @@ async function refreshQueues() {
 		applicationQueue.value = applicationsResponse.applications;
 		flagQueue.value = flagsResponse.flags;
 		activityLogs.value = activityResponse.logs;
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to load admin review queues.";
-		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -93,26 +96,32 @@ async function reviewApplication(id: string, decision: "approved" | "rejected" |
 		});
 		delete reviewNotes.value[id];
 		await refreshQueues();
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to review that application.";
-		console.error(error);
 	} finally {
 		actionState.value = "";
 	}
 }
 
 async function reviewFlag(id: string, decision: "reviewed" | "dismissed") {
+	if (!flagReviewNotes.value[id]?.trim()) {
+		errorMessage.value = "Add a moderation note before closing that flag.";
+		return;
+	}
 	actionState.value = id;
 	try {
 		await $fetch(apiUrl(`/admin/question-flags/${id}/review`), {
 			method: "POST",
 			credentials: "include",
-			body: { decision }
+			body: {
+				decision,
+				reviewNote: flagReviewNotes.value[id].trim()
+			}
 		});
+		delete flagReviewNotes.value[id];
 		await refreshQueues();
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to review that flag.";
-		console.error(error);
 	} finally {
 		actionState.value = "";
 	}
@@ -231,9 +240,16 @@ watch(
 						<div>
 							<h3>{{ flag.question?.title || "Flagged question" }}</h3>
 							<p>{{ flag.reason }}</p>
+							<p v-if="flag.note" class="muted"><strong>Reporter note:</strong> {{ flag.note }}</p>
 							<p class="muted">{{ flag.reporterName || "Unknown reporter" }}</p>
 						</div>
-						<div class="queue-actions">
+						<div class="queue-actions queue-actions--stacked">
+							<textarea
+								v-model="flagReviewNotes[flag._id]"
+								class="review-notes"
+								rows="3"
+								placeholder="Required private moderation rationale"
+							/>
 							<button
 								class="mini-button mini-button--approve"
 								type="button"

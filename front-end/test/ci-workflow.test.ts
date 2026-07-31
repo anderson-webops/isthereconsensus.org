@@ -16,8 +16,12 @@ describe("CI workflow", () => {
 	it("uses GitHub JavaScript actions that target the Node 24 runtime", () => {
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v4/);
 		assert.doesNotMatch(workflowSource, /FORCE_JAVASCRIPT_ACTIONS_TO_NODE24/);
-		assert.match(workflowSource, /actions\/checkout@v7/);
-		assert.match(workflowSource, /actions\/setup-node@v7/);
+		assert.match(workflowSource, /actions\/checkout@[0-9a-f]{40} # v7/);
+		assert.match(workflowSource, /actions\/setup-node@[0-9a-f]{40} # v7/);
+		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v\d/);
+		assert.match(workflowSource, /NODE_VERSION: 24\.18\.1/);
+		assert.match(workflowSource, /NPM_VERSION: 12\.0\.2/);
+		assert.match(workflowSource, /run: npm install --global npm@\$\{NPM_VERSION\}/);
 	});
 
 	it("smoke tests built SSR public assets and route rules after the production build", () => {

@@ -10,6 +10,19 @@ function ensureLeadingSlash(value: string) {
 	return value.startsWith("/") ? value : `/${value}`;
 }
 
+function normalizeAbsoluteHttpBase(value: string, label: string) {
+	let parsed: URL;
+	try {
+		parsed = new URL(value);
+	} catch {
+		throw new Error(`${label} must be a relative path or an absolute HTTP or HTTPS URL.`);
+	}
+	if (!["http:", "https:"].includes(parsed.protocol) || parsed.username || parsed.password) {
+		throw new Error(`${label} must be an HTTP or HTTPS URL without embedded credentials.`);
+	}
+	return trimTrailingSlash(parsed.toString());
+}
+
 export function isLocalApiBase(value: string) {
 	return LOCAL_URL_PATTERN.test(value);
 }
@@ -21,20 +34,36 @@ export function normalizePublicApiBase(value: string | undefined, isDev: boolean
 		return isDev ? "http://127.0.0.1:3011" : "/api";
 	}
 
-	if (!isDev && isLocalApiBase(candidate)) {
-		return "/api";
-	}
-
 	if (candidate.startsWith("/")) {
+		if (candidate.startsWith("//") || candidate.includes("\\") || /\s/.test(candidate)) {
+			throw new Error("PUBLIC_API_BASE must be a same-origin path or an absolute HTTP or HTTPS URL.");
+		}
 		return ensureLeadingSlash(trimTrailingSlash(candidate)) || "/api";
 	}
 
-	return trimTrailingSlash(candidate);
+	const normalized = normalizeAbsoluteHttpBase(candidate, "PUBLIC_API_BASE");
+	return !isDev && isLocalApiBase(normalized) ? "/api" : normalized;
 }
 
 export function normalizeInternalApiBase(value: string | undefined) {
 	const candidate = (value || "").trim();
-	return trimTrailingSlash(candidate || "http://127.0.0.1:3011").replace(API_SUFFIX_PATTERN, "");
+	return normalizeAbsoluteHttpBase(candidate || "http://127.0.0.1:3011", "INTERNAL_API_BASE").replace(
+		API_SUFFIX_PATTERN,
+		""
+	);
+}
+
+export function normalizePublicSiteUrl(value: string | undefined, isDev: boolean) {
+	const candidate = (value || (isDev ? "http://127.0.0.1:3000" : "https://isthereconsensus.org")).trim();
+	const normalized = normalizeAbsoluteHttpBase(candidate, "PUBLIC_SITE_URL");
+	const parsed = new URL(normalized);
+	if (!isDev && parsed.protocol !== "https:") {
+		throw new Error("PUBLIC_SITE_URL must use HTTPS in production.");
+	}
+	if (parsed.pathname !== "/" || parsed.search || parsed.hash) {
+		throw new Error("PUBLIC_SITE_URL must be an origin without a path, query, or fragment.");
+	}
+	return parsed.origin;
 }
 
 export function joinBaseUrl(base: string, path: string) {

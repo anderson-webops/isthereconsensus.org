@@ -26,6 +26,10 @@ export const decisionWeightSourceKinds = new Set<ClaimSourceKind>([
 	"systematic_review"
 ]);
 
+type ReadinessSource
+	= Pick<IClaimSource, "doi" | "kind" | "pmcid" | "pmid" | "url">
+		& Partial<Pick<IClaimSource, "citationStatus" | "evidenceProfile">>;
+
 function hasText(value: unknown): boolean {
 	return typeof value === "string" && value.trim().length > 0;
 }
@@ -44,10 +48,13 @@ export function sourceHasPublicLink(source: Pick<IClaimSource, "doi" | "pmcid" |
 	return [source.url, source.doi, source.pmid, source.pmcid].some(hasText);
 }
 
-export function summarizeClaimSourceReadiness(
-	sources: Array<Pick<IClaimSource, "doi" | "kind" | "pmcid" | "pmid" | "url">>
-): PublicClaimSourceReadinessCounts {
-	return sources.reduce<PublicClaimSourceReadinessCounts>(
+export function sourceIsUsableForPublicReadiness(source: ReadinessSource): boolean {
+	return source.citationStatus !== "retracted"
+		&& source.evidenceProfile?.publicationIntegrity?.retracted !== true;
+}
+
+export function summarizeClaimSourceReadiness(sources: ReadinessSource[]): PublicClaimSourceReadinessCounts {
+	return sources.filter(sourceIsUsableForPublicReadiness).reduce<PublicClaimSourceReadinessCounts>(
 		(counts, source) => ({
 			sourceCount: counts.sourceCount + 1,
 			linkedSourceCount: counts.linkedSourceCount + (sourceHasPublicLink(source) ? 1 : 0),

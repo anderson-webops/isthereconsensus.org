@@ -5,6 +5,7 @@ import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/co
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
+import { serializeJsonLd } from "~/utils/json-ld";
 
 interface TopicRouteParams {
 	slug?: string | string[];
@@ -113,7 +114,7 @@ useHead(() => ({
 		}
 	],
 	script: [breadcrumbStructuredData.value, topicStructuredData.value].map((entry, index) => ({
-		innerHTML: JSON.stringify(entry),
+		innerHTML: serializeJsonLd(entry),
 		key: `topic-structured-data-${index}`,
 		type: "application/ld+json"
 	}))

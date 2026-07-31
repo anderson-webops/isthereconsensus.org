@@ -3,19 +3,16 @@
 import type { ModuleOptions as ColorModeOptions } from "@nuxtjs/color-mode";
 import type { NuxtConfig } from "nuxt/schema";
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
-import { config as loadEnv } from "dotenv";
 import { defineNuxtConfig } from "nuxt/config";
 import { appDescription, appName } from "./src/constants";
-import { normalizeInternalApiBase, normalizePublicApiBase } from "./src/utils/api";
+import { normalizeInternalApiBase, normalizePublicApiBase, normalizePublicSiteUrl } from "./src/utils/api";
 
 const __dirname: string = path.dirname(fileURLToPath(import.meta.url));
 const srcPath: string = path.resolve(__dirname, "src");
 const srcAlias = `${srcPath}/`;
-const backendEnvPath = path.resolve(__dirname, "../back-end/.env");
 
 function readGitValue(args: string[]): string {
 	try {
@@ -29,22 +26,12 @@ function readGitValue(args: string[]): string {
 	}
 }
 
-const envPathCandidates = [process.env.NUXT_ENV_PATH, process.env.APP_ENV_PATH, backendEnvPath].filter(
-	Boolean
-) as string[];
-const loadedEnvPaths = new Set<string>();
-
-for (const envPath of envPathCandidates) {
-	if (loadedEnvPaths.has(envPath)) continue;
-	if (existsSync(envPath)) {
-		loadEnv({ path: envPath, override: false });
-		loadedEnvPaths.add(envPath);
-	}
-}
-
 const isDev = process.env.NODE_ENV === "development";
-const publicApiBase = normalizePublicApiBase(process.env.PUBLIC_API_BASE, isDev);
-const internalApiBase = normalizeInternalApiBase(process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE);
+const publicApiBase = normalizePublicApiBase(process.env.NUXT_PUBLIC_API_BASE || process.env.PUBLIC_API_BASE, isDev);
+const internalApiBase = normalizeInternalApiBase(
+	process.env.NUXT_API_INTERNAL_BASE || process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE
+);
+const publicSiteUrl = normalizePublicSiteUrl(process.env.NUXT_PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL, isDev);
 const deploymentCommit =
 	process.env.SOURCE_COMMIT ||
 	process.env.SOURCE_VERSION ||
@@ -110,6 +97,51 @@ const privateNoindexHeaders = {
 const legacyNoindexHeaders = {
 	"X-Robots-Tag": "noindex, follow"
 };
+const publicApiOrigin = (() => {
+	try {
+		return new URL(publicApiBase).origin;
+	} catch {
+		return "";
+	}
+})();
+const contentSecurityPolicy = [
+	"default-src 'self'",
+	"base-uri 'self'",
+	"object-src 'none'",
+	"frame-ancestors 'none'",
+	"form-action 'self'",
+	"img-src 'self' data: https:",
+	"font-src 'self' data: https://fonts.gstatic.com",
+	"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+	[
+		"script-src 'self' 'unsafe-inline'",
+		"https://analytics.isthereconsensus.org",
+		`https://${centralAnalyticsDomain}`,
+		"https://challenges.cloudflare.com"
+	].join(" "),
+	[
+		"connect-src 'self'",
+		publicApiOrigin,
+		"https://analytics.isthereconsensus.org",
+		`https://${centralAnalyticsDomain}`,
+		"https://challenges.cloudflare.com"
+	]
+		.filter(Boolean)
+		.join(" "),
+	"frame-src https://challenges.cloudflare.com",
+	"worker-src 'self' blob:",
+	"manifest-src 'self'",
+	"upgrade-insecure-requests"
+].join("; ");
+const securityHeaders = {
+	"Content-Security-Policy": contentSecurityPolicy,
+	"Cross-Origin-Opener-Policy": "same-origin",
+	"Permissions-Policy": "camera=(), geolocation=(), microphone=(), payment=(), usb=()",
+	"Referrer-Policy": "strict-origin-when-cross-origin",
+	"Strict-Transport-Security": "max-age=63072000; includeSubDomains",
+	"X-Content-Type-Options": "nosniff",
+	"X-Frame-Options": "DENY"
+};
 
 export default defineNuxtConfig({
 	alias: {
@@ -157,16 +189,13 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		apiInternalBase: internalApiBase,
-		internalDiagnosticsKey: process.env.INTERNAL_DIAGNOSTICS_KEY || "",
-		resend: {
-			apiKey: process.env.RESEND_API_KEY,
-			from: process.env.RESEND_FROM,
-			to: process.env.RESEND_TO
-		},
+		// Secrets must be supplied at runtime as NUXT_INTERNAL_DIAGNOSTICS_KEY.
+		// Never bake the backend environment file into the frontend artifact.
+		internalDiagnosticsKey: "",
 		public: {
 			apiBase: publicApiBase,
-			siteUrl: process.env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
-			captchaSiteKey: process.env.PUBLIC_CAPTCHA_SITEKEY || "",
+			siteUrl: publicSiteUrl,
+			captchaSiteKey: process.env.NUXT_PUBLIC_CAPTCHA_SITE_KEY || process.env.PUBLIC_CAPTCHA_SITEKEY || "",
 			deployment: {
 				commit: deploymentCommit || "",
 				ref: deploymentRef || ""
@@ -181,6 +210,9 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
+		"/**": {
+			headers: securityHeaders
+		},
 		"/account": {
 			headers: privateNoindexHeaders
 		},

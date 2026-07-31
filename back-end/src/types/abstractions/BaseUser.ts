@@ -6,6 +6,7 @@ export interface IBaseUser extends Document {
 	name: string;
 	email: string;
 	password: string;
+	sessionVersion: number;
 	saveEdit: string; // the “Save” / “Edit” toggle text
 	trustScore?: number;
 	trustLevel?: number;

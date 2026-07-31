@@ -7,6 +7,7 @@ import { getTopicGuide, topicGuides } from "~/data/topicGuides";
 import { interleaveClaimsByTopic } from "~/utils/claim-directory";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
+import { serializeJsonLd } from "~/utils/json-ld";
 
 const route = useRoute();
 const router = useRouter();
@@ -136,7 +137,7 @@ useHead(() => ({
 	],
 	script: [
 		{
-			innerHTML: JSON.stringify(directoryStructuredData.value),
+			innerHTML: serializeJsonLd(directoryStructuredData.value),
 			key: "consensus-directory-jsonld",
 			type: "application/ld+json"
 		}

@@ -35,6 +35,10 @@ interface RetiredSeedClaimUpdate {
 	};
 }
 
+export interface SeedClaimsOptions {
+	synchronizeExisting?: boolean;
+}
+
 interface ExistingClaimSourceForSeedSync {
 	kind?: string;
 	title?: string;
@@ -260,27 +264,27 @@ async function archiveRetiredSeedClaims(activeSeedKeys: Set<string>) {
 	}
 }
 
-export async function seedClaims() {
+export async function seedClaims(options: SeedClaimsOptions = {}) {
+	const synchronizeExisting = options.synchronizeExisting === true;
 	const activeSeedKeys = new Set(defaultClaims.map(seed => seedKey(seed.topicSlug, seed.slug)));
 
 	for (const seed of defaultClaims) {
 		const topic = await Topic.findOne({ slug: seed.topicSlug });
 		if (!topic) continue;
 
-		const claim = await Claim.findOneAndUpdate(
-			{ topic: topic._id, slug: seed.slug },
-			{
-				$setOnInsert: {
-					topic: topic._id,
-					slug: seed.slug,
-					...seedClaimFields(seed),
-					lastReviewedAt: new Date(),
-					nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
-					publishedAt: seed.status === "published" ? new Date() : undefined
-				}
-			},
-			{ upsert: true, returnDocument: "after" }
-		);
+		const existingClaim = await Claim.findOne({ topic: topic._id, slug: seed.slug });
+		const claim = existingClaim ?? await Claim.create({
+			topic: topic._id,
+			slug: seed.slug,
+			...seedClaimFields(seed),
+			lastReviewedAt: new Date(),
+			nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
+			publishedAt: seed.status === "published" ? new Date() : undefined
+		});
+
+		if (existingClaim && !synchronizeExisting) {
+			continue;
+		}
 
 		const claimUpdate = buildSeedClaimUpdate(claim as unknown as Record<string, unknown>, seed);
 		const missingFields: Record<string, unknown> = { ...(claimUpdate.$set ?? {}) };
@@ -315,5 +319,7 @@ export async function seedClaims() {
 		}
 	}
 
-	await archiveRetiredSeedClaims(activeSeedKeys);
+	if (synchronizeExisting) {
+		await archiveRetiredSeedClaims(activeSeedKeys);
+	}
 }

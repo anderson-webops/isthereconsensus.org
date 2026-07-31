@@ -6,6 +6,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { backlogClaims, firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
 import { futureRoadmapPreview } from "~/data/futureRoadmap";
 import { measurementLoop, patternPreview, publishingPlan, publishingPlanPreview } from "~/data/searchDemand";
+import { safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 
 const router = useRouter();
@@ -20,7 +21,7 @@ const unassignedQuestions = ref<Question[]>([]);
 const workflowGuide = [
 	"Link to an existing claim when the proposition and scope are already covered and the new question mostly needs routing.",
 	"Create a new draft claim when the proposition needs its own evidence base, definitions, or expert pool.",
-	"Mark duplicate only when the proposition, scope, and practical answer are already represented elsewhere.",
+	"Admins may mark a duplicate only when the proposition, scope, and practical answer are already represented elsewhere, and must record the reason.",
 	"Escalate safety, legal, or privacy issues to admin handling instead of leaving them in the normal intake queue."
 ];
 const moderationGuide = [
@@ -100,6 +101,9 @@ const topicPressure = computed(() =>
 		.slice(0, 6)
 );
 const selectedClaim = ref<Record<string, string>>({});
+const duplicateReason = ref<Record<string, string>>({});
+const deletionReason = ref<Record<string, string>>({});
+const deletionConfirmed = ref<Record<string, boolean>>({});
 
 function daysSince(value?: string) {
 	if (!value) return Number.POSITIVE_INFINITY;
@@ -224,8 +228,7 @@ async function refreshEditorial() {
 		]);
 		claims.value = claimsResponse.claims;
 		unassignedQuestions.value = questionsResponse.questions;
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to load the editorial workspace.";
 	} finally {
 		loading.value = false;
@@ -249,8 +252,7 @@ async function createDraftClaim(question: Question) {
 		);
 		await refreshEditorial();
 		await router.push(`/account/editorial/claims/${response.claim._id}`);
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to create a draft claim from that question.";
 	} finally {
 		actionState.value = "";
@@ -268,8 +270,7 @@ async function linkQuestion(question: Question) {
 			body: { claimId }
 		});
 		await refreshEditorial();
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to link that question to a claim.";
 	} finally {
 		actionState.value = "";
@@ -277,15 +278,18 @@ async function linkQuestion(question: Question) {
 }
 
 async function markDuplicate(question: Question) {
+	const moderationNote = duplicateReason.value[question._id]?.trim();
+	if (!moderationNote) return;
 	actionState.value = question._id;
 	try {
 		await $fetch(apiUrl(`/editorial/questions/${question._id}/mark-duplicate`), {
 			method: "POST",
-			credentials: "include"
+			credentials: "include",
+			body: { moderationNote }
 		});
+		delete duplicateReason.value[question._id];
 		await refreshEditorial();
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to mark that question as duplicate.";
 	} finally {
 		actionState.value = "";
@@ -293,15 +297,20 @@ async function markDuplicate(question: Question) {
 }
 
 async function deleteQuestion(question: Question) {
+	const moderationReason = deletionReason.value[question._id]?.trim();
+	if (!moderationReason || !deletionConfirmed.value[question._id]) return;
+
 	actionState.value = question._id;
 	try {
 		await $fetch(apiUrl(`/questions/${question._id}`), {
 			method: "DELETE",
-			credentials: "include"
+			credentials: "include",
+			body: { moderationReason }
 		});
+		delete deletionReason.value[question._id];
+		delete deletionConfirmed.value[question._id];
 		await refreshEditorial();
-	} catch (error) {
-		console.error(error);
+	} catch {
 		errorMessage.value = "Unable to delete that question.";
 	} finally {
 		actionState.value = "";
@@ -856,7 +865,10 @@ watch(
 						<p class="eyebrow">Queue 1</p>
 						<h2>Unassigned community questions</h2>
 					</div>
-					<p>Link a question to an existing claim, turn it into a draft, or mark it as duplicate.</p>
+					<p>
+						Link a question to an existing claim or turn it into a draft. Admins can record and apply a
+						duplicate decision.
+					</p>
 				</div>
 
 				<div v-if="!unassignedQuestions.length" class="empty-state">No unassigned questions are waiting.</div>
@@ -865,7 +877,7 @@ watch(
 						<div class="queue-card__content">
 							<p class="queue-card__meta">
 								<span>{{ question.topic.title }}</span>
-								<span>{{ question.authorName || question.displayName || "Community member" }}</span>
+								<span>{{ question.displayName || "Community member" }}</span>
 								<span v-if="question.askKind">{{ question.askKind }}</span>
 							</p>
 							<h3>{{ question.title }}</h3>
@@ -891,7 +903,12 @@ watch(
 							<p v-if="question.differenceNote" class="queue-card__note">
 								<strong>What the match missed:</strong> {{ question.differenceNote }}
 							</p>
-							<a v-if="question.sourceUrl" :href="question.sourceUrl" target="_blank" rel="noreferrer">
+							<a
+								v-if="safeExternalHttpUrl(question.sourceUrl)"
+								:href="safeExternalHttpUrl(question.sourceUrl)"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								{{ question.sourceUrl }}
 							</a>
 						</div>
@@ -907,6 +924,27 @@ watch(
 									{{ claim.title }}
 								</option>
 							</select>
+							<input
+								v-if="isAdmin"
+								v-model="duplicateReason[question._id]"
+								type="text"
+								maxlength="1000"
+								placeholder="Reason for duplicate decision"
+							/>
+							<input
+								v-if="isAdmin"
+								v-model="deletionReason[question._id]"
+								type="text"
+								maxlength="500"
+								placeholder="Moderation reason required for removal"
+							/>
+							<label v-if="isAdmin" class="queue-card__confirmation">
+								<input v-model="deletionConfirmed[question._id]" type="checkbox" />
+								<span
+									>Remove public content and public account attribution while retaining moderation
+									records</span
+								>
+							</label>
 							<div class="queue-card__buttons">
 								<button
 									class="button button--ghost"
@@ -925,9 +963,10 @@ watch(
 									Create draft
 								</button>
 								<button
+									v-if="isAdmin"
 									class="button button--ghost"
 									type="button"
-									:disabled="actionState === question._id"
+									:disabled="!duplicateReason[question._id]?.trim() || actionState === question._id"
 									@click="markDuplicate(question)"
 								>
 									Mark duplicate
@@ -936,10 +975,14 @@ watch(
 									v-if="isAdmin"
 									class="button button--ghost button--danger"
 									type="button"
-									:disabled="actionState === question._id"
+									:disabled="
+										!deletionReason[question._id]?.trim() ||
+										!deletionConfirmed[question._id] ||
+										actionState === question._id
+									"
 									@click="deleteQuestion(question)"
 								>
-									Delete
+									Remove question
 								</button>
 							</div>
 						</div>
@@ -1314,6 +1357,20 @@ watch(
 	border-radius: 14px;
 	border: 1px solid var(--consensus-line);
 	background: var(--consensus-field-surface);
+}
+
+.queue-card__confirmation {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+	line-height: 1.45;
+}
+
+.queue-card__confirmation input {
+	width: auto;
+	margin-top: 3px;
 }
 
 .editorial-grid {

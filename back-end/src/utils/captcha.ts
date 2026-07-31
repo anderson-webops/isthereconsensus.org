@@ -1,4 +1,6 @@
 import { env } from "node:process";
+import { fetchJsonBounded } from "./boundedFetch.js";
+import { logError } from "./safeLog.js";
 
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
@@ -11,6 +13,9 @@ export interface CaptchaResult {
 export async function verifyCaptcha(token: string | undefined, remoteIp?: string): Promise<CaptchaResult> {
 	const secret = env.CAPTCHA_SECRET;
 	if (!secret) {
+		if (env.NODE_ENV === "production") {
+			return { ok: false, error: "Captcha is unavailable." };
+		}
 		return { ok: true, skipped: true };
 	}
 	if (!token) {
@@ -23,19 +28,23 @@ export async function verifyCaptcha(token: string | undefined, remoteIp?: string
 	if (remoteIp) body.set("remoteip", remoteIp);
 
 	try {
-		const response = await fetch(VERIFY_URL, {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body
-		});
-		const data = (await response.json()) as { "success"?: boolean; "error-codes"?: string[] };
+		const { response, data } = await fetchJsonBounded<{ "success"?: boolean; "error-codes"?: string[] }>(
+			VERIFY_URL,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				body
+			},
+			{ timeoutMs: 5_000, maxBytes: 32 * 1024 }
+		);
+		if (!response.ok) return { ok: false, error: "Captcha verification failed." };
 		if (!data.success) {
-			return { ok: false, error: data["error-codes"]?.join(", ") || "Captcha failed" };
+			return { ok: false, error: "Captcha verification failed." };
 		}
 		return { ok: true };
 	}
 	catch (error) {
-		console.error("Captcha verification failed", error);
-		return { ok: false, error: "Captcha verification error" };
+		logError("Captcha verification failed", error);
+		return { ok: false, error: "Captcha verification is temporarily unavailable." };
 	}
 }

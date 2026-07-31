@@ -3,23 +3,27 @@ import type { IAdmin } from "../types/entities/IAdmin.js";
 import type { IUser } from "../types/entities/IUser.js";
 import type { CustomSession } from "../types/session/CustomSession.js";
 import type { AccountActivityActor, AccountActivityTarget } from "../utils/accountActivity.js";
+import argon2 from "argon2";
 import { Admin } from "../models/schemas/Admin.js";
 import { User } from "../models/schemas/User.js";
 import { emailFingerprint, recordAccountActivity } from "../utils/accountActivity.js";
+import {
+	adminPasswordSchema,
+	emailChangeSchema,
+	firstValidationError,
+	loginSchema,
+	passwordChangeSchema,
+	registrationSchema
+} from "../utils/accountValidation.js";
 import { verifyCaptcha } from "../utils/captcha.js";
+import { logError } from "../utils/safeLog.js";
 
 type Entity = IUser | IAdmin;
 
-const THIRTY_DAYS_MS: number = 30 * 24 * 60 * 60 * 1000;
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const ADMIN_SESSION_MAX_AGE_MS = 8 * 60 * 60 * 1000;
 const TERMS_VERSION = "2026-04-11";
-
-function isEntity(entity: any): entity is Entity {
-	return entity != null && typeof entity.comparePassword === "function";
-}
-
-function getEntityId(entity: Entity) {
-	return entity._id.toString();
-}
+const dummyPasswordHash = argon2.hash("not-a-real-account-password");
 
 function accountType(entity: Entity): "admin" | "user" {
 	return entity instanceof Admin ? "admin" : "user";
@@ -40,69 +44,67 @@ function accountActor(entity: Entity): AccountActivityActor {
 	};
 }
 
-async function actorFromSession(session: CustomSession): Promise<AccountActivityActor | undefined> {
-	if (session.adminID) {
-		const admin = await Admin.findById(session.adminID);
-		if (admin) return accountActor(admin);
-	}
-	if (session.userID) {
-		const user = await User.findById(session.userID);
-		if (user) return accountActor(user);
-	}
-	return undefined;
+function sessionVersion(entity: Entity) {
+	return Number(entity.sessionVersion || 0);
 }
 
-function canMutate(session: CustomSession, entity: Entity) {
-	if (session.adminID) return true;
-	const entityId = getEntityId(entity);
-	if (entity instanceof Admin) return session.adminID === entityId;
-	if (entity instanceof User) return session.userID === entityId;
-	return false;
+function clearSession(req: Parameters<RequestHandler>[0]) {
+	(req.session as unknown) = null;
+}
+
+function hasAmbiguousIdentity(session: CustomSession | undefined) {
+	return Boolean(session?.userID && session?.adminID);
+}
+
+function setSession(req: Parameters<RequestHandler>[0], entity: Entity) {
+	const session = req.session as CustomSession;
+	session.sessionVersion = sessionVersion(entity);
+	if (entity instanceof Admin) {
+		session.adminID = entity._id.toString();
+		session.userID = undefined;
+	}
+	else {
+		session.adminID = undefined;
+		session.userID = entity._id.toString();
+	}
+}
+
+function currentEntity(req: Parameters<RequestHandler>[0]): Entity | null {
+	return req.currentAdmin ?? req.currentUser ?? null;
+}
+
+async function consumeDummyPasswordCheck(password: string) {
+	const hash = await dummyPasswordHash;
+	await argon2.verify(hash, password);
 }
 
 export const registerUser: RequestHandler = async (req, res) => {
-	const { name, email, password, captchaToken, acceptTerms } = req.body as {
-		name?: string;
-		email?: string;
-		password?: string;
-		captchaToken?: string;
-		acceptTerms?: boolean;
-	};
-
-	if (!name || !email || !password) {
-		return res.status(400).json({ error: "Name, email, and password are required." });
-	}
-	if (!acceptTerms) {
-		return res.status(400).json({ error: "You must agree to the Terms of Service." });
+	const parsed = registrationSchema.safeParse(req.body);
+	if (!parsed.success) {
+		return res.status(400).json({ error: firstValidationError(parsed.error) });
 	}
 
-	const captcha = await verifyCaptcha(captchaToken, req.ip);
+	const captcha = await verifyCaptcha(parsed.data.captchaToken, req.ip);
 	if (!captcha.ok) {
 		return res.status(403).json({ error: captcha.error || "Captcha verification failed." });
 	}
 
-	const trimmedName = name.trim();
-	const trimmedEmail = email.trim().toLowerCase();
-
 	const [existingUser, existingAdmin] = await Promise.all([
-		User.findOne({ email: trimmedEmail }),
-		Admin.findOne({ email: trimmedEmail })
+		User.exists({ email: parsed.data.email }),
+		Admin.exists({ email: parsed.data.email })
 	]);
-
 	if (existingUser || existingAdmin) {
 		return res.status(409).json({ error: "Email already in use." });
 	}
 
 	const user = await User.create({
-		name: trimmedName,
-		email: trimmedEmail,
-		password,
+		name: parsed.data.name,
+		email: parsed.data.email,
+		password: parsed.data.password,
 		termsVersion: TERMS_VERSION,
 		termsAcceptedAt: new Date()
 	});
-	const session = req.session as CustomSession;
-	session.adminID = undefined;
-	session.userID = user._id.toString();
+	setSession(req, user);
 
 	await recordAccountActivity({
 		req,
@@ -115,65 +117,49 @@ export const registerUser: RequestHandler = async (req, res) => {
 		}
 	});
 
-	return res.status(201).json({ currentUser: user });
+	return res.status(201).json({ currentUser: user, currentAdmin: null });
 };
 
 export const login: RequestHandler = async (req, res) => {
-	const { email, password, remember, captchaToken } = req.body as {
-		email?: string;
-		password?: string;
-		remember?: boolean;
-		captchaToken?: string;
-	};
-
-	if (!email || !password) {
+	const parsed = loginSchema.safeParse(req.body);
+	if (!parsed.success) {
 		return res.status(400).json({ error: "Email and password are required." });
 	}
 
-	if (captchaToken) {
-		const captcha = await verifyCaptcha(captchaToken, req.ip);
+	if (parsed.data.captchaToken) {
+		const captcha = await verifyCaptcha(parsed.data.captchaToken, req.ip);
 		if (!captcha.ok) {
 			return res.status(403).json({ error: captcha.error || "Captcha verification failed." });
 		}
 	}
 
-	const normalizedEmail = email.trim().toLowerCase();
+	const [user, admin] = await Promise.all([
+		User.findOne({ email: parsed.data.email }).exec(),
+		Admin.findOne({ email: parsed.data.email }).exec()
+	]);
+	const matchesExactlyOneAccount = Number(Boolean(user)) + Number(Boolean(admin)) === 1;
+	const entity = matchesExactlyOneAccount ? (admin ?? user) : null;
+	const matches = entity
+		? await entity.comparePassword(parsed.data.password)
+		: (await consumeDummyPasswordCheck(parsed.data.password), false);
 
-	const results = (await Promise.all([
-		User.findOne({ email: normalizedEmail }).exec(),
-		Admin.findOne({ email: normalizedEmail }).exec()
-	])) as Array<IUser | IAdmin | null>;
-
-	const entity = results.find(isEntity);
-	const matches = entity ? await entity.comparePassword(password) : false;
 	if (!entity || !matches) {
 		await recordAccountActivity({
 			req,
 			action: "login.failed",
 			actor: { type: "anonymous" },
-			target: entity ? accountTarget(entity) : { type: "unknown", email: normalizedEmail },
+			target: entity ? accountTarget(entity) : { type: "unknown", email: parsed.data.email },
 			metadata: {
-				reason: "bad_credentials"
+				reason: matchesExactlyOneAccount ? "bad_credentials" : "unknown_or_ambiguous_account"
 			}
 		});
-		return res.status(403).json({ error: "Bad credentials." });
+		return res.status(403).json({ error: "Invalid email or password." });
 	}
 
-	const session = req.session as CustomSession;
-	let responseKey: "currentAdmin" | "currentUser";
-	if (entity instanceof Admin) {
-		session.adminID = entity._id.toString();
-		session.userID = undefined;
-		responseKey = "currentAdmin";
-	}
-	else {
-		session.adminID = undefined;
-		session.userID = entity._id.toString();
-		responseKey = "currentUser";
-	}
-
-	const options = ((req as any).sessionOptions ??= {});
-	options.maxAge = remember ? THIRTY_DAYS_MS : undefined;
+	setSession(req, entity);
+	const options = ((req as unknown as { sessionOptions?: { maxAge?: number } }).sessionOptions ??= {});
+	const remember = !(entity instanceof Admin) && parsed.data.remember;
+	options.maxAge = entity instanceof Admin ? ADMIN_SESSION_MAX_AGE_MS : remember ? THIRTY_DAYS_MS : undefined;
 
 	await recordAccountActivity({
 		req,
@@ -181,152 +167,144 @@ export const login: RequestHandler = async (req, res) => {
 		actor: accountActor(entity),
 		target: accountTarget(entity),
 		metadata: {
-			remember: remember ? "true" : "false"
+			remember: remember ? "true" : "false",
+			sessionClass: entity instanceof Admin ? "admin_8h" : remember ? "remembered_user" : "browser_session"
 		}
 	});
 
-	return res.json({ [responseKey]: entity });
+	return entity instanceof Admin
+		? res.json({ currentAdmin: entity, currentUser: null })
+		: res.json({ currentUser: entity, currentAdmin: null });
 };
 
 export const logout: RequestHandler = async (req, res) => {
 	const session = req.session as CustomSession;
-	const entity = session.adminID
-		? await Admin.findById(session.adminID)
-		: session.userID
-			? await User.findById(session.userID)
-			: null;
+	clearSession(req);
 
-	if (entity) {
-		await recordAccountActivity({
-			req,
-			action: "logout",
-			actor: accountActor(entity),
-			target: accountTarget(entity)
-		});
+	try {
+		const entity = hasAmbiguousIdentity(session)
+			? null
+			: session?.adminID
+				? await Admin.findById(session.adminID)
+				: session?.userID
+					? await User.findById(session.userID)
+					: null;
+
+		if (entity && session.sessionVersion === sessionVersion(entity)) {
+			await recordAccountActivity({
+				req,
+				action: "logout",
+				actor: accountActor(entity),
+				target: accountTarget(entity)
+			});
+		}
+	}
+	catch (error) {
+		logError("Logout audit lookup failed", error);
 	}
 
-	(req.session as any) = null;
 	return res.sendStatus(200);
 };
 
 export const me: RequestHandler = async (req, res) => {
-	const session = req.session as CustomSession;
+	const session = req.session as CustomSession | undefined;
+	if (hasAmbiguousIdentity(session)) {
+		clearSession(req);
+		return res.json({ currentUser: null, currentAdmin: null });
+	}
+	let entity: Entity | null = null;
+	if (session?.adminID) entity = await Admin.findById(session.adminID);
+	else if (session?.userID) entity = await User.findById(session.userID);
 
-	if (session?.adminID) {
-		const admin = await Admin.findById(session.adminID);
-		if (!admin) session.adminID = undefined;
-		return res.json({ currentAdmin: admin ?? null, currentUser: null });
+	if (!entity || session?.sessionVersion !== sessionVersion(entity)) {
+		if (session?.adminID || session?.userID) clearSession(req);
+		return res.json({ currentUser: null, currentAdmin: null });
 	}
 
-	if (session?.userID) {
-		const user = await User.findById(session.userID);
-		if (!user) session.userID = undefined;
-		return res.json({ currentUser: user ?? null, currentAdmin: null });
-	}
-
-	return res.json({ currentUser: null, currentAdmin: null });
-};
-
-export const checkEmail: RequestHandler = async (req, res) => {
-	const { id, email } = req.body as { id?: string; email?: string };
-	if (!email) return res.status(400).json({ error: "Email required." });
-
-	const [u, a] = await Promise.all([User.findOne({ email }), Admin.findOne({ email })]);
-	const conflict = [u, a].some(entity => entity && entity._id.toString() !== id);
-	return res.status(conflict ? 409 : 200).json({ available: !conflict });
+	return entity instanceof Admin
+		? res.json({ currentAdmin: entity, currentUser: null })
+		: res.json({ currentUser: entity, currentAdmin: null });
 };
 
 export const changeEmail: RequestHandler = async (req, res) => {
-	const { id } = req.params as { id?: string };
-	const { email: newEmail } = req.body as { email?: string };
+	const entity = currentEntity(req);
+	if (!entity) return res.status(403).json({ error: "Login required." });
 
-	if (!id) return res.status(400).json({ error: "Missing account id." });
-	if (!newEmail) return res.status(400).json({ error: "New email is required." });
+	const parsed = emailChangeSchema.safeParse(req.body);
+	if (!parsed.success) {
+		return res.status(400).json({ error: firstValidationError(parsed.error) });
+	}
 
-	const normalizedEmail = newEmail.trim().toLowerCase();
-	const models = [User, Admin] as Array<import("mongoose").Model<any>>;
-	const conflicts = await Promise.all(
-		models.map(Model => Model.exists({ email: normalizedEmail, _id: { $ne: id } }))
-	);
+	if (!(await entity.comparePassword(parsed.data.currentPassword))) {
+		return res.status(403).json({ error: "Current password is incorrect." });
+	}
 
+	const isAdmin = entity instanceof Admin;
+	const conflicts = await Promise.all([
+		User.exists(isAdmin ? { email: parsed.data.email } : { email: parsed.data.email, _id: { $ne: entity._id } }),
+		Admin.exists(isAdmin ? { email: parsed.data.email, _id: { $ne: entity._id } } : { email: parsed.data.email })
+	]);
 	if (conflicts.some(Boolean)) {
-		return res.status(409).json({ error: "Email already exists." });
+		return res.status(409).json({ error: "Email already in use." });
 	}
 
-	const session = req.session as CustomSession;
-	for (const Model of models) {
-		const doc = await Model.findById(id);
-		if (!doc) continue;
-		if (!canMutate(session, doc as Entity)) {
-			return res.status(403).json({ error: "Not authorized to update this email." });
+	const previousEmail = entity.email;
+	entity.email = parsed.data.email;
+	entity.sessionVersion = sessionVersion(entity) + 1;
+	await entity.save();
+	setSession(req, entity);
+
+	const previousEmailFingerprint = emailFingerprint(previousEmail);
+	const newEmailFingerprint = emailFingerprint(parsed.data.email);
+	await recordAccountActivity({
+		req,
+		action: "email.changed",
+		actor: accountActor(entity),
+		target: accountTarget(entity),
+		metadata: {
+			previousEmailHash: previousEmailFingerprint.targetEmailHash,
+			previousEmailDomain: previousEmailFingerprint.targetEmailDomain,
+			newEmailHash: newEmailFingerprint.targetEmailHash,
+			newEmailDomain: newEmailFingerprint.targetEmailDomain
 		}
-		const previousEmail = doc.email;
-		doc.email = normalizedEmail;
-		await doc.save();
-		const previousEmailFingerprint = emailFingerprint(previousEmail);
-		const newEmailFingerprint = emailFingerprint(normalizedEmail);
-		await recordAccountActivity({
-			req,
-			action: "email.changed",
-			actor: (await actorFromSession(session)) ?? accountActor(doc as Entity),
-			target: accountTarget(doc as Entity),
-			metadata: {
-				previousEmailHash: previousEmailFingerprint.targetEmailHash,
-				previousEmailDomain: previousEmailFingerprint.targetEmailDomain,
-				newEmailHash: newEmailFingerprint.targetEmailHash,
-				newEmailDomain: newEmailFingerprint.targetEmailDomain
-			}
-		});
-		return res.json({ message: "Email updated successfully." });
-	}
+	});
 
-	return res.status(404).json({ error: "Account not found." });
+	return entity instanceof Admin
+		? res.json({ message: "Email updated successfully.", currentAdmin: entity, currentUser: null })
+		: res.json({ message: "Email updated successfully.", currentUser: entity, currentAdmin: null });
 };
 
 export const changePassword: RequestHandler = async (req, res) => {
-	const { id } = req.params as { id?: string };
-	const { currentPassword, newPassword } = req.body as {
-		currentPassword?: string;
-		newPassword?: string;
-	};
+	const entity = currentEntity(req);
+	if (!entity) return res.status(403).json({ error: "Login required." });
 
-	if (!id) return res.status(400).json({ error: "Missing account id." });
-	if (!newPassword) return res.status(400).json({ error: "New password is required." });
-
-	const models = [User, Admin] as Array<import("mongoose").Model<any>>;
-	const session = req.session as CustomSession;
-
-	for (const Model of models) {
-		const doc = await Model.findById(id);
-		if (!doc) continue;
-		if (!canMutate(session, doc as Entity)) {
-			return res.status(403).json({ error: "Not authorized to update this password." });
+	const parsed = passwordChangeSchema.safeParse(req.body);
+	if (!parsed.success) {
+		return res.status(400).json({ error: firstValidationError(parsed.error) });
+	}
+	if (entity instanceof Admin) {
+		const adminPassword = adminPasswordSchema.safeParse(parsed.data.newPassword);
+		if (!adminPassword.success) {
+			return res.status(400).json({ error: firstValidationError(adminPassword.error) });
 		}
-
-		const isAdminOverride = !!session.adminID;
-		if (!isAdminOverride) {
-			if (!currentPassword) {
-				return res.status(400).json({ error: "Current password is required." });
-			}
-			const matches = await (doc as Entity).comparePassword(currentPassword);
-			if (!matches) {
-				return res.status(403).json({ error: "Current password is incorrect." });
-			}
-		}
-
-		doc.password = newPassword;
-		await doc.save();
-		await recordAccountActivity({
-			req,
-			action: "password.changed",
-			actor: (await actorFromSession(session)) ?? accountActor(doc as Entity),
-			target: accountTarget(doc as Entity),
-			metadata: {
-				adminOverride: isAdminOverride ? "true" : "false"
-			}
-		});
-		return res.json({ message: "Password updated successfully." });
+	}
+	if (!(await entity.comparePassword(parsed.data.currentPassword))) {
+		return res.status(403).json({ error: "Current password is incorrect." });
 	}
 
-	return res.status(404).json({ error: "Account not found." });
+	entity.password = parsed.data.newPassword;
+	entity.sessionVersion = sessionVersion(entity) + 1;
+	await entity.save();
+	setSession(req, entity);
+
+	await recordAccountActivity({
+		req,
+		action: "password.changed",
+		actor: accountActor(entity),
+		target: accountTarget(entity),
+		metadata: {
+			revokedOtherSessions: "true"
+		}
+	});
+	return res.json({ message: "Password updated successfully." });
 };

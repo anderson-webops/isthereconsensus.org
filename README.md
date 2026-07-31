@@ -31,8 +31,10 @@ The site is deliberately not a truth oracle, medical-advice tool, or automated c
 
 ## Getting started
 
+Use Node `24.18.1` and npm `12.0.2`; `.node-version`, `.nvmrc`, package engines, CI, and the container build all pin that production toolchain.
+
 ```bash
-npm ci
+npm ci --include=optional --strict-allow-scripts
 npm run dev
 ```
 
@@ -78,7 +80,8 @@ npm run -w back-end server
 Run these from the repository root before shipping a meaningful change:
 
 ```bash
-npm ci
+npm ci --include=optional --strict-allow-scripts
+npm run verify:native-lock
 npm run lint
 npm run typecheck
 npm run build
@@ -87,6 +90,8 @@ npm run smoke:ssr-routes
 npm run a11y
 npm test
 npm audit
+npm audit --omit=dev
+npm audit signatures
 ```
 
 After production deploys, run the live contract smoke:
@@ -114,33 +119,33 @@ LIVE_SMOKE_BASE_URL=http://127.0.0.1:4068 LIVE_SMOKE_PROFILE=frontend npm run sm
 The deploy script treats static and SSR Nuxt sites differently:
 
 - Static mode (`FE_MODE="static"`):
-  - Build output is `front-end/dist/` (copied from `.output/public` during build).
-  - Deploy step rsyncs `front-end/dist/` into `/var/www/<site>/`.
-  - Nginx serves files directly from `/var/www/<site>/`.
+    - Build output is `front-end/dist/` (copied from `.output/public` during build).
+    - Deploy step rsyncs `front-end/dist/` into `/var/www/<site>/`.
+    - Nginx serves files directly from `/var/www/<site>/`.
 
 - SSR mode (`FE_MODE="nuxt-ssr"`):
-  - Build output is the Nitro server plus public assets under `front-end/.output/`.
-  - Deploy step rsyncs `front-end/.output/` into `/srv/<site>/front-end/.output/`.
-  - The systemd frontend service serves the site; `/var/www/<site>/` is not used and remains empty.
+    - Build output is the Nitro server plus public assets under `front-end/.output/`.
+    - Deploy step rsyncs `front-end/.output/` into `/srv/<site>/front-end/.output/`.
+    - The systemd frontend service serves the site; `/var/www/<site>/` is not used and remains empty.
 
 Why this matters: if you see `/var/www/stridewithus.co` populated but `/var/www/isthereconsensus.org` empty, that is expected for SSR sites unless `/var/www` was filled manually or via a custom step. Dates on `/var/www` files often reveal that they were copied long ago and are not part of the current SSR deploy path.
 
 Options if you want `/var/www/<site>/` populated for an SSR site:
 
-1) Keep SSR and leave `/var/www/<site>/` empty (recommended).
-   - Most correct for SSR: Nginx should proxy to the frontend service.
-2) Keep SSR and mirror public assets into `/var/www/<site>/`.
-   - Add a deploy step to rsync `front-end/.output/public/` into `/var/www/<site>/`.
-   - Useful if you want Nginx to serve static assets directly.
-3) Keep SSR and make `/var/www/<site>/` a symlink or bind mount.
-   - Point it at `/srv/<site>/front-end/.output/public/`.
-   - Keeps a single source of truth for public assets.
-4) Switch the site to static (`FE_MODE="static"`).
-   - `/var/www/<site>/` will be populated from `front-end/dist/`.
-   - Loses server-side rendering; SSR-only routes or APIs must move to the backend.
+1. Keep SSR and leave `/var/www/<site>/` empty (recommended).
+    - Most correct for SSR: Nginx should proxy to the frontend service.
+2. Keep SSR and mirror public assets into `/var/www/<site>/`.
+    - Add a deploy step to rsync `front-end/.output/public/` into `/var/www/<site>/`.
+    - Useful if you want Nginx to serve static assets directly.
+3. Keep SSR and make `/var/www/<site>/` a symlink or bind mount.
+    - Point it at `/srv/<site>/front-end/.output/public/`.
+    - Keeps a single source of truth for public assets.
+4. Switch the site to static (`FE_MODE="static"`).
+    - `/var/www/<site>/` will be populated from `front-end/dist/`.
+    - Loses server-side rendering; SSR-only routes or APIs must move to the backend.
 
 ## Launch coordination
 
 - `/setup` is a development-only diagnostics page. In production, use the protected diagnostics APIs instead of rendering an operational UI.
 - [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
-- In production same-origin mode, set `PUBLIC_API_BASE=/api` so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.
+- In production same-origin mode, set `NUXT_PUBLIC_API_BASE=/api` and keep the private backend address in `NUXT_API_INTERNAL_BASE`, so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.

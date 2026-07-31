@@ -39,6 +39,11 @@ const omittedRoutes = [
 ];
 
 describe("sitemap static route list", () => {
+	it("uses the configured public origin instead of the request host", () => {
+		assert.match(sitemapSource, /config\.public\.siteUrl \|\| "https:\/\/isthereconsensus\.org"/);
+		assert.doesNotMatch(sitemapSource, /const origin = getRequestURL\(event\)\.origin/);
+	});
+
 	for (const route of publicStaticRoutes) {
 		it(`keeps ${route} discoverable`, () => {
 			assert.match(sitemapSource, new RegExp(`path: "${route === "/" ? "\\/" : route}"`));

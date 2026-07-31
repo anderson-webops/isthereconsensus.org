@@ -31,6 +31,7 @@ const registerCaptcha = ref("");
 const acceptedTerms = ref(false);
 
 const emailUpdate = ref("");
+const emailCurrentPassword = ref("");
 const currentPassword = ref("");
 const newPassword = ref("");
 
@@ -40,7 +41,6 @@ const accountMessage = ref("");
 const accountError = ref("");
 const busy = ref(false);
 
-const accountId = computed(() => currentAccount.value?._id ?? "");
 const accountName = computed(() => currentAccount.value?.name || "Account");
 const accountRole = computed(() => (role.value === "admin" ? "Admin" : "Member"));
 
@@ -56,9 +56,8 @@ async function handleLogin() {
 		});
 		authSuccess.value = "Signed in.";
 		loginPassword.value = "";
-	} catch (error) {
+	} catch {
 		authError.value = "Unable to sign in. Check your credentials and try again.";
-		console.error(error);
 	} finally {
 		busy.value = false;
 	}
@@ -87,9 +86,8 @@ async function handleRegister() {
 		authSuccess.value = "Account created. You are now signed in.";
 		registerPassword.value = "";
 		acceptedTerms.value = false;
-	} catch (error) {
+	} catch {
 		authError.value = "Unable to create an account. Please try again.";
-		console.error(error);
 	} finally {
 		busy.value = false;
 	}
@@ -102,48 +100,46 @@ async function handleLogout() {
 	try {
 		await logout();
 		accountMessage.value = "Signed out.";
-	} catch (error) {
+	} catch {
 		accountError.value = "Unable to sign out right now.";
-		console.error(error);
 	} finally {
 		busy.value = false;
 	}
 }
 
 async function handleChangeEmail() {
-	if (!accountId.value) return;
 	accountMessage.value = "";
 	accountError.value = "";
 	busy.value = true;
 	try {
-		await changeEmail({ id: accountId.value, email: emailUpdate.value.trim() });
+		await changeEmail({
+			email: emailUpdate.value.trim(),
+			currentPassword: emailCurrentPassword.value
+		});
 		accountMessage.value = "Email updated.";
 		emailUpdate.value = "";
-	} catch (error) {
+		emailCurrentPassword.value = "";
+	} catch {
 		accountError.value = "Unable to update email right now.";
-		console.error(error);
 	} finally {
 		busy.value = false;
 	}
 }
 
 async function handleChangePassword() {
-	if (!accountId.value) return;
 	accountMessage.value = "";
 	accountError.value = "";
 	busy.value = true;
 	try {
 		await changePassword({
-			id: accountId.value,
 			currentPassword: currentPassword.value,
 			newPassword: newPassword.value
 		});
 		accountMessage.value = "Password updated.";
 		currentPassword.value = "";
 		newPassword.value = "";
-	} catch (error) {
+	} catch {
 		accountError.value = "Unable to update password right now.";
-		console.error(error);
 	} finally {
 		busy.value = false;
 	}
@@ -185,7 +181,8 @@ async function handleChangePassword() {
 							<h3>Email</h3>
 							<p>Change the address used for sign-in and account notices.</p>
 						</div>
-						<div class="setting-card__fields setting-card__fields--inline">
+						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden />
+						<div class="setting-card__fields setting-card__fields--password">
 							<div class="field-stack">
 								<label class="field-label" for="email-update">New email</label>
 								<input
@@ -193,11 +190,28 @@ async function handleChangePassword() {
 									v-model="emailUpdate"
 									type="email"
 									autocomplete="email"
+									maxlength="254"
 									placeholder="you@email.com"
+									required
+								/>
+							</div>
+							<div class="field-stack">
+								<label class="field-label" for="email-current-password">Current password</label>
+								<input
+									id="email-current-password"
+									v-model="emailCurrentPassword"
+									type="password"
+									autocomplete="current-password"
+									maxlength="1024"
+									required
 								/>
 							</div>
 							<div class="setting-card__actions">
-								<button class="button button--primary" type="submit" :disabled="busy || !emailUpdate">
+								<button
+									class="button button--primary"
+									type="submit"
+									:disabled="busy || !emailUpdate || !emailCurrentPassword"
+								>
 									Save email
 								</button>
 							</div>
@@ -218,6 +232,8 @@ async function handleChangePassword() {
 									v-model="currentPassword"
 									type="password"
 									autocomplete="current-password"
+									maxlength="1024"
+									required
 								/>
 							</div>
 							<div class="field-stack">
@@ -227,6 +243,9 @@ async function handleChangePassword() {
 									v-model="newPassword"
 									type="password"
 									autocomplete="new-password"
+									:minlength="role === 'admin' ? 16 : 12"
+									maxlength="256"
+									required
 								/>
 							</div>
 						</div>
@@ -255,9 +274,23 @@ async function handleChangePassword() {
 
 			<form v-if="mode === 'login'" class="auth-form" @submit.prevent="handleLogin">
 				<label class="field-label" for="login-email">Email</label>
-				<input id="login-email" v-model="loginEmail" type="email" autocomplete="email" />
+				<input
+					id="login-email"
+					v-model="loginEmail"
+					type="email"
+					autocomplete="email"
+					maxlength="254"
+					required
+				/>
 				<label class="field-label" for="login-password">Password</label>
-				<input id="login-password" v-model="loginPassword" type="password" autocomplete="current-password" />
+				<input
+					id="login-password"
+					v-model="loginPassword"
+					type="password"
+					autocomplete="current-password"
+					maxlength="1024"
+					required
+				/>
 				<label class="checkbox">
 					<input v-model="rememberMe" type="checkbox" />
 					<span>Remember me</span>
@@ -267,11 +300,34 @@ async function handleChangePassword() {
 
 			<form v-else class="auth-form" @submit.prevent="handleRegister">
 				<label class="field-label" for="register-name">Name</label>
-				<input id="register-name" v-model="registerName" type="text" autocomplete="name" />
+				<input
+					id="register-name"
+					v-model="registerName"
+					type="text"
+					autocomplete="name"
+					minlength="2"
+					maxlength="80"
+					required
+				/>
 				<label class="field-label" for="register-email">Email</label>
-				<input id="register-email" v-model="registerEmail" type="email" autocomplete="email" />
+				<input
+					id="register-email"
+					v-model="registerEmail"
+					type="email"
+					autocomplete="email"
+					maxlength="254"
+					required
+				/>
 				<label class="field-label" for="register-password">Password</label>
-				<input id="register-password" v-model="registerPassword" type="password" autocomplete="new-password" />
+				<input
+					id="register-password"
+					v-model="registerPassword"
+					type="password"
+					autocomplete="new-password"
+					minlength="12"
+					maxlength="256"
+					required
+				/>
 				<CaptchaWidget v-model="registerCaptcha" />
 				<label class="checkbox checkbox--legal">
 					<input v-model="acceptedTerms" type="checkbox" />

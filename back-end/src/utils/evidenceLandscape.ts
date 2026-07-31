@@ -16,7 +16,7 @@ export interface PublicEvidenceLandscape {
 	credibleMinorityViewSummary?: string;
 	fringeOrUnsupportedViewSummary?: string;
 	whatWouldChangeThis?: string;
-	boundaryConditions: IClaimEvidenceLandscape["boundaryConditions"];
+	boundaryConditions: Array<Omit<IClaimEvidenceLandscape["boundaryConditions"][number], "sourceIds">>;
 	applicability: IClaimEvidenceLandscape["applicability"];
 	distribution: IClaimEvidenceLandscape["distribution"];
 	evidenceBaseSize: IClaimEvidenceLandscape["evidenceBaseSize"];
@@ -66,7 +66,11 @@ export function toPublicEvidenceLandscape(
 			? landscape.fringeOrUnsupportedViewSummary
 			: undefined,
 		whatWouldChangeThis: landscape.whatWouldChangeThis,
-		boundaryConditions: landscape.boundaryConditions ?? [],
+		boundaryConditions: (landscape.boundaryConditions ?? []).map(({ dimension, label, explanation }) => ({
+			dimension,
+			label,
+			explanation
+		})),
 		applicability: landscape.applicability,
 		distribution: landscape.distribution,
 		evidenceBaseSize: landscape.evidenceBaseSize,

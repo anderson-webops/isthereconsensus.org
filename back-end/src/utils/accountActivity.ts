@@ -7,6 +7,7 @@ import type {
 import { createHash } from "node:crypto";
 import mongoose from "mongoose";
 import { AccountActivityLog } from "../models/schemas/AccountActivityLog.js";
+import { logError } from "./safeLog.js";
 
 const sensitiveMetadataKeyPattern = /password|token|secret|captcha|session|cookie|authorization|auth/i;
 const emailMetadataKeyPattern = /email/i;
@@ -36,14 +37,7 @@ export interface RecordAccountActivityInput {
 
 function clientIp(req?: Request) {
 	if (!req) return "";
-	const forwardedFor = req.headers["x-forwarded-for"];
-	const forwardedIp
-		= typeof forwardedFor === "string"
-			? forwardedFor.split(",")[0]?.trim()
-			: Array.isArray(forwardedFor)
-				? forwardedFor[0]?.trim()
-				: undefined;
-	return forwardedIp || req.ip || req.socket.remoteAddress || "";
+	return (req.ip || req.socket.remoteAddress || "").slice(0, 80);
 }
 
 function requestId(req?: Request) {
@@ -108,12 +102,12 @@ export async function recordAccountActivity(input: RecordAccountActivityInput) {
 			targetEmailHash: emailFields.targetEmailHash,
 			targetEmailDomain: emailFields.targetEmailDomain,
 			sourceIp: clientIp(input.req),
-			userAgent: input.req?.get("user-agent") || "",
+			userAgent: (input.req?.get("user-agent") || "").slice(0, 500),
 			requestId: requestId(input.req),
 			metadata: sanitizeAccountActivityMetadata(input.metadata)
 		});
 	}
 	catch (error) {
-		console.error("Failed to record account activity", error);
+		logError("Failed to record account activity", error);
 	}
 }

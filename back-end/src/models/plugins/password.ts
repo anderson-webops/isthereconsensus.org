@@ -19,6 +19,7 @@ export function passwordPlugin<T extends Document & { password: string }>(
 	schema.methods.toJSON = function () {
 		const obj = this.toObject();
 		delete obj.password;
+		delete obj.sessionVersion;
 		return obj;
 	};
 }

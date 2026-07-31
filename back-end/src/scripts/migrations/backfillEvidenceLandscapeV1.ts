@@ -1,29 +1,12 @@
-import process, { env } from "node:process";
+import process from "node:process";
 import mongoose from "mongoose";
 import {
 	EVIDENCE_LANDSCAPE_SCHEMA_VERSION
 } from "../../constants/evidenceLandscape.js";
 import { Claim } from "../../models/schemas/Claim.js";
-import { readMongoSecret } from "../../vaultClient.js";
+import { resolveMongoConfiguration } from "../../utils/mongoConfiguration.js";
+import { logError } from "../../utils/safeLog.js";
 import "dotenv/config";
-
-async function getMongoUri() {
-	try {
-		const { uri } = await readMongoSecret();
-		if (uri) return uri;
-	}
-	catch (error) {
-		const message = error instanceof Error ? error.message : String(error);
-		if (!message.includes("Failed to fetch") && !message.includes("ECONNREFUSED")) {
-			console.warn(`Vault unavailable; falling back to MONGODB_URI (${message}).`);
-		}
-	}
-
-	if (!env.MONGODB_URI) {
-		throw new Error("No MongoDB URI available (Vault and MONGODB_URI missing).");
-	}
-	return env.MONGODB_URI;
-}
 
 function defaultEvidenceLandscape() {
 	return {
@@ -90,7 +73,7 @@ function defaultEvidenceLandscape() {
 
 async function main() {
 	const write = process.argv.includes("--write");
-	const mongoUri = await getMongoUri();
+	const { uri: mongoUri } = await resolveMongoConfiguration();
 	await mongoose.connect(mongoUri);
 
 	const filter = { "evidenceLandscape.schemaVersion": { $exists: false } };
@@ -113,7 +96,7 @@ async function main() {
 }
 
 main().catch(async (error) => {
-	console.error(error);
+	logError("Evidence landscape migration failed", error);
 	await mongoose.disconnect();
 	process.exit(1);
 });

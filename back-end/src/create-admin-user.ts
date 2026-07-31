@@ -1,71 +1,72 @@
-// src/create-admin-user.ts
-import { env, exit } from "node:process";
+import process from "node:process";
 import mongoose from "mongoose";
 import * as readlineSync from "readline-sync";
-
 import { Admin } from "./models/schemas/Admin.js";
+import { User } from "./models/schemas/User.js";
 import { recordAccountActivity } from "./utils/accountActivity.js";
+import {
+	accountEmailSchema,
+	accountNameSchema,
+	adminPasswordSchema,
+	firstValidationError
+} from "./utils/accountValidation.js";
+import { resolveMongoConfiguration } from "./utils/mongoConfiguration.js";
+import { logError } from "./utils/safeLog.js";
 import "dotenv/config";
 
-const MONGODB_URI = env.MONGODB_URI;
-if (!MONGODB_URI) {
-	console.error("MONGODB_URI is required");
-	exit(1);
-}
+async function main() {
+	const { uri: mongoUri } = await resolveMongoConfiguration();
 
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI).then(() => console.log("Connected to MongoDB")).catch((err) => {
-	console.error("Error connecting to MongoDB:", err);
-	exit(1);
-});
+	const nameResult = accountNameSchema.safeParse(readlineSync.question("Name: "));
+	const emailResult = accountEmailSchema.safeParse(readlineSync.question("Email: "));
+	const passwordResult = adminPasswordSchema.safeParse(
+		readlineSync.question("Password: ", { hideEchoBack: true })
+	);
+	for (const result of [nameResult, emailResult, passwordResult]) {
+		if (!result.success) throw new Error(firstValidationError(result.error));
+	}
 
-// Gather input
-const name: string = readlineSync.question("Name: ");
-const email: string = readlineSync.question("Email: ");
-const password: string = readlineSync.question("Password: ", {
-	hideEchoBack: true
-});
+	await mongoose.connect(mongoUri, {
+		serverSelectionTimeoutMS: 10_000,
+		connectTimeoutMS: 10_000
+	});
 
-if (!name || !email || !password) {
-	console.error("You need to enter name, email, and password!");
-	exit(1);
-}
+	const [existingAdmin, existingUser] = await Promise.all([
+		Admin.exists({ email: emailResult.data }),
+		User.exists({ email: emailResult.data })
+	]);
+	if (existingAdmin || existingUser) {
+		throw new Error("That email already belongs to an account.");
+	}
 
-(async () => {
-	try {
-		const existingAdmin = await Admin.findOne({ email });
-		if (existingAdmin) {
-			console.error("That email already exists");
-			exit(1);
+	const admin = await Admin.create({
+		name: nameResult.data,
+		email: emailResult.data,
+		password: passwordResult.data,
+		editAdmins: false,
+		saveEdit: "Edit",
+		role: "admin"
+	});
+	await recordAccountActivity({
+		action: "admin.created",
+		actor: { type: "system" },
+		target: {
+			id: admin._id.toString(),
+			type: "admin",
+			email: admin.email
+		},
+		metadata: {
+			source: "create-admin-user"
 		}
+	});
+	console.log("Admin account created.");
+}
 
-		const admin = new Admin({
-			name,
-			email,
-			password,
-			editAdmins: false,
-			saveEdit: "Edit",
-			role: "admin"
-		});
-
-		await admin.save();
-		await recordAccountActivity({
-			action: "admin.created",
-			actor: { type: "system" },
-			target: {
-				id: admin._id.toString(),
-				type: "admin",
-				email: admin.email
-			},
-			metadata: {
-				source: "create-admin-user"
-			}
-		});
-		// console.log(`Admin user created for ${name} with email ${email}`);
-		exit(0);
-	}
-	catch (error) {
-		console.error(`Error: ${error}`);
-		exit(1);
-	}
-})();
+main()
+	.catch((error) => {
+		logError("Admin account creation failed", error);
+		process.exitCode = 1;
+	})
+	.finally(async () => {
+		if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
+	});

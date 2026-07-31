@@ -15,13 +15,12 @@ interface RegisterPayload {
 }
 
 interface ChangeEmailPayload {
-	id: string;
 	email: string;
+	currentPassword: string;
 }
 
 interface ChangePasswordPayload {
-	id: string;
-	currentPassword?: string;
+	currentPassword: string;
 	newPassword: string;
 }
 
@@ -48,10 +47,9 @@ export function useAuth() {
 			});
 			user.value = response.currentUser ?? null;
 			admin.value = response.currentAdmin ?? null;
-		} catch (error) {
+		} catch {
 			user.value = null;
 			admin.value = null;
-			console.error(error);
 		} finally {
 			ready.value = true;
 			refreshing.value = false;
@@ -97,21 +95,21 @@ export function useAuth() {
 	}
 
 	async function changeEmail(payload: ChangeEmailPayload) {
-		return $fetch(apiUrl(`/auth/change-email/${payload.id}`), {
-			method: "POST",
+		const response = await $fetch<AuthResponse>(apiUrl("/auth/email"), {
+			method: "PATCH",
 			credentials: "include",
-			body: { email: payload.email }
+			body: payload
 		});
+		user.value = response.currentUser ?? null;
+		admin.value = response.currentAdmin ?? null;
+		return response;
 	}
 
 	async function changePassword(payload: ChangePasswordPayload) {
-		return $fetch(apiUrl(`/auth/change-password/${payload.id}`), {
-			method: "POST",
+		return $fetch(apiUrl("/auth/password"), {
+			method: "PATCH",
 			credentials: "include",
-			body: {
-				currentPassword: payload.currentPassword,
-				newPassword: payload.newPassword
-			}
+			body: payload
 		});
 	}
 

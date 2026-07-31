@@ -7,16 +7,19 @@ export default defineEventHandler((event): SetupPromptResponse => {
 	const config = useRuntimeConfig(event);
 	const internalDiagnosticsKey = config.internalDiagnosticsKey as string;
 	const providedDiagnosticsKey = getHeader(event, "x-internal-diagnostics-key");
+	const diagnosticsEnabled = process.env.ENABLE_INTERNAL_DIAGNOSTICS === "true";
 	const diagnosticsAllowed = canReadDiagnostics({
 		isProd: process.env.NODE_ENV === "production",
+		enabled: diagnosticsEnabled,
 		configuredKey: internalDiagnosticsKey,
 		providedKey: providedDiagnosticsKey
 	});
 
 	if (!diagnosticsAllowed) {
+		const diagnosticsHidden = process.env.NODE_ENV === "production" && !diagnosticsEnabled;
 		throw createError({
-			statusCode: 403,
-			statusMessage: "Forbidden"
+			statusCode: diagnosticsHidden ? 404 : 403,
+			statusMessage: diagnosticsHidden ? "Not Found" : "Forbidden"
 		});
 	}
 

@@ -14,7 +14,7 @@ const roleCopy = computed(() => {
 		return "Admin accounts can review intake and maintain canonical claim pages from the editorial workspace.";
 	}
 	if (currentAccount.value?.expertiseStatus === "verified") {
-		return "Verified experts can draft and publish canonical claim reviews from the editorial workspace.";
+		return "Verified experts can prepare and submit draft claim reviews; admins control final approval and publication.";
 	}
 	return "Member accounts can post community questions and apply for expert review.";
 });

@@ -50,9 +50,8 @@ async function refreshSentiment() {
 			confidence.value = response.currentVote.confidence;
 			note.value = response.currentVote.note || "";
 		}
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to load community sentiment right now.";
-		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -77,9 +76,8 @@ async function submitVote() {
 			}
 		});
 		await refreshSentiment();
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to save your vote right now.";
-		console.error(error);
 	} finally {
 		saving.value = false;
 	}

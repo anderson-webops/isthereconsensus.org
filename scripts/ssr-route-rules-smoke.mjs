@@ -8,6 +8,14 @@ import { fileURLToPath } from "node:url";
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
 const serverEntry = resolve(projectRoot, "front-end/.output/server/index.mjs");
+const requiredSecurityHeaders = {
+	"cross-origin-opener-policy": ["same-origin"],
+	"permissions-policy": ["camera=()", "microphone=()", "payment=()"],
+	"referrer-policy": ["strict-origin-when-cross-origin"],
+	"strict-transport-security": ["max-age=63072000", "includeSubDomains"],
+	"x-content-type-options": ["nosniff"],
+	"x-frame-options": ["DENY"]
+};
 
 const routeExpectations = {
 	"/claim-roadmap": {
@@ -210,6 +218,10 @@ async function fetchRoute(baseUrl, route) {
 	return {
 		location: resolvedLocation,
 		robots: response.headers.get("x-robots-tag") || "",
+		securityHeaders: Object.fromEntries(
+			["content-security-policy", ...Object.keys(requiredSecurityHeaders)]
+				.map(header => [header, response.headers.get(header) || ""])
+		),
 		status: response.status
 	};
 }
@@ -226,6 +238,26 @@ function assertRoute(route, actual, expected) {
 	}
 	if (!expected.location && actual.location) {
 		throw new Error(`${route} unexpectedly redirected to ${actual.location}.`);
+	}
+	const expectedCspFragments = actual.status === 404
+		? ["script-src 'none'", "frame-ancestors 'none'"]
+		: ["default-src 'self'", "frame-ancestors 'none'", "object-src 'none'"];
+	for (const fragment of expectedCspFragments) {
+		if (!actual.securityHeaders["content-security-policy"].includes(fragment)) {
+			throw new Error(
+				`${route} returned content-security-policy: ${actual.securityHeaders["content-security-policy"]}; expected ${fragment}.`
+			);
+		}
+	}
+	for (const [header, expectedFragments] of Object.entries(requiredSecurityHeaders)) {
+		const routeExpectedFragments = actual.status === 404 && header === "referrer-policy"
+			? ["no-referrer"]
+			: expectedFragments;
+		for (const fragment of routeExpectedFragments) {
+			if (!actual.securityHeaders[header].includes(fragment)) {
+				throw new Error(`${route} returned ${header}: ${actual.securityHeaders[header]}; expected ${fragment}.`);
+			}
+		}
 	}
 }
 
