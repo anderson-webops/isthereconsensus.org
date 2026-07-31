@@ -9,6 +9,7 @@ export interface IQuestionFlag {
 	reason: "off-topic" | "duplicate" | "misleading" | "low-quality" | "needs-sources" | "abusive";
 	note?: string;
 	status: "open" | "reviewed" | "dismissed";
+	reviewNote?: string;
 	reviewedBy?: mongoose.Types.ObjectId;
 	reviewedAt?: Date;
 }
@@ -26,6 +27,7 @@ const questionFlagSchema: Schema<IQuestionFlag> = new Schema(
 		},
 		note: { type: String, default: "", trim: true, maxlength: 500 },
 		status: { type: String, enum: ["open", "reviewed", "dismissed"], default: "open", index: true },
+		reviewNote: { type: String, default: "", trim: true, maxlength: 1000 },
 		reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
 		reviewedAt: { type: Date }
 	},

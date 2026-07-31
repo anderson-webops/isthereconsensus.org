@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.git
+.github
+**/.env
+**/.env.*
+!**/.env.example
+**/.nuxt
+**/.output
+**/dist
+**/node_modules
+coverage
+npm-debug.log*

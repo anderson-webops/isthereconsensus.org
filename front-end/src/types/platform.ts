@@ -11,10 +11,13 @@ export type AccountActivityAction =
 	| "password.changed"
 	| "email.changed"
 	| "expert_application.created"
-	| "expert_application.reviewed";
+	| "expert_application.reviewed"
+	| "question.deleted"
+	| "question.moderated"
+	| "question_flag.reviewed";
 
 export type AccountActivityActorType = "user" | "admin" | "system" | "anonymous";
-export type AccountActivityTargetType = "user" | "admin" | "expert_application" | "unknown";
+export type AccountActivityTargetType = "user" | "admin" | "expert_application" | "question" | "unknown";
 
 export interface AccountActivityLog {
 	_id: string;
@@ -98,6 +101,7 @@ export interface QuestionFlag {
 	reason: "off-topic" | "duplicate" | "misleading" | "low-quality" | "needs-sources" | "abusive";
 	note?: string;
 	status: "open" | "reviewed" | "dismissed";
+	reviewNote?: string;
 	reporterName?: string;
 	question?: {
 		_id: string;

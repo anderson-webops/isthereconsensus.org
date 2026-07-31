@@ -1,4 +1,5 @@
 import { env } from "node:process";
+import { fetchJsonBounded } from "./boundedFetch.js";
 
 export interface EvidenceResult {
 	id: string;
@@ -58,22 +59,25 @@ export async function searchEvidence(query: string) {
 		url.searchParams.set("api_key", env.OPENALEX_API_KEY);
 	}
 
-	const response = await fetch(url.toString(), {
-		headers: {
-			Accept: "application/json"
-		}
-	});
+	const { response, data } = await fetchJsonBounded<{ results?: OpenAlexWork[] }>(
+		url,
+		{
+			headers: {
+				Accept: "application/json"
+			}
+		},
+		{ timeoutMs: 6_000, maxBytes: 512 * 1024 }
+	);
 	if (!response.ok) {
 		throw new Error(`OpenAlex request failed with ${response.status}`);
 	}
 
-	const data = (await response.json()) as { results?: OpenAlexWork[] };
 	const results = (data.results || []).map(work => ({
 		id: work.id || "",
 		title: work.display_name || "Untitled work",
 		year: work.publication_year,
 		journal: work.primary_location?.source?.display_name,
-		url: work.primary_location?.landing_page_url || work.doi || work.id,
+		url: safeProviderUrl(work.primary_location?.landing_page_url || work.doi || work.id),
 		doi: work.doi,
 		citedByCount: work.cited_by_count,
 		type: work.type,
@@ -88,4 +92,15 @@ export async function searchEvidence(query: string) {
 		configured: Boolean(env.OPENALEX_API_KEY || env.OPENALEX_EMAIL),
 		results
 	};
+}
+
+function safeProviderUrl(value: string | undefined) {
+	if (!value) return undefined;
+	try {
+		const url = new URL(value);
+		return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password ? url.toString() : undefined;
+	}
+	catch {
+		return undefined;
+	}
 }

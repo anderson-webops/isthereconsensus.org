@@ -8,6 +8,7 @@ import {
 	ACCOUNT_ACTIVITY_TARGET_TYPES,
 	AccountActivityLog
 } from "../models/schemas/AccountActivityLog.js";
+import { logError } from "../utils/safeLog.js";
 
 function normalizeText(value: unknown, maxLength: number) {
 	if (typeof value !== "string") return "";
@@ -104,7 +105,7 @@ export const listAccountActivity: RequestHandler = async (req, res) => {
 		});
 	}
 	catch (error) {
-		console.error(error);
+		logError("Account activity query failed", error);
 		return res.status(500).json({ error: "Failed to load account activity." });
 	}
 };

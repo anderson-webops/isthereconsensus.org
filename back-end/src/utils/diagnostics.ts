@@ -1,14 +1,21 @@
-const loopbackAddresses = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
+import { Buffer } from "node:buffer";
+import { timingSafeEqual } from "node:crypto";
 
 export interface DiagnosticsAccessInput {
 	isProd: boolean;
+	enabled?: boolean;
 	configuredKey?: string;
 	providedKey?: string;
-	clientIp?: string;
 }
 
-export function canReadDiagnostics({ isProd, configuredKey, providedKey, clientIp }: DiagnosticsAccessInput) {
+function keysMatch(configuredKey: string, providedKey: string) {
+	const expected = Buffer.from(configuredKey);
+	const received = Buffer.from(providedKey);
+	return expected.length === received.length && timingSafeEqual(expected, received);
+}
+
+export function canReadDiagnostics({ isProd, enabled, configuredKey, providedKey }: DiagnosticsAccessInput) {
 	if (!isProd) return true;
-	if (configuredKey && providedKey === configuredKey) return true;
-	return Boolean(clientIp && loopbackAddresses.has(clientIp));
+	if (!enabled || !configuredKey || configuredKey.length < 32 || !providedKey) return false;
+	return keysMatch(configuredKey, providedKey);
 }

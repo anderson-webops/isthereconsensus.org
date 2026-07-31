@@ -1,20 +1,23 @@
 import type { Request } from "express";
 
 export function getActorFromRequest(req: Request) {
-	const session = req.session as any;
-	if (session?.adminID) {
+	if (req.currentAdmin) {
 		return {
-			id: session.adminID as string,
+			id: req.currentAdmin._id.toString(),
 			model: "Admin" as const,
-			name: req.currentAdmin?.name || "Admin"
+			name: req.currentAdmin.name || "Admin"
 		};
 	}
 
-	return {
-		id: session?.userID as string,
-		model: "User" as const,
-		name: req.currentUser?.name || "Member"
-	};
+	if (req.currentUser) {
+		return {
+			id: req.currentUser._id.toString(),
+			model: "User" as const,
+			name: req.currentUser.name || "Member"
+		};
+	}
+
+	throw new Error("Authenticated actor unavailable");
 }
 
 export function trustTierLabel(trustLevel: number | undefined, expertiseStatus: string | undefined) {

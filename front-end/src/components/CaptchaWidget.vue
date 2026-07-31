@@ -95,8 +95,7 @@ onMounted(async () => {
 	try {
 		await loadScript();
 		renderWidget();
-	} catch (error) {
-		console.error(error);
+	} catch {
 		isReady.value = true;
 	}
 });

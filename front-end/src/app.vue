@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { appDescription, appName, siteUrl, socialImageUrl } from "~/constants";
+import { serializeJsonLd } from "~/utils/json-ld";
 
 const privateRoutePattern = /^(?:\/account|\/api|\/setup)(?:\/|$)/;
 const route = useRoute();
@@ -47,7 +48,7 @@ useHead(() => ({
 		}
 	],
 	script: structuredData.map((entry, index) => ({
-		innerHTML: JSON.stringify(entry),
+		innerHTML: serializeJsonLd(entry),
 		key: `structured-data-${index}`,
 		type: "application/ld+json"
 	}))

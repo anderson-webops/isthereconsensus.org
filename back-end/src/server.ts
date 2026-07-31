@@ -15,10 +15,11 @@ import type { IQuestion } from "./models/schemas/Question.js";
 import type { PublicClaimSourceReadinessCounts } from "./utils/publicClaimReadiness.js";
 // src/server.ts
 import process, { env, exit } from "node:process";
-import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 
 import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import mongoose from "mongoose";
 import {
 	EVIDENCE_BOUNDARY_DIMENSIONS,
@@ -30,7 +31,6 @@ import {
 	EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS,
 	EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
 	EVIDENCE_LANDSCAPE_SUPPORT_LABELS,
-	EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
 	EVIDENCE_PRECISION_LEVELS,
 	EVIDENCE_RISK_OF_BIAS_LEVELS,
 	EVIDENCE_SOURCE_EXCLUSION_REASONS,
@@ -41,7 +41,7 @@ import {
 import { listAccountActivity } from "./controllers/accountActivityController.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
-import { requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
+import { optionalAuth, requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
 import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "./models/schemas/ClaimSource.js";
@@ -55,7 +55,13 @@ import { User } from "./models/schemas/User.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { buildSetupStatus } from "./setup/buildSetupStatus.js";
 import { recordAccountActivity } from "./utils/accountActivity.js";
+import {
+	normalizeHttpOrigin,
+	normalizeHttpUrl,
+	normalizeHttpUrlList
+} from "./utils/accountValidation.js";
 import { verifyCaptcha } from "./utils/captcha.js";
+import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
 import { searchEvidence } from "./utils/evidence.js";
@@ -69,13 +75,28 @@ import {
 	validEvidenceTier
 } from "./utils/evidenceDistribution.js";
 import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
+import { resolveMongoConfiguration } from "./utils/mongoConfiguration.js";
 import {
 	emptyPublicClaimSourceReadinessCounts,
 	getPublicClaimReadiness,
 	summarizeClaimSourceReadiness
 } from "./utils/publicClaimReadiness.js";
+import {
+	toApplicantExpertApplication,
+	toEditorialClaim,
+	toEditorialClaimRevision,
+	toEditorialClaimSource,
+	toEditorialEvidenceLandscape,
+	toEditorialEvidenceReview,
+	toEditorialQuestion,
+	toPublicClaim,
+	toPublicQuestion,
+	toPublicTopic,
+	toPublicTopicSentimentVote,
+	toReporterQuestionFlag
+} from "./utils/publicRecords.js";
+import { logError } from "./utils/safeLog.js";
 import { slugify } from "./utils/slugify.js";
-import { readMongoSecret } from "./vaultClient.js";
 import "dotenv/config";
 
 const whitespacePattern = /\s+/;
@@ -83,51 +104,104 @@ const normalizeQuestionPattern = /[^\p{L}\p{N}\s]/gu;
 
 async function main() {
 	const app = express();
+	const isProd = env.NODE_ENV === "production";
+	const isCrossSite = env.CROSS_SITE === "true";
 	const internalDiagnosticsKey = env.INTERNAL_DIAGNOSTICS_KEY;
+	const diagnosticsEnabled = env.ENABLE_INTERNAL_DIAGNOSTICS === "true";
+	const seedContentMode = env.SEED_CONTENT_MODE || "insert";
+	if (seedContentMode !== "insert" && seedContentMode !== "sync") {
+		throw new Error("SEED_CONTENT_MODE must be either insert or sync.");
+	}
+	app.disable("x-powered-by");
+
+	const trustProxy = (env.TRUST_PROXY_IPS || "loopback")
+		.split(",")
+		.map(value => value.trim())
+		.filter(Boolean);
+	app.set("trust proxy", trustProxy);
+
+	app.use(helmet({
+		contentSecurityPolicy: false,
+		crossOriginResourcePolicy: false,
+		hsts: isProd
+	}));
 
 	// health
-	app.get("/healthz", (_req, res) => {
+	const healthLimiter = rateLimit({
+		windowMs: 60_000,
+		limit: 120,
+		standardHeaders: "draft-8",
+		legacyHeaders: false
+	});
+	app.get("/healthz", healthLimiter, (_req, res) => {
 		res.set("Cache-Control", "no-store");
 		res.json({ ok: true });
 	});
 
 	const SESSION_SECRET = env.SESSION_SECRET;
 	if (!SESSION_SECRET) throw new Error("Missing SESSION_SECRET");
+	if (isProd && (SESSION_SECRET.length < 32 || /SECRET_VALUE_HERE|change.?me/i.test(SESSION_SECRET))) {
+		throw new Error("SESSION_SECRET must be a unique production secret of at least 32 characters.");
+	}
+	if (isProd && !env.CAPTCHA_SECRET) {
+		throw new Error("CAPTCHA_SECRET is required in production.");
+	}
+	if (isProd && diagnosticsEnabled && (!internalDiagnosticsKey || internalDiagnosticsKey.length < 32)) {
+		throw new Error("Enabled production diagnostics require INTERNAL_DIAGNOSTICS_KEY of at least 32 characters.");
+	}
 
-	app.set("trust proxy", 1);
+	app.use(express.json({
+		inflate: false,
+		limit: "128kb",
+		strict: true,
+		type: ["application/json", "application/*+json"]
+	}));
 
-	// 1) parsers first (with limits)
-	app.use(bodyParser.urlencoded({ extended: false, limit: "256kb" }));
-	app.use(bodyParser.json({ limit: "256kb" }));
+	const publicSiteOrigin = normalizeHttpOrigin(
+		env.PUBLIC_SITE_URL || "https://isthereconsensus.org",
+		{ requireHttps: isProd }
+	);
+	const configuredCorsOrigins = (env.CORS_ORIGIN || "")
+		.split(",")
+		.map(value => value.trim())
+		.filter(Boolean)
+		.map(value => normalizeHttpOrigin(value, { requireHttps: isProd }));
+	const allowedOrigins = new Set([publicSiteOrigin, ...configuredCorsOrigins]);
+	if (isProd && isCrossSite && configuredCorsOrigins.length === 0) {
+		throw new Error("CORS_ORIGIN is required when CROSS_SITE=true in production.");
+	}
+	const corsOrigin = configuredCorsOrigins.join(",");
 
-	const isProd: boolean = env.NODE_ENV === "production";
-	const isCrossSite: boolean = !!env.CROSS_SITE;
-	const corsOrigin = env.CORS_ORIGIN || (isProd ? "" : "*");
-	if (corsOrigin) {
-		const allowCredentials = corsOrigin !== "*";
-		app.use((req, res, next) => {
-			res.setHeader("Access-Control-Allow-Origin", corsOrigin);
+	app.use((req, res, next) => {
+		const origin = req.get("origin");
+		const originAllowed = Boolean(origin && allowedOrigins.has(origin));
+		if (originAllowed) {
+			res.setHeader("Access-Control-Allow-Origin", origin!);
+			res.setHeader("Access-Control-Allow-Credentials", "true");
 			res.setHeader("Vary", "Origin");
 			res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
-			res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-			if (allowCredentials) {
-				res.setHeader("Access-Control-Allow-Credentials", "true");
-			}
-			if (req.method === "OPTIONS") return res.sendStatus(204);
-			return next();
-		});
-	}
+			res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+		}
+		if (req.method === "OPTIONS") {
+			return originAllowed || (!isProd && !origin)
+				? res.sendStatus(204)
+				: res.status(403).json({ error: "Origin not allowed." });
+		}
+		return next();
+	});
 
 	// 2) sessions BEFORE any route that needs req.session
 	///   COOKIES   ///
 	type CookieSessionOpts = Parameters<typeof cookieSession>[0];
 
 	const cookieOptions: CookieSessionOpts = {
-		name: "session",
+		name: isProd ? "__Host-session" : "session",
 		keys: [SESSION_SECRET],
 		maxAge: 24 * 60 * 60 * 1000,
-		sameSite: "lax", // default, safe for dev & same-origin
-		secure: false // default in dev
+		httpOnly: true,
+		path: "/",
+		sameSite: "lax",
+		secure: isProd
 	};
 
 	// Adjust for production
@@ -145,6 +219,61 @@ async function main() {
 
 	app.use(cookieSession(cookieOptions));
 
+	app.use((req, res, next) => {
+		const unsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
+		if (!unsafeMethod) return next();
+
+		const origin = req.get("origin");
+		const fetchSite = req.get("sec-fetch-site");
+		if ((origin && !allowedOrigins.has(origin))
+			|| (fetchSite === "cross-site" && (!origin || !allowedOrigins.has(origin)))) {
+			return res.status(403).json({ error: "Cross-site request blocked." });
+		}
+		if (isProd && req.get("cookie") && !origin && fetchSite !== "same-origin" && fetchSite !== "same-site") {
+			return res.status(403).json({ error: "Request origin could not be verified." });
+		}
+		return next();
+	});
+
+	const authLimiter = rateLimit({
+		windowMs: 15 * 60_000,
+		limit: 20,
+		standardHeaders: "draft-8",
+		legacyHeaders: false
+	});
+	const writeLimiter = rateLimit({
+		windowMs: 60_000,
+		limit: 90,
+		standardHeaders: "draft-8",
+		legacyHeaders: false,
+		skip: req => ["GET", "HEAD", "OPTIONS"].includes(req.method)
+	});
+	const readLimiter = rateLimit({
+		windowMs: 60_000,
+		limit: 300,
+		standardHeaders: "draft-8",
+		legacyHeaders: false,
+		skip: req => !["GET", "HEAD"].includes(req.method)
+	});
+	const searchSuggestionLimiter = rateLimit({
+		windowMs: 60_000,
+		limit: 30,
+		standardHeaders: "draft-8",
+		legacyHeaders: false
+	});
+	const evidenceSearchLimiter = rateLimit({
+		windowMs: 60_000,
+		limit: 20,
+		standardHeaders: "draft-8",
+		legacyHeaders: false
+	});
+	app.use("/api/auth/login", authLimiter);
+	app.use("/api/auth/register", authLimiter);
+	app.use("/api/auth/email", authLimiter);
+	app.use("/api/auth/password", authLimiter);
+	app.use("/api", readLimiter);
+	app.use("/api", writeLimiter);
+
 	// 3) cache-control for auth endpoints
 	app.use((req, res, next) => {
 		if (req.path.startsWith("/accounts") || req.path.startsWith("/api/auth") || req.path.endsWith("/loggedin")) {
@@ -154,7 +283,7 @@ async function main() {
 	});
 
 	// ready
-	app.get("/readyz", async (_req, res) => {
+	app.get("/readyz", healthLimiter, async (_req, res) => {
 		const connection = mongoose.connection;
 		const state = connection.readyState;
 		if (state !== 1 || !connection.db) {
@@ -170,7 +299,7 @@ async function main() {
 		}
 
 		try {
-			await connection.db.admin().ping();
+			await connection.db.command({ ping: 1, maxTimeMS: 2_000 });
 			return res.set("Cache-Control", "no-store").json({
 				ready: true,
 				components: {
@@ -178,7 +307,7 @@ async function main() {
 				}
 			});
 		}
-		catch (error) {
+		catch {
 			return res
 				.status(503)
 				.set("Cache-Control", "no-store")
@@ -188,61 +317,34 @@ async function main() {
 						db: {
 							ok: false,
 							state,
-							error: error instanceof Error ? error.message : "db-ping-failed"
+							error: "db-ping-failed"
 						}
 					}
 				});
 		}
 	});
 
-	// --- Get Mongo URI from Vault (preferred), else env fallback ---
-	let mongoUri: string | undefined;
-	let mongoSource: "vault" | "env" | "missing" = "missing";
-	try {
-		const { uri } = await readMongoSecret(); // your Vault client should read from KV v2
-		mongoUri = uri;
-		mongoSource = uri ? "vault" : "missing";
-	}
-	catch (e) {
-		// Fail silently if Vault is not available, then probably local test (Had to do this to avoid weird requirements
-		// console.log("Vault unavailable, falling back to MONGODB_URI:", e);
-		const m: string = e?.toString() || "";
-		if (!m.includes("Failed to fetch") && !m.includes("connect ECONNREFUSED")) {
-			console.log("");
-		}
+	const { source: mongoSource, uri: mongoUri } = await resolveMongoConfiguration();
 
-		mongoUri = env.MONGODB_URI;
-		mongoSource = mongoUri ? "env" : "missing";
-	}
-
-	if (!mongoUri) {
-		throw new Error("No MongoDB URI available (Vault and MONGODB_URI missing)");
-	}
-
-	await mongoose.connect(mongoUri);
-	console.log("Connected to MongoDB");
+	await mongoose.connect(mongoUri, {
+		serverSelectionTimeoutMS: 10_000,
+		connectTimeoutMS: 10_000
+	});
+	console.log(`Connected to MongoDB using ${mongoSource} configuration.`);
 	const c = mongoose.connection;
-	console.log(`Mongo connected: db=${c.db?.databaseName} host=${c.host} name=${c.name}`);
-	function diagnosticsClientIp(req: express.Request) {
-		const forwardedFor = req.headers["x-forwarded-for"];
-		const forwardedIp
-			= typeof forwardedFor === "string"
-				? forwardedFor.split(",")[0]?.trim()
-				: Array.isArray(forwardedFor)
-					? forwardedFor[0]?.trim()
-					: undefined;
-		return forwardedIp || req.ip || req.socket.remoteAddress || "";
-	}
 
 	function requireDiagnosticsAccess(req: express.Request, res: express.Response) {
 		const allowed = canReadDiagnostics({
 			isProd,
+			enabled: diagnosticsEnabled,
 			configuredKey: internalDiagnosticsKey,
-			providedKey: req.get("x-internal-diagnostics-key"),
-			clientIp: diagnosticsClientIp(req)
+			providedKey: req.get("x-internal-diagnostics-key")
 		});
 		if (!allowed) {
-			res.status(403).set("Cache-Control", "no-store").json({ ok: false, error: "forbidden" });
+			res
+				.status(isProd && !diagnosticsEnabled ? 404 : 403)
+				.set("Cache-Control", "no-store")
+				.json({ ok: false, error: isProd && !diagnosticsEnabled ? "not_found" : "forbidden" });
 		}
 		return allowed;
 	}
@@ -255,7 +357,7 @@ async function main() {
 			host: c.host || null,
 			name: c.name || null,
 			readyState: c.readyState,
-			usingVault: !!env.VAULT_ROLE_ID && !!env.VAULT_SECRET_ID
+			usingVault: mongoSource === "vault"
 		});
 	});
 	app.get("/api/setup/status", (req, res) => {
@@ -271,7 +373,8 @@ async function main() {
 		);
 	});
 	await seedTopics();
-	await seedClaims();
+	await seedClaims({ synchronizeExisting: seedContentMode === "sync" });
+	console.log(`Seed content mode: ${seedContentMode === "sync" ? "synchronize existing" : "insert only"}.`);
 	await Question.updateMany({ routingStatus: { $exists: false } }, { $set: { routingStatus: "unassigned" } });
 
 	const api = express.Router();
@@ -308,6 +411,35 @@ async function main() {
 		return getActorFromRequest(req);
 	}
 
+	function canMutateClaim(req: express.Request, claim: Pick<IClaim, "status">) {
+		if (req.currentAdmin) {
+			return claim.status === "draft" || claim.status === "needs_update";
+		}
+		return claim.status === "draft";
+	}
+
+	function requireClaimMutationAccess(
+		req: express.Request,
+		res: express.Response,
+		claim: Pick<IClaim, "status">
+	) {
+		if (canMutateClaim(req, claim)) return true;
+		res.status(403).json({
+			error:
+				"Claim edits require draft status, or needs-update status for an admin. Use the review workflow for published or archived records."
+		});
+		return false;
+	}
+
+	function invalidateEvidenceLandscapeApproval(claim: Pick<IClaim, "evidenceLandscape">) {
+		const workflow = claim.evidenceLandscape.workflow;
+		workflow.status = workflow.status === "changes_requested" ? "changes_requested" : "draft";
+		workflow.reviewedById = undefined;
+		workflow.approvedById = undefined;
+		workflow.publishedAt = undefined;
+		claim.evidenceLandscape.publicFlags.showEvidenceLandscape = false;
+	}
+
 	function normalizeAskKind(value: unknown) {
 		const normalized = normalizeText(value, 24);
 		if (normalized === "claim") return "claim";
@@ -338,11 +470,6 @@ async function main() {
 
 	function isClaimStatus(value: string): value is ClaimStatus {
 		return value === "draft" || value === "published" || value === "needs_update" || value === "archived";
-	}
-
-	function normalizeStatus(value: unknown): ClaimStatus {
-		const normalized = normalizeText(value, 24);
-		return isClaimStatus(normalized) ? normalized : "draft";
 	}
 
 	function normalizeConsensusBand(value: unknown): ClaimConsensusBand {
@@ -670,7 +797,7 @@ async function main() {
 		const flags = typeof record.publicFlags === "object" && record.publicFlags
 			? (record.publicFlags as Record<string, unknown>)
 			: {};
-		const workflow = typeof record.workflow === "object" && record.workflow
+		const requestedWorkflow = typeof record.workflow === "object" && record.workflow
 			? (record.workflow as Record<string, unknown>)
 			: {};
 		const existingFlags = existing?.publicFlags ?? {
@@ -768,10 +895,7 @@ async function main() {
 			distribution: normalizeLandscapeDistribution(record.distribution, existing?.distribution),
 			evidenceBaseSize: normalizeEvidenceBaseSize(record.evidenceBaseSize, existing?.evidenceBaseSize),
 			publicFlags: {
-				showEvidenceLandscape: normalizeEvidenceLandscapeBoolean(
-					flags.showEvidenceLandscape,
-					existingFlags.showEvidenceLandscape
-				),
+				showEvidenceLandscape: existingFlags.showEvidenceLandscape,
 				showCredibleMinorityView: normalizeEvidenceLandscapeBoolean(
 					flags.showCredibleMinorityView,
 					existingFlags.showCredibleMinorityView
@@ -790,30 +914,21 @@ async function main() {
 				)
 			},
 			workflow: {
-				status: normalizeEvidenceLandscapeEnum(
-					workflow.status,
-					EVIDENCE_LANDSCAPE_WORKFLOW_STATUSES,
-					existingWorkflow.status
-				),
-				assignedEditorId: normalizeOptionalObjectId(workflow.assignedEditorId, existingWorkflow.assignedEditorId),
-				reviewedById: normalizeOptionalObjectId(workflow.reviewedById, existingWorkflow.reviewedById),
-				approvedById: normalizeOptionalObjectId(workflow.approvedById, existingWorkflow.approvedById),
-				lastAssessedAt:
-					workflow.lastAssessedAt === undefined
-						? existingWorkflow.lastAssessedAt
-						: normalizeDate(workflow.lastAssessedAt),
-				nextReviewDueAt:
-					workflow.nextReviewDueAt === undefined
-						? existingWorkflow.nextReviewDueAt
-						: normalizeDate(workflow.nextReviewDueAt),
-				publishedAt:
-					workflow.publishedAt === undefined ? existingWorkflow.publishedAt : normalizeDate(workflow.publishedAt),
-				supersededByClaimId: normalizeOptionalObjectId(
-					workflow.supersededByClaimId,
-					existingWorkflow.supersededByClaimId
-				),
-				assessedBy: normalizeOptionalObjectId(workflow.assessedBy, existingWorkflow.assessedBy),
-				editorialNotes: normalizeEvidenceLandscapeText(workflow, "editorialNotes", 2000, existingWorkflow.editorialNotes)
+				status: existingWorkflow.status,
+				assignedEditorId: existingWorkflow.assignedEditorId,
+				reviewedById: existingWorkflow.reviewedById,
+				approvedById: existingWorkflow.approvedById,
+				lastAssessedAt: existingWorkflow.lastAssessedAt,
+				nextReviewDueAt: existingWorkflow.nextReviewDueAt,
+				publishedAt: existingWorkflow.publishedAt,
+				supersededByClaimId: existingWorkflow.supersededByClaimId,
+				assessedBy: existingWorkflow.assessedBy,
+				editorialNotes: normalizeEvidenceLandscapeText(
+					requestedWorkflow,
+					"editorialNotes",
+					2000,
+					existingWorkflow.editorialNotes
+				)
 			}
 		};
 	}
@@ -991,32 +1106,12 @@ async function main() {
 				}
 			},
 			reviewer: {
-				codedById: normalizeOptionalObjectId(reviewer.codedById, defaults.reviewer.codedById),
-				codedAt: reviewer.codedAt === undefined ? defaults.reviewer.codedAt : normalizeDate(reviewer.codedAt),
-				reviewedById: normalizeOptionalObjectId(reviewer.reviewedById, defaults.reviewer.reviewedById),
-				reviewedAt: reviewer.reviewedAt === undefined ? defaults.reviewer.reviewedAt : normalizeDate(reviewer.reviewedAt),
+				codedById: defaults.reviewer.codedById,
+				codedAt: defaults.reviewer.codedAt,
+				reviewedById: defaults.reviewer.reviewedById,
+				reviewedAt: defaults.reviewer.reviewedAt,
 				notes: normalizeEvidenceLandscapeText(reviewer, "notes", 1000, defaults.reviewer.notes)
 			}
-		};
-	}
-
-	function sanitizePublicQuestionClaim(value: unknown) {
-		if (!value || typeof value !== "object" || !("_id" in value)) return value ?? null;
-		const record = value as Partial<IClaim> & { _id?: unknown };
-		return {
-			_id: record._id,
-			title: record.title,
-			slug: record.slug,
-			consensusBand: record.consensusBand,
-			evidenceLandscape: toPublicEvidenceLandscape(record)
-		};
-	}
-
-	function sanitizePublicQuestion<T extends { claim?: unknown }>(question: T) {
-		if (!question.claim || typeof question.claim !== "object") return question;
-		return {
-			...question,
-			claim: sanitizePublicQuestionClaim(question.claim)
 		};
 	}
 
@@ -1029,8 +1124,13 @@ async function main() {
 		return topic;
 	}
 
-	async function findClaimForTopic(topicId: mongoose.Types.ObjectId, claimSlug: string) {
-		return Claim.findOne({ topic: topicId, slug: claimSlug });
+	async function findPublicClaimForTopic(topicId: mongoose.Types.ObjectId, claimSlug: string) {
+		const claim = await Claim.findOne({ topic: topicId, slug: claimSlug, status: "published" });
+		if (!claim) return null;
+		const sources = await loadClaimSources(claim._id);
+		return getPublicClaimReadiness(claim.toObject(), summarizeClaimSourceReadiness(sources)).isReady
+			? claim
+			: null;
 	}
 
 	async function loadClaimSources(claimId: mongoose.Types.ObjectId) {
@@ -1067,6 +1167,25 @@ async function main() {
 		}
 
 		return sourceCountMap;
+	}
+
+	async function serializePublicQuestions(questions: Array<Partial<IQuestion>>) {
+		const claims = questions.map((question) => {
+			const claim = question.claim as unknown as (Partial<IClaim> & { _id?: unknown }) | null | undefined;
+			return claim && typeof claim === "object" && claim._id ? claim : null;
+		});
+		const claimIds = claims
+			.map(claim => claim?._id)
+			.filter((id): id is mongoose.Types.ObjectId => Boolean(id && mongoose.Types.ObjectId.isValid(String(id))))
+			.map(id => new mongoose.Types.ObjectId(String(id)));
+		const sourceCountMap = await loadClaimSourceReadinessCountMap(claimIds);
+
+		return questions.map((question, index) => {
+			const claim = claims[index];
+			return toPublicQuestion(question, {
+				claim: claim && publicClaimIsReady(claim, sourceCountMap) ? claim : null
+			});
+		});
 	}
 
 	function appendClaimChangeLog(
@@ -1364,7 +1483,7 @@ async function main() {
 			const topics = await Topic.find().sort({ order: 1, title: 1 }).lean();
 
 			if (!includeCounts && !includeClaims) {
-				return res.json({ topics });
+				return res.json({ topics: topics.map(toPublicTopic) });
 			}
 
 			const counts = await Question.aggregate([
@@ -1425,7 +1544,7 @@ async function main() {
 			const topicsWithCounts = topics.map((topic) => {
 				const key = topic._id.toString();
 				return {
-					...topic,
+					...toPublicTopic(topic),
 					questionCount: countMap.get(key) ?? 0,
 					claimCount: includeClaims ? (claimCountMap.get(key) ?? 0) : undefined,
 					featuredClaims: includeClaims ? (featuredClaimsMap.get(key) ?? []) : undefined
@@ -1435,7 +1554,7 @@ async function main() {
 			return res.json({ topics: topicsWithCounts });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load topics." });
 		}
 	});
@@ -1446,7 +1565,7 @@ async function main() {
 			if (!topic) return res.status(404).json({ error: "Topic not found." });
 
 			if (req.query.includeClaims !== "true") {
-				return res.json({ topic });
+				return res.json({ topic: toPublicTopic(topic) });
 			}
 
 			const featuredClaims = await Claim.find({ topic: topic._id, status: "published" })
@@ -1456,18 +1575,17 @@ async function main() {
 			const publicReadyClaims = featuredClaims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 			return res.json({
 				topic: {
-					...topic,
+					...toPublicTopic(topic),
 					claimCount: publicReadyClaims.length,
-					featuredClaims: publicReadyClaims.slice(0, 5).map(claim => ({
-						...claim,
-						evidenceLandscape: toPublicEvidenceLandscape(claim),
-						sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount
+					featuredClaims: publicReadyClaims.slice(0, 5).map(claim => toPublicClaim(claim, {
+						sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
+						topic
 					}))
 				}
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load topic." });
 		}
 	});
@@ -1484,22 +1602,14 @@ async function main() {
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 
 			return res.json({
-				claims: publicReadyClaims.map(claim => ({
-					...claim,
-					evidenceLandscape: toPublicEvidenceLandscape(claim),
+				claims: publicReadyClaims.map(claim => toPublicClaim(claim, {
 					sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
-					topic: {
-						_id: topic._id,
-						title: topic.title,
-						slug: topic.slug,
-						description: topic.description,
-						accent: topic.accent
-					}
+					topic: topic.toObject()
 				}))
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claims." });
 		}
 	});
@@ -1610,7 +1720,7 @@ async function main() {
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claims." });
 		}
 	});
@@ -1633,23 +1743,15 @@ async function main() {
 				return res.status(404).json({ error: "Claim not found." });
 			}
 			return res.json({
-				claim: {
-					...claim,
-					evidenceLandscape: toPublicEvidenceLandscape(claim),
+				claim: toPublicClaim(claim, {
 					sourceCount: sourceCounts.sourceCount,
-					topic: {
-						_id: topic._id,
-						title: topic.title,
-						slug: topic.slug,
-						description: topic.description,
-						accent: topic.accent
-					},
+					topic: topic.toObject(),
 					sources
-				}
+				})
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claim." });
 		}
 	});
@@ -1685,12 +1787,12 @@ async function main() {
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load evidence landscape sources." });
 		}
 	});
 
-	api.get("/topics/:slug/sentiment", async (req, res) => {
+	api.get("/topics/:slug/sentiment", optionalAuth, async (req, res) => {
 		try {
 			const topic = await Topic.findOne({ slug: req.params.slug });
 			if (!topic) return res.status(404).json({ error: "Topic not found." });
@@ -1734,11 +1836,11 @@ async function main() {
 				totalVotes,
 				totals,
 				percentages,
-				currentVote
+				currentVote: toPublicTopicSentimentVote(currentVote)
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load sentiment." });
 		}
 	});
@@ -1779,15 +1881,15 @@ async function main() {
 				}
 			).lean();
 
-			return res.json({ vote });
+			return res.json({ vote: toPublicTopicSentimentVote(vote) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to save sentiment." });
 		}
 	});
 
-	api.post("/topics", async (req, res) => {
+	api.post("/topics", requireAdmin, async (req, res) => {
 		if (env.ENABLE_TOPIC_CREATION !== "true") {
 			return res.status(403).json({ error: "Topic creation is disabled." });
 		}
@@ -1805,12 +1907,12 @@ async function main() {
 			return res.status(201).json({ topic });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to create topic." });
 		}
 	});
 
-	api.get("/search/suggestions", async (req, res) => {
+	api.get("/search/suggestions", searchSuggestionLimiter, async (req, res) => {
 		try {
 			const query = normalizeText(req.query.q, 160).toLowerCase();
 			if (!query || query.length < 2) {
@@ -1912,7 +2014,7 @@ async function main() {
 				)
 				.slice(0, 6)
 				.map(({ question, match }) => ({
-					...sanitizePublicQuestion(question),
+					...toPublicQuestion(question),
 					matchReason: match.matchReason,
 					matchScore: match.matchScore
 				}));
@@ -1924,7 +2026,7 @@ async function main() {
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load suggestions." });
 		}
 	});
@@ -1947,7 +2049,7 @@ async function main() {
 				filter.topic = topic._id;
 
 				if (claimSlug) {
-					const claim = await findClaimForTopic(topic._id, claimSlug);
+					const claim = await findPublicClaimForTopic(topic._id, claimSlug);
 					if (!claim) return res.status(404).json({ error: "Claim not found." });
 					filter.claim = claim._id;
 					filter.routingStatus = "linked";
@@ -1957,7 +2059,7 @@ async function main() {
 				}
 			}
 
-			if (isQuestionRoutingStatus(routingStatus)) {
+			if (isQuestionRoutingStatus(routingStatus) && routingStatus !== "duplicate") {
 				filter.routingStatus = routingStatus;
 			}
 
@@ -1968,10 +2070,10 @@ async function main() {
 				.populate("claim")
 				.lean();
 
-			return res.json({ questions: questions.map(sanitizePublicQuestion) });
+			return res.json({ questions: await serializePublicQuestions(questions) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load questions." });
 		}
 	});
@@ -1981,12 +2083,17 @@ async function main() {
 			if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
-			const question = await Question.findById(req.params.id).populate("topic").populate("claim").lean();
+			const question = await Question.findOne({
+				_id: req.params.id,
+				status: { $ne: "archived" },
+				routingStatus: { $ne: "duplicate" }
+			}).populate("topic").populate("claim").lean();
 			if (!question) return res.status(404).json({ error: "Question not found." });
-			return res.json({ question: sanitizePublicQuestion(question) });
+			const [publicQuestion] = await serializePublicQuestions([question]);
+			return res.json({ question: publicQuestion });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load question." });
 		}
 	});
@@ -2004,7 +2111,13 @@ async function main() {
 			const normalizedQuestion
 				= normalizeText(req.body?.normalizedQuestion, 220) || normalizeQuestionText(title || "");
 			const body = normalizeText(req.body?.body, 4000);
-			const sourceUrl = normalizeText(req.body?.sourceUrl, 500);
+			let sourceUrl = "";
+			try {
+				sourceUrl = normalizeHttpUrl(req.body?.sourceUrl, 500);
+			}
+			catch (error) {
+				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
+			}
 			const sourceContextType = normalizeSourceContextType(req.body?.sourceContextType);
 			const displayName = normalizeText(req.body?.displayName, 80);
 			const askKind = normalizeAskKind(req.body?.askKind);
@@ -2020,9 +2133,9 @@ async function main() {
 			const topic = await Topic.findOne({ slug: topicSlug });
 			if (!topic) return res.status(404).json({ error: "Topic not found." });
 
-			let claim: Awaited<ReturnType<typeof findClaimForTopic>> | null = null;
+			let claim: Awaited<ReturnType<typeof findPublicClaimForTopic>> | null = null;
 			if (claimSlug) {
-				claim = await findClaimForTopic(topic._id, claimSlug);
+				claim = await findPublicClaimForTopic(topic._id, claimSlug);
 				if (!claim) {
 					return res.status(400).json({ error: "Claim does not belong to the supplied topic." });
 				}
@@ -2062,10 +2175,11 @@ async function main() {
 			}
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			return res.status(201).json({ question: populated });
+			const [publicQuestion] = populated ? await serializePublicQuestions([populated]) : [null];
+			return res.status(201).json({ question: publicQuestion });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to create question." });
 		}
 	});
@@ -2079,6 +2193,9 @@ async function main() {
 
 			const question = await Question.findById(questionId);
 			if (!question) return res.status(404).json({ error: "Question not found." });
+			if (question.status === "archived") {
+				return res.status(409).json({ error: "This question has already been removed." });
+			}
 
 			const actor = currentActor(req);
 			const isOwner = question.author?.toString() === actor.id && question.authorModel === actor.model;
@@ -2087,13 +2204,50 @@ async function main() {
 			if (!isOwner && !isAdmin) {
 				return res.status(403).json({ error: "Not authorized to delete this question." });
 			}
+			const moderationReason = normalizeText(req.body?.moderationReason, 500);
+			if (isAdmin && !isOwner && !moderationReason) {
+				return res.status(400).json({ error: "A moderation reason is required to remove another account's question." });
+			}
 
-			await QuestionFlag.deleteMany({ question: question._id });
-			await question.deleteOne();
+			const previousRoutingStatus = question.routingStatus || "unassigned";
+			const previousStatus = question.status || "open";
+			question.title = "Removed question";
+			question.normalizedQuestion = "";
+			question.body = "";
+			question.sourceUrl = "";
+			question.sourceContextType = "other";
+			question.displayName = "";
+			question.author = undefined;
+			question.authorModel = undefined;
+			question.authorName = "";
+			question.linkedBy = undefined;
+			question.closestMatchLabel = "";
+			question.differenceNote = "";
+			question.status = "archived";
+			await question.save();
+			await recordAccountActivity({
+				req,
+				action: "question.deleted",
+				actor: {
+					id: actor.id,
+					type: actor.model === "Admin" ? "admin" : "user"
+				},
+				target: {
+					id: question._id.toString(),
+					type: "question"
+				},
+				metadata: {
+					...(moderationReason ? { moderationReason } : {}),
+					ownerDelete: String(isOwner),
+					preservedModerationFlags: "true",
+					previousRoutingStatus,
+					previousStatus
+				}
+			});
 			return res.sendStatus(204);
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to delete question." });
 		}
 	});
@@ -2121,36 +2275,37 @@ async function main() {
 			}
 
 			const actor = currentActor(req);
-			const flag = await QuestionFlag.findOneAndUpdate(
+			const flagIdentity = {
+				question: question._id,
+				reporter: actor.id,
+				reporterModel: actor.model
+			};
+			const upsertResult = await QuestionFlag.updateOne(
+				flagIdentity,
 				{
-					question: question._id,
-					reporter: actor.id,
-					reporterModel: actor.model
+					$set: {
+						reporterName: actor.name,
+						reason,
+						note,
+						status: "open",
+						reviewNote: "",
+						reviewedBy: undefined,
+						reviewedAt: undefined
+					},
+					$setOnInsert: flagIdentity
 				},
-				{
-					question: question._id,
-					reporter: actor.id,
-					reporterModel: actor.model,
-					reporterName: actor.name,
-					reason,
-					note,
-					status: "open"
-				},
-				{
-					returnDocument: "after",
-					upsert: true,
-					setDefaultsOnInsert: true
-				}
-			).lean();
+				{ upsert: true }
+			);
+			const flag = await QuestionFlag.findOne(flagIdentity).lean();
 
-			if (actor.model === "User") {
+			if (actor.model === "User" && upsertResult.upsertedCount === 1) {
 				await User.findByIdAndUpdate(actor.id, { $inc: { trustScore: 1 } });
 			}
 
-			return res.status(201).json({ flag });
+			return res.status(201).json({ flag: toReporterQuestionFlag(flag) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to flag question." });
 		}
 	});
@@ -2162,10 +2317,10 @@ async function main() {
 				return res.json({ application: null });
 			}
 			const application = await ExpertApplication.findOne({ user: actor.id }).lean();
-			return res.json({ application });
+			return res.json({ application: toApplicantExpertApplication(application) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load expert application." });
 		}
 	});
@@ -2185,7 +2340,13 @@ async function main() {
 			const attestsDisclosurePolicy = normalizeBoolean(req.body?.attestsDisclosurePolicy);
 			const attestsReviewStandards = normalizeBoolean(req.body?.attestsReviewStandards);
 			const expertiseAreas = normalizeList(req.body?.expertiseAreas, 8, 80);
-			const evidenceLinks = normalizeList(req.body?.evidenceLinks, 8, 300);
+			let evidenceLinks: string[];
+			try {
+				evidenceLinks = normalizeHttpUrlList(req.body?.evidenceLinks, 8, 300);
+			}
+			catch (error) {
+				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid evidence URL." });
+			}
 			const user = await User.findById(actor.id);
 
 			if (!user) return res.status(404).json({ error: "User not found." });
@@ -2252,15 +2413,15 @@ async function main() {
 				}
 			});
 
-			return res.status(201).json({ application });
+			return res.status(201).json({ application: toApplicantExpertApplication(application) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to submit expert application." });
 		}
 	});
 
-	api.get("/evidence/search", async (req, res) => {
+	api.get("/evidence/search", evidenceSearchLimiter, async (req, res) => {
 		try {
 			const query = typeof req.query.q === "string" ? req.query.q : "";
 			const topicSlug = typeof req.query.topic === "string" ? req.query.topic : "";
@@ -2280,7 +2441,7 @@ async function main() {
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to search evidence sources." });
 		}
 	});
@@ -2339,18 +2500,22 @@ async function main() {
 				});
 			}
 			return res.json({
-				claims: claims.map(claim => ({
-					...claim,
-					sourceCount: sourceCountMap.get(claim._id.toString())?.count ?? 0,
-					flaggedSourceCount: sourceCountMap.get(claim._id.toString())?.flaggedCount ?? 0,
-					retractedSourceCount: sourceCountMap.get(claim._id.toString())?.retractedCount ?? 0,
-					correctedSourceCount: sourceCountMap.get(claim._id.toString())?.correctedCount ?? 0,
-					concernSourceCount: sourceCountMap.get(claim._id.toString())?.concernCount ?? 0
-				}))
+				claims: claims
+					.map(claim =>
+						toEditorialClaim({
+							...claim,
+							sourceCount: sourceCountMap.get(claim._id.toString())?.count ?? 0,
+							flaggedSourceCount: sourceCountMap.get(claim._id.toString())?.flaggedCount ?? 0,
+							retractedSourceCount: sourceCountMap.get(claim._id.toString())?.retractedCount ?? 0,
+							correctedSourceCount: sourceCountMap.get(claim._id.toString())?.correctedCount ?? 0,
+							concernSourceCount: sourceCountMap.get(claim._id.toString())?.concernCount ?? 0
+						})
+					)
+					.filter(Boolean)
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load editorial claims." });
 		}
 	});
@@ -2365,10 +2530,10 @@ async function main() {
 			const claim = await Claim.findById(claimId).populate("topic").lean();
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 			const sources = await loadClaimSources(claim._id);
-			return res.json({ claim: { ...claim, sources } });
+			return res.json({ claim: toEditorialClaim({ ...claim, sources }) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claim." });
 		}
 	});
@@ -2396,7 +2561,7 @@ async function main() {
 				topic: topic._id,
 				title,
 				slug,
-				status: normalizeStatus(req.body?.status),
+				status: "draft",
 				consensusBand: normalizeConsensusBand(req.body?.consensusBand),
 				agreementLevel: normalizeAgreementLevel(req.body?.agreementLevel),
 				evidenceCertainty: normalizeEvidenceCertainty(req.body?.evidenceCertainty),
@@ -2445,10 +2610,10 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.status(201).json({ claim: populated });
+			return res.status(201).json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to create claim." });
 		}
 	});
@@ -2462,6 +2627,10 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
+			if (req.body?.status !== undefined) {
+				return res.status(400).json({ error: "Use the publish or archive workflow to change claim status." });
+			}
 
 			const nextTopicSlug = normalizeText(req.body?.topic, 120);
 			if (nextTopicSlug) {
@@ -2487,9 +2656,8 @@ async function main() {
 				return res.status(409).json({ error: "A claim with that slug already exists in this topic." });
 			}
 
-			if (req.body?.status) claim.status = normalizeStatus(req.body?.status) as typeof claim.status;
-			if (req.body?.consensusBand) {
-				claim.consensusBand = normalizeText(req.body?.consensusBand, 24) as typeof claim.consensusBand;
+			if (req.body?.consensusBand !== undefined) {
+				claim.consensusBand = normalizeConsensusBand(req.body?.consensusBand);
 			}
 			if (req.body?.agreementLevel !== undefined) {
 				claim.agreementLevel = normalizeAgreementLevel(req.body?.agreementLevel) as typeof claim.agreementLevel;
@@ -2579,6 +2747,7 @@ async function main() {
 
 			const revisionSummary = normalizeText(req.body?.revisionNote, 2000) || "Updated claim draft.";
 			appendClaimChangeLog(claim, "update", revisionSummary);
+			invalidateEvidenceLandscapeApproval(claim);
 
 			await claim.save();
 
@@ -2591,15 +2760,15 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: populated });
+			return res.json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to update claim." });
 		}
 	});
 
-	api.post("/editorial/claims/:id/publish", requireEditorial, async (req, res) => {
+	api.post("/editorial/claims/:id/publish", requireAdmin, async (req, res) => {
 		try {
 			const claimId = typeof req.params.id === "string" ? req.params.id : "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
@@ -2608,6 +2777,16 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!claimWorkflowTransitionAllowed(claim.status, "publish")) {
+				return res.status(409).json({
+					error: "Only draft or needs-update claims can be published."
+				});
+			}
+			const revisionNote = normalizeText(req.body?.revisionNote, 2000);
+			if (claim.status === "needs_update" && !revisionNote) {
+				return res.status(400).json({ error: "A public update summary is required before republication." });
+			}
+			const publicationSummary = revisionNote || "Published claim.";
 
 			const actor = currentActor(req);
 			const publishedAt = new Date();
@@ -2620,27 +2799,35 @@ async function main() {
 			appendClaimChangeLog(
 				claim,
 				"publication",
-				normalizeText(req.body?.revisionNote, 2000) || "Published claim."
+				publicationSummary
 			);
+			const sources = await loadClaimSources(claim._id);
+			const readiness = getPublicClaimReadiness(claim.toObject(), summarizeClaimSourceReadiness(sources));
+			if (!readiness.isReady) {
+				return res.status(422).json({
+					error: "Claim is not ready for publication.",
+					validationErrors: readiness.missing
+				});
+			}
 			await claim.save();
 
 			await createClaimRevision({
 				claimId: claim._id,
 				editorId: actor.id,
 				editorModel: actor.model,
-				summary: normalizeText(req.body?.revisionNote, 2000) || "Published claim."
+				summary: publicationSummary
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: populated });
+			return res.json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to publish claim." });
 		}
 	});
 
-	api.post("/editorial/claims/:id/archive", requireEditorial, async (req, res) => {
+	api.post("/editorial/claims/:id/review", requireAdmin, async (req, res) => {
 		try {
 			const claimId = typeof req.params.id === "string" ? req.params.id : "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
@@ -2649,24 +2836,159 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!claimWorkflowTransitionAllowed(claim.status, "review")) {
+				return res.status(409).json({ error: "Only published claims can receive a completed review." });
+			}
+			const revisionNote = normalizeText(req.body?.revisionNote, 2000);
+			if (!revisionNote) {
+				return res.status(400).json({ error: "A public review summary is required." });
+			}
+
+			const reviewedAt = normalizeDate(req.body?.lastReviewedAt) || new Date();
+			claim.lastReviewedAt = reviewedAt;
+			claim.nextReviewAt
+				= normalizeDate(req.body?.nextReviewAt) || new Date(reviewedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
+			claim.reviewedBy = new mongoose.Types.ObjectId(currentActor(req).id);
+			appendClaimChangeLog(claim, "review", revisionNote);
+			const sources = await loadClaimSources(claim._id);
+			const readiness = getPublicClaimReadiness(claim.toObject(), summarizeClaimSourceReadiness(sources));
+			if (!readiness.isReady) {
+				return res.status(422).json({
+					error: "Claim is not ready to remain published.",
+					validationErrors: readiness.missing
+				});
+			}
+			await claim.save();
+
+			const actor = currentActor(req);
+			await createClaimRevision({
+				claimId: claim._id,
+				editorId: actor.id,
+				editorModel: actor.model,
+				summary: revisionNote
+			});
+
+			const populated = await Claim.findById(claim._id).populate("topic").lean();
+			return res.json({ claim: toEditorialClaim(populated) });
+		}
+		catch (error) {
+			logError("API request failed", error);
+			return res.status(500).json({ error: "Failed to record claim review." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/request-update", requireAdmin, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!claimWorkflowTransitionAllowed(claim.status, "request_update")) {
+				return res.status(409).json({ error: "Only published claims can be marked as needing an update." });
+			}
+			const revisionNote = normalizeText(req.body?.revisionNote, 2000);
+			if (!revisionNote) {
+				return res.status(400).json({ error: "A public update rationale is required." });
+			}
+
+			claim.status = "needs_update";
+			appendClaimChangeLog(claim, "update", revisionNote);
+			await claim.save();
+
+			const actor = currentActor(req);
+			await createClaimRevision({
+				claimId: claim._id,
+				editorId: actor.id,
+				editorModel: actor.model,
+				summary: revisionNote
+			});
+
+			const populated = await Claim.findById(claim._id).populate("topic").lean();
+			return res.json({ claim: toEditorialClaim(populated) });
+		}
+		catch (error) {
+			logError("API request failed", error);
+			return res.status(500).json({ error: "Failed to mark claim for update." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/restore-draft", requireAdmin, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!claimWorkflowTransitionAllowed(claim.status, "restore_draft")) {
+				return res.status(409).json({
+					error: "Only archived or needs-update claims can be restored to draft."
+				});
+			}
+			const revisionNote = normalizeText(req.body?.revisionNote, 2000);
+			if (!revisionNote) {
+				return res.status(400).json({ error: "A public restoration rationale is required." });
+			}
+
+			claim.status = "draft";
+			appendClaimChangeLog(claim, "update", revisionNote);
+			await claim.save();
+
+			const actor = currentActor(req);
+			await createClaimRevision({
+				claimId: claim._id,
+				editorId: actor.id,
+				editorModel: actor.model,
+				summary: revisionNote
+			});
+
+			const populated = await Claim.findById(claim._id).populate("topic").lean();
+			return res.json({ claim: toEditorialClaim(populated) });
+		}
+		catch (error) {
+			logError("API request failed", error);
+			return res.status(500).json({ error: "Failed to restore claim draft." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/archive", requireAdmin, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!claimWorkflowTransitionAllowed(claim.status, "archive")) {
+				return res.status(409).json({ error: "The claim is already archived." });
+			}
+			const revisionNote = normalizeText(req.body?.revisionNote, 2000);
+			if (!revisionNote) {
+				return res.status(400).json({ error: "A public archival rationale is required." });
+			}
 
 			const actor = currentActor(req);
 			claim.status = "archived";
-			appendClaimChangeLog(claim, "update", normalizeText(req.body?.revisionNote, 2000) || "Archived claim.");
+			appendClaimChangeLog(claim, "update", revisionNote);
 			await claim.save();
 
 			await createClaimRevision({
 				claimId: claim._id,
 				editorId: actor.id,
 				editorModel: actor.model,
-				summary: normalizeText(req.body?.revisionNote, 2000) || "Archived claim."
+				summary: revisionNote
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: populated });
+			return res.json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to archive claim." });
 		}
 	});
@@ -2678,10 +3000,12 @@ async function main() {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
 			const revisions = await ClaimRevision.find({ claim: claimId }).sort({ createdAt: -1 }).lean();
-			return res.json({ revisions });
+			return res.json({
+				revisions: revisions.map(toEditorialClaimRevision).filter(Boolean)
+			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claim revisions." });
 		}
 	});
@@ -2704,14 +3028,14 @@ async function main() {
 				claim: {
 					id: claim._id,
 					title: claim.title,
-					evidenceLandscape: claim.evidenceLandscape
+					evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
 				},
-				sources,
-				reviewHistory
+				sources: sources.map(toEditorialClaimSource).filter(Boolean),
+				reviewHistory: reviewHistory.map(toEditorialEvidenceReview).filter(Boolean)
 			});
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load evidence landscape." });
 		}
 	});
@@ -2725,12 +3049,11 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
 
 			const fromStatus = claim.evidenceLandscape.workflow.status;
 			claim.evidenceLandscape = normalizeEvidenceLandscape(req.body, claim.evidenceLandscape);
-			if (fromStatus !== "changes_requested") {
-				claim.evidenceLandscape.workflow.status = "draft";
-			}
+			invalidateEvidenceLandscapeApproval(claim);
 			await claim.save();
 
 			const actor = currentActor(req);
@@ -2745,10 +3068,10 @@ async function main() {
 				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
 			});
 
-			return res.json({ claim });
+			return res.json({ claim: toEditorialClaim(claim.toObject()) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to update evidence landscape." });
 		}
 	});
@@ -2764,18 +3087,19 @@ async function main() {
 			if (!source) return res.status(404).json({ error: "Source not found." });
 			const claim = await Claim.findById(source.claim);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
 
 			const actor = currentActor(req);
 			const fromStatus = claim.evidenceLandscape.workflow.status;
 			source.evidenceProfile = normalizeSourceEvidenceProfile(req.body, source.evidenceProfile);
 			source.evidenceProfile.reviewer.codedById = new mongoose.Types.ObjectId(actor.id);
 			source.evidenceProfile.reviewer.codedAt = new Date();
+			source.evidenceProfile.reviewer.reviewedById = undefined;
+			source.evidenceProfile.reviewer.reviewedAt = undefined;
 			await source.save();
 
-			if (fromStatus !== "changes_requested") {
-				claim.evidenceLandscape.workflow.status = "draft";
-				await claim.save();
-			}
+			invalidateEvidenceLandscapeApproval(claim);
+			await claim.save();
 
 			await createEvidenceLandscapeReviewEvent({
 				claimId: claim._id,
@@ -2787,10 +3111,10 @@ async function main() {
 				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
 			});
 
-			return res.json({ source });
+			return res.json({ source: toEditorialClaimSource(source.toObject()) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to update source evidence profile." });
 		}
 	});
@@ -2804,14 +3128,13 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
 			const sources = await loadClaimSources(claim._id);
 			const recomputed = recomputeEvidenceLandscapeFromSources(sources);
 			const fromStatus = claim.evidenceLandscape.workflow.status;
 			claim.evidenceLandscape.distribution = recomputed.distribution;
 			claim.evidenceLandscape.evidenceBaseSize = recomputed.evidenceBaseSize;
-			if (fromStatus !== "changes_requested") {
-				claim.evidenceLandscape.workflow.status = "draft";
-			}
+			invalidateEvidenceLandscapeApproval(claim);
 			await claim.save();
 
 			const actor = currentActor(req);
@@ -2825,10 +3148,10 @@ async function main() {
 				changedFields: ["distribution", "evidenceBaseSize"]
 			});
 
-			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to recompute evidence landscape." });
 		}
 	});
@@ -2842,6 +3165,13 @@ async function main() {
 
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			if (!["not_started", "draft", "changes_requested"].includes(fromStatus)) {
+				return res.status(409).json({
+					error: "Only a draft or changes-requested evidence landscape can be submitted for review."
+				});
+			}
 			const sources = await loadClaimSources(claim._id);
 			const validationErrors = validateEvidenceLandscapeForSubmit(claim, sources);
 			if (validationErrors.length) {
@@ -2849,7 +3179,6 @@ async function main() {
 			}
 
 			const actor = currentActor(req);
-			const fromStatus = claim.evidenceLandscape.workflow.status;
 			claim.evidenceLandscape.workflow.status = "ready_for_review";
 			claim.evidenceLandscape.workflow.assignedEditorId = new mongoose.Types.ObjectId(actor.id);
 			await claim.save();
@@ -2864,15 +3193,64 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to submit evidence landscape for review." });
 		}
 	});
 
-	api.post("/editorial/claims/:id/evidence-landscape/approve", requireEditorial, async (req, res) => {
+	api.post("/editorial/claims/:id/evidence-landscape/request-changes", requireAdmin, async (req, res) => {
+		try {
+			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			if (!mongoose.Types.ObjectId.isValid(claimId)) {
+				return res.status(400).json({ error: "Invalid claim id." });
+			}
+
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (claim.status !== "draft" && claim.status !== "needs_update") {
+				return res.status(409).json({
+					error: "Move the claim into the update workflow before requesting evidence landscape changes."
+				});
+			}
+			const fromStatus = claim.evidenceLandscape.workflow.status;
+			if (fromStatus !== "ready_for_review" && fromStatus !== "approved") {
+				return res.status(409).json({
+					error: "Changes can be requested only from a ready-for-review or approved landscape."
+				});
+			}
+			const notes = normalizeText(req.body?.notes, 2000);
+			if (!notes) {
+				return res.status(400).json({ error: "A private change-request note is required." });
+			}
+
+			const actor = currentActor(req);
+			claim.evidenceLandscape.workflow.status = "changes_requested";
+			claim.evidenceLandscape.workflow.reviewedById = new mongoose.Types.ObjectId(actor.id);
+			claim.evidenceLandscape.workflow.approvedById = undefined;
+			await claim.save();
+
+			await createEvidenceLandscapeReviewEvent({
+				claimId: claim._id,
+				action: "changes_requested",
+				actorId: actor.id,
+				actorModel: actor.model,
+				fromStatus,
+				toStatus: "changes_requested",
+				notes
+			});
+
+			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+		}
+		catch (error) {
+			logError("API request failed", error);
+			return res.status(500).json({ error: "Failed to request evidence landscape changes." });
+		}
+	});
+
+	api.post("/editorial/claims/:id/evidence-landscape/approve", requireAdmin, async (req, res) => {
 		try {
 			const claimId = typeof req.params.id === "string" ? req.params.id : "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
@@ -2910,15 +3288,15 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to approve evidence landscape." });
 		}
 	});
 
-	api.post("/editorial/claims/:id/evidence-landscape/publish", requireEditorial, async (req, res) => {
+	api.post("/editorial/claims/:id/evidence-landscape/publish", requireAdmin, async (req, res) => {
 		try {
 			const claimId = typeof req.params.id === "string" ? req.params.id : "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
@@ -2958,10 +3336,10 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: claim.evidenceLandscape });
+			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to publish evidence landscape." });
 		}
 	});
@@ -2973,10 +3351,10 @@ async function main() {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
 			const sources = await loadClaimSources(new mongoose.Types.ObjectId(claimId));
-			return res.json({ sources });
+			return res.json({ sources: sources.map(toEditorialClaimSource).filter(Boolean) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claim sources." });
 		}
 	});
@@ -2989,16 +3367,37 @@ async function main() {
 			}
 			const claim = await Claim.findById(claimId);
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
+			const sourceTitle = normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
+			if (!sourceTitle) return res.status(400).json({ error: "Source title is required." });
+
+			let sourceUrl = "";
+			try {
+				sourceUrl = normalizeHttpUrl(req.body?.url, 500);
+			}
+			catch (error) {
+				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
+			}
+
+			let statusSources: string[];
+			try {
+				statusSources = normalizeHttpUrlList(req.body?.statusSources, 6, 500);
+			}
+			catch (error) {
+				return res.status(400).json({
+					error: error instanceof Error ? error.message : "Invalid integrity signal URL."
+				});
+			}
 
 			const source = await ClaimSource.create({
 				claim: claim._id,
 				kind: normalizeClaimSourceKind(req.body?.kind),
-				title: normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH),
+				title: sourceTitle,
 				publisher: normalizeText(req.body?.publisher, 160),
 				year: req.body?.year
 					? normalizeInteger(req.body?.year, 0, 9999, new Date().getUTCFullYear())
 					: undefined,
-				url: normalizeText(req.body?.url, 500),
+				url: sourceUrl,
 				doi: normalizeText(req.body?.doi, 200),
 				pmid: normalizeText(req.body?.pmid, 40),
 				pmcid: normalizeText(req.body?.pmcid, 40),
@@ -3006,11 +3405,13 @@ async function main() {
 				appraisal: normalizeSourceAppraisal(req.body?.appraisal),
 				citationStatus: normalizeCitationStatus(req.body?.citationStatus),
 				citationCheckedAt: normalizeDate(req.body?.citationCheckedAt),
-				statusSources: normalizeList(req.body?.statusSources, 6, 120),
+				statusSources,
 				stance: normalizeClaimSourceStance(req.body?.stance),
 				note: normalizeText(req.body?.note, 1000),
 				order: normalizeInteger(req.body?.order, 0, 999, 0)
 			});
+			invalidateEvidenceLandscapeApproval(claim);
+			await claim.save();
 
 			const actor = currentActor(req);
 			await createClaimRevision({
@@ -3020,10 +3421,10 @@ async function main() {
 				summary: normalizeText(req.body?.revisionNote, 2000) || "Added claim source."
 			});
 
-			return res.status(201).json({ source });
+			return res.status(201).json({ source: toEditorialClaimSource(source.toObject()) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to add source." });
 		}
 	});
@@ -3038,14 +3439,28 @@ async function main() {
 
 			const source = await ClaimSource.findOne({ _id: sourceId, claim: claimId });
 			if (!source) return res.status(404).json({ error: "Source not found." });
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
 
-			if (req.body?.kind !== undefined) source.kind = normalizeText(req.body?.kind, 32) as typeof source.kind;
-			if (req.body?.title !== undefined) source.title = normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
+			if (req.body?.kind !== undefined) source.kind = normalizeClaimSourceKind(req.body?.kind);
+			if (req.body?.title !== undefined) {
+				const sourceTitle = normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
+				if (!sourceTitle) return res.status(400).json({ error: "Source title is required." });
+				source.title = sourceTitle;
+			}
 			if (req.body?.publisher !== undefined) source.publisher = normalizeText(req.body?.publisher, 160);
 			if (req.body?.year !== undefined) {
 				source.year = req.body?.year ? normalizeInteger(req.body?.year, 0, 9999, 0) : undefined;
 			}
-			if (req.body?.url !== undefined) source.url = normalizeText(req.body?.url, 500);
+			if (req.body?.url !== undefined) {
+				try {
+					source.url = normalizeHttpUrl(req.body?.url, 500);
+				}
+				catch (error) {
+					return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
+				}
+			}
 			if (req.body?.doi !== undefined) source.doi = normalizeText(req.body?.doi, 200);
 			if (req.body?.pmid !== undefined) source.pmid = normalizeText(req.body?.pmid, 40);
 			if (req.body?.pmcid !== undefined) source.pmcid = normalizeText(req.body?.pmcid, 40);
@@ -3062,14 +3477,25 @@ async function main() {
 				source.citationCheckedAt = normalizeDate(req.body?.citationCheckedAt);
 			}
 			if (req.body?.statusSources !== undefined) {
-				source.statusSources = normalizeList(req.body?.statusSources, 6, 120);
+				try {
+					source.statusSources = normalizeHttpUrlList(req.body?.statusSources, 6, 500);
+				}
+				catch (error) {
+					return res.status(400).json({
+						error: error instanceof Error ? error.message : "Invalid integrity signal URL."
+					});
+				}
 			}
 			if (req.body?.stance !== undefined)
-				source.stance = normalizeText(req.body?.stance, 24) as typeof source.stance;
+				source.stance = normalizeClaimSourceStance(req.body?.stance);
 			if (req.body?.note !== undefined) source.note = normalizeText(req.body?.note, 1000);
 			if (req.body?.order !== undefined)
 				source.order = normalizeInteger(req.body?.order, 0, 999, source.order || 0);
+			source.evidenceProfile.reviewer.reviewedById = undefined;
+			source.evidenceProfile.reviewer.reviewedAt = undefined;
 			await source.save();
+			invalidateEvidenceLandscapeApproval(claim);
+			await claim.save();
 
 			const actor = currentActor(req);
 			await createClaimRevision({
@@ -3079,10 +3505,10 @@ async function main() {
 				summary: normalizeText(req.body?.revisionNote, 2000) || "Updated claim source."
 			});
 
-			return res.json({ source });
+			return res.json({ source: toEditorialClaimSource(source.toObject()) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to update source." });
 		}
 	});
@@ -3095,8 +3521,13 @@ async function main() {
 				return res.status(400).json({ error: "Invalid source id." });
 			}
 
+			const claim = await Claim.findById(claimId);
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (!requireClaimMutationAccess(req, res, claim)) return;
 			const source = await ClaimSource.findOneAndDelete({ _id: sourceId, claim: claimId });
 			if (!source) return res.status(404).json({ error: "Source not found." });
+			invalidateEvidenceLandscapeApproval(claim);
+			await claim.save();
 
 			const actor = currentActor(req);
 			await createClaimRevision({
@@ -3109,7 +3540,7 @@ async function main() {
 			return res.sendStatus(204);
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to remove source." });
 		}
 	});
@@ -3128,10 +3559,10 @@ async function main() {
 				.populate("topic")
 				.populate("claim")
 				.lean();
-			return res.json({ questions });
+			return res.json({ questions: questions.map(toEditorialQuestion) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load editorial questions." });
 		}
 	});
@@ -3147,6 +3578,9 @@ async function main() {
 			const [question, claim] = await Promise.all([Question.findById(questionId), Claim.findById(claimId)]);
 			if (!question) return res.status(404).json({ error: "Question not found." });
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			if (claim.status === "archived") {
+				return res.status(422).json({ error: "Archived claims cannot receive new question links." });
+			}
 			if (question.topic.toString() !== claim.topic.toString()) {
 				return res.status(400).json({ error: "Claim must belong to the same topic as the question." });
 			}
@@ -3159,10 +3593,10 @@ async function main() {
 			await question.save();
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			return res.json({ question: populated });
+			return res.json({ question: populated ? toEditorialQuestion(populated) : null });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to link question to claim." });
 		}
 	});
@@ -3212,35 +3646,59 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.status(201).json({ claim: populated });
+			return res.status(201).json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to create claim from question." });
 		}
 	});
 
-	api.post("/editorial/questions/:id/mark-duplicate", requireEditorial, async (req, res) => {
+	api.post("/editorial/questions/:id/mark-duplicate", requireAdmin, async (req, res) => {
 		try {
 			const questionId = typeof req.params.id === "string" ? req.params.id : "";
 			if (!mongoose.Types.ObjectId.isValid(questionId)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
+			const moderationNote = normalizeText(req.body?.moderationNote, 1000);
+			if (!moderationNote) {
+				return res.status(400).json({ error: "A moderation note is required to mark a question duplicate." });
+			}
 
 			const question = await Question.findById(questionId);
 			if (!question) return res.status(404).json({ error: "Question not found." });
 
+			const actor = currentActor(req);
 			question.routingStatus = "duplicate";
 			question.status = "flagged";
-			question.linkedBy = new mongoose.Types.ObjectId(currentActor(req).id);
+			question.linkedBy = new mongoose.Types.ObjectId(actor.id);
 			question.linkedAt = new Date();
+			question.moderationNote = moderationNote;
+			question.moderatedBy = new mongoose.Types.ObjectId(actor.id);
+			question.moderatedAt = new Date();
 			await question.save();
+			await recordAccountActivity({
+				req,
+				action: "question.moderated",
+				actor: {
+					id: actor.id,
+					type: "admin"
+				},
+				target: {
+					id: question._id.toString(),
+					type: "question"
+				},
+				metadata: {
+					decision: "duplicate",
+					topicId: question.topic.toString()
+				}
+			});
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			return res.json({ question: populated });
+			return res.json({ question: populated ? toEditorialQuestion(populated) : null });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to mark question as duplicate." });
 		}
 	});
@@ -3258,7 +3716,7 @@ async function main() {
 			return res.json({ applications });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load expert applications." });
 		}
 	});
@@ -3275,6 +3733,11 @@ async function main() {
 			if (!["approved", "rejected", "needs-info"].includes(decision)) {
 				return res.status(400).json({ error: "Invalid decision." });
 			}
+			if (decision !== "approved" && !reviewNotes) {
+				return res.status(400).json({
+					error: "Review notes are required when requesting more information or removing verified access."
+				});
+			}
 
 			const application = await ExpertApplication.findById(applicationId);
 			if (!application) return res.status(404).json({ error: "Application not found." });
@@ -3288,13 +3751,20 @@ async function main() {
 			const user = await User.findById(application.user);
 			if (user) {
 				const previousStatus = user.expertiseStatus;
+				const previousTrustLevel = user.trustLevel || 0;
 				user.expertiseStatus
 					= decision === "approved" ? "verified" : decision === "needs-info" ? "pending" : "rejected";
+				if (previousStatus !== user.expertiseStatus) {
+					user.sessionVersion = Number(user.sessionVersion || 0) + 1;
+				}
 				if (decision === "approved") {
 					user.trustLevel = Math.max(user.trustLevel || 0, 3);
 					user.trustScore = Math.max(user.trustScore || 0, 200);
 					user.affiliation = application.affiliation || user.affiliation || "";
 					user.expertiseAreas = application.expertiseAreas;
+				}
+				else {
+					user.trustLevel = Math.min(user.trustLevel || 0, 2);
 				}
 				await user.save();
 				await recordAccountActivity({
@@ -3311,7 +3781,9 @@ async function main() {
 					},
 					metadata: {
 						decision,
+						newTrustLevel: user.trustLevel || 0,
 						previousStatus,
+						previousTrustLevel,
 						newStatus: user.expertiseStatus,
 						userId: user._id.toString()
 					}
@@ -3321,7 +3793,7 @@ async function main() {
 			return res.json({ application });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to review expert application." });
 		}
 	});
@@ -3338,7 +3810,7 @@ async function main() {
 			return res.json({ flags });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load question flags." });
 		}
 	});
@@ -3354,28 +3826,83 @@ async function main() {
 			if (!["reviewed", "dismissed"].includes(decision)) {
 				return res.status(400).json({ error: "Invalid decision." });
 			}
+			const reviewNote = normalizeText(req.body?.reviewNote, 1000);
+			if (!reviewNote) {
+				return res.status(400).json({ error: "A moderation review note is required." });
+			}
 
 			const flag = await QuestionFlag.findById(flagId);
 			if (!flag) return res.status(404).json({ error: "Flag not found." });
+			if (flag.status !== "open") {
+				return res.status(409).json({ error: "This flag has already been reviewed." });
+			}
 
 			flag.status = decision;
-			flag.reviewedBy = new mongoose.Types.ObjectId(currentActor(req).id);
+			flag.reviewNote = reviewNote;
+			const actor = currentActor(req);
+			flag.reviewedBy = new mongoose.Types.ObjectId(actor.id);
 			flag.reviewedAt = new Date();
 			await flag.save();
+			await recordAccountActivity({
+				req,
+				action: "question_flag.reviewed",
+				actor: {
+					id: actor.id,
+					type: "admin"
+				},
+				target: {
+					id: flag.question.toString(),
+					type: "question"
+				},
+				metadata: {
+					decision,
+					reason: flag.reason
+				}
+			});
 
 			return res.json({ flag });
 		}
 		catch (error) {
-			console.error(error);
+			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to review question flag." });
 		}
 	});
 
 	app.use("/api/auth", authRoutes);
 	app.use("/api", api);
+	app.use("/api", (_req, res) => {
+		res.status(404).json({ error: "Not found." });
+	});
+	app.use((_req, res) => {
+		res.status(404).json({ error: "Not found." });
+	});
 
-	const PORT = env.PORT || 3011;
-	const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
+	const errorHandler: express.ErrorRequestHandler = (error, _req, res, _next) => {
+		const parserError = error instanceof SyntaxError
+			&& typeof error === "object"
+			&& error
+			&& "type" in error
+			&& error.type === "entity.parse.failed";
+		if (parserError) {
+			res.status(400).json({ error: "Request body must contain valid JSON." });
+			return;
+		}
+
+		logError("Unhandled API error", error);
+		res.status(500).json({ error: "Internal server error." });
+	};
+	app.use(errorHandler);
+
+	const parsedPort = Number.parseInt(env.PORT || "3011", 10);
+	if (!Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65_535) {
+		throw new Error("PORT must be an integer between 1 and 65535.");
+	}
+	const host = env.HOST || "127.0.0.1";
+	const server = app.listen(parsedPort, host, () => console.log(`Server listening on ${host}:${parsedPort}.`));
+	server.requestTimeout = 15_000;
+	server.headersTimeout = 10_000;
+	server.keepAliveTimeout = 5_000;
+	server.maxRequestsPerSocket = 1_000;
 	let isShuttingDown = false;
 
 	const shutdown = async (signal: NodeJS.Signals) => {
@@ -3388,6 +3915,7 @@ async function main() {
 
 		try {
 			if (server.listening) {
+				server.closeIdleConnections();
 				await new Promise<void>((resolve, reject) => {
 					server.close((error) => {
 						if (error) {
@@ -3408,7 +3936,7 @@ async function main() {
 			exit(0);
 		}
 		catch (error) {
-			console.error("Graceful shutdown failed:", error);
+			logError("Graceful shutdown failed", error);
 			exit(1);
 		}
 	};
@@ -3422,6 +3950,6 @@ async function main() {
 }
 
 main().catch((err) => {
-	console.error(err);
+	logError("Server startup failed", err);
 	exit(1);
 });

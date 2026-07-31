@@ -2,12 +2,12 @@ import { Router } from "express";
 import {
 	changeEmail,
 	changePassword,
-	checkEmail,
 	login,
 	logout,
 	me,
 	registerUser
 } from "../controllers/authController.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -15,8 +15,7 @@ router.post("/register", registerUser);
 router.post("/login", login);
 router.delete("/logout", logout);
 router.get("/me", me);
-router.post("/check-email", checkEmail);
-router.post("/change-email/:id", changeEmail);
-router.post("/change-password/:id", changePassword);
+router.patch("/email", requireAuth, changeEmail);
+router.patch("/password", requireAuth, changePassword);
 
 export const authRoutes = router;

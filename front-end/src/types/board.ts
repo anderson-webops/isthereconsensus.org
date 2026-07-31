@@ -114,9 +114,7 @@ export interface ClaimSourceEvidenceProfile {
 		effectEstimate: ClaimSourceEffectEstimate;
 	};
 	reviewer: {
-		codedById?: string;
 		codedAt?: string;
-		reviewedById?: string;
 		reviewedAt?: string;
 		notes?: string;
 	};
@@ -184,10 +182,6 @@ export interface ClaimEvidenceLandscape {
 		status?: ClaimLandscapeWorkflowStatus;
 		lastAssessedAt?: string;
 		nextReviewDueAt?: string;
-		assessedBy?: string;
-		assignedEditorId?: string;
-		reviewedById?: string;
-		approvedById?: string;
 		publishedAt?: string;
 		supersededByClaimId?: string;
 		editorialNotes?: string;
@@ -302,17 +296,13 @@ export interface Claim extends ClaimSummary {
 	coiSummary?: string;
 	independenceSummary?: string;
 	changeLog?: ClaimChangeLogEntry[];
-	reviewedBy?: string;
 	sources?: ClaimSource[];
 }
 
 export interface ClaimRevision {
 	_id: string;
-	claim: string;
-	editor: string;
 	editorModel: "User" | "Admin";
 	summary: string;
-	snapshot: Record<string, unknown>;
 	createdAt?: string;
 	updatedAt?: string;
 }
@@ -332,9 +322,6 @@ export interface Question {
 	sourceUrl?: string;
 	sourceContextType?: QuestionSourceContextType;
 	displayName?: string;
-	author?: string;
-	authorName?: string;
-	authorModel?: "User" | "Admin";
 	status?: "open" | "flagged" | "archived";
 	routingStatus?: QuestionRoutingStatus;
 	askKind?: QuestionAskKind;

@@ -2,7 +2,9 @@
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
+import { serializeJsonLd } from "~/utils/json-ld";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -280,7 +282,7 @@ useHead(() => ({
 		}
 	],
 	script: [breadcrumbStructuredData.value, articleStructuredData.value].map((entry, index) => ({
-		innerHTML: JSON.stringify(entry),
+		innerHTML: serializeJsonLd(entry),
 		key: `claim-structured-data-${index}`,
 		type: "application/ld+json"
 	}))
@@ -333,11 +335,12 @@ function formatCitationStatus(status?: ClaimSource["citationStatus"]) {
 }
 
 function sourcePrimaryLink(source: ClaimSource) {
-	if (source.url) return source.url;
-	if (source.doi) return `https://doi.org/${source.doi}`;
-	if (source.pmid) return `https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/`;
-	if (source.pmcid) return `https://pmc.ncbi.nlm.nih.gov/articles/${source.pmcid}/`;
-	return "";
+	return (
+		safeExternalHttpUrl(source.url) ||
+		doiResolverUrl(source.doi) ||
+		pubMedUrl(source.pmid) ||
+		pubMedCentralUrl(source.pmcid)
+	);
 }
 
 function formatDate(value?: string, fallback = "Not available yet") {
@@ -545,7 +548,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 									class="button button--ghost"
 									:href="sourcePrimaryLink(source)"
 									target="_blank"
-									rel="noreferrer"
+									rel="noopener noreferrer"
 								>
 									Open source
 								</a>

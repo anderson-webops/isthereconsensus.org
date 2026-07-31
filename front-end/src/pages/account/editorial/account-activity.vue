@@ -50,10 +50,13 @@ const actions: AccountActivityAction[] = [
 	"password.changed",
 	"email.changed",
 	"expert_application.created",
-	"expert_application.reviewed"
+	"expert_application.reviewed",
+	"question.deleted",
+	"question.moderated",
+	"question_flag.reviewed"
 ];
 const actorTypes: AccountActivityActorType[] = ["user", "admin", "system", "anonymous"];
-const targetTypes: AccountActivityTargetType[] = ["user", "admin", "expert_application", "unknown"];
+const targetTypes: AccountActivityTargetType[] = ["user", "admin", "expert_application", "question", "unknown"];
 const actionLabels: Record<AccountActivityAction, string> = {
 	"user.registered": "Public user registration",
 	"user.deleted": "User deleted",
@@ -65,7 +68,10 @@ const actionLabels: Record<AccountActivityAction, string> = {
 	"password.changed": "Password changed",
 	"email.changed": "Email changed",
 	"expert_application.created": "Expert application created",
-	"expert_application.reviewed": "Expert application reviewed"
+	"expert_application.reviewed": "Expert application reviewed",
+	"question.deleted": "Question deleted",
+	"question.moderated": "Question moderated",
+	"question_flag.reviewed": "Question flag reviewed"
 };
 
 function formatDate(value?: string) {
@@ -117,9 +123,8 @@ async function loadActivity(page = pagination.value.page) {
 		});
 		logs.value = response.logs;
 		pagination.value = response.pagination;
-	} catch (error) {
+	} catch {
 		errorMessage.value = "Unable to load account activity.";
-		console.error(error);
 	} finally {
 		loading.value = false;
 	}

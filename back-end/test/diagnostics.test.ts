@@ -8,33 +8,37 @@ describe("canReadDiagnostics", () => {
 	});
 
 	it("allows production diagnostics when the internal key matches", () => {
+		const key = "a".repeat(32);
 		assert.equal(
 			canReadDiagnostics({
 				isProd: true,
-				configuredKey: "secret",
-				providedKey: "secret"
+				enabled: true,
+				configuredKey: key,
+				providedKey: key
 			}),
 			true
 		);
 	});
 
-	it("allows production diagnostics from loopback", () => {
+	it("does not trust loopback or forwarded loopback addresses in production", () => {
 		assert.equal(
 			canReadDiagnostics({
 				isProd: true,
+				enabled: true,
 				clientIp: "127.0.0.1"
-			}),
-			true
+			} as any),
+			false,
+			"loopback access must not bypass the diagnostics key"
 		);
 	});
 
-	it("rejects production diagnostics without loopback or the internal key", () => {
+	it("rejects production diagnostics without the enabled gate and strong matching key", () => {
 		assert.equal(
 			canReadDiagnostics({
 				isProd: true,
+				enabled: true,
 				configuredKey: "secret",
-				providedKey: "wrong",
-				clientIp: "203.0.113.10"
+				providedKey: "wrong"
 			}),
 			false
 		);

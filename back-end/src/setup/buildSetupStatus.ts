@@ -161,9 +161,9 @@ export function buildSetupStatus({
 			ok: topicCreationEnabled,
 			severity: "info",
 			detail: topicCreationEnabled
-				? "Public topic creation is enabled."
-				: "Topic creation is disabled; only seeded topics will appear.",
-			action: "Enable only if you want the public to create new topic lanes."
+				? "Admin-only topic creation is enabled."
+				: "Admin topic creation is disabled; only seeded topics will appear.",
+			action: "Enable only when administrators need to create new topic lanes through the API."
 		}
 	];
 

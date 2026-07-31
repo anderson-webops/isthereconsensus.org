@@ -33,7 +33,8 @@ function resolveApiBase(event: H3Event) {
 }
 
 export default defineEventHandler(async (event) => {
-	const origin = getRequestURL(event).origin;
+	const config = useRuntimeConfig(event);
+	const origin = new URL(String(config.public.siteUrl || "https://isthereconsensus.org")).origin;
 	const apiBase = resolveApiBase(event);
 	const staticRoutes: Array<{ path: string; lastmod?: string }> = [
 		{ path: "/" },

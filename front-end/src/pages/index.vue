@@ -7,6 +7,7 @@ import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/co
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
+import { serializeJsonLd } from "~/utils/json-ld";
 import { claimReviewTimestamp, selectRecentClaims } from "~/utils/recent-claims";
 
 definePageMeta({
@@ -173,7 +174,7 @@ useHead({
 	],
 	script: [
 		{
-			innerHTML: JSON.stringify({
+			innerHTML: serializeJsonLd({
 				"@context": "https://schema.org",
 				"@type": "FAQPage",
 				mainEntity: faqEntries.map((entry) => ({
@@ -210,8 +211,7 @@ watchDebounced(
 			suggestions.value = await $fetch<SuggestionResponse>(
 				apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`)
 			);
-		} catch (error) {
-			console.error(error);
+		} catch {
 			suggestions.value = { claims: [], topics: [], questions: [] };
 			suggestionError.value = "Suggestion lookup is unavailable right now.";
 		} finally {

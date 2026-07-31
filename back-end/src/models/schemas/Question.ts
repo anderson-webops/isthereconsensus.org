@@ -26,6 +26,9 @@ export interface IQuestion {
 	multiQuestion?: boolean;
 	linkedBy?: mongoose.Types.ObjectId;
 	linkedAt?: Date;
+	moderationNote?: string;
+	moderatedBy?: mongoose.Types.ObjectId;
+	moderatedAt?: Date;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
@@ -69,7 +72,10 @@ const questionSchema: Schema<IQuestion> = new Schema(
 		loadedFrame: { type: Boolean, default: false },
 		multiQuestion: { type: Boolean, default: false },
 		linkedBy: { type: Schema.Types.ObjectId, index: true },
-		linkedAt: { type: Date }
+		linkedAt: { type: Date },
+		moderationNote: { type: String, default: "", trim: true, maxlength: 1000 },
+		moderatedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
+		moderatedAt: { type: Date }
 	},
 	{ timestamps: true }
 );
