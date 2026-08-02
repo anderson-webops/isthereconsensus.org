@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { defaultClaims } from "../src/data/claims.js";
+import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
+import { Claim } from "../src/models/schemas/Claim.js";
 import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "../src/models/schemas/ClaimSource.js";
 
 const launchSensitiveClaimSlugs = [
@@ -61,6 +63,20 @@ describe("default claim seed quality", () => {
 	it("keeps seeded claim slugs unique", () => {
 		const keys = defaultClaims.map(claim => `${claim.topicSlug}/${claim.slug}`);
 		assert.equal(new Set(keys).size, keys.length);
+	});
+
+	it("keeps every source-controlled claim within the persistence schema", async () => {
+		for (const seed of defaultClaims) {
+			const document = new Claim({
+				topic: new mongoose.Types.ObjectId(),
+				slug: seed.slug,
+				...(buildSeedClaimUpdate({}, seed).$set ?? {}),
+				lastReviewedAt: new Date(),
+				nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
+				publishedAt: seed.status === "published" ? new Date() : undefined
+			});
+			await assert.doesNotReject(() => document.validate(), seed.slug);
+		}
 	});
 
 	it("keeps every published claim complete enough for public claim pages", () => {

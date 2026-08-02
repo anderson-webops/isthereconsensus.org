@@ -6,6 +6,13 @@ export interface MongoConfiguration {
 	source: "env" | "vault";
 }
 
+export function validateMongoUri(uri: string) {
+	if (!/^mongodb(?:\+srv)?:\/\/\S+$/u.test(uri) || uri.length > 8_192) {
+		throw new Error("MongoDB configuration must contain a valid MongoDB URI.");
+	}
+	return uri;
+}
+
 export async function resolveMongoConfiguration(): Promise<MongoConfiguration> {
 	const vaultState = vaultConfigurationState();
 	if (vaultState === "incomplete") {
@@ -14,14 +21,11 @@ export async function resolveMongoConfiguration(): Promise<MongoConfiguration> {
 
 	if (vaultState === "configured") {
 		const { uri } = await readMongoSecret();
-		if (!uri) {
-			throw new Error("Configured Vault secret did not provide a MongoDB URI.");
-		}
-		return { source: "vault", uri };
+		return { source: "vault", uri: validateMongoUri(uri) };
 	}
 
 	if (!env.MONGODB_URI) {
 		throw new Error("No MongoDB URI available (Vault and MONGODB_URI missing).");
 	}
-	return { source: "env", uri: env.MONGODB_URI };
+	return { source: "env", uri: validateMongoUri(env.MONGODB_URI) };
 }

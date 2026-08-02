@@ -15,6 +15,7 @@ import {
 	passwordChangeSchema,
 	registrationSchema
 } from "../utils/accountValidation.js";
+import { adminIsEnabled } from "../utils/adminAccess.js";
 import { verifyCaptcha } from "../utils/captcha.js";
 import { logError } from "../utils/safeLog.js";
 
@@ -142,15 +143,18 @@ export const login: RequestHandler = async (req, res) => {
 	const matches = entity
 		? await entity.comparePassword(parsed.data.password)
 		: (await consumeDummyPasswordCheck(parsed.data.password), false);
+	const disabledAdmin = entity instanceof Admin && !adminIsEnabled(entity);
 
-	if (!entity || !matches) {
+	if (!entity || !matches || disabledAdmin) {
 		await recordAccountActivity({
 			req,
 			action: "login.failed",
 			actor: { type: "anonymous" },
 			target: entity ? accountTarget(entity) : { type: "unknown", email: parsed.data.email },
 			metadata: {
-				reason: matchesExactlyOneAccount ? "bad_credentials" : "unknown_or_ambiguous_account"
+				reason: disabledAdmin
+					? "disabled_account"
+					: matchesExactlyOneAccount ? "bad_credentials" : "unknown_or_ambiguous_account"
 			}
 		});
 		return res.status(403).json({ error: "Invalid email or password." });
@@ -216,7 +220,11 @@ export const me: RequestHandler = async (req, res) => {
 	if (session?.adminID) entity = await Admin.findById(session.adminID);
 	else if (session?.userID) entity = await User.findById(session.userID);
 
-	if (!entity || session?.sessionVersion !== sessionVersion(entity)) {
+	if (
+		!entity
+		|| (entity instanceof Admin && !adminIsEnabled(entity))
+		|| session?.sessionVersion !== sessionVersion(entity)
+	) {
 		if (session?.adminID || session?.userID) clearSession(req);
 		return res.json({ currentUser: null, currentAdmin: null });
 	}

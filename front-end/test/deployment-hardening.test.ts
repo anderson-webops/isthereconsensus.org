@@ -6,9 +6,10 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(testDir, "..", "..");
-const dockerfile = readFileSync(join(repositoryRoot, "Dockerfile"), "utf8");
 const deploymentGuide = readFileSync(join(repositoryRoot, "DEPLOYMENT.md"), "utf8");
 const nginxConfig = readFileSync(join(repositoryRoot, "deploy", "nginx", "isthereconsensus.org.conf"), "utf8");
+const prepareRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "prepare-release.sh"), "utf8");
+const promoteRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "promote-release.sh"), "utf8");
 const nuxtConfig = readFileSync(join(repositoryRoot, "front-end", "nuxt.config.ts"), "utf8");
 const poweredByPlugin = readFileSync(
 	join(repositoryRoot, "front-end", "server", "plugins", "remove-powered-by.ts"),
@@ -20,24 +21,38 @@ const systemdUnits = [
 ];
 
 describe("deployment hardening", () => {
-	it("pins the security-patched Node image and removes package managers from the runtime stage", () => {
-		const pinnedBase =
-			/node:24\.18\.1-alpine@sha256:f70403e87646dc51b45295f4b8b70cdad0b63d2297c4c9899119b03f7af7a6b3/g;
-		assert.equal(dockerfile.match(pinnedBase)?.length, 2);
-		assert.match(dockerfile, /npm install --global npm@12\.0\.2/);
-		assert.match(dockerfile, /rm -rf \/usr\/local\/lib\/node_modules\/npm/);
-		assert.match(dockerfile, /USER node/);
-		assert.match(dockerfile, /HEALTHCHECK .*--retries=3/s);
+	it("prepares and promotes direct releases without a production container contract", () => {
+		assert.match(prepareRelease, /node --version.*v24\.18\.1/s);
+		assert.match(prepareRelease, /npm --version.*12\.0\.2/s);
+		assert.match(prepareRelease, /NODE_BIN_DIR:-\/usr\/bin/);
+		assert.match(prepareRelease, /git -C "\$candidate" status --porcelain/);
+		assert.match(prepareRelease, /npm ci --include=dev --include=optional --strict-allow-scripts/);
+		assert.match(
+			prepareRelease,
+			/unset NODE_ENV[\s\S]+npm test[\s\S]+export NODE_ENV=production[\s\S]+npm run build/
+		);
+		assert.match(prepareRelease, /npm ci --omit=dev --include=optional --ignore-scripts/);
+		assert.doesNotMatch(prepareRelease, /npm prune/);
+		assert.match(prepareRelease, /deployment\.commit !== process\.env\.SOURCE_COMMIT/);
+		assert.match(promoteRelease, /mv -Tf/);
+		assert.match(promoteRelease, /api_ready_url/);
+		assert.match(promoteRelease, /web_ready_url/);
+		assert.match(promoteRelease, /previous_target/);
+		assert.match(promoteRelease, /wait_for_target "\$previous_target"/);
+		assert.doesNotMatch(`${prepareRelease}\n${promoteRelease}`, /\b(?:docker|podman|compose)\b/iu);
 	});
 
 	it("keeps both application services private and privilege-restricted", () => {
 		for (const unit of systemdUnits) {
+			assert.match(unit, /WorkingDirectory=\/srv\/isthereconsensus\.org\/current/);
 			assert.match(unit, /Environment=HOST=127\.0\.0\.1/);
+			assert.match(unit, /ExecStartPre=\/usr\/bin\/test -f/);
 			assert.match(unit, /NoNewPrivileges=true/);
 			assert.match(unit, /CapabilityBoundingSet=\n/);
 			assert.match(unit, /LockPersonality=true/);
 			assert.match(unit, /ProtectProc=invisible/);
 			assert.match(unit, /ProtectSystem=strict/);
+			assert.match(unit, /PrivateMounts=true/);
 			assert.match(unit, /RemoveIPC=true/);
 			assert.match(unit, /RestrictNamespaces=true/);
 			assert.match(unit, /RestrictSUIDSGID=true/);

@@ -2,6 +2,7 @@ export type AuthRole = "user" | "admin";
 
 export interface AuthUser {
 	_id: string;
+	enabled?: boolean;
 	name: string;
 	email: string;
 	role?: AuthRole;

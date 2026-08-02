@@ -11,6 +11,7 @@ import {
 	normalizeHttpUrlList
 } from "../src/utils/accountValidation.js";
 import { verifyCaptcha } from "../src/utils/captcha.js";
+import { validateMongoUri } from "../src/utils/mongoConfiguration.js";
 import {
 	toApplicantExpertApplication,
 	toEditorialClaim,
@@ -22,6 +23,12 @@ import {
 	toPublicTopicSentimentVote,
 	toReporterQuestionFlag
 } from "../src/utils/publicRecords.js";
+import { classifyPublicRequestError } from "../src/utils/requestErrors.js";
+import {
+	assertDistinctProductionSecrets,
+	parseRuntimeHost,
+	parseTrustedProxyIps
+} from "../src/utils/runtimeSecurity.js";
 
 const originalNodeEnv = process.env.NODE_ENV;
 const originalCaptchaSecret = process.env.CAPTCHA_SECRET;
@@ -33,6 +40,49 @@ afterEach(() => {
 });
 
 describe("security boundaries", () => {
+	it("classifies bounded request-body failures without exposing internals", () => {
+		assert.deepEqual(classifyPublicRequestError({ type: "entity.parse.failed" }), {
+			message: "Request body must contain valid JSON.",
+			status: 400
+		});
+		assert.deepEqual(classifyPublicRequestError({ type: "entity.too.large", length: 999_999 }), {
+			message: "Request body is too large.",
+			status: 413
+		});
+		assert.deepEqual(classifyPublicRequestError({ type: "encoding.unsupported", encoding: "secret" }), {
+			message: "Request encoding is not supported.",
+			status: 415
+		});
+		assert.equal(classifyPublicRequestError(new Error("private database detail")), undefined);
+	});
+
+	it("allows only exact proxy addresses and loopback production listeners", () => {
+		assert.deepEqual(parseTrustedProxyIps(undefined, true), ["127.0.0.1", "::1"]);
+		assert.deepEqual(parseTrustedProxyIps("127.0.0.1,::1,127.0.0.1", true), ["127.0.0.1", "::1"]);
+		assert.throws(() => parseTrustedProxyIps("loopback", true), /exact IP addresses/u);
+		assert.throws(() => parseTrustedProxyIps("10.0.0.0/8", true), /exact IP addresses/u);
+		assert.equal(parseRuntimeHost(undefined, true), "127.0.0.1");
+		assert.throws(() => parseRuntimeHost("0.0.0.0", true), /loopback-only/u);
+		assert.equal(parseRuntimeHost("0.0.0.0", true, true), "0.0.0.0");
+	});
+
+	it("rejects reused production secrets and malformed database URIs", () => {
+		assert.throws(
+			() => assertDistinctProductionSecrets(true, {
+				CAPTCHA_SECRET: "same-secret",
+				SESSION_SECRET: "same-secret"
+			}),
+			/must use different secrets/u
+		);
+		assert.doesNotThrow(() => assertDistinctProductionSecrets(true, {
+			CAPTCHA_SECRET: "captcha-secret",
+			SESSION_SECRET: "session-secret"
+		}));
+		assert.equal(validateMongoUri("mongodb://127.0.0.1:27017/test"), "mongodb://127.0.0.1:27017/test");
+		assert.throws(() => validateMongoUri("https://database.example/test"), /valid MongoDB URI/u);
+		assert.throws(() => validateMongoUri("mongodb://127.0.0.1:27017/test\n"), /valid MongoDB URI/u);
+	});
+
 	it("accepts long passwords and rejects short passwords", () => {
 		assert.equal(accountPasswordSchema.safeParse("a long passphrase for this account").success, true);
 		assert.equal(accountPasswordSchema.safeParse("too short").success, false);

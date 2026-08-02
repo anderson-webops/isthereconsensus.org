@@ -31,7 +31,7 @@ The site is deliberately not a truth oracle, medical-advice tool, or automated c
 
 ## Getting started
 
-Use Node `24.18.1` and npm `12.0.2`; `.node-version`, `.nvmrc`, package engines, CI, and the container build all pin that production toolchain.
+Use Node `24.18.1` and npm `12.0.2`; `.node-version`, `.nvmrc`, package engines, CI, and the direct systemd deployment all pin that production toolchain.
 
 ```bash
 npm ci --include=optional --strict-allow-scripts
@@ -114,35 +114,13 @@ To check a locally running built SSR server instead, point the smoke at that ori
 LIVE_SMOKE_BASE_URL=http://127.0.0.1:4068 LIVE_SMOKE_PROFILE=frontend npm run smoke:live
 ```
 
-## Deployment note: static vs SSR and /var/www
+## Direct production deployment
 
-The deploy script treats static and SSR Nuxt sites differently:
+Production runs without Docker or a container registry. Each release is a clean Git checkout under `/srv/isthereconsensus.org/releases/<release>`, prepared as the unprivileged deployment user and then atomically promoted through `/srv/isthereconsensus.org/current`.
 
-- Static mode (`FE_MODE="static"`):
-    - Build output is `front-end/dist/` (copied from `.output/public` during build).
-    - Deploy step rsyncs `front-end/dist/` into `/var/www/<site>/`.
-    - Nginx serves files directly from `/var/www/<site>/`.
+Two hardened systemd services run the compiled Nuxt SSR frontend and Express API from that immutable release. Nginx terminates dual-stack TLS and proxies the public site and API to their loopback listeners. `/var/www/isthereconsensus.org` is intentionally unused because this is an SSR application.
 
-- SSR mode (`FE_MODE="nuxt-ssr"`):
-    - Build output is the Nitro server plus public assets under `front-end/.output/`.
-    - Deploy step rsyncs `front-end/.output/` into `/srv/<site>/front-end/.output/`.
-    - The systemd frontend service serves the site; `/var/www/<site>/` is not used and remains empty.
-
-Why this matters: if you see `/var/www/stridewithus.co` populated but `/var/www/isthereconsensus.org` empty, that is expected for SSR sites unless `/var/www` was filled manually or via a custom step. Dates on `/var/www` files often reveal that they were copied long ago and are not part of the current SSR deploy path.
-
-Options if you want `/var/www/<site>/` populated for an SSR site:
-
-1. Keep SSR and leave `/var/www/<site>/` empty (recommended).
-    - Most correct for SSR: Nginx should proxy to the frontend service.
-2. Keep SSR and mirror public assets into `/var/www/<site>/`.
-    - Add a deploy step to rsync `front-end/.output/public/` into `/var/www/<site>/`.
-    - Useful if you want Nginx to serve static assets directly.
-3. Keep SSR and make `/var/www/<site>/` a symlink or bind mount.
-    - Point it at `/srv/<site>/front-end/.output/public/`.
-    - Keeps a single source of truth for public assets.
-4. Switch the site to static (`FE_MODE="static"`).
-    - `/var/www/<site>/` will be populated from `front-end/dist/`.
-    - Loses server-side rendering; SSR-only routes or APIs must move to the backend.
+Preparation runs the clean-install, dependency, security, native-binding, test, build, SSR, and accessibility gates before replacing the dependency tree with a clean production-only install. Promotion verifies both service readiness and the exact public source identity, and restores the prior release if any check fails. See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the host setup and commands.
 
 ## Launch coordination
 

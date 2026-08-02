@@ -2,6 +2,7 @@
 import type { IBaseUser } from "../abstractions/BaseUser.js";
 
 export interface IAdmin extends IBaseUser {
+	enabled: boolean;
 	editAdmins: boolean; // admin-specific toggle
 	role: string; // e.g. "admin"
 }

@@ -206,6 +206,65 @@ describe("account security", () => {
 		assert.equal(req.sessionOptions.maxAge, 8 * 60 * 60 * 1000);
 	});
 
+	it("rejects a disabled admin even when the submitted password is correct", async () => {
+		const admin = new Admin({
+			_id: new mongoose.Types.ObjectId(),
+			enabled: false,
+			name: "Disabled administrator",
+			email: "disabled-admin@example.com",
+			password: "existing-password-hash",
+			sessionVersion: 7,
+			editAdmins: false,
+			saveEdit: "Edit"
+		});
+		(admin as any).comparePassword = async () => true;
+		User.findOne = (() => ({ exec: async () => null })) as any;
+		Admin.findOne = (() => ({ exec: async () => admin })) as any;
+		AccountActivityLog.create = (async (entry: unknown) => entry) as any;
+		const req: any = {
+			body: {
+				email: "disabled-admin@example.com",
+				password: "correct current password"
+			},
+			session: {},
+			headers: {},
+			socket: {},
+			get: () => ""
+		};
+
+		const response = await runHandler(login, req);
+
+		assert.equal(response.statusCode, 403);
+		assert.deepEqual(response.body, { error: "Invalid email or password." });
+		assert.equal(req.session.adminID, undefined);
+	});
+
+	it("revokes a disabled admin session at every authorization check", async () => {
+		const admin = new Admin({
+			_id: new mongoose.Types.ObjectId(),
+			enabled: false,
+			name: "Disabled administrator",
+			email: "disabled-admin@example.com",
+			password: "existing-password-hash",
+			sessionVersion: 7,
+			editAdmins: false,
+			saveEdit: "Edit"
+		});
+		Admin.findById = (async () => admin) as any;
+		const req: any = {
+			session: {
+				adminID: admin._id.toString(),
+				sessionVersion: 7
+			}
+		};
+
+		const response = await runHandler(requireAdmin, req);
+
+		assert.equal(response.statusCode, 403);
+		assert.equal(req.session, null);
+		assert.deepEqual(response.body, { error: "Session expired" });
+	});
+
 	it("invalidates a cookie whose session version no longer matches the account", async () => {
 		const user = account();
 		User.findById = (async () => user) as any;

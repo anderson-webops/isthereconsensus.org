@@ -95,6 +95,12 @@ import {
 	toPublicTopicSentimentVote,
 	toReporterQuestionFlag
 } from "./utils/publicRecords.js";
+import { classifyPublicRequestError } from "./utils/requestErrors.js";
+import {
+	assertDistinctProductionSecrets,
+	parseRuntimeHost,
+	parseTrustedProxyIps
+} from "./utils/runtimeSecurity.js";
 import { logError } from "./utils/safeLog.js";
 import { slugify } from "./utils/slugify.js";
 import "dotenv/config";
@@ -108,17 +114,15 @@ async function main() {
 	const isCrossSite = env.CROSS_SITE === "true";
 	const internalDiagnosticsKey = env.INTERNAL_DIAGNOSTICS_KEY;
 	const diagnosticsEnabled = env.ENABLE_INTERNAL_DIAGNOSTICS === "true";
+	const runtimeHost = parseRuntimeHost(env.HOST, isProd, env.ALLOW_PUBLIC_LISTENER === "true");
+	const trustedProxyIps = parseTrustedProxyIps(env.TRUST_PROXY_IPS, isProd);
 	const seedContentMode = env.SEED_CONTENT_MODE || "insert";
 	if (seedContentMode !== "insert" && seedContentMode !== "sync") {
 		throw new Error("SEED_CONTENT_MODE must be either insert or sync.");
 	}
 	app.disable("x-powered-by");
 
-	const trustProxy = (env.TRUST_PROXY_IPS || "loopback")
-		.split(",")
-		.map(value => value.trim())
-		.filter(Boolean);
-	app.set("trust proxy", trustProxy);
+	app.set("trust proxy", trustedProxyIps.length ? trustedProxyIps : false);
 
 	app.use(helmet({
 		contentSecurityPolicy: false,
@@ -149,6 +153,12 @@ async function main() {
 	if (isProd && diagnosticsEnabled && (!internalDiagnosticsKey || internalDiagnosticsKey.length < 32)) {
 		throw new Error("Enabled production diagnostics require INTERNAL_DIAGNOSTICS_KEY of at least 32 characters.");
 	}
+	assertDistinctProductionSecrets(isProd, {
+		CAPTCHA_SECRET: env.CAPTCHA_SECRET,
+		INTERNAL_DIAGNOSTICS_KEY: diagnosticsEnabled ? internalDiagnosticsKey : undefined,
+		SESSION_SECRET,
+		VAULT_SECRET_ID: env.VAULT_SECRET_ID
+	});
 
 	app.use(express.json({
 		inflate: false,
@@ -3733,62 +3743,66 @@ async function main() {
 			if (!["approved", "rejected", "needs-info"].includes(decision)) {
 				return res.status(400).json({ error: "Invalid decision." });
 			}
-			if (decision !== "approved" && !reviewNotes) {
+			if (!reviewNotes) {
 				return res.status(400).json({
-					error: "Review notes are required when requesting more information or removing verified access."
+					error: "A review rationale is required for every expert-access decision."
 				});
 			}
 
 			const application = await ExpertApplication.findById(applicationId);
 			if (!application) return res.status(404).json({ error: "Application not found." });
+			const user = await User.findById(application.user);
+			if (!user) {
+				return res.status(409).json({ error: "The application no longer has an active user account." });
+			}
 
 			application.status = decision;
 			application.reviewNotes = reviewNotes;
 			application.reviewedBy = new mongoose.Types.ObjectId(currentActor(req).id);
 			application.reviewedAt = new Date();
-			await application.save();
-
-			const user = await User.findById(application.user);
-			if (user) {
-				const previousStatus = user.expertiseStatus;
-				const previousTrustLevel = user.trustLevel || 0;
-				user.expertiseStatus
-					= decision === "approved" ? "verified" : decision === "needs-info" ? "pending" : "rejected";
-				if (previousStatus !== user.expertiseStatus) {
-					user.sessionVersion = Number(user.sessionVersion || 0) + 1;
-				}
-				if (decision === "approved") {
-					user.trustLevel = Math.max(user.trustLevel || 0, 3);
-					user.trustScore = Math.max(user.trustScore || 0, 200);
-					user.affiliation = application.affiliation || user.affiliation || "";
-					user.expertiseAreas = application.expertiseAreas;
-				}
-				else {
-					user.trustLevel = Math.min(user.trustLevel || 0, 2);
-				}
-				await user.save();
-				await recordAccountActivity({
-					req,
-					action: "expert_application.reviewed",
-					actor: {
-						id: req.currentAdmin?._id.toString() ?? currentActor(req).id,
-						type: "admin"
-					},
-					target: {
-						id: application._id.toString(),
-						type: "expert_application",
-						email: user.email
-					},
-					metadata: {
-						decision,
-						newTrustLevel: user.trustLevel || 0,
-						previousStatus,
-						previousTrustLevel,
-						newStatus: user.expertiseStatus,
-						userId: user._id.toString()
-					}
-				});
+			const previousStatus = user.expertiseStatus;
+			const previousTrustLevel = user.trustLevel || 0;
+			user.expertiseStatus
+				= decision === "approved" ? "verified" : decision === "needs-info" ? "pending" : "rejected";
+			if (previousStatus !== user.expertiseStatus) {
+				user.sessionVersion = Number(user.sessionVersion || 0) + 1;
 			}
+			if (decision === "approved") {
+				user.trustLevel = Math.max(user.trustLevel || 0, 3);
+				user.trustScore = Math.max(user.trustScore || 0, 200);
+				user.affiliation = application.affiliation || user.affiliation || "";
+				user.expertiseAreas = application.expertiseAreas;
+				// Record the approval before granting access so partial failure is fail-closed.
+				await application.save();
+				await user.save();
+			}
+			else {
+				user.trustLevel = Math.min(user.trustLevel || 0, 2);
+				// Revoke access before recording the review so partial failure cannot retain privilege.
+				await user.save();
+				await application.save();
+			}
+			await recordAccountActivity({
+				req,
+				action: "expert_application.reviewed",
+				actor: {
+					id: req.currentAdmin?._id.toString() ?? currentActor(req).id,
+					type: "admin"
+				},
+				target: {
+					id: application._id.toString(),
+					type: "expert_application",
+					email: user.email
+				},
+				metadata: {
+					decision,
+					newTrustLevel: user.trustLevel || 0,
+					previousStatus,
+					previousTrustLevel,
+					newStatus: user.expertiseStatus,
+					userId: user._id.toString()
+				}
+			});
 
 			return res.json({ application });
 		}
@@ -3878,13 +3892,9 @@ async function main() {
 	});
 
 	const errorHandler: express.ErrorRequestHandler = (error, _req, res, _next) => {
-		const parserError = error instanceof SyntaxError
-			&& typeof error === "object"
-			&& error
-			&& "type" in error
-			&& error.type === "entity.parse.failed";
-		if (parserError) {
-			res.status(400).json({ error: "Request body must contain valid JSON." });
+		const publicRequestError = classifyPublicRequestError(error);
+		if (publicRequestError) {
+			res.status(publicRequestError.status).json({ error: publicRequestError.message });
 			return;
 		}
 
@@ -3897,8 +3907,11 @@ async function main() {
 	if (!Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65_535) {
 		throw new Error("PORT must be an integer between 1 and 65535.");
 	}
-	const host = env.HOST || "127.0.0.1";
-	const server = app.listen(parsedPort, host, () => console.log(`Server listening on ${host}:${parsedPort}.`));
+	const server = app.listen(
+		parsedPort,
+		runtimeHost,
+		() => console.log(`Server listening on ${runtimeHost}:${parsedPort}.`)
+	);
 	server.requestTimeout = 15_000;
 	server.headersTimeout = 10_000;
 	server.keepAliveTimeout = 5_000;

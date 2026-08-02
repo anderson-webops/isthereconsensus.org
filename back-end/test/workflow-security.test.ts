@@ -104,6 +104,11 @@ describe("workflow security", () => {
 		);
 		assert.match(serverSource, /\/request-update"[\s\S]+A public update rationale is required/);
 		assert.match(serverSource, /\/archive"[\s\S]+A public archival rationale is required/);
+		assert.match(serverSource, /A review rationale is required for every expert-access decision/);
+		assert.match(
+			serverSource,
+			/decision === "approved"[\s\S]+await application\.save\(\);[\s\S]+await user\.save\(\);[\s\S]+else[\s\S]+await user\.save\(\);[\s\S]+await application\.save\(\);/
+		);
 	});
 
 	it("does not accept source reviewer identities or timestamps from editorial request bodies", () => {
