@@ -61,6 +61,7 @@ Run root-level validation before shipping a backend change:
 
 ```bash
 npm ci --include=optional --strict-allow-scripts
+npm run verify:install-scripts
 npm run verify:native-lock
 npm run lint
 npm run typecheck

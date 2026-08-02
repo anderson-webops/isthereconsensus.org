@@ -333,6 +333,13 @@ export default defineNuxtConfig({
 	},
 	vite: {
 		build: {
+			// Required Nuxt and UnoCSS hooks dominate some otherwise short builds. Keep
+			// correctness checks enabled while suppressing this timing-only diagnostic.
+			rolldownOptions: {
+				checks: {
+					pluginTimings: false
+				}
+			},
 			modulePreload: {
 				polyfill: false
 			}
