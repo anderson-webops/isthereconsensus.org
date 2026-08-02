@@ -47,6 +47,7 @@ unset NODE_ENV
 
 cd -- "$candidate"
 npm ci --include=dev --include=optional --strict-allow-scripts
+npm run verify:install-scripts
 npm audit
 npm audit --omit=dev
 npm audit signatures

@@ -14,8 +14,10 @@
 	"allowScripts": {
 		"argon2@0.45.1": true,
 		"esbuild@0.28.1": true,
+		"express-rate-limit": false,
 		"fsevents@2.3.3": true,
-		"puppeteer@25.4.0": true,
+		"mongodb": false,
+		"puppeteer": false,
 		"unrs-resolver@1.12.2": true
 	},
 	"workspaces": [
@@ -39,6 +41,7 @@
 		"smoke:ssr-assets": "node scripts/ssr-public-assets-smoke.mjs",
 		"smoke:ssr-routes": "node scripts/ssr-route-rules-smoke.mjs",
 		"clean": "node scripts/clean.mjs",
+		"verify:install-scripts": "node scripts/verify-install-script-policy.mjs",
 		"verify:native-lock": "node scripts/verify-native-lock.mjs",
 		"verify:platform-install": "node scripts/verify-platform-install.mjs",
 		"up": "node ./scripts/up.mjs",
@@ -69,6 +72,7 @@
 			"esbuild": "0.28.1"
 		},
 		"defu": "6.1.6",
+		"glob": "13.0.6",
 		"anymatch": {
 			"picomatch": "2.3.2"
 		},

@@ -38,6 +38,10 @@ npm ci --include=optional --strict-allow-scripts
 npm run dev
 ```
 
+The root and `back-end/` standalone installs each carry a reviewed install-script policy. Required native setup is
+approved only for the exact locked version; repository-only dependency prepare scripts remain denied. Run
+`npm run verify:install-scripts` after changing either manifest, lockfile, or npm configuration.
+
 This starts the front-end in dev mode at `http://localhost:3000`.
 
 For API-backed local work, copy `back-end/.env.example` to `back-end/.env`, set `MONGODB_URI`, and run the backend separately:
@@ -81,6 +85,7 @@ Run these from the repository root before shipping a meaningful change:
 
 ```bash
 npm ci --include=optional --strict-allow-scripts
+npm run verify:install-scripts
 npm run verify:native-lock
 npm run lint
 npm run typecheck

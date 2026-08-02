@@ -3,7 +3,8 @@
 ## Agent Delivery Workflow
 - Do not leave completed work uncommitted. After each coherent, validated change set, create a commit and push it in the same session.
 - Use multiple commits and pushes when that keeps unrelated changes, partial validations, or follow-up fixes clearly separated. Prefer small, logically grouped commits over one mixed commit.
-- Keep `package-lock.json` synchronized before every commit or push.
+- Keep `package-lock.json`, `back-end/package-lock.json`, and `back-end/.npmrc` synchronized before every commit or push.
+- The nested lock and npm configuration are the reviewed policy for reproducible standalone backend deployment installs.
 - Use lowercase annotated semver tags only. Do not invent ad-hoc labels such as `V1`, `torca-r07`, `pre-lfs-migration-*`, or similar one-off names.
 - This repo follows the stable `v1.x` line. Stay on `v1` for routine work; only cut `v2` for an intentional breaking product or API change.
 - Before creating a new tag, check the latest tag in the active semver line and decide whether the new commit is still the same release milestone. If it is, move that existing tag forward to the new validated commit instead of minting a new version number.
@@ -16,7 +17,8 @@
 
 ## Dependency & Lockfile Discipline
 
-- Treat the repo-root `npm ci` path as the source of truth for deploy readiness.
+- Treat the repo-root `npm ci` path as the source of truth for deploy readiness, and validate the committed standalone
+  backend lock with `npm run verify:install-scripts`.
 - Any time `package.json`, any workspace `package.json`, dependency ranges, `package-lock.json`, or dependency update tooling changes, verify lockfile parity from the repo root before committing.
 - Do not rely on `npm install` fallback as success. A change is not deploy-ready unless root `npm ci` succeeds.
 
