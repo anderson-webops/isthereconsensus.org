@@ -4,22 +4,29 @@ import { fetchJsonBounded } from "./utils/boundedFetch.js";
 
 const vaultLoginResponseSchema = z.object({
 	auth: z.object({
-		client_token: z.string().min(1)
+		client_token: z.string().min(16).max(4096)
 	})
 });
 
 const vaultSecretResponseSchema = z.object({
 	data: z.object({
 		data: z.object({
-			uri: z.string().min(1)
+			uri: z.string().min(1).max(8192).regex(/^mongodb(?:\+srv)?:\/\//u)
 		})
 	})
 });
 
 function vaultAddress() {
 	const parsed = new URL(env.VAULT_ADDR || "http://127.0.0.1:8200");
-	if (!["http:", "https:"].includes(parsed.protocol) || parsed.username || parsed.password) {
-		throw new Error("VAULT_ADDR must be an HTTP or HTTPS URL without embedded credentials.");
+	if (
+		!["http:", "https:"].includes(parsed.protocol)
+		|| parsed.username
+		|| parsed.password
+		|| parsed.pathname !== "/"
+		|| parsed.search
+		|| parsed.hash
+	) {
+		throw new Error("VAULT_ADDR must contain only an HTTP or HTTPS scheme and host without credentials.");
 	}
 	const loopbackHosts = new Set(["127.0.0.1", "::1", "[::1]", "localhost"]);
 	if (parsed.protocol !== "https:" && !loopbackHosts.has(parsed.hostname)) {

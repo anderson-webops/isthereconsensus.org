@@ -5,6 +5,8 @@ export const ACCOUNT_ACTIVITY_ACTIONS = [
 	"user.registered",
 	"user.deleted",
 	"admin.created",
+	"admin.disabled",
+	"admin.enabled",
 	"admin.deleted",
 	"login.success",
 	"login.failed",

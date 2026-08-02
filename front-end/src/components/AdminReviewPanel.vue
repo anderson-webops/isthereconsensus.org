@@ -24,6 +24,8 @@ const activityLabels: Record<AccountActivityAction, string> = {
 	"user.registered": "Public registration",
 	"user.deleted": "User deleted",
 	"admin.created": "Admin created",
+	"admin.disabled": "Admin disabled",
+	"admin.enabled": "Admin enabled",
 	"admin.deleted": "Admin deleted",
 	"login.success": "Login success",
 	"login.failed": "Login failed",
@@ -84,6 +86,10 @@ async function refreshQueues() {
 }
 
 async function reviewApplication(id: string, decision: "approved" | "rejected" | "needs-info") {
+	if (!reviewNotes.value[id]?.trim()) {
+		errorMessage.value = "Add a review rationale before deciding that application.";
+		return;
+	}
 	actionState.value = id;
 	try {
 		await $fetch(apiUrl(`/admin/expert-applications/${id}/review`), {
@@ -91,7 +97,7 @@ async function reviewApplication(id: string, decision: "approved" | "rejected" |
 			credentials: "include",
 			body: {
 				decision,
-				reviewNotes: reviewNotes.value[id] || ""
+				reviewNotes: reviewNotes.value[id].trim()
 			}
 		});
 		delete reviewNotes.value[id];
@@ -199,7 +205,7 @@ watch(
 								v-model="reviewNotes[application._id]"
 								class="review-notes"
 								rows="3"
-								placeholder="Optional review note shown back to the applicant"
+								placeholder="Required review rationale shown back to the applicant"
 							/>
 							<button
 								class="mini-button mini-button--approve"

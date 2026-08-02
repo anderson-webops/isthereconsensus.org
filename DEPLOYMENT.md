@@ -26,7 +26,8 @@ Backend/runtime:
 - `SESSION_SECRET` (a unique value of at least 32 characters)
 - `HOST=127.0.0.1`
 - `PORT=3011`
-- `TRUST_PROXY_IPS=loopback` when nginx connects over loopback; otherwise list only the exact trusted proxy addresses
+- `TRUST_PROXY_IPS=127.0.0.1,::1` when nginx connects over loopback; only exact IP addresses are accepted
+- `ALLOW_PUBLIC_LISTENER=false`; production refuses a non-loopback `HOST` unless this is explicitly set to `true`
 - `PUBLIC_SITE_URL`
 - `CAPTCHA_SECRET`
 - `PUBLIC_CAPTCHA_SITEKEY`
@@ -54,19 +55,21 @@ Optional:
 - Backend diagnostics: `ENABLE_INTERNAL_DIAGNOSTICS=true` plus a unique `INTERNAL_DIAGNOSTICS_KEY` of at least 32 characters
 - Frontend diagnostics proxy: `ENABLE_INTERNAL_DIAGNOSTICS=true` plus a matching server-only `NUXT_INTERNAL_DIAGNOSTICS_KEY`
 
+Production security secrets must be unique. Startup rejects reuse among the session, CAPTCHA, internal-diagnostics, and Vault AppRole secrets.
+
 `SEED_CONTENT_MODE=sync` is an explicit content-promotion operation: it synchronizes existing seeded claims and sources and archives source-controlled retirements. Take a database backup, review the source diff, use `sync` for the controlled promotion, and return the service to `insert` afterward. Do not leave restart-time synchronization enabled as a substitute for the authenticated editorial workflow.
 
-## Build and start
+## Prepare and promote a direct release
 
 ```bash
-npm ci --include=optional --strict-allow-scripts
-npm run verify:native-lock
-npm run build
-npm run smoke:ssr-assets
-npm run smoke:ssr-routes
-npm run -w front-end start
-npm run -w back-end start
+sudo -u isthereconsensus git clone --no-local <repository-url> /srv/isthereconsensus.org/releases/<release>
+sudo -u isthereconsensus /srv/isthereconsensus.org/releases/<release>/deploy/systemd/prepare-release.sh \
+  /srv/isthereconsensus.org/releases/<release>
+sudo /srv/isthereconsensus.org/releases/<release>/deploy/systemd/promote-release.sh \
+  /srv/isthereconsensus.org/releases/<release>
 ```
+
+Install or review the hardened units first with `deploy/systemd/install-services.sh`. The preparation script requires a clean checkout and the exact Node/npm toolchain, runs all repository gates, embeds the candidate commit in `/deployment.json`, and replaces the dependency tree with a clean production-only install. Lifecycle hooks are suppressed only for that post-build reinstall, and the compiled backend and native password-hashing dependency are then loaded by the runtime smoke. The promotion script atomically updates `/srv/isthereconsensus.org/current`, restarts both services, verifies API and web readiness plus exact public source identity, and restores the prior release on failure. Production does not require Docker, Compose, or a container registry.
 
 The frontend build never reads `back-end/.env`. Supply public build metadata explicitly when needed, and supply secrets only to the running service through the protected frontend or backend environment file. Nuxt runtime overrides use the `NUXT_*` names shown above.
 
@@ -78,7 +81,7 @@ npm run smoke:live
 
 `smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, deployment metadata, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`. To prove the public origin is running a specific build, also set `LIVE_SMOKE_EXPECT_COMMIT` to the expected commit prefix.
 
-The hardened reference units and reverse-proxy configuration live in `deploy/systemd/` and `deploy/nginx/`. Install the code under `/srv/isthereconsensus.org`, create a dedicated unprivileged `isthereconsensus` account, keep environment files under `/etc/isthereconsensus/` with owner-only permissions, and validate nginx/systemd configuration before promotion.
+The hardened reference units and reverse-proxy configuration live in `deploy/systemd/` and `deploy/nginx/`. Install releases under `/srv/isthereconsensus.org/releases/`, create a dedicated unprivileged `isthereconsensus` account, keep environment files under `/etc/isthereconsensus/` with owner-only permissions, and validate nginx/systemd configuration before promotion.
 
 If `/deployment.json` returns `404`, `smoke:live` also fetches `/_nuxt/builds/latest.json` and reports the live Nuxt build id/timestamp. Use that fallback to distinguish a stale frontend deploy from a backend/source-stack problem.
 
@@ -102,7 +105,9 @@ Production diagnostics are disabled unless `ENABLE_INTERNAL_DIAGNOSTICS=true`. T
 - Cookie auth expects HTTPS in production.
 - If frontend and backend live on different public origins, configure `CORS_ORIGIN` precisely and keep secure cookie settings aligned.
 - Credential changes increment the account session version. Existing cookies without the current version and all older cookies are rejected, so users may need to sign in again after this release.
+- Disabled administrators cannot log in or retain an authenticated session. Use `npm run -w back-end set-admin-status`, which requires exact email confirmation, revokes sessions, records the action, and refuses to disable the last enabled administrator.
 - Interactive claim publication, review, update requests, archival, restoration, evidence approval, and evidence publication use explicit admin-only state transitions with recorded reasons. Generic edits cannot mutate published or archived claims.
+- Expert approval and demotion both require a rationale. Promotion persists the application decision before granting the user role; demotion revokes the user role before recording the application state, so partial failures fail closed.
 - Admin creation and evidence migrations use the same fail-closed Vault-or-environment database selection as the API. A configured Vault failure never falls back to `MONGODB_URI`.
-- Never copy the repository’s ignored `back-end/.env` into an image or source bundle. Keep production environment files mode `0600`.
+- Never copy the repository’s ignored `back-end/.env` into a release checkout or deployment bundle. Keep production environment files mode `0600` outside the release tree.
 - The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only in development. Use the protected setup APIs for production diagnostics.

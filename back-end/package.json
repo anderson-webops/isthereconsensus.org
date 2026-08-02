@@ -24,6 +24,8 @@
 		"typecheck": "tsc --noEmit -p tsconfig.json",
 		"create-admin": "node dist/create-admin-user.js",
 		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts",
+		"set-admin-status": "node dist/set-admin-status.js",
+		"set-admin-status-ts": "tsx -r dotenv/config src/set-admin-status.ts",
 		"migrate:evidence-landscape:v1": "tsx -r dotenv/config src/scripts/migrations/backfillEvidenceLandscapeV1.ts"
 	},
 	"keywords": [],
@@ -36,7 +38,7 @@
 		"express": "^5.2.1",
 		"express-rate-limit": "^8.6.1",
 		"helmet": "^8.3.0",
-		"mongoose": "^9.9.0",
+		"mongoose": "^9.9.1",
 		"readline-sync": "^1.4.10",
 		"zod": "^4.4.3"
 	},

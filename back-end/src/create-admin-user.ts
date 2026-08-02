@@ -43,6 +43,7 @@ async function main() {
 		name: nameResult.data,
 		email: emailResult.data,
 		password: passwordResult.data,
+		enabled: true,
 		editAdmins: false,
 		saveEdit: "Edit",
 		role: "admin"

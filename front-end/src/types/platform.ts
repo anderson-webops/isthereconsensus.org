@@ -4,6 +4,8 @@ export type AccountActivityAction =
 	| "user.registered"
 	| "user.deleted"
 	| "admin.created"
+	| "admin.disabled"
+	| "admin.enabled"
 	| "admin.deleted"
 	| "login.success"
 	| "login.failed"

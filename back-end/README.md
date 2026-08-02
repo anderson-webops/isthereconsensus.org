@@ -33,15 +33,18 @@ Production refuses to start without a strong session secret and captcha secret. 
 
 `SEED_CONTENT_MODE=insert` is the safe startup default. It creates missing source-controlled records but does not overwrite editorial database changes. Use `SEED_CONTENT_MODE=sync` only as a reviewed, backup-protected content promotion, then return the service to `insert`.
 
-Admin creation and evidence migrations use the same Vault-or-`MONGODB_URI` selection as the API:
+Admin creation, administrator enable/disable, and evidence migrations use the same Vault-or-`MONGODB_URI` selection as the API:
 
 ```bash
 npm run -w back-end build
 npm run -w back-end create-admin
+npm run -w back-end set-admin-status
 npm run -w back-end migrate:evidence-landscape:v1
 ```
 
-Interactive publication and demotion are stateful workflows. Verified experts edit drafts; admins explicitly publish, record completed reviews, request updates, archive or restore claims, approve or demote evidence landscapes, and provide the required public or private rationale.
+The administrator status command requires exact email confirmation, refuses to disable the last enabled administrator, increments the account session version, and records the action. Disabled administrators cannot log in or continue using an existing session.
+
+Interactive publication and demotion are stateful workflows. Verified experts edit drafts; admins explicitly publish, record completed reviews, request updates, archive or restore claims, approve or demote evidence landscapes, and provide the required public or private rationale. Expert approval and demotion also require a rationale and use fail-closed persistence ordering so a partial database failure cannot leave an unintended privilege active.
 
 ## Scripts
 

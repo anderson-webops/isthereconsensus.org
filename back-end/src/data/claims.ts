@@ -1619,7 +1619,7 @@ const rawClaims: SeedClaim[] = [
 					"Maternal vaccination reduces laboratory-confirmed influenza in infants, with evidence also supporting lower infant flu-associated hospitalizations in several syntheses and recent test-negative studies.",
 				effectDirection: "supports",
 				magnitude:
-					"A 2018 systematic review and meta-analysis estimated 48% lower infant laboratory-confirmed influenza risk and 72% lower influenza-associated hospitalization risk; a 2023 JAMA Pediatrics test-negative study estimated 39% effectiveness against infant influenza-associated hospitalization.",
+					"A 2018 systematic review and meta-analysis estimated 48% lower lab-confirmed infant influenza risk and 72% lower influenza hospitalization risk; a 2023 JAMA Pediatrics test-negative study estimated 39% effectiveness against infant influenza hospitalization.",
 				certainty: "moderate",
 				limitations: [
 					"Protection varies by season, vaccine match, trimester, and infant age.",
@@ -7450,7 +7450,7 @@ const rawClaims: SeedClaim[] = [
 					"Rapid methane reductions would lower near-term warming and ozone-related air-pollution harms, while still needing to be paired with deep CO2 reductions for long-term climate stabilization.",
 				effectDirection: "supports",
 				magnitude:
-					"UNEP and the Climate and Clean Air Coalition estimate available measures could reduce human-caused methane emissions about 45% by 2030 and avoid about 0.3 C of warming by the 2040s; IEA reports methane has contributed around 30% of observed warming since the Industrial Revolution.",
+					"UNEP and the Climate and Clean Air Coalition estimate available measures could cut human-caused methane about 45% by 2030 and avoid about 0.3 C of warming by the 2040s; IEA reports methane has contributed around 30% of observed warming since the Industrial Revolution.",
 				certainty: "high",
 				limitations: [
 					"Realized reductions depend on policy adoption, sector implementation, enforcement, financing, and verification.",
@@ -14394,7 +14394,7 @@ const rawClaims: SeedClaim[] = [
 					"Uncertainty communication usually does not produce a large overall loss of trust, but effects depend on uncertainty type, wording, topic, prior beliefs, and whether uncertainty is quantified or framed as conflict.",
 				effectDirection: "supports",
 				magnitude:
-					"Dries 2026 synthesized 28 studies and found no overall trust effect, with 23 null studies. Guo 2025 synthesized 43 empirical articles and found epistemic uncertainty had a small positive credibility effect (d = 0.09), while consensus uncertainty (d = -0.12) and technical uncertainty (d = -0.15) slightly lowered attitudes without reducing credibility.",
+					"Dries 2026 synthesized 28 studies and found no overall trust effect; 23 were null. Guo 2025 synthesized 43 articles: epistemic uncertainty slightly increased credibility (d = 0.09), while consensus (d = -0.12) and technical uncertainty (d = -0.15) slightly lowered attitudes.",
 				certainty: "moderate",
 				limitations: [
 					"Many studies measure immediate trust, not long-term behavior or institutional trust.",
@@ -15096,7 +15096,7 @@ const rawClaims: SeedClaim[] = [
 					"Validated surrogates can be useful, but many surrogate endpoint-treatment pairs lack high-strength evidence that marker improvement predicts clinical benefit.",
 				effectDirection: "supports",
 				magnitude:
-					"A 2024 JAMA review found 22 of 37 FDA-listed nononcologic surrogate markers had no eligible published meta-analysis; among pairs reporting r or R2, only 10 of 59 had at least one high-strength association. A 2019 oncology umbrella review found most settings had low, modest, or mixed correlations with overall survival.",
+					"A 2024 JAMA review found no eligible meta-analysis for 22 of 37 FDA-listed nononcologic surrogates; only 10 of 59 pairs reporting r or R2 had a high-strength association. A 2019 oncology umbrella review found mostly low, modest, or mixed correlations with overall survival.",
 				certainty: "high",
 				limitations: [
 					"Evidence varies sharply by disease, treatment mechanism, endpoint, line of therapy, and clinical outcome.",
@@ -15698,7 +15698,7 @@ const rawClaims: SeedClaim[] = [
 					"Small and early studies are often useful signals, but their effect estimates are less stable and frequently larger than estimates from larger or later evidence.",
 				effectDirection: "supports",
 				magnitude:
-					"Dechartres 2013 found effects 32% larger in the smallest trial quarter and 48% larger in trials with fewer than 50 patients compared with trials with at least 1000 patients. Schwab 2021 found small-study effects in 19% of large meta-analyses. Alahdab 2018 found early exaggerated effects in 37% of chronic-condition meta-analyses.",
+					"Dechartres 2013 found effects 32% larger in the smallest trial quarter and 48% larger below 50 patients than at 1,000 or more. Schwab 2021 found small-study effects in 19% of large meta-analyses; Alahdab 2018 found early exaggeration in 37% of chronic-condition meta-analyses.",
 				certainty: "moderate",
 				limitations: [
 					"Small-study effects can arise from multiple mechanisms, not only publication bias.",
@@ -16095,7 +16095,7 @@ const rawClaims: SeedClaim[] = [
 					"Open data and code are associated with better transparency and higher chances of successful reruns, but audits repeatedly find incomplete, non-executable, or only partly reproducible shared materials.",
 				effectDirection: "supports",
 				magnitude:
-					"Examples include 21 of 36 shared data-and-code Registered Reports with reproduced main results, 34% to 56% reproducibility under an open data policy, one exact reproduction among 14 open-data-badged papers, and 74% initial failure among more than 9,000 R files in Harvard Dataverse replication datasets.",
+					"Examples include main-result reproduction in 21 of 36 shared data-and-code Registered Reports, 34% to 56% reproducibility under an open-data policy, 1 of 14 open-data-badged papers, and 74% initial failure among more than 9,000 R files in Harvard Dataverse datasets.",
 				certainty: "moderate",
 				limitations: [
 					"Audit samples are field-specific and use different definitions of reproducibility.",
@@ -18946,7 +18946,7 @@ const rawClaims: SeedClaim[] = [
 					"Randomized trials and comparative reviews consistently show large average weight reductions for semaglutide and tirzepatide relative to placebo, with tirzepatide generally producing larger average reductions than semaglutide in direct and indirect comparisons.",
 				effectDirection: "supports",
 				magnitude:
-					"STEP 1 reported -14.9% body-weight change with semaglutide 2.4 mg versus -2.4% with placebo at 68 weeks. SURMOUNT-1 reported -15.0% to -20.9% with tirzepatide versus -3.1% with placebo at 72 weeks. SURMOUNT-5 reported -20.2% with tirzepatide versus -13.7% with semaglutide at 72 weeks.",
+					"STEP 1: -14.9% with semaglutide versus -2.4% placebo at 68 weeks. SURMOUNT-1: -15.0% to -20.9% with tirzepatide versus -3.1% placebo at 72 weeks. SURMOUNT-5: -20.2% with tirzepatide versus -13.7% semaglutide at 72 weeks.",
 				certainty: "moderate",
 				limitations: [
 					"Gastrointestinal adverse effects are common and can lead to discontinuation.",
@@ -19433,7 +19433,7 @@ const rawClaims: SeedClaim[] = [
 					"SARS-CoV-2 infection is associated with excess risk of multiple persistent symptoms and functional effects compared with uninfected controls, while exact prevalence depends strongly on definitions and context.",
 				effectDirection: "supports",
 				magnitude:
-					"A 2025 controlled-study meta-analysis covering 50 studies and more than 14 million people found increased risk for 39 of 40 long-term symptoms after infection; a 2022 Nature Medicine matched cohort found 62 symptoms associated with confirmed infection beyond 12 weeks in non-hospitalized adults.",
+					"A 2025 controlled-study meta-analysis of 50 studies and more than 14 million people found increased risk for 39 of 40 long-term symptoms after infection. A 2022 matched cohort found 62 symptoms associated with confirmed infection beyond 12 weeks in non-hospitalized adults.",
 				certainty: "moderate",
 				limitations: [
 					"Risk estimates change with variant era, vaccination, reinfection, acute severity, and study design.",
@@ -19828,7 +19828,7 @@ const rawClaims: SeedClaim[] = [
 					"Iodized salt improves iodine status and reduces classic iodine-deficiency outcomes, while safe implementation requires iodine-status monitoring and coordination with sodium-reduction programs.",
 				effectDirection: "supports",
 				magnitude:
-					"A WHO systematic review with meta-analyses reported lower goiter risk across nonrandomized, cohort, and repeated cross-sectional evidence, lower cretinism and low cognitive-function outcomes in cross-sectional or quasi-experimental evidence, and higher urinary iodine after iodized-salt exposure.",
+					"A WHO systematic review found lower goiter risk across nonrandomized, cohort, and repeated cross-sectional evidence; lower cretinism and low cognitive-function outcomes in cross-sectional or quasi-experimental evidence; and higher urinary iodine after iodized-salt exposure.",
 				certainty: "moderate",
 				limitations: [
 					"Evidence quality varied by outcome and study design, from very low to moderate.",
@@ -20794,7 +20794,7 @@ const rawClaims: SeedClaim[] = [
 					"Most syntheses find intermittent fasting produces weight loss compared with no structured restriction, but does not reliably beat continuous calorie restriction when energy restriction is similar.",
 				effectDirection: "mixed",
 				magnitude:
-					"Recent network meta-analyses report broadly similar effects; BMJ 2025 found alternate-day fasting about 1.29 kg lower than continuous energy restriction, while NEJM 2022 and Annals 2023 head-to-head trials found no significant advantage for time-restricted eating over calorie restriction.",
+					"Network meta-analyses report broadly similar effects. BMJ 2025 found alternate-day fasting about 1.29 kg lower than continuous restriction; NEJM 2022 and Annals 2023 head-to-head trials found no significant advantage for time-restricted eating over calorie restriction.",
 				certainty: "moderate",
 				limitations: [
 					"Different fasting schedules are often pooled despite different behavioral and metabolic demands.",
@@ -21645,7 +21645,7 @@ const rawClaims: SeedClaim[] = [
 					"Official guidance, systematic reviews, meta-analyses, and newer quasi-experimental studies support speed cameras as a safety countermeasure that reduces speeding and often reduces crashes, injuries, or deaths.",
 				effectDirection: "supports",
 				magnitude:
-					"NHTSA summarizes best-controlled fixed-camera studies as roughly 20% to 25% site-specific injury-crash reductions; the 2010 Cochrane review found reductions across all speed and crash studies it included, and a 2025 NYC quasi-experiment estimated 30% fewer collisions and 16% fewer injuries over seven months.",
+					"NHTSA summarizes best-controlled fixed-camera studies as about 20% to 25% site-specific injury-crash reductions. A 2010 Cochrane review found reductions across included studies; a 2025 NYC quasi-experiment estimated 30% fewer collisions and 16% fewer injuries over seven months.",
 				certainty: "moderate",
 				limitations: [
 					"Randomized trials are rare or unrealistic, so most evidence comes from observational, before-after, interrupted time-series, and quasi-experimental designs.",
@@ -21846,7 +21846,7 @@ const rawClaims: SeedClaim[] = [
 					"Official guidance and review literature support graduated driver licensing as a crash- and fatality-reduction policy, with the clearest benefits for 16-year-old drivers and for stronger programs with nighttime and passenger restrictions.",
 				effectDirection: "supports",
 				magnitude:
-					"The 2011 Cochrane review reported a median 15.5% decrease in adjusted overall crash rates and a median 21% decrease in adjusted injury crash rates for 16-year-olds during the first post-GDL year; a 2012 meta-analysis estimated pooled adjusted crash-rate ratios of 0.78 for age 16, 0.94 for age 17, and 1.00 for age 18.",
+					"A 2011 Cochrane review reported median first-year decreases of 15.5% in adjusted overall crashes and 21% in adjusted injury crashes for 16-year-olds. A 2012 meta-analysis estimated adjusted crash-rate ratios of 0.78 at age 16, 0.94 at 17, and 1.00 at 18.",
 				certainty: "moderate",
 				limitations: [
 					"Evidence is largely observational or quasi-experimental because licensing laws are implemented at the state or jurisdiction level.",
@@ -22955,7 +22955,7 @@ const rawClaims: SeedClaim[] = [
 					"The reliable-evidence signal does not support homeopathy as an effective treatment beyond placebo for specific health conditions, although small or lower-quality trials can show positive results.",
 				effectDirection: "mixed",
 				magnitude:
-					"Shang 2005 found placebo-compatible effects after accounting for trial bias; Ernst 2010 found available Cochrane reviews did not show effects beyond placebo; Gartlehner 2022 found 38% of registered trials remained unpublished and unregistered trials had larger effects than registered trials.",
+					"Shang 2005 found placebo-compatible effects after accounting for trial bias; Ernst 2010 found available Cochrane reviews showed no effects beyond placebo; Gartlehner 2022 found 38% of registered trials remained unpublished and larger effects in unregistered trials.",
 				certainty: "moderate",
 				limitations: [
 					"Trials span many conditions, remedies, and individualized protocols, making broad pooling imperfect.",

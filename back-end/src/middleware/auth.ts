@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 import type { CustomSession } from "../types/session/CustomSession.js";
 import { Admin } from "../models/schemas/Admin.js";
 import { User } from "../models/schemas/User.js";
+import { adminIsEnabled } from "../utils/adminAccess.js";
 import { logError } from "../utils/safeLog.js";
 
 function sessionVersionMatches(session: CustomSession, account: { sessionVersion?: number }) {
@@ -51,7 +52,7 @@ export const requireAdmin: RequestHandler = async (req, res, next) => {
 	}
 	try {
 		const admin = await Admin.findById(session.adminID);
-		if (!admin || !sessionVersionMatches(session, admin)) {
+		if (!admin || !adminIsEnabled(admin) || !sessionVersionMatches(session, admin)) {
 			clearSession(req);
 			return res.status(403).json({ error: "Session expired" });
 		}
@@ -95,7 +96,7 @@ export const optionalAuth: RequestHandler = async (req, res, next) => {
 		}
 
 		const admin = await Admin.findById(session.adminID);
-		if (!admin || !sessionVersionMatches(session, admin)) {
+		if (!admin || !adminIsEnabled(admin) || !sessionVersionMatches(session, admin)) {
 			clearSession(req);
 			return next();
 		}
