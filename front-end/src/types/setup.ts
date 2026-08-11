@@ -32,7 +32,7 @@ export interface SetupDashboardResponse {
 	apiBase: string;
 	frontend: SetupProbe<{ ok: boolean }>;
 	backendHealth: SetupProbe<{ ok: boolean }>;
-	backendReady: SetupProbe<{ ready: boolean; state?: number }>;
+	backendReady: SetupProbe<{ ok: boolean }>;
 	backendSetup: SetupProbe<SetupStatusResponse>;
 }
 

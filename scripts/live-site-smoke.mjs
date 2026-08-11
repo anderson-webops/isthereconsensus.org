@@ -124,12 +124,18 @@ function assertManifest(result) {
 	}
 }
 
-function assertReadyz(result) {
+function assertMinimalProbe(result) {
 	expectStatus(result, 200);
 	expectContentType(result, "application/json");
 	const data = parseJson(result);
-	if (data.ready !== true) {
-		throw new Error(`${result.route} did not report ready: ${result.body}`);
+	if (data.ok !== true || Object.keys(data).length !== 1) {
+		throw new Error(`${result.route} did not return the minimal probe payload: ${result.body}`);
+	}
+	if (!result.headers.get("cache-control")?.includes("no-store")) {
+		throw new Error(`${result.route} did not set Cache-Control: no-store.`);
+	}
+	for (const header of ["location", "set-cookie", "www-authenticate"]) {
+		if (result.headers.get(header)) throw new Error(`${result.route} unexpectedly set ${header}.`);
 	}
 }
 
@@ -255,14 +261,11 @@ failures.push(await runCheck("/setup is not publicly readable", async () => {
 }));
 
 failures.push(await runCheck("/healthz responds", async () => {
-	const result = await fetchRoute("/healthz");
-	expectStatus(result, 200);
-	expectContentType(result, "application/json");
-	expectIncludes(result, ["ok"]);
+	assertMinimalProbe(await fetchRoute("/healthz"));
 }));
 
 failures.push(await runCheck("/readyz responds ready", async () => {
-	assertReadyz(await fetchRoute("/readyz"));
+	assertMinimalProbe(await fetchRoute("/readyz"));
 }));
 
 if (profile === "production") {

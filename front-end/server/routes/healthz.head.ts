@@ -1,5 +1,4 @@
 export default defineEventHandler((event) => {
 	setResponseHeader(event, "Cache-Control", "no-store");
-
-	return { ok: true };
+	setResponseStatus(event, 200);
 });
