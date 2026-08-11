@@ -76,6 +76,7 @@ import {
 } from "./utils/evidenceDistribution.js";
 import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
 import { resolveMongoConfiguration } from "./utils/mongoConfiguration.js";
+import { createProbeRouter } from "./utils/probes.js";
 import {
 	emptyPublicClaimSourceReadinessCounts,
 	getPublicClaimReadiness,
@@ -130,17 +131,16 @@ async function main() {
 		hsts: isProd
 	}));
 
-	// health
-	const healthLimiter = rateLimit({
-		windowMs: 60_000,
-		limit: 120,
-		standardHeaders: "draft-8",
-		legacyHeaders: false
-	});
-	app.get("/healthz", healthLimiter, (_req, res) => {
-		res.set("Cache-Control", "no-store");
-		res.json({ ok: true });
-	});
+	app.use(
+		createProbeRouter(async () => {
+			const connection = mongoose.connection;
+			if (connection.readyState !== 1 || !connection.db) {
+				return false;
+			}
+			await connection.db.command({ ping: 1, maxTimeMS: 2_000 });
+			return true;
+		})
+	);
 
 	const SESSION_SECRET = env.SESSION_SECRET;
 	if (!SESSION_SECRET) throw new Error("Missing SESSION_SECRET");
@@ -290,48 +290,6 @@ async function main() {
 			res.setHeader("Cache-Control", "no-store");
 		}
 		next();
-	});
-
-	// ready
-	app.get("/readyz", healthLimiter, async (_req, res) => {
-		const connection = mongoose.connection;
-		const state = connection.readyState;
-		if (state !== 1 || !connection.db) {
-			return res
-				.status(503)
-				.set("Cache-Control", "no-store")
-				.json({
-					ready: false,
-					components: {
-						db: { ok: false, state }
-					}
-				});
-		}
-
-		try {
-			await connection.db.command({ ping: 1, maxTimeMS: 2_000 });
-			return res.set("Cache-Control", "no-store").json({
-				ready: true,
-				components: {
-					db: { ok: true, state }
-				}
-			});
-		}
-		catch {
-			return res
-				.status(503)
-				.set("Cache-Control", "no-store")
-				.json({
-					ready: false,
-					components: {
-						db: {
-							ok: false,
-							state,
-							error: "db-ping-failed"
-						}
-					}
-				});
-		}
 	});
 
 	const { source: mongoSource, uri: mongoUri } = await resolveMongoConfiguration();

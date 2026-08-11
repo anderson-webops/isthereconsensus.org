@@ -26,8 +26,8 @@ describe("buildFrontendSetupChecks", () => {
 			backendHealth: { ok: true, detail: "Backend /healthz responded successfully.", data: { ok: true } },
 			backendReady: {
 				ok: true,
-				detail: "Backend /readyz reports MongoDB is ready.",
-				data: { ready: true, state: 1 }
+				detail: "Backend /readyz reports its dependencies are ready.",
+				data: { ok: true }
 			},
 			backendSetup: { ok: true, detail: "7/8 checks passing" }
 		};

@@ -60,10 +60,8 @@ export default defineEventHandler(async (event): Promise<SetupDashboardResponse>
 			joinBaseUrl(internalApiBase, "/healthz"),
 			() => "Backend /healthz responded successfully."
 		),
-		probeJson<{ ready: boolean; state?: number }>(joinBaseUrl(internalApiBase, "/readyz"), (data) =>
-			data.ready
-				? "Backend /readyz reports MongoDB is ready."
-				: `Backend /readyz reports not ready${typeof data.state === "number" ? ` (state ${data.state})` : ""}.`
+		probeJson<{ ok: boolean }>(joinBaseUrl(internalApiBase, "/readyz"), (data) =>
+			data.ok ? "Backend /readyz reports its dependencies are ready." : "Backend /readyz reports not ready."
 		),
 		probeJson<SetupStatusResponse>(
 			buildApiUrl(internalApiBase, "/setup/status"),

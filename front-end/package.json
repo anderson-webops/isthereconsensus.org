@@ -76,8 +76,8 @@
 	"overrides": {
 		"@nuxt/devtools": "^3.2.4",
 		"@nuxt/kit": "^4.4.2",
-		"nuxt": "^4.4.2",
-		"unplugin": "^3.0.0",
-		"vite": "^8.0.7"
+		"nuxt": "$nuxt",
+		"unplugin": "$unplugin",
+		"vite": "$vite"
 	}
 }
