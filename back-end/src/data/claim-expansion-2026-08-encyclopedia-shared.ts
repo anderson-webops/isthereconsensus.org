@@ -4,13 +4,14 @@ export const august2026EncyclopediaReviewTimestamp = "2026-08-18T18:00:00.000Z";
 export const august2026EncyclopediaTrancheTwoReviewTimestamp = "2026-08-18T20:00:00.000Z";
 export const august2026EncyclopediaTrancheThreeReviewTimestamp = "2026-08-18T22:00:00.000Z";
 export const august2026EncyclopediaTrancheFourReviewTimestamp = "2026-08-18T23:30:00.000Z";
+export const august2026EncyclopediaTrancheFiveReviewTimestamp = "2026-08-19T01:00:00.000Z";
 
 type EncyclopediaClaim = Omit<SeedClaim, "status"> & {
 	status?: SeedClaim["status"];
 };
 
 type EncyclopediaSource = SeedClaim["sources"][number];
-type EncyclopediaSourceSeed = Omit<
+export type EncyclopediaSourceSeed = Omit<
 	EncyclopediaSource,
 	"appraisal" | "citationCheckedAt" | "citationStatus" | "isAnchor" | "order" | "stance" | "statusSources"
 > & {
@@ -18,6 +19,16 @@ type EncyclopediaSourceSeed = Omit<
 	isAnchor?: boolean;
 	stance?: EncyclopediaSource["stance"];
 };
+
+export type EncyclopediaDoiSourceTuple = readonly [
+	kind: EncyclopediaSource["kind"],
+	title: string,
+	publisher: string,
+	year: number,
+	doi: string,
+	note: string,
+	stance?: EncyclopediaSource["stance"]
+];
 
 type EncyclopediaSourcedClaim = Omit<EncyclopediaClaim, "sources"> & {
 	sources: EncyclopediaSourceSeed[];
@@ -97,4 +108,43 @@ export function august2026EncyclopediaTrancheFourSourcedClaim(
 			};
 		})
 	});
+}
+
+export function august2026EncyclopediaTrancheFiveClaim(seed: EncyclopediaClaim): SeedClaim {
+	return encyclopediaClaimAt(seed, august2026EncyclopediaTrancheFiveReviewTimestamp);
+}
+
+export function august2026EncyclopediaTrancheFiveSourcedClaim(
+	seed: EncyclopediaSourcedClaim
+): SeedClaim {
+	return august2026EncyclopediaTrancheFiveClaim({
+		...seed,
+		sources: seed.sources.map((source, index) => {
+			const primaryLink = source.url ?? (source.doi ? `https://doi.org/${source.doi}` : undefined);
+
+			return {
+				...source,
+				order: index + 1,
+				stance: source.stance ?? "supports",
+				isAnchor: source.isAnchor ?? index === 0,
+				appraisal: source.appraisal ?? "high",
+				citationStatus: "current",
+				citationCheckedAt: august2026EncyclopediaTrancheFiveReviewTimestamp,
+				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
+			};
+		})
+	});
+}
+
+export function encyclopediaDoiSources(rows: readonly EncyclopediaDoiSourceTuple[]): EncyclopediaSourceSeed[] {
+	return rows.map(([kind, title, publisher, year, doi, note, stance]) => ({
+		kind,
+		title,
+		publisher,
+		year,
+		doi,
+		url: `https://doi.org/${doi}`,
+		note,
+		stance
+	}));
 }

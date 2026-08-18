@@ -1,39 +1,43 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 import { topicGuides } from "../src/data/topicGuides.js";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
-const expandedTopicFiles = new Map([
-	["consensus-foundations", "claim-expansion-2026-08-consensus-foundations.ts"],
-	["media-misinformation", "claim-expansion-2026-08-media-misinformation.ts"],
-	["bias-incentives", "claim-expansion-2026-08-bias-incentives.ts"],
-	["science-communication", "claim-expansion-2026-08-science-communication.ts"],
-	["historical-case-studies", "claim-expansion-2026-08-historical-case-studies.ts"],
-	["public-policy-and-safety", "claim-expansion-2026-08-public-policy-safety.ts"]
-]);
+function seededClaimTopics() {
+	const dataDir = join(testDir, "..", "..", "back-end", "src", "data");
+	const seedFiles = readdirSync(dataDir).filter(
+		(fileName) => fileName === "claims.ts" || (fileName.startsWith("claim-expansion-") && fileName.endsWith(".ts"))
+	);
+	const claimTopics = new Map<string, string>();
 
-function claimSlugsFromSeedFile(fileName: string) {
-	const source = readFileSync(join(testDir, "..", "..", "back-end", "src", "data", fileName), "utf8");
-	return new Set([...source.matchAll(/\n\t\tslug: "([^"]+)",/g)].map((match) => match[1]));
+	for (const fileName of seedFiles) {
+		const source = readFileSync(join(dataDir, fileName), "utf8");
+		for (const match of source.matchAll(/topicSlug:\s*"([^"]+)"[\s\S]*?slug:\s*"([^"]+)"/g)) {
+			claimTopics.set(match[2], match[1]);
+		}
+	}
+
+	return claimTopics;
 }
 
 describe("topic guide starter claims", () => {
-	it("provides three distinct, seeded entry points for every newly deepened topic", () => {
+	it("provides three distinct, seeded entry points for every topic guide", () => {
 		const allStarters: string[] = [];
+		const claimTopics = seededClaimTopics();
 
-		for (const [topicSlug, fileName] of expandedTopicFiles) {
-			const starters = topicGuides[topicSlug]?.starterClaimSlugs ?? [];
-			const seededClaimSlugs = claimSlugsFromSeedFile(fileName);
+		for (const [topicSlug, guide] of Object.entries(topicGuides)) {
+			const starters = guide.starterClaimSlugs ?? [];
 
 			assert.equal(starters.length, 3, `${topicSlug} should expose exactly three starter claims`);
 			assert.equal(new Set(starters).size, 3, `${topicSlug} starter claims should be distinct`);
 			for (const starterSlug of starters) {
-				assert.ok(
-					seededClaimSlugs.has(starterSlug),
-					`${starterSlug} should exist in the ${topicSlug} seed tranche`
+				assert.equal(
+					claimTopics.get(starterSlug),
+					topicSlug,
+					`${starterSlug} should be seeded in ${topicSlug}`
 				);
 			}
 			allStarters.push(...starters);

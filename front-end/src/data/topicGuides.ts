@@ -76,6 +76,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What do the large population studies say here?",
 			"Is this a public-health consensus or a frontier research question?"
 		],
+		starterClaimSlugs: [
+			"do-antibiotics-treat-colds-flu-or-most-viral-respiratory-infections",
+			"do-statins-reduce-heart-attacks-and-strokes-for-people-at-elevated-cardiovascular-risk",
+			"does-sunscreen-use-prevent-skin-cancer"
+		],
 		evidenceTrail: [
 			{ title: "Systematic reviews", note: "Best for checking whether the effect holds up across many studies." },
 			{
@@ -111,6 +116,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What part of climate science is actually settled?",
 			"What are experts still debating at the edges?"
 		],
+		starterClaimSlugs: [
+			"is-recent-global-warming-mainly-caused-by-human-activity",
+			"is-global-sea-level-rising-and-accelerating-due-to-human-caused-climate-change",
+			"is-extreme-heat-becoming-more-frequent-or-intense-because-of-human-caused-climate-change"
+		],
 		evidenceTrail: [
 			{ title: "Assessment reports", note: "Useful for seeing where large literatures converge." },
 			{ title: "Observation records", note: "Helpful when grounding claims in measurement rather than rhetoric." }
@@ -142,6 +152,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"Is this headline based on a single study or a broader review?",
 			"What is the real-world risk change, not just the relative risk?"
+		],
+		starterClaimSlugs: [
+			"do-most-people-consume-too-much-sodium-and-does-reducing-sodium-lower-blood-pressure",
+			"does-eating-processed-meat-increase-colorectal-cancer-risk",
+			"are-seed-oils-uniquely-toxic-or-inflammatory"
 		],
 		evidenceTrail: [
 			{ title: "Guidelines", note: "Important when checking what major medical societies currently advise." },
@@ -175,6 +190,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What does theory mean in science here?",
 			"What evidence would actually break the current evolutionary framework?"
 		],
+		starterClaimSlugs: [
+			"is-evolution-just-a-theory",
+			"can-evolution-be-observed-happening-today",
+			"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"
+		],
 		evidenceTrail: [
 			{ title: "Comparative genetics", note: "Useful for seeing why multiple lines of biology converge." },
 			{ title: "Fossil and geological records", note: "Helpful when addressing historical evidence claims." }
@@ -206,6 +226,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What exactly is being genetically changed here, and what was actually tested?",
 			"Is the argument about health risk, ecological risk, or agricultural policy?"
+		],
+		starterClaimSlugs: [
+			"are-commercial-gmo-foods-unsafe-to-eat",
+			"is-crispr-ready-for-heritable-human-embryo-editing",
+			"can-crispr-based-gene-therapy-treat-sickle-cell-disease-in-eligible-patients"
 		],
 		evidenceTrail: [
 			{
@@ -244,6 +269,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"Is this a tested effect or just an appealing label?",
 			"Does the claim improve outcomes outside of a narrow lab task?"
+		],
+		starterClaimSlugs: [
+			"are-antidepressants-effective-for-major-depressive-disorder-and-how-big-is-the-average-benefit",
+			"does-exercise-reduce-symptoms-of-depression",
+			"is-cognitive-behavioral-therapy-for-insomnia-a-first-line-treatment-for-chronic-insomnia"
 		],
 		evidenceTrail: [
 			{ title: "Educational psychology reviews", note: "Useful when the claim affects teaching or training." },
@@ -363,6 +393,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What exactly are experts arguing about here?",
 			"Is the disagreement about whether the effect exists or how strong it is?"
+		],
+		starterClaimSlugs: [
+			"what-counts-as-an-active-scientific-debate",
+			"do-anti-amyloid-drugs-provide-a-clinically-meaningful-net-benefit-in-early-alzheimers-disease",
+			"can-direct-air-capture-deliver-affordable-large-scale-carbon-removal"
 		],
 		evidenceTrail: [
 			{ title: "Meta-analyses", note: "Helpful when the dispute is about magnitude across many studies." },
@@ -559,6 +594,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Compared with what, for which students, and on which outcome did this approach work?",
 			"Did the improvement last after the study or transfer to broader learning?"
 		],
+		starterClaimSlugs: [
+			"does-retrieval-practice-improve-long-term-learning",
+			"does-matching-instruction-to-a-students-learning-style-improve-achievement",
+			"does-intensive-tutoring-improve-student-achievement"
+		],
 		evidenceTrail: [
 			{
 				title: "Systematic education reviews",
@@ -597,6 +637,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Is this claim about sleep duration, circadian timing, sleep quality, or a diagnosed disorder?",
 			"Does the evidence measure how people feel, how they perform, or long-term health outcomes?"
 		],
+		starterClaimSlugs: [
+			"do-most-healthy-adults-need-at-least-seven-hours-of-sleep",
+			"should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
+			"can-consumer-sleep-trackers-diagnose-sleep-disorders"
+		],
 		evidenceTrail: [
 			{ title: "Sleep-medicine guidelines", note: "Best for diagnosis and treatment boundaries." },
 			{
@@ -632,6 +677,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What outcome is this supposed to improve: health, strength, endurance, body composition, recovery, or performance?",
 			"Was the effect tested against a realistic alternative in people like the intended user?"
 		],
+		starterClaimSlugs: [
+			"does-physical-activity-below-the-weekly-guideline-still-improve-health",
+			"is-creatine-monohydrate-effective-and-generally-safe-for-healthy-adults",
+			"does-recreational-running-cause-knee-or-hip-osteoarthritis"
+		],
 		evidenceTrail: [
 			{ title: "Physical-activity guidelines", note: "Useful for the durable population-health baseline." },
 			{
@@ -666,6 +716,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What outcome was measured, and what is the credible comparison for what would have happened otherwise?",
 			"Which part of this dispute is empirical, and which part depends on rights or values?"
+		],
+		starterClaimSlugs: [
+			"does-the-death-penalty-deter-homicide-more-than-long-imprisonment",
+			"do-scared-straight-prison-visit-programs-prevent-juvenile-offending",
+			"does-pretrial-detention-influence-later-case-and-life-outcomes"
 		],
 		evidenceTrail: [
 			{
@@ -705,6 +760,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Is this conclusion based on one image, or on several independent kinds of measurement?",
 			"Does the claim distinguish evidence for a phenomenon from identification of its underlying cause?"
 		],
+		starterClaimSlugs: [
+			"did-humans-land-on-the-moon",
+			"is-the-universe-expanding",
+			"has-life-beyond-earth-been-scientifically-confirmed"
+		],
 		evidenceTrail: [
 			{
 				title: "NASA, ESA, and observatory archives",
@@ -742,6 +802,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"Is the statement a long-term hazard estimate, a short-term forecast, or an alert after an event has begun?",
 			"Which independent measurement methods support the geologic interpretation?"
+		],
+		starterClaimSlugs: [
+			"is-earth-about-4-54-billion-years-old",
+			"do-earths-tectonic-plates-move",
+			"can-scientists-predict-the-exact-time-place-and-magnitude-of-earthquakes"
 		],
 		evidenceTrail: [
 			{
@@ -781,6 +846,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Compared with what counterfactual, and over what timescale, did the conservation action help?",
 			"Is the claim about species richness, abundance, ecological function, carbon, or human well-being?"
 		],
+		starterClaimSlugs: [
+			"does-biodiversity-support-ecosystem-functioning-and-stability",
+			"does-breaking-habitat-into-smaller-isolated-patches-harm-biodiversity",
+			"do-protected-areas-generally-improve-conservation-outcomes"
+		],
 		evidenceTrail: [
 			{
 				title: "IPBES global and thematic assessments",
@@ -818,6 +888,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What is the complete lifecycle and what service must the system provide?",
 			"Is this result a model, a laboratory demonstration, a commercial plant, or verified system-scale performance?"
+		],
+		starterClaimSlugs: [
+			"does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
+			"can-modern-heat-pumps-work-efficiently-in-cold-climates",
+			"is-direct-air-capture-already-operating-at-climate-relevant-scale"
 		],
 		evidenceTrail: [
 			{
@@ -857,6 +932,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Is the outcome measured per hectare, per unit of food, per farm, or across the whole supply chain?",
 			"Which baseline, co-practices, climate, soil, and time horizon were actually studied?"
 		],
+		starterClaimSlugs: [
+			"did-synthetic-nitrogen-fertilizer-increase-crop-yields-and-nitrogen-pollution",
+			"does-organic-farming-generally-trade-lower-yields-for-higher-on-farm-biodiversity",
+			"is-regenerative-agriculture-one-standardized-uniformly-proven-farming-system"
+		],
 		evidenceTrail: [
 			{
 				title: "FAO, WHO, and agricultural meta-analyses",
@@ -894,6 +974,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"Is this evidence about global input, local concentration, organism exposure, or population harm?",
 			"What depth, region, duration, and observing system define the trend?"
+		],
+		starterClaimSlugs: [
+			"is-ocean-heat-content-increasing-because-of-human-caused-warming",
+			"does-overfishing-deplete-fish-stocks-and-can-effective-management-rebuild-them",
+			"is-deep-sea-mining-environmentally-harmless"
 		],
 		evidenceTrail: [
 			{
@@ -933,6 +1018,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What complete signal should exist if the claim is true, and was every part measured?",
 			"Was the system boundary closed and has an independent laboratory reproduced the result?"
 		],
+		starterClaimSlugs: [
+			"are-atoms-physically-real-rather-than-only-mathematical-conveniences",
+			"does-gps-require-corrections-predicted-by-relativity",
+			"has-room-temperature-superconductivity-at-ordinary-pressure-been-independently-confirmed"
+		],
 		evidenceTrail: [
 			{
 				title: "Standards institutes, national laboratories, and major technical reviews",
@@ -971,6 +1061,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Who gains, who loses, compared with what alternative, and over what time horizon?",
 			"Is the estimate local and partial-equilibrium, or does it include taxes, prices, supply, migration, and other economy-wide responses?"
 		],
+		starterClaimSlugs: [
+			"do-modest-minimum-wage-increases-always-cause-large-job-losses",
+			"does-rent-control-help-covered-tenants-without-affecting-housing-supply-or-mobility",
+			"do-unconditional-cash-transfers-reduce-poverty-and-improve-well-being"
+		],
 		evidenceTrail: [
 			{
 				title: "National Academies, Cochrane, and institutional evidence reviews",
@@ -1007,6 +1102,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What exact claim are you trying to check?",
 			"Which source, quote, or example kicked off the question?"
+		],
+		starterClaimSlugs: [
+			"do-seat-belts-reduce-death-and-serious-injury-in-crashes",
+			"do-speed-cameras-reduce-speeding-crashes-injuries-and-deaths",
+			"do-four-sided-pool-fences-reduce-drowning-risk-for-young-children"
 		],
 		evidenceTrail: [
 			{ title: "Primary source first", note: "Start with the actual claim, quote, or paper being discussed." },
