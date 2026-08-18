@@ -145,5 +145,40 @@ export const defaultTopics = [
 		description: "Biodiversity, extinction, ecological pressures, and which conservation actions work under real conditions.",
 		order: 21,
 		accent: "#477058"
+	},
+	{
+		title: "Energy & infrastructure",
+		slug: "energy-and-infrastructure",
+		description: "Power, fuels, grids, storage, extraction, and climate technologies assessed as complete systems rather than slogans.",
+		order: 22,
+		accent: "#80613f"
+	},
+	{
+		title: "Agriculture & food systems",
+		slug: "agriculture-and-food-systems",
+		description: "Crop production, soils, nutrients, pests, food supply chains, and the tradeoffs behind agricultural labels.",
+		order: 23,
+		accent: "#68713e"
+	},
+	{
+		title: "Oceans & marine science",
+		slug: "oceans-and-marine-science",
+		description: "Ocean warming, fisheries, pollution, coastal ecosystems, circulation, and emerging marine interventions.",
+		order: 24,
+		accent: "#34717b"
+	},
+	{
+		title: "Physics & chemistry",
+		slug: "physics-and-chemistry",
+		description: "Foundational physical evidence, persistent science myths, and the line between laboratory milestones and usable technology.",
+		order: 25,
+		accent: "#665b8c"
+	},
+	{
+		title: "Economics & social policy",
+		slug: "economics-and-social-policy",
+		description: "What empirical research says about work, housing, cash, migration, trade, family policy, and distributional tradeoffs.",
+		order: 26,
+		accent: "#84604f"
 	}
 ];

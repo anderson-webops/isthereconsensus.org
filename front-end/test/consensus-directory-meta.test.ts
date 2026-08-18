@@ -56,7 +56,12 @@ describe("consensus directory metadata", () => {
 			["crime-and-justice", /design and value limits/i],
 			["astronomy-and-space", /Strong observations/i],
 			["earth-and-geoscience", /probabilistic hazards/i],
-			["ecology-and-conservation", /context-dependent remedies/i]
+			["ecology-and-conservation", /context-dependent remedies/i],
+			["energy-and-infrastructure", /system-dependent choices/i],
+			["agriculture-and-food-systems", /management-dependent outcomes/i],
+			["oceans-and-marine-science", /uneven observation and recovery/i],
+			["physics-and-chemistry", /demanding discovery standards/i],
+			["economics-and-social-policy", /distribution-sensitive effects/i]
 		] as const;
 
 		for (const [slug, labelPattern] of expectedGuides) {

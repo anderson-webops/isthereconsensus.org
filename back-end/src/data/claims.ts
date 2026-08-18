@@ -144,6 +144,21 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "ecology-and-conservation") {
 		return ["Web of Science", "OpenAlex", "Crossref", "IPBES and IUCN assessments"];
 	}
+	if (topicSlug === "energy-and-infrastructure") {
+		return ["Scopus", "OpenAlex", "Crossref", "IPCC, IEA, DOE, and national-laboratory assessments"];
+	}
+	if (topicSlug === "agriculture-and-food-systems") {
+		return ["CAB Abstracts", "AGRIS", "Web of Science", "FAO and WHO assessments"];
+	}
+	if (topicSlug === "oceans-and-marine-science") {
+		return ["Web of Science", "OpenAlex", "Crossref", "IPCC, NOAA, FAO, and UNEP assessments"];
+	}
+	if (topicSlug === "physics-and-chemistry") {
+		return ["Web of Science", "OpenAlex", "Crossref", "NIST and national-laboratory archives"];
+	}
+	if (topicSlug === "economics-and-social-policy") {
+		return ["EconLit", "NBER", "OpenAlex", "National Academies and multilateral reviews"];
+	}
 	if (
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
@@ -185,6 +200,11 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		topicSlug === "astronomy-and-space"
 		|| topicSlug === "earth-and-geoscience"
 		|| topicSlug === "ecology-and-conservation"
+		|| topicSlug === "energy-and-infrastructure"
+		|| topicSlug === "agriculture-and-food-systems"
+		|| topicSlug === "oceans-and-marine-science"
+		|| topicSlug === "physics-and-chemistry"
+		|| topicSlug === "economics-and-social-policy"
 	) {
 		return ["Crossref update metadata", "OpenAlex work updates", "Editorial institutional watch"];
 	}
@@ -233,6 +253,21 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "ecology-and-conservation") {
 		return ["IPBES assessment cycle", "IUCN and CBD updates", "Major conservation synthesis updates"];
+	}
+	if (topicSlug === "energy-and-infrastructure") {
+		return ["IPCC and IEA assessment cycles", "DOE and national-laboratory updates", "Grid and lifecycle synthesis updates"];
+	}
+	if (topicSlug === "agriculture-and-food-systems") {
+		return ["FAO agrifood assessments", "WHO One Health guidance", "Major agricultural meta-analysis updates"];
+	}
+	if (topicSlug === "oceans-and-marine-science") {
+		return ["IPCC ocean assessments", "NOAA and FAO observing updates", "UNEP and National Academies marine reviews"];
+	}
+	if (topicSlug === "physics-and-chemistry") {
+		return ["NIST standards and measurement updates", "National-laboratory replication reports", "Major field-review and retraction updates"];
+	}
+	if (topicSlug === "economics-and-social-policy") {
+		return ["National Academies policy reviews", "Cochrane and Campbell updates", "Major administrative-data and meta-analysis updates"];
 	}
 	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
 }
@@ -376,6 +411,41 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "IPBES", role: "Global biodiversity assessment anchor" },
 			{ name: "International Union for Conservation of Nature", role: "Species status and conservation-practice anchor" },
 			{ name: "Major conservation meta-analyses", role: "Intervention-effectiveness and uncertainty anchor" }
+		];
+	}
+	if (topicSlug === "energy-and-infrastructure") {
+		return [
+			{ name: "Intergovernmental Panel on Climate Change", role: "Lifecycle and energy-system assessment anchor" },
+			{ name: "International Energy Agency", role: "Technology, deployment, and energy-market synthesis anchor" },
+			{ name: "U.S. Department of Energy / national laboratories", role: "Operational research and infrastructure evidence anchor" }
+		];
+	}
+	if (topicSlug === "agriculture-and-food-systems") {
+		return [
+			{ name: "Food and Agriculture Organization of the United Nations", role: "Agrifood systems and nutrient assessment anchor" },
+			{ name: "World Health Organization", role: "Food safety and One Health guidance anchor" },
+			{ name: "Major agricultural meta-analyses", role: "Practice, yield, soil, and ecosystem-effect anchor" }
+		];
+	}
+	if (topicSlug === "oceans-and-marine-science") {
+		return [
+			{ name: "IPCC / NOAA", role: "Ocean observation, climate, and circulation assessment anchor" },
+			{ name: "FAO / UNEP", role: "Fisheries and marine-pollution assessment anchor" },
+			{ name: "National Academies", role: "Independent marine intervention and governance anchor" }
+		];
+	}
+	if (topicSlug === "physics-and-chemistry") {
+		return [
+			{ name: "National Institute of Standards and Technology", role: "Measurement and physical-standards anchor" },
+			{ name: "National laboratories and major collaborations", role: "Experimental and replication anchor" },
+			{ name: "Major field reviews and retraction records", role: "Discovery-status and integrity anchor" }
+		];
+	}
+	if (topicSlug === "economics-and-social-policy") {
+		return [
+			{ name: "National Academies", role: "Independent policy-evidence assessment anchor" },
+			{ name: "Cochrane / major systematic reviews", role: "Intervention and outcome synthesis anchor" },
+			{ name: "Administrative and quasi-experimental research", role: "Causal and distributional effect anchor" }
 		];
 	}
 	return [
@@ -604,6 +674,115 @@ function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 	return "not_appraised";
 }
 
+function defaultInclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "energy-and-infrastructure") {
+		return [
+			"Use consistent lifecycle and service boundaries when comparing fuels, infrastructure, storage, capture, or removal technologies.",
+			"Prioritize major energy assessments, measured operating performance, and synthesis over nameplate, target-level, or promotional claims.",
+			"Keep technical feasibility, commercial operation, system scale, reliability contribution, and full-chain emissions as separate milestones."
+		];
+	}
+	if (seed.topicSlug === "agriculture-and-food-systems") {
+		return [
+			"Prefer systematic reviews and long-term field, farm, or watershed evidence that identifies crop, soil, climate, baseline, and co-practices.",
+			"Report production and environmental outcomes with explicit per-area, per-output, and whole-system boundaries where they differ.",
+			"Treat named farming systems as bundles of testable practices and measured outcomes rather than evidence-bearing labels."
+		];
+	}
+	if (seed.topicSlug === "oceans-and-marine-science") {
+		return [
+			"Prioritize global assessments, long-term observing systems, mass balances, and ecological syntheses with explicit region, depth, compartment, and timescale.",
+			"Separate pollutant input, environmental concentration, organism exposure, individual harm, population effect, and human-health evidence.",
+			"For marine interventions, require net carbon or resource accounting, permanence, monitoring, ecological effects, governance, and scale."
+		];
+	}
+	if (seed.topicSlug === "physics-and-chemistry") {
+		return [
+			"Require the complete diagnostic signature predicted by the claim, a closed system boundary, calibrated measurements, and independent replication.",
+			"Use standards institutes, national laboratories, major technical reviews, and primary experiments with enough methods to evaluate artifacts.",
+			"Distinguish observation, mechanism, target-level milestone, engineering breakeven, and commercial technology."
+		];
+	}
+	if (seed.topicSlug === "economics-and-social-policy") {
+		return [
+			"Prioritize systematic reviews, administrative causal studies, randomized programs, and transparent quasi-experiments with a credible counterfactual.",
+			"Report average, subgroup, distributional, behavioral-margin, and time-horizon effects rather than one headline coefficient.",
+			"Keep estimated consequences separate from ethical judgments and flag when a local or temporary study cannot identify permanent economy-wide effects."
+		];
+	}
+	return [
+		"Prioritize systematic reviews, meta-analyses, major guidelines, and consensus assessments.",
+		"Use landmark primary studies only when they materially changed the field or clarify a live disagreement.",
+		"Anchor the public bottom line in sources that describe methods, scope, and major limitations."
+	];
+}
+
+function defaultExclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "energy-and-infrastructure") {
+		return [
+			"Do not infer lifecycle or system performance from a combustion-only, component-only, target-only, or nameplate metric.",
+			"Exclude vendor forecasts and modeled deployment claims that do not disclose energy, emissions, duration, storage, or reliability boundaries.",
+			"Do not treat a less harmful option as impact-free or as the best choice for every region and service."
+		];
+	}
+	if (seed.topicSlug === "agriculture-and-food-systems") {
+		return [
+			"Do not generalize one crop, soil depth, growing season, experimental station, or branded practice to all farming systems.",
+			"Exclude comparisons that change yield, land, input, or co-practice boundaries without stating the denominator.",
+			"Do not use a certification or umbrella label as a substitute for measured agronomic, ecological, health, or livelihood outcomes."
+		];
+	}
+	if (seed.topicSlug === "oceans-and-marine-science") {
+		return [
+			"Do not convert one beach, gyre, species, depth, or regional record into a fixed global source share or trend.",
+			"Exclude laboratory exposures that cannot be related to environmental dose from population or human-risk conclusions.",
+			"Do not treat proposed carbon uptake, biomass growth, or gross capture as durable verified net removal."
+		];
+	}
+	if (seed.topicSlug === "physics-and-chemistry") {
+		return [
+			"Do not let a video, patent, private demonstration, preprint, single curve, or unexplained anomaly carry an extraordinary physical claim.",
+			"Exclude energy claims that omit inputs, depletion, calibration, thermal accounting, or complete facility boundaries.",
+			"Do not equate one suggestive property with the full required signature of superconductivity, fusion, signalling, radioactivity, or another claimed phenomenon."
+		];
+	}
+	if (seed.topicSlug === "economics-and-social-policy") {
+		return [
+			"Do not treat one city, subgroup, coefficient, short event window, or statistically insignificant estimate as a universal zero or inevitability.",
+			"Exclude comparisons without a credible counterfactual or that conceal who gains, who loses, and which adjustment margins were measured.",
+			"Do not present pilot partial-equilibrium estimates as complete permanent national effects without taxes, prices, supply, migration, and financing."
+		];
+	}
+	return [
+		"Do not let isolated preprints, commentary, or anecdotal reports carry the public bottom line.",
+		"Treat mechanistic or animal-only evidence as supporting context unless the page is specifically about mechanism.",
+		"Exclude weak or redundant sources when a stronger synthesis already covers the same point."
+	];
+}
+
+function defaultAppraisalTools(topicSlug: string) {
+	if (topicSlug === "energy-and-infrastructure") {
+		return ["Lifecycle boundary audit", "Technology-readiness and operating-data check", "Reliability-service and duration check"];
+	}
+	if (topicSlug === "agriculture-and-food-systems") {
+		return ["Agronomic context and baseline check", "Area-versus-output denominator audit", "Soil depth, duration, and co-practice check"];
+	}
+	if (topicSlug === "oceans-and-marine-science") {
+		return ["Region-depth-timescale coverage check", "Exposure-to-effect evidence ladder", "Mass-balance, permanence, and ecosystem-risk audit"];
+	}
+	if (topicSlug === "physics-and-chemistry") {
+		return ["Complete diagnostic-signature check", "Energy and matter system-boundary audit", "Independent replication and integrity-status review"];
+	}
+	if (topicSlug === "economics-and-social-policy") {
+		return ["Counterfactual and identification-strategy review", "Average-versus-distributional effect audit", "Partial-versus-general-equilibrium boundary check"];
+	}
+	return [
+		"GRADE-style certainty check for the body of evidence",
+		"Risk-of-bias review for key study designs",
+		"Shared-baseline check when institutions disagree"
+	];
+}
+
 function defaultMisconceptionTags(seed: SeedClaim) {
 	const tags = new Set<string>();
 
@@ -654,6 +833,11 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		seed.topicSlug === "astronomy-and-space"
 		|| seed.topicSlug === "earth-and-geoscience"
 		|| seed.topicSlug === "ecology-and-conservation"
+		|| seed.topicSlug === "energy-and-infrastructure"
+		|| seed.topicSlug === "agriculture-and-food-systems"
+		|| seed.topicSlug === "oceans-and-marine-science"
+		|| seed.topicSlug === "physics-and-chemistry"
+		|| seed.topicSlug === "economics-and-social-policy"
 	) {
 		tags.add("one-study-doesnt-overturn-evidence");
 		tags.add("cherry-picking-distorts-the-evidence");
@@ -704,6 +888,11 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					: seed.topicSlug === "astronomy-and-space"
 						|| seed.topicSlug === "earth-and-geoscience"
 						|| seed.topicSlug === "ecology-and-conservation"
+						|| seed.topicSlug === "energy-and-infrastructure"
+						|| seed.topicSlug === "agriculture-and-food-systems"
+						|| seed.topicSlug === "oceans-and-marine-science"
+						|| seed.topicSlug === "physics-and-chemistry"
+						|| seed.topicSlug === "economics-and-social-policy"
 						? ["Crossref", "OpenAlex", "Editorial review"]
 						: ["Crossref", "Editorial review"])
 		})),
@@ -712,22 +901,10 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 		reviewMode: seed.reviewMode ?? "standard",
 		searchDatabases: seed.searchDatabases ?? defaultSearchDatabases(seed.topicSlug),
 		searchCutoffAt: seed.searchCutoffAt ?? seedTimestamp,
-		inclusionRules: seed.inclusionRules ?? [
-			"Prioritize systematic reviews, meta-analyses, major guidelines, and consensus assessments.",
-			"Use landmark primary studies only when they materially changed the field or clarify a live disagreement.",
-			"Anchor the public bottom line in sources that describe methods, scope, and major limitations."
-		],
-		exclusionRules: seed.exclusionRules ?? [
-			"Do not let isolated preprints, commentary, or anecdotal reports carry the public bottom line.",
-			"Treat mechanistic or animal-only evidence as supporting context unless the page is specifically about mechanism.",
-			"Exclude weak or redundant sources when a stronger synthesis already covers the same point."
-		],
+		inclusionRules: seed.inclusionRules ?? defaultInclusionRules(seed),
+		exclusionRules: seed.exclusionRules ?? defaultExclusionRules(seed),
 		surveillanceSpec: seed.surveillanceSpec ?? defaultSurveillanceSpec(seed),
-		appraisalTools: seed.appraisalTools ?? [
-			"GRADE-style certainty check for the body of evidence",
-			"Risk-of-bias review for key study designs",
-			"Shared-baseline check when institutions disagree"
-		],
+		appraisalTools: seed.appraisalTools ?? defaultAppraisalTools(seed.topicSlug),
 		evidenceSummaries: seed.evidenceSummaries ?? defaultEvidenceSummaries(seed),
 		institutionalAnchors: seed.institutionalAnchors ?? defaultInstitutionalAnchors(seed.topicSlug),
 		misconceptionTags: seed.misconceptionTags ?? defaultMisconceptionTags(seed),

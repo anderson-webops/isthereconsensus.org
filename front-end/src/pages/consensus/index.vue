@@ -42,7 +42,12 @@ const starterOrder = [
 	"crime-and-justice",
 	"astronomy-and-space",
 	"earth-and-geoscience",
-	"ecology-and-conservation"
+	"ecology-and-conservation",
+	"energy-and-infrastructure",
+	"agriculture-and-food-systems",
+	"oceans-and-marine-science",
+	"physics-and-chemistry",
+	"economics-and-social-policy"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const fallbackTopics = computed<Topic[]>(() =>
