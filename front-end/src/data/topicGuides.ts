@@ -463,6 +463,44 @@ export const topicGuides: Record<string, TopicGuide> = {
 			{ title: "Educational psychology", note: "Helpful for understanding memory, misconceptions, and transfer." }
 		]
 	},
+	"public-policy-and-safety": {
+		slug: "public-policy-and-safety",
+		consensusScore: 86,
+		consensusLabel: "Strong evidence for several prevention tools",
+		snapshot:
+			"Policy evidence can estimate whether an intervention reduces harm, while legal rights, costs, fairness, and acceptable tradeoffs remain public judgments rather than laboratory results.",
+		stableCore: [
+			"Well-designed natural experiments and program reviews can identify meaningful population effects even when randomized policy trials are impossible.",
+			"Implementation quality and local context often determine how much of an average benefit a community realizes.",
+			"Evidence that a policy works does not by itself settle whether its burdens, enforcement, or distribution are acceptable."
+		],
+		openQuestions: [
+			"Which implementation details preserve benefit while reducing inequitable burdens and unintended effects?",
+			"How well do results transfer across jurisdictions with different laws, services, institutions, and baseline risks?"
+		],
+		whatWouldChangeMinds: [
+			"Stronger controlled evaluations showing that a reported population benefit disappears after accounting for trends and selection.",
+			"Evidence that a feasible alternative achieves greater harm reduction with fewer costs or inequities."
+		],
+		commonMisreads: [
+			"A measured average effect is not a guarantee that every local program works equally well.",
+			"Scientific evidence can inform a policy choice without resolving its legal or moral dimensions."
+		],
+		starterQuestions: [
+			"What outcome changed after the intervention, compared with what would otherwise have happened?",
+			"Which tradeoffs are empirical questions, and which require a public value judgment?"
+		],
+		evidenceTrail: [
+			{
+				title: "Systematic reviews of programs",
+				note: "Useful for checking whether effects repeat across jurisdictions and implementation models."
+			},
+			{
+				title: "Controlled natural experiments",
+				note: "Important when random assignment is impractical but timing and comparison groups can strengthen causal inference."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,

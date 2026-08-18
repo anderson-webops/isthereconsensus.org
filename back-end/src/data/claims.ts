@@ -17,6 +17,7 @@ import type {
 	ClaimSourceStance
 } from "../models/schemas/ClaimSource.js";
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
+import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
@@ -125,6 +126,7 @@ function defaultSearchDatabases(topicSlug: string) {
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
 		|| topicSlug === "neuroscience-and-psychology"
+		|| topicSlug === "public-policy-and-safety"
 	) {
 		return ["PubMed", "OpenAlex", "Crossref"];
 	}
@@ -151,6 +153,7 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		|| topicSlug === "nutrition-and-diet"
 		|| topicSlug === "neuroscience-and-psychology"
 		|| topicSlug === "genetics-and-biotechnology"
+		|| topicSlug === "public-policy-and-safety"
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
@@ -175,6 +178,9 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "historical-case-studies") {
 		return ["Field-specific retrospective reviews", "National Academies archives", "Public-health archive updates"];
+	}
+	if (topicSlug === "public-policy-and-safety") {
+		return ["CDC prevention guidance", "The Community Guide", "Campbell and Cochrane review updates"];
 	}
 	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
 }
@@ -262,6 +268,13 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "National Academies", role: "Retrospective evidence and policy-review anchor" },
 			{ name: "CDC / Surgeon General archives", role: "Public-health record anchor where relevant" },
 			{ name: "Major field-specific reviews", role: "Historical synthesis anchor for how the consensus shifted" }
+		];
+	}
+	if (topicSlug === "public-policy-and-safety") {
+		return [
+			{ name: "The Community Guide", role: "Population-intervention evidence anchor" },
+			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. prevention guidance anchor" },
+			{ name: "Cochrane / Campbell Collaboration", role: "Independent policy and intervention review anchor" }
 		];
 	}
 	return [
@@ -26423,7 +26436,8 @@ const rawClaims: SeedClaim[] = [
 			}
 		]
 	},
-	...july2026ExpansionClaims
+	...july2026ExpansionClaims,
+	...august2026ExpansionClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);

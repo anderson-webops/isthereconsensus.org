@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
+import { defaultTopics } from "../src/data/topics.js";
 import { Claim } from "../src/models/schemas/Claim.js";
 import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "../src/models/schemas/ClaimSource.js";
 
@@ -54,6 +55,77 @@ const july2026ExpansionSlugs = [
 	"is-evolution-entirely-random",
 	"are-socially-defined-human-racial-groups-discrete-biological-subspecies"
 ];
+
+const august2026ExpansionSlugs = [
+	"do-statins-cause-dementia-or-lasting-cognitive-decline",
+	"does-the-newborn-vitamin-k-injection-prevent-dangerous-bleeding-and-is-it-safe",
+	"does-fecal-microbiota-transplantation-work-for-recurrent-c-difficile-infection",
+	"do-simple-febrile-seizures-usually-cause-brain-damage-or-lasting-developmental-problems",
+	"do-routine-general-health-checks-reduce-deaths-in-otherwise-healthy-adults",
+	"is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+	"did-global-warming-stop-after-1998",
+	"does-human-caused-climate-change-reduce-crop-yields-and-threaten-food-security",
+	"does-thawing-permafrost-amplify-warming-and-does-it-make-runaway-warming-inevitable",
+	"is-human-caused-climate-change-worsening-pollen-seasons-in-north-america",
+	"does-eating-breakfast-cause-weight-loss-or-boost-metabolism",
+	"do-probiotics-prevent-antibiotic-associated-diarrhea",
+	"do-vitamin-d-supplements-prevent-fractures-or-falls-in-generally-healthy-adults",
+	"does-msg-cause-headaches-or-serious-health-effects-at-typical-dietary-exposure",
+	"can-an-alkaline-diet-change-blood-ph-or-treat-cancer",
+	"can-polygraph-tests-reliably-detect-lies",
+	"does-single-session-psychological-debriefing-prevent-ptsd-after-trauma",
+	"do-commercial-brain-training-games-produce-broad-lasting-cognitive-improvements",
+	"is-sexual-orientation-conversion-therapy-effective-and-safe",
+	"is-neurofeedback-an-established-effective-treatment-for-adhd",
+	"does-private-umbilical-cord-blood-banking-benefit-most-families",
+	"does-pgt-a-improve-cumulative-live-birth-rates-for-most-ivf-patients",
+	"does-tumor-genomic-sequencing-guarantee-an-effective-matched-cancer-therapy",
+	"are-polygenic-embryo-screening-scores-clinically-proven-to-improve-childrens-health",
+	"can-blood-based-tumor-dna-testing-replace-tissue-biopsy-for-most-cancers",
+	"do-publicized-sobriety-checkpoints-reduce-alcohol-related-crashes-and-deaths",
+	"does-comprehensive-sexuality-education-increase-teen-sexual-activity",
+	"do-school-based-anti-bullying-programs-reduce-bullying",
+	"does-secure-firearm-storage-reduce-youth-firearm-injury-and-suicide",
+	"do-smoke-free-indoor-laws-reduce-heart-attacks-and-other-cardiovascular-events"
+];
+
+const titleStopWords = new Set([
+	"a",
+	"an",
+	"and",
+	"are",
+	"can",
+	"do",
+	"does",
+	"for",
+	"in",
+	"is",
+	"most",
+	"of",
+	"or",
+	"the",
+	"to",
+	"with"
+]);
+
+function titleTokens(title: string) {
+	return new Set(
+		title
+			.toLowerCase()
+			.replaceAll(/[^a-z0-9]+/g, " ")
+			.trim()
+			.split(/\s+/)
+			.filter(token => token && !titleStopWords.has(token))
+	);
+}
+
+function titleSimilarity(left: string, right: string) {
+	const leftTokens = titleTokens(left);
+	const rightTokens = titleTokens(right);
+	const intersection = [...leftTokens].filter(token => rightTokens.has(token)).length;
+	const union = new Set([...leftTokens, ...rightTokens]).size;
+	return union === 0 ? 0 : intersection / union;
+}
 
 function primarySourceLink(source: (typeof defaultClaims)[number]["sources"][number]) {
 	return source.url || source.doi || source.pmid || source.pmcid || "";
@@ -189,6 +261,144 @@ describe("default claim seed quality", () => {
 				`${claim.slug} needs a synthesis or institutional decision source`
 			);
 		}
+	});
+
+	it("publishes 30 genuinely new August 2026 reviews beyond the 251-claim July baseline", () => {
+		const expansionSlugSet = new Set(august2026ExpansionSlugs);
+		const expansionClaims = august2026ExpansionSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing August 2026 expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 30);
+		assert.equal(expansionClaims.length, 30);
+		assert.equal(defaultClaims.length, 281, "The August milestone must extend the 251-claim baseline to 281");
+		assert.equal(
+			defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug)).length,
+			251,
+			"The pre-existing library must remain distinct from the 30 new August reviews"
+		);
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"climate-and-environment": 5,
+				"genetics-and-biotechnology": 5,
+				"health-and-medicine": 5,
+				"neuroscience-and-psychology": 5,
+				"nutrition-and-diet": 5,
+				"public-policy-and-safety": 5
+			}
+		);
+
+		assert.equal(defaultTopics.length, 14);
+		const policyTopic = defaultTopics.find(topic => topic.slug === "public-policy-and-safety");
+		assert.ok(policyTopic, "The new policy reviews need a visible topic directory");
+		assert.equal(policyTopic.order, 14);
+
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-18T12:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-18T12:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(
+				claim.sources.some(source => source.isAnchor),
+				`${claim.slug} needs a visible anchor source`
+			);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+		}
+	});
+
+	it("keeps the August expansion distinct from pre-existing claim titles", () => {
+		const expansionSlugSet = new Set(august2026ExpansionSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`August claim "${claim.title}" is too similar to pre-existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("keeps the August expansion's contested conclusions inside their evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing August expansion claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		const statins = visibleClaimText("do-statins-cause-dementia-or-lasting-cognitive-decline");
+		assert.match(statins, /observational/i);
+		assert.match(statins, /does not prove|not prove/i);
+		assert.match(statins, /reversible/i);
+
+		const fecalTransplant = visibleClaimText(
+			"does-fecal-microbiota-transplantation-work-for-recurrent-c-difficile-infection"
+		);
+		assert.match(fecalTransplant, /screen/i);
+		assert.match(fecalTransplant, /immunocomprom/i);
+		assert.match(fecalTransplant, /transmi/i);
+
+		const pgtA = visibleClaimText("does-pgt-a-improve-cumulative-live-birth-rates-for-most-ivf-patients");
+		assert.match(pgtA, /cumulative/i);
+		assert.match(pgtA, /per.transfer|per.retrieval/i);
+		assert.match(pgtA, /mosaic/i);
+
+		const polygenicEmbryos = visibleClaimText(
+			"are-polygenic-embryo-screening-scores-clinically-proven-to-improve-childrens-health"
+		);
+		assert.match(polygenicEmbryos, /no clinical/i);
+		assert.match(polygenicEmbryos, /ancestry/i);
+		assert.match(polygenicEmbryos, /unproven/i);
+
+		const firearmStorage = visibleClaimText(
+			"does-secure-firearm-storage-reduce-youth-firearm-injury-and-suicide"
+		);
+		assert.match(firearmStorage, /observational/i);
+		assert.match(firearmStorage, /randomized/i);
+
+		const polygraph = visibleClaimText("can-polygraph-tests-reliably-detect-lies");
+		assert.match(polygraph, /screening/i);
+		assert.match(polygraph, /false positive/i);
+
+		const neurofeedback = visibleClaimText("is-neurofeedback-an-established-effective-treatment-for-adhd");
+		assert.match(neurofeedback, /blinded/i);
+		assert.match(neurofeedback, /no meaningful overall/i);
+
+		const sexEducation = visibleClaimText(
+			"does-comprehensive-sexuality-education-increase-teen-sexual-activity"
+		);
+		assert.match(sexEducation, /does not generally/i);
+		assert.match(sexEducation, /vary|variation/i);
 	});
 
 	it("keeps the expansion's contested claims inside their evidence boundaries", () => {

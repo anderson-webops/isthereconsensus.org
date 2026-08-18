@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import { getTopicGuide } from "../src/data/topicGuides.js";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(testDir, "..", "src/pages/consensus/index.vue"), "utf8");
@@ -44,6 +45,14 @@ describe("consensus directory metadata", () => {
 		assert.match(source, /interleaveClaimsByTopic/);
 		assert.match(source, /filteredClaims\.value\.length/);
 		assert.match(source, /const claimsPageSize = 12/);
+	});
+
+	it("surfaces the new public-policy reviews with a claim-specific directory guide", () => {
+		const policyGuide = getTopicGuide("public-policy-and-safety");
+		assert.equal(policyGuide.slug, "public-policy-and-safety");
+		assert.match(policyGuide.consensusLabel, /Strong evidence/);
+		assert.match(policyGuide.snapshot, /legal rights, costs, fairness/);
+		assert.match(source, /"public-policy-and-safety"/);
 	});
 
 	it("puts reviewed claims before a compact, count-labeled topic disclosure", () => {
