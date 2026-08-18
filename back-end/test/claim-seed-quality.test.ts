@@ -149,6 +149,59 @@ const august2026EncyclopediaTrancheTwoSlugs = [
 	"are-tree-plantations-equivalent-to-natural-forests-for-biodiversity-and-carbon-storage"
 ];
 
+const august2026EncyclopediaTrancheThreeSlugs = [
+	"does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
+	"can-modern-heat-pumps-work-efficiently-in-cold-climates",
+	"can-short-duration-batteries-by-themselves-cover-every-grid-reliability-need",
+	"can-lithium-ion-batteries-be-recycled-and-their-materials-recovered",
+	"does-clean-energy-mineral-mining-have-environmental-and-social-costs",
+	"is-green-hydrogen-the-most-efficient-choice-for-every-energy-use",
+	"can-carbon-capture-reduce-facility-emissions-without-eliminating-them",
+	"is-direct-air-capture-already-operating-at-climate-relevant-scale",
+	"do-energy-efficiency-gains-usually-survive-the-rebound-effect",
+	"does-expanding-transmission-and-interconnection-improve-grid-reliability-and-decarbonization",
+	"did-synthetic-nitrogen-fertilizer-increase-crop-yields-and-nitrogen-pollution",
+	"does-agricultural-antibiotic-use-contribute-to-antimicrobial-resistance",
+	"does-organic-farming-generally-trade-lower-yields-for-higher-on-farm-biodiversity",
+	"does-no-till-farming-reliably-store-large-amounts-of-additional-soil-carbon",
+	"do-cover-crops-improve-soil-and-reduce-nitrate-losses-without-always-increasing-yields",
+	"do-diverse-crop-rotations-improve-yields-and-ecosystem-services-compared-with-monoculture",
+	"can-integrated-pest-management-reduce-pesticide-use-without-sacrificing-crop-yields",
+	"is-regenerative-agriculture-one-standardized-uniformly-proven-farming-system",
+	"are-food-miles-usually-the-largest-part-of-a-foods-greenhouse-gas-footprint",
+	"does-excess-fertilizer-runoff-cause-eutrophication-and-coastal-dead-zones",
+	"is-ocean-heat-content-increasing-because-of-human-caused-warming",
+	"is-the-global-ocean-losing-oxygen-as-it-warms",
+	"does-overfishing-deplete-fish-stocks-and-can-effective-management-rebuild-them",
+	"does-most-ocean-plastic-come-from-land-while-fishing-gear-remains-important",
+	"does-plastic-pollution-harm-marine-wildlife",
+	"are-microplastics-widespread-in-seafood-while-human-health-effects-remain-uncertain",
+	"do-mangroves-salt-marshes-and-seagrasses-store-carbon-and-protect-coasts",
+	"is-deep-sea-mining-environmentally-harmless",
+	"is-an-abrupt-amoc-collapse-this-century-certain",
+	"is-ocean-based-carbon-dioxide-removal-ready-for-safe-large-scale-deployment",
+	"are-atoms-physically-real-rather-than-only-mathematical-conveniences",
+	"does-gps-require-corrections-predicted-by-relativity",
+	"can-a-perpetual-motion-machine-produce-net-energy-indefinitely",
+	"does-quantum-entanglement-allow-faster-than-light-messaging",
+	"do-microwave-ovens-make-food-radioactive",
+	"is-radiation-risk-determined-by-whether-a-source-is-natural-or-artificial",
+	"is-old-window-glass-slowly-flowing-downward-at-room-temperature",
+	"has-room-temperature-superconductivity-at-ordinary-pressure-been-independently-confirmed",
+	"has-cold-fusion-become-a-reproducible-energy-source",
+	"has-fusion-ignition-already-produced-commercial-net-electricity",
+	"do-modest-minimum-wage-increases-always-cause-large-job-losses",
+	"does-rent-control-help-covered-tenants-without-affecting-housing-supply-or-mobility",
+	"does-adding-housing-supply-reduce-rents-or-rent-growth-across-a-city",
+	"do-cash-transfers-make-low-income-recipients-spend-more-on-alcohol-or-tobacco",
+	"do-unconditional-cash-transfers-reduce-poverty-and-improve-well-being",
+	"does-immigration-substantially-lower-wages-and-employment-for-native-born-workers-overall",
+	"does-international-trade-create-broad-gains-while-imposing-concentrated-local-losses",
+	"does-the-earned-income-tax-credit-reduce-poverty-and-increase-employment",
+	"does-paid-parental-leave-improve-parent-and-infant-health",
+	"does-basic-income-make-most-recipients-stop-working"
+];
+
 const titleStopWords = new Set([
 	"a",
 	"an",
@@ -492,6 +545,144 @@ describe("default claim seed quality", () => {
 				`${claim.slug} needs a synthesis or institutional decision source`
 			);
 		}
+	});
+
+	it("adds a 50-review third encyclopedia tranche across five new fields", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheThreeSlugs);
+		const expansionClaims = august2026EncyclopediaTrancheThreeSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing third encyclopedia expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 50);
+		assert.equal(expansionClaims.length, 50);
+		assert.ok(defaultClaims.length >= 385, "The third encyclopedia tranche must bring the library to 385 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"agriculture-and-food-systems": 10,
+				"economics-and-social-policy": 10,
+				"energy-and-infrastructure": 10,
+				"oceans-and-marine-science": 10,
+				"physics-and-chemistry": 10
+			}
+		);
+
+		const newTopicSlugs = [
+			"agriculture-and-food-systems",
+			"economics-and-social-policy",
+			"energy-and-infrastructure",
+			"oceans-and-marine-science",
+			"physics-and-chemistry"
+		];
+		assert.ok(defaultTopics.length >= 26, "The third encyclopedia tranche must bring the directory to 26 topics");
+		for (const topicSlug of newTopicSlugs) {
+			assert.ok(defaultTopics.some(topic => topic.slug === topicSlug), `Missing topic ${topicSlug}`);
+		}
+
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-18T22:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-18T22:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(claim.sources.some(source => source.isAnchor), `${claim.slug} needs a visible anchor source`);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+			assert.ok(
+				claim.sources.every(source => source.citationCheckedAt === "2026-08-18T22:00:00.000Z"),
+				`${claim.slug} must record the tranche citation review`
+			);
+			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
+			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
+			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+		}
+	});
+
+	it("keeps the third encyclopedia tranche distinct from prior claim titles", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheThreeSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Third-tranche claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the third encyclopedia tranche's key evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing third-tranche claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions
+			].join(" ");
+		}
+
+		const gas = visibleClaimText(
+			"does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage"
+		);
+		assert.match(gas, /usually, but not automatically/i);
+		assert.match(gas, /neither fuel is low-carbon/i);
+		assert.match(gas, /time horizon/i);
+
+		const noTill = visibleClaimText(
+			"does-no-till-farming-reliably-store-large-amounts-of-additional-soil-carbon"
+		);
+		assert.match(noTill, /whole-profile/i);
+		assert.match(noTill, /redistribut/i);
+		assert.match(noTill, /erosion/i);
+
+		const microplastics = visibleClaimText(
+			"are-microplastics-widespread-in-seafood-while-human-health-effects-remain-uncertain"
+		);
+		assert.match(microplastics, /detection is not the same/i);
+		assert.match(microplastics, /human-health effects remain|does not establish the size of any health risk/i);
+
+		const superconductivity = visibleClaimText(
+			"has-room-temperature-superconductivity-at-ordinary-pressure-been-independently-confirmed"
+		);
+		assert.match(superconductivity, /as of the August 2026 evidence cutoff/i);
+		assert.match(superconductivity, /ordinary pressure/i);
+		assert.match(superconductivity, /zero (?:electrical )?resistance/i);
+		assert.match(superconductivity, /magnetic/i);
+
+		const cash = visibleClaimText(
+			"do-cash-transfers-make-low-income-recipients-spend-more-on-alcohol-or-tobacco"
+		);
+		assert.match(cash, /generally no/i);
+		assert.match(cash, /population-level claim/i);
+		assert.match(cash, /does not mean no individual ever/i);
+
+		const basicIncome = visibleClaimText("does-basic-income-make-most-recipients-stop-working");
+		assert.match(basicIncome, /no trial fully reproduces/i);
+		assert.match(basicIncome, /permanent.*national/i);
+		assert.doesNotMatch(basicIncome, /no effect on work/i);
 	});
 
 	it("keeps the second encyclopedia tranche distinct from prior claim titles", () => {

@@ -761,6 +761,196 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"energy-and-infrastructure": {
+		slug: "energy-and-infrastructure",
+		consensusScore: 87,
+		consensusLabel: "Strong physical foundations, system-dependent choices",
+		snapshot:
+			"Energy claims become clearer when the full system boundary is visible: extraction, conversion losses, lifecycle emissions, networks, reliability services, local impacts, and time all matter more than a technology label.",
+		stableCore: [
+			"No energy technology is impact-free, and lifecycle comparison is more informative than counting only visible emissions or materials.",
+			"Reliable low-emission systems use portfolios of generation, grids, storage, demand flexibility, efficiency, and firm resources rather than one universal device.",
+			"Laboratory feasibility, facility performance, commercial scale, and economy-wide deployment are distinct evidence milestones."
+		],
+		openQuestions: [
+			"Which regional portfolios best balance reliability, cost, speed, land, materials, resilience, and community consent?",
+			"How quickly can emerging removal, hydrogen, storage, capture, recycling, and grid technologies improve under verified operation?"
+		],
+		whatWouldChangeMinds: [
+			"Transparent operating and lifecycle data that reverse current comparisons under consistent system boundaries.",
+			"Reliable commercial demonstrations that satisfy services or scales currently requiring a broader portfolio."
+		],
+		commonMisreads: [
+			"A lower-emission option is not necessarily zero-emission or best for every location.",
+			"A power rating, capture percentage, or target-level gain may omit duration, upstream emissions, or facility energy."
+		],
+		starterQuestions: [
+			"What is the complete lifecycle and what service must the system provide?",
+			"Is this result a model, a laboratory demonstration, a commercial plant, or verified system-scale performance?"
+		],
+		evidenceTrail: [
+			{
+				title: "IPCC, IEA, DOE, and national-laboratory assessments",
+				note: "Best for system boundaries, deployment status, and cross-technology comparisons."
+			},
+			{
+				title: "Lifecycle studies and operating data",
+				note: "Needed to distinguish nameplate claims from full-chain real-world performance."
+			}
+		]
+	},
+	"agriculture-and-food-systems": {
+		slug: "agriculture-and-food-systems",
+		consensusScore: 84,
+		consensusLabel: "Strong mechanisms, management-dependent outcomes",
+		snapshot:
+			"Food-system evidence rarely supports one farming label as universally superior. Yields, land, soil, water, nutrients, biodiversity, pollution, labor, nutrition, and resilience must be compared at compatible scales.",
+		stableCore: [
+			"Modern inputs and practices can raise production while also creating pollution, resistance, or ecological tradeoffs.",
+			"Diversification, cover, monitoring, and nutrient precision often improve outcomes, but local climate, soils, crops, and management control effect size.",
+			"Per-hectare, per-unit-food, watershed, and whole-system comparisons can answer different questions."
+		],
+		openQuestions: [
+			"Which practice bundles improve production, ecosystems, and livelihoods without shifting land use or pollution elsewhere?",
+			"How can policy reward measured outcomes while remaining practical for farmers and diverse regions?"
+		],
+		whatWouldChangeMinds: [
+			"Long-term systems trials that reverse current yield, nutrient, biodiversity, or resistance findings under matched baselines.",
+			"Whole-food-system evidence showing that accepted tradeoffs disappear once land, diets, waste, and markets are included."
+		],
+		commonMisreads: [
+			"A named practice or certification is not a guaranteed environmental outcome.",
+			"More carbon near the soil surface, fewer pesticide kilograms, or shorter transport distance can each be incomplete metrics."
+		],
+		starterQuestions: [
+			"Is the outcome measured per hectare, per unit of food, per farm, or across the whole supply chain?",
+			"Which baseline, co-practices, climate, soil, and time horizon were actually studied?"
+		],
+		evidenceTrail: [
+			{
+				title: "FAO, WHO, and agricultural meta-analyses",
+				note: "Best for global nutrient, resistance, food-system, and practice evidence."
+			},
+			{
+				title: "Long-term field and watershed studies",
+				note: "Necessary for soil change, yield stability, pollution, and management context."
+			}
+		]
+	},
+	"oceans-and-marine-science": {
+		slug: "oceans-and-marine-science",
+		consensusScore: 89,
+		consensusLabel: "Strong change signals, uneven observation and recovery",
+		snapshot:
+			"The ocean stores heat, carbon, oxygen, life, and pollution across vast depths and timescales. Global trends can be strong even when observations are sparse and regional circulation creates large year-to-year differences.",
+		stableCore: [
+			"Human warming is increasing ocean heat, changing chemistry, and contributing to oxygen loss and ecological stress.",
+			"Overfishing and plastic pollution cause measurable harm, while effective management and prevention can improve outcomes.",
+			"Large marine interventions require unusually careful monitoring because effects can move, persist, and cross borders."
+		],
+		openQuestions: [
+			"How will warming, circulation, deoxygenation, acidification, exploitation, and pollution combine in particular ecosystems?",
+			"Which restoration, fisheries, plastics, mining, and carbon-removal rules remain effective at ocean scale?"
+		],
+		whatWouldChangeMinds: [
+			"Independent global observing systems that contradict established heat, oxygen, stock, or pollution trends.",
+			"Large controlled interventions demonstrating recovery or removal without the ecological and accounting risks now expected."
+		],
+		commonMisreads: [
+			"One region or ocean compartment does not establish a fixed global source share or trend.",
+			"Detecting a pollutant, forecasting circulation weakening, and proving a health effect or abrupt collapse are different claims."
+		],
+		starterQuestions: [
+			"Is this evidence about global input, local concentration, organism exposure, or population harm?",
+			"What depth, region, duration, and observing system define the trend?"
+		],
+		evidenceTrail: [
+			{
+				title: "IPCC, FAO, UNEP, NOAA, and National Academies assessments",
+				note: "Best broad anchors for climate, fisheries, pollution, and intervention readiness."
+			},
+			{
+				title: "Long-term observations and ecological syntheses",
+				note: "Needed for regional variation, recovery, exposure, and causal pathways."
+			}
+		]
+	},
+	"physics-and-chemistry": {
+		slug: "physics-and-chemistry",
+		consensusScore: 95,
+		consensusLabel: "Exceptionally strong foundations, demanding discovery standards",
+		snapshot:
+			"Physics and chemistry often allow unusually precise tests. Persistent myths usually confuse a technical term or system boundary, while frontier claims fail when one dramatic signal is mistaken for a complete independent replication.",
+		stableCore: [
+			"Atomic structure, thermodynamics, relativity, quantum correlations, and radiation interactions make quantitative predictions tested across technologies.",
+			"A discovery requires the full diagnostic signature, controlled energy or matter accounting, and independent reproduction—not a video, one curve, or one laboratory.",
+			"Scientific milestones can be genuine and important without already constituting a practical commercial technology."
+		],
+		openQuestions: [
+			"Which materials and controlled quantum systems can convert strong foundational physics into scalable technologies?",
+			"What new evidence would reveal a real boundary or extension of theories that already work with extraordinary precision?"
+		],
+		whatWouldChangeMinds: [
+			"Transparent, independently reproduced measurements that violate a precise established prediction while closing ordinary artifacts.",
+			"A replacement theory that predicts both prior successes and the new result more accurately."
+		],
+		commonMisreads: [
+			"Quantum, radiation, energy gain, levitation, and amorphous each have technical meanings that differ from popular shorthand.",
+			"Target-level gain, correlation, detection, or an unexplained anomaly is not automatically a power plant, message, disease, or new force."
+		],
+		starterQuestions: [
+			"What complete signal should exist if the claim is true, and was every part measured?",
+			"Was the system boundary closed and has an independent laboratory reproduced the result?"
+		],
+		evidenceTrail: [
+			{
+				title: "Standards institutes, national laboratories, and major technical reviews",
+				note: "Best for operational definitions, measurement, and engineering boundaries."
+			},
+			{
+				title: "Replication studies and formal retraction records",
+				note: "Essential for fast-moving extraordinary materials and energy claims."
+			}
+		]
+	},
+	"economics-and-social-policy": {
+		slug: "economics-and-social-policy",
+		consensusScore: 81,
+		consensusLabel: "Broad empirical patterns, distribution-sensitive effects",
+		snapshot:
+			"Economic policies rarely affect one number or one group. Strong reviews separate average effects from distribution, short-run adjustment from long-run equilibrium, and empirical estimates from ethical choices.",
+		stableCore: [
+			"Minimum wages, housing rules, trade, migration, taxes, and transfers change several behavioral and market margins at once.",
+			"An aggregate gain can coexist with severe concentrated losses, and a benefit for incumbents can impose costs on future participants.",
+			"Quasi-experiments, administrative data, randomized programs, meta-analyses, and structural models answer complementary but bounded questions."
+		],
+		openQuestions: [
+			"Which designs preserve documented benefits while reducing concentrated costs, exclusion, administrative burden, and weak take-up?",
+			"How well do local or temporary estimates generalize to permanent national programs with taxes, prices, migration, and political feedback?"
+		],
+		whatWouldChangeMinds: [
+			"Design-robust syntheses reversing current average or distributional effects across multiple settings.",
+			"Long-term population evidence showing pilot and natural-experiment conclusions fail once financing and economy-wide responses emerge."
+		],
+		commonMisreads: [
+			"A small average is not exactly zero and can hide meaningful subgroup effects.",
+			"Evidence about consequences can inform policy without deciding fairness, rights, or acceptable tradeoffs by itself."
+		],
+		starterQuestions: [
+			"Who gains, who loses, compared with what alternative, and over what time horizon?",
+			"Is the estimate local and partial-equilibrium, or does it include taxes, prices, supply, migration, and other economy-wide responses?"
+		],
+		evidenceTrail: [
+			{
+				title: "National Academies, Cochrane, and institutional evidence reviews",
+				note: "Best for broad policy synthesis and explicit evidence limits."
+			},
+			{
+				title: "Administrative causal studies and meta-analyses",
+				note: "Useful for effect size, heterogeneity, and adjustment across settings."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,
