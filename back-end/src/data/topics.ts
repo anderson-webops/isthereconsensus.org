@@ -89,5 +89,12 @@ export const defaultTopics = [
 		description: "Anything that does not fit cleanly elsewhere.",
 		order: 6,
 		accent: "#7b6f69"
+	},
+	{
+		title: "Public policy & safety",
+		slug: "public-policy-and-safety",
+		description: "Evidence on public interventions intended to reduce preventable harm, including their limits and tradeoffs.",
+		order: 14,
+		accent: "#76536f"
 	}
 ];

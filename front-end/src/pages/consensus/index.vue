@@ -31,7 +31,8 @@ const starterOrder = [
 	"biology-and-evolution",
 	"nutrition-and-diet",
 	"neuroscience-and-psychology",
-	"genetics-and-biotechnology"
+	"genetics-and-biotechnology",
+	"public-policy-and-safety"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const fallbackTopics = computed<Topic[]>(() =>
