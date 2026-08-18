@@ -123,6 +123,12 @@ function inferEvidenceCertainty(confidenceScore: number): ClaimEvidenceCertainty
 }
 
 function defaultSearchDatabases(topicSlug: string) {
+	if (topicSlug === "active-debates") {
+		return ["Web of Science", "PubMed and trial registries", "Scopus", "OpenAlex and Crossref"];
+	}
+	if (topicSlug === "biology-and-evolution") {
+		return ["Web of Science", "PubMed", "OpenAlex and Crossref", "Genomic, phylogenetic, and natural-history repositories"];
+	}
 	if (topicSlug === "consensus-foundations") {
 		return ["Web of Science", "PsycINFO", "PubMed", "OpenAlex and Crossref"];
 	}
@@ -199,6 +205,12 @@ function defaultSurveillanceCadenceDays(seed: SeedClaim) {
 }
 
 function defaultIntegrityMonitors(topicSlug: string) {
+	if (topicSlug === "active-debates") {
+		return ["Crossref update metadata", "PubMed and trial-registry linking", "OpenAlex updates and editorial frontier audit"];
+	}
+	if (topicSlug === "biology-and-evolution") {
+		return ["Crossref update metadata", "PubMed and OpenAlex linking", "Genomic-data and phylogenetic correction audit"];
+	}
 	if (topicSlug === "consensus-foundations" || topicSlug === "bias-incentives") {
 		return ["Crossref update metadata", "Retraction Watch", "PubPeer and editorial source audit"];
 	}
@@ -235,6 +247,12 @@ function defaultIntegrityMonitors(topicSlug: string) {
 }
 
 function defaultGuidelineMonitors(topicSlug: string) {
+	if (topicSlug === "active-debates") {
+		return ["National Academies frontier assessments", "WHO and major regulator updates", "IPCC and field-specific living reviews"];
+	}
+	if (topicSlug === "biology-and-evolution") {
+		return ["Major evolutionary-biology reviews", "National Academies science-education assessments", "Genomics and taxonomy synthesis updates"];
+	}
 	if (topicSlug === "consensus-foundations") {
 		return ["National Academies methods reports", "ASA and major statistical-society statements", "Cochrane methods updates"];
 	}
@@ -347,6 +365,20 @@ function defaultSurveillanceSpec(seed: SeedClaim): IClaimSurveillanceSpec {
 }
 
 function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnchor[] {
+	if (topicSlug === "active-debates") {
+		return [
+			{ name: "National Academies", role: "Independent frontier, technology-readiness, and governance assessment anchor" },
+			{ name: "WHO / major public regulators", role: "Human-health, safety, and phased-evaluation anchor where applicable" },
+			{ name: "Current systematic reviews and pivotal trials", role: "Evidence-maturity and live-disagreement anchor" }
+		];
+	}
+	if (topicSlug === "biology-and-evolution") {
+		return [
+			{ name: "Major evolutionary-biology reviews", role: "Population, genomic, phylogenetic, and experimental synthesis anchor" },
+			{ name: "National Academies", role: "Independent evolution and science-education assessment anchor" },
+			{ name: "Curated genomic and natural-history repositories", role: "Primary comparative and observational evidence anchor" }
+		];
+	}
 	if (topicSlug === "consensus-foundations") {
 		return [
 			{ name: "National Academies", role: "Scientific methods, replication, and evidence-synthesis anchor" },
@@ -738,6 +770,20 @@ function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 }
 
 function defaultInclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "active-debates") {
+		return [
+			"Prioritize current systematic reviews, pivotal controlled studies, independently measured operating data, and major assessments that state the evidence cutoff and maturity stage.",
+			"Separate proof of mechanism, efficacy under selected conditions, real-world effectiveness, safety, scalability, affordability, governance, and net outcome rather than combining them into one verdict.",
+			"Include credible competing interpretations and specify the exact unresolved quantity, subgroup, timescale, system boundary, or decision threshold."
+		];
+	}
+	if (seed.topicSlug === "biology-and-evolution") {
+		return [
+			"Prioritize converging population-genetic, genomic, phylogenetic, experimental-evolution, paleontological, and field evidence appropriate to the timescale of the claim.",
+			"Define the evolutionary mechanism, heritable unit, population, environment, comparison, and timescale before inferring selection, drift, mutation, gene flow, or speciation.",
+			"Use major reviews to connect examples across taxa while preserving the difference between an observed process and its general frequency or importance."
+		];
+	}
 	if (seed.topicSlug === "consensus-foundations") {
 		return [
 			"Use major methods statements, statistical guidance, systematic evaluations, and worked evidence examples that define the inferential question and assumptions.",
@@ -823,6 +869,20 @@ function defaultInclusionRules(seed: SeedClaim) {
 }
 
 function defaultExclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "active-debates") {
+		return [
+			"Do not turn a mechanism, biomarker, surrogate endpoint, cage experiment, pilot facility, modeled scenario, or vendor target into proven patient, population, environmental, or commercial benefit.",
+			"Exclude forecasts and promotional claims that omit comparator, lifecycle or clinical boundary, external validation, harms, uncertainty, and the maturity milestone actually reached.",
+			"Do not present absence of a definitive answer as equal support for every position; show which intermediate findings are established and which decision-critical link remains open."
+		];
+	}
+	if (seed.topicSlug === "biology-and-evolution") {
+		return [
+			"Do not infer adaptation from existence, complexity, persistence, function, or a plausible just-so story without comparative or fitness evidence.",
+			"Exclude claims that confuse mutation bias with foresight, individual acclimation with inherited population change, or partial reproductive isolation with one universal species boundary.",
+			"Do not generalize one laboratory lineage, taxon, gene, fossil, or timescale into a universal rate or mechanism without converging evidence."
+		];
+	}
 	if (seed.topicSlug === "consensus-foundations") {
 		return [
 			"Do not turn a threshold, checklist score, evidence hierarchy, or single design label into an automatic truth or importance verdict.",
@@ -908,6 +968,12 @@ function defaultExclusionRules(seed: SeedClaim) {
 }
 
 function defaultAppraisalTools(topicSlug: string) {
+	if (topicSlug === "active-debates") {
+		return ["Evidence-maturity and technology-readiness ladder", "Surrogate-to-patient-or-population directness audit", "Competing-hypothesis, lifecycle-boundary, and external-validity check"];
+	}
+	if (topicSlug === "biology-and-evolution") {
+		return ["Selection-drift-mutation-gene-flow mechanism audit", "Phylogenetic and population-structure check", "Cross-taxon, timescale, and experimental-field triangulation"];
+	}
 	if (topicSlug === "consensus-foundations") {
 		return ["Estimand, assumptions, and uncertainty audit", "Causal-identification and external-validity check", "Cross-method triangulation map"];
 	}
@@ -950,6 +1016,19 @@ function defaultAppraisalTools(topicSlug: string) {
 
 function defaultMisconceptionTags(seed: SeedClaim) {
 	const tags = new Set<string>();
+	if (seed.topicSlug === "active-debates") {
+		tags.add("uncertainty-isnt-ignorance");
+		tags.add("mechanism-is-not-real-world-effect");
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("preprints-are-preliminary");
+		tags.add("hazard-is-not-the-same-as-risk");
+	}
+	if (seed.topicSlug === "biology-and-evolution") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("cherry-picking-distorts-the-evidence");
+		tags.add("uncertainty-isnt-ignorance");
+		tags.add("mechanism-is-not-real-world-effect");
+	}
 
 	if (seed.topicSlug === "health-and-medicine") {
 		tags.add("one-study-doesnt-overturn-evidence");

@@ -265,6 +265,64 @@ const august2026EncyclopediaTrancheFourSlugs = [
 	"does-minimum-unit-pricing-reduce-alcohol-consumption-and-harm"
 ];
 
+const august2026EncyclopediaTrancheFiveSlugs = [
+	"does-retrieval-practice-improve-long-term-learning",
+	"does-spacing-study-sessions-improve-retention",
+	"does-matching-instruction-to-a-students-learning-style-improve-achievement",
+	"do-brief-growth-mindset-interventions-produce-large-reliable-academic-gains",
+	"does-intensive-tutoring-improve-student-achievement",
+	"do-universal-school-social-emotional-learning-programs-improve-outcomes",
+	"does-active-learning-outperform-traditional-lecture-in-undergraduate-stem",
+	"does-high-quality-preschool-improve-later-educational-outcomes",
+	"does-giving-every-student-a-laptop-reliably-improve-learning",
+	"does-formative-assessment-improve-k12-learning",
+	"can-consumer-sleep-trackers-diagnose-sleep-disorders",
+	"can-a-short-daytime-nap-improve-alertness-and-cognition",
+	"does-regular-exercise-improve-sleep-quality",
+	"does-white-noise-reliably-improve-sleep",
+	"do-weighted-blankets-reliably-treat-insomnia-or-anxiety",
+	"is-mouth-taping-a-proven-safe-treatment-for-snoring-or-sleep-apnea",
+	"do-magnesium-supplements-reliably-improve-insomnia",
+	"is-cannabis-an-established-treatment-for-chronic-insomnia",
+	"are-sedating-antihistamines-good-regular-treatments-for-chronic-insomnia",
+	"do-daylight-saving-clock-changes-measurably-affect-health",
+	"does-recreational-running-cause-knee-or-hip-osteoarthritis",
+	"does-exercising-before-breakfast-produce-greater-long-term-fat-loss",
+	"must-resistance-training-sets-reach-failure-to-build-strength-or-muscle",
+	"is-there-a-narrow-post-workout-anabolic-window-for-protein",
+	"is-high-intensity-interval-training-universally-superior-to-moderate-continuous-exercise",
+	"does-cardio-cancel-muscle-gains-from-strength-training",
+	"can-regular-ice-baths-after-lifting-blunt-muscle-growth",
+	"are-smartwatch-calorie-burn-estimates-accurate-enough-to-eat-back",
+	"do-structured-neuromuscular-warm-ups-reduce-youth-sports-injuries",
+	"must-weights-be-heavy-to-build-muscle",
+	"do-scared-straight-prison-visit-programs-prevent-juvenile-offending",
+	"does-education-in-prison-reduce-later-reoffending",
+	"do-adult-drug-courts-reduce-reoffending",
+	"do-face-to-face-restorative-justice-conferences-reduce-repeat-offending-and-help-victims",
+	"does-public-area-cctv-reduce-crime",
+	"do-voluntary-local-gun-buybacks-reduce-firearm-violence",
+	"does-pretrial-detention-influence-later-case-and-life-outcomes",
+	"does-reducing-cash-bail-clearly-increase-crime",
+	"do-focused-deterrence-strategies-reduce-serious-crime",
+	"does-solitary-confinement-harm-mental-health",
+	"can-losing-genes-be-an-adaptive-evolutionary-change",
+	"do-organisms-mutate-because-they-need-a-particular-adaptation",
+	"can-genetic-drift-change-populations-without-natural-selection",
+	"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory",
+	"can-reproductive-isolation-evolve-within-observable-timescales",
+	"does-ultra-processing-harm-health-beyond-a-foods-nutrient-profile",
+	"have-ordinary-microplastic-exposures-been-shown-to-cause-human-disease",
+	"do-anti-amyloid-drugs-provide-a-clinically-meaningful-net-benefit-in-early-alzheimers-disease",
+	"does-long-covid-involve-measurable-biological-abnormalities",
+	"does-psychedelic-microdosing-improve-mood-or-cognition-beyond-placebo",
+	"does-ai-assisted-mammography-improve-screening-outcomes-beyond-detection-and-workload",
+	"can-direct-air-capture-deliver-affordable-large-scale-carbon-removal",
+	"is-cultivated-meat-clearly-lower-impact-at-commercial-scale",
+	"is-stratospheric-aerosol-injection-a-proven-safe-climate-solution",
+	"are-gene-drive-mosquitoes-proven-safe-and-effective-for-malaria-control-at-population-scale"
+];
+
 const titleStopWords = new Set([
 	"a",
 	"an",
@@ -870,6 +928,130 @@ describe("default claim seed quality", () => {
 		);
 		assert.match(pricing, /best evaluated national case|Scotland/i);
 		assert.match(pricing, /transferability|not establish an identical effect/i);
+	});
+
+	it("adds a 55-review fifth encyclopedia tranche that reaches the 500-claim milestone", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheFiveSlugs);
+		const expansionClaims = august2026EncyclopediaTrancheFiveSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing fifth encyclopedia expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 55);
+		assert.equal(expansionClaims.length, 55);
+		assert.ok(defaultClaims.length >= 500, "The fifth encyclopedia tranche must bring the library to 500 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"active-debates": 10,
+				"biology-and-evolution": 5,
+				"crime-and-justice": 10,
+				"education-and-learning": 10,
+				"exercise-and-sports-science": 10,
+				"sleep-and-circadian-health": 10
+			}
+		);
+
+		assert.ok(defaultTopics.length >= 26, "The final milestone must retain the 26-topic directory");
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-19T01:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-19T01:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(claim.sources.some(source => source.isAnchor), `${claim.slug} needs a visible anchor source`);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+			assert.ok(
+				claim.sources.every(source => source.citationCheckedAt === "2026-08-19T01:00:00.000Z"),
+				`${claim.slug} must record the fifth-tranche citation review`
+			);
+			assert.ok(claim.sources.every(source => source.doi && source.url === `https://doi.org/${source.doi}`));
+			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
+			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
+			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+		}
+	});
+
+	it("keeps the fifth encyclopedia tranche distinct from all earlier claim titles", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheFiveSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Fifth-tranche claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the fifth encyclopedia tranche's decision-critical evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing fifth-tranche claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions
+			].join(" ");
+		}
+
+		assert.match(
+			visibleClaimText("does-matching-instruction-to-a-students-learning-style-improve-achievement"),
+			/no good evidence|not.*fixed cognitive type/i
+		);
+		assert.match(visibleClaimText("does-white-noise-reliably-improve-sleep"), /low quality and inconsistent/i);
+		assert.match(
+			visibleClaimText("is-mouth-taping-a-proven-safe-treatment-for-snoring-or-sleep-apnea"),
+			/not.*proven|not establish broad safety/i
+		);
+		assert.match(
+			visibleClaimText("does-recreational-running-cause-knee-or-hip-osteoarthritis"),
+			/has not been shown to cause|does not support a simple wear-and-tear/i
+		);
+		assert.match(visibleClaimText("does-reducing-cash-bail-clearly-increase-crime"), /no general inevitable increase/i);
+		assert.match(
+			visibleClaimText("does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"),
+			/extend rather than replace|does not.*displac/i
+		);
+		assert.match(
+			visibleClaimText("have-ordinary-microplastic-exposures-been-shown-to-cause-human-disease"),
+			/detection is not a diagnosis|detection.*not.*health risk/i
+		);
+		assert.match(
+			visibleClaimText("do-anti-amyloid-drugs-provide-a-clinically-meaningful-net-benefit-in-early-alzheimers-disease"),
+			/modestly slow|not restoration.*cure/i
+		);
+		assert.match(
+			visibleClaimText("is-cultivated-meat-clearly-lower-impact-at-commercial-scale"),
+			/conditional scenarios|commercial.*not established/i
+		);
+		assert.match(
+			visibleClaimText("are-gene-drive-mosquitoes-proven-safe-and-effective-for-malaria-control-at-population-scale"),
+			/cage.*not proof|cage success does not/i
+		);
 	});
 
 	it("keeps the second encyclopedia tranche distinct from prior claim titles", () => {
