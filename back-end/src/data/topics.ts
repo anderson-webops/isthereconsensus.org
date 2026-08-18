@@ -124,5 +124,26 @@ export const defaultTopics = [
 		description: "What research can and cannot establish about deterrence, policing, courts, testimony, and rehabilitation.",
 		order: 18,
 		accent: "#7a5548"
+	},
+	{
+		title: "Astronomy & space",
+		slug: "astronomy-and-space",
+		description: "What observations establish about Earth, the Moon, the universe, and unresolved searches beyond our planet.",
+		order: 19,
+		accent: "#4b6387"
+	},
+	{
+		title: "Earth & geoscience",
+		slug: "earth-and-geoscience",
+		description: "Earth's age, interior, moving plates, natural hazards, and resource myths separated from prediction hype.",
+		order: 20,
+		accent: "#7a633c"
+	},
+	{
+		title: "Ecology & conservation",
+		slug: "ecology-and-conservation",
+		description: "Biodiversity, extinction, ecological pressures, and which conservation actions work under real conditions.",
+		order: 21,
+		accent: "#477058"
 	}
 ];

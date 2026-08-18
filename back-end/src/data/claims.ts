@@ -135,6 +135,15 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "crime-and-justice") {
 		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
 	}
+	if (topicSlug === "astronomy-and-space") {
+		return ["NASA ADS", "OpenAlex", "Crossref", "NASA and ESA mission archives"];
+	}
+	if (topicSlug === "earth-and-geoscience") {
+		return ["GeoRef", "OpenAlex", "Crossref", "U.S. Geological Survey"];
+	}
+	if (topicSlug === "ecology-and-conservation") {
+		return ["Web of Science", "OpenAlex", "Crossref", "IPBES and IUCN assessments"];
+	}
 	if (
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
@@ -172,6 +181,13 @@ function defaultIntegrityMonitors(topicSlug: string) {
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
+	if (
+		topicSlug === "astronomy-and-space"
+		|| topicSlug === "earth-and-geoscience"
+		|| topicSlug === "ecology-and-conservation"
+	) {
+		return ["Crossref update metadata", "OpenAlex work updates", "Editorial institutional watch"];
+	}
 	return ["Crossref update metadata", "Manual institutional watch", "Editorial source audit"];
 }
 
@@ -208,6 +224,15 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "crime-and-justice") {
 		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
+	}
+	if (topicSlug === "astronomy-and-space") {
+		return ["NASA and ESA mission archives", "Particle Data Group reviews", "National Academies decadal surveys"];
+	}
+	if (topicSlug === "earth-and-geoscience") {
+		return ["USGS hazard and monitoring updates", "National Academies reviews", "Major geoscience synthesis updates"];
+	}
+	if (topicSlug === "ecology-and-conservation") {
+		return ["IPBES assessment cycle", "IUCN and CBD updates", "Major conservation synthesis updates"];
 	}
 	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
 }
@@ -330,6 +355,27 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "National Academies", role: "Independent justice-evidence assessment anchor" },
 			{ name: "National Institute of Justice", role: "U.S. criminal-justice research anchor" },
 			{ name: "Campbell Collaboration", role: "Crime and justice intervention-review anchor" }
+		];
+	}
+	if (topicSlug === "astronomy-and-space") {
+		return [
+			{ name: "NASA", role: "Mission, observation, and public evidence archive" },
+			{ name: "European Space Agency", role: "Independent mission and observational anchor" },
+			{ name: "Particle Data Group / National Academies", role: "Field synthesis and frontier-review anchor" }
+		];
+	}
+	if (topicSlug === "earth-and-geoscience") {
+		return [
+			{ name: "U.S. Geological Survey", role: "Measurement, hazards, and geologic evidence anchor" },
+			{ name: "National Academies", role: "Independent geoscience assessment anchor" },
+			{ name: "Major peer-reviewed geoscience reviews", role: "Field synthesis and uncertainty anchor" }
+		];
+	}
+	if (topicSlug === "ecology-and-conservation") {
+		return [
+			{ name: "IPBES", role: "Global biodiversity assessment anchor" },
+			{ name: "International Union for Conservation of Nature", role: "Species status and conservation-practice anchor" },
+			{ name: "Major conservation meta-analyses", role: "Intervention-effectiveness and uncertainty anchor" }
 		];
 	}
 	return [
@@ -604,6 +650,16 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		tags.add("cherry-picking-distorts-the-evidence");
 		tags.add("false-balance-misleads");
 	}
+	if (
+		seed.topicSlug === "astronomy-and-space"
+		|| seed.topicSlug === "earth-and-geoscience"
+		|| seed.topicSlug === "ecology-and-conservation"
+	) {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("cherry-picking-distorts-the-evidence");
+		tags.add("uncertainty-isnt-ignorance");
+		tags.add("false-balance-misleads");
+	}
 
 	const title = seed.title.toLowerCase();
 	if (title.includes("autism") || title.includes("cause")) {
@@ -645,7 +701,11 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					|| seed.topicSlug === "sleep-and-circadian-health"
 					|| seed.topicSlug === "exercise-and-sports-science"
 					? ["Crossref", "PubMed", "Europe PMC"]
-					: ["Crossref", "Editorial review"])
+					: seed.topicSlug === "astronomy-and-space"
+						|| seed.topicSlug === "earth-and-geoscience"
+						|| seed.topicSlug === "ecology-and-conservation"
+						? ["Crossref", "OpenAlex", "Editorial review"]
+						: ["Crossref", "Editorial review"])
 		})),
 		agreementLevel: seed.agreementLevel ?? inferAgreementLevel(seed.consensusBand),
 		evidenceCertainty: seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore),

@@ -647,6 +647,120 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"astronomy-and-space": {
+		slug: "astronomy-and-space",
+		consensusScore: 91,
+		consensusLabel: "Strong observations, open frontiers",
+		snapshot:
+			"Astronomy combines exceptionally stable observations about Earth, the Moon, stars, galaxies, and cosmic history with genuine frontiers such as dark matter's identity and the search for life. An unexplained observation is not automatically evidence for an extraordinary explanation.",
+		stableCore: [
+			"Independent measurements of geometry, motion, light, gravity, and returned material reinforce the field's foundational conclusions.",
+			"The expanding-universe and hot-Big-Bang framework is strongly supported even though early-universe physics and the expansion rate remain active research areas.",
+			"Searches for extraterrestrial life and dark-matter particles are scientifically serious without yet amounting to confirmed detections."
+		],
+		openQuestions: [
+			"What physical process drove the universe's earliest expansion, and why do current expansion-rate measurements disagree?",
+			"What is dark matter made of, and will a credible biosignature or technosignature be found?"
+		],
+		whatWouldChangeMinds: [
+			"Independent observations that repeatedly fail where the current cosmological or gravitational models make precise predictions.",
+			"A life-detection or UAP claim supported by calibrated, shareable data that excludes plausible non-biological or ordinary explanations."
+		],
+		commonMisreads: [
+			"The Big Bang describes an expanding hot early universe, not an explosion from one location into empty space.",
+			"Unidentified means that available data do not identify an object; it does not mean extraterrestrial."
+		],
+		starterQuestions: [
+			"Is this conclusion based on one image, or on several independent kinds of measurement?",
+			"Does the claim distinguish evidence for a phenomenon from identification of its underlying cause?"
+		],
+		evidenceTrail: [
+			{
+				title: "NASA, ESA, and observatory archives",
+				note: "Primary mission data and calibrated observational context."
+			},
+			{
+				title: "Major collaboration papers and field reviews",
+				note: "Best for separating established observations from unsettled interpretation."
+			}
+		]
+	},
+	"earth-and-geoscience": {
+		slug: "earth-and-geoscience",
+		consensusScore: 89,
+		consensusLabel: "Strong foundations, probabilistic hazards",
+		snapshot:
+			"Earth science establishes the planet's age, layered interior, moving plates, and many human influences on geologic systems. Hazard monitoring can materially improve forecasts and warnings, but it rarely provides exact deterministic predictions.",
+		stableCore: [
+			"Radiometric dating, seafloor records, satellite geodesy, seismology, and field geology converge across independent methods.",
+			"Earth's mantle is overwhelmingly solid rock that deforms over long timescales; localized melting produces magma.",
+			"Earthquake probabilities, earthquake early warning, and volcano forecasts answer different questions and have different limits."
+		],
+		openQuestions: [
+			"How can probabilistic hazard forecasts become more local, timely, and useful without implying false precision?",
+			"How will groundwater use, subsurface energy operations, and volcanic unrest interact with local geology over time?"
+		],
+		whatWouldChangeMinds: [
+			"Replicable measurements that contradict radiometric, geodetic, seismic, or stratigraphic evidence across methods.",
+			"Validated precursors that predict specific earthquakes or eruptions prospectively and outperform probability-based baselines."
+		],
+		commonMisreads: [
+			"Slowly flowing solid rock is not a global ocean of liquid magma.",
+			"An average interval between rare eruptions is not a countdown clock."
+		],
+		starterQuestions: [
+			"Is the statement a long-term hazard estimate, a short-term forecast, or an alert after an event has begun?",
+			"Which independent measurement methods support the geologic interpretation?"
+		],
+		evidenceTrail: [
+			{
+				title: "USGS monitoring and assessment pages",
+				note: "Authoritative U.S. observations, definitions, and hazard boundaries."
+			},
+			{
+				title: "Geophysical reviews and global datasets",
+				note: "Useful for mechanisms, uncertainty, and evidence beyond one location."
+			}
+		]
+	},
+	"ecology-and-conservation": {
+		slug: "ecology-and-conservation",
+		consensusScore: 86,
+		consensusLabel: "Strong decline signals, context-dependent remedies",
+		snapshot:
+			"Biodiversity loss is measurable and consequential, while conservation outcomes depend on place, enforcement, governance, and what pressure is reduced. The evidence supports action without pretending every intervention or species introduction has the same effect.",
+		stableCore: [
+			"Biodiversity contributes to ecosystem functioning and resilience, although the contribution of any one species or trait varies.",
+			"Habitat loss, overexploitation, pollution, climate change, and harmful invasive species are major pressures with interacting effects.",
+			"Protected areas, restoration, invasive-species control, and sustainable management often help when they are well designed and maintained."
+		],
+		openQuestions: [
+			"Which combinations of protection, restoration, and working-land management deliver durable ecological and social outcomes?",
+			"How should conservation prioritize total habitat, connectivity, representation, climate refuges, and local stewardship?"
+		],
+		whatWouldChangeMinds: [
+			"Global counterfactual studies showing that well-implemented conservation generally fails to slow losses.",
+			"Long-term evidence that materially changes estimates of extinction rates, ecosystem-function effects, or major pressure pathways."
+		],
+		commonMisreads: [
+			"Non-native does not automatically mean invasive; harm and spread must be evaluated.",
+			"Planting trees can be useful without making a plantation ecologically equivalent to a natural forest."
+		],
+		starterQuestions: [
+			"Compared with what counterfactual, and over what timescale, did the conservation action help?",
+			"Is the claim about species richness, abundance, ecological function, carbon, or human well-being?"
+		],
+		evidenceTrail: [
+			{
+				title: "IPBES global and thematic assessments",
+				note: "Best broad synthesis of biodiversity status, drivers, and response options."
+			},
+			{
+				title: "Counterfactual conservation meta-analyses",
+				note: "Useful for distinguishing genuine outcomes from simple inside-outside comparisons."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,
