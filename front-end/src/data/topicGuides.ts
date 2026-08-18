@@ -501,6 +501,152 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"education-and-learning": {
+		slug: "education-and-learning",
+		consensusScore: 76,
+		consensusLabel: "Evidence varies sharply by intervention",
+		snapshot:
+			"Education research supports some practical improvements, but effects often depend on age, teaching quality, implementation, and what outcome is measured. Familiar policies can sound more certain than the evidence warrants.",
+		stableCore: [
+			"Learning interventions should be judged against a credible comparison, not only by whether students improved over time.",
+			"Average effects can hide important differences by age, subject, baseline need, and implementation quality.",
+			"A useful component such as phonics or homework is not automatically a complete curriculum or a universal prescription."
+		],
+		openQuestions: [
+			"Which combinations of curriculum, teacher support, and school conditions produce durable learning gains?",
+			"How well do results transfer across countries, age groups, and students with different learning needs?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled replications showing that an intervention's gains persist and transfer beyond the tested task.",
+			"Stronger evidence that a widely used policy either delivers meaningful benefits or imposes overlooked harms across settings."
+		],
+		commonMisreads: [
+			"A statistically detectable school effect may still be modest in practice.",
+			"Evidence for one instructional ingredient does not establish that every program using its label works equally well."
+		],
+		starterQuestions: [
+			"Compared with what, for which students, and on which outcome did this approach work?",
+			"Did the improvement last after the study or transfer to broader learning?"
+		],
+		evidenceTrail: [
+			{
+				title: "Systematic education reviews",
+				note: "Useful for comparing interventions across schools while keeping effect size and study quality visible."
+			},
+			{
+				title: "Evidence-practice guides",
+				note: "Helpful for translating an average result into the implementation conditions schools actually need."
+			}
+		]
+	},
+	"sleep-and-circadian-health": {
+		slug: "sleep-and-circadian-health",
+		consensusScore: 88,
+		consensusLabel: "Strong foundations with individual variation",
+		snapshot:
+			"Sleep duration, timing, and regularity have durable biological foundations. The largest uncertainty usually concerns individual need, treatment choice, and the size of long-term risks—not whether chronic sleep disruption matters.",
+		stableCore: [
+			"Most healthy adults function best with at least seven hours of regular sleep, although individual need varies.",
+			"Light, behavior, work schedules, and internal circadian timing all shape when sleep occurs.",
+			"Persistent insomnia or warning signs of sleep apnea deserve proper evaluation rather than indefinite self-treatment."
+		],
+		openQuestions: [
+			"Which people recover most fully from short sleep, and how much recovery is possible after repeated restriction?",
+			"How can shift schedules reduce circadian disruption while remaining workable for essential services?"
+		],
+		whatWouldChangeMinds: [
+			"Longer randomized or quasi-experimental studies that materially revise the health effects attributed to sleep duration or timing.",
+			"Better biomarkers that reliably distinguish harmless individual variation from clinically important sleep disruption."
+		],
+		commonMisreads: [
+			"Feeling accustomed to short sleep does not prove that attention, metabolism, and performance have fully adapted.",
+			"Blue light is one part of evening screen use, not a complete explanation for every sleep problem."
+		],
+		starterQuestions: [
+			"Is this claim about sleep duration, circadian timing, sleep quality, or a diagnosed disorder?",
+			"Does the evidence measure how people feel, how they perform, or long-term health outcomes?"
+		],
+		evidenceTrail: [
+			{ title: "Sleep-medicine guidelines", note: "Best for diagnosis and treatment boundaries." },
+			{
+				title: "Controlled sleep and circadian studies",
+				note: "Useful for separating short-term mechanisms from longer-term observational risk."
+			}
+		]
+	},
+	"exercise-and-sports-science": {
+		slug: "exercise-and-sports-science",
+		consensusScore: 90,
+		consensusLabel: "Strong consensus on movement, qualified at the margins",
+		snapshot:
+			"Regular movement reliably benefits health, and useful gains begin below ideal targets. More specific claims about routines, supplements, injury prevention, and body composition need narrower evidence and often produce smaller effects.",
+		stableCore: [
+			"Some activity is better than none, and benefits accumulate across a range of realistic weekly doses.",
+			"Progressive resistance training can be safe and beneficial across ages when technique, load, and supervision are appropriate.",
+			"Training adaptations are specific: a method can improve one outcome without being best for every goal."
+		],
+		openQuestions: [
+			"Which combinations of intensity, volume, and recovery are most sustainable for different people?",
+			"How should research results for trained athletes be translated for beginners, older adults, and clinical populations?"
+		],
+		whatWouldChangeMinds: [
+			"Large comparative trials showing that a popular training or recovery claim produces meaningful outcomes beyond ordinary progressive exercise.",
+			"Consistent safety evidence that changes current boundaries for a supplement or training method."
+		],
+		commonMisreads: [
+			"A precise target such as 10,000 steps can be motivational without being a biological threshold.",
+			"Short-term soreness, calorie use, or performance changes do not automatically establish long-term fat loss, injury prevention, or health benefit."
+		],
+		starterQuestions: [
+			"What outcome is this supposed to improve: health, strength, endurance, body composition, recovery, or performance?",
+			"Was the effect tested against a realistic alternative in people like the intended user?"
+		],
+		evidenceTrail: [
+			{ title: "Physical-activity guidelines", note: "Useful for the durable population-health baseline." },
+			{
+				title: "Training and sports-medicine syntheses",
+				note: "Important for outcome-specific effects, supervision, and injury boundaries."
+			}
+		]
+	},
+	"crime-and-justice": {
+		slug: "crime-and-justice",
+		consensusScore: 72,
+		consensusLabel: "Useful evidence, with major design and value limits",
+		snapshot:
+			"Justice research can test deterrence, recidivism, police practices, and witness accuracy. It cannot by itself decide what punishments, risks, rights, or inequities a society should accept.",
+		stableCore: [
+			"The strongest conclusions compare outcomes against a plausible counterfactual rather than relying on before-and-after impressions.",
+			"Implementation, local institutions, and who is affected can change both benefits and harms.",
+			"A policy's empirical effect and its legal or moral legitimacy are related but distinct questions."
+		],
+		openQuestions: [
+			"Which interventions preserve public-safety gains while reducing coercion, error, and unequal burdens?",
+			"How reliably do findings transfer across jurisdictions with different laws, crime patterns, and institutions?"
+		],
+		whatWouldChangeMinds: [
+			"Stronger replicated natural experiments or randomized evaluations that reverse an intervention's current estimated effect.",
+			"Better evidence about downstream harms, distributional effects, and long-term outcomes rather than only immediate enforcement metrics."
+		],
+		commonMisreads: [
+			"An absence of credible evidence for deterrence is not proof that an effect is exactly zero.",
+			"A reduction in one measured outcome does not settle displacement, fairness, legitimacy, or community harm."
+		],
+		starterQuestions: [
+			"What outcome was measured, and what is the credible comparison for what would have happened otherwise?",
+			"Which part of this dispute is empirical, and which part depends on rights or values?"
+		],
+		evidenceTrail: [
+			{
+				title: "Systematic crime and justice reviews",
+				note: "Useful for comparing interventions while checking displacement, recidivism, and implementation."
+			},
+			{
+				title: "National evidence assessments",
+				note: "Important when methods are contested or the available studies cannot support a precise causal conclusion."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,

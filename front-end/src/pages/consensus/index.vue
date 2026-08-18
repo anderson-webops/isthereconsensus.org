@@ -4,7 +4,7 @@ import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
-import { interleaveClaimsByTopic } from "~/utils/claim-directory";
+import { interleaveClaimsByTopic, loadCompleteClaimDirectory } from "~/utils/claim-directory";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -16,8 +16,11 @@ const { apiUrl } = useApi();
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
+
 const { data: claimsData, status: claimsStatus } = await useAsyncData("claim-directory", () =>
-	$fetch<ClaimsResponse>(apiUrl("/claims?limit=500"))
+	loadCompleteClaimDirectory((page, pageSize) =>
+		$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}`))
+	)
 );
 
 const search = ref(typeof route.query.q === "string" ? route.query.q : "");
@@ -32,7 +35,11 @@ const starterOrder = [
 	"nutrition-and-diet",
 	"neuroscience-and-psychology",
 	"genetics-and-biotechnology",
-	"public-policy-and-safety"
+	"public-policy-and-safety",
+	"education-and-learning",
+	"sleep-and-circadian-health",
+	"exercise-and-sports-science",
+	"crime-and-justice"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const fallbackTopics = computed<Topic[]>(() =>
