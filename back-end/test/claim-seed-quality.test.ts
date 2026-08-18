@@ -89,6 +89,33 @@ const august2026ExpansionSlugs = [
 	"do-smoke-free-indoor-laws-reduce-heart-attacks-and-other-cardiovascular-events"
 ];
 
+const august2026EncyclopediaSlugs = [
+	"do-later-school-start-times-improve-adolescent-sleep-and-well-being",
+	"does-systematic-phonics-instruction-help-children-learn-to-read",
+	"do-smaller-classes-substantially-improve-student-achievement",
+	"does-making-a-student-repeat-a-grade-reliably-improve-long-term-outcomes",
+	"do-school-uniforms-improve-academic-achievement-or-student-behavior",
+	"does-homework-improve-academic-achievement",
+	"do-most-healthy-adults-need-at-least-seven-hours-of-sleep",
+	"can-weekend-catch-up-sleep-fully-erase-chronic-sleep-debt",
+	"does-alcohol-improve-sleep-when-used-as-a-nightcap",
+	"does-evening-light-from-screens-delay-sleep",
+	"should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
+	"does-long-term-night-shift-work-increase-chronic-health-risks",
+	"does-physical-activity-below-the-weekly-guideline-still-improve-health",
+	"does-supervised-resistance-training-stunt-childrens-growth",
+	"can-exercising-one-body-part-selectively-remove-fat-from-that-area",
+	"does-static-stretching-before-exercise-prevent-injuries",
+	"are-10000-daily-steps-necessary-for-health-benefits",
+	"is-creatine-monohydrate-effective-and-generally-safe-for-healthy-adults",
+	"does-the-death-penalty-deter-homicide-more-than-long-imprisonment",
+	"does-hot-spots-policing-reduce-crime-without-simply-moving-it-nearby",
+	"do-police-body-worn-cameras-consistently-reduce-use-of-force-and-complaints",
+	"does-trying-juveniles-in-adult-court-reduce-later-offending",
+	"is-eyewitness-confidence-a-reliable-measure-of-identification-accuracy",
+	"do-cognitive-behavioral-rehabilitation-programs-reduce-reoffending"
+];
+
 const titleStopWords = new Set([
 	"a",
 	"an",
@@ -132,9 +159,9 @@ function primarySourceLink(source: (typeof defaultClaims)[number]["sources"][num
 }
 
 describe("default claim seed quality", () => {
-	it("keeps seeded claim slugs unique", () => {
-		const keys = defaultClaims.map(claim => `${claim.topicSlug}/${claim.slug}`);
-		assert.equal(new Set(keys).size, keys.length);
+	it("keeps seeded claim slugs globally unique across topics", () => {
+		const slugs = defaultClaims.map(claim => claim.slug);
+		assert.equal(new Set(slugs).size, slugs.length);
 	});
 
 	it("keeps every source-controlled claim within the persistence schema", async () => {
@@ -273,12 +300,7 @@ describe("default claim seed quality", () => {
 
 		assert.equal(expansionSlugSet.size, 30);
 		assert.equal(expansionClaims.length, 30);
-		assert.equal(defaultClaims.length, 281, "The August milestone must extend the 251-claim baseline to 281");
-		assert.equal(
-			defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug)).length,
-			251,
-			"The pre-existing library must remain distinct from the 30 new August reviews"
-		);
+		assert.ok(defaultClaims.length >= 281, "The library must retain the 281-claim August milestone");
 		assert.deepEqual(
 			Object.fromEntries(
 				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
@@ -298,7 +320,7 @@ describe("default claim seed quality", () => {
 			}
 		);
 
-		assert.equal(defaultTopics.length, 14);
+		assert.ok(defaultTopics.length >= 14);
 		const policyTopic = defaultTopics.find(topic => topic.slug === "public-policy-and-safety");
 		assert.ok(policyTopic, "The new policy reviews need a visible topic directory");
 		assert.equal(policyTopic.order, 14);
@@ -322,6 +344,80 @@ describe("default claim seed quality", () => {
 				),
 				`${claim.slug} needs a synthesis or institutional decision source`
 			);
+		}
+	});
+
+	it("adds a 24-review encyclopedia tranche across four newly developed topics", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaSlugs);
+		const expansionClaims = august2026EncyclopediaSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing encyclopedia expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 24);
+		assert.equal(expansionClaims.length, 24);
+		assert.ok(defaultClaims.length >= 305, "The first encyclopedia tranche must bring the library to 305 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"crime-and-justice": 6,
+				"education-and-learning": 6,
+				"exercise-and-sports-science": 6,
+				"sleep-and-circadian-health": 6
+			}
+		);
+
+		const newTopicSlugs = [
+			"crime-and-justice",
+			"education-and-learning",
+			"exercise-and-sports-science",
+			"sleep-and-circadian-health"
+		];
+		assert.ok(defaultTopics.length >= 18, "The first encyclopedia tranche must bring the directory to 18 topics");
+		for (const topicSlug of newTopicSlugs) {
+			assert.ok(defaultTopics.some(topic => topic.slug === topicSlug), `Missing topic ${topicSlug}`);
+		}
+
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-18T18:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-18T18:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(claim.sources.some(source => source.isAnchor), `${claim.slug} needs a visible anchor source`);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+		}
+	});
+
+	it("keeps the encyclopedia tranche distinct from the existing claim library", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Encyclopedia claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
 		}
 	});
 

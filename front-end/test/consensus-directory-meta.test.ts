@@ -32,7 +32,8 @@ describe("consensus directory metadata", () => {
 	});
 
 	it("exposes the full reviewed-claim directory instead of only topic previews", () => {
-		assert.match(source, /apiUrl\("\/claims\?limit=500"\)/);
+		assert.match(source, /loadCompleteClaimDirectory\(\(page, pageSize\) =>/);
+		assert.match(source, /`\/claims\?limit=\$\{pageSize\}&page=\$\{page\}`/);
 		assert.match(source, /id="reviewed-claims"/);
 		assert.match(source, /Reviewed claim directory/);
 		assert.match(source, /v-for="claim in visibleClaims"/);
@@ -45,6 +46,24 @@ describe("consensus directory metadata", () => {
 		assert.match(source, /interleaveClaimsByTopic/);
 		assert.match(source, /filteredClaims\.value\.length/);
 		assert.match(source, /const claimsPageSize = 12/);
+	});
+
+	it("adds guided directory sections for the first encyclopedia expansion topics", () => {
+		const expectedGuides = [
+			["education-and-learning", /varies sharply by intervention/i],
+			["sleep-and-circadian-health", /Strong foundations/i],
+			["exercise-and-sports-science", /Strong consensus on movement/i],
+			["crime-and-justice", /design and value limits/i]
+		] as const;
+
+		for (const [slug, labelPattern] of expectedGuides) {
+			const guide = getTopicGuide(slug);
+			assert.equal(guide.slug, slug);
+			assert.match(guide.consensusLabel, labelPattern);
+			assert.ok(guide.stableCore.length >= 3);
+			assert.ok(guide.evidenceTrail.length >= 2);
+			assert.match(source, new RegExp(`"${slug}"`));
+		}
 	});
 
 	it("surfaces the new public-policy reviews with a claim-specific directory guide", () => {

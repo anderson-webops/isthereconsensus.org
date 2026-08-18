@@ -96,5 +96,33 @@ export const defaultTopics = [
 		description: "Evidence on public interventions intended to reduce preventable harm, including their limits and tradeoffs.",
 		order: 14,
 		accent: "#76536f"
+	},
+	{
+		title: "Education & learning",
+		slug: "education-and-learning",
+		description: "What improves learning, where familiar school policies disappoint, and how effects vary by age and setting.",
+		order: 15,
+		accent: "#436b83"
+	},
+	{
+		title: "Sleep & circadian health",
+		slug: "sleep-and-circadian-health",
+		description: "Sleep duration, timing, light, shift work, and common remedies examined without wellness hype.",
+		order: 16,
+		accent: "#5d5a91"
+	},
+	{
+		title: "Exercise & sports science",
+		slug: "exercise-and-sports-science",
+		description: "Training, movement, performance, and recovery claims separated from gym folklore and supplement marketing.",
+		order: 17,
+		accent: "#3f765f"
+	},
+	{
+		title: "Crime & justice",
+		slug: "crime-and-justice",
+		description: "What research can and cannot establish about deterrence, policing, courts, testimony, and rehabilitation.",
+		order: 18,
+		accent: "#7a5548"
 	}
 ];

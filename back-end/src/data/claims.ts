@@ -17,6 +17,7 @@ import type {
 	ClaimSourceStance
 } from "../models/schemas/ClaimSource.js";
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
+import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
 
 interface SeedClaimSource {
@@ -122,6 +123,18 @@ function inferEvidenceCertainty(confidenceScore: number): ClaimEvidenceCertainty
 }
 
 function defaultSearchDatabases(topicSlug: string) {
+	if (topicSlug === "education-and-learning") {
+		return ["ERIC", "PsycINFO", "OpenAlex", "Crossref"];
+	}
+	if (topicSlug === "sleep-and-circadian-health") {
+		return ["PubMed", "Cochrane Library", "OpenAlex", "Crossref"];
+	}
+	if (topicSlug === "exercise-and-sports-science") {
+		return ["PubMed", "SPORTDiscus", "OpenAlex", "Crossref"];
+	}
+	if (topicSlug === "crime-and-justice") {
+		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
+	}
 	if (
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
@@ -154,6 +167,8 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		|| topicSlug === "neuroscience-and-psychology"
 		|| topicSlug === "genetics-and-biotechnology"
 		|| topicSlug === "public-policy-and-safety"
+		|| topicSlug === "sleep-and-circadian-health"
+		|| topicSlug === "exercise-and-sports-science"
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
@@ -181,6 +196,18 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "public-policy-and-safety") {
 		return ["CDC prevention guidance", "The Community Guide", "Campbell and Cochrane review updates"];
+	}
+	if (topicSlug === "education-and-learning") {
+		return ["IES and NICHD updates", "Education Endowment Foundation reviews", "Campbell review updates"];
+	}
+	if (topicSlug === "sleep-and-circadian-health") {
+		return ["AASM guidance", "NHLBI updates", "Cochrane review updates"];
+	}
+	if (topicSlug === "exercise-and-sports-science") {
+		return ["WHO activity guidance", "AAP and ACSM updates", "Major position-statement updates"];
+	}
+	if (topicSlug === "crime-and-justice") {
+		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
 	}
 	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
 }
@@ -275,6 +302,34 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "The Community Guide", role: "Population-intervention evidence anchor" },
 			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. prevention guidance anchor" },
 			{ name: "Cochrane / Campbell Collaboration", role: "Independent policy and intervention review anchor" }
+		];
+	}
+	if (topicSlug === "education-and-learning") {
+		return [
+			{ name: "Institute of Education Sciences", role: "U.S. education evidence and practice anchor" },
+			{ name: "Education Endowment Foundation", role: "Teaching-intervention synthesis anchor" },
+			{ name: "Campbell Collaboration", role: "Independent education-review anchor" }
+		];
+	}
+	if (topicSlug === "sleep-and-circadian-health") {
+		return [
+			{ name: "American Academy of Sleep Medicine", role: "Clinical sleep guidance anchor" },
+			{ name: "National Heart, Lung, and Blood Institute", role: "Public-health and circadian evidence anchor" },
+			{ name: "Cochrane", role: "Sleep-intervention evidence-synthesis anchor" }
+		];
+	}
+	if (topicSlug === "exercise-and-sports-science") {
+		return [
+			{ name: "World Health Organization", role: "Global physical-activity guidance anchor" },
+			{ name: "American Academy of Pediatrics", role: "Youth activity and training safety anchor" },
+			{ name: "American College of Sports Medicine", role: "Exercise-science guidance anchor" }
+		];
+	}
+	if (topicSlug === "crime-and-justice") {
+		return [
+			{ name: "National Academies", role: "Independent justice-evidence assessment anchor" },
+			{ name: "National Institute of Justice", role: "U.S. criminal-justice research anchor" },
+			{ name: "Campbell Collaboration", role: "Crime and justice intervention-review anchor" }
 		];
 	}
 	return [
@@ -587,6 +642,8 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					|| seed.topicSlug === "nutrition-and-diet"
 					|| seed.topicSlug === "neuroscience-and-psychology"
 					|| seed.topicSlug === "genetics-and-biotechnology"
+					|| seed.topicSlug === "sleep-and-circadian-health"
+					|| seed.topicSlug === "exercise-and-sports-science"
 					? ["Crossref", "PubMed", "Europe PMC"]
 					: ["Crossref", "Editorial review"])
 		})),
@@ -26437,7 +26494,8 @@ const rawClaims: SeedClaim[] = [
 		]
 	},
 	...july2026ExpansionClaims,
-	...august2026ExpansionClaims
+	...august2026ExpansionClaims,
+	...august2026EncyclopediaClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
