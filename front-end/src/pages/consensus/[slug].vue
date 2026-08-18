@@ -31,6 +31,12 @@ const { data: claimsData } = await useAsyncData(`topic-claims-${slug.value}`, ()
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
+const starterClaims = computed(() => {
+	const claimsBySlug = new Map(claims.value.map((claim) => [claim.slug, claim]));
+	return (guide.value.starterClaimSlugs ?? [])
+		.map((starterSlug) => claimsBySlug.get(starterSlug))
+		.filter((claim): claim is ClaimSummary => Boolean(claim));
+});
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${slug.value}`);
 const topicTitle = computed(() => topic.value?.title || formatSlugTitle(slug.value));
@@ -207,6 +213,11 @@ function claimCardPreview(claim: ClaimSummary) {
 		context: compactContextPreview(context)
 	};
 }
+
+function starterClaimPreview(claim: ClaimSummary) {
+	const preview = claimCardPreview(claim);
+	return preview.context ? `${preview.lead} ${preview.context}` : preview.lead;
+}
 </script>
 
 <template>
@@ -236,6 +247,28 @@ function claimCardPreview(claim: ClaimSummary) {
 				</NuxtLink>
 			</div>
 		</header>
+
+		<section v-if="starterClaims.length" class="start-here">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Start here</p>
+					<h2>Three useful entry points</h2>
+				</div>
+				<p>Begin with a foundation, a common misconception, or a concrete real-world decision.</p>
+			</div>
+			<div class="start-here__grid">
+				<NuxtLink
+					v-for="claim in starterClaims"
+					:key="claim._id"
+					class="starter-card"
+					:to="`/consensus/${slug}/${claim.slug}`"
+				>
+					<span>{{ claimSupportLabel(claim) }}</span>
+					<h3>{{ claim.title }}</h3>
+					<p>{{ starterClaimPreview(claim) }}</p>
+				</NuxtLink>
+			</div>
+		</section>
 
 		<section class="claim-lane">
 			<div class="section-heading">
@@ -292,6 +325,7 @@ function claimCardPreview(claim: ClaimSummary) {
 }
 
 .topic-page__header,
+.start-here,
 .claim-lane,
 .queue-note,
 .claim-row {
@@ -301,6 +335,7 @@ function claimCardPreview(claim: ClaimSummary) {
 }
 
 .topic-page__header,
+.start-here,
 .claim-lane,
 .queue-note {
 	padding: 22px;
@@ -353,8 +388,48 @@ function claimCardPreview(claim: ClaimSummary) {
 }
 
 .section-heading h2,
+.starter-card h3,
 .section-heading p {
 	margin: 0;
+}
+
+.start-here__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin-top: 16px;
+}
+
+.starter-card {
+	display: grid;
+	gap: 8px;
+	padding: 17px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 16px;
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	text-decoration: none;
+}
+
+.starter-card > span {
+	color: var(--consensus-ember);
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.starter-card h3 {
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+	line-height: 1.24;
+}
+
+.starter-card p {
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.92rem;
+	line-height: 1.5;
 }
 
 .queue-note {
@@ -479,6 +554,7 @@ function claimCardPreview(claim: ClaimSummary) {
 	}
 
 	.topic-page__header,
+	.start-here,
 	.claim-lane,
 	.queue-note {
 		padding: 18px;
@@ -486,6 +562,12 @@ function claimCardPreview(claim: ClaimSummary) {
 	}
 
 	.claim-list {
+		gap: 10px;
+		margin-top: 14px;
+	}
+
+	.start-here__grid {
+		grid-template-columns: 1fr;
 		gap: 10px;
 		margin-top: 14px;
 	}

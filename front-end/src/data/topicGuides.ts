@@ -13,6 +13,7 @@ export interface TopicGuide {
 	whatWouldChangeMinds: string[];
 	commonMisreads: string[];
 	starterQuestions: string[];
+	starterClaimSlugs?: string[];
 	evidenceTrail: TopicGuideResource[];
 }
 
@@ -257,7 +258,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 92,
 		consensusLabel: "Strong lessons from past consensus shifts",
 		snapshot:
-			"Historical case studies show that science does change, but usually when better evidence, better measurements, and better models outperform the old story over time.",
+			"Historical cases show how evidence, institutions, technology, and policy changed together—from hand disinfection and insulin to clean air and acid-rain controls—without turning every episode into a lone-genius fable.",
 		stableCore: [
 			"Many famous consensus shifts did not happen because people suddenly became open-minded; they happened because new evidence held up under challenge.",
 			"Industry pressure, media confusion, and professional inertia can delay consensus without defeating it forever.",
@@ -279,6 +280,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What evidence finally broke the old view here?",
 			"What does this case teach about how long real consensus change can take?"
 		],
+		starterClaimSlugs: [
+			"did-semmelweisss-hand-disinfection-rule-sharply-reduce-childbed-fever",
+			"did-prenatal-thalidomide-exposure-cause-severe-birth-defects",
+			"did-sulfur-emission-controls-reduce-acid-rain-and-begin-ecosystem-recovery"
+		],
 		evidenceTrail: [
 			{
 				title: "Landmark studies and trials",
@@ -295,7 +301,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 94,
 		consensusLabel: "Strong consensus on the basic process",
 		snapshot:
-			"Scientific knowledge becomes trustworthy through criticism, replication, converging evidence, and better predictive models, not by charisma or repetition.",
+			"Scientific knowledge becomes trustworthy through explicit assumptions, estimates with uncertainty, criticism, replication, triangulation, and useful prediction—not a p-value threshold, prestige, charisma, or repetition.",
 		stableCore: [
 			"Consensus is the residue of repeated challenge, not the absence of disagreement.",
 			"Methods, measurement, and replication matter more than a single flashy result.",
@@ -316,6 +322,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What makes a scientific claim feel settled instead of speculative?",
 			"Why doesn’t one new study usually overturn a field?"
+		],
+		starterClaimSlugs: [
+			"does-statistical-significance-tell-you-whether-an-effect-is-large-or-important",
+			"does-a-non-significant-result-prove-there-is-no-effect",
+			"can-a-meta-analysis-rescue-a-body-of-biased-or-low-quality-studies"
 		],
 		evidenceTrail: [
 			{
@@ -363,7 +374,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 82,
 		consensusLabel: "Strong agreement that framing distorts public understanding",
 		snapshot:
-			"Scientific communication often breaks when headlines flatten uncertainty, exaggerate novelty, or present fringe disagreement as balanced controversy.",
+			"Information can feel credible because it is repeated, popular, vivid, or presented as a balanced controversy. Those cues shape attention and belief, but they are not substitutes for representative evidence and traceable sources.",
 		stableCore: [
 			"Relative risk without baseline context is easy to overread.",
 			"Single studies are regularly framed as if they replace a broader evidence base.",
@@ -385,6 +396,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What does this headline leave out about scale or uncertainty?",
 			"Is this a genuine consensus update or just a media spike?"
 		],
+		starterClaimSlugs: [
+			"can-repeating-a-false-claim-make-it-feel-more-true",
+			"can-false-balance-reporting-make-expert-evidence-look-evenly-divided",
+			"does-a-very-large-online-sample-eliminate-selection-bias"
+		],
 		evidenceTrail: [
 			{ title: "Science journalism analyses", note: "Useful for spotting patterns in headline inflation." },
 			{
@@ -398,7 +414,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 76,
 		consensusLabel: "Substantial agreement that incentives shape research behavior",
 		snapshot:
-			"Publication pressure, funding structure, prestige incentives, and selective reporting can bend what gets studied, published, and amplified without invalidating science as a whole.",
+			"Publication pressure, selective outcomes, analytic flexibility, citation patterns, prestige metrics, and weak correction incentives can bend the visible record without making every scientist dishonest or every result false.",
 		stableCore: [
 			"Researchers respond to incentives just like everyone else.",
 			"Bias can enter through study design, analysis choices, publication, and media amplification.",
@@ -420,6 +436,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"What incentives might be shaping this result or headline?",
 			"What checks are in place to reduce bias here?"
 		],
+		starterClaimSlugs: [
+			"can-selective-outcome-reporting-distort-a-clinical-trials-published-conclusion",
+			"do-registered-reports-reduce-publication-bias-and-guarantee-valid-findings",
+			"can-flexible-analysis-choices-inflate-false-positive-findings"
+		],
 		evidenceTrail: [
 			{
 				title: "Reproducibility studies",
@@ -433,7 +454,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 71,
 		consensusLabel: "Clear patterns, with room for experimentation",
 		snapshot:
-			"Good science communication makes uncertainty legible, keeps scale intact, and preserves curiosity without pretending every topic is equally unsettled.",
+			"Good science communication makes scale and uncertainty legible, matches the audience and decision, and tests comprehension—not just engagement—while keeping the evidence unchanged beneath the format.",
 		stableCore: [
 			"Clear explanations outperform jargon-heavy certainty theater.",
 			"Audience trust improves when uncertainty is named precisely instead of hidden.",
@@ -454,6 +475,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"Did this explainer preserve the scale of the evidence?",
 			"What tradeoff did the communicator make between clarity and precision?"
+		],
+		starterClaimSlugs: [
+			"do-more-facts-alone-reliably-resolve-polarized-science-disputes",
+			"can-natural-frequencies-and-icon-arrays-improve-risk-understanding",
+			"is-one-trusted-messenger-equally-credible-to-every-audience"
 		],
 		evidenceTrail: [
 			{
@@ -489,6 +515,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		starterQuestions: [
 			"What outcome changed after the intervention, compared with what would otherwise have happened?",
 			"Which tradeoffs are empirical questions, and which require a public value judgment?"
+		],
+		starterClaimSlugs: [
+			"do-lower-legal-blood-alcohol-limits-reduce-alcohol-related-crashes",
+			"did-child-resistant-packaging-laws-reduce-fatal-medicine-poisonings-in-young-children",
+			"do-taxes-on-sugar-sweetened-beverages-reduce-purchases"
 		],
 		evidenceTrail: [
 			{

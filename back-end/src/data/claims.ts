@@ -123,6 +123,18 @@ function inferEvidenceCertainty(confidenceScore: number): ClaimEvidenceCertainty
 }
 
 function defaultSearchDatabases(topicSlug: string) {
+	if (topicSlug === "consensus-foundations") {
+		return ["Web of Science", "PsycINFO", "PubMed", "OpenAlex and Crossref"];
+	}
+	if (topicSlug === "media-misinformation") {
+		return ["Communication & Mass Media Complete", "PsycINFO", "Web of Science", "OpenAlex and Crossref"];
+	}
+	if (topicSlug === "bias-incentives") {
+		return ["Web of Science", "PubMed", "OpenAlex and Crossref", "Retraction Watch and publisher notices"];
+	}
+	if (topicSlug === "science-communication") {
+		return ["Communication & Mass Media Complete", "PsycINFO", "PubMed", "OpenAlex and Crossref"];
+	}
 	if (topicSlug === "education-and-learning") {
 		return ["ERIC", "PsycINFO", "OpenAlex", "Crossref"];
 	}
@@ -163,7 +175,6 @@ function defaultSearchDatabases(topicSlug: string) {
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
 		|| topicSlug === "neuroscience-and-psychology"
-		|| topicSlug === "public-policy-and-safety"
 	) {
 		return ["PubMed", "OpenAlex", "Crossref"];
 	}
@@ -171,7 +182,10 @@ function defaultSearchDatabases(topicSlug: string) {
 		return ["OpenAlex", "Crossref", "IPCC assessment reports"];
 	}
 	if (topicSlug === "historical-case-studies") {
-		return ["OpenAlex", "Crossref", "National Academies / official historical reviews"];
+		return ["JSTOR and HathiTrust", "PubMed", "OpenAlex and Crossref", "Official scientific and policy archives"];
+	}
+	if (topicSlug === "public-policy-and-safety") {
+		return ["Campbell Library", "Cochrane Library", "PubMed", "The Community Guide and official program evaluations"];
 	}
 	return ["OpenAlex", "Crossref", "Major institutional reports"];
 }
@@ -185,6 +199,15 @@ function defaultSurveillanceCadenceDays(seed: SeedClaim) {
 }
 
 function defaultIntegrityMonitors(topicSlug: string) {
+	if (topicSlug === "consensus-foundations" || topicSlug === "bias-incentives") {
+		return ["Crossref update metadata", "Retraction Watch", "PubPeer and editorial source audit"];
+	}
+	if (topicSlug === "media-misinformation" || topicSlug === "science-communication") {
+		return ["Crossref update metadata", "OpenAlex work updates", "Publisher corrections and editorial source audit"];
+	}
+	if (topicSlug === "historical-case-studies") {
+		return ["Crossref update metadata", "Archival provenance check", "Retrospective correction and source audit"];
+	}
 	if (
 		topicSlug === "health-and-medicine"
 		|| topicSlug === "nutrition-and-diet"
@@ -212,6 +235,18 @@ function defaultIntegrityMonitors(topicSlug: string) {
 }
 
 function defaultGuidelineMonitors(topicSlug: string) {
+	if (topicSlug === "consensus-foundations") {
+		return ["National Academies methods reports", "ASA and major statistical-society statements", "Cochrane methods updates"];
+	}
+	if (topicSlug === "media-misinformation") {
+		return ["Major misinformation meta-analysis updates", "Platform transparency and methods reports", "National Academies communication reviews"];
+	}
+	if (topicSlug === "bias-incentives") {
+		return ["COPE guidance and cases", "National Academies integrity reviews", "EQUATOR and Registered Reports updates"];
+	}
+	if (topicSlug === "science-communication") {
+		return ["National Academies communication reviews", "WHO and CDC risk-communication guidance", "IPDAS evidence updates"];
+	}
 	if (topicSlug === "health-and-medicine") {
 		return ["WHO guidance streams", "CDC guidance updates", "Cochrane review updates"];
 	}
@@ -231,7 +266,7 @@ function defaultGuidelineMonitors(topicSlug: string) {
 		return ["Field-specific retrospective reviews", "National Academies archives", "Public-health archive updates"];
 	}
 	if (topicSlug === "public-policy-and-safety") {
-		return ["CDC prevention guidance", "The Community Guide", "Campbell and Cochrane review updates"];
+		return ["The Community Guide", "WHO and federal safety guidance", "Campbell and Cochrane review updates"];
 	}
 	if (topicSlug === "education-and-learning") {
 		return ["IES and NICHD updates", "Education Endowment Foundation reviews", "Campbell review updates"];
@@ -312,6 +347,34 @@ function defaultSurveillanceSpec(seed: SeedClaim): IClaimSurveillanceSpec {
 }
 
 function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnchor[] {
+	if (topicSlug === "consensus-foundations") {
+		return [
+			{ name: "National Academies", role: "Scientific methods, replication, and evidence-synthesis anchor" },
+			{ name: "Cochrane Methods", role: "Systematic-review and risk-of-bias methods anchor" },
+			{ name: "American Statistical Association", role: "Statistical interpretation and practice-statement anchor" }
+		];
+	}
+	if (topicSlug === "media-misinformation") {
+		return [
+			{ name: "National Academies", role: "Independent science-communication and information-system assessment anchor" },
+			{ name: "Major misinformation meta-analyses", role: "Belief, correction, sharing, and intervention synthesis anchor" },
+			{ name: "Audited platform and survey data", role: "Real-world exposure, diffusion, and selection anchor" }
+		];
+	}
+	if (topicSlug === "bias-incentives") {
+		return [
+			{ name: "National Academies", role: "Research-integrity system assessment anchor" },
+			{ name: "Committee on Publication Ethics", role: "Correction, retraction, and publication-practice anchor" },
+			{ name: "EQUATOR Network / Center for Open Science", role: "Reporting, registration, and transparency-practice anchor" }
+		];
+	}
+	if (topicSlug === "science-communication") {
+		return [
+			{ name: "National Academies", role: "Science-communication research and goal-setting anchor" },
+			{ name: "World Health Organization", role: "Risk and emergency communication guidance anchor" },
+			{ name: "Centers for Disease Control and Prevention", role: "Plain-language and public-information design anchor" }
+		];
+	}
 	if (topicSlug === "health-and-medicine") {
 		return [
 			{ name: "World Health Organization", role: "Global public-health guideline anchor" },
@@ -675,6 +738,48 @@ function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 }
 
 function defaultInclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "consensus-foundations") {
+		return [
+			"Use major methods statements, statistical guidance, systematic evaluations, and worked evidence examples that define the inferential question and assumptions.",
+			"Separate estimate, uncertainty, model fit, causal identification, external validity, practical importance, and decision value rather than collapsing them into one verdict.",
+			"Prefer converging demonstrations across disciplines and methods when the claim concerns a general research principle."
+		];
+	}
+	if (seed.topicSlug === "media-misinformation") {
+		return [
+			"Prioritize preregistered experiments, field experiments, platform-scale audits, representative surveys, and meta-analyses with explicit content and audience samples.",
+			"Keep exposure, attention, perceived accuracy, belief, sharing intention, actual sharing, reach, and downstream behavior as separate outcomes.",
+			"Record platform, interface, language, political context, study period, source classification, and bot or account-detection limits."
+		];
+	}
+	if (seed.topicSlug === "bias-incentives") {
+		return [
+			"Prioritize registry-to-publication audits, protocol comparisons, blinded or matched evaluations, correction records, and systematic reviews of research practice.",
+			"Use a defined publication, trial, article, citation, or researcher denominator and distinguish detected cases from underlying prevalence.",
+			"Separate system incentives and average risk from judgments about any named study, journal, institution, or researcher's intent."
+		];
+	}
+	if (seed.topicSlug === "science-communication") {
+		return [
+			"Prioritize systematic reviews, preregistered audience experiments, field evaluations, and institutional guidance that specifies audience, goal, message, channel, and context.",
+			"Measure calibrated comprehension, discernment, trust, decision quality, behavior, and durability separately from liking, recall, or stated intention.",
+			"Preserve the underlying evidence, denominator, timeframe, uncertainty, options, and action feasibility while testing communication format."
+		];
+	}
+	if (seed.topicSlug === "historical-case-studies") {
+		return [
+			"Combine contemporary primary records with later field-specific historical synthesis and current scientific understanding of the claimed mechanism or outcome.",
+			"Build an explicit timeline that separates observation, intervention, publication, replication, professional acceptance, policy adoption, and later retelling.",
+			"Prefer cases with converging population, experimental, mechanistic, archival, and policy evidence over single-hero or single-study narratives."
+		];
+	}
+	if (seed.topicSlug === "public-policy-and-safety") {
+		return [
+			"Prioritize systematic reviews and credible randomized, controlled time-series, natural-experiment, or matched policy evaluations with a stated counterfactual.",
+			"Report implementation, coverage, enforcement, uptake, intermediate behavior, final health or safety outcomes, displacement, and durability separately.",
+			"Include subgroup, equity, cost, access, unintended-effect, and jurisdictional context when they can change the policy conclusion."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Use consistent lifecycle and service boundaries when comparing fuels, infrastructure, storage, capture, or removal technologies.",
@@ -718,6 +823,48 @@ function defaultInclusionRules(seed: SeedClaim) {
 }
 
 function defaultExclusionRules(seed: SeedClaim) {
+	if (seed.topicSlug === "consensus-foundations") {
+		return [
+			"Do not turn a threshold, checklist score, evidence hierarchy, or single design label into an automatic truth or importance verdict.",
+			"Exclude examples that hide the model assumptions, selection process, comparison, estimand, denominator, or decision context needed to interpret them.",
+			"Do not generalize a field-specific replication rate or bias audit into one universal rate for all science."
+		];
+	}
+	if (seed.topicSlug === "media-misinformation") {
+		return [
+			"Do not infer population belief or causal platform effects from viral examples, convenience engagement counts, or content selected because it was already prominent.",
+			"Exclude interventions that lower belief in true and false information equally when the claimed outcome is improved discernment.",
+			"Do not transfer an effect across platforms, countries, languages, topics, or election periods without making that boundary visible."
+		];
+	}
+	if (seed.topicSlug === "bias-incentives") {
+		return [
+			"Do not infer misconduct, falsity, or intent from funding, a null result, a correction, a retraction, journal venue, or one reporting discrepancy alone.",
+			"Exclude prevalence claims without a defined denominator, detection process, time window, and account of missing or unresolved cases.",
+			"Do not let proposed reforms count as proven solutions without comparative evidence on reliability, burden, gaming, and unintended effects."
+		];
+	}
+	if (seed.topicSlug === "science-communication") {
+		return [
+			"Do not treat message popularity, self-reported liking, immediate recall, or stated intention as equivalent to accurate understanding or durable behavior.",
+			"Exclude formats that gain simplicity by changing the claim, denominator, comparison, causal strength, uncertainty, or available options.",
+			"Do not universalize one audience's response or assume that a trusted, vivid, emotional, visual, or plain message is necessarily accurate."
+		];
+	}
+	if (seed.topicSlug === "historical-case-studies") {
+		return [
+			"Do not let a retrospective hero story, famous image, quotation, or institutional commemoration substitute for the contemporary evidence record.",
+			"Exclude present-day causal certainty from claims about what historical actors knew, when they knew it, or why adoption was delayed.",
+			"Do not infer that every rejected outsider, dramatic reversal, or temporally associated policy was scientifically vindicated."
+		];
+	}
+	if (seed.topicSlug === "public-policy-and-safety") {
+		return [
+			"Do not treat a law on the books, modeled benefit, intermediate outcome, or participant-only estimate as proof of population implementation and final-outcome effect.",
+			"Exclude before-after comparisons that lack a credible control for secular trends, regression to the mean, policy timing, displacement, and concurrent interventions.",
+			"Do not export one jurisdiction's effect size without accounting for baseline risk, enforcement, market response, infrastructure, access, and equity."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Do not infer lifecycle or system performance from a combustion-only, component-only, target-only, or nameplate metric.",
@@ -761,6 +908,24 @@ function defaultExclusionRules(seed: SeedClaim) {
 }
 
 function defaultAppraisalTools(topicSlug: string) {
+	if (topicSlug === "consensus-foundations") {
+		return ["Estimand, assumptions, and uncertainty audit", "Causal-identification and external-validity check", "Cross-method triangulation map"];
+	}
+	if (topicSlug === "media-misinformation") {
+		return ["Exposure-to-belief-to-behavior outcome ladder", "Platform, sample, and content-selection audit", "Discernment, durability, and spillover check"];
+	}
+	if (topicSlug === "bias-incentives") {
+		return ["Protocol, registry, and publication comparison", "Detection-process and denominator audit", "Incentive, intent, and outcome separation check"];
+	}
+	if (topicSlug === "science-communication") {
+		return ["Audience-goal-message-context matrix", "Comprehension, calibration, and behavior outcome check", "Framing, denominator, accessibility, and durability audit"];
+	}
+	if (topicSlug === "historical-case-studies") {
+		return ["Primary-record provenance and timeline audit", "Contemporary-versus-retrospective knowledge check", "Cross-source causal and adoption triangulation"];
+	}
+	if (topicSlug === "public-policy-and-safety") {
+		return ["Counterfactual and policy-timing review", "Implementation-to-final-outcome evidence chain", "Distributional, displacement, and unintended-effect audit"];
+	}
 	if (topicSlug === "energy-and-infrastructure") {
 		return ["Lifecycle boundary audit", "Technology-readiness and operating-data check", "Reliability-service and duration check"];
 	}

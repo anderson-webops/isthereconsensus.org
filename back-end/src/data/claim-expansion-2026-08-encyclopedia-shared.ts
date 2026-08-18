@@ -3,6 +3,7 @@ import type { SeedClaim } from "./claims.js";
 export const august2026EncyclopediaReviewTimestamp = "2026-08-18T18:00:00.000Z";
 export const august2026EncyclopediaTrancheTwoReviewTimestamp = "2026-08-18T20:00:00.000Z";
 export const august2026EncyclopediaTrancheThreeReviewTimestamp = "2026-08-18T22:00:00.000Z";
+export const august2026EncyclopediaTrancheFourReviewTimestamp = "2026-08-18T23:30:00.000Z";
 
 type EncyclopediaClaim = Omit<SeedClaim, "status"> & {
 	status?: SeedClaim["status"];
@@ -18,7 +19,7 @@ type EncyclopediaSourceSeed = Omit<
 	stance?: EncyclopediaSource["stance"];
 };
 
-type EncyclopediaTrancheThreeClaim = Omit<EncyclopediaClaim, "sources"> & {
+type EncyclopediaSourcedClaim = Omit<EncyclopediaClaim, "sources"> & {
 	sources: EncyclopediaSourceSeed[];
 };
 
@@ -51,7 +52,7 @@ export function august2026EncyclopediaTrancheThreeClaim(seed: EncyclopediaClaim)
 }
 
 export function august2026EncyclopediaTrancheThreeSourcedClaim(
-	seed: EncyclopediaTrancheThreeClaim
+	seed: EncyclopediaSourcedClaim
 ): SeedClaim {
 	return august2026EncyclopediaTrancheThreeClaim({
 		...seed,
@@ -66,6 +67,32 @@ export function august2026EncyclopediaTrancheThreeSourcedClaim(
 				appraisal: source.appraisal ?? "high",
 				citationStatus: "current",
 				citationCheckedAt: august2026EncyclopediaTrancheThreeReviewTimestamp,
+				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
+			};
+		})
+	});
+}
+
+export function august2026EncyclopediaTrancheFourClaim(seed: EncyclopediaClaim): SeedClaim {
+	return encyclopediaClaimAt(seed, august2026EncyclopediaTrancheFourReviewTimestamp);
+}
+
+export function august2026EncyclopediaTrancheFourSourcedClaim(
+	seed: EncyclopediaSourcedClaim
+): SeedClaim {
+	return august2026EncyclopediaTrancheFourClaim({
+		...seed,
+		sources: seed.sources.map((source, index) => {
+			const primaryLink = source.url ?? (source.doi ? `https://doi.org/${source.doi}` : undefined);
+
+			return {
+				...source,
+				order: index + 1,
+				stance: source.stance ?? "supports",
+				isAnchor: source.isAnchor ?? index === 0,
+				appraisal: source.appraisal ?? "high",
+				citationStatus: "current",
+				citationCheckedAt: august2026EncyclopediaTrancheFourReviewTimestamp,
 				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
 			};
 		})
