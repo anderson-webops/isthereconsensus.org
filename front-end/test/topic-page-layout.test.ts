@@ -39,4 +39,18 @@ describe("topic page layout", () => {
 		assert.match(source, /@media \(max-width: 820px\) \{[\s\S]*\.claim-row__content \{[\s\S]*gap: 7px;/);
 		assert.match(source, /\.claim-row__caveat \{[\s\S]*-webkit-line-clamp: 2;/);
 	});
+
+	it("offers curated starter claims before the full topic directory", () => {
+		const starterSection = source.indexOf('class="start-here"');
+		const directorySection = source.indexOf('class="claim-lane"');
+
+		assert.ok(starterSection >= 0, "topic pages should render the curated starter section");
+		assert.ok(directorySection > starterSection, "starter claims should appear before the full topic directory");
+		assert.match(source, /v-if="starterClaims\.length"/);
+		assert.match(source, /Three useful entry points/);
+		assert.match(source, /v-for="claim in starterClaims"/);
+		assert.match(source, /function starterClaimPreview\(claim: ClaimSummary\)/);
+		assert.match(source, /\{\{ starterClaimPreview\(claim\) \}\}/);
+		assert.match(source, /:to="`\/consensus\/\$\{slug\}\/\$\{claim\.slug\}`"/);
+	});
 });

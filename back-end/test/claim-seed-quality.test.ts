@@ -202,6 +202,69 @@ const august2026EncyclopediaTrancheThreeSlugs = [
 	"does-basic-income-make-most-recipients-stop-working"
 ];
 
+const august2026EncyclopediaTrancheFourSlugs = [
+	"does-statistical-significance-tell-you-whether-an-effect-is-large-or-important",
+	"does-a-non-significant-result-prove-there-is-no-effect",
+	"does-a-95-percent-confidence-interval-give-a-95-percent-probability-that-the-true-value-is-inside-it",
+	"can-testing-many-hypotheses-create-false-positive-findings-without-adjustment",
+	"must-a-replication-copy-the-original-study-exactly-to-be-informative",
+	"can-a-meta-analysis-rescue-a-body-of-biased-or-low-quality-studies",
+	"does-randomization-automatically-answer-every-causal-or-policy-question",
+	"are-observational-studies-useless-for-learning-about-causal-effects",
+	"does-one-failed-replication-prove-the-original-finding-was-false",
+	"can-converging-evidence-from-different-methods-strengthen-a-causal-conclusion",
+	"can-repeating-a-false-claim-make-it-feel-more-true",
+	"can-false-balance-reporting-make-expert-evidence-look-evenly-divided",
+	"do-corrections-completely-erase-misinformations-influence",
+	"do-warning-labels-eliminate-belief-in-and-sharing-of-misinformation",
+	"can-brief-accuracy-prompts-improve-the-quality-of-news-people-share",
+	"is-online-false-news-spread-only-by-automated-bots",
+	"do-likes-and-share-counts-prove-that-online-information-is-credible",
+	"does-a-very-large-online-sample-eliminate-selection-bias",
+	"can-press-releases-and-headlines-turn-association-into-causation",
+	"do-media-literacy-interventions-reliably-make-everyone-resistant-to-misinformation",
+	"can-selective-outcome-reporting-distort-a-clinical-trials-published-conclusion",
+	"can-spin-make-a-statistically-non-significant-trial-sound-positive",
+	"do-registered-reports-reduce-publication-bias-and-guarantee-valid-findings",
+	"are-positive-study-results-more-likely-to-be-cited",
+	"can-ordinary-journal-peer-review-reliably-detect-fraud-and-hidden-errors",
+	"do-retraction-counts-reveal-how-much-research-misconduct-exists",
+	"can-incentives-for-novel-positive-findings-make-a-literature-less-reliable",
+	"do-direct-replications-often-estimate-smaller-effects-than-original-studies",
+	"can-flexible-analysis-choices-inflate-false-positive-findings",
+	"does-a-journals-impact-factor-measure-the-quality-of-each-article-it-publishes",
+	"do-more-facts-alone-reliably-resolve-polarized-science-disputes",
+	"can-unexplained-scientific-jargon-reduce-understanding-and-engagement",
+	"does-plain-language-improve-comprehension-without-guaranteeing-an-informed-decision",
+	"can-natural-frequencies-and-icon-arrays-improve-risk-understanding",
+	"can-equivalent-survival-and-mortality-framing-change-peoples-choices",
+	"do-words-like-likely-and-rare-mean-the-same-probability-to-everyone",
+	"can-personal-narratives-improve-engagement-while-also-biasing-risk-judgments",
+	"is-one-trusted-messenger-equally-credible-to-every-audience",
+	"do-fear-appeals-work-best-when-people-also-receive-effective-action-guidance",
+	"does-two-way-public-engagement-add-value-beyond-one-way-science-messaging",
+	"did-semmelweisss-hand-disinfection-rule-sharply-reduce-childbed-fever",
+	"did-one-famous-map-by-itself-establish-that-contaminated-water-spread-cholera",
+	"did-prenatal-thalidomide-exposure-cause-severe-birth-defects",
+	"did-mandatory-folic-acid-fortification-reduce-neural-tube-defects",
+	"did-niacin-enrichment-help-eliminate-endemic-pellagra-in-the-united-states",
+	"did-sulfur-emission-controls-reduce-acid-rain-and-begin-ecosystem-recovery",
+	"did-magnetic-stripes-alone-establish-the-modern-theory-of-plate-tectonics",
+	"did-combination-antiretroviral-therapy-transform-survival-with-hiv",
+	"did-insulin-transform-type-1-diabetes-from-a-rapidly-fatal-disease",
+	"did-the-1952-great-smog-demonstrate-that-severe-air-pollution-can-rapidly-kill",
+	"do-lower-legal-blood-alcohol-limits-reduce-alcohol-related-crashes",
+	"do-alcohol-ignition-interlocks-reduce-repeat-impaired-driving",
+	"does-converting-suitable-intersections-to-roundabouts-reduce-severe-crashes",
+	"do-area-wide-traffic-calming-schemes-reduce-road-injuries",
+	"did-child-resistant-packaging-laws-reduce-fatal-medicine-poisonings-in-young-children",
+	"do-residential-fire-sprinklers-reduce-deaths-and-injuries-when-home-fires-occur",
+	"do-higher-tobacco-excise-taxes-reduce-smoking",
+	"do-taxes-on-sugar-sweetened-beverages-reduce-purchases",
+	"do-industrial-trans-fat-restrictions-reduce-cardiovascular-harm",
+	"does-minimum-unit-pricing-reduce-alcohol-consumption-and-harm"
+];
+
 const titleStopWords = new Set([
 	"a",
 	"an",
@@ -683,6 +746,130 @@ describe("default claim seed quality", () => {
 		assert.match(basicIncome, /no trial fully reproduces/i);
 		assert.match(basicIncome, /permanent.*national/i);
 		assert.doesNotMatch(basicIncome, /no effect on work/i);
+	});
+
+	it("adds a 60-review fourth encyclopedia tranche that deepens six underserved fields", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheFourSlugs);
+		const expansionClaims = august2026EncyclopediaTrancheFourSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing fourth encyclopedia expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 60);
+		assert.equal(expansionClaims.length, 60);
+		assert.ok(defaultClaims.length >= 445, "The fourth encyclopedia tranche must bring the library to 445 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"bias-incentives": 10,
+				"consensus-foundations": 10,
+				"historical-case-studies": 10,
+				"media-misinformation": 10,
+				"public-policy-and-safety": 10,
+				"science-communication": 10
+			}
+		);
+
+		assert.ok(defaultTopics.length >= 26, "Deepening existing topics must retain the 26-topic directory");
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-18T23:30:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-18T23:30:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(claim.sources.some(source => source.isAnchor), `${claim.slug} needs a visible anchor source`);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+			assert.ok(
+				claim.sources.every(source => source.citationCheckedAt === "2026-08-18T23:30:00.000Z"),
+				`${claim.slug} must record the fourth-tranche citation review`
+			);
+			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
+			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
+			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+		}
+	});
+
+	it("keeps the fourth encyclopedia tranche distinct from all earlier claim titles", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheFourSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Fourth-tranche claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the fourth encyclopedia tranche's decision-critical evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing fourth-tranche claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions
+			].join(" ");
+		}
+
+		const significance = visibleClaimText(
+			"does-statistical-significance-tell-you-whether-an-effect-is-large-or-important"
+		);
+		assert.match(significance, /does not measure effect size/i);
+		assert.match(significance, /practical importance/i);
+
+		const falseBalance = visibleClaimText(
+			"can-false-balance-reporting-make-expert-evidence-look-evenly-divided"
+		);
+		assert.match(falseBalance, /relative weight/i);
+		assert.match(falseBalance, /equal airtime/i);
+
+		const registeredReports = visibleClaimText(
+			"do-registered-reports-reduce-publication-bias-and-guarantee-valid-findings"
+		);
+		assert.match(registeredReports, /cannot guarantee|does not mean automatically correct/i);
+		assert.match(registeredReports, /results-blind/i);
+
+		const narratives = visibleClaimText(
+			"can-personal-narratives-improve-engagement-while-also-biasing-risk-judgments"
+		);
+		assert.match(narratives, /illustrate rather than replace/i);
+		assert.match(narratives, /unrepresentative/i);
+
+		const snow = visibleClaimText(
+			"did-one-famous-map-by-itself-establish-that-contaminated-water-spread-cholera"
+		);
+		assert.match(snow, /not because dots clustered on one map/i);
+		assert.match(snow, /natural comparison/i);
+
+		const pricing = visibleClaimText(
+			"does-minimum-unit-pricing-reduce-alcohol-consumption-and-harm"
+		);
+		assert.match(pricing, /best evaluated national case|Scotland/i);
+		assert.match(pricing, /transferability|not establish an identical effect/i);
 	});
 
 	it("keeps the second encyclopedia tranche distinct from prior claim titles", () => {
