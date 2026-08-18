@@ -48,12 +48,15 @@ describe("consensus directory metadata", () => {
 		assert.match(source, /const claimsPageSize = 12/);
 	});
 
-	it("adds guided directory sections for the first encyclopedia expansion topics", () => {
+	it("adds guided directory sections for the encyclopedia expansion topics", () => {
 		const expectedGuides = [
 			["education-and-learning", /varies sharply by intervention/i],
 			["sleep-and-circadian-health", /Strong foundations/i],
 			["exercise-and-sports-science", /Strong consensus on movement/i],
-			["crime-and-justice", /design and value limits/i]
+			["crime-and-justice", /design and value limits/i],
+			["astronomy-and-space", /Strong observations/i],
+			["earth-and-geoscience", /probabilistic hazards/i],
+			["ecology-and-conservation", /context-dependent remedies/i]
 		] as const;
 
 		for (const [slug, labelPattern] of expectedGuides) {

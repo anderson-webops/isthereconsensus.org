@@ -39,7 +39,10 @@ const starterOrder = [
 	"education-and-learning",
 	"sleep-and-circadian-health",
 	"exercise-and-sports-science",
-	"crime-and-justice"
+	"crime-and-justice",
+	"astronomy-and-space",
+	"earth-and-geoscience",
+	"ecology-and-conservation"
 ];
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const fallbackTopics = computed<Topic[]>(() =>

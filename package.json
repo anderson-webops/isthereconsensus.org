@@ -40,6 +40,7 @@
 		"smoke:backend-runtime": "node scripts/backend-runtime-smoke.mjs",
 		"smoke:ssr-assets": "node scripts/ssr-public-assets-smoke.mjs",
 		"smoke:ssr-routes": "node scripts/ssr-route-rules-smoke.mjs",
+		"content:coverage": "npm exec -w back-end -- tsx src/scripts/reportContentCoverage.ts",
 		"clean": "node scripts/clean.mjs",
 		"verify:install-scripts": "node scripts/verify-install-script-policy.mjs",
 		"verify:native-lock": "node scripts/verify-native-lock.mjs",

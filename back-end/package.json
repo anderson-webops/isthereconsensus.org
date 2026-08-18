@@ -26,6 +26,7 @@
 		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts",
 		"set-admin-status": "node dist/set-admin-status.js",
 		"set-admin-status-ts": "tsx -r dotenv/config src/set-admin-status.ts",
+		"content:coverage": "tsx src/scripts/reportContentCoverage.ts",
 		"migrate:evidence-landscape:v1": "tsx -r dotenv/config src/scripts/migrations/backfillEvidenceLandscapeV1.ts"
 	},
 	"keywords": [],

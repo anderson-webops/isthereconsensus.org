@@ -116,6 +116,39 @@ const august2026EncyclopediaSlugs = [
 	"do-cognitive-behavioral-rehabilitation-programs-reduce-reoffending"
 ];
 
+const august2026EncyclopediaTrancheTwoSlugs = [
+	"is-earth-flat-or-approximately-spherical",
+	"did-humans-land-on-the-moon",
+	"is-the-universe-expanding",
+	"is-the-hot-big-bang-the-best-supported-broad-model-of-cosmic-history",
+	"are-black-holes-real-astronomical-objects",
+	"does-astrology-predict-personality-or-events-better-than-chance",
+	"has-life-beyond-earth-been-scientifically-confirmed",
+	"do-uap-reports-establish-extraterrestrial-visitation",
+	"can-solar-storms-disrupt-technology-and-electric-grids",
+	"has-the-particle-identity-of-dark-matter-been-directly-detected",
+	"is-earth-about-4-54-billion-years-old",
+	"do-earths-tectonic-plates-move",
+	"can-scientists-predict-the-exact-time-place-and-magnitude-of-earthquakes",
+	"can-underground-fluid-injection-induce-earthquakes",
+	"is-yellowstone-overdue-for-a-supereruption",
+	"is-earths-mantle-mostly-molten",
+	"are-most-natural-diamonds-made-from-coal",
+	"was-petroleum-made-from-dinosaurs",
+	"can-volcano-monitoring-forecast-elevated-eruption-risk",
+	"can-groundwater-pumping-cause-land-subsidence",
+	"does-biodiversity-support-ecosystem-functioning-and-stability",
+	"are-current-species-extinction-rates-above-natural-background-rates",
+	"does-breaking-habitat-into-smaller-isolated-patches-harm-biodiversity",
+	"are-all-non-native-species-invasive",
+	"do-invasive-alien-species-cause-major-ecological-and-economic-harm",
+	"do-pollinator-declines-threaten-crop-production",
+	"do-pesticides-contribute-to-pollinator-declines",
+	"do-protected-areas-generally-improve-conservation-outcomes",
+	"do-well-enforced-no-take-marine-reserves-increase-fish-biomass-and-biodiversity",
+	"are-tree-plantations-equivalent-to-natural-forests-for-biodiversity-and-carbon-storage"
+];
+
 const titleStopWords = new Set([
 	"a",
 	"an",
@@ -403,6 +436,110 @@ describe("default claim seed quality", () => {
 				`${claim.slug} needs a synthesis or institutional decision source`
 			);
 		}
+	});
+
+	it("adds a 30-review second encyclopedia tranche across three new fields", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheTwoSlugs);
+		const expansionClaims = august2026EncyclopediaTrancheTwoSlugs.map((slug) => {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing second encyclopedia expansion claim ${slug}`);
+			return claim;
+		});
+
+		assert.equal(expansionSlugSet.size, 30);
+		assert.equal(expansionClaims.length, 30);
+		assert.ok(defaultClaims.length >= 335, "The second encyclopedia tranche must bring the library to 335 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						expansionClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"astronomy-and-space": 10,
+				"earth-and-geoscience": 10,
+				"ecology-and-conservation": 10
+			}
+		);
+
+		const newTopicSlugs = [
+			"astronomy-and-space",
+			"earth-and-geoscience",
+			"ecology-and-conservation"
+		];
+		assert.ok(defaultTopics.length >= 21, "The second encyclopedia tranche must bring the directory to 21 topics");
+		for (const topicSlug of newTopicSlugs) {
+			assert.ok(defaultTopics.some(topic => topic.slug === topicSlug), `Missing topic ${topicSlug}`);
+		}
+
+		for (const claim of expansionClaims) {
+			assert.equal(claim.status, "published", `${claim.slug} must be public`);
+			assert.equal(claim.searchCutoffAt, "2026-08-18T20:00:00.000Z");
+			assert.equal(claim.lastRetractionCheckAt, "2026-08-18T20:00:00.000Z");
+			assert.ok(claim.sources.length >= 3, `${claim.slug} needs at least three sources`);
+			assert.ok(claim.sources.some(source => source.isAnchor), `${claim.slug} needs a visible anchor source`);
+			assert.ok(
+				claim.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or institutional decision source`
+			);
+		}
+	});
+
+	it("keeps the second encyclopedia tranche distinct from prior claim titles", () => {
+		const expansionSlugSet = new Set(august2026EncyclopediaTrancheTwoSlugs);
+		const expansionClaims = defaultClaims.filter(claim => expansionSlugSet.has(claim.slug));
+		const preExistingClaims = defaultClaims.filter(claim => !expansionSlugSet.has(claim.slug));
+
+		for (const claim of expansionClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Second-tranche claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves important ecology evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing ecology claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions
+			].join(" ");
+		}
+
+		const fragmentation = visibleClaimText(
+			"does-breaking-habitat-into-smaller-isolated-patches-harm-biodiversity"
+		);
+		assert.match(fragmentation, /fragmentation per se/i);
+		assert.match(fragmentation, /habitat amount/i);
+		assert.match(fragmentation, /positive, negative, or neutral/i);
+
+		const pollinators = visibleClaimText("do-pollinator-declines-threaten-crop-production");
+		assert.match(pollinators, /wind- or self-pollinated/i);
+		assert.match(pollinators, /not apply equally|not.*every calorie/i);
+
+		const plantations = visibleClaimText(
+			"are-tree-plantations-equivalent-to-natural-forests-for-biodiversity-and-carbon-storage"
+		);
+		assert.match(plantations, /prior land cover|baseline land cover/i);
+		assert.match(plantations, /not substitutes/i);
 	});
 
 	it("keeps the encyclopedia tranche distinct from the existing claim library", () => {
