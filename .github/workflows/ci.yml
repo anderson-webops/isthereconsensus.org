@@ -23,25 +23,31 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Guard footer appearance controls
+      - name: Guard header appearance controls
         run: |
           set -euo pipefail
 
-          grep -R --fixed-strings --line-number 'class="site-footer__appearance" aria-label="Appearance controls"' \
+          grep -R --fixed-strings --line-number 'class="site-header__controls" aria-label="Appearance controls"' \
             front-end/src/layouts/default.vue \
             front-end/src/layouts/home.vue
 
-          ! grep -R --fixed-strings --line-number 'class="site-header__controls" aria-label="Appearance controls"' \
+          if grep -R --fixed-strings --line-number 'class="site-footer__appearance" aria-label="Appearance controls"' \
             front-end/src/layouts/default.vue \
-            front-end/src/layouts/home.vue
+            front-end/src/layouts/home.vue; then
+            echo "Appearance controls belong in the header, not the footer." >&2
+            exit 1
+          fi
 
-          ! grep -R -E --line-number 'palette header regression|keeps the palette switcher next to the compact color-mode toggle in the header' \
-            front-end/test/palette-footer-regression.test.ts \
+          grep -R -E --line-number 'palette header regression|keeps the palette switcher next to the compact color-mode toggle in the header' \
+            front-end/test/palette-header-regression.test.ts \
             front-end/test/theme-controls.test.ts
 
-          grep -R -E --line-number 'palette footer regression|keeps the palette switcher next to the compact color-mode toggle in the footer' \
-            front-end/test/palette-footer-regression.test.ts \
-            front-end/test/theme-controls.test.ts
+          if grep -R -E --line-number 'palette footer regression|keeps the palette switcher next to the compact color-mode toggle in the footer' \
+            front-end/test/palette-header-regression.test.ts \
+            front-end/test/theme-controls.test.ts; then
+            echo "Footer appearance-control regression guard should not be present." >&2
+            exit 1
+          fi
 
   lint:
     runs-on: ubuntu-latest
