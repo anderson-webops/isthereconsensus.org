@@ -340,17 +340,22 @@ export interface Question {
 export interface SearchClaimMatch extends ClaimSummary {
 	matchReason?: string;
 	matchScore?: number;
+	matchStrength?: SearchMatchStrength;
 }
 
 export interface SearchTopicMatch extends Topic {
 	matchReason?: string;
 	matchScore?: number;
+	matchStrength?: SearchMatchStrength;
 }
 
 export interface SearchQuestionMatch extends Question {
 	matchReason?: string;
 	matchScore?: number;
+	matchStrength?: SearchMatchStrength;
 }
+
+export type SearchMatchStrength = "exact" | "close" | "related" | "none";
 
 export interface TopicResponse {
 	topics: Topic[];

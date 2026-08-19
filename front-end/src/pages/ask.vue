@@ -30,19 +30,19 @@ const { currentAccount, isLoggedIn } = useAuth();
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
 const question = ref(typeof route.query.question === "string" ? route.query.question : "");
-const coreQuestion = ref(question.value);
 const context = ref("");
 const sourceUrl = ref("");
 const selectedTopic = ref(typeof route.query.topic === "string" ? route.query.topic : "");
-const selectedClaimSlug = ref("");
 const questionKind = ref<QuestionAskKind>("discussion");
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
 const suggestionError = ref("");
+const showPostingForm = ref(false);
 const submitting = ref(false);
 const errorMessage = ref("");
 const captchaToken = ref("");
 const captchaRef = ref<{ reset: () => void } | null>(null);
+const postingFormRef = ref<HTMLElement | null>(null);
 
 const { data: topicsData } = await useAsyncData("ask-topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
@@ -55,9 +55,7 @@ const queryAnalysis = computed(() => analyzeAskQuery(query.value));
 const explainerSuggestions = computed(() => matchExplainers(query.value).slice(0, 3));
 const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
 const topTopicMatch = computed(() => suggestions.value.topics[0] ?? null);
-const selectedClaimRecord = computed(
-	() => suggestions.value.claims.find((claim) => claim.slug === selectedClaimSlug.value) ?? null
-);
+const showMatchDecision = computed(() => searchReady.value && !loadingSuggestions.value);
 const supportLinks = computed(() => {
 	const links: Array<{ label: string; path: string }> = [];
 
@@ -78,14 +76,6 @@ const supportLinks = computed(() => {
 	return links;
 });
 const closestMatchRecord = computed<MatchOption | null>(() => {
-	if (selectedClaimRecord.value?.topic?.slug) {
-		return {
-			label: selectedClaimRecord.value.title,
-			path: `/consensus/${selectedClaimRecord.value.topic.slug}/${selectedClaimRecord.value.slug}`,
-			type: "claim"
-		};
-	}
-
 	if (topClaimMatch.value?.topic?.slug) {
 		return {
 			label: topClaimMatch.value.title,
@@ -148,23 +138,22 @@ function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
 
-function attachClaim(claim: ClaimSummary) {
-	selectedTopic.value = claim.topic?.slug || selectedTopic.value;
-	selectedClaimSlug.value = claim.slug;
-	questionKind.value = "claim";
-}
-
 function openSuggestion(path: string) {
 	router.push(path);
+}
+
+async function revealPostingForm() {
+	showPostingForm.value = true;
+	errorMessage.value = "";
+	await nextTick();
+	postingFormRef.value?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 watch(
 	() => query.value,
 	(value, previous) => {
-		if (!coreQuestion.value || coreQuestion.value === previous) {
-			coreQuestion.value = value;
-		}
 		questionKind.value = defaultAskKind(queryAnalysis.value);
+		if (previous !== undefined && value !== previous) showPostingForm.value = false;
 	},
 	{ immediate: true }
 );
@@ -177,15 +166,6 @@ watch(
 		selectedTopic.value = topClaimMatch.value?.topic?.slug || topTopicMatch.value?.slug || topics.value[0].slug;
 	},
 	{ immediate: true }
-);
-
-watch(
-	() => suggestions.value.claims.map((claim) => claim.slug).join("|"),
-	() => {
-		if (!selectedClaimSlug.value) return;
-		if (suggestions.value.claims.some((claim) => claim.slug === selectedClaimSlug.value)) return;
-		selectedClaimSlug.value = "";
-	}
 );
 
 watchDebounced(
@@ -218,8 +198,8 @@ async function submitQuestion() {
 		errorMessage.value = "Please sign in before posting.";
 		return;
 	}
-	if (!coreQuestion.value.trim()) {
-		errorMessage.value = "Add a one-sentence core question before posting.";
+	if (!query.value) {
+		errorMessage.value = "Add a question before posting.";
 		return;
 	}
 	if (!selectedTopic.value) {
@@ -238,8 +218,8 @@ async function submitQuestion() {
 			credentials: "include",
 			body: {
 				topic: selectedTopic.value,
-				claim: selectedClaimSlug.value || undefined,
-				title: coreQuestion.value.trim(),
+				claim: undefined,
+				title: query.value,
 				normalizedQuestion: queryAnalysis.value.normalized,
 				body: context.value.trim(),
 				sourceUrl: sourceUrl.value.trim(),
@@ -256,14 +236,6 @@ async function submitQuestion() {
 
 		captchaRef.value?.reset();
 		captchaToken.value = "";
-
-		if (selectedClaimSlug.value) {
-			await router.push({
-				path: `/consensus/${selectedTopic.value}/${selectedClaimSlug.value}`,
-				query: { posted: "1" }
-			});
-			return;
-		}
 
 		await router.push({
 			path: `/consensus/${selectedTopic.value}`,
@@ -284,40 +256,30 @@ async function submitQuestion() {
 		<header class="ask-page__header">
 			<p class="eyebrow">Ask a question</p>
 			<h1>Search first. Ask what is missing.</h1>
-			<p>
-				Start with the closest reviewed page. If it does not answer the question, submit the specific gap for
-				review.
-			</p>
+			<p>Find the closest reviewed answer, or send the specific gap for review.</p>
 		</header>
 
 		<section class="search-panel">
-			<label class="field-label" for="claim-question">Search a claim or question first</label>
+			<label class="field-label" for="claim-question">What are you looking for?</label>
 			<textarea
 				id="claim-question"
 				v-model="question"
 				rows="3"
 				placeholder="Does X cause Y? Is X safe? What does this new study show?"
 			/>
-			<p class="search-panel__hint">
-				Use one clear claim when possible. Matching reviews, topics, and explainers appear as you type.
-			</p>
 		</section>
 
-		<section class="results-panel">
+		<section v-if="searchReady" class="results-panel">
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Closest reviewed pages</p>
-					<h2>Start with the strongest match</h2>
+					<h2>Does one of these answer it?</h2>
 				</div>
-				<p>Use the match if it answers your question. Post only what remains unclear.</p>
 			</div>
 
-			<div v-if="!searchReady" class="empty-state">Type at least three characters to start matching.</div>
-			<div v-else-if="loadingSuggestions" class="empty-state">Checking reviewed pages...</div>
+			<div v-if="loadingSuggestions" class="empty-state">Checking reviewed pages...</div>
 			<div v-else-if="suggestionError" class="empty-state">{{ suggestionError }}</div>
-			<div v-else-if="!suggestions.claims.length" class="empty-state">
-				No close claim review yet. Check related topics or submit a focused question.
-			</div>
+			<div v-else-if="!suggestions.claims.length" class="empty-state">No close reviewed claim found.</div>
 			<div v-else class="match-list">
 				<article
 					v-for="claim in suggestions.claims"
@@ -328,7 +290,7 @@ async function submitQuestion() {
 					<div>
 						<p class="match-row__meta">
 							<span>{{ claim.topic?.title }}</span>
-							<span>{{ matchStrengthLabel(claim.matchScore) }}</span>
+							<span>{{ matchStrengthLabel(claim.matchScore, claim.matchStrength) }}</span>
 							<span>{{ claimSupportLabel(claim) }}</span>
 							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
 						</p>
@@ -346,34 +308,41 @@ async function submitQuestion() {
 						>
 							Open review
 						</button>
-						<button class="button button--ghost" type="button" @click="attachClaim(claim)">
-							Related, but different
-						</button>
 					</div>
 				</article>
 			</div>
 
-			<div v-if="searchReady && supportLinks.length" class="support-links">
-				<p class="field-label">Broader or conceptual fallback</p>
+			<div v-if="supportLinks.length" class="support-links">
+				<p class="field-label">Related topics and explainers</p>
 				<div class="support-links__list">
 					<NuxtLink v-for="link in supportLinks" :key="link.path" class="text-link" :to="link.path">
 						{{ link.label }}
 					</NuxtLink>
 				</div>
 			</div>
+
+			<div v-if="showMatchDecision" class="match-decision">
+				<p>
+					{{
+						suggestions.claims.length
+							? "None of these answers my question."
+							: "This question is not covered yet."
+					}}
+				</p>
+				<button class="button button--primary" type="button" @click="revealPostingForm">
+					Ask what is missing
+				</button>
+			</div>
 		</section>
 
-		<section class="posting-form">
+		<section v-if="showPostingForm" ref="postingFormRef" class="posting-form">
 			<div class="posting-form__header">
 				<div>
 					<p class="eyebrow">Submit to the queue</p>
-					<h2>If the matches miss your question, ask here.</h2>
+					<h2>Ask what is missing</h2>
 				</div>
-				<p>
-					Use a neutral, testable question. Add context only when it helps explain what the reviewed page did
-					not cover.
-				</p>
 			</div>
+			<p class="posting-form__question">{{ query }}</p>
 
 			<AuthPanel
 				v-if="!isLoggedIn"
@@ -382,28 +351,6 @@ async function submitQuestion() {
 				variant="inline"
 			/>
 			<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
-
-			<div v-if="selectedClaimRecord" class="attached-claim">
-				<div>
-					<p class="field-label">Related reviewed claim attached</p>
-					<p>{{ selectedClaimRecord.title }}</p>
-				</div>
-				<button class="button button--ghost" type="button" @click="selectedClaimSlug = ''">Clear</button>
-			</div>
-
-			<div class="field-stack">
-				<label class="field-label" for="core-question">One-sentence core question</label>
-				<input
-					id="core-question"
-					v-model="coreQuestion"
-					type="text"
-					placeholder="Example: Do vaccines change human DNA?"
-				/>
-				<p class="field-help">
-					One sentence is enough. Prefer a neutral form such as "Does X cause Y?" or "What evidence supports
-					X?"
-				</p>
-			</div>
 
 			<div class="field-stack">
 				<label class="field-label" for="post-topic">Closest topic</label>
@@ -448,7 +395,6 @@ async function submitQuestion() {
 				>
 					{{ submitting ? "Posting..." : "Post to the queue" }}
 				</button>
-				<NuxtLink class="button button--ghost" to="/consensus">Browse topics</NuxtLink>
 			</div>
 		</section>
 	</div>
@@ -474,21 +420,19 @@ async function submitQuestion() {
 }
 
 .ask-page__header p,
-.search-panel__hint,
-.field-help,
 .section-heading p,
 .match-row p,
 .empty-state,
 .posting-form__header p,
+.posting-form__question,
+.match-decision p,
 .muted,
-.error,
-.attached-claim p {
+.error {
 	color: var(--consensus-muted);
 	line-height: 1.64;
 }
 
 .ask-page__header p,
-.field-help,
 .section-heading p,
 .posting-form__header p {
 	max-width: 68ch;
@@ -497,8 +441,7 @@ async function submitQuestion() {
 .search-panel,
 .results-panel,
 .posting-form,
-.match-row,
-.attached-claim {
+.match-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 18px;
@@ -539,11 +482,6 @@ async function submitQuestion() {
 	color: var(--consensus-muted);
 }
 
-.field-help {
-	margin: -2px 0 0;
-	font-size: 0.94rem;
-}
-
 .match-row__meta {
 	display: flex;
 	gap: 8px 12px;
@@ -560,7 +498,7 @@ async function submitQuestion() {
 
 .match-row__actions,
 .posting-form__actions,
-.attached-claim {
+.match-decision {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
@@ -572,7 +510,7 @@ async function submitQuestion() {
 .section-heading p,
 .posting-form__header h2,
 .posting-form__header p,
-.attached-claim p {
+.match-decision p {
 	margin: 0;
 }
 
@@ -609,7 +547,7 @@ async function submitQuestion() {
 .match-row__actions {
 	flex-direction: column;
 	align-items: stretch;
-	min-width: 176px;
+	min-width: 148px;
 }
 
 .match-row__actions .button {
@@ -628,9 +566,27 @@ async function submitQuestion() {
 	flex-wrap: wrap;
 }
 
-.attached-claim {
-	padding: 16px 18px;
+.match-decision {
 	align-items: center;
+	margin-top: 4px;
+	padding-top: 16px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.posting-form {
+	scroll-margin-top: 18px;
+}
+
+.posting-form__question {
+	margin: 0;
+	padding: 13px 15px;
+	border-left: 3px solid var(--consensus-ember);
+	background: var(--consensus-field-surface);
+	color: var(--consensus-ink);
+}
+
+.posting-form__actions {
+	justify-content: end;
 }
 
 .posting-form__optional {
@@ -727,8 +683,14 @@ async function submitQuestion() {
 	}
 
 	.match-row__actions,
-	.posting-form__actions {
+	.posting-form__actions,
+	.match-decision {
 		width: 100%;
+	}
+
+	.match-decision {
+		align-items: stretch;
+		flex-direction: column;
 	}
 }
 </style>

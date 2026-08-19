@@ -9,6 +9,7 @@ import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
 import { claimReviewTimestamp, selectRecentClaims } from "~/utils/recent-claims";
+import { resolveHomeSearchRoute } from "~/utils/search-routing";
 
 definePageMeta({
 	layout: "home"
@@ -105,6 +106,16 @@ const searchAnalysis = computed(() => analyzeAskQuery(searchQuery.value));
 const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
 const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
 const explainerSuggestions = computed(() => matchExplainers(searchQuery.value).slice(0, 2));
+const hasSuggestions = computed(() =>
+	Boolean(claimSuggestions.value.length || topicSuggestions.value.length || explainerSuggestions.value.length)
+);
+const showNoCloseMatch = computed(
+	() => searchQuery.value.length >= 3 && !loadingSuggestions.value && !suggestionError.value && !hasSuggestions.value
+);
+const askSearchLink = computed(() => ({
+	path: "/ask",
+	query: { question: searchQuery.value }
+}));
 const recentClaimCandidates = computed(() =>
 	enrichedTopics.value.flatMap((topic) =>
 		(topic.featuredClaims ?? []).map((claim) => ({
@@ -223,32 +234,15 @@ watchDebounced(
 
 function submitSearch() {
 	const query = searchQuery.value;
-	if (!query) {
-		router.push("/consensus");
-		return;
-	}
-
-	const firstClaim = claimSuggestions.value[0];
-	if (firstClaim?.topic?.slug) {
-		router.push(`/consensus/${firstClaim.topic.slug}/${firstClaim.slug}`);
-		return;
-	}
-
-	const firstTopic = topicSuggestions.value[0];
-	if (firstTopic?.slug) {
-		router.push(`/consensus/${firstTopic.slug}`);
-		return;
-	}
-
-	if (searchAnalysis.value.recommendedDestination === "explainer" && explainerSuggestions.value[0]) {
-		router.push(`/explainers/${explainerSuggestions.value[0].slug}`);
-		return;
-	}
-
-	router.push({
-		path: "/ask",
-		query: { question: query }
-	});
+	router.push(
+		resolveHomeSearchRoute({
+			claims: claimSuggestions.value,
+			explainerSlug: explainerSuggestions.value[0]?.slug,
+			preferExplainer: searchAnalysis.value.recommendedDestination === "explainer",
+			query,
+			topics: topicSuggestions.value
+		})
+	);
 }
 
 function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
@@ -348,10 +342,7 @@ function formatTopicUpdateLabel(value?: string) {
 						Checking reviewed pages...
 					</div>
 
-					<div
-						v-if="claimSuggestions.length || topicSuggestions.length || explainerSuggestions.length"
-						class="suggestion-groups"
-					>
+					<div v-if="hasSuggestions" class="suggestion-groups">
 						<div v-if="claimSuggestions.length" class="suggestion-group">
 							<p class="suggestion-group__label">Claim reviews</p>
 							<ul class="suggestion-list">
@@ -389,6 +380,10 @@ function formatTopicUpdateLabel(value?: string) {
 								</li>
 							</ul>
 						</div>
+					</div>
+					<div v-else-if="showNoCloseMatch" class="search-panel__empty" aria-live="polite">
+						<span>No close match in the reviewed library.</span>
+						<NuxtLink class="text-link" :to="askSearchLink">Ask this question</NuxtLink>
 					</div>
 				</form>
 			</div>
@@ -605,6 +600,16 @@ function formatTopicUpdateLabel(value?: string) {
 .suggestion-groups {
 	display: grid;
 	gap: 12px;
+}
+
+.search-panel__empty {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px 16px;
+	flex-wrap: wrap;
+	padding-top: 2px;
+	color: var(--consensus-muted);
 }
 
 .suggestion-group {

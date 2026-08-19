@@ -103,6 +103,7 @@ import {
 	parseTrustedProxyIps
 } from "./utils/runtimeSecurity.js";
 import { logError } from "./utils/safeLog.js";
+import { analyzeSearchMatch, searchMatchIsDisplayable } from "./utils/searchMatch.js";
 import { slugify } from "./utils/slugify.js";
 import "dotenv/config";
 
@@ -1403,47 +1404,6 @@ async function main() {
 		return errors;
 	}
 
-	function analyzeMatch(query: string, haystack: string) {
-		if (!query || !haystack) {
-			return {
-				matchReason: "",
-				matchScore: 0
-			};
-		}
-		const normalizedQuery = query.toLowerCase();
-		const normalizedHaystack = haystack.toLowerCase();
-		if (normalizedHaystack === normalizedQuery) {
-			return {
-				matchReason: "Exact wording match",
-				matchScore: 120
-			};
-		}
-		if (normalizedHaystack.startsWith(normalizedQuery)) {
-			return {
-				matchReason: "Starts with the same wording",
-				matchScore: 100
-			};
-		}
-		if (normalizedHaystack.includes(normalizedQuery)) {
-			return {
-				matchReason: "Contains the same phrasing",
-				matchScore: 80
-			};
-		}
-		const queryTokens = normalizedQuery.split(whitespacePattern).filter(Boolean);
-		const haystackTokens = normalizedHaystack.split(whitespacePattern).filter(Boolean);
-		const overlap = [...new Set(queryTokens.filter(token => haystackTokens.some(entry => entry.includes(token))))];
-		return overlap.length
-			? {
-					matchReason: `Matches terms: ${overlap.slice(0, 3).join(", ")}`,
-					matchScore: 20 + overlap.length * 10
-				}
-			: {
-					matchReason: "",
-					matchScore: 0
-				};
-	}
-
 	api.get("/topics", async (req, res) => {
 		try {
 			const includeCounts = req.query.includeCounts === "true";
@@ -1610,7 +1570,6 @@ async function main() {
 						? claim.topic
 						: null;
 					const haystack = [
-						claim.title,
 						claim.bottomLine,
 						claim.editorSummary,
 						...(claim.misconceptions || []),
@@ -1621,18 +1580,24 @@ async function main() {
 						.join(" ")
 						.trim();
 
+					const titleMatch = query ? analyzeSearchMatch(query, claim.title) : null;
+					const contentMatch = query ? analyzeSearchMatch(query, haystack) : null;
+					const match
+						= titleMatch && contentMatch
+							? (titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch)
+							: null;
+
 					return {
 						claim,
-						match: query
-							? analyzeMatch(query, haystack)
-							: {
-									matchReason: "",
-									matchScore: 0
-								},
+						match: match ?? {
+							matchReason: "",
+							matchScore: 0,
+							matchStrength: "none" as const
+						},
 						topic
 					};
 				})
-				.filter(entry => !query || entry.match.matchScore > 0)
+				.filter(entry => !query || searchMatchIsDisplayable(entry.match))
 				.sort((left, right) => {
 					if (query && left.match.matchScore !== right.match.matchScore) {
 						return right.match.matchScore - left.match.matchScore;
@@ -1665,6 +1630,7 @@ async function main() {
 				lastRetractionCheckAt: claim.lastRetractionCheckAt,
 				matchReason: match.matchReason || undefined,
 				matchScore: query ? match.matchScore : undefined,
+				matchStrength: query ? match.matchStrength : undefined,
 				topic: topic
 					? {
 							_id: topic._id,
@@ -1906,7 +1872,6 @@ async function main() {
 			const rankedClaims = publicReadyClaims
 				.map((claim) => {
 					const haystack = [
-						claim.title,
 						claim.bottomLine,
 						claim.editorSummary,
 						...(claim.misconceptions || []),
@@ -1915,10 +1880,12 @@ async function main() {
 					]
 						.join(" ")
 						.trim();
-					const match = analyzeMatch(query, haystack);
+					const titleMatch = analyzeSearchMatch(query, claim.title);
+					const contentMatch = analyzeSearchMatch(query, haystack);
+					const match = titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch;
 					return { claim, match };
 				})
-				.filter(entry => entry.match.matchScore > 0)
+				.filter(entry => searchMatchIsDisplayable(entry.match))
 				.sort(
 					(left, right) =>
 						right.match.matchScore - left.match.matchScore || left.claim.title.localeCompare(right.claim.title)
@@ -1933,6 +1900,7 @@ async function main() {
 					confidenceScore: claim.confidenceScore,
 					matchReason: match.matchReason,
 					matchScore: match.matchScore,
+					matchStrength: match.matchStrength,
 					topic:
 						typeof claim.topic === "object" && "slug" in claim.topic
 							? {
@@ -1945,10 +1913,12 @@ async function main() {
 
 			const rankedTopics = topics
 				.map((topic) => {
-					const match = analyzeMatch(query, [topic.title, topic.description, topic.slug].join(" "));
+					const titleMatch = analyzeSearchMatch(query, topic.title);
+					const contextMatch = analyzeSearchMatch(query, [topic.description, topic.slug].join(" "));
+					const match = titleMatch.matchScore >= contextMatch.matchScore ? titleMatch : contextMatch;
 					return { topic, match };
 				})
-				.filter(entry => entry.match.matchScore > 0)
+				.filter(entry => searchMatchIsDisplayable(entry.match))
 				.sort(
 					(left, right) =>
 						right.match.matchScore - left.match.matchScore || left.topic.title.localeCompare(right.topic.title)
@@ -1957,7 +1927,8 @@ async function main() {
 				.map(({ topic, match }) => ({
 					...topic,
 					matchReason: match.matchReason,
-					matchScore: match.matchScore
+					matchScore: match.matchScore,
+					matchStrength: match.matchStrength
 				}));
 
 			const rankedQuestions = questions
@@ -1971,10 +1942,10 @@ async function main() {
 					]
 						.join(" ")
 						.trim();
-					const match = analyzeMatch(query, haystack);
+					const match = analyzeSearchMatch(query, haystack);
 					return { question, match };
 				})
-				.filter(entry => entry.match.matchScore > 0)
+				.filter(entry => searchMatchIsDisplayable(entry.match))
 				.sort(
 					(left, right) =>
 						right.match.matchScore - left.match.matchScore
@@ -1984,7 +1955,8 @@ async function main() {
 				.map(({ question, match }) => ({
 					...toPublicQuestion(question),
 					matchReason: match.matchReason,
-					matchScore: match.matchScore
+					matchScore: match.matchScore,
+					matchStrength: match.matchStrength
 				}));
 
 			return res.json({
