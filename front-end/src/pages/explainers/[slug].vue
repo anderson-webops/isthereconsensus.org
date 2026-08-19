@@ -43,26 +43,17 @@ useSeoMeta({
 		</header>
 
 		<section class="explainer-detail-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>What people often get wrong</h2>
-				<p>The common shortcut that makes the topic harder to read.</p>
-			</div>
+			<h2>What people often get wrong</h2>
 			<p>{{ explainer?.whatPeopleGetWrong }}</p>
 		</section>
 
-		<section class="explainer-detail-panel explainer-detail-panel--soft">
-			<div class="section-heading section-heading--tight">
-				<h2>Core concept</h2>
-				<p>The stable idea that helps the rest of the page make sense.</p>
-			</div>
+		<section class="explainer-detail-panel">
+			<h2>Core concept</h2>
 			<p>{{ explainer?.coreConcept }}</p>
 		</section>
 
 		<section class="explainer-detail-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>How scientists handle this in practice</h2>
-				<p>The habits that keep the explanation tied to evidence.</p>
-			</div>
+			<h2>How scientists handle this in practice</h2>
 			<ul class="plain-list">
 				<li v-for="item in explainer?.howScientistsHandleIt || []" :key="item">{{ item }}</li>
 			</ul>
@@ -70,20 +61,14 @@ useSeoMeta({
 
 		<section class="explainer-detail-grid">
 			<section class="explainer-detail-panel">
-				<div class="section-heading section-heading--tight">
-					<h2>Common traps</h2>
-					<p>The same errors recur across topics.</p>
-				</div>
+				<h2>Common traps</h2>
 				<ul class="plain-list plain-list--tight">
 					<li v-for="item in explainer?.commonTraps || []" :key="item">{{ item }}</li>
 				</ul>
 			</section>
 
 			<section class="explainer-detail-panel">
-				<div class="section-heading section-heading--tight">
-					<h2>Good sources for this concept</h2>
-					<p>Process-focused sources are usually better than one-off examples.</p>
-				</div>
+				<h2>Good sources for this concept</h2>
 				<ul class="plain-list plain-list--tight">
 					<li v-for="item in explainer?.goodSources || []" :key="item">{{ item }}</li>
 				</ul>
@@ -91,10 +76,7 @@ useSeoMeta({
 		</section>
 
 		<section class="explainer-detail-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>Worked examples</h2>
-				<p>Concrete patterns that make the concept easier to recognize.</p>
-			</div>
+			<h2>Worked examples</h2>
 			<div class="example-grid">
 				<article v-for="item in explainer?.workedExamples || []" :key="item.title" class="example-card">
 					<h3>{{ item.title }}</h3>
@@ -103,32 +85,28 @@ useSeoMeta({
 			</div>
 		</section>
 
-		<section v-if="relatedModules.length" class="explainer-detail-panel explainer-detail-panel--soft">
-			<div class="section-heading section-heading--tight">
+		<section v-if="relatedModules.length" class="explainer-detail-panel">
+			<div class="section-heading section-heading--linked">
 				<h2>Related misconception modules</h2>
-				<p>Shorter entries that connect this concept to recurring mistakes.</p>
+				<NuxtLink class="text-link" to="/misconceptions">View all modules</NuxtLink>
 			</div>
 			<div class="module-grid">
 				<article v-for="item in relatedModules" :key="item.slug" class="module-card">
 					<h3>{{ item.title }}</h3>
 					<p>{{ item.shortCorrection }}</p>
-					<div class="module-card__actions">
-						<NuxtLink class="text-link" to="/misconceptions">Open module library</NuxtLink>
-					</div>
 				</article>
 			</div>
 		</section>
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Back to reviewed claims</p>
-				<h2>Read the frame, then return to the claim.</h2>
+				<p class="eyebrow">Reviewed claims</p>
+				<h2>See the concept applied.</h2>
 				<p>{{ explainer?.whyItMatters }}</p>
 			</div>
 			<div class="explainer-callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/explainers">All explainers</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">Misconception modules</NuxtLink>
 			</div>
 		</section>
 	</div>
@@ -141,17 +119,14 @@ useSeoMeta({
 }
 
 .explainer-detail-header,
-.explainer-detail-panel,
 .example-card,
-.module-card,
-.explainer-callout {
+.module-card {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
+	border-radius: 8px;
 }
 
 .explainer-detail-header,
-.explainer-detail-panel,
 .explainer-callout {
 	padding: 20px;
 }
@@ -168,10 +143,12 @@ useSeoMeta({
 
 .explainer-detail-panel {
 	gap: 14px;
+	padding: 4px 0 22px;
+	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .explainer-detail-header h1,
-.section-heading h2,
+.explainer-detail-panel h2,
 .example-card h3,
 .module-card h3,
 .explainer-callout h2 {
@@ -231,15 +208,11 @@ useSeoMeta({
 	align-content: start;
 }
 
-.section-heading h2,
+.explainer-detail-panel h2,
 .example-card h3,
 .module-card h3,
 .explainer-callout h2 {
 	line-height: 1.2;
-}
-
-.explainer-detail-panel--soft {
-	background: color-mix(in srgb, var(--consensus-method) 14%, var(--consensus-surface));
 }
 
 .section-heading {
@@ -248,9 +221,9 @@ useSeoMeta({
 	align-items: start;
 }
 
-.section-heading--tight h2,
-.section-heading--tight p {
-	margin: 0;
+.section-heading--linked {
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
 }
 
 .plain-list {
@@ -269,6 +242,9 @@ useSeoMeta({
 	gap: 18px;
 	flex-wrap: wrap;
 	align-items: end;
+	padding-right: 0;
+	padding-left: 0;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .explainer-callout > div:not(.explainer-callout__actions) {
@@ -277,8 +253,7 @@ useSeoMeta({
 	gap: 8px;
 }
 
-.explainer-callout__actions,
-.module-card__actions {
+.explainer-callout__actions {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
@@ -318,9 +293,17 @@ useSeoMeta({
 	}
 
 	.explainer-detail-header,
-	.explainer-detail-panel,
 	.explainer-callout {
 		padding: 16px;
+	}
+
+	.explainer-detail-panel {
+		padding-bottom: 18px;
+	}
+
+	.explainer-callout {
+		padding-right: 0;
+		padding-left: 0;
 	}
 
 	.explainer-callout {
@@ -338,11 +321,9 @@ useSeoMeta({
 	}
 
 	.explainer-detail-header,
-	.explainer-detail-panel,
 	.example-card,
-	.module-card,
-	.explainer-callout {
-		border-radius: 14px;
+	.module-card {
+		border-radius: 8px;
 	}
 
 	.explainer-detail-header {
@@ -370,6 +351,10 @@ useSeoMeta({
 
 	.explainer-callout__actions {
 		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.section-heading--linked {
 		grid-template-columns: 1fr;
 	}
 

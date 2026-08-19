@@ -25,7 +25,7 @@ describe("claim detail layout", () => {
 		assert.match(source, /@media \(max-width: 860px\) \{[\s\S]*\.claim-page \{[\s\S]*gap: 14px;/);
 		assert.match(
 			source,
-			/\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.uncertainty-strip,[\s\S]*\.content-panel,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/
+			/\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.uncertainty-strip,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/
 		);
 		assert.match(source, /\.claim-page__hero \{[\s\S]*gap: 7px;/);
 		assert.match(source, /\.claim-page__header h1 \{[\s\S]*font-size: clamp\(1\.72rem, 7\.2vw, 2\.05rem\);/);
@@ -46,6 +46,25 @@ describe("claim detail layout", () => {
 		assert.match(source, /v-if="bottomLineParts\.context" class="bottom-line__context"/);
 		assert.match(source, /\.bottom-line__text--lead \{[\s\S]*font-weight: 700;/);
 		assert.match(source, /\.bottom-line__context \{[\s\S]*color: var\(--consensus-muted\);/);
+	});
+
+	it("puts substantive claim content before uncertainty and technical assessment", () => {
+		const stableCoreIndex = source.indexOf('key: "stable-core"');
+		const openQuestionsIndex = source.indexOf('key: "open-questions"');
+		const uncertaintyIndex = source.indexOf('<section class="uncertainty-strip">');
+		const assessmentIndex = source.indexOf("<EvidenceLandscapePanel");
+
+		assert.ok(stableCoreIndex >= 0 && stableCoreIndex < openQuestionsIndex);
+		assert.ok(source.indexOf("claimSnapshotGroups.length") < uncertaintyIndex);
+		assert.ok(uncertaintyIndex < assessmentIndex);
+		assert.match(source, /selectVisibleEvidenceSummaries/);
+		assert.doesNotMatch(source, />Main limits</);
+	});
+
+	it("keeps the change log outside the default reading path", () => {
+		assert.match(source, /<details class="content-panel change-log-panel">/);
+		assert.match(source, /<summary class="change-log-panel__summary">/);
+		assert.doesNotMatch(source, /<section class="content-panel">[\s\S]*<h2>Change log<\/h2>/);
 	});
 });
 

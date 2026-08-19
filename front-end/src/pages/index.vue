@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
-import ConsensusMeter from "~/components/ConsensusMeter.vue";
 import { appDescription, appName, socialImageUrl } from "~/constants";
-import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
+import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
@@ -127,19 +126,8 @@ const recentClaimCandidates = computed(() =>
 const recentlyReviewedClaims = computed(() => selectRecentClaims(recentClaimCandidates.value, 5));
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
 const totalTopicCount = computed(() => enrichedTopics.value.length);
-const topicsWithReviewedClaimsCount = computed(
-	() => enrichedTopics.value.filter((topic) => (topic.claimCount ?? 0) > 0).length
-);
 const totalReviewedClaimCount = computed(() =>
 	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
-);
-const mostCoveredTopic = computed(() =>
-	enrichedTopics.value
-		.filter((topic) => (topic.claimCount ?? 0) > 0)
-		.reduce<Topic | null>((current, topic) => {
-			if (!current) return topic;
-			return (topic.claimCount ?? 0) > (current.claimCount ?? 0) ? topic : current;
-		}, null)
 );
 const faqEntries = [
 	{
@@ -258,12 +246,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 		: formatBandLabel(claim.consensusBand);
 }
 
-function claimCertaintyLabel(claim: ClaimSummary) {
-	return claim.evidenceLandscape?.evidenceCertainty
-		? formatLandscapeCertaintyLabel(claim.evidenceLandscape.evidenceCertainty)
-		: "";
-}
-
 function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
@@ -278,16 +260,6 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 	}).format(new Date(timestamp));
 	return `Reviewed ${formattedDate}`;
 }
-
-function formatTopicUpdateLabel(value?: string) {
-	if (!value) return "Update pending";
-	const formattedDate = new Intl.DateTimeFormat("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric"
-	}).format(new Date(value));
-	return `Updated ${formattedDate}`;
-}
 </script>
 
 <template>
@@ -301,31 +273,8 @@ function formatTopicUpdateLabel(value?: string) {
 					uncertain in the evidence.
 				</p>
 
-				<div class="library-snapshot" aria-label="Library snapshot">
-					<NuxtLink class="library-snapshot__item" to="/consensus">
-						<strong>{{ formatCountLabel(totalReviewedClaimCount, "reviewed claim") }}</strong>
-						<span>in the public library</span>
-					</NuxtLink>
-					<NuxtLink class="library-snapshot__item" to="/consensus">
-						<strong>{{ formatCountLabel(totalTopicCount, "topic") }}</strong>
-						<span>ready to browse</span>
-					</NuxtLink>
-					<NuxtLink
-						v-if="mostCoveredTopic"
-						class="library-snapshot__item"
-						:to="`/consensus/${mostCoveredTopic.slug}`"
-					>
-						<strong>{{ formatCountLabel(mostCoveredTopic.claimCount, "review") }}</strong>
-						<span>{{ mostCoveredTopic.title }}</span>
-					</NuxtLink>
-					<NuxtLink v-else class="library-snapshot__item" to="/consensus">
-						<strong>{{ formatCountLabel(topicsWithReviewedClaimsCount, "active topic") }}</strong>
-						<span>with live reviews</span>
-					</NuxtLink>
-				</div>
-
 				<form class="search-panel" @submit.prevent="submitSearch">
-					<label class="search-panel__label" for="home-search">Search a claim, headline, or topic</label>
+					<label class="search-panel__label" for="home-search">Search reviewed claims</label>
 					<div class="search-panel__row">
 						<input
 							id="home-search"
@@ -335,8 +284,6 @@ function formatTopicUpdateLabel(value?: string) {
 						/>
 						<button class="button button--primary" type="submit">Search</button>
 					</div>
-					<p class="search-panel__hint">Matching claim reviews, topics, and explainers appear as you type.</p>
-
 					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
 					<div v-else-if="loadingSuggestions && searchQuery.length >= 3" class="search-panel__hint">
 						Checking reviewed pages...
@@ -386,6 +333,11 @@ function formatTopicUpdateLabel(value?: string) {
 						<NuxtLink class="text-link" :to="askSearchLink">Ask this question</NuxtLink>
 					</div>
 				</form>
+
+				<NuxtLink class="library-summary" to="/consensus">
+					{{ formatCountLabel(totalReviewedClaimCount, "reviewed claim") }} across
+					{{ formatCountLabel(totalTopicCount, "topic") }}
+				</NuxtLink>
 			</div>
 		</section>
 
@@ -409,8 +361,6 @@ function formatTopicUpdateLabel(value?: string) {
 						<p class="claim-row__meta">
 							<span>{{ claim.topic.title }}</span>
 							<span>{{ claimSupportLabel(claim) }}</span>
-							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
-							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
 							<span v-if="formatClaimReviewLabel(claim)">{{ formatClaimReviewLabel(claim) }}</span>
 						</p>
 						<h3>{{ claim.title }}</h3>
@@ -418,10 +368,6 @@ function formatTopicUpdateLabel(value?: string) {
 							{{ claimCardSummary(claim) }}
 						</p>
 					</div>
-					<span class="claim-row__score" :aria-label="`Confidence score ${claim.confidenceScore} out of 100`">
-						<span>Confidence</span>
-						<strong>{{ claim.confidenceScore }}/100</strong>
-					</span>
 				</NuxtLink>
 			</div>
 		</section>
@@ -448,11 +394,7 @@ function formatTopicUpdateLabel(value?: string) {
 						<div class="topic-row__meta">
 							<span>{{ topic.guide.consensusLabel }}</span>
 							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
-							<span>{{ formatTopicUpdateLabel(topic.updatedAt) }}</span>
 						</div>
-					</div>
-					<div class="topic-row__meter">
-						<ConsensusMeter :level="topic.guide.consensusScore" :label="topic.guide.consensusLabel" />
 					</div>
 				</NuxtLink>
 			</div>
@@ -521,44 +463,19 @@ function formatTopicUpdateLabel(value?: string) {
 	margin: 0;
 }
 
-.library-snapshot {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
-	max-width: 920px;
-}
-
-.library-snapshot__item {
-	display: inline-grid;
-	gap: 3px;
-	min-width: 170px;
-	padding: 10px 12px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 82%, transparent);
-	text-decoration: none;
-}
-
-.library-snapshot__item strong {
-	color: var(--consensus-ink);
-	font-family: "Fraunces", serif;
-	font-size: 1.05rem;
-	line-height: 1.1;
-}
-
-.library-snapshot__item span {
-	color: var(--consensus-muted);
-	font-size: 0.82rem;
-	font-weight: 700;
-	line-height: 1.25;
-	text-transform: uppercase;
-}
-
 .search-panel {
 	max-width: 920px;
 	padding: 18px 20px;
 	display: grid;
 	gap: 12px;
+}
+
+.library-summary {
+	justify-self: start;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+	font-weight: 600;
+	text-decoration: none;
 }
 
 .search-panel__label,
@@ -714,7 +631,6 @@ function formatTopicUpdateLabel(value?: string) {
 .claim-row,
 .topic-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 18px;
 	padding: 18px;
 	text-decoration: none;
@@ -739,41 +655,6 @@ function formatTopicUpdateLabel(value?: string) {
 	flex-wrap: wrap;
 	font-size: 0.88rem;
 	color: var(--consensus-muted);
-}
-
-.claim-row__score {
-	display: inline-grid;
-	gap: 3px;
-	align-self: center;
-	justify-self: end;
-	min-width: 118px;
-	padding: 9px 12px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 14px;
-	background: var(--consensus-elevated-surface);
-	color: var(--consensus-ink);
-	text-align: center;
-}
-
-.claim-row__score span {
-	color: var(--consensus-muted);
-	font-size: 0.68rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	line-height: 1;
-	text-transform: uppercase;
-}
-
-.claim-row__score strong {
-	font-family: "Fraunces", serif;
-	font-size: 1.08rem;
-	line-height: 1;
-}
-
-.topic-row__meter {
-	display: grid;
-	align-content: center;
-	min-width: 220px;
 }
 
 .library-grid {
@@ -823,23 +704,12 @@ function formatTopicUpdateLabel(value?: string) {
 
 @media (max-width: 980px) {
 	.hero,
-	.library-grid,
-	.claim-row,
-	.topic-row {
+	.library-grid {
 		grid-template-columns: 1fr;
 	}
 
 	.hero h1 {
 		max-width: none;
-	}
-
-	.topic-row__meter {
-		min-width: 0;
-	}
-
-	.claim-row__score {
-		justify-self: start;
-		text-align: left;
 	}
 }
 
@@ -876,17 +746,6 @@ function formatTopicUpdateLabel(value?: string) {
 		padding: 14px;
 	}
 
-	.library-snapshot {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 8px;
-	}
-
-	.library-snapshot__item {
-		min-width: 0;
-		padding: 9px 11px;
-	}
-
 	.search-panel input {
 		min-height: 46px;
 		padding: 12px 14px;
@@ -906,18 +765,6 @@ function formatTopicUpdateLabel(value?: string) {
 
 	.claim-row__summary {
 		-webkit-line-clamp: 2;
-	}
-
-	.claim-row__score {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 7px;
-		min-width: 0;
-		padding: 7px 10px;
-	}
-
-	.claim-row__score strong {
-		font-size: 1rem;
 	}
 
 	.search-panel__row {

@@ -18,49 +18,34 @@ useStaticPageMeta({
 			<p class="eyebrow">Evergreen explainers</p>
 			<h1>Core concepts behind recurring confusion.</h1>
 			<p>
-				These explainers cover the recurring ideas behind the site: evidence hierarchies, risk, causation,
-				replication, falsifiability, and the line between settled consensus and frontier debate.
+				Evidence hierarchies, risk, causation, replication, falsifiability, and the line between settled
+				consensus and frontier debate.
 			</p>
 		</header>
 
 		<section class="explainer-grid">
-			<article v-for="explainer in evergreenExplainers" :key="explainer.slug" class="explainer-card">
+			<NuxtLink
+				v-for="explainer in evergreenExplainers"
+				:key="explainer.slug"
+				class="explainer-card"
+				:to="`/explainers/${explainer.slug}`"
+			>
 				<div>
 					<p class="eyebrow">Explainer</p>
 					<h2>{{ explainer.title }}</h2>
 				</div>
 				<p>{{ explainer.summary }}</p>
-				<div class="explainer-card__actions">
-					<span class="explainer-card__meta">
-						{{ explainer.relatedMisconceptions.length }} linked module{{
-							explainer.relatedMisconceptions.length === 1 ? "" : "s"
-						}}
-					</span>
-					<NuxtLink class="text-link" :to="`/explainers/${explainer.slug}`">Open explainer</NuxtLink>
-				</div>
-				<details class="explainer-card__details">
-					<summary>Why it matters and key points</summary>
-					<p>{{ explainer.whyItMatters }}</p>
-					<ul>
-						<li v-for="point in explainer.keyPoints" :key="point">{{ point }}</li>
-					</ul>
-				</details>
-			</article>
+				<span class="explainer-card__link">Read explainer</span>
+			</NuxtLink>
 		</section>
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Support the claim, then return</p>
-				<h2>Use the concept, then return to the claim.</h2>
-				<p>
-					Open these when a claim depends on evidence hierarchies, uncertainty, or media distortion and a
-					shorter page would not leave enough room for the method.
-				</p>
+				<p class="eyebrow">Reviewed library</p>
+				<h2>See these concepts in context.</h2>
 			</div>
 			<div class="explainer-callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/misconceptions">View misconception modules</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>
 	</div>
@@ -73,11 +58,10 @@ useStaticPageMeta({
 }
 
 .explainer-header,
-.explainer-card,
-.explainer-callout {
+.explainer-card {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 18px;
+	border-radius: 8px;
 }
 
 .explainer-header,
@@ -128,80 +112,26 @@ useStaticPageMeta({
 	display: grid;
 	gap: 14px;
 	align-content: start;
+	color: var(--consensus-ink);
+	text-decoration: none;
+	transition:
+		border-color 160ms ease,
+		transform 160ms ease;
 }
 
-.explainer-card__details {
-	display: grid;
-	gap: 8px;
-	padding-top: 2px;
+.explainer-card:hover,
+.explainer-card:focus-visible {
+	border-color: var(--consensus-interactive);
+	transform: translateY(-2px);
 }
 
-.explainer-card h2,
-.explainer-card__details summary {
+.explainer-card h2 {
 	line-height: 1.2;
 }
 
-.explainer-card__details p,
-.explainer-card__details ul {
-	margin: 0;
-}
-
-.explainer-card__details summary {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	list-style: none;
-	cursor: pointer;
-	font-family: "Fraunces", serif;
+.explainer-card__link {
+	align-self: end;
 	font-weight: 600;
-	color: var(--consensus-ink);
-}
-
-.explainer-card__details summary::-webkit-details-marker {
-	display: none;
-}
-
-.explainer-card__details summary::after {
-	width: 18px;
-	height: 18px;
-	flex: 0 0 18px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	color: var(--consensus-muted);
-	font-family: "Space Grotesk", system-ui, sans-serif;
-	font-size: 0.82rem;
-	line-height: 16px;
-	text-align: center;
-	content: "+";
-}
-
-.explainer-card__details[open] summary::after {
-	content: "-";
-}
-
-.explainer-card__details ul {
-	padding-left: 20px;
-	display: grid;
-	gap: 8px;
-}
-
-.explainer-card__actions {
-	display: flex;
-	justify-content: space-between;
-	gap: 12px;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-.explainer-card__meta {
-	color: var(--consensus-muted);
-	font-size: 0.9rem;
-}
-
-.text-link {
-	font-weight: 600;
-	text-decoration: none;
 	color: var(--consensus-interactive);
 }
 
@@ -211,6 +141,9 @@ useStaticPageMeta({
 	gap: 18px;
 	flex-wrap: wrap;
 	align-items: end;
+	padding-right: 0;
+	padding-left: 0;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .explainer-callout__actions {
@@ -252,6 +185,8 @@ useStaticPageMeta({
 
 	.explainer-callout {
 		align-items: stretch;
+		padding-right: 0;
+		padding-left: 0;
 	}
 
 	.explainer-callout__actions {

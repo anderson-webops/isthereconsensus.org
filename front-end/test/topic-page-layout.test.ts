@@ -37,7 +37,7 @@ describe("topic page layout", () => {
 		assert.match(source, /\.claim-row__summary-context \{[\s\S]*-webkit-line-clamp: 2;/);
 		assert.match(source, /@media \(max-width: 820px\) \{[\s\S]*\.claim-row__summary \{[\s\S]*gap: 3px;/);
 		assert.match(source, /@media \(max-width: 820px\) \{[\s\S]*\.claim-row__content \{[\s\S]*gap: 7px;/);
-		assert.match(source, /\.claim-row__caveat \{[\s\S]*-webkit-line-clamp: 2;/);
+		assert.doesNotMatch(source, /claim-row__score|claim-row__caveat|confidenceScore/);
 	});
 
 	it("offers curated starter claims before the full topic directory", () => {
@@ -47,10 +47,17 @@ describe("topic page layout", () => {
 		assert.ok(starterSection >= 0, "topic pages should render the curated starter section");
 		assert.ok(directorySection > starterSection, "starter claims should appear before the full topic directory");
 		assert.match(source, /v-if="starterClaims\.length"/);
-		assert.match(source, /Three useful entry points/);
+		assert.match(source, /Recommended starting points/);
 		assert.match(source, /v-for="claim in starterClaims"/);
 		assert.match(source, /function starterClaimPreview\(claim: ClaimSummary\)/);
 		assert.match(source, /\{\{ starterClaimPreview\(claim\) \}\}/);
 		assert.match(source, /:to="`\/consensus\/\$\{slug\}\/\$\{claim\.slug\}`"/);
+	});
+
+	it("uses readable evidence labels instead of an unexplained numeric score", () => {
+		assert.match(source, /claimSupportLabel\(claim\)/);
+		assert.match(source, /claimCertaintyLabel\(claim\)/);
+		assert.match(source, /formatCountLabel\(claim\.sourceCount, "source"\)/);
+		assert.doesNotMatch(source, /Confidence score|\/100|claim-row__score/);
 	});
 });

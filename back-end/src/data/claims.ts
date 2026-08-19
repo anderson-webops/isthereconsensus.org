@@ -668,85 +668,19 @@ function inferUncertaintyType(detail: string): IClaimUncertaintyDriver["type"] {
 function defaultUncertaintySummary(seed: SeedClaim) {
 	const certainty = seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore);
 	if (certainty === "high") {
-		return "The core direction of this claim is stable across the highest-weight sources. Most remaining uncertainty is about subgroup boundaries, effect size, or how the answer travels across settings, not whether the core conclusion reverses.";
+		return "The main conclusion is stable across the highest-weight sources. Remaining uncertainty concerns the boundaries and precision of the claim, not whether its core conclusion reverses.";
 	}
 	if (certainty === "moderate") {
-		return "The overall direction looks reliable, but important details could still move. Editors should treat the main conclusion as durable while keeping effect size, subgroup risk, and implementation limits visible.";
+		return "The overall direction is reasonably stable, but important details and the precision of the conclusion could still change.";
 	}
 	if (certainty === "low") {
-		return "The page can describe the current direction of the evidence, but that direction is still tentative. Better syntheses, more direct data, or stronger follow-up could materially reshape the public-facing summary.";
+		return "The current direction is tentative. More direct evidence or stronger synthesis could materially reshape the conclusion.";
 	}
-	return "This page is a careful snapshot of an unstable evidence base. The site can explain the question and the current signal, but the conclusion should not be treated as a settled answer yet.";
-}
-
-function fallbackUncertaintyDrivers(seed: SeedClaim): IClaimUncertaintyDriver[] {
-	const certainty = seed.evidenceCertainty ?? inferEvidenceCertainty(seed.confidenceScore);
-	if (certainty === "high") {
-		return [
-			{
-				type: "generalizability",
-				detail: "Most remaining uncertainty is about which subgroups, settings, or exposure levels look different from the main population-level finding."
-			},
-			{
-				type: "imprecision",
-				detail: "The direction is stable, but the exact size of the effect or risk can still move across syntheses and real-world settings."
-			},
-			{
-				type: "implementation",
-				detail: "Policy, communication, or rollout choices can change practical outcomes even when the underlying evidence direction is settled."
-			}
-		];
-	}
-	if (certainty === "moderate") {
-		return [
-			{
-				type: "imprecision",
-				detail: "The main direction looks durable, but effect size, baseline risk, or subgroup differences are still moving enough to matter."
-			},
-			{
-				type: "generalizability",
-				detail: "Results may not travel equally well across populations, settings, or implementation contexts."
-			},
-			{
-				type: "timing",
-				detail: "Longer follow-up or a newer synthesis could tighten or narrow the current public-facing answer."
-			}
-		];
-	}
-	if (certainty === "low") {
-		return [
-			{
-				type: "indirectness",
-				detail: "Some of the evidence comes from adjacent populations, proxy outcomes, or partial versions of the public claim rather than a direct test of it."
-			},
-			{
-				type: "bias",
-				detail: "Study-design limitations, confounding, or uneven measurement still make the body of evidence vulnerable to revision."
-			},
-			{
-				type: "timing",
-				detail: "Longer follow-up and stronger syntheses could still shift both the size and the interpretation of the current signal."
-			}
-		];
-	}
-	return [
-		{
-			type: "inconsistency",
-			detail: "High-weight sources do not yet converge cleanly on one interpretation of the evidence."
-		},
-		{
-			type: "imprecision",
-			detail: "Effect estimates and practical risk ranges are still unstable enough that a stronger synthesis could materially change the summary."
-		},
-		{
-			type: "indirectness",
-			detail: "The evidence base still leans on partial, proxy, or otherwise indirect signals rather than a direct durable answer."
-		}
-	];
+	return "The evidence base is not stable enough for a settled answer. This page reports the current signal and the specific questions that remain open.";
 }
 
 function defaultUncertaintyDrivers(seed: SeedClaim): IClaimUncertaintyDriver[] {
-	const explicitDrivers = seed.openQuestions
+	const drivers = seed.openQuestions
 		.slice(0, 4)
 		.map(detail => detail.trim())
 		.filter(Boolean)
@@ -754,13 +688,12 @@ function defaultUncertaintyDrivers(seed: SeedClaim): IClaimUncertaintyDriver[] {
 			type: inferUncertaintyType(detail),
 			detail
 		}));
-	const combined = [...explicitDrivers, ...fallbackUncertaintyDrivers(seed)];
 	const seen = new Set<string>();
-	return combined.filter((driver) => {
+	return drivers.filter((driver) => {
 		if (seen.has(driver.detail)) return false;
 		seen.add(driver.detail);
 		return true;
-	}).slice(0, 6);
+	});
 }
 
 function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {

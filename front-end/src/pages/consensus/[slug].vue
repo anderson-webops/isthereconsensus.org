@@ -252,9 +252,8 @@ function starterClaimPreview(claim: ClaimSummary) {
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Start here</p>
-					<h2>Three useful entry points</h2>
+					<h2>Recommended starting points</h2>
 				</div>
-				<p>Begin with a foundation, a common misconception, or a concrete real-world decision.</p>
 			</div>
 			<div class="start-here__grid">
 				<NuxtLink
@@ -274,9 +273,8 @@ function starterClaimPreview(claim: ClaimSummary) {
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Reviewed claims</p>
-					<h2>Open the claim that matches your question</h2>
+					<h2>All reviewed claims</h2>
 				</div>
-				<p>Each reviewed page includes the bottom line, uncertainty, evidence summaries, and source trail.</p>
 			</div>
 
 			<div v-if="!claims.length" class="empty-state">
@@ -304,14 +302,7 @@ function starterClaimPreview(claim: ClaimSummary) {
 								{{ claimCardPreview(claim).context }}
 							</span>
 						</p>
-						<p v-if="claim.evidenceLandscape?.caveatSummary" class="claim-row__caveat">
-							Caveat: {{ claim.evidenceLandscape.caveatSummary }}
-						</p>
 					</div>
-					<span class="claim-row__score" :aria-label="`Confidence score ${claim.confidenceScore} out of 100`">
-						<span>Confidence</span>
-						<strong>{{ claim.confidenceScore }}/100</strong>
-					</span>
 				</NuxtLink>
 			</div>
 		</section>
@@ -325,20 +316,26 @@ function starterClaimPreview(claim: ClaimSummary) {
 }
 
 .topic-page__header,
-.start-here,
-.claim-lane,
 .queue-note,
 .claim-row {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 18px;
+	border-radius: 8px;
 }
 
 .topic-page__header,
-.start-here,
-.claim-lane,
 .queue-note {
 	padding: 22px;
+}
+
+.start-here,
+.claim-lane {
+	padding: 4px 0 22px;
+	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.claim-lane {
+	border-bottom: 0;
 }
 
 .topic-page__header {
@@ -405,7 +402,7 @@ function starterClaimPreview(claim: ClaimSummary) {
 	gap: 8px;
 	padding: 17px;
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
+	border-radius: 8px;
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
 	text-decoration: none;
@@ -444,8 +441,6 @@ function starterClaimPreview(claim: ClaimSummary) {
 
 .claim-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	gap: 12px;
 	padding: 18px;
 	text-decoration: none;
 }
@@ -492,42 +487,6 @@ function starterClaimPreview(claim: ClaimSummary) {
 	color: var(--consensus-muted);
 }
 
-.claim-row__score {
-	display: inline-grid;
-	gap: 3px;
-	align-self: center;
-	justify-self: end;
-	min-width: 118px;
-	padding: 9px 12px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 14px;
-	background: var(--consensus-elevated-surface);
-	color: var(--consensus-ink);
-	text-align: center;
-}
-
-.claim-row__score span {
-	color: var(--consensus-muted);
-	font-size: 0.68rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	line-height: 1;
-	text-transform: uppercase;
-}
-
-.claim-row__score strong {
-	font-family: "Fraunces", serif;
-	font-size: 1.08rem;
-	line-height: 1;
-}
-
-.claim-row__caveat {
-	margin-top: 8px;
-	padding-top: 8px;
-	border-top: 1px solid var(--consensus-soft-line);
-	font-size: 0.94rem;
-}
-
 .button {
 	display: inline-flex;
 	align-items: center;
@@ -554,11 +513,14 @@ function starterClaimPreview(claim: ClaimSummary) {
 	}
 
 	.topic-page__header,
-	.start-here,
-	.claim-lane,
 	.queue-note {
 		padding: 18px;
-		border-radius: 16px;
+		border-radius: 8px;
+	}
+
+	.start-here,
+	.claim-lane {
+		padding-bottom: 18px;
 	}
 
 	.claim-list {
@@ -573,10 +535,8 @@ function starterClaimPreview(claim: ClaimSummary) {
 	}
 
 	.claim-row {
-		grid-template-columns: 1fr;
-		gap: 10px;
 		padding: 14px;
-		border-radius: 14px;
+		border-radius: 8px;
 	}
 
 	.claim-row h3 {
@@ -600,32 +560,6 @@ function starterClaimPreview(claim: ClaimSummary) {
 
 	.claim-row__summary {
 		gap: 3px;
-	}
-
-	.claim-row__score {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		justify-self: start;
-		min-width: 0;
-		padding: 7px 10px;
-		border-radius: 999px;
-		text-align: left;
-	}
-
-	.claim-row__score strong {
-		font-size: 1rem;
-	}
-
-	.claim-row__caveat {
-		display: -webkit-box;
-		overflow: hidden;
-		margin-top: 7px;
-		padding-top: 7px;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		font-size: 0.9rem;
-		line-height: 1.45;
 	}
 
 	.topic-page__actions {

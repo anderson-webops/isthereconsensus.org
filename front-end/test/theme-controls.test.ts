@@ -5,62 +5,57 @@ import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
-
 const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the footer in ${file}`, () => {
+		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const paletteImportIndex = source.indexOf('import PaletteSwitcher from "~/components/PaletteSwitcher.vue"');
-			const themeImportIndex = source.indexOf('import ThemeToggle from "~/components/ThemeToggle.vue"');
-			const footerControlsIndex = source.indexOf(
-				'class="site-footer__appearance" aria-label="Appearance controls"'
+			const headerControlsIndex = source.indexOf(
+				'class="site-header__controls" aria-label="Appearance controls"'
 			);
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
 
-			assert.notEqual(paletteImportIndex, -1);
-			assert.notEqual(themeImportIndex, -1);
-			assert.notEqual(footerControlsIndex, -1);
-			assert.notEqual(paletteRenderIndex, -1);
-			assert.notEqual(themeRenderIndex, -1);
-			assert.ok(footerControlsIndex < paletteRenderIndex);
-			assert.ok(paletteRenderIndex < themeRenderIndex);
-			assert.match(
-				source,
-				/class="site-footer__appearance" aria-label="Appearance controls"[\s\S]*<PaletteSwitcher \/>\s*<ThemeToggle \/>/
-			);
-			assert.doesNotMatch(source, /site-header__controls/);
+			assert.match(source, /import PaletteSwitcher from "~\/components\/PaletteSwitcher\.vue"/);
+			assert.match(source, /import ThemeToggle from "~\/components\/ThemeToggle\.vue"/);
+			assert.ok(headerControlsIndex >= 0);
+			assert.ok(paletteRenderIndex > headerControlsIndex);
+			assert.ok(themeRenderIndex > paletteRenderIndex);
+			assert.doesNotMatch(source, /site-footer__appearance/);
 		});
 
-		it(`keeps the footer focused on brand, appearance, and utility links in ${file}`, () => {
+		it(`keeps first-time navigation focused while preserving utility links in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const footerStart = source.indexOf('<footer class="site-footer">');
-			const footer = source.slice(footerStart);
+			const headerStart = source.indexOf('<header class="site-header">');
+			const headerEnd = source.indexOf("</header>", headerStart);
+			const header = source.slice(headerStart, headerEnd);
+			const footer = source.slice(source.indexOf('<footer class="site-footer">'));
 
-			assert.notEqual(footerStart, -1);
-			assert.match(footer, /Appearance/);
-			assert.match(footer, /PaletteSwitcher/);
-			assert.match(footer, /ThemeToggle/);
+			assert.match(header, /to="\/consensus"[\s\S]*Browse/);
+			assert.match(header, /to="\/explainers"[\s\S]*Explainers/);
+			assert.match(header, /to="\/ask"[\s\S]*Ask/);
+			assert.doesNotMatch(header, /<NuxtLink to="\/">Home<\/NuxtLink>/);
+			assert.doesNotMatch(header, /to="\/standards"|to="\/account">Account/);
+			assert.match(footer, /to="\/standards"[\s\S]*How reviews work/);
+			assert.match(footer, /to="\/account"[\s\S]*Account/);
 			assert.match(footer, /to="\/corrections"[\s\S]*Corrections/);
 			assert.match(footer, /to="\/privacy"[\s\S]*Privacy/);
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
-			assert.match(footer, /&copy; \{\{ year \}\} Is There Consensus\?/);
-			assert.doesNotMatch(footer, /Browse topics|Ask a question|Explainers|How reviews work/);
-			assert.doesNotMatch(footer, /community-guidelines|Guidelines/);
 		});
 
-		it(`keeps the footer appearance control row usable on mobile in ${file}`, () => {
+		it(`keeps the header controls usable on mobile in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 
 			assert.match(
 				source,
-				/@media \(max-width: 700px\) \{[\s\S]*\.site-footer__appearance \{[\s\S]*justify-content: space-between;[\s\S]*width: min\(100%, 360px\);/
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-header__actions \{[\s\S]*justify-content: space-between;/
 			);
-			assert.match(source, /@media \(max-width: 700px\) \{[\s\S]*\.site-header \{[\s\S]*flex-direction: column;/);
-			assert.match(source, /@media \(max-width: 480px\) \{[\s\S]*\.site-brand__tag \{[\s\S]*display: none;/);
-			assert.doesNotMatch(source, /site-header__controls/);
+			assert.match(source, /@media \(max-width: 360px\) \{[\s\S]*flex-direction: column;/);
+			assert.match(
+				source,
+				/\.site-header__controls :deep\(\.theme-toggle\) \{[\s\S]*width: 34px;[\s\S]*height: 34px;/
+			);
 		});
 	}
 
