@@ -7,12 +7,24 @@ import { fileURLToPath } from "node:url";
 const testDir = dirname(fileURLToPath(import.meta.url));
 
 describe("explainer detail layout", () => {
-	it("keeps explainer detail helper copy reader-facing", () => {
+	it("lets clear headings carry the article without repetitive helper copy", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/[slug].vue"), "utf8");
 
-		assert.match(source, /The stable idea that helps the rest of the page make sense/);
-		assert.match(source, /Concrete patterns that make the concept easier to recognize/);
-		assert.doesNotMatch(source, /reuse across claim pages/i);
-		assert.doesNotMatch(source, /explain this elsewhere/i);
+		assert.match(source, /<h2>What people often get wrong<\/h2>/);
+		assert.match(source, /<h2>Core concept<\/h2>/);
+		assert.match(source, /<h2>Worked examples<\/h2>/);
+		assert.doesNotMatch(source, /The common shortcut|The stable idea|The habits that|The same errors recur/);
+		assert.doesNotMatch(source, /Process-focused sources|Concrete patterns|Shorter entries/);
+	});
+
+	it("uses one module-library link and two closing choices", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/explainers/[slug].vue"), "utf8");
+		const misconceptionLinks = source.match(/to="\/misconceptions"/g) ?? [];
+
+		assert.equal(misconceptionLinks.length, 1);
+		assert.match(source, />Browse claim reviews<\/NuxtLink>/);
+		assert.match(source, />All explainers<\/NuxtLink>/);
+		assert.doesNotMatch(source, />Misconception modules<\/NuxtLink>/);
+		assert.match(source, /\.explainer-detail-panel \{[\s\S]*border-bottom:/);
 	});
 });

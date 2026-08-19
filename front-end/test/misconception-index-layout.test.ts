@@ -46,25 +46,20 @@ describe("misconception and explainer index layout copy", () => {
 	it("uses public navigation labels from evergreen explainers", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
 
-		assert.match(source, /Use the concept, then return to the claim\./);
-		assert.match(source, /shorter page would not leave enough room for the method/);
-		assert.match(source, />How reviews work</);
+		assert.match(source, /See these concepts in context\./);
+		assert.match(source, />Browse claim reviews</);
+		assert.doesNotMatch(source, />How reviews work</);
 		assert.doesNotMatch(source, /Read editorial standards/);
 		assert.doesNotMatch(source, /support pages/i);
 		assert.doesNotMatch(source, /not a detour/i);
 	});
 
-	it("keeps explainer index cards summary-first with optional depth", () => {
+	it("makes each explainer card one clear destination", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
-		const actionsIndex = source.indexOf('<div class="explainer-card__actions">');
-		const detailsIndex = source.indexOf('<details class="explainer-card__details">');
 
-		assert.match(source, /<summary>Why it matters and key points<\/summary>/);
-		assert.ok(source.includes("<p>{{ explainer.whyItMatters }}</p>"));
-		assert.match(source, /<li v-for="point in explainer\.keyPoints"/);
-		assert.notEqual(actionsIndex, -1);
-		assert.notEqual(detailsIndex, -1);
-		assert.ok(actionsIndex < detailsIndex);
-		assert.doesNotMatch(source, /class="explainer-card__section"/);
+		assert.match(source, /<NuxtLink[\s\S]*v-for="explainer in evergreenExplainers"[\s\S]*class="explainer-card"/);
+		assert.match(source, /<span class="explainer-card__link">Read explainer<\/span>/);
+		assert.doesNotMatch(source, /linked module|explainer-card__details|explainer-card__actions/);
+		assert.equal((source.match(/to="\/consensus"/g) ?? []).length, 1);
 	});
 });

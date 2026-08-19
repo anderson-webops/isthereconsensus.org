@@ -2,6 +2,7 @@
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -33,7 +34,9 @@ const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
-const evidenceSummaries = computed(() => claim.value?.evidenceSummaries ?? []);
+const evidenceSummaries = computed(() =>
+	selectVisibleEvidenceSummaries(claim.value?.evidenceSummaries ?? [], claim.value?.title, claim.value?.bottomLine)
+);
 const evidenceLandscape = computed(() => claim.value?.evidenceLandscape);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
@@ -46,16 +49,16 @@ const claimSnapshotGroups = computed(() => {
 			items: claim.value?.stableCore ?? []
 		},
 		{
-			key: "misconceptions",
-			eyebrow: "Reader traps",
-			title: "Common misconceptions",
-			items: claim.value?.misconceptions ?? []
-		},
-		{
 			key: "open-questions",
 			eyebrow: "Open questions",
 			title: "What remains open",
 			items: claim.value?.openQuestions ?? []
+		},
+		{
+			key: "misconceptions",
+			eyebrow: "Reader traps",
+			title: "Common misconceptions",
+			items: claim.value?.misconceptions ?? []
 		},
 		{
 			key: "change-threshold",
@@ -98,48 +101,32 @@ const bottomLineParts = computed(() => {
 		context: text.slice(leadEnd).trim()
 	};
 });
-const evidenceSectionTitle = computed(() =>
-	claimSnapshotGroups.value.length ? "Claim snapshot" : "Evidence summaries by outcome"
-);
-const evidenceSectionDescription = computed(() =>
-	claimSnapshotGroups.value.length
-		? "A concise view of what is stable, what is easy to misread, and what could still change."
-		: "Each summary captures the question, the finding, and the main limitations."
-);
-
 const uncertaintySummary = computed(() => {
 	if (claim.value?.uncertaintySummary?.trim()) {
 		return claim.value.uncertaintySummary.trim();
 	}
 	if (claim.value?.evidenceCertainty === "high") {
-		return "High certainty means the broader evidence stack looks stable and would probably need a substantial new synthesis to move.";
+		return "The core conclusion appears stable. Remaining uncertainty concerns its boundaries and precision.";
 	}
 	if (claim.value?.evidenceCertainty === "moderate") {
-		return "Moderate certainty means the overall direction looks reliable, but size, subgroup details, or implementation details could still move.";
+		return "The overall direction appears reliable, but important details and the precision of the conclusion could still change.";
 	}
 	if (claim.value?.evidenceCertainty === "low") {
-		return "Low certainty means the current direction is tentative enough that stronger direct evidence could still reshape the page.";
+		return "The current direction is tentative. Stronger direct evidence could still reshape the conclusion.";
 	}
 	if (claim.value?.evidenceCertainty === "very_low") {
-		return "Very low certainty means this is an unstable evidence base and should be read as a careful snapshot, not a durable settled answer.";
+		return "The evidence base is not stable enough for a settled answer.";
 	}
-	return "A plain-language uncertainty summary is not available yet.";
+	return "No uncertainty summary is available yet.";
 });
 
-const uncertaintyLimits = computed(() => {
-	const driverDetails = uncertaintyDrivers.value.map((driver) => driver.detail.trim()).filter(Boolean);
-	if (driverDetails.length) {
-		return Array.from(new Set(driverDetails)).slice(0, 6);
-	}
-	return Array.from(
-		new Set(
-			evidenceSummaries.value
-				.flatMap((summary) => summary.limitations || [])
-				.map((item) => item.trim())
-				.filter(Boolean)
-		)
-	).slice(0, 6);
-});
+const uncertaintyLimits = computed(() =>
+	selectDistinctUncertaintyLimits({
+		drivers: uncertaintyDrivers.value,
+		openQuestions: claim.value?.openQuestions ?? [],
+		evidenceSummaries: evidenceSummaries.value
+	})
+);
 
 const sourceGroups = computed(() => {
 	const groups: Array<{
@@ -400,33 +387,16 @@ function formatDate(value?: string, fallback = "Not available yet") {
 			</div>
 		</section>
 
-		<EvidenceLandscapePanel v-if="evidenceLandscape" :landscape="evidenceLandscape" />
-
-		<section class="uncertainty-strip">
-			<div>
-				<p class="eyebrow">Uncertainty and limits</p>
-				<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
-				<p>{{ uncertaintySummary }}</p>
-			</div>
-			<div v-if="uncertaintyLimits.length">
-				<p class="field-label">Main limits</p>
-				<ul class="plain-list plain-list--tight">
-					<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
-				</ul>
-			</div>
-		</section>
-
 		<section class="content-stack">
-			<section class="content-panel">
+			<section v-if="claimSnapshotGroups.length" class="content-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Outcome view</p>
-						<h2>{{ evidenceSectionTitle }}</h2>
+						<p class="eyebrow">Evidence</p>
+						<h2>What the evidence says</h2>
 					</div>
-					<p>{{ evidenceSectionDescription }}</p>
 				</div>
 
-				<div v-if="claimSnapshotGroups.length" class="claim-snapshot-grid">
+				<div class="claim-snapshot-grid">
 					<article v-for="group in claimSnapshotGroups" :key="group.key" class="claim-snapshot-block">
 						<p class="eyebrow">{{ group.eyebrow }}</p>
 						<h3>{{ group.title }}</h3>
@@ -435,12 +405,32 @@ function formatDate(value?: string, fallback = "Not available yet") {
 						</ul>
 					</article>
 				</div>
+			</section>
 
-				<div v-if="evidenceSummaries.length" class="outcome-summary-section">
-					<div v-if="claimSnapshotGroups.length" class="section-subheading">
-						<h3>Outcome summaries</h3>
-						<p>Each summary captures the question, the finding, and the main limitations.</p>
+			<section class="uncertainty-strip">
+				<div>
+					<p class="eyebrow">Uncertainty</p>
+					<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
+					<p>{{ uncertaintySummary }}</p>
+				</div>
+				<div v-if="uncertaintyLimits.length">
+					<p class="field-label">Limits to keep in mind</p>
+					<ul class="plain-list plain-list--tight">
+						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
+					</ul>
+				</div>
+			</section>
+
+			<EvidenceLandscapePanel v-if="evidenceLandscape" :landscape="evidenceLandscape" />
+
+			<section v-if="evidenceSummaries.length" class="content-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Outcome detail</p>
+						<h2>Detailed findings</h2>
 					</div>
+				</div>
+				<div class="outcome-summary-section">
 					<div class="evidence-summary-list">
 						<article
 							v-for="summary in evidenceSummaries"
@@ -471,18 +461,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 						</article>
 					</div>
 				</div>
-				<div v-else-if="!claimSnapshotGroups.length" class="empty-state">
-					No outcome-level evidence summaries are attached yet.
-				</div>
 			</section>
 
 			<section class="content-panel">
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Evidence trail</p>
-						<h2>Source stack</h2>
+						<h2>Sources</h2>
 					</div>
-					<p>Grouped so the most decision-relevant sources appear first.</p>
+					<p>Highest-weight sources appear first.</p>
 				</div>
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
@@ -558,15 +545,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</div>
 			</section>
 
-			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Corrections and updates</p>
-						<h2>Change log</h2>
-					</div>
-					<p>What changed and when.</p>
-				</div>
-
+			<details class="content-panel change-log-panel">
+				<summary class="change-log-panel__summary">
+					<span class="change-log-panel__heading">
+						<span class="eyebrow">Corrections and updates</span>
+						<span class="change-log-panel__title">Change log</span>
+					</span>
+					<span class="change-log-panel__meta">
+						{{ claim?.changeLog?.length || 0 }}
+						{{ claim?.changeLog?.length === 1 ? "entry" : "entries" }}
+					</span>
+				</summary>
 				<div v-if="!claim?.changeLog?.length" class="empty-state">
 					No public change log entries are recorded yet.
 				</div>
@@ -583,7 +572,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 						<p>{{ entry.summary }}</p>
 					</article>
 				</div>
-			</section>
+			</details>
 		</section>
 	</div>
 </template>
@@ -597,7 +586,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__header,
 .bottom-line,
 .uncertainty-strip,
-.content-panel,
 .queue-note {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -612,6 +600,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	gap: 18px;
 }
 
+.content-panel {
+	display: grid;
+	gap: 16px;
+	padding: 4px 0 24px;
+	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.content-panel:last-child {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
 .claim-page__hero {
 	display: grid;
 	gap: 10px;
@@ -620,7 +620,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__header h1,
 .bottom-line h2,
 .section-heading h2,
-.section-subheading h3,
 .claim-snapshot-block h3,
 .source-group__title,
 .source-row h4 {
@@ -638,7 +637,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__meta,
 .bottom-line p,
 .section-heading p,
-.section-subheading p,
 .plain-list,
 .source-row p,
 .empty-state,
@@ -731,22 +729,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .section-heading p,
-.section-subheading p,
 .source-group__description {
 	max-width: 58ch;
 	color: var(--consensus-muted);
 	line-height: 1.55;
-}
-
-.section-subheading {
-	display: grid;
-	gap: 6px;
-	padding-top: 2px;
-}
-
-.section-subheading h3,
-.section-subheading p {
-	margin: 0;
 }
 
 .content-stack,
@@ -768,19 +754,29 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .evidence-summary-card,
 .claim-snapshot-block,
-.source-group,
 .change-log__entry {
 	display: grid;
 	gap: 14px;
 	padding: 18px;
-	border-radius: 16px;
+	border-radius: 8px;
 	background: var(--consensus-field-surface);
 	border: 1px solid var(--consensus-soft-line);
 }
 
+.source-group {
+	display: grid;
+	gap: 14px;
+	padding: 16px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.source-group:last-child {
+	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
 .source-row {
 	padding: 16px;
-	border-radius: 14px;
+	border-radius: 8px;
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 }
@@ -866,7 +862,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .evidence-summary-card h3,
-.section-subheading h3,
 .claim-snapshot-block h3,
 .source-group__title,
 .source-row h4 {
@@ -918,6 +913,41 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	background: color-mix(in srgb, var(--consensus-caution) 12%, var(--consensus-elevated-surface));
 }
 
+.change-log-panel__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.change-log-panel__summary::-webkit-details-marker {
+	display: none;
+}
+
+.change-log-panel__heading {
+	display: grid;
+	gap: 6px;
+}
+
+.change-log-panel__title {
+	font-family: "Fraunces", serif;
+	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.change-log-panel__meta {
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	font-weight: 700;
+}
+
+.change-log-panel[open] .change-log-panel__summary {
+	margin-bottom: 16px;
+}
+
 .button {
 	display: inline-flex;
 	align-items: center;
@@ -948,7 +978,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.claim-page__header,
 	.bottom-line,
 	.uncertainty-strip,
-	.content-panel,
 	.queue-note {
 		padding: 14px;
 		border-radius: 16px;
@@ -974,7 +1003,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.claim-page__meta,
 	.bottom-line p,
 	.section-heading p,
-	.section-subheading p,
 	.plain-list,
 	.source-row p,
 	.empty-state,
@@ -1014,17 +1042,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 	.evidence-summary-card,
 	.claim-snapshot-block,
-	.source-group,
 	.change-log__entry {
 		gap: 11px;
 		padding: 14px;
-		border-radius: 14px;
+		border-radius: 8px;
+	}
+
+	.source-group {
+		padding: 14px 0;
 	}
 
 	.source-row {
 		gap: 12px;
 		padding: 14px;
-		border-radius: 12px;
+		border-radius: 8px;
 	}
 
 	.source-group__summary {

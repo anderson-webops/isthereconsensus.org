@@ -14,11 +14,6 @@ const props = defineProps<{
 const notes = computed(() =>
 	[
 		{
-			key: "answer",
-			label: "Plain-language answer",
-			value: props.landscape.plainLanguageAnswer
-		},
-		{
 			key: "caveat",
 			label: "Important caveat",
 			value: props.landscape.caveatSummary
@@ -41,11 +36,6 @@ const notes = computed(() =>
 			value: props.landscape.publicFlags?.showFalseBalanceWarning
 				? props.landscape.fringeOrUnsupportedViewSummary
 				: ""
-		},
-		{
-			key: "change",
-			label: "What could change this",
-			value: props.landscape.whatWouldChangeThis
 		}
 	].filter((item) => item.value?.trim())
 );
@@ -71,13 +61,7 @@ const distributionRows = computed(() => {
 		{ key: "mixed", label: "Mixed / inconclusive", bucket: distribution.inconclusiveOrMixed },
 		{ key: "background", label: "Background only", bucket: distribution.backgroundContext }
 	];
-	const maxWeighted = Math.max(...rows.map((row) => row.bucket.weightedCount ?? row.bucket.count), 1);
-	return rows
-		.filter((row) => row.bucket.count > 0)
-		.map((row) => ({
-			...row,
-			width: `${Math.max(((row.bucket.weightedCount ?? row.bucket.count) / maxWeighted) * 100, 8)}%`
-		}));
+	return rows.filter((row) => row.bucket.count > 0);
 });
 
 const excludedCounts = computed(() => {
@@ -128,13 +112,10 @@ function formatDate(value?: string) {
 	<section class="evidence-landscape-panel">
 		<div class="evidence-landscape-panel__header">
 			<div>
-				<p class="eyebrow">Evidence landscape</p>
-				<h2>{{ landscape.oneSentenceSummary || formatLandscapeSupportLabel(landscape.supportLabel) }}</h2>
-				<p v-if="landscape.plainLanguageAnswer" class="landscape-answer">
-					{{ landscape.plainLanguageAnswer }}
-				</p>
+				<p class="eyebrow">Evidence assessment</p>
+				<h2>How strong is the evidence?</h2>
 			</div>
-			<div class="evidence-landscape-panel__badges" aria-label="Evidence landscape labels">
+			<div class="evidence-landscape-panel__badges" aria-label="Evidence assessment labels">
 				<span class="landscape-badge landscape-badge--support">
 					{{ formatLandscapeSupportLabel(landscape.supportLabel) }}
 				</span>
@@ -144,36 +125,8 @@ function formatDate(value?: string) {
 				<span class="landscape-badge">
 					{{ formatLandscapeExpertAgreementLabel(landscape.expertAgreement) }}
 				</span>
-				<span v-if="landscape.evidenceDirection" class="landscape-badge">
-					{{ formatLandscapeDirectionLabel(landscape.evidenceDirection) }}
-				</span>
 			</div>
 		</div>
-
-		<div v-if="evidenceBaseStats.length" class="landscape-stats" aria-label="Evidence base size">
-			<div v-for="item in evidenceBaseStats" :key="item.key" class="landscape-stat">
-				<strong>{{ item.value }}</strong>
-				<span>{{ item.label }}</span>
-			</div>
-		</div>
-
-		<section v-if="distributionRows.length" class="landscape-distribution">
-			<div class="landscape-section-heading">
-				<p class="field-label">Range of credible source positions</p>
-				<p>This is weighted by source tier, not counted as a vote.</p>
-			</div>
-			<div class="distribution-list">
-				<div v-for="row in distributionRows" :key="row.key" class="distribution-row">
-					<div class="distribution-row__meta">
-						<span>{{ row.label }}</span>
-						<span>{{ row.bucket.count }} source{{ row.bucket.count === 1 ? "" : "s" }}</span>
-					</div>
-					<div class="distribution-track" aria-hidden="true">
-						<span class="distribution-fill" :style="{ width: row.width }" />
-					</div>
-				</div>
-			</div>
-		</section>
 
 		<div v-if="notes.length" class="evidence-landscape-panel__notes">
 			<article v-for="note in notes" :key="note.key" class="landscape-note">
@@ -181,26 +134,6 @@ function formatDate(value?: string) {
 				<p>{{ note.value }}</p>
 			</article>
 		</div>
-
-		<section v-if="boundaryConditions.length || applicabilityItems.length" class="landscape-limits">
-			<div v-if="boundaryConditions.length" class="landscape-limit-card">
-				<p class="field-label">Boundary conditions</p>
-				<ul class="landscape-list">
-					<li v-for="boundary in boundaryConditions" :key="`${boundary.dimension}-${boundary.label}`">
-						<strong>{{ boundary.label }}:</strong> {{ boundary.explanation }}
-					</li>
-				</ul>
-			</div>
-			<div v-if="applicabilityItems.length" class="landscape-limit-card">
-				<p class="field-label">Applies to</p>
-				<dl class="landscape-definition-list">
-					<template v-for="item in applicabilityItems" :key="item.key">
-						<dt>{{ item.label }}</dt>
-						<dd>{{ item.value }}</dd>
-					</template>
-				</dl>
-			</div>
-		</section>
 
 		<p v-if="landscape.publicFlags?.showFalseBalanceWarning" class="landscape-warning">
 			Unsupported or fringe versions of a claim can be described, but they do not receive equal visual weight with
@@ -212,23 +145,73 @@ function formatDate(value?: string) {
 			qualified clinical or domain-specific guidance.
 		</p>
 
-		<div v-if="excludedCounts.length" class="excluded-source-note">
-			<p class="field-label">Separated from the evidence distribution</p>
-			<p>
-				<span v-for="item in excludedCounts" :key="item.key"> {{ item.value }} {{ item.label }} </span>
-			</p>
-		</div>
+		<details class="evidence-assessment-details">
+			<summary>Evidence assessment details</summary>
+			<div class="evidence-assessment-details__body">
+				<p v-if="landscape.oneSentenceSummary" class="assessment-summary">
+					{{ landscape.oneSentenceSummary }}
+				</p>
+				<p v-if="landscape.evidenceDirection" class="assessment-direction">
+					<strong>Overall direction:</strong>
+					{{ formatLandscapeDirectionLabel(landscape.evidenceDirection) }}
+				</p>
 
-		<footer class="evidence-landscape-panel__footer">
-			<p>
-				This landscape separates support, certainty, and expert agreement. Source counts are not votes, and this
-				panel does not automatically decide the public bottom line.
-			</p>
-			<p v-if="lastAssessedAt || nextReviewDueAt">
-				<span v-if="lastAssessedAt"> Assessed {{ formatDate(lastAssessedAt) }} </span>
-				<span v-if="nextReviewDueAt"> Next review {{ formatDate(nextReviewDueAt) }} </span>
-			</p>
-		</footer>
+				<div v-if="evidenceBaseStats.length" class="landscape-stats" aria-label="Evidence base size">
+					<div v-for="item in evidenceBaseStats" :key="item.key" class="landscape-stat">
+						<strong>{{ item.value }}</strong>
+						<span>{{ item.label }}</span>
+					</div>
+				</div>
+
+				<section v-if="distributionRows.length" class="landscape-distribution">
+					<div class="landscape-section-heading">
+						<p class="field-label">Credible source positions</p>
+						<p>Counts describe the reviewed source set; they are not votes.</p>
+					</div>
+					<div class="distribution-list">
+						<div v-for="row in distributionRows" :key="row.key" class="distribution-row">
+							<span>{{ row.label }}</span>
+							<strong>{{ row.bucket.count }} source{{ row.bucket.count === 1 ? "" : "s" }}</strong>
+						</div>
+					</div>
+				</section>
+
+				<section v-if="boundaryConditions.length || applicabilityItems.length" class="landscape-limits">
+					<div v-if="boundaryConditions.length" class="landscape-limit-card">
+						<p class="field-label">Boundary conditions</p>
+						<ul class="landscape-list">
+							<li v-for="boundary in boundaryConditions" :key="`${boundary.dimension}-${boundary.label}`">
+								<strong>{{ boundary.label }}:</strong> {{ boundary.explanation }}
+							</li>
+						</ul>
+					</div>
+					<div v-if="applicabilityItems.length" class="landscape-limit-card">
+						<p class="field-label">Applies to</p>
+						<dl class="landscape-definition-list">
+							<template v-for="item in applicabilityItems" :key="item.key">
+								<dt>{{ item.label }}</dt>
+								<dd>{{ item.value }}</dd>
+							</template>
+						</dl>
+					</div>
+				</section>
+
+				<div v-if="excludedCounts.length" class="excluded-source-note">
+					<p class="field-label">Separated from the evidence distribution</p>
+					<p>
+						<span v-for="item in excludedCounts" :key="item.key">{{ item.value }} {{ item.label }}</span>
+					</p>
+				</div>
+
+				<footer class="evidence-landscape-panel__footer">
+					<p>Support, certainty, and expert agreement are separate judgments. Source counts are not votes.</p>
+					<p v-if="lastAssessedAt || nextReviewDueAt">
+						<span v-if="lastAssessedAt">Assessed {{ formatDate(lastAssessedAt) }}</span>
+						<span v-if="nextReviewDueAt">Next review {{ formatDate(nextReviewDueAt) }}</span>
+					</p>
+				</footer>
+			</div>
+		</details>
 	</section>
 </template>
 
@@ -236,12 +219,9 @@ function formatDate(value?: string) {
 .evidence-landscape-panel {
 	display: grid;
 	gap: 18px;
-	padding: 22px;
-	border: 1px solid color-mix(in srgb, var(--consensus-community) 24%, var(--consensus-soft-line));
-	border-radius: 22px;
-	background:
-		linear-gradient(135deg, color-mix(in srgb, var(--consensus-community-soft) 24%, transparent), transparent 42%),
-		var(--consensus-surface);
+	padding: 24px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .evidence-landscape-panel__header,
@@ -256,16 +236,8 @@ function formatDate(value?: string) {
 .evidence-landscape-panel h2 {
 	margin: 6px 0 0;
 	font-family: "Fraunces", serif;
-	font-size: 2rem;
-	line-height: 1.05;
-}
-
-.landscape-answer {
-	max-width: 76ch;
-	margin: 12px 0 0;
-	color: var(--consensus-ink);
-	font-size: 1.02rem;
-	line-height: 1.65;
+	font-size: 1.7rem;
+	line-height: 1.12;
 }
 
 .evidence-landscape-panel__badges,
@@ -278,21 +250,24 @@ function formatDate(value?: string) {
 .landscape-stats {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 10px;
+	border-top: 1px solid var(--consensus-soft-line);
+	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .landscape-stat {
 	display: grid;
 	gap: 2px;
-	padding: 14px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	background: color-mix(in srgb, var(--consensus-field-surface) 84%, var(--consensus-community-soft) 16%);
+	padding: 12px;
+	border-left: 1px solid var(--consensus-soft-line);
+}
+
+.landscape-stat:first-child {
+	border-left: 0;
 }
 
 .landscape-stat strong {
 	font-family: "Fraunces", serif;
-	font-size: 1.9rem;
+	font-size: 1.55rem;
 	line-height: 1;
 }
 
@@ -325,10 +300,8 @@ function formatDate(value?: string) {
 .excluded-source-note {
 	display: grid;
 	gap: 12px;
-	padding: 16px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 18px;
-	background: var(--consensus-field-surface);
+	padding-top: 16px;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .landscape-section-heading {
@@ -352,35 +325,20 @@ function formatDate(value?: string) {
 
 .distribution-list {
 	display: grid;
-	gap: 10px;
 }
 
 .distribution-row {
-	display: grid;
-	gap: 7px;
-}
-
-.distribution-row__meta {
 	display: flex;
 	justify-content: space-between;
 	gap: 12px;
+	padding: 9px 0;
+	border-bottom: 1px solid var(--consensus-soft-line);
 	color: var(--consensus-muted);
 	font-size: 0.86rem;
-	font-weight: 700;
 }
 
-.distribution-track {
-	overflow: hidden;
-	height: 10px;
-	border-radius: 999px;
-	background: var(--consensus-elevated-surface);
-}
-
-.distribution-fill {
-	display: block;
-	height: 100%;
-	border-radius: inherit;
-	background: linear-gradient(90deg, var(--consensus-community), var(--consensus-accent));
+.distribution-row strong {
+	color: var(--consensus-ink);
 }
 
 .evidence-landscape-panel__notes {
@@ -392,10 +350,8 @@ function formatDate(value?: string) {
 .landscape-note {
 	display: grid;
 	gap: 6px;
-	padding: 15px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 16px;
-	background: var(--consensus-field-surface);
+	padding: 14px 0;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .landscape-note p,
@@ -455,7 +411,7 @@ function formatDate(value?: string) {
 
 .landscape-warning {
 	padding: 14px 16px;
-	border-radius: 16px;
+	border-radius: 8px;
 	background: color-mix(in srgb, var(--consensus-caution) 12%, var(--consensus-field-surface));
 	border: 1px solid color-mix(in srgb, var(--consensus-caution) 35%, var(--consensus-soft-line));
 }
@@ -474,6 +430,55 @@ function formatDate(value?: string) {
 	background: color-mix(in srgb, var(--consensus-caution) 10%, var(--consensus-elevated-surface));
 }
 
+.evidence-assessment-details {
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+	background: var(--consensus-surface);
+}
+
+.evidence-assessment-details > summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 15px 16px;
+	cursor: pointer;
+	list-style: none;
+	font-weight: 700;
+}
+
+.evidence-assessment-details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.evidence-assessment-details > summary::after {
+	content: "+";
+	font-size: 1.1rem;
+}
+
+.evidence-assessment-details[open] > summary::after {
+	content: "-";
+}
+
+.evidence-assessment-details__body {
+	display: grid;
+	gap: 16px;
+	padding: 16px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.assessment-summary,
+.assessment-direction {
+	max-width: 72ch;
+	margin: 0;
+	color: var(--consensus-muted);
+	line-height: 1.6;
+}
+
+.assessment-direction strong {
+	color: var(--consensus-ink);
+}
+
 .field-label {
 	font-size: 0.82rem;
 	font-weight: 700;
@@ -482,13 +487,49 @@ function formatDate(value?: string) {
 }
 
 @media (max-width: 760px) {
-	.landscape-stats,
 	.landscape-limits {
 		grid-template-columns: 1fr;
 	}
 
+	.landscape-stats {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.landscape-stat:nth-child(odd) {
+		border-left: 0;
+	}
+
+	.landscape-stat:nth-child(n + 3) {
+		border-top: 1px solid var(--consensus-soft-line);
+	}
+
 	.evidence-landscape-panel__notes {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 460px) {
+	.landscape-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.landscape-stat,
+	.landscape-stat:nth-child(odd) {
+		border-top: 1px solid var(--consensus-soft-line);
+		border-left: 0;
+	}
+
+	.landscape-stat:first-child {
+		border-top: 0;
+	}
+
+	.landscape-definition-list {
+		grid-template-columns: 1fr;
+		gap: 4px;
+	}
+
+	.landscape-definition-list dd + dt {
+		margin-top: 8px;
 	}
 }
 </style>
