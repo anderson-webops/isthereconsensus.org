@@ -3,6 +3,16 @@ import test from "node:test";
 // noinspection ES6PreferShortImport
 import { appDescription, appName } from "../src/constants";
 
+interface HeadMeta {
+	content?: string;
+	name?: string;
+}
+
+interface HeadLink {
+	href?: string;
+	rel?: string;
+}
+
 test("nuxt config points to src/ and keeps the public app shell metadata", async () => {
 	const { default: config } = await import("../nuxt.config.ts");
 
@@ -14,8 +24,8 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	assert.equal(config.colorMode?.preference, "system");
 	assert.equal(config.colorMode?.fallback, "light");
 
-	const headMeta = config.app?.head?.meta ?? [];
-	const headLinks = config.app?.head?.link ?? [];
+	const headMeta = (config.app?.head?.meta ?? []) as HeadMeta[];
+	const headLinks = (config.app?.head?.link ?? []) as HeadLink[];
 	const descriptionMeta = headMeta.find((meta) => meta?.name === "description");
 	assert.equal(descriptionMeta?.content, appDescription);
 
