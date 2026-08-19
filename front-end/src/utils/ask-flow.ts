@@ -390,9 +390,8 @@ export function defaultAskKind(query: AskQueryAnalysis): AskKind {
 	return "discussion";
 }
 
-export function matchStrengthLabel(score?: number) {
-	if (!score) return "Related";
-	if (score >= 100) return "Best match";
-	if (score >= 80) return "Likely relevant";
+export function matchStrengthLabel(score?: number, strength?: "exact" | "close" | "related" | "none") {
+	if (strength === "exact" || (!strength && score && score >= 120)) return "Exact match";
+	if (strength === "close" || (!strength && score && score >= 80)) return "Close match";
 	return "Related";
 }

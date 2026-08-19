@@ -8,28 +8,29 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(testDir, "..", "src/pages/ask.vue"), "utf8");
 
 describe("ask page layout copy", () => {
-	it("keeps the ask flow framed around searching first and posting only gaps", () => {
+	it("keeps the ask flow progressive and framed around uncovered questions", () => {
 		assert.match(source, /Search first\. Ask what is missing\./);
-		assert.match(source, /Search a claim or question first/);
-		assert.match(source, /Use the match if it answers your question\. Post only what remains unclear\./);
-		assert.match(source, /If the matches miss your question, ask here\./);
-		assert.match(source, /Related, but different/);
-		assert.match(source, /Related reviewed claim attached/);
-		assert.doesNotMatch(source, /If nothing close fits, ask here\./);
-		assert.doesNotMatch(source, /Ask about a gap/);
-		assert.doesNotMatch(source, /Close, but different/);
+		assert.match(source, /What are you looking for\?/);
+		assert.match(source, /Does one of these answer it\?/);
+		assert.match(source, /None of these answers my question\./);
+		assert.match(source, /Ask what is missing/);
+		assert.match(source, /v-if="showPostingForm"/);
+		assert.match(source, /async function revealPostingForm/);
+		assert.doesNotMatch(source, /Related, but different/);
 	});
 
-	it("keeps the queue prompt neutral and specific", () => {
-		assert.match(source, /Use a neutral, testable question/);
-		assert.match(source, /One sentence is enough/);
+	it("uses one question field instead of asking visitors to repeat themselves", () => {
+		assert.match(source, /id="claim-question"/);
+		assert.match(source, /class="posting-form__question">\{\{ query \}\}/);
 		assert.match(source, /Add context, source, or what differs/);
 		assert.match(source, /describe what differs from the closest match/);
+		assert.doesNotMatch(source, /id="core-question"/);
+		assert.doesNotMatch(source, /v-model="coreQuestion"/);
 	});
 
 	it("keeps reviewed-match actions easy to scan on desktop and mobile", () => {
 		assert.match(source, /\.match-row \{[\s\S]*grid-template-columns: minmax\(0, 1fr\) auto;/);
-		assert.match(source, /\.match-row__actions \{[\s\S]*flex-direction: column;[\s\S]*min-width: 176px;/);
+		assert.match(source, /\.match-row__actions \{[\s\S]*flex-direction: column;[\s\S]*min-width: 148px;/);
 		assert.match(source, /\.match-row__actions \.button \{[\s\S]*width: 100%;/);
 		assert.match(source, /@media \(max-width: 720px\) \{[\s\S]*\.match-row \{[\s\S]*grid-template-columns: 1fr;/);
 	});
