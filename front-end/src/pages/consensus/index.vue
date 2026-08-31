@@ -216,20 +216,11 @@ function formatTopicClaimCount(topic: Topic) {
 	return "Claim reviews load on topic pages";
 }
 
-function topicDirectoryDescription(topic: Topic & { guide: ReturnType<typeof getTopicGuide> }) {
-	return topic.description || topic.guide.snapshot;
-}
-
 function formatClaimBand(band: ClaimConsensusBand) {
 	if (band === "strong") return "Strong consensus";
 	if (band === "broad") return "Broad consensus";
 	if (band === "mixed") return "Mixed evidence";
 	return "Still unclear";
-}
-
-function formatEvidenceCertainty(value?: string) {
-	if (!value) return "Certainty under review";
-	return `${formatSlugTitle(value)} certainty`;
 }
 
 function showMoreClaims() {
@@ -295,15 +286,11 @@ watch([query, claimBand], () => {
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<p class="topic-row__description" :title="topicDirectoryDescription(topic)">
-							{{ topicDirectoryDescription(topic) }}
-						</p>
 						<div class="topic-row__meta">
-							<span>{{ topic.guide.consensusLabel }}</span>
 							<span>{{ formatTopicClaimCount(topic) }}</span>
 						</div>
 					</div>
-					<span class="topic-row__open">Open topic</span>
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -374,30 +361,21 @@ watch([query, claimBand], () => {
 					</button>
 				</div>
 				<div v-else class="claim-grid">
-					<article v-for="claim in visibleClaims" :key="claim._id" class="claim-card">
-						<div class="claim-card__meta">
-							<NuxtLink v-if="claim.topic" :to="`/consensus/${claim.topic.slug}`">
-								{{ claim.topic.title }}
-							</NuxtLink>
-							<span>{{ formatClaimBand(claim.consensusBand) }}</span>
+					<NuxtLink
+						v-for="claim in visibleClaims"
+						:key="claim._id"
+						class="claim-card"
+						:to="`/consensus/${claim.topic?.slug ?? 'other-questions'}/${claim.slug}`"
+					>
+						<div class="claim-card__content">
+							<h3>{{ claim.title }}</h3>
+							<p class="claim-card__meta">
+								<span v-if="claim.topic">{{ claim.topic.title }}</span>
+								<span class="claim-card__status">{{ formatClaimBand(claim.consensusBand) }}</span>
+							</p>
 						</div>
-						<h3>
-							<NuxtLink :to="`/consensus/${claim.topic?.slug ?? 'other-questions'}/${claim.slug}`">
-								{{ claim.title }}
-							</NuxtLink>
-						</h3>
-						<p>{{ claim.bottomLine }}</p>
-						<div class="claim-card__footer">
-							<span>{{ formatCountLabel(claim.sourceCount ?? 0, "source") }}</span>
-							<span>{{ formatEvidenceCertainty(claim.evidenceCertainty) }}</span>
-							<NuxtLink
-								class="claim-card__open"
-								:to="`/consensus/${claim.topic?.slug ?? 'other-questions'}/${claim.slug}`"
-							>
-								Open review
-							</NuxtLink>
-						</div>
-					</article>
+						<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
+					</NuxtLink>
 				</div>
 
 				<div v-if="remainingClaimCount" class="claim-directory__more">
@@ -433,7 +411,6 @@ watch([query, claimBand], () => {
 
 .directory__header p,
 .section-heading p,
-.topic-row p,
 .empty-state,
 .results-count {
 	color: var(--consensus-muted);
@@ -567,52 +544,38 @@ watch([query, claimBand], () => {
 .topic-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
 	gap: 16px;
-	padding: 18px 20px;
+	padding: 17px 20px;
 	color: inherit;
 	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.topic-row:hover,
+.topic-row:focus-visible {
+	border-color: var(--consensus-interactive);
 }
 
 .topic-row__main {
 	display: grid;
-	gap: 10px;
+	gap: 7px;
 	align-content: start;
 }
 
 .topic-row h3 {
 	margin: 0;
-	line-height: 1.2;
-}
-
-.topic-row p {
-	margin: 0;
-}
-
-.topic-row__description {
-	display: -webkit-box;
-	overflow: hidden;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 3;
+	color: var(--consensus-ink);
+	font-size: 1.26rem;
+	font-weight: 600;
+	line-height: 1.3;
 }
 
 .topic-row__meta {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
-}
-
-.topic-row__open {
-	display: inline-flex;
-	align-items: center;
-	align-self: start;
-	justify-content: center;
-	justify-self: end;
-	min-height: 40px;
-	padding: 9px 14px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	font-weight: 600;
-	text-decoration: none;
+	letter-spacing: 0;
 }
 
 .claim-directory {
@@ -693,72 +656,59 @@ watch([query, claimBand], () => {
 
 .claim-card {
 	display: grid;
-	align-content: start;
-	gap: 12px;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 14px;
 	min-width: 0;
 	padding: 18px;
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 8px;
 	background: var(--consensus-field-surface);
+	color: inherit;
+	text-decoration: none;
+	transition: border-color 160ms ease;
 }
 
-.claim-card__meta,
-.claim-card__footer {
+.claim-card:hover,
+.claim-card:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
+.claim-card__content {
+	display: grid;
+	gap: 8px;
+	min-width: 0;
+}
+
+.claim-card__meta {
 	display: flex;
 	align-items: center;
 	gap: 8px 12px;
 	flex-wrap: wrap;
+	margin: 0;
 	color: var(--consensus-muted);
 	font-size: 0.78rem;
 	font-weight: 700;
-	letter-spacing: 0.05em;
+	letter-spacing: 0;
 	text-transform: uppercase;
 }
 
-.claim-card__meta {
-	justify-content: space-between;
-}
-
-.claim-card__meta a,
-.claim-card h3 a,
-.claim-card__open {
-	color: inherit;
-	text-decoration: none;
-}
-
-.claim-card__meta a:hover,
-.claim-card h3 a:hover,
-.claim-card__open:hover {
-	color: var(--consensus-ember);
+.claim-card__status {
+	color: var(--consensus-interactive);
 }
 
 .claim-card h3 {
 	margin: 0;
-	font-size: clamp(1.1rem, 2vw, 1.35rem);
-	line-height: 1.25;
-}
-
-.claim-card > p {
-	display: -webkit-box;
-	overflow: hidden;
-	margin: 0;
-	color: var(--consensus-muted);
-	line-height: 1.6;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 4;
-}
-
-.claim-card__footer {
-	align-self: end;
-	padding-top: 2px;
-	border-top: 1px solid var(--consensus-soft-line);
-	letter-spacing: 0.03em;
-	text-transform: none;
-}
-
-.claim-card__open {
-	margin-left: auto;
 	color: var(--consensus-ink);
+	font-size: 1.24rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.card-arrow {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
 }
 
 .claim-directory__more {
@@ -819,15 +769,13 @@ watch([query, claimBand], () => {
 
 	.directory__header p,
 	.section-heading p,
-	.topic-row p,
 	.empty-state,
 	.results-count {
 		line-height: 1.58;
 	}
 
 	.topic-row {
-		grid-template-columns: 1fr;
-		gap: 12px;
+		gap: 10px;
 		padding: 14px;
 	}
 
@@ -835,12 +783,8 @@ watch([query, claimBand], () => {
 		gap: 8px;
 	}
 
-	.topic-row__description {
-		-webkit-line-clamp: 2;
-	}
-
-	.topic-row__open {
-		justify-self: start;
+	.topic-row h3 {
+		font-size: 1.12rem;
 	}
 
 	.claim-directory__summary {
@@ -862,13 +806,13 @@ watch([query, claimBand], () => {
 	}
 
 	.claim-card {
-		gap: 10px;
+		gap: 9px;
 		padding: 14px;
 		border-radius: 8px;
 	}
 
-	.claim-card > p {
-		-webkit-line-clamp: 5;
+	.claim-card h3 {
+		font-size: 1.12rem;
 	}
 
 	.claim-directory__more {

@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const workflowSource = readFileSync(join(testDir, "..", "..", ".github", "workflows", "ci.yml"), "utf8");
+const accessibilitySource = readFileSync(join(testDir, "..", "..", "scripts", "a11y-smoke.mjs"), "utf8");
 
 describe("CI workflow", () => {
 	it("cancels stale queued runs for the same branch", () => {
@@ -44,5 +45,11 @@ describe("CI workflow", () => {
 		assert.notEqual(buildFrontendStep, -1);
 		assert.notEqual(accessibilityStep, -1);
 		assert.ok(buildFrontendStep < accessibilityStep);
+	});
+
+	it("checks the title-led explainer and misconception indexes in both color modes", () => {
+		assert.match(accessibilitySource, /"\/explainers"/);
+		assert.match(accessibilitySource, /"\/misconceptions"/);
+		assert.match(accessibilitySource, /A11Y_COLOR_SCHEMES \|\| "light,dark"/);
 	});
 });

@@ -44,45 +44,45 @@ useStaticPageMeta({
 		</header>
 
 		<section class="misconception-grid">
-			<article v-for="item in misconceptionModules" :key="item.slug" class="misconception-card">
-				<div>
-					<p class="eyebrow">Common mistake</p>
-					<h2>{{ item.title }}</h2>
-				</div>
-				<p class="misconception-card__diagnosis">{{ item.diagnosis }}</p>
-				<section class="misconception-card__section misconception-card__section--correction">
-					<h3>Short correction</h3>
-					<p>{{ item.shortCorrection }}</p>
-				</section>
-				<details class="misconception-card__details">
-					<summary>Quick checks and why it persists</summary>
-					<div class="misconception-card__details-body">
-						<section class="misconception-card__section">
-							<h3>Quick check</h3>
-							<ul>
-								<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
-							</ul>
-						</section>
-						<section class="misconception-card__section">
-							<h3>Why it persists</h3>
-							<p>{{ item.whyItPersists }}</p>
-						</section>
-						<section class="misconception-card__section misconception-card__section--links">
-							<h3>Related explainers</h3>
-							<div class="chip-row">
-								<NuxtLink
-									v-for="slug in item.relatedExplainers"
-									:key="slug"
-									class="chip"
-									:to="`/explainers/${slug}`"
-								>
-									{{ explainerTitle(slug) }}
-								</NuxtLink>
-							</div>
-						</section>
+			<details v-for="item in misconceptionModules" :key="item.slug" class="misconception-card">
+				<summary class="misconception-card__summary">
+					<div>
+						<p class="eyebrow">Common mistake</p>
+						<h2>{{ item.title }}</h2>
 					</div>
-				</details>
-			</article>
+					<span class="i-carbon-chevron-down misconception-card__chevron" aria-hidden="true" />
+				</summary>
+				<div class="misconception-card__body">
+					<p class="misconception-card__diagnosis">{{ item.diagnosis }}</p>
+					<section class="misconception-card__section misconception-card__section--correction">
+						<h3>Short correction</h3>
+						<p>{{ item.shortCorrection }}</p>
+					</section>
+					<section class="misconception-card__section">
+						<h3>Quick checks</h3>
+						<ul>
+							<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
+						</ul>
+					</section>
+					<section class="misconception-card__section">
+						<h3>Why it persists</h3>
+						<p>{{ item.whyItPersists }}</p>
+					</section>
+					<section class="misconception-card__section misconception-card__section--links">
+						<h3>Related explainers</h3>
+						<div class="chip-row">
+							<NuxtLink
+								v-for="slug in item.relatedExplainers"
+								:key="slug"
+								class="chip"
+								:to="`/explainers/${slug}`"
+							>
+								{{ explainerTitle(slug) }}
+							</NuxtLink>
+						</div>
+					</section>
+				</div>
+			</details>
 		</section>
 
 		<section class="misconception-panel misconception-panel--soft">
@@ -213,11 +213,60 @@ useStaticPageMeta({
 }
 
 .misconception-card {
-	padding: 22px;
-	display: grid;
-	gap: 13px;
-	align-content: start;
 	min-width: 0;
+	overflow: hidden;
+}
+
+.misconception-card__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 14px;
+	padding: 19px 20px;
+	list-style: none;
+	cursor: pointer;
+}
+
+.misconception-card__summary::-webkit-details-marker {
+	display: none;
+}
+
+.misconception-card__summary > div {
+	display: grid;
+	gap: 7px;
+}
+
+.misconception-card__summary .eyebrow {
+	margin: 0;
+}
+
+.misconception-card__summary h2 {
+	font-size: 1.24rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.misconception-card__summary:focus-visible {
+	outline: 2px solid var(--consensus-interactive);
+	outline-offset: -3px;
+}
+
+.misconception-card__chevron {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
+	transition: transform 160ms ease;
+}
+
+.misconception-card[open] .misconception-card__chevron {
+	transform: rotate(180deg);
+}
+
+.misconception-card__body {
+	display: grid;
+	gap: 16px;
+	padding: 18px 20px 20px;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .misconception-card__section {
@@ -230,10 +279,8 @@ useStaticPageMeta({
 }
 
 .misconception-card__section--correction {
-	padding: 13px 14px;
-	border: 1px solid color-mix(in srgb, var(--consensus-method) 28%, var(--consensus-soft-line));
-	border-radius: 14px;
-	background: color-mix(in srgb, var(--consensus-method) 10%, var(--consensus-surface));
+	padding-left: 14px;
+	border-left: 3px solid var(--consensus-method);
 }
 
 .misconception-card__section--correction p {
@@ -254,59 +301,6 @@ useStaticPageMeta({
 	padding-left: 20px;
 	display: grid;
 	gap: 8px;
-}
-
-.misconception-card__details {
-	display: grid;
-	gap: 10px;
-	padding-top: 2px;
-}
-
-.misconception-card__details summary {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	list-style: none;
-	cursor: pointer;
-	font-family: "Fraunces", serif;
-	font-weight: 600;
-	line-height: 1.2;
-	color: var(--consensus-ink);
-}
-
-.misconception-card__details summary::-webkit-details-marker {
-	display: none;
-}
-
-.misconception-card__details summary:focus-visible {
-	border-radius: 8px;
-	outline: 2px solid var(--consensus-debate);
-	outline-offset: 4px;
-}
-
-.misconception-card__details summary::after {
-	width: 18px;
-	height: 18px;
-	flex: 0 0 18px;
-	border: 1px solid var(--consensus-line);
-	border-radius: 999px;
-	color: var(--consensus-muted);
-	font-family: "Space Grotesk", system-ui, sans-serif;
-	font-size: 0.82rem;
-	line-height: 16px;
-	text-align: center;
-	content: "+";
-}
-
-.misconception-card__details[open] summary::after {
-	content: "-";
-}
-
-.misconception-card__details-body {
-	display: grid;
-	gap: 12px;
-	padding-top: 10px;
 }
 
 .misconception-panel--soft {
@@ -423,8 +417,7 @@ useStaticPageMeta({
 
 	.misconception-header,
 	.misconception-panel,
-	.misconception-callout,
-	.misconception-card {
+	.misconception-callout {
 		padding: 15px;
 	}
 
@@ -447,12 +440,19 @@ useStaticPageMeta({
 		margin-bottom: 12px;
 	}
 
-	.misconception-card {
-		gap: 9px;
+	.misconception-card__summary {
+		gap: 10px;
+		padding: 14px;
 	}
 
-	.misconception-card h2 {
-		line-height: 1.12;
+	.misconception-card__summary h2 {
+		font-size: 1.12rem;
+		line-height: 1.3;
+	}
+
+	.misconception-card__body {
+		gap: 14px;
+		padding: 14px;
 	}
 
 	.misconception-card__section {
@@ -460,23 +460,13 @@ useStaticPageMeta({
 	}
 
 	.misconception-card__section--correction {
-		padding: 10px 11px;
-		border-radius: 12px;
+		padding-left: 11px;
 	}
 
 	.misconception-card__section ul,
 	.plain-list {
 		gap: 6px;
 		padding-left: 18px;
-	}
-
-	.misconception-card__details {
-		gap: 8px;
-	}
-
-	.misconception-card__details-body {
-		gap: 10px;
-		padding-top: 8px;
 	}
 
 	.chip-row {

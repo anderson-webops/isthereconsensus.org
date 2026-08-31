@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
+import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
-import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
 
@@ -126,15 +125,6 @@ useHead(() => ({
 	}))
 }));
 
-function formatDate(value?: string, fallback = "Not available yet") {
-	if (!value) return fallback;
-	return new Intl.DateTimeFormat("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric"
-	}).format(new Date(value));
-}
-
 function formatBandLabel(band?: ClaimSummary["consensusBand"]) {
 	if (band === "strong") return "Strong consensus";
 	if (band === "broad") return "Broad consensus";
@@ -146,77 +136,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.supportLabel
 		? formatLandscapeSupportLabel(claim.evidenceLandscape.supportLabel)
 		: formatBandLabel(claim.consensusBand);
-}
-
-function claimCertaintyLabel(claim: ClaimSummary) {
-	return claim.evidenceLandscape?.evidenceCertainty
-		? formatLandscapeCertaintyLabel(claim.evidenceLandscape.evidenceCertainty)
-		: "";
-}
-
-function claimCardSummary(claim: ClaimSummary) {
-	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
-}
-
-function splitSummaryLead(text: string) {
-	const cleaned = text.trim();
-	const sentenceEnd = cleaned.match(/[.!?](?:\s|$)/);
-	if (!sentenceEnd) {
-		return {
-			lead: cleaned,
-			context: ""
-		};
-	}
-
-	const leadEnd = (sentenceEnd.index ?? 0) + sentenceEnd[0].trimEnd().length;
-	return {
-		lead: cleaned.slice(0, leadEnd).trim(),
-		context: cleaned.slice(leadEnd).trim()
-	};
-}
-
-function truncateWords(text: string, maxWords = 24) {
-	const words = text.trim().split(/\s+/).filter(Boolean);
-	if (words.length <= maxWords) return text.trim();
-	const previewWords = words.slice(0, maxWords);
-	const weakEndings = new Set([
-		"a",
-		"an",
-		"and",
-		"are",
-		"as",
-		"because",
-		"but",
-		"for",
-		"of",
-		"or",
-		"the",
-		"to",
-		"with"
-	]);
-	while (previewWords.length > 1 && weakEndings.has(previewWords[previewWords.length - 1].toLowerCase())) {
-		previewWords.pop();
-	}
-	return `${previewWords.join(" ")}...`;
-}
-
-function compactContextPreview(text: string) {
-	return truncateWords(splitSummaryLead(text).lead || text);
-}
-
-function claimCardPreview(claim: ClaimSummary) {
-	const full = claimCardSummary(claim);
-	const { lead, context } = splitSummaryLead(full);
-	return {
-		full,
-		lead,
-		context: compactContextPreview(context)
-	};
-}
-
-function starterClaimPreview(claim: ClaimSummary) {
-	const preview = claimCardPreview(claim);
-	return preview.context ? `${preview.lead} ${preview.context}` : preview.lead;
 }
 </script>
 
@@ -262,9 +181,11 @@ function starterClaimPreview(claim: ClaimSummary) {
 					class="starter-card"
 					:to="`/consensus/${slug}/${claim.slug}`"
 				>
-					<span>{{ claimSupportLabel(claim) }}</span>
-					<h3>{{ claim.title }}</h3>
-					<p>{{ starterClaimPreview(claim) }}</p>
+					<div class="starter-card__content">
+						<h3>{{ claim.title }}</h3>
+						<span>{{ claimSupportLabel(claim) }}</span>
+					</div>
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -291,18 +212,10 @@ function starterClaimPreview(claim: ClaimSummary) {
 					<div class="claim-row__content">
 						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__meta">
-							<span>{{ claimSupportLabel(claim) }}</span>
-							<span v-if="claimCertaintyLabel(claim)">{{ claimCertaintyLabel(claim) }}</span>
-							<span>{{ formatCountLabel(claim.sourceCount, "source") }}</span>
-							<span>Reviewed {{ formatDate(claim.lastReviewedAt, "Pending") }}</span>
-						</p>
-						<p class="claim-row__summary" :title="claimCardPreview(claim).full">
-							<span class="claim-row__summary-lead">{{ claimCardPreview(claim).lead }}</span>
-							<span v-if="claimCardPreview(claim).context" class="claim-row__summary-context">
-								{{ claimCardPreview(claim).context }}
-							</span>
+							<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
 						</p>
 					</div>
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -399,34 +312,43 @@ function starterClaimPreview(claim: ClaimSummary) {
 
 .starter-card {
 	display: grid;
-	gap: 8px;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 12px;
 	padding: 17px;
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 8px;
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
 	text-decoration: none;
+	transition: border-color 160ms ease;
 }
 
-.starter-card > span {
-	color: var(--consensus-ember);
+.starter-card:hover,
+.starter-card:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
+.starter-card__content {
+	display: grid;
+	gap: 8px;
+}
+
+.starter-card__content > span {
+	color: var(--consensus-interactive);
 	font-size: 0.72rem;
 	font-weight: 800;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
+	line-height: 1.35;
 	text-transform: uppercase;
 }
 
 .starter-card h3 {
 	font-family: "Fraunces", serif;
-	font-size: 1.08rem;
-	line-height: 1.24;
-}
-
-.starter-card p {
 	margin: 0;
-	color: var(--consensus-muted);
-	font-size: 0.92rem;
-	line-height: 1.5;
+	font-size: 1.18rem;
+	font-weight: 600;
+	line-height: 1.3;
 }
 
 .queue-note {
@@ -441,50 +363,56 @@ function starterClaimPreview(claim: ClaimSummary) {
 
 .claim-row {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 14px;
 	padding: 18px;
+	color: inherit;
 	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.claim-row:hover,
+.claim-row:focus-visible {
+	border-color: var(--consensus-interactive);
 }
 
 .claim-row__content {
 	display: grid;
-	gap: 8px;
+	gap: 7px;
 	align-content: start;
 }
 
 .claim-row h3 {
-	line-height: 1.2;
+	color: var(--consensus-ink);
+	font-size: 1.26rem;
+	font-weight: 600;
+	line-height: 1.3;
 }
 
 .claim-row p {
 	margin: 0;
 }
 
-.claim-row__summary {
-	display: grid;
-	gap: 4px;
-}
-
-.claim-row__summary-lead {
-	color: var(--consensus-ink);
-	font-weight: 700;
-}
-
-.claim-row__summary-context {
-	display: -webkit-box;
-	overflow: hidden;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
-
 .claim-row__meta {
 	display: flex;
-	gap: 12px;
+	gap: 8px 12px;
 	flex-wrap: wrap;
-	font-size: 0.82rem;
+	font-size: 0.76rem;
 	font-weight: 600;
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
+}
+
+.claim-row__status {
+	color: var(--consensus-interactive);
+}
+
+.card-arrow {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
 }
 
 .button {
@@ -540,26 +468,23 @@ function starterClaimPreview(claim: ClaimSummary) {
 	}
 
 	.claim-row h3 {
-		line-height: 1.16;
+		font-size: 1.12rem;
+		line-height: 1.3;
 	}
 
 	.claim-row__content {
 		gap: 7px;
 	}
 
-	.claim-row p {
-		line-height: 1.5;
-	}
-
 	.claim-row__meta {
 		gap: 6px 8px;
 		font-size: 0.74rem;
-		letter-spacing: 0.05em;
+		letter-spacing: 0;
 		line-height: 1.35;
 	}
 
-	.claim-row__summary {
-		gap: 3px;
+	.starter-card h3 {
+		font-size: 1.08rem;
 	}
 
 	.topic-page__actions {

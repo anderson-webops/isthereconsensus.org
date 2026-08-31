@@ -9,4 +9,5 @@ dist
 .idea/
 public/assets/fonts
 ops
+output/
 .isthereconsensus-release-prepared.json
