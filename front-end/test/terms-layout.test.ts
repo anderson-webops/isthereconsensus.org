@@ -74,6 +74,11 @@ describe("terms page layout", () => {
 		assert.equal((termsSource.match(/class="terms-panel"/g) || []).length, 14);
 	});
 
+	it("separates numbered sections without framing every section as another card", () => {
+		assert.match(termsSource, /\.terms-panel \{[\s\S]*padding: 22px 0;[\s\S]*border-top:/);
+		assert.match(termsSource, /@media \(max-width: 720px\) \{[\s\S]*\.terms-panel \{[\s\S]*padding: 16px 0;/);
+	});
+
 	it("keeps mobile terms cards and lists compact", () => {
 		assert.match(termsSource, /@media \(max-width: 720px\) \{[\s\S]*\.summary-card \{[\s\S]*gap: 5px;/);
 		assert.match(

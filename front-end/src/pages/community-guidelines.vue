@@ -97,7 +97,7 @@ useStaticPageMeta({
 
 		<section class="guidelines-summary">
 			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
-				<h3>{{ item.title }}</h3>
+				<h2>{{ item.title }}</h2>
 				<p>{{ item.body }}</p>
 			</article>
 		</section>
@@ -186,24 +186,27 @@ useStaticPageMeta({
 }
 
 .guidelines-header,
-.guidelines-panel,
 .summary-card,
 .detail-card,
 .guidelines-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 8px;
 }
 
 .guidelines-header,
-.guidelines-panel,
 .guidelines-callout {
 	padding: 22px;
 }
 
+.guidelines-panel {
+	padding: 22px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
 .guidelines-header h1,
 .section-heading h2,
-.summary-card h3,
+.summary-card h2,
 .detail-card h3,
 .guidelines-callout h2 {
 	margin: 0;
@@ -262,13 +265,13 @@ useStaticPageMeta({
 	align-content: start;
 }
 
-.summary-card h3 {
+.summary-card h2 {
 	font-size: 1rem;
 	color: var(--consensus-ink);
 }
 
 .summary-card p,
-.summary-card h3,
+.summary-card h2,
 .detail-card p,
 .plain-list,
 .prose p {
@@ -287,7 +290,7 @@ useStaticPageMeta({
 }
 
 .guidelines-panel--soft {
-	background: var(--consensus-elevated-surface);
+	background: transparent;
 }
 
 .plain-list {
@@ -344,17 +347,19 @@ useStaticPageMeta({
 	}
 
 	.guidelines-header,
-	.guidelines-panel,
 	.summary-card,
 	.detail-card,
 	.guidelines-callout {
-		border-radius: 16px;
+		border-radius: 8px;
 	}
 
 	.guidelines-header,
-	.guidelines-panel,
 	.guidelines-callout {
 		padding: 16px;
+	}
+
+	.guidelines-panel {
+		padding: 16px 0;
 	}
 
 	.summary-card,

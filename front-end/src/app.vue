@@ -332,19 +332,22 @@ dd {
 }
 
 .policy-header,
-.policy-panel,
 .policy-summary-card,
 .policy-detail-card,
 .policy-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 18px;
+	border-radius: 8px;
 }
 
 .policy-header,
-.policy-panel,
 .policy-callout {
 	padding: 22px;
+}
+
+.policy-panel {
+	padding: 22px 0;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .policy-header h1,
@@ -444,7 +447,7 @@ dd {
 }
 
 .policy-panel--soft {
-	background: var(--consensus-elevated-surface);
+	background: transparent;
 }
 
 .policy-list {
@@ -529,17 +532,19 @@ body
 	}
 
 	.policy-header,
-	.policy-panel,
 	.policy-summary-card,
 	.policy-detail-card,
 	.policy-callout {
-		border-radius: 16px;
+		border-radius: 8px;
 	}
 
 	.policy-header,
-	.policy-panel,
 	.policy-callout {
 		padding: 16px;
+	}
+
+	.policy-panel {
+		padding: 16px 0;
 	}
 
 	.policy-summary,

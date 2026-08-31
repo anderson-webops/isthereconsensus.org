@@ -70,6 +70,11 @@ describe("privacy page layout", () => {
 		assert.match(privacySource, /No internet service can guarantee perfect security\./);
 	});
 
+	it("separates numbered sections without nesting every section in a card", () => {
+		assert.match(privacySource, /\.privacy-panel \{[\s\S]*padding: 22px 0;[\s\S]*border-top:/);
+		assert.match(privacySource, /@media \(max-width: 720px\) \{[\s\S]*\.privacy-panel \{[\s\S]*padding: 16px 0;/);
+	});
+
 	it("keeps mobile privacy cards, contents links, and lists compact", () => {
 		assert.match(
 			privacySource,
