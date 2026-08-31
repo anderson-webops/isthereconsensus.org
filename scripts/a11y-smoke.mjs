@@ -22,6 +22,8 @@ let apiUrl = "";
 const routes = [
 	"/",
 	"/consensus",
+	"/explainers",
+	"/misconceptions",
 	"/standards",
 	"/source-standards",
 	"/privacy",

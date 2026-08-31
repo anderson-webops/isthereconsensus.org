@@ -30,12 +30,11 @@ useStaticPageMeta({
 				class="explainer-card"
 				:to="`/explainers/${explainer.slug}`"
 			>
-				<div>
+				<div class="explainer-card__content">
 					<p class="eyebrow">Explainer</p>
 					<h2>{{ explainer.title }}</h2>
 				</div>
-				<p>{{ explainer.summary }}</p>
-				<span class="explainer-card__link">Read explainer</span>
+				<span class="i-carbon-arrow-right explainer-card__arrow" aria-hidden="true" />
 			</NuxtLink>
 		</section>
 
@@ -110,8 +109,9 @@ useStaticPageMeta({
 .explainer-card {
 	padding: 20px;
 	display: grid;
-	gap: 14px;
-	align-content: start;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 16px;
 	color: var(--consensus-ink);
 	text-decoration: none;
 	transition:
@@ -126,12 +126,23 @@ useStaticPageMeta({
 }
 
 .explainer-card h2 {
-	line-height: 1.2;
+	font-size: 1.24rem;
+	font-weight: 600;
+	line-height: 1.3;
 }
 
-.explainer-card__link {
-	align-self: end;
-	font-weight: 600;
+.explainer-card__content {
+	display: grid;
+	gap: 7px;
+}
+
+.explainer-card__content p {
+	margin: 0;
+}
+
+.explainer-card__arrow {
+	width: 20px;
+	height: 20px;
 	color: var(--consensus-interactive);
 }
 
@@ -181,6 +192,10 @@ useStaticPageMeta({
 	.explainer-header,
 	.explainer-callout {
 		padding: 18px;
+	}
+
+	.explainer-card h2 {
+		font-size: 1.12rem;
 	}
 
 	.explainer-callout {

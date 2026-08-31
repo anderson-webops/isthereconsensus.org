@@ -7,7 +7,7 @@ import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
-import { claimReviewTimestamp, selectRecentClaims } from "~/utils/recent-claims";
+import { selectRecentClaims } from "~/utils/recent-claims";
 import { resolveHomeSearchRoute } from "~/utils/search-routing";
 
 definePageMeta({
@@ -249,17 +249,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 function claimCardSummary(claim: ClaimSummary) {
 	return claim.evidenceLandscape?.oneSentenceSummary || claim.bottomLine;
 }
-
-function formatClaimReviewLabel(claim: ClaimSummary) {
-	const timestamp = claimReviewTimestamp(claim);
-	if (!timestamp) return "";
-	const formattedDate = new Intl.DateTimeFormat("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric"
-	}).format(new Date(timestamp));
-	return `Reviewed ${formattedDate}`;
-}
 </script>
 
 <template>
@@ -282,7 +271,10 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 							type="text"
 							placeholder="Try vaccines, climate, or GMOs"
 						/>
-						<button class="button button--primary" type="submit">Search</button>
+						<button class="button button--primary" type="submit" aria-label="Search">
+							<span class="i-carbon-search search-panel__search-icon" aria-hidden="true" />
+							<span class="search-panel__button-label">Search</span>
+						</button>
 					</div>
 					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
 					<div v-else-if="loadingSuggestions && searchQuery.length >= 3" class="search-panel__hint">
@@ -358,16 +350,13 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 					:to="`/consensus/${claim.topic.slug}/${claim.slug}`"
 				>
 					<div class="claim-row__main">
+						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__meta">
 							<span>{{ claim.topic.title }}</span>
-							<span>{{ claimSupportLabel(claim) }}</span>
-							<span v-if="formatClaimReviewLabel(claim)">{{ formatClaimReviewLabel(claim) }}</span>
-						</p>
-						<h3>{{ claim.title }}</h3>
-						<p class="claim-row__summary" :title="claimCardSummary(claim)">
-							{{ claimCardSummary(claim) }}
+							<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
 						</p>
 					</div>
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -390,12 +379,11 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<p>{{ topic.description || topic.guide.snapshot }}</p>
 						<div class="topic-row__meta">
-							<span>{{ topic.guide.consensusLabel }}</span>
 							<span>{{ formatCountLabel(topic.claimCount, "claim review") }}</span>
 						</div>
 					</div>
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -450,8 +438,6 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 }
 
 .hero__lead,
-.claim-row p,
-.topic-row p,
 .search-panel__hint {
 	color: var(--consensus-muted);
 }
@@ -565,8 +551,7 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 	color: var(--consensus-muted);
 }
 
-.suggestion-list__summary,
-.claim-row__summary {
+.suggestion-list__summary {
 	display: -webkit-box;
 	overflow: hidden;
 	-webkit-box-orient: vertical;
@@ -574,10 +559,6 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 
 .suggestion-list__summary {
 	-webkit-line-clamp: 2;
-}
-
-.claim-row__summary {
-	-webkit-line-clamp: 3;
 }
 
 .home-section {
@@ -631,30 +612,62 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 .claim-row,
 .topic-row {
 	display: grid;
-	gap: 18px;
-	padding: 18px;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 16px;
+	padding: 19px 20px;
+	color: inherit;
 	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.claim-row:hover,
+.claim-row:focus-visible,
+.topic-row:hover,
+.topic-row:focus-visible {
+	border-color: var(--consensus-interactive);
 }
 
 .claim-row__main,
 .topic-row__main {
 	display: grid;
-	gap: 10px;
+	gap: 8px;
 }
 
-.claim-row__main p,
-.topic-row__main p {
+.claim-row__main p {
 	margin: 0;
-	line-height: 1.62;
+	line-height: 1.35;
+}
+
+.claim-row h3,
+.topic-row h3 {
+	margin: 0;
+	color: var(--consensus-ink);
+	font-size: 1.28rem;
+	font-weight: 600;
+	line-height: 1.32;
 }
 
 .claim-row__meta,
 .topic-row__meta {
 	display: flex;
-	gap: 10px;
+	gap: 8px 12px;
 	flex-wrap: wrap;
-	font-size: 0.88rem;
+	font-size: 0.76rem;
+	letter-spacing: 0;
+	line-height: 1.35;
+	text-transform: uppercase;
 	color: var(--consensus-muted);
+}
+
+.claim-row__status {
+	color: var(--consensus-interactive);
+}
+
+.card-arrow {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
 }
 
 .library-grid {
@@ -682,6 +695,7 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	gap: 7px;
 	padding: 12px 20px;
 	border-radius: 999px;
 	text-decoration: none;
@@ -696,6 +710,11 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 
 .button--ghost {
 	background: transparent;
+}
+
+.search-panel__search-icon {
+	width: 18px;
+	height: 18px;
 }
 
 .text-link {
@@ -754,7 +773,7 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 
 	.claim-row,
 	.topic-row {
-		gap: 12px;
+		gap: 10px;
 		padding: 14px;
 	}
 
@@ -763,8 +782,10 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 		gap: 8px;
 	}
 
-	.claim-row__summary {
-		-webkit-line-clamp: 2;
+	.claim-row h3,
+	.topic-row h3 {
+		font-size: 1.12rem;
+		line-height: 1.3;
 	}
 
 	.search-panel__row {
@@ -774,8 +795,12 @@ function formatClaimReviewLabel(claim: ClaimSummary) {
 
 	.search-panel .button {
 		min-height: 46px;
-		width: auto;
-		padding: 10px 14px;
+		width: 46px;
+		padding: 0;
+	}
+
+	.search-panel__button-label {
+		display: none;
 	}
 
 	.search-panel__hint {

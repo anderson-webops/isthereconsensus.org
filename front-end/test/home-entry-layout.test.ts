@@ -27,7 +27,9 @@ describe("home entry layout", () => {
 			source,
 			/\.search-panel__row \{[\s\S]*grid-template-columns: minmax\(0, 1fr\) auto;[\s\S]*gap: 8px;/
 		);
-		assert.match(source, /\.search-panel \.button \{[\s\S]*min-height: 46px;[\s\S]*width: auto;/);
+		assert.match(source, /i-carbon-search search-panel__search-icon/);
+		assert.match(source, /\.search-panel \.button \{[\s\S]*min-height: 46px;[\s\S]*width: 46px;/);
+		assert.match(source, /\.search-panel__button-label \{[\s\S]*display: none;/);
 	});
 
 	it("keeps library depth subordinate to the search task", () => {
@@ -48,7 +50,20 @@ describe("home entry layout", () => {
 		assert.match(source, /selectRecentClaims\(recentClaimCandidates\.value, 5\)/);
 		assert.match(source, /<p class="eyebrow">Recently reviewed<\/p>/);
 		assert.match(source, /<h2>New and refreshed claim reviews<\/h2>/);
-		assert.match(source, /formatClaimReviewLabel\(claim\)/);
-		assert.match(source, /return `Reviewed \$\{formattedDate\}`/);
+		assert.doesNotMatch(source, /formatClaimReviewLabel|claimReviewTimestamp/);
+	});
+
+	it("keeps browse cards title-led and sends readers to the full answer", () => {
+		const claimRowStart = source.indexOf('class="claim-row"');
+		const claimRowEnd = source.indexOf("</NuxtLink>", claimRowStart);
+		const claimRow = source.slice(claimRowStart, claimRowEnd);
+
+		assert.ok(claimRow.includes("<h3>{{ claim.title }}</h3>"));
+		assert.ok(claimRow.indexOf("<h3>{{ claim.title }}</h3>") < claimRow.indexOf('class="claim-row__meta"'));
+		assert.match(claimRow, /class="claim-row__status"/);
+		assert.match(claimRow, /i-carbon-arrow-right/);
+		assert.doesNotMatch(claimRow, /claimCardSummary|claim-row__summary|formatClaimReviewLabel/);
+		assert.match(source, /\.claim-row h3,[\s\S]*font-size: 1\.28rem;/);
+		assert.match(source, /@media \(max-width: 640px\) \{[\s\S]*\.claim-row h3,[\s\S]*font-size: 1\.12rem;/);
 	});
 });

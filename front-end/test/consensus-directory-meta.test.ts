@@ -95,6 +95,24 @@ describe("consensus directory metadata", () => {
 		assert.doesNotMatch(source, /ConsensusMeter/);
 	});
 
+	it("keeps topic and claim cards focused on choosing a destination", () => {
+		const topicRowStart = source.indexOf('class="topic-row"');
+		const topicRowEnd = source.indexOf("</NuxtLink>", topicRowStart);
+		const topicRow = source.slice(topicRowStart, topicRowEnd);
+		const claimCardStart = source.indexOf('class="claim-card"');
+		const claimCardEnd = source.indexOf("</NuxtLink>", claimCardStart);
+		const claimCard = source.slice(claimCardStart, claimCardEnd);
+
+		assert.match(topicRow, /<h3>\{\{ topic\.title \}\}<\/h3>/);
+		assert.match(topicRow, /formatTopicClaimCount\(topic\)/);
+		assert.doesNotMatch(topicRow, /topicDirectoryDescription|consensusLabel|Open topic/);
+		assert.match(claimCard, /<h3>\{\{ claim\.title \}\}<\/h3>/);
+		assert.match(claimCard, /class="claim-card__status"/);
+		assert.doesNotMatch(claimCard, /bottomLine|sourceCount|evidenceCertainty|Open review/);
+		assert.match(source, /\.claim-card h3 \{[\s\S]*font-size: 1\.24rem;/);
+		assert.doesNotMatch(source, /font-size: clamp\(/);
+	});
+
 	it("keeps mobile directory filters compact without changing the page flow", () => {
 		assert.match(source, /@media \(max-width: 760px\) \{[\s\S]*\.directory__controls \{[\s\S]*gap: 8px;/);
 		assert.match(source, /@media \(max-width: 760px\) \{[\s\S]*\.directory__controls \{[\s\S]*padding: 14px;/);
