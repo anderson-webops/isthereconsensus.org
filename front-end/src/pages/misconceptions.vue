@@ -85,48 +85,58 @@ useStaticPageMeta({
 			</details>
 		</section>
 
-		<section class="misconception-panel misconception-panel--soft">
-			<div class="section-heading section-heading--tight">
-				<h2>How the library fits</h2>
-				<p>Fix the mistake quickly, then link to the deeper method lesson.</p>
+		<details class="misconception-panel misconception-panel--soft misconception-panel--disclosure">
+			<summary class="misconception-panel__summary">
+				<span class="section-heading section-heading--tight">
+					<h2 class="misconception-panel__title">How the library fits</h2>
+					<span>Fix the mistake quickly, then link to the deeper method lesson.</span>
+				</span>
+				<span class="i-carbon-chevron-down misconception-panel__chevron" aria-hidden="true" />
+			</summary>
+			<div class="misconception-panel__body">
+				<ul class="plain-list">
+					<li>The short correction helps when the same misunderstanding keeps returning.</li>
+					<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
+					<li>One linked explainer gives readers the method behind the correction.</li>
+					<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
+				</ul>
 			</div>
-			<ul class="plain-list">
-				<li>The short correction helps when the same misunderstanding keeps returning.</li>
-				<li>Corrections stay neutral and plain-language instead of turning into scolding.</li>
-				<li>One linked explainer gives readers the method behind the correction.</li>
-				<li>Topic-shaped examples help, but the conceptual logic stays consistent across clusters.</li>
-			</ul>
-		</section>
+		</details>
 
-		<section class="misconception-panel">
-			<div class="section-heading section-heading--tight">
-				<h2>Where each module fits</h2>
-				<p>This map connects recurring mistakes to the science claims where they often appear.</p>
+		<details class="misconception-panel misconception-panel--disclosure">
+			<summary class="misconception-panel__summary">
+				<span class="section-heading section-heading--tight">
+					<h2 class="misconception-panel__title">Where each module fits</h2>
+					<span>This map connects recurring mistakes to the science claims where they often appear.</span>
+				</span>
+				<span class="i-carbon-chevron-down misconception-panel__chevron" aria-hidden="true" />
+			</summary>
+			<div class="misconception-panel__body">
+				<div class="reuse-table-wrap">
+					<table class="reuse-table">
+						<thead>
+							<tr>
+								<th>Module</th>
+								<th v-for="cluster in clusterLabels" :key="cluster.slug">{{ cluster.label }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="item in misconceptionModules" :key="item.slug">
+								<td data-label="Module">{{ item.title }}</td>
+								<td v-for="cluster in clusterLabels" :key="cluster.slug" :data-label="cluster.label">
+									{{
+										formatRelevance(
+											item.clusterUse.find((entry) => entry.slug === cluster.slug)?.relevance ||
+												"occasional"
+										)
+									}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			<div class="reuse-table-wrap">
-				<table class="reuse-table">
-					<thead>
-						<tr>
-							<th>Module</th>
-							<th v-for="cluster in clusterLabels" :key="cluster.slug">{{ cluster.label }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="item in misconceptionModules" :key="item.slug">
-							<td data-label="Module">{{ item.title }}</td>
-							<td v-for="cluster in clusterLabels" :key="cluster.slug" :data-label="cluster.label">
-								{{
-									formatRelevance(
-										item.clusterUse.find((entry) => entry.slug === cluster.slug)?.relevance ||
-											"occasional"
-									)
-								}}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</section>
+		</details>
 
 		<section class="misconception-callout">
 			<div>
@@ -307,6 +317,61 @@ useStaticPageMeta({
 	background: color-mix(in srgb, var(--consensus-method) 14%, var(--consensus-surface));
 }
 
+.misconception-panel--disclosure {
+	padding: 0;
+	overflow: hidden;
+}
+
+.misconception-panel__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	min-height: 68px;
+	padding: 15px 18px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.misconception-panel__summary::-webkit-details-marker {
+	display: none;
+}
+
+.misconception-panel__summary .section-heading {
+	display: grid;
+	gap: 4px;
+	margin: 0;
+}
+
+.misconception-panel__title {
+	margin: 0;
+	font-family: "Fraunces", serif;
+	font-size: 1.2rem;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.misconception-panel__summary .section-heading > span:last-child {
+	color: var(--consensus-muted);
+	line-height: 1.45;
+}
+
+.misconception-panel__chevron {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
+	transition: transform 160ms ease;
+}
+
+.misconception-panel--disclosure[open] .misconception-panel__chevron {
+	transform: rotate(180deg);
+}
+
+.misconception-panel__body {
+	padding: 16px 18px 18px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
 .section-heading {
 	display: grid;
 	gap: 6px;
@@ -419,6 +484,19 @@ useStaticPageMeta({
 	.misconception-panel,
 	.misconception-callout {
 		padding: 15px;
+	}
+
+	.misconception-panel--disclosure {
+		padding: 0;
+	}
+
+	.misconception-panel__summary {
+		min-height: 62px;
+		padding: 13px 14px;
+	}
+
+	.misconception-panel__body {
+		padding: 13px 14px 14px;
 	}
 
 	.misconception-header h1 {

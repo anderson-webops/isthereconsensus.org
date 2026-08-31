@@ -12,8 +12,23 @@ describe("claim detail layout", () => {
 		assert.match(source, /<details\s+v-for="group in sourceGroups"[\s\S]*:open="group\.key === 'tier1'"/);
 		assert.match(source, /class="source-group__summary"/);
 		assert.match(source, /formatCountLabel\(group\.items\.length, "source"\)/);
-		assert.match(source, /class="source-list"[\s\S]*<article v-for="source in group\.items"/);
+		assert.match(source, /class="source-group__body"[\s\S]*class="source-group__description"/);
+		assert.match(source, /class="source-list"[\s\S]*<article[\s\S]*v-for="source in group\.items"/);
+		assert.match(source, /<h4>\{\{ source\.title \}\}<\/h4>[\s\S]*class="source-row__meta"/);
+		assert.match(source, /<details class="source-row__details">[\s\S]*Source details/);
+		assert.match(source, /class="source-row__open"[\s\S]*Open source/);
 		assert.doesNotMatch(source, /<section v-for="group in sourceGroups"/);
+	});
+
+	it("keeps secondary claim depth behind title-led disclosures", () => {
+		assert.match(
+			source,
+			/<details[\s\S]*v-for="group in claimSnapshotGroups"[\s\S]*:open="group\.key === 'stable-core'"/
+		);
+		assert.match(source, /class="claim-snapshot-block__summary"/);
+		assert.match(source, /formatCountLabel\(group\.items\.length, "point"\)/);
+		assert.match(source, /<details[\s\S]*v-for="summary in evidenceSummaries"[\s\S]*class="evidence-summary-card"/);
+		assert.match(source, /class="evidence-summary-card__summary"/);
 	});
 
 	it("keeps the uncertainty summary at a readable measure", () => {
@@ -23,10 +38,8 @@ describe("claim detail layout", () => {
 
 	it("keeps the mobile claim answer visible without hiding trust cues", () => {
 		assert.match(source, /@media \(max-width: 860px\) \{[\s\S]*\.claim-page \{[\s\S]*gap: 14px;/);
-		assert.match(
-			source,
-			/\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.uncertainty-strip,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/
-		);
+		assert.match(source, /\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/);
+		assert.match(source, /\.uncertainty-strip \{[\s\S]*grid-template-columns: 1fr;[\s\S]*padding: 14px 0;/);
 		assert.match(source, /\.claim-page__hero \{[\s\S]*gap: 7px;/);
 		assert.match(source, /\.claim-page__header h1 \{[\s\S]*font-size: clamp\(1\.72rem, 7\.2vw, 2\.05rem\);/);
 		assert.match(source, /\.bottom-line \.bottom-line__text \{[\s\S]*font-size: 1\.02rem;/);

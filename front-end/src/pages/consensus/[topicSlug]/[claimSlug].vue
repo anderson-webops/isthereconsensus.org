@@ -131,34 +131,39 @@ const uncertaintyLimits = computed(() =>
 const sourceGroups = computed(() => {
 	const groups: Array<{
 		key: string;
+		tier: string;
 		title: string;
 		description: string;
 		kinds: ClaimSource["kind"][];
 	}> = [
 		{
 			key: "tier1",
-			title: "Tier 1 · Guidelines and consensus statements",
+			tier: "Tier 1",
+			title: "Guidelines and consensus statements",
 			description:
 				"These sources establish the shared institutional baseline and the current public-facing consensus.",
 			kinds: ["guideline", "consensus_statement"]
 		},
 		{
 			key: "tier2",
-			title: "Tier 2 · Systematic reviews and meta-analyses",
+			tier: "Tier 2",
+			title: "Systematic reviews and meta-analyses",
 			description:
 				"These sources summarize the literature and carry the most weight when the site explains the body of evidence.",
 			kinds: ["systematic_review", "meta_analysis"]
 		},
 		{
 			key: "tier3",
-			title: "Tier 3 · Pivotal primary studies",
+			tier: "Tier 3",
+			title: "Pivotal primary studies",
 			description:
 				"These studies matter when a specific trial or landmark paper changed the field or clarified a major point.",
 			kinds: ["landmark_study"]
 		},
 		{
 			key: "tier4",
-			title: "Tier 4 · Context and background",
+			tier: "Tier 4",
+			title: "Context and background",
 			description:
 				"These sources help explain methods, history, and scope, but they do not outrank the higher-tier syntheses.",
 			kinds: ["context"]
@@ -298,7 +303,8 @@ function formatChangeKind(kind?: string) {
 }
 
 function formatSourceKind(kind: string) {
-	return kind.replaceAll("_", " ");
+	const label = kind.replaceAll("_", " ");
+	return `${label.charAt(0).toUpperCase()}${label.slice(1)}`;
 }
 
 function formatEffectDirection(direction?: string) {
@@ -397,13 +403,28 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</div>
 
 				<div class="claim-snapshot-grid">
-					<article v-for="group in claimSnapshotGroups" :key="group.key" class="claim-snapshot-block">
-						<p class="eyebrow">{{ group.eyebrow }}</p>
-						<h3>{{ group.title }}</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="item in group.items" :key="item">{{ item }}</li>
-						</ul>
-					</article>
+					<details
+						v-for="group in claimSnapshotGroups"
+						:key="group.key"
+						class="claim-snapshot-block"
+						:open="group.key === 'stable-core'"
+					>
+						<summary class="claim-snapshot-block__summary">
+							<span class="claim-snapshot-block__heading">
+								<span class="eyebrow">{{ group.eyebrow }}</span>
+								<h3 class="claim-snapshot-block__title">{{ group.title }}</h3>
+							</span>
+							<span class="claim-snapshot-block__summary-meta">
+								<span>{{ formatCountLabel(group.items.length, "point") }}</span>
+								<span class="i-carbon-chevron-down claim-snapshot-block__chevron" aria-hidden="true" />
+							</span>
+						</summary>
+						<div class="claim-snapshot-block__body">
+							<ul class="plain-list plain-list--tight">
+								<li v-for="item in group.items" :key="item">{{ item }}</li>
+							</ul>
+						</div>
+					</details>
 				</div>
 			</section>
 
@@ -413,12 +434,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
 					<p>{{ uncertaintySummary }}</p>
 				</div>
-				<div v-if="uncertaintyLimits.length">
-					<p class="field-label">Limits to keep in mind</p>
+				<details v-if="uncertaintyLimits.length" class="uncertainty-strip__limits">
+					<summary>
+						<span>Limits to keep in mind</span>
+						<span>{{ formatCountLabel(uncertaintyLimits.length, "point") }}</span>
+					</summary>
 					<ul class="plain-list plain-list--tight">
 						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
 					</ul>
-				</div>
+				</details>
 			</section>
 
 			<EvidenceLandscapePanel v-if="evidenceLandscape" :landscape="evidenceLandscape" />
@@ -432,44 +456,46 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</div>
 				<div class="outcome-summary-section">
 					<div class="evidence-summary-list">
-						<article
+						<details
 							v-for="summary in evidenceSummaries"
 							:key="`${summary.question}-${summary.finding}`"
 							class="evidence-summary-card"
 						>
-							<div class="evidence-summary-card__top">
-								<div>
-									<p class="eyebrow">Key question</p>
-									<h3>{{ summary.question }}</h3>
-								</div>
+							<summary class="evidence-summary-card__summary">
+								<h3>{{ summary.question }}</h3>
 								<div class="evidence-summary-card__badges">
 									<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
 									<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
+									<span
+										class="i-carbon-chevron-down evidence-summary-card__chevron"
+										aria-hidden="true"
+									/>
+								</div>
+							</summary>
+							<div class="evidence-summary-card__body">
+								<p v-if="summary.population" class="muted">
+									<strong>Population / context:</strong> {{ summary.population }}
+								</p>
+								<p><strong>Finding:</strong> {{ summary.finding }}</p>
+								<p v-if="summary.magnitude">
+									<strong>Magnitude / range:</strong> {{ summary.magnitude }}
+								</p>
+								<div v-if="summary.limitations?.length">
+									<p class="field-label">Key limitations</p>
+									<ul class="plain-list plain-list--tight">
+										<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
+									</ul>
 								</div>
 							</div>
-							<p v-if="summary.population" class="muted">
-								<strong>Population / context:</strong> {{ summary.population }}
-							</p>
-							<p><strong>Finding:</strong> {{ summary.finding }}</p>
-							<p v-if="summary.magnitude"><strong>Magnitude / range:</strong> {{ summary.magnitude }}</p>
-							<div v-if="summary.limitations?.length">
-								<p class="field-label">Key limitations</p>
-								<ul class="plain-list plain-list--tight">
-									<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
-								</ul>
-							</div>
-						</article>
+						</details>
 					</div>
 				</div>
 			</section>
 
 			<section class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Evidence trail</p>
-						<h2>Sources</h2>
-					</div>
-					<p>Highest-weight sources appear first.</p>
+				<div class="section-heading section-heading--sources">
+					<h2>Sources</h2>
+					<p>{{ formatCountLabel(sourceCount, "source") }}, highest-weight first.</p>
 				</div>
 
 				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
@@ -482,64 +508,105 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					>
 						<summary class="source-group__summary">
 							<span class="source-group__summary-copy">
-								<span class="source-group__title">{{ group.title }}</span>
-								<span class="source-group__description">{{ group.description }}</span>
+								<span class="eyebrow">{{ group.tier }}</span>
+								<h3 class="source-group__title">{{ group.title }}</h3>
 							</span>
 							<span class="source-group__summary-meta">
-								<span class="source-group__count">
-									{{ formatCountLabel(group.items.length, "source") }}
-								</span>
-								<span class="source-group__toggle" aria-hidden="true" />
+								<span class="source-group__count">{{
+									formatCountLabel(group.items.length, "source")
+								}}</span>
+								<span class="i-carbon-chevron-down source-group__chevron" aria-hidden="true" />
 							</span>
 						</summary>
-						<div class="source-list">
-							<article v-for="source in group.items" :key="source._id || source.title" class="source-row">
-								<div>
-									<p class="source-row__meta">
-										<span>{{ formatSourceKind(source.kind) }}</span>
-										<span>{{ source.publisher || "Source" }}</span>
-										<span v-if="source.year">{{ source.year }}</span>
-									</p>
-									<h4>{{ source.title }}</h4>
-									<p>{{ source.note }}</p>
-									<div class="source-row__badges">
-										<span v-if="source.isAnchor" class="tag tag--anchor">Anchor source</span>
-										<span class="tag">{{ formatSourceAppraisal(source.appraisal) }}</span>
-										<span
-											class="tag"
-											:class="{
-												'tag--warning':
-													source.citationStatus && source.citationStatus !== 'current'
-											}"
-										>
-											{{ formatCitationStatus(source.citationStatus) }}
-										</span>
-									</div>
-									<div
-										v-if="source.doi || source.pmid || source.pmcid || source.citationCheckedAt"
-										class="source-row__identifiers"
-									>
-										<span v-if="source.doi">DOI: {{ source.doi }}</span>
-										<span v-if="source.pmid">PMID: {{ source.pmid }}</span>
-										<span v-if="source.pmcid">PMCID: {{ source.pmcid }}</span>
-										<span v-if="source.citationCheckedAt">
-											Checked {{ formatDate(source.citationCheckedAt, "Date pending") }}
-										</span>
-									</div>
-									<div v-if="source.statusSources?.length" class="source-row__identifiers">
-										<span>Integrity signals: {{ source.statusSources.join(" · ") }}</span>
-									</div>
-								</div>
-								<a
-									v-if="sourcePrimaryLink(source)"
-									class="button button--ghost"
-									:href="sourcePrimaryLink(source)"
-									target="_blank"
-									rel="noopener noreferrer"
+						<div class="source-group__body">
+							<p class="source-group__description">{{ group.description }}</p>
+							<div class="source-list">
+								<article
+									v-for="source in group.items"
+									:key="source._id || source.title"
+									class="source-row"
 								>
-									Open source
-								</a>
-							</article>
+									<div class="source-row__content">
+										<h4>{{ source.title }}</h4>
+										<p class="source-row__meta">
+											<span>{{ source.publisher || "Source" }}</span>
+											<span v-if="source.year">{{ source.year }}</span>
+										</p>
+										<p class="source-row__note">{{ source.note }}</p>
+										<div class="source-row__badges">
+											<span v-if="source.isAnchor" class="tag tag--anchor">Anchor source</span>
+											<span
+												v-if="source.citationStatus && source.citationStatus !== 'current'"
+												class="tag tag--warning"
+											>
+												{{ formatCitationStatus(source.citationStatus) }}
+											</span>
+										</div>
+										<details class="source-row__details">
+											<summary>
+												<span>Source details</span>
+												<span
+													class="i-carbon-chevron-down source-row__details-chevron"
+													aria-hidden="true"
+												/>
+											</summary>
+											<dl class="source-row__details-list">
+												<dt>Type</dt>
+												<dd>{{ formatSourceKind(source.kind) }}</dd>
+												<dt>Appraisal</dt>
+												<dd>{{ formatSourceAppraisal(source.appraisal) }}</dd>
+												<dt>Citation status</dt>
+												<dd>{{ formatCitationStatus(source.citationStatus) }}</dd>
+												<template v-if="source.doi">
+													<dt>DOI</dt>
+													<dd>{{ source.doi }}</dd>
+												</template>
+												<template v-if="source.pmid">
+													<dt>PMID</dt>
+													<dd>{{ source.pmid }}</dd>
+												</template>
+												<template v-if="source.pmcid">
+													<dt>PMCID</dt>
+													<dd>{{ source.pmcid }}</dd>
+												</template>
+												<template v-if="source.citationCheckedAt">
+													<dt>Checked</dt>
+													<dd>{{ formatDate(source.citationCheckedAt, "Date pending") }}</dd>
+												</template>
+											</dl>
+											<div v-if="source.statusSources?.length" class="source-row__integrity">
+												<p class="field-label">Integrity signals</p>
+												<ul class="plain-list plain-list--tight">
+													<li
+														v-for="statusSource in source.statusSources"
+														:key="statusSource"
+													>
+														<a
+															v-if="safeExternalHttpUrl(statusSource)"
+															:href="safeExternalHttpUrl(statusSource)"
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															{{ statusSource }}
+														</a>
+														<span v-else>{{ statusSource }}</span>
+													</li>
+												</ul>
+											</div>
+										</details>
+									</div>
+									<a
+										v-if="sourcePrimaryLink(source)"
+										class="source-row__open"
+										:href="sourcePrimaryLink(source)"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<span>Open source</span>
+										<span class="i-carbon-arrow-up-right" aria-hidden="true" />
+									</a>
+								</article>
+							</div>
 						</div>
 					</details>
 				</div>
@@ -549,7 +616,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<summary class="change-log-panel__summary">
 					<span class="change-log-panel__heading">
 						<span class="eyebrow">Corrections and updates</span>
-						<span class="change-log-panel__title">Change log</span>
+						<h2 class="change-log-panel__title">Change log</h2>
 					</span>
 					<span class="change-log-panel__meta">
 						{{ claim?.changeLog?.length || 0 }}
@@ -585,7 +652,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-page__header,
 .bottom-line,
-.uncertainty-strip,
 .queue-note {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -594,10 +660,19 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .claim-page__header,
-.bottom-line,
-.uncertainty-strip {
+.bottom-line {
 	display: grid;
 	gap: 18px;
+}
+
+.uncertainty-strip {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 18px;
+	align-items: start;
+	padding: 18px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
 .content-panel {
@@ -620,7 +695,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-page__header h1,
 .bottom-line h2,
 .section-heading h2,
-.claim-snapshot-block h3,
+.claim-snapshot-block__title,
 .source-group__title,
 .source-row h4 {
 	margin: 0;
@@ -703,8 +778,50 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	max-width: 68ch;
 }
 
+.uncertainty-strip h2 {
+	margin: 4px 0 6px;
+	font-family: "Fraunces", serif;
+	font-size: 1.35rem;
+	line-height: 1.18;
+}
+
+.uncertainty-strip p {
+	margin: 0;
+}
+
+.uncertainty-strip__limits {
+	width: min(100%, 360px);
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+}
+
+.uncertainty-strip__limits > summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	min-height: 44px;
+	padding: 9px 12px;
+	cursor: pointer;
+	list-style: none;
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.uncertainty-strip__limits > summary::-webkit-details-marker {
+	display: none;
+}
+
+.uncertainty-strip__limits > summary span:last-child {
+	color: var(--consensus-muted);
+	font-size: 0.78rem;
+}
+
+.uncertainty-strip__limits .plain-list {
+	margin: 0 12px 12px;
+}
+
 .bottom-line__actions,
-.evidence-summary-card__top,
 .source-row {
 	display: flex;
 	justify-content: space-between;
@@ -735,6 +852,14 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.55;
 }
 
+.section-heading--sources {
+	margin-bottom: 4px;
+}
+
+.section-heading--sources h2 {
+	font-size: 1.7rem;
+}
+
 .content-stack,
 .outcome-summary-section,
 .evidence-summary-list,
@@ -747,13 +872,86 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-snapshot-grid {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	align-items: start;
-	gap: 16px;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 10px;
 }
 
 .evidence-summary-card,
-.claim-snapshot-block,
+.claim-snapshot-block {
+	display: block;
+	border-radius: 8px;
+	background: var(--consensus-field-surface);
+	border: 1px solid var(--consensus-soft-line);
+	overflow: hidden;
+}
+
+.claim-snapshot-block__summary,
+.evidence-summary-card__summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	min-height: 58px;
+	padding: 13px 16px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.claim-snapshot-block__summary::-webkit-details-marker,
+.evidence-summary-card__summary::-webkit-details-marker {
+	display: none;
+}
+
+.claim-snapshot-block__heading {
+	display: grid;
+	gap: 3px;
+}
+
+.claim-snapshot-block__heading .eyebrow {
+	margin: 0;
+}
+
+.claim-snapshot-block__title,
+.evidence-summary-card h3 {
+	margin: 0;
+	color: var(--consensus-ink);
+	font-weight: 600;
+	line-height: 1.24;
+}
+
+.claim-snapshot-block__summary-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--consensus-muted);
+	font-size: 0.8rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.claim-snapshot-block__chevron,
+.evidence-summary-card__chevron,
+.source-group__chevron {
+	width: 18px;
+	height: 18px;
+	color: var(--consensus-interactive);
+	transition: transform 160ms ease;
+}
+
+.claim-snapshot-block[open] .claim-snapshot-block__chevron,
+.evidence-summary-card[open] .evidence-summary-card__chevron,
+.source-group[open] .source-group__chevron {
+	transform: rotate(180deg);
+}
+
+.claim-snapshot-block__body,
+.evidence-summary-card__body {
+	display: grid;
+	gap: 12px;
+	padding: 14px 16px 16px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
 .change-log__entry {
 	display: grid;
 	gap: 14px;
@@ -764,9 +962,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .source-group {
-	display: grid;
-	gap: 14px;
-	padding: 16px 0;
+	display: block;
 	border-top: 1px solid var(--consensus-soft-line);
 }
 
@@ -775,7 +971,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .source-row {
-	padding: 16px;
+	padding: 16px 18px;
 	border-radius: 8px;
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
@@ -785,7 +981,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 14px;
-	align-items: start;
+	align-items: center;
+	min-height: 68px;
+	padding: 12px 0;
 	cursor: pointer;
 	list-style: none;
 }
@@ -796,17 +994,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .source-group__summary-copy {
 	display: grid;
-	gap: 6px;
+	gap: 3px;
 	min-width: 0;
 }
 
 .source-group__title {
+	margin: 0;
 	color: var(--consensus-ink);
+	font-size: 1.08rem;
+	font-weight: 600;
 	line-height: 1.22;
 }
 
 .source-group__description {
-	display: block;
+	margin: 0;
 }
 
 .source-group__summary-meta {
@@ -817,68 +1018,131 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .source-group__count {
-	display: inline-flex;
-	align-items: center;
-	min-height: 28px;
-	padding: 5px 9px;
-	border-radius: 999px;
-	border: 1px solid var(--consensus-line);
-	background: var(--consensus-elevated-surface);
 	color: var(--consensus-muted);
-	font-size: 0.78rem;
+	font-size: 0.8rem;
 	font-weight: 700;
 	white-space: nowrap;
 }
 
-.source-group__toggle {
-	display: inline-grid;
-	place-items: center;
-	width: 28px;
-	height: 28px;
-	border-radius: 999px;
-	border: 1px solid var(--consensus-line);
-	background: var(--consensus-elevated-surface);
-	color: var(--consensus-ink);
-	font-weight: 800;
+.source-group__body {
+	display: grid;
+	gap: 12px;
+	padding: 4px 0 18px;
 }
 
-.source-group__toggle::before {
-	content: "+";
+.source-row__content {
+	display: grid;
+	flex: 1 1 620px;
+	gap: 8px;
+	min-width: 0;
 }
 
-.source-group[open] .source-group__toggle::before {
-	content: "-";
+.source-row h4 {
+	font-size: 1.08rem;
+	line-height: 1.3;
+	overflow-wrap: anywhere;
 }
 
-.source-group[open] .source-list {
-	margin-top: 14px;
+.source-row__meta {
+	gap: 8px;
+}
+
+.source-row__note {
+	max-width: 72ch;
+}
+
+.source-row__open {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	color: var(--consensus-link);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.source-row__open [class*="i-carbon-"] {
+	width: 17px;
+	height: 17px;
+}
+
+.source-row__details {
+	margin-top: 2px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.source-row__details > summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	cursor: pointer;
+	list-style: none;
+	color: var(--consensus-link);
+	font-size: 0.88rem;
+	font-weight: 700;
+}
+
+.source-row__details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.source-row__details-chevron {
+	width: 16px;
+	height: 16px;
+	transition: transform 160ms ease;
+}
+
+.source-row__details[open] .source-row__details-chevron {
+	transform: rotate(180deg);
+}
+
+.source-row__details-list {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	gap: 6px 14px;
+	margin: 0 0 12px;
+	font-size: 0.88rem;
+}
+
+.source-row__details-list dt {
+	color: var(--consensus-muted);
+	font-weight: 700;
+}
+
+.source-row__details-list dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.source-row__integrity {
+	display: grid;
+	gap: 6px;
+	padding: 12px 0 2px;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.source-row__integrity a {
+	color: var(--consensus-link);
 }
 
 .evidence-summary-card p,
-.claim-snapshot-block p,
 .source-row p,
 .change-log__entry p {
 	margin: 0;
 }
 
 .evidence-summary-card h3,
-.claim-snapshot-block h3,
 .source-group__title,
 .source-row h4 {
 	line-height: 1.22;
 }
 
 .evidence-summary-card__badges,
-.source-row__badges,
-.source-row__identifiers {
+.source-row__badges {
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;
-}
-
-.source-row__identifiers span,
-.source-row h4 {
-	overflow-wrap: anywhere;
 }
 
 .plain-list {
@@ -932,6 +1196,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .change-log-panel__title {
+	margin: 0;
 	font-family: "Fraunces", serif;
 	font-size: 1.5rem;
 	font-weight: 700;
@@ -977,16 +1242,24 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 	.claim-page__header,
 	.bottom-line,
-	.uncertainty-strip,
 	.queue-note {
 		padding: 14px;
 		border-radius: 16px;
 	}
 
 	.claim-page__header,
-	.bottom-line,
-	.uncertainty-strip {
+	.bottom-line {
 		gap: 10px;
+	}
+
+	.uncertainty-strip {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		padding: 14px 0;
+	}
+
+	.uncertainty-strip__limits {
+		width: 100%;
 	}
 
 	.claim-page__hero {
@@ -1037,39 +1310,52 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	}
 
 	.claim-snapshot-grid {
-		gap: 12px;
+		gap: 8px;
 	}
 
-	.evidence-summary-card,
-	.claim-snapshot-block,
 	.change-log__entry {
 		gap: 11px;
 		padding: 14px;
 		border-radius: 8px;
 	}
 
-	.source-group {
-		padding: 14px 0;
+	.claim-snapshot-block__summary,
+	.evidence-summary-card__summary {
+		min-height: 54px;
+		padding: 11px 13px;
+	}
+
+	.claim-snapshot-block__body,
+	.evidence-summary-card__body {
+		padding: 12px 13px 14px;
+	}
+
+	.evidence-summary-card__summary {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.evidence-summary-card__badges {
+		align-items: center;
+	}
+
+	.source-group__summary {
+		min-height: 62px;
+		padding: 10px 0;
+	}
+
+	.source-group__body {
+		padding: 2px 0 14px;
 	}
 
 	.source-row {
-		gap: 12px;
+		gap: 10px;
 		padding: 14px;
 		border-radius: 8px;
 	}
 
-	.source-group__summary {
-		grid-template-columns: 1fr;
-		gap: 10px;
-	}
-
-	.source-group__summary-meta {
-		justify-content: space-between;
-		width: 100%;
-	}
-
-	.source-group[open] .source-list {
-		margin-top: 12px;
+	.source-row__open {
+		min-height: 40px;
 	}
 
 	.plain-list {
@@ -1093,6 +1379,19 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 @media (max-width: 560px) {
+	.claim-snapshot-block__summary {
+		grid-template-columns: 1fr auto;
+	}
+
+	.source-row__details-list {
+		grid-template-columns: 1fr;
+		gap: 3px;
+	}
+
+	.source-row__details-list dd + dt {
+		margin-top: 6px;
+	}
+
 	.bottom-line__actions {
 		display: flex;
 		flex-wrap: wrap;

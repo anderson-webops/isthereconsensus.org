@@ -15,6 +15,14 @@ describe("shared policy layout", () => {
 		assert.match(source, /\.policy-summary-card p \{[\s\S]*line-height: 1\.4;/);
 	});
 
+	it("uses section dividers instead of framing every policy section as another card", () => {
+		const source = readFileSync(join(testDir, "..", "src/app.vue"), "utf8");
+
+		assert.match(source, /\.policy-panel \{[\s\S]*padding: 22px 0;[\s\S]*border-top:/);
+		assert.match(source, /\.policy-panel--soft \{[\s\S]*background: transparent;/);
+		assert.match(source, /@media \(max-width: 720px\) \{[\s\S]*\.policy-panel \{[\s\S]*padding: 16px 0;/);
+	});
+
 	it("keeps policy callout actions full width on narrow screens", () => {
 		const source = readFileSync(join(testDir, "..", "src/app.vue"), "utf8");
 

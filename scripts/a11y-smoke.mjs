@@ -22,16 +22,27 @@ let apiUrl = "";
 const routes = [
 	"/",
 	"/consensus",
+	"/ask",
 	"/explainers",
+	"/explainers/how-consensus-forms",
 	"/misconceptions",
 	"/standards",
 	"/source-standards",
 	"/privacy",
-	"/terms"
+	"/terms",
+	"/community-guidelines",
+	"/corrections",
+	"/conflicts-and-funding",
+	"/expert-review-program",
+	"/moderation-and-appeals",
+	"/automation-and-ai",
+	"/copyright-and-trademark",
+	"/account-deletion-and-retention",
+	"/this-page-does-not-exist"
 ];
 const colorSchemes = (process.env.A11Y_COLOR_SCHEMES || "light,dark")
 	.split(",")
-	.map(scheme => scheme.trim())
+	.map((scheme) => scheme.trim())
 	.filter(Boolean);
 
 const chromeCandidates = [
@@ -44,7 +55,7 @@ const chromeCandidates = [
 	"/usr/bin/chromium"
 ].filter(Boolean);
 
-const chromePath = chromeCandidates.find(candidate => existsSync(candidate));
+const chromePath = chromeCandidates.find((candidate) => existsSync(candidate));
 if (chromePath) process.env.PUPPETEER_EXECUTABLE_PATH = chromePath;
 
 function parsePort(envName, fallbackPort) {
@@ -57,7 +68,7 @@ function parsePort(envName, fallbackPort) {
 }
 
 function portIsAvailable(port) {
-	return new Promise(resolvePortCheck => {
+	return new Promise((resolvePortCheck) => {
 		const server = net.createServer();
 		server.unref();
 		server.once("error", () => resolvePortCheck(false));
@@ -88,7 +99,7 @@ function getEphemeralPort(reservedPorts) {
 
 async function choosePort(envName, fallbackPort, reservedPorts) {
 	const { explicit, port } = parsePort(envName, fallbackPort);
-	if (!reservedPorts.has(port) && await portIsAvailable(port)) return port;
+	if (!reservedPorts.has(port) && (await portIsAvailable(port))) return port;
 	if (explicit) throw new Error(`${envName}=${port} is already in use.`);
 
 	const selectedPort = await getEphemeralPort(reservedPorts);
@@ -135,7 +146,8 @@ function responseFor(url) {
 	const pathname = url.pathname.replace(/\/+/g, "/");
 	if (pathname.endsWith("/pageview")) return { pageview: 0, startAt: Date.now() };
 	if (pathname.includes("/session")) return { authenticated: false, user: null, admin: null };
-	if (pathname.includes("/auth") || pathname.includes("/login")) return { authenticated: false, user: null, token: "" };
+	if (pathname.includes("/auth") || pathname.includes("/login"))
+		return { authenticated: false, user: null, token: "" };
 	if (pathname.includes("/me") || pathname.includes("/account")) return { user: null, authenticated: false };
 	if (pathname.includes("/quotes")) return [];
 	if (pathname.includes("/availability")) {
@@ -147,14 +159,18 @@ function responseFor(url) {
 	if (pathname.includes("/topics")) return { topics: [], claims: [], ...emptyCollection() };
 	if (pathname.includes("/claims")) return { claims: [], ...emptyCollection() };
 	if (pathname.includes("/search")) return { query: url.searchParams.get("q") || "", ...emptyCollection() };
-	if (pathname.includes("/submissions") || pathname.includes("/board") || pathname.includes("/items")) return emptyCollection();
+	if (pathname.includes("/submissions") || pathname.includes("/board") || pathname.includes("/items"))
+		return emptyCollection();
 	if (pathname.includes("/service-directory")) return { services: [], categories: [], ...emptyCollection() };
 	if (pathname.includes("/elections")) return { elections: [], ...emptyCollection() };
-	if (pathname.includes("/jurisdictions") || pathname.includes("/locations") || pathname.includes("/districts")) return { jurisdictions: [], locations: [], districts: [], ...emptyCollection() };
-	if (pathname.includes("/representatives") || pathname.includes("/candidate")) return { representatives: [], candidates: [], ...emptyCollection() };
+	if (pathname.includes("/jurisdictions") || pathname.includes("/locations") || pathname.includes("/districts"))
+		return { jurisdictions: [], locations: [], districts: [], ...emptyCollection() };
+	if (pathname.includes("/representatives") || pathname.includes("/candidate"))
+		return { representatives: [], candidates: [], ...emptyCollection() };
 	if (pathname.includes("/sources")) return { sources: [], ...emptyCollection() };
 	if (pathname.includes("/products")) return [];
-	if (pathname.includes("/contact") || pathname.includes("/cart") || pathname.includes("/orders")) return { ok: true };
+	if (pathname.includes("/contact") || pathname.includes("/cart") || pathname.includes("/orders"))
+		return { ok: true };
 	return { ok: true, ...emptyCollection() };
 }
 
@@ -188,18 +204,19 @@ async function waitForHttp(url, timeoutMs = 45_000, expectedText = "") {
 			if (response.ok && expectedText) {
 				lastError = new Error(`${url} did not render expected text: ${expectedText}`);
 			}
-		}
-		catch (error) {
+		} catch (error) {
 			lastError = error;
 		}
-		await new Promise(resolveWait => setTimeout(resolveWait, 400));
+		await new Promise((resolveWait) => setTimeout(resolveWait, 400));
 	}
 	throw lastError || new Error(`Timed out waiting for ${url}`);
 }
 
 function startFrontend() {
 	if (!existsSync(frontendServerEntry)) {
-		throw new Error("Missing front-end/.output/server/index.mjs. Run `npm run build` or `npm run -w front-end build` before `npm run a11y`.");
+		throw new Error(
+			"Missing front-end/.output/server/index.mjs. Run `npm run build` or `npm run -w front-end build` before `npm run a11y`."
+		);
 	}
 
 	const child = spawn(process.execPath, [frontendServerEntry], {
@@ -244,13 +261,13 @@ function startFrontend() {
 		detached: process.platform !== "win32",
 		stdio: ["ignore", "pipe", "pipe"]
 	});
-	child.stdout.on("data", data => writeServerLine("ssr", data));
-	child.stderr.on("data", data => writeServerLine("ssr", data));
+	child.stdout.on("data", (data) => writeServerLine("ssr", data));
+	child.stderr.on("data", (data) => writeServerLine("ssr", data));
 	return child;
 }
 
 function closeServer(server) {
-	return new Promise(resolveClose => server.close(resolveClose));
+	return new Promise((resolveClose) => server.close(resolveClose));
 }
 
 function processIsRunning(child) {
@@ -260,7 +277,7 @@ function processIsRunning(child) {
 function waitForProcessExit(child, timeoutMs) {
 	if (!processIsRunning(child)) return Promise.resolve(true);
 
-	return new Promise(resolveWait => {
+	return new Promise((resolveWait) => {
 		const onExit = () => {
 			clearTimeout(timeout);
 			resolveWait(true);
@@ -279,8 +296,7 @@ async function stopProcessTree(child) {
 	const target = process.platform === "win32" ? child.pid : -child.pid;
 	try {
 		process.kill(target, "SIGTERM");
-	}
-	catch (error) {
+	} catch (error) {
 		if (error?.code !== "ESRCH") console.warn(`Could not stop frontend process: ${error.message}`);
 		return;
 	}
@@ -289,8 +305,7 @@ async function stopProcessTree(child) {
 
 	try {
 		process.kill(target, "SIGKILL");
-	}
-	catch (error) {
+	} catch (error) {
 		if (error?.code !== "ESRCH") console.warn(`Could not force stop frontend process: ${error.message}`);
 	}
 	await waitForProcessExit(child, 2_000);
@@ -317,11 +332,54 @@ async function analyzePage(browser, route, scheme) {
 			}
 		});
 	});
+	await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+	await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+	const mobileLayout = await page.evaluate(() => {
+		const visible = (element) => {
+			const style = globalThis.getComputedStyle(element);
+			const rect = element.getBoundingClientRect();
+			return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+		};
+		const overflowElements = Array.from(document.querySelectorAll("body *"))
+			.filter(
+				(element) =>
+					visible(element) &&
+					(element.getBoundingClientRect().right > globalThis.innerWidth + 1 ||
+						element.getBoundingClientRect().left < -1)
+			)
+			.slice(0, 5)
+			.map((element) => `${element.tagName.toLowerCase()}.${String(element.className || "").trim()}`);
+		const negativeLetterSpacing = Array.from(document.querySelectorAll("body *"))
+			.filter((element) => {
+				if (!visible(element)) return false;
+				const value = Number.parseFloat(globalThis.getComputedStyle(element).letterSpacing);
+				return Number.isFinite(value) && value < 0;
+			})
+			.slice(0, 5)
+			.map((element) => `${element.tagName.toLowerCase()}.${String(element.className || "").trim()}`);
+
+		return {
+			h1Count: Array.from(document.querySelectorAll("main h1")).filter(visible).length,
+			horizontalOverflow: document.documentElement.scrollWidth > globalThis.innerWidth + 1,
+			overflowElements,
+			negativeLetterSpacing
+		};
+	});
 	await page.close();
+	const layoutIssues = [];
+	if (mobileLayout.h1Count !== 1)
+		layoutIssues.push(`expected one visible main heading, found ${mobileLayout.h1Count}`);
+	if (mobileLayout.horizontalOverflow || mobileLayout.overflowElements.length) {
+		layoutIssues.push(`mobile horizontal overflow: ${mobileLayout.overflowElements.join(", ") || "page root"}`);
+	}
+	if (mobileLayout.negativeLetterSpacing.length) {
+		layoutIssues.push(`negative letter spacing: ${mobileLayout.negativeLetterSpacing.join(", ")}`);
+	}
 	return {
 		url,
 		scheme,
-		violations: result.violations.filter(violation => violation.id !== "frame-tested")
+		layoutIssues,
+		violations: result.violations.filter((violation) => violation.id !== "frame-tested")
 	};
 }
 
@@ -345,7 +403,7 @@ try {
 	for (const route of routes) {
 		for (const scheme of colorSchemes) {
 			const result = await analyzePage(browser, route, scheme);
-			if (result.violations.length) {
+			if (result.violations.length || result.layoutIssues.length) {
 				failures.push(result);
 				continue;
 			}
@@ -356,6 +414,9 @@ try {
 	if (failures.length) {
 		for (const failure of failures) {
 			console.error(`\nAccessibility issues for ${siteName} at ${failure.url} [${failure.scheme}]`);
+			for (const issue of failure.layoutIssues) {
+				console.error(`- [layout] ${issue}`);
+			}
 			for (const violation of failure.violations) {
 				console.error(`- [${violation.impact ?? "unknown"}] ${violation.id}: ${violation.help}`);
 				console.error(`  ${violation.helpUrl}`);
@@ -366,8 +427,7 @@ try {
 		}
 		process.exitCode = 1;
 	}
-}
-finally {
+} finally {
 	if (browser) await browser.close();
 	await stopProcessTree(frontendProcess);
 	await closeServer(apiServer);

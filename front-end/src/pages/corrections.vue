@@ -80,7 +80,7 @@ useStaticPageMeta({
 
 		<section class="corrections-summary">
 			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
-				<h3>{{ item.title }}</h3>
+				<h2>{{ item.title }}</h2>
 				<p>{{ item.body }}</p>
 			</article>
 		</section>
@@ -156,24 +156,27 @@ useStaticPageMeta({
 }
 
 .corrections-header,
-.corrections-panel,
 .summary-card,
 .detail-card,
 .corrections-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 8px;
 }
 
 .corrections-header,
-.corrections-panel,
 .corrections-callout {
 	padding: 22px;
 }
 
+.corrections-panel {
+	padding: 22px 0;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
 .corrections-header h1,
 .section-heading h2,
-.summary-card h3,
+.summary-card h2,
 .detail-card h3,
 .corrections-callout h2 {
 	margin: 0;
@@ -232,13 +235,13 @@ useStaticPageMeta({
 	align-content: start;
 }
 
-.summary-card h3 {
+.summary-card h2 {
 	font-size: 1rem;
 	color: var(--consensus-ink);
 }
 
 .summary-card p,
-.summary-card h3,
+.summary-card h2,
 .detail-card p,
 .plain-list {
 	margin: 0;
@@ -256,7 +259,7 @@ useStaticPageMeta({
 }
 
 .corrections-panel--soft {
-	background: var(--consensus-elevated-surface);
+	background: transparent;
 }
 
 .plain-list,
@@ -336,23 +339,29 @@ useStaticPageMeta({
 	color: var(--consensus-ink);
 }
 
+.corrections-callout a.button--primary {
+	color: var(--consensus-on-accent);
+}
+
 @media (max-width: 720px) {
 	.corrections-page {
 		gap: 18px;
 	}
 
 	.corrections-header,
-	.corrections-panel,
 	.summary-card,
 	.detail-card,
 	.corrections-callout {
-		border-radius: 16px;
+		border-radius: 8px;
 	}
 
 	.corrections-header,
-	.corrections-panel,
 	.corrections-callout {
 		padding: 16px;
+	}
+
+	.corrections-panel {
+		padding: 16px 0;
 	}
 
 	.summary-card,

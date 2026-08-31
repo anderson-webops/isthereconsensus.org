@@ -10,7 +10,9 @@ describe("misconception and explainer index layout copy", () => {
 	it("keeps misconception library framing reader-facing", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
 		const gridIndex = source.indexOf('<section class="misconception-grid">');
-		const libraryFitIndex = source.indexOf('<section class="misconception-panel misconception-panel--soft">');
+		const libraryFitIndex = source.indexOf(
+			'<details class="misconception-panel misconception-panel--soft misconception-panel--disclosure">'
+		);
 
 		assert.match(source, /Recurring mistakes around science claims\./);
 		assert.match(source, /Common mistake/);
@@ -27,6 +29,15 @@ describe("misconception and explainer index layout copy", () => {
 		assert.notEqual(gridIndex, -1);
 		assert.notEqual(libraryFitIndex, -1);
 		assert.ok(gridIndex < libraryFitIndex);
+	});
+
+	it("keeps reference-heavy library guidance collapsed until requested", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
+
+		assert.equal((source.match(/class="misconception-panel__summary"/g) ?? []).length, 2);
+		assert.equal((source.match(/class="misconception-panel__body"/g) ?? []).length, 2);
+		assert.match(source, /misconception-panel--disclosure\[open\] \.misconception-panel__chevron/);
+		assert.doesNotMatch(source, /<section class="misconception-panel misconception-panel--soft">/);
 	});
 
 	it("keeps each misconception title visible while its answer stays optional", () => {

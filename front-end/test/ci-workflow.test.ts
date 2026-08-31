@@ -47,9 +47,14 @@ describe("CI workflow", () => {
 		assert.ok(buildFrontendStep < accessibilityStep);
 	});
 
-	it("checks the title-led explainer and misconception indexes in both color modes", () => {
+	it("checks public reading and policy templates in both color modes and at mobile width", () => {
 		assert.match(accessibilitySource, /"\/explainers"/);
+		assert.match(accessibilitySource, /"\/explainers\/how-consensus-forms"/);
 		assert.match(accessibilitySource, /"\/misconceptions"/);
+		assert.match(accessibilitySource, /"\/community-guidelines"/);
+		assert.match(accessibilitySource, /"\/account-deletion-and-retention"/);
+		assert.match(accessibilitySource, /width: 390, height: 844/);
+		assert.match(accessibilitySource, /horizontalOverflow/);
 		assert.match(accessibilitySource, /A11Y_COLOR_SCHEMES \|\| "light,dark"/);
 	});
 });

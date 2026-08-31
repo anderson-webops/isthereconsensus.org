@@ -147,7 +147,7 @@ useStaticPageMeta({
 
 		<section class="privacy-summary">
 			<article v-for="item in quickPoints" :key="item.title" class="summary-card">
-				<h3>{{ item.title }}</h3>
+				<h2>{{ item.title }}</h2>
 				<p>{{ item.body }}</p>
 			</article>
 		</section>
@@ -397,28 +397,31 @@ useStaticPageMeta({
 }
 
 .privacy-header,
-.privacy-panel,
 .privacy-contents,
 .summary-card,
 .category-card,
 .privacy-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 8px;
 }
 
 .privacy-header,
-.privacy-panel,
 .privacy-contents,
 .privacy-callout {
 	padding: 22px;
+}
+
+.privacy-panel {
+	padding: 22px 0;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .privacy-header h1,
 .section-heading h2,
 .privacy-contents h2,
 .prose h3,
-.summary-card h3,
+.summary-card h2,
 .category-card h3,
 .privacy-callout h2 {
 	margin: 0;
@@ -514,7 +517,7 @@ useStaticPageMeta({
 	align-content: start;
 }
 
-.summary-card h3 {
+.summary-card h2 {
 	font-size: 1rem;
 	color: var(--consensus-ink);
 }
@@ -522,7 +525,7 @@ useStaticPageMeta({
 .summary-card p,
 .plain-list,
 .prose p,
-.summary-card h3,
+.summary-card h2,
 .category-card h3,
 .category-card p {
 	margin: 0;
@@ -615,19 +618,21 @@ code {
 	}
 
 	.privacy-header,
-	.privacy-panel,
 	.privacy-contents,
 	.summary-card,
 	.category-card,
 	.privacy-callout {
-		border-radius: 16px;
+		border-radius: 8px;
 	}
 
 	.privacy-header,
-	.privacy-panel,
 	.privacy-contents,
 	.privacy-callout {
 		padding: 16px;
+	}
+
+	.privacy-panel {
+		padding: 16px 0;
 	}
 
 	.summary-card,
