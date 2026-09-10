@@ -1077,6 +1077,135 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"human-origins-and-paleontology": {
+		slug: "human-origins-and-paleontology",
+		consensusScore: 94,
+		consensusLabel: "Strong framework, rapidly improving detail",
+		snapshot:
+			"Fossils, dates, comparative anatomy, proteins, and ancient genomes now reveal a branching human history with repeated contact among populations. New finds often redraw particular branches without restoring a straight ladder of progress.",
+		stableCore: [
+			"Homo sapiens originated and diversified in Africa before later dispersals and admixture.",
+			"Several hominin populations coexisted, and human evolution combined branching with occasional gene flow.",
+			"Major transitions such as dinosaur-to-bird and land-mammal-to-whale evolution are supported by converging fossil and anatomical evidence."
+		],
+		openQuestions: [
+			"Where do fragmentary fossils belong, and how much variation fits within one species?",
+			"Which poorly sampled regions and populations contributed to later genomes and cultures?"
+		],
+		whatWouldChangeMinds: [
+			"Reliably dated fossils or genomes that reverse the currently convergent geographic and phylogenetic pattern.",
+			"Independent analyses showing that key ancient-DNA or transitional-anatomy signals are systematic artifacts."
+		],
+		commonMisreads: [
+			"A newly placed branch can change a family tree without overturning evolution or common ancestry.",
+			"An extinct cousin need not be a direct ancestor to be informative about shared history."
+		],
+		starterQuestions: [
+			"Which parts of this origin story come from fossils, genomes, or both?",
+			"Is the claim about direct ancestry, a close relative, or a broader transition?"
+		],
+		starterClaimSlugs: [
+			"did-modern-humans-interbreed-with-neanderthals",
+			"are-living-birds-dinosaurs",
+			"did-the-chicxulub-asteroid-impact-drive-the-end-cretaceous-mass-extinction"
+		],
+		evidenceTrail: [
+			{
+				title: "Ancient genomes and population models",
+				note: "Best for testing contact, ancestry, population structure, and competing demographic histories."
+			},
+			{
+				title: "Fossils, stratigraphy, and comparative anatomy",
+				note: "Necessary for dating, morphology, locomotion, ecology, and transitions that DNA cannot preserve."
+			}
+		]
+	},
+	"sports-nutrition-and-supplements": {
+		slug: "sports-nutrition-and-supplements",
+		consensusScore: 76,
+		consensusLabel: "Several real effects, many narrow or overstated",
+		snapshot:
+			"A supplement can alter a biomarker yet do little for performance, or provide a small benefit only in a particular event. Useful reviews compare effect size, training status, diet, dose, adverse effects, and real competition demands.",
+		stableCore: [
+			"Adequate energy, protein, training, sleep, and recovery matter more than most supplements.",
+			"A few supplements have repeatable domain-specific effects, but average gains are usually modest.",
+			"Product quality, contamination, side effects, and prohibited-substance risk are part of the evidence decision."
+		],
+		openQuestions: [
+			"Which responder profiles and event conditions make small average effects practically worthwhile?",
+			"How well do short laboratory outcomes predict long-term training and competition performance?"
+		],
+		whatWouldChangeMinds: [
+			"Large independent, preregistered trials that reverse current outcome-specific syntheses.",
+			"Head-to-head evidence showing a supplement adds meaningful benefit over an adequate diet and matched training."
+		],
+		commonMisreads: [
+			"A plausible mechanism or visible sensation is not proof of a useful performance effect.",
+			"Statistical significance can describe a change too small or unreliable to matter to an athlete."
+		],
+		starterQuestions: [
+			"What exact event, outcome, dose, and training population were studied?",
+			"Was the supplement compared with adequate nutrition and a credible placebo?"
+		],
+		starterClaimSlugs: [
+			"does-beta-alanine-improve-exercise-performance",
+			"do-bcaa-supplements-add-muscle-or-performance-benefits-when-protein-intake-is-adequate",
+			"do-high-dose-antioxidant-supplements-improve-training-adaptation"
+		],
+		evidenceTrail: [
+			{
+				title: "Systematic reviews and sports consensus statements",
+				note: "Best for effect size, event specificity, dosing, safety, and evidence grading."
+			},
+			{
+				title: "Randomized performance and training trials",
+				note: "Needed to distinguish biomarkers and soreness from functional or competitive benefit."
+			}
+		]
+	},
+	"infection-immunity-and-vaccines": {
+		slug: "infection-immunity-and-vaccines",
+		consensusScore: 92,
+		consensusLabel: "Strong mechanisms and interventions, changing conditions",
+		snapshot:
+			"Infectious-disease evidence joins biology with changing populations, pathogens, immunity, behavior, and surveillance. The core mechanisms can be stable even when a seasonal effect size or best implementation strategy changes.",
+		stableCore: [
+			"Vaccination, hygiene, ventilation, treatment, and surveillance act on different links in infection and disease.",
+			"Protection against infection, transmission, symptoms, hospitalization, and death must be measured separately.",
+			"Human, animal, food, and environmental systems are connected in antimicrobial resistance and emerging infection."
+		],
+		openQuestions: [
+			"How will variants, waning immunity, climate, travel, and behavior change future transmission?",
+			"Which combinations of interventions produce durable benefit with the least burden and inequity?"
+		],
+		whatWouldChangeMinds: [
+			"Prospective evidence that repeatedly contradicts current transmission mechanisms or intervention effects.",
+			"Better surveillance showing that a stable-looking result was driven by case definitions, testing access, or selection bias."
+		],
+		commonMisreads: [
+			"A breakthrough infection does not establish that a vaccine provides no protection against severe disease.",
+			"A pathogen detected in one sample does not by itself establish infectiousness, source, or individual diagnosis."
+		],
+		starterQuestions: [
+			"Which outcome, population, pathogen version, and time period does this estimate cover?",
+			"Is the evidence about individual protection, population transmission, or both?"
+		],
+		starterClaimSlugs: [
+			"does-seasonal-influenza-vaccination-reduce-severe-flu-outcomes",
+			"do-face-masks-usually-cause-dangerous-oxygen-or-carbon-dioxide-changes",
+			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"
+		],
+		evidenceTrail: [
+			{
+				title: "Systematic reviews, surveillance, and public-health guidance",
+				note: "Best for integrating changing pathogens, populations, outcomes, and implementation."
+			},
+			{
+				title: "Randomized trials and outbreak investigations",
+				note: "Useful for intervention effects, transmission timing, and context-specific causal questions."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,

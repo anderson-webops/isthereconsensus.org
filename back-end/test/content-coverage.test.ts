@@ -11,8 +11,8 @@ describe("content coverage", () => {
 	it("tracks the current library against the evidence-encyclopedia target", () => {
 		const report = summarizeContentCoverage(defaultClaims, defaultTopics);
 
-		assert.ok(report.reviewedClaimCount >= 500);
-		assert.ok(report.activeTopicCount >= 26);
+		assert.ok(report.reviewedClaimCount >= 530);
+		assert.ok(report.activeTopicCount >= 29);
 		assert.equal(report.definedTopicCount, defaultTopics.length);
 		assert.equal(
 			report.claimGap,

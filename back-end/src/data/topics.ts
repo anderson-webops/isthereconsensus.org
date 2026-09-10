@@ -180,5 +180,26 @@ export const defaultTopics = [
 		description: "What empirical research says about work, housing, cash, migration, trade, family policy, and distributional tradeoffs.",
 		order: 26,
 		accent: "#84604f"
+	},
+	{
+		title: "Human origins & paleontology",
+		slug: "human-origins-and-paleontology",
+		description: "Fossils, ancient genomes, human ancestry, and major evolutionary transitions separated from ladder-like origin stories.",
+		order: 27,
+		accent: "#8b5f43"
+	},
+	{
+		title: "Sports nutrition & supplements",
+		slug: "sports-nutrition-and-supplements",
+		description: "Performance, recovery, and supplement claims judged by practical effect size, event fit, and comparative evidence.",
+		order: 28,
+		accent: "#407166"
+	},
+	{
+		title: "Infection, immunity & vaccines",
+		slug: "infection-immunity-and-vaccines",
+		description: "Transmission, vaccination, hygiene, treatment, surveillance, and resistance examined across individual and population risk.",
+		order: 29,
+		accent: "#526b8b"
 	}
 ];

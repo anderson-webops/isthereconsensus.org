@@ -14,6 +14,13 @@ describe("evidence atlas collections", () => {
 		const topicSlugs = new Set(defaultTopics.map(topic => topic.slug));
 		const configuredTopicSlugs = new Set(atlasCollections.map(collection => collection.topicSlug));
 		const collectionKeys = new Set<string>();
+		for (const topicSlug of [
+			"human-origins-and-paleontology",
+			"sports-nutrition-and-supplements",
+			"infection-immunity-and-vaccines"
+		]) {
+			assert.ok(configuredTopicSlugs.has(topicSlug), `${topicSlug} should retain curated atlas collections`);
+		}
 
 		for (const collection of atlasCollections) {
 			assert.ok(topicSlugs.has(collection.topicSlug), `${collection.topicSlug} should be a seeded topic`);

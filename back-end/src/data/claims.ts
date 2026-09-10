@@ -19,6 +19,7 @@ import type {
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
+import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
@@ -126,7 +127,7 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "active-debates") {
 		return ["Web of Science", "PubMed and trial registries", "Scopus", "OpenAlex and Crossref"];
 	}
-	if (topicSlug === "biology-and-evolution") {
+	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
 		return ["Web of Science", "PubMed", "OpenAlex and Crossref", "Genomic, phylogenetic, and natural-history repositories"];
 	}
 	if (topicSlug === "consensus-foundations") {
@@ -147,8 +148,11 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "sleep-and-circadian-health") {
 		return ["PubMed", "Cochrane Library", "OpenAlex", "Crossref"];
 	}
-	if (topicSlug === "exercise-and-sports-science") {
+	if (topicSlug === "exercise-and-sports-science" || topicSlug === "sports-nutrition-and-supplements") {
 		return ["PubMed", "SPORTDiscus", "OpenAlex", "Crossref"];
+	}
+	if (topicSlug === "infection-immunity-and-vaccines") {
+		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "OpenAlex and Crossref"];
 	}
 	if (topicSlug === "crime-and-justice") {
 		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
@@ -208,7 +212,7 @@ function defaultIntegrityMonitors(topicSlug: string) {
 	if (topicSlug === "active-debates") {
 		return ["Crossref update metadata", "PubMed and trial-registry linking", "OpenAlex updates and editorial frontier audit"];
 	}
-	if (topicSlug === "biology-and-evolution") {
+	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
 		return ["Crossref update metadata", "PubMed and OpenAlex linking", "Genomic-data and phylogenetic correction audit"];
 	}
 	if (topicSlug === "consensus-foundations" || topicSlug === "bias-incentives") {
@@ -228,6 +232,8 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		|| topicSlug === "public-policy-and-safety"
 		|| topicSlug === "sleep-and-circadian-health"
 		|| topicSlug === "exercise-and-sports-science"
+		|| topicSlug === "sports-nutrition-and-supplements"
+		|| topicSlug === "infection-immunity-and-vaccines"
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
@@ -250,7 +256,7 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	if (topicSlug === "active-debates") {
 		return ["National Academies frontier assessments", "WHO and major regulator updates", "IPCC and field-specific living reviews"];
 	}
-	if (topicSlug === "biology-and-evolution") {
+	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
 		return ["Major evolutionary-biology reviews", "National Academies science-education assessments", "Genomics and taxonomy synthesis updates"];
 	}
 	if (topicSlug === "consensus-foundations") {
@@ -294,6 +300,12 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "exercise-and-sports-science") {
 		return ["WHO activity guidance", "AAP and ACSM updates", "Major position-statement updates"];
+	}
+	if (topicSlug === "sports-nutrition-and-supplements") {
+		return ["IOC and ACSM consensus updates", "Australian Institute of Sport supplement framework", "Major sports-nutrition review updates"];
+	}
+	if (topicSlug === "infection-immunity-and-vaccines") {
+		return ["WHO guidance streams", "CDC surveillance and guidance updates", "Cochrane and major living-review updates"];
 	}
 	if (topicSlug === "crime-and-justice") {
 		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
@@ -372,7 +384,7 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "Current systematic reviews and pivotal trials", role: "Evidence-maturity and live-disagreement anchor" }
 		];
 	}
-	if (topicSlug === "biology-and-evolution") {
+	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
 		return [
 			{ name: "Major evolutionary-biology reviews", role: "Population, genomic, phylogenetic, and experimental synthesis anchor" },
 			{ name: "National Academies", role: "Independent evolution and science-education assessment anchor" },
@@ -478,6 +490,20 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "World Health Organization", role: "Global physical-activity guidance anchor" },
 			{ name: "American Academy of Pediatrics", role: "Youth activity and training safety anchor" },
 			{ name: "American College of Sports Medicine", role: "Exercise-science guidance anchor" }
+		];
+	}
+	if (topicSlug === "sports-nutrition-and-supplements") {
+		return [
+			{ name: "International Olympic Committee", role: "Supplement efficacy, safety, and elite-sport consensus anchor" },
+			{ name: "Australian Institute of Sport", role: "Evidence-graded sports-supplement framework anchor" },
+			{ name: "American College of Sports Medicine", role: "Exercise nutrition and performance guidance anchor" }
+		];
+	}
+	if (topicSlug === "infection-immunity-and-vaccines") {
+		return [
+			{ name: "World Health Organization", role: "Global infectious-disease and immunization guidance anchor" },
+			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. surveillance and implementation anchor" },
+			{ name: "Cochrane", role: "Independent prevention and treatment evidence-synthesis anchor" }
 		];
 	}
 	if (topicSlug === "crime-and-justice") {
@@ -710,7 +736,7 @@ function defaultInclusionRules(seed: SeedClaim) {
 			"Include credible competing interpretations and specify the exact unresolved quantity, subgroup, timescale, system boundary, or decision threshold."
 		];
 	}
-	if (seed.topicSlug === "biology-and-evolution") {
+	if (seed.topicSlug === "biology-and-evolution" || seed.topicSlug === "human-origins-and-paleontology") {
 		return [
 			"Prioritize converging population-genetic, genomic, phylogenetic, experimental-evolution, paleontological, and field evidence appropriate to the timescale of the claim.",
 			"Define the evolutionary mechanism, heritable unit, population, environment, comparison, and timescale before inferring selection, drift, mutation, gene flow, or speciation.",
@@ -757,6 +783,20 @@ function defaultInclusionRules(seed: SeedClaim) {
 			"Prioritize systematic reviews and credible randomized, controlled time-series, natural-experiment, or matched policy evaluations with a stated counterfactual.",
 			"Report implementation, coverage, enforcement, uptake, intermediate behavior, final health or safety outcomes, displacement, and durability separately.",
 			"Include subgroup, equity, cost, access, unintended-effect, and jurisdictional context when they can change the policy conclusion."
+		];
+	}
+	if (seed.topicSlug === "sports-nutrition-and-supplements") {
+		return [
+			"Prioritize systematic reviews, meta-analyses, randomized trials, and major sports-nutrition consensus statements with explicit dose, duration, comparator, and training status.",
+			"Separate biochemical response, laboratory capacity, soreness, recovery, body composition, and real competition performance.",
+			"Report effect size, uncertainty, adverse effects, product quality, diet adequacy, event demands, and practical relevance together."
+		];
+	}
+	if (seed.topicSlug === "infection-immunity-and-vaccines") {
+		return [
+			"Prioritize systematic reviews, surveillance, randomized or strong quasi-experimental evidence, outbreak investigations, and current public-health guidance.",
+			"Separate infection, transmission, symptoms, severe disease, hospitalization, mortality, carriage, and population-level indirect effects.",
+			"Record pathogen, variant or strain, vaccine or treatment, population, setting, follow-up, and changing background immunity."
 		];
 	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
@@ -809,7 +849,7 @@ function defaultExclusionRules(seed: SeedClaim) {
 			"Do not present absence of a definitive answer as equal support for every position; show which intermediate findings are established and which decision-critical link remains open."
 		];
 	}
-	if (seed.topicSlug === "biology-and-evolution") {
+	if (seed.topicSlug === "biology-and-evolution" || seed.topicSlug === "human-origins-and-paleontology") {
 		return [
 			"Do not infer adaptation from existence, complexity, persistence, function, or a plausible just-so story without comparative or fitness evidence.",
 			"Exclude claims that confuse mutation bias with foresight, individual acclimation with inherited population change, or partial reproductive isolation with one universal species boundary.",
@@ -858,6 +898,20 @@ function defaultExclusionRules(seed: SeedClaim) {
 			"Do not export one jurisdiction's effect size without accounting for baseline risk, enforcement, market response, infrastructure, access, and equity."
 		];
 	}
+	if (seed.topicSlug === "sports-nutrition-and-supplements") {
+		return [
+			"Do not turn a pathway, biomarker, acute laboratory change, or statistically significant result into meaningful performance or long-term health benefit.",
+			"Exclude comparisons that do not control for total diet, protein, training, placebo, co-supplements, dose, or baseline deficiency when those factors can explain the result.",
+			"Do not generalize one event, population, product, or sponsored protocol to every athlete or treat a modest average effect as guaranteed individual benefit."
+		];
+	}
+	if (seed.topicSlug === "infection-immunity-and-vaccines") {
+		return [
+			"Do not infer causation from temporal anecdotes, passive reports, ecological correlations, pathogen detection alone, or a single outbreak.",
+			"Exclude claims that merge protection against infection with protection against severe disease or transfer one pathogen's threshold and timing to another.",
+			"Do not generalize evidence across variants, populations, settings, products, doses, or risk groups without making the boundary explicit."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Do not infer lifecycle or system performance from a combustion-only, component-only, target-only, or nameplate metric.",
@@ -904,7 +958,7 @@ function defaultAppraisalTools(topicSlug: string) {
 	if (topicSlug === "active-debates") {
 		return ["Evidence-maturity and technology-readiness ladder", "Surrogate-to-patient-or-population directness audit", "Competing-hypothesis, lifecycle-boundary, and external-validity check"];
 	}
-	if (topicSlug === "biology-and-evolution") {
+	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
 		return ["Selection-drift-mutation-gene-flow mechanism audit", "Phylogenetic and population-structure check", "Cross-taxon, timescale, and experimental-field triangulation"];
 	}
 	if (topicSlug === "consensus-foundations") {
@@ -924,6 +978,12 @@ function defaultAppraisalTools(topicSlug: string) {
 	}
 	if (topicSlug === "public-policy-and-safety") {
 		return ["Counterfactual and policy-timing review", "Implementation-to-final-outcome evidence chain", "Distributional, displacement, and unintended-effect audit"];
+	}
+	if (topicSlug === "sports-nutrition-and-supplements") {
+		return ["Supplement dose, formulation, and contamination audit", "Outcome-to-competition directness check", "Diet, training-status, placebo, and sponsorship risk-of-bias review"];
+	}
+	if (topicSlug === "infection-immunity-and-vaccines") {
+		return ["Pathogen, outcome, and case-definition audit", "Variant, immunity, and population transportability check", "Bias, surveillance denominator, and intervention-timing review"];
 	}
 	if (topicSlug === "energy-and-infrastructure") {
 		return ["Lifecycle boundary audit", "Technology-readiness and operating-data check", "Reliability-service and duration check"];
@@ -956,14 +1016,14 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		tags.add("preprints-are-preliminary");
 		tags.add("hazard-is-not-the-same-as-risk");
 	}
-	if (seed.topicSlug === "biology-and-evolution") {
+	if (seed.topicSlug === "biology-and-evolution" || seed.topicSlug === "human-origins-and-paleontology") {
 		tags.add("one-study-doesnt-overturn-evidence");
 		tags.add("cherry-picking-distorts-the-evidence");
 		tags.add("uncertainty-isnt-ignorance");
 		tags.add("mechanism-is-not-real-world-effect");
 	}
 
-	if (seed.topicSlug === "health-and-medicine") {
+	if (seed.topicSlug === "health-and-medicine" || seed.topicSlug === "infection-immunity-and-vaccines") {
 		tags.add("one-study-doesnt-overturn-evidence");
 		tags.add("relative-risk-can-mislead");
 		tags.add("anecdotes-are-not-population-evidence");
@@ -977,6 +1037,12 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		tags.add("cherry-picking-distorts-the-evidence");
 		tags.add("mechanism-is-not-real-world-effect");
 		tags.add("hazard-is-not-the-same-as-risk");
+	}
+	if (seed.topicSlug === "sports-nutrition-and-supplements") {
+		tags.add("one-study-doesnt-overturn-evidence");
+		tags.add("mechanism-is-not-real-world-effect");
+		tags.add("relative-risk-can-mislead");
+		tags.add("cherry-picking-distorts-the-evidence");
 	}
 	if (seed.topicSlug === "climate-and-environment") {
 		tags.add("one-study-doesnt-overturn-evidence");
@@ -1061,6 +1127,8 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					|| seed.topicSlug === "genetics-and-biotechnology"
 					|| seed.topicSlug === "sleep-and-circadian-health"
 					|| seed.topicSlug === "exercise-and-sports-science"
+					|| seed.topicSlug === "sports-nutrition-and-supplements"
+					|| seed.topicSlug === "infection-immunity-and-vaccines"
 					? ["Crossref", "PubMed", "Europe PMC"]
 					: seed.topicSlug === "astronomy-and-space"
 						|| seed.topicSlug === "earth-and-geoscience"
@@ -26909,7 +26977,8 @@ const rawClaims: SeedClaim[] = [
 	},
 	...july2026ExpansionClaims,
 	...august2026ExpansionClaims,
-	...august2026EncyclopediaClaims
+	...august2026EncyclopediaClaims,
+	...september2026TrafficClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
