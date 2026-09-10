@@ -2,6 +2,7 @@
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { buildApiUrl } from "~/utils/api";
 import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
@@ -13,6 +14,7 @@ interface ClaimRouteParams {
 }
 
 const route = useRoute();
+const config = useRuntimeConfig();
 const { apiUrl } = useApi();
 const { currentAccount, role } = useAuth();
 
@@ -33,6 +35,8 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const collectionMemberships = computed(() => claimData.value?.collections ?? []);
 const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
+const citation = computed(() => claimData.value?.citation);
+const citationCopyState = ref<"copied" | "error" | "idle">("idle");
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
@@ -81,6 +85,9 @@ const askLink = computed(() => ({
 	path: "/ask",
 	query: claim.value?.title ? { topic: topicSlug.value, question: claim.value.title } : { topic: topicSlug.value }
 }));
+const citationExportBase = computed(() =>
+	buildApiUrl(config.public.apiBase as string, `/topics/${topicSlug.value}/claims/${claimSlug.value}/citations`)
+);
 const claimMeta = computed(() => [
 	formatBandLabel(claim.value?.consensusBand),
 	formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
@@ -336,6 +343,21 @@ function sourcePrimaryLink(source: ClaimSource) {
 		pubMedUrl(source.pmid) ||
 		pubMedCentralUrl(source.pmcid)
 	);
+}
+
+function citationExportUrl(format: "bibtex" | "json" | "markdown" | "ris") {
+	const separator = citationExportBase.value.includes("?") ? "&" : "?";
+	return `${citationExportBase.value}${separator}format=${format}`;
+}
+
+async function copyCitation() {
+	if (!import.meta.client || !citation.value?.plainText) return;
+	try {
+		await window.navigator.clipboard.writeText(citation.value.plainText);
+		citationCopyState.value = "copied";
+	} catch {
+		citationCopyState.value = "error";
+	}
 }
 
 function formatDate(value?: string, fallback = "Not available yet") {
@@ -613,6 +635,35 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					</details>
 				</div>
 			</section>
+
+			<details v-if="citation" class="content-panel citation-panel">
+				<summary class="citation-panel__summary">
+					<span>
+						<span class="eyebrow">Reuse the evidence</span>
+						<span class="citation-panel__title">Cite this review</span>
+					</span>
+					<span class="i-carbon-chevron-down citation-panel__chevron" aria-hidden="true" />
+				</summary>
+				<div class="citation-panel__body">
+					<p>{{ citation.plainText }}</p>
+					<div class="citation-panel__actions">
+						<button class="button button--primary" type="button" @click="copyCitation">
+							{{ citationCopyState === "copied" ? "Citation copied" : "Copy citation" }}
+						</button>
+						<a class="button button--ghost" :href="citationExportUrl('bibtex')">BibTeX</a>
+						<a class="button button--ghost" :href="citationExportUrl('ris')">RIS</a>
+						<a class="button button--ghost" :href="citationExportUrl('markdown')">Markdown</a>
+						<a class="button button--ghost" :href="citationExportUrl('json')">CSL JSON</a>
+					</div>
+					<p v-if="citationCopyState === 'error'" class="citation-panel__error" role="status">
+						Your browser blocked clipboard access. Use one of the downloadable formats instead.
+					</p>
+					<p class="citation-panel__note">
+						Exports include this reviewed page and its displayed source list. Missing author metadata is
+						never invented.
+					</p>
+				</div>
+			</details>
 
 			<section v-if="collectionMemberships.length || relatedClaims.length" class="content-panel continue-panel">
 				<div class="section-heading">
@@ -1310,6 +1361,67 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .tag--warning {
 	border-color: color-mix(in srgb, var(--consensus-caution) 40%, var(--consensus-line));
 	background: color-mix(in srgb, var(--consensus-caution) 12%, var(--consensus-elevated-surface));
+}
+
+.citation-panel__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.citation-panel__summary::-webkit-details-marker {
+	display: none;
+}
+
+.citation-panel__summary > span:first-child {
+	display: grid;
+	gap: 6px;
+}
+
+.citation-panel__title {
+	font-family: "Fraunces", serif;
+	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.citation-panel__chevron {
+	width: 18px;
+	height: 18px;
+	transition: transform 160ms ease;
+}
+
+.citation-panel[open] .citation-panel__chevron {
+	transform: rotate(180deg);
+}
+
+.citation-panel__body {
+	display: grid;
+	gap: 14px;
+	padding-top: 18px;
+}
+
+.citation-panel__body p {
+	max-width: 78ch;
+	margin: 0;
+}
+
+.citation-panel__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.citation-panel__note {
+	color: var(--consensus-muted);
+	font-size: 0.86rem;
+}
+
+.citation-panel__error {
+	color: var(--consensus-caution);
 }
 
 .change-log-panel__summary {

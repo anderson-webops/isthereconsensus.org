@@ -393,6 +393,12 @@ export interface ClaimsResponse {
 
 export interface ClaimResponse {
 	claim: Claim;
+	citation?: {
+		plainText: string;
+		markdown: string;
+		reviewUrl: string;
+		reviewedAt?: string;
+	};
 	collections?: AtlasCollectionMembership[];
 	relatedClaims?: ClaimSummary[];
 }

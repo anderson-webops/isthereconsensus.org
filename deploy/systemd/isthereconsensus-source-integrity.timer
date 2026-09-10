@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Is There Consensus source-integrity checks daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=2h
+Unit=isthereconsensus-source-integrity.service
+
+[Install]
+WantedBy=timers.target

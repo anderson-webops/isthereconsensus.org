@@ -22,6 +22,7 @@ let apiUrl = "";
 const routes = [
 	"/",
 	"/consensus",
+	"/consensus/a11y-topic/a11y-citation-review",
 	"/ask",
 	"/explainers",
 	"/explainers/how-consensus-forms",
@@ -38,6 +39,7 @@ const routes = [
 	"/automation-and-ai",
 	"/copyright-and-trademark",
 	"/account-deletion-and-retention",
+	"/account/editorial/source-integrity",
 	"/this-page-does-not-exist"
 ];
 const colorSchemes = (process.env.A11Y_COLOR_SCHEMES || "light,dark")
@@ -144,6 +146,51 @@ function emptyCollection() {
 
 function responseFor(url) {
 	const pathname = url.pathname.replace(/\/+/g, "/");
+	if (pathname.endsWith("/topics/a11y-topic/claims/a11y-citation-review")) {
+		return {
+			claim: {
+				_id: "a11y-claim",
+				title: "Does this sample review support accessible citation reuse?",
+				slug: "a11y-citation-review",
+				status: "published",
+				consensusBand: "broad",
+				evidenceCertainty: "moderate",
+				confidenceScore: 82,
+				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
+				stableCore: ["The review can be copied or exported in standard citation formats."],
+				openQuestions: ["How will citation use vary by reader?"],
+				whatWouldChangeMinds: ["A browser-level accessibility regression."],
+				misconceptions: [],
+				sources: [
+					{
+						kind: "systematic_review",
+						title: "Accessible evidence reuse fixture",
+						publisher: "Is There Consensus",
+						year: 2026,
+						url: "https://isthereconsensus.org/standards",
+						stance: "supports",
+						note: "A deterministic fixture for built-app accessibility testing."
+					}
+				],
+				lastReviewedAt: "2026-09-10T00:00:00.000Z",
+				publishedAt: "2026-09-10T00:00:00.000Z",
+				topic: {
+					_id: "a11y-topic",
+					title: "Accessibility fixtures",
+					slug: "a11y-topic",
+					description: "Deterministic content used only by the local accessibility smoke test."
+				}
+			},
+			citation: {
+				plainText: "Is There Consensus editorial team. Accessible citation fixture.",
+				markdown: "[Accessible citation fixture](https://isthereconsensus.org/standards).",
+				reviewUrl: "https://isthereconsensus.org/consensus/a11y-topic/a11y-citation-review",
+				reviewedAt: "2026-09-10"
+			},
+			collections: [],
+			relatedClaims: []
+		};
+	}
 	if (pathname.endsWith("/pageview")) return { pageview: 0, startAt: Date.now() };
 	if (pathname.includes("/session")) return { authenticated: false, user: null, admin: null };
 	if (pathname.includes("/auth") || pathname.includes("/login"))
@@ -234,6 +281,7 @@ function startFrontend() {
 			NUXT_TELEMETRY_DISABLED: "1",
 			NUXT_PUBLIC_APP_URL: baseUrl,
 			NUXT_PUBLIC_SITE_URL: baseUrl,
+			NUXT_API_INTERNAL_BASE: apiUrl,
 			NUXT_PUBLIC_API_BASE: apiUrl,
 			NUXT_PUBLIC_API_BASE_URL: apiUrl,
 			PUBLIC_API_BASE: apiUrl,
