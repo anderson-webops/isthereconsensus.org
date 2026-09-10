@@ -676,6 +676,108 @@ export const atlasCollections = [
 			"does-antimicrobial-resistance-move-among-humans-animals-food-and-the-environment",
 			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"
 		]
+	},
+	{
+		topicSlug: "mental-health-and-treatment",
+		slug: "rapid-and-specialist-treatments",
+		title: "Rapid and specialist treatments",
+		description: "ECT, brain stimulation, and ketamine assessed for severe or treatment-resistant depression without cure-all framing.",
+		claimSlugs: [
+			"is-electroconvulsive-therapy-effective-for-severe-depression",
+			"does-repetitive-transcranial-magnetic-stimulation-help-treatment-resistant-depression",
+			"can-ketamine-or-esketamine-rapidly-reduce-treatment-resistant-depression"
+		]
+	},
+	{
+		topicSlug: "mental-health-and-treatment",
+		slug: "psychotherapy-access-and-care-systems",
+		title: "Psychotherapy, access, and care systems",
+		description: "What structured therapy can do and how remote and collaborative delivery change access and outcomes.",
+		claimSlugs: [
+			"do-trauma-focused-psychotherapies-reduce-ptsd-symptoms",
+			"can-live-video-psychotherapy-work-about-as-well-as-in-person-therapy",
+			"does-collaborative-care-improve-depression-and-anxiety-treatment-in-primary-care"
+		]
+	},
+	{
+		topicSlug: "mental-health-and-treatment",
+		slug: "maintenance-suicide-prevention-and-medication-safety",
+		title: "Maintenance, suicide prevention, and medication safety",
+		description: "Relapse prevention and high-value medicines considered together with monitoring, dependence, and discontinuation risk.",
+		claimSlugs: [
+			"does-maintenance-antipsychotic-treatment-reduce-relapse-in-schizophrenia",
+			"does-clozapine-reduce-suicidal-behavior-in-schizophrenia-or-schizoaffective-disorder",
+			"does-lithium-prevent-relapse-and-reduce-suicide-risk-in-bipolar-disorder",
+			"can-benzodiazepines-relieve-acute-anxiety-and-should-regular-use-be-stopped-abruptly"
+		]
+	},
+	{
+		topicSlug: "reproductive-and-sexual-health",
+		slug: "contraceptive-effectiveness-and-risk",
+		title: "Contraceptive effectiveness and risk",
+		description: "Long-acting methods, eligibility, clot risk, and cancer tradeoffs compared without treating every method as interchangeable.",
+		claimSlugs: [
+			"are-iuds-and-contraceptive-implants-among-the-most-effective-reversible-contraceptives",
+			"are-iuds-safe-for-adolescents-and-people-who-have-not-given-birth",
+			"does-combined-hormonal-contraception-increase-the-risk-of-venous-blood-clots",
+			"do-hormonal-contraceptives-change-cancer-risks-in-different-directions"
+		]
+	},
+	{
+		topicSlug: "reproductive-and-sexual-health",
+		slug: "abortion-safety-fertility-and-mental-health",
+		title: "Abortion safety, fertility, and mental health",
+		description: "Clinical outcomes after evidence-based abortion care separated from expected symptoms, rare complications, and political claims.",
+		claimSlugs: [
+			"is-medication-abortion-safe-and-effective-in-early-pregnancy",
+			"does-an-uncomplicated-abortion-generally-cause-infertility-or-poorer-future-pregnancy-outcomes",
+			"does-abortion-generally-worsen-long-term-mental-health-compared-with-being-denied-a-wanted-abortion"
+		]
+	},
+	{
+		topicSlug: "reproductive-and-sexual-health",
+		slug: "fertility-aging-and-menopause",
+		title: "Fertility, aging, and menopause",
+		description: "Continuous fertility change, IVF limits, and symptom treatment explained without cliff metaphors or universal risk claims.",
+		claimSlugs: [
+			"does-female-fertility-decline-gradually-with-age-rather-than-falling-at-an-exact-age-of-35",
+			"can-ivf-fully-overcome-age-related-fertility-decline",
+			"is-menopausal-hormone-therapy-effective-for-hot-flashes-with-risks-that-should-be-individualized"
+		]
+	},
+	{
+		topicSlug: "aging-and-longevity",
+		slug: "strength-frailty-and-nutrition",
+		title: "Strength, frailty, and nutrition",
+		description: "Actionable evidence on resistance work, multicomponent exercise, falls, function, and conditional protein benefit.",
+		claimSlugs: [
+			"does-resistance-training-improve-strength-and-physical-function-in-older-adults-with-sarcopenia",
+			"can-multicomponent-exercise-reduce-frailty-and-falls-in-older-adults",
+			"does-added-protein-enhance-resistance-exercise-for-some-older-adults"
+		]
+	},
+	{
+		topicSlug: "aging-and-longevity",
+		slug: "connection-and-metabolic-aging",
+		title: "Connection and metabolic aging",
+		description: "Social connection and calorie restriction examined across associations, interventions, biomarkers, and patient-important outcomes.",
+		claimSlugs: [
+			"are-social-isolation-and-loneliness-linked-to-higher-mortality-in-older-adults",
+			"does-moderate-calorie-restriction-improve-health-markers-while-its-effect-on-human-lifespan-remains-unknown"
+		]
+	},
+	{
+		topicSlug: "aging-and-longevity",
+		slug: "longevity-frontier-and-biomarkers",
+		title: "Longevity frontier and biomarkers",
+		description: "Popular drugs, supplements, senolytics, and aging clocks sorted by the distance from mechanism to proven healthy-human benefit.",
+		claimSlugs: [
+			"is-metformin-proven-to-extend-healthy-lifespan-in-people-without-diabetes",
+			"is-rapamycin-proven-to-extend-healthy-human-lifespan",
+			"do-nad-boosters-raise-nad-without-proven-anti-aging-clinical-benefits",
+			"are-senolytic-drugs-established-anti-aging-treatments",
+			"can-consumer-biological-age-tests-reliably-guide-treatment-or-predict-an-individuals-lifespan"
+		]
 	}
 ] as const satisfies readonly AtlasCollectionDefinition[];
 

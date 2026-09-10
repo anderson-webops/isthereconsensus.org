@@ -17,7 +17,10 @@ describe("evidence atlas collections", () => {
 		for (const topicSlug of [
 			"human-origins-and-paleontology",
 			"sports-nutrition-and-supplements",
-			"infection-immunity-and-vaccines"
+			"infection-immunity-and-vaccines",
+			"mental-health-and-treatment",
+			"reproductive-and-sexual-health",
+			"aging-and-longevity"
 		]) {
 			assert.ok(configuredTopicSlugs.has(topicSlug), `${topicSlug} should retain curated atlas collections`);
 		}

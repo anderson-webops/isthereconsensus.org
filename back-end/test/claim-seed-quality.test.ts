@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
+import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
@@ -1911,6 +1912,107 @@ describe("default claim seed quality", () => {
 		assert.match(visibleClaimText("are-shorter-antibiotic-courses-effective-for-many-common-infections"), /does not mean stopping|not permission/i);
 		assert.match(visibleClaimText("does-latent-tuberculosis-infection-always-progress-to-active-disease"), /five to ten percent/i);
 		assert.match(visibleClaimText("can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"), /not an individual diagnostic/i);
+	});
+
+	it("adds a 30-review healthspan tranche across three complete topic clusters", () => {
+		assert.equal(september2026HealthspanClaims.length, 30);
+		assert.ok(defaultClaims.length >= 560, "The healthspan tranche must bring the library to 560 claims");
+		assert.ok(defaultTopics.length >= 32, "The healthspan tranche must bring the directory to 32 topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026HealthspanClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026HealthspanClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"aging-and-longevity": 10,
+				"mental-health-and-treatment": 10,
+				"reproductive-and-sexual-health": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026HealthspanClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026HealthspanClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing healthspan claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-10T22:10:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T22:10:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(
+				seeded.sources.every(source => source.url?.startsWith("https://")),
+				`${claim.slug} sources should have direct HTTPS landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(source => !source.url?.includes("consensus.app")),
+				`${claim.slug} should not expose discovery-platform tracking URLs`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => !source.doi || source.url === `https://doi.org/${source.doi}`
+				),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => source.citationCheckedAt === "2026-09-10T22:10:00.000Z"
+				),
+				`${claim.slug} must record the tranche citation review`
+			);
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026HealthspanClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Healthspan claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the healthspan tranche's clinical and evidence-maturity boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing healthspan claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		assert.match(visibleClaimText("is-electroconvulsive-therapy-effective-for-severe-depression"), /memory|cognitive/i);
+		assert.match(visibleClaimText("can-benzodiazepines-relieve-acute-anxiety-and-should-regular-use-be-stopped-abruptly"), /abrupt|seizures/i);
+		assert.match(visibleClaimText("does-female-fertility-decline-gradually-with-age-rather-than-falling-at-an-exact-age-of-35"), /not a biological cliff|does not fall/i);
+		assert.match(visibleClaimText("does-an-uncomplicated-abortion-generally-cause-infertility-or-poorer-future-pregnancy-outcomes"), /unsafe abortion|unsafe care/i);
+		assert.match(visibleClaimText("does-moderate-calorie-restriction-improve-health-markers-while-its-effect-on-human-lifespan-remains-unknown"), /did not show|not direct evidence/i);
+		assert.match(visibleClaimText("is-rapamycin-proven-to-extend-healthy-human-lifespan"), /no trial|not proof/i);
+		assert.match(visibleClaimText("can-consumer-biological-age-tests-reliably-guide-treatment-or-predict-an-individuals-lifespan"), /model output|not a literal count/i);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

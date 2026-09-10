@@ -19,6 +19,7 @@ import type {
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
+import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 
 interface SeedClaimSource {
@@ -154,6 +155,15 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "infection-immunity-and-vaccines") {
 		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "OpenAlex and Crossref"];
 	}
+	if (topicSlug === "mental-health-and-treatment") {
+		return ["PubMed", "PsycINFO", "Cochrane Library and ClinicalTrials.gov", "OpenAlex and Crossref"];
+	}
+	if (topicSlug === "reproductive-and-sexual-health") {
+		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "WHO, CDC, ACOG, and ASRM guidance"];
+	}
+	if (topicSlug === "aging-and-longevity") {
+		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "NIH / NIA, OpenAlex, and Crossref"];
+	}
 	if (topicSlug === "crime-and-justice") {
 		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
 	}
@@ -234,6 +244,9 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		|| topicSlug === "exercise-and-sports-science"
 		|| topicSlug === "sports-nutrition-and-supplements"
 		|| topicSlug === "infection-immunity-and-vaccines"
+		|| topicSlug === "mental-health-and-treatment"
+		|| topicSlug === "reproductive-and-sexual-health"
+		|| topicSlug === "aging-and-longevity"
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
@@ -306,6 +319,15 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "infection-immunity-and-vaccines") {
 		return ["WHO guidance streams", "CDC surveillance and guidance updates", "Cochrane and major living-review updates"];
+	}
+	if (topicSlug === "mental-health-and-treatment") {
+		return ["WHO and major psychiatric guideline updates", "NIMH and regulator safety updates", "Cochrane and major living-review updates"];
+	}
+	if (topicSlug === "reproductive-and-sexual-health") {
+		return ["WHO and CDC reproductive-health guidance", "ACOG and ASRM practice updates", "Major contraception, fertility, and menopause review updates"];
+	}
+	if (topicSlug === "aging-and-longevity") {
+		return ["NIH / NIA healthy-aging updates", "FDA drug and supplement safety updates", "Major gerontology and geroscience review updates"];
 	}
 	if (topicSlug === "crime-and-justice") {
 		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
@@ -504,6 +526,27 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "World Health Organization", role: "Global infectious-disease and immunization guidance anchor" },
 			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. surveillance and implementation anchor" },
 			{ name: "Cochrane", role: "Independent prevention and treatment evidence-synthesis anchor" }
+		];
+	}
+	if (topicSlug === "mental-health-and-treatment") {
+		return [
+			{ name: "World Health Organization", role: "Global mental-health treatment and service guidance anchor" },
+			{ name: "National Institute of Mental Health", role: "Current disorder, treatment, and research-context anchor" },
+			{ name: "Cochrane and major psychiatric reviews", role: "Comparative benefit, harm, and certainty anchor" }
+		];
+	}
+	if (topicSlug === "reproductive-and-sexual-health") {
+		return [
+			{ name: "World Health Organization", role: "Global reproductive and sexual-health guidance anchor" },
+			{ name: "CDC / American College of Obstetricians and Gynecologists", role: "Current U.S. contraception and clinical-practice anchor" },
+			{ name: "American Society for Reproductive Medicine / The Menopause Society", role: "Fertility and menopause evidence anchor" }
+		];
+	}
+	if (topicSlug === "aging-and-longevity") {
+		return [
+			{ name: "National Institute on Aging", role: "Healthy-aging, function, and geroscience research anchor" },
+			{ name: "Cochrane and major gerontology reviews", role: "Intervention benefit, harm, and certainty anchor" },
+			{ name: "U.S. Food and Drug Administration", role: "Drug, supplement, indication, and safety-status anchor" }
 		];
 	}
 	if (topicSlug === "crime-and-justice") {
@@ -799,6 +842,27 @@ function defaultInclusionRules(seed: SeedClaim) {
 			"Record pathogen, variant or strain, vaccine or treatment, population, setting, follow-up, and changing background immunity."
 		];
 	}
+	if (seed.topicSlug === "mental-health-and-treatment") {
+		return [
+			"Prioritize current guidelines, systematic reviews, randomized comparisons, and strong long-term observational evidence with explicit diagnosis, severity, treatment history, and comparator.",
+			"Separate symptom response, remission, relapse, function, quality of life, suicide-related outcomes, discontinuation, withdrawal, and treatment burden.",
+			"Report setting, delivery mode, dose or protocol, follow-up, adverse effects, patient preference, and access constraints alongside average efficacy."
+		];
+	}
+	if (seed.topicSlug === "reproductive-and-sexual-health") {
+		return [
+			"Prioritize current WHO and professional guidance, systematic reviews, national surveillance, and comparative studies with explicit method, age, gestation, indication, and denominator.",
+			"Separate efficacy, typical-use effectiveness, expected effects, uncommon complications, long-term outcomes, access, and patient-centered experience.",
+			"Preserve autonomy and distinguish population averages from individualized decisions involving pregnancy goals, medical history, fertility, and risk tolerance."
+		];
+	}
+	if (seed.topicSlug === "aging-and-longevity") {
+		return [
+			"Prioritize randomized human trials, systematic reviews, validated cohorts, and major healthy-aging guidance with explicit baseline function, frailty, dose, duration, and comparator.",
+			"Separate target engagement, biomarkers, strength, function, disease, disability-free survival, mortality, quality of life, and adverse effects.",
+			"Use animal and mechanistic evidence to justify hypotheses, not to establish healthy-human longevity or clinical utility."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Use consistent lifecycle and service boundaries when comparing fuels, infrastructure, storage, capture, or removal technologies.",
@@ -912,6 +976,27 @@ function defaultExclusionRules(seed: SeedClaim) {
 			"Do not generalize evidence across variants, populations, settings, products, doses, or risk groups without making the boundary explicit."
 		];
 	}
+	if (seed.topicSlug === "mental-health-and-treatment") {
+		return [
+			"Do not infer universal effectiveness or harm from one patient story, uncontrolled clinic series, symptom scale, commercial protocol, or diagnosis-free wellness claim.",
+			"Exclude comparisons that hide severity, prior treatment, co-interventions, expectancy, withdrawal, adherence, crisis risk, or clinically important adverse effects.",
+			"Do not generalize one therapy, medicine, diagnosis, delivery mode, or short-term response to every patient or to durable recovery."
+		];
+	}
+	if (seed.topicSlug === "reproductive-and-sexual-health") {
+		return [
+			"Do not generalize across contraceptive methods, abortion methods, gestational ages, fertility diagnoses, hormone formulations, or patient risk profiles.",
+			"Exclude claims that confuse relative with absolute risk, expected symptoms with complications, clinical thresholds with biological cliffs, or safe care with unsafe care.",
+			"Do not use moral, political, marketing, or anecdotal assertions as evidence of medical efficacy, safety, fertility, or mental-health outcomes."
+		];
+	}
+	if (seed.topicSlug === "aging-and-longevity") {
+		return [
+			"Do not turn an animal lifespan result, pathway, target-engagement marker, epigenetic score, or short pilot study into proven human age reversal or longevity.",
+			"Exclude claims that omit baseline frailty, nutritional status, training, dose, follow-up, adverse effects, competing illness, or the difference between biomarker and clinical outcome.",
+			"Do not treat commercial availability, regulatory approval for another disease, or a younger biological-age score as validated preventive treatment."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Do not infer lifecycle or system performance from a combustion-only, component-only, target-only, or nameplate metric.",
@@ -985,6 +1070,15 @@ function defaultAppraisalTools(topicSlug: string) {
 	if (topicSlug === "infection-immunity-and-vaccines") {
 		return ["Pathogen, outcome, and case-definition audit", "Variant, immunity, and population transportability check", "Bias, surveillance denominator, and intervention-timing review"];
 	}
+	if (topicSlug === "mental-health-and-treatment") {
+		return ["Diagnosis, severity, and treatment-history audit", "Response-remission-relapse-function outcome ladder", "Blinding, expectancy, withdrawal, adverse-effect, and patient-burden review"];
+	}
+	if (topicSlug === "reproductive-and-sexual-health") {
+		return ["Method, age, gestation, and medical-eligibility audit", "Absolute-risk and denominator check", "Autonomy, access, comparator, and long-term outcome review"];
+	}
+	if (topicSlug === "aging-and-longevity") {
+		return ["Animal-to-human evidence-maturity ladder", "Biomarker-to-function-to-survival directness audit", "Frailty, adherence, competing-risk, and long-term safety review"];
+	}
 	if (topicSlug === "energy-and-infrastructure") {
 		return ["Lifecycle boundary audit", "Technology-readiness and operating-data check", "Reliability-service and duration check"];
 	}
@@ -1023,12 +1117,30 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		tags.add("mechanism-is-not-real-world-effect");
 	}
 
-	if (seed.topicSlug === "health-and-medicine" || seed.topicSlug === "infection-immunity-and-vaccines") {
+	if (
+		seed.topicSlug === "health-and-medicine"
+		|| seed.topicSlug === "infection-immunity-and-vaccines"
+		|| seed.topicSlug === "mental-health-and-treatment"
+		|| seed.topicSlug === "reproductive-and-sexual-health"
+		|| seed.topicSlug === "aging-and-longevity"
+	) {
 		tags.add("one-study-doesnt-overturn-evidence");
 		tags.add("relative-risk-can-mislead");
 		tags.add("anecdotes-are-not-population-evidence");
 		tags.add("mechanism-is-not-real-world-effect");
 		tags.add("scientists-changing-their-minds-is-normal");
+	}
+	if (seed.topicSlug === "mental-health-and-treatment") {
+		tags.add("correlation-isnt-causation");
+		tags.add("p-values-are-not-the-whole-story");
+	}
+	if (seed.topicSlug === "reproductive-and-sexual-health") {
+		tags.add("correlation-isnt-causation");
+		tags.add("hazard-is-not-the-same-as-risk");
+	}
+	if (seed.topicSlug === "aging-and-longevity") {
+		tags.add("correlation-isnt-causation");
+		tags.add("preprints-are-preliminary");
 	}
 	if (seed.topicSlug === "nutrition-and-diet") {
 		tags.add("one-study-doesnt-overturn-evidence");
@@ -1129,6 +1241,9 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					|| seed.topicSlug === "exercise-and-sports-science"
 					|| seed.topicSlug === "sports-nutrition-and-supplements"
 					|| seed.topicSlug === "infection-immunity-and-vaccines"
+					|| seed.topicSlug === "mental-health-and-treatment"
+					|| seed.topicSlug === "reproductive-and-sexual-health"
+					|| seed.topicSlug === "aging-and-longevity"
 					? ["Crossref", "PubMed", "Europe PMC"]
 					: seed.topicSlug === "astronomy-and-space"
 						|| seed.topicSlug === "earth-and-geoscience"
@@ -26978,7 +27093,8 @@ const rawClaims: SeedClaim[] = [
 	...july2026ExpansionClaims,
 	...august2026ExpansionClaims,
 	...august2026EncyclopediaClaims,
-	...september2026TrafficClaims
+	...september2026TrafficClaims,
+	...september2026HealthspanClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
