@@ -20,7 +20,10 @@ describe("evidence atlas collections", () => {
 			"infection-immunity-and-vaccines",
 			"mental-health-and-treatment",
 			"reproductive-and-sexual-health",
-			"aging-and-longevity"
+			"aging-and-longevity",
+			"cancer-prevention-and-care",
+			"cardiovascular-metabolic-and-kidney-health",
+			"substance-use-and-addiction"
 		]) {
 			assert.ok(configuredTopicSlugs.has(topicSlug), `${topicSlug} should retain curated atlas collections`);
 		}

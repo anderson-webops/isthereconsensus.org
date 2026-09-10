@@ -19,6 +19,7 @@ import type {
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
+import { september2026ClinicalClaims } from "./claim-expansion-2026-09-clinical.js";
 import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 
@@ -164,6 +165,15 @@ function defaultSearchDatabases(topicSlug: string) {
 	if (topicSlug === "aging-and-longevity") {
 		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "NIH / NIA, OpenAlex, and Crossref"];
 	}
+	if (topicSlug === "cancer-prevention-and-care") {
+		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "NCI, USPSTF, OpenAlex, and Crossref"];
+	}
+	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "AHA / ACC, KDIGO, ADA, OpenAlex, and Crossref"];
+	}
+	if (topicSlug === "substance-use-and-addiction") {
+		return ["PubMed", "PsycINFO", "Cochrane Library and ClinicalTrials.gov", "SAMHSA, CDC, ASAM, OpenAlex, and Crossref"];
+	}
 	if (topicSlug === "crime-and-justice") {
 		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
 	}
@@ -247,6 +257,9 @@ function defaultIntegrityMonitors(topicSlug: string) {
 		|| topicSlug === "mental-health-and-treatment"
 		|| topicSlug === "reproductive-and-sexual-health"
 		|| topicSlug === "aging-and-longevity"
+		|| topicSlug === "cancer-prevention-and-care"
+		|| topicSlug === "cardiovascular-metabolic-and-kidney-health"
+		|| topicSlug === "substance-use-and-addiction"
 	) {
 		return ["Crossref update metadata", "PubMed linking", "Europe PMC status checks"];
 	}
@@ -328,6 +341,15 @@ function defaultGuidelineMonitors(topicSlug: string) {
 	}
 	if (topicSlug === "aging-and-longevity") {
 		return ["NIH / NIA healthy-aging updates", "FDA drug and supplement safety updates", "Major gerontology and geroscience review updates"];
+	}
+	if (topicSlug === "cancer-prevention-and-care") {
+		return ["NCI and USPSTF cancer guidance", "ASCO, NCCN, and major oncology guideline updates", "Major screening, survivorship, and supportive-care review updates"];
+	}
+	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return ["AHA / ACC cardiovascular guidance", "KDIGO and ADA kidney-metabolic guidance", "Major cardiovascular and kidney outcome-trial updates"];
+	}
+	if (topicSlug === "substance-use-and-addiction") {
+		return ["SAMHSA and CDC treatment and harm-reduction guidance", "ASAM and major addiction guideline updates", "Cochrane and major treatment-outcome review updates"];
 	}
 	if (topicSlug === "crime-and-justice") {
 		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
@@ -547,6 +569,27 @@ function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnch
 			{ name: "National Institute on Aging", role: "Healthy-aging, function, and geroscience research anchor" },
 			{ name: "Cochrane and major gerontology reviews", role: "Intervention benefit, harm, and certainty anchor" },
 			{ name: "U.S. Food and Drug Administration", role: "Drug, supplement, indication, and safety-status anchor" }
+		];
+	}
+	if (topicSlug === "cancer-prevention-and-care") {
+		return [
+			{ name: "National Cancer Institute", role: "Cancer biology, prevention, screening, treatment, and supportive-care anchor" },
+			{ name: "U.S. Preventive Services Task Force", role: "Average-risk screening benefit, harm, and population-boundary anchor" },
+			{ name: "Major oncology guidelines and systematic reviews", role: "Treatment, survivorship, symptom, and outcome-synthesis anchor" }
+		];
+	}
+	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return [
+			{ name: "American Heart Association / American College of Cardiology", role: "Cardiovascular prevention, diagnosis, and treatment-guidance anchor" },
+			{ name: "Kidney Disease: Improving Global Outcomes", role: "Chronic-kidney-disease classification and treatment anchor" },
+			{ name: "Major randomized outcome trials and systematic reviews", role: "Kidney, metabolic, cardiovascular-event, harm, and certainty anchor" }
+		];
+	}
+	if (topicSlug === "substance-use-and-addiction") {
+		return [
+			{ name: "Substance Abuse and Mental Health Services Administration", role: "Treatment access, medication, recovery, and implementation anchor" },
+			{ name: "American Society of Addiction Medicine", role: "Withdrawal, substance-use-disorder, and clinical-practice anchor" },
+			{ name: "Cochrane and major harm-reduction reviews", role: "Treatment, behavior, overdose, implementation, and certainty anchor" }
 		];
 	}
 	if (topicSlug === "crime-and-justice") {
@@ -863,6 +906,27 @@ function defaultInclusionRules(seed: SeedClaim) {
 			"Use animal and mechanistic evidence to justify hypotheses, not to establish healthy-human longevity or clinical utility."
 		];
 	}
+	if (seed.topicSlug === "cancer-prevention-and-care") {
+		return [
+			"Prioritize current oncology and screening guidance, systematic reviews, randomized outcome trials, and strong prospective cohorts with explicit cancer type, stage, population, treatment, and comparator.",
+			"Separate detection, stage shift, response, recurrence, symptom burden, quality of life, treatment complications, cancer-specific mortality, and overall survival.",
+			"Report absolute benefit and harm, average-risk versus inherited-risk boundaries, treatment substitution, follow-up, and patient goals alongside relative effects."
+		];
+	}
+	if (seed.topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return [
+			"Prioritize current cardiovascular, kidney, and metabolic guidelines, randomized outcome trials, systematic reviews, and validated cohorts with explicit baseline risk and treatment context.",
+			"Separate biomarkers, symptoms, filtration, albuminuria, hospitalization, heart failure, stroke, myocardial infarction, kidney failure, mortality, and treatment harms.",
+			"Report absolute risk, duration, adherence, kidney and liver function, interactions, competing risks, and population eligibility alongside average effects."
+		];
+	}
+	if (seed.topicSlug === "substance-use-and-addiction") {
+		return [
+			"Prioritize current addiction guidance, systematic reviews, randomized interventions, strong longitudinal cohorts, and implementation studies with explicit substance, severity, setting, goal, and comparator.",
+			"Separate withdrawal, craving, verified use, retention, recovery, quality of life, nonfatal overdose, onsite reversal, population mortality, and treatment or policy harms.",
+			"Report follow-up, co-use, changing drug supply, treatment access, adherence, stigma, legal context, and patient-defined goals without turning association into moral judgment."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Use consistent lifecycle and service boundaries when comparing fuels, infrastructure, storage, capture, or removal technologies.",
@@ -997,6 +1061,27 @@ function defaultExclusionRules(seed: SeedClaim) {
 			"Do not treat commercial availability, regulatory approval for another disease, or a younger biological-age score as validated preventive treatment."
 		];
 	}
+	if (seed.topicSlug === "cancer-prevention-and-care") {
+		return [
+			"Do not turn cell metabolism, animal tumor response, a testimonial, surrogate endpoint, stage shift, or response rate into a proven cure or survival benefit.",
+			"Exclude claims that merge screening with diagnosis, average risk with inherited high risk, complementary symptom care with replacement therapy, or association with treatment effect.",
+			"Do not generalize one cancer type, stage, molecular subtype, treatment, procedure, or patient population to all cancers."
+		];
+	}
+	if (seed.topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return [
+			"Do not turn a biomarker association, short physiologic response, device alert, or disease mechanism into proven event reduction or an individual treatment decision.",
+			"Exclude comparisons that hide baseline cardiovascular risk, albuminuria, kidney function, bleeding, interactions, adherence, follow-up, or absolute benefit and harm.",
+			"Do not generalize one drug, device, risk score, disease stage, or trial population to every patient with a similar label."
+		];
+	}
+	if (seed.topicSlug === "substance-use-and-addiction") {
+		return [
+			"Do not treat withdrawal completion, self-report alone, treatment attendance, onsite overdose reversal, or a detected contaminant as equivalent to durable recovery or population mortality benefit.",
+			"Exclude claims that hide co-use, tolerance, drug-supply changes, treatment access, attrition, stigma, legal context, or the difference between offering care and coercing it.",
+			"Do not use moral labels, isolated testimonials, uncontrolled before-after changes, or one site's implementation as universal evidence of efficacy or harm."
+		];
+	}
 	if (seed.topicSlug === "energy-and-infrastructure") {
 		return [
 			"Do not infer lifecycle or system performance from a combustion-only, component-only, target-only, or nameplate metric.",
@@ -1079,6 +1164,15 @@ function defaultAppraisalTools(topicSlug: string) {
 	if (topicSlug === "aging-and-longevity") {
 		return ["Animal-to-human evidence-maturity ladder", "Biomarker-to-function-to-survival directness audit", "Frailty, adherence, competing-risk, and long-term safety review"];
 	}
+	if (topicSlug === "cancer-prevention-and-care") {
+		return ["Cancer-type, stage, and molecular-subtype transportability audit", "Detection-to-treatment-to-survival outcome ladder", "Absolute benefit, harm, competing-risk, and treatment-substitution review"];
+	}
+	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		return ["Baseline-risk and absolute-event review", "Biomarker-to-organ-function-to-clinical-event ladder", "Bleeding, kidney function, interactions, adherence, and competing-risk audit"];
+	}
+	if (topicSlug === "substance-use-and-addiction") {
+		return ["Substance, severity, treatment-goal, and follow-up audit", "Withdrawal-to-use-to-retention-to-mortality outcome ladder", "Co-use, attrition, drug-supply, implementation, stigma, and policy-context review"];
+	}
 	if (topicSlug === "energy-and-infrastructure") {
 		return ["Lifecycle boundary audit", "Technology-readiness and operating-data check", "Reliability-service and duration check"];
 	}
@@ -1123,6 +1217,9 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 		|| seed.topicSlug === "mental-health-and-treatment"
 		|| seed.topicSlug === "reproductive-and-sexual-health"
 		|| seed.topicSlug === "aging-and-longevity"
+		|| seed.topicSlug === "cancer-prevention-and-care"
+		|| seed.topicSlug === "cardiovascular-metabolic-and-kidney-health"
+		|| seed.topicSlug === "substance-use-and-addiction"
 	) {
 		tags.add("one-study-doesnt-overturn-evidence");
 		tags.add("relative-risk-can-mislead");
@@ -1141,6 +1238,18 @@ function defaultMisconceptionTags(seed: SeedClaim) {
 	if (seed.topicSlug === "aging-and-longevity") {
 		tags.add("correlation-isnt-causation");
 		tags.add("preprints-are-preliminary");
+	}
+	if (seed.topicSlug === "cancer-prevention-and-care") {
+		tags.add("hazard-is-not-the-same-as-risk");
+		tags.add("cherry-picking-distorts-the-evidence");
+	}
+	if (seed.topicSlug === "cardiovascular-metabolic-and-kidney-health") {
+		tags.add("correlation-isnt-causation");
+		tags.add("p-values-are-not-the-whole-story");
+	}
+	if (seed.topicSlug === "substance-use-and-addiction") {
+		tags.add("correlation-isnt-causation");
+		tags.add("uncertainty-isnt-ignorance");
 	}
 	if (seed.topicSlug === "nutrition-and-diet") {
 		tags.add("one-study-doesnt-overturn-evidence");
@@ -1244,6 +1353,9 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 					|| seed.topicSlug === "mental-health-and-treatment"
 					|| seed.topicSlug === "reproductive-and-sexual-health"
 					|| seed.topicSlug === "aging-and-longevity"
+					|| seed.topicSlug === "cancer-prevention-and-care"
+					|| seed.topicSlug === "cardiovascular-metabolic-and-kidney-health"
+					|| seed.topicSlug === "substance-use-and-addiction"
 					? ["Crossref", "PubMed", "Europe PMC"]
 					: seed.topicSlug === "astronomy-and-space"
 						|| seed.topicSlug === "earth-and-geoscience"
@@ -27094,7 +27206,8 @@ const rawClaims: SeedClaim[] = [
 	...august2026ExpansionClaims,
 	...august2026EncyclopediaClaims,
 	...september2026TrafficClaims,
-	...september2026HealthspanClaims
+	...september2026HealthspanClaims,
+	...september2026ClinicalClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);

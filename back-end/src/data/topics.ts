@@ -222,5 +222,26 @@ export const defaultTopics = [
 		description: "Healthy aging, function, social connection, biomarkers, and longevity interventions separated from anti-aging marketing.",
 		order: 32,
 		accent: "#76633f"
+	},
+	{
+		title: "Cancer prevention & care",
+		slug: "cancer-prevention-and-care",
+		description: "Prevention, screening, diagnosis, treatment, survivorship, and supportive care separated from cancer myths and unproven cures.",
+		order: 33,
+		accent: "#965363"
+	},
+	{
+		title: "Heart, metabolic & kidney health",
+		slug: "cardiovascular-metabolic-and-kidney-health",
+		description: "Cardiovascular, diabetes, and kidney evidence connected through risk, organ function, treatment benefit, and patient safety.",
+		order: 34,
+		accent: "#47768a"
+	},
+	{
+		title: "Substance use & addiction",
+		slug: "substance-use-and-addiction",
+		description: "Withdrawal, treatment, recovery, tobacco, alcohol, cannabis, stimulant use, and harm reduction assessed without stigma.",
+		order: 35,
+		accent: "#745985"
 	}
 ];
