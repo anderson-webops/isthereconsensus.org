@@ -150,6 +150,9 @@ watch(
 				<p>Moderation and expert-review queues, in one place.</p>
 			</div>
 			<div class="admin-panel__actions">
+				<NuxtLink class="button button--ghost" to="/account/editorial/source-integrity">
+					Source integrity
+				</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/account/editorial/account-activity">
 					Account activity
 				</NuxtLink>

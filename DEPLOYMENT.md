@@ -48,6 +48,7 @@ Choose exactly one database-secret path:
 Optional:
 
 - `CORS_ORIGIN`, as an exact comma-separated origin allowlist when a browser frontend is hosted separately
+- `CROSSREF_MAILTO`, a monitored contact address for Crossref polite-pool source-integrity requests
 - `SOURCE_COMMIT`, `SOURCE_TAG`, or `RELEASE_VERSION` to expose non-secret frontend build identity through `/deployment.json`
 - `CROSS_SITE=true`
 - `ENABLE_TOPIC_CREATION=true`
@@ -78,6 +79,31 @@ After the public reverse proxy is serving the new build, run:
 ```bash
 npm run smoke:live
 ```
+
+## Source-integrity monitoring
+
+The backend includes a bounded Crossref monitor for DOI sources. It queries registered post-publication update metadata, records each check for two years without retaining raw upstream responses, and places newly corrected, retracted, or concern-flagged sources into the existing human editorial review queue. A response with no registered update refreshes the check timestamp but is not treated as proof that the paper is valid, and an automated signal never silently clears a prior warning.
+
+Preview the next batch without changing records:
+
+```bash
+npm run monitor:source-integrity -- --limit 100 --stale-days 30
+```
+
+Apply a reviewed batch:
+
+```bash
+npm run monitor:source-integrity -- --apply --limit 100 --stale-days 30
+```
+
+The reference systemd service and timer run the same applied batch daily with a randomized delay. Install them with the other units, then explicitly opt in after the first release containing the compiled monitor is promoted:
+
+```bash
+sudo deploy/systemd/install-services.sh --enable-integrity-timer
+systemctl list-timers isthereconsensus-source-integrity.timer
+```
+
+Administrators can inspect counts, errors, and the retained check history at `/account/editorial/source-integrity`. Crossref coverage depends on deposited metadata, so this monitor complements rather than replaces PubMed, publisher, guideline, and manual editorial checks.
 
 `smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, deployment metadata, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`. To prove the public origin is running a specific build, also set `LIVE_SMOKE_EXPECT_COMMIT` to the expected commit prefix.
 

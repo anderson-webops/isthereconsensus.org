@@ -89,6 +89,17 @@ describe("claim detail layout", () => {
 		assert.match(source, /class="related-claim-grid"/);
 		assert.match(source, /v-for="relatedClaim in relatedClaims"/);
 	});
+
+	it("offers compact citation reuse and standard download formats", () => {
+		assert.match(source, /class="content-panel citation-panel"/);
+		assert.match(source, />Cite this review</);
+		assert.match(source, /copyCitation/);
+		assert.match(source, /citationExportUrl\('bibtex'\)/);
+		assert.match(source, /citationExportUrl\('ris'\)/);
+		assert.match(source, /citationExportUrl\('markdown'\)/);
+		assert.match(source, /citationExportUrl\('json'\)/);
+		assert.match(source, /Missing author metadata is\s+never/u);
+	});
 });
 
 describe("breadcrumbs layout", () => {

@@ -12,11 +12,12 @@ import type {
 import type { ClaimSourceKind, ClaimSourceStance, IClaimSourceEvidenceProfile } from "./models/schemas/ClaimSource.js";
 import type { IExpertApplication } from "./models/schemas/ExpertApplication.js";
 import type { IQuestion } from "./models/schemas/Question.js";
+import type { ISourceIntegrityCheck } from "./models/schemas/SourceIntegrityCheck.js";
 import type { PublicClaimSourceReadinessCounts } from "./utils/publicClaimReadiness.js";
+
 // src/server.ts
 import process, { env, exit } from "node:process";
 import cookieSession from "cookie-session";
-
 import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -56,6 +57,7 @@ import { EvidenceLandscapeReview } from "./models/schemas/EvidenceLandscapeRevie
 import { ExpertApplication } from "./models/schemas/ExpertApplication.js";
 import { Question } from "./models/schemas/Question.js";
 import { QuestionFlag } from "./models/schemas/QuestionFlag.js";
+import { SourceIntegrityCheck } from "./models/schemas/SourceIntegrityCheck.js";
 import { Topic } from "./models/schemas/Topic.js";
 import { TopicSentimentVote } from "./models/schemas/TopicSentimentVote.js";
 import { User } from "./models/schemas/User.js";
@@ -68,6 +70,7 @@ import {
 	normalizeHttpUrlList
 } from "./utils/accountValidation.js";
 import { verifyCaptcha } from "./utils/captcha.js";
+import { buildClaimCitationBundle } from "./utils/claimCitations.js";
 import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
@@ -113,6 +116,7 @@ import {
 import { logError } from "./utils/safeLog.js";
 import { analyzeSearchMatch, searchMatchIsDisplayable } from "./utils/searchMatch.js";
 import { slugify } from "./utils/slugify.js";
+import { SOURCE_INTEGRITY_CLAIM_STATUSES, SOURCE_INTEGRITY_OUTCOMES } from "./utils/sourceIntegrity.js";
 import "dotenv/config";
 
 const whitespacePattern = /\s+/;
@@ -1729,6 +1733,12 @@ async function main() {
 					sourceCount: publicClaimSourceCountsFor(relatedSourceCountMap, relatedClaim._id).sourceCount,
 					topic: topic.toObject()
 				}));
+			const citationBundle = buildClaimCitationBundle({
+				claim,
+				topic: topic.toObject(),
+				sources,
+				siteOrigin: publicSiteOrigin
+			});
 
 			return res.json({
 				claim: toPublicClaim(claim, {
@@ -1736,6 +1746,12 @@ async function main() {
 					topic: topic.toObject(),
 					sources
 				}),
+				citation: {
+					plainText: citationBundle.plainText,
+					markdown: citationBundle.reviewMarkdown,
+					reviewUrl: citationBundle.reviewUrl,
+					reviewedAt: citationBundle.reviewedAt
+				},
 				collections: getAtlasCollectionMemberships(topic.slug, claim.slug),
 				relatedClaims
 			});
@@ -1743,6 +1759,45 @@ async function main() {
 		catch (error) {
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claim." });
+		}
+	});
+
+	api.get("/topics/:topicSlug/claims/:claimSlug/citations", async (req, res) => {
+		try {
+			const topic = await findTopicOr404(res, req.params.topicSlug);
+			if (!topic) return;
+			const claim = await Claim.findOne({
+				topic: topic._id,
+				slug: req.params.claimSlug,
+				status: "published"
+			}).lean();
+			if (!claim) return res.status(404).json({ error: "Claim not found." });
+			const sources = await loadClaimSources(claim._id);
+			if (!getPublicClaimReadiness(claim, summarizeClaimSourceReadiness(sources)).isReady) {
+				return res.status(404).json({ error: "Claim not found." });
+			}
+
+			const format = normalizeText(req.query.format, 16).toLowerCase() || "json";
+			if (!["bibtex", "json", "markdown", "ris"].includes(format)) {
+				return res.status(400).json({ error: "Citation format must be bibtex, ris, markdown, or json." });
+			}
+			const bundle = buildClaimCitationBundle({
+				claim,
+				topic: topic.toObject(),
+				sources,
+				siteOrigin: publicSiteOrigin
+			});
+			const filename = `isthereconsensus-${claim.slug}.${format === "bibtex" ? "bib" : format === "markdown" ? "md" : format}`;
+			res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+			res.setHeader("X-Content-Type-Options", "nosniff");
+			if (format === "bibtex") return res.type("application/x-bibtex").send(bundle.bibtex);
+			if (format === "ris") return res.type("application/x-research-info-systems").send(bundle.ris);
+			if (format === "markdown") return res.type("text/markdown").send(bundle.markdown);
+			return res.json(bundle.cslJson);
+		}
+		catch (error) {
+			logError("Citation export failed", error);
+			return res.status(500).json({ error: "Failed to export citations." });
 		}
 	});
 
@@ -3707,6 +3762,134 @@ async function main() {
 	});
 
 	api.get("/admin/account-activity", requireAdmin, listAccountActivity);
+
+	api.get("/admin/source-integrity", requireAdmin, async (req, res) => {
+		try {
+			const page = normalizeInteger(req.query.page, 1, 10_000, 1);
+			const limit = normalizeInteger(req.query.limit, 1, 100, 25);
+			const staleDays = normalizeInteger(req.query.staleDays, 1, 365, 30);
+			const requestedOutcome = normalizeText(req.query.outcome, 40);
+			const selectedOutcome = SOURCE_INTEGRITY_OUTCOMES.find(outcome => outcome === requestedOutcome);
+			if (requestedOutcome && !selectedOutcome) {
+				return res.status(400).json({ error: "Invalid source-integrity outcome." });
+			}
+			const checkFilter: QueryFilter<ISourceIntegrityCheck> = selectedOutcome
+				? { outcome: selectedOutcome }
+				: {};
+			const staleBefore = new Date(Date.now() - staleDays * 24 * 60 * 60 * 1000);
+			const monitoredClaimIds = await Claim.distinct("_id", {
+				status: { $in: SOURCE_INTEGRITY_CLAIM_STATUSES }
+			});
+			const doiSourceFilter = {
+				claim: { $in: monitoredClaimIds },
+				doi: { $exists: true, $ne: "" }
+			};
+			const [
+				checks,
+				total,
+				monitoredSourceCount,
+				uncheckedSourceCount,
+				staleSourceCount,
+				flaggedSourceCount,
+				recentSignalCount,
+				recentErrorCount,
+				latestCheck
+			] = await Promise.all([
+				SourceIntegrityCheck.find(checkFilter)
+					.sort({ checkedAt: -1, _id: -1 })
+					.skip((page - 1) * limit)
+					.limit(limit)
+					.lean(),
+				SourceIntegrityCheck.countDocuments(checkFilter),
+				ClaimSource.countDocuments(doiSourceFilter),
+				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $exists: false } }),
+				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $lt: staleBefore } }),
+				ClaimSource.countDocuments({
+					...doiSourceFilter,
+					citationStatus: { $in: ["corrected", "expression_of_concern", "retracted"] }
+				}),
+				SourceIntegrityCheck.countDocuments({
+					checkedAt: { $gte: staleBefore },
+					outcome: { $in: ["corrected", "expression_of_concern", "retracted"] }
+				}),
+				SourceIntegrityCheck.countDocuments({
+					checkedAt: { $gte: staleBefore },
+					outcome: "error"
+				}),
+				SourceIntegrityCheck.findOne().sort({ checkedAt: -1 }).select("checkedAt").lean()
+			]);
+			const sourceIds = checks.map(check => check.source);
+			const claimIds = checks.map(check => check.claim);
+			const [sources, claims] = await Promise.all([
+				ClaimSource.find({ _id: { $in: sourceIds } })
+					.select("title doi citationStatus")
+					.lean(),
+				Claim.find({ _id: { $in: claimIds } })
+					.select("title slug topic status")
+					.populate("topic")
+					.lean()
+			]);
+			const sourceMap = new Map(sources.map(source => [source._id.toString(), source]));
+			const claimMap = new Map(claims.map(claim => [claim._id.toString(), claim]));
+
+			return res.set("Cache-Control", "no-store").json({
+				summary: {
+					monitoredSourceCount,
+					uncheckedSourceCount,
+					staleSourceCount,
+					flaggedSourceCount,
+					recentSignalCount,
+					recentErrorCount,
+					staleDays,
+					latestCheckAt: latestCheck?.checkedAt
+				},
+				checks: checks.map((check) => {
+					const source = sourceMap.get(check.source.toString());
+					const claim = claimMap.get(check.claim.toString());
+					return {
+						_id: check._id,
+						provider: check.provider,
+						doi: check.doi,
+						checkedAt: check.checkedAt,
+						previousStatus: check.previousStatus,
+						observedStatus: check.observedStatus,
+						outcome: check.outcome,
+						signals: check.signals,
+						statusSources: check.statusSources,
+						applied: check.applied,
+						diagnosticCode: check.diagnosticCode,
+						source: source
+							? {
+									_id: source._id,
+									title: source.title,
+									doi: source.doi,
+									citationStatus: source.citationStatus
+								}
+							: null,
+						claim: claim
+							? {
+									_id: claim._id,
+									title: claim.title,
+									slug: claim.slug,
+									status: claim.status,
+									topic: toPublicTopic(claim.topic)
+								}
+							: null
+					};
+				}),
+				pagination: {
+					page,
+					limit,
+					total,
+					hasMore: page * limit < total
+				}
+			});
+		}
+		catch (error) {
+			logError("Source integrity activity request failed", error);
+			return res.status(500).json({ error: "Failed to load source integrity activity." });
+		}
+	});
 
 	api.get("/admin/expert-applications", requireAdmin, async (req, res) => {
 		try {

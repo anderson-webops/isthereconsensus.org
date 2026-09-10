@@ -47,6 +47,68 @@ export interface AccountActivityResponse {
 	};
 }
 
+export type SourceIntegrityOutcome =
+	"no_registered_update" | "corrected" | "expression_of_concern" | "retracted" | "unsupported" | "error";
+
+export interface SourceIntegritySignal {
+	type: string;
+	label?: string;
+	noticeDoi?: string;
+	url?: string;
+	source?: string;
+	updatedAt?: string;
+}
+
+export interface SourceIntegrityCheck {
+	_id: string;
+	provider: "crossref";
+	doi?: string;
+	checkedAt?: string;
+	previousStatus: "current" | "corrected" | "retracted" | "expression_of_concern";
+	observedStatus?: "current" | "corrected" | "retracted" | "expression_of_concern";
+	outcome: SourceIntegrityOutcome;
+	signals: SourceIntegritySignal[];
+	statusSources: string[];
+	applied: boolean;
+	diagnosticCode?: string;
+	source?: {
+		_id: string;
+		title: string;
+		doi?: string;
+		citationStatus?: "current" | "corrected" | "retracted" | "expression_of_concern";
+	} | null;
+	claim?: {
+		_id: string;
+		title: string;
+		slug: string;
+		status: string;
+		topic?: {
+			title: string;
+			slug: string;
+		} | null;
+	} | null;
+}
+
+export interface SourceIntegrityResponse {
+	summary: {
+		monitoredSourceCount: number;
+		uncheckedSourceCount: number;
+		staleSourceCount: number;
+		flaggedSourceCount: number;
+		recentSignalCount: number;
+		recentErrorCount: number;
+		staleDays: number;
+		latestCheckAt?: string;
+	};
+	checks: SourceIntegrityCheck[];
+	pagination: {
+		page: number;
+		limit: number;
+		total: number;
+		hasMore: boolean;
+	};
+}
+
 export interface ExpertApplication {
 	_id: string;
 	name: string;
