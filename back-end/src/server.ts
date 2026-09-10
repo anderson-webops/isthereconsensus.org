@@ -39,6 +39,13 @@ import {
 	EVIDENCE_TIERS
 } from "./constants/evidenceLandscape.js";
 import { listAccountActivity } from "./controllers/accountActivityController.js";
+import {
+	buildPublicAtlasCollections,
+	getAtlasCollectionMemberships,
+	getAtlasCollections,
+	rankRelatedClaimSlugs
+} from "./data/atlasCollections.js";
+import { getDemandAdjustedClaimSearchScore } from "./data/contentDemand.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { optionalAuth, requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
@@ -91,6 +98,7 @@ import {
 	toEditorialEvidenceReview,
 	toEditorialQuestion,
 	toPublicClaim,
+	toPublicClaimSummary,
 	toPublicQuestion,
 	toPublicTopic,
 	toPublicTopicSentimentVote,
@@ -1529,11 +1537,17 @@ async function main() {
 			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 
+			const serializedClaims = publicReadyClaims.map(claim => toPublicClaim(claim, {
+				sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
+				topic: topic.toObject()
+			}));
+
 			return res.json({
-				claims: publicReadyClaims.map(claim => toPublicClaim(claim, {
-					sourceCount: publicClaimSourceCountsFor(sourceCountMap, claim._id).sourceCount,
-					topic: topic.toObject()
-				}))
+				claims: serializedClaims,
+				collections: buildPublicAtlasCollections(
+					topic.slug,
+					publicReadyClaims.map(claim => claim.slug)
+				)
 			});
 		}
 		catch (error) {
@@ -1582,25 +1596,31 @@ async function main() {
 
 					const titleMatch = query ? analyzeSearchMatch(query, claim.title) : null;
 					const contentMatch = query ? analyzeSearchMatch(query, haystack) : null;
-					const match
-						= titleMatch && contentMatch
+					const match = (
+						titleMatch && contentMatch
 							? (titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch)
-							: null;
+							: null
+					) ?? {
+						matchReason: "",
+						matchScore: 0,
+						matchStrength: "none" as const
+					};
+
+					const rankingScore = query && topic
+						? getDemandAdjustedClaimSearchScore(match.matchScore, topic.slug, claim.slug)
+						: match.matchScore;
 
 					return {
 						claim,
-						match: match ?? {
-							matchReason: "",
-							matchScore: 0,
-							matchStrength: "none" as const
-						},
-						topic
+						match,
+						topic,
+						rankingScore
 					};
 				})
 				.filter(entry => !query || searchMatchIsDisplayable(entry.match))
 				.sort((left, right) => {
-					if (query && left.match.matchScore !== right.match.matchScore) {
-						return right.match.matchScore - left.match.matchScore;
+					if (query && left.rankingScore !== right.rankingScore) {
+						return right.rankingScore - left.rankingScore;
 					}
 					return (
 						(left.topic?.title ?? "").localeCompare(right.topic?.title ?? "")
@@ -1676,12 +1696,48 @@ async function main() {
 			if (!getPublicClaimReadiness(claim, sourceCounts).isReady) {
 				return res.status(404).json({ error: "Claim not found." });
 			}
+
+			const collectionClaimSlugs = getAtlasCollections(topic.slug)
+				.flatMap(collection => collection.claimSlugs);
+			const rankedRelatedSlugs = rankRelatedClaimSlugs(
+				topic.slug,
+				claim.slug,
+				collectionClaimSlugs,
+				24
+			);
+			const relatedCandidates = rankedRelatedSlugs.length
+				? await Claim.find({
+						topic: topic._id,
+						slug: { $in: rankedRelatedSlugs },
+						status: "published"
+					})
+						.lean()
+				: [];
+			const relatedSourceCountMap = await loadClaimSourceReadinessCountMap(
+				relatedCandidates.map(relatedClaim => relatedClaim._id)
+			);
+			const readyRelatedBySlug = new Map(
+				relatedCandidates
+					.filter(relatedClaim => publicClaimIsReady(relatedClaim, relatedSourceCountMap))
+					.map(relatedClaim => [relatedClaim.slug, relatedClaim])
+			);
+			const relatedClaims = rankedRelatedSlugs
+				.map(relatedSlug => readyRelatedBySlug.get(relatedSlug))
+				.filter((relatedClaim): relatedClaim is NonNullable<typeof relatedClaim> => Boolean(relatedClaim))
+				.slice(0, 4)
+				.map(relatedClaim => toPublicClaimSummary(relatedClaim, {
+					sourceCount: publicClaimSourceCountsFor(relatedSourceCountMap, relatedClaim._id).sourceCount,
+					topic: topic.toObject()
+				}));
+
 			return res.json({
 				claim: toPublicClaim(claim, {
 					sourceCount: sourceCounts.sourceCount,
 					topic: topic.toObject(),
 					sources
-				})
+				}),
+				collections: getAtlasCollectionMemberships(topic.slug, claim.slug),
+				relatedClaims
 			});
 		}
 		catch (error) {
@@ -1883,12 +1939,19 @@ async function main() {
 					const titleMatch = analyzeSearchMatch(query, claim.title);
 					const contentMatch = analyzeSearchMatch(query, haystack);
 					const match = titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch;
-					return { claim, match };
+					const topicSlug = typeof claim.topic === "object" && "slug" in claim.topic
+						? claim.topic.slug
+						: "";
+					return {
+						claim,
+						match,
+						rankingScore: getDemandAdjustedClaimSearchScore(match.matchScore, topicSlug, claim.slug)
+					};
 				})
 				.filter(entry => searchMatchIsDisplayable(entry.match))
 				.sort(
 					(left, right) =>
-						right.match.matchScore - left.match.matchScore || left.claim.title.localeCompare(right.claim.title)
+						right.rankingScore - left.rankingScore || left.claim.title.localeCompare(right.claim.title)
 				)
 				.slice(0, 6)
 				.map(({ claim, match }) => ({

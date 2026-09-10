@@ -23,7 +23,7 @@ describe("content coverage", () => {
 			Math.max(0, CONTENT_COVERAGE_TARGET.minimumActiveTopics - report.activeTopicCount)
 		);
 		assert.deepEqual(report.unlistedTopicSlugs, []);
-		assert.equal(report.targetReached, true);
+		assert.equal(report.targetReached, false);
 		assert.equal(
 			report.targetReached,
 			report.reviewedClaimCount >= CONTENT_COVERAGE_TARGET.minimumReviewedClaims

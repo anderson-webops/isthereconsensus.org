@@ -25,6 +25,14 @@ describe("CI workflow", () => {
 		assert.match(workflowSource, /run: npm install --global npm@\$\{NPM_VERSION\}/);
 	});
 
+	it("guards the requested footer placement for appearance controls", () => {
+		assert.match(workflowSource, /name: Guard footer appearance controls/);
+		assert.match(workflowSource, /class="site-footer__appearance" aria-label="Appearance controls"/);
+		assert.match(workflowSource, /front-end\/test\/palette-footer-regression\.test\.ts/);
+		assert.doesNotMatch(workflowSource, /name: Guard header appearance controls/);
+		assert.doesNotMatch(workflowSource, /front-end\/test\/palette-header-regression\.test\.ts/);
+	});
+
 	it("smoke tests built SSR public assets and route rules after the production build", () => {
 		assert.match(workflowSource, /run: npm run build/);
 		assert.match(workflowSource, /SOURCE_COMMIT: \$\{\{ github\.sha \}\}/);

@@ -57,4 +57,15 @@ describe("topic page layout", () => {
 			/claimCertaintyLabel|sourceCount|lastReviewedAt|Confidence score|\/100|claim-row__score/
 		);
 	});
+
+	it("organizes configured topics into navigable evidence-atlas collections", () => {
+		assert.match(source, /const collectionLanes = computed/);
+		assert.match(source, /<h2>Browse by subtopic<\/h2>/);
+		assert.match(source, /<nav class="collection-index" aria-label="Subtopic collections">/);
+		assert.match(source, /:href="`#collection-\$\{collection\.slug\}`"/);
+		assert.match(source, /:id="`collection-\$\{collection\.slug\}`"/);
+		assert.match(source, /v-for="claim in collection\.claims"/);
+		assert.match(source, /v-if="!collectionLanes\.length \|\| ungroupedClaims\.length" class="claim-lane"/);
+		assert.match(source, /collectionLanes\.length \? "Other reviewed claims" : "All reviewed claims"/);
+	});
 });

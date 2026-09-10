@@ -9,20 +9,23 @@ const layoutFiles = ["src/layouts/default.vue", "src/layouts/home.vue"];
 
 describe("theme controls", () => {
 	for (const file of layoutFiles) {
-		it(`keeps the palette switcher next to the compact color-mode toggle in the header in ${file}`, () => {
+		it(`keeps the palette switcher next to the compact color-mode toggle in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const headerControlsIndex = source.indexOf(
-				'class="site-header__controls" aria-label="Appearance controls"'
+			const headerStart = source.indexOf('<header class="site-header">');
+			const headerEnd = source.indexOf("</header>", headerStart);
+			const header = source.slice(headerStart, headerEnd);
+			const footerControlsIndex = source.indexOf(
+				'class="site-footer__appearance" aria-label="Appearance controls"'
 			);
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
 
 			assert.match(source, /import PaletteSwitcher from "~\/components\/PaletteSwitcher\.vue"/);
 			assert.match(source, /import ThemeToggle from "~\/components\/ThemeToggle\.vue"/);
-			assert.ok(headerControlsIndex >= 0);
-			assert.ok(paletteRenderIndex > headerControlsIndex);
+			assert.ok(footerControlsIndex >= 0);
+			assert.ok(paletteRenderIndex > footerControlsIndex);
 			assert.ok(themeRenderIndex > paletteRenderIndex);
-			assert.doesNotMatch(source, /site-footer__appearance/);
+			assert.doesNotMatch(header, /PaletteSwitcher|ThemeToggle|site-header__controls/);
 		});
 
 		it(`keeps first-time navigation focused while preserving utility links in ${file}`, () => {
@@ -44,17 +47,17 @@ describe("theme controls", () => {
 			assert.match(footer, /to="\/terms"[\s\S]*Terms/);
 		});
 
-		it(`keeps the header controls usable on mobile in ${file}`, () => {
+		it(`keeps the footer appearance controls usable on mobile in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
 
 			assert.match(
 				source,
-				/@media \(max-width: 700px\) \{[\s\S]*\.site-header__actions \{[\s\S]*justify-content: space-between;/
+				/@media \(max-width: 700px\) \{[\s\S]*\.site-footer__appearance \{[\s\S]*justify-content: space-between;[\s\S]*width: min\(100%, 360px\);/
 			);
-			assert.match(source, /@media \(max-width: 360px\) \{[\s\S]*flex-direction: column;/);
+			assert.match(source, /@media \(max-width: 700px\) \{[\s\S]*\.site-header \{[\s\S]*flex-direction: column;/);
 			assert.match(
 				source,
-				/\.site-header__controls :deep\(\.theme-toggle\) \{[\s\S]*width: 34px;[\s\S]*height: 34px;/
+				/\.site-footer__appearance :deep\(\.theme-toggle\) \{[\s\S]*width: 34px;[\s\S]*height: 34px;/
 			);
 		});
 	}
