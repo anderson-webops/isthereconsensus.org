@@ -201,5 +201,26 @@ export const defaultTopics = [
 		description: "Transmission, vaccination, hygiene, treatment, surveillance, and resistance examined across individual and population risk.",
 		order: 29,
 		accent: "#526b8b"
+	},
+	{
+		title: "Mental health & treatment",
+		slug: "mental-health-and-treatment",
+		description: "Therapy, medication, somatic treatment, and care delivery assessed with attention to benefit, burden, safety, and patient choice.",
+		order: 30,
+		accent: "#6f5685"
+	},
+	{
+		title: "Reproductive & sexual health",
+		slug: "reproductive-and-sexual-health",
+		description: "Contraception, fertility, pregnancy care, abortion, and menopause explained through outcomes, autonomy, and individualized risk.",
+		order: 31,
+		accent: "#96576c"
+	},
+	{
+		title: "Aging & longevity",
+		slug: "aging-and-longevity",
+		description: "Healthy aging, function, social connection, biomarkers, and longevity interventions separated from anti-aging marketing.",
+		order: 32,
+		accent: "#76633f"
 	}
 ];

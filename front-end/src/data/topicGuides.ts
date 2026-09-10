@@ -1206,6 +1206,135 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"mental-health-and-treatment": {
+		slug: "mental-health-and-treatment",
+		consensusScore: 87,
+		consensusLabel: "Established benefits, individualized treatment",
+		snapshot:
+			"Mental-health evidence supports several effective therapies, medicines, and care systems, but average efficacy never identifies the right treatment by itself. Diagnosis, severity, urgency, prior response, adverse effects, access, and patient preference shape the clinical decision.",
+		stableCore: [
+			"Structured psychotherapy, medication, somatic treatment, and organized care can produce meaningful symptom and functional improvement.",
+			"Response, remission, relapse prevention, safety, withdrawal, and daily burden are different outcomes and should be reported separately.",
+			"Urgent or severe illness can change the benefit-risk balance and require specialist or crisis care."
+		],
+		openQuestions: [
+			"Which treatment sequence and maintenance plan works best for each patient rather than for the average trial participant?",
+			"How can effective care reach people facing cost, workforce, geographic, cultural, privacy, or disability barriers?"
+		],
+		whatWouldChangeMinds: [
+			"Large, bias-resistant comparative trials that reverse current response, remission, relapse, or safety conclusions.",
+			"Long-term evidence showing that a currently recommended treatment's burden consistently exceeds its patient-important benefit."
+		],
+		commonMisreads: [
+			"A treatment working on average does not mean everyone responds or that adverse effects can be dismissed.",
+			"A rapid symptom change is not the same as durable recovery, and a physical dependence is not automatically addiction."
+		],
+		starterQuestions: [
+			"Is this evidence about acute response, remission, relapse prevention, function, safety, or all of them?",
+			"Which diagnosis, severity, prior treatments, delivery setting, and follow-up does the result cover?"
+		],
+		starterClaimSlugs: [
+			"do-trauma-focused-psychotherapies-reduce-ptsd-symptoms",
+			"does-maintenance-antipsychotic-treatment-reduce-relapse-in-schizophrenia",
+			"can-ketamine-or-esketamine-rapidly-reduce-treatment-resistant-depression"
+		],
+		evidenceTrail: [
+			{
+				title: "Current guidelines and systematic reviews",
+				note: "Best for comparing efficacy, harms, certainty, and where treatment recommendations apply."
+			},
+			{
+				title: "Randomized trials and long-term clinical cohorts",
+				note: "Needed for response, maintenance, uncommon harms, withdrawal, function, and real-world access."
+			}
+		]
+	},
+	"reproductive-and-sexual-health": {
+		slug: "reproductive-and-sexual-health",
+		consensusScore: 92,
+		consensusLabel: "Strong core evidence, method-specific decisions",
+		snapshot:
+			"Reproductive-health evidence is strongest when it names the method, age, gestation, outcome, denominator, and patient context. Clinical thresholds and population averages support decisions, but they should not be converted into biological cliffs, universal risks, or limits on autonomy.",
+		stableCore: [
+			"Modern contraception and evidence-based abortion care are highly effective and safe for most medically eligible patients.",
+			"Fertility changes continuously with age, and assisted reproduction can help without guaranteeing a live birth.",
+			"Hormone benefits and risks differ by formulation, route, timing, duration, and personal medical history."
+		],
+		openQuestions: [
+			"How can care improve pain control, access, informed choice, and long-term outcome reporting without coercion?",
+			"Which contemporary formulations and fertility strategies improve patient-important outcomes for specific risk groups?"
+		],
+		whatWouldChangeMinds: [
+			"Large, well-controlled evidence reversing established effectiveness or safety conclusions for a clearly defined method and population.",
+			"Current professional guidance changing after new data on uncommon harms, long-term outcomes, or comparative effectiveness."
+		],
+		commonMisreads: [
+			"A relative risk, clinical threshold, or per-transfer success rate can mislead when its baseline and denominator are hidden.",
+			"Evidence about one contraceptive, abortion method, hormone regimen, age group, or fertility diagnosis does not apply unchanged to all others."
+		],
+		starterQuestions: [
+			"Which method, patient group, time horizon, and absolute outcome does this claim describe?",
+			"Is the comparison with nonuse, another treatment, pregnancy, being denied care, or a different reporting denominator?"
+		],
+		starterClaimSlugs: [
+			"are-iuds-and-contraceptive-implants-among-the-most-effective-reversible-contraceptives",
+			"is-medication-abortion-safe-and-effective-in-early-pregnancy",
+			"does-female-fertility-decline-gradually-with-age-rather-than-falling-at-an-exact-age-of-35"
+		],
+		evidenceTrail: [
+			{
+				title: "WHO, CDC, and professional clinical guidance",
+				note: "Best for current eligibility, regimens, safety, counseling, and individualized decision boundaries."
+			},
+			{
+				title: "Systematic reviews and transparent outcome registries",
+				note: "Needed for uncommon harms, fertility probabilities, long-term outcomes, and denominator-aware comparisons."
+			}
+		]
+	},
+	"aging-and-longevity": {
+		slug: "aging-and-longevity",
+		consensusScore: 70,
+		consensusLabel: "Strong function evidence, unproven longevity frontier",
+		snapshot:
+			"Some healthy-aging interventions already improve strength, function, and falls, while many advertised longevity products stop at animal lifespan, pathways, or biomarkers. The crucial evidence ladder runs from mechanism to daily function, disease, disability-free survival, and human lifespan.",
+		stableCore: [
+			"Progressive resistance, balance, and multicomponent exercise can improve function and reduce important risks in older adults.",
+			"Animal lifespan extension and human biomarker movement do not establish longer or healthier human life.",
+			"Frailty, nutrition, social conditions, medical risk, dose, adherence, and competing illness change intervention effects."
+		],
+		openQuestions: [
+			"Which geroscience interventions improve disability-free survival or multiple diseases with acceptable long-term safety?",
+			"Which aging biomarkers are reproducible and clinically useful rather than merely associated with outcomes?"
+		],
+		whatWouldChangeMinds: [
+			"Large randomized trials showing durable gains in function, disease-free survival, disability, or lifespan rather than only laboratory markers.",
+			"Long-term safety evidence showing that an apparently beneficial intervention creates greater infection, metabolic, cancer, bone, muscle, or quality-of-life harm."
+		],
+		commonMisreads: [
+			"A longer-lived mouse, changed pathway, or younger clock score is not proof that a person will live longer.",
+			"An approved drug can be effective for its disease indication without being proven for healthy-person longevity."
+		],
+		starterQuestions: [
+			"Is the outcome a biomarker, strength, daily function, disease, disability-free survival, or lifespan?",
+			"Was the evidence produced in cells, animals, patients with a disease, or generally healthy older adults?"
+		],
+		starterClaimSlugs: [
+			"does-resistance-training-improve-strength-and-physical-function-in-older-adults-with-sarcopenia",
+			"does-moderate-calorie-restriction-improve-health-markers-while-its-effect-on-human-lifespan-remains-unknown",
+			"is-rapamycin-proven-to-extend-healthy-human-lifespan"
+		],
+		evidenceTrail: [
+			{
+				title: "Human randomized trials and systematic reviews",
+				note: "Best for separating target engagement from function, disease, adverse effects, and patient-important benefit."
+			},
+			{
+				title: "Longitudinal cohorts and translational geroscience",
+				note: "Useful for risk prediction and hypothesis development when their observational and animal-to-human limits stay visible."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,
