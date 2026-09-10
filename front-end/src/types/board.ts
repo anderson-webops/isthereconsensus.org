@@ -248,6 +248,20 @@ export interface Topic {
 	updatedAt?: string;
 }
 
+export interface AtlasCollection {
+	slug: string;
+	title: string;
+	description: string;
+	claimSlugs: string[];
+}
+
+export interface AtlasCollectionMembership {
+	slug: string;
+	title: string;
+	description: string;
+	claimCount: number;
+}
+
 export interface ClaimSummary {
 	_id: string;
 	title: string;
@@ -367,6 +381,7 @@ export interface SingleTopicResponse {
 
 export interface ClaimsResponse {
 	claims: ClaimSummary[];
+	collections?: AtlasCollection[];
 	pagination?: {
 		page: number;
 		pageSize: number;
@@ -378,6 +393,8 @@ export interface ClaimsResponse {
 
 export interface ClaimResponse {
 	claim: Claim;
+	collections?: AtlasCollectionMembership[];
+	relatedClaims?: ClaimSummary[];
 }
 
 export interface ClaimRevisionsResponse {

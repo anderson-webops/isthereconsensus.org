@@ -3,6 +3,7 @@ import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
+import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
 
@@ -30,10 +31,24 @@ const { data: claimsData } = await useAsyncData(`topic-claims-${slug.value}`, ()
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
+const claimsBySlug = computed(() => new Map(claims.value.map((claim) => [claim.slug, claim])));
+const collectionLanes = computed(() =>
+	(claimsData.value?.collections ?? [])
+		.map((collection) => ({
+			...collection,
+			claims: collection.claimSlugs
+				.map((claimSlug) => claimsBySlug.value.get(claimSlug))
+				.filter((claim): claim is ClaimSummary => Boolean(claim))
+		}))
+		.filter((collection) => collection.claims.length > 0)
+);
+const ungroupedClaims = computed(() => {
+	const groupedSlugs = new Set(collectionLanes.value.flatMap((collection) => collection.claimSlugs));
+	return claims.value.filter((claim) => !groupedSlugs.has(claim.slug));
+});
 const starterClaims = computed(() => {
-	const claimsBySlug = new Map(claims.value.map((claim) => [claim.slug, claim]));
 	return (guide.value.starterClaimSlugs ?? [])
-		.map((starterSlug) => claimsBySlug.get(starterSlug))
+		.map((starterSlug) => claimsBySlug.value.get(starterSlug))
 		.filter((claim): claim is ClaimSummary => Boolean(claim));
 });
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
@@ -190,11 +205,69 @@ function claimSupportLabel(claim: ClaimSummary) {
 			</div>
 		</section>
 
-		<section class="claim-lane">
+		<section v-if="collectionLanes.length" class="atlas-lane">
+			<div class="section-heading section-heading--split">
+				<div>
+					<p class="eyebrow">Evidence atlas</p>
+					<h2>Browse by subtopic</h2>
+				</div>
+				<p>
+					{{ formatCountLabel(claims.length, "review") }} organized into
+					{{ formatCountLabel(collectionLanes.length, "collection") }}.
+				</p>
+			</div>
+
+			<nav class="collection-index" aria-label="Subtopic collections">
+				<a
+					v-for="collection in collectionLanes"
+					:key="collection.slug"
+					class="collection-index__link"
+					:href="`#collection-${collection.slug}`"
+				>
+					<span>{{ collection.title }}</span>
+					<span>{{ collection.claims.length }}</span>
+				</a>
+			</nav>
+
+			<div class="collection-lanes">
+				<section
+					v-for="collection in collectionLanes"
+					:id="`collection-${collection.slug}`"
+					:key="collection.slug"
+					class="collection-lane"
+				>
+					<div class="collection-lane__heading">
+						<div>
+							<p class="eyebrow">{{ formatCountLabel(collection.claims.length, "review") }}</p>
+							<h2>{{ collection.title }}</h2>
+						</div>
+						<p>{{ collection.description }}</p>
+					</div>
+					<div class="claim-list">
+						<NuxtLink
+							v-for="claim in collection.claims"
+							:key="claim._id"
+							class="claim-row"
+							:to="`/consensus/${slug}/${claim.slug}`"
+						>
+							<div class="claim-row__content">
+								<h3>{{ claim.title }}</h3>
+								<p class="claim-row__meta">
+									<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
+								</p>
+							</div>
+							<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
+						</NuxtLink>
+					</div>
+				</section>
+			</div>
+		</section>
+
+		<section v-if="!collectionLanes.length || ungroupedClaims.length" class="claim-lane">
 			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Reviewed claims</p>
-					<h2>All reviewed claims</h2>
+					<h2>{{ collectionLanes.length ? "Other reviewed claims" : "All reviewed claims" }}</h2>
 				</div>
 			</div>
 
@@ -204,7 +277,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 			</div>
 			<div v-else class="claim-list">
 				<NuxtLink
-					v-for="claim in claims"
+					v-for="claim in collectionLanes.length ? ungroupedClaims : claims"
 					:key="claim._id"
 					class="claim-row"
 					:to="`/consensus/${slug}/${claim.slug}`"
@@ -242,6 +315,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 }
 
 .start-here,
+.atlas-lane,
 .claim-lane {
 	padding: 4px 0 22px;
 	border-bottom: 1px solid var(--consensus-soft-line);
@@ -287,6 +361,13 @@ function claimSupportLabel(claim: ClaimSummary) {
 	display: grid;
 	gap: 6px;
 	align-items: start;
+}
+
+.section-heading--split,
+.collection-lane__heading {
+	grid-template-columns: minmax(0, 0.8fr) minmax(280px, 1.2fr);
+	gap: 18px 32px;
+	align-items: end;
 }
 
 .topic-page__actions {
@@ -353,6 +434,74 @@ function claimSupportLabel(claim: ClaimSummary) {
 
 .queue-note {
 	background: color-mix(in srgb, var(--consensus-surface) 85%, var(--consensus-community-soft) 15%);
+}
+
+.atlas-lane,
+.collection-lanes {
+	display: grid;
+	gap: 24px;
+}
+
+.collection-index {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.collection-index__link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 54px;
+	padding: 11px 14px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	font-weight: 700;
+	line-height: 1.35;
+	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.collection-index__link:hover,
+.collection-index__link:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
+.collection-index__link span:last-child {
+	color: var(--consensus-interactive);
+	font-size: 0.8rem;
+}
+
+.collection-lanes {
+	gap: 34px;
+}
+
+.collection-lane {
+	scroll-margin-top: 88px;
+}
+
+.collection-lane__heading {
+	display: grid;
+}
+
+.collection-lane__heading h2,
+.collection-lane__heading p {
+	margin: 0;
+}
+
+.collection-lane__heading h2 {
+	font-family: "Fraunces", serif;
+	font-size: 1.65rem;
+	line-height: 1.2;
+}
+
+.collection-lane__heading > p {
+	max-width: 62ch;
+	color: var(--consensus-muted);
+	line-height: 1.58;
 }
 
 .claim-list {
@@ -447,8 +596,24 @@ function claimSupportLabel(claim: ClaimSummary) {
 	}
 
 	.start-here,
+	.atlas-lane,
 	.claim-lane {
 		padding-bottom: 18px;
+	}
+
+	.section-heading--split,
+	.collection-lane__heading {
+		grid-template-columns: 1fr;
+		gap: 8px;
+		align-items: start;
+	}
+
+	.collection-index {
+		grid-template-columns: 1fr;
+	}
+
+	.collection-lanes {
+		gap: 28px;
 	}
 
 	.claim-list {

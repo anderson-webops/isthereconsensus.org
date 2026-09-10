@@ -79,6 +79,16 @@ describe("claim detail layout", () => {
 		assert.match(source, /<summary class="change-log-panel__summary">/);
 		assert.doesNotMatch(source, /<section class="content-panel">[\s\S]*<h2>Change log<\/h2>/);
 	});
+
+	it("continues into curated collections and related reviews", () => {
+		assert.match(source, /const collectionMemberships = computed/);
+		assert.match(source, /const relatedClaims = computed/);
+		assert.match(source, /<h2>Related reviews<\/h2>/);
+		assert.match(source, /class="collection-memberships"/);
+		assert.match(source, /class="collection-membership"/);
+		assert.match(source, /class="related-claim-grid"/);
+		assert.match(source, /v-for="relatedClaim in relatedClaims"/);
+	});
 });
 
 describe("breadcrumbs layout", () => {

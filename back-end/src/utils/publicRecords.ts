@@ -272,6 +272,37 @@ export function toPublicClaimSource(value: PublicClaimSourceInput) {
 	};
 }
 
+export function toPublicClaimSummary(
+	value: Partial<IClaim>,
+	options: {
+		sourceCount?: number;
+		topic?: ITopic | UnknownRecord | null;
+	} = {}
+) {
+	return {
+		_id: value._id,
+		topic: toPublicTopic(options.topic ?? value.topic),
+		title: value.title,
+		slug: value.slug,
+		status: value.status,
+		consensusBand: value.consensusBand,
+		agreementLevel: value.agreementLevel,
+		evidenceCertainty: value.evidenceCertainty,
+		confidenceScore: value.confidenceScore,
+		reviewMode: value.reviewMode,
+		bottomLine: value.bottomLine,
+		evidenceLandscape: toPublicEvidenceLandscape(value),
+		searchCutoffAt: value.searchCutoffAt,
+		lastRetractionCheckAt: value.lastRetractionCheckAt,
+		lastReviewedAt: value.lastReviewedAt,
+		nextReviewAt: value.nextReviewAt,
+		publishedAt: value.publishedAt,
+		createdAt: value.createdAt,
+		updatedAt: value.updatedAt,
+		sourceCount: options.sourceCount
+	};
+}
+
 export function toPublicClaim(
 	value: Partial<IClaim>,
 	options: {

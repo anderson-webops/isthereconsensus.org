@@ -31,6 +31,8 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 );
 
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
+const collectionMemberships = computed(() => claimData.value?.collections ?? []);
+const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
@@ -612,6 +614,45 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</div>
 			</section>
 
+			<section v-if="collectionMemberships.length || relatedClaims.length" class="content-panel continue-panel">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Continue exploring</p>
+						<h2>Related reviews</h2>
+					</div>
+					<p>Follow the nearest evidence questions instead of returning to a flat directory.</p>
+				</div>
+
+				<div v-if="collectionMemberships.length" class="collection-memberships">
+					<span class="field-label">This review belongs to</span>
+					<NuxtLink
+						v-for="collection in collectionMemberships"
+						:key="collection.slug"
+						class="collection-membership"
+						:to="{ path: `/consensus/${topicSlug}`, hash: `#collection-${collection.slug}` }"
+					>
+						<span>{{ collection.title }}</span>
+						<span>{{ formatCountLabel(collection.claimCount, "review") }}</span>
+					</NuxtLink>
+				</div>
+
+				<div v-if="relatedClaims.length" class="related-claim-grid">
+					<NuxtLink
+						v-for="relatedClaim in relatedClaims"
+						:key="relatedClaim._id"
+						class="related-claim-card"
+						:to="`/consensus/${topicSlug}/${relatedClaim.slug}`"
+					>
+						<div>
+							<span class="eyebrow">{{ formatBandLabel(relatedClaim.consensusBand) }}</span>
+							<h3>{{ relatedClaim.title }}</h3>
+							<p>{{ relatedClaim.bottomLine }}</p>
+						</div>
+						<span class="i-carbon-arrow-right related-claim-card__arrow" aria-hidden="true" />
+					</NuxtLink>
+				</div>
+			</section>
+
 			<details class="content-panel change-log-panel">
 				<summary class="change-log-panel__summary">
 					<span class="change-log-panel__heading">
@@ -865,9 +906,103 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .evidence-summary-list,
 .source-groups,
 .source-list,
-.change-log {
+.change-log,
+.continue-panel,
+.collection-memberships,
+.related-claim-grid {
 	display: grid;
 	gap: 16px;
+}
+
+.collection-memberships {
+	grid-template-columns: max-content repeat(2, minmax(0, 1fr));
+	align-items: center;
+	gap: 10px;
+}
+
+.collection-membership {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 46px;
+	padding: 9px 12px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+	background: var(--consensus-elevated-surface);
+	color: var(--consensus-ink);
+	font-weight: 700;
+	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.collection-membership:hover,
+.collection-membership:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
+.collection-membership span:last-child {
+	color: var(--consensus-muted);
+	font-size: 0.76rem;
+	white-space: nowrap;
+}
+
+.related-claim-grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.related-claim-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	padding: 16px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+	background: var(--consensus-surface);
+	color: var(--consensus-ink);
+	text-decoration: none;
+	transition: border-color 160ms ease;
+}
+
+.related-claim-card:hover,
+.related-claim-card:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
+.related-claim-card > div {
+	display: grid;
+	gap: 7px;
+}
+
+.related-claim-card .eyebrow,
+.related-claim-card h3,
+.related-claim-card p {
+	margin: 0;
+}
+
+.related-claim-card h3 {
+	font-family: "Fraunces", serif;
+	font-size: 1.08rem;
+	font-weight: 600;
+	line-height: 1.28;
+}
+
+.related-claim-card p {
+	display: -webkit-box;
+	overflow: hidden;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+	line-height: 1.5;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.related-claim-card__arrow {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
 }
 
 .claim-snapshot-grid {
@@ -1237,6 +1372,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	}
 
 	.claim-snapshot-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.collection-memberships,
+	.related-claim-grid {
 		grid-template-columns: 1fr;
 	}
 

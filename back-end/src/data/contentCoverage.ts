@@ -1,6 +1,6 @@
 export const CONTENT_COVERAGE_TARGET = Object.freeze({
-	minimumReviewedClaims: 500,
-	minimumActiveTopics: 25
+	minimumReviewedClaims: 750,
+	minimumActiveTopics: 35
 });
 
 interface CoverageClaim {
