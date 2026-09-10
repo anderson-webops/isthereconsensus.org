@@ -574,6 +574,108 @@ export const atlasCollections = [
 			"can-genetic-drift-change-populations-without-natural-selection",
 			"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"
 		]
+	},
+	{
+		topicSlug: "human-origins-and-paleontology",
+		slug: "archaic-genomes-and-contact",
+		title: "Archaic genomes and contact",
+		description: "What ancient and living genomes show about contact with Neanderthal and Denisovan populations.",
+		claimSlugs: [
+			"did-modern-humans-interbreed-with-neanderthals",
+			"did-denisovans-contribute-ancestry-to-living-human-populations"
+		]
+	},
+	{
+		topicSlug: "human-origins-and-paleontology",
+		slug: "human-origins-and-hominin-lives",
+		title: "Human origins and hominin lives",
+		description: "African origins, branching human evolution, and the behavior of other hominin populations.",
+		claimSlugs: [
+			"did-homo-sapiens-originate-in-africa",
+			"was-human-evolution-a-straight-ladder-toward-modern-humans",
+			"were-neanderthals-unintelligent-and-without-complex-culture"
+		]
+	},
+	{
+		topicSlug: "human-origins-and-paleontology",
+		slug: "deep-time-transitions-and-extinction",
+		title: "Deep-time transitions and extinction",
+		description: "Dinosaur-to-bird and land-to-water transitions, plus the impact that ended the non-avian dinosaurs.",
+		claimSlugs: [
+			"are-living-birds-dinosaurs",
+			"did-the-chicxulub-asteroid-impact-drive-the-end-cretaceous-mass-extinction",
+			"did-feathers-evolve-only-after-birds-began-to-fly",
+			"is-archaeopteryx-evidence-of-the-dinosaur-bird-transition",
+			"did-whales-evolve-from-land-dwelling-mammals"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "performance-aids-and-hydration",
+		title: "Performance aids and hydration",
+		description: "When buffering, nitrate, and electrolyte products can improve a specific exercise demand.",
+		claimSlugs: [
+			"does-beta-alanine-improve-exercise-performance",
+			"can-beetroot-juice-or-dietary-nitrate-improve-exercise-performance",
+			"does-sodium-bicarbonate-improve-high-intensity-exercise-performance",
+			"are-electrolyte-sports-drinks-necessary-for-ordinary-short-workouts"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "protein-connective-tissue-and-adaptation",
+		title: "Protein, connective tissue, and adaptation",
+		description: "Claims about isolated amino acids, collagen, HMB, and supplements that may alter training adaptation.",
+		claimSlugs: [
+			"do-bcaa-supplements-add-muscle-or-performance-benefits-when-protein-intake-is-adequate",
+			"do-collagen-supplements-improve-joint-pain-or-training-adaptation",
+			"does-hmb-reliably-add-muscle-or-strength-in-trained-athletes",
+			"do-high-dose-antioxidant-supplements-improve-training-adaptation"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "botanicals-and-recovery",
+		title: "Botanicals and recovery",
+		description: "Popular plant-derived products assessed for performance, soreness, and recovery rather than wellness reputation.",
+		claimSlugs: [
+			"does-ashwagandha-reliably-improve-athletic-performance",
+			"does-tart-cherry-supplementation-speed-recovery-from-hard-exercise"
+		]
+	},
+	{
+		topicSlug: "infection-immunity-and-vaccines",
+		slug: "influenza-vaccination-and-indirect-protection",
+		title: "Influenza vaccination and indirect protection",
+		description: "Direct and population benefits of vaccination, plus what influenza vaccines cannot cause.",
+		claimSlugs: [
+			"does-seasonal-influenza-vaccination-reduce-severe-flu-outcomes",
+			"can-vaccination-indirectly-protect-people-who-are-not-vaccinated",
+			"can-an-influenza-vaccine-give-someone-influenza"
+		]
+	},
+	{
+		topicSlug: "infection-immunity-and-vaccines",
+		slug: "transmission-masks-and-hand-hygiene",
+		title: "Transmission, masks, and hand hygiene",
+		description: "How transmission can precede symptoms and how common protective tools work within their limits.",
+		claimSlugs: [
+			"can-people-transmit-sars-cov-2-before-symptoms-begin",
+			"do-face-masks-usually-cause-dangerous-oxygen-or-carbon-dioxide-changes",
+			"is-alcohol-based-hand-sanitizer-always-equivalent-to-washing-with-soap-and-water"
+		]
+	},
+	{
+		topicSlug: "infection-immunity-and-vaccines",
+		slug: "treatment-resistance-and-surveillance",
+		title: "Treatment, resistance, and surveillance",
+		description: "Treatment duration, latent-infection risk, connected resistance systems, and population early warning.",
+		claimSlugs: [
+			"are-shorter-antibiotic-courses-effective-for-many-common-infections",
+			"does-latent-tuberculosis-infection-always-progress-to-active-disease",
+			"does-antimicrobial-resistance-move-among-humans-animals-food-and-the-environment",
+			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"
+		]
 	}
 ] as const satisfies readonly AtlasCollectionDefinition[];
 

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
+import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
@@ -1823,6 +1824,93 @@ describe("default claim seed quality", () => {
 		assert.match(visibleSummary, /taking ever-larger doses is not a proven solution/i);
 		assert.doesNotMatch(visibleSummary, /complete tolerance develops/i);
 		assert.doesNotMatch(visibleSummary, /habitual users get no benefit/i);
+	});
+
+	it("adds a traffic-informed 30-review tranche across three new topic clusters", () => {
+		assert.equal(september2026TrafficClaims.length, 30);
+		assert.ok(defaultClaims.length >= 530, "The traffic-informed tranche must bring the library to 530 claims");
+		assert.ok(defaultTopics.length >= 29, "The traffic-informed tranche must bring the directory to 29 topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026TrafficClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026TrafficClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"human-origins-and-paleontology": 10,
+				"infection-immunity-and-vaccines": 10,
+				"sports-nutrition-and-supplements": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026TrafficClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026TrafficClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing traffic-informed claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-10T21:00:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T21:00:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(
+					source => source.kind === "systematic_review" || source.kind === "meta_analysis"
+				),
+				`${claim.slug} needs a synthesis source`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => source.doi && source.url === `https://doi.org/${source.doi}`
+				),
+				`${claim.slug} sources should use DOI landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => source.citationCheckedAt === "2026-09-10T21:00:00.000Z"
+				),
+				`${claim.slug} must record the tranche citation review`
+			);
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026TrafficClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Traffic-informed claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves decision-critical boundaries in the traffic-informed topic clusters", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing traffic-informed claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		assert.match(visibleClaimText("did-homo-sapiens-originate-in-africa"), /one tiny birthplace|single-point origin/i);
+		assert.match(visibleClaimText("do-collagen-supplements-improve-joint-pain-or-training-adaptation"), /modest|heterogeneous/i);
+		assert.match(visibleClaimText("are-shorter-antibiotic-courses-effective-for-many-common-infections"), /does not mean stopping|not permission/i);
+		assert.match(visibleClaimText("does-latent-tuberculosis-infection-always-progress-to-active-disease"), /five to ten percent/i);
+		assert.match(visibleClaimText("can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"), /not an individual diagnostic/i);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

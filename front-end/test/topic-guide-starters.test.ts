@@ -23,7 +23,17 @@ function seededClaimTopics() {
 	return claimTopics;
 }
 
+function seededTopicSlugs() {
+	const topicsFile = join(testDir, "..", "..", "back-end", "src", "data", "topics.ts");
+	const source = readFileSync(topicsFile, "utf8");
+	return new Set([...source.matchAll(/\bslug:\s*"([^"]+)"/g)].map((match) => match[1]));
+}
+
 describe("topic guide starter claims", () => {
+	it("provides one guide for every seeded topic", () => {
+		assert.deepEqual(new Set(Object.keys(topicGuides)), seededTopicSlugs());
+	});
+
 	it("provides three distinct, seeded entry points for every topic guide", () => {
 		const allStarters: string[] = [];
 		const claimTopics = seededClaimTopics();
