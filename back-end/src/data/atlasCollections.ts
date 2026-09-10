@@ -778,6 +778,108 @@ export const atlasCollections = [
 			"are-senolytic-drugs-established-anti-aging-treatments",
 			"can-consumer-biological-age-tests-reliably-guide-treatment-or-predict-an-individuals-lifespan"
 		]
+	},
+	{
+		topicSlug: "cancer-prevention-and-care",
+		slug: "diagnosis-metabolism-and-cancer-biology",
+		title: "Diagnosis, metabolism, and cancer biology",
+		description: "Biopsy, glucose use, inherited susceptibility, and contagion claims separated from the mechanisms they are often confused with.",
+		claimSlugs: [
+			"do-diagnostic-biopsies-usually-cause-cancer-to-spread",
+			"does-cutting-sugar-from-the-diet-starve-or-cure-cancer",
+			"do-inherited-pathogenic-variants-account-for-most-cancers",
+			"is-cancer-contagious-through-ordinary-contact"
+		]
+	},
+	{
+		topicSlug: "cancer-prevention-and-care",
+		slug: "treatment-support-and-survivorship",
+		title: "Treatment, support, and survivorship",
+		description: "Evidence-based cancer treatment paired with palliative care, exercise, and tobacco treatment rather than false either-or choices.",
+		claimSlugs: [
+			"can-unproven-alternative-therapies-safely-replace-effective-cancer-treatment",
+			"does-early-palliative-care-mean-giving-up-or-shorten-life",
+			"does-exercise-during-and-after-cancer-treatment-reduce-fatigue-and-improve-function",
+			"does-quitting-smoking-after-a-cancer-diagnosis-improve-survival"
+		]
+	},
+	{
+		topicSlug: "cancer-prevention-and-care",
+		slug: "screening-benefits-harms-and-risk-groups",
+		title: "Screening benefits, harms, and risk groups",
+		description: "Average-risk recommendations distinguished from symptom evaluation and specialist surveillance for inherited high risk.",
+		claimSlugs: [
+			"should-average-risk-adults-without-symptoms-be-screened-for-pancreatic-cancer",
+			"should-average-risk-women-without-symptoms-be-screened-for-ovarian-cancer"
+		]
+	},
+	{
+		topicSlug: "cardiovascular-metabolic-and-kidney-health",
+		slug: "lipids-kidneys-and-cardiovascular-risk",
+		title: "Lipids, kidneys, and cardiovascular risk",
+		description: "Causal risk factors and predictive markers distinguished from laboratory numbers that failed as treatment targets.",
+		claimSlugs: [
+			"does-lifelong-exposure-to-high-ldl-cholesterol-causally-drive-atherosclerosis",
+			"does-raising-hdl-cholesterol-with-medication-reliably-prevent-heart-attacks",
+			"does-chronic-kidney-disease-substantially-increase-cardiovascular-risk"
+		]
+	},
+	{
+		topicSlug: "cardiovascular-metabolic-and-kidney-health",
+		slug: "therapies-that-change-clinical-outcomes",
+		title: "Therapies that change clinical outcomes",
+		description: "Stroke prevention, rehabilitation, kidney protection, and diabetes remission organized around patient-important outcomes.",
+		claimSlugs: [
+			"does-oral-anticoagulation-reduce-stroke-in-atrial-fibrillation-when-indicated",
+			"does-cardiac-rehabilitation-improve-outcomes-after-coronary-heart-disease",
+			"do-sglt2-inhibitors-slow-chronic-kidney-disease-even-without-diabetes",
+			"can-type-2-diabetes-enter-remission-after-substantial-sustained-weight-loss"
+		]
+	},
+	{
+		topicSlug: "cardiovascular-metabolic-and-kidney-health",
+		slug: "measurement-alerts-and-medication-safety",
+		title: "Measurement, alerts, and medication safety",
+		description: "Home readings, wearable alerts, and common pain medicines interpreted through validation, follow-up, and kidney safety.",
+		claimSlugs: [
+			"does-home-blood-pressure-monitoring-help-control-hypertension",
+			"can-regular-nsaid-use-injure-the-kidneys",
+			"can-smartwatch-atrial-fibrillation-alerts-replace-a-medical-ecg-diagnosis"
+		]
+	},
+	{
+		topicSlug: "substance-use-and-addiction",
+		slug: "effective-treatment-and-recovery",
+		title: "Effective treatment and recovery",
+		description: "Medication, reinforcement, tobacco care, and opioid treatment assessed by retention, substance outcomes, and survival.",
+		claimSlugs: [
+			"do-naltrexone-and-acamprosate-help-alcohol-use-disorder",
+			"does-contingency-management-help-stimulant-use-disorder",
+			"does-treating-tobacco-use-undermine-recovery-from-alcohol-or-other-drug-use",
+			"does-opioid-detoxification-without-ongoing-treatment-reduce-overdose-risk"
+		]
+	},
+	{
+		topicSlug: "substance-use-and-addiction",
+		slug: "pregnancy-withdrawal-and-health-claims",
+		title: "Pregnancy, withdrawal, and health claims",
+		description: "Cannabis, nicotine, and alcohol questions separated by exposure, time horizon, dependence, and clinically urgent risk.",
+		claimSlugs: [
+			"is-cannabis-use-during-pregnancy-established-as-safe",
+			"does-stopping-smoking-generally-worsen-mental-health",
+			"can-abrupt-alcohol-withdrawal-be-medically-dangerous",
+			"is-moderate-alcohol-consumption-proven-to-protect-heart-health"
+		]
+	},
+	{
+		topicSlug: "substance-use-and-addiction",
+		slug: "harm-reduction-evidence-boundaries",
+		title: "Harm-reduction evidence boundaries",
+		description: "Direct detection, onsite response, behavior, neighborhood effects, and population mortality kept as distinct evidence levels.",
+		claimSlugs: [
+			"are-supervised-consumption-sites-proven-to-reduce-population-overdose-mortality",
+			"are-fentanyl-test-strips-proven-to-prevent-overdose-deaths"
+		]
 	}
 ] as const satisfies readonly AtlasCollectionDefinition[];
 

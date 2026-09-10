@@ -1335,6 +1335,135 @@ export const topicGuides: Record<string, TopicGuide> = {
 			}
 		]
 	},
+	"cancer-prevention-and-care": {
+		slug: "cancer-prevention-and-care",
+		consensusScore: 92,
+		consensusLabel: "Strong clinical core, cancer-specific decisions",
+		snapshot:
+			"Cancer is not one disease, so responsible conclusions name the cancer type, stage, molecular features, patient group, and outcome. Screening can help in some populations and harm in others, effective treatment can coexist with supportive care, and a plausible biological mechanism is not a proven cure.",
+		stableCore: [
+			"Pathology, stage, molecular testing, and patient health guide treatment because benefits do not transfer unchanged across cancers.",
+			"Screening should be judged by mortality and net harm, not only by finding more or earlier-looking disease.",
+			"Palliative care, exercise, nutrition, and tobacco treatment can improve life during cancer care without replacing effective cancer-directed treatment."
+		],
+		openQuestions: [
+			"Which biomarkers and screening pathways find dangerous cancer early enough to improve survival without excessive false positives and overdiagnosis?",
+			"How can precision treatment, symptom care, survivorship, and prevention reach more patients without widening inequity?"
+		],
+		whatWouldChangeMinds: [
+			"Large trials or updated syntheses that reverse current survival, screening, supportive-care, or treatment-harm conclusions for a clearly defined cancer population.",
+			"Validated diagnostic or therapeutic pathways that improve patient-important outcomes rather than only biomarkers, response rates, or stage distribution."
+		],
+		commonMisreads: [
+			"Evidence about one cancer type, stage, or treatment cannot be generalized to all cancer.",
+			"A cell pathway, PET image, testimonial, tumor response, or early detection count does not by itself establish cure or longer survival."
+		],
+		starterQuestions: [
+			"Which cancer, stage, risk group, treatment, comparator, and outcome does this claim cover?",
+			"Is the evidence about diagnosis, response, recurrence, symptoms, quality of life, cancer mortality, or overall survival?"
+		],
+		starterClaimSlugs: [
+			"can-unproven-alternative-therapies-safely-replace-effective-cancer-treatment",
+			"does-early-palliative-care-mean-giving-up-or-shorten-life",
+			"should-average-risk-women-without-symptoms-be-screened-for-ovarian-cancer"
+		],
+		evidenceTrail: [
+			{
+				title: "Current oncology and screening guidance",
+				note: "Best for defining eligible populations, treatment pathways, safety boundaries, and recommendations that can change with new trials."
+			},
+			{
+				title: "Randomized outcomes, systematic reviews, and strong cohorts",
+				note: "Needed to connect detection and treatment with symptoms, recurrence, complications, quality of life, and survival."
+			}
+		]
+	},
+	"cardiovascular-metabolic-and-kidney-health": {
+		slug: "cardiovascular-metabolic-and-kidney-health",
+		consensusScore: 94,
+		consensusLabel: "Strong outcome evidence, risk-based treatment",
+		snapshot:
+			"Heart, metabolic, and kidney conditions share causes and outcomes, so one laboratory number rarely tells the whole story. The strongest evidence connects a defined intervention to heart attack, stroke, heart failure, kidney failure, hospitalization, quality of life, or survival while accounting for baseline risk and treatment harm.",
+		stableCore: [
+			"Sustained LDL exposure, blood pressure, diabetes, smoking, and chronic kidney disease materially shape cardiovascular risk.",
+			"Filtration and urine albumin identify different dimensions of kidney and cardiovascular risk.",
+			"Treatment decisions should combine absolute benefit, adverse effects, kidney and liver function, interactions, adherence, and patient priorities."
+		],
+		openQuestions: [
+			"How can lifetime-risk prevention begin early enough without overmedicalizing people whose near-term absolute benefit is small?",
+			"Which combinations and delivery systems produce durable heart and kidney benefit across frailty, multimorbidity, and unequal access?"
+		],
+		whatWouldChangeMinds: [
+			"Large low-bias outcome trials that reverse current conclusions about stroke prevention, kidney protection, rehabilitation, or causal risk factors.",
+			"Validated measures or devices that improve clinical outcomes beyond the risk factors and care pathways they would replace."
+		],
+		commonMisreads: [
+			"A biomarker that predicts risk is not automatically a treatment target whose numerical change improves outcomes.",
+			"A device alert, one home reading, or one estimated filtration value is not a complete diagnosis or treatment decision."
+		],
+		starterQuestions: [
+			"What is this person's baseline absolute risk and which patient-important outcome is being prevented?",
+			"Does the evidence cover this kidney function, bleeding risk, age, comorbidity, dose, and follow-up?"
+		],
+		starterClaimSlugs: [
+			"does-lifelong-exposure-to-high-ldl-cholesterol-causally-drive-atherosclerosis",
+			"does-oral-anticoagulation-reduce-stroke-in-atrial-fibrillation-when-indicated",
+			"do-sglt2-inhibitors-slow-chronic-kidney-disease-even-without-diabetes"
+		],
+		evidenceTrail: [
+			{
+				title: "Guidelines and randomized clinical-outcome trials",
+				note: "Best for connecting eligibility and treatment with stroke, cardiac events, kidney progression, hospitalization, mortality, and harms."
+			},
+			{
+				title: "Genetic, longitudinal, and measurement evidence",
+				note: "Useful for causality, lifetime exposure, risk prediction, and diagnostic context when it is not mistaken for treatment proof."
+			}
+		]
+	},
+	"substance-use-and-addiction": {
+		slug: "substance-use-and-addiction",
+		consensusScore: 79,
+		consensusLabel: "Effective treatment, uneven access and policy evidence",
+		snapshot:
+			"Substance-use disorders are treatable health conditions, and evidence supports medication, behavioral treatment, continuity, and harm reduction without moral judgment. Effects must be separated across withdrawal, use, retention, recovery, onsite overdose response, and population mortality because one success does not automatically prove every later outcome.",
+		stableCore: [
+			"Alcohol and opioid withdrawal can require medical care, and withdrawal management alone does not treat the continuing disorder.",
+			"Medications and contingency management improve important outcomes for defined substance-use disorders, though access and retention remain major limits.",
+			"Harm-reduction tools can save or protect people directly even when evidence for citywide mortality effects remains incomplete."
+		],
+		openQuestions: [
+			"Which low-threshold and integrated models keep people engaged across housing instability, stigma, criminalization, pregnancy, mental illness, and changing drug supplies?",
+			"How can policy evaluations distinguish client benefit, neighborhood effects, treatment connection, and population mortality with credible counterfactuals?"
+		],
+		whatWouldChangeMinds: [
+			"Large trials or strong natural experiments that reverse established treatment and withdrawal-safety conclusions or resolve currently mixed population effects.",
+			"Programs that demonstrate more durable recovery and mortality benefit with less burden, coercion, inequity, or unintended harm."
+		],
+		commonMisreads: [
+			"Completing detoxification, attending treatment, testing a sample, or reversing an onsite overdose is not the same outcome as durable recovery or lower population mortality.",
+			"Uncertainty about one policy endpoint does not mean addiction is untreatable or that direct harm-reduction benefits are imaginary."
+		],
+		starterQuestions: [
+			"Which substance, severity, treatment goal, setting, follow-up, and outcome does the evidence describe?",
+			"Are results based on self-report, verified use, retention, overdose, mortality, or a combination?"
+		],
+		starterClaimSlugs: [
+			"do-naltrexone-and-acamprosate-help-alcohol-use-disorder",
+			"does-contingency-management-help-stimulant-use-disorder",
+			"does-opioid-detoxification-without-ongoing-treatment-reduce-overdose-risk"
+		],
+		evidenceTrail: [
+			{
+				title: "Current addiction guidelines and randomized treatment evidence",
+				note: "Best for withdrawal safety, medication, behavioral treatment, eligibility, and patient-centered continuing care."
+			},
+			{
+				title: "Longitudinal and implementation evidence",
+				note: "Needed for retention, recovery, rare harms, real-world access, local context, and population-level policy outcomes."
+			}
+		]
+	},
 	"other-questions": {
 		slug: "other-questions",
 		consensusScore: 43,

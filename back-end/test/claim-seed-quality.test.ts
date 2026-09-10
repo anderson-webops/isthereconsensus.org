@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
+import { september2026ClinicalClaims } from "../src/data/claim-expansion-2026-09-clinical.js";
 import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { defaultClaims } from "../src/data/claims.js";
@@ -2013,6 +2014,122 @@ describe("default claim seed quality", () => {
 		assert.match(visibleClaimText("does-moderate-calorie-restriction-improve-health-markers-while-its-effect-on-human-lifespan-remains-unknown"), /did not show|not direct evidence/i);
 		assert.match(visibleClaimText("is-rapamycin-proven-to-extend-healthy-human-lifespan"), /no trial|not proof/i);
 		assert.match(visibleClaimText("can-consumer-biological-age-tests-reliably-guide-treatment-or-predict-an-individuals-lifespan"), /model output|not a literal count/i);
+	});
+
+	it("adds a 30-review clinical tranche that completes the 35-topic atlas milestone", () => {
+		assert.equal(september2026ClinicalClaims.length, 30);
+		assert.ok(defaultClaims.length >= 590, "The clinical tranche must bring the library to 590 claims");
+		assert.ok(defaultTopics.length >= 35, "The clinical tranche must bring the directory to 35 topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026ClinicalClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026ClinicalClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"cancer-prevention-and-care": 10,
+				"cardiovascular-metabolic-and-kidney-health": 10,
+				"substance-use-and-addiction": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026ClinicalClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026ClinicalClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing clinical claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-10T23:30:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T23:30:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(
+				seeded.sources.every(source => source.url?.startsWith("https://")),
+				`${claim.slug} sources should have direct HTTPS landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(source => !source.url?.includes("consensus.app")),
+				`${claim.slug} should not expose discovery-platform tracking URLs`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => !source.doi || source.url === `https://doi.org/${source.doi}`
+				),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => source.citationCheckedAt === "2026-09-10T23:30:00.000Z"
+				),
+				`${claim.slug} must record the tranche citation review`
+			);
+			assert.ok(
+				seeded.sources.every(
+					source => source.citationStatus === "current" || source.citationStatus === "corrected"
+				),
+				`${claim.slug} must not include an excluded source`
+			);
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const correctedSources = september2026ClinicalClaims.flatMap(claim =>
+			claim.sources.filter(source => source.citationStatus === "corrected")
+		);
+		assert.deepEqual(correctedSources.map(source => source.doi), ["10.24095/hpcdp.45.9.02"]);
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026ClinicalClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Clinical claim "${claim.title}" is too similar to existing "${
+						existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the clinical tranche's screening, treatment, and outcome boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing clinical claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		assert.match(visibleClaimText("do-diagnostic-biopsies-usually-cause-cancer-to-spread"), /rare|uncommon/i);
+		assert.match(visibleClaimText("does-cutting-sugar-from-the-diet-starve-or-cure-cancer"), /does not selectively|no human evidence/i);
+		assert.match(visibleClaimText("should-average-risk-women-without-symptoms-be-screened-for-ovarian-cancer"), /mortality|false positive/i);
+		assert.match(visibleClaimText("does-raising-hdl-cholesterol-with-medication-reliably-prevent-heart-attacks"), /marker|not a treatment target/i);
+		assert.match(visibleClaimText("can-smartwatch-atrial-fibrillation-alerts-replace-a-medical-ecg-diagnosis"), /confirmation|confirmatory/i);
+		assert.match(visibleClaimText("is-cannabis-use-during-pregnancy-established-as-safe"), /observational|confound/i);
+		assert.match(visibleClaimText("can-abrupt-alcohol-withdrawal-be-medically-dangerous"), /emergency|seizure|delirium/i);
+		assert.match(visibleClaimText("are-supervised-consumption-sites-proven-to-reduce-population-overdose-mortality"), /onsite|population/i);
+		assert.match(visibleClaimText("are-fentanyl-test-strips-proven-to-prevent-overdose-deaths"), /negative result|not.*safe|mortality/i);
+		assert.match(visibleClaimText("does-opioid-detoxification-without-ongoing-treatment-reduce-overdose-risk"), /tolerance|ongoing treatment/i);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {
