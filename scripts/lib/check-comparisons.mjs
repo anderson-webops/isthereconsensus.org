@@ -7,7 +7,7 @@ import { evidenceComparisons } from "../../front-end/src/data/comparisons/index.
 // Called inside the existing built-app browser harness and its read-only API
 // fixture. No second browser/server, account, or production writes are needed.
 export async function checkComparisons({ page, baseUrl, open }) {
-	for (const [query, slug] of [["solar vs wind", "electricity-emissions"], ["creatine vs protein", "strength-training-supplements"], ["coffee and sleep", "caffeine-dose-and-sleep"], ["CBT-I vs sleep hygiene", "non-drug-insomnia-treatments"]]) {
+	for (const [query, slug] of [["solar vs wind", "electricity-emissions"], ["creatine vs protein", "strength-training-supplements"], ["coffee and sleep", "caffeine-dose-and-sleep"], ["CBT-I vs sleep hygiene", "non-drug-insomnia-treatments"], ["heat pump upgrades", "home-heat-pump-upgrades"]]) {
 		for (const route of [`/consensus?q=${encodeURIComponent(query)}`, `/ask?question=${encodeURIComponent(query)}`]) {
 			await open(route);
 			assert.ok(await page.$(`.comparison-links a[href="/compare/${slug}"]`), `${route}: separate comparison match`);
@@ -160,9 +160,77 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	await checkCaffeineComparison({ page, open, sitemap });
 	await checkStrengthComparison({ page, open, sitemap });
 	await checkInsomniaComparison({ page, open, sitemap });
+	await checkHeatingComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkHeatingComparison({ page, open, sitemap }) {
+	const comparison = evidenceComparisons.find(item => item.slug === "home-heat-pump-upgrades");
+	const path = `/compare/${comparison.slug}`;
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path)]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: heating comparison discoverable`);
+	}
+	await open(path);
+	const values = () => page.$$eval(".comparison-value", nodes => nodes.map(node => node.textContent.trim()));
+	assert.deepEqual(await values(), ["62", "86", "95"]);
+	assert.match(await page.$eval(".comparison-basis", node => node.textContent), /winter 2021–22/);
+	assert.ok((await page.$$eval(".comparison-unit", nodes => nodes.map(node => node.textContent))).every(text => text.includes("% of modeled households")));
+	await page.select("#comparison-outcome", "lifetime-value");
+	await page.waitForFunction(() => document.querySelector(".comparison-value")?.textContent.trim() === "55");
+	assert.deepEqual(await values(), ["55", "41", "21"]);
+	await page.select("#comparison-context", "with-envelope");
+	await page.waitForFunction(() => document.querySelector(".comparison-value")?.textContent.trim() === "39");
+	assert.deepEqual(await values(), ["39", "28", "15"]);
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.equal(await page.$eval("#comparison-context", node => node.value), "with-envelope");
+	assert.equal(await page.$eval("#comparison-outcome", node => node.value), "lifetime-value");
+	await page.select("#comparison-outcome", "bill-savings");
+	await page.waitForFunction(() => document.querySelector(".comparison-value")?.textContent.trim() === "82");
+	assert.deepEqual(await values(), ["82", "94", "97"]);
+	for (const context of ["your-home", "other-systems"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 3);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-value, .comparison-source-link)")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-value");
+	}
+	await open(`${path}?outcome=lifetime-value&context=with-envelope&options=medium,cold-climate`);
+	assert.deepEqual(await values(), ["28", "15"]);
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	await open(`${path}?options=`);
+	await page.waitForSelector(".comparison-empty");
+	await page.reload({ waitUntil: "networkidle0" });
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 3);
+	await page.focus(".comparison-choices input");
+	await page.keyboard.press("Space");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 2);
+	await open(path);
+	await page.click('.comparison-option a[href="#comparison-source-wilson"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-wilson");
+	assert.match(await page.$eval("#comparison-source-wilson", node => node.textContent), /Figure 3.*16 years.*3\.4%/s);
+	for (const theme of ["light", "dark"]) {
+		const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+		if (current !== theme) await page.click(".theme-toggle");
+		await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+		for (const width of [1280, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `heating overflow ${theme} ${width}`);
+			if (width <= 390) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 1, "explanatory numeric cards need one readable mobile column");
+			if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && width !== 320) {
+				await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `heating-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `heating overflow ${theme} at 200% text`);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 }
 
 async function checkInsomniaComparison({ page, open, sitemap }) {

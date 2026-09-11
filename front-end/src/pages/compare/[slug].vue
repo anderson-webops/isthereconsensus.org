@@ -455,7 +455,8 @@ useHead({
 	outline-offset: 3px;
 }
 @media (max-width: 640px) {
-	.comparison-selects {
+	.comparison-selects,
+	.comparison-grid {
 		grid-template-columns: minmax(0, 1fr);
 	}
 }
