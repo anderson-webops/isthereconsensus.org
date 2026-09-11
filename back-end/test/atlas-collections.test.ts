@@ -15,6 +15,8 @@ describe("evidence atlas collections", () => {
 		const configuredTopicSlugs = new Set(atlasCollections.map(collection => collection.topicSlug));
 		const collectionKeys = new Set<string>();
 		for (const topicSlug of [
+			"biology-and-evolution",
+			"energy-and-infrastructure",
 			"human-origins-and-paleontology",
 			"sports-nutrition-and-supplements",
 			"infection-immunity-and-vaccines",

@@ -536,7 +536,10 @@ export const atlasCollections = [
 		description: "How scientific theory, fossils, genetics, and comparative biology support evolutionary history.",
 		claimSlugs: [
 			"is-evolution-just-a-theory",
-			"are-transitional-fossils-missing-from-the-fossil-record"
+			"are-transitional-fossils-missing-from-the-fossil-record",
+			"does-human-chromosome-2-preserve-evidence-of-an-ancestral-chromosome-fusion",
+			"do-shared-endogenous-retroviral-insertions-support-primate-common-ancestry",
+			"must-a-vestigial-trait-be-completely-useless-to-count-as-vestigial"
 		]
 	},
 	{
@@ -572,7 +575,98 @@ export const atlasCollections = [
 			"can-losing-genes-be-an-adaptive-evolutionary-change",
 			"do-organisms-mutate-because-they-need-a-particular-adaptation",
 			"can-genetic-drift-change-populations-without-natural-selection",
-			"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"
+			"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory",
+			"does-horizontal-gene-transfer-overturn-evolutionary-common-descent"
+		]
+	},
+	{
+		topicSlug: "biology-and-evolution",
+		slug: "evolutionary-innovation-and-convergence",
+		title: "Evolutionary innovation and convergence",
+		description: "How duplication, new genes, functional intermediates, and independent adaptation generate biological novelty.",
+		claimSlugs: [
+			"can-gene-duplication-produce-genuinely-new-biological-functions",
+			"can-new-protein-coding-genes-arise-from-previously-noncoding-dna",
+			"can-complex-eyes-evolve-through-functional-intermediate-stages",
+			"can-unrelated-lineages-independently-evolve-similar-traits"
+		]
+	},
+	{
+		topicSlug: "biology-and-evolution",
+		slug: "cooperation-selection-and-tradeoffs",
+		title: "Cooperation, selection, and tradeoffs",
+		description: "Why selection can maintain cooperation and favor reproductive advantages that carry survival costs.",
+		claimSlugs: [
+			"is-cooperation-incompatible-with-evolution-by-natural-selection",
+			"can-sexual-selection-favor-traits-that-carry-survival-costs"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "lifecycle-and-carbon-accounting",
+		title: "Lifecycle and carbon accounting",
+		description: "Full-chain emissions and energy payback across fossil, nuclear, renewable, and hydrogen pathways.",
+		claimSlugs: [
+			"does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
+			"is-nuclear-power-a-low-carbon-electricity-source-over-its-full-lifecycle",
+			"do-solar-panels-consume-more-energy-to-manufacture-than-they-generate",
+			"do-wind-turbines-consume-more-energy-to-build-than-they-produce",
+			"is-hydrogen-automatically-low-carbon-regardless-of-how-it-is-produced"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "grid-reliability-flexibility-and-resilience",
+		title: "Grid reliability, flexibility, and resilience",
+		description: "How networks, batteries, flexible demand, backup design, and managed charging work together.",
+		claimSlugs: [
+			"can-short-duration-batteries-by-themselves-cover-every-grid-reliability-need",
+			"does-expanding-transmission-and-interconnection-improve-grid-reliability-and-decarbonization",
+			"will-ordinary-rooftop-solar-panels-keep-a-home-powered-during-a-grid-outage",
+			"can-demand-response-programs-reduce-electricity-peaks-and-support-grid-reliability",
+			"can-widespread-electric-vehicle-charging-always-fit-existing-local-grids-without-planning"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "end-use-efficiency-and-technology-fit",
+		title: "End-use efficiency and technology fit",
+		description: "Choosing technologies for the service they provide while accounting for climate, conversion losses, and rebound.",
+		claimSlugs: [
+			"can-modern-heat-pumps-work-efficiently-in-cold-climates",
+			"is-green-hydrogen-the-most-efficient-choice-for-every-energy-use",
+			"do-energy-efficiency-gains-usually-survive-the-rebound-effect"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "materials-community-impacts-and-safeguards",
+		title: "Materials, community impacts, and safeguards",
+		description: "Recycling, extraction, local impacts, and health claims that accompany energy infrastructure.",
+		claimSlugs: [
+			"can-lithium-ion-batteries-be-recycled-and-their-materials-recovered",
+			"does-clean-energy-mineral-mining-have-environmental-and-social-costs",
+			"does-wind-turbine-infrasound-cause-a-distinct-disease-syndrome"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "carbon-capture-and-removal-at-scale",
+		title: "Carbon capture and removal at scale",
+		description: "What facility capture and atmospheric removal can do now, and what has not reached climate-relevant scale.",
+		claimSlugs: [
+			"can-carbon-capture-reduce-facility-emissions-without-eliminating-them",
+			"is-direct-air-capture-already-operating-at-climate-relevant-scale"
+		]
+	},
+	{
+		topicSlug: "energy-and-infrastructure",
+		slug: "nuclear-waste-and-commercialization",
+		title: "Nuclear waste and commercialization",
+		description: "Technical waste disposal and the still-emerging commercial evidence for small modular reactors.",
+		claimSlugs: [
+			"is-deep-geological-disposal-a-technically-viable-path-for-high-level-nuclear-waste",
+			"are-small-modular-reactors-already-proven-cheaper-and-faster-at-commercial-scale"
 		]
 	},
 	{
@@ -618,7 +712,9 @@ export const atlasCollections = [
 			"does-beta-alanine-improve-exercise-performance",
 			"can-beetroot-juice-or-dietary-nitrate-improve-exercise-performance",
 			"does-sodium-bicarbonate-improve-high-intensity-exercise-performance",
-			"are-electrolyte-sports-drinks-necessary-for-ordinary-short-workouts"
+			"are-electrolyte-sports-drinks-necessary-for-ordinary-short-workouts",
+			"does-caffeine-improve-exercise-performance-in-habitual-caffeine-users",
+			"does-citrulline-meaningfully-improve-strength-or-power"
 		]
 	},
 	{
@@ -630,7 +726,9 @@ export const atlasCollections = [
 			"do-bcaa-supplements-add-muscle-or-performance-benefits-when-protein-intake-is-adequate",
 			"do-collagen-supplements-improve-joint-pain-or-training-adaptation",
 			"does-hmb-reliably-add-muscle-or-strength-in-trained-athletes",
-			"do-high-dose-antioxidant-supplements-improve-training-adaptation"
+			"do-high-dose-antioxidant-supplements-improve-training-adaptation",
+			"is-there-a-narrow-30-minute-anabolic-window-for-protein-after-lifting",
+			"does-glutamine-build-muscle-or-improve-performance-in-healthy-athletes"
 		]
 	},
 	{
@@ -641,6 +739,36 @@ export const atlasCollections = [
 		claimSlugs: [
 			"does-ashwagandha-reliably-improve-athletic-performance",
 			"does-tart-cherry-supplementation-speed-recovery-from-hard-exercise"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "endurance-carbohydrate-strategy",
+		title: "Endurance carbohydrate strategy",
+		description: "Carbohydrate loading before long events and fueling while prolonged exercise is underway.",
+		claimSlugs: [
+			"does-carbohydrate-intake-during-prolonged-endurance-exercise-improve-performance",
+			"does-carbohydrate-loading-improve-long-duration-endurance-performance"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "creatine-safety-and-misconceptions",
+		title: "Creatine safety and misconceptions",
+		description: "Direct evidence on dehydration, cramps, hair outcomes, and the limits of common warnings.",
+		claimSlugs: [
+			"does-creatine-increase-dehydration-or-muscle-cramp-risk-during-exercise",
+			"is-creatines-proposed-link-to-hair-loss-established"
+		]
+	},
+	{
+		topicSlug: "sports-nutrition-and-supplements",
+		slug: "micronutrients-blends-and-product-quality",
+		title: "Micronutrients, blends, and product quality",
+		description: "Why correcting a deficiency differs from taking more, and why a product category is not one tested formula.",
+		claimSlugs: [
+			"do-magnesium-supplements-improve-performance-when-deficiency-is-absent",
+			"are-multi-ingredient-pre-workout-supplements-proven-safe-and-effective-as-a-category"
 		]
 	},
 	{
