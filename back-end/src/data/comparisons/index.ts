@@ -1,9 +1,10 @@
 import { caffeineComparison } from "./caffeine.js";
 import { electricityComparison } from "./electricity.js";
+import { heatingComparison } from "./heating.js";
 import { insomniaComparison } from "./insomnia.js";
 import { strengthComparison } from "./strength.js";
 
-export const evidenceComparisons = [electricityComparison, caffeineComparison, strengthComparison, insomniaComparison];
+export const evidenceComparisons = [electricityComparison, caffeineComparison, strengthComparison, insomniaComparison, heatingComparison];
 
 export function comparisonForSlug(slug: string) {
 	return evidenceComparisons.find(comparison => comparison.slug === slug);

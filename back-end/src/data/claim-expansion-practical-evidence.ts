@@ -1,4 +1,5 @@
 import type { SeedClaim } from "./claims.js";
+import { heatingPracticalClaims, heatingPracticalGaps } from "./claim-expansion-practical-heating.js";
 import { sleepPracticalClaims, sleepPracticalGaps } from "./claim-expansion-practical-sleep.js";
 import { strengthPracticalClaims, strengthPracticalGaps } from "./claim-expansion-practical-strength.js";
 
@@ -17,7 +18,8 @@ export const practicalEvidenceGaps = [
 		]
 	},
 	...strengthPracticalGaps,
-	...sleepPracticalGaps
+	...sleepPracticalGaps,
+	...heatingPracticalGaps
 ];
 
 export const practicalEvidenceClaims: SeedClaim[] = [
@@ -212,5 +214,6 @@ export const practicalEvidenceClaims: SeedClaim[] = [
 		]
 	},
 	...strengthPracticalClaims,
-	...sleepPracticalClaims
+	...sleepPracticalClaims,
+	...heatingPracticalClaims
 ];

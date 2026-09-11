@@ -682,6 +682,12 @@ export const atlasCollections = [
 		description: "Choosing technologies for the service they provide while accounting for climate, conversion losses, and rebound.",
 		claimSlugs: [
 			"can-modern-heat-pumps-work-efficiently-in-cold-climates",
+			"do-heat-pump-efficiency-ratings-predict-a-homes-seasonal-performance",
+			"do-air-to-water-heat-pumps-require-underfloor-heating",
+			"must-an-older-home-meet-new-build-insulation-standards-before-a-heat-pump-can-work",
+			"is-a-bigger-heat-pump-always-more-efficient",
+			"does-resistance-backup-always-erase-a-heat-pumps-efficiency-benefit",
+			"do-lower-heat-pump-energy-bills-guarantee-lower-total-cost",
 			"is-green-hydrogen-the-most-efficient-choice-for-every-energy-use",
 			"do-energy-efficiency-gains-usually-survive-the-rebound-effect"
 		]

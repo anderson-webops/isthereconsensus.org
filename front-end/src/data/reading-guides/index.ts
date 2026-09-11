@@ -56,6 +56,14 @@ export const readingGuides: ReadingGuideSummary[] = [
 		topics: ["climate-and-environment", "energy-and-infrastructure"],
 		reviews: [
 			{
+				path: "/consensus/energy-and-infrastructure/do-lower-heat-pump-energy-bills-guarantee-lower-total-cost",
+				label: "Heat-pump bills versus lifetime costs"
+			},
+			{
+				path: "/consensus/energy-and-infrastructure/do-heat-pump-efficiency-ratings-predict-a-homes-seasonal-performance",
+				label: "Heat-pump ratings and measurement boundaries"
+			},
+			{
 				path: "/consensus/climate-and-environment/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
 				label: "Nuclear power and fossil-fuel health risks"
 			},
