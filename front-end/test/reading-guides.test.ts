@@ -11,12 +11,20 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
-	it("has a unique discoverable entry for each initial guide", () => {
+	it("has a unique discoverable entry for all ten planned subjects", () => {
+		assert.ok(readingGuides.length >= 10);
 		assert.equal(new Set(readingGuides.map((guide) => guide.slug)).size, readingGuides.length);
 		for (const slug of [
 			"caffeine-tolerance-and-sleep",
 			"making-sense-of-supplements",
-			"comparing-electricity-options"
+			"comparing-electricity-options",
+			"sleep-and-insomnia",
+			"exercise-without-magic-numbers",
+			"reading-vaccine-evidence",
+			"making-sense-of-nutrition",
+			"understanding-climate-attribution",
+			"understanding-evolution",
+			"interpreting-medical-evidence"
 		])
 			assert.ok(readingGuides.some((guide) => guide.slug === slug));
 	});
@@ -37,12 +45,13 @@ describe("sourced reading guides", () => {
 			assert.equal(new Set(guide.sections.map((section) => section.id)).size, guide.sections.length);
 			const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
 			const body = paragraphs.map((paragraph) => paragraph.text).join(" ");
-			assert.ok(body.split(/\s+/).length >= 500);
+			assert.ok(body.split(/\s+/).length >= 500, `${summary.slug} needs a substantive body`);
 			for (const section of guide.sections) {
 				assert.match(section.id, safeSlug);
 				assert.ok(section.paragraphs.length > 0);
 				for (const paragraph of section.paragraphs) {
 					assert.ok(paragraph.text.length > 80);
+					assert.equal(paragraph.text, paragraph.text.trim());
 					for (const id of paragraph.sources) assert.ok(sources.has(id), `missing citation ${id}`);
 				}
 			}
@@ -93,5 +102,49 @@ describe("sourced reading guides", () => {
 		const source = readFileSync(new URL("../server/routes/sitemap.xml.ts", import.meta.url), "utf8");
 		assert.match(source, /const guideRoutes = readingGuides\.map/);
 		assert.match(source, /\.\.\.staticRoutes, \.\.\.guideRoutes, \.\.\.dynamicRoutes/);
+	});
+
+	it("includes every guide in both-theme accessibility coverage", () => {
+		const source = readFileSync(new URL("../../scripts/a11y-smoke.mjs", import.meta.url), "utf8");
+		for (const guide of readingGuides) assert.ok(source.includes(`"/guides/${guide.slug}"`));
+		assert.ok(source.includes('"light,dark"'));
+	});
+
+	it("preserves important population, correction, and uncertainty qualifications", async () => {
+		const qualifications: Record<string, RegExp[]> = {
+			"sleep-and-insomnia": [/low-certainty/, /medicine alone/, /CBT-I alone/],
+			"exercise-without-magic-numbers": [
+				/residual confounding/,
+				/corrected a supplementary table/,
+				/not.*one reader/
+			],
+			"reading-vaccine-evidence": [
+				/not evidence that vaccination prevents autism/,
+				/observational/,
+				/cannot establish causation/
+			],
+			"making-sense-of-nutrition": [/2018 revised analysis/, /random assignment/, /small and short/],
+			"understanding-climate-attribution": [
+				/2011-2020/,
+				/1850-1900/,
+				/hypothetical/,
+				/not evidence that a region is unaffected/
+			],
+			"understanding-evolution": [
+				/did not descend from chimpanzees living today/,
+				/Genetic drift/,
+				/not.*person's body/
+			],
+			"interpreting-medical-evidence": [
+				/hypothetical/,
+				/one percentage point/,
+				/not a percentage of scientists/,
+				/not.*proof of publication bias/
+			]
+		};
+		for (const [slug, patterns] of Object.entries(qualifications)) {
+			const text = JSON.stringify(await loadReadingGuide(slug));
+			for (const pattern of patterns) assert.match(text, pattern, `${slug}: missing qualification`);
+		}
 	});
 });

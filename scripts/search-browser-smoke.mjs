@@ -14,6 +14,7 @@ import { defaultClaims } from "../back-end/src/data/claims.ts";
 import { defaultTopics } from "../back-end/src/data/topics.ts";
 import { createClaimSearchIndex } from "../back-end/src/utils/claimSearch.ts";
 import { readingGuides } from "../front-end/src/data/reading-guides/index.ts";
+import { loadReadingGuide } from "../front-end/src/data/reading-guides/load.ts";
 
 const topics = defaultTopics.map((topic) => ({
 	...topic,
@@ -210,6 +211,7 @@ try {
 	await page.setViewport({ width: 1280, height: 900 });
 	// Guides use source-controlled narrative, independent of backend availability.
 	for (const guide of readingGuides) {
+		const content = await loadReadingGuide(guide.slug);
 		const response = await fetch(`${baseUrl}/guides/${guide.slug}`);
 		assert.equal(response.status, 200);
 		const html = await response.text();
@@ -228,6 +230,18 @@ try {
 		);
 		assert.equal(articleMetadata.headline, guide.title);
 		assert.equal(articleMetadata.dateModified, guide.checkedAt);
+		assert.deepEqual(
+			articleMetadata.citation,
+			content.sources.map((source) => source.url)
+		);
+		const renderedParagraphs = await page.$$eval(".guide-section > p", (paragraphs) =>
+			paragraphs.map((paragraph) => paragraph.textContent)
+		);
+		for (const paragraph of content.sections.flatMap((section) => section.paragraphs))
+			assert.ok(
+				renderedParagraphs.some((text) => text.includes(paragraph.text)),
+				`${guide.slug}: missing body text`
+			);
 		assert.equal(
 			await page.evaluate(() =>
 				Array.from(document.querySelectorAll('main a[href^="#"]')).every((link) =>
@@ -242,6 +256,57 @@ try {
 			"decimal",
 			"source numbers must remain visible beside the references"
 		);
+		for (const width of [390, 320]) {
+			await page.setViewport({ width, height: 844 });
+			assert.equal(
+				await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1),
+				false,
+				`${guide.slug}: overflow at ${width}px`
+			);
+		}
+		await page.setViewport({ width: 390, height: 844 });
+		await page.evaluate(() => {
+			document.documentElement.style.fontSize = "200%";
+		});
+		assert.equal(
+			await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1),
+			false,
+			`${guide.slug}: overflow at 200% text`
+		);
+		await page.evaluate(() => {
+			document.documentElement.style.fontSize = "";
+		});
+		// Wait for font/layout repaint after text enlargement before a full-page
+		// capture; stale enlarged document bounds can otherwise stretch the shot.
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+		});
+		assert.equal((await page.$$(".reading-guide")).length, 1, `${guide.slug}: duplicate article`);
+		const layout = await page.evaluate(() => ({
+			pageHeight: document.documentElement.scrollHeight,
+			shellHeight: document.querySelector(".site-shell").getBoundingClientRect().height,
+			guideHeight: document.querySelector(".reading-guide").getBoundingClientRect().height,
+			fontSize: getComputedStyle(document.documentElement).fontSize
+		}));
+		assert.ok(
+			layout.pageHeight <= Math.ceil(layout.shellHeight) + 1,
+			`${guide.slug}: content outside the page shell`
+		);
+		if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && guide.slug === "interpreting-medical-evidence") {
+			console.log("Medical guide mobile layout:", layout);
+			mkdirSync(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, { recursive: true });
+			await page.screenshot({
+				path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "medical-guide-mobile.png"),
+				fullPage: true
+			});
+		}
+		await page.setViewport({ width: 1280, height: 900 });
+		if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && guide.slug === "interpreting-medical-evidence")
+			await page.screenshot({
+				path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "medical-guide-desktop.png"),
+				fullPage: true
+			});
 	}
 	await open("/guides");
 	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
@@ -302,21 +367,39 @@ try {
 			fullPage: true
 		});
 	}
-	const exampleReview = readingGuides[0].reviews[0];
-	await open(exampleReview.path);
-	await page.click(`.guide-links a[href="/guides/${readingGuides[0].slug}"]`);
-	await page.waitForSelector(".reading-guide");
-	await page.click(`.guide-review-links a[href="${exampleReview.path}"]`);
-	await page.waitForSelector(".claim-page h1");
-	await open("/consensus/nutrition-and-diet");
-	assert.ok(await page.$('.guide-links a[href="/guides/making-sense-of-supplements"]'));
+	const discoveryPages = new Map();
+	for (const guide of readingGuides) {
+		const exampleReview = guide.reviews[0];
+		await open(exampleReview.path);
+		await page.click(`.guide-links a[href="/guides/${guide.slug}"]`);
+		await page.waitForFunction((title) => document.querySelector("h1")?.textContent === title, {}, guide.title);
+		await page.click(`.guide-review-links a[href="${exampleReview.path}"]`);
+		await page.waitForSelector(".claim-page h1");
+		for (const path of [
+			...guide.reviews.map((review) => review.path),
+			...guide.topics.map((topic) => `/consensus/${topic}`)
+		]) {
+			if (!discoveryPages.has(path)) discoveryPages.set(path, new Set());
+			discoveryPages.get(path).add(guide.slug);
+		}
+	}
+	for (const [path, slugs] of discoveryPages) {
+		const response = await fetch(`${baseUrl}${path}`);
+		assert.equal(response.status, 200, `linked destination ${path}`);
+		const html = await response.text();
+		for (const slug of slugs)
+			assert.ok(html.includes(`href="/guides/${slug}"`), `${path}: missing guide discovery ${slug}`);
+	}
 	await open("/explainers");
 	assert.equal((await page.$$(".guide-links li")).length, readingGuides.length);
 	failures.add("");
 	const independentSitemap = await fetch(`${baseUrl}/sitemap.xml`).then((response) => response.text());
 	for (const guide of readingGuides) assert.ok(independentSitemap.includes(`/guides/${guide.slug}`));
-	const independentGuide = await fetch(`${baseUrl}/guides/${readingGuides[0].slug}`);
-	assert.equal(independentGuide.status, 200);
+	for (const guide of readingGuides) {
+		const independentGuide = await fetch(`${baseUrl}/guides/${guide.slug}`);
+		assert.equal(independentGuide.status, 200);
+		assert.ok((await independentGuide.text()).includes("Sources and their limits"));
+	}
 	failures.clear();
 	assert.equal((await fetch(`${baseUrl}/guides/unknown-reading-guide`)).status, 404);
 	console.log(
