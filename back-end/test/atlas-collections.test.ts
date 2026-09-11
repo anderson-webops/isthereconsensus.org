@@ -121,6 +121,6 @@ describe("evidence atlas collections", () => {
 
 		assert.equal(memberships.length, 1);
 		assert.equal(memberships[0]?.slug, "performance-caffeine-and-gut-health");
-		assert.equal(memberships[0]?.claimCount, 5);
+		assert.equal(memberships[0]?.claimCount, 7);
 	});
 });
