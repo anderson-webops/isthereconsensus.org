@@ -2,7 +2,7 @@
 
 ## Ten guides, September 11, 2026
 
-The ten planned subjects are implemented: caffeine, supplements, energy choices, sleep, exercise, vaccines, nutrition, climate attribution, evolution, and interpreting medical evidence. This completes the authored guide set, not the broader reader-experience goal. Saved reviews, followed-topic updates, editorial feedback, and final whole-goal acceptance remain separate requirements. The final seven guides still require release acceptance before they count as published.
+The ten planned subjects are implemented: caffeine, supplements, energy choices, sleep, exercise, vaccines, nutrition, climate attribution, evolution, and interpreting medical evidence. All ten were publicly accepted in v1.17.0 at `d64fe7cf170a2f4d65a7bc6d0dfd94f0f23e5918` on September 11, 2026. The release records exact public identity, complete guide bodies/citations/metadata, 50 discovery pages, sitemap and unknown-route checks. This completes the guide milestone, not the broader reader-experience goal; see [reader-experience-goal.md](reader-experience-goal.md) for the current state of the remaining requirements.
 
 Guide narratives live alongside the existing frontend explainers, in `front-end/src/data/reading-guides/`. They synthesize and link to the canonical API-backed claim reviews; they do not create duplicate claim records or inflate the 750-claim count. Small discovery metadata is separate from lazily loaded article bodies. Dates are explicit source-check dates, not fabricated expert-review dates or database restart timestamps.
 
@@ -37,4 +37,4 @@ The complete ten-guide tree passed root `npm ci`, install-script policy and nati
 
 The built-browser reading/search suite passed for all ten guides, including exact article paragraphs and citation metadata, 390px and 320px widths, 200% text, and every guide's review-to-guide-to-review journey. All 32 accessibility routes passed in both light and dark modes. Backend runtime, SSR public assets, and SSR route-rule checks passed. Visual inspection confirmed the article remains a single continuous column after text enlargement is reset; the screenshot harness waits for font/layout repaint before full-page capture.
 
-These local results do not accept the public deployment. The existing v1.17.0 milestone will be updated only after GitHub checks pass; its release notes and associated PR will record exact-commit public acceptance separately.
+These local results are distinct from public acceptance. [v1.17.0 release notes](https://github.com/anderson-webops/isthereconsensus.org/releases/tag/v1.17.0) record passed PR #55 and merged-main CI, followed by exact-commit public checks for all ten guides.

@@ -131,3 +131,15 @@ Workflow syntax validation passed. The optional guarded local Actions-security
 scanner did not run because its installed version differs from the approved
 version; it is not counted as a passed check. Public release acceptance remains
 separate from these local results.
+
+### Public acceptance, September 11, 2026
+
+Release v1.18.0 and merged-main CI identify
+`f146045bcaa071935fb91bde394b4b2663dcd726`. The public `/deployment.json`
+reports that exact commit and tag. `scripts/live-reader-library-smoke.mjs`
+passed against it: private/no-store library headers, noindex, anonymous account
+API denial, actual resolver content and browser-local save/follow/reload/removal.
+The production-profile live smoke also passed, including readiness and hidden
+setup diagnostics. No production accounts or database records were created;
+account persistence and signed-session isolation were exercised in the isolated
+MongoDB/browser harness and CI, not by manipulating a real reader's account.

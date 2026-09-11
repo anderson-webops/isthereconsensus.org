@@ -13,6 +13,7 @@ import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
 import puppeteer from "puppeteer";
+import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
 import { Admin } from "../back-end/dist/models/schemas/Admin.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
@@ -604,8 +605,37 @@ try {
 	await clickText(page, "Yes, clear browser library");
 	await browserText(page, "Saved reviews (0)");
 	assert.deepEqual(errors, []);
+	await checkReaderFeedback({
+		api,
+		browser,
+		base,
+		review,
+		userCookie: userA.cookie,
+		adminCookie: editor.cookie,
+		restartBackend: async () => {
+			await stop(backend);
+			await startBackend();
+		},
+		clickText,
+		browserText,
+		browserLogin: async (page) => {
+			const status = await page.evaluate(
+				async ({ password }) =>
+					(
+						await fetch("/api/auth/login", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ email: "editor@example.test", password })
+						})
+					).status,
+				{ password }
+			);
+			assert.equal(status, 200);
+		}
+	});
 	await Admin.updateOne({ _id: actor._id }, { $set: { enabled: false } });
 	await api("/library/account", { cookie: editor.cookie, status: 403 });
+	await api("/admin/reader-feedback", { cookie: editor.cookie, status: 403 });
 	await User.updateOne({ email: "reader-b@example.test" }, { $inc: { sessionVersion: 1 } });
 	await api("/library/account", { cookie: userB.cookie, status: 403 });
 	console.log(
