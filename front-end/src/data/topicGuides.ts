@@ -74,12 +74,13 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterQuestions: [
 			"What do the large population studies say here?",
-			"Is this a public-health consensus or a frontier research question?"
+			"Is this a public-health consensus or a frontier research question?",
+			"Does a familiar treatment improve outcomes, or only feel intuitively helpful?"
 		],
 		starterClaimSlugs: [
-			"do-antibiotics-treat-colds-flu-or-most-viral-respiratory-infections",
 			"do-statins-reduce-heart-attacks-and-strokes-for-people-at-elevated-cardiovascular-risk",
-			"does-sunscreen-use-prevent-skin-cancer"
+			"must-fda-approved-generic-medicines-match-brand-name-quality-and-bioequivalence",
+			"is-fever-itself-usually-dangerous-in-an-otherwise-healthy-child"
 		],
 		evidenceTrail: [
 			{ title: "Systematic reviews", note: "Best for checking whether the effect holds up across many studies." },
@@ -114,12 +115,13 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterQuestions: [
 			"What part of climate science is actually settled?",
-			"What are experts still debating at the edges?"
+			"What are experts still debating at the edges?",
+			"Does this claim confuse local weather, regional impacts, and global trends?"
 		],
 		starterClaimSlugs: [
 			"is-recent-global-warming-mainly-caused-by-human-activity",
-			"is-global-sea-level-rising-and-accelerating-due-to-human-caused-climate-change",
-			"is-extreme-heat-becoming-more-frequent-or-intense-because-of-human-caused-climate-change"
+			"can-scientists-attribute-part-of-a-single-extreme-weather-event-to-climate-change",
+			"can-adaptation-alone-avoid-most-climate-damage-without-cutting-emissions"
 		],
 		evidenceTrail: [
 			{ title: "Assessment reports", note: "Useful for seeing where large literatures converge." },
@@ -151,12 +153,13 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterQuestions: [
 			"Is this headline based on a single study or a broader review?",
-			"What is the real-world risk change, not just the relative risk?"
+			"What is the real-world risk change, not just the relative risk?",
+			"Is the claim about a food, a nutrient, a supplement, or an entire dietary pattern?"
 		],
 		starterClaimSlugs: [
 			"do-most-people-consume-too-much-sodium-and-does-reducing-sodium-lower-blood-pressure",
-			"does-eating-processed-meat-increase-colorectal-cancer-risk",
-			"are-seed-oils-uniquely-toxic-or-inflammatory"
+			"is-whole-fruit-metabolically-equivalent-to-drinking-fruit-juice",
+			"is-intermittent-fasting-proven-to-extend-human-lifespan-through-autophagy"
 		],
 		evidenceTrail: [
 			{ title: "Guidelines", note: "Important when checking what major medical societies currently advise." },

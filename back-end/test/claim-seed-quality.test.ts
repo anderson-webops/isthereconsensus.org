@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { september2026ClinicalClaims } from "../src/data/claim-expansion-2026-09-clinical.js";
 import { september2026DemandDepthClaims } from "../src/data/claim-expansion-2026-09-demand-depth.js";
+import { september2026DemandEssentialsClaims } from "../src/data/claim-expansion-2026-09-demand-essentials.js";
 import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
 import { september2026VisitorDepthClaims } from "../src/data/claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
@@ -2359,6 +2360,117 @@ describe("default claim seed quality", () => {
 			visibleClaimText("can-a-custom-oral-appliance-treat-obstructive-sleep-apnea-when-cpap-is-not-tolerated-or-preferred"),
 			/custom|titratable|follow-up/i
 		);
+	});
+
+	it("adds 30 demand-informed essentials across climate, nutrition, and health", () => {
+		assert.equal(september2026DemandEssentialsClaims.length, 30);
+		assert.ok(defaultClaims.length >= 680, "The demand-essentials tranche must bring the library to 680 claims");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026DemandEssentialsClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026DemandEssentialsClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"climate-and-environment": 10,
+				"health-and-medicine": 10,
+				"nutrition-and-diet": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026DemandEssentialsClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026DemandEssentialsClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing demand-essentials claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-11T04:55:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-11T04:55:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(source =>
+					source.kind === "systematic_review"
+					|| source.kind === "meta_analysis"
+					|| source.kind === "guideline"
+					|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(seeded.sources.every(source => source.url?.startsWith("https://")), `${claim.slug} sources need HTTPS links`);
+			assert.ok(seeded.sources.every(source => !source.url?.includes("consensus.app")), `${claim.slug} should not expose discovery links`);
+			assert.ok(
+				seeded.sources.every(source => !source.doi || source.url === `https://doi.org/${source.doi}`),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(seeded.sources.every(source => source.citationCheckedAt === "2026-09-11T04:55:00.000Z"));
+			assert.ok(seeded.sources.every(source => source.citationStatus !== "retracted"));
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026DemandEssentialsClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Demand-essentials claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the demand-essentials tranche's evidence boundaries and integrity context", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing demand-essentials claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => `${source.title} ${source.note}`)
+			].join(" ");
+		}
+
+		assert.match(
+			visibleClaimText("is-climate-change-making-drought-worse-everywhere"),
+			/region|drought definition|not one global variable/i
+		);
+		assert.match(
+			visibleClaimText("can-solar-geoengineering-safely-substitute-for-cutting-greenhouse-gas-emissions"),
+			/not.*substitute|ocean acidification|governance/i
+		);
+		assert.match(
+			visibleClaimText("does-apple-cider-vinegar-produce-substantial-durable-weight-loss"),
+			/retracted|retraction|unreliable data/i
+		);
+		assert.match(
+			visibleClaimText("are-carnivore-diets-proven-safe-and-nutritionally-adequate-over-the-long-term"),
+			/no long-duration randomized|long-term evidence is absent|not been proven/i
+		);
+		assert.match(
+			visibleClaimText("does-acupuncture-meaningfully-improve-chronic-low-back-pain-beyond-usual-care-or-sham-treatment"),
+			/sham|small|not clinically important/i
+		);
+		assert.match(
+			visibleClaimText("is-fever-itself-usually-dangerous-in-an-otherwise-healthy-child"),
+			/hyperthermia|warning signs|young infant/i
+		);
+
+		const earwax = defaultClaims.find(claim => claim.slug === "are-ear-candles-safe-and-effective-for-removing-earwax");
+		const manipulation = defaultClaims.find(
+			claim => claim.slug === "can-spinal-manipulation-reliably-treat-asthma-hypertension-or-other-non-musculoskeletal-disease"
+		);
+		assert.ok(earwax?.sources.some(source => source.citationStatus === "corrected"));
+		assert.ok(manipulation?.sources.some(source => source.citationStatus === "corrected"));
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

@@ -171,10 +171,28 @@ export const atlasCollections = [
 		claimSlugs: [
 			"does-routine-imaging-improve-uncomplicated-low-back-pain",
 			"does-spinal-manipulation-help-low-back-pain",
+			"does-acupuncture-meaningfully-improve-chronic-low-back-pain-beyond-usual-care-or-sham-treatment",
+			"can-spinal-manipulation-reliably-treat-asthma-hypertension-or-other-non-musculoskeletal-disease",
 			"does-positive-airway-pressure-help-adults-with-obstructive-sleep-apnea",
 			"does-homeopathy-reliably-work-beyond-placebo-for-treating-health-conditions",
 			"do-long-term-opioids-provide-sustained-benefit-for-chronic-non-cancer-pain",
 			"does-fecal-microbiota-transplantation-work-for-recurrent-c-difficile-infection"
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
+		slug: "everyday-symptoms-and-medicine-use",
+		title: "Everyday symptoms and medicine use",
+		description: "Evidence-based choices for common infections, fever, cough, ear care, and generic medicines.",
+		claimSlugs: [
+			"must-fda-approved-generic-medicines-match-brand-name-quality-and-bioequivalence",
+			"do-antibiotics-meaningfully-help-uncomplicated-acute-bronchitis-in-otherwise-healthy-adults",
+			"do-antibiotics-routinely-help-most-acute-sinus-infections",
+			"are-ear-candles-safe-and-effective-for-removing-earwax",
+			"do-oral-over-the-counter-cough-and-cold-medicines-help-young-children-and-are-they-safe",
+			"can-honey-modestly-reduce-acute-cough-in-children-over-age-one",
+			"is-fever-itself-usually-dangerous-in-an-otherwise-healthy-child",
+			"do-fever-reducing-medicines-prevent-febrile-seizures"
 		]
 	},
 	{
@@ -211,7 +229,9 @@ export const atlasCollections = [
 			"have-climate-models-generally-predicted-the-broad-warming-trend",
 			"is-water-vapor-the-main-cause-of-current-global-warming",
 			"is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
-			"did-global-warming-stop-after-1998"
+			"did-global-warming-stop-after-1998",
+			"do-cold-snaps-or-snowy-winters-disprove-global-warming",
+			"is-atmospheric-carbon-dioxide-too-scarce-to-affect-climate"
 		]
 	},
 	{
@@ -230,7 +250,9 @@ export const atlasCollections = [
 			"are-glaciers-and-major-ice-sheets-losing-mass-as-the-climate-warms",
 			"is-arctic-sea-ice-declining-because-of-human-caused-warming",
 			"does-thawing-permafrost-amplify-warming-and-does-it-make-runaway-warming-inevitable",
-			"is-human-caused-climate-change-worsening-pollen-seasons-in-north-america"
+			"is-human-caused-climate-change-worsening-pollen-seasons-in-north-america",
+			"can-scientists-attribute-part-of-a-single-extreme-weather-event-to-climate-change",
+			"is-climate-change-making-drought-worse-everywhere"
 		]
 	},
 	{
@@ -255,7 +277,8 @@ export const atlasCollections = [
 		claimSlugs: [
 			"is-the-ocean-becoming-more-acidic-because-of-human-co2-emissions",
 			"does-ocean-warming-cause-coral-bleaching-and-reef-loss",
-			"is-current-biodiversity-loss-largely-driven-by-human-activity"
+			"is-current-biodiversity-loss-largely-driven-by-human-activity",
+			"are-climate-tipping-points-guaranteed-to-occur-at-exactly-1-5-degrees-celsius"
 		]
 	},
 	{
@@ -270,7 +293,10 @@ export const atlasCollections = [
 			"do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
 			"do-heat-pumps-usually-cut-home-heating-emissions-compared-with-fossil-fuel-heating",
 			"can-planting-trees-alone-solve-climate-change",
-			"can-electricity-grids-remain-reliable-with-high-shares-of-wind-and-solar"
+			"can-electricity-grids-remain-reliable-with-high-shares-of-wind-and-solar",
+			"can-adaptation-alone-avoid-most-climate-damage-without-cutting-emissions",
+			"can-solar-geoengineering-safely-substitute-for-cutting-greenhouse-gas-emissions",
+			"do-wind-turbines-cause-cancer-or-a-distinct-disease-syndrome-through-infrasound"
 		]
 	},
 	{
@@ -282,7 +308,8 @@ export const atlasCollections = [
 			"are-pfas-forever-chemicals-harmful-to-human-health-and-what-do-drinking-water-limits-try-to-prevent",
 			"are-pfas-exposures-linked-to-higher-cholesterol-and-reduced-vaccine-antibody-response",
 			"are-microplastics-in-drinking-water-proven-to-cause-human-health-harms-at-current-exposure-levels",
-			"are-neonicotinoid-insecticides-harmful-to-bees-and-other-pollinators"
+			"are-neonicotinoid-insecticides-harmful-to-bees-and-other-pollinators",
+			"are-biodegradable-or-compostable-plastics-guaranteed-to-break-down-in-nature"
 		]
 	},
 	{
@@ -293,7 +320,8 @@ export const atlasCollections = [
 		claimSlugs: [
 			"does-deforestation-significantly-contribute-to-climate-change-and-biodiversity-loss",
 			"does-livestock-production-contribute-substantially-to-greenhouse-gas-emissions",
-			"does-human-caused-climate-change-reduce-crop-yields-and-threaten-food-security"
+			"does-human-caused-climate-change-reduce-crop-yields-and-threaten-food-security",
+			"does-carbon-dioxide-fertilization-cancel-climate-damage-to-crops-and-ecosystems"
 		]
 	},
 	{
@@ -309,7 +337,8 @@ export const atlasCollections = [
 			"do-industrially-produced-trans-fats-increase-cardiovascular-risk",
 			"does-a-mediterranean-style-diet-reduce-cardiovascular-events-in-high-risk-adults",
 			"does-the-dash-eating-plan-lower-blood-pressure",
-			"do-omega-3-fish-oil-supplements-broadly-prevent-first-heart-attacks-or-strokes"
+			"do-omega-3-fish-oil-supplements-broadly-prevent-first-heart-attacks-or-strokes",
+			"is-coconut-oil-a-heart-healthy-replacement-for-unsaturated-vegetable-oils"
 		]
 	},
 	{
@@ -353,7 +382,13 @@ export const atlasCollections = [
 			"does-eating-organic-food-clearly-improve-long-term-health-outcomes",
 			"do-non-sugar-sweeteners-reliably-help-with-long-term-weight-control",
 			"does-eating-breakfast-cause-weight-loss-or-boost-metabolism",
-			"can-an-alkaline-diet-change-blood-ph-or-treat-cancer"
+			"can-an-alkaline-diet-change-blood-ph-or-treat-cancer",
+			"does-apple-cider-vinegar-produce-substantial-durable-weight-loss",
+			"are-frozen-fruits-and-vegetables-substantially-less-nutritious-than-fresh-produce",
+			"does-microwaving-destroy-more-nutrients-than-other-cooking-methods",
+			"is-whole-fruit-metabolically-equivalent-to-drinking-fruit-juice",
+			"is-intermittent-fasting-proven-to-extend-human-lifespan-through-autophagy",
+			"are-carnivore-diets-proven-safe-and-nutritionally-adequate-over-the-long-term"
 		]
 	},
 	{
@@ -366,7 +401,8 @@ export const atlasCollections = [
 			"does-aspartame-cause-cancer-at-typical-intake-levels",
 			"does-pasteurization-make-milk-safer-than-drinking-raw-milk",
 			"do-whole-grains-and-dietary-fiber-help-lower-colorectal-cancer-risk",
-			"does-msg-cause-headaches-or-serious-health-effects-at-typical-dietary-exposure"
+			"does-msg-cause-headaches-or-serious-health-effects-at-typical-dietary-exposure",
+			"does-eating-soy-increase-breast-cancer-risk-or-recurrence"
 		]
 	},
 	{
@@ -379,7 +415,9 @@ export const atlasCollections = [
 			"does-caffeine-become-less-effective-with-regular-daily-use",
 			"do-high-protein-diets-damage-kidney-function-in-healthy-adults",
 			"does-protein-supplementation-improve-muscle-and-strength-gains-during-resistance-training",
-			"do-probiotics-prevent-antibiotic-associated-diarrhea"
+			"do-probiotics-prevent-antibiotic-associated-diarrhea",
+			"does-ordinary-soy-consumption-lower-testosterone-or-feminize-men",
+			"can-a-well-planned-plant-based-diet-provide-enough-protein-for-adults"
 		]
 	},
 	{
