@@ -168,15 +168,15 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 96,
 		consensusLabel: "Strong consensus on the core framework",
 		snapshot:
-			"Many public disputes about evolution come from language confusion or impossible expectations rather than from serious cracks in the biological evidence.",
+			"Evolutionary history is supported not only by fossils and comparative anatomy, but by genomic signatures such as chromosome fusion and shared viral insertions. Active research tests mechanisms, timing, and exceptions within that framework.",
 		stableCore: [
 			"The scientific meaning of theory is much stronger than the everyday meaning.",
 			"Common descent is supported across fossils, genetics, and comparative biology.",
-			"The active research lives more in mechanism and timing than in whether evolution happened."
+			"Mutation, duplication, selection, drift, recombination, and gene flow can generate, spread, preserve, or remove biological variation."
 		],
 		openQuestions: [
-			"How should educators explain theory without triggering everyday-language confusion?",
-			"Which misconceptions are hardest to correct once they become identity-linked?"
+			"How often do different routes such as duplication, regulatory change, and de novo genes generate important innovations?",
+			"How should branching ancestry be reconstructed when horizontal transfer, incomplete lineage sorting, or hybridization complicates one simple tree?"
 		],
 		whatWouldChangeMinds: [
 			"Evidence that breaks common descent across multiple independent lines of biology.",
@@ -184,16 +184,16 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		commonMisreads: [
 			"'Just a theory' imports everyday speech into a technical scientific context.",
-			"People often demand a perfectly complete fossil record before accepting a historical explanation."
+			"A trait can retain a secondary function and still be vestigial with respect to an ancestral primary function."
 		],
 		starterQuestions: [
 			"What does theory mean in science here?",
 			"What evidence would actually break the current evolutionary framework?"
 		],
 		starterClaimSlugs: [
-			"is-evolution-just-a-theory",
-			"can-evolution-be-observed-happening-today",
-			"does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"
+			"does-human-chromosome-2-preserve-evidence-of-an-ancestral-chromosome-fusion",
+			"are-transitional-fossils-missing-from-the-fossil-record",
+			"can-gene-duplication-produce-genuinely-new-biological-functions"
 		],
 		evidenceTrail: [
 			{ title: "Comparative genetics", note: "Useful for seeing why multiple lines of biology converge." },
@@ -867,7 +867,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 87,
 		consensusLabel: "Strong physical foundations, system-dependent choices",
 		snapshot:
-			"Energy claims become clearer when the full system boundary is visible: extraction, conversion losses, lifecycle emissions, networks, reliability services, local impacts, and time all matter more than a technology label.",
+			"Energy claims become clearer when the full system boundary is visible: extraction, lifecycle emissions, networks, reliability services, local impacts, and commercial maturity all matter more than a technology label.",
 		stableCore: [
 			"No energy technology is impact-free, and lifecycle comparison is more informative than counting only visible emissions or materials.",
 			"Reliable low-emission systems use portfolios of generation, grids, storage, demand flexibility, efficiency, and firm resources rather than one universal device.",
@@ -883,16 +883,16 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		commonMisreads: [
 			"A lower-emission option is not necessarily zero-emission or best for every location.",
-			"A power rating, capture percentage, or target-level gain may omit duration, upstream emissions, or facility energy."
+			"A low-carbon generator, a home outage backup system, and a commercially mature project are three different claims."
 		],
 		starterQuestions: [
 			"What is the complete lifecycle and what service must the system provide?",
 			"Is this result a model, a laboratory demonstration, a commercial plant, or verified system-scale performance?"
 		],
 		starterClaimSlugs: [
-			"does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
-			"can-modern-heat-pumps-work-efficiently-in-cold-climates",
-			"is-direct-air-capture-already-operating-at-climate-relevant-scale"
+			"is-nuclear-power-a-low-carbon-electricity-source-over-its-full-lifecycle",
+			"will-ordinary-rooftop-solar-panels-keep-a-home-powered-during-a-grid-outage",
+			"can-widespread-electric-vehicle-charging-always-fit-existing-local-grids-without-planning"
 		],
 		evidenceTrail: [
 			{
@@ -1125,11 +1125,11 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 76,
 		consensusLabel: "Several real effects, many narrow or overstated",
 		snapshot:
-			"A supplement can alter a biomarker yet do little for performance, or provide a small benefit only in a particular event. Useful reviews compare effect size, training status, diet, dose, adverse effects, and real competition demands.",
+			"A fueling strategy or supplement can help one event yet do little elsewhere. Useful reviews separate well-supported tools such as event-specific carbohydrate and caffeine from biomarker claims, proprietary blends, and deficiency correction.",
 		stableCore: [
 			"Adequate energy, protein, training, sleep, and recovery matter more than most supplements.",
 			"A few supplements have repeatable domain-specific effects, but average gains are usually modest.",
-			"Product quality, contamination, side effects, and prohibited-substance risk are part of the evidence decision."
+			"Product identity, dose disclosure, contamination, side effects, sleep, and prohibited-substance risk are part of the evidence decision."
 		],
 		openQuestions: [
 			"Which responder profiles and event conditions make small average effects practically worthwhile?",
@@ -1141,16 +1141,16 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		commonMisreads: [
 			"A plausible mechanism or visible sensation is not proof of a useful performance effect.",
-			"Statistical significance can describe a change too small or unreliable to matter to an athlete."
+			"An ingredient effect, a nutrient-deficiency benefit, and a whole branded blend are not interchangeable evidence."
 		],
 		starterQuestions: [
 			"What exact event, outcome, dose, and training population were studied?",
 			"Was the supplement compared with adequate nutrition and a credible placebo?"
 		],
 		starterClaimSlugs: [
-			"does-beta-alanine-improve-exercise-performance",
-			"do-bcaa-supplements-add-muscle-or-performance-benefits-when-protein-intake-is-adequate",
-			"do-high-dose-antioxidant-supplements-improve-training-adaptation"
+			"does-caffeine-improve-exercise-performance-in-habitual-caffeine-users",
+			"does-creatine-increase-dehydration-or-muscle-cramp-risk-during-exercise",
+			"does-carbohydrate-intake-during-prolonged-endurance-exercise-improve-performance"
 		],
 		evidenceTrail: [
 			{

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { september2026ClinicalClaims } from "../src/data/claim-expansion-2026-09-clinical.js";
+import { september2026DemandDepthClaims } from "../src/data/claim-expansion-2026-09-demand-depth.js";
 import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { defaultClaims } from "../src/data/claims.js";
@@ -2130,6 +2131,118 @@ describe("default claim seed quality", () => {
 		assert.match(visibleClaimText("are-supervised-consumption-sites-proven-to-reduce-population-overdose-mortality"), /onsite|population/i);
 		assert.match(visibleClaimText("are-fentanyl-test-strips-proven-to-prevent-overdose-deaths"), /negative result|not.*safe|mortality/i);
 		assert.match(visibleClaimText("does-opioid-detoxification-without-ongoing-treatment-reduce-overdose-risk"), /tolerance|ongoing treatment/i);
+	});
+
+	it("adds 30 demand-led reviews across evolution, energy, and sports nutrition", () => {
+		assert.equal(september2026DemandDepthClaims.length, 30);
+		assert.ok(defaultClaims.length >= 620, "The demand-depth tranche must bring the library to 620 claims");
+		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026DemandDepthClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026DemandDepthClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"biology-and-evolution": 10,
+				"energy-and-infrastructure": 10,
+				"sports-nutrition-and-supplements": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026DemandDepthClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026DemandDepthClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing demand-depth claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-10T23:45:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T23:45:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(
+					source =>
+						source.kind === "systematic_review"
+						|| source.kind === "meta_analysis"
+						|| source.kind === "guideline"
+						|| source.kind === "consensus_statement"
+						|| (source.kind === "context" && /review|synthesi/i.test(`${source.title} ${source.note}`))
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(
+				seeded.sources.every(source => source.url?.startsWith("https://")),
+				`${claim.slug} sources should have direct HTTPS landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(source => !source.url?.includes("consensus.app")),
+				`${claim.slug} should not expose discovery-platform tracking URLs`
+			);
+			assert.ok(
+				seeded.sources.every(source => !source.doi || source.url === `https://doi.org/${source.doi}`),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(source => source.citationCheckedAt === "2026-09-10T23:45:00.000Z"),
+				`${claim.slug} must record the tranche citation review`
+			);
+			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026DemandDepthClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Demand-depth claim "${claim.title}" is too similar to existing "${
+						existing.title
+					}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the demand-depth tranche's uncertainty and product boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing demand-depth claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		const infrasound = visibleClaimText("does-wind-turbine-infrasound-cause-a-distinct-disease-syndrome");
+		assert.match(infrasound, /does not support a distinct disease syndrome/i);
+		assert.match(infrasound, /annoyance|sleep disturbance/i);
+		assert.match(infrasound, /long-term clinical outcomes is thinner|long-term.*limited/i);
+
+		const modularReactors = visibleClaimText("are-small-modular-reactors-already-proven-cheaper-and-faster-at-commercial-scale");
+		assert.match(modularReactors, /a few.*operate|small number.*operate/i);
+		assert.match(modularReactors, /not yet|not broadly proven|prospective/i);
+
+		const creatineHair = visibleClaimText("is-creatines-proposed-link-to-hair-loss-established");
+		assert.match(creatineHair, /12-week randomized/i);
+		assert.match(creatineHair, /one.*trial|direct evidence is limited/i);
+		assert.match(creatineHair, /long-term|years/i);
+
+		const preWorkout = visibleClaimText("are-multi-ingredient-pre-workout-supplements-proven-safe-and-effective-as-a-category");
+		assert.match(preWorkout, /formula|product-specific|category/i);
+		assert.match(preWorkout, /caffeine|stimulant/i);
+		assert.match(preWorkout, /proprietary blend|contaminated|contamination/i);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

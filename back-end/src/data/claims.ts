@@ -20,6 +20,7 @@ import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
 import { september2026ClinicalClaims } from "./claim-expansion-2026-09-clinical.js";
+import { september2026DemandDepthClaims } from "./claim-expansion-2026-09-demand-depth.js";
 import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healthspan.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 
@@ -27207,7 +27208,8 @@ const rawClaims: SeedClaim[] = [
 	...august2026EncyclopediaClaims,
 	...september2026TrafficClaims,
 	...september2026HealthspanClaims,
-	...september2026ClinicalClaims
+	...september2026ClinicalClaims,
+	...september2026DemandDepthClaims
 ];
 
 export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
