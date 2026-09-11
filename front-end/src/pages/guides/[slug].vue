@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { siteUrl } from "~/constants";
+import { comparisonsForGuide } from "~/data/comparisons";
 import { readingGuides } from "~/data/reading-guides";
 import { loadReadingGuide } from "~/data/reading-guides/load";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -71,6 +73,7 @@ useHead({
 			<h2 id="guide-takeaway-title">The short answer</h2>
 			<p>{{ guide.takeaway }}</p>
 		</section>
+		<ComparisonLinks :comparisons="comparisonsForGuide(`/guides/${slug}`)" />
 		<details class="guide-contents">
 			<summary>In this guide</summary>
 			<nav aria-label="In this guide">

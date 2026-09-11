@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
+import { evidenceComparisons } from "~/data/comparisons";
 import { evergreenExplainers } from "~/data/explainers";
 import { readingGuides } from "~/data/reading-guides";
 
@@ -26,6 +28,7 @@ useStaticPageMeta({
 		</header>
 
 		<ReadingGuideLinks :guides="readingGuides" />
+		<ComparisonLinks :comparisons="evidenceComparisons" />
 
 		<section class="explainer-grid">
 			<NuxtLink

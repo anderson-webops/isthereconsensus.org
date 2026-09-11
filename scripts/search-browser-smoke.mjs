@@ -15,6 +15,7 @@ import { defaultTopics } from "../back-end/src/data/topics.ts";
 import { createClaimSearchIndex } from "../back-end/src/utils/claimSearch.ts";
 import { readingGuides } from "../front-end/src/data/reading-guides/index.ts";
 import { loadReadingGuide } from "../front-end/src/data/reading-guides/load.ts";
+import { checkComparisons } from "./lib/check-comparisons.mjs";
 
 const topics = defaultTopics.map((topic) => ({
 	...topic,
@@ -209,6 +210,7 @@ try {
 		await page.waitForFunction(() => Boolean(document.querySelector("#__nuxt")?.__vue_app__));
 	}
 	await page.setViewport({ width: 1280, height: 900 });
+	await checkComparisons({ page, baseUrl, open });
 	// Guides use source-controlled narrative, independent of backend availability.
 	for (const guide of readingGuides) {
 		const content = await loadReadingGuide(guide.slug);

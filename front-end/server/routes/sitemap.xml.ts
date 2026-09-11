@@ -1,4 +1,5 @@
 import type { H3Event } from "h3";
+import { evidenceComparisons } from "../../src/data/comparisons";
 import { readingGuides } from "../../src/data/reading-guides";
 
 const httpPattern = /^https?:\/\//;
@@ -45,6 +46,7 @@ export default defineEventHandler(async (event) => {
 		{ path: "/community-guidelines" },
 		{ path: "/conflicts-and-funding" },
 		{ path: "/consensus" },
+		{ path: "/compare" },
 		{ path: "/copyright-and-trademark" },
 		{ path: "/corrections" },
 		{ path: "/expert-review-program" },
@@ -89,7 +91,11 @@ export default defineEventHandler(async (event) => {
 
 	const seen = new Set<string>();
 	const guideRoutes = readingGuides.map((guide) => ({ path: `/guides/${guide.slug}`, lastmod: guide.checkedAt }));
-	const body = [...staticRoutes, ...guideRoutes, ...dynamicRoutes]
+	const comparisonRoutes = evidenceComparisons.map((comparison) => ({
+		path: `/compare/${comparison.slug}`,
+		lastmod: comparison.checkedAt
+	}));
+	const body = [...staticRoutes, ...guideRoutes, ...comparisonRoutes, ...dynamicRoutes]
 		.filter((entry) => {
 			if (seen.has(entry.path)) return false;
 			seen.add(entry.path);
