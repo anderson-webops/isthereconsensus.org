@@ -8,6 +8,14 @@ export const electricityComparison: EvidenceComparison = {
 	description:
 		"Compare generation technologies using the same published emissions measure, then check what the comparison leaves out.",
 	checkedAt: "2026-09-11",
+	readerUpdates: [{
+		id: "de80df99-1514-43d0-8e39-f54d893740c1",
+		date: "2026-09-11T19:27:39Z",
+		kind: "new_comparison",
+		summary: "Added a same-measure comparison of electricity generation emissions, with life-cycle boundaries and whole-grid limitations made explicit.",
+		bottomLineImpact: "new",
+		sourceIds: ["nrel-2021"]
+	}],
 	datasetLabel: "NREL's September 2021 literature compilation",
 	resultNote: "Published medians hide variation; these are not predictions.",
 	measureNote:

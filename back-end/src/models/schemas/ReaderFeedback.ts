@@ -6,6 +6,7 @@ const feedbackSchema = new Schema(
 		_id: { type: String, required: true, match: /^[a-f\d]{64}$/ },
 		kind: { type: String, required: true, enum: feedbackKinds },
 		claimId: { type: Schema.Types.ObjectId, ref: "Claim" },
+		comparisonSlug: { type: String, maxlength: 100, match: /^[a-z0-9]+(?:-[a-z0-9]+)*$/ },
 		topicId: { type: Schema.Types.ObjectId, ref: "Topic" },
 		helpful: { type: Boolean },
 		area: { type: String, enum: ["source", "population", "outcome", "explanation", "other"] },
@@ -41,6 +42,7 @@ const feedbackSchema = new Schema(
 feedbackSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 feedbackSchema.index({ status: 1, priority: -1, createdAt: -1, _id: -1 });
 feedbackSchema.index({ claimId: 1, createdAt: -1 });
+feedbackSchema.index({ comparisonSlug: 1, createdAt: -1 });
 feedbackSchema.index({ topicId: 1, createdAt: -1 });
 
 export const ReaderFeedback = mongoose.model("ReaderFeedback", feedbackSchema);

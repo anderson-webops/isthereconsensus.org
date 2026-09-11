@@ -13,14 +13,16 @@ import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
 import puppeteer from "puppeteer";
-import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import { evidenceComparisons } from "../back-end/dist/data/comparisons/index.js";
+import { selectedComparisonUpdates } from "../back-end/dist/data/comparisons/updates.js";
 import { Admin } from "../back-end/dist/models/schemas/Admin.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js";
 import { User } from "../back-end/dist/models/schemas/User.js";
-import "../back-end/dist/models/schemas/Topic.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
+import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import "../back-end/dist/models/schemas/Topic.js";
 
 const directory = mkdtempSync(join(tmpdir(), "consensus-reader-smoke-"));
 const databaseName = `reader_library_smoke_${randomUUID().replaceAll("-", "")}`;
@@ -51,10 +53,11 @@ function start(command, args, env) {
 	children.add(child);
 	processes.set(child, "");
 	child.on("error", (error) => processes.set(child, error.message));
-	for (const stream of [child.stdout, child.stderr])
+	for (const stream of [child.stdout, child.stderr]) {
 		stream.on("data", (data) => {
 			processes.set(child, (processes.get(child) + data).slice(-4000));
 		});
+	}
 	return child;
 }
 async function stop(child) {
@@ -215,7 +218,11 @@ try {
 	assert.ok(review && second);
 	const reviewId = String(review._id);
 	const topicId = String(review.topic._id);
-	const chosen = { savedReviewIds: [reviewId], followedTopicIds: [topicId], savedComparisonSlugs: ["electricity-emissions"] };
+	const chosen = {
+		savedReviewIds: [reviewId],
+		followedTopicIds: [topicId],
+		savedComparisonSlugs: ["electricity-emissions"]
+	};
 	const absent = new mongoose.Types.ObjectId().toString();
 	const userA = await api("/auth/register", {
 		method: "POST",
@@ -243,7 +250,11 @@ try {
 		{ ...chosen, revision: 0, owner: String(actor._id) },
 		{ ...chosen, revision: 0, password: "not stored" },
 		{ ...chosen, revision: 0, savedReviewIds: [reviewId, reviewId] },
-		...[["../account"], ["electricity-emissions", "electricity-emissions"], Array.from({ length: 51 }, (_, i) => `comparison-${i}`)].map(savedComparisonSlugs => ({ ...chosen, revision: 0, savedComparisonSlugs }))
+		...[
+			["../account"],
+			["electricity-emissions", "electricity-emissions"],
+			Array.from({ length: 51 }, (_, i) => `comparison-${i}`)
+		].map((savedComparisonSlugs) => ({ ...chosen, revision: 0, savedComparisonSlugs }))
 	]) {
 		await api("/library/account", { method: "PATCH", cookie: userA.cookie, body, status: 400 });
 	}
@@ -266,16 +277,41 @@ try {
 	});
 	assert.deepEqual((await api("/library/account", { cookie: userB.cookie })).data, { ...empty, revision: 0 });
 	assert.deepEqual((await api("/library/account", { cookie: editor.cookie })).data, { ...empty, revision: 0 });
-	await api("/library/account", { method: "PATCH", cookie: editor.cookie, body: { ...empty, revision: 0, savedComparisonSlugs: ["unpublished-comparison"] }, status: 422 });
+	await api("/library/account", {
+		method: "PATCH",
+		cookie: editor.cookie,
+		body: { ...empty, revision: 0, savedComparisonSlugs: ["unpublished-comparison"] },
+		status: 422
+	});
 	const legacySelection = { savedReviewIds: [], followedTopicIds: [] };
-	const editorSave = async body => (await api("/library/account", { method: "PATCH", cookie: editor.cookie, body })).data;
+	const editorSave = async (body) =>
+		(await api("/library/account", { method: "PATCH", cookie: editor.cookie, body })).data;
 	assert.deepEqual(await editorSave({ ...legacySelection, revision: 0 }), { ...empty, revision: 1 });
 	await editorSave({ ...empty, revision: 1, savedComparisonSlugs: ["caffeine-dose-and-sleep"] });
-	assert.deepEqual((await editorSave({ ...legacySelection, revision: 2 })).savedComparisonSlugs, ["caffeine-dose-and-sleep"], "Older clients must preserve comparison saves.");
+	assert.deepEqual(
+		(await editorSave({ ...legacySelection, revision: 2 })).savedComparisonSlugs,
+		["caffeine-dose-and-sleep"],
+		"Older clients must preserve comparison saves."
+	);
 	assert.deepEqual((await editorSave({ ...empty, revision: 3 })).savedComparisonSlugs, []);
-	await ReaderLibrary.updateOne({ _id: `admin:${actor._id}` }, { $set: { savedComparisonSlugs: ["withdrawn-comparison"] } });
-	assert.deepEqual((await api("/library/resolve", { method: "POST", body: { ...empty, savedComparisonSlugs: ["withdrawn-comparison"] } })).data.comparisons, []);
-	assert.deepEqual((await editorSave({ ...empty, revision: 4 })).savedComparisonSlugs, [], "Withdrawn references remain removable.");
+	await ReaderLibrary.updateOne(
+		{ _id: `admin:${actor._id}` },
+		{ $set: { savedComparisonSlugs: ["withdrawn-comparison"] } }
+	);
+	assert.deepEqual(
+		(
+			await api("/library/resolve", {
+				method: "POST",
+				body: { ...empty, savedComparisonSlugs: ["withdrawn-comparison"] }
+			})
+		).data.comparisons,
+		[]
+	);
+	assert.deepEqual(
+		(await editorSave({ ...empty, revision: 4 })).savedComparisonSlugs,
+		[],
+		"Withdrawn references remain removable."
+	);
 	const concurrent = await Promise.all(
 		[chosen, empty].map((body) =>
 			fetch(`${base}/api/library/account`, {
@@ -417,6 +453,40 @@ try {
 	assert.equal(last.nextCursor, null);
 	assert.equal(new Set([...first.updates, ...last.updates].map((event) => event.id)).size, 35);
 	assert.doesNotMatch(JSON.stringify([first, last]), /Expired event/);
+	const comparisonOnly = { ...empty, savedComparisonSlugs: ["electricity-emissions"], includeComparisons: true };
+	const expectedComparisonEvents = (saved, topics) => {
+		const now = new Date();
+		return selectedComparisonUpdates(
+			evidenceComparisons,
+			saved,
+			topics,
+			now,
+			new Date(now.getTime() - 90 * 86400000)
+		);
+	};
+	const comparisonPage = await feed(comparisonOnly);
+	assert.equal(
+		comparisonPage.updates.length,
+		expectedComparisonEvents(comparisonOnly.savedComparisonSlugs, []).length
+	);
+	assert.ok(comparisonPage.updates.every((row) => row.comparison?.slug === "electricity-emissions" && !row.review));
+	assert.deepEqual((await feed({ ...comparisonOnly, includeComparisons: false })).updates, []);
+	assert.deepEqual((await feed({ ...comparisonOnly, savedComparisonSlugs: ["withdrawn-comparison"] })).updates, []);
+	const mixedSelection = { ...chosen, includeComparisons: true };
+	const mixedFirst = await feed(mixedSelection);
+	const mixedLast = await feed(mixedSelection, mixedFirst.nextCursor);
+	const mixed = [...mixedFirst.updates, ...mixedLast.updates];
+	const expected = expectedComparisonEvents(chosen.savedComparisonSlugs, [review.topic.slug]);
+	assert.equal(mixed.length, 35 + expected.length);
+	assert.equal(new Set(mixed.map((row) => row.id)).size, mixed.length);
+	assert.equal(mixedLast.nextCursor, null);
+	assert.equal(mixed.filter((row) => row.comparison).length, expected.length);
+	assert.ok(mixed.every((row) => Boolean(row.review) !== Boolean(row.comparison)));
+	assert.ok(
+		[...first.updates, ...last.updates].every((row) => row.review && !row.comparison),
+		"Old clients remain review-only even with saved comparisons."
+	);
+	await api("/library/updates", { method: "POST", body: { ...chosen, includeComparisons: "true" }, status: 400 });
 	await api("/library/updates", { method: "POST", body: { ...chosen, cursor: "bad-cursor" }, status: 400 });
 	await ClaimSource.updateMany({ claim: fixtureId }, { $set: { citationStatus: "retracted" } });
 	await recordSeedReaderAnnouncement(fixtureId, { ...seedAnnouncement, id: randomUUID() });
@@ -430,7 +500,11 @@ try {
 	await api("/library/account", {
 		method: "PATCH",
 		cookie: editor.cookie,
-		body: { ...empty, savedReviewIds: [String(fixtureId)], revision: (await api("/library/account", { cookie: editor.cookie })).data.revision },
+		body: {
+			...empty,
+			savedReviewIds: [String(fixtureId)],
+			revision: (await api("/library/account", { cookie: editor.cookie })).data.revision
+		},
 		status: 422
 	});
 	assert.equal(
@@ -526,7 +600,17 @@ try {
 	await browserText(page, "Bottom line changed");
 	assert.equal(await page.$$eval("#reader-updates li", (rows) => rows.length), 30);
 	await clickText(page, "Load older updates");
-	await page.waitForFunction(() => document.querySelectorAll("#reader-updates li").length === 36);
+	const browserUpdateCount =
+		36 + expectedComparisonEvents(["strength-training-supplements"], [review.topic.slug]).length;
+	await page.waitForFunction(
+		(count) => document.querySelectorAll("#reader-updates li").length === count,
+		{},
+		browserUpdateCount
+	);
+	assert.equal(
+		await page.$$eval('#reader-updates a[href^="/compare/"]', (nodes) => nodes.length),
+		browserUpdateCount - 36
+	);
 	assert.equal(await page.evaluate(() => document.body.innerText.includes("Load older updates")), false);
 	await page.addScriptTag({ path: createRequire(import.meta.url).resolve("axe-core/axe.min.js") });
 	for (const mode of ["light", "dark"]) {
@@ -552,8 +636,10 @@ try {
 			mkdirSync(process.env.READER_SMOKE_SCREENSHOT_DIR, { recursive: true });
 			for (const width of [390, 1280]) {
 				await page.setViewport({ width, height: 900 });
-				await page.$eval("#saved-comparisons", element => element.scrollIntoView());
-				await page.screenshot({ path: resolve(process.env.READER_SMOKE_SCREENSHOT_DIR, `saved-comparisons-${mode}-${width}.png`) });
+				await page.$eval("#saved-comparisons", (element) => element.scrollIntoView());
+				await page.screenshot({
+					path: resolve(process.env.READER_SMOKE_SCREENSHOT_DIR, `saved-comparisons-${mode}-${width}.png`)
+				});
 			}
 		}
 	}
@@ -601,8 +687,8 @@ try {
 	await clickText(page, "Copy browser saves and follows to my account");
 	await browserText(page, "Saved to your account.");
 	await browserText(page, "Saved comparisons (2)");
-	await page.waitForSelector('#saved-comparisons button:not([disabled])');
-	await page.click('#saved-comparisons button');
+	await page.waitForSelector("#saved-comparisons button:not([disabled])");
+	await page.click("#saved-comparisons button");
 	await browserText(page, "Saved comparisons (1)");
 	await clickText(page, "Remove");
 	await browserText(page, "Saved reviews (0)");
@@ -639,6 +725,19 @@ try {
 	await clickText(page, "Clear browser library…");
 	await clickText(page, "Yes, clear browser library");
 	await browserText(page, "Saved reviews (0)");
+	await page.goto(`${base}/compare/electricity-emissions`, { waitUntil: "networkidle0" });
+	await clickText(page, "Save comparison");
+	await page.goto(`${base}/library`, { waitUntil: "networkidle0" });
+	await browserText(page, "Saved comparisons (1)");
+	await page.waitForFunction(() => !document.body.innerText.includes("Loading updates…"));
+	assert.equal(
+		await page.$$eval("#reader-updates li", (nodes) => nodes.length),
+		expectedComparisonEvents(["electricity-emissions"], []).length
+	);
+	assert.equal(await page.$('#reader-updates a[href^="/consensus/"]'), null);
+	await clickText(page, "Clear browser library…");
+	await clickText(page, "Yes, clear browser library");
+	await browserText(page, "Saved comparisons (0)");
 	assert.deepEqual(errors, []);
 	await checkReaderFeedback({
 		api,

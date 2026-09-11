@@ -4,7 +4,8 @@ import type { IReaderUpdate } from "../utils/readerUpdates.js";
 import express from "express";
 import mongoose from "mongoose";
 import { z } from "zod";
-import { comparisonForSlug } from "../data/comparisons/index.js";
+import { comparisonForSlug, evidenceComparisons } from "../data/comparisons/index.js";
+import { compareUpdatePosition, selectedComparisonUpdates } from "../data/comparisons/updates.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Claim } from "../models/schemas/Claim.js";
 import { MAX_FOLLOWED_TOPICS, MAX_SAVED_REVIEWS, ReaderLibrary } from "../models/schemas/ReaderLibrary.js";
@@ -38,7 +39,8 @@ const replacement = selection
 			.max(Number.MAX_SAFE_INTEGER - 1)
 	})
 	.strict();
-const updateRequest = selection.extend({ cursor: z.string().max(400).optional() }).strict();
+// Older clients send savedComparisonSlugs but still expect review-only rows.
+const updateRequest = selection.extend({ cursor: z.string().max(400).optional(), includeComparisons: z.boolean().optional() }).strict();
 
 export type LoadVisibleClaims = (claimIds: string[]) => Promise<IClaim[]>;
 
@@ -192,57 +194,58 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 				topic: { $in: parsed.data.followedTopicIds.map(value => new mongoose.Types.ObjectId(value)) }
 			});
 		}
-		if (!selected.length) return res.json({ updates: [], nextCursor: null, asOf, windowStart });
 		try {
-			const rows = await Claim.aggregate<{ claimId: mongoose.Types.ObjectId; update: IReaderUpdate }>([
-				{
-					$match: {
-						"status": "published",
-						"$or": selected,
-						"readerUpdates.date": { $gte: windowStart, $lte: asOf }
-					}
-				},
-				{ $unwind: "$readerUpdates" },
-				{
-					$match: {
-						"readerUpdates.date": { $gte: windowStart, $lte: asOf },
-						...(cursor
-							? {
-									$or: [
-										{ "readerUpdates.date": { $lt: new Date(cursor.before) } },
-										{
-											"readerUpdates.date": new Date(cursor.before),
-											"readerUpdates.id": { $lt: cursor.id }
+			const claimRows = selected.length
+				? await Claim.aggregate<{ claimId: mongoose.Types.ObjectId; update: IReaderUpdate }>([
+						{
+							$match: {
+								"status": "published",
+								"$or": selected,
+								"readerUpdates.date": { $gte: windowStart, $lte: asOf }
+							}
+						},
+						{ $unwind: "$readerUpdates" },
+						{
+							$match: {
+								"readerUpdates.date": { $gte: windowStart, $lte: asOf },
+								...(cursor
+									? {
+											$or: [
+												{ "readerUpdates.date": { $lt: new Date(cursor.before) } },
+												{
+													"readerUpdates.date": new Date(cursor.before),
+													"readerUpdates.id": { $lt: cursor.id }
+												}
+											]
 										}
-									]
-								}
-							: {})
-					}
-				},
-				{ $sort: { "readerUpdates.date": -1, "readerUpdates.id": -1 } },
-				{ $limit: 31 },
-				{ $project: { _id: 0, claimId: "$_id", update: "$readerUpdates" } }
-			]).option({ maxTimeMS: 5000 });
+									: {})
+							}
+						},
+						{ $sort: { "readerUpdates.date": -1, "readerUpdates.id": -1 } },
+						{ $limit: 31 },
+						{ $project: { _id: 0, claimId: "$_id", update: "$readerUpdates" } }
+					]).option({ maxTimeMS: 5000 })
+				: [];
+			const topics = parsed.data.includeComparisons && parsed.data.followedTopicIds.length
+				? await Topic.find({ _id: { $in: parsed.data.followedTopicIds } }).select("slug").maxTimeMS(5000).lean()
+				: [];
+			const comparisonRows = parsed.data.includeComparisons
+				? selectedComparisonUpdates(evidenceComparisons, parsed.data.savedComparisonSlugs ?? [], topics.map(topic => topic.slug), asOf, windowStart, cursor)
+				: [];
+			const rows = [...claimRows, ...comparisonRows].sort((a, b) => compareUpdatePosition(a.update, b.update)).slice(0, 31);
 			const page = rows.slice(0, 30);
-			const visible = await loadVisibleClaims([...new Set(page.map(row => String(row.claimId)))]);
+			const claimIds = [...new Set(page.flatMap(row => "claimId" in row ? [String(row.claimId)] : []))];
+			const visible = claimIds.length ? await loadVisibleClaims(claimIds) : [];
 			const claims = new Map(visible.map(claim => [String(claim._id), claim]));
 			const last = page.at(-1);
 			return res.json({
-				updates: page.flatMap(({ claimId, update }) => {
-					const claim = claims.get(String(claimId));
-					return claim
-						? [
-								{
-									id: update.id,
-									date: update.date,
-									kind: update.kind,
-									summary: update.summary,
-									bottomLineImpact: update.bottomLineImpact,
-									review: toPublicClaimSummary(claim)
-								}
-							]
-						: [];
-				}),
+				updates: page.map((row) => {
+					const { update } = row;
+					const fields = { id: update.id, date: update.date, kind: update.kind, summary: update.summary, bottomLineImpact: update.bottomLineImpact };
+					if ("comparison" in row) return { ...fields, comparison: row.comparison };
+					const claim = claims.get(String(row.claimId));
+					return claim ? { ...fields, review: toPublicClaimSummary(claim) } : null;
+				}).filter(row => row !== null),
 				nextCursor:
 					rows.length > 30 && last ? encodeReaderUpdateCursor(last.update.date, last.update.id, asOf) : null,
 				asOf,

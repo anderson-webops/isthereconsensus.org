@@ -8,6 +8,14 @@ export const strengthComparison: EvidenceComparison = {
 	description:
 		"Protein, creatine, or BCAAs: compare what the evidence supports for strength and muscle growth, and where the claims go further than the research.",
 	checkedAt: "2026-09-11",
+	readerUpdates: [{
+		id: "715ece68-d739-499b-8dc4-ace8e8d780ff",
+		date: "2026-09-11T20:50:09Z",
+		kind: "new_comparison",
+		summary: "Added protein, creatine and BCAA evidence with study-specific outcomes and limitations, without treating separate studies as a common-scale ranking.",
+		bottomLineImpact: "new",
+		sourceIds: ["protein-review", "nih-guidance", "creatine-imaging", "bcaa-acute"]
+	}],
 	datasetLabel: "Separate research summaries and NIH guidance, not one head-to-head trial",
 	resultNote: "Different studies cannot establish a universal winner. Open each finding for its evidence and limits.",
 	protocolNote:

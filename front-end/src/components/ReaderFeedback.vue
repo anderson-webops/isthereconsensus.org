@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{ claimId?: string }>();
+const props = defineProps<{ claimId?: string; comparisonSlug?: string }>();
+const hasEvidenceTarget = computed(() => Boolean(props.claimId || props.comparisonSlug));
+const evidenceTarget = computed(() =>
+	props.comparisonSlug ? { comparisonSlug: props.comparisonSlug } : { claimId: props.claimId }
+);
 const { apiUrl } = useApi();
 const config = useRuntimeConfig();
 const expanded = ref(false);
@@ -30,10 +34,12 @@ async function send(helpful?: boolean) {
 	controller = new AbortController();
 	try {
 		const body = usefulness
-			? { kind: "usefulness", claimId: props.claimId, helpful }
+			? { kind: "usefulness", ...evidenceTarget.value, helpful }
 			: {
-					kind: props.claimId ? "missing_evidence" : "content_gap",
-					...(props.claimId ? { claimId: props.claimId, area: area.value } : { title: title.value }),
+					kind: hasEvidenceTarget.value ? "missing_evidence" : "content_gap",
+					...(hasEvidenceTarget.value
+						? { ...evidenceTarget.value, area: area.value }
+						: { title: title.value }),
 					message: message.value,
 					sourceUrl: sourceUrl.value,
 					captchaToken: captchaToken.value
@@ -73,19 +79,19 @@ async function send(helpful?: boolean) {
 
 <template>
 	<section class="reader-feedback" aria-label="Reader feedback">
-		<div v-if="claimId" class="reader-feedback__row">
-			<h2>Was this review useful?</h2>
+		<div v-if="hasEvidenceTarget" class="reader-feedback__row">
+			<h2>Was this {{ comparisonSlug ? "comparison" : "review" }} useful?</h2>
 			<button type="button" :disabled="busy || received" @click="send(true)">Yes, useful</button>
 			<button type="button" :disabled="busy || received" @click="send(false)">Not yet</button>
 		</div>
-		<p v-if="claimId" class="reader-feedback__hint">
+		<p v-if="hasEvidenceTarget" class="reader-feedback__hint">
 			This rates the explanation, not whether you agree with the science.
 		</p>
 		<button type="button" :aria-expanded="expanded" :disabled="busy" @click="expanded = !expanded">
 			{{
 				expanded
 					? "Close feedback form"
-					: claimId
+					: hasEvidenceTarget
 						? "Suggest missing evidence"
 						: "Suggest a missing topic privately"
 			}}
@@ -95,7 +101,7 @@ async function send(helpful?: boolean) {
 				Only admins can read this feedback. Do not include names, contact details, personal health information
 				or private links. Your search text is not copied or saved automatically.
 			</p>
-			<label v-if="!claimId"
+			<label v-if="!hasEvidenceTarget"
 				>Question or topic
 				<input
 					v-model="title"

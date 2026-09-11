@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FeedbackResponse, FeedbackRow } from "~/types/reader-feedback";
+import { comparisonForSlug, evidenceComparisons } from "~/data/comparisons";
 import { feedbackKindLabels, feedbackPriorityLabels, feedbackStatusLabels } from "~/types/reader-feedback";
 import { safeExternalHttpUrl } from "~/utils/external-links";
 
@@ -18,6 +19,7 @@ const pagination = ref({ page: 1, limit: 25, total: 0, hasMore: false });
 const status = ref("new");
 const kind = ref("");
 const priority = ref("");
+const comparisonSlug = ref("");
 const busy = ref(false);
 const errorMessage = ref("");
 const notice = ref("");
@@ -66,6 +68,7 @@ async function load(page = 1) {
 	if (status.value) params.set("status", status.value);
 	if (kind.value) params.set("kind", kind.value);
 	if (priority.value) params.set("priority", priority.value);
+	if (comparisonSlug.value) params.set("comparisonSlug", comparisonSlug.value);
 	try {
 		const result = await request<FeedbackResponse>(`/admin/reader-feedback?${params}`);
 		if (run !== generation) return;
@@ -208,6 +211,18 @@ onBeforeUnmount(() => {
 						</option>
 					</select></label
 				>
+				<label
+					>Comparison<select v-model="comparisonSlug" name="comparison-filter" :disabled="busy">
+						<option value="">All feedback</option>
+						<option
+							v-for="comparison in evidenceComparisons"
+							:key="comparison.slug"
+							:value="comparison.slug"
+						>
+							{{ comparison.title }}
+						</option>
+					</select></label
+				>
 				<button class="button button--ghost" type="submit" :disabled="busy">Apply filters / reload</button>
 			</form>
 			<p role="status">
@@ -232,6 +247,12 @@ onBeforeUnmount(() => {
 				<p v-if="row.area">Missing: {{ row.area }}</p>
 				<p v-if="row.message" class="feedback-queue__message">{{ row.message }}</p>
 				<div class="feedback-queue__links">
+					<NuxtLink
+						v-if="row.comparisonSlug && comparisonForSlug(row.comparisonSlug)"
+						:to="`/compare/${row.comparisonSlug}`"
+						>Open original comparison</NuxtLink
+					>
+					<span v-else-if="row.comparisonSlug">Original comparison is no longer public.</span>
 					<NuxtLink v-if="row.claimId" :to="`/account/editorial/claims/${row.claimId}`"
 						>Open original review</NuxtLink
 					>
@@ -378,6 +399,10 @@ onBeforeUnmount(() => {
 .feedback-queue__targets {
 	display: grid;
 	gap: 0.6rem;
+	min-width: 0;
+}
+.feedback-queue__filters label {
+	max-width: 100%;
 }
 .feedback-queue__review {
 	max-width: 48rem;

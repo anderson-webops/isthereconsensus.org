@@ -4,8 +4,9 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import process from "node:process";
-import { ReaderFeedback } from "../back-end/dist/models/schemas/ReaderFeedback.js";
+import { evidenceComparisons } from "../back-end/dist/data/comparisons/index.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
+import { ReaderFeedback } from "../back-end/dist/models/schemas/ReaderFeedback.js";
 import { User } from "../back-end/dist/models/schemas/User.js";
 
 export async function checkReaderFeedback({
@@ -169,10 +170,11 @@ export async function checkReaderFeedback({
 		'[name="feedback-message"]',
 		"Please investigate whether different reading strategies improve delayed recall."
 	);
-	if (process.env.READER_FEEDBACK_SCREENSHOT_DIR)
+	if (process.env.READER_FEEDBACK_SCREENSHOT_DIR) {
 		await (
 			await page.$(".reader-feedback")
 		).screenshot({ path: join(process.env.READER_FEEDBACK_SCREENSHOT_DIR, "public-form.png") });
+	}
 	await page.addScriptTag({ path: createRequire(import.meta.url).resolve("axe-core/axe.min.js") });
 	assert.deepEqual(
 		await page.evaluate(async () => (await window.axe.run(document.querySelector(".reader-feedback"))).violations),
@@ -197,11 +199,12 @@ export async function checkReaderFeedback({
 	await clickText(page, "Find destination");
 	await page.waitForSelector(".feedback-queue__targets button");
 	await page.click(".feedback-queue__targets button");
-	if (process.env.READER_FEEDBACK_SCREENSHOT_DIR)
+	if (process.env.READER_FEEDBACK_SCREENSHOT_DIR) {
 		await page.screenshot({
 			path: join(process.env.READER_FEEDBACK_SCREENSHOT_DIR, "admin-triage.png"),
 			fullPage: true
 		});
+	}
 	await clickText(page, "Save editorial review");
 	await browserText(page, "Editorial priority saved.");
 	await page.addScriptTag({ path: createRequire(import.meta.url).resolve("axe-core/axe.min.js") });
@@ -239,6 +242,16 @@ export async function checkReaderFeedback({
 	assert.equal(await page.$(".feedback-queue__card"), null);
 	assert.deepEqual(errors, []);
 	await page.close();
+	await checkComparisonFeedback({
+		api,
+		browser,
+		base,
+		adminCookie,
+		userCookie,
+		browserLogin,
+		clickText,
+		browserText
+	});
 	let limited = false;
 	for (let attempt = 0; attempt < 31; attempt++) {
 		const response = await fetch(`${base}/api/reader-feedback`, {
@@ -256,5 +269,137 @@ export async function checkReaderFeedback({
 	assert.equal(limited, true, "Anonymous feedback must have bounded request rates.");
 	console.log(
 		"reader feedback browser: usefulness, retained failed form, no query capture, private suggestion, admin triage/linking, sign-out and responsive accessibility passed"
+	);
+}
+
+async function checkComparisonFeedback({
+	api,
+	browser,
+	base,
+	adminCookie,
+	userCookie,
+	browserLogin,
+	clickText,
+	browserText
+}) {
+	const comparison = evidenceComparisons[0];
+	const before = JSON.stringify(evidenceComparisons);
+	const rating = { kind: "usefulness", comparisonSlug: comparison.slug, helpful: true };
+	await api("/reader-feedback", {
+		method: "POST",
+		body: { ...rating, referenceTitle: "Spoofed title" },
+		status: 400
+	});
+	await api("/reader-feedback", {
+		method: "POST",
+		body: { ...rating, comparisonSlug: "withdrawn-comparison" },
+		status: 422
+	});
+	await api("/reader-feedback", { method: "POST", body: rating, status: 201 });
+	assert.equal(
+		(await api("/reader-feedback", { method: "POST", body: { ...rating, helpful: false } })).data.duplicate,
+		true
+	);
+	const path = `/admin/reader-feedback?comparisonSlug=${comparison.slug}`;
+	await api(path, { status: 403 });
+	await api(path, { cookie: userCookie, status: 403 });
+	const row = (await api(path, { cookie: adminCookie })).data.rows[0];
+	assert.equal(row.referenceTitle, comparison.title);
+	assert.equal(row.claimId, undefined);
+	assert.equal(row.topicId, undefined);
+	const page = await browser.newPage();
+	await page.evaluateOnNewDocument(() => localStorage.setItem("nuxt-color-mode", "system"));
+	const errors = [];
+	page.on("pageerror", (error) => errors.push(error.message));
+	await page.goto(`${base}/compare/${comparison.slug}?private-query=must-not-be-copied`, {
+		waitUntil: "networkidle0"
+	});
+	await browserText(page, "Was this comparison useful?");
+	await clickText(page, "Not yet");
+	await browserText(page, "This feedback has already been received today.");
+	await page.click(".comparison-history summary");
+	assert.equal(await page.$$eval(".comparison-history li", (nodes) => nodes.length), comparison.readerUpdates.length);
+	assert.ok(await page.$('.comparison-history a[href="#comparison-source-nrel-2021"]'));
+	await clickText(page, "Suggest missing evidence");
+	assert.equal(await page.$('[name="feedback-title"]'), null);
+	assert.equal(await page.$eval('[name="feedback-message"]', (element) => element.value), "");
+	await page.type(
+		'[name="feedback-message"]',
+		"Please explain how whole-grid storage changes the comparison boundary."
+	);
+	await page.setRequestInterception(true);
+	const fail = (request) =>
+		request.url().endsWith("/api/reader-feedback")
+			? request.respond({
+					status: 503,
+					contentType: "application/json",
+					body: JSON.stringify({ error: "Comparison feedback temporarily unavailable" })
+				})
+			: request.continue();
+	page.on("request", fail);
+	await clickText(page, "Send private suggestion");
+	await browserText(page, "Comparison feedback temporarily unavailable");
+	assert.match(await page.$eval('[name="feedback-message"]', (element) => element.value), /whole-grid storage/);
+	page.off("request", fail);
+	await page.setRequestInterception(false);
+	for (const mode of ["light", "dark"]) {
+		await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: mode }]);
+		await page.waitForFunction(
+			(mode) => document.documentElement.classList.contains("dark") === (mode === "dark"),
+			{},
+			mode
+		);
+		await page.evaluate(async () => {
+			await new Promise(requestAnimationFrame);
+			await Promise.all(
+				document
+					.getAnimations()
+					.filter((animation) => Number.isFinite(animation.effect?.getComputedTiming().endTime))
+					.map((animation) => animation.finished.catch(() => {}))
+			);
+		});
+		await page.addScriptTag({ path: createRequire(import.meta.url).resolve("axe-core/axe.min.js") });
+		assert.deepEqual(await page.evaluate(async () => (await window.axe.run()).violations), []);
+	}
+	for (const width of [1280, 390, 320]) {
+		await page.setViewport({ width, height: 900 });
+		assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+	}
+	await page.evaluate(() => (document.documentElement.style.fontSize = "200%"));
+	assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+	await page.evaluate(() => (document.documentElement.style.fontSize = ""));
+	if (process.env.READER_FEEDBACK_SCREENSHOT_DIR)
+		await (
+			await page.$(".reader-feedback")
+		).screenshot({ path: join(process.env.READER_FEEDBACK_SCREENSHOT_DIR, "comparison-feedback-mobile.png") });
+	await clickText(page, "Send private suggestion");
+	await browserText(page, "Thank you. Your feedback is in the private editorial queue.");
+	const queue = (await api(`${path}&limit=1`, { cookie: adminCookie })).data;
+	assert.equal(queue.pagination.total, 2);
+	assert.equal(queue.pagination.hasMore, true);
+	assert.notEqual(queue.rows[0]._id, (await api(`${path}&limit=1&page=2`, { cookie: adminCookie })).data.rows[0]._id);
+	assert.doesNotMatch(
+		JSON.stringify(await ReaderFeedback.find({ comparisonSlug: comparison.slug }).lean()),
+		/must-not-be-copied|captchaToken|password|authorization|sourceIp|userAgent|session/
+	);
+	await browserLogin(page);
+	await page.goto(`${base}/account/editorial/reader-feedback`, { waitUntil: "networkidle0" });
+	await page.select('[name="comparison-filter"]', comparison.slug);
+	await clickText(page, "Apply filters / reload");
+	await browserText(page, "2 matching submissions.");
+	assert.equal(await page.$$eval(".feedback-queue__card", (nodes) => nodes.length), 2);
+	assert.ok(await page.$(`.feedback-queue__card a[href="/compare/${comparison.slug}"]`));
+	await clickText(page, "Review feedback");
+	await page.type('[name="review-note"]', "Check the system boundary against newer whole-grid evidence.");
+	await clickText(page, "Save editorial review");
+	await browserText(page, "Editorial priority saved.");
+	const reviewed = await ReaderFeedback.findOne({ comparisonSlug: comparison.slug, status: "reviewing" }).lean();
+	assert.equal(reviewed.revision, 1);
+	assert.equal(reviewed.reviews.length, 1);
+	assert.equal(JSON.stringify(evidenceComparisons), before, "Feedback must not change comparison findings.");
+	assert.deepEqual(errors, []);
+	await page.close();
+	console.log(
+		"comparison feedback: canonical target, privacy, deduplication, retained failed form, source history, admin filtering/triage and responsive accessibility passed"
 	);
 }

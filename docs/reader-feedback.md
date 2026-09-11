@@ -1,6 +1,6 @@
 # Reader feedback and editorial priorities
 
-The public review page offers explanation-usefulness feedback and an expandable
+Public review and comparison pages offer explanation-usefulness feedback and an expandable
 missing-evidence form. `/ask` offers a separate private topic suggestion. These
 are not public questions, scientific votes or automated publication requests.
 The forms do not read or copy query text, use browser storage, or attach an
@@ -10,9 +10,13 @@ it is cleared after confirmed receipt. Registration is not required.
 ## Private collection and abuse controls
 
 - `POST /api/reader-feedback` accepts one strict, bounded shape: `usefulness`
-  (review and boolean), `missing_evidence` (review, gap category, explanation and
+  (review or comparison and boolean), `missing_evidence` (review or comparison, gap category, explanation and
   optional public source), or `content_gap` (title, explanation and optional
-  topic/source). Unknown fields are rejected.
+  topic/source). Unknown fields are rejected. Evidence feedback requires exactly
+  one `claimId` or `comparisonSlug`; both or neither are rejected. Comparison
+  slugs must belong to the published catalog. Titles come from that catalog,
+  never submitted title fields or arbitrary target URLs. A comparison spanning
+  several topics is not assigned an arbitrary single topic.
 - The current publication and actual source-readiness checks gate review
   references. Missing topics are rejected; expired or removed content is never
   treated as a valid new review target.
@@ -26,7 +30,7 @@ it is cleared after confirmed receipt. Registration is not required.
 - A keyed SHA-256 code over namespace, UTC day, network, kind, target and (for
   suggestions) normalized message is the document's unique ID. The network is
   normalized with the rate limiter's IPv6 helper. Usefulness is deduplicated
-  once per network/review/day even when the boolean changes. Duplicate retries
+  once per network/evidence-target/day even when the boolean changes. Duplicate retries
   receive an acknowledgement without overwriting the first submission.
 - The hash input uses a namespaced server secret; the raw address, account
   identity, cookies, auth headers and bot-check tokens are not written to the
@@ -56,7 +60,9 @@ checks reject stale writes, including ambiguous network retries. No triage
 operation mutates a claim, its scientific conclusion or publication state.
 
 - `GET /api/admin/reader-feedback` supports bounded `page`, `limit`, `kind`,
-  `status`, `priority`, `claimId` and `topicId` filters.
+  `status`, `priority`, `claimId`, `comparisonSlug` and `topicId` filters. The admin
+  page includes a comparison filter and links to the original public comparison.
+  Withdrawn comparisons retain their historical title but have no public link.
 - `GET /api/admin/reader-feedback/targets?query=...` searches bounded claim/topic
   titles for linking, including drafts. Its result is admin-only.
 - `PATCH /api/admin/reader-feedback/:id` requires the current revision, explicit
@@ -68,6 +74,13 @@ operation mutates a claim, its scientific conclusion or publication state.
   noindex/nofollow and contains no feedback in SSR output.
 
 ## Verification and rollout
+
+Comparison support adds an optional indexed `comparisonSlug` field to the
+existing collection. Existing review deduplication keys, expiry and triage
+revision behavior are unchanged. No destructive migration or science update is
+performed. Deploy the matching backend before the new frontend. Older backend
+versions reject comparison submissions; retain the additive backend during a
+frontend rollback if those submissions must remain available.
 
 Unit tests cover strict fields, URL safety, limits, keyed deduplication, schema
 secrets rejection, client no-query-capture and private UI contracts. The existing

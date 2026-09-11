@@ -1,9 +1,12 @@
 import { createHmac } from "node:crypto";
 import { z } from "zod";
+import { comparisonSlugPattern } from "./comparisonLibrary.js";
 
 export const feedbackKinds = ["usefulness", "missing_evidence", "content_gap"] as const;
 export const feedbackStatuses = ["new", "reviewing", "planned", "resolved", "dismissed"] as const;
 const objectId = z.string().regex(/^[a-f\d]{24}$/);
+const comparisonSlug = z.string().max(100).regex(comparisonSlugPattern);
+const evidenceTarget = { claimId: objectId.optional(), comparisonSlug: comparisonSlug.optional() };
 const sourceUrl = z
 	.string()
 	.trim()
@@ -24,11 +27,11 @@ const suggestion = {
 	captchaToken: z.string().max(4096).optional()
 };
 export const readerFeedbackSubmission = z.discriminatedUnion("kind", [
-	z.object({ kind: z.literal("usefulness"), claimId: objectId, helpful: z.boolean() }).strict(),
+	z.object({ kind: z.literal("usefulness"), ...evidenceTarget, helpful: z.boolean() }).strict(),
 	z
 		.object({
 			kind: z.literal("missing_evidence"),
-			claimId: objectId,
+			...evidenceTarget,
 			area: z.enum(["source", "population", "outcome", "explanation", "other"]),
 			...suggestion
 		})
@@ -41,7 +44,7 @@ export const readerFeedbackSubmission = z.discriminatedUnion("kind", [
 			...suggestion
 		})
 		.strict()
-]);
+]).refine(data => data.kind === "content_gap" || Boolean(data.claimId) !== Boolean(data.comparisonSlug), "Choose exactly one review or comparison.");
 export const readerFeedbackReview = z
 	.object({
 		revision: z
@@ -64,6 +67,7 @@ export const readerFeedbackQuery = z
 		status: z.enum(feedbackStatuses).optional(),
 		priority: z.coerce.number().int().min(0).max(2).optional(),
 		claimId: objectId.optional(),
+		comparisonSlug: comparisonSlug.optional(),
 		topicId: objectId.optional()
 	})
 	.strict();
@@ -77,7 +81,7 @@ export function feedbackSubmissionKey(
 	data: z.infer<typeof readerFeedbackSubmission>,
 	now: Date
 ) {
-	const target = data.kind === "content_gap" ? `${data.topicId ?? ""}:${data.title.toLowerCase()}` : data.claimId;
+	const target = data.kind === "content_gap" ? `${data.topicId ?? ""}:${data.title.toLowerCase()}` : data.comparisonSlug ? `comparison:${data.comparisonSlug}` : data.claimId;
 	const detail = data.kind === "usefulness" ? "" : data.message.toLowerCase();
 	return createHmac("sha256", secret)
 		.update(
