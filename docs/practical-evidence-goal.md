@@ -32,7 +32,7 @@ Source: NREL, *Life Cycle Greenhouse Gas Emissions from Electricity Generation: 
 
 Both columns use g CO₂e/kWh. The report explicitly warns that phase and total medians can draw from different study pools. No phase additions, subtractions, percentages, cost conversions or composite rankings are performed. The tests pin each displayed figure and qualifier to this manual transcription check.
 
-Progress: one comparison implemented and locally validated; **zero new canonical reviews**. Search/library/update/feedback integration and the other eleven comparisons remain pending. Do not mark the whole goal complete on delivery of this pilot.
+Progress at the first milestone: one comparison implemented and locally validated; **zero new canonical reviews**. Search/library/update/feedback integration and the other eleven comparisons remained pending. Do not mark the whole goal complete on delivery of a pilot.
 
 ## Pilot validation, September 11, 2026
 
@@ -46,3 +46,34 @@ Progress: one comparison implemented and locally validated; **zero new canonical
 - `npm run content:coverage`: confirmed the unchanged baseline of 750 reviewed claims in 35 topics. Its previous target is not the new goal's completion counter.
 
 These are local checks, not proof of production deployment. The protected branch requires the appearance-controls CI check; with this workflow it must be obtained through a PR before integration. PR checks, merged-main CI, a release and exact public acceptance remain separate delivery steps. No production account, database record, secret or service was changed for the pilot.
+
+## Second milestone: caffeine timing and a new canonical question
+
+Adds `/compare/caffeine-dose-and-sleep`: 100 mg and 400 mg test doses, 4/8/12 hours before bedtime, total sleep and stage N3 sleep. A separate population/schedule context deliberately withholds estimates. Outcomes remain placebo contrasts, not a ranking or an inferred head-to-head significance test. Context-specific lookup never falls back to another timing's numbers.
+
+Source: Gardiner et al., [DOI 10.1093/sleep/zsae230](https://academic.oup.com/sleep/article/48/4/zsae230/7815486), published online October 8, 2024, in the April 2025 issue of *Sleep*. Checked September 11, 2026: publisher methods, results and limitations, plus the publisher's supplementary DOCX Table S4. Rendered supplement pages 9–10 were inspected against the extracted cells. The twelve TST/N3 placebo estimates, twelve standardized effects, their adjusted intervals, and p-values are pinned by regression tests. No raw-data reanalysis or calculation of minute-scale confidence intervals was performed.
+
+The interface distinguishes the headline difference in minutes from the reported Cohen's d interval. It retains nonsignificant estimates and their uncertainty rather than replacing them with zero. The protocol prominently notes the usual morning caffeine in every condition, so placebo is not presented as a caffeine-free day. Single-night observations in 23 healthy men are not individualized safety cutoffs.
+
+The canonical addition is **Does delaying morning caffeine for 90 minutes prevent an afternoon crash?** Its scope is the claimed benefit of a fixed post-waking delay, not the already-covered daily-tolerance or six-hour-bedtime questions. It adds no measured expert percentage or claimed independent expert review. A targeted Consensus search plus direct source checking did not establish the specific benefit; the review does not claim equivalence or that immediate caffeine is superior.
+
+Sources checked for that review:
+
+- [2024 narrative caffeine review, section 15 and disclosures](https://pmc.ncbi.nlm.nih.gov/articles/PMC10930107/): full relevant text, including supplement-industry relationships. Not characterized as a systematic review.
+- [Lovallo et al. 1996 physiological crossover experiment](https://pubmed.ncbi.nlm.nih.gov/8951977/): abstract only; explicitly indirect hormone evidence, not an afternoon-fatigue timing trial.
+- [FDA consumer caffeine guidance](https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much): sensitivity and general safety context, not endorsement of the waiting rule.
+
+`practicalEvidenceClaims` and `practicalEvidenceGaps` record genuinely new questions separately from the original 750. The new review is connected to the circadian collection, existing search, comparison links, and the existing saved-review and private-feedback surfaces. Its stable `new_review` announcement uses the existing idempotent publication mechanism; no startup-derived timestamp or bulk historical announcement is introduced.
+
+Implemented total: **2 of 12 comparisons; 1 of 50 new canonical reviews**. Catalog total: **751 reviews, 35 topics, ten guides**. This is not completion of the full goal. The strength-training pilot, remaining comparisons and new reviews, comparison-specific search/saving/updates/feedback, and exact public release acceptance remain unfinished.
+
+### Second-milestone validation, September 11, 2026
+
+- Clean root `npm ci`, standalone backend install-script policy, and all 31 Linux native lock entries passed. No dependency manifests, lockfiles or npm configuration changed; the clean install reported zero audit vulnerabilities.
+- Root lint, typecheck, production build and all **468 tests** passed: 294 frontend and 174 backend, without failures or skips. New checks cover all twelve source-table contrasts and their uncertainty, context isolation, rapid selection changes, new-review schema validation, genuine-new-content accounting, explicit source limitations, and search discovery.
+- All **86 accessibility route/theme checks** passed. Built-browser checks passed for source/discovery links, dose/outcome/context changes, unsupported contexts, empty selection and recovery, keyboard controls, shared URLs/reload/history, metadata, sitemap and 404s, plus the existing search and guide regression suite.
+- The browser regression found a real rapid-selection race: changing outcome and context together could lose the first change. Navigation now composes each selection against the last completed URL, with delayed-navigation and rejection-recovery unit coverage. The browser test deliberately retains back-to-back selections.
+- Mobile/desktop visual checks include both themes and open uncertainty disclosures. Overflow checks cover 320, 390 and 1280 pixels, plus 200% text at 320 pixels. Screenshot capture waits for the existing theme color transition to finish.
+- Backend-runtime, SSR-public-asset and SSR-route-rule smoke checks passed. The optional guarded Oxlint preflight did not run because its expected version differed from the installed version; the repository's authoritative ESLint checks passed.
+
+These are source/local validation results, not production acceptance. The public deployment marker still identified **v1.19.0**, commit `44b299a1803243140eef91c7b18b148d077794bd`, at this milestone's preflight. Source integration, CI and release publication are tracked separately. Normal insert-only seeding adds the new canonical review and its stable announcement; no existing-content synchronization mode, schema migration, credential reset or production write was performed.
