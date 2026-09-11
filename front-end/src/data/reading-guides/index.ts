@@ -90,6 +90,18 @@ export const readingGuides: ReadingGuideSummary[] = [
 				label: "CBT-I as an initial insomnia treatment"
 			},
 			{
+				path: "/consensus/sleep-and-circadian-health/can-brief-behavioral-treatment-improve-chronic-insomnia",
+				label: "What brief behavioral care can establish"
+			},
+			{
+				path: "/consensus/sleep-and-circadian-health/does-fully-automated-digital-cbt-i-match-face-to-face-therapy",
+				label: "Automated and face-to-face care are different comparisons"
+			},
+			{
+				path: "/consensus/sleep-and-circadian-health/can-sleep-restriction-therapy-temporarily-increase-daytime-sleepiness",
+				label: "Early sleepiness during treatment"
+			},
+			{
 				path: "/consensus/sleep-and-circadian-health/should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
 				label: "When loud snoring calls for assessment"
 			}

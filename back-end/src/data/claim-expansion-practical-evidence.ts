@@ -1,4 +1,5 @@
 import type { SeedClaim } from "./claims.js";
+import { sleepPracticalClaims, sleepPracticalGaps } from "./claim-expansion-practical-sleep.js";
 import { strengthPracticalClaims, strengthPracticalGaps } from "./claim-expansion-practical-strength.js";
 
 const checkedAt = "2026-09-11T19:38:00.000Z";
@@ -15,7 +16,8 @@ export const practicalEvidenceGaps = [
 			"can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep"
 		]
 	},
-	...strengthPracticalGaps
+	...strengthPracticalGaps,
+	...sleepPracticalGaps
 ];
 
 export const practicalEvidenceClaims: SeedClaim[] = [
@@ -209,5 +211,6 @@ export const practicalEvidenceClaims: SeedClaim[] = [
 			}
 		]
 	},
-	...strengthPracticalClaims
+	...strengthPracticalClaims,
+	...sleepPracticalClaims
 ];

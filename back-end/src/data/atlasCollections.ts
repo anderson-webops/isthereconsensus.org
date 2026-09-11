@@ -915,7 +915,12 @@ export const atlasCollections = [
 			"do-magnesium-supplements-reliably-improve-insomnia",
 			"is-cannabis-an-established-treatment-for-chronic-insomnia",
 			"are-sedating-antihistamines-good-regular-treatments-for-chronic-insomnia",
-			"is-sleep-hygiene-alone-an-effective-treatment-for-chronic-insomnia"
+			"is-sleep-hygiene-alone-an-effective-treatment-for-chronic-insomnia",
+			"can-brief-behavioral-treatment-improve-chronic-insomnia",
+			"can-stimulus-control-alone-help-chronic-insomnia",
+			"is-relaxation-an-essential-part-of-effective-insomnia-treatment",
+			"does-fully-automated-digital-cbt-i-match-face-to-face-therapy",
+			"can-sleep-restriction-therapy-temporarily-increase-daytime-sleepiness"
 		]
 	},
 	{

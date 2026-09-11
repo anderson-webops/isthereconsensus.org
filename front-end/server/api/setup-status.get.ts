@@ -9,7 +9,8 @@ async function probeJson<T>(
 	headers?: Record<string, string>
 ): Promise<SetupProbe<T>> {
 	try {
-		const data = (await $fetch(url, { headers, retry: 0 })) as T;
+		// Backend URLs are not Nuxt routes; avoid recursive route-response inference.
+		const data = (await $fetch<T, string>(url, { headers, retry: 0 })) as T;
 		return {
 			ok: true,
 			detail: successDetail(data),
