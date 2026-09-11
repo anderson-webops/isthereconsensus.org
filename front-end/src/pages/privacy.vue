@@ -49,6 +49,7 @@ const collectionCategories = [
 			"public question content, including titles, body text, source links, display names, and related metadata",
 			"expert application materials such as affiliation, credentials, expertise areas, evidence links, and statements",
 			"moderation reports and notes you submit about public questions",
+			"private usefulness feedback and missing-evidence or topic suggestions you explicitly submit to admins",
 			"saved-review and followed-topic identifiers when you choose an account library or copy browser selections to it",
 			"emails or other direct messages you send to the site operator"
 		]
@@ -92,6 +93,14 @@ const sharingCategories = [
 ];
 
 const retentionRows: RetentionRow[] = [
+	{
+		title: "Private reader feedback",
+		body: "Feedback and its editorial review history are retained for up to two years. We do not automatically retain your search text or attach your account identity to feedback.",
+		details: [
+			"A keyed code derived from the day, network address and feedback target limits duplicate submissions. The raw address and bot-check token are not stored in feedback records. Shared networks may share a daily usefulness signal.",
+			"Free-text suggestions use the site's bot check. Do not submit personal health details or private links. Feedback helps admins plan work; it is not a scientific vote."
+		]
+	},
 	{
 		title: "Saved reviews and followed topics",
 		body: "Browser libraries remain in that browser profile until you remove them or clear site data. Account libraries remain until you remove their selections, clear the account library, or request account deletion.",

@@ -71,6 +71,11 @@ const routeExpectations = {
 		robots: "noindex, nofollow",
 		status: 200
 	},
+	"/account/editorial/reader-feedback": {
+		cacheControl: "private, no-store",
+		robots: "noindex, nofollow",
+		status: 200
+	},
 	"/setup": {
 		robots: "noindex, nofollow",
 		status: 404

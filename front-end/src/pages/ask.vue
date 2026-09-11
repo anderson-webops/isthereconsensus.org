@@ -408,6 +408,7 @@ async function submitQuestion() {
 				</button>
 			</div>
 		</section>
+		<ReaderFeedback />
 	</div>
 </template>
 

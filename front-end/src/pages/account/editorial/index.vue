@@ -1050,6 +1050,9 @@ watch(
 			</section>
 
 			<section v-if="isAdmin" class="editorial-panel">
+				<NuxtLink class="button button--ghost" to="/account/editorial/reader-feedback"
+					>Reader feedback and priorities</NuxtLink
+				>
 				<div class="section-heading section-heading--tight">
 					<div>
 						<p class="eyebrow">Queue 4</p>

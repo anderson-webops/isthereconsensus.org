@@ -740,6 +740,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					</article>
 				</div>
 			</details>
+			<ReaderFeedback v-if="claim?._id" :key="claim._id" :claim-id="claim._id" />
 		</section>
 	</div>
 </template>
