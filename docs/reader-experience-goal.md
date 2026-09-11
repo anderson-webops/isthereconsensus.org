@@ -15,7 +15,7 @@ The starting release is v1.15.72, with 750 published claims in 35 topics. This g
 ## Progress
 
 - Search benchmark and ranking: implemented, with the 100-question benchmark, 20 negative queries, full-catalog title checks, and built-browser navigation/error checks recorded in [search-quality-benchmark.md](search-quality-benchmark.md). CI and live release acceptance are tracked in PR #53 and its release notes.
-- Ten reading guides: pending.
+- Ten reading guides: first three implemented (caffeine, supplements, energy choices), with the reading/discovery surface and evidence checks described in [reading-guide-evidence.md](reading-guide-evidence.md). CI and public release acceptance are still required. Seven guides remain: sleep, exercise, vaccines, nutrition, climate attribution, evolution, and interpreting medical evidence.
 - Saved reviews and topic updates: pending.
 - Reader feedback and editorial priorities: pending.
 - Final full-goal acceptance audit: pending.

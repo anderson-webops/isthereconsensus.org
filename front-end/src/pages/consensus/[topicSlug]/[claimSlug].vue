@@ -2,6 +2,8 @@
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
+import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
 import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
@@ -35,6 +37,7 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const collectionMemberships = computed(() => claimData.value?.collections ?? []);
 const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
+const readingGuides = computed(() => guidesForReview(`/consensus/${topicSlug.value}/${claimSlug.value}`));
 const citation = computed(() => claimData.value?.citation);
 const citationCopyState = ref<"copied" | "error" | "idle">("idle");
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
@@ -664,6 +667,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					</p>
 				</div>
 			</details>
+
+			<ReadingGuideLinks :guides="readingGuides" />
 
 			<section v-if="collectionMemberships.length || relatedClaims.length" class="content-panel continue-panel">
 				<div class="section-heading">
