@@ -3,7 +3,7 @@
 ## Reader experience
 
 `/library` collects saved reviews, saved evidence comparisons, followed topics
-and a feed of substantive published review changes. Review, comparison and topic
+and a feed of substantive published review and comparison changes. Review, comparison and topic
 pages expose compact Save/Follow controls.
 Registration is optional: **This browser** stores selections in the current
 browser profile; **My account** stores them on the server for the authenticated
@@ -44,6 +44,10 @@ render contains no personal selections.
   selection. No anonymous library is created.
 - `POST /api/library/updates`: read-only public announcements for selected
   reviews **or** followed topics, using a bounded cursor and 30-row pages.
+  `includeComparisons: true` explicitly opts into comparison rows for saved
+  comparisons or their followed topics. Omitted/false stays review-only, even
+  when an older client sends `savedComparisonSlugs`. Rows have exactly one
+  `review` or `comparison` target. The new library opts in and renders both.
 
 Selection bodies contain IDs and comparison slugs, not raw search text. POST keeps interests out of
 URL query strings. Do not add request-body logging, interest events to account
@@ -57,9 +61,27 @@ the reader's device. No new automatic account-deletion workflow is introduced.
 
 Only explicit announcements enter the feed. Neither old `changeLog` entries nor
 legacy publication/review dates are backfilled as new activity. The feed covers
-the last 90 days, retains at most 100 announcements per review and rechecks the
+the last 90 days, retains at most 100 announcements per review or comparison and rechecks the
 current publication state and source readiness on every request. Draft,
 needs-update, archived and source-unready content is excluded.
+
+Comparison history is an explicit, source-controlled list on each public
+comparison. Every event has a stable UUID, fixed UTC date, substantive summary,
+kind (`new_comparison`, `evidence_update`, `correction`), bottom-line impact and
+source IDs belonging to that comparison. New comparison pairs with impact
+`new`; later changes must use changed, unchanged or not assessed. Invalid,
+duplicate and future entries are omitted safely; catalog tests reject invalid
+data, overlong histories and IDs reused by canonical review announcements.
+Removing a comparison from the public registry also removes it from the feed.
+
+The first three entries preserve original source-release timestamps: electricity
+v1.20.0 at 2026-09-11T19:27:39Z, caffeine v1.21.0 at 20:12:32Z and strength
+supplements v1.22.0 at 20:50:09Z. These are not claims about public deployment
+time or publication dates of the underlying studies. Never bump them on rebuild,
+deployment or cosmetic edits. Comparison pages expose this source-release history
+and its evidence links. Pagination merges both content types by descending date
+and binary UUID with a fixed 90-day snapshot; saved-plus-followed matches appear
+once. Source-unready reviews are removed without making pagination unbounded.
 
 The first administrative publication creates a `new_review` event. On
 republication, the admin must choose no announcement, `evidence_update`, or

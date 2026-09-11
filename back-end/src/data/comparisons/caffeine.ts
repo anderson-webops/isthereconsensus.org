@@ -35,6 +35,14 @@ export const caffeineComparison: EvidenceComparison = {
 	description:
 		"See how two caffeine doses affected sleep at three tested times. These trial averages are not a personal caffeine cutoff.",
 	checkedAt: "2026-09-11",
+	readerUpdates: [{
+		id: "d100c675-c40e-4e33-8682-e32d116eecc1",
+		date: "2026-09-11T20:12:32Z",
+		kind: "new_comparison",
+		summary: "Added sleep findings for 100 mg and 400 mg caffeine at three tested times, retaining placebo contrasts, uncertainty and the trial's limited population.",
+		bottomLineImpact: "new",
+		sourceIds: ["gardiner-trial"]
+	}],
 	datasetLabel: "Gardiner et al., randomized crossover trial (online 2024; 2025 issue)",
 	resultNote: "Averages are not personal predictions. Uncertain results remain uncertain, not zero.",
 	protocolNote:

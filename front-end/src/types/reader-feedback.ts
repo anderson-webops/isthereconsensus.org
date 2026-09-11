@@ -1,5 +1,5 @@
 export const feedbackKindLabels = {
-	usefulness: "Review usefulness",
+	usefulness: "Explanation usefulness",
 	missing_evidence: "Missing evidence",
 	content_gap: "Content gap"
 } as const;
@@ -18,6 +18,7 @@ export interface FeedbackRow {
 	priority: number;
 	revision: number;
 	claimId?: string;
+	comparisonSlug?: string;
 	topicId?: string;
 	helpful?: boolean;
 	area?: string;

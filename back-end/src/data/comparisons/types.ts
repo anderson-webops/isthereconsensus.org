@@ -26,7 +26,17 @@ export interface ComparisonFinding {
 	sourceIds: string[];
 }
 
+export interface ComparisonAnnouncement {
+	id: string;
+	date: string;
+	kind: "new_comparison" | "evidence_update" | "correction";
+	summary: string;
+	bottomLineImpact: "new" | "changed" | "unchanged" | "not_assessed";
+	sourceIds: string[];
+}
+
 export interface EvidenceComparison {
+	readerUpdates?: ComparisonAnnouncement[];
 	slug: string;
 	title: string;
 	description: string;

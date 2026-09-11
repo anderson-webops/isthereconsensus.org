@@ -1,6 +1,7 @@
 import type { LoadVisibleClaims } from "./readerLibraryRoutes.js";
 import express from "express";
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
+import { comparisonForSlug } from "../data/comparisons/index.js";
 import { requireAdmin } from "../middleware/auth.js";
 import { Claim } from "../models/schemas/Claim.js";
 import { ReaderFeedback } from "../models/schemas/ReaderFeedback.js";
@@ -42,11 +43,19 @@ export function createReaderFeedbackRouter(
 			if (await ReaderFeedback.exists({ _id: key })) return res.json({ received: true, duplicate: true });
 			let topicId;
 			let referenceTitle;
-			if (data.kind !== "content_gap") {
-				const [claim] = await loadVisibleClaims([data.claimId]);
+			let target: { comparisonSlug?: string; claimId?: string } = {};
+			if (data.kind !== "content_gap" && data.comparisonSlug) {
+				const comparison = comparisonForSlug(data.comparisonSlug);
+				if (!comparison) return res.status(422).json({ error: "This comparison is no longer available for feedback." });
+				referenceTitle = comparison.title;
+				target = { comparisonSlug: comparison.slug };
+			}
+			else if (data.kind !== "content_gap") {
+				const [claim] = await loadVisibleClaims([data.claimId!]);
 				if (!claim) return res.status(422).json({ error: "This review is no longer available for feedback." });
 				topicId = claim.topic._id;
 				referenceTitle = claim.title;
+				target = { claimId: data.claimId };
 			}
 			else if (data.topicId) {
 				const topic = await Topic.findById(data.topicId).select("_id").lean();
@@ -64,13 +73,14 @@ export function createReaderFeedbackRouter(
 				kind: data.kind,
 				topicId,
 				referenceTitle,
+				...target,
 				...(data.kind === "usefulness"
-					? { claimId: data.claimId, helpful: data.helpful }
+					? { helpful: data.helpful }
 					: {
 							message: data.message,
 							sourceUrl: data.sourceUrl,
 							...(data.kind === "missing_evidence"
-								? { claimId: data.claimId, area: data.area }
+								? { area: data.area }
 								: { title: data.title })
 						}),
 				expiresAt: new Date(now.getTime() + 730 * 24 * 60 * 60_000)

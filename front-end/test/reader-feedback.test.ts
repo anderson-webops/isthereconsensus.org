@@ -32,4 +32,16 @@ describe("reader feedback contract", () => {
 		assert.match(page, /currentAccount.value\?\._id/);
 		assert.match(page, /run !== generation/);
 	});
+	it("uses canonical comparison targets and explicitly opts into mixed library updates", () => {
+		const comparison = read("../src/pages/compare/[slug].vue");
+		assert.match(comparison, /:comparison-slug="comparison.slug"/);
+		assert.match(comparison, /comparisonHistory\(comparison/);
+		assert.match(comparison, /not study dates or cosmetic refreshes/);
+		const library = read("../src/pages/library.vue");
+		assert.match(library, /includeComparisons: true/);
+		assert.match(library, /v-if="update.comparison"/);
+		const admin = read("../src/pages/account/editorial/reader-feedback.vue");
+		assert.match(admin, /comparisonForSlug\(row.comparisonSlug\)/);
+		assert.match(admin, /name="comparison-filter"/);
+	});
 });

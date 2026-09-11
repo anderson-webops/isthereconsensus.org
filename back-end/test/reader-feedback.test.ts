@@ -84,6 +84,27 @@ describe("private reader feedback", () => {
 		])
 			assert.equal(readerFeedbackSubmission.safeParse({ ...suggestion, sourceUrl }).success, false);
 	});
+	it("requires exactly one canonical evidence target and refuses spoofed comparison fields", () => {
+		const comparison = { kind: "usefulness", comparisonSlug: "electricity-emissions", helpful: true };
+		assert.ok(readerFeedbackSubmission.safeParse(comparison).success);
+		assert.ok(readerFeedbackSubmission.safeParse({ ...suggestion, claimId: undefined, comparisonSlug: "electricity-emissions" }).success);
+		for (const body of [
+			{ ...comparison, claimId },
+			{ kind: "usefulness", helpful: true },
+			{ ...comparison, comparisonSlug: "../admin" },
+			{ ...comparison, comparisonSlug: "a".repeat(101) },
+			{ ...comparison, referenceTitle: "Spoofed title" },
+			{ ...comparison, targetUrl: "https://example.test" },
+			{ kind: "content_gap", title: "A research question", message: suggestion.message, comparisonSlug: comparison.comparisonSlug }
+		]) assert.equal(readerFeedbackSubmission.safeParse(body).success, false);
+		assert.ok(readerFeedbackQuery.safeParse({ comparisonSlug: comparison.comparisonSlug }).success);
+		assert.equal(readerFeedbackQuery.safeParse({ comparisonSlug: { $ne: null } }).success, false);
+		const now = new Date("2026-09-12T00:00:00Z");
+		const parsed = readerFeedbackSubmission.parse(comparison);
+		const key = feedbackSubmissionKey("test-secret", "192.0.2.1", parsed, now);
+		assert.notEqual(key, feedbackSubmissionKey("test-secret", "192.0.2.1", rating, now));
+		assert.equal(key, feedbackSubmissionKey("test-secret", "192.0.2.1", readerFeedbackSubmission.parse({ ...comparison, helpful: false }), now));
+	});
 	it("bounds admin filters, revisions and required triage reasons", () => {
 		assert.deepEqual(readerFeedbackQuery.parse({}), { page: 1, limit: 25 });
 		for (const query of [

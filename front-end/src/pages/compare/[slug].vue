@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReaderFeedback from "~/components/ReaderFeedback.vue";
 import { siteUrl } from "~/constants";
-import { comparisonForSlug } from "~/data/comparisons";
+import { comparisonForSlug, comparisonHistory } from "~/data/comparisons";
 import {
 	createComparisonNavigation,
 	estimateForSelection,
@@ -17,6 +18,15 @@ const route = useRoute();
 const router = useRouter();
 const comparison = comparisonForSlug(String(route.params.slug || ""));
 if (!comparison) throw createError({ statusCode: 404, statusMessage: "Evidence comparison not found" });
+const historyAsOf = useState("comparison-history-as-of", () => new Date().toISOString());
+const history = comparisonHistory(comparison, new Date(historyAsOf.value));
+const updateLabels = { new_comparison: "New comparison", evidence_update: "Evidence update", correction: "Correction" };
+const impactLabels = {
+	new: "Initial comparison",
+	changed: "Bottom line changed",
+	unchanged: "Bottom line unchanged",
+	not_assessed: "Bottom-line impact not assessed"
+};
 const selection = computed(() => resolveComparisonSelection(comparison, route.query));
 const results = computed(() =>
 	selection.value.options.map((option) => ({
@@ -230,8 +240,33 @@ useHead({
 					<p>{{ source.locator }}. {{ source.note }}</p>
 				</li>
 			</ol>
-			<p><NuxtLink to="/corrections">Suggest a correction</NuxtLink></p>
+			<p><NuxtLink to="/corrections">How corrections work</NuxtLink></p>
 		</section>
+		<details v-if="history.length" class="comparison-history">
+			<summary>Comparison history ({{ history.length }})</summary>
+			<p>
+				Source-release history records new comparisons, evidence changes and corrections. These are editorial
+				dates, not study dates or cosmetic refreshes.
+			</p>
+			<ol>
+				<li v-for="update in history" :key="update.id">
+					<p>
+						<time :datetime="update.date">{{ update.date.slice(0, 10) }}</time> ·
+						{{ updateLabels[update.kind] }} · {{ impactLabels[update.bottomLineImpact] }}
+					</p>
+					<p>{{ update.summary }}</p>
+					<a
+						v-for="id in update.sourceIds"
+						:key="id"
+						class="comparison-source-link"
+						:href="`#comparison-source-${id}`"
+						:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
+						>Source {{ sourceNumbers.get(id) }}</a
+					>
+				</li>
+			</ol>
+		</details>
+		<ReaderFeedback :comparison-slug="comparison.slug" />
 	</article>
 </template>
 
@@ -268,12 +303,14 @@ useHead({
 .comparison-source-link + .comparison-source-link {
 	margin-left: 12px;
 }
-.comparison-uncertainty summary {
+.comparison-uncertainty summary,
+.comparison-history summary {
 	cursor: pointer;
 	min-height: 44px;
 	padding-block: 10px;
 }
-.comparison-uncertainty p {
+.comparison-uncertainty p,
+.comparison-history p {
 	font-size: 0.95rem;
 }
 .comparison-intro {

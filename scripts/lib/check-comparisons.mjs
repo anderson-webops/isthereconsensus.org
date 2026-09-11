@@ -184,7 +184,8 @@ async function checkStrengthComparison({ page, open, sitemap }) {
 	for (const context of ["without-training", "clinical"]) {
 		await page.select("#comparison-context", context);
 		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 3);
-		assert.equal((await page.$$(".comparison-finding, .comparison-value, .comparison-evidence, .comparison-source-link")).length, 0);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-finding, .comparison-value, .comparison-evidence, .comparison-source-link)")).length, 0);
+		assert.ok(await page.$(".comparison-history a"), "Historical citations remain outside unsupported result cards.");
 		await page.goBack();
 		await page.waitForSelector(".comparison-finding");
 	}

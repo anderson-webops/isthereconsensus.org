@@ -176,3 +176,49 @@ marker still reported **v1.19.0**, commit
 accounts, credentials, database records, services or deployment configuration
 were changed. CI, source integration/release and exact live acceptance are
 separate gates.
+
+## Comparison updates and private feedback milestone
+
+The library now explicitly opts into mixed review/comparison announcements,
+including comparison-only libraries and comparisons within followed topics.
+Older clients continue receiving review-only rows. Comparison histories record
+the original source releases with stable IDs, evidence links and explicit
+bottom-line impact; cosmetic changes do not manufacture new scientific activity.
+
+Comparison pages offer the existing private usefulness and missing-evidence
+forms, with canonical server-resolved targets and titles. The admin queue can
+filter and triage comparison feedback. Anonymous submissions do not attach an
+account, cookie, raw network address or bot-check token to stored feedback.
+Feedback never changes scientific findings or publication state automatically.
+
+This is feature integration, **not new scientific content**. Progress remains
+**3 of 12 comparisons and 4 of 50 new canonical reviews**, or 754 total reviews
+across 35 topics. Nine comparisons, 46 genuinely new reviews and exact public
+release acceptance remain required. No production deployment is performed by
+this milestone; the matching backend must be ready before the new frontend.
+
+### Local validation
+
+- Clean root installation reported zero audit vulnerabilities. Standalone
+  backend install-script parity and all 31 Linux native lock entries passed;
+  both lockfiles, manifests and npm configuration are unchanged.
+- Repository lint, frontend/backend typechecks, production build and all
+  **487 tests** passed: 303 frontend and 184 backend, no failures or skips.
+- The real isolated database/browser suite passed mixed-feed pagination,
+  old-client compatibility, comparison-only libraries, saved/followed
+  deduplication, target validation, admin-only feedback filters and triage,
+  secret-field exclusion, restart persistence and retained failed forms.
+- Comparison/search/guide browser regressions, runtime fail-closed behavior,
+  SSR assets and route privacy headers passed. All **100 accessibility
+  route/theme checks** passed; populated feedback and library views also passed
+  both themes, 320-pixel layout and 200% text checks. Mobile feedback and admin
+  triage screenshots were visually inspected.
+- History is distinct from outcome uncertainty. Unsupported result cards do
+  not expose borrowed findings or citations, while the separate history keeps
+  its source links. Invalid dates, malformed UUIDs and future events are tested.
+- The optional Oxlint preflight remained unavailable because its installed
+  version differs from the reviewed version; native repository lint passed.
+
+These are local results. Protected-branch CI, integration, a source release and
+exact public acceptance remain separate gates. The full expansion goal remains
+active; this milestone must not be counted as additional canonical reviews.

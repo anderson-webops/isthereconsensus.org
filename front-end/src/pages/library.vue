@@ -7,14 +7,15 @@ interface LibraryContent {
 	topics: Topic[];
 	comparisons: Array<{ slug: string; title: string; description: string }>;
 }
-interface ReaderUpdate {
+type ReaderUpdate = {
 	id: string;
 	date: string;
-	kind: "new_review" | "evidence_update" | "correction";
+	kind: "new_review" | "new_comparison" | "evidence_update" | "correction";
 	summary: string;
 	bottomLineImpact: "new" | "changed" | "unchanged" | "not_assessed";
-	review: ClaimSummary;
-}
+} & (
+	{ review: ClaimSummary; comparison?: never } | { comparison: LibraryContent["comparisons"][number]; review?: never }
+);
 interface UpdatePage {
 	updates: ReaderUpdate[];
 	nextCursor: string | null;
@@ -111,7 +112,11 @@ async function loadUpdates(append = false) {
 			method: "POST",
 			credentials: "omit",
 			signal: request.signal,
-			body: { ...selection(), ...(append && nextCursor.value ? { cursor: nextCursor.value } : {}) }
+			body: {
+				...selection(),
+				includeComparisons: true,
+				...(append && nextCursor.value ? { cursor: nextCursor.value } : {})
+			}
 		});
 		if (request.signal.aborted) return;
 		updates.value = append ? [...updates.value, ...response.updates] : response.updates;
@@ -133,8 +138,14 @@ watch(
 		nextCursor.value = null;
 		updatesLoading.value = false;
 		updatesError.value = "";
-		if (library.state.ready && (library.state.savedReviewIds.length || library.state.followedTopicIds.length))
+		if (
+			library.state.ready &&
+			(library.state.savedReviewIds.length ||
+				library.state.followedTopicIds.length ||
+				library.state.savedComparisonSlugs.length)
+		) {
 			void loadUpdates();
+		}
 	},
 	{ immediate: true }
 );
@@ -144,12 +155,17 @@ async function clearLibrary() {
 }
 
 const impactLabels = {
-	new: "New review",
+	new: "Initial publication",
 	changed: "Bottom line changed",
 	unchanged: "Bottom line unchanged",
 	not_assessed: "Bottom-line impact not assessed"
 };
-const kindLabels = { new_review: "New review", evidence_update: "Evidence update", correction: "Correction" };
+const kindLabels = {
+	new_review: "New review",
+	new_comparison: "New comparison",
+	evidence_update: "Evidence update",
+	correction: "Correction"
+};
 function formatDate(value: string) {
 	return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(value));
 }
@@ -334,12 +350,12 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 					<button type="button" :disabled="updatesLoading" @click="refreshCount++">Refresh updates</button>
 				</div>
 				<p>
-					New reviews, substantive evidence updates and corrections from the last 90 days, for your saved
-					reviews and followed topics. Draft work and cosmetic edits are excluded.
+					New reviews and comparisons, substantive evidence updates and corrections from the last 90 days, for
+					your saved content and followed topics. Draft work and cosmetic edits are excluded.
 				</p>
 				<p class="library-note">
-					This feed starts with the library feature; older edits are not presented as new updates. It retains
-					up to 100 announcements per review.
+					Review announcements start with the library feature. Comparison dates record their original source
+					releases, not today's deployment. Up to 100 announcements are retained per review or comparison.
 				</p>
 				<p v-if="updatesLoading" role="status">Loading updates…</p>
 				<p v-if="updatesError" role="alert">{{ updatesError }}</p>
@@ -354,9 +370,14 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 								{{ kindLabels[update.kind] }}
 							</p>
 							<h3>
-								<NuxtLink :to="`/consensus/${update.review.topic?.slug}/${update.review.slug}`">{{
-									update.review.title
+								<NuxtLink v-if="update.comparison" :to="`/compare/${update.comparison.slug}`">{{
+									update.comparison.title
 								}}</NuxtLink>
+								<NuxtLink
+									v-else
+									:to="`/consensus/${update.review.topic?.slug}/${update.review.slug}`"
+									>{{ update.review.title }}</NuxtLink
+								>
 							</h3>
 							<p>{{ update.summary }}</p>
 							<p class="library-note">{{ impactLabels[update.bottomLineImpact] }}</p>
