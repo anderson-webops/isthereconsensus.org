@@ -75,6 +75,8 @@ const saving = ref(false);
 const actionMessage = ref("");
 const errorMessage = ref("");
 const claim = ref<Claim | null>(null);
+const readerUpdateKind = ref("");
+const bottomLineImpact = ref("");
 const canEditClaim = computed(() => isNew.value || isAdmin.value || claim.value?.status === "draft");
 const revisions = ref<ClaimRevision[]>([]);
 const topics = ref<Topic[]>([]);
@@ -368,6 +370,8 @@ function readApiError(error: unknown, fallback: string) {
 
 function hydrateClaim(record: Claim | null) {
 	claim.value = record;
+	readerUpdateKind.value = "";
+	bottomLineImpact.value = "";
 	form.topic = record?.topic?.slug || topics.value[0]?.slug || "";
 	form.title = record?.title || "";
 	form.slug = record?.slug || "";
@@ -711,7 +715,9 @@ async function publishClaim() {
 			body: {
 				lastReviewedAt: form.lastReviewedAt || undefined,
 				nextReviewAt: form.nextReviewAt || undefined,
-				revisionNote: form.revisionNote.trim() || undefined
+				revisionNote: form.revisionNote.trim() || undefined,
+				readerUpdateKind: readerUpdateKind.value || undefined,
+				bottomLineImpact: bottomLineImpact.value || undefined
 			}
 		});
 		actionMessage.value = "Claim published.";
@@ -2135,6 +2141,33 @@ watch(
 					Published and archived records are read-only. An admin must move the claim through the update or
 					restore workflow before its content can be edited.
 				</p>
+				<div
+					v-if="isAdmin && claim?.publishedAt && ['draft', 'needs_update'].includes(form.status)"
+					class="field field--full"
+				>
+					<label class="field"
+						><span class="field-label">Reader update on publication</span>
+						<select v-model="readerUpdateKind">
+							<option value="">Choose the significance of this update</option>
+							<option value="none">Cosmetic or administrative edit; no feed announcement</option>
+							<option value="evidence_update">Substantive evidence update</option>
+							<option value="correction">Correction</option>
+						</select>
+					</label>
+					<label v-if="readerUpdateKind && readerUpdateKind !== 'none'" class="field"
+						><span class="field-label">Effect on the bottom line</span>
+						<select v-model="bottomLineImpact">
+							<option value="">Choose the effect</option>
+							<option value="changed">The bottom line changed</option>
+							<option value="unchanged">The bottom line is unchanged</option>
+							<option value="not_assessed">Effect has not been assessed</option>
+						</select>
+					</label>
+					<p class="helper-note">
+						A substantive update uses the public change summary above in followers' feeds only after
+						successful publication.
+					</p>
+				</div>
 				<p v-if="actionMessage" class="success">{{ actionMessage }}</p>
 				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 

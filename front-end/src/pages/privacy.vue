@@ -49,6 +49,7 @@ const collectionCategories = [
 			"public question content, including titles, body text, source links, display names, and related metadata",
 			"expert application materials such as affiliation, credentials, expertise areas, evidence links, and statements",
 			"moderation reports and notes you submit about public questions",
+			"saved-review and followed-topic identifiers when you choose an account library or copy browser selections to it",
 			"emails or other direct messages you send to the site operator"
 		]
 	},
@@ -74,6 +75,7 @@ const collectionCategories = [
 
 const useCases = [
 	"create and maintain accounts, sign users in, and keep sessions secure",
+	"remember your selected reviews and topics, and show relevant published updates",
 	"publish, route, moderate, and, when necessary, remove community questions and related reports",
 	"review expert applications and manage editorial roles",
 	"measure site usage, diagnose issues, and improve the public reading experience",
@@ -90,6 +92,14 @@ const sharingCategories = [
 ];
 
 const retentionRows: RetentionRow[] = [
+	{
+		title: "Saved reviews and followed topics",
+		body: "Browser libraries remain in that browser profile until you remove them or clear site data. Account libraries remain until you remove their selections, clear the account library, or request account deletion.",
+		details: [
+			"The My library page provides removal and clear controls. Browser and account libraries are separate; copying is optional.",
+			"Library selections are not public. The service receives selected identifiers when loading review details or updates. We do not add these identifiers to account activity logs. Backups may retain removed selections for longer."
+		]
+	},
 	{
 		title: "Account records",
 		body: "We generally keep account information for as long as the account remains active, and for a reasonable period afterward when needed for security, fraud prevention, or legal compliance."
@@ -118,6 +128,7 @@ const retentionRows: RetentionRow[] = [
 ];
 
 const rightsPoints = [
+	"You can remove saved reviews, unfollow topics, or clear either library from My library. Clearing one does not clear the other.",
 	"You can update your account email and password from the account page while signed in.",
 	"You can delete your own questions from the public thread interface while signed in, subject to ordinary product limits and admin controls.",
 	"If you want help with access, correction, closure, or deletion requests, email consensus@isthereconsensus.org.",
@@ -140,7 +151,7 @@ useStaticPageMeta({
 			<p class="eyebrow">Privacy Policy</p>
 			<h1>How we handle personal information.</h1>
 			<p>
-				Effective April 11, 2026. This policy explains what the site collects, how it uses that information,
+				Effective September 11, 2026. This policy explains what the site collects, how it uses that information,
 				when it may be disclosed, and what practical choices users currently have.
 			</p>
 		</header>

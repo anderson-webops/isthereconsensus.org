@@ -1,6 +1,7 @@
 import { Claim } from "../models/schemas/Claim.js";
 import { ClaimSource } from "../models/schemas/ClaimSource.js";
 import { Topic } from "../models/schemas/Topic.js";
+import { recordSeedReaderAnnouncement } from "../utils/seedReaderAnnouncement.js";
 import { defaultClaims } from "./claims.js";
 
 type SeedClaimSource = (typeof defaultClaims)[number]["sources"][number];
@@ -295,7 +296,7 @@ export async function seedClaims(options: SeedClaimsOptions = {}) {
 		if (!claim.nextReviewAt) missingFields.nextReviewAt = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
 		if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
 		if (hasSeedClaimUpdate({ $set: missingFields })) {
-			await Claim.updateOne({ _id: claim._id }, { $set: missingFields });
+			await Claim.updateOne({ _id: claim._id }, { $set: missingFields, $inc: { __v: 1 } });
 		}
 
 		for (const source of seed.sources) {
@@ -317,6 +318,7 @@ export async function seedClaims(options: SeedClaimsOptions = {}) {
 				await ClaimSource.updateOne({ _id: existingSource._id }, sourceUpdate);
 			}
 		}
+		await recordSeedReaderAnnouncement(claim._id, seed.readerAnnouncement);
 	}
 
 	if (synchronizeExisting) {

@@ -61,6 +61,7 @@ import { Topic } from "./models/schemas/Topic.js";
 import { TopicSentimentVote } from "./models/schemas/TopicSentimentVote.js";
 import { User } from "./models/schemas/User.js";
 import { authRoutes } from "./routes/authRoutes.js";
+import { createReaderLibraryRouter } from "./routes/readerLibraryRoutes.js";
 import { buildSetupStatus } from "./setup/buildSetupStatus.js";
 import { recordAccountActivity } from "./utils/accountActivity.js";
 import {
@@ -87,6 +88,7 @@ import {
 import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
 import { resolveMongoConfiguration } from "./utils/mongoConfiguration.js";
 import { createProbeRouter } from "./utils/probes.js";
+import { loadClaimSourceReadinessCountMap } from "./utils/publicClaimQueries.js";
 import {
 	emptyPublicClaimSourceReadinessCounts,
 	getPublicClaimReadiness,
@@ -107,6 +109,7 @@ import {
 	toPublicTopicSentimentVote,
 	toReporterQuestionFlag
 } from "./utils/publicRecords.js";
+import { planReaderPublication } from "./utils/readerUpdates.js";
 import { classifyPublicRequestError } from "./utils/requestErrors.js";
 import {
 	assertDistinctProductionSecrets,
@@ -359,6 +362,7 @@ async function main() {
 	await Question.updateMany({ routingStatus: { $exists: false } }, { $set: { routingStatus: "unassigned" } });
 
 	const api = express.Router();
+	api.use("/library", createReaderLibraryRouter());
 
 	function normalizeText(value: unknown, maxLength: number) {
 		if (typeof value !== "string") return "";
@@ -1130,24 +1134,6 @@ async function main() {
 		sourceCountMap: Map<string, PublicClaimSourceReadinessCounts>
 	) {
 		return getPublicClaimReadiness(claim, publicClaimSourceCountsFor(sourceCountMap, claim._id)).isReady;
-	}
-
-	async function loadClaimSourceReadinessCountMap(claimIds: mongoose.Types.ObjectId[]) {
-		if (!claimIds.length) return new Map<string, PublicClaimSourceReadinessCounts>();
-
-		const sources = await ClaimSource.find({ claim: { $in: claimIds } }).lean();
-		const sourcesByClaim = new Map<string, typeof sources>();
-		for (const source of sources) {
-			const key = source.claim.toString();
-			sourcesByClaim.set(key, [...(sourcesByClaim.get(key) ?? []), source]);
-		}
-
-		const sourceCountMap = new Map<string, PublicClaimSourceReadinessCounts>();
-		for (const [claimId, claimSources] of sourcesByClaim) {
-			sourceCountMap.set(claimId, summarizeClaimSourceReadiness(claimSources));
-		}
-
-		return sourceCountMap;
 	}
 
 	async function serializePublicQuestions(questions: Array<Partial<IQuestion>>) {
@@ -2793,6 +2779,13 @@ async function main() {
 				return res.status(400).json({ error: "A public update summary is required before republication." });
 			}
 			const publicationSummary = revisionNote || "Published claim.";
+			const readerPublication = planReaderPublication({
+				previouslyPublished: Boolean(claim.publishedAt),
+				kind: req.body?.readerUpdateKind,
+				bottomLineImpact: req.body?.bottomLineImpact,
+				summary: publicationSummary
+			});
+			if (!readerPublication.ok) return res.status(400).json({ error: readerPublication.error });
 
 			const actor = currentActor(req);
 			const publishedAt = new Date();
@@ -2814,6 +2807,11 @@ async function main() {
 					error: "Claim is not ready for publication.",
 					validationErrors: readiness.missing
 				});
+			}
+			// Only this approved publication path creates reader-feed events.
+			// Save the event and publication atomically in the same claim document.
+			if (readerPublication.update) {
+				claim.readerUpdates = [readerPublication.update, ...(claim.readerUpdates ?? [])].slice(0, 100);
 			}
 			await claim.save();
 
