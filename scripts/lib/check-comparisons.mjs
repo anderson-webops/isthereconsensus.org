@@ -7,7 +7,7 @@ import { evidenceComparisons } from "../../front-end/src/data/comparisons/index.
 // Called inside the existing built-app browser harness and its read-only API
 // fixture. No second browser/server, account, or production writes are needed.
 export async function checkComparisons({ page, baseUrl, open }) {
-	for (const [query, slug] of [["solar vs wind", "electricity-emissions"], ["creatine vs protein", "strength-training-supplements"], ["coffee and sleep", "caffeine-dose-and-sleep"]]) {
+	for (const [query, slug] of [["solar vs wind", "electricity-emissions"], ["creatine vs protein", "strength-training-supplements"], ["coffee and sleep", "caffeine-dose-and-sleep"], ["CBT-I vs sleep hygiene", "non-drug-insomnia-treatments"]]) {
 		for (const route of [`/consensus?q=${encodeURIComponent(query)}`, `/ask?question=${encodeURIComponent(query)}`]) {
 			await open(route);
 			assert.ok(await page.$(`.comparison-links a[href="/compare/${slug}"]`), `${route}: separate comparison match`);
@@ -159,9 +159,72 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 	await checkCaffeineComparison({ page, open, sitemap });
 	await checkStrengthComparison({ page, open, sitemap });
+	await checkInsomniaComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkInsomniaComparison({ page, open, sitemap }) {
+	const comparison = evidenceComparisons.find(item => item.slug === "non-drug-insomnia-treatments");
+	const path = `/compare/${comparison.slug}`;
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path)]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: insomnia comparison discoverable`);
+	}
+	await open(path);
+	assert.equal((await page.$$(".comparison-finding")).length, 6);
+	assert.equal((await page.$$(".comparison-value")).length, 0);
+	await page.select("#comparison-outcome", "demands");
+	await page.waitForFunction(() => document.querySelector(".comparison-finding")?.textContent.includes("delivery matters"));
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.equal(await page.$eval("#comparison-outcome", node => node.value), "demands");
+	for (const context of ["short-opportunity", "other-populations"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 6);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-finding, .comparison-value, .comparison-evidence, .comparison-source-link)")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-finding");
+	}
+	await open(`${path}?outcome=demands&options=cbt-i,brief`);
+	assert.equal((await page.$$(".comparison-option")).length, 2);
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	await open(`${path}?options=`);
+	await page.waitForSelector(".comparison-empty");
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 6);
+	await page.focus(".comparison-choices input");
+	await page.keyboard.press("Space");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 5);
+	await open(path);
+	for (const disclosure of await page.$$(".comparison-evidence summary")) await disclosure.click();
+	const details = await page.$$eval(".comparison-evidence[open]", nodes => nodes.map(node => node.textContent));
+	assert.match(details[1], /55%.*13%.*four weeks/s);
+	assert.match(details[1], /SD to SE/);
+	assert.match(details[4], /0\.81.*0\.64 to 1\.02.*not conclusive evidence of harm/s);
+	await page.click('.comparison-option a[href="#comparison-source-components"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-components");
+	assert.ok(await page.$("#comparison-source-components a"));
+	for (const theme of ["light", "dark"]) {
+		const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+		if (current !== theme) await page.click(".theme-toggle");
+		await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+		for (const width of [1280, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `insomnia overflow ${theme} ${width}`);
+			if (width === 1280) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 3, "six text-heavy options should use three readable columns");
+			if (width <= 390) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 1);
+			if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && width !== 320) {
+				await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `insomnia-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `insomnia overflow ${theme} at 200% text`);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 }
 
 async function checkStrengthComparison({ page, open, sitemap }) {

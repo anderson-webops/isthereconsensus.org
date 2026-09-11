@@ -222,3 +222,98 @@ this milestone; the matching backend must be ready before the new frontend.
 These are local results. Protected-branch CI, integration, a source release and
 exact public acceptance remain separate gates. The full expansion goal remains
 active; this milestone must not be counted as additional canonical reviews.
+
+## Non-drug insomnia comparison and five new reviews
+
+The next comparison covers six approaches: multicomponent CBT-I, brief
+behavioral treatment, stimulus control, sleep restriction, relaxation and
+sleep-hygiene education. Readers can switch between insomnia improvement and
+treatment demands/safety, select a subset, and share that selection. Adult
+insomnia results are withheld for insufficient sleep opportunity, children
+and other sleep disorders. Guideline strength, component odds ratios and
+single-trial remission percentages are not a shared numerical ranking.
+
+Five genuinely new questions, documented against related existing reviews in
+`sleepPracticalGaps`, concern:
+
+1. Brief behavioral care versus education, not another generic CBT-I review.
+2. Stimulus control alone versus its contribution inside a package.
+3. Whether relaxation is an essential ingredient, distinguishing standalone
+   recommendations from uncertain add-on effects.
+4. Fully automated versus individual face-to-face delivery and the meaning of
+   a prespecified non-inferiority margin.
+5. Early sleepiness during therapeutic restriction of time in bed, distinct
+   from habitual inadequate sleep and from later posttreatment safety.
+
+Implemented source total: **4 of 12 comparisons; 9 of 50 new reviews**.
+Catalog: **759 canonical reviews, 35 topics, ten guides**. Eight comparisons,
+41 genuinely new reviews and exact public release acceptance remain required.
+The canonical registration automatically supplies topic/search discovery,
+review saving and substantive announcements; the shared comparison registry
+supplies discovery, comparison saving, update history/feed and private
+feedback. The sleep guide links the new delivery, brief-care and safety reviews.
+
+### Source checks and evidence boundaries
+
+- One focused Consensus search identified digital-delivery studies; three
+  records were fetched. One was a protocol, not completed findings, and was
+  excluded as outcome evidence. Primary records
+  and accessible full text were checked separately. No Deep Review was used.
+- AASM 2021 final recommendation abstract (PMID 33164742) and the society's
+  public explanation were checked. No claim of a new formal GRADE assessment
+  or complete guideline-methods appraisal is made.
+- Furukawa et al. 2024 (DOI 10.1001/jamapsychiatry.2023.5060): relevant full-text
+  methods, outcomes, additive-model assumptions, limitations and commercial
+  disclosures checked through Europe PMC. Stimulus-control incremental OR
+  1.43 (95% CI 1.00–2.05) and relaxation OR 0.81 (0.64–1.02) are preserved as
+  conditional component estimates, not absolute benefits or proof of harm.
+- Buysse et al. 2011 (PMID 21263078): abstract and indexed outcome/follow-up
+  passages checked. The linked 2019 correction (DOI
+  10.1001/jamainternmed.2019.1927) changes Tables 2–5 headings from SD to SE.
+  The source is explicitly marked corrected; follow-up of favorable responders
+  is not treated as a continuing randomized comparison.
+- Kallestad et al. 2021 (PMID 34291808): relevant full text checked through
+  Europe PMC. At week 33, face-to-face minus automated ISI was −2.8 points
+  (95% CI −4.8 to −0.8), crossing the −2-point non-inferiority boundary.
+  Superiority for face-to-face and inconclusive digital non-inferiority are
+  compatible. The 2020 digital meta-analysis (PMID 32950013) was checked at
+  abstract level, not as a reappraisal of all component trials.
+- Kyle et al. 2014 (PMID 24497651) and Cheng et al. 2020 (PMID 31992407):
+  primary abstracts checked. The 16-person uncontrolled acute study and
+  150-woman randomized before/after study address different timing and
+  populations. Cheng's 0.94 (95% CI 0.13–6.96) is a sleepiness-transition OR,
+  not a between-treatment relative risk. No personal sleep window is supplied.
+
+Citation-status checks were limited to the linked primary records and any
+linked notices. This targeted research is AI-assisted, not exhaustive or
+independently expert-reviewed. No source percentages are labeled as expert
+agreement, and no new pooled effects or personal predictions were calculated.
+
+### Local validation
+
+- Clean root installation reported zero audit vulnerabilities. Standalone
+  backend install-script parity and all 31 Linux native lock entries passed;
+  manifests, both lockfiles and backend npm configuration are unchanged.
+- Repository lint, frontend/backend typechecks, production build and all
+  **497 tests** passed: 307 frontend and 190 backend, with no failures or skips.
+  The external backend diagnostic probe now explicitly supplies fetch types
+  to avoid recursive Nuxt route inference; its runtime behavior is unchanged.
+- Comparison/search/guide browser checks passed discovery from the guide,
+  topics and all seven linked reviews; both outcomes, unsupported contexts,
+  shared selections, keyboard controls, source links, history and sitemap.
+  Six text-heavy cards use three columns on desktop and one on phones. Light
+  and dark views passed 320-pixel and 200% text checks; desktop and mobile
+  screenshots were visually inspected.
+- All **110 accessibility route/theme checks** passed. The isolated real
+  database/browser library and private-feedback suite, runtime fail-closed
+  checks, SSR public assets and route privacy headers also passed.
+- New regressions preserve the corrected brief-treatment source, the direct
+  digital comparison's margin and direction, the component-model limits and
+  distinct early versus later safety results. Canonical schema validation,
+  source length limits, collection membership and content uniqueness passed.
+- The optional Oxlint preflight remained unavailable because its installed
+  version differs from the reviewed version; native repository lint passed.
+
+These are local results. Protected-branch CI, source integration/release and
+exact public acceptance are separate gates. The full expansion goal remains
+active at four comparisons and nine genuinely new canonical reviews.

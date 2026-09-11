@@ -390,7 +390,7 @@ useHead({
 	gap: 12px;
 }
 .comparison-grid--findings {
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
 }
 .comparison-option {
 	padding: 20px 16px;
