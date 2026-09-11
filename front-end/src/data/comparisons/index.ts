@@ -1,7 +1,8 @@
 import { caffeineComparison } from "./caffeine";
 import { electricityComparison } from "./electricity";
+import { strengthComparison } from "./strength";
 
-export const evidenceComparisons = [electricityComparison, caffeineComparison];
+export const evidenceComparisons = [electricityComparison, caffeineComparison, strengthComparison];
 
 export function comparisonForSlug(slug: string) {
 	return evidenceComparisons.find((comparison) => comparison.slug === slug);

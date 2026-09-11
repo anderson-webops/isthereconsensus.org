@@ -141,9 +141,82 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
 	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 	await checkCaffeineComparison({ page, open, sitemap });
+	await checkStrengthComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkStrengthComparison({ page, open, sitemap }) {
+	const path = "/compare/strength-training-supplements";
+	const comparison = evidenceComparisons.find(item => item.slug === "strength-training-supplements");
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path)]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: strength comparison discoverable`);
+	}
+	await open(path);
+	assert.equal((await page.$$(".comparison-finding")).length, 3);
+	assert.equal((await page.$$(".comparison-value")).length, 0, "no fake common-scale values");
+	await page.click(".comparison-evidence summary");
+	assert.match(await page.$eval(".comparison-evidence[open]", node => node.textContent), /2\.49 kg.*0\.64 to 4\.33 kg/s);
+	await page.select("#comparison-outcome", "muscle-growth");
+	await page.waitForFunction(() => document.querySelector(".comparison-finding")?.textContent.includes("Small added gains"));
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.equal(await page.$eval("#comparison-outcome", node => node.value), "muscle-growth");
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	for (const context of ["without-training", "clinical"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 3);
+		assert.equal((await page.$$(".comparison-finding, .comparison-value, .comparison-evidence, .comparison-source-link")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-finding");
+	}
+	for (let index = 1; index <= 3; index++) {
+		await page.focus(`.comparison-choices label:nth-child(${index}) input`);
+		await page.keyboard.press("Space");
+		await page.waitForFunction(count => document.querySelectorAll(".comparison-option").length === count, {}, 3 - index);
+	}
+	await page.waitForSelector(".comparison-empty");
+	await page.reload({ waitUntil: "networkidle0" });
+	await page.waitForSelector(".comparison-empty");
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-finding").length === 3);
+	for (const disclosure of await page.$$(".comparison-evidence summary")) await disclosure.click();
+	const details = await page.$$eval(".comparison-evidence[open]", nodes => nodes.map(node => node.textContent));
+	assert.match(details[0], /7\.2 mm².*0\.20 to 14\.30 mm²/s);
+	assert.match(details[1], /Bayesian credible interval −0\.02 to 0\.25/);
+	assert.match(details[2], /not 22% more muscle/);
+	await page.click(".comparison-option a[href=\"#comparison-source-creatine-imaging\"]");
+	await page.waitForFunction(() => location.hash === "#comparison-source-creatine-imaging");
+	assert.ok(await page.$("#comparison-source-creatine-imaging a"));
+	for (const width of [1280, 390, 320]) {
+		await page.setViewport({ width, height: 900 });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `strength overflow at ${width}px`);
+		if (width <= 390) {
+			assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 1, "long findings must stack on phones, not merely avoid overflow");
+		}
+	}
+	await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+	assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, "strength overflow at 200% text");
+	await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR) {
+		for (const theme of ["light", "dark"]) {
+			const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+			if (current !== theme) await page.click(".theme-toggle");
+			await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done)));
+				await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {})));
+			});
+			for (const width of [390, 1280]) {
+				await page.setViewport({ width, height: 900 });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `strength-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 }
 
 async function checkCaffeineComparison({ page, open, sitemap }) {

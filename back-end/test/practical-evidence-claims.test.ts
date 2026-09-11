@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { practicalEvidenceClaims, practicalEvidenceGaps } from "../src/data/claim-expansion-practical-evidence.js";
+import { strengthPracticalClaims } from "../src/data/claim-expansion-practical-strength.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
@@ -23,6 +24,31 @@ describe("new practical-evidence canonical reviews", () => {
 				assert.ok(!slugs.has(related));
 				assert.ok(defaultClaims.some(claim => claim.slug === related));
 			}
+		}
+	});
+
+	it("keeps the three creatine questions distinct and their evidence limits explicit", () => {
+		assert.equal(strengthPracticalClaims.length, 3);
+		const [loading, leanMass, buffered] = strengthPracticalClaims;
+		assert.match(loading!.bottomLine, /does not establish identical strength/);
+		assert.match(loading!.evidenceSummaries![0]!.limitations.join(" "), /Abstract only/);
+		assert.match(leanMass!.bottomLine, /not evidence that all creatine benefits are water/);
+		assert.match(leanMass!.evidenceSummaries![0]!.finding, /0\.51 kg.*2\.24 versus 2\.11 kg/);
+		assert.match(leanMass!.evidenceSummaries![1]!.magnitude!, /95% credible interval −0\.02 to 0\.25/);
+		assert.match(buffered!.bottomLine, /does not prove exact equivalence/);
+		assert.match(buffered!.coiSummary!, /AlzChem/);
+		for (const claim of strengthPracticalClaims) {
+			assert.match(claim.reviewerLine!, /independent expert review not completed/);
+			assert.match(claim.appraisalTools!.join(" "), /no formal GRADE/);
+			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+			assert.equal(new Set(claim.sources.map(source => source.url)).size, claim.sources.length);
+		}
+	});
+
+	it("finds the new creatine questions without counting comparisons or revisions as reviews", () => {
+		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
+		for (const [index, query] of ["creatine loading phase", "creatine lean mass muscle tissue", "buffered creatine monohydrate"].entries()) {
+			assert.ok(search(query).some(result => result.claim.slug === strengthPracticalClaims[index]!.slug));
 		}
 	});
 

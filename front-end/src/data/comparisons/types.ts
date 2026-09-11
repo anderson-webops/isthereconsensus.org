@@ -14,6 +14,17 @@ export interface ComparisonEstimate {
 	pValue?: string;
 }
 
+// When studies cannot share a defensible numeric scale, compare their findings
+// and expose each study's own units and scope without computing a ranking.
+export interface ComparisonFinding {
+	headline: string;
+	summary: string;
+	evidence: string;
+	scope: string;
+	limitation: string;
+	sourceIds: string[];
+}
+
 export interface EvidenceComparison {
 	slug: string;
 	title: string;
@@ -35,6 +46,7 @@ export interface EvidenceComparison {
 		estimates: Record<string, ComparisonEstimate>;
 		// When present, never fall back to another context's estimates.
 		estimatesByContext?: Record<string, Record<string, ComparisonEstimate>>;
+		findingsByContext?: Record<string, Record<string, ComparisonFinding>>;
 	}>;
 	limitations: string[];
 	sources: Array<{ id: string; title: string; url: string; locator: string; note: string }>;

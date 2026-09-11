@@ -77,3 +77,39 @@ Implemented total: **2 of 12 comparisons; 1 of 50 new canonical reviews**. Catal
 - Backend-runtime, SSR-public-asset and SSR-route-rule smoke checks passed. The optional guarded Oxlint preflight did not run because its expected version differed from the installed version; the repository's authoritative ESLint checks passed.
 
 These are source/local validation results, not production acceptance. The public deployment marker still identified **v1.19.0**, commit `44b299a1803243140eef91c7b18b148d077794bd`, at this milestone's preflight. Source integration, CI and release publication are tracked separately. Normal insert-only seeding adds the new canonical review and its stable announcement; no existing-content synchronization mode, schema migration, credential reset or production write was performed.
+
+## Third milestone: strength supplements and three new reviews
+
+Adds `/compare/strength-training-supplements`, covering protein, creatine monohydrate and BCAAs for strength and muscle growth. These evidence bodies differ in populations, controls, measurements and duration. The interface therefore presents study-specific findings, not a common-scale ranking. Expandable evidence retains numbers, units, uncertainty, source scope and funding limitations. Without-training and clinical contexts explicitly withhold unmatched findings; neither means an effect of zero.
+
+New canonical questions, each with its own gap record, sources, uncertainty and stable announcement:
+
+1. **Is a loading phase necessary to raise muscle creatine stores?** Separates accumulation speed from the existing general efficacy/safety review. Store increases are not strength increases, and protocol doses are descriptive rather than personal advice.
+2. **Does extra lean mass measured after creatine mean extra muscle tissue?** Separates DXA lean mass from direct muscle imaging. The wash-in study does not establish that all creatine benefits are water or that higher doses are necessary.
+3. **Does buffered creatine outperform creatine monohydrate?** Addresses a directly tested formulation claim without treating a nonsignificant difference as equivalence or generalizing to every alternative formulation.
+
+Source-access record, checked September 11, 2026:
+
+- [Morton et al. 2018 protein-supplementation meta-analysis](https://pmc.ncbi.nlm.nih.gov/articles/PMC5867436/): relevant full methods/results, sensitivity analysis and disclosures via Europe PMC. Preserve 1RM +2.49 kg (95% CI 0.64–4.33), mid-femur cross-sectional area +7.2 mm² (0.20–14.30), and fat-free mass +0.30 kg (0.09–0.52) as separate analyses, not head-to-head supplement results. Dairy-industry relationships disclosed. No claim that every outcome contains all 49 trials or that a modeled intake breakpoint is a universal cutoff.
+- [Burke et al. 2023 direct-imaging synthesis](https://pmc.ncbi.nlm.nih.gov/articles/PMC10180745/): relevant full methods, results, discussion and disclosures via Europe PMC. Ten trials, 44 regional outcomes, 6–52 weeks. SMD 0.11, 95% **Bayesian credible interval** −0.02–0.25. Not kilograms, a confidence interval, or expert agreement. Industry relationships disclosed.
+- [Desai et al. 2025 wash-in trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC11944689/): relevant full methods/results/discussion/disclosures via Europe PMC. No placebo, hydration not measured, single dose, measurement-error qualification. The 0.51 kg early DXA difference is not directly measured contractile tissue; subsequent nonsignificance is not equivalence. Prior supplier sponsorship disclosed.
+- [Hultman et al. 1996 loading experiment](https://pubmed.ncbi.nlm.nih.gov/8828669/): PubMed abstract and complete Consensus paper record, not full trial methods. No claim of randomized strength equivalence or verified funding independence.
+- [Jagim et al. 2012 buffered-creatine trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC3479057/): relevant full design, participants, protocols, results and funding via Europe PMC. 36 trained men, 28 days, three formulation/dose arms; usable muscle biopsies in 25. Manufacturer funding and absence of an inactive placebo remain explicit.
+- [ISSN 2017 position statement](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/): relevant full protocol, bioavailability, ergogenic-value and competing-interest sections. A position statement with industry relationships, not an independent replication.
+- [Jackman et al. 2017 acute BCAA experiment](https://pubmed.ncbi.nlm.nih.gov/28638350/): abstract and protocol figure. Ten young men, four-hour synthesis outcome, no complete-protein comparator. A 22% higher synthesis rate is not 22% more muscle.
+- [NIH exercise-supplement fact sheet](https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/): full relevant creatine, protein and BCAA sections, updated April 1, 2024. Independent general context, not individualized treatment guidance.
+
+These were targeted source checks, not a registered systematic review, completed formal GRADE/RoB assessment, or independent expert review. Direct source access is distinguished from Consensus discovery. No Deep Review was used for this milestone.
+
+Implemented total: **3 of 12 comparisons; 4 of 50 new canonical reviews**. Catalog: **754 reviews, 35 topics, ten guides**. Existing claim search, topic collections, review saving, stable updates and private feedback cover the new reviews. Comparison-specific search/saving/updates/feedback, nine more comparisons, 46 more reviews and exact public acceptance remain unfinished. This pilot does not complete the active goal.
+
+### Third-milestone validation, September 11, 2026
+
+- Clean root installation passed with zero audit vulnerabilities. Root and standalone backend lock/install-script policy and 31 Linux native lock entries passed; manifests, both lockfiles and npm configuration are unchanged.
+- Root lint, typecheck, production build and all **472 tests** passed: 296 frontend, 176 backend, no failures or skips. New checks cover source-specific findings, context isolation, schema validation, unique review/gap accounting and discoverability.
+- Built-browser comparison, search and guide checks passed. The three new reviews expose the comparison through their normal reading pages; outcome/context changes, source anchors, shared URLs, reload, history, keyboard toggles, empty selections, sitemap and metadata were verified.
+- All **96 accessibility route/theme checks** passed, including the five strength comparison states in light and dark. Visual inspection of both themes and mobile/desktop followed the automated checks.
+- Visual review caught a layout problem that simple overflow checks missed: prose findings could fit in two excessively narrow phone columns. Findings now use wider minimum cards, with a browser assertion requiring one column at 320 and 390 pixels. Expanded disclosures also pass overflow checks at 1280 pixels and at 200% text on a 320-pixel viewport.
+- Backend-runtime, SSR-public-asset and SSR-route-rule smoke checks passed. A local preview remains available on port 3000; no additional browser window was opened during the background continuation.
+
+These are local/source results. At the final local check, public identity remained **v1.19.0**, commit `44b299a1803243140eef91c7b18b148d077794bd`. The normal insert-only seed path adds the three new reviews and idempotent announcements on authorized deployment. No schema migration, account action, existing-content synchronization mode or production write was performed. PR CI, merge, source release and exact public acceptance remain separate steps.
