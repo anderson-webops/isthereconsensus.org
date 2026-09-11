@@ -88,7 +88,7 @@ describe("consensus directory metadata", () => {
 
 		assert.ok(topicDirectoryIndex >= 0);
 		assert.ok(claimDirectoryIndex > topicDirectoryIndex);
-		assert.match(source, /<section id="topic-directory"/);
+		assert.match(source, /<section v-if="!query" id="topic-directory"/);
 		assert.match(source, /<details id="reviewed-claims"/);
 		assert.match(source, /:open="hasActiveDirectoryFilter"/);
 		assert.match(source, /\.claim-directory__summary::after \{[\s\S]*content: "\+";/);

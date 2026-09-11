@@ -271,10 +271,10 @@ watch([query, claimBand], () => {
 			<p class="results-count" aria-live="polite">{{ resultsCountLabel }}</p>
 		</section>
 
-		<section id="topic-directory" class="results-block topic-directory">
+		<section v-if="!query" id="topic-directory" class="results-block topic-directory">
 			<div class="section-heading">
 				<p class="eyebrow">Browse by subject</p>
-				<h2>{{ query ? "Related topics" : "Topics" }}</h2>
+				<h2>Topics</h2>
 			</div>
 
 			<div v-if="!filteredTopics.length && !searchPending && claimsStatus !== 'error'" class="empty-state">
@@ -288,7 +288,7 @@ watch([query, claimBand], () => {
 					</button>
 				</div>
 			</div>
-			<div v-else class="topic-list" :class="{ 'topic-list--compact': query }">
+			<div v-else class="topic-list">
 				<NuxtLink
 					v-for="topic in filteredTopics"
 					:key="topic.slug"
@@ -297,11 +297,11 @@ watch([query, claimBand], () => {
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<div v-if="!query" class="topic-row__meta">
+						<div class="topic-row__meta">
 							<span>{{ formatTopicClaimCount(topic) }}</span>
 						</div>
 					</div>
-					<span v-if="!query" class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
+					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -371,9 +371,14 @@ watch([query, claimBand], () => {
 				</div>
 				<div v-else-if="!filteredClaims.length" class="empty-state">
 					<p>No reviewed claims match that search and consensus filter.</p>
-					<button class="empty-state__action" type="button" @click="clearDirectoryFilters">
-						Show all claim reviews
-					</button>
+					<div class="empty-state__actions">
+						<NuxtLink v-if="query" class="empty-state__action" :to="askDirectoryLink">
+							Ask this question
+						</NuxtLink>
+						<button class="empty-state__action" type="button" @click="clearDirectoryFilters">
+							Show all claim reviews
+						</button>
+					</div>
 				</div>
 				<div v-else class="claim-grid">
 					<NuxtLink
@@ -401,6 +406,22 @@ watch([query, claimBand], () => {
 				</div>
 			</div>
 		</details>
+
+		<section v-if="query && filteredTopics.length" class="results-block related-topics">
+			<div class="section-heading">
+				<h2>Related topics</h2>
+			</div>
+			<div class="related-topic-links">
+				<NuxtLink
+					v-for="topic in filteredTopics"
+					:key="topic.slug"
+					class="related-topic-link"
+					:to="`/consensus/${topic.slug}`"
+				>
+					{{ topic.title }}
+				</NuxtLink>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -457,20 +478,22 @@ watch([query, claimBand], () => {
 	border-bottom: 1px solid var(--consensus-soft-line);
 }
 
-.topic-list.topic-list--compact {
+.related-topic-links {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 }
 
-.topic-list--compact .topic-row {
+.related-topic-link {
 	display: block;
 	padding: 10px 14px;
-}
-
-.topic-list--compact .topic-row h3 {
-	font-family: inherit;
 	font-size: 0.95rem;
+	font-weight: 600;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 8px;
+	background: var(--consensus-surface);
+	color: var(--consensus-ink);
+	text-decoration: none;
 }
 
 .directory__controls {

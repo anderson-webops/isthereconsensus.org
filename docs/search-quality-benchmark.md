@@ -21,7 +21,7 @@ Additional regression checks preserve the first result for all 750 catalog title
 - Word and phrase equivalents, accent normalization, and unambiguous bounded typo correction support ordinary wording.
 - Title relevance and distinctive subject coverage outweigh incidental mentions in longer summaries. A small, expiring demand signal only breaks close ties.
 - Results link to existing reviews; matching does not generate answers or alter scientific conclusions.
-- Directory searches preserve server order. Blank searches still expose the entire catalog, grouped for browsing and progressively displayed.
+- Directory searches preserve server order and put matching reviews before compact related-topic links. Blank searches still expose the entire catalog, with topics first and reviews progressively displayed.
 - Loading, unavailable service, and genuine empty results are separate states. Old suggestion responses are canceled and ignored when the reader changes the question.
 
 ## Reproduce
