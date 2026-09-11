@@ -471,7 +471,9 @@ export const atlasCollections = [
 		claimSlugs: [
 			"are-commercial-gmo-foods-unsafe-to-eat",
 			"are-gmos-unregulated-in-the-united-states",
-			"does-glyphosate-cause-cancer-in-humans"
+			"does-glyphosate-cause-cancer-in-humans",
+			"have-insect-resistant-genetically-engineered-crops-generally-reduced-insecticide-use-and-crop-losses",
+			"do-herbicide-tolerant-crops-prevent-herbicide-resistant-weeds-from-evolving"
 		]
 	},
 	{
@@ -484,7 +486,12 @@ export const atlasCollections = [
 			"do-polygenic-risk-scores-work-equally-well-across-ancestry-groups",
 			"can-direct-to-consumer-genetic-tests-reliably-predict-most-common-diseases",
 			"do-harmful-brca1-or-brca2-variants-substantially-raise-breast-and-ovarian-cancer-risk",
-			"can-pharmacogenomic-testing-improve-prescribing-decisions-for-some-drugs"
+			"can-pharmacogenomic-testing-improve-prescribing-decisions-for-some-drugs",
+			"can-ancestry-dna-tests-identify-a-persons-exact-ethnicity-or-tribal-identity",
+			"is-self-identified-race-interchangeable-with-genetic-ancestry-in-medical-research",
+			"does-a-variant-of-uncertain-significance-diagnose-a-genetic-disorder",
+			"can-a-negative-genetic-test-rule-out-every-inherited-disorder",
+			"is-whole-genome-sequencing-of-healthy-adults-proven-to-improve-long-term-health-outcomes"
 		]
 	},
 	{
@@ -499,7 +506,9 @@ export const atlasCollections = [
 			"can-smn-gene-therapy-improve-outcomes-for-some-children-with-spinal-muscular-atrophy",
 			"can-car-t-cell-therapy-produce-durable-remissions-for-some-blood-cancers",
 			"are-unapproved-stem-cell-treatments-proven-safe-and-effective-for-most-advertised-conditions",
-			"are-biosimilars-as-safe-and-effective-as-their-reference-biologic-medicines"
+			"are-biosimilars-as-safe-and-effective-as-their-reference-biologic-medicines",
+			"does-crispr-always-make-only-the-intended-dna-change",
+			"are-somatic-gene-therapy-changes-normally-inherited-by-a-patients-children"
 		]
 	},
 	{
@@ -514,7 +523,8 @@ export const atlasCollections = [
 			"can-genome-or-exome-sequencing-improve-diagnosis-for-children-with-suspected-rare-genetic-disorders",
 			"does-private-umbilical-cord-blood-banking-benefit-most-families",
 			"does-pgt-a-improve-cumulative-live-birth-rates-for-most-ivf-patients",
-			"are-polygenic-embryo-screening-scores-clinically-proven-to-improve-childrens-health"
+			"are-polygenic-embryo-screening-scores-clinically-proven-to-improve-childrens-health",
+			"can-mitochondrial-donation-reduce-transmission-of-some-mitochondrial-dna-diseases"
 		]
 	},
 	{
@@ -773,24 +783,40 @@ export const atlasCollections = [
 	},
 	{
 		topicSlug: "infection-immunity-and-vaccines",
-		slug: "influenza-vaccination-and-indirect-protection",
-		title: "Influenza vaccination and indirect protection",
-		description: "Direct and population benefits of vaccination, plus what influenza vaccines cannot cause.",
+		slug: "vaccination-benefits-and-population-protection",
+		title: "Vaccination benefits and population protection",
+		description: "How individual and community protection persists across imperfect effectiveness, breakthrough infections, and changing exposure.",
 		claimSlugs: [
 			"does-seasonal-influenza-vaccination-reduce-severe-flu-outcomes",
 			"can-vaccination-indirectly-protect-people-who-are-not-vaccinated",
-			"can-an-influenza-vaccine-give-someone-influenza"
+			"can-an-influenza-vaccine-give-someone-influenza",
+			"is-catching-a-vaccine-preventable-disease-generally-a-safer-way-to-gain-immunity-than-vaccination",
+			"can-a-vaccine-remain-valuable-even-when-breakthrough-infections-occur",
+			"does-measles-control-require-consistently-very-high-two-dose-vaccination-coverage",
+			"does-tdap-vaccination-during-pregnancy-protect-newborns-from-pertussis"
 		]
 	},
 	{
 		topicSlug: "infection-immunity-and-vaccines",
-		slug: "transmission-masks-and-hand-hygiene",
-		title: "Transmission, masks, and hand hygiene",
-		description: "How transmission can precede symptoms and how common protective tools work within their limits.",
+		slug: "pathogen-specific-and-post-exposure-vaccination",
+		title: "Pathogen-specific and post-exposure vaccination",
+		description: "Why protection differs by disease, age, outcome, setting, and whether action happens before or after exposure.",
+		claimSlugs: [
+			"does-bcg-vaccination-protect-equally-well-against-every-form-of-tuberculosis-at-every-age",
+			"can-rabies-post-exposure-prophylaxis-prevent-disease-after-an-exposure-but-before-symptoms"
+		]
+	},
+	{
+		topicSlug: "infection-immunity-and-vaccines",
+		slug: "transmission-testing-and-protective-behavior",
+		title: "Transmission, testing, and protective behavior",
+		description: "How symptoms, laboratory signals, timing, and common protective tools work together without any one becoming a perfect proxy.",
 		claimSlugs: [
 			"can-people-transmit-sars-cov-2-before-symptoms-begin",
 			"do-face-masks-usually-cause-dangerous-oxygen-or-carbon-dioxide-changes",
-			"is-alcohol-based-hand-sanitizer-always-equivalent-to-washing-with-soap-and-water"
+			"is-alcohol-based-hand-sanitizer-always-equivalent-to-washing-with-soap-and-water",
+			"does-a-positive-pcr-result-always-prove-that-a-person-is-currently-infectious",
+			"can-symptoms-alone-reliably-distinguish-influenza-covid-19-and-rsv"
 		]
 	},
 	{
@@ -802,7 +828,75 @@ export const atlasCollections = [
 			"are-shorter-antibiotic-courses-effective-for-many-common-infections",
 			"does-latent-tuberculosis-infection-always-progress-to-active-disease",
 			"does-antimicrobial-resistance-move-among-humans-animals-food-and-the-environment",
-			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"
+			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends",
+			"does-antimicrobial-resistance-mean-a-persons-body-has-become-resistant-to-antibiotics",
+			"do-antibiotic-stewardship-programs-improve-prescribing-without-increasing-deaths"
+		]
+	},
+	{
+		topicSlug: "sleep-and-circadian-health",
+		slug: "sleep-need-debt-and-performance",
+		title: "Sleep need, debt, and performance",
+		description: "How duration, accumulated restriction, naps, and sleepiness affect recovery, cognition, and safety.",
+		claimSlugs: [
+			"do-most-healthy-adults-need-at-least-seven-hours-of-sleep",
+			"can-weekend-catch-up-sleep-fully-erase-chronic-sleep-debt",
+			"can-a-short-daytime-nap-improve-alertness-and-cognition",
+			"do-people-fully-adapt-to-chronic-sleep-restriction-without-performance-loss",
+			"does-drowsy-driving-materially-increase-crash-risk"
+		]
+	},
+	{
+		topicSlug: "sleep-and-circadian-health",
+		slug: "circadian-timing-light-and-regularity",
+		title: "Circadian timing, light, and regularity",
+		description: "Clock timing across light, work schedules, caffeine, daylight-saving changes, melatonin, and day-to-day regularity.",
+		claimSlugs: [
+			"does-evening-light-from-screens-delay-sleep",
+			"does-long-term-night-shift-work-increase-chronic-health-risks",
+			"do-daylight-saving-clock-changes-measurably-affect-health",
+			"can-correctly-timed-melatonin-shift-the-circadian-clock",
+			"does-irregular-sleep-timing-matter-even-when-total-sleep-duration-seems-adequate",
+			"can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep"
+		]
+	},
+	{
+		topicSlug: "sleep-and-circadian-health",
+		slug: "insomnia-treatments-and-sleep-aids",
+		title: "Insomnia treatments and sleep aids",
+		description: "Common remedies separated from structured treatment by outcome, product, dose, and evidence quality.",
+		claimSlugs: [
+			"does-alcohol-improve-sleep-when-used-as-a-nightcap",
+			"does-regular-exercise-improve-sleep-quality",
+			"does-white-noise-reliably-improve-sleep",
+			"do-weighted-blankets-reliably-treat-insomnia-or-anxiety",
+			"do-magnesium-supplements-reliably-improve-insomnia",
+			"is-cannabis-an-established-treatment-for-chronic-insomnia",
+			"are-sedating-antihistamines-good-regular-treatments-for-chronic-insomnia",
+			"is-sleep-hygiene-alone-an-effective-treatment-for-chronic-insomnia"
+		]
+	},
+	{
+		topicSlug: "sleep-and-circadian-health",
+		slug: "sleep-apnea-breathing-and-driving",
+		title: "Sleep apnea, breathing, and driving",
+		description: "Recognition and treatment of obstructed breathing, including what symptom relief does and does not establish.",
+		claimSlugs: [
+			"should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
+			"is-mouth-taping-a-proven-safe-treatment-for-snoring-or-sleep-apnea",
+			"does-treating-obstructive-sleep-apnea-reduce-motor-vehicle-crash-risk",
+			"can-a-custom-oral-appliance-treat-obstructive-sleep-apnea-when-cpap-is-not-tolerated-or-preferred"
+		]
+	},
+	{
+		topicSlug: "sleep-and-circadian-health",
+		slug: "sleep-measurement-learning-and-memory",
+		title: "Sleep measurement, learning, and memory",
+		description: "What consumer measurements can reveal and how multiple sleep stages support learning and memory.",
+		claimSlugs: [
+			"can-consumer-sleep-trackers-diagnose-sleep-disorders",
+			"does-sleep-support-memory-consolidation-after-learning",
+			"is-rem-sleep-the-only-sleep-stage-important-for-memory"
 		]
 	},
 	{
