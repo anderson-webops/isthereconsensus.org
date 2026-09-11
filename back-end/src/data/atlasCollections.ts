@@ -802,11 +802,14 @@ export const atlasCollections = [
 	{
 		topicSlug: "sports-nutrition-and-supplements",
 		slug: "creatine-safety-and-misconceptions",
-		title: "Creatine safety and misconceptions",
-		description: "Direct evidence on dehydration, cramps, hair outcomes, and the limits of common warnings.",
+		title: "Creatine protocols, measurements, and misconceptions",
+		description: "Loading, lean-mass measurements, buffered formulations, and direct evidence on common safety concerns.",
 		claimSlugs: [
 			"does-creatine-increase-dehydration-or-muscle-cramp-risk-during-exercise",
-			"is-creatines-proposed-link-to-hair-loss-established"
+			"is-creatines-proposed-link-to-hair-loss-established",
+			"is-a-loading-phase-necessary-to-raise-muscle-creatine-stores",
+			"does-extra-lean-mass-after-creatine-mean-extra-muscle-tissue",
+			"does-buffered-creatine-outperform-creatine-monohydrate"
 		]
 	},
 	{

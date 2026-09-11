@@ -5,6 +5,7 @@ import { comparisonForSlug } from "~/data/comparisons";
 import {
 	createComparisonNavigation,
 	estimateForSelection,
+	findingForSelection,
 	formatComparisonEstimate,
 	resolveComparisonSelection
 } from "~/utils/evidence-comparison";
@@ -19,7 +20,8 @@ const selection = computed(() => resolveComparisonSelection(comparison, route.qu
 const results = computed(() =>
 	selection.value.options.map((option) => ({
 		...option,
-		estimate: estimateForSelection(option, selection.value.outcome, selection.value.context)
+		estimate: estimateForSelection(option, selection.value.outcome, selection.value.context),
+		finding: findingForSelection(option, selection.value.outcome, selection.value.context)
 	}))
 );
 const sourceNumbers = new Map(comparison.sources.map((source, index) => [source.id, index + 1]));
@@ -138,7 +140,11 @@ useHead({
 						: "No comparable estimates for this context in this dataset."
 				}}
 			</p>
-			<div v-if="selection.options.length" class="comparison-grid">
+			<div
+				v-if="selection.options.length"
+				class="comparison-grid"
+				:class="{ 'comparison-grid--findings': results.some((option) => option.finding) }"
+			>
 				<section
 					v-for="option in results"
 					:key="option.id"
@@ -164,13 +170,17 @@ useHead({
 							<p v-if="option.estimate.pValue">Adjusted p {{ option.estimate.pValue }}.</p>
 						</details>
 						<p class="comparison-option-scope">{{ option.scope }}</p>
-						<a
-							v-for="id in option.estimate.sourceIds"
-							:key="id"
-							:href="`#comparison-source-${id}`"
-							:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
-							>Source {{ sourceNumbers.get(id) }}</a
-						>
+					</template>
+					<template v-else-if="option.finding">
+						<p class="comparison-finding">{{ option.finding.headline }}</p>
+						<p>{{ option.finding.summary }}</p>
+						<details class="comparison-uncertainty comparison-evidence">
+							<summary>Evidence and limits</summary>
+							<p>{{ option.finding.evidence }}</p>
+							<p>{{ option.finding.scope }}</p>
+							<p>{{ option.finding.limitation }}</p>
+						</details>
+						<p class="comparison-option-scope">{{ option.scope }}</p>
 					</template>
 					<p v-else class="comparison-unavailable">
 						{{
@@ -179,6 +189,14 @@ useHead({
 								: "Not comparable in this context"
 						}}
 					</p>
+					<a
+						v-for="id in option.estimate?.sourceIds || option.finding?.sourceIds || []"
+						:key="id"
+						class="comparison-source-link"
+						:href="`#comparison-source-${id}`"
+						:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
+						>Source {{ sourceNumbers.get(id) }}</a
+					>
 				</section>
 			</div>
 			<div v-else class="comparison-empty">
@@ -187,7 +205,7 @@ useHead({
 			</div>
 		</section>
 		<section class="comparison-limits" aria-labelledby="comparison-limits-title">
-			<h2 id="comparison-limits-title">Read these figures with their limits</h2>
+			<h2 id="comparison-limits-title">Read these findings with their limits</h2>
 			<ul>
 				<li v-for="limit in comparison.limitations" :key="limit">{{ limit }}</li>
 			</ul>
@@ -239,6 +257,14 @@ useHead({
 }
 .comparison-interpretation {
 	font-weight: 600;
+}
+.comparison-finding {
+	font-size: 1.15rem;
+	font-weight: 600;
+	margin-top: 16px;
+}
+.comparison-source-link + .comparison-source-link {
+	margin-left: 12px;
 }
 .comparison-uncertainty summary {
 	cursor: pointer;
@@ -323,6 +349,9 @@ useHead({
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
 	gap: 12px;
+}
+.comparison-grid--findings {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
 }
 .comparison-option {
 	padding: 20px 16px;

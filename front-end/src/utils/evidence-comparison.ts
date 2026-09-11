@@ -24,6 +24,15 @@ export function resolveComparisonSelection(comparison: EvidenceComparison, query
 	return { outcome, context, options };
 }
 
+export function findingForSelection(
+	option: EvidenceComparison["options"][number],
+	outcome: EvidenceComparison["outcomes"][number],
+	context: EvidenceComparison["contexts"][number]
+) {
+	if (!context.supportsEstimates) return undefined;
+	return option.findingsByContext?.[context.id]?.[outcome.id];
+}
+
 interface SelectionChange {
 	outcome?: string;
 	context?: string;

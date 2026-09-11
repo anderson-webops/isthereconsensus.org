@@ -14,12 +14,14 @@ import { readingGuides } from "../src/data/reading-guides/index.js";
 import {
 	createComparisonNavigation,
 	estimateForSelection,
+	findingForSelection,
 	formatComparisonEstimate,
 	resolveComparisonSelection
 } from "../src/utils/evidence-comparison.js";
 
 const electricity = comparisonForSlug("electricity-emissions")!;
 const caffeine = comparisonForSlug("caffeine-dose-and-sleep")!;
+const strength = comparisonForSlug("strength-training-supplements")!;
 const safeId = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const claimPaths = new Set(defaultClaims.map((claim) => `/consensus/${claim.topicSlug}/${claim.slug}`));
 const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
@@ -51,7 +53,7 @@ describe("practical evidence comparisons", () => {
 			const sourceIds = new Set(comparison.sources.map((source) => source.id));
 			const cited = new Set<string>();
 			for (const outcome of comparison.outcomes) {
-				assert.ok(outcome.unit.length > 0, "a measure needs an explicit shared unit");
+				assert.ok(outcome.unit.length > 0, "a measure needs an explicit unit or study-specific label");
 				assert.ok(outcome.explanation.length > 40);
 			}
 			for (const option of comparison.options) {
@@ -81,6 +83,42 @@ describe("practical evidence comparisons", () => {
 						cited.add(id);
 					}
 				}
+				for (const [contextId, findings] of Object.entries(option.findingsByContext || {})) {
+					const context = comparison.contexts.find((entry) => entry.id === contextId)!;
+					assert.ok(context?.supportsEstimates);
+					for (const [outcomeId, finding] of Object.entries(findings)) {
+						const outcome = comparison.outcomes.find((entry) => entry.id === outcomeId)!;
+						assert.ok(outcome);
+						assert.equal(
+							estimateForSelection(option, outcome, context),
+							undefined,
+							"one rendering mode per cell"
+						);
+						for (const field of [
+							finding.headline,
+							finding.summary,
+							finding.evidence,
+							finding.scope,
+							finding.limitation
+						])
+							assert.ok(field.length > 20);
+						assert.ok(finding.sourceIds.length > 0);
+						assert.equal(new Set(finding.sourceIds).size, finding.sourceIds.length);
+						for (const id of finding.sourceIds) {
+							assert.ok(sourceIds.has(id), `missing finding source ${id}`);
+							cited.add(id);
+						}
+					}
+				}
+				for (const context of comparison.contexts.filter((entry) => entry.supportsEstimates)) {
+					for (const outcome of comparison.outcomes) {
+						assert.ok(
+							estimateForSelection(option, outcome, context) ||
+								findingForSelection(option, outcome, context),
+							"supported cells need evidence"
+						);
+					}
+				}
 			}
 			for (const source of comparison.sources) {
 				const url = new URL(source.url);
@@ -101,6 +139,52 @@ describe("practical evidence comparisons", () => {
 				assert.ok(comparisonsForReview(review.path).includes(comparison));
 			}
 		}
+	});
+
+	it("keeps supplement evidence on study-specific scales without inventing a shared ranking", () => {
+		assert.equal(strength.options.length, 3);
+		assert.equal(strength.outcomes.length, 2);
+		const protein = strength.options[0]!.findingsByContext!.training!;
+		const creatine = strength.options[1]!.findingsByContext!.training!;
+		const bcaa = strength.options[2]!.findingsByContext!.training!;
+		assert.match(protein.strength!.evidence, /2\.49 kg.*0\.64 to 4\.33 kg/);
+		assert.match(protein["muscle-growth"]!.evidence, /7\.2 mm².*0\.20 to 14\.30 mm²/);
+		assert.match(protein["muscle-growth"]!.evidence, /0\.30 kg.*0\.09 to 0\.52 kg/);
+		assert.match(creatine["muscle-growth"]!.evidence, /0\.11.*Bayesian credible interval −0\.02 to 0\.25/);
+		assert.match(bcaa["muscle-growth"]!.evidence, /four hours/);
+		assert.match(bcaa["muscle-growth"]!.evidence, /not 22% more muscle/);
+		assert.match(strength.measureNote, /no shared numeric score/);
+		for (const option of strength.options) {
+			for (const outcome of strength.outcomes) {
+				assert.equal(estimateForSelection(option, outcome, strength.contexts[0]!), undefined);
+				assert.ok(findingForSelection(option, outcome, strength.contexts[0]!));
+			}
+		}
+	});
+
+	it("never carries supplement findings into unstudied contexts or unknown outcomes", () => {
+		for (const option of strength.options) {
+			for (const outcome of strength.outcomes) {
+				for (const context of strength.contexts.slice(1))
+					assert.equal(findingForSelection(option, outcome, context), undefined);
+				assert.equal(
+					findingForSelection(option, outcome, { ...strength.contexts[0]!, id: "missing" }),
+					undefined
+				);
+				assert.equal(
+					findingForSelection(option, outcome, { ...strength.contexts[0]!, supportsEstimates: false }),
+					undefined
+				);
+			}
+			assert.equal(
+				findingForSelection(option, { ...strength.outcomes[0]!, id: "missing" }, strength.contexts[0]!),
+				undefined
+			);
+		}
+		assert.equal(
+			findingForSelection(caffeine.options[0]!, caffeine.outcomes[0]!, caffeine.contexts[0]!),
+			undefined
+		);
 	});
 
 	it("preserves all twelve caffeine placebo contrasts from the inspected supplementary Table S4", () => {
@@ -315,7 +399,12 @@ describe("practical evidence comparisons", () => {
 			"/compare/caffeine-dose-and-sleep",
 			"/compare/caffeine-dose-and-sleep?outcome=deep-sleep&context=twelve-hours",
 			"/compare/caffeine-dose-and-sleep?context=other-populations",
-			"/compare/caffeine-dose-and-sleep?options="
+			"/compare/caffeine-dose-and-sleep?options=",
+			"/compare/strength-training-supplements",
+			"/compare/strength-training-supplements?outcome=muscle-growth",
+			"/compare/strength-training-supplements?context=without-training",
+			"/compare/strength-training-supplements?context=clinical",
+			"/compare/strength-training-supplements?options="
 		])
 			assert.ok(a11y.includes(`"${route}"`));
 	});

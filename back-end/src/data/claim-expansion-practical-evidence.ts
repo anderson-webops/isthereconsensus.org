@@ -1,4 +1,5 @@
 import type { SeedClaim } from "./claims.js";
+import { strengthPracticalClaims, strengthPracticalGaps } from "./claim-expansion-practical-strength.js";
 
 const checkedAt = "2026-09-11T19:38:00.000Z";
 const morningDelaySlug = "does-delaying-morning-caffeine-prevent-an-afternoon-crash";
@@ -13,7 +14,8 @@ export const practicalEvidenceGaps = [
 			"does-caffeine-become-less-effective-with-regular-daily-use",
 			"can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep"
 		]
-	}
+	},
+	...strengthPracticalGaps
 ];
 
 export const practicalEvidenceClaims: SeedClaim[] = [
@@ -206,5 +208,6 @@ export const practicalEvidenceClaims: SeedClaim[] = [
 				]
 			}
 		]
-	}
+	},
+	...strengthPracticalClaims
 ];
