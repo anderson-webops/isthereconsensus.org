@@ -43,4 +43,6 @@ Set `SEARCH_SMOKE_SCREENSHOT_DIR` to save desktop and mobile screenshots. The sm
 
 ## Release acceptance
 
+On September 11, 2026, production identified commit `6dff3225081518653e726a4535ba7054a6ce51cc`, release `v1.16.0`. The production live smoke passed. Sequential read-only calls to the real `/api/claims?q=...&limit=3` endpoint placed the expected review in the top three for all 100 covered questions and returned no claims for all 20 unsupported questions. This verifies deployment and API integration against the fixed development set, not independent evaluation or visitor success. Main CI run `34602937403` also completed successfully.
+
 Local validation and CI/live deployment verification are recorded in the pull request and release notes. The broader reader-experience goal remains open: this search milestone does not deliver the ten new reading guides, saved reviews, followed-topic updates, or editorial feedback workflow.

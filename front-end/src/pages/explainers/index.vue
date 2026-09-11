@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { evergreenExplainers } from "~/data/explainers";
+import { readingGuides } from "~/data/reading-guides";
 
 useStaticPageMeta({
 	description:
@@ -22,6 +24,8 @@ useStaticPageMeta({
 				consensus and frontier debate.
 			</p>
 		</header>
+
+		<ReadingGuideLinks :guides="readingGuides" />
 
 		<section class="explainer-grid">
 			<NuxtLink

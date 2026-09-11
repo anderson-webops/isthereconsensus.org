@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
+import { guidesForTopic } from "~/data/reading-guides";
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
@@ -30,6 +32,7 @@ const { data: claimsData } = await useAsyncData(`topic-claims-${slug.value}`, ()
 
 const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
+const readingGuides = computed(() => guidesForTopic(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
 const claimsBySlug = computed(() => new Map(claims.value.map((claim) => [claim.slug, claim])));
 const collectionLanes = computed(() =>
@@ -181,6 +184,8 @@ function claimSupportLabel(claim: ClaimSummary) {
 				</NuxtLink>
 			</div>
 		</header>
+
+		<ReadingGuideLinks :guides="readingGuides" />
 
 		<section v-if="starterClaims.length" class="start-here">
 			<div class="section-heading">

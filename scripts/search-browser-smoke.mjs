@@ -13,6 +13,7 @@ import puppeteer from "puppeteer";
 import { defaultClaims } from "../back-end/src/data/claims.ts";
 import { defaultTopics } from "../back-end/src/data/topics.ts";
 import { createClaimSearchIndex } from "../back-end/src/utils/claimSearch.ts";
+import { readingGuides } from "../front-end/src/data/reading-guides/index.ts";
 
 const topics = defaultTopics.map((topic) => ({
 	...topic,
@@ -30,6 +31,8 @@ const vaccineSlug = "do-childhood-vaccines-cause-autism";
 const delays = new Map();
 const failures = new Set();
 const requests = [];
+const pendingInterceptions = new Set();
+const interceptionErrors = [];
 let baseUrl;
 let browser;
 let page;
@@ -51,6 +54,16 @@ const api = http.createServer(async (req, res) => {
 	let body = {};
 	if (url.pathname === "/api/topics") body = { topics };
 	if (url.pathname === "/api/auth/me") body = { user: null, admin: null };
+	const topicMatch = url.pathname.match(/^\/api\/topics\/([^/]+)(?:\/claims(?:\/([^/]+))?)?$/);
+	if (topicMatch) {
+		const topic = topics.find((entry) => entry.slug === topicMatch[1]);
+		const claims = catalog.filter((claim) => claim.topicSlug === topicMatch[1]);
+		body = topicMatch[2]
+			? { claim: claims.find((claim) => claim.slug === topicMatch[2]), relatedClaims: [], collections: [] }
+			: url.pathname.endsWith("/claims")
+				? { claims, collections: [] }
+				: { topic };
+	}
 	if (url.pathname === "/api/claims") {
 		const rows = query ? search(query).map((row) => ({ ...row.claim, ...row.match })) : catalog;
 		const page = Number(url.searchParams.get("page") || 1);
@@ -160,25 +173,150 @@ try {
 	page.on("pageerror", (error) => pageErrors.push(error.message));
 	page.setDefaultTimeout(15_000);
 	await page.setRequestInterception(true);
-	page.on("request", async (request) => {
+	async function interceptRequest(request) {
 		const url = new URL(request.url());
 		// Mirror the production reverse proxy, keeping the browser's strict
 		// same-origin connect-src policy intact.
 		if (url.origin === baseUrl && url.pathname.startsWith("/api/")) {
-			const response = await fetch(`http://127.0.0.1:${apiPort}${url.pathname}${url.search}`);
+			const response = await fetch(`http://127.0.0.1:${apiPort}${url.pathname}${url.search}`, {
+				signal: AbortSignal.timeout(10_000)
+			});
 			await request.respond({
 				status: response.status,
 				contentType: "application/json",
 				body: await response.text()
 			});
 		} else if (["127.0.0.1", "localhost"].includes(url.hostname) || ["data:", "blob:"].includes(url.protocol))
-			request.continue();
-		else request.abort();
+			await request.continue();
+		else await request.abort();
+	}
+	page.on("request", (request) => {
+		const operation = interceptRequest(request)
+			.catch((error) => {
+				interceptionErrors.push(error);
+			})
+			.finally(() => pendingInterceptions.delete(operation));
+		pendingInterceptions.add(operation);
 	});
 	async function open(path) {
 		await page.goto(`${baseUrl}${path}`, { waitUntil: "networkidle0" });
 		await page.waitForFunction(() => Boolean(document.querySelector("#__nuxt")?.__vue_app__));
 	}
+	await page.setViewport({ width: 1280, height: 900 });
+	// Guides use source-controlled narrative, independent of backend availability.
+	for (const guide of readingGuides) {
+		const response = await fetch(`${baseUrl}/guides/${guide.slug}`);
+		assert.equal(response.status, 200);
+		const html = await response.text();
+		assert.ok(html.includes(guide.title));
+		assert.ok(html.includes("Sources and their limits"));
+		await open(`/guides/${guide.slug}`);
+		assert.equal(await page.$eval("h1", (element) => element.textContent), guide.title);
+		assert.equal(
+			await page.$eval('link[rel="canonical"]', (element) => element.href),
+			`https://isthereconsensus.org/guides/${guide.slug}`
+		);
+		const articleMetadata = await page.evaluate(() =>
+			Array.from(document.querySelectorAll('script[type="application/ld+json"]'))
+				.map((script) => JSON.parse(script.textContent))
+				.find((entry) => entry["@type"] === "Article")
+		);
+		assert.equal(articleMetadata.headline, guide.title);
+		assert.equal(articleMetadata.dateModified, guide.checkedAt);
+		assert.equal(
+			await page.evaluate(() =>
+				Array.from(document.querySelectorAll('main a[href^="#"]')).every((link) =>
+					document.getElementById(link.getAttribute("href").slice(1))
+				)
+			),
+			true
+		);
+		assert.equal((await page.$$(".guide-review-links a")).length, guide.reviews.length);
+		assert.equal(
+			await page.$eval(".guide-source-list", (element) => getComputedStyle(element).listStyleType),
+			"decimal",
+			"source numbers must remain visible beside the references"
+		);
+	}
+	await open("/guides");
+	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
+	await page.click(`.guide-card a[href="/guides/${readingGuides[0].slug}"]`);
+	await page.waitForSelector(".reading-guide");
+	await page.click(".guide-contents summary");
+	await page.click('.guide-contents a[href="#guide-sources"]');
+	await page.waitForFunction(() => location.hash === "#guide-sources");
+	assert.ok(await page.$eval("#guide-sources", (element) => Math.abs(element.getBoundingClientRect().top) < 80));
+	await page.click('.guide-footer a[href="/guides"]');
+	await page.waitForSelector(".guide-card");
+	await page.click(`.guide-card a[href="/guides/${readingGuides[1].slug}"]`);
+	await page.waitForFunction(
+		(title) => document.querySelector("h1")?.textContent === title,
+		{},
+		readingGuides[1].title
+	);
+	await page.goBack({ waitUntil: "networkidle0" });
+	await page.waitForSelector(".guide-card");
+	await page.goForward({ waitUntil: "networkidle0" });
+	await page.waitForFunction(
+		(title) => document.querySelector("h1")?.textContent === title,
+		{},
+		readingGuides[1].title
+	);
+	for (const width of [390, 320]) {
+		await page.setViewport({ width, height: 844 });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+	}
+	await page.setViewport({ width: 390, height: 844 });
+	await page.evaluate(() => {
+		document.documentElement.style.fontSize = "200%";
+	});
+	assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+	await page.evaluate(() => {
+		document.documentElement.style.fontSize = "";
+	});
+	await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+	assert.equal((await page.$$(".reading-guide")).length, 1, "navigation must not retain a second guide");
+	console.log(
+		"Guide layout after text resize:",
+		await page.evaluate(() => ({
+			pageHeight: document.documentElement.scrollHeight,
+			shellHeight: document.querySelector(".site-shell").getBoundingClientRect().height,
+			guideHeight: document.querySelector(".reading-guide").getBoundingClientRect().height,
+			fontSize: getComputedStyle(document.documentElement).fontSize
+		}))
+	);
+	if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR) {
+		mkdirSync(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, { recursive: true });
+		await page.screenshot({
+			path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "guide-mobile.png"),
+			fullPage: false
+		});
+		await page.setViewport({ width: 1280, height: 900 });
+		await page.screenshot({
+			path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "guide-desktop.png"),
+			fullPage: true
+		});
+	}
+	const exampleReview = readingGuides[0].reviews[0];
+	await open(exampleReview.path);
+	await page.click(`.guide-links a[href="/guides/${readingGuides[0].slug}"]`);
+	await page.waitForSelector(".reading-guide");
+	await page.click(`.guide-review-links a[href="${exampleReview.path}"]`);
+	await page.waitForSelector(".claim-page h1");
+	await open("/consensus/nutrition-and-diet");
+	assert.ok(await page.$('.guide-links a[href="/guides/making-sense-of-supplements"]'));
+	await open("/explainers");
+	assert.equal((await page.$$(".guide-links li")).length, readingGuides.length);
+	failures.add("");
+	const independentSitemap = await fetch(`${baseUrl}/sitemap.xml`).then((response) => response.text());
+	for (const guide of readingGuides) assert.ok(independentSitemap.includes(`/guides/${guide.slug}`));
+	const independentGuide = await fetch(`${baseUrl}/guides/${readingGuides[0].slug}`);
+	assert.equal(independentGuide.status, 200);
+	failures.clear();
+	assert.equal((await fetch(`${baseUrl}/guides/unknown-reading-guide`)).status, 404);
+	console.log(
+		"PASS guide SSR, metadata, anchors, navigation, responsive reading, discovery and backend-independent sitemap"
+	);
 	await page.setViewport({ width: 1280, height: 900 });
 	await open("/consensus?q=coffee%20stopped%20working");
 	await assertFirstReview(page, caffeineSlug);
@@ -262,6 +400,22 @@ try {
 			path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "search-mobile.png"),
 			fullPage: true
 		});
+	// Stop navigation/prefetch before checking the intercepted requests. Keep
+	// the fixture alive until every handler settles, including delayed responses.
+	delays.set("cleanup-probe", 500);
+	await page.evaluate(() => {
+		// Navigation intentionally cancels the page-side consumer; the proxy
+		// handler must still finish before its fixture server is closed.
+		void fetch("/api/claims?q=cleanup-probe").catch(() => {});
+	});
+	await waitUntil(
+		() => requests.some((row) => row.query === "cleanup-probe"),
+		"Delayed cleanup probe did not reach the fixture"
+	);
+	assert.ok(pendingInterceptions.size > 0, "Cleanup must exercise an in-flight request");
+	await page.goto("about:blank", { waitUntil: "load" });
+	await waitUntil(() => pendingInterceptions.size === 0, "Intercepted browser requests did not settle");
+	assert.deepEqual(interceptionErrors, [], "Browser proxy requests must succeed, including late responses");
 	assert.deepEqual(pageErrors, []);
 	console.log("PASS mobile overflow and browser runtime error checks");
 } catch (error) {
@@ -279,6 +433,9 @@ try {
 	throw error;
 } finally {
 	if (browser) await browser.close();
+	// Failure cleanup also drains handlers, with fetch timeouts bounding the wait.
+	// Their rejections are captured above, never leaked as unhandled promises.
+	await Promise.all(pendingInterceptions);
 	if (frontend?.pid && frontend.exitCode === null && frontend.signalCode === null) {
 		frontend.kill("SIGTERM");
 		await Promise.race([once(frontend, "exit"), delay(5000)]);

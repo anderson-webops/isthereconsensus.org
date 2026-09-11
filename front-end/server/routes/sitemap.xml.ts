@@ -1,4 +1,5 @@
 import type { H3Event } from "h3";
+import { readingGuides } from "../../src/data/reading-guides";
 
 const httpPattern = /^https?:\/\//;
 const trailingSlashPattern = /\/$/;
@@ -48,6 +49,7 @@ export default defineEventHandler(async (event) => {
 		{ path: "/corrections" },
 		{ path: "/expert-review-program" },
 		{ path: "/explainers" },
+		{ path: "/guides" },
 		{ path: "/misconceptions" },
 		{ path: "/moderation-and-appeals" },
 		{ path: "/privacy" },
@@ -86,7 +88,8 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const seen = new Set<string>();
-	const body = [...staticRoutes, ...dynamicRoutes]
+	const guideRoutes = readingGuides.map((guide) => ({ path: `/guides/${guide.slug}`, lastmod: guide.checkedAt }));
+	const body = [...staticRoutes, ...guideRoutes, ...dynamicRoutes]
 		.filter((entry) => {
 			if (seen.has(entry.path)) return false;
 			seen.add(entry.path);

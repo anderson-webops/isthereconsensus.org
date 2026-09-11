@@ -19,6 +19,7 @@ const publicStaticRoutes = [
 	"/corrections",
 	"/expert-review-program",
 	"/explainers",
+	"/guides",
 	"/misconceptions",
 	"/moderation-and-appeals",
 	"/standards",
