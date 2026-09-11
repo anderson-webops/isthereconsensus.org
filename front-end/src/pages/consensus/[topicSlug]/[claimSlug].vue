@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
+import { comparisonsForReview } from "~/data/comparisons";
 import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
 import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
@@ -672,6 +674,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 			</details>
 
 			<ReadingGuideLinks :guides="readingGuides" />
+			<ComparisonLinks :comparisons="comparisonsForReview(`/consensus/${topicSlug}/${claimSlug}`)" />
 
 			<section v-if="collectionMemberships.length || relatedClaims.length" class="content-panel continue-panel">
 				<div class="section-heading">

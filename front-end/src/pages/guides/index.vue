@@ -22,6 +22,10 @@ useStaticPageMeta({
 			</p>
 		</header>
 		<p class="guides-count">{{ readingGuides.length }} sourced reading guides</p>
+		<p>
+			<NuxtLink to="/compare">Compare options side by side</NuxtLink>, with sources and limits beside each
+			finding.
+		</p>
 		<div class="guides-list">
 			<article v-for="guide in readingGuides" :key="guide.slug" class="guide-card">
 				<h2>

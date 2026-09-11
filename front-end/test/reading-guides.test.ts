@@ -101,7 +101,7 @@ describe("sourced reading guides", () => {
 	it("keeps guide routes in the sitemap even when the backend is unavailable", () => {
 		const source = readFileSync(new URL("../server/routes/sitemap.xml.ts", import.meta.url), "utf8");
 		assert.match(source, /const guideRoutes = readingGuides\.map/);
-		assert.match(source, /\.\.\.staticRoutes, \.\.\.guideRoutes, \.\.\.dynamicRoutes/);
+		assert.match(source, /\.\.\.staticRoutes, \.\.\.guideRoutes, \.\.\.comparisonRoutes, \.\.\.dynamicRoutes/);
 	});
 
 	it("includes every guide in both-theme accessibility coverage", () => {

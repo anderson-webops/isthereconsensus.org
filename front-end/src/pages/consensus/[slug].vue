@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
+import { comparisonsForTopic } from "~/data/comparisons";
 import { guidesForTopic } from "~/data/reading-guides";
 import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
@@ -188,6 +190,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 
 		<LibraryAction v-if="topic?._id" :id="topic._id" kind="topic" />
 		<ReadingGuideLinks :guides="readingGuides" />
+		<ComparisonLinks :comparisons="comparisonsForTopic(slug)" />
 
 		<section v-if="starterClaims.length" class="start-here">
 			<div class="section-heading">
