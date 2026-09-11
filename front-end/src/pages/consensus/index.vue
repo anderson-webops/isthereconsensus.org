@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ClaimConsensusBand, ClaimsResponse, Topic, TopicResponse } from "~/types/board";
+import { watchDebounced } from "@vueuse/core";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
@@ -12,18 +13,28 @@ import { matchesSearchQuery } from "~/utils/search-query";
 const route = useRoute();
 const router = useRouter();
 const { apiUrl } = useApi();
+const search = ref(typeof route.query.q === "string" ? route.query.q : "");
+const query = computed(() => search.value.trim().slice(0, 160));
+const requestedQuery = ref(query.value);
 
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
 );
 
-const { data: claimsData, status: claimsStatus } = await useAsyncData("claim-directory", () =>
-	loadCompleteClaimDirectory((page, pageSize) =>
-		$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}`))
-	)
+const {
+	data: claimsData,
+	status: claimsStatus,
+	refresh: refreshClaims
+} = await useAsyncData(
+	() => `claim-directory-${requestedQuery.value}`,
+	() => {
+		const searchSuffix = requestedQuery.value ? `&q=${encodeURIComponent(requestedQuery.value)}` : "";
+		return loadCompleteClaimDirectory((page, pageSize) =>
+			$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}${searchSuffix}`))
+		);
+	}
 );
-
-const search = ref(typeof route.query.q === "string" ? route.query.q : "");
+const searchPending = computed(() => query.value !== requestedQuery.value || claimsStatus.value === "pending");
 const claimBand = ref<"all" | ClaimConsensusBand>("all");
 const claimsPageSize = 12;
 const visibleClaimCount = ref(claimsPageSize);
@@ -95,7 +106,13 @@ const enrichedTopics = computed(() =>
 		})
 );
 
-const claims = computed(() => interleaveClaimsByTopic(claimsData.value?.claims ?? [], starterOrder));
+const claims = computed(() =>
+	searchPending.value || claimsStatus.value === "error"
+		? []
+		: requestedQuery.value
+			? (claimsData.value?.claims ?? [])
+			: interleaveClaimsByTopic(claimsData.value?.claims ?? [], starterOrder)
+);
 
 const directoryStructuredData = computed(() => ({
 	"@context": "https://schema.org",
@@ -160,40 +177,31 @@ useHead(() => ({
 	]
 }));
 
-watch(search, (value) => {
-	router.replace({
-		query: value.trim() ? { q: value.trim() } : undefined
-	});
-});
+watchDebounced(
+	query,
+	(value) => {
+		requestedQuery.value = value;
+		router.replace({
+			query: value ? { q: value } : undefined
+		});
+	},
+	{ debounce: 250, maxWait: 600 }
+);
 
-const query = computed(() => search.value.trim());
+watch(
+	() => route.query.q,
+	(value) => {
+		search.value = typeof value === "string" ? value : "";
+	}
+);
 const filteredTopics = computed(() =>
 	enrichedTopics.value.filter((topic) => {
-		const topicClaimText = claims.value
-			.filter((claim) => claim.topic?.slug === topic.slug)
-			.flatMap((claim) => [claim.title, claim.bottomLine]);
-		return matchesSearchQuery(query.value, [
-			topic.title,
-			topic.description,
-			topic.guide.snapshot,
-			topic.guide.consensusLabel,
-			...topicClaimText
-		]);
+		if (!query.value || claims.value.some((claim) => claim.topic?.slug === topic.slug)) return true;
+		return matchesSearchQuery(query.value, [topic.title, topic.description]);
 	})
 );
 const filteredClaims = computed(() =>
-	claims.value.filter((claim) => {
-		const matchesBand = claimBand.value === "all" || claim.consensusBand === claimBand.value;
-		return (
-			matchesBand &&
-			matchesSearchQuery(query.value, [
-				claim.title,
-				claim.bottomLine,
-				claim.topic?.title,
-				claim.topic?.description
-			])
-		);
-	})
+	claims.value.filter((claim) => claimBand.value === "all" || claim.consensusBand === claimBand.value)
 );
 const visibleClaims = computed(() => filteredClaims.value.slice(0, visibleClaimCount.value));
 const remainingClaimCount = computed(() => Math.max(filteredClaims.value.length - visibleClaims.value.length, 0));
@@ -203,6 +211,8 @@ const askDirectoryLink = computed(() => ({
 	query: { question: query.value }
 }));
 const resultsCountLabel = computed(() => {
+	if (searchPending.value) return "Searching reviewed claims…";
+	if (claimsStatus.value === "error") return "Reviewed claims could not be loaded.";
 	const reviewLabel = formatCountLabel(
 		filteredClaims.value.length,
 		hasActiveDirectoryFilter.value ? "matching review" : "review"
@@ -255,6 +265,7 @@ watch([query, claimBand], () => {
 					v-model="search"
 					type="search"
 					placeholder="Try caffeine, vaccines, climate, sleep..."
+					maxlength="160"
 				/>
 			</div>
 			<p class="results-count" aria-live="polite">{{ resultsCountLabel }}</p>
@@ -263,10 +274,10 @@ watch([query, claimBand], () => {
 		<section id="topic-directory" class="results-block topic-directory">
 			<div class="section-heading">
 				<p class="eyebrow">Browse by subject</p>
-				<h2>Topics</h2>
+				<h2>{{ query ? "Related topics" : "Topics" }}</h2>
 			</div>
 
-			<div v-if="!filteredTopics.length" class="empty-state">
+			<div v-if="!filteredTopics.length && !searchPending && claimsStatus !== 'error'" class="empty-state">
 				<p>No close topic or review match.</p>
 				<div class="empty-state__actions">
 					<NuxtLink v-if="query" class="empty-state__action" :to="askDirectoryLink">
@@ -277,7 +288,7 @@ watch([query, claimBand], () => {
 					</button>
 				</div>
 			</div>
-			<div v-else class="topic-list">
+			<div v-else class="topic-list" :class="{ 'topic-list--compact': query }">
 				<NuxtLink
 					v-for="topic in filteredTopics"
 					:key="topic.slug"
@@ -286,11 +297,11 @@ watch([query, claimBand], () => {
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
-						<div class="topic-row__meta">
+						<div v-if="!query" class="topic-row__meta">
 							<span>{{ formatTopicClaimCount(topic) }}</span>
 						</div>
 					</div>
-					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
+					<span v-if="!query" class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
@@ -351,8 +362,12 @@ watch([query, claimBand], () => {
 					</div>
 				</div>
 
-				<div v-if="claimsStatus === 'pending'" class="empty-state" aria-live="polite">
+				<div v-if="searchPending" class="empty-state" aria-live="polite">
 					<p>Loading reviewed claims…</p>
+				</div>
+				<div v-else-if="claimsStatus === 'error'" class="empty-state" role="alert">
+					<p>Unable to load reviewed claims. Please try again.</p>
+					<button class="empty-state__action" type="button" @click="refreshClaims()">Try again</button>
 				</div>
 				<div v-else-if="!filteredClaims.length" class="empty-state">
 					<p>No reviewed claims match that search and consensus filter.</p>
@@ -440,6 +455,22 @@ watch([query, claimBand], () => {
 .topic-directory {
 	padding: 4px 0 22px;
 	border-bottom: 1px solid var(--consensus-soft-line);
+}
+
+.topic-list.topic-list--compact {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.topic-list--compact .topic-row {
+	display: block;
+	padding: 10px 14px;
+}
+
+.topic-list--compact .topic-row h3 {
+	font-family: inherit;
+	font-size: 0.95rem;
 }
 
 .directory__controls {

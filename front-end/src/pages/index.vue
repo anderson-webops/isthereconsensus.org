@@ -7,6 +7,7 @@ import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
+import { createLatestRequest } from "~/utils/latest-request";
 import { selectRecentClaims } from "~/utils/recent-claims";
 import { resolveHomeSearchRoute } from "~/utils/search-routing";
 
@@ -21,6 +22,8 @@ const search = ref("");
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
 const suggestionError = ref("");
+const suggestionRequests = createLatestRequest();
+onScopeDispose(suggestionRequests.cancel);
 
 const starterOrder = [
 	"climate-and-environment",
@@ -100,7 +103,7 @@ const enrichedTopics = computed(() =>
 		})
 );
 
-const searchQuery = computed(() => search.value.trim());
+const searchQuery = computed(() => search.value.trim().slice(0, 160));
 const searchAnalysis = computed(() => analyzeAskQuery(searchQuery.value));
 const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
 const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
@@ -196,32 +199,47 @@ function resetSuggestions() {
 	suggestionError.value = "";
 }
 
-watchDebounced(
-	() => searchQuery.value,
-	async (value) => {
-		if (value.length < 3) {
-			resetSuggestions();
-			return;
-		}
-
-		loadingSuggestions.value = true;
-		suggestionError.value = "";
-		try {
-			suggestions.value = await $fetch<SuggestionResponse>(
-				apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`)
-			);
-		} catch {
-			suggestions.value = { claims: [], topics: [], questions: [] };
-			suggestionError.value = "Suggestion lookup is unavailable right now.";
-		} finally {
-			loadingSuggestions.value = false;
-		}
+watch(
+	searchQuery,
+	(value) => {
+		suggestionRequests.cancel();
+		resetSuggestions();
+		loadingSuggestions.value = value.length >= 3;
 	},
-	{ debounce: 250, maxWait: 600 }
+	{ flush: "sync" }
 );
+
+async function loadSuggestions(value: string) {
+	if (import.meta.server) return;
+	if (value.length < 3) {
+		resetSuggestions();
+		return;
+	}
+
+	loadingSuggestions.value = true;
+	suggestionError.value = "";
+	const request = suggestionRequests.begin();
+	try {
+		const result = await $fetch<SuggestionResponse>(apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`), {
+			signal: request.signal
+		});
+		if (request.isCurrent()) suggestions.value = result;
+	} catch {
+		if (!request.isCurrent()) return;
+		suggestions.value = { claims: [], topics: [], questions: [] };
+		suggestionError.value = "Suggestion lookup is unavailable right now.";
+	} finally {
+		if (request.isCurrent()) loadingSuggestions.value = false;
+	}
+}
+watchDebounced(searchQuery, loadSuggestions, { debounce: 250, maxWait: 600 });
 
 function submitSearch() {
 	const query = searchQuery.value;
+	if (query && (loadingSuggestions.value || suggestionError.value)) {
+		router.push({ path: "/consensus", query: { q: query } });
+		return;
+	}
 	router.push(
 		resolveHomeSearchRoute({
 			claims: claimSuggestions.value,

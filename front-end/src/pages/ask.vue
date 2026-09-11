@@ -14,6 +14,7 @@ import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
+import { createLatestRequest } from "~/utils/latest-request";
 
 interface MatchOption {
 	label: string;
@@ -37,6 +38,8 @@ const questionKind = ref<QuestionAskKind>("discussion");
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
 const suggestionError = ref("");
+const suggestionRequests = createLatestRequest();
+onScopeDispose(suggestionRequests.cancel);
 const showPostingForm = ref(false);
 const submitting = ref(false);
 const errorMessage = ref("");
@@ -152,10 +155,13 @@ async function revealPostingForm() {
 watch(
 	() => query.value,
 	(value, previous) => {
+		suggestionRequests.cancel();
+		resetSuggestions();
+		loadingSuggestions.value = value.length >= 3;
 		questionKind.value = defaultAskKind(queryAnalysis.value);
 		if (previous !== undefined && value !== previous) showPostingForm.value = false;
 	},
-	{ immediate: true }
+	{ immediate: true, flush: "sync" }
 );
 
 watch(
@@ -168,29 +174,34 @@ watch(
 	{ immediate: true }
 );
 
-watchDebounced(
-	() => query.value,
-	async (value) => {
-		if (!value || value.length < 3) {
-			resetSuggestions();
-			return;
-		}
+async function loadSuggestions(value: string) {
+	if (import.meta.server) return;
+	if (!value || value.length < 3) {
+		resetSuggestions();
+		return;
+	}
 
-		loadingSuggestions.value = true;
-		suggestionError.value = "";
-		try {
-			suggestions.value = await $fetch<SuggestionResponse>(
-				apiUrl(`/search/suggestions?q=${encodeURIComponent(value)}`)
-			);
-		} catch {
-			suggestionError.value = "Unable to load suggestions right now.";
-			suggestions.value = { claims: [], topics: [], questions: [] };
-		} finally {
-			loadingSuggestions.value = false;
-		}
-	},
-	{ debounce: 250, maxWait: 600 }
-);
+	loadingSuggestions.value = true;
+	suggestionError.value = "";
+	const request = suggestionRequests.begin();
+	try {
+		const result = await $fetch<SuggestionResponse>(
+			apiUrl(`/search/suggestions?q=${encodeURIComponent(value.slice(0, 160))}`),
+			{
+				signal: request.signal
+			}
+		);
+		if (request.isCurrent()) suggestions.value = result;
+	} catch {
+		if (!request.isCurrent()) return;
+		suggestionError.value = "Unable to load suggestions right now.";
+		suggestions.value = { claims: [], topics: [], questions: [] };
+	} finally {
+		if (request.isCurrent()) loadingSuggestions.value = false;
+	}
+}
+watchDebounced(query, loadSuggestions, { debounce: 250, maxWait: 600 });
+onMounted(() => loadSuggestions(query.value));
 
 async function submitQuestion() {
 	errorMessage.value = "";

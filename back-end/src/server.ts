@@ -46,7 +46,6 @@ import {
 	getAtlasCollections,
 	rankRelatedClaimSlugs
 } from "./data/atlasCollections.js";
-import { getDemandAdjustedClaimSearchScore } from "./data/contentDemand.js";
 import { seedClaims } from "./data/seedClaims.js";
 import { seedTopics } from "./data/seedTopics.js";
 import { optionalAuth, requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
@@ -71,6 +70,7 @@ import {
 } from "./utils/accountValidation.js";
 import { verifyCaptcha } from "./utils/captcha.js";
 import { buildClaimCitationBundle } from "./utils/claimCitations.js";
+import { createClaimSearchIndex } from "./utils/claimSearch.js";
 import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
@@ -1582,55 +1582,26 @@ async function main() {
 			const claims = await Claim.find(filter).populate("topic").lean();
 			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
-			const rankedClaims = publicReadyClaims
-				.map((claim) => {
-					const topic = claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
-						? claim.topic
-						: null;
-					const haystack = [
-						claim.bottomLine,
-						claim.editorSummary,
-						...(claim.misconceptions || []),
-						...(claim.misconceptionTags || []),
-						topic?.title ?? "",
-						topic?.description ?? ""
-					]
-						.join(" ")
-						.trim();
-
-					const titleMatch = query ? analyzeSearchMatch(query, claim.title) : null;
-					const contentMatch = query ? analyzeSearchMatch(query, haystack) : null;
-					const match = (
-						titleMatch && contentMatch
-							? (titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch)
-							: null
-					) ?? {
-						matchReason: "",
-						matchScore: 0,
-						matchStrength: "none" as const
-					};
-
-					const rankingScore = query && topic
-						? getDemandAdjustedClaimSearchScore(match.matchScore, topic.slug, claim.slug)
-						: match.matchScore;
-
-					return {
+			const searchableClaims = publicReadyClaims.map(claim => ({
+				...claim,
+				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+			}));
+			const searchResults = query
+				? createClaimSearchIndex(searchableClaims)(query)
+				: searchableClaims.map(claim => ({
 						claim,
-						match,
-						topic,
-						rankingScore
-					};
-				})
-				.filter(entry => !query || searchMatchIsDisplayable(entry.match))
-				.sort((left, right) => {
-					if (query && left.rankingScore !== right.rankingScore) {
-						return right.rankingScore - left.rankingScore;
-					}
-					return (
-						(left.topic?.title ?? "").localeCompare(right.topic?.title ?? "")
-						|| left.claim.title.localeCompare(right.claim.title)
-					);
-				});
+						match: { matchScore: 0, matchStrength: "none" as const, matchReason: "" }
+					}));
+			const rankedClaims = searchResults.map(({ claim, match }) => ({
+				claim,
+				match,
+				topic: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic : null
+			}));
+			if (!query) {
+				rankedClaims.sort((left, right) =>
+					(left.topic?.title ?? "").localeCompare(right.topic?.title ?? "") || left.claim.title.localeCompare(right.claim.title)
+				);
+			}
 
 			const total = rankedClaims.length;
 			const totalPages = Math.max(Math.ceil(total / pageSize), 1);
@@ -1980,34 +1951,11 @@ async function main() {
 			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 
-			const rankedClaims = publicReadyClaims
-				.map((claim) => {
-					const haystack = [
-						claim.bottomLine,
-						claim.editorSummary,
-						...(claim.misconceptions || []),
-						...(claim.misconceptionTags || []),
-						typeof claim.topic === "object" && "title" in claim.topic ? claim.topic.title : ""
-					]
-						.join(" ")
-						.trim();
-					const titleMatch = analyzeSearchMatch(query, claim.title);
-					const contentMatch = analyzeSearchMatch(query, haystack);
-					const match = titleMatch.matchScore >= contentMatch.matchScore ? titleMatch : contentMatch;
-					const topicSlug = typeof claim.topic === "object" && "slug" in claim.topic
-						? claim.topic.slug
-						: "";
-					return {
-						claim,
-						match,
-						rankingScore: getDemandAdjustedClaimSearchScore(match.matchScore, topicSlug, claim.slug)
-					};
-				})
-				.filter(entry => searchMatchIsDisplayable(entry.match))
-				.sort(
-					(left, right) =>
-						right.rankingScore - left.rankingScore || left.claim.title.localeCompare(right.claim.title)
-				)
+			const searchableClaims = publicReadyClaims.map(claim => ({
+				...claim,
+				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+			}));
+			const rankedClaims = createClaimSearchIndex(searchableClaims)(query)
 				.slice(0, 6)
 				.map(({ claim, match }) => ({
 					_id: claim._id,

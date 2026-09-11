@@ -60,7 +60,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -84,7 +84,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -115,7 +115,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -139,7 +139,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -170,7 +170,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -188,6 +188,9 @@ jobs:
       - name: Axe accessibility smoke checks
         run: npm run a11y
 
+      - name: Reader search browser checks
+        run: node --import tsx scripts/search-browser-smoke.mjs
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -199,7 +202,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
@@ -234,7 +237,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Verify Linux ARM64 glibc and musl installs
         run: npm run verify:platform-install
