@@ -118,7 +118,12 @@ async function setInput(page, selector, value) {
 
 async function assertFirstReview(page, slug) {
 	await page.waitForFunction(
-		(expected) => document.querySelector(".claim-card")?.getAttribute("href")?.endsWith(expected),
+		// Homepage cards share the class and can remain visible while Nuxt
+		// resolves a history navigation. Require the destination directory.
+		(expected) =>
+			location.pathname === "/consensus" &&
+			Boolean(document.querySelector("#directory-search")) &&
+			document.querySelector("#reviewed-claims .claim-card")?.getAttribute("href")?.endsWith(expected),
 		{},
 		slug
 	);
@@ -383,6 +388,7 @@ try {
 	await page.waitForFunction(() => location.pathname === "/consensus");
 	await assertFirstReview(page, caffeineSlug);
 	await page.goBack({ waitUntil: "networkidle0" });
+	await page.waitForFunction(() => location.pathname === "/" && Boolean(document.querySelector("#home-search")));
 	await page.goForward({ waitUntil: "networkidle0" });
 	await assertFirstReview(page, caffeineSlug);
 	assert.equal(await page.$eval("#directory-search", (input) => input.value), "coffee stopped working");
