@@ -17,9 +17,11 @@ describe("evidence atlas collections", () => {
 		for (const topicSlug of [
 			"biology-and-evolution",
 			"energy-and-infrastructure",
+			"genetics-and-biotechnology",
 			"human-origins-and-paleontology",
 			"sports-nutrition-and-supplements",
 			"infection-immunity-and-vaccines",
+			"sleep-and-circadian-health",
 			"mental-health-and-treatment",
 			"reproductive-and-sexual-health",
 			"aging-and-longevity",

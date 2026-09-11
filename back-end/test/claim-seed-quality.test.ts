@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { september2026ClinicalClaims } from "../src/data/claim-expansion-2026-09-clinical.js";
 import { september2026DemandDepthClaims } from "../src/data/claim-expansion-2026-09-demand-depth.js";
 import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
+import { september2026VisitorDepthClaims } from "../src/data/claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
@@ -2243,6 +2244,121 @@ describe("default claim seed quality", () => {
 		assert.match(preWorkout, /formula|product-specific|category/i);
 		assert.match(preWorkout, /caffeine|stimulant/i);
 		assert.match(preWorkout, /proprietary blend|contaminated|contamination/i);
+	});
+
+	it("adds 30 visitor-informed reviews across genetics, infection, and sleep", () => {
+		assert.equal(september2026VisitorDepthClaims.length, 30);
+		assert.ok(defaultClaims.length >= 650, "The visitor-depth tranche must bring the library to 650 claims");
+		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026VisitorDepthClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026VisitorDepthClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			{
+				"genetics-and-biotechnology": 10,
+				"infection-immunity-and-vaccines": 10,
+				"sleep-and-circadian-health": 10
+			}
+		);
+
+		const newSlugs = new Set(september2026VisitorDepthClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 30);
+		for (const claim of september2026VisitorDepthClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing visitor-depth claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-11T00:35:00.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-11T00:35:00.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
+			assert.ok(
+				seeded.sources.some(source =>
+					source.kind === "systematic_review"
+					|| source.kind === "meta_analysis"
+					|| source.kind === "guideline"
+					|| source.kind === "consensus_statement"
+					|| (source.kind === "context" && /review|synthesi/i.test(`${source.title} ${source.note}`))
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(seeded.sources.every(source => source.url?.startsWith("https://")), `${claim.slug} sources need HTTPS links`);
+			assert.ok(seeded.sources.every(source => !source.url?.includes("consensus.app")), `${claim.slug} should not expose discovery links`);
+			assert.ok(
+				seeded.sources.every(source => !source.doi || source.url === `https://doi.org/${source.doi}`),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(seeded.sources.every(source => source.citationCheckedAt === "2026-09-11T00:35:00.000Z"));
+			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026VisitorDepthClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Visitor-depth claim "${claim.title}" is too similar to existing "${existing.title}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the visitor-depth tranche's diagnostic, causal, and treatment boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing visitor-depth claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => source.note)
+			].join(" ");
+		}
+
+		assert.match(visibleClaimText("does-crispr-always-make-only-the-intended-dna-change"), /off-target|unintended|unexpected/i);
+		assert.match(
+			visibleClaimText("is-whole-genome-sequencing-of-healthy-adults-proven-to-improve-long-term-health-outcomes"),
+			/not.*proven|uncertain|clinical utility/i
+		);
+		assert.match(
+			visibleClaimText("is-catching-a-vaccine-preventable-disease-generally-a-safer-way-to-gain-immunity-than-vaccination"),
+			/disease|complication|risk/i
+		);
+		assert.match(
+			visibleClaimText("does-a-positive-pcr-result-always-prove-that-a-person-is-currently-infectious"),
+			/genetic material|culture|replication-competent/i
+		);
+		assert.match(
+			visibleClaimText("does-bcg-vaccination-protect-equally-well-against-every-form-of-tuberculosis-at-every-age"),
+			/severe childhood|pulmonary|varies/i
+		);
+		assert.match(
+			visibleClaimText("do-people-fully-adapt-to-chronic-sleep-restriction-without-performance-loss"),
+			/objective|performance|subjective/i
+		);
+		assert.match(
+			visibleClaimText("can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep"),
+			/six hours|6 hours|not a universal safe cutoff/i
+		);
+		assert.match(
+			visibleClaimText("is-sleep-hygiene-alone-an-effective-treatment-for-chronic-insomnia"),
+			/not.*stand-alone|CBT-I|multicomponent/i
+		);
+		assert.match(
+			visibleClaimText("can-a-custom-oral-appliance-treat-obstructive-sleep-apnea-when-cpap-is-not-tolerated-or-preferred"),
+			/custom|titratable|follow-up/i
+		);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

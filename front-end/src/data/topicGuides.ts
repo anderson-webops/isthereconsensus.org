@@ -203,34 +203,34 @@ export const topicGuides: Record<string, TopicGuide> = {
 	"genetics-and-biotechnology": {
 		slug: "genetics-and-biotechnology",
 		consensusScore: 89,
-		consensusLabel: "Strong consensus on current commercial safety assessments",
+		consensusLabel: "Strong foundations, product-specific evidence",
 		snapshot:
-			"Public fear around GMOs and biotechnology often blends safety, agriculture, business practices, and ethics into one argument, even when the scientific questions are more specific.",
+			"Genetics can explain inheritance and enable powerful tests and therapies without making identity, disease, or treatment deterministic. Biotechnology evidence is most useful when the exact variant, assay, crop trait, target cell, and outcome stay visible.",
 		stableCore: [
-			"Major scientific and public-health bodies treat currently approved GM foods as no more inherently dangerous to eat than comparable conventional foods.",
-			"Safety claims about biotechnology belong apart from wider debates about patents, farming policy, or corporate power.",
-			"Gene-editing tools can have real benefits and real risks, but those risks need to be assessed claim by claim rather than by panic about the category itself."
+			"A genetic association, risk estimate, or uncertain variant is not automatically a diagnosis or destiny.",
+			"Gene-editing and gene-therapy benefits and risks depend on the target cells, delivery system, edit, disease, and follow-up.",
+			"Crop safety, pesticide use, resistance evolution, farming policy, and corporate power are related but distinct questions."
 		],
 		openQuestions: [
-			"Which governance rules best handle ecological, ethical, and market concerns around new biotech tools?",
-			"How should regulators communicate the difference between product risk and production politics?"
+			"Which genomic tests and preventive findings improve long-term outcomes rather than merely increasing diagnoses and follow-up?",
+			"Which governance rules best handle heritable editing, community identity, ecological effects, privacy, and unequal access?"
 		],
 		whatWouldChangeMinds: [
 			"Repeated, high-quality human or ecological evidence showing that approved biotech products create harms not caught by current safety assessments.",
 			"A better risk model demonstrating systematic failure in existing regulatory review."
 		],
 		commonMisreads: [
-			"People often treat 'GMO' as a single hazard rather than a set of different techniques and products.",
-			"Arguments about pesticides or corporate control are often confused with the narrower question of whether the food itself is unsafe to eat."
+			"People often treat a DNA result as certain, exhaustive, or equivalent to social identity when it is none of those things.",
+			"CRISPR and GMO are category labels, not evidence that every product has the same precision, benefit, or risk."
 		],
 		starterQuestions: [
 			"What exactly is being genetically changed here, and what was actually tested?",
 			"Is the argument about health risk, ecological risk, or agricultural policy?"
 		],
 		starterClaimSlugs: [
-			"are-commercial-gmo-foods-unsafe-to-eat",
-			"is-crispr-ready-for-heritable-human-embryo-editing",
-			"can-crispr-based-gene-therapy-treat-sickle-cell-disease-in-eligible-patients"
+			"does-crispr-always-make-only-the-intended-dna-change",
+			"can-ancestry-dna-tests-identify-a-persons-exact-ethnicity-or-tribal-identity",
+			"have-insect-resistant-genetically-engineered-crops-generally-reduced-insecticide-use-and-crop-losses"
 		],
 		evidenceTrail: [
 			{
@@ -615,15 +615,15 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 88,
 		consensusLabel: "Strong foundations with individual variation",
 		snapshot:
-			"Sleep duration, timing, and regularity have durable biological foundations. The largest uncertainty usually concerns individual need, treatment choice, and the size of long-term risks—not whether chronic sleep disruption matters.",
+			"Sleep duration, timing, regularity, and architecture have durable biological foundations. The hardest practical questions are how to recognize hidden impairment, match a treatment to the actual disorder, and separate a useful aid from a marketed cure.",
 		stableCore: [
 			"Most healthy adults function best with at least seven hours of regular sleep, although individual need varies.",
 			"Light, behavior, work schedules, and internal circadian timing all shape when sleep occurs.",
 			"Persistent insomnia or warning signs of sleep apnea deserve proper evaluation rather than indefinite self-treatment."
 		],
 		openQuestions: [
-			"Which people recover most fully from short sleep, and how much recovery is possible after repeated restriction?",
-			"How can shift schedules reduce circadian disruption while remaining workable for essential services?"
+			"Which people recover most fully from restriction, and how can hidden performance impairment be detected before it causes harm?",
+			"How can circadian schedules and accessible treatments reduce disruption while remaining workable in everyday life?"
 		],
 		whatWouldChangeMinds: [
 			"Longer randomized or quasi-experimental studies that materially revise the health effects attributed to sleep duration or timing.",
@@ -638,9 +638,9 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Does the evidence measure how people feel, how they perform, or long-term health outcomes?"
 		],
 		starterClaimSlugs: [
-			"do-most-healthy-adults-need-at-least-seven-hours-of-sleep",
-			"should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
-			"can-consumer-sleep-trackers-diagnose-sleep-disorders"
+			"do-people-fully-adapt-to-chronic-sleep-restriction-without-performance-loss",
+			"can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep",
+			"can-a-custom-oral-appliance-treat-obstructive-sleep-apnea-when-cpap-is-not-tolerated-or-preferred"
 		],
 		evidenceTrail: [
 			{ title: "Sleep-medicine guidelines", note: "Best for diagnosis and treatment boundaries." },
@@ -1168,15 +1168,15 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 92,
 		consensusLabel: "Strong mechanisms and interventions, changing conditions",
 		snapshot:
-			"Infectious-disease evidence joins biology with changing populations, pathogens, immunity, behavior, and surveillance. The core mechanisms can be stable even when a seasonal effect size or best implementation strategy changes.",
+			"Infectious-disease evidence joins biology with changing pathogens, immunity, behavior, tests, treatment, and surveillance. The core mechanisms can remain stable even when protection, circulation, and the best implementation strategy change.",
 		stableCore: [
 			"Vaccination, hygiene, ventilation, treatment, and surveillance act on different links in infection and disease.",
 			"Protection against infection, transmission, symptoms, hospitalization, and death must be measured separately.",
 			"Human, animal, food, and environmental systems are connected in antimicrobial resistance and emerging infection."
 		],
 		openQuestions: [
-			"How will variants, waning immunity, climate, travel, and behavior change future transmission?",
-			"Which combinations of interventions produce durable benefit with the least burden and inequity?"
+			"How will variants, waning immunity, resistance, climate, travel, and behavior change future transmission and treatment?",
+			"Which combinations of vaccination, diagnostics, treatment, and public-health measures produce durable benefit with the least burden and inequity?"
 		],
 		whatWouldChangeMinds: [
 			"Prospective evidence that repeatedly contradicts current transmission mechanisms or intervention effects.",
@@ -1191,9 +1191,9 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Is the evidence about individual protection, population transmission, or both?"
 		],
 		starterClaimSlugs: [
-			"does-seasonal-influenza-vaccination-reduce-severe-flu-outcomes",
-			"do-face-masks-usually-cause-dangerous-oxygen-or-carbon-dioxide-changes",
-			"can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"
+			"is-catching-a-vaccine-preventable-disease-generally-a-safer-way-to-gain-immunity-than-vaccination",
+			"does-a-positive-pcr-result-always-prove-that-a-person-is-currently-infectious",
+			"does-antimicrobial-resistance-mean-a-persons-body-has-become-resistant-to-antibiotics"
 		],
 		evidenceTrail: [
 			{
