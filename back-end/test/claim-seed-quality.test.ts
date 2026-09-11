@@ -8,6 +8,7 @@ import { september2026DemandEssentialsClaims } from "../src/data/claim-expansion
 import { september2026HealthspanClaims } from "../src/data/claim-expansion-2026-09-healthspan.js";
 import { september2026VisitorDepthClaims } from "../src/data/claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
+import { practicalEvidenceClaims } from "../src/data/claim-expansion-practical-evidence.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
@@ -2486,7 +2487,7 @@ describe("default claim seed quality", () => {
 		};
 
 		assert.equal(september2026AtlasBreadthClaims.length, 70);
-		assert.equal(defaultClaims.length, 750, "The atlas-breadth tranche should complete the 750-claim milestone");
+		assert.equal(defaultClaims.length - practicalEvidenceClaims.length, 750, "The pre-comparison baseline remains 750 claims");
 		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
 		assert.deepEqual(
 			Object.fromEntries(

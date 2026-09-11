@@ -2,7 +2,12 @@
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { siteUrl } from "~/constants";
 import { comparisonForSlug } from "~/data/comparisons";
-import { formatComparisonEstimate, resolveComparisonSelection } from "~/utils/evidence-comparison";
+import {
+	createComparisonNavigation,
+	estimateForSelection,
+	formatComparisonEstimate,
+	resolveComparisonSelection
+} from "~/utils/evidence-comparison";
 import { serializeJsonLd } from "~/utils/json-ld";
 
 definePageMeta({ key: (route) => route.path });
@@ -11,19 +16,24 @@ const router = useRouter();
 const comparison = comparisonForSlug(String(route.params.slug || ""));
 if (!comparison) throw createError({ statusCode: 404, statusMessage: "Evidence comparison not found" });
 const selection = computed(() => resolveComparisonSelection(comparison, route.query));
+const results = computed(() =>
+	selection.value.options.map((option) => ({
+		...option,
+		estimate: estimateForSelection(option, selection.value.outcome, selection.value.context)
+	}))
+);
 const sourceNumbers = new Map(comparison.sources.map((source, index) => [source.id, index + 1]));
 const sourceTitles = new Map(comparison.sources.map((source) => [source.id, source.title]));
 
-function updateSelection(change: { outcome?: string; context?: string; options?: string }) {
-	return router.push({
-		query: {
-			outcome: selection.value.outcome.id,
-			context: selection.value.context.id,
-			options: selection.value.options.map((option) => option.id).join(","),
-			...change
-		}
-	});
-}
+let disposed = false;
+onBeforeUnmount(() => {
+	disposed = true;
+});
+const updateSelection = createComparisonNavigation(
+	comparison,
+	() => router.currentRoute.value.query,
+	(query) => (disposed ? Promise.resolve() : router.push({ query }))
+);
 function selectOutcome(event: Event) {
 	void updateSelection({ outcome: (event.target as HTMLSelectElement).value });
 }
@@ -31,10 +41,12 @@ function selectContext(event: Event) {
 	void updateSelection({ context: (event.target as HTMLSelectElement).value });
 }
 function toggleOption(id: string) {
-	const ids = new Set(selection.value.options.map((option) => option.id));
-	if (ids.has(id)) ids.delete(id);
-	else ids.add(id);
-	void updateSelection({ options: [...ids].join(",") });
+	void updateSelection((current) => {
+		const ids = new Set(current.options.map((option) => option.id));
+		if (ids.has(id)) ids.delete(id);
+		else ids.add(id);
+		return { options: [...ids].join(",") };
+	});
 }
 function showAll() {
 	void updateSelection({ options: "all" });
@@ -112,6 +124,7 @@ useHead({
 			<h2 id="comparison-result-title">{{ selection.outcome.label }}</h2>
 			<p>{{ selection.outcome.explanation }}</p>
 			<p class="comparison-context">{{ selection.context.explanation }}</p>
+			<p v-if="comparison.protocolNote" class="comparison-protocol">{{ comparison.protocolNote }}</p>
 			<p class="comparison-basis">
 				{{ comparison.datasetLabel }}. Sources checked
 				<time :datetime="comparison.checkedAt">{{ comparison.checkedAt }}</time
@@ -121,26 +134,38 @@ useHead({
 				{{ selection.options.length }} options selected for {{ selection.outcome.label.toLowerCase() }}.
 				{{
 					selection.context.supportsEstimates
-						? "Published medians hide variation; these are not predictions."
+						? comparison.resultNote
 						: "No comparable estimates for this context in this dataset."
 				}}
 			</p>
 			<div v-if="selection.options.length" class="comparison-grid">
 				<section
-					v-for="option in selection.options"
+					v-for="option in results"
 					:key="option.id"
 					class="comparison-option"
 					:aria-labelledby="`option-${option.id}`"
 				>
 					<h3 :id="`option-${option.id}`">{{ option.label }}</h3>
-					<template v-if="selection.context.supportsEstimates && option.estimates[selection.outcome.id]">
+					<template v-if="option.estimate">
 						<p class="comparison-value">
-							{{ formatComparisonEstimate(option.estimates[selection.outcome.id]!) }}
+							{{ formatComparisonEstimate(option.estimate) }}
 						</p>
 						<p class="comparison-unit">{{ selection.outcome.unit }}</p>
+						<p v-if="option.estimate.interpretation" class="comparison-interpretation">
+							{{ option.estimate.interpretation }}
+						</p>
+						<details v-if="option.estimate.uncertainty" class="comparison-uncertainty">
+							<summary>Estimate uncertainty</summary>
+							<p>
+								{{ option.estimate.uncertainty.metric }}: {{ option.estimate.uncertainty.estimate }};
+								{{ option.estimate.uncertainty.level }}% CI {{ option.estimate.uncertainty.lower }} to
+								{{ option.estimate.uncertainty.upper }}.
+							</p>
+							<p v-if="option.estimate.pValue">Adjusted p {{ option.estimate.pValue }}.</p>
+						</details>
 						<p class="comparison-option-scope">{{ option.scope }}</p>
 						<a
-							v-for="id in option.estimates[selection.outcome.id]!.sourceIds"
+							v-for="id in option.estimate.sourceIds"
 							:key="id"
 							:href="`#comparison-source-${id}`"
 							:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
@@ -211,6 +236,17 @@ useHead({
 .comparison-page p,
 .comparison-page li {
 	line-height: 1.65;
+}
+.comparison-interpretation {
+	font-weight: 600;
+}
+.comparison-uncertainty summary {
+	cursor: pointer;
+	min-height: 44px;
+	padding-block: 10px;
+}
+.comparison-uncertainty p {
+	font-size: 0.95rem;
 }
 .comparison-intro {
 	max-width: 70ch;

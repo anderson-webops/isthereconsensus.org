@@ -9,6 +9,7 @@ export const electricityComparison: EvidenceComparison = {
 		"Compare generation technologies using the same published emissions measure, then check what the comparison leaves out.",
 	checkedAt: "2026-09-11",
 	datasetLabel: "NREL's September 2021 literature compilation",
+	resultNote: "Published medians hide variation; these are not predictions.",
 	measureNote:
 		"g CO₂e/kWh means grams of carbon-dioxide-equivalent emissions per kilowatt-hour. ≈ means approximately; < means less than, not an exact value.",
 	topics: ["climate-and-environment", "energy-and-infrastructure"],

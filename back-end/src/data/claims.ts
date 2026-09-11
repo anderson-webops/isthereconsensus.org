@@ -27,6 +27,7 @@ import { september2026DemandEssentialsClaims } from "./claim-expansion-2026-09-d
 import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healthspan.js";
 import { september2026VisitorDepthClaims } from "./claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
+import { practicalEvidenceClaims } from "./claim-expansion-practical-evidence.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
@@ -27217,6 +27218,7 @@ const rawClaims: SeedClaim[] = [
 	...september2026HealthspanClaims,
 	...september2026ClinicalClaims,
 	...september2026DemandDepthClaims,
+	...practicalEvidenceClaims,
 	...september2026DemandEssentialsClaims,
 	...september2026VisitorDepthClaims,
 	...september2026AtlasBreadthClaims

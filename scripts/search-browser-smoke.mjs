@@ -453,7 +453,9 @@ try {
 	await page.waitForSelector(".claim-card");
 	await setInput(page, "#directory-search", "");
 	await page.waitForFunction(
-		() => document.querySelector(".results-count")?.textContent === "750 reviews, 35 topics"
+		(expected) => document.querySelector(".results-count")?.textContent === expected,
+		{},
+		`${catalog.length} reviews, ${topics.length} topics`
 	);
 	await page.click("#reviewed-claims summary");
 	assert.equal((await page.$$(".claim-card")).length, 12);
