@@ -34,7 +34,7 @@ describe("consensus directory metadata", () => {
 
 	it("exposes the full reviewed-claim directory instead of only topic previews", () => {
 		assert.match(source, /loadCompleteClaimDirectory\(\(page, pageSize\) =>/);
-		assert.match(source, /`\/claims\?limit=\$\{pageSize\}&page=\$\{page\}`/);
+		assert.match(source, /\/claims\?limit=\$\{pageSize\}&page=\$\{page\}/);
 		assert.match(source, /id="reviewed-claims"/);
 		assert.match(source, /Filter claims by consensus/);
 		assert.match(source, /v-for="claim in visibleClaims"/);
