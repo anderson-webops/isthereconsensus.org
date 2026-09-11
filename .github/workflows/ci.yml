@@ -193,6 +193,11 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:8.0@sha256:4a0f30875898413139bec44c73c02a05fed172578de65b644dcdcee143ae7306
+        ports:
+          - 27017/tcp
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -225,6 +230,11 @@ jobs:
 
       - name: SSR route rule smoke
         run: npm run smoke:ssr-routes
+
+      - name: Reader library persistence and browser checks
+        env:
+          READER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}
+        run: node scripts/reader-library-smoke.mjs
 
   linux-arm64-install:
     runs-on: ubuntu-latest

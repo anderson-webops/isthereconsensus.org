@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
+import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
@@ -185,6 +186,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 			</div>
 		</header>
 
+		<LibraryAction v-if="topic?._id" :id="topic._id" kind="topic" />
 		<ReadingGuideLinks :guides="readingGuides" />
 
 		<section v-if="starterClaims.length" class="start-here">

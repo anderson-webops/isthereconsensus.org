@@ -16,6 +16,7 @@ import type {
 	ClaimSourceKind,
 	ClaimSourceStance
 } from "../models/schemas/ClaimSource.js";
+import type { IReaderUpdate } from "../utils/readerUpdates.js";
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
@@ -53,6 +54,9 @@ interface SeedClaimChangeLogEntry {
 }
 
 export interface SeedClaim {
+	// Explicit, stable publication metadata for source-controlled releases.
+	// Never derive announcements from startup time or legacy change logs.
+	readerAnnouncement?: Omit<IReaderUpdate, "date"> & { date: string };
 	topicSlug: string;
 	title: string;
 	slug: string;

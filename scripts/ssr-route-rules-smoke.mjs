@@ -66,6 +66,11 @@ const routeExpectations = {
 		robots: "noindex, nofollow",
 		status: 200
 	},
+	"/library": {
+		cacheControl: "private, no-store",
+		robots: "noindex, nofollow",
+		status: 200
+	},
 	"/setup": {
 		robots: "noindex, nofollow",
 		status: 404
@@ -82,7 +87,7 @@ function parsePort(envName, fallbackPort) {
 }
 
 function portIsAvailable(port) {
-	return new Promise(resolvePortCheck => {
+	return new Promise((resolvePortCheck) => {
 		const server = net.createServer();
 		server.unref();
 		server.once("error", () => resolvePortCheck(false));
@@ -113,7 +118,7 @@ function getEphemeralPort(reservedPorts) {
 
 async function choosePort(envName, fallbackPort, reservedPorts) {
 	const { explicit, port } = parsePort(envName, fallbackPort);
-	if (!reservedPorts.has(port) && await portIsAvailable(port)) return port;
+	if (!reservedPorts.has(port) && (await portIsAvailable(port))) return port;
 	if (explicit) throw new Error(`${envName}=${port} is already in use.`);
 
 	const selectedPort = await getEphemeralPort(reservedPorts);
@@ -133,7 +138,7 @@ function processIsRunning(child) {
 function waitForProcessExit(child, timeoutMs) {
 	if (!processIsRunning(child)) return Promise.resolve(true);
 
-	return new Promise(resolveWait => {
+	return new Promise((resolveWait) => {
 		const onExit = () => {
 			clearTimeout(timeout);
 			resolveWait(true);
@@ -183,8 +188,8 @@ function startServer(port) {
 		},
 		stdio: ["ignore", "pipe", "pipe"]
 	});
-	child.stdout.on("data", data => writeServerLine("ssr", data));
-	child.stderr.on("data", data => writeServerLine("ssr", data));
+	child.stdout.on("data", (data) => writeServerLine("ssr", data));
+	child.stderr.on("data", (data) => writeServerLine("ssr", data));
 	return child;
 }
 
@@ -197,11 +202,10 @@ async function waitForText(url, expectedText, timeoutMs = 45_000) {
 			const text = await response.text();
 			if (response.ok && text.includes(expectedText)) return;
 			lastError = new Error(`${url} returned ${response.status} without expected text: ${expectedText}`);
-		}
-		catch (error) {
+		} catch (error) {
 			lastError = error;
 		}
-		await new Promise(resolveWait => setTimeout(resolveWait, 400));
+		await new Promise((resolveWait) => setTimeout(resolveWait, 400));
 	}
 	throw lastError || new Error(`Timed out waiting for ${url}`);
 }
@@ -216,17 +220,23 @@ async function fetchRoute(baseUrl, route) {
 		? `${new URL(location, baseUrl).pathname}${new URL(location, baseUrl).hash}`
 		: undefined;
 	return {
+		cacheControl: response.headers.get("cache-control") || "",
 		location: resolvedLocation,
 		robots: response.headers.get("x-robots-tag") || "",
 		securityHeaders: Object.fromEntries(
-			["content-security-policy", ...Object.keys(requiredSecurityHeaders)]
-				.map(header => [header, response.headers.get(header) || ""])
+			["content-security-policy", ...Object.keys(requiredSecurityHeaders)].map((header) => [
+				header,
+				response.headers.get(header) || ""
+			])
 		),
 		status: response.status
 	};
 }
 
 function assertRoute(route, actual, expected) {
+	if (expected.cacheControl && actual.cacheControl !== expected.cacheControl) {
+		throw new Error(`${route} must not cache private library content.`);
+	}
 	if (actual.status !== expected.status) {
 		throw new Error(`${route} returned ${actual.status}; expected ${expected.status}.`);
 	}

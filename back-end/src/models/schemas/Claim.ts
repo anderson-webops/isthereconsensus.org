@@ -1,4 +1,5 @@
 import type { Model } from "mongoose";
+import type { IReaderUpdate } from "../../utils/readerUpdates.js";
 import type { ITopic } from "./Topic.js";
 import mongoose, { Schema } from "mongoose";
 import {
@@ -233,6 +234,7 @@ export interface IClaim {
 	independenceSummary?: string;
 	lastRetractionCheckAt?: Date;
 	changeLog: IClaimChangeLogEntry[];
+	readerUpdates?: IReaderUpdate[];
 	lastReviewedAt?: Date;
 	nextReviewAt?: Date;
 	publishedAt?: Date;
@@ -608,6 +610,26 @@ const claimSchema: Schema<IClaim> = new Schema(
 		coiSummary: { type: String, default: "", trim: true, maxlength: 1000 },
 		independenceSummary: { type: String, default: "", trim: true, maxlength: 1000 },
 		lastRetractionCheckAt: { type: Date },
+		readerUpdates: {
+			type: [
+				new Schema<IReaderUpdate>(
+					{
+						id: { type: String, required: true },
+						date: { type: Date, required: true },
+						kind: { type: String, required: true, enum: ["new_review", "evidence_update", "correction"] },
+						summary: { type: String, required: true, trim: true, maxlength: 2000 },
+						bottomLineImpact: {
+							type: String,
+							required: true,
+							enum: ["new", "changed", "unchanged", "not_assessed"]
+						}
+					},
+					{ _id: false }
+				)
+			],
+			default: [],
+			validate: (updates: IReaderUpdate[]) => updates.length <= 100
+		},
 		changeLog: {
 			type: [
 				new Schema<IClaimChangeLogEntry>(
@@ -630,10 +652,11 @@ const claimSchema: Schema<IClaim> = new Schema(
 		publishedAt: { type: Date },
 		reviewedBy: { type: Schema.Types.ObjectId }
 	},
-	{ timestamps: true }
+	{ timestamps: true, optimisticConcurrency: true }
 );
 
 claimSchema.index({ topic: 1, slug: 1 }, { unique: true });
+claimSchema.index({ "status": 1, "topic": 1, "readerUpdates.date": -1 });
 claimSchema.index({
 	"evidenceLandscape.publicFlags.showEvidenceLandscape": 1,
 	"evidenceLandscape.workflow.status": 1

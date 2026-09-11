@@ -24,6 +24,7 @@ const routes = [
 	"/consensus",
 	"/consensus/a11y-topic/a11y-citation-review",
 	"/ask",
+	"/library",
 	"/explainers",
 	"/explainers/how-consensus-forms",
 	"/guides",

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
+import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { guidesForReview } from "~/data/reading-guides";
@@ -400,6 +401,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<span v-for="item in claimMeta" :key="item">{{ item }}</span>
 			</p>
 		</header>
+
+		<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
 
 		<section class="bottom-line">
 			<div>
