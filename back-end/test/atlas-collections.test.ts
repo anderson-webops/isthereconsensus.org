@@ -6,6 +6,7 @@ import {
 	getAtlasCollectionMemberships,
 	rankRelatedClaimSlugs
 } from "../src/data/atlasCollections.js";
+import { september2026AtlasBreadthClaims } from "../src/data/claim-expansion-2026-09-atlas-breadth.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { defaultTopics } from "../src/data/topics.js";
 
@@ -15,7 +16,12 @@ describe("evidence atlas collections", () => {
 		const configuredTopicSlugs = new Set(atlasCollections.map(collection => collection.topicSlug));
 		const collectionKeys = new Set<string>();
 		for (const topicSlug of [
+			"agriculture-and-food-systems",
+			"astronomy-and-space",
 			"biology-and-evolution",
+			"earth-and-geoscience",
+			"ecology-and-conservation",
+			"economics-and-social-policy",
 			"energy-and-infrastructure",
 			"genetics-and-biotechnology",
 			"human-origins-and-paleontology",
@@ -23,6 +29,8 @@ describe("evidence atlas collections", () => {
 			"infection-immunity-and-vaccines",
 			"sleep-and-circadian-health",
 			"mental-health-and-treatment",
+			"oceans-and-marine-science",
+			"physics-and-chemistry",
 			"reproductive-and-sexual-health",
 			"aging-and-longevity",
 			"cancer-prevention-and-care",
@@ -69,6 +77,14 @@ describe("evidence atlas collections", () => {
 				seededClaimSlugs,
 				`${topicSlug} should place every published claim exactly once`
 			);
+		}
+	});
+
+	it("places every atlas-breadth claim into one curated collection", () => {
+		for (const claim of september2026AtlasBreadthClaims) {
+			const memberships = getAtlasCollectionMemberships(claim.topicSlug, claim.slug);
+			assert.equal(memberships.length, 1, `${claim.slug} should have one curated collection`);
+			assert.ok(memberships[0]?.claimCount >= 2, `${claim.slug} should connect to related reviews`);
 		}
 	});
 
