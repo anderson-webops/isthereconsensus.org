@@ -84,8 +84,8 @@ This adds one collection and indexes; no content synchronization, backfill or
 new secret is required. Preserve `SEED_CONTENT_MODE=insert`. The existing CAPTCHA
 runtime configuration must be present for free-text submissions.
 
-Release and public acceptance are pending. A successful local test or a GitHub
-release alone is not proof that the public site is running the change.
+Release v1.19.0 and public acceptance are recorded below. A successful local test
+or a GitHub release alone is not proof that the public site is running the change.
 
 ### Local acceptance, September 11, 2026
 
@@ -106,3 +106,20 @@ browser that rejects application writes. It never submits feedback, solves a
 CAPTCHA, uses production credentials or creates accounts. Successful authenticated
 triage, persistence and CAPTCHA fail-closed behavior are verified in isolated
 tests; public form visibility is not claimed as a production write test.
+
+### Public acceptance, September 11, 2026
+
+PR #57 and merged-main CI passed. Production reports v1.19.0, commit
+`44b299a1803243140eef91c7b18b148d077794bd`, build
+`45b3b001-cdfc-4fd2-b3cd-9933c31c2790`. The exact-commit public feedback check
+passed: private/no-store responses, noindex admin page, anonymous denial for the
+queue and destination API, actual review/topic forms with empty inputs, the
+production bot-check container, and an anonymous-locked admin UI. The public
+reader-library check and standard production live smoke passed at the same commit.
+
+These checks did not solve a CAPTCHA, submit a suggestion, create an account,
+use credentials, or write to the production database. Positive submission,
+restart persistence and authenticated triage were exercised with the real
+backend and database in the isolated harness and CI. Promotion was performed
+outside this local task; the public identity and behavior are directly verified,
+not inferred from the GitHub release or an SSH session.
