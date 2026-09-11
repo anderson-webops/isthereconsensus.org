@@ -33,6 +33,19 @@ function topic(overrides: Partial<SearchTopicMatch> = {}): SearchTopicMatch {
 }
 
 describe("home search routing", () => {
+	it("keeps comparison-only matches discoverable without replacing exact reviewed answers", () => {
+		const input = {
+			claims: [],
+			topics: [],
+			preferExplainer: false,
+			query: "creatine vs protein",
+			hasComparisons: true
+		};
+		assert.deepEqual(resolveHomeSearchRoute(input), { path: "/consensus", query: { q: input.query } });
+		assert.deepEqual(resolveHomeSearchRoute({ ...input, claims: [claim({ matchStrength: "exact" })] }), {
+			path: "/consensus/science/reviewed-claim"
+		});
+	});
 	it("opens one exact claim title directly", () => {
 		const route = resolveHomeSearchRoute({
 			claims: [claim({ matchStrength: "exact" })],

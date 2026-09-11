@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { once } from "node:events";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import http from "node:http";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
@@ -106,7 +106,7 @@ const proxy = http.createServer((request, response) => {
 	});
 	request.pipe(upstream);
 });
-const empty = { savedReviewIds: [], followedTopicIds: [] };
+const empty = { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [] };
 async function api(path, { method = "GET", body, cookie, status = 200, headers = {} } = {}) {
 	const response = await fetch(`${base}/api${path}`, {
 		method,
@@ -215,7 +215,7 @@ try {
 	assert.ok(review && second);
 	const reviewId = String(review._id);
 	const topicId = String(review.topic._id);
-	const chosen = { savedReviewIds: [reviewId], followedTopicIds: [topicId] };
+	const chosen = { savedReviewIds: [reviewId], followedTopicIds: [topicId], savedComparisonSlugs: ["electricity-emissions"] };
 	const absent = new mongoose.Types.ObjectId().toString();
 	const userA = await api("/auth/register", {
 		method: "POST",
@@ -236,11 +236,14 @@ try {
 	const resolved = (await api("/library/resolve", { method: "POST", body: chosen })).data;
 	assert.equal(resolved.reviews[0]._id, reviewId);
 	assert.equal(resolved.topics[0]._id, topicId);
+	assert.equal(resolved.comparisons[0].slug, "electricity-emissions");
+	assert.deepEqual(Object.keys(resolved.comparisons[0]).sort(), ["description", "slug", "title"]);
 	assert.equal(await ReaderLibrary.countDocuments(), 0, "Anonymous resolution must not persist interests.");
 	for (const body of [
 		{ ...chosen, revision: 0, owner: String(actor._id) },
 		{ ...chosen, revision: 0, password: "not stored" },
-		{ ...chosen, revision: 0, savedReviewIds: [reviewId, reviewId] }
+		{ ...chosen, revision: 0, savedReviewIds: [reviewId, reviewId] },
+		...[["../account"], ["electricity-emissions", "electricity-emissions"], Array.from({ length: 51 }, (_, i) => `comparison-${i}`)].map(savedComparisonSlugs => ({ ...chosen, revision: 0, savedComparisonSlugs }))
 	]) {
 		await api("/library/account", { method: "PATCH", cookie: userA.cookie, body, status: 400 });
 	}
@@ -263,6 +266,16 @@ try {
 	});
 	assert.deepEqual((await api("/library/account", { cookie: userB.cookie })).data, { ...empty, revision: 0 });
 	assert.deepEqual((await api("/library/account", { cookie: editor.cookie })).data, { ...empty, revision: 0 });
+	await api("/library/account", { method: "PATCH", cookie: editor.cookie, body: { ...empty, revision: 0, savedComparisonSlugs: ["unpublished-comparison"] }, status: 422 });
+	const legacySelection = { savedReviewIds: [], followedTopicIds: [] };
+	const editorSave = async body => (await api("/library/account", { method: "PATCH", cookie: editor.cookie, body })).data;
+	assert.deepEqual(await editorSave({ ...legacySelection, revision: 0 }), { ...empty, revision: 1 });
+	await editorSave({ ...empty, revision: 1, savedComparisonSlugs: ["caffeine-dose-and-sleep"] });
+	assert.deepEqual((await editorSave({ ...legacySelection, revision: 2 })).savedComparisonSlugs, ["caffeine-dose-and-sleep"], "Older clients must preserve comparison saves.");
+	assert.deepEqual((await editorSave({ ...empty, revision: 3 })).savedComparisonSlugs, []);
+	await ReaderLibrary.updateOne({ _id: `admin:${actor._id}` }, { $set: { savedComparisonSlugs: ["withdrawn-comparison"] } });
+	assert.deepEqual((await api("/library/resolve", { method: "POST", body: { ...empty, savedComparisonSlugs: ["withdrawn-comparison"] } })).data.comparisons, []);
+	assert.deepEqual((await editorSave({ ...empty, revision: 4 })).savedComparisonSlugs, [], "Withdrawn references remain removable.");
 	const concurrent = await Promise.all(
 		[chosen, empty].map((body) =>
 			fetch(`${base}/api/library/account`, {
@@ -417,7 +430,7 @@ try {
 	await api("/library/account", {
 		method: "PATCH",
 		cookie: editor.cookie,
-		body: { ...empty, savedReviewIds: [String(fixtureId)], revision: 0 },
+		body: { ...empty, savedReviewIds: [String(fixtureId)], revision: (await api("/library/account", { cookie: editor.cookie })).data.revision },
 		status: 422
 	});
 	assert.equal(
@@ -489,6 +502,11 @@ try {
 	await page.goto(base + reviewPath, { waitUntil: "networkidle0" });
 	await clickText(page, "Save review");
 	await browserText(page, "Saved in this browser.");
+	await page.goto(`${base}/compare/strength-training-supplements`, { waitUntil: "networkidle0" });
+	await clickText(page, "Save comparison");
+	await browserText(page, "Saved in this browser.");
+	await page.reload({ waitUntil: "networkidle0" });
+	await browserText(page, "Saved comparison");
 	await page.goto(`${base}/consensus/${review.topic.slug}`, { waitUntil: "networkidle0" });
 	await clickText(page, "Follow topic");
 	contentFailure = true;
@@ -499,6 +517,8 @@ try {
 	await clickText(page, "Retry loading content");
 	await browserText(page, "Saved reviews (1)");
 	await browserText(page, "Followed topics (1)");
+	await browserText(page, "Saved comparisons (1)");
+	assert.ok(await page.$('#saved-comparisons a[href="/compare/strength-training-supplements"]'));
 	await browserText(page, review.title);
 	await page.reload({ waitUntil: "networkidle0" });
 	await browserText(page, "Saved reviews (1)");
@@ -528,6 +548,14 @@ try {
 		});
 		const violations = await page.evaluate(async () => (await window.axe.run()).violations);
 		assert.deepEqual(violations, [], `Populated library accessibility in ${mode} mode`);
+		if (process.env.READER_SMOKE_SCREENSHOT_DIR) {
+			mkdirSync(process.env.READER_SMOKE_SCREENSHOT_DIR, { recursive: true });
+			for (const width of [390, 1280]) {
+				await page.setViewport({ width, height: 900 });
+				await page.$eval("#saved-comparisons", element => element.scrollIntoView());
+				await page.screenshot({ path: resolve(process.env.READER_SMOKE_SCREENSHOT_DIR, `saved-comparisons-${mode}-${width}.png`) });
+			}
+		}
 	}
 	for (const width of [1440, 390, 320]) {
 		await page.setViewport({ width, height: 900 });
@@ -572,6 +600,10 @@ try {
 	);
 	await clickText(page, "Copy browser saves and follows to my account");
 	await browserText(page, "Saved to your account.");
+	await browserText(page, "Saved comparisons (2)");
+	await page.waitForSelector('#saved-comparisons button:not([disabled])');
+	await page.click('#saved-comparisons button');
+	await browserText(page, "Saved comparisons (1)");
 	await clickText(page, "Remove");
 	await browserText(page, "Saved reviews (0)");
 	await page.reload({ waitUntil: "networkidle0" });
@@ -588,6 +620,8 @@ try {
 	await page.waitForFunction(() => !document.body.innerText.includes("reader-a@example.test"));
 	await page.evaluate(() => document.querySelector('a[href="/library"]').click());
 	await browserText(page, "Saved reviews (1)");
+	await browserText(page, "Saved comparisons (1)");
+	assert.ok(await page.$('#saved-comparisons a[href="/compare/strength-training-supplements"]'));
 	assert.equal(await page.evaluate(() => document.body.innerText.includes("My account")), false);
 	await clickText(page, "Clear browser library…");
 	await clickText(page, "Cancel");
@@ -595,6 +629,7 @@ try {
 	await clickText(page, "Clear browser library…");
 	await clickText(page, "Yes, clear browser library");
 	await browserText(page, "Saved reviews (0)");
+	await browserText(page, "Saved comparisons (0)");
 	await page.reload({ waitUntil: "networkidle0" });
 	await browserText(page, "Saved reviews (0)");
 	await page.evaluate(() => localStorage.setItem("consensus-reader-library-v1", "invalid-json"));

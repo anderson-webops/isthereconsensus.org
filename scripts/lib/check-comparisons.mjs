@@ -7,6 +7,23 @@ import { evidenceComparisons } from "../../front-end/src/data/comparisons/index.
 // Called inside the existing built-app browser harness and its read-only API
 // fixture. No second browser/server, account, or production writes are needed.
 export async function checkComparisons({ page, baseUrl, open }) {
+	for (const [query, slug] of [["solar vs wind", "electricity-emissions"], ["creatine vs protein", "strength-training-supplements"], ["coffee and sleep", "caffeine-dose-and-sleep"]]) {
+		for (const route of [`/consensus?q=${encodeURIComponent(query)}`, `/ask?question=${encodeURIComponent(query)}`]) {
+			await open(route);
+			assert.ok(await page.$(`.comparison-links a[href="/compare/${slug}"]`), `${route}: separate comparison match`);
+		}
+	}
+	await open("/consensus?q=solar%20astrology");
+	assert.equal((await page.$$(".comparison-links")).length, 0);
+	await open("/");
+	await page.$eval("#home-search", input => {
+		input.value = "creatine vs protein";
+		input.dispatchEvent(new Event("input", { bubbles: true }));
+	});
+	await page.waitForSelector('.comparison-suggestions a[href="/compare/strength-training-supplements"]');
+	await page.click('.comparison-suggestions a');
+	await page.waitForSelector(".comparison-finding");
+	assert.equal(new URL(page.url()).pathname, "/compare/strength-training-supplements");
 	await open("/compare");
 	assert.equal((await page.$$(".comparisons-index article")).length, evidenceComparisons.length);
 	const pilot = evidenceComparisons[0];

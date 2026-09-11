@@ -1,4 +1,4 @@
-import type { EvidenceComparison } from "./types";
+import type { EvidenceComparison } from "./types.js";
 
 // This is not a network meta-analysis or a common-scale product ranking.
 // Preserve each study's own outcome, units, population and uncertainty.
@@ -85,7 +85,7 @@ export const strengthComparison: EvidenceComparison = {
 			estimates: {},
 			findingsByContext: {
 				training: {
-					strength: {
+					"strength": {
 						headline: "A modest additional benefit is supported",
 						summary:
 							"Extra protein can add to strength gains during resistance training. A supplement is one way to obtain it; the result does not establish an advantage over an otherwise adequate food-based diet.",
@@ -117,7 +117,7 @@ export const strengthComparison: EvidenceComparison = {
 			estimates: {},
 			findingsByContext: {
 				training: {
-					strength: {
+					"strength": {
 						headline: "Can add to strength-training benefits",
 						summary:
 							"Creatine can support repeated high-intensity work and strength adaptation. It is not a substitute for training, and individuals do not all respond alike.",
@@ -149,7 +149,7 @@ export const strengthComparison: EvidenceComparison = {
 			estimates: {},
 			findingsByContext: {
 				training: {
-					strength: {
+					"strength": {
 						headline: "Extra benefit with adequate protein is unclear",
 						summary:
 							"Research does not consistently show additional strength or performance benefits beyond sufficient high-quality protein. That is not the same as proving no possible benefit under any conditions.",

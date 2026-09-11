@@ -113,3 +113,66 @@ Implemented total: **3 of 12 comparisons; 4 of 50 new canonical reviews**. Catal
 - Backend-runtime, SSR-public-asset and SSR-route-rule smoke checks passed. A local preview remains available on port 3000; no additional browser window was opened during the background continuation.
 
 These are local/source results. At the final local check, public identity remained **v1.19.0**, commit `44b299a1803243140eef91c7b18b148d077794bd`. The normal insert-only seed path adds the three new reviews and idempotent announcements on authorized deployment. No schema migration, account action, existing-content synchronization mode or production write was performed. PR CI, merge, source release and exact public acceptance remain separate steps.
+
+## Fourth milestone: comparison discovery and saving
+
+Comparisons are now a distinct result group in home search, the claim directory
+and Ask. Option names and everyday retrieval variants can find the appropriate
+comparison, while exact canonical-review routing and review counts are unchanged.
+Matching words retrieve a page, not a scientific verdict or an invented ranking.
+The small development fixture checks electricity options, protein/creatine/BCAAs,
+coffee/sleep, exact titles and unsupported subjects; it is not a measured visitor
+success rate or a blind search evaluation.
+
+Each comparison has a compact Save control using the existing library's browser
+or account scope. The library displays saved comparisons separately, supports
+removal, explicit browser-to-account copying, account conflicts and sign-out,
+and preserves unavailable references. Bookmarks save the canonical page; copied
+page addresses retain the reader's chosen outcome, context and options.
+
+The source-controlled public definitions move to
+`back-end/src/data/comparisons/` and are re-exported by Nuxt. The standalone
+backend validates new account selections against this same catalog. The model
+adds a bounded array of comparison slugs, with no new credentials, external
+storage, collection, interest logging or destructive migration. Older account
+clients cannot silently erase that new field. Browser version 1 upgrades on an
+explicit mutation, and version 2 fails closed in older clients. Rollout and
+rollback limits are documented in `docs/reader-library.md`.
+
+This is a useful-feature milestone, **not additional scientific content**.
+Progress remains **3 of 12 comparisons and 4 of 50 genuinely new reviews**;
+the catalog remains **754 reviews, 35 topics and ten guides**. Comparison-specific
+substantive updates and feedback, nine more comparisons, 46 more reviews and
+exact public acceptance remain unfinished. The full goal stays active.
+
+### Fourth-milestone validation, September 11, 2026
+
+- Clean root installation, standalone backend install-script policy and all 31
+  Linux native lock entries passed. The install reported zero audit
+  vulnerabilities; manifests, both lockfiles and npm configuration are unchanged.
+- Root lint, typecheck, production build and all **481 tests** passed: 302
+  frontend and 179 backend, with no failures or skips.
+- All **100 accessibility route/theme checks** passed, including comparison
+  results in the directory and Ask. The populated saved-comparison library also
+  passed accessibility in both themes, overflow checks at 320/390/1440 pixels
+  and 200% text, plus mobile/desktop visual inspection.
+- The isolated MongoDB/built-browser harness passed published-slug validation,
+  anonymous access denial, account separation, old-client field preservation,
+  explicit clearing, withdrawn-reference removal, persistence after restart,
+  browser save/reload, account copying/removal and sign-out. Existing substantive
+  update and reader-feedback flows passed their regression checks.
+- Built comparison/search/guide checks passed, preserving source numbers,
+  canonical routing/counts, unsupported-query handling, outcomes, contexts,
+  keyboard controls, URL/history behavior, sitemap and metadata. Backend-runtime,
+  SSR asset and route-header checks also passed.
+- The optional guarded Oxlint preflight did not run because its installed
+  version differs from the approved version. Native ESLint passed. The existing
+  local preview was restored on port 3000 after the clean install; no additional
+  user-facing browser window was opened during this continuation.
+
+These are local/source results, not production acceptance. The public deployment
+marker still reported **v1.19.0**, commit
+`44b299a1803243140eef91c7b18b148d077794bd`, during this milestone. No production
+accounts, credentials, database records, services or deployment configuration
+were changed. CI, source integration/release and exact live acceptance are
+separate gates.

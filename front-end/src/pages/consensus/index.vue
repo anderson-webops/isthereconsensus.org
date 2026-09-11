@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { ClaimConsensusBand, ClaimsResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
 import { interleaveClaimsByTopic, loadCompleteClaimDirectory } from "~/utils/claim-directory";
+import { searchComparisons } from "~/utils/comparison-search";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -16,6 +18,7 @@ const { apiUrl } = useApi();
 const search = ref(typeof route.query.q === "string" ? route.query.q : "");
 const query = computed(() => search.value.trim().slice(0, 160));
 const requestedQuery = ref(query.value);
+const comparisonMatches = computed(() => searchComparisons(query.value));
 
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
@@ -407,6 +410,7 @@ watch([query, claimBand], () => {
 			</div>
 		</details>
 
+		<ComparisonLinks :comparisons="comparisonMatches" />
 		<section v-if="query && filteredTopics.length" class="results-block related-topics">
 			<div class="section-heading">
 				<h2>Related topics</h2>

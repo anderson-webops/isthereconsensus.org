@@ -1,4 +1,4 @@
-import type { ComparisonEstimate, EvidenceComparison } from "./types";
+import type { ComparisonEstimate, EvidenceComparison } from "./types.js";
 
 // Gardiner et al., supplementary Table S4, placebo contrasts only.
 // Retain the table's precision. Do not subtract arm means or infer minute CIs

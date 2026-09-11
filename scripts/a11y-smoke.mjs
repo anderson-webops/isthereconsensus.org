@@ -22,8 +22,10 @@ let apiUrl = "";
 const routes = [
 	"/",
 	"/consensus",
+	"/consensus?q=creatine%20vs%20protein",
 	"/consensus/a11y-topic/a11y-citation-review",
 	"/ask",
+	"/ask?question=creatine%20vs%20protein",
 	"/library",
 	"/account/editorial/reader-feedback",
 	"/explainers",

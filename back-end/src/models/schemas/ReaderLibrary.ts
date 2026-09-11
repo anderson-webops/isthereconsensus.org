@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { savedComparisonSlugsSchema } from "../../utils/comparisonLibrary.js";
 
 export const MAX_SAVED_REVIEWS = 200;
 export const MAX_FOLLOWED_TOPICS = 100;
@@ -8,6 +9,7 @@ export interface IReaderLibrary {
 	revision: number;
 	savedReviewIds: string[];
 	followedTopicIds: string[];
+	savedComparisonSlugs: string[];
 }
 
 function ids(maximum: number) {
@@ -28,7 +30,12 @@ const readerLibrarySchema = new Schema<IReaderLibrary>(
 		_id: { type: String, required: true, match: /^(user|admin):[a-f\d]{24}$/ },
 		revision: { type: Number, required: true, min: 1, validate: Number.isSafeInteger },
 		savedReviewIds: ids(MAX_SAVED_REVIEWS),
-		followedTopicIds: ids(MAX_FOLLOWED_TOPICS)
+		followedTopicIds: ids(MAX_FOLLOWED_TOPICS),
+		savedComparisonSlugs: {
+			type: [String],
+			default: [],
+			validate: (values: string[]) => savedComparisonSlugsSchema.safeParse(values).success
+		}
 	},
 	{ versionKey: false, strict: "throw" }
 );

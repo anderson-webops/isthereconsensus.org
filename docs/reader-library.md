@@ -1,17 +1,18 @@
-# Saved reviews and followed-topic updates
+# Saved reviews, comparisons and followed-topic updates
 
 ## Reader experience
 
-`/library` collects saved reviews, followed topics and a feed of substantive
-published changes. Review and topic pages expose compact Save/Follow controls.
+`/library` collects saved reviews, saved evidence comparisons, followed topics
+and a feed of substantive published review changes. Review, comparison and topic
+pages expose compact Save/Follow controls.
 Registration is optional: **This browser** stores selections in the current
 browser profile; **My account** stores them on the server for the authenticated
 user or admin. Signing in never uploads browser selections automatically.
 Copying the browser library to an account requires an explicit action.
 
 The two libraries remain separate. Readers can remove individual selections or
-confirm clearing the selected library. A library holds up to 200 reviews and 100
-topics. Clearing browser site data removes its local library. Anyone sharing
+confirm clearing the selected library. A library holds up to 200 reviews, 50
+comparisons and 100 topics. Clearing browser site data removes its local library. Anyone sharing
 that browser profile can see browser-local selections.
 
 Account libraries are keyed by the authenticated role and account ID. Client
@@ -21,7 +22,7 @@ previous account's state. Revision-checked writes prevent silent overwrites;
 uncertain saves require reloading before another write. Clearing an account
 library is never automatically retried against a newer revision.
 
-Unavailable reviews remain removable references. A request failure does not
+Unavailable reviews and comparisons remain removable references. A request failure does not
 remove saved references or mislabel them as withdrawn. Corrupt local storage is
 preserved until the reader explicitly clears it.
 
@@ -36,12 +37,15 @@ render contains no personal selections.
 - `PATCH /api/library/account`: replace selections using the current revision.
   Unknown fields, duplicate/invalid IDs and excessive lists are rejected.
   New references must resolve to public content. Conflicts return 409.
+  `savedComparisonSlugs` contains canonical comparison slugs, not arbitrary URLs
+  or review IDs. Omitting this field preserves existing comparisons for older
+  clients; an explicit empty array clears them.
 - `POST /api/library/resolve`: read-only public titles/topics for the supplied
   selection. No anonymous library is created.
 - `POST /api/library/updates`: read-only public announcements for selected
   reviews **or** followed topics, using a bounded cursor and 30-row pages.
 
-Selection bodies contain IDs, not raw search text. POST keeps interests out of
+Selection bodies contain IDs and comparison slugs, not raw search text. POST keeps interests out of
 URL query strings. Do not add request-body logging, interest events to account
 activity logs, email notifications or third-party analytics for these selections.
 The existing same-origin, signed-session and request-size protections apply.
@@ -113,8 +117,39 @@ build, SSR/runtime smoke, search/guide browser checks and accessibility suite.
 MongoDB adds the reader-library collection on first account write and the claim
 feed index through the existing model initialization. There is no content
 backfill or destructive migration. Older application versions ignore the
-additive fields and collection. Verify the public release identity and library
+additive database fields and collection, subject to the browser compatibility
+notes below. Verify the public release identity and library
 route/API after deployment without creating test accounts in production.
+
+### Comparison compatibility and rollout
+
+The public comparison catalog lives in `back-end/src/data/comparisons/`, inside
+the standalone backend deployment boundary. Nuxt re-exports the same pure data;
+there is no duplicate publication list or database lookup for comparison bodies.
+Library resolution returns only the requested published titles, slugs and
+descriptions. Unknown references can remain saved, but new account additions
+must belong to the current catalog. No new collection or destructive migration
+is needed.
+
+Browser storage retains the existing key and reads legacy version 1 in memory.
+It writes version 2 only after the reader explicitly changes their library. An
+older browser client rejects version 2 instead of silently dropping comparison
+saves; it can resume after refreshing to the new application. Corrupt or unknown
+versions are preserved until an explicit clear. Account data is never cached in
+browser storage or automatically copied on sign-in.
+
+Deploy the backend and frontend from the same release, with the backend ready
+before serving the new client. New clients fail closed against an old account
+response that lacks comparison selections. For rollback, keep the additive
+backend support or expect comparison-aware account writes to be unavailable;
+do not reset browser libraries or strip stored selections to make them appear
+compatible. Old clients talking to the new backend preserve comparisons when
+they replace reviews/topics without the new field.
+
+Saved comparisons open the default comparison view. A page address carries a
+particular outcome/context/option selection and can be copied separately. This
+milestone does not add comparison announcements to the review-update feed or
+comparison-specific feedback; both remain tracked in the practical-evidence goal.
 
 ### Local acceptance, September 11, 2026
 
