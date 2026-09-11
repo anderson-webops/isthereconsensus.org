@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { siteUrl } from "~/constants";
 import { comparisonForSlug } from "~/data/comparisons";
@@ -89,6 +90,7 @@ useHead({
 			<h1>{{ comparison.title }}</h1>
 			<p class="comparison-intro">{{ comparison.description }}</p>
 		</header>
+		<LibraryAction :id="comparison.slug" kind="comparison" />
 		<section class="comparison-controls" aria-label="Choose your comparison">
 			<div class="comparison-selects">
 				<label for="comparison-outcome"

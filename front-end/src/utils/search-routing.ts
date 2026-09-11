@@ -6,6 +6,7 @@ export interface SearchRouteLocation {
 }
 
 interface SearchRouteInput {
+	hasComparisons?: boolean;
 	claims: SearchClaimMatch[];
 	explainerSlug?: string;
 	preferExplainer: boolean;
@@ -14,6 +15,7 @@ interface SearchRouteInput {
 }
 
 export function resolveHomeSearchRoute({
+	hasComparisons = false,
 	claims,
 	explainerSlug,
 	preferExplainer,
@@ -37,7 +39,7 @@ export function resolveHomeSearchRoute({
 		return { path: `/explainers/${explainerSlug}` };
 	}
 
-	if (claims.length || topics.length) {
+	if (claims.length || topics.length || hasComparisons) {
 		return {
 			path: "/consensus",
 			query: { q: normalizedQuery }

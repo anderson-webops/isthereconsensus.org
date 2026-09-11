@@ -1,4 +1,4 @@
-import type { EvidenceComparison } from "./types";
+import type { EvidenceComparison } from "./types.js";
 
 // A dated comparison synthesis, not a replacement for canonical claim reviews.
 // Values are transcribed from Table 1, not calculated from phase medians.

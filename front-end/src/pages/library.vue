@@ -5,6 +5,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 interface LibraryContent {
 	reviews: ClaimSummary[];
 	topics: Topic[];
+	comparisons: Array<{ slug: string; title: string; description: string }>;
 }
 interface ReaderUpdate {
 	id: string;
@@ -21,7 +22,7 @@ interface UpdatePage {
 
 const { $readerLibrary: library } = useNuxtApp();
 const { apiUrl } = useApi();
-const content = ref<LibraryContent>({ reviews: [], topics: [] });
+const content = ref<LibraryContent>({ reviews: [], topics: [], comparisons: [] });
 const contentLoading = ref(false);
 const contentError = ref("");
 const contentLoaded = ref(false);
@@ -35,6 +36,9 @@ const confirmClear = ref(false);
 const scopeLabel = computed(() => (library.state.scope === "account" ? "account" : "browser"));
 const reviewsById = computed(() => new Map(content.value.reviews.map((review) => [review._id, review])));
 const topicsById = computed(() => new Map(content.value.topics.map((topic) => [topic._id, topic])));
+const comparisonsBySlug = computed(
+	() => new Map(content.value.comparisons.map((comparison) => [comparison.slug, comparison]))
+);
 const selectionKey = computed(() =>
 	JSON.stringify([
 		library.state.owner,
@@ -42,13 +46,15 @@ const selectionKey = computed(() =>
 		library.state.ready,
 		library.state.savedReviewIds,
 		library.state.followedTopicIds,
+		library.state.savedComparisonSlugs,
 		refreshCount.value
 	])
 );
 function selection() {
 	return {
 		savedReviewIds: [...library.state.savedReviewIds],
-		followedTopicIds: [...library.state.followedTopicIds]
+		followedTopicIds: [...library.state.followedTopicIds],
+		savedComparisonSlugs: [...library.state.savedComparisonSlugs]
 	};
 }
 let updateRequest: AbortController | null = null;
@@ -58,14 +64,18 @@ watch(
 	async (_value, _previous, onCleanup) => {
 		const request = new AbortController();
 		onCleanup(() => request.abort());
-		content.value = { reviews: [], topics: [] };
+		content.value = { reviews: [], topics: [], comparisons: [] };
 		contentLoaded.value = false;
 		contentError.value = "";
 		contentLoading.value = false;
 		visibleCount.value = 20;
 		confirmClear.value = false;
 		if (!library.state.ready) return;
-		if (!library.state.savedReviewIds.length && !library.state.followedTopicIds.length) {
+		if (
+			!library.state.savedReviewIds.length &&
+			!library.state.followedTopicIds.length &&
+			!library.state.savedComparisonSlugs.length
+		) {
 			contentLoaded.value = true;
 			return;
 		}
@@ -152,7 +162,7 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'My library' }]" />
 		<header>
 			<h1>My library</h1>
-			<p>Keep useful reviews and follow the topics you want to revisit.</p>
+			<p>Keep useful reviews and comparisons, and follow the topics you want to revisit.</p>
 		</header>
 		<section class="library-settings" aria-label="Library storage">
 			<div class="library-toolbar">
@@ -193,7 +203,7 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				Copy browser saves and follows to my account
 			</button>
 			<p class="library-note">
-				Up to 200 saved reviews and 100 followed topics per library. No email notifications.
+				Up to 200 saved reviews, 50 comparisons and 100 followed topics per library. No email notifications.
 			</p>
 			<p v-if="library.state.error" role="alert">{{ library.state.error }}</p>
 			<p v-else-if="!library.state.ready" role="status">Loading your library…</p>
@@ -203,6 +213,7 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 		<template v-if="library.state.ready">
 			<nav class="library-toolbar" aria-label="Library sections">
 				<a href="#saved-reviews">Saved reviews ({{ library.state.savedReviewIds.length }})</a>
+				<a href="#saved-comparisons">Saved comparisons ({{ library.state.savedComparisonSlugs.length }})</a>
 				<a href="#followed-topics">Followed topics ({{ library.state.followedTopicIds.length }})</a>
 				<a href="#reader-updates">What changed</a>
 			</nav>
@@ -252,6 +263,43 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				>
 					Show more saved reviews
 				</button>
+			</section>
+
+			<section id="saved-comparisons" aria-labelledby="comparisons-heading">
+				<h2 id="comparisons-heading">Saved comparisons</h2>
+				<p v-if="!library.state.savedComparisonSlugs.length">
+					Open an <NuxtLink to="/compare">evidence comparison</NuxtLink> and choose “Save comparison”.
+				</p>
+				<p v-else class="library-note">
+					Bookmarks open the comparison's default view. Copy its page address to keep a particular outcome and
+					selection.
+				</p>
+				<ul v-if="contentLoaded && library.state.savedComparisonSlugs.length" class="library-list">
+					<li v-for="slug in library.state.savedComparisonSlugs" :key="slug">
+						<div>
+							<h3>
+								<NuxtLink v-if="comparisonsBySlug.get(slug)" :to="`/compare/${slug}`">{{
+									comparisonsBySlug.get(slug)?.title
+								}}</NuxtLink
+								><span v-else>Comparison currently unavailable</span>
+							</h3>
+							<p class="library-note">
+								{{
+									comparisonsBySlug.get(slug)?.description ||
+									"You can keep or remove this saved reference."
+								}}
+							</p>
+						</div>
+						<button
+							type="button"
+							:disabled="library.state.busy || library.state.needsReload"
+							:aria-label="`Remove saved comparison: ${comparisonsBySlug.get(slug)?.title || 'unavailable comparison'}`"
+							@click="library.setSelected('savedComparisonSlugs', slug, false)"
+						>
+							Remove
+						</button>
+					</li>
+				</ul>
 			</section>
 
 			<section id="followed-topics" aria-labelledby="followed-heading">
@@ -327,8 +375,8 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 			</button>
 			<div v-else>
 				<p>
-					Remove all saved reviews and followed topics from this {{ scopeLabel }} library? This cannot be
-					undone. The other library will not change.
+					Remove all saved reviews, comparisons and followed topics from this {{ scopeLabel }} library? This
+					cannot be undone. The other library will not change.
 				</p>
 				<div class="library-toolbar">
 					<button type="button" :disabled="library.state.busy" @click="clearLibrary">

@@ -5,6 +5,7 @@ import { appDescription, appName, socialImageUrl } from "~/constants";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
 import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
+import { searchComparisons } from "~/utils/comparison-search";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
 import { createLatestRequest } from "~/utils/latest-request";
@@ -108,8 +109,14 @@ const searchAnalysis = computed(() => analyzeAskQuery(searchQuery.value));
 const claimSuggestions = computed(() => suggestions.value.claims.slice(0, 3));
 const topicSuggestions = computed(() => suggestions.value.topics.slice(0, 3));
 const explainerSuggestions = computed(() => matchExplainers(searchQuery.value).slice(0, 2));
+const comparisonSuggestions = computed(() => searchComparisons(searchQuery.value));
 const hasSuggestions = computed(() =>
-	Boolean(claimSuggestions.value.length || topicSuggestions.value.length || explainerSuggestions.value.length)
+	Boolean(
+		claimSuggestions.value.length ||
+		topicSuggestions.value.length ||
+		explainerSuggestions.value.length ||
+		comparisonSuggestions.value.length
+	)
 );
 const showNoCloseMatch = computed(
 	() => searchQuery.value.length >= 3 && !loadingSuggestions.value && !suggestionError.value && !hasSuggestions.value
@@ -242,6 +249,7 @@ function submitSearch() {
 	}
 	router.push(
 		resolveHomeSearchRoute({
+			hasComparisons: comparisonSuggestions.value.length > 0,
 			claims: claimSuggestions.value,
 			explainerSlug: explainerSuggestions.value[0]?.slug,
 			preferExplainer: searchAnalysis.value.recommendedDestination === "explainer",
@@ -326,6 +334,14 @@ function claimCardSummary(claim: ClaimSummary) {
 							</ul>
 						</div>
 
+						<div v-if="comparisonSuggestions.length" class="suggestion-group comparison-suggestions">
+							<p class="suggestion-group__label">Practical comparisons</p>
+							<ul class="suggestion-list">
+								<li v-for="comparison in comparisonSuggestions" :key="comparison.slug">
+									<NuxtLink :to="`/compare/${comparison.slug}`">{{ comparison.title }}</NuxtLink>
+								</li>
+							</ul>
+						</div>
 						<div v-if="explainerSuggestions.length" class="suggestion-group">
 							<p class="suggestion-group__label">Explain concepts</p>
 							<ul class="suggestion-list">

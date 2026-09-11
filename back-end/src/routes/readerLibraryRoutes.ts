@@ -4,10 +4,12 @@ import type { IReaderUpdate } from "../utils/readerUpdates.js";
 import express from "express";
 import mongoose from "mongoose";
 import { z } from "zod";
+import { comparisonForSlug } from "../data/comparisons/index.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Claim } from "../models/schemas/Claim.js";
 import { MAX_FOLLOWED_TOPICS, MAX_SAVED_REVIEWS, ReaderLibrary } from "../models/schemas/ReaderLibrary.js";
 import { Topic } from "../models/schemas/Topic.js";
+import { replacementComparisons, savedComparisonSlugsSchema } from "../utils/comparisonLibrary.js";
 import { loadVisibleLibraryClaims } from "../utils/publicClaimQueries.js";
 import { toPublicClaimSummary, toPublicTopic } from "../utils/publicRecords.js";
 import { decodeReaderUpdateCursor, encodeReaderUpdateCursor } from "../utils/readerUpdates.js";
@@ -23,7 +25,8 @@ function ids(maximum: number) {
 const selection = z
 	.object({
 		savedReviewIds: ids(MAX_SAVED_REVIEWS),
-		followedTopicIds: ids(MAX_FOLLOWED_TOPICS)
+		followedTopicIds: ids(MAX_FOLLOWED_TOPICS),
+		savedComparisonSlugs: savedComparisonSlugsSchema.optional()
 	})
 	.strict();
 const replacement = selection
@@ -43,7 +46,8 @@ function publicLibrary(library: IReaderLibrary | null) {
 	return {
 		revision: library?.revision ?? 0,
 		savedReviewIds: library?.savedReviewIds ?? [],
-		followedTopicIds: library?.followedTopicIds ?? []
+		followedTopicIds: library?.followedTopicIds ?? [],
+		savedComparisonSlugs: library?.savedComparisonSlugs ?? []
 	};
 }
 
@@ -91,6 +95,11 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			const addedTopics = parsed.data.followedTopicIds.filter(
 				value => !current?.followedTopicIds.includes(value)
 			);
+			const comparisons = replacementComparisons(parsed.data.savedComparisonSlugs, current?.savedComparisonSlugs);
+			const addedComparisons = comparisons.filter(value => !current?.savedComparisonSlugs?.includes(value));
+			if (addedComparisons.some(slug => !comparisonForSlug(slug))) {
+				return res.status(422).json({ error: "A selected comparison is no longer available." });
+			}
 			const [reviews, topics] = await Promise.all([
 				addedReviews.length ? loadVisibleClaims(addedReviews) : [],
 				addedTopics.length
@@ -105,7 +114,8 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			const next = {
 				revision: parsed.data.revision + 1,
 				savedReviewIds: parsed.data.savedReviewIds,
-				followedTopicIds: parsed.data.followedTopicIds
+				followedTopicIds: parsed.data.followedTopicIds,
+				savedComparisonSlugs: comparisons
 			};
 			const saved = current
 				? await ReaderLibrary.findOneAndUpdate(
@@ -143,7 +153,11 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			]);
 			return res.json({
 				reviews: claims.map(claim => toPublicClaimSummary(claim)),
-				topics: topics.map(toPublicTopic)
+				topics: topics.map(toPublicTopic),
+				comparisons: (parsed.data.savedComparisonSlugs ?? []).flatMap((slug) => {
+					const comparison = comparisonForSlug(slug);
+					return comparison ? [{ slug, title: comparison.title, description: comparison.description }] : [];
+				})
 			});
 		}
 		catch (error) {

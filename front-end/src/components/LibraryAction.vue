@@ -1,16 +1,21 @@
 <script setup lang="ts">
-const props = defineProps<{ kind: "review" | "topic"; id: string }>();
+const props = defineProps<{ kind: "review" | "topic" | "comparison"; id: string }>();
 const { $readerLibrary: library } = useNuxtApp();
-const key = computed(() => (props.kind === "review" ? "savedReviewIds" : "followedTopicIds"));
+const keys = { review: "savedReviewIds", topic: "followedTopicIds", comparison: "savedComparisonSlugs" } as const;
+const key = computed(() => keys[props.kind]);
 const selected = computed(() => library.state[key.value].includes(props.id));
 const label = computed(() =>
-	props.kind === "review"
+	props.kind === "comparison"
 		? selected.value
-			? "Saved review"
-			: "Save review"
-		: selected.value
-			? "Following topic"
-			: "Follow topic"
+			? "Saved comparison"
+			: "Save comparison"
+		: props.kind === "review"
+			? selected.value
+				? "Saved review"
+				: "Save review"
+			: selected.value
+				? "Following topic"
+				: "Follow topic"
 );
 </script>
 
@@ -28,7 +33,7 @@ const label = computed(() =>
 			</button>
 			<template #fallback
 				><span class="library-action__placeholder">{{
-					kind === "review" ? "Save review" : "Follow topic"
+					kind === "comparison" ? "Save comparison" : kind === "review" ? "Save review" : "Follow topic"
 				}}</span></template
 			>
 		</ClientOnly>

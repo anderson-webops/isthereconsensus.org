@@ -11,9 +11,11 @@ import type {
 import { watchDebounced } from "@vueuse/core";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
+import { searchComparisons } from "~/utils/comparison-search";
 import { createLatestRequest } from "~/utils/latest-request";
 
 interface MatchOption {
@@ -56,6 +58,7 @@ const query = computed(() => question.value.trim());
 const searchReady = computed(() => query.value.length >= 3);
 const queryAnalysis = computed(() => analyzeAskQuery(query.value));
 const explainerSuggestions = computed(() => matchExplainers(query.value).slice(0, 3));
+const comparisonSuggestions = computed(() => searchComparisons(query.value));
 const topClaimMatch = computed(() => suggestions.value.claims[0] ?? null);
 const topTopicMatch = computed(() => suggestions.value.topics[0] ?? null);
 const showMatchDecision = computed(() => searchReady.value && !loadingSuggestions.value);
@@ -332,6 +335,7 @@ async function submitQuestion() {
 				</div>
 			</div>
 
+			<ComparisonLinks :comparisons="comparisonSuggestions" />
 			<div v-if="showMatchDecision" class="match-decision">
 				<p>
 					{{
