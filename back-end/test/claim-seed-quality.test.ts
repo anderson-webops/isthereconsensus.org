@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
+import { september2026AtlasBreadthClaims } from "../src/data/claim-expansion-2026-09-atlas-breadth.js";
 import { september2026ClinicalClaims } from "../src/data/claim-expansion-2026-09-clinical.js";
 import { september2026DemandDepthClaims } from "../src/data/claim-expansion-2026-09-demand-depth.js";
 import { september2026DemandEssentialsClaims } from "../src/data/claim-expansion-2026-09-demand-essentials.js";
@@ -2471,6 +2472,148 @@ describe("default claim seed quality", () => {
 		);
 		assert.ok(earwax?.sources.some(source => source.citationStatus === "corrected"));
 		assert.ok(manipulation?.sources.some(source => source.citationStatus === "corrected"));
+	});
+
+	it("adds 70 reviewed claims across seven atlas-breadth domains", () => {
+		const expectedTopicCounts = {
+			"agriculture-and-food-systems": 10,
+			"astronomy-and-space": 10,
+			"earth-and-geoscience": 10,
+			"ecology-and-conservation": 10,
+			"economics-and-social-policy": 10,
+			"oceans-and-marine-science": 10,
+			"physics-and-chemistry": 10
+		};
+
+		assert.equal(september2026AtlasBreadthClaims.length, 70);
+		assert.equal(defaultClaims.length, 750, "The atlas-breadth tranche should complete the 750-claim milestone");
+		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
+		assert.deepEqual(
+			Object.fromEntries(
+				[...new Set(september2026AtlasBreadthClaims.map(claim => claim.topicSlug))]
+					.sort()
+					.map(topicSlug => [
+						topicSlug,
+						september2026AtlasBreadthClaims.filter(claim => claim.topicSlug === topicSlug).length
+					])
+			),
+			expectedTopicCounts
+		);
+
+		const newSlugs = new Set(september2026AtlasBreadthClaims.map(claim => claim.slug));
+		assert.equal(newSlugs.size, 70);
+
+		for (const claim of september2026AtlasBreadthClaims) {
+			const seeded = defaultClaims.find(entry => entry.slug === claim.slug);
+			assert.ok(seeded, `Missing atlas-breadth claim ${claim.slug}`);
+			assert.equal(seeded.status, "published");
+			assert.equal(seeded.searchCutoffAt, "2026-09-11T05:17:10.000Z");
+			assert.equal(seeded.lastRetractionCheckAt, "2026-09-11T05:17:10.000Z");
+			assert.equal(seeded.sources.length, 3, `${claim.slug} should have exactly three reviewed sources`);
+			assert.equal(
+				seeded.sources.filter(source => source.isAnchor).length,
+				1,
+				`${claim.slug} should have exactly one anchor source`
+			);
+			assert.ok(
+				seeded.sources.some(source =>
+					source.kind === "systematic_review"
+					|| source.kind === "meta_analysis"
+					|| source.kind === "guideline"
+					|| source.kind === "consensus_statement"
+				),
+				`${claim.slug} needs a synthesis or guidance source`
+			);
+			assert.ok(seeded.sources.every(source => source.url?.startsWith("https://")), `${claim.slug} sources need HTTPS links`);
+			assert.ok(seeded.sources.every(source => !source.url?.includes("consensus.app")), `${claim.slug} should not expose discovery links`);
+			assert.ok(
+				seeded.sources.every(source => !source.doi || source.url === `https://doi.org/${source.doi}`),
+				`${claim.slug} DOI sources should use DOI landing pages`
+			);
+			assert.ok(
+				seeded.sources.every(source => source.citationCheckedAt === "2026-09-11T05:17:10.000Z"),
+				`${claim.slug} should record the atlas-breadth citation review`
+			);
+			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
+			assert.ok(seeded.sources.every(source => source.statusSources.length >= 1));
+			assert.equal(new Set(seeded.sources.map(source => primarySourceLink(source))).size, 3);
+			assert.ok(seeded.sources.every(source => source.title.length <= CLAIM_SOURCE_TITLE_MAX_LENGTH));
+			assert.ok(seeded.inclusionRules.length >= 3);
+			assert.ok(seeded.exclusionRules.length >= 3);
+			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.ok(seeded.uncertaintySummary.trim().length >= 40);
+			assert.ok(seeded.changeLog.some(entry => entry.kind === "publication"));
+		}
+
+		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
+		for (const claim of september2026AtlasBreadthClaims) {
+			for (const existing of preExistingClaims) {
+				const similarity = titleSimilarity(claim.title, existing.title);
+				assert.ok(
+					similarity < 0.72,
+					`Atlas-breadth claim "${claim.title}" is too similar to existing "${
+						existing.title
+					}" (${similarity.toFixed(2)})`
+				);
+			}
+		}
+	});
+
+	it("preserves the atlas-breadth tranche's central evidence boundaries", () => {
+		function visibleClaimText(slug: string) {
+			const claim = defaultClaims.find(entry => entry.slug === slug);
+			assert.ok(claim, `Missing atlas-breadth claim ${slug}`);
+			return [
+				claim.bottomLine,
+				claim.editorSummary,
+				claim.uncertaintySummary,
+				...claim.stableCore,
+				...claim.openQuestions,
+				...claim.misconceptions,
+				...claim.sources.map(source => `${source.title} ${source.note}`)
+			].join(" ");
+		}
+
+		assert.match(
+			visibleClaimText("does-earthquake-early-warning-predict-an-earthquake-before-it-begins"),
+			/already begun|after rupture|not.*prediction/i
+		);
+		assert.match(
+			visibleClaimText("can-unusual-animal-behavior-reliably-predict-earthquakes"),
+			/not reliably|not.*validated|false alarm/i
+		);
+		assert.match(
+			visibleClaimText("does-precision-agriculture-automatically-reduce-fertilizer-pesticide-and-water-use"),
+			/not guarantee|does not guarantee|rebound|total use/i
+		);
+		assert.match(
+			visibleClaimText("is-cultivated-meat-already-proven-greener-than-conventional-meat-at-commercial-scale"),
+			/not yet|not.*demonstrated|prospective|commercial-scale/i
+		);
+		assert.match(
+			visibleClaimText("are-sunscreen-chemicals-proven-to-be-a-major-cause-of-coral-reef-decline-in-the-ocean"),
+			/hazard.*risk|laboratory.*field|exposure/i
+		);
+		assert.match(
+			visibleClaimText("is-ocean-iron-fertilization-proven-to-provide-safe-durable-carbon-removal-at-climate-scale"),
+			/bloom.*not|durable|monitoring|side effect/i
+		);
+		assert.match(
+			visibleClaimText("does-quantum-mechanics-require-a-conscious-observer-to-make-measurements-real"),
+			/without a person|conscious.*unnecessary|not require human awareness/i
+		);
+		assert.match(
+			visibleClaimText("is-the-ph-scale-always-limited-to-values-from-zero-to-fourteen"),
+			/below 0|exceed 14|not.*universal/i
+		);
+		assert.match(
+			visibleClaimText("does-unemployment-insurance-only-delay-peoples-return-to-work"),
+			/consumption|hardship|aggregate demand|stabiliz/i
+		);
+		assert.match(
+			visibleClaimText("does-putting-a-price-on-carbon-reduce-greenhouse-gas-emissions"),
+			/revenue|distribution|coverage|complementary/i
+		);
 	});
 
 	it("keeps seeded claim sources inside the ClaimSource schema constraints", async () => {

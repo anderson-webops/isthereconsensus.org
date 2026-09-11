@@ -765,8 +765,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"did-humans-land-on-the-moon",
-			"is-the-universe-expanding",
-			"has-life-beyond-earth-been-scientifically-confirmed"
+			"is-the-sun-powered-by-ordinary-burning-rather-than-nuclear-fusion",
+			"have-astronomers-confirmed-planets-orbiting-other-stars"
 		],
 		evidenceTrail: [
 			{
@@ -808,8 +808,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"is-earth-about-4-54-billion-years-old",
-			"do-earths-tectonic-plates-move",
-			"can-scientists-predict-the-exact-time-place-and-magnitude-of-earthquakes"
+			"does-earthquake-early-warning-predict-an-earthquake-before-it-begins",
+			"is-earths-magnetic-field-reversal-overdue-and-predictably-catastrophic"
 		],
 		evidenceTrail: [
 			{
@@ -851,8 +851,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"does-biodiversity-support-ecosystem-functioning-and-stability",
-			"does-breaking-habitat-into-smaller-isolated-patches-harm-biodiversity",
-			"do-protected-areas-generally-improve-conservation-outcomes"
+			"do-wildlife-corridors-usually-improve-movement-between-fragmented-habitats",
+			"is-suppressing-every-fire-best-for-fire-adapted-ecosystems"
 		],
 		evidenceTrail: [
 			{
@@ -937,8 +937,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"did-synthetic-nitrogen-fertilizer-increase-crop-yields-and-nitrogen-pollution",
-			"does-organic-farming-generally-trade-lower-yields-for-higher-on-farm-biodiversity",
-			"is-regenerative-agriculture-one-standardized-uniformly-proven-farming-system"
+			"does-agroforestry-reliably-improve-farms-and-ecosystems-at-the-same-time",
+			"would-reducing-food-loss-and-waste-materially-lower-environmental-pressure"
 		],
 		evidenceTrail: [
 			{
@@ -980,8 +980,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"is-ocean-heat-content-increasing-because-of-human-caused-warming",
-			"does-overfishing-deplete-fish-stocks-and-can-effective-management-rebuild-them",
-			"is-deep-sea-mining-environmentally-harmless"
+			"does-ocean-acidification-mean-the-ocean-is-becoming-acidic",
+			"is-marine-heat-stress-a-primary-cause-of-mass-coral-bleaching"
 		],
 		evidenceTrail: [
 			{
@@ -1023,8 +1023,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"are-atoms-physically-real-rather-than-only-mathematical-conveniences",
-			"does-gps-require-corrections-predicted-by-relativity",
-			"has-room-temperature-superconductivity-at-ordinary-pressure-been-independently-confirmed"
+			"does-quantum-teleportation-transport-matter-or-permit-faster-than-light-messages",
+			"does-antimatter-fall-upward-in-earths-gravity"
 		],
 		evidenceTrail: [
 			{
@@ -1066,8 +1066,8 @@ export const topicGuides: Record<string, TopicGuide> = {
 		],
 		starterClaimSlugs: [
 			"do-modest-minimum-wage-increases-always-cause-large-job-losses",
-			"does-rent-control-help-covered-tenants-without-affecting-housing-supply-or-mobility",
-			"do-unconditional-cash-transfers-reduce-poverty-and-improve-well-being"
+			"does-housing-first-improve-housing-stability-for-people-experiencing-homelessness",
+			"does-putting-a-price-on-carbon-reduce-greenhouse-gas-emissions"
 		],
 		evidenceTrail: [
 			{

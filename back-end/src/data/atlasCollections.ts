@@ -1140,6 +1140,370 @@ export const atlasCollections = [
 			"are-supervised-consumption-sites-proven-to-reduce-population-overdose-mortality",
 			"are-fentanyl-test-strips-proven-to-prevent-overdose-deaths"
 		]
+	},
+	{
+		topicSlug: "astronomy-and-space",
+		slug: "earth-moon-and-planetary-perspective",
+		title: "Earth, Moon, and planetary perspective",
+		description: "Direct observations that resolve familiar misconceptions about Earth's shape, lunar exploration and illumination, seasons, and planetary temperature.",
+		claimSlugs: [
+			"is-earth-flat-or-approximately-spherical",
+			"did-humans-land-on-the-moon",
+			"is-the-far-side-of-the-moon-permanently-dark",
+			"are-earths-seasons-mainly-caused-by-changing-distance-from-the-sun",
+			"is-mercury-the-hottest-planet-because-it-is-closest-to-the-sun"
+		]
+	},
+	{
+		topicSlug: "astronomy-and-space",
+		slug: "cosmic-history-expansion-and-horizons",
+		title: "Cosmic history, expansion, and horizons",
+		description: "The evidence for cosmic expansion and a hot early universe, plus the live measurement tensions and horizon concepts that do not erase that core.",
+		claimSlugs: [
+			"is-the-universe-expanding",
+			"is-the-hot-big-bang-the-best-supported-broad-model-of-cosmic-history",
+			"does-the-hubble-tension-by-itself-disprove-the-big-bang-model",
+			"does-faster-than-light-cosmic-recession-violate-relativity",
+			"is-the-observable-universe-necessarily-the-entire-universe"
+		]
+	},
+	{
+		topicSlug: "astronomy-and-space",
+		slug: "stars-gravity-and-energetic-events",
+		title: "Stars, gravity, and energetic events",
+		description: "Fusion, stellar evolution, black holes, gravitational waves, and solar storms connected from physical mechanism to direct observation.",
+		claimSlugs: [
+			"are-black-holes-real-astronomical-objects",
+			"is-the-sun-powered-by-ordinary-burning-rather-than-nuclear-fusion",
+			"will-the-sun-eventually-explode-as-a-supernova",
+			"have-gravitational-waves-been-directly-detected",
+			"can-solar-storms-disrupt-technology-and-electric-grids"
+		]
+	},
+	{
+		topicSlug: "astronomy-and-space",
+		slug: "worlds-signals-and-extraordinary-claims",
+		title: "Worlds, signals, and extraordinary claims",
+		description: "Confirmed exoplanets and unresolved dark matter distinguished from astrology, possible life, and reports that do not establish extraterrestrial visitation.",
+		claimSlugs: [
+			"does-astrology-predict-personality-or-events-better-than-chance",
+			"has-life-beyond-earth-been-scientifically-confirmed",
+			"do-uap-reports-establish-extraterrestrial-visitation",
+			"has-the-particle-identity-of-dark-matter-been-directly-detected",
+			"have-astronomers-confirmed-planets-orbiting-other-stars"
+		]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "deep-earth-history-and-materials",
+		title: "Deep Earth, history, and materials",
+		description: "Earth's age, moving plates, mantle state, and the geologic origins of diamonds and petroleum.",
+		claimSlugs: [
+			"is-earth-about-4-54-billion-years-old",
+			"do-earths-tectonic-plates-move",
+			"is-earths-mantle-mostly-molten",
+			"are-most-natural-diamonds-made-from-coal",
+			"was-petroleum-made-from-dinosaurs"
+		]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "earthquake-prediction-warning-and-induced-risk",
+		title: "Earthquake prediction, warning, and induced risk",
+		description: "Exact prediction separated from early warning, probabilistic hazards, fluid-induced seismicity, foreshock myths, and unreliable animal signs.",
+		claimSlugs: [
+			"can-scientists-predict-the-exact-time-place-and-magnitude-of-earthquakes",
+			"can-underground-fluid-injection-induce-earthquakes",
+			"does-earthquake-early-warning-predict-an-earthquake-before-it-begins",
+			"do-frequent-small-earthquakes-prevent-a-future-large-earthquake",
+			"does-hydraulic-fracturing-cause-most-induced-earthquakes-in-oil-producing-regions",
+			"can-unusual-animal-behavior-reliably-predict-earthquakes"
+		]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "volcano-water-and-coastal-hazards",
+		title: "Volcano, water, and coastal hazards",
+		description: "Monitoring and mitigation across eruption unrest, groundwater extraction and storage, tsunamis, land motion, and locally variable sea level.",
+		claimSlugs: [
+			"is-yellowstone-overdue-for-a-supereruption",
+			"can-volcano-monitoring-forecast-elevated-eruption-risk",
+			"can-groundwater-pumping-cause-land-subsidence",
+			"is-most-groundwater-stored-in-vast-underground-lakes-and-rivers",
+			"are-tsunamis-simply-unusually-large-tides",
+			"is-sea-level-the-same-height-and-trend-everywhere"
+		]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "earths-magnetic-field",
+		title: "Earth's magnetic field",
+		description: "The fluid-core geodynamo, wandering poles, reversals, and why magnetic change is not the cause of modern global warming.",
+		claimSlugs: [
+			"is-earths-magnetic-field-reversal-overdue-and-predictably-catastrophic",
+			"are-shifting-magnetic-poles-causing-todays-climate-change",
+			"is-earths-main-magnetic-field-generated-by-a-permanent-solid-magnet-in-the-core"
+		]
+	},
+	{
+		topicSlug: "ecology-and-conservation",
+		slug: "biodiversity-change-and-pollinators",
+		title: "Biodiversity change and pollinators",
+		description: "Ecosystem function, extinction and insect trends, crop pollination, and pesticide pressure without turning uneven change into one global number.",
+		claimSlugs: [
+			"does-biodiversity-support-ecosystem-functioning-and-stability",
+			"are-current-species-extinction-rates-above-natural-background-rates",
+			"are-all-insect-populations-collapsing-at-the-same-rate-everywhere",
+			"do-pollinator-declines-threaten-crop-production",
+			"do-pesticides-contribute-to-pollinator-declines"
+		]
+	},
+	{
+		topicSlug: "ecology-and-conservation",
+		slug: "habitat-connectivity-and-protection",
+		title: "Habitat connectivity and protection",
+		description: "Fragmentation, protected areas, marine reserves, wildlife corridors, and wetland restoration linked through measurable ecological function.",
+		claimSlugs: [
+			"does-breaking-habitat-into-smaller-isolated-patches-harm-biodiversity",
+			"do-protected-areas-generally-improve-conservation-outcomes",
+			"do-well-enforced-no-take-marine-reserves-increase-fish-biomass-and-biodiversity",
+			"do-wildlife-corridors-usually-improve-movement-between-fragmented-habitats",
+			"can-wetland-restoration-reduce-flood-risk-while-improving-habitat"
+		]
+	},
+	{
+		topicSlug: "ecology-and-conservation",
+		slug: "forest-continuity-and-fire-regimes",
+		title: "Forest continuity and fire regimes",
+		description: "Why plantation area and new trees do not immediately replace old ecosystems, and why fire management must match an ecosystem's regime.",
+		claimSlugs: [
+			"are-tree-plantations-equivalent-to-natural-forests-for-biodiversity-and-carbon-storage",
+			"can-a-newly-planted-forest-quickly-replace-an-old-growth-forest",
+			"is-suppressing-every-fire-best-for-fire-adapted-ecosystems"
+		]
+	},
+	{
+		topicSlug: "ecology-and-conservation",
+		slug: "introduced-species-and-wildlife-intervention",
+		title: "Introduced species and wildlife intervention",
+		description: "Invasiveness, feeding, captive breeding, predator control, de-extinction, and free-ranging cats evaluated by population outcomes and humane management.",
+		claimSlugs: [
+			"are-all-non-native-species-invasive",
+			"do-invasive-alien-species-cause-major-ecological-and-economic-harm",
+			"is-feeding-wild-animals-generally-harmless-when-the-food-seems-healthy",
+			"can-captive-breeding-by-itself-save-most-threatened-species",
+			"does-killing-predators-reliably-protect-livestock-or-biodiversity",
+			"can-de-extinction-substitute-for-conserving-species-that-are-alive-today",
+			"do-free-ranging-domestic-cats-harm-wildlife-populations"
+		]
+	},
+	{
+		topicSlug: "agriculture-and-food-systems",
+		slug: "soil-nutrients-and-crop-diversity",
+		title: "Soil, nutrients, and crop diversity",
+		description: "Fertilizer, tillage, cover crops, rotations, and biochar compared through yields, soil function, pollution, and credible carbon accounting.",
+		claimSlugs: [
+			"did-synthetic-nitrogen-fertilizer-increase-crop-yields-and-nitrogen-pollution",
+			"does-no-till-farming-reliably-store-large-amounts-of-additional-soil-carbon",
+			"do-cover-crops-improve-soil-and-reduce-nitrate-losses-without-always-increasing-yields",
+			"do-diverse-crop-rotations-improve-yields-and-ecosystem-services-compared-with-monoculture",
+			"does-adding-biochar-to-soil-always-increase-crop-yields-and-lock-away-carbon"
+		]
+	},
+	{
+		topicSlug: "agriculture-and-food-systems",
+		slug: "inputs-pests-resistance-and-precision",
+		title: "Inputs, pests, resistance, and precision",
+		description: "Antibiotics, integrated pest management, engineered traits, and precision tools treated as specific management systems rather than universal labels.",
+		claimSlugs: [
+			"does-agricultural-antibiotic-use-contribute-to-antimicrobial-resistance",
+			"can-integrated-pest-management-reduce-pesticide-use-without-sacrificing-crop-yields",
+			"do-genetically-modified-crops-always-increase-pesticide-use",
+			"does-precision-agriculture-automatically-reduce-fertilizer-pesticide-and-water-use"
+		]
+	},
+	{
+		topicSlug: "agriculture-and-food-systems",
+		slug: "farming-systems-and-controlled-production",
+		title: "Farming systems and controlled production",
+		description: "Organic, regenerative, agroforestry, and vertical-farming claims separated into measurable practices, comparisons, and tradeoffs.",
+		claimSlugs: [
+			"does-organic-farming-generally-trade-lower-yields-for-higher-on-farm-biodiversity",
+			"is-regenerative-agriculture-one-standardized-uniformly-proven-farming-system",
+			"does-agroforestry-reliably-improve-farms-and-ecosystems-at-the-same-time",
+			"is-vertical-farming-inherently-more-sustainable-than-field-agriculture"
+		]
+	},
+	{
+		topicSlug: "agriculture-and-food-systems",
+		slug: "food-footprints-water-and-emissions",
+		title: "Food footprints, water, and emissions",
+		description: "Supply chains, runoff, meat alternatives, waste prevention, irrigation, and rice methane assessed across complete lifecycles and local limits.",
+		claimSlugs: [
+			"are-food-miles-usually-the-largest-part-of-a-foods-greenhouse-gas-footprint",
+			"does-excess-fertilizer-runoff-cause-eutrophication-and-coastal-dead-zones",
+			"is-grass-fed-beef-always-lower-carbon-than-feedlot-finished-beef",
+			"is-cultivated-meat-already-proven-greener-than-conventional-meat-at-commercial-scale",
+			"would-reducing-food-loss-and-waste-materially-lower-environmental-pressure",
+			"does-irrigation-only-increase-crop-production-without-serious-long-term-costs",
+			"can-changing-rice-field-water-management-reduce-methane-without-sacrificing-yield"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "ocean-climate-chemistry-and-sea-level",
+		title: "Ocean climate, chemistry, and sea level",
+		description: "Heat uptake, oxygen loss, circulation, acidification, and sea-level mechanisms joined without flattening regional or biological variation.",
+		claimSlugs: [
+			"is-ocean-heat-content-increasing-because-of-human-caused-warming",
+			"is-the-global-ocean-losing-oxygen-as-it-warms",
+			"is-an-abrupt-amoc-collapse-this-century-certain",
+			"does-ocean-acidification-mean-the-ocean-is-becoming-acidic",
+			"does-ocean-acidification-affect-every-marine-organism-in-the-same-way",
+			"does-melting-floating-sea-ice-directly-drive-most-sea-level-rise"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "reefs-blue-carbon-and-coastal-resilience",
+		title: "Reefs, blue carbon, and coastal resilience",
+		description: "Coastal habitats and coral reefs examined through climate stress, adaptation limits, local pollution, carbon storage, and protection.",
+		claimSlugs: [
+			"do-mangroves-salt-marshes-and-seagrasses-store-carbon-and-protect-coasts",
+			"is-marine-heat-stress-a-primary-cause-of-mass-coral-bleaching",
+			"can-coral-reefs-be-assumed-to-adapt-fully-to-rapid-ocean-warming-without-emissions-cuts",
+			"are-sunscreen-chemicals-proven-to-be-a-major-cause-of-coral-reef-decline-in-the-ocean"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "seafood-pollution-noise-and-transport",
+		title: "Seafood, pollution, noise, and transport",
+		description: "Fishing, aquaculture, plastics, underwater sound, and shipping pathways organized around exposure, management, and ecological outcomes.",
+		claimSlugs: [
+			"does-overfishing-deplete-fish-stocks-and-can-effective-management-rebuild-them",
+			"does-most-ocean-plastic-come-from-land-while-fishing-gear-remains-important",
+			"does-plastic-pollution-harm-marine-wildlife",
+			"are-microplastics-widespread-in-seafood-while-human-health-effects-remain-uncertain",
+			"can-human-made-underwater-noise-harm-marine-life",
+			"is-aquaculture-always-more-sustainable-than-catching-wild-seafood",
+			"can-ships-spread-invasive-species-through-ballast-water"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "deep-ocean-extraction-and-carbon-removal",
+		title: "Deep-ocean extraction and carbon removal",
+		description: "Deep-sea mining and ocean carbon-removal proposals evaluated before commercial scale through durability, monitoring, ecosystem, and governance evidence.",
+		claimSlugs: [
+			"is-deep-sea-mining-environmentally-harmless",
+			"is-ocean-based-carbon-dioxide-removal-ready-for-safe-large-scale-deployment",
+			"is-ocean-iron-fertilization-proven-to-provide-safe-durable-carbon-removal-at-climate-scale"
+		]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "matter-energy-waves-and-everyday-materials",
+		title: "Matter, energy, waves, and everyday materials",
+		description: "Atomic evidence, energy conservation, microwaves, radiation risk, glass, and sound separated from durable popular myths.",
+		claimSlugs: [
+			"are-atoms-physically-real-rather-than-only-mathematical-conveniences",
+			"can-a-perpetual-motion-machine-produce-net-energy-indefinitely",
+			"do-microwave-ovens-make-food-radioactive",
+			"is-radiation-risk-determined-by-whether-a-source-is-natural-or-artificial",
+			"is-old-window-glass-slowly-flowing-downward-at-room-temperature",
+			"can-sound-travel-through-a-perfect-vacuum"
+		]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "relativity-gravity-and-equivalence",
+		title: "Relativity, gravity, and equivalence",
+		description: "GPS timing, universal free fall, and antimatter gravity connected through precise tests rather than intuition about mass or charge.",
+		claimSlugs: [
+			"does-gps-require-corrections-predicted-by-relativity",
+			"do-heavier-objects-fall-faster-than-lighter-objects-in-a-vacuum",
+			"does-antimatter-fall-upward-in-earths-gravity"
+		]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "quantum-measurement-information-and-computing",
+		title: "Quantum measurement, information, and computing",
+		description: "Entanglement, decoherence, teleportation, and quantum algorithms explained with their communication, interpretation, and performance limits intact.",
+		claimSlugs: [
+			"does-quantum-entanglement-allow-faster-than-light-messaging",
+			"does-quantum-mechanics-require-a-conscious-observer-to-make-measurements-real",
+			"does-quantum-teleportation-transport-matter-or-permit-faster-than-light-messages",
+			"will-quantum-computers-make-every-computational-problem-faster"
+		]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "frontiers-thermodynamics-and-chemical-measurement",
+		title: "Frontiers, thermodynamics, and chemical measurement",
+		description: "Extraordinary energy and materials claims joined with practical boundaries in toxicology, pH, absolute zero, and entropy.",
+		claimSlugs: [
+			"has-room-temperature-superconductivity-at-ordinary-pressure-been-independently-confirmed",
+			"has-cold-fusion-become-a-reproducible-energy-source",
+			"has-fusion-ignition-already-produced-commercial-net-electricity",
+			"are-natural-chemicals-inherently-safer-than-synthetic-chemicals",
+			"is-the-ph-scale-always-limited-to-values-from-zero-to-fourteen",
+			"can-a-finite-physical-process-reach-absolute-zero-temperature",
+			"is-entropy-simply-a-measure-of-visible-disorder"
+		]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "work-wages-leave-and-care",
+		title: "Work, wages, leave, and care",
+		description: "Wage floors, tax credits, income floors, unemployment insurance, unions, leave, and child care examined through income, work, health, and bargaining effects.",
+		claimSlugs: [
+			"do-modest-minimum-wage-increases-always-cause-large-job-losses",
+			"does-the-earned-income-tax-credit-reduce-poverty-and-increase-employment",
+			"does-basic-income-make-most-recipients-stop-working",
+			"does-unemployment-insurance-only-delay-peoples-return-to-work",
+			"do-labor-unions-raise-members-wages-and-reduce-wage-inequality-without-tradeoffs",
+			"do-child-care-subsidies-always-cause-large-increases-in-maternal-employment",
+			"does-paid-parental-leave-improve-parent-and-infant-health",
+			"can-paid-sick-leave-improve-health-access-without-causing-large-job-losses"
+		]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "cash-poverty-and-child-development",
+		title: "Cash, poverty, and child development",
+		description: "Cash transfers, child benefits, and early education tracked from immediate resources through behavior and long-term development.",
+		claimSlugs: [
+			"do-cash-transfers-make-low-income-recipients-spend-more-on-alcohol-or-tobacco",
+			"do-unconditional-cash-transfers-reduce-poverty-and-improve-well-being",
+			"do-child-benefits-reduce-child-poverty-without-any-labor-supply-tradeoff",
+			"does-microcredit-reliably-lift-most-borrowers-out-of-poverty"
+		]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "housing-supply-stability-and-rents",
+		title: "Housing supply, stability, and rents",
+		description: "Tenant protection, new supply, mobility, and Housing First separated into who benefits, what changes, and over which time horizon.",
+		claimSlugs: [
+			"does-rent-control-help-covered-tenants-without-affecting-housing-supply-or-mobility",
+			"does-adding-housing-supply-reduce-rents-or-rent-growth-across-a-city",
+			"does-housing-first-improve-housing-stability-for-people-experiencing-homelessness"
+		]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "markets-prices-and-public-externalities",
+		title: "Markets, prices, and public externalities",
+		description: "Immigration and trade gains joined with carbon pricing, congestion charges, and induced road demand, keeping aggregate effects distinct from concentrated costs.",
+		claimSlugs: [
+			"does-immigration-substantially-lower-wages-and-employment-for-native-born-workers-overall",
+			"does-international-trade-create-broad-gains-while-imposing-concentrated-local-losses",
+			"does-putting-a-price-on-carbon-reduce-greenhouse-gas-emissions",
+			"can-congestion-pricing-reduce-urban-traffic-without-creating-equity-concerns",
+			"does-adding-highway-lanes-permanently-eliminate-traffic-congestion"
+		]
 	}
 ] as const satisfies readonly AtlasCollectionDefinition[];
 
