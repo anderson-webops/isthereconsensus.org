@@ -754,7 +754,11 @@ try {
 	await page.evaluate(() => document.querySelector('a[href="/library"]').click());
 	await browserText(page, "Saved reviews (1)");
 	await browserText(page, "Saved comparisons (1)");
-	assert.ok(await page.$('#saved-comparisons a[href="/compare/strength-training-supplements"]'));
+	// Counts come from local selections; link details arrive from /library/resolve.
+	await page.waitForSelector('#saved-comparisons a[href="/compare/strength-training-supplements"]', {
+		visible: true,
+		timeout: 10000
+	});
 	assert.equal(await page.evaluate(() => document.body.innerText.includes("My account")), false);
 	await clickText(page, "Clear browser library…");
 	await clickText(page, "Cancel");
