@@ -319,6 +319,19 @@ export const atlasCollections = [
 	},
 	{
 		topicSlug: "climate-and-environment",
+		slug: "household-water-treatment",
+		title: "Household water treatment",
+		description: "Match boiling, filtration, UV, reverse osmosis and softening to specific treatment goals, certification claims and operating limits.",
+		claimSlugs: [
+			"does-boiling-water-remove-fuel-and-toxic-chemicals",
+			"does-water-filter-certification-mean-it-removes-every-contaminant",
+			"does-ultraviolet-water-disinfection-also-remove-lead-nitrate-and-pfas",
+			"do-reverse-osmosis-systems-all-use-the-same-amount-of-reject-water",
+			"does-softening-hard-water-make-it-microbiologically-safe"
+		]
+	},
+	{
+		topicSlug: "climate-and-environment",
 		slug: "land-use-food-and-climate",
 		title: "Land use, food, and climate",
 		description: "Climate and biodiversity consequences of forests, agriculture, livestock, and food security.",

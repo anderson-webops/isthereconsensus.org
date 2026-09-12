@@ -4,6 +4,7 @@ import { exerciseBpPracticalClaims, exerciseBpPracticalGaps } from "./claim-expa
 import { heatingPracticalClaims, heatingPracticalGaps } from "./claim-expansion-practical-heating.js";
 import { sleepPracticalClaims, sleepPracticalGaps } from "./claim-expansion-practical-sleep.js";
 import { strengthPracticalClaims, strengthPracticalGaps } from "./claim-expansion-practical-strength.js";
+import { waterPracticalClaims, waterPracticalGaps } from "./claim-expansion-practical-water.js";
 
 const checkedAt = "2026-09-11T19:38:00.000Z";
 const morningDelaySlug = "does-delaying-morning-caffeine-prevent-an-afternoon-crash";
@@ -23,7 +24,8 @@ export const practicalEvidenceGaps = [
 	...sleepPracticalGaps,
 	...heatingPracticalGaps,
 	...airPracticalGaps,
-	...exerciseBpPracticalGaps
+	...exerciseBpPracticalGaps,
+	...waterPracticalGaps
 ];
 
 export const practicalEvidenceClaims: SeedClaim[] = [
@@ -221,5 +223,6 @@ export const practicalEvidenceClaims: SeedClaim[] = [
 	...sleepPracticalClaims,
 	...heatingPracticalClaims,
 	...airPracticalClaims,
-	...exerciseBpPracticalClaims
+	...exerciseBpPracticalClaims,
+	...waterPracticalClaims
 ];

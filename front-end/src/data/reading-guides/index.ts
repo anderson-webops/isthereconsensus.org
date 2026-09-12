@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "household-water-treatment",
+		title: "Water treatment: match the method to the contaminant",
+		summary:
+			"Understand filter certification, boiling and UV limits, hardness control, and the water-use trade-offs of reverse osmosis.",
+		checkedAt: "2026-09-12",
+		topics: ["climate-and-environment", "health-and-medicine"],
+		reviews: [
+			{
+				path: "/consensus/climate-and-environment/does-boiling-water-remove-fuel-and-toxic-chemicals",
+				label: "Boiling and chemical contamination"
+			},
+			{
+				path: "/consensus/climate-and-environment/does-water-filter-certification-mean-it-removes-every-contaminant",
+				label: "Contaminant-specific certification"
+			},
+			{
+				path: "/consensus/climate-and-environment/does-ultraviolet-water-disinfection-also-remove-lead-nitrate-and-pfas",
+				label: "UV and chemical-removal limits"
+			},
+			{
+				path: "/consensus/climate-and-environment/do-reverse-osmosis-systems-all-use-the-same-amount-of-reject-water",
+				label: "RO water use and efficiency"
+			},
+			{
+				path: "/consensus/climate-and-environment/does-softening-hard-water-make-it-microbiologically-safe",
+				label: "Softening is not disinfection"
+			}
+		]
+	},
+	{
 		slug: "exercise-and-blood-pressure",
 		title: "Exercise and blood pressure: beyond the rankings",
 		summary:
