@@ -1,42 +1,18 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
+import { defaultClaims } from "../../back-end/src/data/claims.js";
+import { defaultTopics } from "../../back-end/src/data/topics.js";
 import { topicGuides } from "../src/data/topicGuides.js";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-function seededClaimTopics() {
-	const dataDir = join(testDir, "..", "..", "back-end", "src", "data");
-	const seedFiles = readdirSync(dataDir).filter(
-		(fileName) => fileName === "claims.ts" || (fileName.startsWith("claim-expansion-") && fileName.endsWith(".ts"))
-	);
-	const claimTopics = new Map<string, string>();
-
-	for (const fileName of seedFiles) {
-		const source = readFileSync(join(dataDir, fileName), "utf8");
-		for (const match of source.matchAll(/topicSlug:\s*"([^"]+)"[\s\S]*?slug:\s*"([^"]+)"/g)) {
-			claimTopics.set(match[2], match[1]);
-		}
-	}
-
-	return claimTopics;
-}
-
-function seededTopicSlugs() {
-	const topicsFile = join(testDir, "..", "..", "back-end", "src", "data", "topics.ts");
-	const source = readFileSync(topicsFile, "utf8");
-	return new Set([...source.matchAll(/\bslug:\s*"([^"]+)"/g)].map((match) => match[1]));
-}
 
 describe("topic guide starter claims", () => {
 	it("provides one guide for every seeded topic", () => {
-		assert.deepEqual(new Set(Object.keys(topicGuides)), seededTopicSlugs());
+		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map((topic) => topic.slug)));
 	});
 
 	it("provides three distinct, seeded entry points for every topic guide", () => {
 		const allStarters: string[] = [];
-		const claimTopics = seededClaimTopics();
+		// Check the actual composed catalog, including claims with shared constants.
+		const claimTopics = new Map(defaultClaims.map((claim) => [claim.slug, claim.topicSlug]));
 
 		for (const [topicSlug, guide] of Object.entries(topicGuides)) {
 			const starters = guide.starterClaimSlugs ?? [];

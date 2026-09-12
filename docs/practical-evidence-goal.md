@@ -4,16 +4,24 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
-Current implementation milestone: [hearing protection](practical-hearing-protection.md),
-bringing the implementation to ten comparisons and 40 genuinely new reviews.
+Current implementation milestone: [account protection](practical-account-protection.md),
+bringing the implementation to eleven comparisons and 45 genuinely new reviews.
 Earlier milestone counts below are historical. Public acceptance is recorded
 separately from these source counts.
 
-The preceding mosquito release v1.30.0 is live at commit
-`c3d2f80022f35d887714f732b22d16c1f05ab73f`, build
-`840573e5-77cc-43bf-94ec-0e8f92da4226`. Its pages, findings, sources and
-785-review catalog passed public checks, but dynamic sitemap links were
-missing. Full acceptance is pending the sitemap repair in the hearing milestone.
+The hearing milestone passed all eight CI jobs on PR #71 and merged main,
+and was released and publicly accepted as **v1.31.0**, commit
+`74d4b2dde4c41772ad6aaa249a2e871067eac6fb`, build
+`519a69d5-13a6-4330-952c-04714ed648dc`. Read-only acceptance verified identity
+before and after, readiness, ten findings, unsupported contexts, five exact
+review/source stacks, guide, collection, and all **35 topics and 790 reviews**
+in the sitemap.
+
+The mosquito milestone's earlier sitemap failure is resolved in v1.31.0.
+Its complete acceptance was repeated on the same verified build, including
+all twelve findings, unsupported contexts, five review/source stacks, guide,
+collection and sitemap. Fully accepted progress is **10/12 comparisons and
+40/50 new reviews**; account-protection source work is the next milestone.
 
 The preceding water milestone was publicly accepted September 12, 2026 UTC:
 v1.29.0, commit `cc0443803bcf5a4ec38c97c807ec60fb9ed110b8`, build

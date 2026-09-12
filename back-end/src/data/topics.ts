@@ -243,5 +243,12 @@ export const defaultTopics = [
 		description: "Withdrawal, treatment, recovery, tobacco, alcohol, cannabis, stimulant use, and harm reduction assessed without stigma.",
 		order: 35,
 		accent: "#745985"
+	},
+	{
+		title: "Digital security & privacy",
+		slug: "digital-security-and-privacy",
+		description: "Authentication, data protection and digital privacy examined through standards, real-world behavior and explicit threat models.",
+		order: 36,
+		accent: "#416b80"
 	}
 ];

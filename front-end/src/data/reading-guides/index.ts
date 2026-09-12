@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "account-protection",
+		title: "Account protection: threats, login and recovery",
+		summary:
+			"Understand what passkeys, codes and password managers protect, and why recovery and maintenance need separate attention.",
+		checkedAt: "2026-09-12",
+		topics: ["digital-security-and-privacy"],
+		reviews: [
+			{
+				path: "/consensus/digital-security-and-privacy/do-passkeys-prevent-phishing-and-all-account-takeovers",
+				label: "Passkey phishing resistance and its limits"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/can-one-time-authenticator-codes-still-be-phished",
+				label: "One-time codes and live phishing"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-installing-a-password-manager-eliminate-password-reuse",
+				label: "Password managers and reuse"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/do-synced-passkeys-prevent-lockout-when-a-device-is-lost",
+				label: "Syncing and recovery"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-changing-passwords-every-month-improve-account-security",
+				label: "Routine password expiry"
+			}
+		]
+	},
+	{
 		slug: "hearing-protection",
 		title: "Hearing protection: understand ratings, fit and lasting use",
 		summary:
