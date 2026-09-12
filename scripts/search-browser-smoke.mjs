@@ -137,7 +137,9 @@ try {
 	await new Promise((done) => portProbe.close(done));
 	baseUrl = `http://127.0.0.1:${frontendPort}`;
 	const apiPort = await listen(api);
-	const apiUrl = `http://127.0.0.1:${apiPort}/api`;
+	// Match the normalized production default: the backend origin has no /api
+	// suffix. Each API consumer must add that prefix using the shared helper.
+	const apiUrl = `http://127.0.0.1:${apiPort}`;
 	frontend = spawn(process.execPath, [resolve("front-end/.output/server/index.mjs")], {
 		env: {
 			...process.env,
@@ -210,6 +212,12 @@ try {
 		await page.waitForFunction(() => Boolean(document.querySelector("#__nuxt")?.__vue_app__));
 	}
 	await page.setViewport({ width: 1280, height: 900 });
+	const completeSitemapResponse = await fetch(`${baseUrl}/sitemap.xml`);
+	assert.equal(completeSitemapResponse.status, 200);
+	const completeSitemap = await completeSitemapResponse.text();
+	for (const topic of topics) assert.ok(completeSitemap.includes(`<loc>https://isthereconsensus.org/consensus/${topic.slug}</loc>`), `sitemap topic ${topic.slug}`);
+	for (const claim of catalog) assert.ok(completeSitemap.includes(`<loc>https://isthereconsensus.org/consensus/${claim.topicSlug}/${claim.slug}</loc>`), `sitemap review ${claim.slug}`);
+	console.log("PASS complete topic/review sitemap with the default backend-origin configuration");
 	await checkComparisons({ page, baseUrl, open });
 	// Guides use source-controlled narrative, independent of backend availability.
 	for (const guide of readingGuides) {

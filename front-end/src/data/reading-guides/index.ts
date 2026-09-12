@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "hearing-protection",
+		title: "Hearing protection: understand ratings, fit and lasting use",
+		summary:
+			"Read beyond the package rating: fitting skill, training retention, device roles and the limits of combining protectors.",
+		checkedAt: "2026-09-12",
+		topics: ["health-and-medicine"],
+		reviews: [
+			{
+				path: "/consensus/health-and-medicine/does-a-hearing-protectors-noise-reduction-rating-predict-my-protection",
+				label: "Product ratings and individual fit"
+			},
+			{
+				path: "/consensus/health-and-medicine/does-individual-earplug-fit-training-improve-noise-attenuation",
+				label: "Immediate effects of fitting instruction"
+			},
+			{
+				path: "/consensus/health-and-medicine/does-earplug-fit-training-provide-lasting-protection-without-refreshers",
+				label: "Retaining fitting skills"
+			},
+			{
+				path: "/consensus/health-and-medicine/are-noise-cancelling-headphones-a-substitute-for-hearing-protection",
+				label: "Noise cancellation and protection"
+			},
+			{
+				path: "/consensus/health-and-medicine/can-you-add-earplug-and-earmuff-ratings-for-double-hearing-protection",
+				label: "Limits of combined protection"
+			}
+		]
+	},
+	{
 		slug: "mosquito-bite-prevention",
 		title: "Mosquito prevention: read beyond the repellent label",
 		summary:

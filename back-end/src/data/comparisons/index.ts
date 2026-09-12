@@ -2,6 +2,7 @@ import { airCleaningComparison } from "./air-cleaning.js";
 import { caffeineComparison } from "./caffeine.js";
 import { electricityComparison } from "./electricity.js";
 import { exerciseBpComparison } from "./exercise-bp.js";
+import { hearingComparison } from "./hearing.js";
 import { heatingComparison } from "./heating.js";
 import { insomniaComparison } from "./insomnia.js";
 import { mosquitoComparison } from "./mosquito.js";
@@ -17,7 +18,8 @@ export const evidenceComparisons = [
 	airCleaningComparison,
 	exerciseBpComparison,
 	waterComparison,
-	mosquitoComparison
+	mosquitoComparison,
+	hearingComparison
 ];
 
 export function comparisonForSlug(slug: string) {
