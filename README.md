@@ -111,7 +111,7 @@ The same check is also available as the manual GitHub Actions workflow `Live smo
 LIVE_SMOKE_EXPECT_COMMIT=$(git rev-parse --short=12 HEAD) npm run smoke:live
 ```
 
-Administrators can review bounded Crossref source-integrity checks at `/account/editorial/source-integrity`. The optional daily systemd timer and manual dry-run/apply commands are documented in [`DEPLOYMENT.md`](./DEPLOYMENT.md).
+Administrators can review bounded Crossref and Europe PMC source-integrity checks at `/account/editorial/source-integrity`. The optional daily systemd timer and manual dry-run/apply commands are documented in [`DEPLOYMENT.md`](./DEPLOYMENT.md).
 
 If `/deployment.json` is missing, the live smoke also reports the Nuxt build id from `/_nuxt/builds/latest.json`. A stale build id there means the public frontend service has not picked up the latest deployment artifact yet.
 

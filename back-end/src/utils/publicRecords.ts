@@ -137,6 +137,7 @@ export function toEditorialClaimSource(value: unknown) {
 	const reviewer = asRecord(evidenceProfile?.reviewer);
 	const {
 		claim: _claim,
+		integrityMonitoring: _integrityMonitoring,
 		...sourceFields
 	} = source;
 

@@ -24,7 +24,7 @@ const monitorTimer = readFileSync(
 describe("source-integrity operations", () => {
 	it("keeps the activity endpoint admin-only and the page explicit about signal limits", () => {
 		assert.match(server, /api\.get\("\/admin\/source-integrity", requireAdmin/u);
-		assert.match(page, /an empty result is not treated as proof that a paper is valid/u);
+		assert.match(page.replace(/\s+/g, " "), /missing updates or an unindexed paper do not establish validity/u);
 		assert.match(page, /v-if="!ready"/u);
 		assert.match(page, /v-else-if="!isAdmin"/u);
 		assert.match(page, /Admin access required/u);

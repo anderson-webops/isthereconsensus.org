@@ -91,7 +91,16 @@ export interface IClaimSourceEvidenceProfile {
 	reviewer: IClaimSourceReviewerProfile;
 }
 
+export interface IntegrityProviderProgress {
+	doi: string;
+	attemptedAt: Date;
+	checkedAt?: Date;
+	outcome: string;
+	retryAt: Date;
+}
+
 export interface IClaimSource {
+	integrityMonitoring?: { crossref?: IntegrityProviderProgress; europepmc?: IntegrityProviderProgress };
 	claim: IClaim | mongoose.Types.ObjectId;
 	kind: ClaimSourceKind;
 	title: string;
@@ -262,9 +271,22 @@ const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 	{ _id: false }
 );
 
+const integrityProgressSchema = new Schema<IntegrityProviderProgress>({
+	doi: { type: String, maxlength: 240, required: true },
+	attemptedAt: { type: Date, required: true },
+	checkedAt: { type: Date },
+	outcome: { type: String, required: true },
+	retryAt: { type: Date, required: true }
+}, { _id: false });
+
 const claimSourceSchema: Schema<IClaimSource> = new Schema(
 	{
 		claim: { type: Schema.Types.ObjectId, ref: "Claim", required: true, index: true },
+		integrityMonitoring: {
+			type: new Schema({ crossref: integrityProgressSchema, europepmc: integrityProgressSchema }, { _id: false }),
+			default: undefined,
+			select: false
+		},
 		kind: {
 			type: String,
 			required: true,

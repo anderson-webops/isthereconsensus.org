@@ -121,7 +121,8 @@ import {
 import { logError } from "./utils/safeLog.js";
 import { analyzeSearchMatch, searchMatchIsDisplayable } from "./utils/searchMatch.js";
 import { slugify } from "./utils/slugify.js";
-import { SOURCE_INTEGRITY_CLAIM_STATUSES, SOURCE_INTEGRITY_OUTCOMES } from "./utils/sourceIntegrity.js";
+import { SOURCE_INTEGRITY_CLAIM_STATUSES, SOURCE_INTEGRITY_OUTCOMES, SOURCE_INTEGRITY_PROVIDERS } from "./utils/sourceIntegrity.js";
+import { integrityProviderDueFilter } from "./utils/sourceIntegrityMonitor.js";
 import "dotenv/config";
 
 const whitespacePattern = /\s+/;
@@ -3719,6 +3720,10 @@ async function main() {
 
 	api.get("/admin/account-activity", requireAdmin, listAccountActivity);
 
+	api.use("/admin/source-integrity", (_req, res, next) => {
+		res.set("Cache-Control", "private, no-store");
+		next();
+	});
 	api.get("/admin/source-integrity", requireAdmin, async (req, res) => {
 		try {
 			const page = normalizeInteger(req.query.page, 1, 10_000, 1);
@@ -3729,13 +3734,17 @@ async function main() {
 			if (requestedOutcome && !selectedOutcome) {
 				return res.status(400).json({ error: "Invalid source-integrity outcome." });
 			}
+			const requestedProvider = normalizeText(req.query.provider, 40);
+			const selectedProvider = SOURCE_INTEGRITY_PROVIDERS.find(provider => provider === requestedProvider);
+			if (requestedProvider && !selectedProvider) return res.status(400).json({ error: "Invalid source-integrity provider." });
 			const checkFilter: QueryFilter<ISourceIntegrityCheck> = selectedOutcome
 				? { outcome: selectedOutcome }
 				: {};
+			if (selectedProvider) checkFilter.provider = selectedProvider;
 			const staleBefore = new Date(Date.now() - staleDays * 24 * 60 * 60 * 1000);
 			const monitoredClaimIds = await Claim.distinct("_id", {
 				status: { $in: SOURCE_INTEGRITY_CLAIM_STATUSES }
-			});
+			}).maxTimeMS(5000);
 			const doiSourceFilter = {
 				claim: { $in: monitoredClaimIds },
 				doi: { $exists: true, $ne: "" }
@@ -3755,40 +3764,54 @@ async function main() {
 					.sort({ checkedAt: -1, _id: -1 })
 					.skip((page - 1) * limit)
 					.limit(limit)
+					.maxTimeMS(5000)
 					.lean(),
-				SourceIntegrityCheck.countDocuments(checkFilter),
-				ClaimSource.countDocuments(doiSourceFilter),
-				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $exists: false } }),
-				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $lt: staleBefore } }),
+				SourceIntegrityCheck.countDocuments(checkFilter).maxTimeMS(5000),
+				ClaimSource.countDocuments(doiSourceFilter).maxTimeMS(5000),
+				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $exists: false } }).maxTimeMS(5000),
+				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $lt: staleBefore } }).maxTimeMS(5000),
 				ClaimSource.countDocuments({
 					...doiSourceFilter,
 					citationStatus: { $in: ["corrected", "expression_of_concern", "retracted"] }
-				}),
+				}).maxTimeMS(5000),
 				SourceIntegrityCheck.countDocuments({
 					checkedAt: { $gte: staleBefore },
 					outcome: { $in: ["corrected", "expression_of_concern", "retracted"] }
-				}),
+				}).maxTimeMS(5000),
 				SourceIntegrityCheck.countDocuments({
 					checkedAt: { $gte: staleBefore },
 					outcome: "error"
-				}),
-				SourceIntegrityCheck.findOne().sort({ checkedAt: -1 }).select("checkedAt").lean()
+				}).maxTimeMS(5000),
+				SourceIntegrityCheck.findOne().sort({ checkedAt: -1 }).select("checkedAt").maxTimeMS(5000).lean()
 			]);
+			const providerCoverage = await Promise.all(SOURCE_INTEGRITY_PROVIDERS.map(async (provider) => {
+				const path = `integrityMonitoring.${provider}`;
+				const [checked, due, notIndexed, errors] = await Promise.all([
+					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.checkedAt`]: { $exists: true }, $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000),
+					ClaimSource.countDocuments({ ...doiSourceFilter, ...integrityProviderDueFilter(provider, new Date(), staleDays) }).maxTimeMS(5000),
+					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.outcome`]: "not_indexed", $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000),
+					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.outcome`]: "error", $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000)
+				]);
+				return { provider, checked, due, notIndexed, errors };
+			}));
 			const sourceIds = checks.map(check => check.source);
 			const claimIds = checks.map(check => check.claim);
 			const [sources, claims] = await Promise.all([
 				ClaimSource.find({ _id: { $in: sourceIds } })
 					.select("title doi citationStatus")
+					.maxTimeMS(5000)
 					.lean(),
 				Claim.find({ _id: { $in: claimIds } })
 					.select("title slug topic status")
 					.populate("topic")
+					.maxTimeMS(5000)
 					.lean()
 			]);
 			const sourceMap = new Map(sources.map(source => [source._id.toString(), source]));
 			const claimMap = new Map(claims.map(claim => [claim._id.toString(), claim]));
 
-			return res.set("Cache-Control", "no-store").json({
+			return res.set("Cache-Control", "private, no-store").json({
+				providerCoverage,
 				summary: {
 					monitoredSourceCount,
 					uncheckedSourceCount,
@@ -3807,6 +3830,14 @@ async function main() {
 						provider: check.provider,
 						doi: check.doi,
 						checkedAt: check.checkedAt,
+						attemptedAt: check.attemptedAt,
+						providerAttemptedAt: check.providerAttemptedAt,
+						observedAt: check.observedAt,
+						cached: check.cached,
+						queryUrl: check.queryUrl,
+						providerVersion: check.providerVersion,
+						recordIds: check.recordIds,
+						retryAt: check.retryAt,
 						previousStatus: check.previousStatus,
 						observedStatus: check.observedStatus,
 						outcome: check.outcome,

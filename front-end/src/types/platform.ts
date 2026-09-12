@@ -48,7 +48,13 @@ export interface AccountActivityResponse {
 }
 
 export type SourceIntegrityOutcome =
-	"no_registered_update" | "corrected" | "expression_of_concern" | "retracted" | "unsupported" | "error";
+	| "no_registered_update"
+	| "corrected"
+	| "expression_of_concern"
+	| "retracted"
+	| "not_indexed"
+	| "unsupported"
+	| "error";
 
 export interface SourceIntegritySignal {
 	type: string;
@@ -61,7 +67,15 @@ export interface SourceIntegritySignal {
 
 export interface SourceIntegrityCheck {
 	_id: string;
-	provider: "crossref";
+	provider: "crossref" | "europepmc";
+	attemptedAt?: string;
+	providerAttemptedAt?: string;
+	observedAt?: string;
+	cached?: boolean;
+	queryUrl?: string;
+	providerVersion?: string;
+	recordIds?: string[];
+	retryAt?: string;
 	doi?: string;
 	checkedAt?: string;
 	previousStatus: "current" | "corrected" | "retracted" | "expression_of_concern";
@@ -90,6 +104,13 @@ export interface SourceIntegrityCheck {
 }
 
 export interface SourceIntegrityResponse {
+	providerCoverage?: {
+		provider: "crossref" | "europepmc";
+		checked: number;
+		due: number;
+		notIndexed: number;
+		errors: number;
+	}[];
 	summary: {
 		monitoredSourceCount: number;
 		uncheckedSourceCount: number;
