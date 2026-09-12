@@ -4,8 +4,8 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
-Latest source milestone: [exercise and blood pressure](practical-exercise-blood-pressure.md),
-bringing the implementation to seven comparisons and 25 genuinely new reviews.
+Latest source milestone: [household water treatment](practical-household-water.md),
+bringing the implementation to eight comparisons and 30 genuinely new reviews.
 Earlier milestone counts below are historical. Public acceptance is recorded
 separately from these source counts.
 
