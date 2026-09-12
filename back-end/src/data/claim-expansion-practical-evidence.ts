@@ -2,6 +2,7 @@ import type { SeedClaim } from "./claims.js";
 import { accountProtectionClaims, accountProtectionGaps } from "./claim-expansion-practical-account.js";
 import { airPracticalClaims, airPracticalGaps } from "./claim-expansion-practical-air.js";
 import { exerciseBpPracticalClaims, exerciseBpPracticalGaps } from "./claim-expansion-practical-exercise-bp.js";
+import { foodStorageClaims, foodStorageGaps } from "./claim-expansion-practical-food.js";
 import { hearingPracticalClaims, hearingPracticalGaps } from "./claim-expansion-practical-hearing.js";
 import { heatingPracticalClaims, heatingPracticalGaps } from "./claim-expansion-practical-heating.js";
 import { mosquitoPracticalClaims, mosquitoPracticalGaps } from "./claim-expansion-practical-mosquito.js";
@@ -31,7 +32,8 @@ export const practicalEvidenceGaps = [
 	...waterPracticalGaps,
 	...mosquitoPracticalGaps,
 	...hearingPracticalGaps,
-	...accountProtectionGaps
+	...accountProtectionGaps,
+	...foodStorageGaps
 ];
 
 export const practicalEvidenceClaims: SeedClaim[] = [
@@ -233,5 +235,6 @@ export const practicalEvidenceClaims: SeedClaim[] = [
 	...waterPracticalClaims,
 	...mosquitoPracticalClaims,
 	...hearingPracticalClaims,
-	...accountProtectionClaims
+	...accountProtectionClaims,
+	...foodStorageClaims
 ];
