@@ -1,6 +1,7 @@
 import { Claim } from "../models/schemas/Claim.js";
 import { ClaimSource } from "../models/schemas/ClaimSource.js";
 import { Topic } from "../models/schemas/Topic.js";
+import { recordedDate } from "../utils/claimReviewStatus.js";
 import { recordSeedReaderAnnouncement } from "../utils/seedReaderAnnouncement.js";
 import { defaultClaims } from "./claims.js";
 
@@ -247,6 +248,31 @@ function seedKey(topicSlug: string, slug: string) {
 	return `${topicSlug}/${slug}`;
 }
 
+// Import time is publication infrastructure, not evidence of a new review.
+// Use only dated review/publication records; cosmetic updates do not refresh it.
+export function seedReviewDates(seed: Pick<SeedClaim, "changeLog">) {
+	const dates = seed.changeLog
+		.filter(entry => ["review", "publication"].includes(entry.kind))
+		.map(entry => recordedDate(entry.date))
+		.filter((date): date is string => Boolean(date))
+		.sort();
+	// A legacy entry with only updates can supply its earliest content-record
+	// date, explicitly labelled source_record, never an asserted expert review.
+	const latest
+		= dates.at(-1)
+			?? seed.changeLog
+				.map(entry => recordedDate(entry.date))
+				.filter((date): date is string => Boolean(date))
+				.sort()[0];
+	return latest
+		? {
+				lastReviewedAt: new Date(latest),
+				reviewDateBasis: "source_record" as const,
+				nextReviewAt: new Date(new Date(latest).getTime() + 180 * 24 * 60 * 60 * 1000)
+			}
+		: {};
+}
+
 async function archiveRetiredSeedClaims(activeSeedKeys: Set<string>) {
 	for (const retired of retiredSeedClaims) {
 		if (activeSeedKeys.has(seedKey(retired.topicSlug, retired.slug))) continue;
@@ -274,14 +300,15 @@ export async function seedClaims(options: SeedClaimsOptions = {}) {
 		if (!topic) continue;
 
 		const existingClaim = await Claim.findOne({ topic: topic._id, slug: seed.slug });
-		const claim = existingClaim ?? await Claim.create({
-			topic: topic._id,
-			slug: seed.slug,
-			...seedClaimFields(seed),
-			lastReviewedAt: new Date(),
-			nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
-			publishedAt: seed.status === "published" ? new Date() : undefined
-		});
+		const claim
+			= existingClaim
+				?? (await Claim.create({
+					topic: topic._id,
+					slug: seed.slug,
+					...seedClaimFields(seed),
+					...seedReviewDates(seed),
+					publishedAt: seed.status === "published" ? new Date() : undefined
+				}));
 
 		if (existingClaim && !synchronizeExisting) {
 			continue;
@@ -292,8 +319,8 @@ export async function seedClaims(options: SeedClaimsOptions = {}) {
 		if (!claim.agreementLevel) missingFields.agreementLevel = seed.agreementLevel;
 		if (!claim.evidenceCertainty) missingFields.evidenceCertainty = seed.evidenceCertainty;
 		if (!claim.reviewMode) missingFields.reviewMode = seed.reviewMode;
-		if (!claim.lastReviewedAt) missingFields.lastReviewedAt = new Date();
-		if (!claim.nextReviewAt) missingFields.nextReviewAt = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
+		// Existing dates and schedules retain their provenance, including unknown
+		// provenance. A synchronization must not fabricate a completed review.
 		if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
 		if (hasSeedClaimUpdate({ $set: missingFields })) {
 			await Claim.updateOne({ _id: claim._id }, { $set: missingFields, $inc: { __v: 1 } });

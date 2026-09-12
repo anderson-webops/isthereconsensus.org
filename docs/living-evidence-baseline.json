@@ -1,0 +1,220 @@
+{
+  "observedAt": "2026-09-12T13:32:36.691Z",
+  "release": {
+    "commit": "cbabd72516f84f984b41e7fdcdd465d221cad605",
+    "ref": "v1.33.0",
+    "buildId": "ee20a6c4-70a8-4acd-b824-667f01b73ac2"
+  },
+  "totalReviews": 800,
+  "totalTopics": 36,
+  "recordedDateIssues": {
+    "cutoffLaterThanReview": 281,
+    "explicitFollowUpDue": 0,
+    "missingFollowUp": 0,
+    "cutoffLaterCalendarDayThanReview": 75,
+    "note": "The first count compares precise timestamps. Reader chronology warnings use UTC calendar days, allowing a cutoff and review on the same day."
+  },
+  "selectionMethod": "Ten oldest recorded literature cutoffs in health, nutrition and sleep, plus ten oldest across other topics; ties by slug. Age identifies candidates for review, not invalid conclusions. Historical path traffic was not treated as current analytics. These are planned refresh targets; substitution requires a documented substantive scope reason.",
+  "refreshTargets": [
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+      "title": "Are dietary cholesterol and saturated fat the same kind of risk?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.245Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.245Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "do-childhood-vaccines-cause-autism",
+      "title": "Do childhood vaccines cause autism?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.219Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.219Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "do-dietary-supplements-usually-improve-health-in-healthy-adults",
+      "title": "Do dietary supplements usually improve health in otherwise healthy adults?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.292Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.292Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "does-antibiotic-overuse-drive-antibiotic-resistance",
+      "title": "Does antibiotic overuse drive antibiotic resistance?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.271Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.271Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "does-saturated-fat-still-raise-ldl-and-heart-risk",
+      "title": "Does saturated fat still raise LDL and heart risk?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.281Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.281Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+      "title": "Are COVID-19 vaccines safe and beneficial during pregnancy and breastfeeding?",
+      "reviewDateRecorded": "2026-07-02T20:42:12.082Z",
+      "literatureCutoffRecorded": "2026-07-02T12:00:00.000Z",
+      "nextReviewRecorded": "2026-12-29T20:42:12.082Z",
+      "sourceCount": 5,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "do-covid-19-vaccines-cause-infertility",
+      "title": "Do COVID-19 vaccines cause infertility?",
+      "reviewDateRecorded": "2026-07-02T20:35:53.934Z",
+      "literatureCutoffRecorded": "2026-07-02T12:00:00.000Z",
+      "nextReviewRecorded": "2026-12-29T20:35:53.934Z",
+      "sourceCount": 4,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "do-mrna-covid-19-vaccines-change-your-dna",
+      "title": "Do mRNA COVID-19 vaccines change your DNA?",
+      "reviewDateRecorded": "2026-07-02T20:35:53.896Z",
+      "literatureCutoffRecorded": "2026-07-02T12:00:00.000Z",
+      "nextReviewRecorded": "2026-12-29T20:35:53.896Z",
+      "sourceCount": 4,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "does-the-mmr-vaccine-cause-autism",
+      "title": "Does the MMR vaccine cause autism?",
+      "reviewDateRecorded": "2026-07-02T20:35:53.851Z",
+      "literatureCutoffRecorded": "2026-07-02T12:00:00.000Z",
+      "nextReviewRecorded": "2026-12-29T20:35:53.851Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+      "title": "How big is the myocarditis risk after mRNA COVID-19 vaccination, and who is most affected?",
+      "reviewDateRecorded": "2026-07-02T20:42:12.136Z",
+      "literatureCutoffRecorded": "2026-07-02T12:00:00.000Z",
+      "nextReviewRecorded": "2026-12-29T20:42:12.136Z",
+      "sourceCount": 5,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "genetics-and-biotechnology",
+      "slug": "are-commercial-gmo-foods-unsafe-to-eat",
+      "title": "Are commercial GMO foods unsafe to eat?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.311Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.311Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "historical-case-studies",
+      "slug": "did-smoking-cause-lung-cancer",
+      "title": "Did smoking cause lung cancer?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.327Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.327Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "neuroscience-and-psychology",
+      "slug": "do-learning-styles-improve-educational-outcomes",
+      "title": "Do learning styles improve educational outcomes?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.262Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.262Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "neuroscience-and-psychology",
+      "slug": "do-we-only-use-10-percent-of-our-brain",
+      "title": "Do we only use 10 percent of our brain?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.319Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.319Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "consensus-foundations",
+      "slug": "how-does-scientific-consensus-form",
+      "title": "How does scientific consensus form?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.343Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.343Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "biology-and-evolution",
+      "slug": "is-evolution-just-a-theory",
+      "title": "Is evolution 'just a theory'?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.254Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.254Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "climate-and-environment",
+      "slug": "is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+      "title": "Is nuclear power more dangerous than fossil-fuel energy?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.301Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.301Z",
+      "sourceCount": 3,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "climate-and-environment",
+      "slug": "is-recent-global-warming-mainly-caused-by-human-activity",
+      "title": "Is recent global warming mainly caused by human activity?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.235Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.235Z",
+      "sourceCount": 4,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "active-debates",
+      "slug": "what-counts-as-an-active-scientific-debate",
+      "title": "What counts as an active scientific debate?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.358Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.358Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    },
+    {
+      "topicSlug": "media-misinformation",
+      "slug": "why-does-one-study-rarely-change-everything",
+      "title": "Why does one study rarely change everything?",
+      "reviewDateRecorded": "2026-04-01T23:52:29.351Z",
+      "literatureCutoffRecorded": "2026-04-11T12:00:00.000Z",
+      "nextReviewRecorded": "2026-09-28T23:52:29.351Z",
+      "sourceCount": 2,
+      "status": "not_started"
+    }
+  ]
+}

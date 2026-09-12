@@ -15,6 +15,7 @@ import type {
 	EvidenceStudyDesign,
 	EvidenceTier
 } from "~/constants/evidenceLandscape";
+import type { ClaimReviewStatus, ReviewDateBasis } from "~/utils/claim-review-status";
 
 export type ClaimStatus = "draft" | "published" | "needs_update" | "archived";
 export type ClaimConsensusBand = "strong" | "broad" | "mixed" | "unclear";
@@ -291,6 +292,8 @@ export interface ClaimSummary {
 }
 
 export interface Claim extends ClaimSummary {
+	reviewDateBasis?: ReviewDateBasis;
+	reviewStatus?: ClaimReviewStatus;
 	stableCore: string[];
 	openQuestions: string[];
 	whatWouldChangeMinds: string[];

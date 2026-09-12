@@ -563,7 +563,21 @@ try {
 		process.exitCode = 1;
 	}
 } finally {
-	if (browser) await browser.close();
+	if (browser) {
+		const browserProcess = browser.process();
+		// Chromium helpers can retain inherited output pipes after the browser
+		// exits. Close only this runner's browser pipes during shutdown.
+		const closePipes = () => {
+			for (const stream of browserProcess?.stdio ?? []) stream?.destroy();
+		};
+		const cleanupTimer = setTimeout(closePipes, 2_000);
+		try {
+			await browser.close();
+		} finally {
+			clearTimeout(cleanupTimer);
+			closePipes();
+		}
+	}
 	await stopProcessTree(frontendProcess);
 	await closeServer(apiServer);
 }

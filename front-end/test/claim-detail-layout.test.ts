@@ -49,7 +49,7 @@ describe("claim detail layout", () => {
 		);
 		assert.match(source, /\.bottom-line__actions \.button \{[\s\S]*flex: 1 1 140px;/);
 		assert.match(source, /formatCountLabel\(sourceCount\.value, "source"\)/);
-		assert.match(source, /`Reviewed \$\{formatDate\(claim\.value\?\.lastReviewedAt, "Pending"\)\}`/);
+		assert.match(source, /formatReviewDate\(reviewStatus\.value\.reviewedAt\)/);
 	});
 
 	it("splits long bottom-line copy into a lead answer and supporting context", () => {
@@ -75,7 +75,7 @@ describe("claim detail layout", () => {
 	});
 
 	it("keeps the change log outside the default reading path", () => {
-		assert.match(source, /<details class="content-panel change-log-panel">/);
+		assert.match(source, /<details\s[^>]*class="content-panel change-log-panel"/);
 		assert.match(source, /<summary class="change-log-panel__summary">/);
 		assert.doesNotMatch(source, /<section class="content-panel">[\s\S]*<h2>Change log<\/h2>/);
 	});

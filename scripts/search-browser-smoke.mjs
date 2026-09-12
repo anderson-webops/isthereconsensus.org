@@ -16,6 +16,7 @@ import { createClaimSearchIndex } from "../back-end/src/utils/claimSearch.ts";
 import { readingGuides } from "../front-end/src/data/reading-guides/index.ts";
 import { loadReadingGuide } from "../front-end/src/data/reading-guides/load.ts";
 import { checkComparisons } from "./lib/check-comparisons.mjs";
+import { checkReviewStatus } from "./lib/check-review-status.mjs";
 
 const topics = defaultTopics.map((topic) => ({
 	...topic,
@@ -40,6 +41,7 @@ let browser;
 let page;
 let frontend;
 let frontendOutput = "";
+let reviewFixture;
 const api = http.createServer(async (req, res) => {
 	const url = new URL(req.url, "http://localhost");
 	const query = url.searchParams.get("q") ?? "";
@@ -81,6 +83,7 @@ const api = http.createServer(async (req, res) => {
 			}
 		};
 	}
+	if (body.claim?.slug === caffeineSlug && reviewFixture) body.claim = { ...body.claim, ...reviewFixture };
 	if (url.pathname === "/api/search/suggestions")
 		body = {
 			claims: search(query)
@@ -219,6 +222,7 @@ try {
 	for (const claim of catalog) assert.ok(completeSitemap.includes(`<loc>https://isthereconsensus.org/consensus/${claim.topicSlug}/${claim.slug}</loc>`), `sitemap review ${claim.slug}`);
 	console.log("PASS complete topic/review sitemap with the default backend-origin configuration");
 	await checkComparisons({ page, baseUrl, open });
+	await checkReviewStatus({ page, baseUrl, open, setFixture: fixture => { reviewFixture = fixture; } });
 	// Guides use source-controlled narrative, independent of backend availability.
 	for (const guide of readingGuides) {
 		const content = await loadReadingGuide(guide.slug);

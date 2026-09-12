@@ -1,4 +1,5 @@
 import type { Model } from "mongoose";
+import type { ReviewDateBasis } from "../../utils/claimReviewStatus.js";
 import type { IReaderUpdate } from "../../utils/readerUpdates.js";
 import type { ITopic } from "./Topic.js";
 import mongoose, { Schema } from "mongoose";
@@ -236,6 +237,7 @@ export interface IClaim {
 	changeLog: IClaimChangeLogEntry[];
 	readerUpdates?: IReaderUpdate[];
 	lastReviewedAt?: Date;
+	reviewDateBasis?: ReviewDateBasis;
 	nextReviewAt?: Date;
 	publishedAt?: Date;
 	reviewedBy?: mongoose.Types.ObjectId;
@@ -648,6 +650,11 @@ const claimSchema: Schema<IClaim> = new Schema(
 			default: []
 		},
 		lastReviewedAt: { type: Date },
+		reviewDateBasis: {
+			type: String,
+			enum: ["source_record", "editorial_review", "unspecified"],
+			default: "unspecified"
+		},
 		nextReviewAt: { type: Date },
 		publishedAt: { type: Date },
 		reviewedBy: { type: Schema.Types.ObjectId }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
+import ClaimReviewStatus from "~/components/ClaimReviewStatus.vue";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import LibraryAction from "~/components/LibraryAction.vue";
@@ -9,6 +10,7 @@ import { comparisonsForReview } from "~/data/comparisons";
 import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
 import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
+import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -38,6 +40,12 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 );
 
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
+const reviewEvaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
+const reviewStatus = computed(
+	() =>
+		claim.value?.reviewStatus ??
+		claimReviewStatus(claim.value ?? {}, claim.value?.sources, new Date(reviewEvaluatedAt.value))
+);
 const collectionMemberships = computed(() => claimData.value?.collections ?? []);
 const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
 const readingGuides = computed(() => guidesForReview(`/consensus/${topicSlug.value}/${claimSlug.value}`));
@@ -98,7 +106,7 @@ const claimMeta = computed(() => [
 	formatBandLabel(claim.value?.consensusBand),
 	formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
 	formatCountLabel(sourceCount.value, "source"),
-	`Reviewed ${formatDate(claim.value?.lastReviewedAt, "Pending")}`
+	`Review date recorded: ${formatReviewDate(reviewStatus.value.reviewedAt)}`
 ]);
 const bottomLineParts = computed(() => {
 	const text = claim.value?.bottomLine?.trim() || "";
@@ -251,12 +259,6 @@ const articleStructuredData = computed(() => ({
 		name: "Is There Consensus",
 		url: "https://isthereconsensus.org"
 	},
-	reviewedBy: claim.value?.reviewerLine
-		? {
-				"@type": "Person",
-				name: claim.value.reviewerLine
-			}
-		: undefined,
 	url: pageUrl.value,
 	about: claim.value?.topic
 		? {
@@ -425,6 +427,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 			</div>
 		</section>
 
+		<ClaimReviewStatus v-if="claim" :claim="claim" />
+
 		<section class="content-stack">
 			<section v-if="claimSnapshotGroups.length" class="content-panel">
 				<div class="section-heading">
@@ -526,7 +530,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 			<section class="content-panel">
 				<div class="section-heading section-heading--sources">
-					<h2>Sources</h2>
+					<h2 id="claim-sources">Sources</h2>
 					<p>{{ formatCountLabel(sourceCount, "source") }}, highest-weight first.</p>
 				</div>
 
@@ -715,7 +719,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				</div>
 			</section>
 
-			<details class="content-panel change-log-panel">
+			<details id="claim-history" class="content-panel change-log-panel">
 				<summary class="change-log-panel__summary">
 					<span class="change-log-panel__heading">
 						<span class="eyebrow">Corrections and updates</span>
