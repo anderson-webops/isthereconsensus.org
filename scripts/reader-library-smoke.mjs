@@ -82,7 +82,7 @@ async function waitFor(check, label, child) {
 		if (await check()) return;
 		await delay(100);
 	}
-	throw new Error(`Timed out: ${label}`);
+	throw new Error(`Timed out: ${label}${child ? `\n${processes.get(child)}` : ""}`);
 }
 async function ready(url, child) {
 	await waitFor(
@@ -224,8 +224,10 @@ try {
 		PUBLIC_SITE_URL: base
 	};
 	async function startBackend() {
+		const started = Date.now();
 		backend = start(process.execPath, [resolve("back-end/dist/server.js")], backendEnv);
 		await ready(`http://127.0.0.1:${backendPort}/healthz`, backend);
+		console.log(`Disposable backend ready in ${Date.now() - started}ms.`);
 	}
 	await startBackend();
 	const review = await Claim.findOne({ slug: "does-caffeine-become-less-effective-with-regular-daily-use" })

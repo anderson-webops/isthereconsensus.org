@@ -57,7 +57,11 @@ export function useAuth() {
 	}
 
 	if (import.meta.client && !ready.value && !refreshing.value) {
-		refreshAuth();
+		// Keep the first client render aligned with the server's unknown session.
+		// A fast response during plugin setup can otherwise race hydration.
+		onNuxtReady(() => {
+			if (!ready.value && !refreshing.value) void refreshAuth();
+		});
 	}
 
 	async function login(payload: LoginPayload) {
