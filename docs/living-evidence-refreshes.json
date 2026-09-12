@@ -121,6 +121,16 @@
       "announcementId": "0db18271-f57c-43d7-a4a2-26f75362e4ff",
       "bottomLineImpact": "unchanged",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "do-dietary-supplements-usually-improve-health-in-healthy-adults",
+      "preparedAt": "2026-09-12T22:52:24.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/supplements-refresh-2026-09-12.md",
+      "announcementId": "bf9db60d-9ff6-414f-8bcb-9420a2b5c146",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

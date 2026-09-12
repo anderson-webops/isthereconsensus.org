@@ -152,3 +152,9 @@ The [brain-activity refresh](research/brain-activity-refresh-2026-09-12.md)
 adds primary imaging examples and distinguishes baseline activity, task contrasts
 and model performance. Twelve baseline reviews are now source-prepared; none
 has yet completed controlled public content publication.
+
+The [supplements refresh](research/supplements-refresh-2026-09-12.md) replaces a
+blanket answer with outcome-specific evidence, retains positive cognitive and
+cancer findings, and distinguishes dementia, biomarkers and infection outcomes.
+Thirteen baseline reviews are source-prepared; controlled publication remains
+outstanding for all thirteen.
