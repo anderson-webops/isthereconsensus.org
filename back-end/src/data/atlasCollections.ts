@@ -28,6 +28,19 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "digital-security-and-privacy",
+		slug: "account-protection",
+		title: "Account protection and recovery",
+		description: "Passkeys, codes, password reuse, recovery and the limits of routine password changes.",
+		claimSlugs: [
+			"do-passkeys-prevent-phishing-and-all-account-takeovers",
+			"can-one-time-authenticator-codes-still-be-phished",
+			"does-installing-a-password-manager-eliminate-password-reuse",
+			"do-synced-passkeys-prevent-lockout-when-a-device-is-lost",
+			"does-changing-passwords-every-month-improve-account-security"
+		]
+	},
+	{
 		topicSlug: "health-and-medicine",
 		slug: "hearing-protection",
 		title: "Hearing protection and fit",

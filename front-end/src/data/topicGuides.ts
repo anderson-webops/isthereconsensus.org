@@ -5,7 +5,8 @@ export interface TopicGuideResource {
 
 export interface TopicGuide {
 	slug: string;
-	consensusScore: number;
+	// Retained for older records; new topics need no invented numerical score.
+	consensusScore?: number;
 	consensusLabel: string;
 	snapshot: string;
 	stableCore: string[];
@@ -49,6 +50,49 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"digital-security-and-privacy": {
+		slug: "digital-security-and-privacy",
+		consensusLabel: "Established technical properties, context-dependent outcomes",
+		snapshot:
+			"Digital protection depends on the threat, the implementation and how people regain access. Standards specify properties; studies examine particular tools, users and settings. Neither supplies one percentage of security for every account.",
+		stableCore: [
+			"Credential scope, password uniqueness and additional factors address different attack paths.",
+			"A protocol's protection does not establish the security of enrollment, recovery or every device.",
+			"A useful tool must support the actual workflow, including when ordinary access is unavailable."
+		],
+		openQuestions: [
+			"Which interfaces sustain secure habits across different users and devices?",
+			"How can recovery preserve access without quietly weakening protection?"
+		],
+		whatWouldChangeMinds: [
+			"Replicated evaluations that test specified threats, deployment conditions and real user outcomes.",
+			"Updated standards or verified implementation findings that change the assumptions behind a protection claim."
+		],
+		commonMisreads: [
+			"A feature name is not a complete security assessment.",
+			"Usability, adoption and attacks prevented are different outcomes; they should not be combined into one score."
+		],
+		starterQuestions: [
+			"Which threat is being addressed?",
+			"What remains available if the usual device or account is lost?",
+			"Is the evidence a standard, a selected product test or a study of user behavior?"
+		],
+		starterClaimSlugs: [
+			"do-passkeys-prevent-phishing-and-all-account-takeovers",
+			"does-installing-a-password-manager-eliminate-password-reuse",
+			"do-synced-passkeys-prevent-lockout-when-a-device-is-lost"
+		],
+		evidenceTrail: [
+			{
+				title: "Standards and institutional guidance",
+				note: "Explain intended properties, required checks and scope; the linked reviews identify exact sections."
+			},
+			{
+				title: "Implementation and human-behavior research",
+				note: "Tests specific versions, adversaries and populations, with dates and generalization limits retained."
+			}
+		]
+	},
 	"health-and-medicine": {
 		slug: "health-and-medicine",
 		consensusScore: 93,

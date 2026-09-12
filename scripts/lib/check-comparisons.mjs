@@ -166,9 +166,73 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	await checkWaterComparison({ page, open, sitemap });
 	await checkMosquitoComparison({ page, open, sitemap });
 	await checkHearingComparison({ page, open, sitemap });
+	await checkAccountComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkAccountComparison({ page, open, sitemap }) {
+	const comparison = evidenceComparisons.find(item => item.slug === "account-protection");
+	const path = `/compare/${comparison.slug}`;
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path), "/consensus?q=password%20manager", "/ask?question=passkeys"]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: account comparison discoverable`);
+	}
+	await open(path);
+	for (const outcome of comparison.outcomes) {
+		await page.select("#comparison-outcome", outcome.id);
+		await page.waitForFunction(id => new URL(location.href).searchParams.get("outcome") === id || (id === "threat" && !new URL(location.href).searchParams.has("outcome")), {}, outcome.id);
+		assert.equal((await page.$$(".comparison-value")).length, 0);
+		assert.equal((await page.$$(".comparison-finding")).length, 6);
+		const cards = await page.$$eval(".comparison-option", nodes => nodes.map(node => node.textContent));
+		comparison.options.forEach((option, index) => {
+			const finding = option.findingsByContext.general[outcome.id];
+			for (const value of [finding.headline, finding.summary, finding.evidence, finding.scope, finding.limitation]) assert.ok(cards[index].includes(value), `${option.id}/${outcome.id}: account field rendered`);
+		});
+	}
+	for (const context of ["personal", "incident"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 6);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-value, .comparison-finding, .comparison-source-link)")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-finding");
+	}
+	await open(`${path}?outcome=access&options=manager,passkey`);
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.equal((await page.$$(".comparison-option")).length, 2);
+	assert.match(await page.$eval(".comparison-grid", node => node.textContent), /Backup eligibility does not establish a completed backup/);
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	await open(`${path}?options=`);
+	await page.waitForSelector(".comparison-empty");
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 6);
+	await page.focus(".comparison-choices input");
+	await page.keyboard.press("Space");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 5);
+	await open(path);
+	await page.click('.comparison-option a[href="#comparison-source-webauthn"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-webauthn");
+	assert.match(await page.$eval("#comparison-source-webauthn", node => node.textContent), /August 25, 2026 Recommendation/);
+	for (const theme of ["light", "dark"]) {
+		const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+		if (current !== theme) await page.click(".theme-toggle");
+		await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+		for (const width of [1280, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `account overflow ${theme} ${width}`);
+			assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), width === 1280 ? 3 : 1);
+			if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && width !== 320) {
+				await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `account-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `account ${theme} 200% text`);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	for (const route of [path, comparison.guidePath]) assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${route}</loc>`));
 }
 
 async function checkHearingComparison({ page, open, sitemap }) {
