@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "mosquito-bite-prevention",
+		title: "Mosquito prevention: read beyond the repellent label",
+		summary:
+			"Understand concentration, delivery, protection-time studies and the limits of newer indoor malaria-prevention evidence.",
+		checkedAt: "2026-09-12",
+		topics: ["health-and-medicine"],
+		reviews: [
+			{
+				path: "/consensus/health-and-medicine/does-a-higher-repellent-concentration-mean-proportionally-better-mosquito-protection",
+				label: "Concentration and duration"
+			},
+			{
+				path: "/consensus/health-and-medicine/is-lemon-eucalyptus-essential-oil-equivalent-to-a-registered-ole-or-pmd-repellent",
+				label: "OLE/PMD versus essential oil"
+			},
+			{
+				path: "/consensus/health-and-medicine/do-repellent-wristbands-protect-as-well-as-skin-applied-mosquito-repellents",
+				label: "Wristbands and delivery"
+			},
+			{
+				path: "/consensus/health-and-medicine/do-laboratory-mosquito-repellent-protection-times-predict-everyday-protection",
+				label: "Interpreting protection time"
+			},
+			{
+				path: "/consensus/health-and-medicine/do-spatial-emanators-prevent-malaria-and-can-they-replace-bed-nets",
+				label: "Supplementary indoor spatial protection"
+			}
+		]
+	},
+	{
 		slug: "household-water-treatment",
 		title: "Water treatment: match the method to the contaminant",
 		summary:
