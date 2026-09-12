@@ -375,6 +375,13 @@ try {
 		status: 403
 	});
 	await publish({ revisionNote: "New fixture evidence review" });
+	const firstReviewRecord = await Claim.findById(fixtureId).lean();
+	assert.equal(firstReviewRecord.reviewDateBasis, "editorial_review");
+	const publishedReview = (await api(`/topics/${review.topic.slug}/claims/${firstReviewRecord.slug}`)).data;
+	assert.equal(publishedReview.claim.reviewStatus.basis, "editorial_review");
+	assert.equal(publishedReview.claim.reviewStatus.sourceChecks.total, sources.length);
+	assert.equal("reviewedBy" in publishedReview.claim, false);
+	assert.match(publishedReview.citation.plainText, /Editorial review recorded/);
 	assert.equal(await eventCount(), 1);
 	assert.equal((await feed()).updates[0].kind, "new_review");
 	await requestUpdate();
@@ -393,12 +400,16 @@ try {
 		status: 400
 	});
 	await publish({ revisionNote: "Formatting only", readerUpdateKind: "none" });
+	const afterFormatting = await Claim.findById(fixtureId).lean();
+	assert.equal(afterFormatting.lastReviewedAt.toISOString(), firstReviewRecord.lastReviewedAt.toISOString(), "Formatting publication must not refresh the review date");
+	assert.equal(afterFormatting.nextReviewAt.toISOString(), firstReviewRecord.nextReviewAt.toISOString(), "Formatting publication must not postpone review");
 	assert.equal(await eventCount(), 1);
 	await api(`${publication}/review`, {
 		method: "POST",
 		cookie: editor.cookie,
 		body: { revisionNote: "Review check only" }
 	});
+	assert.equal((await Claim.findById(fixtureId).lean()).reviewDateBasis, "editorial_review");
 	assert.equal(await eventCount(), 1);
 	for (const kind of ["evidence_update", "correction"]) {
 		await requestUpdate();

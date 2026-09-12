@@ -3,6 +3,28 @@ import { describe, it } from "node:test";
 import { buildClaimCitationBundle } from "../src/utils/claimCitations.js";
 
 describe("claim citation exports", () => {
+	it("never substitutes publication time for a missing review date in any export", () => {
+		const bundle = buildClaimCitationBundle({
+			claim: { title: "Undated review", slug: "undated", publishedAt: new Date("2020-01-01") },
+			topic: { title: "Methods", slug: "methods" },
+			sources: [],
+			siteOrigin: "https://isthereconsensus.org",
+			generatedAt: new Date("2026-09-12")
+		});
+		assert.equal(bundle.reviewedAt, undefined);
+		for (const text of [bundle.plainText, bundle.markdown, bundle.bibtex, bundle.ris, JSON.stringify(bundle.cslJson)]) assert.ok(text.includes("Review date not recorded"));
+		assert.deepEqual(bundle.cslJson[0].issued, { "date-parts": [[2020, 1, 1]] });
+		assert.match(bundle.ris, /Y2 {2}- 2026-09-12/u);
+	});
+	it("preserves review provenance and withholds invalid or future dates", () => {
+		for (const basis of ["source_record", "editorial_review", "unspecified"] as const) {
+			const make = (date: Date) => buildClaimCitationBundle({ claim: { title: "Record", slug: "record", lastReviewedAt: date, reviewDateBasis: basis }, topic: { title: "Methods", slug: "methods" }, sources: [], siteOrigin: "https://isthereconsensus.org", generatedAt: new Date("2026-09-12") });
+			const bundle = make(new Date("2026-08-01"));
+			assert.ok(bundle.plainText.includes(basis === "source_record" ? "Content record dated" : basis === "editorial_review" ? "Editorial review recorded" : "provenance not recorded"));
+			assert.equal(make(new Date("2030-01-01")).reviewedAt, undefined);
+			assert.equal(make(new Date(Number.NaN)).reviewedAt, undefined);
+		}
+	});
 	it("builds stable review and source citations without inventing missing authors", () => {
 		const bundle = buildClaimCitationBundle({
 			claim: {
@@ -29,7 +51,7 @@ describe("claim citation exports", () => {
 		});
 
 		assert.match(bundle.plainText, /Is There Consensus editorial team/u);
-		assert.match(bundle.plainText, /Reviewed September 10, 2026/u);
+		assert.match(bundle.plainText, /Review date recorded September 10, 2026; provenance not recorded/u);
 		assert.doesNotMatch(bundle.plainText, /\?\.”/u);
 		assert.equal(
 			bundle.reviewUrl,

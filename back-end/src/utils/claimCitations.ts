@@ -1,9 +1,10 @@
 import type { IClaim } from "../models/schemas/Claim.js";
 import type { IClaimSource } from "../models/schemas/ClaimSource.js";
 import type { ITopic } from "../models/schemas/Topic.js";
+import { recordedDate } from "./claimReviewStatus.js";
 import { normalizeDoi } from "./sourceIntegrity.js";
 
-interface CitationClaim extends Pick<IClaim, "lastReviewedAt" | "publishedAt" | "slug" | "title"> {}
+interface CitationClaim extends Pick<IClaim, "lastReviewedAt" | "reviewDateBasis" | "publishedAt" | "slug" | "title"> {}
 
 interface CitationSource extends Pick<
 	IClaimSource,
@@ -30,10 +31,9 @@ function cleanText(value: unknown) {
 	return typeof value === "string" ? value.replaceAll(/\s+/g, " ").trim() : "";
 }
 
-function citationDate(value: Date | string | undefined) {
-	if (!value) return undefined;
-	const date = new Date(value);
-	return Number.isNaN(date.getTime()) ? undefined : date;
+function citationDate(value: Date | string | undefined, now: Date) {
+	const date = recordedDate(value);
+	return date && date <= now.toISOString() ? new Date(date) : undefined;
 }
 
 function isoDate(value: Date | undefined) {
@@ -140,31 +140,42 @@ export function buildClaimCitationBundle(params: {
 	generatedAt?: Date;
 }): ClaimCitationBundle {
 	const generatedAt = params.generatedAt ?? new Date();
-	const reviewedDate = citationDate(params.claim.lastReviewedAt) ?? citationDate(params.claim.publishedAt);
+	const reviewedDate = citationDate(params.claim.lastReviewedAt, generatedAt);
+	const publishedDate = citationDate(params.claim.publishedAt, generatedAt);
+	const citationYear = publishedDate?.getUTCFullYear();
+	const basis = params.claim.reviewDateBasis;
+	const dateNote = reviewedDate
+		? basis === "editorial_review"
+			? `Editorial review recorded ${displayDate(reviewedDate)}`
+			: basis === "source_record"
+				? `Content record dated ${displayDate(reviewedDate)}; independent expert review not established`
+				: `Review date recorded ${displayDate(reviewedDate)}; provenance not recorded`
+		: "Review date not recorded";
 	const reviewedAt = isoDate(reviewedDate);
 	const origin = params.siteOrigin.replace(/\/+$/u, "");
 	const reviewUrl = `${origin}/consensus/${encodeURIComponent(params.topic.slug)}/${encodeURIComponent(params.claim.slug)}`;
 	const reviewKey = `isthereconsensus_${citationKey(params.claim.slug, "review")}_${reviewedDate?.getUTCFullYear() ?? "undated"}`;
 	const reviewTitle = cleanText(params.claim.title);
 	const reviewTitleSentence = /[.!?]$/u.test(reviewTitle) ? reviewTitle : `${reviewTitle}.`;
-	const plainText = `${REVIEW_AUTHOR}. “${reviewTitleSentence}” Is There Consensus. Reviewed ${displayDate(reviewedDate)}. ${reviewUrl}`;
-	const reviewMarkdown = `[${cleanText(params.claim.title)}](${reviewUrl}). *Is There Consensus*, reviewed ${displayDate(reviewedDate)}.`;
+	const plainText = `${REVIEW_AUTHOR}. “${reviewTitleSentence}” Is There Consensus. ${dateNote}. ${reviewUrl}`;
+	const reviewMarkdown = `[${cleanText(params.claim.title)}](${reviewUrl}). *Is There Consensus*. ${dateNote}.`;
 	const reviewBibtex = bibtexEntry(reviewKey, [
 		["title", params.claim.title],
 		["author", REVIEW_AUTHOR],
 		["howpublished", "Is There Consensus"],
-		["year", reviewedDate?.getUTCFullYear()],
+		["year", citationYear],
 		["url", reviewUrl],
-		["note", `Reviewed ${displayDate(reviewedDate)}`]
+		["note", dateNote]
 	]);
 	const reviewRis = risRecord([
 		["TY", "ELEC"],
 		["TI", params.claim.title],
 		["AU", REVIEW_AUTHOR],
 		["T2", "Is There Consensus"],
-		["PY", reviewedDate?.getUTCFullYear()],
+		["PY", citationYear],
 		["UR", reviewUrl],
-		["Y2", reviewedAt]
+		["Y2", isoDate(generatedAt)],
+		["N1", dateNote]
 	]);
 
 	const sourceBibtex = params.sources.map((source, index) => {
@@ -212,7 +223,8 @@ export function buildClaimCitationBundle(params: {
 			"title": cleanText(params.claim.title),
 			"container-title": "Is There Consensus",
 			"author": [{ literal: REVIEW_AUTHOR }],
-			"issued": reviewedDate ? { "date-parts": [[reviewedDate.getUTCFullYear(), reviewedDate.getUTCMonth() + 1, reviewedDate.getUTCDate()]] } : undefined,
+			"issued": publishedDate ? { "date-parts": [[publishedDate.getUTCFullYear(), publishedDate.getUTCMonth() + 1, publishedDate.getUTCDate()]] } : undefined,
+			"note": dateNote,
 			"URL": reviewUrl
 		},
 		...params.sources.map((source, index) => ({

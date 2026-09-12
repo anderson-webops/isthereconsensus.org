@@ -2734,6 +2734,7 @@ async function main() {
 			}
 			if (req.body?.lastReviewedAt !== undefined) {
 				claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt);
+				claim.reviewDateBasis = "unspecified";
 			}
 			if (req.body?.nextReviewAt !== undefined) {
 				claim.nextReviewAt = normalizeDate(req.body?.nextReviewAt);
@@ -2791,12 +2792,16 @@ async function main() {
 
 			const actor = currentActor(req);
 			const publishedAt = new Date();
+			const recordsReview = !claim.publishedAt || Boolean(readerPublication.update);
 			claim.status = "published";
 			claim.publishedAt = claim.publishedAt || publishedAt;
-			claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt) || publishedAt;
-			claim.nextReviewAt
-				= normalizeDate(req.body?.nextReviewAt) || new Date(publishedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
-			claim.reviewedBy = new mongoose.Types.ObjectId(actor.id);
+			if (recordsReview) {
+				claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt) || publishedAt;
+				claim.reviewDateBasis = "editorial_review";
+				claim.nextReviewAt
+					= normalizeDate(req.body?.nextReviewAt) || new Date(claim.lastReviewedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
+				claim.reviewedBy = new mongoose.Types.ObjectId(actor.id);
+			}
 			appendClaimChangeLog(
 				claim,
 				"publication",
@@ -2852,6 +2857,7 @@ async function main() {
 
 			const reviewedAt = normalizeDate(req.body?.lastReviewedAt) || new Date();
 			claim.lastReviewedAt = reviewedAt;
+			claim.reviewDateBasis = "editorial_review";
 			claim.nextReviewAt
 				= normalizeDate(req.body?.nextReviewAt) || new Date(reviewedAt.getTime() + 180 * 24 * 60 * 60 * 1000);
 			claim.reviewedBy = new mongoose.Types.ObjectId(currentActor(req).id);

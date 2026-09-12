@@ -4,6 +4,7 @@ import type { IExpertApplication } from "../models/schemas/ExpertApplication.js"
 import type { IQuestion } from "../models/schemas/Question.js";
 import type { ITopic } from "../models/schemas/Topic.js";
 import type { ITopicSentimentVote } from "../models/schemas/TopicSentimentVote.js";
+import { claimReviewStatus } from "./claimReviewStatus.js";
 import { toPublicEvidenceLandscape } from "./evidenceLandscape.js";
 
 type UnknownRecord = Record<string, unknown>;
@@ -317,6 +318,8 @@ export function toPublicClaim(
 		title: value.title,
 		slug: value.slug,
 		status: value.status,
+		reviewDateBasis: value.reviewDateBasis ?? "unspecified",
+		reviewStatus: claimReviewStatus(value, options.sources),
 		consensusBand: value.consensusBand,
 		agreementLevel: value.agreementLevel,
 		evidenceCertainty: value.evidenceCertainty,
