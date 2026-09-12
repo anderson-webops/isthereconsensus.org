@@ -4,10 +4,16 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
-Latest source milestone: [mosquito prevention](practical-mosquito-prevention.md),
-bringing the implementation to nine comparisons and 35 genuinely new reviews.
+Current implementation milestone: [hearing protection](practical-hearing-protection.md),
+bringing the implementation to ten comparisons and 40 genuinely new reviews.
 Earlier milestone counts below are historical. Public acceptance is recorded
 separately from these source counts.
+
+The preceding mosquito release v1.30.0 is live at commit
+`c3d2f80022f35d887714f732b22d16c1f05ab73f`, build
+`840573e5-77cc-43bf-94ec-0e8f92da4226`. Its pages, findings, sources and
+785-review catalog passed public checks, but dynamic sitemap links were
+missing. Full acceptance is pending the sitemap repair in the hearing milestone.
 
 The preceding water milestone was publicly accepted September 12, 2026 UTC:
 v1.29.0, commit `cc0443803bcf5a4ec38c97c807ec60fb9ed110b8`, build

@@ -29,6 +29,19 @@ export interface PublicAtlasCollectionMembership {
 export const atlasCollections = [
 	{
 		topicSlug: "health-and-medicine",
+		slug: "hearing-protection",
+		title: "Hearing protection and fit",
+		description: "Package ratings, fitting instruction, retained skill and the limits of headphones or combined protectors.",
+		claimSlugs: [
+			"does-a-hearing-protectors-noise-reduction-rating-predict-my-protection",
+			"does-individual-earplug-fit-training-improve-noise-attenuation",
+			"does-earplug-fit-training-provide-lasting-protection-without-refreshers",
+			"are-noise-cancelling-headphones-a-substitute-for-hearing-protection",
+			"can-you-add-earplug-and-earmuff-ratings-for-double-hearing-protection"
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		slug: "mosquito-bite-prevention",
 		title: "Mosquito-bite prevention",
 		description: "Repellent duration, delivery, test methods and the limits of newer indoor malaria-prevention tools.",

@@ -1,6 +1,7 @@
 import type { H3Event } from "h3";
 import { evidenceComparisons } from "../../src/data/comparisons";
 import { readingGuides } from "../../src/data/reading-guides";
+import { buildApiUrl } from "../../src/utils/api";
 
 const httpPattern = /^https?:\/\//;
 const trailingSlashPattern = /\/$/;
@@ -63,7 +64,7 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const topicsResponse = await $fetch<{ topics?: Array<{ slug: string; updatedAt?: string }> }>(
-			`${apiBase}/topics`
+			buildApiUrl(apiBase, "/topics")
 		);
 		const topics = topicsResponse.topics ?? [];
 		const topicRoutes = topics.map(({ slug, updatedAt }) => ({
@@ -74,7 +75,7 @@ export default defineEventHandler(async (event) => {
 			topics.map(async ({ slug, updatedAt }) => {
 				const claimsResponse = await $fetch<{
 					claims?: Array<{ slug: string; updatedAt?: string; lastReviewedAt?: string }>;
-				}>(`${apiBase}/topics/${slug}/claims`);
+				}>(buildApiUrl(apiBase, `/topics/${slug}/claims`));
 				return (claimsResponse.claims ?? []).map(
 					({ slug: claimSlug, updatedAt: claimUpdatedAt, lastReviewedAt }) => ({
 						path: `/consensus/${slug}/${claimSlug}`,
