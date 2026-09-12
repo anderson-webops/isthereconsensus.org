@@ -21,6 +21,26 @@
       "announcementId": "9b2bc125-f489-4300-b7a9-a86a9464dca6",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "does-antibiotic-overuse-drive-antibiotic-resistance",
+      "preparedAt": "2026-09-12T18:12:25.762Z",
+      "status": "prepared",
+      "sourceRecord": "research/gmo-amr-refresh-2026-09-12.md",
+      "announcementId": "ffcd5178-7fce-4459-8b1a-79e80b6c628b",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
+    },
+    {
+      "topicSlug": "genetics-and-biotechnology",
+      "slug": "are-commercial-gmo-foods-unsafe-to-eat",
+      "preparedAt": "2026-09-12T18:12:25.762Z",
+      "status": "prepared",
+      "sourceRecord": "research/gmo-amr-refresh-2026-09-12.md",
+      "announcementId": "2a958fea-ebdf-4338-b77d-876d1176a174",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
     }
   ]
 }

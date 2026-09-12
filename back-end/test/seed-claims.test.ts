@@ -135,7 +135,13 @@ describe("seedClaims source synchronization", () => {
 	});
 
 	it("clears stale identifiers that no longer belong to the matched seed row", () => {
-		const source = findSeedSource("are-commercial-gmo-foods-unsafe-to-eat", 1);
+		const source = {
+			...findSeedSource("are-commercial-gmo-foods-unsafe-to-eat", 1),
+			doi: undefined,
+			pmid: undefined,
+			pmcid: undefined,
+			year: undefined
+		};
 		const update = buildSeedSourceUpdate(
 			{
 				...source,
