@@ -91,6 +91,16 @@
       "announcementId": "c87999ae-c9f1-47af-ac4b-9cd6d98fc68a",
       "bottomLineImpact": "unchanged",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+      "preparedAt": "2026-09-12T21:19:41.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/pregnancy-refresh-2026-09-12.md",
+      "announcementId": "aef3e4e5-d1d8-4e75-8647-33e3702e8050",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

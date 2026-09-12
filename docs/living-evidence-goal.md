@@ -134,3 +134,10 @@ and improve interpretation of individual studies. They add concrete methodologic
 and replication examples while preserving the Ioannidis correction. Nine baseline
 reviews are source-prepared. Their actual database publication and public content
 acceptance remain separate requirements.
+
+The [pregnancy and breastfeeding refresh](research/pregnancy-refresh-2026-09-12.md)
+adds newer first-trimester evidence, explains a reported postpartum-bleeding
+signal alongside a larger cohort, and distinguishes neonatal outcomes and
+breast-milk antibodies from broader developmental or clinical claims. Ten
+baseline reviews are now source-prepared. Controlled public content promotion
+and exact content/history acceptance remain outstanding.
