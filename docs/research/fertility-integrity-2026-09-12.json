@@ -1,0 +1,142 @@
+[
+  {
+    "attemptedAt": "2026-09-12T23:12:13.569Z",
+    "observedAt": "2026-09-12T23:12:14.331Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1093%2Faje%2Fkwac011&rows=100",
+    "doi": "10.1093/aje/kwac011",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1093%2Faje%2Fkwac011&rows=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:15.441Z",
+    "observedAt": "2026-09-12T23:12:16.882Z",
+    "provider": "europepmc",
+    "doi": "10.1093/aje/kwac011",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1093%2Faje%2Fkwac011%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:35051292"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1093%2Faje%2Fkwac011%22&resultType=core&format=json&pageSize=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:17.989Z",
+    "observedAt": "2026-09-12T23:12:18.100Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1016%2Fj.vaccine.2022.09.019&rows=100",
+    "doi": "10.1016/j.vaccine.2022.09.019",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1016%2Fj.vaccine.2022.09.019&rows=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:19.204Z",
+    "observedAt": "2026-09-12T23:12:19.350Z",
+    "provider": "europepmc",
+    "doi": "10.1016/j.vaccine.2022.09.019",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016%2Fj.vaccine.2022.09.019%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:36137903"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016%2Fj.vaccine.2022.09.019%22&resultType=core&format=json&pageSize=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:20.455Z",
+    "observedAt": "2026-09-12T23:12:21.222Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1097%2Faog.0000000000005310&rows=100",
+    "doi": "10.1097/aog.0000000000005310",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1097%2Faog.0000000000005310&rows=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:22.328Z",
+    "observedAt": "2026-09-12T23:12:24.088Z",
+    "provider": "europepmc",
+    "doi": "10.1097/aog.0000000000005310",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1097%2Faog.0000000000005310%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:37441788"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1097%2Faog.0000000000005310%22&resultType=core&format=json&pageSize=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:25.190Z",
+    "observedAt": "2026-09-12T23:12:25.448Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffendo.2025.1587251&rows=100",
+    "doi": "10.3389/fendo.2025.1587251",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffendo.2025.1587251&rows=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:26.549Z",
+    "observedAt": "2026-09-12T23:12:26.694Z",
+    "provider": "europepmc",
+    "doi": "10.3389/fendo.2025.1587251",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389%2Ffendo.2025.1587251%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:40642511"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389%2Ffendo.2025.1587251%22&resultType=core&format=json&pageSize=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:27.797Z",
+    "observedAt": "2026-09-12T23:12:28.094Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffendo.2025.1491259&rows=100",
+    "doi": "10.3389/fendo.2025.1491259",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffendo.2025.1491259&rows=100"
+    ]
+  },
+  {
+    "attemptedAt": "2026-09-12T23:12:29.197Z",
+    "observedAt": "2026-09-12T23:12:29.339Z",
+    "provider": "europepmc",
+    "doi": "10.3389/fendo.2025.1491259",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389%2Ffendo.2025.1491259%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:40556827"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389%2Ffendo.2025.1491259%22&resultType=core&format=json&pageSize=100"
+    ]
+  }
+]
