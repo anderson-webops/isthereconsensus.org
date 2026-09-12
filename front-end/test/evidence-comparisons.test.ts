@@ -52,6 +52,15 @@ describe("practical evidence comparisons", () => {
 			for (const context of comparison.contexts) assert.ok(context.explanation.length > 40);
 			const sourceIds = new Set(comparison.sources.map((source) => source.id));
 			const cited = new Set<string>();
+			if (comparison.guidance) {
+				assert.ok(comparison.guidance.text.length > 50);
+				assert.ok(comparison.guidance.sourceIds.length > 0);
+				assert.equal(new Set(comparison.guidance.sourceIds).size, comparison.guidance.sourceIds.length);
+				for (const id of comparison.guidance.sourceIds) {
+					assert.ok(sourceIds.has(id), `missing guidance source ${id}`);
+					cited.add(id);
+				}
+			}
 			for (const outcome of comparison.outcomes) {
 				assert.ok(outcome.unit.length > 0, "a measure needs an explicit unit or study-specific label");
 				assert.ok(outcome.explanation.length > 40);

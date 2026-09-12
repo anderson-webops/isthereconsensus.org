@@ -222,6 +222,17 @@ useHead({
 				<li v-for="limit in comparison.limitations" :key="limit">{{ limit }}</li>
 			</ul>
 			<p>{{ comparison.measureNote }}</p>
+			<p v-if="comparison.guidance" class="comparison-guidance">
+				{{ comparison.guidance.text }}
+				<a
+					v-for="id in comparison.guidance.sourceIds"
+					:key="id"
+					:href="`#comparison-source-${id}`"
+					:aria-label="`Guidance source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
+					class="comparison-source-link"
+					>Source {{ sourceNumbers.get(id) }}</a
+				>
+			</p>
 			<NuxtLink :to="comparison.guidePath">Read the guide for the wider tradeoffs</NuxtLink>
 		</section>
 		<section aria-labelledby="comparison-reviews-title">

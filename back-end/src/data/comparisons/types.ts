@@ -45,6 +45,9 @@ export interface EvidenceComparison {
 	measureNote: string;
 	resultNote: string;
 	protocolNote?: string;
+	// Contextual guidance must be cited separately, not attached to numeric
+	// estimates as though it were an independent measurement source.
+	guidance?: { text: string; sourceIds: string[] };
 	topics: string[];
 	guidePath: string;
 	reviews: Array<{ path: string; label: string }>;

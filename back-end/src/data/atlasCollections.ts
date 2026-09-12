@@ -261,6 +261,11 @@ export const atlasCollections = [
 		title: "Air quality and health",
 		description: "Outdoor and indoor air pollution, practical controls, and the health outcomes they affect.",
 		claimSlugs: [
+			"does-a-high-efficiency-filter-rating-guarantee-clean-air-throughout-a-room",
+			"can-diy-box-fan-air-cleaners-match-commercial-particle-cleaners",
+			"do-hepa-air-cleaners-remove-gases-and-carbon-monoxide",
+			"are-ozone-generators-safe-and-effective-air-cleaners-for-occupied-homes",
+			"does-a-higher-merv-filter-automatically-improve-whole-home-air-cleaning",
 			"does-air-pollution-cause-millions-of-premature-deaths-each-year",
 			"does-fine-particulate-air-pollution-cause-cardiovascular-disease-and-lung-cancer",
 			"do-portable-hepa-air-cleaners-reduce-indoor-fine-particle-pollution",

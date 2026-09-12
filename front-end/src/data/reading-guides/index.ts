@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "choosing-air-cleaning",
+		title: "Air cleaning: match the device to the problem",
+		summary:
+			"Understand particle ratings, DIY designs, gas-removal limits and whole-system operation before comparing air cleaners.",
+		checkedAt: "2026-09-11",
+		topics: ["climate-and-environment", "health-and-medicine"],
+		reviews: [
+			{
+				path: "/consensus/climate-and-environment/does-a-high-efficiency-filter-rating-guarantee-clean-air-throughout-a-room",
+				label: "Filter efficiency versus room cleaning"
+			},
+			{
+				path: "/consensus/climate-and-environment/can-diy-box-fan-air-cleaners-match-commercial-particle-cleaners",
+				label: "DIY and commercial particle cleaners"
+			},
+			{
+				path: "/consensus/climate-and-environment/do-hepa-air-cleaners-remove-gases-and-carbon-monoxide",
+				label: "Particles, gases and carbon monoxide"
+			},
+			{
+				path: "/consensus/climate-and-environment/are-ozone-generators-safe-and-effective-air-cleaners-for-occupied-homes",
+				label: "Ozone in occupied spaces"
+			},
+			{
+				path: "/consensus/climate-and-environment/does-a-higher-merv-filter-automatically-improve-whole-home-air-cleaning",
+				label: "MERV and whole-system operation"
+			}
+		]
+	},
+	{
 		slug: "caffeine-tolerance-and-sleep",
 		title: "Caffeine: tolerance, performance, and the sleep trade-off",
 		summary:

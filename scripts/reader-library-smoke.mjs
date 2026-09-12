@@ -182,17 +182,27 @@ try {
 		);
 	}
 	const uri = `mongodb://127.0.0.1:${mongoPort}/${databaseName}`;
-	await waitFor(async () => {
-		try {
-			await mongoose.connect(uri, { serverSelectionTimeoutMS: 500 });
-			return true;
-		} catch {
-			return false;
-		}
-	}, "disposable MongoDB");
+	// Imported Mongoose models may auto-create collections as soon as their
+	// connection opens. Check ownership with the raw driver before that can race
+	// the empty-database assertion; never weaken the fresh-database safeguard.
+	const ownershipProbe = new mongoose.mongo.MongoClient(uri, { serverSelectionTimeoutMS: 500 });
+	try {
+		await waitFor(async () => {
+			try {
+				await ownershipProbe.connect();
+				await ownershipProbe.db(databaseName).command({ ping: 1 });
+				return true;
+			} catch {
+				return false;
+			}
+		}, "disposable MongoDB");
+		assert.equal(await ownershipProbe.db(databaseName).listCollections().hasNext(), false, "Test database must be new.");
+		databaseOwned = true;
+	} finally {
+		await ownershipProbe.close();
+	}
+	await mongoose.connect(uri, { serverSelectionTimeoutMS: 500 });
 	assert.equal(mongoose.connection.name, databaseName);
-	assert.equal(await mongoose.connection.db.listCollections().hasNext(), false, "Test database must be new.");
-	databaseOwned = true;
 	backendPort = await freePort();
 	frontendPort = await freePort();
 	base = `http://127.0.0.1:${await listen(proxy)}`;
@@ -592,6 +602,9 @@ try {
 	await browserText(page, "Saved reviews (1)");
 	await browserText(page, "Followed topics (1)");
 	await browserText(page, "Saved comparisons (1)");
+	// Counts come from local selections before the asynchronous content lookup
+	// renders links. Wait for the actual saved target, not just its count.
+	await page.waitForSelector('#saved-comparisons a[href="/compare/strength-training-supplements"]');
 	assert.ok(await page.$('#saved-comparisons a[href="/compare/strength-training-supplements"]'));
 	await browserText(page, review.title);
 	await page.reload({ waitUntil: "networkidle0" });
