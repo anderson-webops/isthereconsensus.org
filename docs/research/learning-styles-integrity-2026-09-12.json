@@ -1,0 +1,92 @@
+[
+  {
+    "attemptedAt": "2026-09-12T21:49:05.462Z",
+    "observedAt": "2026-09-12T21:49:05.940Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1111%2Fj.1539-6053.2009.01038.x&rows=100",
+    "doi": "10.1111/j.1539-6053.2009.01038.x",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1111%2Fj.1539-6053.2009.01038.x&rows=100"
+    ]
+  },
+  {
+    "doi": "10.1111/j.1539-6053.2009.01038.x",
+    "provider": "europepmc",
+    "attemptedAt": "2026-09-12T21:49:07.042Z",
+    "error": 20
+  },
+  {
+    "attemptedAt": "2026-09-12T21:49:20.149Z",
+    "observedAt": "2026-09-12T21:49:20.525Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2012.00429&rows=100",
+    "doi": "10.3389/fpsyg.2012.00429",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2012.00429&rows=100"
+    ]
+  },
+  {
+    "doi": "10.3389/fpsyg.2012.00429",
+    "provider": "europepmc",
+    "attemptedAt": "2026-09-12T21:49:21.626Z",
+    "error": "http_503"
+  },
+  {
+    "attemptedAt": "2026-09-12T21:49:23.206Z",
+    "observedAt": "2026-09-12T21:49:23.655Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2024.1428732&rows=100",
+    "doi": "10.3389/fpsyg.2024.1428732",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2024.1428732&rows=100"
+    ]
+  },
+  {
+    "doi": "10.3389/fpsyg.2024.1428732",
+    "provider": "europepmc",
+    "attemptedAt": "2026-09-12T21:49:24.757Z",
+    "error": "http_503"
+  },
+  {
+    "attemptedAt": "2026-09-12T21:49:26.352Z",
+    "observedAt": "2026-09-12T21:49:26.459Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1007%2Fs10648-025-10002-w&rows=100",
+    "doi": "10.1007/s10648-025-10002-w",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1007%2Fs10648-025-10002-w&rows=100"
+    ]
+  },
+  {
+    "doi": "10.1007/s10648-025-10002-w",
+    "provider": "europepmc",
+    "attemptedAt": "2026-09-12T21:49:27.561Z",
+    "error": "http_503"
+  },
+  {
+    "attemptedAt": "2026-09-12T21:49:29.075Z",
+    "observedAt": "2026-09-12T21:49:29.236Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2020.00164&rows=100",
+    "doi": "10.3389/fpsyg.2020.00164",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.3389%2Ffpsyg.2020.00164&rows=100"
+    ]
+  },
+  {
+    "doi": "10.3389/fpsyg.2020.00164",
+    "provider": "europepmc",
+    "attemptedAt": "2026-09-12T21:49:30.338Z",
+    "error": "http_503"
+  }
+]

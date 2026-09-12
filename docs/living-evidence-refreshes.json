@@ -101,6 +101,16 @@
       "announcementId": "aef3e4e5-d1d8-4e75-8647-33e3702e8050",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "neuroscience-and-psychology",
+      "slug": "do-learning-styles-improve-educational-outcomes",
+      "preparedAt": "2026-09-12T22:01:12.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/learning-styles-refresh-2026-09-12.md",
+      "announcementId": "db9693e7-acc0-470e-a858-605fac87e649",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

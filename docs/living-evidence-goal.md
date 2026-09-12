@@ -141,3 +141,9 @@ signal alongside a larger cohort, and distinguishes neonatal outcomes and
 breast-milk antibodies from broader developmental or clinical claims. Ten
 baseline reviews are now source-prepared. Controlled public content promotion
 and exact content/history acceptance remain outstanding.
+
+The [learning-styles refresh](research/learning-styles-refresh-2026-09-12.md)
+adds a positive meta-analysis and a concrete school-age comparison, distinguishes
+matching tests from correlations and belief surveys, and corrects source
+classifications. Eleven baseline reviews are source-prepared; controlled public
+content publication remains outstanding.
