@@ -45,4 +45,15 @@ describe("living evidence refresh delivery", () => {
 			if (noticeSource) assert.equal(noticeSource.stance, "context");
 		}
 	});
+
+	it("keeps the aluminium correction distinct from the MMR cohort and a retracted comment", () => {
+		const broad = defaultClaims.find(claim => claim.slug === "do-childhood-vaccines-cause-autism")!;
+		const aluminium = broad.sources.find(source => source.doi === "10.7326/ANNALS-25-00997")!;
+		assert.equal(aluminium.citationStatus, "corrected");
+		assert.ok(aluminium.statusSources?.includes("https://europepmc.org/article/MED/40674587"));
+		const mmr = defaultClaims.find(claim => claim.slug === "does-the-mmr-vaccine-cause-autism")!;
+		const cohort = mmr.sources.find(source => source.doi === "10.7326/M18-2101")!;
+		assert.notEqual(cohort.citationStatus, "retracted");
+		assert.ok(!cohort.statusSources?.some(url => url.includes("L19-0381")));
+	});
 });

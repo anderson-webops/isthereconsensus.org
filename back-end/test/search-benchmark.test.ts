@@ -44,7 +44,10 @@ describe("reader search benchmark", () => {
 		assert.equal(result?.claim, claim);
 		assert.equal(result?.match.matchStrength, "exact");
 		assert.equal(result?.claim.bottomLine, claim.bottomLine);
-		assert.match(claim.bottomLine, /^No/u);
+		const counterClaim = { ...claim, bottomLine: "The evidence does not support this claim." };
+		const counterResult = createClaimSearchIndex([counterClaim])(claim.title, referenceDate)[0];
+		assert.equal(counterResult?.match.matchStrength, "exact");
+		assert.equal(counterResult?.claim.bottomLine, counterClaim.bottomLine);
 	});
 
 	it("keeps every catalog title as its own first result within the API query limit", () => {

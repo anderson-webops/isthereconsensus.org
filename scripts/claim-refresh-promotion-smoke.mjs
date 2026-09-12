@@ -18,11 +18,8 @@ import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { applyClaimRefreshes, canonicalRefreshJSON, prepareClaimRefreshes, refreshDigest, registeredRefreshes } from "../back-end/dist/utils/claimRefreshPromotion.js";
 
-const fixtureRefreshes = registeredRefreshes.filter(entry => [
-	"nutrition-and-diet/are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
-	"nutrition-and-diet/does-saturated-fat-still-raise-ldl-and-heart-risk"
-].includes(entry.key));
-assert.equal(fixtureRefreshes.length, 2);
+const fixtureRefreshes = registeredRefreshes;
+assert.ok(fixtureRefreshes.length >= 2 && fixtureRefreshes.length <= 20);
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 assert.equal(execFileSync("git", ["rev-parse", "--show-toplevel"], { cwd: root, encoding: "utf8" }).trim(), root);
@@ -65,20 +62,23 @@ async function snapshot() {
 	return canonicalRefreshJSON(data);
 }
 async function fixture() {
-	const topic = await Topic.create({ slug: "nutrition-and-diet", title: "Owned nutrition test topic" });
+	const topics = new Map();
 	for (const definition of fixtureRefreshes) {
+		const slug = definition.before.topicSlug;
+		if (!topics.has(slug)) topics.set(slug, await Topic.create({ slug, title: `Owned ${slug} test topic` }));
+		const topic = topics.get(slug);
 		const claim = await Claim.create({ ...seedClaimFields(definition.before), ...seedReviewDates(definition.before), slug: definition.before.slug, topic: topic._id, publishedAt: new Date("2026-04-11T12:00:00Z"), maintenance: { revision: 3, history: [{ date: new Date("2026-09-01T00:00:00Z"), adminId: new mongoose.Types.ObjectId(), previousAt: null, nextAt: new Date("2026-11-01T00:00:00Z"), note: "A retained operator scheduling note." }] } });
 		for (const source of definition.before.sources) {
 			const row = await ClaimSource.create({ ...source, claim: claim._id });
 			await ClaimSource.updateOne({ _id: row._id }, { $set: {
 				"evidenceProfile.extraction.keyFinding": "Retained draft extraction from the same source.",
-				"integrityMonitoring.crossref": { doi: source.doi, attemptedAt: new Date("2026-09-01T00:00:00Z"), checkedAt: new Date("2026-09-01T00:00:00Z"), outcome: "no_registered_update", retryAt: new Date("2026-10-01T00:00:00Z") }
-			} });
+				...(source.doi ? { "integrityMonitoring.crossref": { doi: source.doi, attemptedAt: new Date("2026-09-01T00:00:00Z"), checkedAt: new Date("2026-09-01T00:00:00Z"), outcome: "no_registered_update", retryAt: new Date("2026-10-01T00:00:00Z") } } : {})
+			} }, { runValidators: true });
 			// Opaque editorial records must stay byte-for-byte untouched by promotion.
 			await mongoose.connection.db.collection("sourcenoticereviews").insertOne({ _id: row._id, claim: claim._id, decision: "addressed", revision: 3, history: [{ note: "Fixture editorial decision" }] });
 		}
 	}
-	await Claim.create({ ...seedClaimFields(fixtureRefreshes[0].before), ...seedReviewDates(fixtureRefreshes[0].before), slug: "unrelated-editorial-review", topic: topic._id, publishedAt: new Date("2026-04-11T12:00:00Z") });
+	await Claim.create({ ...seedClaimFields(fixtureRefreshes[0].before), ...seedReviewDates(fixtureRefreshes[0].before), slug: "unrelated-editorial-review", topic: topics.get(fixtureRefreshes[0].before.topicSlug)._id, publishedAt: new Date("2026-04-11T12:00:00Z") });
 	await mongoose.connection.db.collection("readerfeedbacks").insertOne({ privateMessage: "Fixture reader evidence request stays private." });
 }
 async function run(mode) {
@@ -142,7 +142,9 @@ async function run(mode) {
 		await assert.rejects(applyClaimRefreshes(stale, approval(stale)), /stale/);
 		assert.equal(await snapshot(), initial);
 		checks++;
-		const sourceId = plan.before[0].sources[0]._id;
+		const monitored = plan.before.flatMap(before => before.sources).find(source => source.integrityMonitoring?.crossref?.doi);
+		assert.ok(monitored, "The monitor-race fixture needs a source with a DOI.");
+		const sourceId = monitored._id;
 		await ClaimSource.updateOne({ _id: sourceId }, { $set: { "evidenceProfile.extraction.keyFinding": "Newer draft coding after preview." } });
 		await assert.rejects(applyClaimRefreshes(plan, approval(plan)), /changed after preview/);
 		checks++;
@@ -159,7 +161,7 @@ async function run(mode) {
 		const cliArgs = [cli, "--apply", "--plan", planPath, "--plan-sha256", refreshDigest(plan), "--backup-file", backupPath, "--backup-sha256", "0".repeat(64), "--operator-note", "Test fixture restore and review only."];
 		await assert.rejects(execute(process.execPath, cliArgs, { env: { PATH: process.env.PATH, MONGODB_URI: uri }, timeout: 20_000 }), /backup digest/);
 		checks++;
-		// Fail at the final receipt, after both reviews and all sources were written in the transaction.
+		// Fail at the final receipt, after all selected reviews and sources were written in the transaction.
 		await mongoose.connection.db.createCollection("claimrefreshpromotions", { validator: { actorType: { $eq: "rejected-fixture-actor" } } });
 		const beforeRollback = await snapshot();
 		await assert.rejects(applyClaimRefreshes(plan, approval(plan)), /validation/);
@@ -202,7 +204,7 @@ async function run(mode) {
 				const source = sources.find(value => String(value._id) === original._id);
 				assert.ok(source, "Existing citation row retained");
 				assert.equal(canonicalRefreshJSON(source.evidenceProfile), canonicalRefreshJSON(original.evidenceProfile));
-				assert.equal(canonicalRefreshJSON(source.integrityMonitoring), canonicalRefreshJSON(original.integrityMonitoring));
+				assert.equal(canonicalRefreshJSON(source.integrityMonitoring ?? null), canonicalRefreshJSON(original.integrityMonitoring ?? null));
 			}
 		}
 		assert.equal(canonicalRefreshJSON(await Claim.findOne({ slug: "unrelated-editorial-review" }).lean()), canonicalRefreshJSON(untouchedBefore));
@@ -245,7 +247,7 @@ async function run(mode) {
 try {
 	await run("standalone");
 	await run("replica");
-	console.log(`Claim refresh promotion: ${checks} database/CLI checks passed, including rollback, concurrency, private-state preservation and retry safety.`);
+	console.log(`Claim refresh promotion: ${checks} database/CLI checks across ${fixtureRefreshes.length} registered reviews passed, including rollback, concurrency, private-state preservation and retry safety.`);
 } finally {
 	rmSync(directory, { recursive: true, force: true });
 	writeFileSync(index, readFileSync(index, "utf8").replace(entry, ""));
