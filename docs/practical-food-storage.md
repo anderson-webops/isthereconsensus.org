@@ -104,6 +104,11 @@ Local validation passed on Node 24.18.1 / npm 12.0.2:
 - Isolated MongoDB and built-browser saved-content, publication-history and
   private-feedback checks; compiled fail-closed runtime and SSR assets/privacy.
 - Native syntax checks for the new goal-wide read-only acceptance script.
+  A pre-release probe exercised its parsing against all eleven comparisons and
+  45 new reviews already live on v1.32.0. It caught and fixed handling of Vue's
+  scoped HTML attributes on numeric-value paragraphs, then passed every context,
+  outcome, source stack and all 795 sitemap review URLs. This subset probe is
+  not the final twelve-comparison/fifty-review acceptance.
 
 Initial failures exposed unsupported uncertainty labels, duplicate source order
 and ordinary-language search gaps. Those were fixed, and the complete relevant

@@ -52,7 +52,7 @@ for (const comparison of evidenceComparisons) {
 				const estimate = estimateForSelection(option, outcome, context);
 				const finding = findingForSelection(option, outcome, context);
 				if (estimate) {
-					const value = card.match(/<p class="comparison-value">([\s\S]*?)<\/p>/)?.[1]?.trim();
+					const value = card.match(/<p\b[^>]*class="comparison-value"[^>]*>([\s\S]*?)<\/p>/)?.[1]?.trim();
 					assert.equal(value, escape(formatComparisonEstimate(estimate)), `${path}/${context.id}/${outcome.id}/${option.id}: value`);
 					assert.ok(card.includes(escape(outcome.unit)));
 					if (estimate.interpretation) assert.ok(card.includes(escape(estimate.interpretation)));
