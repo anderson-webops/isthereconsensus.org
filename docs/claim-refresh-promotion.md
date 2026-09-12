@@ -98,9 +98,9 @@ procedure to undo a change; there is no unattended reverse synchronization.
 
 ## Acceptance and retention
 
-Verify the exact public release identity, both selected texts, six ordered
-citations per nutrition review, correction links, public history and announcement
-IDs. Verify unrelated records and private editorial state against the backup or
+Verify the exact public release identity, every selected review's text and
+evidence summaries, the ordered citations defined by its refresh, any correction
+links, public history and announcement IDs. Verify unrelated records and private editorial state against the backup or
 pre-promotion snapshots. Inspect rendered pages and accessibility in the existing
 themes and mobile/desktop layouts. Only then mark the selected registry entries
 publicly verified with actual evidence, rather than crediting a source release.

@@ -1,4 +1,5 @@
 import type { CompleteSeedClaim } from "./claims.js";
+import { refreshGmoAndAmrClaim } from "./claim-refreshes-gmo-amr.js";
 
 // These are changes to existing reviews, not additional catalog entries.
 // The dated record describes this scoped source check, not expert approval.
@@ -233,7 +234,7 @@ const refreshes: Record<string, Partial<CompleteSeedClaim>> = {
 
 export function refreshLivingEvidenceClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 	const refresh = seed.topicSlug === "nutrition-and-diet" ? refreshes[seed.slug] : undefined;
-	if (!refresh) return seed;
+	if (!refresh) return refreshGmoAndAmrClaim(seed);
 	const sources: Source[] = seed.sources.map(source => ({
 		...source,
 		appraisal: "not_appraised" as const,

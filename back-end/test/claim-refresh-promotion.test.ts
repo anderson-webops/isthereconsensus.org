@@ -12,8 +12,7 @@ const fixtureRefreshes = registeredRefreshes.filter(entry => [
 ].includes(entry.key));
 assert.equal(fixtureRefreshes.length, 2);
 
-function fixture(index = 0) {
-	const definition = fixtureRefreshes[index]!;
+function fixture(index = 0, definition = fixtureRefreshes[index]!) {
 	const claim = new Claim({ ...seedClaimFields(definition.before), ...seedReviewDates(definition.before), slug: definition.before.slug, topic: new Types.ObjectId(), publishedAt: new Date("2026-04-11T12:00:00Z") });
 	const snapshot = JSON.parse(canonicalRefreshJSON({
 		key: definition.key,
@@ -24,9 +23,9 @@ function fixture(index = 0) {
 }
 
 describe("scoped evidence promotion planning", () => {
-	it("updates both registered reviews without rewriting review dates, schedules, histories or source IDs", async () => {
-		for (let index = 0; index < fixtureRefreshes.length; index++) {
-			const { snapshot, plan, definition } = fixture(index);
+	it("updates all registered reviews without rewriting review dates, schedules, histories or source IDs", async () => {
+		for (const definition of registeredRefreshes) {
+			const { snapshot, plan } = fixture(0, definition);
 			snapshot.claim.changeLog.push({ date: "2026-09-01T00:00:00Z", kind: "update", summary: "Earlier editorial history retained." });
 			snapshot.claim.maintenance = { revision: 4, history: [] };
 			const before = canonicalRefreshJSON(snapshot);

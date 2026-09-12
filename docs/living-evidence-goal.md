@@ -115,3 +115,9 @@ explicit synchronization/promotion procedure, or the authenticated editorial
 workflow. Do not enable unattended synchronization or infer a completed expert
 review from imported timestamps. Public tests never create production accounts
 or submit feedback.
+
+The next two [recorded refreshes](research/gmo-amr-refresh-2026-09-12.md) address
+commercial GMO food safety and antibiotic overuse/resistance. Their concrete
+assessment and intervention examples include contrary findings, measured-outcome
+boundaries and access limits. Four baseline reviews are now source-prepared;
+public completion remains governed by the registry's verified-promotion rule.
