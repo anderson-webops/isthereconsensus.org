@@ -11,6 +11,7 @@ export interface ComparisonEstimate {
 		lower: number;
 		upper: number;
 		level: 95;
+		kind?: "confidence" | "credible";
 	};
 	pValue?: string;
 }

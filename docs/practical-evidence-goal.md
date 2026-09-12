@@ -4,6 +4,11 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
+Latest source milestone: [exercise and blood pressure](practical-exercise-blood-pressure.md),
+bringing the implementation to seven comparisons and 25 genuinely new reviews.
+Earlier milestone counts below are historical. Public acceptance is recorded
+separately from these source counts.
+
 Deliver twelve substantive, sourced practical comparisons and fifty genuinely new canonical claim reviews. Baseline: 750 canonical published reviews, 35 topics, ten reading guides. Comparisons synthesize and connect reviews; they do not count as additional canonical reviews. Republishing, rewording, metadata edits, or moving existing reviews do not count toward fifty.
 
 Start with electricity options, strength-training supplements, and caffeine timing. Choose the other nine from documented content gaps and explicit reader feedback. Do not infer demand from unobserved analytics or publish placeholder pages to meet a count.

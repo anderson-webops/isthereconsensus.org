@@ -4,6 +4,40 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "exercise-and-blood-pressure",
+		title: "Exercise and blood pressure: beyond the rankings",
+		summary:
+			"Understand resting versus 24-hour pressure, uncertain exercise rankings, modeled doses and the timing of readings.",
+		checkedAt: "2026-09-12",
+		topics: ["exercise-and-sports-science", "cardiovascular-metabolic-and-kidney-health"],
+		reviews: [
+			{
+				path: "/consensus/exercise-and-sports-science/do-exercise-programs-lower-resting-blood-pressure-in-middle-aged-and-older-adults",
+				label: "Training and resting pressure"
+			},
+			{
+				path: "/consensus/exercise-and-sports-science/are-isometric-exercises-clearly-best-for-lowering-blood-pressure",
+				label: "Isometric exercise ranking claims"
+			},
+			{
+				path: "/consensus/exercise-and-sports-science/does-lower-clinic-blood-pressure-after-exercise-imply-lower-24-hour-pressure",
+				label: "Clinic versus 24-hour results"
+			},
+			{
+				path: "/consensus/exercise-and-sports-science/does-research-identify-one-optimal-exercise-dose-for-lowering-blood-pressure",
+				label: "Dose-response model limits"
+			},
+			{
+				path: "/consensus/exercise-and-sports-science/can-post-exercise-readings-establish-long-term-blood-pressure-control",
+				label: "Measurement timing"
+			},
+			{
+				path: "/consensus/cardiovascular-metabolic-and-kidney-health/does-home-blood-pressure-monitoring-help-control-hypertension",
+				label: "Home monitoring linked to care"
+			}
+		]
+	},
+	{
 		slug: "choosing-air-cleaning",
 		title: "Air cleaning: match the device to the problem",
 		summary:

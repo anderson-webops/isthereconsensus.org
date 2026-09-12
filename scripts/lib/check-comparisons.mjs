@@ -162,9 +162,81 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	await checkInsomniaComparison({ page, open, sitemap });
 	await checkHeatingComparison({ page, open, sitemap });
 	await checkAirCleaningComparison({ page, open, sitemap });
+	await checkExerciseBpComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkExerciseBpComparison({ page, open, sitemap }) {
+	const comparison = evidenceComparisons.find(item => item.slug === "exercise-and-blood-pressure");
+	const path = `/compare/${comparison.slug}`;
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path), "/consensus?q=exercise%20blood%20pressure", "/ask?question=exercise%20blood%20pressure"]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: exercise comparison discoverable`);
+	}
+	await open(path);
+	const values = () => page.$$eval(".comparison-value", nodes => nodes.map(node => node.textContent.trim()));
+	assert.deepEqual(await values(), ["-5.06", "-5.79", "-4.95", "-4.18", "-7.72", "-13.52"]);
+	for (const [outcome, expected] of [["systolic", [[-6.71, -3.43], [-8.1, -3.51], [-7.02, -2.87], [-8.31, -0.06], [-9.99, -5.43], [-18.59, -8.44]]], ["diastolic", [[-3.74, -1.88], [-4.49, -1.86], [-4.12, -1.76], [-5.06, -0.49], [-5.08, -2.49], [-9.79, -3.97]]]]) {
+		await open(`${path}?outcome=${outcome}`);
+		const intervals = await page.$$eval(".comparison-uncertainty", nodes => nodes.map(node => node.textContent));
+		expected.forEach(([lower, upper], index) => assert.ok(intervals[index].includes(`95% credible interval ${lower} to ${upper}`)));
+		for (const details of await page.$$(".comparison-uncertainty summary")) await details.click();
+		assert.equal((await page.$$(".comparison-uncertainty[open]")).length, 6);
+	}
+	assert.deepEqual(await values(), ["-2.82", "-3.17", "-2.95", "-2.77", "-3.79", "-6.87"]);
+	for (const outcome of ["systolic", "diastolic"]) {
+		await open(`${path}?context=ambulatory&outcome=${outcome}`);
+		assert.equal((await page.$$(".comparison-value")).length, 0);
+		assert.equal((await page.$$(".comparison-finding")).length, 6);
+		assert.match(await page.$eval(".comparison-grid", node => node.textContent), /No separately matched circuit estimate/);
+		assert.equal((await page.$$('.comparison-option a[href="#comparison-source-schneider"]')).length, 6);
+	}
+	for (const context of ["personal", "events"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 6);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-value, .comparison-finding, .comparison-source-link)")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-finding");
+	}
+	await open(`${path}?outcome=diastolic&options=continuous,handgrip`);
+	assert.deepEqual(await values(), ["-2.82", "-2.77"]);
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.deepEqual(await values(), ["-2.82", "-2.77"]);
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	await open(`${path}?options=`);
+	await page.reload({ waitUntil: "networkidle0" });
+	await page.waitForSelector(".comparison-empty");
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 6);
+	await page.focus(".comparison-choices input");
+	await page.keyboard.press("Space");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 5);
+	await open(path);
+	await page.click('.comparison-option a[href="#comparison-source-hu"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-hu");
+	assert.match(await page.$eval("#comparison-source-hu", node => node.textContent), /Table 2.*CC BY 4.0/s);
+	for (const theme of ["light", "dark"]) {
+		const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+		if (current !== theme) await page.click(".theme-toggle");
+		await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+		for (const width of [1280, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `exercise BP overflow ${theme} ${width}`);
+			if (width === 1280) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 3, "detailed numeric cards need readable desktop columns");
+			if (width <= 390) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 1);
+			if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && width !== 320) {
+				await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `exercise-bp-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `exercise BP ${theme} 200% text`);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	for (const route of [path, comparison.guidePath]) assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${route}</loc>`));
 }
 
 async function checkAirCleaningComparison({ page, open, sitemap }) {

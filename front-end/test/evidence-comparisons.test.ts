@@ -85,6 +85,7 @@ describe("practical evidence comparisons", () => {
 						assert.ok(lower <= point && point <= upper);
 						assert.ok(metric.length > 10);
 						assert.equal(level, 95);
+						assert.ok([undefined, "confidence", "credible"].includes(estimate.uncertainty.kind));
 						assert.ok(estimate.interpretation);
 					}
 					for (const id of estimate.sourceIds) {

@@ -5,6 +5,7 @@ import ReaderFeedback from "~/components/ReaderFeedback.vue";
 import { siteUrl } from "~/constants";
 import { comparisonForSlug, comparisonHistory } from "~/data/comparisons";
 import {
+	comparisonIntervalLabel,
 	createComparisonNavigation,
 	estimateForSelection,
 	findingForSelection,
@@ -155,7 +156,11 @@ useHead({
 			<div
 				v-if="selection.options.length"
 				class="comparison-grid"
-				:class="{ 'comparison-grid--findings': results.some((option) => option.finding) }"
+				:class="{
+					'comparison-grid--detailed': results.some(
+						(option) => option.finding || option.estimate?.uncertainty
+					)
+				}"
 			>
 				<section
 					v-for="option in results"
@@ -176,8 +181,8 @@ useHead({
 							<summary>Estimate uncertainty</summary>
 							<p>
 								{{ option.estimate.uncertainty.metric }}: {{ option.estimate.uncertainty.estimate }};
-								{{ option.estimate.uncertainty.level }}% CI {{ option.estimate.uncertainty.lower }} to
-								{{ option.estimate.uncertainty.upper }}.
+								{{ comparisonIntervalLabel(option.estimate.uncertainty) }}
+								{{ option.estimate.uncertainty.lower }} to {{ option.estimate.uncertainty.upper }}.
 							</p>
 							<p v-if="option.estimate.pValue">Adjusted p {{ option.estimate.pValue }}.</p>
 						</details>
@@ -400,7 +405,7 @@ useHead({
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
 	gap: 12px;
 }
-.comparison-grid--findings {
+.comparison-grid--detailed {
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
 }
 .comparison-option {

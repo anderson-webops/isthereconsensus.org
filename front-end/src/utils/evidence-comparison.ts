@@ -1,5 +1,9 @@
 import type { ComparisonEstimate, EvidenceComparison } from "../data/comparisons/types";
 
+export function comparisonIntervalLabel(interval: NonNullable<ComparisonEstimate["uncertainty"]>) {
+	return `${interval.level}% ${interval.kind === "credible" ? "credible interval" : "CI"}`;
+}
+
 export function formatComparisonEstimate(estimate: ComparisonEstimate) {
 	const prefix = estimate.qualifier === "less_than" ? "<" : estimate.qualifier === "approximately" ? "≈" : "";
 	return `${prefix}${estimate.value.toLocaleString("en-US", { maximumFractionDigits: 20 })}`;
