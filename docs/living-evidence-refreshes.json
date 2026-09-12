@@ -111,6 +111,16 @@
       "announcementId": "db9693e7-acc0-470e-a858-605fac87e649",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "neuroscience-and-psychology",
+      "slug": "do-we-only-use-10-percent-of-our-brain",
+      "preparedAt": "2026-09-12T22:23:22.206Z",
+      "status": "prepared",
+      "sourceRecord": "research/brain-activity-refresh-2026-09-12.md",
+      "announcementId": "0db18271-f57c-43d7-a4a2-26f75362e4ff",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
     }
   ]
 }

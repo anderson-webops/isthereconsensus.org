@@ -28,6 +28,7 @@ import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healths
 import { september2026VisitorDepthClaims } from "./claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 import { practicalEvidenceClaims } from "./claim-expansion-practical-evidence.js";
+import { refreshBrainClaim } from "./claim-refreshes-brain.js";
 import { refreshFoundationsClaim } from "./claim-refreshes-foundations.js";
 import { refreshLearningClaim } from "./claim-refreshes-learning.js";
 import { refreshLivingEvidenceClaim } from "./claim-refreshes-living-evidence.js";
@@ -27231,4 +27232,4 @@ const rawClaims: SeedClaim[] = [
 
 // Kept separately so a controlled refresh can detect live editorial divergence.
 export const claimsBeforeLivingRefresh: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
-export const defaultClaims: CompleteSeedClaim[] = claimsBeforeLivingRefresh.map(refreshLivingEvidenceClaim).map(refreshVaccineClaim).map(refreshFoundationsClaim).map(refreshPregnancyClaim).map(refreshLearningClaim);
+export const defaultClaims: CompleteSeedClaim[] = claimsBeforeLivingRefresh.map(refreshLivingEvidenceClaim).map(refreshVaccineClaim).map(refreshFoundationsClaim).map(refreshPregnancyClaim).map(refreshLearningClaim).map(refreshBrainClaim);
