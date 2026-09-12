@@ -347,7 +347,12 @@ export async function checkSourceIntegrity({
 	await page.evaluate(() => (document.documentElement.style.fontSize = "200%"));
 	await page.setViewport({ width: 390, height: 1000 });
 	assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
-	await page.evaluate(() => fetch("/api/auth/logout", { method: "DELETE" }));
+	const logoutStatus = await page.evaluate(async () => {
+		const result = await fetch("/api/auth/logout", { method: "DELETE" });
+		await result.text();
+		return result.status;
+	});
+	assert.equal(logoutStatus, 200, "Logout must complete before checking the anonymous page.");
 	await page.reload({ waitUntil: "networkidle0" });
 	await browserText(page, "Admin access required.");
 	assert.ok(!(await page.evaluate(() => document.body.innerText)).includes("Integrity fixture"));

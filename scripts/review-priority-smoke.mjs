@@ -264,7 +264,11 @@ export async function checkReviewPriority({
 	await page.type('input[type="search"]', prefix);
 	await clickText(page, "Apply filters");
 	await page.waitForFunction((prefix) => document.querySelector("tbody")?.textContent.includes(prefix), {}, prefix);
-	await page.click(`button[aria-label="Manage review: ${flagged.title}"]`);
+	const manageSelector = `button[aria-label="Manage review: ${flagged.title}"]`;
+	// An existing row can already contain the filter text while the request is
+	// still in flight. Its disabled button cannot open the detail yet.
+	await page.waitForSelector(`${manageSelector}:not([disabled])`);
+	await page.click(manageSelector);
 	await browserText(page, "Needs assessment");
 	assert.equal(await page.evaluate(() => document.activeElement?.id), "selected-review-title");
 	assert.match(await page.$eval(".source-notice", (el) => el.textContent), /Retraction/);

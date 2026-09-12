@@ -1,0 +1,26 @@
+{
+  "baseline": "living-evidence-baseline.json",
+  "countingRule": "A prepared or source-delivered refresh is not a publicly completed refresh. Credit requires reviewed content promotion and exact public content/history verification.",
+  "refreshes": [
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+      "preparedAt": "2026-09-12T16:16:00.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/nutrition-refresh-2026-09-12.md",
+      "announcementId": "2871c457-acb8-4c49-baea-502b34919d38",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
+    },
+    {
+      "topicSlug": "nutrition-and-diet",
+      "slug": "does-saturated-fat-still-raise-ldl-and-heart-risk",
+      "preparedAt": "2026-09-12T16:16:00.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/nutrition-refresh-2026-09-12.md",
+      "announcementId": "9b2bc125-f489-4300-b7a9-a86a9464dca6",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
+    }
+  ]
+}

@@ -85,6 +85,16 @@ dates, and repeated observations preserve warnings and editorial dispositions.
 Operational validation and exact public acceptance are recorded separately in
 release notes. This feature does not count as a substantive article refresh.
 
+## Substantive refresh progress
+
+The [refresh registry](living-evidence-refreshes.json) tracks prepared content
+separately from public completion. The first two nutrition refreshes add current
+guidance, explicit clinical-outcome limits, quantitative evidence and correction
+provenance. Their [source and promotion record](research/nutrition-refresh-2026-09-12.md)
+documents access limits and the need to preserve editorial/source state during
+controlled promotion. They do not increase the catalog count, and source delivery
+alone does not count them as publicly completed.
+
 ## Source-monitor design references
 
 - [Crossref post-publication updates](https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/registering-updates/): notices are distinct records; metadata must be interpreted in relation to the original work.
