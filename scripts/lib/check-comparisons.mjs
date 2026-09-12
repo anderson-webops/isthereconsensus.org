@@ -161,9 +161,75 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	await checkStrengthComparison({ page, open, sitemap });
 	await checkInsomniaComparison({ page, open, sitemap });
 	await checkHeatingComparison({ page, open, sitemap });
+	await checkAirCleaningComparison({ page, open, sitemap });
 	console.log(
 		"PASS comparison sources, discovery, outcomes, contexts, URL/history, keyboard, empty state, metadata, mobile/text resize, sitemap and 404 checks"
 	);
+}
+
+async function checkAirCleaningComparison({ page, open, sitemap }) {
+	const comparison = evidenceComparisons.find(item => item.slug === "particle-air-cleaner-designs");
+	const path = `/compare/${comparison.slug}`;
+	for (const from of [comparison.guidePath, ...comparison.topics.map(slug => `/consensus/${slug}`), ...comparison.reviews.map(review => review.path), "/consensus?q=DIY%20air%20cleaners", "/ask?question=DIY%20air%20cleaners"]) {
+		await open(from);
+		assert.ok(await page.$(`a[href="${path}"]`), `${from}: air-cleaning comparison discoverable`);
+	}
+	await open(path);
+	const values = () => page.$$eval(".comparison-value", nodes => nodes.map(node => node.textContent.trim()));
+	assert.deepEqual(await values(), ["111.2", "156.1", "400.9", "118.9"]);
+	assert.match(await page.$eval(".comparison-protocol", node => node.textContent), /29\.3 m³.*high.*turbo/s);
+	assert.equal((await page.$$(".comparison-uncertainty")).length, 0, "reported variation must not become a confidence interval");
+	assert.ok((await page.$$eval(".comparison-interpretation", nodes => nodes.map(node => node.textContent))).every(text => text.includes("not a 95% confidence interval")));
+	await page.select("#comparison-outcome", "power");
+	await page.waitForFunction(() => document.querySelector(".comparison-value")?.textContent.trim() === "77.1");
+	assert.deepEqual(await values(), ["77.1", "77.6", "76", "41.1"]);
+	await page.reload({ waitUntil: "networkidle0" });
+	assert.equal(await page.$eval("#comparison-outcome", node => node.value), "power");
+	for (const context of ["occupied-home", "gases", "health"]) {
+		await page.select("#comparison-context", context);
+		await page.waitForFunction(() => document.querySelectorAll(".comparison-unavailable").length === 4);
+		assert.equal((await page.$$(".comparison-grid :is(.comparison-value, .comparison-source-link)")).length, 0);
+		await page.goBack();
+		await page.waitForSelector(".comparison-value");
+	}
+	await open(`${path}?outcome=power&options=four-filter,commercial`);
+	assert.deepEqual(await values(), ["76", "41.1"]);
+	assert.equal(await page.$eval("link[rel=canonical]", node => node.href), `https://isthereconsensus.org${path}`);
+	await open(`${path}?options=`);
+	await page.waitForSelector(".comparison-empty");
+	await page.reload({ waitUntil: "networkidle0" });
+	await page.click(".comparison-empty button");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 4);
+	await page.focus(".comparison-choices input");
+	await page.keyboard.press("Space");
+	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 3);
+	await open(path);
+	await page.click('.comparison-option a[href="#comparison-source-holder"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-holder");
+	assert.match(await page.$eval("#comparison-source-holder", node => node.textContent), /Tables 1–2.*three replicates/s);
+	assert.equal((await page.$$(".comparison-guidance a")).length, 2);
+	await page.click('.comparison-guidance a[href="#comparison-source-epa-diy"]');
+	await page.waitForFunction(() => location.hash === "#comparison-source-epa-diy");
+	assert.match(await page.$eval("#comparison-source-epa-diy", node => node.textContent), /five fan models/);
+	for (const theme of ["light", "dark"]) {
+		const current = await page.$eval("html", node => node.classList.contains("dark") ? "dark" : "light");
+		if (current !== theme) await page.click(".theme-toggle");
+		await page.waitForFunction(expected => document.documentElement.classList.contains(expected), {}, theme);
+		for (const width of [1280, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `air-cleaning overflow ${theme} ${width}`);
+			if (width <= 390) assert.equal(await page.$eval(".comparison-grid", node => getComputedStyle(node).gridTemplateColumns.split(" ").length), 1);
+			if (process.env.SEARCH_SMOKE_SCREENSHOT_DIR && width !== 320) {
+				await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `air-cleaning-${theme}-${width}.png`), fullPage: true });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `air-cleaning ${theme} 200% text`);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+	await page.setViewport({ width: 1280, height: 900 });
+	assert.ok(sitemap.includes(`<loc>https://isthereconsensus.org${path}</loc>`));
 }
 
 async function checkHeatingComparison({ page, open, sitemap }) {
