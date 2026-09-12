@@ -35,7 +35,8 @@ describe("living evidence refresh delivery", () => {
 	it("retains independently observed corrections without treating the notices as efficacy evidence", () => {
 		for (const [slug, doi, notice] of [
 			["are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk", "10.1016/j.ajcnut.2025.05.001", "10.1016/j.ajcnut.2025.10.009"],
-			["does-saturated-fat-still-raise-ldl-and-heart-risk", "10.1161/CIR.0000000000000510", "10.1161/cir.0000000000000529"]
+			["does-saturated-fat-still-raise-ldl-and-heart-risk", "10.1161/CIR.0000000000000510", "10.1161/cir.0000000000000529"],
+			["why-does-one-study-rarely-change-everything", "10.1371/journal.pmed.0020124", "10.1371/journal.pmed.1004085"]
 		]) {
 			const claim = defaultClaims.find(claim => claim.slug === slug)!;
 			const source = claim.sources.find(source => source.doi === doi)!;

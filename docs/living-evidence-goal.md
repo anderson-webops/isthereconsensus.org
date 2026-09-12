@@ -127,3 +127,10 @@ the broad childhood-vaccine question from direct MMR evidence, add the newer US
 cohort, correct the WHO review's scope, and preserve a linked aluminium-study
 correction. Six baseline reviews are now source-prepared. Public completion still
 requires controlled promotion and exact content/history verification.
+
+Three [foundations refreshes](research/foundations-refresh-2026-09-12.md) distinguish
+evidence convergence from panel agreement, clarify what scientific debate means,
+and improve interpretation of individual studies. They add concrete methodological
+and replication examples while preserving the Ioannidis correction. Nine baseline
+reviews are source-prepared. Their actual database publication and public content
+acceptance remain separate requirements.
