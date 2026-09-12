@@ -22,6 +22,7 @@ import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js"
 import { User } from "../back-end/dist/models/schemas/User.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
 import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
 import { checkReviewPriority } from "./review-priority-smoke.mjs";
 import "../back-end/dist/models/schemas/Topic.js";
@@ -232,6 +233,12 @@ try {
 		.lean();
 	const second = await Claim.findOne({ slug: "do-childhood-vaccines-cause-autism" }).populate("topic").lean();
 	assert.ok(review && second);
+	// Publication/pagination scenarios below own their exact event fixture.
+	// Preserve real seed announcements for the separate content acceptance check;
+	// adding a legitimate topic update must not make a legacy-date test fail.
+	const seedAnnouncements = await Claim.find({ "readerUpdates.0": { $exists: true } })
+		.select("_id readerUpdates").lean();
+	await Claim.updateMany({ _id: { $in: seedAnnouncements.map(claim => claim._id) } }, { $set: { readerUpdates: [] } });
 	const reviewId = String(review._id);
 	const topicId = String(review.topic._id);
 	const chosen = {
@@ -805,6 +812,10 @@ try {
 			assert.equal(status, 200);
 		}
 	};
+	for (const claim of seedAnnouncements) {
+		await Claim.updateOne({ _id: claim._id }, { $set: { readerUpdates: claim.readerUpdates } });
+	}
+	await checkLivingEvidenceRefreshes(adminChecks);
 	await checkReaderFeedback(adminChecks);
 	await checkReviewPriority(adminChecks);
 	await checkSourceIntegrity(adminChecks);

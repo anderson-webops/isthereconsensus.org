@@ -28,6 +28,7 @@ import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healths
 import { september2026VisitorDepthClaims } from "./claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 import { practicalEvidenceClaims } from "./claim-expansion-practical-evidence.js";
+import { refreshLivingEvidenceClaim } from "./claim-refreshes-living-evidence.js";
 
 interface SeedClaimSource {
 	kind: ClaimSourceKind;
@@ -27224,4 +27225,4 @@ const rawClaims: SeedClaim[] = [
 	...september2026AtlasBreadthClaims
 ];
 
-export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
+export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults).map(refreshLivingEvidenceClaim);
