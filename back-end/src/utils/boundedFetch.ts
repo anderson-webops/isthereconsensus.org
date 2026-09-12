@@ -4,11 +4,15 @@ const DEFAULT_MAX_BYTES = 256 * 1024;
 export interface BoundedFetchOptions {
 	timeoutMs?: number;
 	maxBytes?: number;
+	validateResponse?: (response: Response) => void;
 }
 
 async function readBoundedBody(response: Response, maxBytes: number): Promise<string> {
 	const declaredLength = Number(response.headers.get("content-length") || "0");
-	if (declaredLength > maxBytes) throw new Error("Upstream response exceeded the allowed size.");
+	if (declaredLength > maxBytes) {
+		await response.body?.cancel();
+		throw new Error("Upstream response exceeded the allowed size.");
+	}
 
 	if (!response.body) return "";
 	const reader = response.body.getReader();
@@ -51,6 +55,13 @@ export async function fetchJsonBounded<T>(
 			redirect: "error",
 			signal: controller.signal
 		});
+		try {
+			options.validateResponse?.(response);
+		}
+		catch (error) {
+			await response.body?.cancel();
+			throw error;
+		}
 		const text = await readBoundedBody(response, maxBytes);
 		let data: T;
 		try {

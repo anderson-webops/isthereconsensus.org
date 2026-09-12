@@ -82,7 +82,7 @@ npm run smoke:live
 
 ## Source-integrity monitoring
 
-The backend includes a bounded Crossref monitor for DOI sources. It queries registered post-publication update metadata, records each check for two years without retaining raw upstream responses, and places newly corrected, retracted, or concern-flagged sources into the existing human editorial review queue. A response with no registered update refreshes the check timestamp but is not treated as proof that the paper is valid, and an automated signal never silently clears a prior warning.
+The backend includes bounded Crossref and Europe PMC monitors for DOI sources. It queries registered post-publication update metadata, records each check for two years without retaining raw upstream responses, and places newly corrected, retracted, or concern-flagged sources into the existing human editorial review queue. A successful metadata response with no registered update records that provider's check timestamp but is not treated as proof that the paper is valid, and an automated signal never silently clears a prior warning.
 
 Preview the next batch without changing records:
 
@@ -103,7 +103,7 @@ sudo deploy/systemd/install-services.sh --enable-integrity-timer
 systemctl list-timers isthereconsensus-source-integrity.timer
 ```
 
-Administrators can inspect counts, errors, and the retained check history at `/account/editorial/source-integrity`. Crossref coverage depends on deposited metadata, so this monitor complements rather than replaces PubMed, publisher, guideline, and manual editorial checks.
+Administrators can inspect provider coverage, cache reuse, errors, and retained check history at `/account/editorial/source-integrity`. Use `--provider crossref`, `--provider europepmc`, or `--provider all` (default). Provider coverage is partial; these checks complement publisher, guideline and manual editorial review. See [bounds, caching, cooldowns and privacy](docs/complementary-source-monitor.md).
 
 `smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, deployment metadata, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`. To prove the public origin is running a specific build, also set `LIVE_SMOKE_EXPECT_COMMIT` to the expected commit prefix.
 

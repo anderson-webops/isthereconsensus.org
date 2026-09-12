@@ -1,0 +1,168 @@
+[
+  {
+    "retrievedAt": "2026-09-12T14:07:22.645Z",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A36216386+AND+SRC%3AMED&resultType=core&format=json&pageSize=2",
+    "version": "6.9",
+    "hitCount": 1,
+    "records": [
+      {
+        "id": "36216386",
+        "source": "MED",
+        "doi": "10.1136/bjsports-36-4-236ret",
+        "title": "Retraction: Commotio cordis.",
+        "pubTypeList": {
+          "pubType": [
+            "Journal Article",
+            "Retraction Notice"
+          ]
+        },
+        "commentCorrectionList": {
+          "commentCorrection": [
+            {
+              "id": "12145110",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2002 Aug;36(4):236-7. doi: 10.1136/bjsm.36.4.236",
+              "type": "Retraction of",
+              "orderIn": 1
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "retrievedAt": "2026-09-12T14:07:23.057Z",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A36216396+AND+SRC%3AMED&resultType=core&format=json&pageSize=2",
+    "version": "6.9",
+    "hitCount": 1,
+    "records": [
+      {
+        "id": "36216396",
+        "source": "MED",
+        "doi": "10.1136/bjsports-2022-106408eoc",
+        "title": "Expression of concern about content of which Dr Paul McCrory is a single author.",
+        "pubTypeList": {
+          "pubType": [
+            "Published Erratum",
+            "Journal Article",
+            "Expression of Concern"
+          ]
+        },
+        "commentCorrectionList": {
+          "commentCorrection": [
+            {
+              "id": "11477008",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2001 Aug;35(4):209-10. doi: 10.1136/bjsm.35.4.209-a",
+              "type": "Expression of concern for",
+              "orderIn": 1
+            },
+            {
+              "id": "11726470",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2001 Dec;35(6):380-2. doi: 10.1136/bjsm.35.6.380",
+              "type": "Expression of concern for",
+              "orderIn": 2
+            },
+            {
+              "id": "11867481",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2002 Feb;36(1):3-5. doi: 10.1136/bjsm.36.1.3",
+              "type": "Expression of concern for",
+              "orderIn": 3
+            },
+            {
+              "id": "12145110",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2002 Aug;36(4):236-7. doi: 10.1136/bjsm.36.4.236",
+              "type": "Expression of concern for",
+              "orderIn": 4
+            },
+            {
+              "id": "12351326",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2002 Oct;36(5):316-8. doi: 10.1136/bjsm.36.5.316",
+              "type": "Expression of concern for",
+              "orderIn": 5
+            },
+            {
+              "id": "15849282",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2005 May;39(5):249.",
+              "type": "Expression of concern for",
+              "orderIn": 6
+            },
+            {
+              "id": "16244183",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2005 Nov;39(11):786.",
+              "type": "Expression of concern for",
+              "orderIn": 7
+            },
+            {
+              "id": "16632562",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2006 May;40(5):377.",
+              "type": "Expression of concern for",
+              "orderIn": 8
+            },
+            {
+              "id": "16799107",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2006 Jul;40(7):565. doi: 10.1136/bjsm.2006.029231",
+              "type": "Expression of concern for",
+              "orderIn": 9
+            },
+            {
+              "id": "36216388",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2022 Dec;56(23):1327-1328. doi: 10.1136/bjsports-2022-106408",
+              "type": "Erratum for",
+              "orderIn": 10
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "retrievedAt": "2026-09-12T14:07:23.178Z",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136%2Fbjsm.36.4.236%22&resultType=core&format=json&pageSize=2",
+    "version": "6.9",
+    "hitCount": 1,
+    "records": [
+      {
+        "id": "12145110",
+        "source": "MED",
+        "doi": "10.1136/bjsm.36.4.236",
+        "title": "Commotio cordis.",
+        "pubTypeList": {
+          "pubType": [
+            "Retracted Publication",
+            "research-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "commentCorrectionList": {
+          "commentCorrection": [
+            {
+              "id": "36216386",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2022 Oct 10:bjsports-36-4-236ret. doi: 10.1136/bjsports-36-4-236ret",
+              "type": "Retraction in",
+              "orderIn": 1
+            },
+            {
+              "id": "36216396",
+              "source": "MED",
+              "reference": "Br J Sports Med. 2022 Oct 10:bjsports-2022-106408eoc. doi: 10.1136/bjsports-2022-106408eoc",
+              "type": "Expression of concern in",
+              "orderIn": 2
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

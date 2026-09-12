@@ -101,9 +101,6 @@ describe("source integrity observations", () => {
 		assert.equal(update.nextStatus, "expression_of_concern");
 		assert.equal(update.statusChanged, false);
 		assert.equal(update.update.citationStatus, undefined);
-		assert.deepEqual(update.update.statusSources, [
-			"https://api.crossref.org/works?filter=updates%3A10.1000%2Ftarget&rows=20",
-			"https://publisher.example/concern"
-		]);
+		assert.equal(update.update.statusSources, undefined);
 	});
 });

@@ -76,6 +76,15 @@ The existing feedback workflow provides scoped resolution without copying privat
 messages into public reviews. This feature does not count as any of the twenty
 substantive refreshes. Release notes record its validation and public acceptance.
 
+## Third milestone: complementary source monitoring
+
+The [complementary monitor](complementary-source-monitor.md) adds Europe PMC with
+independent provider coverage, bounded persistent caching, throttling, cooldowns
+and an applying-run lease. Failed/unindexed responses do not manufacture check
+dates, and repeated observations preserve warnings and editorial dispositions.
+Operational validation and exact public acceptance are recorded separately in
+release notes. This feature does not count as a substantive article refresh.
+
 ## Source-monitor design references
 
 - [Crossref post-publication updates](https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/registering-updates/): notices are distinct records; metadata must be interpreted in relation to the original work.
