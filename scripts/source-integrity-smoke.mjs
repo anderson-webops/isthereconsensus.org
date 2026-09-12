@@ -296,6 +296,19 @@ export async function checkSourceIntegrity({
 	);
 
 	const page = await browser.newPage();
+	await page.evaluateOnNewDocument(() => {
+		const originalFetch = window.fetch.bind(window);
+		window.__authHydrationStates = [];
+		window.fetch = (input, options) => {
+			const url = new URL(input instanceof Request ? input.url : String(input), location.origin);
+			if (url.origin === location.origin && url.pathname === "/api/auth/me") {
+				// Observe the lifecycle at request creation, not after a fast response.
+				const app = document.getElementById("__nuxt")?.__vue_app__?.$nuxt;
+				window.__authHydrationStates.push(app?.isHydrating ?? true);
+			}
+			return originalFetch(input, options);
+		};
+	});
 	await page.goto(`${base}/account`, { waitUntil: "networkidle0" });
 	await browserLogin(page);
 	await page.goto(`${base}/account/editorial/source-integrity`, { waitUntil: "networkidle0" });
@@ -366,6 +379,11 @@ export async function checkSourceIntegrity({
 		assert.equal(authResponse.status(), 200, "Anonymous session lookup must succeed after reload.");
 		const identity = await authResponse.json();
 		assert.ok(identity.currentAdmin === null && identity.currentUser === null, "Logout must leave no account.");
+		assert.deepEqual(
+			await page.evaluate(() => window.__authHydrationStates),
+			[false],
+			"Initial authentication must wait until hydration is complete."
+		);
 		await browserText(page, "Admin access required.");
 	} catch (error) {
 		// Only headings and lifecycle state from this disposable fixture are logged;
