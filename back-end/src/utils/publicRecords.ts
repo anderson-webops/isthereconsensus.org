@@ -179,6 +179,7 @@ export function toEditorialClaim(value: unknown) {
 	if (!claim) return null;
 	const {
 		reviewedBy: _reviewedBy,
+		maintenance: _maintenance,
 		sources,
 		...claimFields
 	} = claim;

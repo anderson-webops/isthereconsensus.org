@@ -28,6 +28,7 @@ const routes = [
 	"/ask?question=creatine%20vs%20protein",
 	"/library",
 	"/account/editorial/reader-feedback",
+	"/account/editorial/review-priority",
 	"/explainers",
 	"/explainers/how-consensus-forms",
 	"/guides",

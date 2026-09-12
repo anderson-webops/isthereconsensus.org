@@ -21,7 +21,16 @@ export type ClaimAgreementLevel = "strong" | "broad_qualified" | "divided" | "fr
 export type ClaimEvidenceCertainty = "high" | "moderate" | "low" | "very_low";
 export type ClaimReviewMode = "standard" | "living";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
-export type ClaimUncertaintyType = "bias" | "indirectness" | "imprecision" | "inconsistency" | "generalizability" | "mechanism" | "timing" | "implementation" | "other";
+export type ClaimUncertaintyType
+	= | "bias"
+		| "indirectness"
+		| "imprecision"
+		| "inconsistency"
+		| "generalizability"
+		| "mechanism"
+		| "timing"
+		| "implementation"
+		| "other";
 export type ClaimLandscapeSupportLabel = (typeof EVIDENCE_LANDSCAPE_SUPPORT_LABELS)[number];
 export type ClaimLandscapeEvidenceCertainty = (typeof EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS)[number];
 export type ClaimLandscapeExpertAgreement = (typeof EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS)[number];
@@ -239,6 +248,16 @@ export interface IClaim {
 	lastReviewedAt?: Date;
 	reviewDateBasis?: ReviewDateBasis;
 	nextReviewAt?: Date;
+	maintenance?: {
+		revision: number;
+		history: Array<{
+			date: Date;
+			adminId: mongoose.Types.ObjectId;
+			previousAt: Date | null;
+			nextAt: Date | null;
+			note: string;
+		}>;
+	};
 	publishedAt?: Date;
 	reviewedBy?: mongoose.Types.ObjectId;
 	createdAt?: Date;
@@ -656,6 +675,25 @@ const claimSchema: Schema<IClaim> = new Schema(
 			default: "unspecified"
 		},
 		nextReviewAt: { type: Date },
+		maintenance: {
+			type: new Schema(
+				{
+					revision: { type: Number, required: true, min: 1 },
+					history: [
+						{
+							_id: false,
+							date: { type: Date, required: true },
+							adminId: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
+							previousAt: { type: Date, default: null },
+							nextAt: { type: Date, default: null },
+							note: { type: String, required: true, minlength: 20, maxlength: 1000 }
+						}
+					]
+				},
+				{ _id: false, strict: "throw" }
+			),
+			select: false
+		},
 		publishedAt: { type: Date },
 		reviewedBy: { type: Schema.Types.ObjectId }
 	},
@@ -663,6 +701,7 @@ const claimSchema: Schema<IClaim> = new Schema(
 );
 
 claimSchema.index({ topic: 1, slug: 1 }, { unique: true });
+claimSchema.index({ status: 1, nextReviewAt: 1, _id: 1 });
 claimSchema.index({ "status": 1, "topic": 1, "readerUpdates.date": -1 });
 claimSchema.index({
 	"evidenceLandscape.publicFlags.showEvidenceLandscape": 1,

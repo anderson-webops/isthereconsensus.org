@@ -65,6 +65,17 @@ This milestone does not change scientific content, overwrite existing production
 records, run a source monitor, or complete any of the twenty refreshes. Source
 and live verification results will be recorded in its release notes.
 
+## Second milestone: admin review priorities
+
+The [review-priority workflow](review-priority.md) combines explicit deadlines,
+unhandled source notices, requests for updates, active reader evidence requests
+and inconsistent dates in a bounded admin queue. Schedule and source decisions
+have private, revision-protected audit histories. A source handling decision
+applies only to its assessed notice snapshot; changed notices return to the queue.
+The existing feedback workflow provides scoped resolution without copying private
+messages into public reviews. This feature does not count as any of the twenty
+substantive refreshes. Release notes record its validation and public acceptance.
+
 ## Source-monitor design references
 
 - [Crossref post-publication updates](https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/registering-updates/): notices are distinct records; metadata must be interpreted in relation to the original work.

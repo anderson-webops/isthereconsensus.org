@@ -42,6 +42,7 @@ const feedbackSchema = new Schema(
 feedbackSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 feedbackSchema.index({ status: 1, priority: -1, createdAt: -1, _id: -1 });
 feedbackSchema.index({ claimId: 1, createdAt: -1 });
+feedbackSchema.index({ linkedClaimId: 1, status: 1, expiresAt: 1 });
 feedbackSchema.index({ comparisonSlug: 1, createdAt: -1 });
 feedbackSchema.index({ topicId: 1, createdAt: -1 });
 

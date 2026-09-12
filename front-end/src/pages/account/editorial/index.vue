@@ -1050,6 +1050,9 @@ watch(
 			</section>
 
 			<section v-if="isAdmin" class="editorial-panel">
+				<NuxtLink class="button button--ghost" to="/account/editorial/review-priority"
+					>Review priorities and schedules</NuxtLink
+				>
 				<NuxtLink class="button button--ghost" to="/account/editorial/reader-feedback"
 					>Reader feedback and priorities</NuxtLink
 				>

@@ -63,6 +63,7 @@ import { User } from "./models/schemas/User.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { createReaderFeedbackRouter } from "./routes/readerFeedbackRoutes.js";
 import { createReaderLibraryRouter } from "./routes/readerLibraryRoutes.js";
+import { createReviewPriorityRouter } from "./routes/reviewPriorityRoutes.js";
 import { buildSetupStatus } from "./setup/buildSetupStatus.js";
 import { recordAccountActivity } from "./utils/accountActivity.js";
 import {
@@ -365,6 +366,7 @@ async function main() {
 	const api = express.Router();
 	api.use("/library", createReaderLibraryRouter());
 	api.use(createReaderFeedbackRouter(SESSION_SECRET));
+	api.use(createReviewPriorityRouter());
 
 	function normalizeText(value: unknown, maxLength: number) {
 		if (typeof value !== "string") return "";
