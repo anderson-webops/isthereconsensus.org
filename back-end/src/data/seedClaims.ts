@@ -96,7 +96,7 @@ function hasSeedClaimUpdate(update: SeedClaimUpdate) {
 	return Boolean(Object.keys(update.$set ?? {}).length);
 }
 
-function seedClaimFields(seed: SeedClaim) {
+export function seedClaimFields(seed: SeedClaim) {
 	return {
 		title: seed.title,
 		status: seed.status,

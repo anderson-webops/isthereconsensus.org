@@ -95,6 +95,13 @@ documents access limits and the need to preserve editorial/source state during
 controlled promotion. They do not increase the catalog count, and source delivery
 alone does not count them as publicly completed.
 
+The [scoped promotion command](claim-refresh-promotion.md) prepares a private,
+reviewable snapshot and publishes a selected batch transactionally after the
+operator's backup and content review. It refuses editorial divergence and active
+scientific approvals, preserves private source state and existing review dates,
+and records a system receipt. Implementing or testing this command does not count
+as publicly completing any refresh.
+
 ## Source-monitor design references
 
 - [Crossref post-publication updates](https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/registering-updates/): notices are distinct records; metadata must be interpreted in relation to the original work.

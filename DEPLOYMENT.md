@@ -60,6 +60,8 @@ Production security secrets must be unique. Startup rejects reuse among the sess
 
 `SEED_CONTENT_MODE=sync` is an explicit content-promotion operation: it synchronizes existing seeded claims and sources and archives source-controlled retirements. Take a database backup, review the source diff, use `sync` for the controlled promotion, and return the service to `insert` afterward. Do not leave restart-time synchronization enabled as a substitute for the authenticated editorial workflow.
 
+For registered living-evidence refreshes, use the [scoped preview and promotion procedure](docs/claim-refresh-promotion.md) or the authenticated editorial workflow. Do not use full-catalog `sync` for these batches: it can replace unrelated editorial content and source-integrity state. The scoped command retains the reviewed backup requirement and refuses unsupported transaction topology before applying changes.
+
 ## Prepare and promote a direct release
 
 ```bash

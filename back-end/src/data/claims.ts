@@ -27225,4 +27225,6 @@ const rawClaims: SeedClaim[] = [
 	...september2026AtlasBreadthClaims
 ];
 
-export const defaultClaims: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults).map(refreshLivingEvidenceClaim);
+// Kept separately so a controlled refresh can detect live editorial divergence.
+export const claimsBeforeLivingRefresh: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
+export const defaultClaims: CompleteSeedClaim[] = claimsBeforeLivingRefresh.map(refreshLivingEvidenceClaim);

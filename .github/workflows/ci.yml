@@ -236,6 +236,9 @@ jobs:
           READER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}
         run: node scripts/reader-library-smoke.mjs
 
+      - name: Scoped refresh transaction and CLI checks
+        run: node scripts/claim-refresh-promotion-smoke.mjs --docker
+
   linux-arm64-install:
     runs-on: ubuntu-latest
     steps:
