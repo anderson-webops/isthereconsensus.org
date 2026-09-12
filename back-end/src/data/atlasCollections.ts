@@ -28,6 +28,19 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "agriculture-and-food-systems",
+		slug: "food-storage-and-safety",
+		title: "Food storage and safety",
+		description: "Growth, survival, toxins and spoilage: understand refrigeration, freezing, reheating and packaging.",
+		claimSlugs: [
+			"does-refrigeration-keep-leftovers-safe-indefinitely",
+			"does-freezing-food-kill-all-pathogens",
+			"does-reheating-make-improperly-stored-food-safe",
+			"can-smell-and-appearance-tell-whether-food-is-safe",
+			"does-vacuum-sealing-replace-refrigeration"
+		]
+	},
+	{
 		topicSlug: "digital-security-and-privacy",
 		slug: "account-protection",
 		title: "Account protection and recovery",

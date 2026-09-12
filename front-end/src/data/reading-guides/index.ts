@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "food-storage-and-safety",
+		title: "Food storage: growth, toxins and quality",
+		summary:
+			"Understand what chilling, freezing, heating and packaging establish, and why normal smell cannot certify safety.",
+		checkedAt: "2026-09-12",
+		topics: ["agriculture-and-food-systems"],
+		reviews: [
+			{
+				path: "/consensus/agriculture-and-food-systems/does-refrigeration-keep-leftovers-safe-indefinitely",
+				label: "Refrigeration and leftover storage"
+			},
+			{
+				path: "/consensus/agriculture-and-food-systems/does-freezing-food-kill-all-pathogens",
+				label: "Freezing and pathogen survival"
+			},
+			{
+				path: "/consensus/agriculture-and-food-systems/does-reheating-make-improperly-stored-food-safe",
+				label: "Reheating and preformed toxins"
+			},
+			{
+				path: "/consensus/agriculture-and-food-systems/can-smell-and-appearance-tell-whether-food-is-safe",
+				label: "Smell, appearance and safety"
+			},
+			{
+				path: "/consensus/agriculture-and-food-systems/does-vacuum-sealing-replace-refrigeration",
+				label: "Vacuum packaging and the cold chain"
+			}
+		]
+	},
+	{
 		slug: "account-protection",
 		title: "Account protection: threats, login and recovery",
 		summary:

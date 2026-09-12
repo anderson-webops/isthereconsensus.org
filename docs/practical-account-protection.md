@@ -111,7 +111,14 @@ than parsing source text, so shared slug constants are covered. The new topic
 has no invented numerical consensus score. Initial search-title and missing
 starter-link failures were fixed before the final complete checks.
 
-CI, merge, source release and exact public acceptance remain separate gates.
+PR #72 passed all eight CI jobs and the secret scan, then merged at
+`61f54061ee3958a0a060515ab2a0d807566ca1db`, with the same tree as its reviewed
+head. All eight main CI jobs passed (34670387829). Annotated release **v1.32.0**
+was publicly accepted at that commit, build
+`a2af9287-db19-45e1-89f6-8570e57b8c2e`. Identity matched before and after
+readiness, twelve findings, withheld contexts, five exact review/source stacks,
+new topic, guide and collection checks. All 36 topics and 795 reviews appear
+in the sitemap. Fully accepted progress is 11/12 comparisons and 45/50 reviews.
 
 Normal startup seeding adds one topic, five reviews and idempotent reader
 announcements. There is no dependency or database-schema migration. Use

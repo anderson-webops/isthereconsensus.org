@@ -4,8 +4,8 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
-Current implementation milestone: [account protection](practical-account-protection.md),
-bringing the implementation to eleven comparisons and 45 genuinely new reviews.
+Current implementation milestone: [food storage and safety](practical-food-storage.md),
+bringing the implementation to twelve comparisons and fifty genuinely new reviews.
 Earlier milestone counts below are historical. Public acceptance is recorded
 separately from these source counts.
 
@@ -21,7 +21,15 @@ The mosquito milestone's earlier sitemap failure is resolved in v1.31.0.
 Its complete acceptance was repeated on the same verified build, including
 all twelve findings, unsupported contexts, five review/source stacks, guide,
 collection and sitemap. Fully accepted progress is **10/12 comparisons and
-40/50 new reviews**; account-protection source work is the next milestone.
+40/50 new reviews** at that historical checkpoint.
+
+Account protection is now publicly accepted as **v1.32.0**, commit
+`61f54061ee3958a0a060515ab2a0d807566ca1db`, build
+`a2af9287-db19-45e1-89f6-8570e57b8c2e`. PR #72 and merged main passed all
+eight CI jobs. Identity matched before and after readiness, twelve findings,
+withheld contexts, five exact review/source stacks, the new topic, guide and
+collection checks. The sitemap includes all 36 topics and 795 reviews.
+Fully accepted progress is **11/12 comparisons and 45/50 new reviews**.
 
 The preceding water milestone was publicly accepted September 12, 2026 UTC:
 v1.29.0, commit `cc0443803bcf5a4ec38c97c807ec60fb9ed110b8`, build
