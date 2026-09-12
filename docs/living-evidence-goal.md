@@ -121,3 +121,9 @@ commercial GMO food safety and antibiotic overuse/resistance. Their concrete
 assessment and intervention examples include contrary findings, measured-outcome
 boundaries and access limits. Four baseline reviews are now source-prepared;
 public completion remains governed by the registry's verified-promotion rule.
+
+Two further [vaccine refreshes](research/vaccine-refresh-2026-09-12.md) distinguish
+the broad childhood-vaccine question from direct MMR evidence, add the newer US
+cohort, correct the WHO review's scope, and preserve a linked aluminium-study
+correction. Six baseline reviews are now source-prepared. Public completion still
+requires controlled promotion and exact content/history verification.
