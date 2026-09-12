@@ -22,6 +22,7 @@ import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js"
 import { User } from "../back-end/dist/models/schemas/User.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
 import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import { checkReviewPriority } from "./review-priority-smoke.mjs";
 import "../back-end/dist/models/schemas/Topic.js";
 
 const directory = mkdtempSync(join(tmpdir(), "consensus-reader-smoke-"));
@@ -196,7 +197,11 @@ try {
 				return false;
 			}
 		}, "disposable MongoDB");
-		assert.equal(await ownershipProbe.db(databaseName).listCollections().hasNext(), false, "Test database must be new.");
+		assert.equal(
+			await ownershipProbe.db(databaseName).listCollections().hasNext(),
+			false,
+			"Test database must be new."
+		);
 		databaseOwned = true;
 	} finally {
 		await ownershipProbe.close();
@@ -401,8 +406,16 @@ try {
 	});
 	await publish({ revisionNote: "Formatting only", readerUpdateKind: "none" });
 	const afterFormatting = await Claim.findById(fixtureId).lean();
-	assert.equal(afterFormatting.lastReviewedAt.toISOString(), firstReviewRecord.lastReviewedAt.toISOString(), "Formatting publication must not refresh the review date");
-	assert.equal(afterFormatting.nextReviewAt.toISOString(), firstReviewRecord.nextReviewAt.toISOString(), "Formatting publication must not postpone review");
+	assert.equal(
+		afterFormatting.lastReviewedAt.toISOString(),
+		firstReviewRecord.lastReviewedAt.toISOString(),
+		"Formatting publication must not refresh the review date"
+	);
+	assert.equal(
+		afterFormatting.nextReviewAt.toISOString(),
+		firstReviewRecord.nextReviewAt.toISOString(),
+		"Formatting publication must not postpone review"
+	);
 	assert.equal(await eventCount(), 1);
 	await api(`${publication}/review`, {
 		method: "POST",
@@ -763,7 +776,7 @@ try {
 	await clickText(page, "Yes, clear browser library");
 	await browserText(page, "Saved comparisons (0)");
 	assert.deepEqual(errors, []);
-	await checkReaderFeedback({
+	const adminChecks = {
 		api,
 		browser,
 		base,
@@ -790,7 +803,9 @@ try {
 			);
 			assert.equal(status, 200);
 		}
-	});
+	};
+	await checkReaderFeedback(adminChecks);
+	await checkReviewPriority(adminChecks);
 	await Admin.updateOne({ _id: actor._id }, { $set: { enabled: false } });
 	await api("/library/account", { cookie: editor.cookie, status: 403 });
 	await api("/admin/reader-feedback", { cookie: editor.cookie, status: 403 });

@@ -12,11 +12,15 @@ useStaticPageMeta({
 	robots: "noindex, nofollow"
 });
 const { apiUrl } = useApi();
+const route = useRoute();
+const reviewId = computed(() =>
+	typeof route.query.reviewId === "string" && /^[a-f\d]{24}$/.test(route.query.reviewId) ? route.query.reviewId : ""
+);
 const { ready, role, currentAccount, refreshAuth } = useAuth();
 const isAdmin = computed(() => ready.value && role.value === "admin");
 const rows = ref<FeedbackRow[]>([]);
 const pagination = ref({ page: 1, limit: 25, total: 0, hasMore: false });
-const status = ref("new");
+const status = ref(reviewId.value ? "" : "new");
 const kind = ref("");
 const priority = ref("");
 const comparisonSlug = ref("");
@@ -69,6 +73,7 @@ async function load(page = 1) {
 	if (kind.value) params.set("kind", kind.value);
 	if (priority.value) params.set("priority", priority.value);
 	if (comparisonSlug.value) params.set("comparisonSlug", comparisonSlug.value);
+	if (reviewId.value) params.set("reviewId", reviewId.value);
 	try {
 		const result = await request<FeedbackResponse>(`/admin/reader-feedback?${params}`);
 		if (run !== generation) return;
@@ -152,7 +157,7 @@ function chooseTarget(target: (typeof targets.value)[number]) {
 	targets.value = [];
 }
 watch(
-	[ready, role, () => currentAccount.value?._id],
+	[ready, role, () => currentAccount.value?._id, reviewId],
 	() => {
 		generation++;
 		controller?.abort();
@@ -186,6 +191,10 @@ onBeforeUnmount(() => {
 		<p v-if="!ready">Checking access…</p>
 		<p v-else-if="!isAdmin">This queue is only available to admins. <NuxtLink to="/account">Sign in</NuxtLink></p>
 		<template v-else>
+			<p v-if="reviewId">
+				Showing feedback submitted for or linked to this review.
+				<NuxtLink to="/account/editorial/reader-feedback">Show all feedback</NuxtLink>
+			</p>
 			<form class="feedback-queue__filters" @submit.prevent="load()">
 				<label
 					>Status<select v-model="status" :disabled="busy">

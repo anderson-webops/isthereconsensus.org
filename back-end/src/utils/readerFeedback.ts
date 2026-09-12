@@ -67,6 +67,7 @@ export const readerFeedbackQuery = z
 		status: z.enum(feedbackStatuses).optional(),
 		priority: z.coerce.number().int().min(0).max(2).optional(),
 		claimId: objectId.optional(),
+		reviewId: objectId.optional(),
 		comparisonSlug: comparisonSlug.optional(),
 		topicId: objectId.optional()
 	})

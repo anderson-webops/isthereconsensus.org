@@ -126,9 +126,13 @@ export function createReaderFeedbackRouter(
 	router.get("/admin/reader-feedback", requireAdmin, async (req, res) => {
 		const parsed = readerFeedbackQuery.safeParse(req.query);
 		if (!parsed.success) return res.status(400).json({ error: "Invalid feedback filters or page." });
-		const { page, limit, ...filters } = parsed.data;
+		const { page, limit, reviewId, ...filters } = parsed.data;
 		try {
-			const filter = { ...filters, expiresAt: { $gt: new Date() } };
+			const filter = {
+				...filters,
+				expiresAt: { $gt: new Date() },
+				...(reviewId ? { $or: [{ claimId: reviewId }, { linkedClaimId: reviewId }] } : {})
+			};
 			const [rows, total] = await Promise.all([
 				ReaderFeedback.find(filter)
 					.sort({ priority: -1, createdAt: -1, _id: -1 })
