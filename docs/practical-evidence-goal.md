@@ -4,10 +4,16 @@ Started September 11, 2026 following the request to review all PRs for productio
 
 ## Goal and baseline
 
-Latest source milestone: [household water treatment](practical-household-water.md),
-bringing the implementation to eight comparisons and 30 genuinely new reviews.
+Latest source milestone: [mosquito prevention](practical-mosquito-prevention.md),
+bringing the implementation to nine comparisons and 35 genuinely new reviews.
 Earlier milestone counts below are historical. Public acceptance is recorded
 separately from these source counts.
+
+The preceding water milestone was publicly accepted September 12, 2026 UTC:
+v1.29.0, commit `cc0443803bcf5a4ec38c97c807ec60fb9ed110b8`, build
+`a27b73eb-b991-45b8-85aa-bab0fa03941b`. Identity matched before and after
+read-only checks of readiness, all eighteen findings, unsupported contexts,
+five review/source stacks, the 780-review catalog, guide, collection and sitemap.
 
 Deliver twelve substantive, sourced practical comparisons and fifty genuinely new canonical claim reviews. Baseline: 750 canonical published reviews, 35 topics, ten reading guides. Comparisons synthesize and connect reviews; they do not count as additional canonical reviews. Republishing, rewording, metadata edits, or moving existing reviews do not count toward fifty.
 

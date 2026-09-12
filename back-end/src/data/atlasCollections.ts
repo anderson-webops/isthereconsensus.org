@@ -29,6 +29,19 @@ export interface PublicAtlasCollectionMembership {
 export const atlasCollections = [
 	{
 		topicSlug: "health-and-medicine",
+		slug: "mosquito-bite-prevention",
+		title: "Mosquito-bite prevention",
+		description: "Repellent duration, delivery, test methods and the limits of newer indoor malaria-prevention tools.",
+		claimSlugs: [
+			"does-a-higher-repellent-concentration-mean-proportionally-better-mosquito-protection",
+			"is-lemon-eucalyptus-essential-oil-equivalent-to-a-registered-ole-or-pmd-repellent",
+			"do-repellent-wristbands-protect-as-well-as-skin-applied-mosquito-repellents",
+			"do-laboratory-mosquito-repellent-protection-times-predict-everyday-protection",
+			"do-spatial-emanators-prevent-malaria-and-can-they-replace-bed-nets"
+		]
+	},
+	{
+		topicSlug: "health-and-medicine",
 		slug: "vaccines-and-immunization",
 		title: "Vaccines and immunization",
 		description: "Vaccine effectiveness, safety signals, pregnancy, immune response, and common causal myths.",
