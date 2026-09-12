@@ -353,8 +353,30 @@ export async function checkSourceIntegrity({
 		return result.status;
 	});
 	assert.equal(logoutStatus, 200, "Logout must complete before checking the anonymous page.");
-	await page.reload({ waitUntil: "networkidle0" });
-	await browserText(page, "Admin access required.");
+	assert.equal(
+		(await page.browserContext().cookies()).some((cookie) => ["session", "session.sig"].includes(cookie.name)),
+		false,
+		"Logout must remove the fixture session cookie."
+	);
+	try {
+		const [authResponse] = await Promise.all([
+			page.waitForResponse((response) => new URL(response.url()).pathname === "/api/auth/me"),
+			page.reload({ waitUntil: "networkidle0" })
+		]);
+		assert.equal(authResponse.status(), 200, "Anonymous session lookup must succeed after reload.");
+		const identity = await authResponse.json();
+		assert.ok(identity.currentAdmin === null && identity.currentUser === null, "Logout must leave no account.");
+		await browserText(page, "Admin access required.");
+	} catch (error) {
+		// Only headings and lifecycle state from this disposable fixture are logged;
+		// never include cookies, response bodies or account credentials.
+		console.error("Source-integrity logout diagnostics", await page.evaluate(() => ({
+			path: location.pathname,
+			readyState: document.readyState,
+			headings: [...document.querySelectorAll("main h1, main h2")].map((node) => node.textContent)
+		})));
+		throw error;
+	}
 	assert.ok(!(await page.evaluate(() => document.body.innerText)).includes("Integrity fixture"));
 	await page.close();
 	console.log(
