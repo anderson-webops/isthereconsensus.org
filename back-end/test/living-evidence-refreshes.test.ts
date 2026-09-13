@@ -9,6 +9,13 @@ const baseline = JSON.parse(readFileSync(new URL("../../docs/living-evidence-bas
 const registry = JSON.parse(readFileSync(new URL("../../docs/living-evidence-refreshes.json", import.meta.url), "utf8"));
 
 describe("living evidence refresh delivery", () => {
+	it("covers exactly the twenty recorded priority targets without claiming publication", () => {
+		const key = (record: { topicSlug: string; slug: string }) => `${record.topicSlug}/${record.slug}`;
+		assert.equal(registry.refreshes.length, 20);
+		assert.deepEqual(registry.refreshes.map(key).sort(), baseline.refreshTargets.map(key).sort());
+		assert.ok(registry.refreshes.every((record: { status: string; publicVerification: unknown }) => record.status === "prepared" && record.publicVerification === null));
+	});
+
 	it("updates baseline reviews without creating duplicate reviews or replacing publication history", () => {
 		assert.equal(defaultClaims.length, baseline.totalReviews);
 		const ids = new Set<string>();
@@ -97,6 +104,48 @@ describe("living evidence refresh delivery", () => {
 		assert.notEqual(claim.lastRetractionCheckAt, claim.readerAnnouncement?.date);
 		assert.equal(claim.sources.length, 5);
 		assert.equal(claim.evidenceSummaries.length, 4);
+		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		assert.deepEqual(claim.institutionalAnchors, []);
+	});
+
+	it("retains incomplete climate notice coverage and the successful retry separately", () => {
+		const claim = defaultClaims.find(claim => claim.slug === "is-recent-global-warming-mainly-caused-by-human-activity")!;
+		const observations = JSON.parse(readFileSync(new URL("../../docs/research/climate-integrity-2026-09-13.json", import.meta.url), "utf8"));
+		assert.equal(observations.length, 7);
+		assert.equal(observations.filter((item: { outcome?: string }) => item.outcome === "not_indexed").length, 2);
+		const failure = observations.find((item: { error?: unknown }) => item.error);
+		assert.ok(failure);
+		assert.equal(failure.observedAt, undefined);
+		for (const source of claim.sources.filter(source => source.doi)) {
+			const successful = observations.filter((item: { doi: string; outcome?: string }) => item.doi === source.doi && item.outcome === "no_registered_update");
+			assert.equal(source.citationCheckedAt, successful.at(-1).observedAt);
+		}
+		assert.equal(claim.sources.find(source => source.doi === "10.1088/1748-9326/11/4/048002")?.kind, "context");
+		assert.equal(claim.lastRetractionCheckAt, observations.at(-1).observedAt);
+		assert.equal(claim.sources.length, 6);
+		assert.equal(claim.evidenceSummaries.length, 5);
+		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		assert.deepEqual(claim.institutionalAnchors, []);
+	});
+
+	it("preserves clinical source dates and guidance limits in the myocarditis refresh", () => {
+		const claim = defaultClaims.find(claim => claim.slug === "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination")!;
+		const observations = JSON.parse(readFileSync(new URL("../../docs/research/myocarditis-integrity-2026-09-13.json", import.meta.url), "utf8"));
+		assert.equal(observations.length, 10);
+		for (const source of claim.sources.filter(source => source.doi)) {
+			const checks = observations.filter((item: { doi: string }) => item.doi === source.doi!.toLowerCase());
+			assert.equal(checks.length, 2);
+			assert.ok(checks.every((item: { outcome: string }) => item.outcome === "no_registered_update"));
+			assert.equal(source.citationCheckedAt, checks.at(-1).observedAt);
+			assert.notEqual(source.citationCheckedAt, claim.readerAnnouncement?.date);
+		}
+		const guidance = claim.sources.find(source => source.publisher === "U.S. Food and Drug Administration")!;
+		assert.equal(guidance.year, 2025);
+		assert.equal(guidance.citationCheckedAt, undefined);
+		assert.match(guidance.note!, /2023–2024/);
+		assert.equal(claim.lastRetractionCheckAt, observations.at(-1).observedAt);
+		assert.equal(claim.sources.length, 8);
+		assert.equal(claim.evidenceSummaries.length, 7);
 		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
 		assert.deepEqual(claim.institutionalAnchors, []);
 	});

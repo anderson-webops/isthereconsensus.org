@@ -181,6 +181,26 @@
       "announcementId": "13787386-07e3-44bc-846c-17c2959eaee9",
       "bottomLineImpact": "unchanged",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "climate-and-environment",
+      "slug": "is-recent-global-warming-mainly-caused-by-human-activity",
+      "preparedAt": "2026-09-13T03:43:58.087Z",
+      "status": "prepared",
+      "sourceRecord": "research/climate-refresh-2026-09-13.md",
+      "announcementId": "1d9fe3e2-04bd-4741-bef6-dccebdf2acbf",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+      "preparedAt": "2026-09-13T03:43:58.087Z",
+      "status": "prepared",
+      "sourceRecord": "research/myocarditis-refresh-2026-09-13.md",
+      "announcementId": "f74e9911-4a9c-4a90-92d5-eea8b6856f17",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
     }
   ]
 }

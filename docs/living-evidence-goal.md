@@ -189,3 +189,17 @@ meaning of theory to observable field changes and a fossil example, distinguishi
 specific predictions and branching histories from the general explanation.
 Eighteen baseline reviews are source-prepared; none has completed controlled
 public content promotion and exact content/history verification.
+
+The [climate attribution refresh](research/climate-refresh-2026-09-13.md) adds
+updated attribution and a methodological example, separates temperature estimates
+from agreement surveys, and preserves differences in periods and uncertainty.
+The [clinical myocarditis refresh](research/myocarditis-refresh-2026-09-13.md)
+adds formulation-specific risk, booster and prognosis evidence with explicit
+subgroup, denominator and recovery limitations. Coverage remains explanatory,
+not experimental or personalized clinical instruction.
+
+All twenty recorded baseline targets are now source-prepared. This does not
+complete the fourth deliverable: reviewed backup, restore verification,
+controlled publication and exact public content/history acceptance remain
+outstanding. The registry intentionally retains `prepared` and null public
+verification for every entry until those steps actually succeed.
