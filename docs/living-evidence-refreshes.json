@@ -151,6 +151,16 @@
       "announcementId": "94e4de95-a59a-4c07-b8dd-5e6dd6c69077",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "climate-and-environment",
+      "slug": "is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+      "preparedAt": "2026-09-13T01:58:45.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/nuclear-refresh-2026-09-13.md",
+      "announcementId": "9c3be85a-f0c4-4946-99a3-0e7c43e5f0ce",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

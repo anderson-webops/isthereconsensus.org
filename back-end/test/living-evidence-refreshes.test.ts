@@ -36,7 +36,8 @@ describe("living evidence refresh delivery", () => {
 		for (const [slug, doi, notice] of [
 			["are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk", "10.1016/j.ajcnut.2025.05.001", "10.1016/j.ajcnut.2025.10.009"],
 			["does-saturated-fat-still-raise-ldl-and-heart-risk", "10.1161/CIR.0000000000000510", "10.1161/cir.0000000000000529"],
-			["why-does-one-study-rarely-change-everything", "10.1371/journal.pmed.0020124", "10.1371/journal.pmed.1004085"]
+			["why-does-one-study-rarely-change-everything", "10.1371/journal.pmed.0020124", "10.1371/journal.pmed.1004085"],
+			["is-nuclear-power-more-dangerous-than-fossil-fuel-energy", "10.1038/s41467-026-69285-4", "10.1038/s41467-026-72052-0"]
 		]) {
 			const claim = defaultClaims.find(claim => claim.slug === slug)!;
 			const source = claim.sources.find(source => source.doi === doi)!;
@@ -45,6 +46,22 @@ describe("living evidence refresh delivery", () => {
 			const noticeSource = claim.sources.find(source => source.doi === notice);
 			if (noticeSource) assert.equal(noticeSource.stance, "context");
 		}
+	});
+
+	it("retains the non-DOI nuclear correction without fabricating a successful indexing check", () => {
+		const claim = defaultClaims.find(claim => claim.slug === "is-nuclear-power-more-dangerous-than-fossil-fuel-energy")!;
+		const report = claim.sources.find(source => source.url === "https://www.unscear.org/unscear/en/publications/2020_2021_2.html")!;
+		assert.equal(report.citationStatus, "corrected");
+		assert.ok(report.statusSources?.includes("https://www.unscear.org/unscear/uploads/documents/publications/Corrigenda/2020_21/2316352E-2022-II.pdf"));
+		const observations = JSON.parse(readFileSync(new URL("../../docs/research/nuclear-integrity-2026-09-13.json", import.meta.url), "utf8"));
+		const source = claim.sources.find(source => source.doi === "10.1007/s10640-025-01002-z")!;
+		const checks = observations.filter((item: { doi: string }) => item.doi === source.doi);
+		assert.equal(checks.find((item: { provider: string }) => item.provider === "europepmc").outcome, "not_indexed");
+		assert.equal(source.citationCheckedAt, checks.find((item: { provider: string }) => item.provider === "crossref").observedAt);
+		assert.equal(claim.sources.length, 9);
+		assert.equal(claim.evidenceSummaries.length, 6);
+		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		assert.deepEqual(claim.institutionalAnchors, []);
 	});
 
 	it("keeps the aluminium correction distinct from the MMR cohort and a retracted comment", () => {
