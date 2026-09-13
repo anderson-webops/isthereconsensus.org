@@ -161,6 +161,26 @@
       "announcementId": "9c3be85a-f0c4-4946-99a3-0e7c43e5f0ce",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "historical-case-studies",
+      "slug": "did-smoking-cause-lung-cancer",
+      "preparedAt": "2026-09-13T02:47:18.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/smoking-refresh-2026-09-13.md",
+      "announcementId": "75346512-7113-46a6-a922-1e6467aa622b",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
+    },
+    {
+      "topicSlug": "biology-and-evolution",
+      "slug": "is-evolution-just-a-theory",
+      "preparedAt": "2026-09-13T02:59:43.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/evolution-refresh-2026-09-13.md",
+      "announcementId": "13787386-07e3-44bc-846c-17c2959eaee9",
+      "bottomLineImpact": "unchanged",
+      "publicVerification": null
     }
   ]
 }

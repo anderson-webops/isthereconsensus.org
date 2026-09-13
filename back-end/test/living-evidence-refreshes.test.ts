@@ -66,6 +66,41 @@ describe("living evidence refresh delivery", () => {
 		assert.deepEqual(claim.institutionalAnchors, []);
 	});
 
+	it("keeps smoking notice checks separate from preparation and undated guidance checks", () => {
+		const claim = defaultClaims.find(claim => claim.slug === "did-smoking-cause-lung-cancer")!;
+		const observations = JSON.parse(readFileSync(new URL("../../docs/research/smoking-integrity-2026-09-13.json", import.meta.url), "utf8"));
+		for (const source of claim.sources.filter(source => source.doi)) {
+			const checks = observations.filter((item: { doi: string }) => item.doi === source.doi!.toLowerCase());
+			assert.equal(checks.length, 2);
+			assert.ok(checks.every((item: { outcome: string }) => item.outcome === "no_registered_update"));
+			assert.equal(source.citationCheckedAt, checks.at(-1).observedAt);
+			assert.notEqual(source.citationCheckedAt, claim.readerAnnouncement?.date);
+		}
+		const guidance = claim.sources.find(source => source.publisher === "National Cancer Institute")!;
+		assert.equal(guidance.year, 2017);
+		assert.equal(guidance.citationCheckedAt, undefined);
+		assert.equal(claim.lastRetractionCheckAt, observations.at(-1).observedAt);
+		assert.equal(claim.sources.length, 5);
+		assert.equal(claim.evidenceSummaries.length, 5);
+		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		assert.deepEqual(claim.institutionalAnchors, []);
+	});
+
+	it("does not date an evolution book check from an unsuccessful indexing result", () => {
+		const claim = defaultClaims.find(claim => claim.slug === "is-evolution-just-a-theory")!;
+		const observations = JSON.parse(readFileSync(new URL("../../docs/research/evolution-integrity-2026-09-13.json", import.meta.url), "utf8"));
+		const book = claim.sources.find(source => source.doi === "10.17226/11876")!;
+		const checks = observations.filter((item: { doi: string }) => item.doi === book.doi);
+		assert.equal(checks.find((item: { provider: string }) => item.provider === "europepmc").outcome, "not_indexed");
+		assert.equal(book.citationCheckedAt, checks.find((item: { provider: string }) => item.provider === "crossref").observedAt);
+		assert.equal(claim.lastRetractionCheckAt, observations.at(-1).observedAt);
+		assert.notEqual(claim.lastRetractionCheckAt, claim.readerAnnouncement?.date);
+		assert.equal(claim.sources.length, 5);
+		assert.equal(claim.evidenceSummaries.length, 4);
+		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		assert.deepEqual(claim.institutionalAnchors, []);
+	});
+
 	it("keeps the aluminium correction distinct from the MMR cohort and a retracted comment", () => {
 		const broad = defaultClaims.find(claim => claim.slug === "do-childhood-vaccines-cause-autism")!;
 		const aluminium = broad.sources.find(source => source.doi === "10.7326/ANNALS-25-00997")!;
