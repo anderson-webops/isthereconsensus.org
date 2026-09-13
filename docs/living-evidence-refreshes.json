@@ -141,6 +141,16 @@
       "announcementId": "189b6ff6-f0a5-4e81-a4cb-adbe75ec0ef0",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "do-mrna-covid-19-vaccines-change-your-dna",
+      "preparedAt": "2026-09-13T01:03:07.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/dna-refresh-2026-09-13.md",
+      "announcementId": "94e4de95-a59a-4c07-b8dd-5e6dd6c69077",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

@@ -164,3 +164,10 @@ platform-specific evidence, separates spontaneous conception from assisted
 reproduction, and retains a treatment-specific adverse signal alongside a
 different cohort. Fourteen baseline reviews are source-prepared; controlled
 publication remains outstanding.
+
+The [DNA-claim refresh](research/dna-refresh-2026-09-13.md) replaces an absolute
+mechanism statement with an evidence-qualified answer. It separates cell-study
+findings, manufacturing-residue measurements and demonstrated human outcomes,
+retaining contrary results and access limitations without laboratory instructions.
+Fifteen baseline reviews are source-prepared; controlled publication remains
+outstanding for all fifteen.
