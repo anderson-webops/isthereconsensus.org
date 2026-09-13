@@ -177,3 +177,15 @@ specific outcomes and replacement scenarios without dismissing accident harms.
 It adds phase-out studies, a cancer-proximity association and two linked
 corrections. Sixteen baseline reviews are source-prepared; all still require
 controlled public content publication and exact content/history verification.
+
+The [smoking refresh](research/smoking-refresh-2026-09-13.md) adds historical and
+contemporary cohort findings, distinguishes causal synthesis from individual
+associations, and separates relative mortality, overall lifespan and cessation
+benefits. Seventeen baseline reviews are source-prepared; controlled public
+content publication remains outstanding.
+
+The [evolution refresh](research/evolution-refresh-2026-09-13.md) connects the
+meaning of theory to observable field changes and a fossil example, distinguishing
+specific predictions and branching histories from the general explanation.
+Eighteen baseline reviews are source-prepared; none has completed controlled
+public content promotion and exact content/history verification.

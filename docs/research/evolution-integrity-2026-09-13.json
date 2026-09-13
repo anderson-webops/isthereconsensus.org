@@ -1,0 +1,84 @@
+[
+  {
+    "attemptedAt": "2026-09-13T02:59:03.449Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.17226%2F11876&rows=100",
+    "doi": "10.17226/11876",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.17226%2F11876&rows=100"
+    ],
+    "observedAt": "2026-09-13T02:59:03.835Z"
+  },
+  {
+    "attemptedAt": "2026-09-13T02:59:04.937Z",
+    "provider": "europepmc",
+    "doi": "10.17226/11876",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.17226%2F11876%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [],
+    "outcome": "not_indexed",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.17226%2F11876%22&resultType=core&format=json&pageSize=100"
+    ],
+    "observedAt": "2026-09-13T02:59:05.481Z"
+  },
+  {
+    "attemptedAt": "2026-09-13T02:59:06.583Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1126%2Fscience.1070315&rows=100",
+    "doi": "10.1126/science.1070315",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1126%2Fscience.1070315&rows=100"
+    ],
+    "observedAt": "2026-09-13T02:59:07.215Z"
+  },
+  {
+    "attemptedAt": "2026-09-13T02:59:08.318Z",
+    "provider": "europepmc",
+    "doi": "10.1126/science.1070315",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1126%2Fscience.1070315%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:11976447"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1126%2Fscience.1070315%22&resultType=core&format=json&pageSize=100"
+    ],
+    "observedAt": "2026-09-13T02:59:08.466Z"
+  },
+  {
+    "attemptedAt": "2026-09-13T02:59:09.569Z",
+    "provider": "crossref",
+    "queryUrl": "https://api.crossref.org/works?filter=updates%3A10.1038%2Fnature04639&rows=100",
+    "doi": "10.1038/nature04639",
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://api.crossref.org/works?filter=updates%3A10.1038%2Fnature04639&rows=100"
+    ],
+    "observedAt": "2026-09-13T02:59:10.034Z"
+  },
+  {
+    "attemptedAt": "2026-09-13T02:59:11.136Z",
+    "provider": "europepmc",
+    "doi": "10.1038/nature04639",
+    "queryUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1038%2Fnature04639%22&resultType=core&format=json&pageSize=100",
+    "providerVersion": "6.9",
+    "recordIds": [
+      "MED:16598249"
+    ],
+    "outcome": "no_registered_update",
+    "signals": [],
+    "statusSources": [
+      "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1038%2Fnature04639%22&resultType=core&format=json&pageSize=100"
+    ],
+    "observedAt": "2026-09-13T02:59:11.275Z"
+  }
+]
