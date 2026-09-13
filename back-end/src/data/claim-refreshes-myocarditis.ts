@@ -142,7 +142,10 @@ export function refreshMyocarditisClaim(seed: CompleteSeedClaim): CompleteSeedCl
 				finding: "CDC reports provider-assessed full or probable recovery in 83% at at least 90 days and over 90% at at least one year among surveyed young cases from 2021. Its one-year data are labeled unpublished. FDA separately describes persistent injury markers on MRI with uncertain long-term significance.",
 				effectDirection: "supports",
 				magnitude: "Different outcomes and follow-up populations, not interchangeable recovery percentages.",
-				limitations: ["The original CDC slide and FDA communication were assessed, not all underlying patient records or MRI analyses. Follow-up selection and differing definitions limit comparisons; neither inevitable damage nor universal complete recovery follows."]
+				limitations: [
+					"The original CDC slide and FDA communication were assessed, not all underlying patient records or MRI analyses.",
+					"Follow-up selection and differing definitions limit comparisons; neither inevitable damage nor universal complete recovery follows."
+				]
 			},
 			{
 				question: "What does the earlier U.S. product comparison establish?",

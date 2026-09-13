@@ -6,6 +6,11 @@ batch of registered source-controlled refreshes. It is never invoked by startup,
 a timer, deployment, or the source-integrity monitor. It does not replace the
 required backup, restore check, content review, or public acceptance.
 
+For the observed v1.37.7 production metadata conflict, read the
+[reconciliation findings and rehearsal requirements](claim-refresh-reconciliation.md)
+before retrying. Source-generated fixtures are not proof of live baseline
+compatibility; do not change a stored field merely to satisfy preview.
+
 ## Preconditions
 
 1. Review the release diff and the refresh's primary-source record. Verify the

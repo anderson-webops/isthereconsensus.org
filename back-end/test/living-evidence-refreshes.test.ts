@@ -9,6 +9,24 @@ const baseline = JSON.parse(readFileSync(new URL("../../docs/living-evidence-bas
 const registry = JSON.parse(readFileSync(new URL("../../docs/living-evidence-refreshes.json", import.meta.url), "utf8"));
 
 describe("living evidence refresh delivery", () => {
+	it("keeps prepared search descriptions and study limitations within the authenticated editor limits", () => {
+		for (const record of registry.refreshes) {
+			const claim = defaultClaims.find(entry => entry.topicSlug === record.topicSlug && entry.slug === record.slug)!;
+			assert.ok(claim.searchDatabases.length <= 8, claim.slug);
+			for (const description of claim.searchDatabases) {
+				assert.equal(description, description.trim(), claim.slug);
+				assert.ok(description.length <= 120, `${claim.slug}: search description would be truncated`);
+			}
+			for (const summary of claim.evidenceSummaries) {
+				assert.ok((summary.limitations?.length ?? 0) <= 6, claim.slug);
+				for (const limitation of summary.limitations ?? []) {
+					assert.equal(limitation, limitation.trim(), claim.slug);
+					assert.ok(limitation.length <= 240, `${claim.slug}: study limitation would be truncated`);
+				}
+			}
+		}
+	});
+
 	it("covers exactly the twenty recorded priority targets without claiming publication", () => {
 		const key = (record: { topicSlug: string; slug: string }) => `${record.topicSlug}/${record.slug}`;
 		assert.equal(registry.refreshes.length, 20);

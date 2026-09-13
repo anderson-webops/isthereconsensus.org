@@ -167,7 +167,10 @@ export function refreshSupplementClaim(seed: CompleteSeedClaim): CompleteSeedCla
 				finding: "Pooled results favored multivitamins for global cognition and episodic memory. Global cognition combines Clinic and Mind; memory also includes Web. The Clinic primary estimate alone included no difference, while its secondary memory estimate favored supplementation.",
 				effectDirection: "supports",
 				magnitude: "Global cognition: 0.07 standard-deviation units (95% CI 0.03 to 0.11; 2,731 participants). Episodic memory: 0.06 (0.03 to 0.10; 5,203 participants). These are small test-score differences.",
-				limitations: ["Clinic retained 492 of 573 baseline-complete participants at two years; models assume missingness is explainable by observed data. Secondary analyses lacked multiplicity control. Limited diversity and one parent trial/formulation constrain generalization."]
+				limitations: [
+					"Clinic retained 492 of 573 baseline-complete participants at two years; models assume missingness is explainable by observed data.",
+					"Secondary analyses lacked multiplicity control. Limited diversity and one parent trial/formulation constrain generalization."
+				]
 			},
 			{
 				question: "Does that establish dementia prevention?",
@@ -175,7 +178,10 @@ export function refreshSupplementClaim(seed: CompleteSeedClaim): CompleteSeedCla
 				finding: "Blinded adjudication identified 110 incident mild-cognitive-impairment cases and 14 probable-dementia cases. Neither comparison established a reduction; low power also prevents ruling out meaningful benefit or harm.",
 				effectDirection: "unclear",
 				magnitude: "Mild cognitive impairment HR 0.91 (95% CI 0.63 to 1.32); probable dementia 0.76 (0.27 to 2.20).",
-				limitations: ["Few events, 2,082 participants with at least one follow-up, baseline cases excluded from the respective incidence analyses. Telephone testing and proxy information informed adjudication. This is part of the same program as the cognitive-score findings."]
+				limitations: [
+					"Few events, 2,082 participants with at least one follow-up, baseline cases excluded from the respective incidence analyses.",
+					"Telephone testing and proxy information informed adjudication. This is part of the same program as the cognitive-score findings."
+				]
 			},
 			{
 				question: "What do the 2026 aging and infection reports add?",
@@ -183,7 +189,10 @@ export function refreshSupplementClaim(seed: CompleteSeedClaim): CompleteSeedCla
 				finding: "The aging report describes small favorable changes in two epigenetic clocks over two years, with uncertain clinical meaning. The COVID report did not establish fewer infections; a symptom signal was stronger in a secondary per-protocol analysis.",
 				effectDirection: "mixed",
 				magnitude: "COVID incidence HR 0.93 (95% CI 0.81 to 1.07). Among 338 cases with symptom data, the symptomatic-illness odds ratio was 0.70 (0.44 to 1.11) in the main analysis and 0.60 (0.37 to 0.99) per protocol.",
-				limitations: ["Original abstracts and available disclosures checked; full methods were unavailable. Biomarkers do not establish survival benefit. Selection, symptom-data availability and 2020 timing limit infection inference; the secondary finding does not establish general immune protection."]
+				limitations: [
+					"Original abstracts and available disclosures checked; full methods were unavailable. Biomarkers do not establish survival benefit.",
+					"Selection, symptom-data availability and 2020 timing limit infection inference; the secondary finding does not establish general immune protection."
+				]
 			}
 		],
 		surveillanceSpec: {

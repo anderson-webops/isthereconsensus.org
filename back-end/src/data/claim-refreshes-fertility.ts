@@ -135,7 +135,10 @@ export function refreshFertilityClaim(seed: CompleteSeedClaim): CompleteSeedClai
 				finding: "Vaccinated women had lower clinical-pregnancy and live-birth rates after their first frozen embryo transfer. Associations were stronger for vaccination before ovarian stimulation. This is a relevant treatment-specific signal that needs independent investigation.",
 				effectDirection: "mixed",
 				magnitude: "Adjusted clinical-pregnancy RR 0.92 (95% CI 0.86 to 0.98); live-birth RR 0.89 (0.82 to 0.98).",
-				limitations: ["Nonrandomized, one center/platform; residual socioeconomic and clinical confounding. Exclusions based on follow-up, infection and missing data can affect selection. Adjustment includes treatment and embryo features that may be downstream of exposure, complicating causal interpretation. It does not establish permanent infertility or a universal timing rule."]
+				limitations: [
+					"Nonrandomized, one center/platform; residual socioeconomic and clinical confounding. Exclusions based on follow-up, infection and missing data can affect selection.",
+					"Adjustment includes treatment and embryo features that may be downstream of exposure, complicating causal interpretation. It does not establish permanent infertility or a universal timing rule."
+				]
 			},
 			{
 				question: "Did a different 2025 cohort reproduce that result?",

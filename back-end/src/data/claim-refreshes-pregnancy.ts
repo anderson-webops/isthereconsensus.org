@@ -139,7 +139,7 @@ export function refreshPregnancyClaim(seed: CompleteSeedClaim): CompleteSeedClai
 		searchCutoffAt: preparedAt,
 		lastRetractionCheckAt: "2026-09-12T21:06:27.201Z",
 		searchDatabases: [
-			"Targeted original institutional guidance, PubMed and Europe PMC records, publisher articles and original full-text XML; not an exhaustive systematic search",
+			"Targeted original institutional guidance, PubMed/Europe PMC and publisher text/XML; not an exhaustive systematic search",
 			"Consensus discovery followed by original-source checks; searches and fetched summaries are not independent evidence",
 			"Crossref and Europe PMC publication-notice metadata, separate from scientific assessment"
 		],
