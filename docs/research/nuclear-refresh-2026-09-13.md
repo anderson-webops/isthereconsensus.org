@@ -72,7 +72,9 @@ counts were not exposed. This was targeted discovery, not an exhaustive review.
 DOIs: seven no-registered-update results, two correction detections for Alwadi,
 and one Europe PMC not-indexed result for Kaariaho. Its successful check timestamp
 comes from Crossref, not the unindexed response. UNSCEAR's non-DOI correction
-was checked separately at preparation. A notice status never certifies validity.
+has a separate manual-check record at 2026-09-13T01:56:49.000Z. The review-level
+check timestamp uses the latest successful provider observation, not preparation
+time. A notice status never certifies validity.
 
 The registry counts sixteen prepared reviews and no controlled public promotions.
 Existing database articles remain insert-only at startup. Publication requires

@@ -58,6 +58,8 @@ describe("living evidence refresh delivery", () => {
 		const checks = observations.filter((item: { doi: string }) => item.doi === source.doi);
 		assert.equal(checks.find((item: { provider: string }) => item.provider === "europepmc").outcome, "not_indexed");
 		assert.equal(source.citationCheckedAt, checks.find((item: { provider: string }) => item.provider === "crossref").observedAt);
+		assert.equal(claim.lastRetractionCheckAt, observations.at(-1).observedAt);
+		assert.notEqual(report.citationCheckedAt, claim.readerAnnouncement?.date);
 		assert.equal(claim.sources.length, 9);
 		assert.equal(claim.evidenceSummaries.length, 6);
 		assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));

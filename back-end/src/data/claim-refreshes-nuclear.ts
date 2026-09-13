@@ -56,7 +56,7 @@ const additions: Source[] = [
 		stance: "context",
 		order: 7,
 		citationStatus: "corrected",
-		citationCheckedAt: preparedAt,
+		citationCheckedAt: "2026-09-13T01:56:49.000Z",
 		statusSources: ["https://www.unscear.org/unscear/uploads/documents/publications/Corrigenda/2020_21/2316352E-2022-II.pdf"],
 		note: "Health-summary paragraphs 244–250 assessed; printed page 96 visually checked. Evidence through 2019, not 2026. The 2023 correction revises early monitoring-data descriptions in paragraphs 18/A29, not clinical outcomes. Full models not reappraised."
 	},
@@ -128,7 +128,7 @@ export function refreshNuclearClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 		evidenceCertainty: "moderate",
 		reviewMode: "living",
 		searchCutoffAt: preparedAt,
-		lastRetractionCheckAt: preparedAt,
+		lastRetractionCheckAt: "2026-09-13T01:57:56.846Z",
 		searchDatabases: [
 			"Targeted original studies, institutional assessments and reference tracing; not an exhaustive systematic search",
 			"Consensus discovery followed by fetched records and original-source verification",
