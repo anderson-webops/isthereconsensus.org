@@ -66,7 +66,7 @@ export async function checkEditorialCitations({ api, browser, base, review, admi
 			}
 			const path = `/editorial/claims/${claim._id}`;
 			const write = (suffix, body, options = {}) =>
-				api(`${path}${suffix}`, { method: "PATCH", cookie: adminCookie, body, ...options });
+				api(`${path}${suffix}`, { method: "PATCH", cookie: adminCookie, body, retryRateLimit: true, ...options });
 			const publicPath = `/topics/${topic.slug}/claims/${slug}`;
 			await write(`/sources/${sources[0]._id}`, { statusSources: sources[0].statusSources }, { status: 403 });
 			await write("/request-update", { revisionNote: "Legacy citation fixture rehearsal" }, { method: "POST" });
@@ -109,7 +109,7 @@ export async function checkEditorialCitations({ api, browser, base, review, admi
 				const source = existing.get(identity(proposed));
 				const body = {
 					...proposed,
-					statusSources: (proposed.statusSources ?? []).filter((value) => /^https?:\/\//.test(value))
+					statusSources: proposed.statusSources ?? []
 				};
 				if (source) {
 					const labels = source.statusSources.filter((value) => !/^https?:\/\//.test(value));
@@ -175,7 +175,7 @@ export async function checkEditorialCitations({ api, browser, base, review, admi
 			assert.equal(published.readerUpdates.length, 1);
 			assert.notEqual(published.readerUpdates[0].id, after.readerAnnouncement.id);
 			assert.equal(published.readerUpdates[0].summary, after.readerAnnouncement.summary);
-			assert.deepEqual(semantic(published.changeLog.slice(0, claim.changeLog.length)), semantic(claim.changeLog));
+			assert.deepEqual(semantic(published.changeLog.slice(-claim.changeLog.length)), semantic(claim.changeLog));
 			const revisions = await ClaimRevision.find({ claim: claim._id }).lean();
 			assert.ok(revisions.length >= after.sources.length + 3);
 			assert.ok(

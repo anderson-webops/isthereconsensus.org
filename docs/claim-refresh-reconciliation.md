@@ -119,3 +119,10 @@ production archive or approval of the operator's private reconciliation proposal
 Repeat the complete isolated restoration rehearsal with the corrected candidate
 before any production publication. Preserve the previous backup/evidence and do
 not publish merely because the former HTTP 400 has disappeared.
+
+Keep the existing request limits enabled during rehearsal. The complete batch
+exceeds the 90-writes-per-minute allowance; pace requests or honor the bounded
+`Retry-After` response on HTTP 429. The disposable regression retries only an
+explicit rate-limit rejection, once after its stated delay, not an ambiguous
+failed mutation or publication. Do not disable authorization, origin checks or
+rate limits to make a batch finish.

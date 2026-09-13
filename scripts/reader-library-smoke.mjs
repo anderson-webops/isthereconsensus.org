@@ -114,8 +114,8 @@ const proxy = http.createServer((request, response) => {
 	request.pipe(upstream);
 });
 const empty = { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [] };
-async function api(path, { method = "GET", body, cookie, status = 200, headers = {} } = {}) {
-	const response = await fetch(`${base}/api${path}`, {
+async function api(path, { method = "GET", body, cookie, status = 200, headers = {}, retryRateLimit = false } = {}) {
+	const request = () => fetch(`${base}/api${path}`, {
 		method,
 		headers: {
 			"Content-Type": "application/json",
@@ -126,6 +126,16 @@ async function api(path, { method = "GET", body, cookie, status = 200, headers =
 		...(body ? { body: JSON.stringify(body) } : {}),
 		signal: AbortSignal.timeout(15_000)
 	});
+	let response = await request();
+	if (retryRateLimit && response.status === 429) {
+		const seconds = Number(response.headers.get("retry-after"));
+		assert.ok(Number.isInteger(seconds) && seconds > 0 && seconds <= 60, "Expected a bounded rate-limit retry delay.");
+		await response.arrayBuffer();
+		console.log("Authenticated fixture client honoring Retry-After without changing server limits.");
+		await delay((seconds + 1) * 1000);
+		response = await request();
+		assert.notEqual(response.status, 429, "Authenticated fixture retry remained rate limited.");
+	}
 	const data = await response.json();
 	assert.equal(response.status, status, `${method} ${path}: ${JSON.stringify(data)}`);
 	if (path.startsWith("/library/")) assert.match(response.headers.get("cache-control"), /private, no-store/);
