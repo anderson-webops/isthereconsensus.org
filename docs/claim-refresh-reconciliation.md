@@ -88,3 +88,41 @@ strict CLI path for records matching their reviewed source baseline. Whichever
 approved path is used, mark registry entries publicly verified only after exact
 article-level acceptance and protected unrelated/private-state checks succeed.
 Source delivery alone does not publish these existing articles.
+
+## Legacy citation provenance compatibility
+
+The operator's v1.37.8 authenticated isolated rehearsal reported that all sixty
+existing citations carry provenance labels such as `Crossref`. Two also need new
+correction-notice URLs. The previous citation PATCH route incorrectly applied
+the new-URL validator to those stored labels, returning HTTP 400.
+
+Citation PATCH now retains ordinary-text provenance labels already stored on
+that specific citation, including when the request supplies only notice URLs or
+an empty list. New labels cannot be introduced through this exception. New and
+resubmitted URLs still require credential-free HTTP/HTTPS; unsafe URL schemes
+are not grandfathered. New-citation creation and global URL validation remain
+unchanged. Existing labels are historical provenance, not proof of a new check.
+
+PATCH rejects malformed lists and overflow instead of silently dropping entries.
+The normal combined limit is six unique entries, including retained labels.
+Longer existing monitor lists may round-trip up to their current size without
+truncation; growing beyond that capacity requires a separate reviewed change.
+Omitting `statusSources` leaves the entire stored field unchanged. Supplying an
+empty list clears notice URLs but retains historical labels.
+
+The disposable authenticated regression exercises all twenty fixture records,
+sixty legacy citations, the two additional notice cases, new citations, claim
+editing, publication, audited revisions, actual date/announcement behavior and
+public rendering. It rejects unauthorized edits and invalid URLs without writes.
+This is synthetic compatibility coverage, not a restoration of the protected
+production archive or approval of the operator's private reconciliation proposal.
+Repeat the complete isolated restoration rehearsal with the corrected candidate
+before any production publication. Preserve the previous backup/evidence and do
+not publish merely because the former HTTP 400 has disappeared.
+
+Keep the existing request limits enabled during rehearsal. The complete batch
+exceeds the 90-writes-per-minute allowance; pace requests or honor the bounded
+`Retry-After` response on HTTP 429. The disposable regression retries only an
+explicit rate-limit rejection, once after its stated delay, not an ambiguous
+failed mutation or publication. Do not disable authorization, origin checks or
+rate limits to make a batch finish.

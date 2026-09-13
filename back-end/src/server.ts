@@ -72,6 +72,7 @@ import {
 	normalizeHttpUrlList
 } from "./utils/accountValidation.js";
 import { verifyCaptcha } from "./utils/captcha.js";
+import { normalizeCitationStatusSources } from "./utils/citationStatusSources.js";
 import { buildClaimCitationBundle } from "./utils/claimCitations.js";
 import { createClaimSearchIndex } from "./utils/claimSearch.js";
 import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
@@ -3493,7 +3494,7 @@ async function main() {
 			}
 			if (req.body?.statusSources !== undefined) {
 				try {
-					source.statusSources = normalizeHttpUrlList(req.body?.statusSources, 6, 500);
+					source.statusSources = normalizeCitationStatusSources(req.body.statusSources, source.statusSources ?? []);
 				}
 				catch (error) {
 					return res.status(400).json({
