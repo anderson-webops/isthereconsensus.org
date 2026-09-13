@@ -22,6 +22,7 @@ import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js"
 import { User } from "../back-end/dist/models/schemas/User.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
 import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import { checkEditorialCitations } from "./editorial-citation-smoke.mjs";
 import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
 import { checkReviewPriority } from "./review-priority-smoke.mjs";
@@ -825,6 +826,7 @@ try {
 	await checkReaderFeedback(adminChecks);
 	await checkReviewPriority(adminChecks);
 	await checkSourceIntegrity(adminChecks);
+	await checkEditorialCitations(adminChecks);
 	await Admin.updateOne({ _id: actor._id }, { $set: { enabled: false } });
 	await api("/library/account", { cookie: editor.cookie, status: 403 });
 	await api("/admin/reader-feedback", { cookie: editor.cookie, status: 403 });
