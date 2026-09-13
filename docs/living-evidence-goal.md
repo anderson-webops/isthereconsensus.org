@@ -171,3 +171,9 @@ findings, manufacturing-residue measurements and demonstrated human outcomes,
 retaining contrary results and access limitations without laboratory instructions.
 Fifteen baseline reviews are source-prepared; controlled publication remains
 outstanding for all fifteen.
+
+The [nuclear-energy refresh](research/nuclear-refresh-2026-09-13.md) compares
+specific outcomes and replacement scenarios without dismissing accident harms.
+It adds phase-out studies, a cancer-proximity association and two linked
+corrections. Sixteen baseline reviews are source-prepared; all still require
+controlled public content publication and exact content/history verification.
