@@ -131,6 +131,16 @@
       "announcementId": "bf9db60d-9ff6-414f-8bcb-9420a2b5c146",
       "bottomLineImpact": "changed",
       "publicVerification": null
+    },
+    {
+      "topicSlug": "health-and-medicine",
+      "slug": "do-covid-19-vaccines-cause-infertility",
+      "preparedAt": "2026-09-12T23:22:15.000Z",
+      "status": "prepared",
+      "sourceRecord": "research/fertility-refresh-2026-09-12.md",
+      "announcementId": "189b6ff6-f0a5-4e81-a4cb-adbe75ec0ef0",
+      "bottomLineImpact": "changed",
+      "publicVerification": null
     }
   ]
 }

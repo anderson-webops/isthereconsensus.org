@@ -158,3 +158,9 @@ blanket answer with outcome-specific evidence, retains positive cognitive and
 cancer findings, and distinguishes dementia, biomarkers and infection outcomes.
 Thirteen baseline reviews are source-prepared; controlled publication remains
 outstanding for all thirteen.
+
+The [fertility refresh](research/fertility-refresh-2026-09-12.md) specifies
+platform-specific evidence, separates spontaneous conception from assisted
+reproduction, and retains a treatment-specific adverse signal alongside a
+different cohort. Fourteen baseline reviews are source-prepared; controlled
+publication remains outstanding.
