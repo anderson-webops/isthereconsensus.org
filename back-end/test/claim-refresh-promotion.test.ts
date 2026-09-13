@@ -23,6 +23,19 @@ function fixture(index = 0, definition = fixtureRefreshes[index]!) {
 }
 
 describe("scoped evidence promotion planning", () => {
+	it("rejects legacy appraisal metadata even when the public bottom line and source set match", async () => {
+		const definition = registeredRefreshes.find(entry => entry.key === "active-debates/what-counts-as-an-active-scientific-debate")!;
+		const value = fixture(0, definition);
+		value.snapshot.claim.appraisalTools = [
+			"GRADE-style certainty check for the body of evidence",
+			"Risk-of-bias review for key study designs",
+			"Shared-baseline check when institutions disagree"
+		];
+		const before = canonicalRefreshJSON(value.snapshot);
+		await assert.rejects(value.plan, /editorial divergence in appraisalTools; use the editorial workflow/);
+		assert.equal(canonicalRefreshJSON(value.snapshot), before);
+	});
+
 	it("updates all registered reviews without rewriting review dates, schedules, histories or source IDs", async () => {
 		for (const definition of registeredRefreshes) {
 			const { snapshot, plan } = fixture(0, definition);

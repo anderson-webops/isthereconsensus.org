@@ -101,7 +101,7 @@ const common: Partial<CompleteSeedClaim> = {
 	reviewMode: "living",
 	evidenceCertainty: "moderate",
 	searchDatabases: [
-		"Targeted original methodological papers, institutional guidance and indexed abstracts; not an exhaustive systematic search",
+		"Targeted original methods papers, institutional guidance and indexed abstracts; not an exhaustive systematic search",
 		"PubMed and Europe PMC for original records; publisher, National Academies, Cochrane, GRADE and ASA material",
 		"Crossref and Europe PMC publication-notice metadata, distinct from scientific assessment"
 	],

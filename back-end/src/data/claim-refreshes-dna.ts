@@ -200,7 +200,8 @@ export function refreshDnaClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 				magnitude:
 					"Selected samples and differing measurement approaches, not a population health-risk estimate.",
 				limitations: [
-					"Eleven Achs batches were expired. Sample selection, RNA interference and measurement assumptions limit comparison. Only Speicher's original abstract was accessible, preventing full appraisal of that report. Neither study resolves all batch-quality or clinical-safety questions."
+					"Eleven Achs batches were expired. Sample selection, RNA interference and measurement assumptions limit comparison.",
+					"Only Speicher's original abstract was accessible, preventing full appraisal of that report. Neither study resolves all batch-quality or clinical-safety questions."
 				]
 			},
 			{

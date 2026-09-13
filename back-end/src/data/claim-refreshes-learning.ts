@@ -131,7 +131,10 @@ export function refreshLearningClaim(seed: CompleteSeedClaim): CompleteSeedClaim
 				finding: "Yes. The main analysis found a small positive average effect, with high heterogeneity. Positive matching patterns for at least two styles appeared in 11 of 42 outcome measures; that is not the percentage of students who benefited. Excluding two nonrandomized studies did not remove the pooled benefit.",
 				effectDirection: "mixed",
 				magnitude: "Main results: Hedges' g 0.32 (95% CI, 0.07-0.57), I² 91%. The abstract differs: g 0.31 (0.05-0.57).",
-				limitations: ["Short tasks, participant exclusions and incompletely reported measurement reliability constrain use. The authors advise against treating this as sufficient support for widespread adoption. No independent reanalysis resolved the numerical discrepancy."]
+				limitations: [
+					"Short tasks, participant exclusions and incompletely reported measurement reliability constrain use.",
+					"The authors advise against treating this as sufficient support for widespread adoption. No independent reanalysis resolved the numerical discrepancy."
+				]
 			},
 			{
 				question: "Why do syntheses sometimes appear to disagree?",
@@ -155,7 +158,10 @@ export function refreshLearningClaim(seed: CompleteSeedClaim): CompleteSeedClaim
 				finding: "This survey measured beliefs about the brain and education. It did not assign students to teaching methods or measure a matching benefit. Its citation is now correctly described as contextual survey evidence, rather than a scientific consensus statement.",
 				effectDirection: "unclear",
 				magnitude: "Matching was endorsed by 93% of 137 UK respondents and 96% of 105 Dutch respondents in this historical sample.",
-				limitations: ["Participation was voluntary and most respondents were interested in neuroscience. These are not current worldwide teacher rates or a measured academic consensus. Selected original methods and table text were read; full questionnaire and disclosures were not appraised."]
+				limitations: [
+					"Participation was voluntary and most respondents were interested in neuroscience. These are not current worldwide teacher rates or a measured academic consensus.",
+					"Selected original methods and table text were read; full questionnaire and disclosures were not appraised."
+				]
 			}
 		],
 		surveillanceSpec: {
