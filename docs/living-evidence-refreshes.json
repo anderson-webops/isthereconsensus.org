@@ -6,201 +6,442 @@
       "topicSlug": "nutrition-and-diet",
       "slug": "are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
       "preparedAt": "2026-09-12T16:16:00.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/nutrition-refresh-2026-09-12.md",
-      "announcementId": "2871c457-acb8-4c49-baea-502b34919d38",
+      "announcementId": "71aa6731-098a-4887-852c-a812662cd82d",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:34.848Z",
+        "publicationHistoryAt": "2026-09-13T23:50:34.848Z",
+        "lastReviewedAt": "2026-09-13T23:50:34.848Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.245Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "2871c457-acb8-4c49-baea-502b34919d38"
     },
     {
       "topicSlug": "nutrition-and-diet",
       "slug": "does-saturated-fat-still-raise-ldl-and-heart-risk",
       "preparedAt": "2026-09-12T16:16:00.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/nutrition-refresh-2026-09-12.md",
-      "announcementId": "9b2bc125-f489-4300-b7a9-a86a9464dca6",
+      "announcementId": "dc7f4f11-1336-4d37-9db4-cb42efd71001",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:05.621Z",
+        "publicationHistoryAt": "2026-09-13T23:51:05.622Z",
+        "lastReviewedAt": "2026-09-13T23:51:05.621Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.281Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "9b2bc125-f489-4300-b7a9-a86a9464dca6"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "does-antibiotic-overuse-drive-antibiotic-resistance",
       "preparedAt": "2026-09-12T18:12:25.762Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/gmo-amr-refresh-2026-09-12.md",
-      "announcementId": "ffcd5178-7fce-4459-8b1a-79e80b6c628b",
+      "announcementId": "7abde758-c9fc-4386-9796-7e459de5db97",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:57.550Z",
+        "publicationHistoryAt": "2026-09-13T23:50:57.551Z",
+        "lastReviewedAt": "2026-09-13T23:50:57.551Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.271Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "ffcd5178-7fce-4459-8b1a-79e80b6c628b"
     },
     {
       "topicSlug": "genetics-and-biotechnology",
       "slug": "are-commercial-gmo-foods-unsafe-to-eat",
       "preparedAt": "2026-09-12T18:12:25.762Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/gmo-amr-refresh-2026-09-12.md",
-      "announcementId": "2a958fea-ebdf-4338-b77d-876d1176a174",
+      "announcementId": "84256aeb-5967-40bc-8342-515eaab750eb",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:33.609Z",
+        "publicationHistoryAt": "2026-09-13T23:51:33.609Z",
+        "lastReviewedAt": "2026-09-13T23:51:33.609Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.311Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "2a958fea-ebdf-4338-b77d-876d1176a174"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "do-childhood-vaccines-cause-autism",
       "preparedAt": "2026-09-12T19:52:01.621Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/vaccine-refresh-2026-09-12.md",
-      "announcementId": "554e0da8-143d-419d-a45f-0cda8a67e275",
+      "announcementId": "d897b20c-eefa-4e22-8b57-1524a1d26321",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:49:31.529Z",
+        "publicationHistoryAt": "2026-09-13T23:49:31.531Z",
+        "lastReviewedAt": "2026-09-13T23:49:31.530Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.219Z",
+        "sourceCount": 7
+      },
+      "preparedAnnouncementId": "554e0da8-143d-419d-a45f-0cda8a67e275"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "does-the-mmr-vaccine-cause-autism",
       "preparedAt": "2026-09-12T19:52:01.621Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/vaccine-refresh-2026-09-12.md",
-      "announcementId": "02ed9586-5ec0-494c-b43c-d7b9ec2c1be9",
+      "announcementId": "f3dc5114-95b1-4650-b412-b7d9e77b2e82",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:49:38.865Z",
+        "publicationHistoryAt": "2026-09-13T23:49:38.865Z",
+        "lastReviewedAt": "2026-09-13T23:49:38.865Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-12-29T20:35:53.851Z",
+        "sourceCount": 5
+      },
+      "preparedAnnouncementId": "02ed9586-5ec0-494c-b43c-d7b9ec2c1be9"
     },
     {
       "topicSlug": "consensus-foundations",
       "slug": "how-does-scientific-consensus-form",
       "preparedAt": "2026-09-12T20:37:22.679Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/foundations-refresh-2026-09-12.md",
-      "announcementId": "1cb5ef81-61b1-4ccc-8abc-1c7019e6b3f3",
+      "announcementId": "b66b8299-774b-467c-b542-cbee22bb4bf5",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:57.226Z",
+        "publicationHistoryAt": "2026-09-13T23:51:57.226Z",
+        "lastReviewedAt": "2026-09-13T23:51:57.226Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.343Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "1cb5ef81-61b1-4ccc-8abc-1c7019e6b3f3"
     },
     {
       "topicSlug": "active-debates",
       "slug": "what-counts-as-an-active-scientific-debate",
       "preparedAt": "2026-09-12T20:37:22.679Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/foundations-refresh-2026-09-12.md",
-      "announcementId": "6d8d4fcb-038d-4f25-b7f8-3f91f92233c8",
+      "announcementId": "822dd63b-19cf-4357-9939-0e4bc8a566bb",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:52:13.737Z",
+        "publicationHistoryAt": "2026-09-13T23:52:13.737Z",
+        "lastReviewedAt": "2026-09-13T23:52:13.737Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.358Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "6d8d4fcb-038d-4f25-b7f8-3f91f92233c8"
     },
     {
       "topicSlug": "media-misinformation",
       "slug": "why-does-one-study-rarely-change-everything",
       "preparedAt": "2026-09-12T20:37:22.679Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/foundations-refresh-2026-09-12.md",
-      "announcementId": "c87999ae-c9f1-47af-ac4b-9cd6d98fc68a",
+      "announcementId": "6819b02f-8662-4952-ba96-48629c07866c",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:52:05.679Z",
+        "publicationHistoryAt": "2026-09-13T23:52:05.680Z",
+        "lastReviewedAt": "2026-09-13T23:52:05.680Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.351Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "c87999ae-c9f1-47af-ac4b-9cd6d98fc68a"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
       "preparedAt": "2026-09-12T21:19:41.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/pregnancy-refresh-2026-09-12.md",
-      "announcementId": "aef3e4e5-d1d8-4e75-8647-33e3702e8050",
+      "announcementId": "bda45bf5-c21f-4969-b44b-b080b1d697e8",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:09.122Z",
+        "publicationHistoryAt": "2026-09-13T23:50:09.122Z",
+        "lastReviewedAt": "2026-09-13T23:50:09.122Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-12-29T20:42:12.082Z",
+        "sourceCount": 10
+      },
+      "preparedAnnouncementId": "aef3e4e5-d1d8-4e75-8647-33e3702e8050"
     },
     {
       "topicSlug": "neuroscience-and-psychology",
       "slug": "do-learning-styles-improve-educational-outcomes",
       "preparedAt": "2026-09-12T22:01:12.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/learning-styles-refresh-2026-09-12.md",
-      "announcementId": "db9693e7-acc0-470e-a858-605fac87e649",
+      "announcementId": "fb58254b-e272-46fc-837e-28704fef6470",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:49.486Z",
+        "publicationHistoryAt": "2026-09-13T23:50:49.486Z",
+        "lastReviewedAt": "2026-09-13T23:50:49.486Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.262Z",
+        "sourceCount": 5
+      },
+      "preparedAnnouncementId": "db9693e7-acc0-470e-a858-605fac87e649"
     },
     {
       "topicSlug": "neuroscience-and-psychology",
       "slug": "do-we-only-use-10-percent-of-our-brain",
       "preparedAt": "2026-09-12T22:23:22.206Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/brain-activity-refresh-2026-09-12.md",
-      "announcementId": "0db18271-f57c-43d7-a4a2-26f75362e4ff",
+      "announcementId": "e98d36b0-fe3c-4391-8e52-235b0d0e2b6f",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:41.680Z",
+        "publicationHistoryAt": "2026-09-13T23:51:41.680Z",
+        "lastReviewedAt": "2026-09-13T23:51:41.680Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.319Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "0db18271-f57c-43d7-a4a2-26f75362e4ff"
     },
     {
       "topicSlug": "nutrition-and-diet",
       "slug": "do-dietary-supplements-usually-improve-health-in-healthy-adults",
       "preparedAt": "2026-09-12T22:52:24.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/supplements-refresh-2026-09-12.md",
-      "announcementId": "bf9db60d-9ff6-414f-8bcb-9420a2b5c146",
+      "announcementId": "8115e9a1-104f-4d77-86cf-1aef0319e3b5",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:15.198Z",
+        "publicationHistoryAt": "2026-09-13T23:51:15.198Z",
+        "lastReviewedAt": "2026-09-13T23:51:15.198Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.292Z",
+        "sourceCount": 8
+      },
+      "preparedAnnouncementId": "bf9db60d-9ff6-414f-8bcb-9420a2b5c146"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "do-covid-19-vaccines-cause-infertility",
       "preparedAt": "2026-09-12T23:22:15.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/fertility-refresh-2026-09-12.md",
-      "announcementId": "189b6ff6-f0a5-4e81-a4cb-adbe75ec0ef0",
+      "announcementId": "735a6036-a3e9-4dfb-bf1c-38595ab5c757",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:49:58.037Z",
+        "publicationHistoryAt": "2026-09-13T23:49:58.037Z",
+        "lastReviewedAt": "2026-09-13T23:49:58.037Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-12-29T20:35:53.934Z",
+        "sourceCount": 7
+      },
+      "preparedAnnouncementId": "189b6ff6-f0a5-4e81-a4cb-adbe75ec0ef0"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "do-mrna-covid-19-vaccines-change-your-dna",
       "preparedAt": "2026-09-13T01:03:07.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/dna-refresh-2026-09-13.md",
-      "announcementId": "94e4de95-a59a-4c07-b8dd-5e6dd6c69077",
+      "announcementId": "3ae4443b-5ce6-4391-98e7-5d72dc8d8f52",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:49:49.177Z",
+        "publicationHistoryAt": "2026-09-13T23:49:49.178Z",
+        "lastReviewedAt": "2026-09-13T23:49:49.178Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-12-29T20:35:53.896Z",
+        "sourceCount": 9
+      },
+      "preparedAnnouncementId": "94e4de95-a59a-4c07-b8dd-5e6dd6c69077"
     },
     {
       "topicSlug": "climate-and-environment",
       "slug": "is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
       "preparedAt": "2026-09-13T01:58:45.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/nuclear-refresh-2026-09-13.md",
-      "announcementId": "9c3be85a-f0c4-4946-99a3-0e7c43e5f0ce",
+      "announcementId": "2936156e-c42c-4715-82a2-148c61177c5e",
       "bottomLineImpact": "changed",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:25.530Z",
+        "publicationHistoryAt": "2026-09-13T23:51:25.530Z",
+        "lastReviewedAt": "2026-09-13T23:51:25.530Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.301Z",
+        "sourceCount": 9
+      },
+      "preparedAnnouncementId": "9c3be85a-f0c4-4946-99a3-0e7c43e5f0ce"
     },
     {
       "topicSlug": "historical-case-studies",
       "slug": "did-smoking-cause-lung-cancer",
       "preparedAt": "2026-09-13T02:47:18.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/smoking-refresh-2026-09-13.md",
-      "announcementId": "75346512-7113-46a6-a922-1e6467aa622b",
+      "announcementId": "40dc6267-1e87-4619-8b18-4f70491e63a7",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:51:49.000Z",
+        "publicationHistoryAt": "2026-09-13T23:51:49.000Z",
+        "lastReviewedAt": "2026-09-13T23:51:49.000Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.327Z",
+        "sourceCount": 5
+      },
+      "preparedAnnouncementId": "75346512-7113-46a6-a922-1e6467aa622b"
     },
     {
       "topicSlug": "biology-and-evolution",
       "slug": "is-evolution-just-a-theory",
       "preparedAt": "2026-09-13T02:59:43.000Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/evolution-refresh-2026-09-13.md",
-      "announcementId": "13787386-07e3-44bc-846c-17c2959eaee9",
+      "announcementId": "28241941-58d6-4f77-993b-e86890e8bb12",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:42.171Z",
+        "publicationHistoryAt": "2026-09-13T23:50:42.171Z",
+        "lastReviewedAt": "2026-09-13T23:50:42.171Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.254Z",
+        "sourceCount": 5
+      },
+      "preparedAnnouncementId": "13787386-07e3-44bc-846c-17c2959eaee9"
     },
     {
       "topicSlug": "climate-and-environment",
       "slug": "is-recent-global-warming-mainly-caused-by-human-activity",
       "preparedAt": "2026-09-13T03:43:58.087Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/climate-refresh-2026-09-13.md",
-      "announcementId": "1d9fe3e2-04bd-4741-bef6-dccebdf2acbf",
+      "announcementId": "9c24879d-9cea-48d2-9a51-d9096287cf9e",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:26.787Z",
+        "publicationHistoryAt": "2026-09-13T23:50:26.787Z",
+        "lastReviewedAt": "2026-09-13T23:50:26.787Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-09-28T23:52:29.235Z",
+        "sourceCount": 6
+      },
+      "preparedAnnouncementId": "1d9fe3e2-04bd-4741-bef6-dccebdf2acbf"
     },
     {
       "topicSlug": "health-and-medicine",
       "slug": "how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
       "preparedAt": "2026-09-13T03:43:58.087Z",
-      "status": "prepared",
+      "status": "publicly_verified",
       "sourceRecord": "research/myocarditis-refresh-2026-09-13.md",
-      "announcementId": "f74e9911-4a9c-4a90-92d5-eea8b6856f17",
+      "announcementId": "175d3f01-785f-42ed-910b-3006c6f9a20c",
       "bottomLineImpact": "unchanged",
-      "publicVerification": null
+      "publicVerification": {
+        "verifiedAt": "2026-09-14T01:16:39.292Z",
+        "record": "living-evidence-publication-2026-09-13.json",
+        "release": "v1.37.9",
+        "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+        "announcementAt": "2026-09-13T23:50:18.698Z",
+        "publicationHistoryAt": "2026-09-13T23:50:18.698Z",
+        "lastReviewedAt": "2026-09-13T23:50:18.698Z",
+        "reviewDateBasis": "editorial_review",
+        "nextReviewAt": "2026-12-29T20:42:12.136Z",
+        "sourceCount": 8
+      },
+      "preparedAnnouncementId": "f74e9911-4a9c-4a90-92d5-eea8b6856f17"
     }
-  ]
+  ],
+  "announcementIdentityRule": "announcementId records the actual authenticated production event. preparedAnnouncementId retains the distinct source/CLI proposal identity; source seed definitions and historical dates are not rewritten."
 }
