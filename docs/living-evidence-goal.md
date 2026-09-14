@@ -4,6 +4,47 @@ Started September 12, 2026 after completion of the practical-evidence expansion.
 Baseline: v1.33.0, commit cbabd72516f84f984b41e7fdcdd465d221cad605;
 800 public reviews, 36 topics, 17 guides and 12 comparisons.
 
+## Published refresh batch
+
+All twenty selected reviews were published through the authenticated editorial
+workflow on September 13, 2026, on v1.37.9 at commit
+`46e370ea6851e5a4ad8a5dc485efc784a376d4c5`. The operator reports a complete
+passing protected rehearsal, restore-tested pre/post-publication local backups,
+192 audited revisions and preserved unrelated/private records. Those protected
+checks are operator evidence, not a restoration performed from this checkout;
+the backups are not off-site.
+
+Independent public readback verified twenty actual announcements, sixty retained
+citation identities and provenance labels, seventy-two added citations, both
+notice merges, ordered sources, substantive content, preserved history/schedules,
+editorial review dates, twenty rendered pages, eighty citation exports and
+forty-six IPv4/IPv6 checks. The [publication record](living-evidence-publication-2026-09-13.json)
+states exactly what was independently checked and what relies on the operator.
+The supplied acceptance transcript was truncated, so the actual announcement IDs
+were obtained directly from the public reader feed rather than inferred from
+the source proposal. Their exact publication, review and history times remain
+distinct, including millisecond differences recorded by the publishing route.
+
+The [registry](living-evidence-refreshes.json) now marks all twenty
+`publicly_verified`. Its `announcementId` is the actual production event;
+`preparedAnnouncementId` preserves the original source/CLI proposal identity.
+No seed definition, historical source date or production article was rewritten
+for this bookkeeping. No further publication of this batch is required.
+
+The subsequent whole-catalog check matched all 800 review-status disclosures and
+verified that the other 780 reviews retained the explicitly compared summaries,
+dates and source counts. This is public-field preservation, not an independent
+audit of private database collections.
+
+## Delivery evidence
+
+- [v1.34.0: review dates and provenance](https://github.com/anderson-webops/isthereconsensus.org/releases/tag/v1.34.0) records native/database/browser/accessibility and exact public status/catalog verification.
+- [v1.35.0: admin priorities and scheduling](https://github.com/anderson-webops/isthereconsensus.org/releases/tag/v1.35.0) records authenticated disposable queue/audit/concurrency tests and live privacy/anonymous-access checks.
+- [v1.36.0: complementary source monitoring](https://github.com/anderson-webops/isthereconsensus.org/releases/tag/v1.36.0) records provider/cache/lease/error and authenticated browser tests, together with public release/access-boundary checks.
+- [v1.37.9 and the completed refresh batch](https://github.com/anderson-webops/isthereconsensus.org/releases/tag/v1.37.9) records the authenticated legacy compatibility fix; the linked publication evidence distinguishes operator-protected acceptance from independent public readback.
+
+## Recorded baseline
+
 The exact public [baseline](living-evidence-baseline.json) records the twenty
 initial refresh targets. At capture, 281 stored cutoff timestamps were later
 than review timestamps; 75 were on a later UTC calendar day. Same-day differences
@@ -85,7 +126,10 @@ dates, and repeated observations preserve warnings and editorial dispositions.
 Operational validation and exact public acceptance are recorded separately in
 release notes. This feature does not count as a substantive article refresh.
 
-## Substantive refresh progress
+## Preparation history before publication
+
+The following milestones describe the state during preparation. Their pending
+publication statements are historical; current completion is recorded above.
 
 The [refresh registry](living-evidence-refreshes.json) tracks prepared content
 separately from public completion. The first two nutrition refreshes add current
@@ -198,8 +242,7 @@ adds formulation-specific risk, booster and prognosis evidence with explicit
 subgroup, denominator and recovery limitations. Coverage remains explanatory,
 not experimental or personalized clinical instruction.
 
-All twenty recorded baseline targets are now source-prepared. This does not
-complete the fourth deliverable: reviewed backup, restore verification,
-controlled publication and exact public content/history acceptance remain
-outstanding. The registry intentionally retains `prepared` and null public
-verification for every entry until those steps actually succeed.
+All twenty recorded baseline targets completed source preparation before the
+protected operator rehearsal and publication. The registry now records their
+verified production identities and dates, separately from preparation. The
+original baseline remains unchanged as historical selection evidence.

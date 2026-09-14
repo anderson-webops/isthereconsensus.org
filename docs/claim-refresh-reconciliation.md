@@ -1,5 +1,22 @@
 # Reconciling the production refresh baseline
 
+## Completed September 13 publication
+
+The operator reports that the full protected rehearsal and all twenty production
+publications completed on v1.37.9. Independent public readback verified the actual
+announcements, substantive content and citation changes, history, dates and
+schedules. See the [publication evidence and its limits](living-evidence-publication-2026-09-13.json)
+and [updated registry](living-evidence-refreshes.json).
+
+No further publication of this batch is needed. Do not rerun archived operator
+scripts or reuse their pre-publication baseline, which no longer matches the
+published records. Preserve the completed operation's protected evidence. The
+following findings explain the safeguards and repairs used, not a current
+instruction to republish these articles. Future operator clients must use the
+documented `DELETE /api/auth/logout`; the reported failed POST logout did not
+invalidate the operator's session, and discarding a cookie is not server-side
+session invalidation.
+
 ## September 13, 2026 finding
 
 The operator reported that the v1.37.7 preview stopped without publishing any

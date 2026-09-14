@@ -7,6 +7,7 @@ import { seedReaderAnnouncementSchema } from "../src/utils/seedReaderAnnouncemen
 
 const baseline = JSON.parse(readFileSync(new URL("../../docs/living-evidence-baseline.json", import.meta.url), "utf8"));
 const registry = JSON.parse(readFileSync(new URL("../../docs/living-evidence-refreshes.json", import.meta.url), "utf8"));
+const publication = JSON.parse(readFileSync(new URL("../../docs/living-evidence-publication-2026-09-13.json", import.meta.url), "utf8"));
 
 describe("living evidence refresh delivery", () => {
 	it("keeps prepared search descriptions and study limitations within the authenticated editor limits", () => {
@@ -27,11 +28,40 @@ describe("living evidence refresh delivery", () => {
 		}
 	});
 
-	it("covers exactly the twenty recorded priority targets without claiming publication", () => {
+	it("records the twenty verified publications with actual rather than prepared announcement identities", () => {
 		const key = (record: { topicSlug: string; slug: string }) => `${record.topicSlug}/${record.slug}`;
 		assert.equal(registry.refreshes.length, 20);
 		assert.deepEqual(registry.refreshes.map(key).sort(), baseline.refreshTargets.map(key).sort());
-		assert.ok(registry.refreshes.every((record: { status: string; publicVerification: unknown }) => record.status === "prepared" && record.publicVerification === null));
+		assert.equal(publication.allPassed, true);
+		assert.equal(publication.articles.length, 20);
+		assert.equal(new Set(publication.articles.map((article: { announcementId: string }) => article.announcementId)).size, 20);
+		for (const record of registry.refreshes) {
+			const article = publication.articles.find((entry: { key: string }) => entry.key === key(record));
+			assert.ok(article, key(record));
+			assert.equal(record.status, "publicly_verified");
+			assert.equal(record.announcementId, article.announcementId);
+			assert.notEqual(record.announcementId, record.preparedAnnouncementId);
+			assert.match(record.announcementId, /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/);
+			assert.equal(record.bottomLineImpact, article.bottomLineImpact);
+			assert.equal(record.publicVerification.record, "living-evidence-publication-2026-09-13.json");
+			assert.equal(record.publicVerification.release, publication.release);
+			assert.equal(record.publicVerification.commit, publication.commit);
+			assert.equal(record.publicVerification.verifiedAt, publication.completedAt);
+			assert.equal(record.publicVerification.announcementAt, article.announcementAt);
+			assert.equal(record.publicVerification.publicationHistoryAt, article.publicationAt);
+			assert.equal(record.publicVerification.lastReviewedAt, article.lastReviewedAt);
+			assert.equal(record.publicVerification.reviewDateBasis, "editorial_review");
+			assert.equal(record.publicVerification.nextReviewAt, article.nextReviewAt);
+			assert.equal(record.publicVerification.sourceCount, article.sources);
+			assert.ok(Date.parse(article.announcementAt) <= Date.parse(article.lastReviewedAt));
+			assert.ok(Date.parse(article.lastReviewedAt) <= Date.parse(article.publicationAt));
+			assert.ok(Date.parse(article.publicationAt) <= Date.parse(publication.completedAt));
+			assert.equal(article.retainedSourceIds.length, article.retainedSources);
+			assert.equal(new Set(article.orderedSourceIds).size, article.sources);
+			assert.ok(article.retainedSourceIds.every((identity: string) => article.orderedSourceIds.includes(identity)));
+		}
+		assert.equal(publication.articles.reduce((total: number, article: { retainedSources: number }) => total + article.retainedSources, 0), 60);
+		assert.equal(publication.articles.reduce((total: number, article: { addedSources: number }) => total + article.addedSources, 0), 72);
 	});
 
 	it("updates baseline reviews without creating duplicate reviews or replacing publication history", () => {
@@ -43,7 +73,7 @@ describe("living evidence refresh delivery", () => {
 			assert.equal(matches.length, 1);
 			const claim = matches[0]!;
 			const announcement = seedReaderAnnouncementSchema.parse(claim.readerAnnouncement);
-			assert.equal(announcement.id, record.announcementId);
+			assert.equal(announcement.id, record.preparedAnnouncementId);
 			assert.equal(announcement.kind, "evidence_update");
 			assert.equal(announcement.bottomLineImpact, record.bottomLineImpact);
 			assert.ok(!ids.has(announcement.id));
@@ -53,7 +83,7 @@ describe("living evidence refresh delivery", () => {
 			assert.equal(seedReviewDates(claim).reviewDateBasis, "source_record");
 			assert.ok(seedReviewDates(claim).lastReviewedAt!.toISOString() < record.preparedAt);
 			assert.match(claim.reviewerLine, /no independent expert approval/i);
-			assert.equal(record.publicVerification, null);
+			assert.notEqual(announcement.id, record.announcementId);
 		}
 	});
 

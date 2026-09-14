@@ -1,0 +1,970 @@
+{
+  "startedAt": "2026-09-14T01:16:33.362Z",
+  "release": "v1.37.9",
+  "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+  "publicChecks": [
+    {
+      "family": "4",
+      "route": "/deployment.json",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/healthz",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/readyz",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/deployment.json",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/healthz",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/readyz",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/do-childhood-vaccines-cause-autism",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/do-childhood-vaccines-cause-autism",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/does-the-mmr-vaccine-cause-autism",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/does-the-mmr-vaccine-cause-autism",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/do-mrna-covid-19-vaccines-change-your-dna",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/do-mrna-covid-19-vaccines-change-your-dna",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/do-covid-19-vaccines-cause-infertility",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/do-covid-19-vaccines-cause-infertility",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/climate-and-environment/claims/is-recent-global-warming-mainly-caused-by-human-activity",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/climate-and-environment/claims/is-recent-global-warming-mainly-caused-by-human-activity",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/nutrition-and-diet/claims/are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/nutrition-and-diet/claims/are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/biology-and-evolution/claims/is-evolution-just-a-theory",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/biology-and-evolution/claims/is-evolution-just-a-theory",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/neuroscience-and-psychology/claims/do-learning-styles-improve-educational-outcomes",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/neuroscience-and-psychology/claims/do-learning-styles-improve-educational-outcomes",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/health-and-medicine/claims/does-antibiotic-overuse-drive-antibiotic-resistance",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/health-and-medicine/claims/does-antibiotic-overuse-drive-antibiotic-resistance",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/nutrition-and-diet/claims/does-saturated-fat-still-raise-ldl-and-heart-risk",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/nutrition-and-diet/claims/does-saturated-fat-still-raise-ldl-and-heart-risk",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/nutrition-and-diet/claims/do-dietary-supplements-usually-improve-health-in-healthy-adults",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/nutrition-and-diet/claims/do-dietary-supplements-usually-improve-health-in-healthy-adults",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/climate-and-environment/claims/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/climate-and-environment/claims/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/genetics-and-biotechnology/claims/are-commercial-gmo-foods-unsafe-to-eat",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/genetics-and-biotechnology/claims/are-commercial-gmo-foods-unsafe-to-eat",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/neuroscience-and-psychology/claims/do-we-only-use-10-percent-of-our-brain",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/neuroscience-and-psychology/claims/do-we-only-use-10-percent-of-our-brain",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/historical-case-studies/claims/did-smoking-cause-lung-cancer",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/historical-case-studies/claims/did-smoking-cause-lung-cancer",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/consensus-foundations/claims/how-does-scientific-consensus-form",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/consensus-foundations/claims/how-does-scientific-consensus-form",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/media-misinformation/claims/why-does-one-study-rarely-change-everything",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/media-misinformation/claims/why-does-one-study-rarely-change-everything",
+      "passed": true
+    },
+    {
+      "family": "4",
+      "route": "/api/topics/active-debates/claims/what-counts-as-an-active-scientific-debate",
+      "passed": true
+    },
+    {
+      "family": "6",
+      "route": "/api/topics/active-debates/claims/what-counts-as-an-active-scientific-debate",
+      "passed": true
+    }
+  ],
+  "articles": [
+    {
+      "key": "health-and-medicine/do-childhood-vaccines-cause-autism",
+      "claimId": "69cdafbd3f93833fac81f101",
+      "publishedAt": "2026-04-01T23:52:29.219Z",
+      "publicationAt": "2026-09-13T23:49:31.531Z",
+      "lastReviewedAt": "2026-09-13T23:49:31.530Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.219Z",
+      "sources": 7,
+      "retainedSources": 3,
+      "addedSources": 4,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f103",
+        "69cdafbd3f93833fac81f105",
+        "69cdafbd3f93833fac81f107"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f103",
+        "69cdafbd3f93833fac81f105",
+        "69cdafbd3f93833fac81f107",
+        "6aa73688e4ce0256a1f13abb",
+        "6aa73689e4ce0256a1f13abd",
+        "6aa7368ae4ce0256a1f13abf",
+        "6aa7368ae4ce0256a1f13ac1"
+      ],
+      "publicClaimSha256": "28f0603856d654211cef49b4fbd141f1db5e72c78de007223c2ff7169220f632",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "d897b20c-eefa-4e22-8b57-1524a1d26321",
+      "announcementAt": "2026-09-13T23:49:31.529Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "health-and-medicine/does-the-mmr-vaccine-cause-autism",
+      "claimId": "6a46cba99e44d834365c8350",
+      "publishedAt": "2026-07-02T20:35:53.851Z",
+      "publicationAt": "2026-09-13T23:49:38.865Z",
+      "lastReviewedAt": "2026-09-13T23:49:38.865Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-12-29T20:35:53.851Z",
+      "sources": 5,
+      "retainedSources": 3,
+      "addedSources": 2,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "6a46cba9f00da017bd9c06ce",
+        "6a46cba9f00da017bd9c06d2",
+        "6a46cba9f00da017bd9c06d6"
+      ],
+      "orderedSourceIds": [
+        "6a46cba9f00da017bd9c06ce",
+        "6a46cba9f00da017bd9c06d2",
+        "6a46cba9f00da017bd9c06d6",
+        "6aa73691e4ce0256a1f13ac9",
+        "6aa73692e4ce0256a1f13acb"
+      ],
+      "publicClaimSha256": "0f8b78285b0f39fbd43322840f698201a8341d33245b8baedb651db408afbd6e",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "f3dc5114-95b1-4650-b412-b7d9e77b2e82",
+      "announcementAt": "2026-09-13T23:49:38.865Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "health-and-medicine/do-mrna-covid-19-vaccines-change-your-dna",
+      "claimId": "6a46cba99e44d834365c835c",
+      "publishedAt": "2026-07-02T20:35:53.896Z",
+      "publicationAt": "2026-09-13T23:49:49.178Z",
+      "lastReviewedAt": "2026-09-13T23:49:49.178Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-12-29T20:35:53.896Z",
+      "sources": 9,
+      "retainedSources": 4,
+      "addedSources": 5,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "6a46cba9f00da017bd9c06dc",
+        "6a46cba9f00da017bd9c06e0",
+        "6a46cba9f00da017bd9c06e4",
+        "6a46cba9f00da017bd9c06e8"
+      ],
+      "orderedSourceIds": [
+        "6a46cba9f00da017bd9c06dc",
+        "6a46cba9f00da017bd9c06e0",
+        "6a46cba9f00da017bd9c06e4",
+        "6a46cba9f00da017bd9c06e8",
+        "6aa73699e4ce0256a1f13ad4",
+        "6aa7369ae4ce0256a1f13ad6",
+        "6aa7369ae4ce0256a1f13ad8",
+        "6aa7369be4ce0256a1f13ada",
+        "6aa7369ce4ce0256a1f13adc"
+      ],
+      "publicClaimSha256": "0ccbbb11a554c552943ad846dceaa8ac9e895316c7299fefee9c1e87eecc7604",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "3ae4443b-5ce6-4391-98e7-5d72dc8d8f52",
+      "announcementAt": "2026-09-13T23:49:49.177Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "health-and-medicine/do-covid-19-vaccines-cause-infertility",
+      "claimId": "6a46cba99e44d834365c836b",
+      "publishedAt": "2026-07-02T20:35:53.934Z",
+      "publicationAt": "2026-09-13T23:49:58.037Z",
+      "lastReviewedAt": "2026-09-13T23:49:58.037Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-12-29T20:35:53.934Z",
+      "sources": 7,
+      "retainedSources": 4,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "6a46cba9f00da017bd9c06ee",
+        "6a46cba9f00da017bd9c06f2",
+        "6a46cba9f00da017bd9c06f6",
+        "6a46cba9f00da017bd9c06fa"
+      ],
+      "orderedSourceIds": [
+        "6a46cba9f00da017bd9c06ee",
+        "6a46cba9f00da017bd9c06f2",
+        "6a46cba9f00da017bd9c06f6",
+        "6a46cba9f00da017bd9c06fa",
+        "6aa736a3e4ce0256a1f13ae5",
+        "6aa736a4e4ce0256a1f13ae7",
+        "6aa736a5e4ce0256a1f13ae9"
+      ],
+      "publicClaimSha256": "fae04591530f40a00b71f55aa43fac332e843e2a94ca29d2011ce003d20fa3e2",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "735a6036-a3e9-4dfb-bf1c-38595ab5c757",
+      "announcementAt": "2026-09-13T23:49:58.037Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "health-and-medicine/are-covid-19-vaccines-safe-and-beneficial-during-pregnancy-and-breastfeeding",
+      "claimId": "6a46cd249e44d834365c8822",
+      "publishedAt": "2026-07-02T20:42:12.082Z",
+      "publicationAt": "2026-09-13T23:50:09.122Z",
+      "lastReviewedAt": "2026-09-13T23:50:09.122Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-12-29T20:42:12.082Z",
+      "sources": 10,
+      "retainedSources": 5,
+      "addedSources": 5,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "6a46cd2403f7facaa2022881",
+        "6a46cd2403f7facaa2022885",
+        "6a46cd2403f7facaa2022889",
+        "6a46cd2403f7facaa202288d",
+        "6a46cd2403f7facaa2022891"
+      ],
+      "orderedSourceIds": [
+        "6a46cd2403f7facaa2022881",
+        "6a46cd2403f7facaa2022885",
+        "6a46cd2403f7facaa2022889",
+        "6a46cd2403f7facaa202288d",
+        "6a46cd2403f7facaa2022891",
+        "6aa736ade4ce0256a1f13af3",
+        "6aa736aee4ce0256a1f13af5",
+        "6aa736aee4ce0256a1f13af7",
+        "6aa736afe4ce0256a1f13af9",
+        "6aa736b0e4ce0256a1f13afb"
+      ],
+      "publicClaimSha256": "3e59a2c1dec24931663711179167acad39a0e947ba00358a19f5442559ecc2b0",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "bda45bf5-c21f-4969-b44b-b080b1d697e8",
+      "announcementAt": "2026-09-13T23:50:09.122Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "health-and-medicine/how-big-is-the-myocarditis-risk-after-mrna-covid-19-vaccination",
+      "claimId": "6a46cd249e44d834365c8834",
+      "publishedAt": "2026-07-02T20:42:12.136Z",
+      "publicationAt": "2026-09-13T23:50:18.698Z",
+      "lastReviewedAt": "2026-09-13T23:50:18.698Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-12-29T20:42:12.136Z",
+      "sources": 8,
+      "retainedSources": 5,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "6a46cd2403f7facaa2022897",
+        "6a46cd2403f7facaa202289b",
+        "6a46cd2403f7facaa202289f",
+        "6a46cd2403f7facaa20228a3",
+        "6a46cd2403f7facaa20228a7"
+      ],
+      "orderedSourceIds": [
+        "6a46cd2403f7facaa2022897",
+        "6a46cd2403f7facaa202289b",
+        "6a46cd2403f7facaa202289f",
+        "6a46cd2403f7facaa20228a3",
+        "6a46cd2403f7facaa20228a7",
+        "6aa736b8e4ce0256a1f13b05",
+        "6aa736b9e4ce0256a1f13b07",
+        "6aa736b9e4ce0256a1f13b09"
+      ],
+      "publicClaimSha256": "7bac96206631bf565d673c0498a446546eaf20c8f3b8d0fc9b603b3000092083",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "175d3f01-785f-42ed-910b-3006c6f9a20c",
+      "announcementAt": "2026-09-13T23:50:18.698Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+      "claimId": "69cdafbd3f93833fac81f10a",
+      "publishedAt": "2026-04-01T23:52:29.235Z",
+      "publicationAt": "2026-09-13T23:50:26.787Z",
+      "lastReviewedAt": "2026-09-13T23:50:26.787Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.235Z",
+      "sources": 6,
+      "retainedSources": 4,
+      "addedSources": 2,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f10c",
+        "69cdafbd3f93833fac81f10e",
+        "69cdafbd3f93833fac81f110",
+        "6a34c5acccad73206efe0402"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f10c",
+        "69cdafbd3f93833fac81f10e",
+        "69cdafbd3f93833fac81f110",
+        "6a34c5acccad73206efe0402",
+        "6aa736c1e4ce0256a1f13b12",
+        "6aa736c2e4ce0256a1f13b14"
+      ],
+      "publicClaimSha256": "c9961b48e9a597c3f214a2527d4867cff172e0d95caad99e3b9afaf90f8b52c3",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "9c24879d-9cea-48d2-9a51-d9096287cf9e",
+      "announcementAt": "2026-09-13T23:50:26.787Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "nutrition-and-diet/are-dietary-cholesterol-and-saturated-fat-the-same-kind-of-risk",
+      "claimId": "69cdafbd3f93833fac81f113",
+      "publishedAt": "2026-04-01T23:52:29.245Z",
+      "publicationAt": "2026-09-13T23:50:34.848Z",
+      "lastReviewedAt": "2026-09-13T23:50:34.848Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.245Z",
+      "sources": 6,
+      "retainedSources": 2,
+      "addedSources": 4,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f115",
+        "69cdafbd3f93833fac81f117"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f115",
+        "69cdafbd3f93833fac81f117",
+        "6aa736c7e4ce0256a1f13b1b",
+        "6aa736c8e4ce0256a1f13b1d",
+        "6aa736c9e4ce0256a1f13b1f",
+        "6aa736cae4ce0256a1f13b21"
+      ],
+      "publicClaimSha256": "79281c5ab503750e10f6bbc4b547bf77620976601d9b8cc70cbb4653df3145aa",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "71aa6731-098a-4887-852c-a812662cd82d",
+      "announcementAt": "2026-09-13T23:50:34.848Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "biology-and-evolution/is-evolution-just-a-theory",
+      "claimId": "69cdafbd3f93833fac81f11a",
+      "publishedAt": "2026-04-01T23:52:29.254Z",
+      "publicationAt": "2026-09-13T23:50:42.171Z",
+      "lastReviewedAt": "2026-09-13T23:50:42.171Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.254Z",
+      "sources": 5,
+      "retainedSources": 3,
+      "addedSources": 2,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f11c",
+        "69cdafbd3f93833fac81f11e",
+        "6a1dee0bd1c4f4e5c9cba58f"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f11c",
+        "69cdafbd3f93833fac81f11e",
+        "6a1dee0bd1c4f4e5c9cba58f",
+        "6aa736d0e4ce0256a1f13b29",
+        "6aa736d1e4ce0256a1f13b2b"
+      ],
+      "publicClaimSha256": "48be38a0fa682a7ba090ca21e6b6344c9450dfe1e89da76ecd161ced5ae31c4c",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "28241941-58d6-4f77-993b-e86890e8bb12",
+      "announcementAt": "2026-09-13T23:50:42.171Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "neuroscience-and-psychology/do-learning-styles-improve-educational-outcomes",
+      "claimId": "69cdafbd3f93833fac81f121",
+      "publishedAt": "2026-04-01T23:52:29.262Z",
+      "publicationAt": "2026-09-13T23:50:49.486Z",
+      "lastReviewedAt": "2026-09-13T23:50:49.486Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.262Z",
+      "sources": 5,
+      "retainedSources": 2,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f123",
+        "69cdafbd3f93833fac81f125"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f123",
+        "69cdafbd3f93833fac81f125",
+        "6aa736d7e4ce0256a1f13b32",
+        "6aa736d7e4ce0256a1f13b34",
+        "6aa736d8e4ce0256a1f13b36"
+      ],
+      "publicClaimSha256": "cd10b62896b833371618b185fd24ec9f621fda96888095eaa8c3b61bbc1bbb45",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "fb58254b-e272-46fc-837e-28704fef6470",
+      "announcementAt": "2026-09-13T23:50:49.486Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "health-and-medicine/does-antibiotic-overuse-drive-antibiotic-resistance",
+      "claimId": "69cdafbd3f93833fac81f128",
+      "publishedAt": "2026-04-01T23:52:29.271Z",
+      "publicationAt": "2026-09-13T23:50:57.551Z",
+      "lastReviewedAt": "2026-09-13T23:50:57.551Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.271Z",
+      "sources": 6,
+      "retainedSources": 3,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f12a",
+        "69cdafbd3f93833fac81f12c",
+        "69cdafbd3f93833fac81f12e"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f12a",
+        "69cdafbd3f93833fac81f12c",
+        "69cdafbd3f93833fac81f12e",
+        "6aa736dfe4ce0256a1f13b3e",
+        "6aa736e0e4ce0256a1f13b40",
+        "6aa736e0e4ce0256a1f13b42"
+      ],
+      "publicClaimSha256": "b12947ad9b058e754d8965d9f698dbf58f3a72fdd1689baa4503499e75a68e79",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "7abde758-c9fc-4386-9796-7e459de5db97",
+      "announcementAt": "2026-09-13T23:50:57.550Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "nutrition-and-diet/does-saturated-fat-still-raise-ldl-and-heart-risk",
+      "claimId": "69cdafbd3f93833fac81f131",
+      "publishedAt": "2026-04-01T23:52:29.281Z",
+      "publicationAt": "2026-09-13T23:51:05.622Z",
+      "lastReviewedAt": "2026-09-13T23:51:05.621Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.281Z",
+      "sources": 6,
+      "retainedSources": 3,
+      "addedSources": 3,
+      "noticeAdditions": 1,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f133",
+        "69cdafbd3f93833fac81f135",
+        "69cdafbd3f93833fac81f137"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f133",
+        "69cdafbd3f93833fac81f135",
+        "69cdafbd3f93833fac81f137",
+        "6aa736e7e4ce0256a1f13b4a",
+        "6aa736e8e4ce0256a1f13b4c",
+        "6aa736e8e4ce0256a1f13b4e"
+      ],
+      "publicClaimSha256": "69c0000901c28f4cc5dd9448b8147c69ccca3c1ef0895ae841b97cf0a2bd606b",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "dc7f4f11-1336-4d37-9db4-cb42efd71001",
+      "announcementAt": "2026-09-13T23:51:05.621Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "nutrition-and-diet/do-dietary-supplements-usually-improve-health-in-healthy-adults",
+      "claimId": "69cdafbd3f93833fac81f13a",
+      "publishedAt": "2026-04-01T23:52:29.292Z",
+      "publicationAt": "2026-09-13T23:51:15.198Z",
+      "lastReviewedAt": "2026-09-13T23:51:15.198Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.292Z",
+      "sources": 8,
+      "retainedSources": 2,
+      "addedSources": 6,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f13c",
+        "69cdafbd3f93833fac81f13e"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f13c",
+        "69cdafbd3f93833fac81f13e",
+        "6aa736eee4ce0256a1f13b55",
+        "6aa736efe4ce0256a1f13b57",
+        "6aa736f0e4ce0256a1f13b59",
+        "6aa736f0e4ce0256a1f13b5b",
+        "6aa736f1e4ce0256a1f13b5d",
+        "6aa736f2e4ce0256a1f13b5f"
+      ],
+      "publicClaimSha256": "c16de916b277225b249a50df9dfe60dfae030940ae8f0f080960421086b201a4",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "8115e9a1-104f-4d77-86cf-1aef0319e3b5",
+      "announcementAt": "2026-09-13T23:51:15.198Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "climate-and-environment/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+      "claimId": "69cdafbd3f93833fac81f141",
+      "publishedAt": "2026-04-01T23:52:29.301Z",
+      "publicationAt": "2026-09-13T23:51:25.530Z",
+      "lastReviewedAt": "2026-09-13T23:51:25.530Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.301Z",
+      "sources": 9,
+      "retainedSources": 3,
+      "addedSources": 6,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f143",
+        "69cdafbd3f93833fac81f145",
+        "69cdafbd3f93833fac81f147"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f143",
+        "69cdafbd3f93833fac81f145",
+        "69cdafbd3f93833fac81f147",
+        "6aa736f9e4ce0256a1f13b67",
+        "6aa736f9e4ce0256a1f13b69",
+        "6aa736fae4ce0256a1f13b6b",
+        "6aa736fbe4ce0256a1f13b6d",
+        "6aa736fce4ce0256a1f13b6f",
+        "6aa736fce4ce0256a1f13b71"
+      ],
+      "publicClaimSha256": "c82921c6eebe0603ceeea73946ff69e54254954c52c434c7be21c5b0bee79679",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "2936156e-c42c-4715-82a2-148c61177c5e",
+      "announcementAt": "2026-09-13T23:51:25.530Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "genetics-and-biotechnology/are-commercial-gmo-foods-unsafe-to-eat",
+      "claimId": "69cdafbd3f93833fac81f14a",
+      "publishedAt": "2026-04-01T23:52:29.311Z",
+      "publicationAt": "2026-09-13T23:51:33.609Z",
+      "lastReviewedAt": "2026-09-13T23:51:33.609Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.311Z",
+      "sources": 6,
+      "retainedSources": 2,
+      "addedSources": 4,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f14c",
+        "69cdafbd3f93833fac81f14e"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f14c",
+        "69cdafbd3f93833fac81f14e",
+        "6aa73702e4ce0256a1f13b78",
+        "6aa73703e4ce0256a1f13b7a",
+        "6aa73704e4ce0256a1f13b7c",
+        "6aa73704e4ce0256a1f13b7e"
+      ],
+      "publicClaimSha256": "a924b2c0d389b59ef9eeeef1a62bbdddc3195611eef9c1804979462c8d96ece7",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "84256aeb-5967-40bc-8342-515eaab750eb",
+      "announcementAt": "2026-09-13T23:51:33.609Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "neuroscience-and-psychology/do-we-only-use-10-percent-of-our-brain",
+      "claimId": "69cdafbd3f93833fac81f151",
+      "publishedAt": "2026-04-01T23:52:29.319Z",
+      "publicationAt": "2026-09-13T23:51:41.680Z",
+      "lastReviewedAt": "2026-09-13T23:51:41.680Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.319Z",
+      "sources": 6,
+      "retainedSources": 3,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f153",
+        "69cdafbd3f93833fac81f155",
+        "6a2c1ed9f4607f68627f5402"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f153",
+        "69cdafbd3f93833fac81f155",
+        "6a2c1ed9f4607f68627f5402",
+        "6aa7370be4ce0256a1f13b86",
+        "6aa7370ce4ce0256a1f13b88",
+        "6aa7370ce4ce0256a1f13b8a"
+      ],
+      "publicClaimSha256": "e0a18c7d4472a1baffe594f29652e0ce2a807a2263097c087ff7f9078e2c141b",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "e98d36b0-fe3c-4391-8e52-235b0d0e2b6f",
+      "announcementAt": "2026-09-13T23:51:41.680Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "historical-case-studies/did-smoking-cause-lung-cancer",
+      "claimId": "69cdafbd3f93833fac81f158",
+      "publishedAt": "2026-04-01T23:52:29.327Z",
+      "publicationAt": "2026-09-13T23:51:49.000Z",
+      "lastReviewedAt": "2026-09-13T23:51:49.000Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.327Z",
+      "sources": 5,
+      "retainedSources": 2,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f15a",
+        "69cdafbd3f93833fac81f15c"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f15a",
+        "69cdafbd3f93833fac81f15c",
+        "6aa73712e4ce0256a1f13b91",
+        "6aa73713e4ce0256a1f13b93",
+        "6aa73714e4ce0256a1f13b95"
+      ],
+      "publicClaimSha256": "407b6d84c8d04e8c2a1861a075fee7e442ddeb77b9608ac6265bb5e8b3b894e9",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "40dc6267-1e87-4619-8b18-4f70491e63a7",
+      "announcementAt": "2026-09-13T23:51:49.000Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "consensus-foundations/how-does-scientific-consensus-form",
+      "claimId": "69cdafbd3f93833fac81f166",
+      "publishedAt": "2026-04-01T23:52:29.343Z",
+      "publicationAt": "2026-09-13T23:51:57.226Z",
+      "lastReviewedAt": "2026-09-13T23:51:57.226Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.343Z",
+      "sources": 6,
+      "retainedSources": 3,
+      "addedSources": 3,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f168",
+        "69cdafbd3f93833fac81f16a",
+        "6a2c1edaf4607f68627f5415"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f168",
+        "69cdafbd3f93833fac81f16a",
+        "6a2c1edaf4607f68627f5415",
+        "6aa7371ae4ce0256a1f13b9d",
+        "6aa7371be4ce0256a1f13b9f",
+        "6aa7371ce4ce0256a1f13ba1"
+      ],
+      "publicClaimSha256": "5cd5607f309d2f43303587885fd7447af5fe79dcb9792abadb1f0a6b316a8165",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "b66b8299-774b-467c-b542-cbee22bb4bf5",
+      "announcementAt": "2026-09-13T23:51:57.226Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    },
+    {
+      "key": "media-misinformation/why-does-one-study-rarely-change-everything",
+      "claimId": "69cdafbd3f93833fac81f16d",
+      "publishedAt": "2026-04-01T23:52:29.351Z",
+      "publicationAt": "2026-09-13T23:52:05.680Z",
+      "lastReviewedAt": "2026-09-13T23:52:05.680Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.351Z",
+      "sources": 6,
+      "retainedSources": 2,
+      "addedSources": 4,
+      "noticeAdditions": 1,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f16f",
+        "69cdafbd3f93833fac81f171"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f16f",
+        "69cdafbd3f93833fac81f171",
+        "6aa73722e4ce0256a1f13ba8",
+        "6aa73723e4ce0256a1f13baa",
+        "6aa73724e4ce0256a1f13bac",
+        "6aa73724e4ce0256a1f13bae"
+      ],
+      "publicClaimSha256": "ea46b0dfa5a7443a1a65f30054dcd1749e92f409870508962442ee44d730b5c4",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "6819b02f-8662-4952-ba96-48629c07866c",
+      "announcementAt": "2026-09-13T23:52:05.679Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "unchanged"
+    },
+    {
+      "key": "active-debates/what-counts-as-an-active-scientific-debate",
+      "claimId": "69cdafbd3f93833fac81f174",
+      "publishedAt": "2026-04-01T23:52:29.358Z",
+      "publicationAt": "2026-09-13T23:52:13.737Z",
+      "lastReviewedAt": "2026-09-13T23:52:13.737Z",
+      "reviewDateBasis": "editorial_review",
+      "nextReviewAt": "2026-09-28T23:52:29.358Z",
+      "sources": 6,
+      "retainedSources": 2,
+      "addedSources": 4,
+      "noticeAdditions": 0,
+      "retainedSourceIds": [
+        "69cdafbd3f93833fac81f176",
+        "69cdafbd3f93833fac81f178"
+      ],
+      "orderedSourceIds": [
+        "69cdafbd3f93833fac81f176",
+        "69cdafbd3f93833fac81f178",
+        "6aa7372ae4ce0256a1f13bb5",
+        "6aa7372be4ce0256a1f13bb7",
+        "6aa7372ce4ce0256a1f13bb9",
+        "6aa7372ce4ce0256a1f13bbb"
+      ],
+      "publicClaimSha256": "e98237b19f01d224cf5f5fcc4b0bfd01b51f8b6c7e160cb49f297803af84c24f",
+      "renderedPagePassed": true,
+      "citationExports": 4,
+      "announcementId": "822dd63b-19cf-4357-9939-0e4bc8a566bb",
+      "announcementAt": "2026-09-13T23:52:13.737Z",
+      "announcementKind": "evidence_update",
+      "bottomLineImpact": "changed"
+    }
+  ],
+  "scope": "Independent public readback, not a private database restoration or an authenticated publication replay.",
+  "completedAt": "2026-09-14T01:16:39.292Z",
+  "deployment": {
+    "ok": true,
+    "service": "front-end",
+    "runtime": "nuxt-ssr",
+    "nodeEnv": "production",
+    "buildId": "76adb4d5-2c59-4597-a0c6-6f6c71f6da54",
+    "commit": "46e370ea6851e5a4ad8a5dc485efc784a376d4c5",
+    "ref": "v1.37.9",
+    "siteUrl": "https://isthereconsensus.org"
+  },
+  "allPassed": true,
+  "renderedPages": 20,
+  "citationExports": 80,
+  "catalog": {
+    "verifiedAt": "2026-09-14T01:23:40.111Z",
+    "totalReviews": 800,
+    "unchangedUnrelatedReviews": 780,
+    "updatedReviews": 20,
+    "reviewStatusClassifierMatches": 800,
+    "publicReviewerIdentitiesAbsent": true,
+    "comparedFields": [
+      "title",
+      "bottomLine",
+      "stableCore",
+      "openQuestions",
+      "searchCutoffAt",
+      "lastReviewedAt",
+      "nextReviewAt",
+      "lastRetractionCheckAt",
+      "publishedAt",
+      "sourceCount"
+    ],
+    "allPassed": true
+  },
+  "operatorReported": {
+    "evidenceId": "consensus-refresh-v1.37.9-20260913T233500Z",
+    "report": "OPERATOR-RESULT.md",
+    "acceptance": "FINAL-ACCEPTANCE.json",
+    "providedEvidence": "Truncated operator report and acceptance output supplied by the user. Per-article announcement IDs below were independently obtained from the public reader feed, not copied from omitted output.",
+    "verifiedRestorationBeforePublication": true,
+    "preAndPostPublicationBackupsRestoreTested": true,
+    "backupLocation": "local, not off-site",
+    "backendAndFrontendNode": "24.21.0",
+    "auditedRevisions": 192,
+    "retainedCitations": 60,
+    "addedCitations": 72,
+    "publicationAnnouncements": 20,
+    "unrelatedCollectionsUnchanged": true,
+    "servicesHealthyWithoutRestart": true,
+    "privateStateVerification": "Operator-reported; no credentials, protected archive or private reconciliation proposal accessed from this checkout."
+  },
+  "verificationLimits": [
+    "Public comparison covers bottom lines, stable cores, evidence summaries, ordered citation identity/counts, retained citation IDs and labels, notice additions, history, review provenance and schedules, announcements, rendered status/history sections, citation-export provenance and IPv4/IPv6 content equality.",
+    "Full private reconciliation fidelity, audited revision counts, backup restoration and unrelated/private database preservation rely on the operator report, not public APIs.",
+    "Announcement, editorial review and publication-history timestamps are distinct actual fields. Millisecond differences are preserved, not normalized to a fabricated common timestamp.",
+    "No content publication, seeding, deployment or authenticated editorial write was performed for this readback."
+  ]
+}
