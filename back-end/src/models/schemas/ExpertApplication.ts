@@ -42,7 +42,7 @@ const expertApplicationSchema: Schema<IExpertApplication> = new Schema(
 		reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
 		reviewedAt: { type: Date }
 	},
-	{ timestamps: true }
+	{ optimisticConcurrency: true, timestamps: true }
 );
 
 export const ExpertApplication: Model<IExpertApplication> = mongoose.model<IExpertApplication>(

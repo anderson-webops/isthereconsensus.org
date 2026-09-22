@@ -26,11 +26,11 @@ Project facts:
 Your job:
 1. Audit the existing server state, repo checkout, env files, services, and nginx configuration.
 2. Install any missing runtime dependencies needed for a stable production deploy.
-3. Build both workspaces and configure two restart-on-boot services:
-   - isthereconsensus-frontend: runs the Nuxt SSR server from front-end/.output/server/index.mjs
-   - isthereconsensus-backend: runs the compiled backend from back-end/dist/server.js
-4. Configure nginx and TLS so the public site serves the Nuxt frontend and proxies /api/, /healthz, /readyz, and /_dbinfo to the backend.
-5. Prefer same-origin deployment. Set PUBLIC_API_BASE=/api unless you intentionally want an absolute public API origin instead.
+3. Use the reviewed artifact-only preparation and promotion scripts with the existing restart-on-boot services:
+   - isthereconsensus-web.service runs the Nuxt SSR server from front-end/.output/server/index.mjs
+   - isthereconsensus-api.service seeds content in a one-shot process, then runs back-end/dist/server.js
+4. Keep the existing nginx and TLS topology. Proxy only /api/, /healthz, and /readyz to the backend; keep /_dbinfo and setup diagnostics unavailable on the public edge.
+5. Prefer same-origin deployment. Set NUXT_PUBLIC_API_BASE=/api unless you intentionally want a separately reviewed public API origin.
 6. Verify secure cookies, CORS behavior, Mongo connectivity, captcha configuration, OpenAlex integration, and health endpoints.
 7. Enable automatic restart on failure and restart on boot for both services.
 8. Leave the server in a working, verified state and report the exact files changed plus the final validation output.
@@ -38,7 +38,7 @@ Your job:
 Required environment/config checks:
 - NODE_ENV=production
 - SESSION_SECRET set to a long random value
-- PUBLIC_API_BASE set to /api for same-origin proxying, or to an intentional absolute public API origin
+- NUXT_PUBLIC_API_BASE set to /api for same-origin proxying, or to an intentional absolute public API origin
 - CAPTCHA_SECRET and PUBLIC_CAPTCHA_SITEKEY configured for production posting
 - OPENALEX_EMAIL set for polite-pool literature lookups; OPENALEX_API_KEY optional but recommended for higher limits
 - VAULT_ADDR / VAULT_ROLE_ID / VAULT_SECRET_ID or MONGODB_URI configured
@@ -56,7 +56,7 @@ Constraints:
 - Do not stop at analysis; make the changes.
 - Do not rewrite application logic unless a minimal deployment fix is required.
 - If you find a mismatch between frontend origin, API origin, and cookie/CORS settings, fix it rather than just reporting it.
-- If a secret value is missing, create a clear placeholder only when necessary and report exactly what still must be supplied manually.`;
+- Never create placeholder production credentials. Stop and report the missing protected value without printing existing secrets.`;
 }
 
 export const serverPreparationTasks: LaunchTask[] = [
@@ -70,7 +70,7 @@ export const serverPreparationTasks: LaunchTask[] = [
 	},
 	{
 		title: "Environment",
-		body: "Set NODE_ENV, SESSION_SECRET, PUBLIC_API_BASE, any private internal API base, Mongo/Vault credentials, Turnstile keys, and OpenAlex credentials before opening the site."
+		body: "Set NODE_ENV, SESSION_SECRET, NUXT_PUBLIC_API_BASE, the private NUXT_API_INTERNAL_BASE, Mongo/Vault credentials, Turnstile keys, and OpenAlex credentials before opening the site."
 	},
 	{
 		title: "Observability",

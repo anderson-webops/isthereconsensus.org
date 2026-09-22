@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { ReaderLibraryController } from "~/utils/reader-library";
+
 const props = defineProps<{ kind: "review" | "topic" | "comparison"; id: string }>();
-const { $readerLibrary: library } = useNuxtApp();
+const library = useNuxtApp().$readerLibrary as ReaderLibraryController;
 const keys = { review: "savedReviewIds", topic: "followedTopicIds", comparison: "savedComparisonSlugs" } as const;
 const key = computed(() => keys[props.kind]);
 const selected = computed(() => library.state[key.value].includes(props.id));

@@ -50,7 +50,7 @@ export function buildFrontendSetupChecks(dashboard: SetupDashboardResponse): Set
 				: siteAndApiMatch
 					? "The frontend is pointing at the same public origin."
 					: `The frontend is targeting ${dashboard.apiBase}; make sure proxy and CORS settings match that choice.`,
-			action: "For the simplest production setup, proxy the API through the site origin and set PUBLIC_API_BASE=/api."
+			action: "For the simplest production setup, proxy the API through the site origin and set NUXT_PUBLIC_API_BASE=/api."
 		}
 	];
 }

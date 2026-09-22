@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ClaimSummary, Topic } from "~/types/board";
+import type { ReaderLibraryController } from "~/utils/reader-library";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 interface LibraryContent {
@@ -21,7 +22,7 @@ interface UpdatePage {
 	nextCursor: string | null;
 }
 
-const { $readerLibrary: library } = useNuxtApp();
+const library = useNuxtApp().$readerLibrary as ReaderLibraryController;
 const { apiUrl } = useApi();
 const content = ref<LibraryContent>({ reviews: [], topics: [], comparisons: [] });
 const contentLoading = ref(false);

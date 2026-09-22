@@ -9,12 +9,15 @@ const frontendManifest = JSON.parse(await readFile(path.join(root, "front-end/pa
 
 function run(command, args, cwd) {
 	return new Promise((resolve, reject) => {
+		const env = {
+			...process.env,
+			PUPPETEER_SKIP_DOWNLOAD: "true"
+		};
+		delete env.npm_config_global_ignore_file;
+		delete env.NPM_CONFIG_GLOBAL_IGNORE_FILE;
 		const child = spawn(command, args, {
 			cwd,
-			env: {
-				...process.env,
-				PUPPETEER_SKIP_DOWNLOAD: "true"
-			},
+			env,
 			stdio: "inherit"
 		});
 		child.once("error", reject);
@@ -23,6 +26,8 @@ function run(command, args, cwd) {
 }
 
 async function verifyTarget(libc) {
+	const npmExecPath = process.env.npm_execpath;
+	if (!npmExecPath) throw new Error("Run verify:platform-install through npm so the selected npm executable is known.");
 	const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), `isthereconsensus-linux-arm64-${libc}-`));
 	try {
 		await Promise.all([
@@ -41,8 +46,9 @@ async function verifyTarget(libc) {
 			})
 		]);
 		await run(
-			process.execPath.replace(/node$/, "npm"),
+			process.execPath,
 			[
+				npmExecPath,
 				"ci",
 				"--ignore-scripts",
 				"--include=optional",
@@ -55,18 +61,28 @@ async function verifyTarget(libc) {
 			temporaryRoot
 		);
 
-		const expected = Object.keys(frontendManifest.optionalDependencies || {}).filter((dependency) => {
+		const expected = Object.entries(frontendManifest.optionalDependencies || {}).filter(([dependency]) => {
 			if (dependency === "@esbuild/linux-arm64") return true;
 			return dependency.includes("linux-arm64") && dependency.endsWith(libc === "musl" ? "-musl" : "-gnu");
 		});
 		const missing = [];
-		for (const dependency of expected) {
-			try {
-				await readFile(path.join(temporaryRoot, "node_modules", dependency, "package.json"), "utf8");
+		for (const [dependency, expectedVersion] of expected) {
+			let found = false;
+			for (const installRoot of [temporaryRoot, path.join(temporaryRoot, "front-end")]) {
+				try {
+					const installed = JSON.parse(
+						await readFile(path.join(installRoot, "node_modules", dependency, "package.json"), "utf8")
+					);
+					if (installed.version === expectedVersion) {
+						found = true;
+						break;
+					}
+				}
+				catch {
+					// Continue through valid npm workspace install locations.
+				}
 			}
-			catch {
-				missing.push(dependency);
-			}
+			if (!found) missing.push(`${dependency}@${expectedVersion}`);
 		}
 		if (missing.length) {
 			throw new Error(`Linux ARM64 ${libc} install omitted native packages: ${missing.join(", ")}`);

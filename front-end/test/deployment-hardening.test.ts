@@ -10,6 +10,8 @@ const deploymentGuide = readFileSync(join(repositoryRoot, "DEPLOYMENT.md"), "utf
 const nginxConfig = readFileSync(join(repositoryRoot, "deploy", "nginx", "isthereconsensus.org.conf"), "utf8");
 const prepareRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "prepare-release.sh"), "utf8");
 const promoteRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "promote-release.sh"), "utf8");
+const artifactBuilder = readFileSync(join(repositoryRoot, "scripts", "build-runtime-artifact.mjs"), "utf8");
+const artifactVerifier = readFileSync(join(repositoryRoot, "scripts", "verify-runtime-artifact.mjs"), "utf8");
 const nuxtConfig = readFileSync(join(repositoryRoot, "front-end", "nuxt.config.ts"), "utf8");
 const poweredByPlugin = readFileSync(
 	join(repositoryRoot, "front-end", "server", "plugins", "remove-powered-by.ts"),
@@ -31,9 +33,16 @@ describe("deployment hardening", () => {
 			prepareRelease,
 			/unset NODE_ENV[\s\S]+npm test[\s\S]+export NODE_ENV=production[\s\S]+npm run build/
 		);
-		assert.match(prepareRelease, /npm ci --omit=dev --include=optional --ignore-scripts/);
+		assert.match(prepareRelease, /npm run artifact:build/);
+		assert.match(prepareRelease, /RUNTIME_ARTIFACT_REQUIRE_CLEAN=true/);
+		assert.match(
+			artifactBuilder,
+			/\["ci", "--omit=dev", "--include=optional", "--strict-allow-scripts", "--no-fund"\]/
+		);
+		assert.match(artifactVerifier, /Runtime artifact inventory or hash mismatch/);
 		assert.doesNotMatch(prepareRelease, /npm prune/);
 		assert.match(prepareRelease, /deployment\.commit !== process\.env\.SOURCE_COMMIT/);
+		assert.match(promoteRelease, /activate_target "\$runtime_target"/);
 		assert.match(promoteRelease, /mv -Tf/);
 		assert.match(promoteRelease, /api_ready_url/);
 		assert.match(promoteRelease, /web_ready_url/);

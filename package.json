@@ -40,6 +40,9 @@
 		"smoke:backend-runtime": "node scripts/backend-runtime-smoke.mjs",
 		"smoke:ssr-assets": "node scripts/ssr-public-assets-smoke.mjs",
 		"smoke:ssr-routes": "node scripts/ssr-route-rules-smoke.mjs",
+		"artifact:build": "node scripts/build-runtime-artifact.mjs",
+		"artifact:verify": "node scripts/verify-runtime-artifact.mjs .runtime-artifact",
+		"artifact:smoke": "node scripts/runtime-artifact-smoke.mjs",
 		"content:coverage": "npm exec -w back-end -- tsx src/scripts/reportContentCoverage.ts",
 		"monitor:source-integrity": "npm run -w back-end monitor:source-integrity",
 		"monitor:source-integrity-ts": "npm run -w back-end monitor:source-integrity-ts",
@@ -51,34 +54,36 @@
 		"a11y": "node scripts/a11y-smoke.mjs"
 	},
 	"devDependencies": {
-		"@antfu/eslint-config": "^9.3.0",
-		"@typescript-eslint/eslint-plugin": "^8.67.0",
-		"@typescript-eslint/parser": "^8.67.0",
-		"@unocss/eslint-plugin": "^66.8.0",
+		"@antfu/eslint-config": "^9.5.1",
+		"@typescript-eslint/eslint-plugin": "^8.70.1",
+		"@typescript-eslint/parser": "^8.70.1",
+		"@unocss/eslint-plugin": "^66.10.5",
 		"axe-core": "^4.13.0",
 		"cac": "^6.7.14",
 		"commander": "^14.0.3",
 		"esbuild": "0.28.2",
-		"eslint": "^10.8.1",
+		"eslint": "^10.11.0",
 		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-format": "^2.0.1",
 		"eslint-plugin-prettier": "^5.5.5",
 		"eslint-plugin-vue": "^10.8.0",
-		"globals": "^17.11.0",
-		"h3": "1.15.11",
+		"globals": "^17.12.0",
 		"minimatch": "10.2.6",
-		"oxc-parser": "0.146.0",
+		"oxc-parser": "0.151.0",
 		"prettier": "^3.9.6",
-		"puppeteer": "^25.7.0",
+		"puppeteer": "^25.11.0",
 		"taze": "^21.1.0",
 		"typescript": "^6.0.3",
-		"unplugin": "^3.3.0"
+		"unplugin": "^3.4.0"
 	},
 	"overrides": {
+		"@bomb.sh/tab": "0.0.22",
 		"esbuild": "0.28.2",
 		"vite": {
 			"esbuild": "0.28.2"
 		},
 		"defu": "6.1.6",
+		"devalue": "5.9.4",
 		"glob": "13.0.6",
 		"anymatch": {
 			"picomatch": "2.3.2"
@@ -95,7 +100,6 @@
 			"picomatch": "2.3.2"
 		},
 		"serialize-javascript": "7.0.5",
-		"srvx": "0.11.13",
 		"@cypress/request": {
 			"uuid": "14.0.0",
 			"qs": "6.16.0"
@@ -110,8 +114,5 @@
 		"svgo": "4.1.0",
 		"tar": "7.5.22",
 		"valibot": "1.4.2"
-	},
-	"dependencies": {
-		"qs": "6.16.0"
 	}
 }

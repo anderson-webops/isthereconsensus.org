@@ -49,7 +49,6 @@ export function buildDeploymentMetadata({
 		ok: true,
 		service: "front-end",
 		runtime: "nuxt-ssr",
-		nodeEnv: env.NODE_ENV || "production",
 		buildId: readBuildId(outputDir),
 		commit:
 			env.SOURCE_COMMIT ||

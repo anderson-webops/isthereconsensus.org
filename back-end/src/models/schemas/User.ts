@@ -25,7 +25,7 @@ const userSchema: Schema<IUser> = new Schema(
 		termsVersion: { type: String, default: "", trim: true, maxlength: 32 },
 		termsAcceptedAt: { type: Date }
 	},
-	{ timestamps: true }
+	{ optimisticConcurrency: true, timestamps: true }
 );
 
 userSchema.plugin(passwordPlugin);

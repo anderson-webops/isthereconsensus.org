@@ -28,15 +28,31 @@ case "$candidate/" in
   *) echo "Candidate must resolve beneath $release_root_real: $candidate" >&2; exit 1 ;;
 esac
 
-for required_file in back-end/dist/server.js front-end/.output/server/index.mjs front-end/.output/public/deployment.json .isthereconsensus-release-prepared.json; do
-  if [[ ! -f "$candidate/$required_file" ]]; then
-    echo "Prepared release is missing $required_file." >&2
-    exit 1
-  fi
+candidate_commit="$(git -C "$candidate" rev-parse HEAD)"
+runtime_target="$(realpath -e -- "$candidate/.runtime-artifact")"
+case "$runtime_target/" in
+  "$candidate/.runtime-artifact/"*) ;;
+  *) echo "Runtime artifact must resolve beneath the candidate checkout." >&2; exit 1 ;;
+esac
+
+for required_file in back-end/dist/server.js back-end/dist/scripts/seedContent.js front-end/.output/server/index.mjs front-end/.output/public/deployment.json .runtime-manifest.json; do
+	if [[ ! -f "$runtime_target/$required_file" ]]; then
+		echo "Prepared release is missing $required_file." >&2
+		exit 1
+	fi
 done
-if ! cmp -s "$candidate/front-end/.output/public/deployment.json" "$candidate/.isthereconsensus-release-prepared.json"; then
-  echo "Prepared release metadata does not match the public deployment identity." >&2
-  exit 1
+if [[ ! -f "$candidate/.isthereconsensus-release-prepared.json" ]]; then
+	echo "Prepared release is missing its source-side identity marker." >&2
+	exit 1
+fi
+if ! RUNTIME_ARTIFACT_EXPECT_COMMIT="$candidate_commit" RUNTIME_ARTIFACT_REQUIRE_CLEAN=true \
+  /usr/bin/node "$candidate/scripts/verify-runtime-artifact.mjs" "$runtime_target"; then
+	echo "Prepared runtime artifact failed its hash and path contract." >&2
+	exit 1
+fi
+if ! cmp -s "$runtime_target/front-end/.output/public/deployment.json" "$candidate/.isthereconsensus-release-prepared.json"; then
+	echo "Prepared release metadata does not match the public deployment identity." >&2
+	exit 1
 fi
 if [[ -e "$current_link" && ! -L "$current_link" ]]; then
   echo "Refusing to replace non-symlink deployment path: $current_link" >&2
@@ -78,9 +94,9 @@ restart_services() {
   systemctl restart "$web_service"
 }
 
-activate_target "$candidate"
-if nginx -t && restart_services && systemctl reload nginx && wait_for_target "$candidate"; then
-  echo "Promoted $candidate and verified both services plus exact public source identity."
+activate_target "$runtime_target"
+if nginx -t && restart_services && systemctl reload nginx && wait_for_target "$runtime_target"; then
+	echo "Promoted $runtime_target and verified both services plus exact public source identity."
   exit 0
 fi
 

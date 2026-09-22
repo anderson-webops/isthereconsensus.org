@@ -1,4 +1,3 @@
-import type { H3Event } from "h3";
 import { evidenceComparisons } from "../../src/data/comparisons";
 import { readingGuides } from "../../src/data/reading-guides";
 import { buildApiUrl } from "../../src/utils/api";
@@ -23,7 +22,7 @@ function formatLastmod(value?: string) {
 	return parsed.toISOString();
 }
 
-function resolveApiBase(event: H3Event) {
+function resolveApiBase(event: Parameters<typeof getRequestURL>[0]) {
 	const config = useRuntimeConfig(event);
 	const requestOrigin = getRequestURL(event).origin;
 	const configured = String(config.apiInternalBase || config.public.apiBase || "/api");

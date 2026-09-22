@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import process from "node:process";
 import { afterEach, describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import { buildSetupStatus } from "../src/setup/buildSetupStatus.js";
 import { claimWorkflowTransitionAllowed } from "../src/utils/claimWorkflow.js";
 import { resolveMongoConfiguration } from "../src/utils/mongoConfiguration.js";
 import { summarizeClaimSourceReadiness } from "../src/utils/publicClaimReadiness.js";
@@ -16,7 +17,12 @@ const originalEnvironment = {
 const testDir = dirname(fileURLToPath(import.meta.url));
 const backendRoot = join(testDir, "..");
 const serverSource = readFileSync(join(backendRoot, "src", "server.ts"), "utf8");
+const expertApplicationSubmissionSource = serverSource.slice(
+	serverSource.indexOf("api.post(\"/expert-applications\""),
+	serverSource.indexOf("api.get(\"/evidence/search\"")
+);
 const seedSource = readFileSync(join(backendRoot, "src", "data", "seedClaims.ts"), "utf8");
+const seedRunnerSource = readFileSync(join(backendRoot, "src", "scripts", "seedContent.ts"), "utf8");
 
 function restoreEnvironment(name: keyof typeof process.env, value: string | undefined) {
 	if (value === undefined) delete process.env[name];
@@ -61,6 +67,18 @@ describe("workflow security", () => {
 		assert.match(serverSource, /CAPTCHA_SECRET is required in production/);
 	});
 
+	it("keeps browser API configuration out of backend readiness", () => {
+		const status = buildSetupStatus({
+			isProd: true,
+			isCrossSite: false,
+			corsOrigin: "",
+			mongoSource: "env"
+		});
+
+		assert.equal(Object.hasOwn(status, "apiBase"), false);
+		assert.equal(status.checks.some(check => check.id === "public-api-base"), false);
+	});
+
 	it("does not treat retracted sources as a publish-ready source stack", () => {
 		const counts = summarizeClaimSourceReadiness([
 			{
@@ -90,11 +108,13 @@ describe("workflow security", () => {
 		});
 	});
 
-	it("keeps restart seeding insert-only unless synchronization is explicitly selected", () => {
+	it("keeps production seeding in a one-shot process and insert-only unless synchronization is explicit", () => {
 		assert.match(seedSource, /existingClaim && !synchronizeExisting/);
 		assert.match(seedSource, /if \(synchronizeExisting\) \{\s+await archiveRetiredSeedClaims/);
-		assert.match(serverSource, /SEED_CONTENT_MODE must be either insert or sync/);
-		assert.match(serverSource, /seedClaims\(\{ synchronizeExisting: seedContentMode === "sync" \}\)/);
+		assert.doesNotMatch(serverSource, /^import .*seedClaims/m);
+		assert.match(serverSource, /if \(!isProd\) \{[\s\S]+import\("\.\/data\/seedClaims\.js"\)/);
+		assert.match(seedRunnerSource, /SEED_CONTENT_MODE must be either insert or sync/);
+		assert.match(seedRunnerSource, /seedClaims\(\{ synchronizeExisting: mode === "sync" \}\)/);
 	});
 
 	it("requires protected notes for evidence demotion and public reasons for claim demotion", () => {
@@ -108,6 +128,22 @@ describe("workflow security", () => {
 		assert.match(
 			serverSource,
 			/decision === "approved"[\s\S]+await application\.save\(\);[\s\S]+await user\.save\(\);[\s\S]+else[\s\S]+await user\.save\(\);[\s\S]+await application\.save\(\);/
+		);
+	});
+
+	it("revokes expert access before a version-checked reapplication save", () => {
+		assert.doesNotMatch(expertApplicationSubmissionSource, /findOneAndUpdate/);
+		assert.match(
+			expertApplicationSubmissionSource,
+			/ExpertApplication\.findOne\([\s\S]+\?\? new ExpertApplication/
+		);
+		assert.match(
+			expertApplicationSubmissionSource,
+			/previousExpertiseStatus[\s\S]+user\.expertiseStatus = "pending"[\s\S]+user\.sessionVersion/
+		);
+		assert.match(
+			expertApplicationSubmissionSource,
+			/await user\.save\(\);\s+await application\.save\(\);/
 		);
 	});
 

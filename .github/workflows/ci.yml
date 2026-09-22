@@ -231,6 +231,16 @@ jobs:
       - name: SSR route rule smoke
         run: npm run smoke:ssr-routes
 
+      - name: Build and verify isolated runtime artifact
+        env:
+          RUNTIME_ARTIFACT_EXPECT_COMMIT: ${{ github.sha }}
+          RUNTIME_ARTIFACT_MONGO_URI: mongodb://127.0.0.1:${{ job.services.mongodb.ports['27017'] }}/isthereconsensus_artifact_acceptance
+        run: |
+          npm run artifact:build
+          npm run artifact:verify
+          npm run artifact:smoke
+          npm audit --prefix .runtime-artifact/back-end --omit=dev
+
       - name: Reader library persistence and browser checks
         env:
           READER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}

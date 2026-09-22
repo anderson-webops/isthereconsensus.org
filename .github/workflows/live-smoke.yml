@@ -39,7 +39,7 @@ jobs:
           cache: npm
 
       - name: Install patched npm
-        run: npm install --global npm@${NPM_VERSION}
+        run: npm install --global "npm@${NPM_VERSION}"
 
       - name: Show toolchain
         run: |
