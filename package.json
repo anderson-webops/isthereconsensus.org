@@ -6,7 +6,7 @@
 	"packageManager": "npm@12.0.2",
 	"engines": {
 		"node": ">=24.18.1 <25",
-		"npm": ">=12.0.2 <13"
+		"npm": ">=11.19.0 <13"
 	},
 	"description": "Monorepo for isthereconsensus.org",
 	"author": "Jacob Anderson",
