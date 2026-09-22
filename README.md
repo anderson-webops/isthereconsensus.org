@@ -31,7 +31,7 @@ The site is deliberately not a truth oracle, medical-advice tool, or automated c
 
 ## Getting started
 
-Use Node `24.18.1` and npm `12.0.2`; `.node-version`, `.nvmrc`, package engines, CI, and the direct systemd deployment all pin that production toolchain.
+Use Node `24.18.1` and npm `12.0.2`; `.node-version`, `.nvmrc`, `packageManager`, CI, and the direct systemd deployment pin that production toolchain. The npm engine range also admits GitHub Dependabot's current npm `11.19.0` resolver so its `engine-strict` update jobs can prepare proposals; local validation, CI, artifacts, and deployment remain pinned to npm `12.0.2`.
 
 ```bash
 npm ci --include=optional --strict-allow-scripts

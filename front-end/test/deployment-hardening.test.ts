@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(testDir, "..", "..");
+const rootPackage = JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8"));
+const backendPackage = JSON.parse(readFileSync(join(repositoryRoot, "back-end", "package.json"), "utf8"));
 const deploymentGuide = readFileSync(join(repositoryRoot, "DEPLOYMENT.md"), "utf8");
 const nginxConfig = readFileSync(join(repositoryRoot, "deploy", "nginx", "isthereconsensus.org.conf"), "utf8");
 const prepareRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "prepare-release.sh"), "utf8");
@@ -23,6 +25,16 @@ const systemdUnits = [
 ];
 
 describe("deployment hardening", () => {
+	it("pins runtime npm while admitting the Dependabot resolver", () => {
+		for (const manifest of [rootPackage, backendPackage]) {
+			assert.equal(manifest.packageManager, "npm@12.0.2");
+			assert.equal(manifest.engines.node, ">=24.18.1 <25");
+			assert.equal(manifest.engines.npm, ">=11.19.0 <13");
+		}
+
+		assert.match(prepareRelease, /npm --version.*12\.0\.2/s);
+	});
+
 	it("prepares and promotes direct releases without a production container contract", () => {
 		assert.match(prepareRelease, /node --version.*v24\.18\.1/s);
 		assert.match(prepareRelease, /npm --version.*12\.0\.2/s);
