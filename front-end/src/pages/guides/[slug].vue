@@ -11,7 +11,9 @@ import { serializeJsonLd } from "~/utils/json-ld";
 // move together, including browser back/forward and unknown slugs.
 definePageMeta({ key: (route) => route.path });
 const route = useRoute();
-const slug = String(route.params.slug || "");
+const routeParams = route.params as Record<string, string | string[] | undefined>;
+const routeSlug = Array.isArray(routeParams.slug) ? routeParams.slug[0] : routeParams.slug;
+const slug = String(routeSlug || "");
 const summary = readingGuides.find((guide) => guide.slug === slug);
 const guide = summary ? await loadReadingGuide(slug) : undefined;
 if (!summary || !guide) throw createError({ statusCode: 404, statusMessage: "Reading guide not found" });

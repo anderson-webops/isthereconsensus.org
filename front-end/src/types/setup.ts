@@ -13,7 +13,6 @@ export interface SetupStatusResponse {
 	ok: boolean;
 	environment: "production" | "development";
 	generatedAt: string;
-	apiBase: string;
 	databaseName: string;
 	mongoSource: "vault" | "env" | "missing";
 	checks: SetupCheck[];

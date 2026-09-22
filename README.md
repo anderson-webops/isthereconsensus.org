@@ -90,6 +90,9 @@ npm run verify:native-lock
 npm run lint
 npm run typecheck
 npm run build
+npm run artifact:build
+npm run artifact:verify
+npm run artifact:smoke
 npm run smoke:ssr-assets
 npm run smoke:ssr-routes
 npm run a11y
@@ -123,11 +126,11 @@ LIVE_SMOKE_BASE_URL=http://127.0.0.1:4068 LIVE_SMOKE_PROFILE=frontend npm run sm
 
 ## Direct production deployment
 
-Production runs without Docker or a container registry. Each release is a clean Git checkout under `/srv/isthereconsensus.org/releases/<release>`, prepared as the unprivileged deployment user and then atomically promoted through `/srv/isthereconsensus.org/current`.
+Production runs without Docker or a container registry. Each release begins as a clean Git checkout under `/srv/isthereconsensus.org/releases/<release>`. Preparation produces a separately installed, fully hashed `.runtime-artifact/`, and `/srv/isthereconsensus.org/current` points only to that artifact after promotion.
 
-Two hardened systemd services run the compiled Nuxt SSR frontend and Express API from that immutable release. Nginx terminates dual-stack TLS and proxies the public site and API to their loopback listeners. `/var/www/isthereconsensus.org` is intentionally unused because this is an SSR application.
+Two hardened systemd services run the compiled Nuxt SSR frontend and Express API from that immutable artifact. The content catalog is loaded by a one-shot API pre-start process, so the long-running API does not retain the source seed catalog in memory. Nginx terminates dual-stack TLS and proxies the public site and API to their loopback listeners. `/var/www/isthereconsensus.org` is intentionally unused because this is an SSR application.
 
-Preparation runs the clean-install, dependency, security, native-binding, test, build, SSR, and accessibility gates before replacing the dependency tree with a clean production-only install. Promotion verifies both service readiness and the exact public source identity, and restores the prior release if any check fails. See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the host setup and commands.
+Preparation runs the clean-install, dependency, security, native-binding, test, build, SSR, and accessibility gates. It then installs the standalone backend production graph into the artifact, records every path, hash, mode, entrypoint, and native binding, and exercises a copy from an isolated directory without source or development dependencies. CI additionally uses a synthetic MongoDB database to exercise seeding, API health/readiness, and graceful shutdown. Promotion revalidates the exact artifact, verifies both service readiness and public source identity, and restores the prior release if any check fails. See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the host setup and commands.
 
 ## Launch coordination
 

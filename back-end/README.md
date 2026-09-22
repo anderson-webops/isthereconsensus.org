@@ -25,7 +25,8 @@ Minimum local development environment:
 - `MONGODB_URI`
 - `SESSION_SECRET`
 - `PORT=3011`
-- `PUBLIC_API_BASE`
+
+The browser-facing API base belongs to the Nuxt runtime rather than the backend. For same-origin deployments, set `NUXT_PUBLIC_API_BASE=/api` in the frontend environment and keep any loopback backend address private in `NUXT_API_INTERNAL_BASE`.
 
 Production also needs the deployment variables documented in `../DEPLOYMENT.md`.
 

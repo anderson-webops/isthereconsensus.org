@@ -46,8 +46,6 @@ import {
 	getAtlasCollections,
 	rankRelatedClaimSlugs
 } from "./data/atlasCollections.js";
-import { seedClaims } from "./data/seedClaims.js";
-import { seedTopics } from "./data/seedTopics.js";
 import { optionalAuth, requireAdmin, requireAuth, requireEditorial } from "./middleware/auth.js";
 import { Claim } from "./models/schemas/Claim.js";
 import { ClaimRevision } from "./models/schemas/ClaimRevision.js";
@@ -137,10 +135,6 @@ async function main() {
 	const diagnosticsEnabled = env.ENABLE_INTERNAL_DIAGNOSTICS === "true";
 	const runtimeHost = parseRuntimeHost(env.HOST, isProd, env.ALLOW_PUBLIC_LISTENER === "true");
 	const trustedProxyIps = parseTrustedProxyIps(env.TRUST_PROXY_IPS, isProd);
-	const seedContentMode = env.SEED_CONTENT_MODE || "insert";
-	if (seedContentMode !== "insert" && seedContentMode !== "sync") {
-		throw new Error("SEED_CONTENT_MODE must be either insert or sync.");
-	}
 	app.disable("x-powered-by");
 
 	app.set("trust proxy", trustedProxyIps.length ? trustedProxyIps : false);
@@ -360,9 +354,19 @@ async function main() {
 			})
 		);
 	});
-	await seedTopics();
-	await seedClaims({ synchronizeExisting: seedContentMode === "sync" });
-	console.log(`Seed content mode: ${seedContentMode === "sync" ? "synchronize existing" : "insert only"}.`);
+	if (!isProd) {
+		const seedContentMode = env.SEED_CONTENT_MODE || "insert";
+		if (seedContentMode !== "insert" && seedContentMode !== "sync") {
+			throw new Error("SEED_CONTENT_MODE must be either insert or sync.");
+		}
+		const [{ seedClaims }, { seedTopics }] = await Promise.all([
+			import("./data/seedClaims.js"),
+			import("./data/seedTopics.js")
+		]);
+		await seedTopics();
+		await seedClaims({ synchronizeExisting: seedContentMode === "sync" });
+		console.log(`Seed content mode: ${seedContentMode === "sync" ? "synchronize existing" : "insert only"}.`);
+	}
 	await Question.updateMany({ routingStatus: { $exists: false } }, { $set: { routingStatus: "unassigned" } });
 
 	const api = express.Router();
@@ -2363,36 +2367,36 @@ async function main() {
 					});
 			}
 
-			const application = await ExpertApplication.findOneAndUpdate(
-				{ user: user._id },
-				{
-					user: user._id,
-					name: user.name,
-					affiliation,
-					credentialLabel,
-					expertiseAreas,
-					evidenceLinks,
-					statement,
-					conflictDisclosure,
-					fundingDisclosure,
-					attestsDisclosurePolicy,
-					attestsReviewStandards,
-					status: "pending",
-					reviewNotes: "",
-					reviewedBy: undefined,
-					reviewedAt: undefined
-				},
-				{
-					returnDocument: "after",
-					upsert: true,
-					setDefaultsOnInsert: true
-				}
-			).lean();
+			const application
+				= await ExpertApplication.findOne({ user: user._id })
+					?? new ExpertApplication({ user: user._id });
+			application.set({
+				name: user.name,
+				affiliation,
+				credentialLabel,
+				expertiseAreas,
+				evidenceLinks,
+				statement,
+				conflictDisclosure,
+				fundingDisclosure,
+				attestsDisclosurePolicy,
+				attestsReviewStandards,
+				status: "pending",
+				reviewNotes: "",
+				reviewedBy: undefined,
+				reviewedAt: undefined
+			});
 
+			const previousExpertiseStatus = user.expertiseStatus;
 			user.expertiseStatus = "pending";
+			if (previousExpertiseStatus !== "pending") {
+				user.sessionVersion = Number(user.sessionVersion || 0) + 1;
+			}
 			if (affiliation) user.affiliation = affiliation;
 			if (expertiseAreas.length) user.expertiseAreas = expertiseAreas;
+			// Revoke existing expert access before changing the application so every partial failure is fail-closed.
 			await user.save();
+			await application.save();
 			await recordAccountActivity({
 				req,
 				action: "expert_application.created",
@@ -2411,7 +2415,7 @@ async function main() {
 				}
 			});
 
-			return res.status(201).json({ application: toApplicantExpertApplication(application) });
+			return res.status(201).json({ application: toApplicantExpertApplication(application.toObject()) });
 		}
 		catch (error) {
 			logError("API request failed", error);

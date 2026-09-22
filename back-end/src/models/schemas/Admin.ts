@@ -19,7 +19,7 @@ const adminSchema: Schema<IAdmin> = new Schema(
 		saveEdit: { type: String, default: "Edit", required: true }, // Added required: true
 		role: { type: String, default: "admin", enum: ["admin"], immutable: true }
 	},
-	{ timestamps: true }
+	{ optimisticConcurrency: true, timestamps: true }
 );
 
 /**

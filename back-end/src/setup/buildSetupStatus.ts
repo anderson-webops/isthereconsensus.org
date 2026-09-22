@@ -17,7 +17,6 @@ export interface SetupStatusResponse {
 	ok: boolean;
 	environment: "production" | "development";
 	generatedAt: string;
-	apiBase: string;
 	databaseName: string;
 	mongoSource: MongoConfigSource;
 	checks: SetupCheck[];
@@ -31,24 +30,12 @@ interface BuildSetupStatusOptions {
 	mongoSource: MongoConfigSource;
 }
 
-const localUrlPattern = /localhost|127\.0\.0\.1|0\.0\.0\.0/i;
-const trailingSlashPattern = /\/+$/;
-
-function looksLocalUrl(value: string) {
-	return localUrlPattern.test(value);
-}
-
-function normalizeApiBase(value: string) {
-	return value.replace(trailingSlashPattern, "");
-}
-
 export function buildSetupStatus({
 	isProd,
 	isCrossSite,
 	corsOrigin,
 	mongoSource
 }: BuildSetupStatusOptions): SetupStatusResponse {
-	const publicApiBase = normalizeApiBase(env.PUBLIC_API_BASE || "");
 	const hasSessionSecret = !!env.SESSION_SECRET;
 	const hasCaptchaSecret = !!env.CAPTCHA_SECRET;
 	const hasCaptchaSiteKey = !!env.PUBLIC_CAPTCHA_SITEKEY;
@@ -95,16 +82,6 @@ export function buildSetupStatus({
 			severity: "critical",
 			detail: hasSessionSecret ? "SESSION_SECRET is configured." : "SESSION_SECRET is missing.",
 			action: "Set a long random SESSION_SECRET before exposing auth to the public."
-		},
-		{
-			id: "public-api-base",
-			label: "Frontend API base",
-			ok: !isProd || (!!publicApiBase && !looksLocalUrl(publicApiBase)),
-			severity: "critical",
-			detail: publicApiBase
-				? `PUBLIC_API_BASE is set to ${publicApiBase}.`
-				: "PUBLIC_API_BASE is not set.",
-			action: "Point PUBLIC_API_BASE at /api for same-origin proxying, or at an intentional absolute public origin."
 		},
 		{
 			id: "cors",
@@ -174,7 +151,6 @@ export function buildSetupStatus({
 		ok: failedCritical === 0,
 		environment: isProd ? "production" : "development",
 		generatedAt: new Date().toISOString(),
-		apiBase: publicApiBase,
 		databaseName,
 		mongoSource,
 		checks,

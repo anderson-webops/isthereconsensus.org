@@ -1,5 +1,3 @@
-import process from "node:process";
-
 interface PublicDeploymentConfig {
 	deployment?: {
 		commit?: unknown;
@@ -22,7 +20,6 @@ export default defineEventHandler((event) => {
 		ok: true,
 		service: "front-end",
 		runtime: "nuxt-ssr",
-		nodeEnv: process.env.NODE_ENV || "",
 		buildId: stringValue(config.app?.buildId),
 		commit: stringValue(publicConfig.deployment?.commit),
 		ref: stringValue(publicConfig.deployment?.ref),

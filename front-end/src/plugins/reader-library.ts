@@ -1,7 +1,7 @@
-import type { AccountLibrary, ReaderLibraryController } from "~/utils/reader-library";
+import type { AccountLibrary } from "~/utils/reader-library";
 import { createReaderLibrary } from "~/utils/reader-library";
 
-export default defineNuxtPlugin<{ readerLibrary: ReaderLibraryController }>((nuxtApp) => {
+export default defineNuxtPlugin((nuxtApp) => {
 	const { apiUrl } = useApi();
 	const { currentAccount, role, ready } = useAuth();
 	const library = createReaderLibrary({

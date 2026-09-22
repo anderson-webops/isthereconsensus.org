@@ -16,13 +16,21 @@ function readJson(path) {
 	return JSON.parse(read(path));
 }
 
-function packageVersion(lockfile, packageName) {
-	return lockfile.packages?.[`node_modules/${packageName}`]?.version;
-}
-
 function exactApproval(lockfile, packageName) {
-	const version = packageVersion(lockfile, packageName);
-	assert.ok(version, `${packageName} is missing from its lockfile.`);
+	const suffix = `/node_modules/${packageName}`;
+	const versions = new Set(
+		Object.entries(lockfile.packages || {})
+			.filter(([packagePath]) => packagePath === `node_modules/${packageName}` || packagePath.endsWith(suffix))
+			.map(([, metadata]) => metadata.version)
+			.filter(Boolean)
+	);
+	assert.ok(versions.size, `${packageName} is missing from its lockfile.`);
+	assert.equal(
+		versions.size,
+		1,
+		`${packageName} resolves to multiple install-script versions: ${[...versions].join(", ")}`
+	);
+	const [version] = versions;
 	return `${packageName}@${version}`;
 }
 

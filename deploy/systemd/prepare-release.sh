@@ -63,19 +63,20 @@ npm run smoke:ssr-assets
 npm run smoke:ssr-routes
 npm run a11y
 
+npm run artifact:build
+RUNTIME_ARTIFACT_EXPECT_COMMIT="$SOURCE_COMMIT" \
+  RUNTIME_ARTIFACT_REQUIRE_CLEAN=true \
+  npm run artifact:verify
+RUNTIME_ARTIFACT_EXPECT_COMMIT="$SOURCE_COMMIT" npm run artifact:smoke
+npm audit --prefix .runtime-artifact/back-end --omit=dev
+
 node - <<'NODE'
 import { copyFileSync, readFileSync } from "node:fs";
 
-const deployment = JSON.parse(readFileSync("front-end/.output/public/deployment.json", "utf8"));
+const deployment = JSON.parse(readFileSync(".runtime-artifact/front-end/.output/public/deployment.json", "utf8"));
 if (deployment.commit !== process.env.SOURCE_COMMIT) {
   throw new Error("Built deployment identity does not match the candidate commit.");
 }
-copyFileSync("front-end/.output/public/deployment.json", ".isthereconsensus-release-prepared.json");
+copyFileSync(".runtime-artifact/front-end/.output/public/deployment.json", ".isthereconsensus-release-prepared.json");
 NODE
-
-npm ci --omit=dev --include=optional --ignore-scripts
-npm audit --omit=dev
-npm run smoke:backend-runtime
-npm run smoke:ssr-assets
-npm run smoke:ssr-routes
 echo "Prepared direct runtime release $candidate at $SOURCE_COMMIT."

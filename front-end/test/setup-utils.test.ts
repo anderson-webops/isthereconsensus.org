@@ -12,7 +12,9 @@ describe("buildServerAgentPrompt", () => {
 		});
 
 		assert.match(prompt, /https:\/\/isthereconsensus\.org/);
-		assert.match(prompt, /PUBLIC_API_BASE=\/api/);
+		assert.match(prompt, /NUXT_PUBLIC_API_BASE=\/api/);
+		assert.match(prompt, /keep \/_dbinfo and setup diagnostics unavailable on the public edge/);
+		assert.doesNotMatch(prompt, /create a clear placeholder/);
 	});
 });
 
@@ -37,5 +39,6 @@ describe("buildFrontendSetupChecks", () => {
 
 		assert.equal(originAlignment?.ok, false);
 		assert.match(originAlignment?.detail || "", /127\.0\.0\.1/);
+		assert.match(originAlignment?.action || "", /NUXT_PUBLIC_API_BASE=\/api/);
 	});
 });
