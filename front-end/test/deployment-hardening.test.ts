@@ -12,6 +12,7 @@ const deploymentGuide = readFileSync(join(repositoryRoot, "DEPLOYMENT.md"), "utf
 const nginxConfig = readFileSync(join(repositoryRoot, "deploy", "nginx", "isthereconsensus.org.conf"), "utf8");
 const prepareRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "prepare-release.sh"), "utf8");
 const promoteRelease = readFileSync(join(repositoryRoot, "deploy", "systemd", "promote-release.sh"), "utf8");
+const installServices = readFileSync(join(repositoryRoot, "deploy", "systemd", "install-services.sh"), "utf8");
 const artifactBuilder = readFileSync(join(repositoryRoot, "scripts", "build-runtime-artifact.mjs"), "utf8");
 const artifactVerifier = readFileSync(join(repositoryRoot, "scripts", "verify-runtime-artifact.mjs"), "utf8");
 const nuxtConfig = readFileSync(join(repositoryRoot, "front-end", "nuxt.config.ts"), "utf8");
@@ -54,12 +55,34 @@ describe("deployment hardening", () => {
 		assert.match(artifactVerifier, /Runtime artifact inventory or hash mismatch/);
 		assert.doesNotMatch(prepareRelease, /npm prune/);
 		assert.match(prepareRelease, /deployment\.commit !== process\.env\.SOURCE_COMMIT/);
-		assert.match(promoteRelease, /activate_target "\$runtime_target"/);
+		assert.match(prepareRelease, /runtime manifest SHA-256: \$manifest_digest/);
+		assert.match(deploymentGuide, /\/usr\/local\/sbin\/isthereconsensus-promote-release/);
+		assert.doesNotMatch(deploymentGuide, /sudo \/srv\/isthereconsensus\.org\/releases\/[^\n]+promote-release\.sh/);
+		assert.match(installServices, /promoter_dest=\/usr\/local\/sbin\/isthereconsensus-promote-release/);
+		assert.match(installServices, /verifier_dest="\$verifier_dir\/verify-runtime-artifact\.mjs"/);
+		assert.match(installServices, /install -o root -g root -m 0755 "\$promoter_source"/);
+		assert.match(installServices, /install -o root -g root -m 0644 "\$verifier_source"/);
+		assert.match(installServices, /artifact_release_root="\$site_root\/artifact-releases"/);
+		assert.match(installServices, /promotion_lock="\$site_root\/\.promotion\.lock"/);
+		assert.match(promoteRelease, /script_real.*installed_promoter/s);
+		assert.match(promoteRelease, /Copied runtime manifest does not match the independently reviewed SHA-256/);
+		assert.match(promoteRelease, /current-commit-or-none.*current-manifest-sha256-or-none/);
+		assert.match(
+			promoteRelease,
+			/seal_runtime_artifact "\$initial_target" "\$expected_current_commit" "\$expected_current_manifest_digest"/
+		);
+		assert.match(promoteRelease, /! -type l -perm \/7000/);
+		assert.match(artifactVerifier, /forbidden set-ID or sticky mode bits/);
+		assert.match(promoteRelease, /verify_runtime_artifact "\$active_staging"/);
+		assert.match(promoteRelease, /assert_trusted_tree "\$candidate_target"/);
+		assert.match(promoteRelease, /activate_target "\$candidate_target"/);
 		assert.match(promoteRelease, /mv -Tf/);
 		assert.match(promoteRelease, /api_ready_url/);
 		assert.match(promoteRelease, /web_ready_url/);
 		assert.match(promoteRelease, /previous_target/);
 		assert.match(promoteRelease, /wait_for_target "\$previous_target"/);
+		assert.doesNotMatch(promoteRelease, /"\$candidate\/scripts\/verify-runtime-artifact\.mjs"/);
+		assert.doesNotMatch(promoteRelease, /git -C "\$candidate"/);
 		assert.doesNotMatch(`${prepareRelease}\n${promoteRelease}`, /\b(?:docker|podman|compose)\b/iu);
 	});
 

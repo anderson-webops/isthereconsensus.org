@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { chmod, cp, lstat, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
@@ -248,6 +248,17 @@ try {
 	else {
 		process.stdout.write("Synthetic MongoDB URI not supplied; isolated dependency-ready API acceptance is deferred to CI.\n");
 	}
+
+	const setIdTarget = path.join(artifactRoot, "back-end/dist/server.js");
+	const originalMode = (await lstat(setIdTarget)).mode & 0o777;
+	await chmod(setIdTarget, originalMode | 0o4000);
+	const setIdMode = runSync("set-ID mode regression", process.execPath, [verifier, artifactRoot], {
+		cwd: acceptanceRoot,
+		env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_COMMIT: manifest.source.commit })
+	});
+	assert.notEqual(setIdMode.status, 0);
+	assert.match(setIdMode.output, /forbidden set-ID or sticky mode bits.*back-end\/dist\/server\.js/iu);
+	await chmod(setIdTarget, originalMode);
 
 	await rm(path.join(artifactRoot, "back-end/dist/utils/runtimeSecurity.js"));
 	const missingModule = runSync("missing module regression", process.execPath, [verifier, artifactRoot], {

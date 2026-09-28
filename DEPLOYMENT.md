@@ -64,19 +64,31 @@ For registered living-evidence refreshes, use the [scoped preview and promotion 
 
 ## Prepare and promote a direct release
 
+Install the reviewed host controls and services from an administrator-owned copy of the exact approved commit before allowing the unprivileged deployment account to prepare candidates:
+
+```bash
+sudo ./deploy/systemd/install-services.sh
+```
+
+Do not invoke an installer or promoter from a deployment-user-writable release checkout. The installer places the promoter at `/usr/local/sbin/isthereconsensus-promote-release` and its standalone verifier under `/usr/local/libexec/isthereconsensus/`, both owned by root. It also creates the root-owned immutable artifact root and promotion lock while preserving existing environment files by default.
+
 ```bash
 sudo -u isthereconsensus git clone --no-local <repository-url> /srv/isthereconsensus.org/releases/<release>
 sudo -u isthereconsensus /srv/isthereconsensus.org/releases/<release>/deploy/systemd/prepare-release.sh \
   /srv/isthereconsensus.org/releases/<release>
-sudo /srv/isthereconsensus.org/releases/<release>/deploy/systemd/promote-release.sh \
-  /srv/isthereconsensus.org/releases/<release>
+sudo /usr/local/sbin/isthereconsensus-promote-release \
+  /srv/isthereconsensus.org/releases/<release> \
+  <full-reviewed-commit> \
+  <independently-reviewed-runtime-manifest-sha256> \
+  <current-reviewed-commit-or-none> \
+  <current-reviewed-runtime-manifest-sha256-or-none>
 ```
 
-Install or review the hardened units first with `deploy/systemd/install-services.sh`. The preparation script requires a clean checkout and the exact Node/npm toolchain, runs all repository gates, and embeds the candidate commit in `/deployment.json`. It builds `.runtime-artifact/` with only the compiled backend, its standalone production install, and the Nuxt output. `.runtime-manifest.json` records the exact source identity, required entrypoints, native bindings, modes, sizes, and SHA-256 hashes for every artifact entry. The verifier carries an independent required-path list and rejects missing, changed, extra, escaping-symlink, credential, and source-control paths.
+The preparation script requires a clean checkout and the exact Node/npm toolchain, runs all repository gates, and embeds the candidate commit in `/deployment.json`. It builds `.runtime-artifact/` with only the compiled backend, its standalone production install, and the Nuxt output. `.runtime-manifest.json` records the exact source identity, required entrypoints, native bindings, modes, sizes, and SHA-256 hashes for every artifact entry. The verifier carries an independent required-path list and rejects missing, changed, extra, escaping-symlink, credential, and source-control paths. Record the preparation output's manifest SHA-256 through the reviewed release evidence path; do not derive the approval argument from a mutable candidate during privileged promotion.
 
 The artifact smoke copies that output to a clean temporary directory outside the checkout. It verifies both frontend probes, frontend rendering and graceful shutdown, backend and seeding fail-closed behavior, and a deliberately missing-module regression. CI supplies an isolated synthetic MongoDB database to additionally run the seed entrypoint and verify backend health, readiness, and graceful shutdown. Production preparation never sends real provider messages or embeds credentials in the artifact.
 
-The promotion script revalidates the artifact and atomically updates `/srv/isthereconsensus.org/current` to the artifact directory, not the source checkout. It restarts both services, verifies API and web readiness plus exact public source identity, and restores the prior release on failure. Production does not require Docker, Compose, or a container registry.
+The installed promoter copies the staged artifact into a root-only temporary tree, verifies the supplied manifest digest, source identity, complete inventory, ownership, modes, and absence of set-ID/sticky bits, and then seals it beneath `/srv/isthereconsensus.org/artifact-releases/`. It never executes candidate-owned code. `/srv/isthereconsensus.org/current` is atomically updated to the sealed root-owned artifact, not the source checkout or deployment-user-writable build. Every promotion requires the independently recorded commit and manifest digest for the current release. On the first post-hardening promotion, those values bind the copy of the previously active writable artifact before it can be retained for rollback. Use `none none` only when no current release exists. The promoter restarts both services, verifies API and web readiness plus exact public source identity, and restores the verified prior release on failure. Production does not require Docker, Compose, or a container registry.
 
 The frontend build never reads `back-end/.env`. Supply public build metadata explicitly when needed, and supply secrets only to the running service through the protected frontend or backend environment file. Nuxt runtime overrides use the `NUXT_*` names shown above.
 
@@ -143,7 +155,7 @@ Production diagnostics are disabled unless `ENABLE_INTERNAL_DIAGNOSTICS=true`. T
 - Expert approval and demotion both require a rationale. Promotion persists the application decision before granting the user role; demotion revokes the user role before recording the application state, so partial failures fail closed.
 - Admin creation and evidence migrations use the same fail-closed Vault-or-environment database selection as the API. A configured Vault failure never falls back to `MONGODB_URI`.
 - Never copy the repository’s ignored `back-end/.env` into a release checkout or deployment bundle. Keep production environment files mode `0600` outside the release tree.
-- The immutable runtime artifact declares no writable paths. MongoDB is external persistent state; no database, queue, upload, cache, or spool belongs under a release directory. Promotion and rollback therefore leave persistent state untouched.
+- The immutable runtime artifact declares no writable paths. MongoDB is external persistent state; no database, queue, upload, cache, or spool belongs under a release directory. Staging checkouts remain writable only by the deployment account, while active and rollback artifacts are root-owned and not group/world writable. Promotion and rollback therefore leave persistent state untouched.
 - Production seeding runs as `back-end/dist/scripts/seedContent.js` before the API starts, then exits and releases the source-catalog memory. Development keeps automatic insert-only seeding. `SEED_CONTENT_MODE=sync` remains a backup-protected, explicitly reviewed promotion operation.
 - Reference systemd units account for memory and bound each Node process at `MemoryHigh=384M`, `MemoryMax=512M`, and `TasksMax=128`. Measure the deployed working set before tightening those ceilings; do not disable readiness or rollback checks to mask a limit breach.
 - The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only in development. Use the protected setup APIs for production diagnostics.

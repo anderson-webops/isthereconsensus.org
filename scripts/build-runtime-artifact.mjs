@@ -95,6 +95,9 @@ async function inventory(directory, prefix = "") {
 		if (relativePath === manifestName) continue;
 		const absolutePath = path.join(directory, entry.name);
 		const metadata = await lstat(absolutePath);
+		if (!metadata.isSymbolicLink() && (metadata.mode & 0o7000) !== 0) {
+			throw new Error(`Artifact entry has forbidden set-ID or sticky mode bits: ${relativePath}`);
+		}
 		if (metadata.isDirectory()) {
 			files.push(...await inventory(absolutePath, relativePath));
 		}
