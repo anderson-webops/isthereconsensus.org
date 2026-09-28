@@ -41,8 +41,9 @@ if [[ "$(node --version)" != "v24.18.1" || "$(npm --version)" != "12.0.2" ]]; th
   exit 1
 fi
 
-export SOURCE_COMMIT="$(git -C "$candidate" rev-parse HEAD)"
-export SOURCE_TAG="$(git -C "$candidate" describe --tags --exact-match 2>/dev/null || true)"
+SOURCE_COMMIT="$(git -C "$candidate" rev-parse HEAD)"
+SOURCE_TAG="$(git -C "$candidate" describe --tags --exact-match 2>/dev/null || true)"
+export SOURCE_COMMIT SOURCE_TAG
 unset NODE_ENV
 
 cd -- "$candidate"
@@ -79,4 +80,6 @@ if (deployment.commit !== process.env.SOURCE_COMMIT) {
 }
 copyFileSync(".runtime-artifact/front-end/.output/public/deployment.json", ".isthereconsensus-release-prepared.json");
 NODE
+manifest_digest="$(sha256sum -- .runtime-artifact/.runtime-manifest.json | awk '{print $1}')"
 echo "Prepared direct runtime release $candidate at $SOURCE_COMMIT."
+echo "Independently review and supply runtime manifest SHA-256: $manifest_digest"

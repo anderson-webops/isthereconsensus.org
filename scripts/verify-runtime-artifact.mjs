@@ -14,6 +14,10 @@ const independentRequiredPaths = [
 	"front-end/.output/server/index.mjs"
 ];
 const artifactRoot = await realpath(path.resolve(process.argv[2] || ".runtime-artifact"));
+const artifactRootMetadata = await lstat(artifactRoot);
+if (!artifactRootMetadata.isDirectory() || (artifactRootMetadata.mode & 0o7000) !== 0) {
+	throw new Error("Runtime artifact root must be a real directory without set-ID or sticky mode bits.");
+}
 
 async function hashFile(absolutePath) {
 	return createHash("sha256").update(await readFile(absolutePath)).digest("hex");
@@ -26,6 +30,9 @@ async function inventory(directory, prefix = "") {
 		if (relativePath === manifestName) continue;
 		const absolutePath = path.join(directory, entry.name);
 		const metadata = await lstat(absolutePath);
+		if (!metadata.isSymbolicLink() && (metadata.mode & 0o7000) !== 0) {
+			throw new Error(`Artifact entry has forbidden set-ID or sticky mode bits: ${relativePath}`);
+		}
 		if (metadata.isDirectory()) {
 			files.push(...await inventory(absolutePath, relativePath));
 		}
