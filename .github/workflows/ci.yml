@@ -156,6 +156,8 @@ jobs:
         run: |
           npm audit
           npm audit --omit=dev
+          npm audit --prefix back-end
+          npm audit --prefix back-end --omit=dev
           npm audit signatures
           npm run verify:native-lock
 
