@@ -151,7 +151,7 @@ async function main() {
 			if (connection.readyState !== 1 || !connection.db) {
 				return false;
 			}
-			await connection.db.command({ ping: 1, maxTimeMS: 2_000 });
+			await connection.db.command({ ping: 1, maxTimeMS: 2_000 }, { signal: AbortSignal.timeout(2_000) });
 			return true;
 		})
 	);
