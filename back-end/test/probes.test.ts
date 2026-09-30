@@ -2,6 +2,7 @@ import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
+import { setTimeout as delay } from "node:timers/promises";
 import express from "express";
 import { createProbeRouter } from "../src/utils/probes.js";
 
@@ -56,5 +57,39 @@ describe("monitoring probes", () => {
 		});
 		await assertProbe(baseUrl, "/readyz", "GET", 503, "{\"ok\":false}");
 		await assertProbe(baseUrl, "/readyz", "HEAD", 503, "");
+	});
+
+	it("shares one readiness check across concurrent GET and HEAD requests", async () => {
+		let checks = 0;
+		const baseUrl = await startServer(async () => {
+			checks += 1;
+			await delay(50);
+			return true;
+		});
+		const requests = Array.from({ length: 32 }, (_, index) => fetch(`${baseUrl}/readyz`, { method: index % 2 ? "HEAD" : "GET" }));
+		const responses = await Promise.all(requests);
+		for (const response of responses) {
+			assert.equal(response.status, 200);
+			assert.equal(response.headers.get("cache-control"), "no-store");
+		}
+		assert.equal(checks, 1);
+		await assertProbe(baseUrl, "/readyz", "GET", 200, "{\"ok\":true}");
+		assert.equal(checks, 1);
+	});
+
+	it("refreshes a failed readiness result after the short cache interval", async () => {
+		let ready = false;
+		let checks = 0;
+		const baseUrl = await startServer(() => {
+			checks += 1;
+			return ready;
+		});
+		await assertProbe(baseUrl, "/readyz", "GET", 503, "{\"ok\":false}");
+		ready = true;
+		await assertProbe(baseUrl, "/readyz", "HEAD", 503, "");
+		assert.equal(checks, 1);
+		await delay(1_100);
+		await assertProbe(baseUrl, "/readyz", "GET", 200, "{\"ok\":true}");
+		assert.equal(checks, 2);
 	});
 });

@@ -142,6 +142,8 @@ Security reporting metadata is served by Nuxt SSR middleware at `/.well-known/se
 - Backend readiness: `GET /readyz`
 - Setup diagnostics: `GET /api/setup/status`
 
+Backend `GET` and `HEAD /readyz` share one bounded MongoDB check. Its result is cached in-process for one second to prevent public probe bursts from multiplying database commands. Responses remain minimal, unauthenticated, and `Cache-Control: no-store`; a failed check returns 503, and a recovered dependency is rechecked after the short cache interval.
+
 Production diagnostics are disabled unless `ENABLE_INTERNAL_DIAGNOSTICS=true`. The `/setup` UI is development-only and should return not-found in production. When diagnostics are enabled, requests require a strong `INTERNAL_DIAGNOSTICS_KEY` supplied as `x-internal-diagnostics-key`; loopback addresses and forwarded headers are not authorization.
 
 ## Deployment notes

@@ -15,14 +15,28 @@ function sendProbe(res: Response, ok: boolean, method: Request["method"]): void 
 
 export function createProbeRouter(checkReadiness: ReadinessCheck): Router {
 	const router = Router();
+	let cachedReadiness: { ready: boolean; expiresAt: number } | undefined;
+	let pendingReadiness: Promise<boolean> | undefined;
+	const getReadiness = (): Promise<boolean> => {
+		if (cachedReadiness && Date.now() < cachedReadiness.expiresAt) {
+			return Promise.resolve(cachedReadiness.ready);
+		}
+		if (!pendingReadiness) {
+			pendingReadiness = Promise.resolve()
+				.then(checkReadiness)
+				.then(ready => ready, () => false)
+				.then((ready) => {
+					cachedReadiness = { ready, expiresAt: Date.now() + 1_000 };
+					return ready;
+				})
+				.finally(() => {
+					pendingReadiness = undefined;
+				});
+		}
+		return pendingReadiness;
+	};
 	const readinessHandler = async (req: Request, res: Response) => {
-		let ready = false;
-		try {
-			ready = await checkReadiness();
-		}
-		catch {
-			ready = false;
-		}
+		const ready = await getReadiness();
 		sendProbe(res, ready, req.method);
 	};
 
