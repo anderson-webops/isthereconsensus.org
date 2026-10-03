@@ -1,10 +1,10 @@
 import { cp, mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { spawn } from "node:child_process";
 
 const root = process.cwd();
+const scratchRoot = path.join(root, ".ai-work", "runs");
 const frontendManifest = JSON.parse(await readFile(path.join(root, "front-end/package.json"), "utf8"));
 
 function run(command, args, cwd) {
@@ -28,7 +28,8 @@ function run(command, args, cwd) {
 async function verifyTarget(libc) {
 	const npmExecPath = process.env.npm_execpath;
 	if (!npmExecPath) throw new Error("Run verify:platform-install through npm so the selected npm executable is known.");
-	const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), `isthereconsensus-linux-arm64-${libc}-`));
+	await mkdir(scratchRoot, { recursive: true });
+	const temporaryRoot = await mkdtemp(path.join(scratchRoot, `isthereconsensus-linux-arm64-${libc}-`));
 	try {
 		await Promise.all([
 			mkdir(path.join(temporaryRoot, "back-end"), { recursive: true }),
@@ -38,6 +39,7 @@ async function verifyTarget(libc) {
 			cp(path.join(root, "package.json"), path.join(temporaryRoot, "package.json")),
 			cp(path.join(root, "package-lock.json"), path.join(temporaryRoot, "package-lock.json")),
 			cp(path.join(root, ".npmrc"), path.join(temporaryRoot, ".npmrc")),
+			cp(path.join(root, "vendor"), path.join(temporaryRoot, "vendor"), { recursive: true }),
 			cp(path.join(root, "back-end/package.json"), path.join(temporaryRoot, "back-end/package.json"), {
 				recursive: true
 			}),
