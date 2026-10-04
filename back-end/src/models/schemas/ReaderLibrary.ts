@@ -3,6 +3,7 @@ import { savedComparisonSlugsSchema } from "../../utils/comparisonLibrary.js";
 
 export const MAX_SAVED_REVIEWS = 200;
 export const MAX_FOLLOWED_TOPICS = 100;
+export const MAX_FOLLOWED_COVERAGE_REQUESTS = 100;
 
 export interface IReaderLibrary {
 	_id: string;
@@ -10,6 +11,7 @@ export interface IReaderLibrary {
 	savedReviewIds: string[];
 	followedTopicIds: string[];
 	savedComparisonSlugs: string[];
+	followedCoverageRequestIds: string[];
 }
 
 function ids(maximum: number) {
@@ -31,6 +33,7 @@ const readerLibrarySchema = new Schema<IReaderLibrary>(
 		revision: { type: Number, required: true, min: 1, validate: Number.isSafeInteger },
 		savedReviewIds: ids(MAX_SAVED_REVIEWS),
 		followedTopicIds: ids(MAX_FOLLOWED_TOPICS),
+		followedCoverageRequestIds: ids(MAX_FOLLOWED_COVERAGE_REQUESTS),
 		savedComparisonSlugs: {
 			type: [String],
 			default: [],

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CoverageResponse } from "~/types/coverage-roadmap";
+import CoverageFollowButton from "~/components/CoverageFollowButton.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { coverageStatusLabels } from "~/types/coverage-roadmap";
 
@@ -86,6 +87,7 @@ function browse(nextPage: number, nextStatus = status.value) {
 					<NuxtLink :to="`/roadmap/${request._id}`">{{ request.title }}</NuxtLink>
 				</h2>
 				<p>{{ request.summary }}</p>
+				<CoverageFollowButton :request-id="request._id" :title="request.title" />
 				<NuxtLink v-if="request.answer" :to="request.answer.path">Read the reviewed answer</NuxtLink>
 				<p v-if="request.answerUnavailable" class="muted">
 					The linked answer is currently unavailable. Publication status is not proof of an available reviewed

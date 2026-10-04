@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import type { ClaimSummary, Topic } from "~/types/board";
+import type { CoverageRequest } from "~/types/coverage-roadmap";
 import type { ReaderLibraryController } from "~/utils/reader-library";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { coverageStatusLabels } from "~/types/coverage-roadmap";
 
 interface LibraryContent {
 	reviews: ClaimSummary[];
 	topics: Topic[];
 	comparisons: Array<{ slug: string; title: string; description: string }>;
+	coverageRequests: CoverageRequest[];
 }
 type ReaderUpdate = {
 	id: string;
 	date: string;
-	kind: "new_review" | "new_comparison" | "evidence_update" | "correction";
+	kind: "new_review" | "new_comparison" | "evidence_update" | "correction" | "coverage_progress" | "requested_answer";
 	summary: string;
 	bottomLineImpact: "new" | "changed" | "unchanged" | "not_assessed";
 } & (
-	{ review: ClaimSummary; comparison?: never } | { comparison: LibraryContent["comparisons"][number]; review?: never }
+	| { review: ClaimSummary; comparison?: never; coverageRequest?: never }
+	| { comparison: LibraryContent["comparisons"][number]; review?: never; coverageRequest?: never }
+	| { coverageRequest: CoverageRequest; review?: never; comparison?: never }
 );
 interface UpdatePage {
 	updates: ReaderUpdate[];
@@ -24,7 +29,7 @@ interface UpdatePage {
 
 const library = useNuxtApp().$readerLibrary as ReaderLibraryController;
 const { apiUrl } = useApi();
-const content = ref<LibraryContent>({ reviews: [], topics: [], comparisons: [] });
+const content = ref<LibraryContent>({ reviews: [], topics: [], comparisons: [], coverageRequests: [] });
 const contentLoading = ref(false);
 const contentError = ref("");
 const contentLoaded = ref(false);
@@ -38,6 +43,9 @@ const confirmClear = ref(false);
 const scopeLabel = computed(() => (library.state.scope === "account" ? "account" : "browser"));
 const reviewsById = computed(() => new Map(content.value.reviews.map((review) => [review._id, review])));
 const topicsById = computed(() => new Map(content.value.topics.map((topic) => [topic._id, topic])));
+const requestsById = computed(
+	() => new Map((content.value.coverageRequests ?? []).map((request) => [request._id, request]))
+);
 const comparisonsBySlug = computed(
 	() => new Map(content.value.comparisons.map((comparison) => [comparison.slug, comparison]))
 );
@@ -49,6 +57,7 @@ const selectionKey = computed(() =>
 		library.state.savedReviewIds,
 		library.state.followedTopicIds,
 		library.state.savedComparisonSlugs,
+		library.state.followedCoverageRequestIds,
 		refreshCount.value
 	])
 );
@@ -56,7 +65,8 @@ function selection() {
 	return {
 		savedReviewIds: [...library.state.savedReviewIds],
 		followedTopicIds: [...library.state.followedTopicIds],
-		savedComparisonSlugs: [...library.state.savedComparisonSlugs]
+		savedComparisonSlugs: [...library.state.savedComparisonSlugs],
+		followedCoverageRequestIds: [...library.state.followedCoverageRequestIds]
 	};
 }
 let updateRequest: AbortController | null = null;
@@ -66,7 +76,7 @@ watch(
 	async (_value, _previous, onCleanup) => {
 		const request = new AbortController();
 		onCleanup(() => request.abort());
-		content.value = { reviews: [], topics: [], comparisons: [] };
+		content.value = { reviews: [], topics: [], comparisons: [], coverageRequests: [] };
 		contentLoaded.value = false;
 		contentError.value = "";
 		contentLoading.value = false;
@@ -76,7 +86,8 @@ watch(
 		if (
 			!library.state.savedReviewIds.length &&
 			!library.state.followedTopicIds.length &&
-			!library.state.savedComparisonSlugs.length
+			!library.state.savedComparisonSlugs.length &&
+			!library.state.followedCoverageRequestIds.length
 		) {
 			contentLoaded.value = true;
 			return;
@@ -116,6 +127,7 @@ async function loadUpdates(append = false) {
 			body: {
 				...selection(),
 				includeComparisons: true,
+				includeCoverageRequests: true,
 				...(append && nextCursor.value ? { cursor: nextCursor.value } : {})
 			}
 		});
@@ -143,7 +155,8 @@ watch(
 			library.state.ready &&
 			(library.state.savedReviewIds.length ||
 				library.state.followedTopicIds.length ||
-				library.state.savedComparisonSlugs.length)
+				library.state.savedComparisonSlugs.length ||
+				library.state.followedCoverageRequestIds.length)
 		) {
 			void loadUpdates();
 		}
@@ -165,7 +178,9 @@ const kindLabels = {
 	new_review: "New review",
 	new_comparison: "New comparison",
 	evidence_update: "Evidence update",
-	correction: "Correction"
+	correction: "Correction",
+	coverage_progress: "Requested question progress",
+	requested_answer: "Requested answer linked"
 };
 function formatDate(value: string) {
 	return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(value));
@@ -179,7 +194,7 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'My library' }]" />
 		<header>
 			<h1>My library</h1>
-			<p>Keep useful reviews and comparisons, and follow the topics you want to revisit.</p>
+			<p>Keep useful reviews and comparisons, and follow topics and requested questions you want to revisit.</p>
 		</header>
 		<section class="library-settings" aria-label="Library storage">
 			<div class="library-toolbar">
@@ -220,7 +235,8 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				Copy browser saves and follows to my account
 			</button>
 			<p class="library-note">
-				Up to 200 saved reviews, 50 comparisons and 100 followed topics per library. No email notifications.
+				Up to 200 saved reviews, 50 comparisons, 100 followed topics and 100 requested questions per library. No
+				email notifications.
 			</p>
 			<p v-if="library.state.error" role="alert">{{ library.state.error }}</p>
 			<p v-else-if="!library.state.ready" role="status">Loading your library…</p>
@@ -232,6 +248,9 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				<a href="#saved-reviews">Saved reviews ({{ library.state.savedReviewIds.length }})</a>
 				<a href="#saved-comparisons">Saved comparisons ({{ library.state.savedComparisonSlugs.length }})</a>
 				<a href="#followed-topics">Followed topics ({{ library.state.followedTopicIds.length }})</a>
+				<a href="#followed-questions"
+					>Requested questions ({{ library.state.followedCoverageRequestIds.length }})</a
+				>
 				<a href="#reader-updates">What changed</a>
 			</nav>
 			<p v-if="contentLoading" role="status">Loading saved content…</p>
@@ -345,6 +364,44 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				</ul>
 			</section>
 
+			<section id="followed-questions" aria-labelledby="questions-heading">
+				<h2 id="questions-heading">Followed requested questions</h2>
+				<p v-if="!library.state.followedCoverageRequestIds.length">
+					Choose “Follow question” on the <NuxtLink to="/roadmap">coverage roadmap</NuxtLink> to track
+					approved progress and the eventual answer.
+				</p>
+				<ul v-else-if="contentLoaded" class="library-list">
+					<li v-for="id in library.state.followedCoverageRequestIds" :key="id">
+						<div v-if="requestsById.get(id)">
+							<p class="library-note">{{ coverageStatusLabels[requestsById.get(id)!.status] }}</p>
+							<h3>
+								<NuxtLink :to="`/roadmap/${id}`">{{ requestsById.get(id)?.title }}</NuxtLink>
+							</h3>
+							<NuxtLink v-if="requestsById.get(id)?.answer" :to="requestsById.get(id)!.answer!.path"
+								>Read the reviewed answer</NuxtLink
+							>
+							<p v-else-if="requestsById.get(id)?.answerUnavailable">
+								The linked answer is currently unavailable.
+							</p>
+						</div>
+						<div v-else>
+							<h3>Requested question currently unavailable</h3>
+							<p class="library-note">
+								You can keep or remove this reference. Private and withdrawn questions are not shown.
+							</p>
+						</div>
+						<button
+							type="button"
+							:disabled="library.state.busy || library.state.needsReload"
+							:aria-label="`Unfollow requested question: ${requestsById.get(id)?.title || 'unavailable question'}`"
+							@click="library.setSelected('followedCoverageRequestIds', id, false)"
+						>
+							Unfollow
+						</button>
+					</li>
+				</ul>
+			</section>
+
 			<section id="reader-updates" aria-labelledby="updates-heading">
 				<div class="library-toolbar">
 					<h2 id="updates-heading">What changed</h2>
@@ -352,7 +409,8 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 				</div>
 				<p>
 					New reviews and comparisons, substantive evidence updates and corrections from the last 90 days, for
-					your saved content and followed topics. Draft work and cosmetic edits are excluded.
+					your saved content and followed topics. Approved requested-question progress and answer links appear
+					separately from scientific evidence updates. Draft work and routine saves are excluded.
 				</p>
 				<p class="library-note">
 					Review announcements start with the library feature. Comparison dates record their original source
@@ -371,17 +429,27 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 								{{ kindLabels[update.kind] }}
 							</p>
 							<h3>
-								<NuxtLink v-if="update.comparison" :to="`/compare/${update.comparison.slug}`">{{
+								<NuxtLink
+									v-if="update.coverageRequest"
+									:to="`/roadmap/${update.coverageRequest._id}`"
+									>{{ update.coverageRequest.title }}</NuxtLink
+								>
+								<NuxtLink v-else-if="update.comparison" :to="`/compare/${update.comparison.slug}`">{{
 									update.comparison.title
 								}}</NuxtLink>
 								<NuxtLink
-									v-else
+									v-else-if="update.review"
 									:to="`/consensus/${update.review.topic?.slug}/${update.review.slug}`"
 									>{{ update.review.title }}</NuxtLink
 								>
 							</h3>
 							<p>{{ update.summary }}</p>
-							<p class="library-note">{{ impactLabels[update.bottomLineImpact] }}</p>
+							<NuxtLink v-if="update.coverageRequest?.answer" :to="update.coverageRequest.answer.path"
+								>Read the reviewed answer</NuxtLink
+							>
+							<p v-if="!update.coverageRequest" class="library-note">
+								{{ impactLabels[update.bottomLineImpact] }}
+							</p>
 						</div>
 					</li>
 				</ul>
@@ -397,8 +465,8 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 			</button>
 			<div v-else>
 				<p>
-					Remove all saved reviews, comparisons and followed topics from this {{ scopeLabel }} library? This
-					cannot be undone. The other library will not change.
+					Remove all saved reviews, comparisons, followed topics and requested questions from this
+					{{ scopeLabel }} library? This cannot be undone. The other library will not change.
 				</p>
 				<div class="library-toolbar">
 					<button type="button" :disabled="library.state.busy" @click="clearLibrary">

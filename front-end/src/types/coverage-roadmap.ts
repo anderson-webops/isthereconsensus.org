@@ -10,7 +10,7 @@ export interface CoverageRequest {
 	topic: { title: string; slug: string } | null;
 	answer: { title: string; path: string } | null;
 	answerUnavailable: boolean;
-	history: Array<{ date: string; status: keyof typeof coverageStatusLabels; summary: string }>;
+	history: Array<{ id?: string; date: string; status: keyof typeof coverageStatusLabels; summary: string }>;
 }
 
 export interface AdminCoverageRequest {

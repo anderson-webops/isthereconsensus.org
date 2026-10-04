@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CoverageRequest } from "~/types/coverage-roadmap";
+import CoverageFollowButton from "~/components/CoverageFollowButton.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { coverageStatusLabels } from "~/types/coverage-roadmap";
 
@@ -48,6 +49,11 @@ useHead(() => ({
 					answer.
 				</p>
 			</header>
+			<CoverageFollowButton :request-id="request._id" :title="request.title" />
+			<p class="muted">
+				Follow approved progress and the eventual answer in your browser or account library. No email
+				notifications are sent.
+			</p>
 			<NuxtLink v-if="request.topic" :to="`/consensus/${request.topic.slug}`"
 				>Explore {{ request.topic.title }}</NuxtLink
 			>
@@ -59,7 +65,7 @@ useHead(() => ({
 			<section class="coverage-request__panel">
 				<h2>Editorial progress</h2>
 				<ol>
-					<li v-for="(event, index) in request.history" :key="index">
+					<li v-for="event in request.history" :key="event.id || event.date">
 						<p>
 							<strong>{{ coverageStatusLabels[event.status] }}</strong> ·
 							{{ new Date(event.date).toLocaleDateString() }}

@@ -5,6 +5,22 @@ import { coverageStatusLabels, coverageVisibilityLabels } from "../src/types/cov
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
 describe("coverage roadmap UI contract", () => {
+	it("follows public questions through the shared private library and separates editorial progress", () => {
+		for (const path of ["../src/pages/roadmap/index.vue", "../src/pages/roadmap/[id].vue"]) {
+			assert.match(read(path), /<CoverageFollowButton :request-id="request._id" :title="request.title"/);
+		}
+		const control = read("../src/components/CoverageFollowButton.vue");
+		assert.match(control, /library.setSelected\("followedCoverageRequestIds"/);
+		assert.match(control, /:aria-pressed="following"/);
+		assert.match(control, /library.state.needsReload/);
+		assert.doesNotMatch(control, /localStorage|\$fetch|feedbackId|privateNote|v-html/);
+		const library = read("../src/pages/library.vue");
+		assert.match(library, /includeCoverageRequests: true/);
+		assert.match(library, /id="followed-questions"/);
+		assert.match(library, /Requested question currently unavailable/);
+		assert.match(library, /v-if="!update.coverageRequest"/);
+		assert.match(library, /No\s+email notifications/);
+	});
 	it("keeps public request status distinct from private moderation visibility", () => {
 		assert.deepEqual(Object.keys(coverageStatusLabels), ["planned", "researching", "published"]);
 		assert.deepEqual(Object.keys(coverageVisibilityLabels), ["draft", "public", "withdrawn"]);

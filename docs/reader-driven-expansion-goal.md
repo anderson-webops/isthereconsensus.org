@@ -53,7 +53,9 @@ raw messages. A per-question novelty/source record will precede content batches.
 - Public coverage roadmap and moderated publication workflow: source-delivered
   in v1.38.0. Public release identity and health observed separately; this is
   not evidence of a production editorial mutation or approved reader demand.
-- Browser/account request following and update resolution: pending.
+- Browser/account request following and update resolution: local signed-session,
+  database and built-browser acceptance passed. Source integration is in
+  progress; public deployment remains a separate gate.
 - Source-verified expansion from 800 to 1,001 reviews: in progress. First batch
   adds four distinct privacy/password-policy reviews; public acceptance remains
   a separate gate. Research record: `research/reader-privacy-2026-10-04.md`.

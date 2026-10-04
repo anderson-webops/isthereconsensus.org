@@ -61,9 +61,11 @@ access. These complement, rather than replace, authenticated runtime checks.
 No content backfill or startup publication is added. The additive collection
 and indexes use normal model initialization. Deploy the matching backend before exposing
 the new frontend. Existing private suggestions are unchanged, and rollback
-does not require deleting the additive collection. Request following, library
-integration, substantive content expansion and public deployment acceptance
-remain separate milestones in `reader-driven-expansion-goal.md`.
+does not require deleting the additive collection. Request following now extends
+the shared reader library with browser-local and optional account selections;
+see `reader-library.md` for compatibility, privacy and update-feed behavior.
+Substantive content expansion and public deployment acceptance remain separate
+milestones in `reader-driven-expansion-goal.md`.
 
 ### Local acceptance, October 4, 2026
 
