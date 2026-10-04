@@ -42,6 +42,17 @@ export const atlasCollections = [
 	},
 	{
 		topicSlug: "digital-security-and-privacy",
+		slug: "browsing-privacy",
+		title: "Browsing privacy and trust",
+		description: "Private windows, HTTPS and VPNs: distinguish local records, protected connections and remote identity.",
+		claimSlugs: [
+			"does-private-or-incognito-browsing-make-you-anonymous",
+			"does-https-or-a-padlock-mean-a-website-is-trustworthy",
+			"does-a-vpn-make-you-completely-anonymous-online"
+		]
+	},
+	{
+		topicSlug: "digital-security-and-privacy",
 		slug: "account-protection",
 		title: "Account protection and recovery",
 		description: "Passkeys, codes, password reuse, recovery and the limits of routine password changes.",
@@ -50,7 +61,8 @@ export const atlasCollections = [
 			"can-one-time-authenticator-codes-still-be-phished",
 			"does-installing-a-password-manager-eliminate-password-reuse",
 			"do-synced-passkeys-prevent-lockout-when-a-device-is-lost",
-			"does-changing-passwords-every-month-improve-account-security"
+			"does-changing-passwords-every-month-improve-account-security",
+			"do-password-symbol-and-character-rules-guarantee-strong-passwords"
 		]
 	},
 	{

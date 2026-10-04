@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
+import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { seedReviewDates } from "../src/data/seedClaims.js";
 import { seedReaderAnnouncementSchema } from "../src/utils/seedReaderAnnouncement.js";
@@ -65,7 +66,7 @@ describe("living evidence refresh delivery", () => {
 	});
 
 	it("updates baseline reviews without creating duplicate reviews or replacing publication history", () => {
-		assert.equal(defaultClaims.length, baseline.totalReviews);
+		assert.equal(defaultClaims.length - readerExpansionClaims.length, baseline.totalReviews);
 		const ids = new Set<string>();
 		for (const record of registry.refreshes) {
 			assert.ok(baseline.refreshTargets.some((target: { slug: string }) => target.slug === record.slug));

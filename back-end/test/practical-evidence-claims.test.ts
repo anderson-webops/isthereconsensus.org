@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { practicalEvidenceClaims, practicalEvidenceGaps } from "../src/data/claim-expansion-practical-evidence.js";
 import { strengthPracticalClaims } from "../src/data/claim-expansion-practical-strength.js";
+import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
@@ -14,7 +15,7 @@ describe("new practical-evidence canonical reviews", () => {
 	it("counts new questions separately from the 750-review baseline and comparison pages", () => {
 		const slugs = new Set(practicalEvidenceClaims.map(claim => claim.slug));
 		assert.equal(slugs.size, practicalEvidenceClaims.length);
-		assert.equal(defaultClaims.length, 750 + slugs.size);
+		assert.equal(defaultClaims.length - readerExpansionClaims.length, 750 + slugs.size);
 		assert.equal(practicalEvidenceGaps.length, slugs.size);
 		for (const gap of practicalEvidenceGaps) {
 			assert.ok(slugs.has(gap.slug));
