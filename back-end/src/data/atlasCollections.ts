@@ -819,11 +819,24 @@ export const atlasCollections = [
 		topicSlug: "human-origins-and-paleontology",
 		slug: "human-origins-and-hominin-lives",
 		title: "Human origins and hominin lives",
-		description: "African origins, branching human evolution, and the behavior of other hominin populations.",
+		description: "African origins, branching ancestry, walking and brain evolution, and the lives and diets of hominin populations.",
 		claimSlugs: [
 			"did-homo-sapiens-originate-in-africa",
 			"was-human-evolution-a-straight-ladder-toward-modern-humans",
-			"were-neanderthals-unintelligent-and-without-complex-culture"
+			"were-neanderthals-unintelligent-and-without-complex-culture",
+			"did-upright-walking-evolve-before-large-human-brains",
+			"does-mitochondrial-eve-mean-humans-descended-from-one-woman-alone",
+			"did-all-palaeolithic-people-eat-one-universal-diet"
+		]
+	},
+	{
+		topicSlug: "human-origins-and-paleontology",
+		slug: "reading-fossil-evidence",
+		title: "Fossil evidence and preservation",
+		description: "Dating clocks, geological context and the limits of genetic preservation in fossils and sediments.",
+		claimSlugs: [
+			"can-radiocarbon-dating-date-million-year-old-fossils",
+			"can-ancient-dna-be-recovered-from-every-fossil"
 		]
 	},
 	{

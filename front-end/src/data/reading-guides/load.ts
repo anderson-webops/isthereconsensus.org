@@ -1,6 +1,7 @@
 import type { ReadingGuideContent } from "./types";
 
 const loaders: Record<string, () => Promise<ReadingGuideContent>> = {
+	"reading-fossil-and-ancestry-evidence": () => import("./origins").then((module) => module.originsEvidenceGuide),
 	"browsing-privacy": () => import("./privacy").then((module) => module.browsingPrivacyGuide),
 	"food-storage-and-safety": () => import("./food").then((module) => module.foodStorageGuide),
 	"account-protection": () => import("./account").then((module) => module.accountProtectionGuide),

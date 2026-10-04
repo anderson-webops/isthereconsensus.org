@@ -53,6 +53,14 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 		const guideText = await page.$eval("main", element => element.innerText);
 		assert.ok(guideText.includes("does not mean it can automatically decrypt"));
 		assert.ok(guideText.includes("independent expert review has not been completed"));
+		const originsResponse = await page.goto(`${base}/guides/reading-fossil-and-ancestry-evidence`, { waitUntil: "networkidle0" });
+		assert.equal(originsResponse.status(), 200);
+		await page.waitForSelector(".guide-source-list");
+		assert.equal(await page.$$eval(".guide-review-links a", links => links.length), 5);
+		const originsText = await page.$eval("main", element => element.innerText.replace(/\s+/g, " "));
+		assert.ok(originsText.includes("still includes animal foods"));
+		assert.ok(originsText.includes("not two independent studies"));
+		assert.ok(originsText.includes("independent expert review has not been completed"));
 		await restartBackend();
 		for (const snapshot of snapshots) {
 			const stored = await Claim.findOne({ slug: snapshot.slug }).lean();

@@ -122,6 +122,25 @@ describe("sourced reading guides", () => {
 		assert.match(source, /\.\.\.staticRoutes, \.\.\.guideRoutes, \.\.\.comparisonRoutes, \.\.\.dynamicRoutes/);
 	});
 
+	it("adds a distinct evidence-chain guide without overstating reconstructions", async () => {
+		const guide = await loadReadingGuide("reading-fossil-and-ancestry-evidence");
+		assert.ok(guide);
+		assert.match(guide.scope, /not a laboratory protocol, medical diet recommendation/);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		const text = guide.sections
+			.flatMap((section) => section.paragraphs)
+			.map((paragraph) => paragraph.text)
+			.join(" ");
+		assert.match(text, /not a catch-all name/);
+		assert.match(text, /not the brain itself/);
+		assert.match(text, /not evidence of the first woman/);
+		assert.match(text, /still includes animal foods/);
+		assert.match(text, /not two independent studies/);
+		assert.notEqual(guide, await loadReadingGuide("understanding-evolution"));
+		const summary = readingGuides.find((entry) => entry.slug === "reading-fossil-and-ancestry-evidence")!;
+		assert.equal(summary.reviews.length, 5);
+	});
+
 	it("includes every guide in both-theme accessibility coverage", () => {
 		const source = readFileSync(new URL("../../scripts/a11y-smoke.mjs", import.meta.url), "utf8");
 		for (const guide of readingGuides) assert.ok(source.includes(`"/guides/${guide.slug}"`));
