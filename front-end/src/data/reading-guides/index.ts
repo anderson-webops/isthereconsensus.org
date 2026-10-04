@@ -4,6 +4,36 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-fossil-and-ancestry-evidence",
+		title: "Fossils and ancestry: reading the evidence chain",
+		summary:
+			"Separate dating clocks, reconstructed traits, inherited lineages, ancient menus and exceptional DNA preservation.",
+		checkedAt: "2026-10-04",
+		topics: ["human-origins-and-paleontology"],
+		reviews: [
+			{
+				path: "/consensus/human-origins-and-paleontology/did-upright-walking-evolve-before-large-human-brains",
+				label: "Walking before major brain enlargement"
+			},
+			{
+				path: "/consensus/human-origins-and-paleontology/can-radiocarbon-dating-date-million-year-old-fossils",
+				label: "Radiocarbon and older fossil dates"
+			},
+			{
+				path: "/consensus/human-origins-and-paleontology/does-mitochondrial-eve-mean-humans-descended-from-one-woman-alone",
+				label: "Maternal lineages and the whole genealogy"
+			},
+			{
+				path: "/consensus/human-origins-and-paleontology/did-all-palaeolithic-people-eat-one-universal-diet",
+				label: "Regional ancient diets and their limits"
+			},
+			{
+				path: "/consensus/human-origins-and-paleontology/can-ancient-dna-be-recovered-from-every-fossil",
+				label: "Fossil shape and genetic preservation"
+			}
+		]
+	},
+	{
 		slug: "browsing-privacy",
 		title: "Browsing privacy: what each tool actually protects",
 		summary: "Distinguish local records, protected connections, website trust and the limits of VPN anonymity.",
