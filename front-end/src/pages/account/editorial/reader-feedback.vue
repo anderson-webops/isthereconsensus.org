@@ -257,6 +257,11 @@ onBeforeUnmount(() => {
 				<p v-if="row.message" class="feedback-queue__message">{{ row.message }}</p>
 				<div class="feedback-queue__links">
 					<NuxtLink
+						v-if="row.kind !== 'usefulness'"
+						:to="{ path: '/account/editorial/roadmap', query: { feedbackId: row._id } }"
+						>Prepare a separate public question</NuxtLink
+					>
+					<NuxtLink
 						v-if="row.comparisonSlug && comparisonForSlug(row.comparisonSlug)"
 						:to="`/compare/${row.comparisonSlug}`"
 						>Open original comparison</NuxtLink

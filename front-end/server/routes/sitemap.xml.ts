@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
 		{ path: "/conflicts-and-funding" },
 		{ path: "/consensus" },
 		{ path: "/compare" },
+		{ path: "/roadmap" },
 		{ path: "/copyright-and-trademark" },
 		{ path: "/corrections" },
 		{ path: "/expert-review-program" },

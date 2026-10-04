@@ -22,6 +22,7 @@ import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js"
 import { User } from "../back-end/dist/models/schemas/User.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
 import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
+import { checkCoverageRoadmap } from "./coverage-roadmap-smoke.mjs";
 import { checkEditorialCitations } from "./editorial-citation-smoke.mjs";
 import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
@@ -834,6 +835,7 @@ try {
 	}
 	await checkLivingEvidenceRefreshes(adminChecks);
 	await checkReaderFeedback(adminChecks);
+	await checkCoverageRoadmap(adminChecks);
 	await checkReviewPriority(adminChecks);
 	await checkSourceIntegrity(adminChecks);
 	await checkEditorialCitations(adminChecks);

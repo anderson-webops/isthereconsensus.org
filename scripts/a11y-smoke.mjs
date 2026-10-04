@@ -27,6 +27,9 @@ const routes = [
 	"/ask",
 	"/ask?question=creatine%20vs%20protein",
 	"/library",
+	"/roadmap",
+	"/roadmap/aaaaaaaaaaaaaaaaaaaaaaaa",
+	"/account/editorial/roadmap",
 	"/account/editorial/reader-feedback",
 	"/account/editorial/review-priority",
 	"/explainers",
@@ -234,6 +237,17 @@ function emptyCollection() {
 
 function responseFor(url) {
 	const pathname = url.pathname.replace(/\/+/g, "/");
+	if (pathname.endsWith("/coverage") || pathname.endsWith("/coverage/aaaaaaaaaaaaaaaaaaaaaaaa")) {
+		const row = {
+			_id: "aaaaaaaaaaaaaaaaaaaaaaaa",
+			title: "Does spaced practice improve long-term learning?",
+			summary: "Compare retention after spaced and massed practice, with explicit limits for different subjects and learners.",
+			status: "researching", topic: null, answer: null, answerUnavailable: false,
+			updatedAt: "2026-10-04T12:00:00.000Z",
+			history: [{ date: "2026-10-04T12:00:00.000Z", status: "researching", summary: "The approved question is being researched." }]
+		};
+		return pathname.endsWith("/coverage") ? { rows: [row], pagination: { page: 1, limit: 20, total: 1, hasMore: false } } : { row };
+	}
 	if (pathname.endsWith("/topics/a11y-topic/claims/a11y-citation-review")) {
 		return {
 			claim: {
