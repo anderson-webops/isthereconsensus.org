@@ -5,11 +5,13 @@ const ACCOUNT_PREFERENCE_KEY = "consensus-reader-library-account";
 export const MAX_SAVED_REVIEWS = 200;
 export const MAX_FOLLOWED_TOPICS = 100;
 export const MAX_SAVED_COMPARISONS = 50;
+export const MAX_FOLLOWED_COVERAGE_REQUESTS = 100;
 
 export interface LibrarySelection {
 	savedReviewIds: string[];
 	followedTopicIds: string[];
 	savedComparisonSlugs: string[];
+	followedCoverageRequestIds: string[];
 }
 
 export interface AccountLibrary extends LibrarySelection {
@@ -28,7 +30,7 @@ interface LibraryPorts {
 }
 
 function emptySelection(): LibrarySelection {
-	return { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [] };
+	return { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [], followedCoverageRequestIds: [] };
 }
 
 export function validLibrarySelection(value: unknown): value is LibrarySelection {
@@ -37,10 +39,13 @@ export function validLibrarySelection(value: unknown): value is LibrarySelection
 	const limits = {
 		savedReviewIds: MAX_SAVED_REVIEWS,
 		followedTopicIds: MAX_FOLLOWED_TOPICS,
-		savedComparisonSlugs: MAX_SAVED_COMPARISONS
+		savedComparisonSlugs: MAX_SAVED_COMPARISONS,
+		followedCoverageRequestIds: MAX_FOLLOWED_COVERAGE_REQUESTS
 	};
-	return (["savedReviewIds", "followedTopicIds", "savedComparisonSlugs"] as const).every((key) => {
-		const values = record[key];
+	return (
+		["savedReviewIds", "followedTopicIds", "savedComparisonSlugs", "followedCoverageRequestIds"] as const
+	).every((key) => {
+		const values = key === "followedCoverageRequestIds" && record[key] === undefined ? [] : record[key];
 		return (
 			Array.isArray(values) &&
 			values.length <= limits[key] &&
@@ -59,18 +64,23 @@ export function validLibrarySelection(value: unknown): value is LibrarySelection
 export function decodeDeviceLibrary(raw: string | null): LibrarySelection {
 	if (raw === null) return emptySelection();
 	const value = JSON.parse(raw) as Record<string, unknown> | null;
-	if (!value || (value.version !== 1 && value.version !== 2)) throw new Error("Invalid browser library");
-	// Upgrade in memory only. The same key switches to version 2 on an explicit
-	// mutation, so older clients fail closed instead of dropping comparisons.
+	if (!value || typeof value.version !== "number" || ![1, 2, 3].includes(value.version))
+		throw new Error("Invalid browser library");
 	if (value.version === 1 && value.savedComparisonSlugs !== undefined) throw new Error("Invalid legacy library");
-	const normalized = value.version === 1 ? { ...value, savedComparisonSlugs: [] } : value;
+	if (value.version !== 3 && value.followedCoverageRequestIds !== undefined)
+		throw new Error("Invalid legacy library");
+	if (value.version === 3 && value.followedCoverageRequestIds === undefined)
+		throw new Error("Invalid browser library");
+	const legacy = value.version === 1 ? { ...value, savedComparisonSlugs: [] } : value;
+	const normalized = value.version === 3 ? legacy : { ...legacy, followedCoverageRequestIds: [] };
 	if (!validLibrarySelection(normalized)) {
 		throw new Error("Invalid browser library");
 	}
 	return {
 		savedReviewIds: [...normalized.savedReviewIds],
 		followedTopicIds: [...normalized.followedTopicIds],
-		savedComparisonSlugs: [...normalized.savedComparisonSlugs]
+		savedComparisonSlugs: [...normalized.savedComparisonSlugs],
+		followedCoverageRequestIds: [...normalized.followedCoverageRequestIds]
 	};
 }
 
@@ -108,6 +118,7 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		state.savedReviewIds = [...selection.savedReviewIds];
 		state.followedTopicIds = [...selection.followedTopicIds];
 		state.savedComparisonSlugs = [...selection.savedComparisonSlugs];
+		state.followedCoverageRequestIds = [...(selection.followedCoverageRequestIds ?? [])];
 	}
 
 	function beginContext() {
@@ -194,13 +205,14 @@ export function createReaderLibrary(ports: LibraryPorts) {
 			if (state.scope === "device") {
 				const next = transform(readDevice());
 				if (!validLibrarySelection(next)) throw new Error("Library limit");
-				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 2, ...next }));
+				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 3, ...next }));
 				assign(next);
 			} else {
 				let current: AccountLibrary = {
 					savedReviewIds: [...state.savedReviewIds],
 					followedTopicIds: [...state.followedTopicIds],
 					savedComparisonSlugs: [...state.savedComparisonSlugs],
+					followedCoverageRequestIds: [...state.followedCoverageRequestIds],
 					revision: state.revision
 				};
 				for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -219,6 +231,7 @@ export function createReaderLibrary(ports: LibraryPorts) {
 						if (statusCode(error) !== 409 || attempt === 1 || clear) throw error;
 						current = await ports.loadAccount(request.signal);
 						if (!validAccountLibrary(current)) throw new Error("Invalid account library");
+						current = { ...current, followedCoverageRequestIds: current.followedCoverageRequestIds ?? [] };
 					}
 				}
 			}
@@ -229,7 +242,7 @@ export function createReaderLibrary(ports: LibraryPorts) {
 			state.needsReload = state.scope === "account";
 			state.error =
 				statusCode(error) === 422
-					? "A selected review, topic or comparison is no longer available. Reload your library before retrying."
+					? "A selected review, topic, comparison or requested question is no longer available. Reload your library before retrying."
 					: state.scope === "account"
 						? "Your changes were not confirmed saved. Reload your library before retrying."
 						: "Your changes could not be saved in this browser. Check browser storage and the library limits.";
@@ -261,14 +274,17 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		return mutate((current) => ({
 			savedReviewIds: [...new Set([...device.savedReviewIds, ...current.savedReviewIds])],
 			followedTopicIds: [...new Set([...device.followedTopicIds, ...current.followedTopicIds])],
-			savedComparisonSlugs: [...new Set([...device.savedComparisonSlugs, ...current.savedComparisonSlugs])]
+			savedComparisonSlugs: [...new Set([...device.savedComparisonSlugs, ...current.savedComparisonSlugs])],
+			followedCoverageRequestIds: [
+				...new Set([...device.followedCoverageRequestIds, ...(current.followedCoverageRequestIds ?? [])])
+			]
 		}));
 	}
 
 	async function clearLibrary() {
 		if (state.scope === "device" && !state.busy) {
 			try {
-				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 2, ...emptySelection() }));
+				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 3, ...emptySelection() }));
 				await reload();
 				state.notice = "Browser library cleared.";
 				return true;

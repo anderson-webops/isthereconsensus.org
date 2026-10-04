@@ -39,7 +39,9 @@ describe("reader feedback contract", () => {
 		assert.match(comparison, /not study dates or cosmetic refreshes/);
 		const library = read("../src/pages/library.vue");
 		assert.match(library, /includeComparisons: true/);
-		assert.match(library, /v-if="update.comparison"/);
+		assert.match(library, /v-else-if="update.comparison"/);
+		assert.match(library, /v-if="update.coverageRequest"/);
+		assert.match(library, /includeCoverageRequests: true/);
 		const admin = read("../src/pages/account/editorial/reader-feedback.vue");
 		assert.match(admin, /comparisonForSlug\(row.comparisonSlug\)/);
 		assert.match(admin, /name="comparison-filter"/);

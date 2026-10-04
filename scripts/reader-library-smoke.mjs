@@ -23,6 +23,7 @@ import { User } from "../back-end/dist/models/schemas/User.js";
 import { recordSeedReaderAnnouncement } from "../back-end/dist/utils/seedReaderAnnouncement.js";
 import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
 import { checkCoverageRoadmap } from "./coverage-roadmap-smoke.mjs";
+import { checkCoverageFollowing } from "./coverage-following-smoke.mjs";
 import { checkEditorialCitations } from "./editorial-citation-smoke.mjs";
 import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
 import { checkReaderContent } from "./reader-content-smoke.mjs";
@@ -115,7 +116,7 @@ const proxy = http.createServer((request, response) => {
 	});
 	request.pipe(upstream);
 });
-const empty = { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [] };
+const empty = { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [], followedCoverageRequestIds: [] };
 async function api(path, { method = "GET", body, cookie, status = 200, headers = {}, retryRateLimit = false } = {}) {
 	const request = () => fetch(`${base}/api${path}`, {
 		method,
@@ -257,6 +258,7 @@ try {
 	const reviewId = String(review._id);
 	const topicId = String(review.topic._id);
 	const chosen = {
+		...empty,
 		savedReviewIds: [reviewId],
 		followedTopicIds: [topicId],
 		savedComparisonSlugs: ["electricity-emissions"]
@@ -834,6 +836,7 @@ try {
 	for (const claim of seedAnnouncements) {
 		await Claim.updateOne({ _id: claim._id }, { $set: { readerUpdates: claim.readerUpdates } });
 	}
+	await checkCoverageFollowing(adminChecks);
 	await checkLivingEvidenceRefreshes(adminChecks);
 	await checkReaderContent(adminChecks);
 	await checkReaderFeedback(adminChecks);

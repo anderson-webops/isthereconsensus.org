@@ -8,10 +8,13 @@ import { comparisonForSlug, evidenceComparisons } from "../data/comparisons/inde
 import { compareUpdatePosition, selectedComparisonUpdates } from "../data/comparisons/updates.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Claim } from "../models/schemas/Claim.js";
-import { MAX_FOLLOWED_TOPICS, MAX_SAVED_REVIEWS, ReaderLibrary } from "../models/schemas/ReaderLibrary.js";
+import { CoverageRequest } from "../models/schemas/CoverageRequest.js";
+import { MAX_FOLLOWED_COVERAGE_REQUESTS, MAX_FOLLOWED_TOPICS, MAX_SAVED_REVIEWS, ReaderLibrary } from "../models/schemas/ReaderLibrary.js";
 import { Topic } from "../models/schemas/Topic.js";
 import { replacementComparisons, savedComparisonSlugsSchema } from "../utils/comparisonLibrary.js";
+import { replacementCoverageRequests, selectedCoverageUpdates } from "../utils/coverageLibrary.js";
 import { loadVisibleLibraryClaims } from "../utils/publicClaimQueries.js";
+import { loadPublicCoverageSelection } from "../utils/publicCoverageQueries.js";
 import { toPublicClaimSummary, toPublicTopic } from "../utils/publicRecords.js";
 import { decodeReaderUpdateCursor, encodeReaderUpdateCursor } from "../utils/readerUpdates.js";
 import { logError } from "../utils/safeLog.js";
@@ -27,7 +30,8 @@ const selection = z
 	.object({
 		savedReviewIds: ids(MAX_SAVED_REVIEWS),
 		followedTopicIds: ids(MAX_FOLLOWED_TOPICS),
-		savedComparisonSlugs: savedComparisonSlugsSchema.optional()
+		savedComparisonSlugs: savedComparisonSlugsSchema.optional(),
+		followedCoverageRequestIds: ids(MAX_FOLLOWED_COVERAGE_REQUESTS).optional()
 	})
 	.strict();
 const replacement = selection
@@ -40,7 +44,7 @@ const replacement = selection
 	})
 	.strict();
 // Older clients send savedComparisonSlugs but still expect review-only rows.
-const updateRequest = selection.extend({ cursor: z.string().max(400).optional(), includeComparisons: z.boolean().optional() }).strict();
+const updateRequest = selection.extend({ cursor: z.string().max(400).optional(), includeComparisons: z.boolean().optional(), includeCoverageRequests: z.boolean().optional() }).strict();
 
 export type LoadVisibleClaims = (claimIds: string[]) => Promise<IClaim[]>;
 
@@ -49,7 +53,8 @@ function publicLibrary(library: IReaderLibrary | null) {
 		revision: library?.revision ?? 0,
 		savedReviewIds: library?.savedReviewIds ?? [],
 		followedTopicIds: library?.followedTopicIds ?? [],
-		savedComparisonSlugs: library?.savedComparisonSlugs ?? []
+		savedComparisonSlugs: library?.savedComparisonSlugs ?? [],
+		followedCoverageRequestIds: library?.followedCoverageRequestIds ?? []
 	};
 }
 
@@ -99,25 +104,29 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			);
 			const comparisons = replacementComparisons(parsed.data.savedComparisonSlugs, current?.savedComparisonSlugs);
 			const addedComparisons = comparisons.filter(value => !current?.savedComparisonSlugs?.includes(value));
+			const coverageRequests = replacementCoverageRequests(parsed.data.followedCoverageRequestIds, current?.followedCoverageRequestIds);
+			const addedCoverageRequests = coverageRequests.filter(value => !current?.followedCoverageRequestIds?.includes(value));
 			if (addedComparisons.some(slug => !comparisonForSlug(slug))) {
 				return res.status(422).json({ error: "A selected comparison is no longer available." });
 			}
-			const [reviews, topics] = await Promise.all([
+			const [reviews, topics, publicRequests] = await Promise.all([
 				addedReviews.length ? loadVisibleClaims(addedReviews) : [],
 				addedTopics.length
 					? Topic.find({ _id: { $in: addedTopics } })
 							.select("_id")
 							.lean()
-					: []
+					: [],
+				addedCoverageRequests.length ? CoverageRequest.find({ _id: { $in: addedCoverageRequests }, visibility: "public" }).select("_id").maxTimeMS(5000).lean() : []
 			]);
-			if (reviews.length !== addedReviews.length || topics.length !== addedTopics.length) {
-				return res.status(422).json({ error: "A selected review or topic is no longer available." });
+			if (reviews.length !== addedReviews.length || topics.length !== addedTopics.length || publicRequests.length !== addedCoverageRequests.length) {
+				return res.status(422).json({ error: "A selected review, topic or requested question is no longer available." });
 			}
 			const next = {
 				revision: parsed.data.revision + 1,
 				savedReviewIds: parsed.data.savedReviewIds,
 				followedTopicIds: parsed.data.followedTopicIds,
-				savedComparisonSlugs: comparisons
+				savedComparisonSlugs: comparisons,
+				followedCoverageRequestIds: coverageRequests
 			};
 			const saved = current
 				? await ReaderLibrary.findOneAndUpdate(
@@ -147,15 +156,17 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 		const parsed = selection.safeParse(req.body);
 		if (!parsed.success) return res.status(400).json({ error: "Invalid library selection." });
 		try {
-			const [claims, topics] = await Promise.all([
+			const [claims, topics, coverage] = await Promise.all([
 				parsed.data.savedReviewIds.length ? loadVisibleClaims(parsed.data.savedReviewIds) : [],
 				parsed.data.followedTopicIds.length
 					? Topic.find({ _id: { $in: parsed.data.followedTopicIds } }).lean()
-					: []
+					: [],
+				loadPublicCoverageSelection(parsed.data.followedCoverageRequestIds ?? [], loadVisibleClaims)
 			]);
 			return res.json({
 				reviews: claims.map(claim => toPublicClaimSummary(claim)),
 				topics: topics.map(toPublicTopic),
+				coverageRequests: coverage.requests,
 				comparisons: (parsed.data.savedComparisonSlugs ?? []).flatMap((slug) => {
 					const comparison = comparisonForSlug(slug);
 					return comparison ? [{ slug, title: comparison.title, description: comparison.description }] : [];
@@ -195,8 +206,11 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			});
 		}
 		try {
+			const coverageIds = parsed.data.includeCoverageRequests ? parsed.data.followedCoverageRequestIds ?? [] : [];
+			const coverage = await loadPublicCoverageSelection(coverageIds, loadVisibleClaims);
+			if (coverage.answerIds.length) selected.push({ _id: { $in: coverage.answerIds.map(value => new mongoose.Types.ObjectId(value)) } });
 			const claimRows = selected.length
-				? await Claim.aggregate<{ claimId: mongoose.Types.ObjectId; update: IReaderUpdate }>([
+				? await Claim.aggregate<{ claimId: mongoose.Types.ObjectId; topicId: mongoose.Types.ObjectId; update: IReaderUpdate }>([
 						{
 							$match: {
 								"status": "published",
@@ -223,7 +237,7 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 						},
 						{ $sort: { "readerUpdates.date": -1, "readerUpdates.id": -1 } },
 						{ $limit: 31 },
-						{ $project: { _id: 0, claimId: "$_id", update: "$readerUpdates" } }
+						{ $project: { _id: 0, claimId: "$_id", topicId: "$topic", update: "$readerUpdates" } }
 					]).option({ maxTimeMS: 5000 })
 				: [];
 			const topics = parsed.data.includeComparisons && parsed.data.followedTopicIds.length
@@ -232,17 +246,27 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 			const comparisonRows = parsed.data.includeComparisons
 				? selectedComparisonUpdates(evidenceComparisons, parsed.data.savedComparisonSlugs ?? [], topics.map(topic => topic.slug), asOf, windowStart, cursor)
 				: [];
-			const rows = [...claimRows, ...comparisonRows].sort((a, b) => compareUpdatePosition(a.update, b.update)).slice(0, 31);
+			const coverageRows = selectedCoverageUpdates(coverage.requests, asOf, windowStart, cursor);
+			const rows = [...claimRows, ...comparisonRows, ...coverageRows].sort((first, second) => compareUpdatePosition(first.update, second.update)).slice(0, 31);
 			const page = rows.slice(0, 30);
 			const claimIds = [...new Set(page.flatMap(row => "claimId" in row ? [String(row.claimId)] : []))];
 			const visible = claimIds.length ? await loadVisibleClaims(claimIds) : [];
 			const claims = new Map(visible.map(claim => [String(claim._id), claim]));
+			const latestCoverage = await loadPublicCoverageSelection(coverageIds, loadVisibleClaims);
+			const currentRequests = new Map(latestCoverage.requests.map(request => [request._id, request]));
 			const last = page.at(-1);
 			return res.json({
 				updates: page.map((row) => {
 					const { update } = row;
 					const fields = { id: update.id, date: update.date, kind: update.kind, summary: update.summary, bottomLineImpact: update.bottomLineImpact };
 					if ("comparison" in row) return { ...fields, comparison: row.comparison };
+					if ("coverageRequest" in row) {
+						const request = currentRequests.get(row.coverageRequest._id);
+						return request && request.history.some(event => event.id === update.id) && (update.kind !== "requested_answer" || request.answer)
+							? { ...fields, coverageRequest: request }
+							: null;
+					}
+					if (!parsed.data.savedReviewIds.includes(String(row.claimId)) && !parsed.data.followedTopicIds.includes(String(row.topicId)) && !latestCoverage.answerIds.includes(String(row.claimId))) return null;
 					const claim = claims.get(String(row.claimId));
 					return claim ? { ...fields, review: toPublicClaimSummary(claim) } : null;
 				}).filter(row => row !== null),

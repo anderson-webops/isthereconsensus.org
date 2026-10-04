@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { z } from "zod";
 
 export const coverageStatuses = ["planned", "researching", "published"] as const;
@@ -54,7 +55,25 @@ interface CoveragePublicRecord {
 	summary: string;
 	status: string;
 	publicUpdatedAt?: Date | null;
-	publicHistory: Array<{ date: Date; status: string; summary: string }>;
+	publicHistory: Array<{ id?: string | null; date: Date; status: string; summary: string }>;
+}
+
+export function coverageEventId(requestId: string, event: CoveragePublicRecord["publicHistory"][number]) {
+	if (event.id) return event.id;
+	const digest = createHash("sha256").update(JSON.stringify(["coverage-public-progress-v1", requestId, event.date.toISOString(), event.status, event.summary])).digest("hex");
+	return `${digest.slice(0, 8)}-${digest.slice(8, 12)}-8${digest.slice(13, 16)}-${(8 + (Number.parseInt(digest[16]!, 16) % 4)).toString(16)}${digest.slice(17, 20)}-${digest.slice(20, 32)}`;
+}
+
+export function meaningfulCoverageProgress(
+	current: { visibility: string; title: string; summary: string; status: string; topicId?: unknown; claimId?: unknown; publicHistory: CoveragePublicRecord["publicHistory"] },
+	next: { title: string; summary: string; status: string; topicId: string | null; claimId: string | null },
+	publicUpdateSummary: string
+) {
+	return current.visibility !== "public"
+		|| current.title !== next.title || current.summary !== next.summary || current.status !== next.status
+		|| String(current.topicId ?? "") !== String(next.topicId ?? "")
+		|| String(current.claimId ?? "") !== String(next.claimId ?? "")
+		|| current.publicHistory.at(-1)?.summary !== publicUpdateSummary;
 }
 
 export function publicCoverageRequest(
@@ -73,6 +92,6 @@ export function publicCoverageRequest(
 			? { title: answer.title, path: `/consensus/${answer.topic.slug}/${answer.slug}` }
 			: null,
 		answerUnavailable: row.status === "published" && !answer,
-		history: row.publicHistory.map(event => ({ date: event.date, status: event.status, summary: event.summary }))
+		history: row.publicHistory.map(event => ({ id: coverageEventId(String(row._id), event), date: event.date, status: event.status, summary: event.summary }))
 	};
 }

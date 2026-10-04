@@ -1,4 +1,5 @@
 import type { LoadVisibleClaims } from "./readerLibraryRoutes.js";
+import { randomUUID } from "node:crypto";
 import express from "express";
 import { requireAdmin } from "../middleware/auth.js";
 import { CoverageRequest } from "../models/schemas/CoverageRequest.js";
@@ -10,13 +11,14 @@ import {
 	coverageDraft,
 	coverageQuery,
 	coverageTransition,
-	publicCoverageRequest
+	meaningfulCoverageProgress
 } from "../utils/coverageRoadmap.js";
 import { loadVisibleLibraryClaims } from "../utils/publicClaimQueries.js";
+import { publicCoverageFields, publicCoverageRows } from "../utils/publicCoverageQueries.js";
 import { logError } from "../utils/safeLog.js";
 
 const validId = (value: unknown) => typeof value === "string" && /^[a-f\d]{24}$/.test(value);
-const publicFields = "title summary status topicId claimId publicUpdatedAt publicHistory";
+const publicFields = publicCoverageFields;
 
 export function createCoverageRoadmapRouter(loadVisibleClaims: LoadVisibleClaims = loadVisibleLibraryClaims) {
 	const router = express.Router();
@@ -24,23 +26,6 @@ export function createCoverageRoadmapRouter(loadVisibleClaims: LoadVisibleClaims
 		res.set("Cache-Control", "private, no-store");
 		next();
 	});
-
-	async function publicRows(rows: Array<Parameters<typeof publicCoverageRequest>[0] & { topicId?: unknown; claimId?: unknown }>) {
-		const [topics, claims] = await Promise.all([
-			Topic.find({ _id: { $in: rows.flatMap(row => row.topicId ? [String(row.topicId)] : []) } })
-				.select("title slug")
-				.maxTimeMS(5000)
-				.lean(),
-			loadVisibleClaims(rows.flatMap(row => row.status === "published" && row.claimId ? [String(row.claimId)] : []))
-		]);
-		const topicMap = new Map(topics.map(topic => [String(topic._id), topic]));
-		const claimMap = new Map(claims.flatMap(claim =>
-			typeof claim.topic === "object" && "slug" in claim.topic
-				? [[String(claim._id), { title: claim.title, slug: claim.slug, topic: { slug: claim.topic.slug } }] as const]
-				: []
-		));
-		return rows.map(row => publicCoverageRequest(row, topicMap.get(String(row.topicId)) ?? null, claimMap.get(String(row.claimId)) ?? null));
-	}
 
 	async function validTargets(data: { topicId: string | null; claimId: string | null; status: string }) {
 		const [topic, claims] = await Promise.all([
@@ -60,7 +45,7 @@ export function createCoverageRoadmapRouter(loadVisibleClaims: LoadVisibleClaims
 				CoverageRequest.find(filter).select(publicFields).sort({ publicUpdatedAt: -1, _id: -1 }).skip((page - 1) * limit).limit(limit).maxTimeMS(5000).lean(),
 				CoverageRequest.countDocuments(filter).maxTimeMS(5000)
 			]);
-			return res.json({ rows: await publicRows(rows), pagination: { page, limit, total, hasMore: page * limit < total } });
+			return res.json({ rows: (await publicCoverageRows(rows, loadVisibleClaims)).requests, pagination: { page, limit, total, hasMore: page * limit < total } });
 		}
 		catch (error) {
 			logError("Public coverage roadmap failed", error);
@@ -73,7 +58,7 @@ export function createCoverageRoadmapRouter(loadVisibleClaims: LoadVisibleClaims
 		try {
 			const row = await CoverageRequest.findOne({ _id: String(req.params.id), visibility: "public" }).select(publicFields).maxTimeMS(5000).lean();
 			if (!row) return res.status(404).json({ error: "This coverage request is not available." });
-			return res.json({ row: (await publicRows([row]))[0] });
+			return res.json({ row: (await publicCoverageRows([row], loadVisibleClaims)).requests[0] });
 		}
 		catch (error) {
 			logError("Public coverage request failed", error);
@@ -133,12 +118,13 @@ export function createCoverageRoadmapRouter(loadVisibleClaims: LoadVisibleClaims
 			if (operation !== "withdraw" && !await validTargets(fields)) return res.status(422).json({ error: "Choose an existing topic and an available published review." });
 			const now = new Date();
 			const isPublic = transition.visibility === "public";
+			const announce = isPublic && meaningfulCoverageProgress(current, fields, publicUpdateSummary);
 			const row = await CoverageRequest.findOneAndUpdate({ _id: current._id, revision }, {
-				$set: { ...fields, visibility: transition.visibility, ...(isPublic ? { publicUpdatedAt: now } : {}) },
+				$set: { ...fields, visibility: transition.visibility, ...(announce ? { publicUpdatedAt: now } : {}) },
 				$inc: { revision: 1 },
 				$push: {
 					audit: { $each: [{ date: now, adminId: req.currentAdmin!._id, revision: revision + 1, operation, visibility: transition.visibility, status: fields.status, note: privateNote }], $slice: -100 },
-					...(isPublic ? { publicHistory: { $each: [{ date: now, status: fields.status, summary: publicUpdateSummary }], $slice: -100 } } : {})
+					...(announce ? { publicHistory: { $each: [{ id: randomUUID(), date: now, status: fields.status, summary: publicUpdateSummary }], $slice: -100 } } : {})
 				}
 			}, { returnDocument: "after", runValidators: true }).maxTimeMS(5000).lean();
 			if (!row) return res.status(409).json({ error: "The request changed. Reload before saving." });

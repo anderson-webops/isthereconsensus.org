@@ -17,7 +17,8 @@ function empty() {
 		revision: 0,
 		savedReviewIds: [] as string[],
 		followedTopicIds: [] as string[],
-		savedComparisonSlugs: [] as string[]
+		savedComparisonSlugs: [] as string[],
+		followedCoverageRequestIds: [] as string[]
 	};
 }
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -49,13 +50,36 @@ function fixture() {
 		library: createReaderLibrary(ports),
 		account: () => account,
 		saveCount: () => saves,
-		replaceAccount: (next: Omit<AccountLibrary, "savedComparisonSlugs"> & { savedComparisonSlugs?: string[] }) => {
+		replaceAccount: (
+			next: Omit<AccountLibrary, "savedComparisonSlugs" | "followedCoverageRequestIds"> & {
+				savedComparisonSlugs?: string[];
+				followedCoverageRequestIds?: string[];
+			}
+		) => {
 			account = { ...empty(), ...next };
 		}
 	};
 }
 
 describe("reader library", () => {
+	it("normalizes legacy account responses when retrying a following conflict", async () => {
+		const setup = fixture();
+		const load = setup.ports.loadAccount;
+		setup.ports.loadAccount = async (signal) => {
+			const current = await load(signal);
+			const { followedCoverageRequestIds: _requests, ...legacy } = current;
+			return legacy as AccountLibrary;
+		};
+		await setup.library.initialize();
+		await setup.library.setOwner("user-a");
+		await setup.library.changeScope("account");
+		setup.replaceAccount({ ...empty(), revision: 1, savedReviewIds: [reviewA] });
+		assert.equal(await setup.library.setSelected("followedCoverageRequestIds", topic, true), true);
+		assert.deepEqual(setup.account().followedCoverageRequestIds, [topic]);
+		assert.deepEqual(setup.account().savedReviewIds, [reviewA]);
+		assert.equal(setup.account().revision, 2);
+	});
+
 	it("saves, follows and removes without an account, persisting across reloads", async () => {
 		const f = fixture();
 		await f.library.initialize();
@@ -71,7 +95,8 @@ describe("reader library", () => {
 		assert.deepEqual(decodeDeviceLibrary(f.data.get(READER_LIBRARY_KEY)!), {
 			savedReviewIds: [],
 			followedTopicIds: [],
-			savedComparisonSlugs: []
+			savedComparisonSlugs: [],
+			followedCoverageRequestIds: []
 		});
 	});
 
@@ -255,7 +280,7 @@ describe("reader library", () => {
 			}),
 			false
 		);
-		assert.throws(() => decodeDeviceLibrary(JSON.stringify({ ...empty(), version: 3 })));
+		assert.throws(() => decodeDeviceLibrary(JSON.stringify({ ...empty(), version: 4 })));
 	});
 
 	it("upgrades legacy browser saves only on mutation and persists comparisons across reloads", async () => {
@@ -266,7 +291,7 @@ describe("reader library", () => {
 		assert.equal(f.data.get(READER_LIBRARY_KEY), legacy);
 		assert.deepEqual(f.library.state.savedComparisonSlugs, []);
 		assert.equal(await f.library.setSelected("savedComparisonSlugs", "electricity-emissions", true), true);
-		assert.equal(JSON.parse(f.data.get(READER_LIBRARY_KEY)!).version, 2);
+		assert.equal(JSON.parse(f.data.get(READER_LIBRARY_KEY)!).version, 3);
 		const reloaded = createReaderLibrary(f.ports);
 		await reloaded.initialize();
 		assert.deepEqual(reloaded.state.savedComparisonSlugs, ["electricity-emissions"]);
@@ -312,10 +337,79 @@ describe("reader library", () => {
 			assert.equal(validLibrarySelection({ ...empty(), savedComparisonSlugs }), false);
 		}
 		const f = fixture();
-		const future = JSON.stringify({ ...empty(), version: 3, savedComparisonSlugs: ["electricity-emissions"] });
+		const future = JSON.stringify({ ...empty(), version: 4, savedComparisonSlugs: ["electricity-emissions"] });
 		f.data.set(READER_LIBRARY_KEY, future);
 		await f.library.initialize();
 		assert.equal(await f.library.setSelected("savedReviewIds", reviewA, true), false);
 		assert.equal(f.data.get(READER_LIBRARY_KEY), future);
+	});
+});
+
+describe("requested-question follows", () => {
+	it("upgrades version-two storage only after an explicit follow and preserves older selections", async () => {
+		const fixtureState = fixture();
+		const { followedCoverageRequestIds: _requests, ...legacy } = empty();
+		const raw = JSON.stringify({
+			...legacy,
+			version: 2,
+			savedReviewIds: [reviewA],
+			savedComparisonSlugs: ["electricity-emissions"]
+		});
+		fixtureState.data.set(READER_LIBRARY_KEY, raw);
+		await fixtureState.library.initialize();
+		assert.equal(fixtureState.data.get(READER_LIBRARY_KEY), raw);
+		assert.deepEqual(fixtureState.library.state.followedCoverageRequestIds, []);
+		assert.equal(await fixtureState.library.setSelected("followedCoverageRequestIds", topic, true), true);
+		assert.equal(JSON.parse(fixtureState.data.get(READER_LIBRARY_KEY)!).version, 3);
+		const reloaded = createReaderLibrary(fixtureState.ports);
+		await reloaded.initialize();
+		assert.deepEqual(reloaded.state.followedCoverageRequestIds, [topic]);
+		assert.deepEqual(reloaded.state.savedReviewIds, [reviewA]);
+		assert.deepEqual(reloaded.state.savedComparisonSlugs, ["electricity-emissions"]);
+		assert.equal(fixtureState.saveCount(), 0);
+		await reloaded.setSelected("followedCoverageRequestIds", topic, false);
+		assert.deepEqual(reloaded.state.followedCoverageRequestIds, []);
+	});
+	it("copies follows only explicitly and isolates account and browser removals", async () => {
+		const fixtureState = fixture();
+		await fixtureState.library.initialize();
+		await fixtureState.library.setSelected("followedCoverageRequestIds", topic, true);
+		await fixtureState.library.setOwner(`user:${reviewA}`);
+		assert.equal(fixtureState.saveCount(), 0);
+		fixtureState.replaceAccount({ ...empty(), revision: 1, followedCoverageRequestIds: [reviewB] });
+		assert.equal(await fixtureState.library.copyDeviceToAccount(), true);
+		assert.deepEqual(fixtureState.account().followedCoverageRequestIds, [topic, reviewB]);
+		await fixtureState.library.setSelected("followedCoverageRequestIds", topic, false);
+		assert.deepEqual(fixtureState.account().followedCoverageRequestIds, [reviewB]);
+		await fixtureState.library.setOwner(null);
+		assert.deepEqual(fixtureState.library.state.followedCoverageRequestIds, [topic]);
+		await fixtureState.library.clearLibrary();
+		assert.deepEqual(fixtureState.library.state.followedCoverageRequestIds, []);
+		assert.deepEqual(fixtureState.account().followedCoverageRequestIds, [reviewB]);
+	});
+	it("merges a concurrent follow without dropping another requested question", async () => {
+		const fixtureState = fixture();
+		await fixtureState.library.initialize();
+		await fixtureState.library.setOwner(`user:${reviewA}`);
+		await fixtureState.library.changeScope("account");
+		fixtureState.replaceAccount({ ...empty(), revision: 1, followedCoverageRequestIds: [reviewB] });
+		assert.equal(await fixtureState.library.setSelected("followedCoverageRequestIds", topic, true), true);
+		assert.deepEqual(fixtureState.account().followedCoverageRequestIds, [topic, reviewB]);
+	});
+	it("rejects duplicate, malformed and excessive follows and preserves corrupt storage", async () => {
+		for (const followedCoverageRequestIds of [
+			[topic, topic],
+			["PRIVATE QUESTION"],
+			Array.from({ length: 101 }, (_, index) => index.toString(16).padStart(24, "0"))
+		]) {
+			assert.equal(validLibrarySelection({ ...empty(), followedCoverageRequestIds }), false);
+		}
+		const fixtureState = fixture();
+		const corrupt = JSON.stringify({ ...empty(), version: 3, followedCoverageRequestIds: [topic, topic] });
+		fixtureState.data.set(READER_LIBRARY_KEY, corrupt);
+		await fixtureState.library.initialize();
+		assert.equal(fixtureState.library.state.ready, false);
+		assert.equal(await fixtureState.library.setSelected("followedCoverageRequestIds", reviewA, true), false);
+		assert.equal(fixtureState.data.get(READER_LIBRARY_KEY), corrupt);
 	});
 });

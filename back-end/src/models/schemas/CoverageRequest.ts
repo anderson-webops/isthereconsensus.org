@@ -14,6 +14,7 @@ const coverageRequestSchema = new Schema({
 	publicHistory: {
 		type: [{
 			_id: false,
+			id: { type: String, match: /^[a-f\d]{8}-[a-f\d]{4}-[1-8][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/ },
 			date: { type: Date, required: true },
 			status: { type: String, required: true, enum: coverageStatuses },
 			summary: { type: String, required: true, minlength: 10, maxlength: 500 }

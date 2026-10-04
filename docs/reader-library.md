@@ -1,10 +1,11 @@
-# Saved reviews, comparisons and followed-topic updates
+# Saved reviews, comparisons and followed questions
 
 ## Reader experience
 
 `/library` collects saved reviews, saved evidence comparisons, followed topics
-and a feed of substantive published review and comparison changes. Review, comparison and topic
-pages expose compact Save/Follow controls.
+and approved requested questions. Review, comparison, topic and public roadmap
+pages expose compact Save/Follow controls. The update feed distinguishes
+editorial question progress from substantive published scientific changes.
 Registration is optional: **This browser** stores selections in the current
 browser profile; **My account** stores them on the server for the authenticated
 user or admin. Signing in never uploads browser selections automatically.
@@ -12,7 +13,7 @@ Copying the browser library to an account requires an explicit action.
 
 The two libraries remain separate. Readers can remove individual selections or
 confirm clearing the selected library. A library holds up to 200 reviews, 50
-comparisons and 100 topics. Clearing browser site data removes its local library. Anyone sharing
+comparisons, 100 topics and 100 requested questions. Clearing browser site data removes its local library. Anyone sharing
 that browser profile can see browser-local selections.
 
 Account libraries are keyed by the authenticated role and account ID. Client
@@ -22,7 +23,7 @@ previous account's state. Revision-checked writes prevent silent overwrites;
 uncertain saves require reloading before another write. Clearing an account
 library is never automatically retried against a newer revision.
 
-Unavailable reviews and comparisons remain removable references. A request failure does not
+Unavailable reviews, comparisons and questions remain removable references. A request failure does not
 remove saved references or mislabel them as withdrawn. Corrupt local storage is
 preserved until the reader explicitly clears it.
 
@@ -40,6 +41,10 @@ render contains no personal selections.
   `savedComparisonSlugs` contains canonical comparison slugs, not arbitrary URLs
   or review IDs. Omitting this field preserves existing comparisons for older
   clients; an explicit empty array clears them.
+  `followedCoverageRequestIds` contains public roadmap IDs. Omitting it preserves
+  existing followed questions for older clients; an empty array explicitly
+  clears them. New private or withdrawn questions cannot be added. Existing
+  unavailable references can be kept or removed without disclosing their copy.
 - `POST /api/library/resolve`: read-only public titles/topics for the supplied
   selection. No anonymous library is created.
 - `POST /api/library/updates`: read-only public announcements for selected
@@ -47,7 +52,11 @@ render contains no personal selections.
   `includeComparisons: true` explicitly opts into comparison rows for saved
   comparisons or their followed topics. Omitted/false stays review-only, even
   when an older client sends `savedComparisonSlugs`. Rows have exactly one
-  `review` or `comparison` target. The new library opts in and renders both.
+  `review`, `comparison` or `coverageRequest` target. Setting
+  `includeCoverageRequests: true` independently opts into approved question progress and available answer
+  announcements; it also selects scientific updates for the currently linked
+  reviewed answer. Omitted/false leaves existing review/comparison selection
+  behavior unchanged. The new library opts into both extensions.
 
 Selection bodies contain IDs and comparison slugs, not raw search text. POST keeps interests out of
 URL query strings. Do not add request-body logging, interest events to account
@@ -61,7 +70,7 @@ the reader's device. No new automatic account-deletion workflow is introduced.
 
 Only explicit announcements enter the feed. Neither old `changeLog` entries nor
 legacy publication/review dates are backfilled as new activity. The feed covers
-the last 90 days, retains at most 100 announcements per review or comparison and rechecks the
+the last 90 days, retains at most 100 announcements per review, comparison or question and rechecks the
 current publication state and source readiness on every request. Draft,
 needs-update, archived and source-unready content is excluded.
 
@@ -73,6 +82,24 @@ source IDs belonging to that comparison. New comparison pairs with impact
 duplicate and future entries are omitted safely; catalog tests reject invalid
 data, overlong histories and IDs reused by canonical review announcements.
 Removing a comparison from the public registry also removes it from the feed.
+
+Requested-question events use `coverage_progress` or `requested_answer` and
+never imply a scientific bottom-line change. Every deliberate public approval
+or changed public progress explanation receives a stable UUID and fixed date.
+Unchanged saves and private-note-only edits do not create public activity. Old
+approved history remains readable with deterministic IDs derived exclusively
+from its public request ID, date, status and explanation, without rewriting
+history or using private audit data. History is capped at 100 entries.
+
+An answer-linked event appears only while the current approved question links
+an available, source-ready published answer. Its subsequent scientific
+announcements are selected automatically without requiring a separate review
+save. Draft or source-unready answers expose neither a review URL nor their
+announcements. Private or withdrawn questions expose no title, summary,
+history or answer through either resolver or feed. The feed rechecks public
+selection before serialization; a withdrawn reference stays removable through
+a generic unavailable placeholder. All three row types use the same frozen
+90-day date/UUID cursor ordering and bounded 30-row pages.
 
 The first three entries preserve original source-release timestamps: electricity
 v1.20.0 at 2026-09-11T19:27:39Z, caffeine v1.21.0 at 20:12:32Z and strength
@@ -153,10 +180,11 @@ descriptions. Unknown references can remain saved, but new account additions
 must belong to the current catalog. No new collection or destructive migration
 is needed.
 
-Browser storage retains the existing key and reads legacy version 1 in memory.
-It writes version 2 only after the reader explicitly changes their library. An
-older browser client rejects version 2 instead of silently dropping comparison
-saves; it can resume after refreshing to the new application. Corrupt or unknown
+Browser storage retains the existing key and reads legacy versions 1 and 2 in
+memory, defaulting followed questions to an empty array. It writes version 3
+only after the reader explicitly changes their library. Older browser clients
+reject version 3 instead of silently dropping comparison saves or question
+follows; they can resume after refreshing to the new application. Corrupt or unknown
 versions are preserved until an explicit clear. Account data is never cached in
 browser storage or automatically copied on sign-in.
 
@@ -167,6 +195,32 @@ backend support or expect comparison-aware account writes to be unavailable;
 do not reset browser libraries or strip stored selections to make them appear
 compatible. Old clients talking to the new backend preserve comparisons when
 they replace reviews/topics without the new field.
+
+The following extension adds only a default-empty array and optional public
+history IDs; no destructive migration or automatic browser upload is needed.
+Deploy the matching backend before exposing the new client. For rollback,
+retain the additive backend support rather than removing stored selections.
+Request following sends no email notifications, and following never approves
+a question, publishes an answer or alters scientific content.
+
+### Requested-question acceptance, October 4, 2026
+
+Root clean installation, both lock-policy checks, lint, frontend/backend
+typechecks, production build and all 677 unit/compatibility tests passed without
+skips or failures. Built backend module loading, public assets and private
+route headers passed. Dependencies and both deployment lockfiles are unchanged.
+
+The complete disposable signed-session/database/built-browser workflow passed
+legacy PATCH omission, browser version migration, account isolation, explicit
+browser copying, stale-write recovery, actual approved progress and editorial
+answer publication, subsequent scientific updates, source readiness, restart
+stability, withdrawal privacy and unavailable-reference removal. Sixty-four
+same-date legacy events paginated over three pages without duplicate IDs or a
+database backfill; later events stayed outside the frozen page window. Both
+themes passed 320px/200%-text accessibility checks and screenshots were inspected.
+An initial run timed out navigating an unrelated existing priority page; the
+complete serial rerun passed without weakening checks or changing rate limits.
+CI and independent public deployment remain separate delivery gates.
 
 Saved comparisons open the default comparison view. A page address carries a
 particular outcome/context/option selection and can be copied separately. This
