@@ -4,6 +4,27 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "browsing-privacy",
+		title: "Browsing privacy: what each tool actually protects",
+		summary: "Distinguish local records, protected connections, website trust and the limits of VPN anonymity.",
+		checkedAt: "2026-10-04",
+		topics: ["digital-security-and-privacy"],
+		reviews: [
+			{
+				path: "/consensus/digital-security-and-privacy/does-private-or-incognito-browsing-make-you-anonymous",
+				label: "Private windows and remote observation"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-https-or-a-padlock-mean-a-website-is-trustworthy",
+				label: "Connection protection and website trust"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-a-vpn-make-you-completely-anonymous-online",
+				label: "VPN routing and remaining identifiers"
+			}
+		]
+	},
+	{
 		slug: "food-storage-and-safety",
 		title: "Food storage: growth, toxins and quality",
 		summary:

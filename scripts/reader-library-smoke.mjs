@@ -25,6 +25,7 @@ import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
 import { checkCoverageRoadmap } from "./coverage-roadmap-smoke.mjs";
 import { checkEditorialCitations } from "./editorial-citation-smoke.mjs";
 import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
+import { checkReaderContent } from "./reader-content-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
 import { checkReviewPriority } from "./review-priority-smoke.mjs";
 import "../back-end/dist/models/schemas/Topic.js";
@@ -834,6 +835,7 @@ try {
 		await Claim.updateOne({ _id: claim._id }, { $set: { readerUpdates: claim.readerUpdates } });
 	}
 	await checkLivingEvidenceRefreshes(adminChecks);
+	await checkReaderContent(adminChecks);
 	await checkReaderFeedback(adminChecks);
 	await checkCoverageRoadmap(adminChecks);
 	await checkReviewPriority(adminChecks);

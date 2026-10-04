@@ -98,6 +98,24 @@ describe("sourced reading guides", () => {
 		assert.match(text, /Abstract checked/);
 	});
 
+	it("adds a distinct privacy guide with observer and encryption boundaries", async () => {
+		const guide = await loadReadingGuide("browsing-privacy");
+		assert.ok(guide);
+		assert.match(guide.scope, /not a provider ranking, independent security audit/);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		const text = guide.sections
+			.flatMap((section) => section.paragraphs)
+			.map((paragraph) => paragraph.text)
+			.join(" ");
+		assert.match(text, /dishonest website can use HTTPS/);
+		assert.match(text, /does not mean it can automatically decrypt/);
+		assert.match(text, /old implementation findings cannot establish/);
+		assert.notEqual(guide, await loadReadingGuide("account-protection"));
+		const summary = readingGuides.find((entry) => entry.slug === "browsing-privacy")!;
+		assert.equal(summary.reviews.length, 3);
+		assert.equal(new Set(summary.reviews.map((review) => review.path)).size, 3);
+	});
+
 	it("keeps guide routes in the sitemap even when the backend is unavailable", () => {
 		const source = readFileSync(new URL("../server/routes/sitemap.xml.ts", import.meta.url), "utf8");
 		assert.match(source, /const guideRoutes = readingGuides\.map/);

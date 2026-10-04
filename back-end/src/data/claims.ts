@@ -28,6 +28,7 @@ import { september2026HealthspanClaims } from "./claim-expansion-2026-09-healths
 import { september2026VisitorDepthClaims } from "./claim-expansion-2026-09-visitor-depth.js";
 import { september2026TrafficClaims } from "./claim-expansion-2026-09.js";
 import { practicalEvidenceClaims } from "./claim-expansion-practical-evidence.js";
+import { readerExpansionClaims } from "./claim-expansion-reader.js";
 import { refreshBrainClaim } from "./claim-refreshes-brain.js";
 import { refreshClimateClaim } from "./claim-refreshes-climate.js";
 import { refreshDnaClaim } from "./claim-refreshes-dna.js";
@@ -27235,7 +27236,8 @@ const rawClaims: SeedClaim[] = [
 	...practicalEvidenceClaims,
 	...september2026DemandEssentialsClaims,
 	...september2026VisitorDepthClaims,
-	...september2026AtlasBreadthClaims
+	...september2026AtlasBreadthClaims,
+	...readerExpansionClaims
 ];
 
 // Kept separately so a controlled refresh can detect live editorial divergence.

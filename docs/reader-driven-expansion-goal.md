@@ -50,10 +50,15 @@ raw messages. A per-question novelty/source record will precede content batches.
 
 ## Milestones
 
-- Public coverage roadmap and moderated publication workflow: in progress.
+- Public coverage roadmap and moderated publication workflow: source-delivered
+  in v1.38.0. Public release identity and health observed separately; this is
+  not evidence of a production editorial mutation or approved reader demand.
 - Browser/account request following and update resolution: pending.
-- Source-verified expansion from 800 to 1,001 reviews: pending.
-- Eight new guides and integrated discovery: pending.
+- Source-verified expansion from 800 to 1,001 reviews: in progress. First batch
+  adds four distinct privacy/password-policy reviews; public acceptance remains
+  a separate gate. Research record: `research/reader-privacy-2026-10-04.md`.
+- Eight new guides and integrated discovery: in progress. One new browsing
+  privacy guide is source-prepared, bringing source guide coverage to 18.
 - Fresh usefulness evaluation and `1000+` quantity copy: pending.
 - Full release and independent public acceptance: pending.
 

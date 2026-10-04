@@ -90,6 +90,7 @@ const routes = [
 	"/compare/account-protection?context=incident",
 	"/compare/account-protection?options=",
 	"/guides/account-protection",
+	"/guides/browsing-privacy",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",
