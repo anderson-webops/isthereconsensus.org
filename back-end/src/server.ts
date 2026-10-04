@@ -59,6 +59,7 @@ import { Topic } from "./models/schemas/Topic.js";
 import { TopicSentimentVote } from "./models/schemas/TopicSentimentVote.js";
 import { User } from "./models/schemas/User.js";
 import { authRoutes } from "./routes/authRoutes.js";
+import { createCoverageRoadmapRouter } from "./routes/coverageRoadmapRoutes.js";
 import { createReaderFeedbackRouter } from "./routes/readerFeedbackRoutes.js";
 import { createReaderLibraryRouter } from "./routes/readerLibraryRoutes.js";
 import { createReviewPriorityRouter } from "./routes/reviewPriorityRoutes.js";
@@ -372,6 +373,7 @@ async function main() {
 	const api = express.Router();
 	api.use("/library", createReaderLibraryRouter());
 	api.use(createReaderFeedbackRouter(SESSION_SECRET));
+	api.use(createCoverageRoadmapRouter());
 	api.use(createReviewPriorityRouter());
 
 	function normalizeText(value: unknown, maxLength: number) {
