@@ -1605,6 +1605,34 @@ export const atlasCollections = [
 	},
 	{
 		topicSlug: "physics-and-chemistry",
+		slug: "temperature-energy-and-phase-changes",
+		title: "Temperature, energy and phase changes",
+		description: "Distinguish thermal state, energy transfer, boiling pressure and lower-temperature evaporation.",
+		claimSlugs: ["do-two-objects-at-the-same-temperature-contain-the-same-internal-energy", "is-heat-a-substance-stored-inside-a-hot-object", "does-water-always-boil-at-exactly-100-degrees-celsius", "can-liquid-water-evaporate-without-reaching-its-boiling-point", "does-adding-energy-as-heat-always-raise-a-substances-temperature"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "thermal-paths-and-surface-measurements",
+		title: "Thermal paths and surface measurements",
+		description: "Contact sensation, insulation, radiative transfer and the limits of infrared surface inference.",
+		claimSlugs: ["must-metal-that-feels-colder-than-wood-actually-be-at-a-lower-temperature", "can-thermal-energy-be-transferred-across-a-vacuum", "does-ordinary-insulation-generate-heat-by-itself", "does-an-infrared-thermometer-directly-reveal-exact-surface-temperature-regardless-of-emissivity", "can-an-ordinary-thermal-camera-directly-see-objects-through-an-opaque-wall"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "optical-paths-images-and-resolution",
+		title: "Optical paths, images and resolution",
+		description: "Real and virtual images, refracted apparent depth, ordinary lens conditions and detail versus enlargement.",
+		claimSlugs: ["does-increasing-magnification-automatically-reveal-more-detail", "can-a-plane-mirrors-virtual-image-be-caught-on-a-screen-at-its-apparent-location", "does-an-underwater-objects-apparent-depth-always-equal-its-actual-depth", "does-a-single-ordinary-diverging-lens-form-a-real-image-of-a-real-object", "does-visible-light-travel-through-ordinary-glass-at-the-vacuum-speed-of-light"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "spectra-scattering-and-observer-dependent-color",
+		title: "Spectra, scattering and observer-dependent color",
+		description: "White-light mixtures, prism dispersion, rainbows, polarized reflections and the clear blue sky.",
+		claimSlugs: ["is-ordinary-white-light-a-single-visible-wavelength", "does-an-ordinary-prism-create-new-colors-rather-than-separate-incident-light", "is-a-rainbow-a-fixed-colored-object-located-at-one-place-for-every-observer", "do-polarizing-sunglasses-block-all-reflected-light-equally", "is-earths-clear-daytime-sky-blue-mainly-because-it-reflects-the-ocean"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
 		slug: "relativity-gravity-and-equivalence",
 		title: "Relativity, gravity, and equivalence",
 		description: "GPS timing, universal free fall, and antimatter gravity connected through precise tests rather than intuition about mass or charge.",
