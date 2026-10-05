@@ -99,6 +99,7 @@ const routes = [
 	"/guides/reading-averages-percentages-and-probability",
 	"/guides/reading-electrical-quantities-and-circuit-claims",
 	"/guides/reading-motion-forces-and-energy-claims",
+	"/guides/reading-digital-security-and-data-protection-claims",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",

@@ -4,6 +4,80 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-digital-security-and-data-protection-claims",
+		title: "Reading digital security and data-protection claims",
+		summary:
+			"Identify the protected information, observer, device state and surviving copies before trusting a security label.",
+		checkedAt: "2026-10-05",
+		topics: ["digital-security-and-privacy"],
+		reviews: [
+			{
+				path: "/consensus/digital-security-and-privacy/does-an-encrypted-connection-to-a-messaging-server-mean-end-to-end-encryption",
+				label: "Connection encryption versus end-to-end messages"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-end-to-end-encryption-hide-all-message-metadata",
+				label: "Message content versus metadata"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-end-to-end-encryption-protect-messages-on-a-compromised-device",
+				label: "End-to-end encryption and compromised devices"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/is-hashing-a-password-the-same-as-encrypting-it",
+				label: "Password hashing versus encryption"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-encrypted-dns-hide-all-of-your-browsing-from-everyone",
+				label: "Encrypted DNS and observer limits"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-dnssec-encrypt-dns-lookups",
+				label: "DNSSEC integrity versus confidentiality"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-blocking-cookies-prevent-all-website-tracking",
+				label: "Cookies and other tracking mechanisms"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-deleting-browser-cookies-erase-a-websites-records-of-you",
+				label: "Cookie deletion versus remote records"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-a-public-ip-address-uniquely-identify-a-person",
+				label: "IP address versus personal identity"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/is-file-synchronization-automatically-a-backup",
+				label: "Synchronization versus recoverable history"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/can-ransomware-affect-a-backup-that-remains-writable-from-the-compromised-system",
+				label: "Backups inside a compromised control boundary"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-deleting-a-file-guarantee-that-its-data-cannot-be-recovered",
+				label: "File removal versus media sanitization"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-full-disk-encryption-prevent-malware-from-reading-files-after-you-unlock-the-device",
+				label: "Storage encryption during legitimate use"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-a-valid-software-signature-prove-that-an-app-is-safe",
+				label: "Signed code versus safe behavior"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-keeping-software-updated-prevent-every-cyberattack",
+				label: "Updates and verified activation"
+			},
+			{
+				path: "/consensus/digital-security-and-privacy/does-a-passing-email-authentication-check-prove-that-the-message-is-truthful",
+				label: "Authenticated email domains versus truthful content"
+			}
+		]
+	},
+	{
 		slug: "reading-motion-forces-and-energy-claims",
 		title: "Motion and energy claims: what is moving, conserved or balanced?",
 		summary:
