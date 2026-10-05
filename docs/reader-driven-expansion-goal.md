@@ -58,8 +58,9 @@ raw messages. A per-question novelty/source record will precede content batches.
   deployment remains a separate gate.
 - Source-verified expansion: authoring reaches 1,001 distinct canonical reviews,
   including 201 additions beyond the 800-review baseline. The final eighteen
-  economic-measurement reviews are committed and pushed; protected integration
-  remains pending. The per-cohort novelty, original-source and qualification
+  economic-measurement reviews and the public-quantity gate are integrated and
+  source-released as v1.38.13 at `3f74de6`. The per-cohort novelty, original-source
+  and qualification
   records are retained under `research/reader-*.md`. Existing refreshes and guide
   pages do not count as additions. Actual public publication remains pending.
 - Eight new guides and integrated discovery: source now contains thirty
@@ -82,7 +83,27 @@ raw messages. A per-question novelty/source record will precede content batches.
   and omitted searchable explanation fields require further search work. The
   now-exposed set must remain a regression record; subsequent tuning also needs
   a separate genuinely fresh frozen evaluation. The usefulness gate is not met.
+- Searchable explanations: a follow-up correction indexes existing public
+  stable-core paragraphs and misconception tags rather than omitting them.
+  Private notes and identifiers stay outside the index. A general scope gate
+  declines personal requests to alter prescribed treatment while preserving
+  population-level information. Focused checks and all 838 native tests pass;
+  the full compiled-backend/browser rehearsal also passes. Protected integration
+  of this follow-up remains pending.
+  On the exposed original set, only four of 42 covered questions match, 9.52%,
+  with all twelve out-of-scope questions correctly empty. This is regression
+  evidence, not a fresh evaluation or visitor success; the 90% goal is unchanged.
+  Neutralizing or capping unknown-word weights was rejected after false matches.
 - Full release and independent public acceptance: pending.
+- Authenticated publication fidelity: a read-only source audit found that the
+  existing create/update narrative item cap would silently truncate 277 items
+  across 135 of the 201 expansion reviews: 258 stable-core paragraphs and
+  nineteen what-would-change-minds items. The longest paragraph has 651
+  characters; both authenticated paths currently slice each item at 280.
+  The isolated seeded-catalog tests do not prove faithful authenticated creation.
+  Fix these bounded narrative inputs and verify exact full-text preservation
+  through authenticated creation, editing and publication before real publication.
+  This must not weaken source URL validation or alter existing published state.
 
 ## Current boundary
 
@@ -91,7 +112,8 @@ This goal starts with a clean source checkout at `7fea640`. No private productio
 feedback or reader analytics have been inspected, and no production mutations
 are authorized merely by this planning record.
 
-Anonymous checks on October 5 at 19:58 UTC found healthy frontend v1.38.12,
+Anonymous checks on October 5 at 21:53 UTC, after the v1.38.13 source release,
+found healthy frontend v1.38.12,
 800 publicly readable reviews and no approved public roadmap entries. The new
 economic review APIs and guide were unavailable. This observed public state,
 not source totals or isolated fixture publication, controls publication claims.

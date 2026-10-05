@@ -8,6 +8,8 @@ export interface SearchableClaim {
 	bottomLine?: string;
 	editorSummary?: string;
 	misconceptions?: string[];
+	stableCore?: string[];
+	misconceptionTags?: string[];
 }
 
 // These are retrieval equivalents, not assertions that the underlying things
@@ -90,6 +92,22 @@ function tokens(value: string) {
 	return [...new Set(text.split(" ").filter(token => (token.length > 1 || /^\d+$/u.test(token)) && !stopWords.has(token)).map(stem).filter(token => !stopWords.has(token)))];
 }
 
+const treatmentChangeTerms = new Set(tokens(
+	"start started starting stop stopped stopping discontinue discontinued discontinuing "
+	+ "switch switched switching change changed changing adjust adjusted adjusting "
+	+ "increase increased increasing decrease decreased decreasing reduce reduced reducing "
+	+ "double doubled doubling halve halved halving replace replaced replacing "
+	+ "combine combined combining mix mixed mixing quit quitting skip skipped skipping "
+	+ "restart restarted restarting taper tapered tapering"
+));
+
+function isPersonalTreatmentDecision(query: string) {
+	const sentence = normalize(query);
+	if (!/\b(?:i|me|my|we|our|im|ive|id)\b/u.test(sentence)) return false;
+	if (!/\b(?:prescribed|prescription|rx)\b|\b(?:my|our) (?:medication|medicine|treatment|therapy|dose|doctor|clinician)\b/u.test(sentence)) return false;
+	return tokens(sentence).some(term => treatmentChangeTerms.has(term));
+}
+
 function oneEditApart(left: string, right: string) {
 	if (Math.abs(left.length - right.length) > 1) return false;
 	if (left.length === right.length) {
@@ -113,7 +131,13 @@ function oneEditApart(left: string, right: string) {
 export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 	const documents = claims.map((claim) => {
 		const title = new Set(tokens(claim.title));
-		const body = new Set(tokens([claim.bottomLine, claim.editorSummary, ...(claim.misconceptions ?? [])].join(" ")));
+		const body = new Set(tokens([
+			claim.bottomLine,
+			claim.editorSummary,
+			...(claim.stableCore ?? []),
+			...(claim.misconceptions ?? []),
+			...(claim.misconceptionTags ?? [])
+		].join(" ")));
 		return { claim, title, body, terms: new Set([...title, ...body]) };
 	});
 	const frequencies = new Map<string, number>();
@@ -125,7 +149,9 @@ export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 	const weight = (term: string) => Math.log(1 + (documents.length + 1) / (1 + (frequencies.get(term) ?? 0)));
 
 	return (query: string, referenceDate = new Date()) => {
-		const rawTerms = tokens(query.slice(0, 160));
+		const boundedQuery = query.slice(0, 160);
+		if (isPersonalTreatmentDecision(boundedQuery)) return [];
+		const rawTerms = tokens(boundedQuery);
 		let corrected = false;
 		const terms = [...new Set(rawTerms.map((term) => {
 			if (frequencies.has(term) || term.length < 5) return term;
