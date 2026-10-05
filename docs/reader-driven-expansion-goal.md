@@ -56,19 +56,32 @@ raw messages. A per-question novelty/source record will precede content batches.
 - Browser/account request following and update resolution: source-delivered in
   v1.38.2 after signed-session, database and built-browser acceptance. Public
   deployment remains a separate gate.
-- Source-verified expansion from 800 to 1,001 reviews: in progress. First batch
-  adds four distinct privacy/password-policy reviews. A second batch adds
-  five human-origins/method reviews. A third adds ten distinct astronomy
-  observation/method reviews; public acceptance remains a separate gate.
-  Research records: `research/reader-privacy-2026-10-04.md` and
-  `research/reader-origins-2026-10-04.md` and
-  `research/reader-space-2026-10-04.md`.
-- Eight new guides and integrated discovery: in progress. One new browsing
-  privacy guide is source-delivered; a second guide explains fossil and ancestry
-  evidence. A third explains astronomical observations and their interpretation.
-  The source catalog now covers 819 reviews and 20 guides, leaving 182 additional
-  reviews and five additional guides to reach the source targets.
-- Fresh usefulness evaluation and `1000+` quantity copy: pending.
+- Source-verified expansion: authoring reaches 1,001 distinct canonical reviews,
+  including 201 additions beyond the 800-review baseline. The final eighteen
+  economic-measurement reviews are committed and pushed; protected integration
+  remains pending. The per-cohort novelty, original-source and qualification
+  records are retained under `research/reader-*.md`. Existing refreshes and guide
+  pages do not count as additions. Actual public publication remains pending.
+- Eight new guides and integrated discovery: source now contains thirty
+  substantial sourced guides, thirteen beyond the seventeen-guide baseline.
+  Their full bodies, paragraph citations, canonical links and public-availability
+  guards are retained. Source counts do not establish public guide availability.
+- Whole-library quantity copy: implemented for the public catalog, not the source
+  seed. Below a thousand, on unavailable data, or on incomplete/invalid counts,
+  use nonnumeric wording. Once distinct valid public topic counts reach the
+  threshold, use `1000+`; do not display an exact whole-library or topic total.
+  Individual topic/source counts and filtered result pagination remain exact.
+  Source delivery and actual public rendering remain separate gates.
+- First fresh usefulness evaluation: sixty agent-authored questions frozen on
+  October 4 were first scored against the complete source catalog on October 5.
+  Canonical source bodies were audited before retrieval: 42 covered questions,
+  three partial, three gaps and twelve out-of-scope requests. Only three of the
+  42 covered questions reached a relevant top-three review, 7.14%, below the
+  required 90%. No failures were dropped or reworded, and no visitor success or
+  independent expert assessment is claimed. Sentence-word coverage rejection
+  and omitted searchable explanation fields require further search work. The
+  now-exposed set must remain a regression record; subsequent tuning also needs
+  a separate genuinely fresh frozen evaluation. The usefulness gate is not met.
 - Full release and independent public acceptance: pending.
 
 ## Current boundary
@@ -77,3 +90,8 @@ The prior living-evidence refresh batch is complete and must not be republished.
 This goal starts with a clean source checkout at `7fea640`. No private production
 feedback or reader analytics have been inspected, and no production mutations
 are authorized merely by this planning record.
+
+Anonymous checks on October 5 at 19:58 UTC found healthy frontend v1.38.12,
+800 publicly readable reviews and no approved public roadmap entries. The new
+economic review APIs and guide were unavailable. This observed public state,
+not source totals or isolated fixture publication, controls publication claims.

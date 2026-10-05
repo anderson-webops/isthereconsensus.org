@@ -9,6 +9,7 @@ import { searchComparisons } from "~/utils/comparison-search";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
 import { createLatestRequest } from "~/utils/latest-request";
+import { formatPublicLibrarySummary } from "~/utils/public-library-summary";
 import { selectRecentClaims } from "~/utils/recent-claims";
 import { resolveHomeSearchRoute } from "~/utils/search-routing";
 
@@ -135,10 +136,7 @@ const recentClaimCandidates = computed(() =>
 );
 const recentlyReviewedClaims = computed(() => selectRecentClaims(recentClaimCandidates.value, 5));
 const topicHighlights = computed(() => enrichedTopics.value.slice(0, 5));
-const totalTopicCount = computed(() => enrichedTopics.value.length);
-const totalReviewedClaimCount = computed(() =>
-	enrichedTopics.value.reduce((count, topic) => count + (topic.claimCount ?? 0), 0)
-);
+const librarySummary = computed(() => formatPublicLibrarySummary(topics.value));
 const faqEntries = [
 	{
 		answer: "Search the claim first, read the short bottom line, and then open the evidence stack only if you need the deeper explanation or source trail.",
@@ -361,8 +359,7 @@ function claimCardSummary(claim: ClaimSummary) {
 				</form>
 
 				<NuxtLink class="library-summary" to="/consensus">
-					{{ formatCountLabel(totalReviewedClaimCount, "reviewed claim") }} across
-					{{ formatCountLabel(totalTopicCount, "topic") }}
+					{{ librarySummary }}
 				</NuxtLink>
 			</div>
 		</section>
