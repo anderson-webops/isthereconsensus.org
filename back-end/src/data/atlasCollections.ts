@@ -1370,6 +1370,34 @@ export const atlasCollections = [
 		]
 	},
 	{
+		topicSlug: "earth-and-geoscience",
+		slug: "flood-probability-measurements-and-protection",
+		title: "Flood probability, measurements and protection",
+		description:
+			"Annual probabilities, river height and discharge, upstream causes and the limits of levee protection.",
+		claimSlugs: [
+			"does-a-100-year-flood-occur-only-once-every-hundred-years",
+			"does-the-same-river-level-always-mean-the-same-water-flow",
+			"can-flooding-occur-without-rain-at-that-location",
+			"do-levees-eliminate-all-flood-risk"
+		]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "groundwater-pathways-head-and-supply",
+		title: "Groundwater pathways, head and supply",
+		description:
+			"Recharge delays, connected streamflow, artesian head, springs and the distinction between storage and transmission.",
+		claimSlugs: [
+			"does-one-rainy-season-quickly-refill-every-aquifer",
+			"can-groundwater-pumping-reduce-flow-in-rivers-and-streams",
+			"does-every-artesian-well-flow-above-ground-without-a-pump",
+			"are-springs-an-unlimited-source-of-groundwater",
+			"does-a-porous-rock-necessarily-make-a-productive-aquifer",
+			"are-rivers-always-fed-by-groundwater-rather-than-recharging-aquifers"
+		]
+	},
+	{
 		topicSlug: "ecology-and-conservation",
 		slug: "biodiversity-change-and-pollinators",
 		title: "Biodiversity change and pollinators",
@@ -1523,6 +1551,42 @@ export const atlasCollections = [
 			"is-deep-sea-mining-environmentally-harmless",
 			"is-ocean-based-carbon-dioxide-removal-ready-for-safe-large-scale-deployment",
 			"is-ocean-iron-fertilization-proven-to-provide-safe-durable-carbon-removal-at-climate-scale"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "wave-patterns-and-water-motion",
+		title: "Wave patterns and water motion",
+		description:
+			"Distinguish moving wave patterns, water-parcel drift and the depth dimension of ocean circulation.",
+		claimSlugs: [
+			"do-ocean-waves-carry-the-same-water-all-the-way-from-origin-to-shore",
+			"do-ocean-currents-move-water-only-horizontally"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "tidal-cycles-currents-and-storm-water",
+		title: "Tidal cycles, currents and storm water",
+		description:
+			"Local tide cycles, spring and neap ranges, current phase and the components of coastal storm water levels.",
+		claimSlugs: [
+			"does-every-coast-have-two-equal-high-tides-each-day",
+			"do-spring-tides-happen-only-in-spring",
+			"are-neap-tides-the-same-thing-as-low-tide",
+			"is-high-tide-always-the-time-of-strongest-tidal-current",
+			"does-wind-alone-determine-storm-surge-height"
+		]
+	},
+	{
+		topicSlug: "oceans-and-marine-science",
+		slug: "seawater-chemistry-and-depth-profiles",
+		title: "Seawater chemistry and depth profiles",
+		description: "Salt inputs and sinks, variable salinity and the limits of a surface-temperature map.",
+		claimSlugs: [
+			"does-ocean-salt-come-only-from-rivers",
+			"does-all-seawater-have-the-same-salinity",
+			"is-ocean-temperature-uniform-from-surface-to-seafloor"
 		]
 	},
 	{

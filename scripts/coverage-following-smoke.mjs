@@ -6,6 +6,7 @@ import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { CoverageRequest } from "../back-end/dist/models/schemas/CoverageRequest.js";
 import { ReaderLibrary } from "../back-end/dist/models/schemas/ReaderLibrary.js";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 
 export async function checkCoverageFollowing({ api: requestApi, browser, base, review, userCookie, adminCookie, browserLogin, clickText, browserText, restartBackend }) {
 	const api = (path, options = {}) => requestApi(path, { retryRateLimit: true, ...options });
@@ -34,7 +35,7 @@ export async function checkCoverageFollowing({ api: requestApi, browser, base, r
 		return row;
 	};
 	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
+	const page = await createIsolatedBrowserPage(context, base);
 	const errors = [];
 	page.on("pageerror", error => errors.push(error.message));
 	let legacyId;

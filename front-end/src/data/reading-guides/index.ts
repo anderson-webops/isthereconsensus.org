@@ -4,6 +4,105 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-flood-and-groundwater-claims",
+		title: "Floods and groundwater: reading the connected system",
+		summary: "Distinguish probability, river levels, recharge, underground storage and bounded flood protection.",
+		checkedAt: "2026-10-05",
+		topics: ["earth-and-geoscience"],
+		reviews: [
+			{
+				path: "/consensus/earth-and-geoscience/does-a-100-year-flood-occur-only-once-every-hundred-years",
+				label: "Flood probability versus a calendar"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-the-same-river-level-always-mean-the-same-water-flow",
+				label: "River height versus discharge"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-one-rainy-season-quickly-refill-every-aquifer",
+				label: "Rainfall versus aquifer recovery"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-groundwater-pumping-reduce-flow-in-rivers-and-streams",
+				label: "Pumping and streamflow depletion"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-every-artesian-well-flow-above-ground-without-a-pump",
+				label: "Artesian head versus flowing wells"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/are-springs-an-unlimited-source-of-groundwater",
+				label: "Spring flow and finite supply"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-a-porous-rock-necessarily-make-a-productive-aquifer",
+				label: "Porosity versus permeability"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/are-rivers-always-fed-by-groundwater-rather-than-recharging-aquifers",
+				label: "Gaining and losing reaches"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-flooding-occur-without-rain-at-that-location",
+				label: "Upstream causes of local flooding"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/do-levees-eliminate-all-flood-risk",
+				label: "Levees and residual risk"
+			}
+		]
+	},
+	{
+		slug: "reading-tides-waves-and-ocean-measurements",
+		title: "Waves, tides and ocean maps: know the measurement",
+		summary:
+			"Separate wave patterns, tidal range, current speed, storm-water components and depth-resolved observations.",
+		checkedAt: "2026-10-05",
+		topics: ["oceans-and-marine-science"],
+		reviews: [
+			{
+				path: "/consensus/oceans-and-marine-science/do-ocean-waves-carry-the-same-water-all-the-way-from-origin-to-shore",
+				label: "Wave patterns versus water parcels"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/does-every-coast-have-two-equal-high-tides-each-day",
+				label: "Different coastal tide cycles"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/do-spring-tides-happen-only-in-spring",
+				label: "Spring tides versus the season"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/are-neap-tides-the-same-thing-as-low-tide",
+				label: "Neap range versus low water"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/is-high-tide-always-the-time-of-strongest-tidal-current",
+				label: "Tide height versus current phase"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/does-wind-alone-determine-storm-surge-height",
+				label: "Surge factors and total water level"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/do-ocean-currents-move-water-only-horizontally",
+				label: "Vertical ocean motion"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/does-ocean-salt-come-only-from-rivers",
+				label: "River inputs and seafloor exchange"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/does-all-seawater-have-the-same-salinity",
+				label: "Variable salinity"
+			},
+			{
+				path: "/consensus/oceans-and-marine-science/is-ocean-temperature-uniform-from-surface-to-seafloor",
+				label: "Temperature profiles versus surface maps"
+			}
+		]
+	},
+	{
 		slug: "reading-space-observations",
 		title: "Space headlines: what the observations establish",
 		summary:

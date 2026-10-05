@@ -1,6 +1,7 @@
 // Invoked by the owned, disposable MongoDB/backend/browser harness. Never
 // accepts a production URL or provisions accounts outside that harness.
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import process from "node:process";
@@ -133,7 +134,12 @@ export async function checkReaderFeedback({
 		"reader feedback API: explicit submissions, deduplication, private fields, admin-only pagination, filters, destinations, CAS and scientific-state isolation passed"
 	);
 
-	const page = await browser.newPage();
+	let fail = false;
+	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (!fail || url.pathname !== "/api/reader-feedback") return false;
+		void request.respond({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Fixture feedback service unavailable" }) }).catch(() => {});
+		return true;
+	});
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));
 	await page.goto(`${base}/consensus/${review.topic.slug}/${review.slug}`, { waitUntil: "networkidle0" });
@@ -142,25 +148,13 @@ export async function checkReaderFeedback({
 	await clickText(page, "Suggest missing evidence");
 	await page.type('[name="feedback-message"]', "Please explain whether the evidence applies to older adults.");
 	await page.type('[name="feedback-source"]', "https://example.org/public-review");
-	await page.setRequestInterception(true);
-	let fail = true;
-	const intercept = (request) =>
-		request.url().endsWith("/api/reader-feedback") && fail
-			? request.respond({
-					status: 503,
-					contentType: "application/json",
-					body: JSON.stringify({ error: "Fixture feedback service unavailable" })
-				})
-			: request.continue();
-	page.on("request", intercept);
+	fail = true;
 	await clickText(page, "Send private suggestion");
 	await browserText(page, "Fixture feedback service unavailable");
 	assert.match(await page.$eval('[name="feedback-message"]', (el) => el.value), /older adults/);
 	fail = false;
 	await clickText(page, "Send private suggestion");
 	await browserText(page, "Thank you. Your feedback is in the private editorial queue.");
-	page.off("request", intercept);
-	await page.setRequestInterception(false);
 	await page.goto(`${base}/ask?q=private-query-must-not-be-copied`, { waitUntil: "networkidle0" });
 	await clickText(page, "Suggest a missing topic privately");
 	assert.equal(await page.$eval('[name="feedback-title"]', (el) => el.value), "");
@@ -307,7 +301,12 @@ async function checkComparisonFeedback({
 	assert.equal(row.referenceTitle, comparison.title);
 	assert.equal(row.claimId, undefined);
 	assert.equal(row.topicId, undefined);
-	const page = await browser.newPage();
+	let fail = false;
+	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (!fail || url.pathname !== "/api/reader-feedback") return false;
+		void request.respond({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Comparison feedback temporarily unavailable" }) }).catch(() => {});
+		return true;
+	});
 	await page.evaluateOnNewDocument(() => localStorage.setItem("nuxt-color-mode", "system"));
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));
@@ -327,21 +326,11 @@ async function checkComparisonFeedback({
 		'[name="feedback-message"]',
 		"Please explain how whole-grid storage changes the comparison boundary."
 	);
-	await page.setRequestInterception(true);
-	const fail = (request) =>
-		request.url().endsWith("/api/reader-feedback")
-			? request.respond({
-					status: 503,
-					contentType: "application/json",
-					body: JSON.stringify({ error: "Comparison feedback temporarily unavailable" })
-				})
-			: request.continue();
-	page.on("request", fail);
+	fail = true;
 	await clickText(page, "Send private suggestion");
 	await browserText(page, "Comparison feedback temporarily unavailable");
 	assert.match(await page.$eval('[name="feedback-message"]', (element) => element.value), /whole-grid storage/);
-	page.off("request", fail);
-	await page.setRequestInterception(false);
+	fail = false;
 	for (const mode of ["light", "dark"]) {
 		await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: mode }]);
 		await page.waitForFunction(

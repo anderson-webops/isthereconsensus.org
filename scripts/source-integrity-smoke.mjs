@@ -1,6 +1,7 @@
 // Invoked only by the fresh, owned loopback database/browser harness. All
 // provider responses and time are injected; no public service or .env is used.
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { randomUUID } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -295,7 +296,7 @@ export async function checkSourceIntegrity({
 		page1.data.pagination.total
 	);
 
-	const page = await browser.newPage();
+	const page = await createIsolatedBrowserPage(browser, base);
 	await page.evaluateOnNewDocument(() => {
 		const originalFetch = window.fetch.bind(window);
 		window.__authHydrationStates = [];
