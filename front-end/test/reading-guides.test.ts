@@ -11,6 +11,30 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects eighteen economic measurement questions without treating accounting as individual welfare or causal policy evidence", async () => {
+		const guide = await loadReadingGuide("reading-inflation-jobs-and-gdp-headlines");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-inflation-jobs-and-gdp-headlines")!;
+		assert.equal(summary.reviews.length, 18);
+		assert.deepEqual(summary.topics, ["economics-and-social-policy"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		assert.equal(guide.sources.length, 17);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1800);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(guide.scope, /independently constructed and hypothetical/);
+		assert.match(text, /does not certify exact personal welfare/);
+		assert.match(text, /temporary-layoff exceptions/);
+		assert.match(text, /U-6 adds marginally attached people to its denominator/);
+		assert.match(text, /a possible explanation and a demonstrated explanation/i);
+		assert.match(text, /inconsistent introductory rounded example/);
+		assert.match(text, /not automatically a feasible policy counterfactual/);
+		assert.match(text, /reference-period reconciliation/);
+		assert.match(text, /not cash balances or forecasts/);
+		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+	});
 	it("connects eighteen assessment questions with substantive explanation and honest score-use limits", async () => {
 		const guide = await loadReadingGuide("reading-test-scores-and-school-comparisons");
 		assert.ok(guide);

@@ -4,6 +4,88 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-inflation-jobs-and-gdp-headlines",
+		title: "Reading inflation, jobs and GDP headlines",
+		summary:
+			"Check price baskets, employment units, denominators, growth conventions and output boundaries before interpreting economic numbers.",
+		checkedAt: "2026-10-05",
+		topics: ["economics-and-social-policy"],
+		reviews: [
+			{
+				path: "/consensus/economics-and-social-policy/does-a-falling-inflation-rate-mean-that-prices-are-falling",
+				label: "Slower inflation versus falling prices"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-the-published-cpi-equal-every-households-inflation-rate",
+				label: "Population averages and personal baskets"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-the-cpi-track-the-full-cost-of-buying-a-home",
+				label: "Shelter services and housing assets"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/can-cpi-index-levels-be-compared-directly-when-their-reference-bases-differ",
+				label: "Reference bases and index comparisons"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-a-pay-rise-guarantee-increased-purchasing-power",
+				label: "Nominal and real pay"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure",
+				label: "Seasonal processing and comparison periods"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/is-the-unemployment-rate-the-percentage-of-everyone-without-a-job",
+				label: "The unemployment denominator"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-a-falling-unemployment-rate-prove-that-more-people-found-work",
+				label: "Unemployment ratios and participation"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-the-payroll-jobs-count-equal-the-number-of-employed-people",
+				label: "Jobs versus people"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-disagreement-between-household-and-payroll-employment-surveys-prove-an-error",
+				label: "Survey differences and uncertainty"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-the-headline-unemployment-rate-measure-everyone-who-wants-more-work",
+				label: "Broader work needs and U-6"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-higher-nominal-gdp-prove-that-more-goods-and-services-were-produced",
+				label: "Production prices and quantities"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/is-an-annualized-quarterly-gdp-growth-rate-the-actual-growth-during-that-quarter",
+				label: "Annualized quarterly growth"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-gdp-add-every-sale-at-every-stage-of-production",
+				label: "Final output and value added"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-subtracting-imports-from-gdp-prove-that-importing-automatically-harms-domestic-output",
+				label: "Foreign-content subtraction"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/can-chained-dollar-real-gdp-components-always-be-added-to-recover-the-total",
+				label: "Chained-dollar aggregation"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-gdp-per-capita-equal-a-typical-persons-income-or-well-being",
+				label: "Per-capita output and welfare"
+			},
+			{
+				path: "/consensus/economics-and-social-policy/does-a-purchasing-power-parity-conversion-predict-the-market-exchange-rate",
+				label: "PPP and exchange-rate purposes"
+			}
+		]
+	},
+	{
 		slug: "reading-test-scores-and-school-comparisons",
 		title: "Reading test scores and school comparisons",
 		summary:
