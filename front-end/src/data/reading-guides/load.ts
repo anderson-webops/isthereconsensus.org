@@ -1,6 +1,10 @@
 import type { ReadingGuideContent } from "./types";
 
 const loaders: Record<string, () => Promise<ReadingGuideContent>> = {
+	"reading-flood-and-groundwater-claims": () =>
+		import("./flood-groundwater").then((module) => module.floodGroundwaterGuide),
+	"reading-tides-waves-and-ocean-measurements": () =>
+		import("./coastal-measurements").then((module) => module.coastalMeasurementsGuide),
 	"reading-space-observations": () => import("./space").then((module) => module.spaceEvidenceGuide),
 	"reading-fossil-and-ancestry-evidence": () => import("./origins").then((module) => module.originsEvidenceGuide),
 	"browsing-privacy": () => import("./privacy").then((module) => module.browsingPrivacyGuide),

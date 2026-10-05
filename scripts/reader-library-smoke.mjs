@@ -30,6 +30,7 @@ import { checkReaderContent } from "./reader-content-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
 import { checkReviewPriority } from "./review-priority-smoke.mjs";
 import "../back-end/dist/models/schemas/Topic.js";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 
 const directory = mkdtempSync(join(tmpdir(), "consensus-reader-smoke-"));
 const databaseName = `reader_library_smoke_${randomUUID().replaceAll("-", "")}`;
@@ -611,28 +612,15 @@ try {
 		"/usr/bin/chromium"
 	].find((path) => path && existsSync(path));
 	browser = await puppeteer.launch({ executablePath, headless: true, args: ["--no-sandbox"] });
-	const page = await browser.newPage();
+	let contentFailure = false;
+	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (!contentFailure || url.pathname !== "/api/library/resolve") return false;
+		void request.respond({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Fixture content failure" }) }).catch(() => {});
+		return true;
+	});
 	page.setDefaultTimeout(15000);
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));
-	let contentFailure = false;
-	await page.setRequestInterception(true);
-	page.on("request", (request) => {
-		const url = new URL(request.url());
-		if (contentFailure && url.pathname === "/api/library/resolve") {
-			void request
-				.respond({
-					status: 503,
-					contentType: "application/json",
-					body: JSON.stringify({ error: "Fixture content failure" })
-				})
-				.catch(() => {});
-			return;
-		}
-		void (
-			url.origin === base || ["data:", "blob:"].includes(url.protocol) ? request.continue() : request.abort()
-		).catch(() => {});
-	});
 	const reviewPath = `/consensus/${review.topic.slug}/${review.slug}`;
 	await page.goto(base + reviewPath, { waitUntil: "networkidle0" });
 	await clickText(page, "Save review");

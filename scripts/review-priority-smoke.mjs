@@ -1,5 +1,6 @@
 // Runs only inside the owned loopback database/server/browser harness.
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { randomUUID } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -254,7 +255,7 @@ export async function checkReviewPriority({
 	assert.equal((await get(due._id)).schedule.revision, 2);
 	assert.equal((await get(flagged._id)).sources[0].revision, 3);
 
-	const page = await browser.newPage();
+	const page = await createIsolatedBrowserPage(browser, base);
 	page.setDefaultTimeout(15000);
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));

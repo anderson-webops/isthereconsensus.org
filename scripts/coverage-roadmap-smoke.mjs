@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import process from "node:process";
@@ -76,7 +77,7 @@ export async function checkCoverageRoadmap({ api, browser, base, review, userCoo
 	console.log("coverage API: private drafts, explicit approval, authenticated pagination, CAS races, withdrawal, answer readiness, restart persistence and private-field isolation passed");
 
 	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
+	const page = await createIsolatedBrowserPage(context, base);
 	const errors = [];
 	page.on("pageerror", error => errors.push(error.message));
 	await page.goto(`${base}/roadmap`, { waitUntil: "networkidle0" });

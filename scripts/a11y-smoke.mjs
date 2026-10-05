@@ -93,6 +93,8 @@ const routes = [
 	"/guides/browsing-privacy",
 	"/guides/reading-fossil-and-ancestry-evidence",
 	"/guides/reading-space-observations",
+	"/guides/reading-flood-and-groundwater-claims",
+	"/guides/reading-tides-waves-and-ocean-measurements",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",

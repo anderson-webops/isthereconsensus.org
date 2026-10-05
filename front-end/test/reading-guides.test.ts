@@ -158,6 +158,38 @@ describe("sourced reading guides", () => {
 		assert.notEqual(guide, await loadReadingGuide("reading-fossil-and-ancestry-evidence"));
 	});
 
+	it("adds substantive flood and coastal guides with ten real review links each", async () => {
+		for (const slug of ["reading-flood-and-groundwater-claims", "reading-tides-waves-and-ocean-measurements"]) {
+			const guide = await loadReadingGuide(slug);
+			assert.ok(guide);
+			assert.equal(readingGuides.find((entry) => entry.slug === slug)!.reviews.length, 10);
+			const text = guide.sections
+				.flatMap((section) => section.paragraphs)
+				.map((paragraph) => paragraph.text)
+				.join(" ");
+			assert.ok(text.split(/\s+/).length >= 900);
+			assert.match(guide.scope, /independent expert review has not been completed/);
+			assert.match(guide.scope, /not a.*warning/);
+		}
+	});
+
+	it("keeps water definitions, access limitations and safety boundaries visible", async () => {
+		const flood = await loadReadingGuide("reading-flood-and-groundwater-claims");
+		const coastal = await loadReadingGuide("reading-tides-waves-and-ocean-measurements");
+		const floodText = JSON.stringify(flood);
+		const coastalText = JSON.stringify(coastal);
+		assert.match(floodText, /not a complete basin observation/);
+		assert.match(floodText, /without raising it above the ground/);
+		assert.match(floodText, /abstract and DOI-metadata level/);
+		assert.match(floodText, /not a certificate of safety/);
+		assert.match(coastalText, /not a universal zero-transport theorem/);
+		assert.match(coastalText, /not two independent confirmations/);
+		assert.match(coastalText, /not a complete local surge forecast/);
+		assert.match(coastalText, /not a full water-column profile/);
+		assert.match(coastalText, /erroneous core-magma wording.*not adopted/);
+		assert.notEqual(flood, coastal);
+	});
+
 	it("includes every guide in both-theme accessibility coverage", () => {
 		const source = readFileSync(new URL("../../scripts/a11y-smoke.mjs", import.meta.url), "utf8");
 		for (const guide of readingGuides) assert.ok(source.includes(`"/guides/${guide.slug}"`));

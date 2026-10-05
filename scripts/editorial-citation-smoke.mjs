@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { randomUUID } from "node:crypto";
 import mongoose from "mongoose";
 import { seedClaimFields } from "../back-end/dist/data/seedClaims.js";
@@ -28,7 +29,7 @@ export async function checkEditorialCitations({ api, browser, base, review, admi
 	const unrelatedSources = await ClaimSource.find({ claim: review._id }).sort({ _id: 1 }).lean();
 	const privateNote = `Private citation fixture ${randomUUID()}`;
 	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
+	const page = await createIsolatedBrowserPage(context, base);
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));
 	let legacyCount = 0;

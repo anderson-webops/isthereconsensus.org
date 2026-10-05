@@ -1,5 +1,6 @@
 // Invoked only by the owned, disposable reader-library harness.
 import assert from "node:assert/strict";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { defaultClaims } from "../back-end/dist/data/claims.js";
@@ -12,7 +13,7 @@ export async function checkLivingEvidenceRefreshes({ api, browser, base }) {
 	assert.ok(seeds.length > 0);
 	assert.equal(seeds.length, registry.refreshes.length);
 	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
+	const page = await createIsolatedBrowserPage(context, base);
 	const errors = [];
 	page.on("pageerror", error => errors.push(error.message));
 	const require = createRequire(import.meta.url);

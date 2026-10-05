@@ -3,10 +3,11 @@ import { createRequire } from "node:module";
 import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
 import { defaultClaims } from "../back-end/dist/data/claims.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
+import { createIsolatedBrowserPage } from "./isolated-browser-page.mjs";
 
 export async function checkReaderContent({ api, browser, base, restartBackend }) {
 	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
+	const page = await createIsolatedBrowserPage(context, base);
 	const errors = [];
 	page.on("pageerror", error => errors.push(error.message));
 	const snapshots = [];
@@ -81,6 +82,18 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 		assert.ok(spaceText.includes("not two independent confirmations"));
 		assert.ok(spaceText.includes("not an exhaustive review of later comparisons"));
 		assert.ok(spaceText.includes("independent expert review has not been completed"));
+		for (const [slug, qualification] of [
+			["reading-flood-and-groundwater-claims", "not a complete basin observation"],
+			["reading-tides-waves-and-ocean-measurements", "not a universal zero-transport theorem"]
+		]) {
+			const response = await page.goto(`${base}/guides/${slug}`, { waitUntil: "networkidle0" });
+			assert.equal(response.status(), 200);
+			await page.waitForSelector(".guide-source-list");
+			assert.equal(await page.$$eval(".guide-review-links a", (links) => links.length), 10);
+			const text = await page.$eval("main", (element) => element.innerText.replace(/\s+/g, " "));
+			assert.ok(text.includes(qualification));
+			assert.ok(text.includes("independent expert review has not been completed"));
+		}
 		await restartBackend();
 		for (const snapshot of snapshots) {
 			const stored = await Claim.findOne({ slug: snapshot.slug }).lean();
