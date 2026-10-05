@@ -1,6 +1,8 @@
 import type { ReadingGuideContent } from "./types";
 
 const loaders: Record<string, () => Promise<ReadingGuideContent>> = {
+	"reading-electrical-quantities-and-circuit-claims": () =>
+		import("./electricity").then((module) => module.electricityGuide),
 	"reading-averages-percentages-and-probability": () =>
 		import("./probability").then((module) => module.probabilityGuide),
 	"reading-heat-and-light-claims": () => import("./heat-light").then((module) => module.heatLightGuide),

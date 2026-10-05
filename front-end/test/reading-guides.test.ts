@@ -11,6 +11,31 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects twenty distinct electrical questions with sourced state, model and measurement boundaries", async () => {
+		const guide = await loadReadingGuide("reading-electrical-quantities-and-circuit-claims");
+		assert.ok(guide);
+		const summary = readingGuides.find(
+			(entry) => entry.slug === "reading-electrical-quantities-and-circuit-claims"
+		)!;
+		assert.equal(summary.reviews.length, 20);
+		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1500);
+		assert.equal(guide.sources.length, 22);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independently constructed and hypothetical/);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(text, /charge balance, the energy balance and the propagation question/);
+		assert.match(text, /108,000 J/);
+		assert.match(text, /20 VA.*0\.5 gives 10 W/);
+		assert.match(text, /9 mJ, not the 18 mJ/);
+		assert.match(text, /not independent experiments/);
+		assert.match(text, /not a numerical poll of scientists/);
+		assert.match(text, /0\.02 Wb/);
+	});
+
 	it("has a unique discoverable entry for all ten planned subjects", () => {
 		assert.ok(readingGuides.length >= 10);
 		assert.equal(new Set(readingGuides.map((guide) => guide.slug)).size, readingGuides.length);
