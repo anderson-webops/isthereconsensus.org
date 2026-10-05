@@ -4,6 +4,88 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-test-scores-and-school-comparisons",
+		title: "Reading test scores and school comparisons",
+		summary:
+			"Separate score scales, norm ranks, precision, assessment uses and population reports before interpreting learning or school charts.",
+		checkedAt: "2026-10-05",
+		topics: ["education-and-learning"],
+		reviews: [
+			{
+				path: "/consensus/education-and-learning/does-a-test-percentile-show-the-percentage-of-questions-answered-correctly",
+				label: "Percentile versus percentage correct"
+			},
+			{
+				path: "/consensus/education-and-learning/can-percentile-ranks-be-averaged-as-if-they-were-equal-interval-test-scores",
+				label: "Ranks and unequal score spacing"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-rise-in-test-score-guarantee-a-rise-in-percentile-rank",
+				label: "Learning change versus relative position"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-grade-equivalent-score-mean-a-student-has-mastered-that-grades-curriculum",
+				label: "Grade equivalents versus curriculum mastery"
+			},
+			{
+				path: "/consensus/education-and-learning/does-the-same-raw-score-on-two-test-forms-mean-the-same-performance",
+				label: "Test-form difficulty and equating"
+			},
+			{
+				path: "/consensus/education-and-learning/are-scaled-test-scores-percentage-correct-with-a-different-label",
+				label: "Reporting scales versus percentage correct"
+			},
+			{
+				path: "/consensus/education-and-learning/can-different-tests-be-compared-just-because-they-use-the-same-score-range",
+				label: "Common-looking ranges and score links"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-reliable-test-score-guarantee-a-valid-interpretation",
+				label: "Reliability versus interpretation validity"
+			},
+			{
+				path: "/consensus/education-and-learning/does-validating-a-test-for-one-purpose-validate-every-use",
+				label: "Purpose-specific assessment evidence"
+			},
+			{
+				path: "/consensus/education-and-learning/is-a-reported-test-score-an-exact-measure-of-a-students-performance",
+				label: "Score precision and measurement error"
+			},
+			{
+				path: "/consensus/education-and-learning/does-crossing-a-test-cut-score-remove-measurement-uncertainty",
+				label: "Cut points and classification uncertainty"
+			},
+			{
+				path: "/consensus/education-and-learning/does-an-unchanged-maximum-test-score-prove-that-learning-stopped",
+				label: "Ceilings and sensitivity to growth"
+			},
+			{
+				path: "/consensus/education-and-learning/is-a-test-item-biased-whenever-groups-have-different-success-rates",
+				label: "Raw gaps, DIF and substantive item review"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-computer-adaptive-test-give-everyone-the-same-questions",
+				label: "Adaptive paths and calibrated scores"
+			},
+			{
+				path: "/consensus/education-and-learning/does-an-assessment-accommodation-automatically-change-what-the-test-measures",
+				label: "Access barriers and measured constructs"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-higher-average-test-score-prove-that-a-school-caused-more-learning",
+				label: "School averages versus causal effects"
+			},
+			{
+				path: "/consensus/education-and-learning/does-a-national-assessment-sample-reveal-every-individual-students-achievement",
+				label: "Population monitoring versus individual scores"
+			},
+			{
+				path: "/consensus/education-and-learning/are-naep-proficient-and-a-states-proficient-label-interchangeable",
+				label: "Framework-specific proficiency labels"
+			}
+		]
+	},
+	{
 		slug: "reading-weather-forecasts-and-measurements",
 		title: "Reading weather forecasts and measurements",
 		summary:

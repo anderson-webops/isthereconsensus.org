@@ -90,7 +90,8 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			["reading-electrical-quantities-and-circuit-claims", "Model agreement is not device certification", 20],
 			["reading-motion-forces-and-energy-claims", "A conserved total does not freeze every part", 32],
 			["reading-digital-security-and-data-protection-claims", "Authenticated is not a synonym for harmless or truthful", 16],
-			["reading-weather-forecasts-and-measurements", "A radar pixel is not a rain gauge on every street", 18]
+			["reading-weather-forecasts-and-measurements", "A radar pixel is not a rain gauge on every street", 18],
+			["reading-test-scores-and-school-comparisons", "A ranking is not a curriculum map", 18]
 		]) {
 			const response = await page.goto(`${base}/guides/${slug}`, { waitUntil: "networkidle0" });
 			assert.equal(response.status(), 200);

@@ -101,6 +101,7 @@ const routes = [
 	"/guides/reading-motion-forces-and-energy-claims",
 	"/guides/reading-digital-security-and-data-protection-claims",
 	"/guides/reading-weather-forecasts-and-measurements",
+	"/guides/reading-test-scores-and-school-comparisons",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",
