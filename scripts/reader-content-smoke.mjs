@@ -87,7 +87,8 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			["reading-tides-waves-and-ocean-measurements", "not a universal zero-transport theorem", 10],
 			["reading-heat-and-light-claims", "independent expert review has not been completed", 20],
 			["reading-averages-percentages-and-probability", "Unknown is not measured zero", 20],
-			["reading-electrical-quantities-and-circuit-claims", "Model agreement is not device certification", 20]
+			["reading-electrical-quantities-and-circuit-claims", "Model agreement is not device certification", 20],
+			["reading-motion-forces-and-energy-claims", "A conserved total does not freeze every part", 32]
 		]) {
 			const response = await page.goto(`${base}/guides/${slug}`, { waitUntil: "networkidle0" });
 			assert.equal(response.status(), 200);

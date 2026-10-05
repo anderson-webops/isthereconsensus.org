@@ -11,6 +11,26 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects thirty-two distinct mechanical-model questions without claiming measurements or expert votes", async () => {
+		const guide = await loadReadingGuide("reading-motion-forces-and-energy-claims");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-motion-forces-and-energy-claims")!;
+		assert.equal(summary.reviews.length, 32);
+		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		assert.equal(guide.sources.length, 39);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 2000);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independently constructed and hypothetical/);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.ok(guide.sections.some((section) => section.title === "A conserved total does not freeze every part"));
+		assert.match(text, /3 N m through 2 radians does 6 J/);
+		assert.match(text, /1\.5 N s and 3 N s/);
+		assert.match(text, /not a numerical poll of scientists/);
+		assert.match(text, /this library does not establish it/);
+	});
 	it("connects twenty distinct electrical questions with sourced state, model and measurement boundaries", async () => {
 		const guide = await loadReadingGuide("reading-electrical-quantities-and-circuit-claims");
 		assert.ok(guide);
