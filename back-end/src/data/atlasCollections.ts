@@ -28,6 +28,54 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "digital-security-and-privacy",
+		slug: "message-and-password-cryptography",
+		title: "Message and password cryptography",
+		description: "Separate transport, content, metadata, endpoint control and stored password representations.",
+		claimSlugs: [
+			"does-an-encrypted-connection-to-a-messaging-server-mean-end-to-end-encryption",
+			"does-end-to-end-encryption-hide-all-message-metadata",
+			"does-end-to-end-encryption-protect-messages-on-a-compromised-device",
+			"is-hashing-a-password-the-same-as-encrypting-it"
+		]
+	},
+	{
+		topicSlug: "digital-security-and-privacy",
+		slug: "dns-and-browser-identifiers",
+		title: "DNS and browser identifiers",
+		description: "Name what a lookup protects, what a browser retains and what an address can establish.",
+		claimSlugs: [
+			"does-encrypted-dns-hide-all-of-your-browsing-from-everyone",
+			"does-dnssec-encrypt-dns-lookups",
+			"does-blocking-cookies-prevent-all-website-tracking",
+			"does-deleting-browser-cookies-erase-a-websites-records-of-you",
+			"does-a-public-ip-address-uniquely-identify-a-person"
+		]
+	},
+	{
+		topicSlug: "digital-security-and-privacy",
+		slug: "files-backups-and-storage",
+		title: "Files, backups and storage",
+		description: "Distinguish current copies, recoverable history, access boundaries, removal and at-rest protection.",
+		claimSlugs: [
+			"is-file-synchronization-automatically-a-backup",
+			"can-ransomware-affect-a-backup-that-remains-writable-from-the-compromised-system",
+			"does-deleting-a-file-guarantee-that-its-data-cannot-be-recovered",
+			"does-full-disk-encryption-prevent-malware-from-reading-files-after-you-unlock-the-device"
+		]
+	},
+	{
+		topicSlug: "digital-security-and-privacy",
+		slug: "software-and-email-trust",
+		title: "Software and email trust",
+		description: "Read signatures, patch status and authenticated domains without turning them into universal safety claims.",
+		claimSlugs: [
+			"does-a-valid-software-signature-prove-that-an-app-is-safe",
+			"does-keeping-software-updated-prevent-every-cyberattack",
+			"does-a-passing-email-authentication-check-prove-that-the-message-is-truthful"
+		]
+	},
+	{
 		topicSlug: "physics-and-chemistry",
 		slug: "motion-and-contact-forces",
 		title: "Motion and contact forces",

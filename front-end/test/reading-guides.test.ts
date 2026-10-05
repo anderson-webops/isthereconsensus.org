@@ -11,6 +11,28 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects sixteen digital-boundary reviews with honest source and product limits", async () => {
+		const guide = await loadReadingGuide("reading-digital-security-and-data-protection-claims");
+		assert.ok(guide);
+		const summary = readingGuides.find(
+			(entry) => entry.slug === "reading-digital-security-and-data-protection-claims"
+		)!;
+		assert.equal(summary.reviews.length, 16);
+		assert.deepEqual(summary.topics, ["digital-security-and-privacy"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		assert.equal(guide.sources.length, 20);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1900);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(text, /library does not establish it/);
+		assert.match(text, /Group Note rather than a W3C Recommendation/);
+		assert.match(text, /RFC 9989/);
+		assert.match(text, /original full texts were unavailable and their percentages were excluded/);
+		assert.match(text, /untested is more informative/);
+		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+	});
 	it("connects thirty-two distinct mechanical-model questions without claiming measurements or expert votes", async () => {
 		const guide = await loadReadingGuide("reading-motion-forces-and-energy-claims");
 		assert.ok(guide);
