@@ -13,6 +13,21 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 	const snapshots = [];
 	const require = createRequire(import.meta.url);
 	try {
+		const explanationQuery = encodeURIComponent("inflation compounds");
+		const explanationSlug = "does-a-falling-inflation-rate-mean-that-prices-are-falling";
+		for (const path of [`/claims?q=${explanationQuery}`, `/search/suggestions?q=${explanationQuery}`]) {
+			const { data } = await api(path);
+			assert.ok(data.claims.slice(0, 3).some(claim => claim.slug === explanationSlug), `${path}: stable-core concept missing`);
+			for (const claim of data.claims) {
+				assert.ok(!("editorNotes" in claim));
+				assert.ok(!("submittedByEmail" in claim));
+			}
+		}
+		const personalTreatmentQuery = encodeURIComponent("Should I stop my prescribed treatment based only on one headline?");
+		for (const path of [`/claims?q=${personalTreatmentQuery}`, `/search/suggestions?q=${personalTreatmentQuery}`]) {
+			const { data } = await api(path);
+			assert.deepEqual(data.claims, [], `${path}: incidental evidence for an individual treatment decision`);
+		}
 		for (const entry of readerExpansionClaims) {
 			const seed = defaultClaims.find(claim => claim.slug === entry.slug);
 			const { data } = await api(`/topics/${seed.topicSlug}/claims/${seed.slug}`);
