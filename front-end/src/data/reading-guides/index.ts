@@ -4,6 +4,96 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-heat-and-light-claims",
+		title: "Heat and light: appearances, quantities and measurements",
+		summary:
+			"Read temperature, thermal images, prisms, lenses and magnification without confusing appearances with complete measurements.",
+		checkedAt: "2026-10-05",
+		topics: ["physics-and-chemistry"],
+		reviews: [
+			{
+				path: "/consensus/physics-and-chemistry/do-two-objects-at-the-same-temperature-contain-the-same-internal-energy",
+				label: "Temperature versus internal energy"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-heat-a-substance-stored-inside-a-hot-object",
+				label: "Heat as a transfer process"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-metal-that-feels-colder-than-wood-actually-be-at-a-lower-temperature",
+				label: "Contact feel versus temperature"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-water-always-boil-at-exactly-100-degrees-celsius",
+				label: "Boiling conditions and pressure"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-liquid-water-evaporate-without-reaching-its-boiling-point",
+				label: "Evaporation below boiling"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-adding-energy-as-heat-always-raise-a-substances-temperature",
+				label: "Energy during phase change"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-thermal-energy-be-transferred-across-a-vacuum",
+				label: "Radiation across vacuum"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-ordinary-insulation-generate-heat-by-itself",
+				label: "Passive insulation versus energy supply"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-infrared-thermometer-directly-reveal-exact-surface-temperature-regardless-of-emissivity",
+				label: "Infrared temperature inference"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-an-ordinary-thermal-camera-directly-see-objects-through-an-opaque-wall",
+				label: "Wall patterns versus seeing through"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-ordinary-white-light-a-single-visible-wavelength",
+				label: "White appearance versus spectrum"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-ordinary-prism-create-new-colors-rather-than-separate-incident-light",
+				label: "Prism dispersion"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-increasing-magnification-automatically-reveal-more-detail",
+				label: "Magnification versus resolution"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-a-plane-mirrors-virtual-image-be-caught-on-a-screen-at-its-apparent-location",
+				label: "Virtual image geometry"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-underwater-objects-apparent-depth-always-equal-its-actual-depth",
+				label: "Refraction and apparent depth"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-a-rainbow-a-fixed-colored-object-located-at-one-place-for-every-observer",
+				label: "Observer-dependent rainbows"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/do-polarizing-sunglasses-block-all-reflected-light-equally",
+				label: "Polarization and partial reflection"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-visible-light-travel-through-ordinary-glass-at-the-vacuum-speed-of-light",
+				label: "Vacuum and material phase speeds"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-single-ordinary-diverging-lens-form-a-real-image-of-a-real-object",
+				label: "Conditional diverging-lens images"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-earths-clear-daytime-sky-blue-mainly-because-it-reflects-the-ocean",
+				label: "Clear-sky atmospheric scattering"
+			}
+		]
+	},
+	{
 		slug: "reading-flood-and-groundwater-claims",
 		title: "Floods and groundwater: reading the connected system",
 		summary: "Distinguish probability, river levels, recharge, underground storage and bounded flood protection.",

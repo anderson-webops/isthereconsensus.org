@@ -33,6 +33,8 @@ const caffeineSlug = "does-caffeine-become-less-effective-with-regular-daily-use
 const vaccineSlug = "do-childhood-vaccines-cause-autism";
 const delays = new Map();
 const failures = new Set();
+const unpublishedGuideReviews = new Set();
+const unavailableGuideTopics = new Set();
 const requests = [];
 const pendingInterceptions = new Set();
 const interceptionErrors = [];
@@ -60,8 +62,14 @@ const api = http.createServer(async (req, res) => {
 	if (url.pathname === "/api/auth/me") body = { user: null, admin: null };
 	const topicMatch = url.pathname.match(/^\/api\/topics\/([^/]+)(?:\/claims(?:\/([^/]+))?)?$/);
 	if (topicMatch) {
+		if (url.pathname.endsWith("/claims") && unavailableGuideTopics.has(topicMatch[1])) {
+			res.writeHead(503);
+			res.end(JSON.stringify({ error: "Guide availability fixture unavailable" }));
+			return;
+		}
 		const topic = topics.find((entry) => entry.slug === topicMatch[1]);
-		const claims = catalog.filter((claim) => claim.topicSlug === topicMatch[1]);
+		const claims = catalog.filter((claim) => claim.topicSlug === topicMatch[1]
+			&& !unpublishedGuideReviews.has(`${claim.topicSlug}/${claim.slug}`));
 		body = topicMatch[2]
 			? { claim: claims.find((claim) => claim.slug === topicMatch[2]), relatedClaims: [], collections: [] }
 			: url.pathname.endsWith("/claims")
@@ -322,6 +330,53 @@ try {
 				fullPage: true
 			});
 	}
+	const availabilityGuide = readingGuides.find((guide) => guide.slug === "reading-heat-and-light-claims");
+	assert.ok(availabilityGuide);
+	const availabilityPath = `/guides/${availabilityGuide.slug}`;
+	const missingReview = availabilityGuide.reviews[0];
+	const [, , availabilityTopic, missingSlug] = missingReview.path.split("/");
+	unpublishedGuideReviews.add(`${availabilityTopic}/${missingSlug}`);
+	const partialResponse = await fetch(`${baseUrl}${availabilityPath}`);
+	assert.equal(partialResponse.status, 200);
+	const partialHtml = await partialResponse.text();
+	assert.ok(partialHtml.includes(availabilityGuide.title));
+	assert.ok(partialHtml.includes("Sources and their limits"));
+	assert.ok(partialHtml.includes("Not currently published"));
+	assert.ok(!partialHtml.includes(`href="${missingReview.path}"`));
+	await open(availabilityPath);
+	assert.equal((await page.$$(".guide-review-links a")).length, availabilityGuide.reviews.length - 1);
+	assert.equal((await page.$$('.guide-review-links [data-review-status="not_published"]')).length, 1);
+	assert.equal(await page.$eval(".guide-review-retry", element => element.textContent.trim()), "Check again");
+	unpublishedGuideReviews.clear();
+	await page.click(".guide-review-retry");
+	await page.waitForFunction(count => document.querySelectorAll(".guide-review-links a").length === count,
+		{}, availabilityGuide.reviews.length);
+	assert.equal((await page.$$(".guide-review-retry")).length, 0);
+	unavailableGuideTopics.add(availabilityTopic);
+	const unavailableResponse = await fetch(`${baseUrl}${availabilityPath}`);
+	assert.equal(unavailableResponse.status, 200);
+	const unavailableHtml = await unavailableResponse.text();
+	assert.ok(unavailableHtml.includes(availabilityGuide.title));
+	assert.ok(unavailableHtml.includes("Sources and their limits"));
+	assert.ok(unavailableHtml.includes("Availability not verified"));
+	assert.ok(!unavailableHtml.includes("Not currently published"));
+	for (const review of availabilityGuide.reviews)
+		assert.ok(!unavailableHtml.includes(`href="${review.path}"`));
+	await open(availabilityPath);
+	assert.equal((await page.$$(".guide-review-links a")).length, 0);
+	assert.equal((await page.$$('.guide-review-links [data-review-status="unavailable"]')).length,
+		availabilityGuide.reviews.length);
+	assert.equal(await page.$eval(".guide-review-retry", element => element.textContent.trim()), "Try again");
+	unavailableGuideTopics.clear();
+	await page.click(".guide-review-retry");
+	await page.waitForFunction(count => document.querySelectorAll(".guide-review-links a").length === count,
+		{}, availabilityGuide.reviews.length);
+	unpublishedGuideReviews.add(`${availabilityTopic}/${missingSlug}`);
+	await open(availabilityPath);
+	assert.equal((await page.$$(".guide-review-links a")).length, availabilityGuide.reviews.length - 1);
+	assert.equal((await page.$$(`.guide-review-links a[href="${missingReview.path}"]`)).length, 0);
+	unpublishedGuideReviews.clear();
+	console.log("PASS guide availability: SSR and hydration preserve sources, gate unpublished links, distinguish failures and recover on retry");
 	await open("/guides");
 	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
 	await page.click(`.guide-card a[href="/guides/${readingGuides[0].slug}"]`);

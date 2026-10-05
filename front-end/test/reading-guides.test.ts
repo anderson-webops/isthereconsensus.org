@@ -173,6 +173,29 @@ describe("sourced reading guides", () => {
 		}
 	});
 
+	it("connects twenty heat and optics reviews with a substantial original guide", async () => {
+		const guide = await loadReadingGuide("reading-heat-and-light-claims");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-heat-and-light-claims")!;
+		assert.equal(summary.reviews.length, 20);
+		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		const text = guide.sections
+			.flatMap((section) => section.paragraphs)
+			.map((paragraph) => paragraph.text)
+			.join(" ");
+		assert.ok(text.split(/\s+/).length >= 1100);
+		assert.equal(guide.sources.length, 19);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(guide.scope, /not a clinical recommendation/);
+		assert.match(text, /commercial interest remains visible/);
+		assert.match(text, /Full methods, funding and conflicts were not audited/);
+		assert.match(text, /internal reflection need not be total/);
+		assert.match(text, /not an absolute limit/);
+		assert.match(text, /does not by itself establish UV protection/);
+		assert.notEqual(guide, await loadReadingGuide("reading-tides-waves-and-ocean-measurements"));
+	});
+
 	it("keeps water definitions, access limitations and safety boundaries visible", async () => {
 		const flood = await loadReadingGuide("reading-flood-and-groundwater-claims");
 		const coastal = await loadReadingGuide("reading-tides-waves-and-ocean-measurements");

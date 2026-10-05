@@ -5,6 +5,7 @@ import { siteUrl } from "~/constants";
 import { comparisonsForGuide } from "~/data/comparisons";
 import { readingGuides } from "~/data/reading-guides";
 import { loadReadingGuide } from "~/data/reading-guides/load";
+import { loadGuideReviewAvailability } from "~/utils/guide-review-availability";
 import { serializeJsonLd } from "~/utils/json-ld";
 
 // Remount when navigating between guides so body, source anchors, and metadata
@@ -17,6 +18,26 @@ const slug = String(routeSlug || "");
 const summary = readingGuides.find((guide) => guide.slug === slug);
 const guide = summary ? await loadReadingGuide(slug) : undefined;
 if (!summary || !guide) throw createError({ statusCode: 404, statusMessage: "Reading guide not found" });
+
+const { apiUrl } = useApi();
+const {
+	data: connectedReviews,
+	status: connectedStatus,
+	refresh: refreshConnectedReviews
+} = await useAsyncData(
+	`guide-review-availability:${slug}`,
+	() =>
+		loadGuideReviewAvailability(summary.reviews, (topic) =>
+			$fetch<unknown>(apiUrl(`/topics/${topic}/claims`), { timeout: 5000, retry: 0 })
+		),
+	{ default: () => summary.reviews.map((review) => ({ ...review, availability: "unavailable" as const })) }
+);
+const hasUnavailableReviews = computed(() =>
+	connectedReviews.value.some((review) => review.availability === "unavailable")
+);
+const hasUnpublishedReviews = computed(() =>
+	connectedReviews.value.some((review) => review.availability === "not_published")
+);
 
 const guideText = guide.sections
 	.flatMap((section) => section.paragraphs)
@@ -118,9 +139,40 @@ useHead({
 		</section>
 		<section id="connected-reviews" class="guide-section" aria-labelledby="connected-reviews-title">
 			<h2 id="connected-reviews-title">Read the individual claim reviews</h2>
+			<p v-if="connectedStatus === 'pending'" role="status">Checking connected review availability…</p>
+			<div v-else-if="hasUnavailableReviews || hasUnpublishedReviews" role="status">
+				<p v-if="hasUnavailableReviews">
+					Some connected review availability could not be verified. The guide and its sources remain
+					available.
+				</p>
+				<p v-else>
+					Some connected reviews are not currently public. The guide's source-linked explanations remain
+					available.
+				</p>
+				<button class="guide-review-retry" type="button" @click="refreshConnectedReviews()">
+					{{ hasUnavailableReviews ? "Try again" : "Check again" }}
+				</button>
+			</div>
 			<ul class="guide-review-links">
-				<li v-for="review in summary.reviews" :key="review.path">
-					<NuxtLink :to="review.path">{{ review.label }}</NuxtLink>
+				<li v-for="review in connectedReviews" :key="review.path" :data-review-status="review.availability">
+					<NuxtLink
+						v-if="connectedStatus !== 'pending' && review.availability === 'published'"
+						:to="review.path"
+						>{{ review.label }}</NuxtLink
+					>
+					<template v-else>
+						<span>{{ review.label }}</span>
+						<span class="guide-source-kind">
+							·
+							{{
+								connectedStatus === "pending"
+									? "Checking availability"
+									: review.availability === "not_published"
+										? "Not currently published"
+										: "Availability not verified"
+							}}</span
+						>
+					</template>
 				</li>
 			</ul>
 		</section>
@@ -216,6 +268,15 @@ useHead({
 }
 .guide-section p {
 	margin: 0 0 18px;
+}
+.guide-review-retry {
+	padding: 8px 14px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 6px;
+	background: var(--consensus-surface);
+	color: var(--consensus-ink);
+	font: inherit;
+	cursor: pointer;
 }
 .reading-guide a {
 	color: var(--consensus-interactive);

@@ -82,14 +82,15 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 		assert.ok(spaceText.includes("not two independent confirmations"));
 		assert.ok(spaceText.includes("not an exhaustive review of later comparisons"));
 		assert.ok(spaceText.includes("independent expert review has not been completed"));
-		for (const [slug, qualification] of [
-			["reading-flood-and-groundwater-claims", "not a complete basin observation"],
-			["reading-tides-waves-and-ocean-measurements", "not a universal zero-transport theorem"]
+		for (const [slug, qualification, reviewCount] of [
+			["reading-flood-and-groundwater-claims", "not a complete basin observation", 10],
+			["reading-tides-waves-and-ocean-measurements", "not a universal zero-transport theorem", 10],
+			["reading-heat-and-light-claims", "independent expert review has not been completed", 20]
 		]) {
 			const response = await page.goto(`${base}/guides/${slug}`, { waitUntil: "networkidle0" });
 			assert.equal(response.status(), 200);
 			await page.waitForSelector(".guide-source-list");
-			assert.equal(await page.$$eval(".guide-review-links a", (links) => links.length), 10);
+			assert.equal(await page.$$eval(".guide-review-links a", (links) => links.length), reviewCount);
 			const text = await page.$eval("main", (element) => element.innerText.replace(/\s+/g, " "));
 			assert.ok(text.includes(qualification));
 			assert.ok(text.includes("independent expert review has not been completed"));
