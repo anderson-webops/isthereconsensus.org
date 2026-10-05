@@ -28,6 +28,62 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "education-and-learning",
+		slug: "learning-methods-and-feedback",
+		title: "Learning methods and feedback",
+		description: "Browse the existing reviews of reading instruction, retrieval, spacing, tutoring, active learning and formative feedback.",
+		claimSlugs: ["does-systematic-phonics-instruction-help-children-learn-to-read", "does-retrieval-practice-improve-long-term-learning", "does-spacing-study-sessions-improve-retention", "does-matching-instruction-to-a-students-learning-style-improve-achievement", "does-intensive-tutoring-improve-student-achievement", "does-active-learning-outperform-traditional-lecture-in-undergraduate-stem", "does-formative-assessment-improve-k12-learning"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "school-organization-and-resources",
+		title: "School organization and resources",
+		description: "Connect the existing reviews of start times, class size, retention, uniforms and student devices.",
+		claimSlugs: ["do-later-school-start-times-improve-adolescent-sleep-and-well-being", "do-smaller-classes-substantially-improve-student-achievement", "does-making-a-student-repeat-a-grade-reliably-improve-long-term-outcomes", "do-school-uniforms-improve-academic-achievement-or-student-behavior", "does-giving-every-student-a-laptop-reliably-improve-learning"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "development-and-study-support",
+		title: "Development and study support",
+		description: "Read the existing evidence on homework, growth-mindset programs, social-emotional learning and preschool.",
+		claimSlugs: ["does-homework-improve-academic-achievement", "do-brief-growth-mindset-interventions-produce-large-reliable-academic-gains", "do-universal-school-social-emotional-learning-programs-improve-outcomes", "does-high-quality-preschool-improve-later-educational-outcomes"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "assessment-norms-and-equivalents",
+		title: "Norms, ranks and grade equivalents",
+		description: "Keep relative position, percentage correct, longitudinal growth and curriculum coverage distinct.",
+		claimSlugs: ["does-a-test-percentile-show-the-percentage-of-questions-answered-correctly", "can-percentile-ranks-be-averaged-as-if-they-were-equal-interval-test-scores", "does-a-rise-in-test-score-guarantee-a-rise-in-percentile-rank", "does-a-grade-equivalent-score-mean-a-student-has-mastered-that-grades-curriculum"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "assessment-score-comparability",
+		title: "Test forms and score scales",
+		description: "Check form difficulty, reporting transformations and justified linking before comparing numbers.",
+		claimSlugs: ["does-the-same-raw-score-on-two-test-forms-mean-the-same-performance", "are-scaled-test-scores-percentage-correct-with-a-different-label", "can-different-tests-be-compared-just-because-they-use-the-same-score-range"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "assessment-measurement-precision",
+		title: "Measurement precision and boundaries",
+		description: "Interpret score uncertainty, cut-point classifications and ceilings without inventing individual conclusions.",
+		claimSlugs: ["is-a-reported-test-score-an-exact-measure-of-a-students-performance", "does-crossing-a-test-cut-score-remove-measurement-uncertainty", "does-an-unchanged-maximum-test-score-prove-that-learning-stopped"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "assessment-validity-and-administration",
+		title: "Validity, adaptation and access",
+		description: "Connect interpretations to their evidence and distinguish adaptive paths and accessible administration.",
+		claimSlugs: ["does-a-reliable-test-score-guarantee-a-valid-interpretation", "does-validating-a-test-for-one-purpose-validate-every-use", "does-a-computer-adaptive-test-give-everyone-the-same-questions", "does-an-assessment-accommodation-automatically-change-what-the-test-measures"]
+	},
+	{
+		topicSlug: "education-and-learning",
+		slug: "population-assessment-interpretation",
+		title: "Group reports and school comparisons",
+		description: "Separate item gaps, school attribution, sampled group estimates and framework-specific proficiency labels.",
+		claimSlugs: ["is-a-test-item-biased-whenever-groups-have-different-success-rates", "does-a-higher-average-test-score-prove-that-a-school-caused-more-learning", "does-a-national-assessment-sample-reveal-every-individual-students-achievement", "are-naep-proficient-and-a-states-proficient-label-interchangeable"]
+	},
+	{
 		topicSlug: "earth-and-geoscience",
 		slug: "weather-forecast-quantities",
 		title: "Rain-forecast quantities",

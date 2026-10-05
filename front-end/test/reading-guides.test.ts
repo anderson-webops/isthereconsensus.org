@@ -11,6 +11,28 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects eighteen assessment questions with substantive explanation and honest score-use limits", async () => {
+		const guide = await loadReadingGuide("reading-test-scores-and-school-comparisons");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-test-scores-and-school-comparisons")!;
+		assert.equal(summary.reviews.length, 18);
+		assert.deepEqual(summary.topics, ["education-and-learning"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		assert.equal(guide.sources.length, 15);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1800);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(guide.scope, /independently constructed and hypothetical/);
+		assert.match(text, /rank of a mean score/);
+		assert.match(text, /not a person's overall developmental age/);
+		assert.match(text, /classical true-score concept is an expectation/);
+		assert.match(text, /absence of a detected flag/);
+		assert.match(text, /not a universal menu of entitlements/);
+		assert.match(text, /group-estimation machinery|Group-estimation machinery/);
+		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+	});
 	it("connects eighteen weather reviews with scoped references and no live-forecast or safety promises", async () => {
 		const guide = await loadReadingGuide("reading-weather-forecasts-and-measurements");
 		assert.ok(guide);
