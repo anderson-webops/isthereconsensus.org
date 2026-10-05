@@ -4,6 +4,88 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-weather-forecasts-and-measurements",
+		title: "Reading weather forecasts and measurements",
+		summary:
+			"Separate rain chance, humidity, exposure indices, precipitation profiles and the layers sampled by weather instruments.",
+		checkedAt: "2026-10-05",
+		topics: ["earth-and-geoscience"],
+		reviews: [
+			{
+				path: "/consensus/earth-and-geoscience/does-a-40-percent-chance-of-rain-mean-rain-for-40-percent-of-the-day",
+				label: "Rain chance versus wet duration"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-a-higher-chance-of-rain-necessarily-mean-heavier-rainfall",
+				label: "Rain chance versus accumulation"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-relative-humidity-rise-without-adding-water-vapor-to-the-air",
+				label: "Humidity changing without added vapor"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/do-two-days-with-the-same-relative-humidity-contain-the-same-amount-of-water-vapor",
+				label: "Equal humidity percentages and vapor amounts"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-100-percent-relative-humidity-mean-that-rain-must-be-falling",
+				label: "Saturation versus falling rain"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/is-morning-dew-simply-rain-that-fell-overnight",
+				label: "Dew forming at a surface"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-frost-form-when-the-reported-air-temperature-is-above-freezing",
+				label: "Frost and observation height"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-wind-chill-make-a-dry-object-colder-than-the-actual-air-temperature",
+				label: "Wind chill versus an object's temperature"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-the-heat-index-describe-every-outdoor-exposure-including-full-sun",
+				label: "Heat-index exposure assumptions"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-ten-inches-of-snow-always-equal-one-inch-of-water",
+				label: "Snow depth and water content"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-snow-reach-the-ground-when-surface-air-is-above-freezing",
+				label: "Snow arriving through warmer air"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/are-sleet-and-freezing-rain-the-same-because-both-involve-ice",
+				label: "Sleet versus freezing rain"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/can-hail-fall-on-a-warm-day",
+				label: "Hail growth aloft on warm days"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-a-precipitation-echo-on-radar-prove-that-rain-is-reaching-the-ground-there",
+				label: "Radar sampling versus rain at the ground"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/is-every-colored-return-on-a-weather-radar-image-precipitation",
+				label: "Radar targets and product legends"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/does-infrared-weather-satellite-imagery-directly-measure-the-air-temperature-at-ground-level",
+				label: "Satellite radiation versus surface air"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/is-sea-level-pressure-the-same-as-the-pressure-measured-at-a-mountain-weather-station",
+				label: "Station pressure and reference levels"
+			},
+			{
+				path: "/consensus/earth-and-geoscience/is-a-weather-front-just-the-thin-line-drawn-on-a-surface-map",
+				label: "Three-dimensional fronts and map lines"
+			}
+		]
+	},
+	{
 		slug: "reading-digital-security-and-data-protection-claims",
 		title: "Reading digital security and data-protection claims",
 		summary:

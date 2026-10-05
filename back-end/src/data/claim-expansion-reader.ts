@@ -8,6 +8,7 @@ import { readerPrivacyClaims, readerPrivacyGaps } from "./claim-expansion-reader
 import { readerProbabilityClaims, readerProbabilityGaps } from "./claim-expansion-reader-probability.js";
 import { readerSpaceClaims, readerSpaceGaps } from "./claim-expansion-reader-space.js";
 import { readerWaterClaims, readerWaterGaps } from "./claim-expansion-reader-water.js";
+import { readerWeatherClaims, readerWeatherGaps } from "./claim-expansion-reader-weather.js";
 
 export const readerExpansionClaims: SeedClaim[] = [
 	...readerPrivacyClaims,
@@ -18,6 +19,7 @@ export const readerExpansionClaims: SeedClaim[] = [
 	...readerProbabilityClaims,
 	...readerElectricityClaims,
 	...readerMechanicsClaims,
-	...readerDigitalClaims
+	...readerDigitalClaims,
+	...readerWeatherClaims
 ];
-export const readerExpansionGaps = [...readerPrivacyGaps, ...readerOriginsGaps, ...readerSpaceGaps, ...readerWaterGaps, ...readerPhysicsGaps, ...readerProbabilityGaps, ...readerElectricityGaps, ...readerMechanicsGaps, ...readerDigitalGaps];
+export const readerExpansionGaps = [...readerPrivacyGaps, ...readerOriginsGaps, ...readerSpaceGaps, ...readerWaterGaps, ...readerPhysicsGaps, ...readerProbabilityGaps, ...readerElectricityGaps, ...readerMechanicsGaps, ...readerDigitalGaps, ...readerWeatherGaps];

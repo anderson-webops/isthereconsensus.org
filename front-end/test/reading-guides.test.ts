@@ -11,6 +11,27 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("connects eighteen weather reviews with scoped references and no live-forecast or safety promises", async () => {
+		const guide = await loadReadingGuide("reading-weather-forecasts-and-measurements");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-weather-forecasts-and-measurements")!;
+		assert.equal(summary.reviews.length, 18);
+		assert.deepEqual(summary.topics, ["earth-and-geoscience"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		assert.equal(guide.sources.length, 23);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1800);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(guide.scope, /not a live forecast/);
+		assert.match(text, /explicitly invented mathematical example/);
+		assert.match(text, /sufficient example, not the only possible arrangement/);
+		assert.match(text, /modern filtered product need not expose all raw returns/);
+		assert.match(text, /station observation and a household sensor/);
+		assert.match(text, /not ordinary psychrometric wet-bulb temperature/);
+		assert.match(text, /library does not establish/);
+	});
 	it("connects sixteen digital-boundary reviews with honest source and product limits", async () => {
 		const guide = await loadReadingGuide("reading-digital-security-and-data-protection-claims");
 		assert.ok(guide);
