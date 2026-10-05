@@ -4,6 +4,144 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-motion-forces-and-energy-claims",
+		title: "Motion and energy claims: what is moving, conserved or balanced?",
+		summary:
+			"Check paths, reference frames, system boundaries, force geometry and model limits before accepting a mechanics or fluid shortcut.",
+		checkedAt: "2026-10-05",
+		topics: ["physics-and-chemistry"],
+		reviews: [
+			{
+				path: "/consensus/physics-and-chemistry/are-distance-traveled-and-displacement-always-the-same",
+				label: "Are distance traveled and displacement always the same?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-average-speed-always-the-magnitude-of-average-velocity",
+				label: "Is average speed always the magnitude of average velocity?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-zero-net-force-mean-an-object-must-be-at-rest",
+				label: "Does zero net force mean an object must be at rest?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-unchanged-mass-have-the-same-gravitational-weight-everywhere",
+				label: "Does an unchanged mass have the same gravitational weight everywhere?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/do-newtons-third-law-force-pairs-cancel-on-the-same-object",
+				label: "Do Newton's third-law force pairs cancel on the same object?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-the-normal-contact-force-always-equal-gravitational-weight",
+				label: "Must the normal contact force always equal gravitational weight?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-static-friction-always-equal-to-its-maximum-value",
+				label: "Is static friction always equal to its maximum value?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-an-object-accelerate-while-its-speed-stays-constant",
+				label: "Can an object accelerate while its speed stays constant?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-centripetal-force-an-extra-force-to-add-to-the-real-forces",
+				label: "Is centripetal force an extra force to add to the real forces?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-doubling-speed-merely-double-kinetic-energy",
+				label: "Does doubling speed merely double kinetic energy?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-a-force-do-negative-mechanical-work",
+				label: "Can a force do negative mechanical work?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-returning-to-the-starting-point-make-every-forces-work-zero",
+				label: "Does returning to the starting point make every force's work zero?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-exerting-a-force-without-displacement-necessarily-do-mechanical-work",
+				label: "Does exerting a force without displacement necessarily do mechanical work?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-conservation-of-energy-require-mechanical-energy-to-remain-unchanged",
+				label: "Does conservation of energy require mechanical energy to remain unchanged?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-conserved-collision-momentum-guarantee-conserved-kinetic-energy",
+				label: "Does conserved collision momentum guarantee conserved kinetic energy?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-elastic-collision-leave-each-objects-kinetic-energy-unchanged",
+				label: "Does an elastic collision leave each object's kinetic energy unchanged?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-peak-force-alone-determine-a-change-in-momentum",
+				label: "Does peak force alone determine a change in momentum?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-an-isolated-systems-center-of-mass-remain-stationary",
+				label: "Must an isolated system's center of mass remain stationary?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-force-magnitude-alone-determine-torque-about-an-axis",
+				label: "Does force magnitude alone determine torque about an axis?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/are-torque-and-energy-the-same-quantity-because-both-involve-newton-meters",
+				label: "Are torque and energy the same quantity because both involve newton meters?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-rotational-inertia-determined-only-by-total-mass",
+				label: "Is rotational inertia determined only by total mass?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-conserved-angular-momentum-require-constant-angular-speed",
+				label: "Does conserved angular momentum require constant angular speed?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-rolling-rigid-bodys-kinetic-energy-include-only-translation",
+				label: "Does a rolling rigid body's kinetic energy include only translation?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-pressure-the-same-quantity-as-total-force",
+				label: "Is pressure the same quantity as total force?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-more-total-fluid-volume-always-mean-greater-pressure-at-the-same-depth",
+				label: "Does more total fluid volume always mean greater pressure at the same depth?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-ideal-hydraulic-force-multiplication-create-extra-energy",
+				label: "Does ideal hydraulic force multiplication create extra energy?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-buoyant-force-determined-by-an-objects-mass-alone",
+				label: "Is buoyant force determined by an object's mass alone?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-buoyant-force-exceed-weight-for-an-object-to-float-at-rest",
+				label: "Must buoyant force exceed weight for an object to float at rest?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-faster-fluid-flow-always-imply-lower-pressure",
+				label: "Does faster fluid flow always imply lower pressure?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-constant-fluid-flow-rate-mean-the-speed-is-the-same-everywhere",
+				label: "Does constant fluid flow rate mean the speed is the same everywhere?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/are-fluid-density-and-viscosity-the-same-property",
+				label: "Are fluid density and viscosity the same property?"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-larger-amplitude-always-make-a-spring-oscillator-slower",
+				label: "Does a larger amplitude always make a spring oscillator slower?"
+			}
+		]
+	},
+	{
 		slug: "reading-electrical-quantities-and-circuit-claims",
 		title: "Electricity claims: charge, power, storage and changing fields",
 		summary:

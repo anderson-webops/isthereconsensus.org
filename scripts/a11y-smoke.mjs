@@ -98,6 +98,7 @@ const routes = [
 	"/guides/reading-heat-and-light-claims",
 	"/guides/reading-averages-percentages-and-probability",
 	"/guides/reading-electrical-quantities-and-circuit-claims",
+	"/guides/reading-motion-forces-and-energy-claims",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",

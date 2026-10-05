@@ -29,6 +29,55 @@ export interface PublicAtlasCollectionMembership {
 export const atlasCollections = [
 	{
 		topicSlug: "physics-and-chemistry",
+		slug: "motion-and-contact-forces",
+		title: "Motion and contact forces",
+		description: "Separate paths, velocity, force pairs, weight and responsive contact forces.",
+		claimSlugs: ["are-distance-traveled-and-displacement-always-the-same", "is-average-speed-always-the-magnitude-of-average-velocity", "does-zero-net-force-mean-an-object-must-be-at-rest", "does-an-unchanged-mass-have-the-same-gravitational-weight-everywhere", "do-newtons-third-law-force-pairs-cancel-on-the-same-object", "must-the-normal-contact-force-always-equal-gravitational-weight", "is-static-friction-always-equal-to-its-maximum-value"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "curved-motion-and-linear-oscillation",
+		title: "Curved motion and linear oscillation",
+		description: "Check velocity direction, inward resultants and the limits of amplitude-independent spring timing.",
+		claimSlugs: ["can-an-object-accelerate-while-its-speed-stays-constant", "is-centripetal-force-an-extra-force-to-add-to-the-real-forces", "does-a-larger-amplitude-always-make-a-spring-oscillator-slower"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "mechanical-work-and-energy-balances",
+		title: "Mechanical work and energy balances",
+		description: "Distinguish signed path work, kinetic scaling and mechanical energy from the complete energy account.",
+		claimSlugs: ["does-doubling-speed-merely-double-kinetic-energy", "can-a-force-do-negative-mechanical-work", "does-returning-to-the-starting-point-make-every-forces-work-zero", "does-exerting-a-force-without-displacement-necessarily-do-mechanical-work", "does-conservation-of-energy-require-mechanical-energy-to-remain-unchanged"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "momentum-and-collision-models",
+		title: "Momentum and collision models",
+		description: "Separate impulse, system momentum, elastic allocation and center-of-mass motion.",
+		claimSlugs: ["does-conserved-collision-momentum-guarantee-conserved-kinetic-energy", "does-an-elastic-collision-leave-each-objects-kinetic-energy-unchanged", "does-peak-force-alone-determine-a-change-in-momentum", "must-an-isolated-systems-center-of-mass-remain-stationary"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "torque-inertia-and-rotational-energy",
+		title: "Torque, inertia and rotational energy",
+		description: "Identify axes, force geometry, mass distribution and rotational energy before applying a conservation shortcut.",
+		claimSlugs: ["does-force-magnitude-alone-determine-torque-about-an-axis", "are-torque-and-energy-the-same-quantity-because-both-involve-newton-meters", "is-rotational-inertia-determined-only-by-total-mass", "does-conserved-angular-momentum-require-constant-angular-speed", "does-a-rolling-rigid-bodys-kinetic-energy-include-only-translation"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "fluid-quantities-and-static-pressure",
+		title: "Fluid quantities and static pressure",
+		description: "Distinguish force, pressure, depth, viscosity and ideal force multiplication without inventing energy.",
+		claimSlugs: ["is-pressure-the-same-quantity-as-total-force", "does-more-total-fluid-volume-always-mean-greater-pressure-at-the-same-depth", "does-ideal-hydraulic-force-multiplication-create-extra-energy", "are-fluid-density-and-viscosity-the-same-property"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "buoyancy-and-flow-balances",
+		title: "Buoyancy and flow balances",
+		description: "Keep displaced-fluid forces, floating equilibrium, continuity and scoped Bernoulli conditions distinct.",
+		claimSlugs: ["is-buoyant-force-determined-by-an-objects-mass-alone", "must-buoyant-force-exceed-weight-for-an-object-to-float-at-rest", "does-faster-fluid-flow-always-imply-lower-pressure", "does-constant-fluid-flow-rate-mean-the-speed-is-the-same-everywhere"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
 		slug: "electrical-quantities-and-ratings",
 		title: "Electrical quantities and ratings",
 		description: "Separate charge, voltage, power, energy, source loading and dissipation before interpreting a number.",
