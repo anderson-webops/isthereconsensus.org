@@ -4,6 +4,96 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-averages-percentages-and-probability",
+		title: "Averages, percentages and probability: what does the number mean?",
+		summary:
+			"Check denominators, group weights, probability models and sampling uncertainty before accepting a numerical headline.",
+		checkedAt: "2026-10-05",
+		topics: ["consensus-foundations"],
+		reviews: [
+			{
+				path: "/consensus/consensus-foundations/do-the-mean-and-median-always-describe-the-same-typical-value",
+				label: "Mean versus median"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-group-averages-be-averaged-without-accounting-for-group-sizes",
+				label: "Pooling group averages"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-combining-groups-reverse-an-association-present-within-every-group",
+				label: "Simpson's paradox"
+			},
+			{
+				path: "/consensus/consensus-foundations/is-a-percentage-point-increase-the-same-as-a-percent-increase",
+				label: "Percentage points versus percent change"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-an-equal-percent-increase-and-decrease-return-a-value-to-its-starting-point",
+				label: "Equal percent rises and falls"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-successive-percentage-changes-be-added-to-get-the-total-change",
+				label: "Successive percentage changes"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-a-conditional-probability-be-reversed-without-changing-its-value",
+				label: "Reversing conditional probabilities"
+			},
+			{
+				path: "/consensus/consensus-foundations/are-mutually-exclusive-events-the-same-as-independent-events",
+				label: "Disjoint versus independent"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-the-probabilities-of-overlapping-events-simply-be-added",
+				label: "Overlapping event probabilities"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-random-sampling-without-replacement-make-successive-draws-independent",
+				label: "Sampling without replacement"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-probability-zero-always-mean-an-outcome-is-impossible",
+				label: "Zero probability and exact points"
+			},
+			{
+				path: "/consensus/consensus-foundations/is-a-probability-density-above-one-an-invalid-probability",
+				label: "Density heights and interval areas"
+			},
+			{
+				path: "/consensus/consensus-foundations/must-an-expected-value-be-a-possible-individual-outcome",
+				label: "Expected versus possible outcomes"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-the-law-of-large-numbers-make-the-next-independent-outcome-compensate-for-a-streak",
+				label: "Streaks and convergence"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-zero-pearson-correlation-prove-that-two-variables-are-independent",
+				label: "Zero correlation and dependence"
+			},
+			{
+				path: "/consensus/consensus-foundations/are-variance-and-standard-deviation-interchangeable-measures-in-the-same-units",
+				label: "Variance, deviation and units"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-a-small-standard-error-mean-individual-observations-vary-very-little",
+				label: "Estimator precision versus individual spread"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-the-68-95-997-rule-apply-to-every-distribution",
+				label: "Normal-model coverage"
+			},
+			{
+				path: "/consensus/consensus-foundations/can-missing-measurements-be-replaced-by-zero-without-changing-the-conclusion",
+				label: "Missing values are not zero"
+			},
+			{
+				path: "/consensus/consensus-foundations/does-changing-histogram-bin-width-leave-the-apparent-distribution-unchanged",
+				label: "Histogram display choices"
+			}
+		]
+	},
+	{
 		slug: "reading-heat-and-light-claims",
 		title: "Heat and light: appearances, quantities and measurements",
 		summary:
