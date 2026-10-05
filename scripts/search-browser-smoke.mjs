@@ -44,6 +44,8 @@ let page;
 let frontend;
 let frontendOutput = "";
 let reviewFixture;
+let topicCountFixture;
+let topicCountsUnavailable = false;
 const api = http.createServer(async (req, res) => {
 	const url = new URL(req.url, "http://localhost");
 	const query = url.searchParams.get("q") ?? "";
@@ -51,6 +53,11 @@ const api = http.createServer(async (req, res) => {
 	res.setHeader("access-control-allow-origin", baseUrl);
 	res.setHeader("access-control-allow-credentials", "true");
 	res.setHeader("content-type", "application/json");
+	if (url.pathname === "/api/topics" && topicCountsUnavailable) {
+		res.writeHead(503);
+		res.end(JSON.stringify({ error: "Public catalog count fixture unavailable" }));
+		return;
+	}
 	if (delays.has(query)) await delay(delays.get(query));
 	if (failures.has(query)) {
 		res.writeHead(503);
@@ -58,7 +65,7 @@ const api = http.createServer(async (req, res) => {
 		return;
 	}
 	let body = {};
-	if (url.pathname === "/api/topics") body = { topics };
+	if (url.pathname === "/api/topics") body = { topics: topicCountFixture ?? topics };
 	if (url.pathname === "/api/auth/me") body = { user: null, admin: null };
 	const topicMatch = url.pathname.match(/^\/api\/topics\/([^/]+)(?:\/claims(?:\/([^/]+))?)?$/);
 	if (topicMatch) {
@@ -535,6 +542,28 @@ try {
 		document.querySelector(".match-row h3")?.textContent?.includes("caffeine become less effective")
 	);
 	console.log("PASS Ask prefilled question triggers initial suggestions");
+	for (const scenario of [
+		{ label: "below threshold", count: 999, expected: "Browse reviewed claims by topic" },
+		{ label: "threshold", count: 1000, expected: "Browse 1000+ reviewed claims by topic" },
+		{ label: "above threshold", count: 1001, expected: "Browse 1000+ reviewed claims by topic" },
+		{ label: "incomplete count", count: undefined, expected: "Browse reviewed claims by topic" },
+		{ label: "catalog unavailable", unavailable: true, expected: "Browse reviewed claims by topic" },
+		{ label: "catalog recovered", expected: "Browse 1000+ reviewed claims by topic" }
+	]) {
+		topicCountsUnavailable = scenario.unavailable ?? false;
+		topicCountFixture = "count" in scenario ? [{ ...topics[0], claimCount: scenario.count }] : undefined;
+		const homeResponse = await fetch(`${baseUrl}/`);
+		assert.equal(homeResponse.status, 200);
+		const homeHtml = await homeResponse.text();
+		const serverSummary = homeHtml.match(/<a[^>]*class="library-summary"[^>]*>([\s\S]*?)<\/a>/)?.[1]
+			?.replace(/<!--[\s\S]*?-->/g, "").replace(/\s+/g, " ").trim();
+		assert.equal(serverSummary, scenario.expected, `SSR library summary: ${scenario.label}`);
+		await open("/");
+		assert.equal(await page.$eval(".library-summary", (element) => element.textContent.trim()), scenario.expected, `Hydrated library summary: ${scenario.label}`);
+	}
+	topicCountFixture = undefined;
+	topicCountsUnavailable = false;
+	console.log("PASS public-library quantity: SSR/hydration threshold, incomplete and failed counts, recovery and unchanged exact search pagination");
 	await open("/");
 	delays.set("coffee stopped working", 1500);
 	await setInput(page, "#home-search", "coffee stopped working");

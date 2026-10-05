@@ -28,6 +28,34 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "economics-and-social-policy",
+		slug: "prices-baskets-and-real-income",
+		title: "Prices, baskets and purchasing power",
+		description: "Separate price levels, household baskets, shelter services, reference bases, real pay and seasonal processing.",
+		claimSlugs: ["does-a-falling-inflation-rate-mean-that-prices-are-falling", "does-the-published-cpi-equal-every-households-inflation-rate", "does-the-cpi-track-the-full-cost-of-buying-a-home", "can-cpi-index-levels-be-compared-directly-when-their-reference-bases-differ", "does-a-pay-rise-guarantee-increased-purchasing-power", "are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure"]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "employment-units-and-denominators",
+		title: "Employment units and denominators",
+		description: "Read labor-force ratios, participation changes, jobs versus people, survey differences and broader work needs.",
+		claimSlugs: ["is-the-unemployment-rate-the-percentage-of-everyone-without-a-job", "does-a-falling-unemployment-rate-prove-that-more-people-found-work", "does-the-payroll-jobs-count-equal-the-number-of-employed-people", "does-disagreement-between-household-and-payroll-employment-surveys-prove-an-error", "does-the-headline-unemployment-rate-measure-everyone-who-wants-more-work"]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "national-output-and-growth-accounting",
+		title: "National output and growth accounting",
+		description: "Check price-adjusted production, annualized rates, value added, foreign content and chained-dollar aggregation.",
+		claimSlugs: ["does-higher-nominal-gdp-prove-that-more-goods-and-services-were-produced", "is-an-annualized-quarterly-gdp-growth-rate-the-actual-growth-during-that-quarter", "does-gdp-add-every-sale-at-every-stage-of-production", "does-subtracting-imports-from-gdp-prove-that-importing-automatically-harms-domestic-output", "can-chained-dollar-real-gdp-components-always-be-added-to-recover-the-total"]
+	},
+	{
+		topicSlug: "economics-and-social-policy",
+		slug: "per-person-and-international-comparisons",
+		title: "Per-person and international comparisons",
+		description: "Distinguish population-scaled output from household welfare and statistical purchasing-power conversions from currency quotations.",
+		claimSlugs: ["does-gdp-per-capita-equal-a-typical-persons-income-or-well-being", "does-a-purchasing-power-parity-conversion-predict-the-market-exchange-rate"]
+	},
+	{
 		topicSlug: "education-and-learning",
 		slug: "learning-methods-and-feedback",
 		title: "Learning methods and feedback",

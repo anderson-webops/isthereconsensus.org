@@ -13,8 +13,10 @@ describe("home entry layout", () => {
 		assert.match(source, /Clear, reviewed summaries for scientific questions/);
 		assert.match(source, /Search reviewed claims/);
 		assert.match(source, /class="library-summary"/);
-		assert.match(source, /formatCountLabel\(totalReviewedClaimCount, "reviewed claim"\)/);
-		assert.match(source, /formatCountLabel\(totalTopicCount, "topic"\)/);
+		assert.match(source, /const librarySummary = computed\(\(\) => formatPublicLibrarySummary\(topics\.value\)\)/);
+		assert.match(source, /\{\{ librarySummary \}\}/);
+		assert.doesNotMatch(source, /totalReviewedClaimCount|totalTopicCount/);
+		assert.match(source, /apiUrl\("\/topics\?includeCounts=true&includeClaims=true"\)/);
 		assert.doesNotMatch(source, /hero__aside/);
 	});
 
@@ -38,7 +40,8 @@ describe("home entry layout", () => {
 
 		assert.ok(searchIndex >= 0);
 		assert.ok(summaryIndex > searchIndex);
-		assert.match(source, /const totalReviewedClaimCount = computed/);
+		assert.match(source, /const librarySummary = computed/);
+		assert.doesNotMatch(source, /defaultClaims|readerExpansionClaims|1001/);
 		assert.doesNotMatch(source, /class="library-snapshot"/);
 		assert.doesNotMatch(source, /mostCoveredTopic/);
 		assert.doesNotMatch(source, /claim-row__score/);
