@@ -28,6 +28,41 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "earth-and-geoscience",
+		slug: "weather-forecast-quantities",
+		title: "Rain-forecast quantities",
+		description: "Identify the precipitation event, valid period and amount threshold before interpreting a percentage.",
+		claimSlugs: ["does-a-40-percent-chance-of-rain-mean-rain-for-40-percent-of-the-day", "does-a-higher-chance-of-rain-necessarily-mean-heavier-rainfall"]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "humidity-dew-and-frost",
+		title: "Humidity, dew and frost",
+		description: "Separate vapor measures, saturation, surface phase changes and observation-height differences.",
+		claimSlugs: ["can-relative-humidity-rise-without-adding-water-vapor-to-the-air", "do-two-days-with-the-same-relative-humidity-contain-the-same-amount-of-water-vapor", "does-100-percent-relative-humidity-mean-that-rain-must-be-falling", "is-morning-dew-simply-rain-that-fell-overnight", "can-frost-form-when-the-reported-air-temperature-is-above-freezing"]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "weather-exposure-indices",
+		title: "Weather exposure indices",
+		description: "Understand wind-chill, heat-index and WBGT assumptions without turning them into personal safety certificates.",
+		claimSlugs: ["does-wind-chill-make-a-dry-object-colder-than-the-actual-air-temperature", "does-the-heat-index-describe-every-outdoor-exposure-including-full-sun"]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "frozen-precipitation",
+		title: "Frozen precipitation",
+		description: "Follow the particle's formation, descent, density and arrival rather than relying on one surface temperature.",
+		claimSlugs: ["does-ten-inches-of-snow-always-equal-one-inch-of-water", "can-snow-reach-the-ground-when-surface-air-is-above-freezing", "are-sleet-and-freezing-rain-the-same-because-both-involve-ice", "can-hail-fall-on-a-warm-day"]
+	},
+	{
+		topicSlug: "earth-and-geoscience",
+		slug: "weather-observations-and-maps",
+		title: "Weather observations and maps",
+		description: "Distinguish radar volumes, satellite targets, pressure datums and three-dimensional fronts from their map representations.",
+		claimSlugs: ["does-a-precipitation-echo-on-radar-prove-that-rain-is-reaching-the-ground-there", "is-every-colored-return-on-a-weather-radar-image-precipitation", "does-infrared-weather-satellite-imagery-directly-measure-the-air-temperature-at-ground-level", "is-sea-level-pressure-the-same-as-the-pressure-measured-at-a-mountain-weather-station", "is-a-weather-front-just-the-thin-line-drawn-on-a-surface-map"]
+	},
+	{
 		topicSlug: "digital-security-and-privacy",
 		slug: "message-and-password-cryptography",
 		title: "Message and password cryptography",
