@@ -141,6 +141,23 @@ describe("sourced reading guides", () => {
 		assert.equal(summary.reviews.length, 5);
 	});
 
+	it("connects ten space questions while qualifying observations and models", async () => {
+		const guide = await loadReadingGuide("reading-space-observations");
+		assert.ok(guide);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		const text = guide.sections
+			.flatMap((section) => section.paragraphs)
+			.map((paragraph) => paragraph.text)
+			.join(" ");
+		assert.match(text, /not a resolved photograph/);
+		assert.match(text, /not two independent confirmations/);
+		assert.match(text, /not a direct identification/);
+		assert.match(text, /not an exhaustive review of later comparisons/);
+		assert.match(text, /not a movie of one galaxy/);
+		assert.equal(readingGuides.find((entry) => entry.slug === "reading-space-observations")!.reviews.length, 10);
+		assert.notEqual(guide, await loadReadingGuide("reading-fossil-and-ancestry-evidence"));
+	});
+
 	it("includes every guide in both-theme accessibility coverage", () => {
 		const source = readFileSync(new URL("../../scripts/a11y-smoke.mjs", import.meta.url), "utf8");
 		for (const guide of readingGuides) assert.ok(source.includes(`"/guides/${guide.slug}"`));

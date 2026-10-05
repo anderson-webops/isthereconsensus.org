@@ -18,7 +18,7 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			assert.equal(data.claim.bottomLine, seed.bottomLine);
 			assert.deepEqual(data.claim.stableCore, seed.stableCore);
 			assert.equal(data.claim.sources.length, seed.sources.length);
-			assert.deepEqual(data.claim.sources.map(source => [source.url, source.citationStatus]), seed.sources.map(source => [source.url, source.citationStatus]));
+			assert.deepEqual(data.claim.sources.map(source => [source.url, source.citationStatus, source.kind, source.appraisal]), seed.sources.map(source => [source.url, source.citationStatus, source.kind, source.appraisal]));
 			const stored = await Claim.findOne({ slug: seed.slug }).lean();
 			assert.ok(stored);
 			assert.equal(await Claim.countDocuments({ topic: stored.topic, slug: stored.slug }), 1);
@@ -33,6 +33,17 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			const text = await page.$eval("main", element => element.innerText.replace(/\s+/g, " "));
 			assert.ok(text.includes(seed.bottomLine), seed.slug);
 			assert.ok(text.includes("independent expert review not completed"));
+			const technicalSources = seed.sources.filter(source => source.kind === "technical_reference");
+			if (technicalSources.length) {
+				const technicalGroup = await page.$(".source-group:has(.source-group__summary)");
+				assert.ok(technicalGroup);
+				await page.$$eval(".source-group", groups => {
+					for (const group of groups) if (group.textContent.includes("Technical and measurement references")) group.open = true;
+				});
+				const rendered = await page.$eval("main", element => element.innerText);
+				assert.ok(rendered.includes("not formal consensus statements"));
+				for (const source of technicalSources) assert.ok(rendered.includes(source.title));
+			}
 			await page.addStyleTag({ content: "*, *::before, *::after { animation: none !important; transition: none !important; }" });
 			await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
 			for (const color of ["light", "dark"]) {
@@ -61,6 +72,15 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 		assert.ok(originsText.includes("still includes animal foods"));
 		assert.ok(originsText.includes("not two independent studies"));
 		assert.ok(originsText.includes("independent expert review has not been completed"));
+		const spaceResponse = await page.goto(`${base}/guides/reading-space-observations`, { waitUntil: "networkidle0" });
+		assert.equal(spaceResponse.status(), 200);
+		await page.waitForSelector(".guide-source-list");
+		assert.equal(await page.$$eval(".guide-review-links a", links => links.length), 10);
+		const spaceText = await page.$eval("main", element => element.innerText.replace(/\s+/g, " "));
+		assert.ok(spaceText.includes("not a resolved photograph"));
+		assert.ok(spaceText.includes("not two independent confirmations"));
+		assert.ok(spaceText.includes("not an exhaustive review of later comparisons"));
+		assert.ok(spaceText.includes("independent expert review has not been completed"));
 		await restartBackend();
 		for (const snapshot of snapshots) {
 			const stored = await Claim.findOne({ slug: snapshot.slug }).lean();

@@ -58,13 +58,16 @@ raw messages. A per-question novelty/source record will precede content batches.
   deployment remains a separate gate.
 - Source-verified expansion from 800 to 1,001 reviews: in progress. First batch
   adds four distinct privacy/password-policy reviews. A second batch adds
-  five human-origins/method reviews; public acceptance remains a separate gate.
+  five human-origins/method reviews. A third adds ten distinct astronomy
+  observation/method reviews; public acceptance remains a separate gate.
   Research records: `research/reader-privacy-2026-10-04.md` and
-  `research/reader-origins-2026-10-04.md`.
+  `research/reader-origins-2026-10-04.md` and
+  `research/reader-space-2026-10-04.md`.
 - Eight new guides and integrated discovery: in progress. One new browsing
   privacy guide is source-delivered; a second guide explains fossil and ancestry
-  evidence. The source catalog now covers 809 reviews and 19 guides, leaving
-  192 additional reviews and six additional guides to reach the source targets.
+  evidence. A third explains astronomical observations and their interpretation.
+  The source catalog now covers 819 reviews and 20 guides, leaving 182 additional
+  reviews and five additional guides to reach the source targets.
 - Fresh usefulness evaluation and `1000+` quantity copy: pending.
 - Full release and independent public acceptance: pending.
 

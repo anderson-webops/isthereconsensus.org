@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { getAtlasCollectionMemberships } from "../src/data/atlasCollections.js";
 import { originsCheckedAt, readerOriginsClaims, readerOriginsGaps, readerOriginsSlugs, readerOriginsSources } from "../src/data/claim-expansion-reader-origins.js";
 import { privacyCheckedAt, readerPrivacyClaims } from "../src/data/claim-expansion-reader-privacy.js";
+import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
 import { defaultClaims } from "../src/data/claims.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
@@ -13,11 +14,12 @@ describe("human-origins reader expansion", () => {
 			assert.deepEqual(getAtlasCollectionMemberships(claim.topicSlug, claim.slug).map(collection => collection.slug), [expected]);
 		}
 	});
-	it("adds five canonical gaps to the unchanged 804-review baseline", () => {
+	it("adds five canonical gaps without recounting the original baseline", () => {
 		assert.equal(readerOriginsClaims.length, 5);
 		const slugs = new Set(readerOriginsClaims.map(claim => claim.slug));
 		assert.equal(slugs.size, 5);
-		assert.equal(defaultClaims.filter(claim => !slugs.has(claim.slug)).length, 804);
+		const expansionSlugs = new Set(readerExpansionClaims.map(claim => claim.slug));
+		assert.equal(defaultClaims.filter(claim => !expansionSlugs.has(claim.slug)).length, 800);
 		assert.deepEqual(readerOriginsGaps.map(gap => gap.slug), [...slugs]);
 		for (const claim of readerOriginsClaims) {
 			assert.equal(defaultClaims.filter(existing => existing.slug === claim.slug).length, 1);

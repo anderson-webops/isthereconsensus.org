@@ -82,6 +82,20 @@ describe("public claim readiness", () => {
 		assert.ok(readiness.missing.includes("decision-weight source"));
 	});
 
+	it("accepts linked technical references without upgrading background sources", () => {
+		const sources = readySources.map(source => ({ ...source, kind: "context" as const }));
+		assert.equal(getPublicClaimReadiness(readyClaim, summarizeClaimSourceReadiness(sources)).isReady, false);
+		const technical = { ...sources[0], kind: "technical_reference" as const, appraisal: "not_appraised" as const };
+		const counts = summarizeClaimSourceReadiness([technical, sources[1]]);
+		assert.equal(counts.decisionWeightSourceCount, 1);
+		assert.equal(getPublicClaimReadiness(readyClaim, counts).isReady, true);
+		assert.equal(technical.appraisal, "not_appraised");
+		assert.equal(getPublicClaimReadiness(readyClaim, summarizeClaimSourceReadiness([technical])).isReady, false);
+		const retracted = { ...technical, citationStatus: "retracted" as const };
+		assert.equal(summarizeClaimSourceReadiness([retracted, ...sources]).decisionWeightSourceCount, 0);
+		assert.equal(getPublicClaimReadiness(readyClaim, summarizeClaimSourceReadiness([retracted, ...sources])).isReady, false);
+	});
+
 	it("accepts stable DOI, PMID, PMCID, or URL links", () => {
 		assert.equal(sourceHasPublicLink({ doi: "10.0000/example" }), true);
 		assert.equal(sourceHasPublicLink({ pmid: "12345678" }), true);

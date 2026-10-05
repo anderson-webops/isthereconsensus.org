@@ -139,7 +139,9 @@ async function api(path, { method = "GET", body, cookie, status = 200, headers =
 		response = await request();
 		assert.notEqual(response.status, 429, "Authenticated fixture retry remained rate limited.");
 	}
-	const data = await response.json();
+	let data = null;
+	if (response.status === 204) assert.equal(await response.text(), "");
+	else data = await response.json();
 	assert.equal(response.status, status, `${method} ${path}: ${JSON.stringify(data)}`);
 	if (path.startsWith("/library/")) assert.match(response.headers.get("cache-control"), /private, no-store/);
 	return {

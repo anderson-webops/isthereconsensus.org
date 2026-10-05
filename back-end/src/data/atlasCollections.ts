@@ -1261,7 +1261,10 @@ export const atlasCollections = [
 			"did-humans-land-on-the-moon",
 			"is-the-far-side-of-the-moon-permanently-dark",
 			"are-earths-seasons-mainly-caused-by-changing-distance-from-the-sun",
-			"is-mercury-the-hottest-planet-because-it-is-closest-to-the-sun"
+			"is-mercury-the-hottest-planet-because-it-is-closest-to-the-sun",
+			"are-astronauts-weightless-because-there-is-no-gravity-in-orbit",
+			"are-moon-phases-caused-by-earths-shadow",
+			"do-planets-reverse-their-orbits-during-retrograde-motion"
 		]
 	},
 	{
@@ -1274,7 +1277,9 @@ export const atlasCollections = [
 			"is-the-hot-big-bang-the-best-supported-broad-model-of-cosmic-history",
 			"does-the-hubble-tension-by-itself-disprove-the-big-bang-model",
 			"does-faster-than-light-cosmic-recession-violate-relativity",
-			"is-the-observable-universe-necessarily-the-entire-universe"
+			"is-the-observable-universe-necessarily-the-entire-universe",
+			"do-distant-galaxy-images-show-the-galaxies-as-they-are-now",
+			"does-dark-energy-mean-scientists-have-identified-the-cause-of-cosmic-acceleration"
 		]
 	},
 	{
@@ -1300,8 +1305,17 @@ export const atlasCollections = [
 			"has-life-beyond-earth-been-scientifically-confirmed",
 			"do-uap-reports-establish-extraterrestrial-visitation",
 			"has-the-particle-identity-of-dark-matter-been-directly-detected",
-			"have-astronomers-confirmed-planets-orbiting-other-stars"
+			"have-astronomers-confirmed-planets-orbiting-other-stars",
+			"does-an-exoplanet-transit-alone-reveal-its-mass-and-composition",
+			"does-being-in-the-habitable-zone-guarantee-a-habitable-planet"
 		]
+	},
+	{
+		topicSlug: "astronomy-and-space",
+		slug: "reading-astronomical-observations",
+		title: "Reading astronomical observations",
+		description: "Image color, repeated lens images and stellar distances: distinguish detector measurements from displays and physical interpretations.",
+		claimSlugs: ["are-webbs-color-images-what-human-eyes-would-see", "can-gravitational-lensing-create-multiple-images-of-one-galaxy", "does-a-brighter-looking-star-have-to-be-closer"]
 	},
 	{
 		topicSlug: "earth-and-geoscience",

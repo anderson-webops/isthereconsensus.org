@@ -4,6 +4,56 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-space-observations",
+		title: "Space headlines: what the observations establish",
+		summary:
+			"Separate sky geometry, processed images, indirect planet measurements and conditional models from stronger claims.",
+		checkedAt: "2026-10-05",
+		topics: ["astronomy-and-space"],
+		reviews: [
+			{
+				path: "/consensus/astronomy-and-space/are-astronauts-weightless-because-there-is-no-gravity-in-orbit",
+				label: "Orbital free fall and gravity"
+			},
+			{
+				path: "/consensus/astronomy-and-space/are-moon-phases-caused-by-earths-shadow",
+				label: "Moon phases versus eclipse shadows"
+			},
+			{
+				path: "/consensus/astronomy-and-space/do-planets-reverse-their-orbits-during-retrograde-motion",
+				label: "Apparent retrograde motion"
+			},
+			{
+				path: "/consensus/astronomy-and-space/does-a-brighter-looking-star-have-to-be-closer",
+				label: "Brightness, distance and parallax"
+			},
+			{
+				path: "/consensus/astronomy-and-space/do-distant-galaxy-images-show-the-galaxies-as-they-are-now",
+				label: "Galaxy images and lookback time"
+			},
+			{
+				path: "/consensus/astronomy-and-space/are-webbs-color-images-what-human-eyes-would-see",
+				label: "Measured infrared and display color"
+			},
+			{
+				path: "/consensus/astronomy-and-space/does-an-exoplanet-transit-alone-reveal-its-mass-and-composition",
+				label: "Planet sizes, masses and interiors"
+			},
+			{
+				path: "/consensus/astronomy-and-space/does-being-in-the-habitable-zone-guarantee-a-habitable-planet",
+				label: "Conditional habitable zones"
+			},
+			{
+				path: "/consensus/astronomy-and-space/can-gravitational-lensing-create-multiple-images-of-one-galaxy",
+				label: "Repeated lens images"
+			},
+			{
+				path: "/consensus/astronomy-and-space/does-dark-energy-mean-scientists-have-identified-the-cause-of-cosmic-acceleration",
+				label: "Acceleration and unresolved mechanisms"
+			}
+		]
+	},
+	{
 		slug: "reading-fossil-and-ancestry-evidence",
 		title: "Fossils and ancestry: reading the evidence chain",
 		summary:

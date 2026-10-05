@@ -19,6 +19,7 @@ export type ClaimSourceKind
 		| "guideline"
 		| "consensus_statement"
 		| "landmark_study"
+		| "technical_reference"
 		| "context";
 export type ClaimSourceStance = "supports" | "context" | "debate";
 export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
@@ -297,6 +298,7 @@ const claimSourceSchema: Schema<IClaimSource> = new Schema(
 				"guideline",
 				"consensus_statement",
 				"landmark_study",
+				"technical_reference",
 				"context"
 			]
 		},

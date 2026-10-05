@@ -538,6 +538,7 @@ async function main() {
 		if (normalized === "guideline") return "guideline";
 		if (normalized === "consensus_statement") return "consensus_statement";
 		if (normalized === "landmark_study") return "landmark_study";
+		if (normalized === "technical_reference") return "technical_reference";
 		return "context";
 	}
 

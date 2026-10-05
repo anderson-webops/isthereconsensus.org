@@ -23,7 +23,8 @@ export const decisionWeightSourceKinds = new Set<ClaimSourceKind>([
 	"guideline",
 	"landmark_study",
 	"meta_analysis",
-	"systematic_review"
+	"systematic_review",
+	"technical_reference"
 ]);
 
 type ReadinessSource
