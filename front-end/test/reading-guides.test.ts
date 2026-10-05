@@ -196,6 +196,28 @@ describe("sourced reading guides", () => {
 		assert.notEqual(guide, await loadReadingGuide("reading-tides-waves-and-ocean-measurements"));
 	});
 
+	it("connects twenty statistics questions with a substantial original guide and model boundaries", async () => {
+		const guide = await loadReadingGuide("reading-averages-percentages-and-probability");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-averages-percentages-and-probability")!;
+		assert.equal(summary.reviews.length, 20);
+		assert.deepEqual(summary.topics, ["consensus-foundations"]);
+		assert.equal(summary.checkedAt, "2026-10-05");
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/).length >= 1400);
+		assert.equal(guide.sources.length, 27);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independently constructed and hypothetical/);
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(text, /68\/110 versus 75\/110/);
+		assert.match(text, /Unknown is not measured zero/);
+		assert.match(text, /not independent experiments/);
+		assert.match(text, /does not fix biased selection/);
+		assert.match(text, /Countable additivity.*uncountable/);
+		assert.match(text, /always aggregate and always adjust are both inadequate/);
+	});
+
 	it("keeps water definitions, access limitations and safety boundaries visible", async () => {
 		const flood = await loadReadingGuide("reading-flood-and-groundwater-claims");
 		const coastal = await loadReadingGuide("reading-tides-waves-and-ocean-measurements");

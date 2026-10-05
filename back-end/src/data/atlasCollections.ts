@@ -28,6 +28,62 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "consensus-foundations",
+		slug: "consensus-and-replication",
+		title: "Consensus and replication",
+		description: "How agreement develops, what it does not imply and how replication informs a body of evidence.",
+		claimSlugs: ["how-does-scientific-consensus-form", "does-scientific-consensus-mean-every-scientist-agrees", "must-a-replication-copy-the-original-study-exactly-to-be-informative", "does-one-failed-replication-prove-the-original-finding-was-false"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "study-design-and-causal-inference",
+		title: "Study design and causal inference",
+		description: "Read randomization, observational evidence, synthesis and convergence without treating any method as an automatic answer.",
+		claimSlugs: ["does-randomization-automatically-answer-every-causal-or-policy-question", "are-observational-studies-useless-for-learning-about-causal-effects", "can-converging-evidence-from-different-methods-strengthen-a-causal-conclusion", "can-a-meta-analysis-rescue-a-body-of-biased-or-low-quality-studies"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "significance-and-interval-interpretation",
+		title: "Significance and interval interpretation",
+		description: "Distinguish statistical evidence, effect magnitude, null results, interval coverage and multiple comparisons.",
+		claimSlugs: ["does-a-p-value-below-005-prove-a-claim-is-true", "does-statistical-significance-tell-you-whether-an-effect-is-large-or-important", "does-a-non-significant-result-prove-there-is-no-effect", "does-a-95-percent-confidence-interval-give-a-95-percent-probability-that-the-true-value-is-inside-it", "can-testing-many-hypotheses-create-false-positive-findings-without-adjustment"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "outcome-and-hazard-labels",
+		title: "Outcome and hazard labels",
+		description: "Separate intermediate indicators, hazard classifications and detected substances from demonstrated outcomes in the stated context.",
+		claimSlugs: ["does-improving-a-surrogate-endpoint-prove-patients-will-benefit", "does-possibly-carcinogenic-mean-rf-radiation-is-proven-to-cause-cancer", "does-the-presence-of-microplastics-in-food-automatically-mean-it-is-unsafe-to-eat"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "averages-and-data-displays",
+		title: "Averages and data displays",
+		description: "Read centers, group weights, aggregation, missing values and histogram choices without changing the question being answered.",
+		claimSlugs: ["do-the-mean-and-median-always-describe-the-same-typical-value", "can-group-averages-be-averaged-without-accounting-for-group-sizes", "can-combining-groups-reverse-an-association-present-within-every-group", "can-missing-measurements-be-replaced-by-zero-without-changing-the-conclusion", "does-changing-histogram-bin-width-leave-the-apparent-distribution-unchanged"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "percentages-and-conditioning",
+		title: "Percentages and conditioning",
+		description: "Follow the baseline and reference set before interpreting changes, conditional probabilities or overlapping events.",
+		claimSlugs: ["is-a-percentage-point-increase-the-same-as-a-percent-increase", "does-an-equal-percent-increase-and-decrease-return-a-value-to-its-starting-point", "can-successive-percentage-changes-be-added-to-get-the-total-change", "can-a-conditional-probability-be-reversed-without-changing-its-value", "can-the-probabilities-of-overlapping-events-simply-be-added"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "independence-and-probability-models",
+		title: "Independence and probability models",
+		description: "Separate disjointness, sampling dependence, continuous density, exact points and independent-trial convergence.",
+		claimSlugs: ["are-mutually-exclusive-events-the-same-as-independent-events", "does-random-sampling-without-replacement-make-successive-draws-independent", "does-probability-zero-always-mean-an-outcome-is-impossible", "is-a-probability-density-above-one-an-invalid-probability", "does-the-law-of-large-numbers-make-the-next-independent-outcome-compensate-for-a-streak"]
+	},
+	{
+		topicSlug: "consensus-foundations",
+		slug: "expectation-spread-and-sampling-uncertainty",
+		title: "Expectation, spread and sampling uncertainty",
+		description: "Distinguish individual outcomes, nonlinear dependence, spread units, estimator precision and conditional normal-model coverage.",
+		claimSlugs: ["must-an-expected-value-be-a-possible-individual-outcome", "does-zero-pearson-correlation-prove-that-two-variables-are-independent", "are-variance-and-standard-deviation-interchangeable-measures-in-the-same-units", "does-a-small-standard-error-mean-individual-observations-vary-very-little", "does-the-68-95-997-rule-apply-to-every-distribution"]
+	},
+	{
 		topicSlug: "agriculture-and-food-systems",
 		slug: "food-storage-and-safety",
 		title: "Food storage and safety",

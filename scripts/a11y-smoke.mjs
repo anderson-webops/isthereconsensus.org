@@ -96,6 +96,7 @@ const routes = [
 	"/guides/reading-flood-and-groundwater-claims",
 	"/guides/reading-tides-waves-and-ocean-measurements",
 	"/guides/reading-heat-and-light-claims",
+	"/guides/reading-averages-percentages-and-probability",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",
