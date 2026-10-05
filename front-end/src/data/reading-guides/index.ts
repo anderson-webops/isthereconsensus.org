@@ -4,6 +4,96 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-electrical-quantities-and-circuit-claims",
+		title: "Electricity claims: charge, power, storage and changing fields",
+		summary:
+			"Read electrical numbers without confusing units, topology, steady states, AC averages or ideal models with tested equipment.",
+		checkedAt: "2026-10-05",
+		topics: ["physics-and-chemistry"],
+		reviews: [
+			{
+				path: "/consensus/physics-and-chemistry/are-amps-and-volts-two-names-for-the-same-electrical-quantity",
+				label: "Amps and volts"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-electric-current-used-up-as-it-passes-through-a-resistor",
+				label: "Charge is not consumed"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-signal-in-a-metal-wire-travel-at-the-electron-drift-speed",
+				label: "Drift versus signal speed"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-ohms-law-guarantee-that-every-device-has-constant-resistance",
+				label: "Ohmic model limits"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/do-the-same-resistors-have-the-same-total-resistance-in-series-and-parallel",
+				label: "Connection topology"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/do-components-in-series-always-have-the-same-voltage-across-them",
+				label: "Series voltage drops"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-batterys-terminal-voltage-always-equal-its-unloaded-voltage",
+				label: "Loaded terminal voltage"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-the-same-amp-hour-battery-capacity-imply-the-same-stored-energy",
+				label: "Charge capacity versus energy"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/are-watts-and-watt-hours-interchangeable-measures-of-electricity-use",
+				label: "Power versus accumulated energy"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-ac-voltage-times-current-always-equal-average-real-power",
+				label: "Apparent versus real AC power"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-ac-current-with-a-zero-signed-average-produce-no-resistive-heating",
+				label: "Signed mean versus RMS"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-electrons-move-all-the-way-from-an-ac-source-to-a-load-in-each-cycle-to-transfer-energy",
+				label: "Oscillating carriers and energy transfer"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-an-ideal-capacitor-remain-charged-without-a-sustained-current",
+				label: "Stored charge without flow"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/is-a-linear-capacitors-stored-energy-always-final-charge-times-final-voltage",
+				label: "Capacitor energy accounting"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-an-ideal-inductor-oppose-an-unchanged-dc-current-forever",
+				label: "Current-change response"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-stationary-magnet-by-itself-induce-a-sustained-current-in-a-stationary-loop",
+				label: "Constant flux is not induction"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/can-the-magnetic-lorentz-force-alone-increase-a-point-charges-kinetic-energy",
+				label: "Magnetic point-charge work"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-a-step-up-transformer-create-extra-electrical-power-when-it-raises-voltage",
+				label: "Voltage conversion is not power creation"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/does-doubling-current-through-a-fixed-resistor-merely-double-its-heating-power",
+				label: "Current-squared dissipation"
+			},
+			{
+				path: "/consensus/physics-and-chemistry/must-the-electric-field-be-zero-inside-an-ordinary-current-carrying-metal",
+				label: "Equilibrium versus current flow"
+			}
+		]
+	},
+	{
 		slug: "reading-averages-percentages-and-probability",
 		title: "Averages, percentages and probability: what does the number mean?",
 		summary:

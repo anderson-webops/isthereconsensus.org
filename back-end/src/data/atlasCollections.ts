@@ -28,6 +28,34 @@ export interface PublicAtlasCollectionMembership {
  */
 export const atlasCollections = [
 	{
+		topicSlug: "physics-and-chemistry",
+		slug: "electrical-quantities-and-ratings",
+		title: "Electrical quantities and ratings",
+		description: "Separate charge, voltage, power, energy, source loading and dissipation before interpreting a number.",
+		claimSlugs: ["are-amps-and-volts-two-names-for-the-same-electrical-quantity", "does-a-batterys-terminal-voltage-always-equal-its-unloaded-voltage", "does-the-same-amp-hour-battery-capacity-imply-the-same-stored-energy", "are-watts-and-watt-hours-interchangeable-measures-of-electricity-use", "does-doubling-current-through-a-fixed-resistor-merely-double-its-heating-power"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "charge-flow-and-circuit-models",
+		title: "Charge flow and circuit models",
+		description: "Check charge conservation, signal propagation, linear-response limits, connections and the physical state of conductors.",
+		claimSlugs: ["is-electric-current-used-up-as-it-passes-through-a-resistor", "does-a-signal-in-a-metal-wire-travel-at-the-electron-drift-speed", "does-ohms-law-guarantee-that-every-device-has-constant-resistance", "do-the-same-resistors-have-the-same-total-resistance-in-series-and-parallel", "do-components-in-series-always-have-the-same-voltage-across-them", "must-the-electric-field-be-zero-inside-an-ordinary-current-carrying-metal"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "alternating-current-and-energy-transfer",
+		title: "Alternating current and energy transfer",
+		description: "Distinguish signed averages, RMS, apparent and real power, and oscillating charge from transferred energy.",
+		claimSlugs: ["does-ac-voltage-times-current-always-equal-average-real-power", "does-an-ac-current-with-a-zero-signed-average-produce-no-resistive-heating", "must-electrons-move-all-the-way-from-an-ac-source-to-a-load-in-each-cycle-to-transfer-energy"]
+	},
+	{
+		topicSlug: "physics-and-chemistry",
+		slug: "storage-fields-and-induction",
+		title: "Storage, fields and induction",
+		description: "Read capacitor and inductor states, flux changes, point-charge forces and transformer energy accounting with explicit assumptions.",
+		claimSlugs: ["can-an-ideal-capacitor-remain-charged-without-a-sustained-current", "is-a-linear-capacitors-stored-energy-always-final-charge-times-final-voltage", "does-an-ideal-inductor-oppose-an-unchanged-dc-current-forever", "does-a-stationary-magnet-by-itself-induce-a-sustained-current-in-a-stationary-loop", "can-the-magnetic-lorentz-force-alone-increase-a-point-charges-kinetic-energy", "does-a-step-up-transformer-create-extra-electrical-power-when-it-raises-voltage"]
+	},
+	{
 		topicSlug: "consensus-foundations",
 		slug: "consensus-and-replication",
 		title: "Consensus and replication",
