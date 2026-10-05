@@ -1749,6 +1749,7 @@ watch(
 										<option value="guideline">Guideline</option>
 										<option value="consensus_statement">Consensus statement</option>
 										<option value="landmark_study">Landmark study</option>
+										<option value="technical_reference">Technical/method reference</option>
 										<option value="context">Context</option>
 									</select>
 								</label>

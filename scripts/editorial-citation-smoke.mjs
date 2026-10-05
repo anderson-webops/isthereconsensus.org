@@ -103,6 +103,27 @@ export async function checkEditorialCitations({ api, browser, base, review, admi
 					(await ClaimSource.findById(sources[0]._id).lean()).statusSources,
 					beforeFailure.statusSources
 				);
+				const technicalBody = {
+					kind: "technical_reference",
+					title: "Disposable instrument-method reference fixture",
+					url: "https://example.test/instrument-method",
+					statusSources: ["https://example.test/instrument-method"],
+					stance: "supports"
+				};
+				for (const cookie of [undefined, userCookie]) {
+					await write("/sources", technicalBody, { method: "POST", cookie, status: 403 });
+				}
+				const created = await write("/sources", technicalBody, { method: "POST", status: 201 });
+				const technicalPath = `/sources/${created.data.source._id}`;
+				assert.equal(created.data.source.kind, "technical_reference");
+				assert.equal(created.data.source.appraisal, "not_appraised");
+				const patched = await write(technicalPath, { ...technicalBody, note: "Method classification is not expert approval." });
+				assert.equal(patched.data.source.kind, "technical_reference");
+				const stored = await ClaimSource.findById(created.data.source._id).lean();
+				assert.equal(stored.evidenceProfile.studyDesign, "not_coded");
+				assert.equal(stored.evidenceProfile.reviewer.reviewedById, undefined);
+				await write(technicalPath, undefined, { method: "DELETE", status: 204 });
+				assert.equal(await ClaimSource.countDocuments({ claim: claim._id }), sources.length);
 			}
 			const expectedSources = [];
 			for (const proposed of after.sources) {

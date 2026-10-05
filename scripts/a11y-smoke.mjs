@@ -92,6 +92,7 @@ const routes = [
 	"/guides/account-protection",
 	"/guides/browsing-privacy",
 	"/guides/reading-fossil-and-ancestry-evidence",
+	"/guides/reading-space-observations",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",

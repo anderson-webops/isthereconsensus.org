@@ -53,7 +53,14 @@ export interface ClaimChangeLogEntry {
 
 export interface ClaimSource {
 	_id?: string;
-	kind: "systematic_review" | "meta_analysis" | "guideline" | "consensus_statement" | "landmark_study" | "context";
+	kind:
+		| "systematic_review"
+		| "meta_analysis"
+		| "guideline"
+		| "consensus_statement"
+		| "landmark_study"
+		| "technical_reference"
+		| "context";
 	title: string;
 	publisher?: string;
 	year?: number;

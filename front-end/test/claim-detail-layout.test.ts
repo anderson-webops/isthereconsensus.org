@@ -8,6 +8,12 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(testDir, "..", "src/pages/consensus/[topicSlug]/[claimSlug].vue"), "utf8");
 
 describe("claim detail layout", () => {
+	it("distinguishes technical references from formal consensus and appraisal", () => {
+		assert.match(source, /key: "technical"[\s\S]*kinds: \["technical_reference"\]/);
+		assert.match(source, /not formal consensus statements, research syntheses or automatically appraised evidence/);
+		assert.match(source, /kind === "technical_reference"\) return "Technical\/method reference"/);
+	});
+
 	it("keeps the source stack scannable without hiding the top evidence tier", () => {
 		assert.match(source, /<details\s+v-for="group in sourceGroups"[\s\S]*:open="group\.key === 'tier1'"/);
 		assert.match(source, /class="source-group__summary"/);

@@ -184,6 +184,14 @@ const sourceGroups = computed(() => {
 			kinds: ["landmark_study"]
 		},
 		{
+			key: "technical",
+			tier: "Method reference",
+			title: "Technical and measurement references",
+			description:
+				"These sources explain the physical principles, instruments or methods directly relevant to the question. They are not formal consensus statements, research syntheses or automatically appraised evidence.",
+			kinds: ["technical_reference"]
+		},
+		{
 			key: "tier4",
 			tier: "Tier 4",
 			title: "Context and background",
@@ -320,6 +328,7 @@ function formatChangeKind(kind?: string) {
 }
 
 function formatSourceKind(kind: string) {
+	if (kind === "technical_reference") return "Technical/method reference";
 	const label = kind.replaceAll("_", " ");
 	return `${label.charAt(0).toUpperCase()}${label.slice(1)}`;
 }
