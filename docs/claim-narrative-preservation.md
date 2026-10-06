@@ -55,6 +55,13 @@ round trips, unchanged-title URL stability, explicit/renamed slugs, strict
 citation URLs and incomplete-publication rejection. Private
 collections and unrelated claims/citations must remain unchanged.
 
+Public topic IDs, content, order and creation dates are checked separately.
+Their `updatedAt` field is excluded from that public-topic comparison because
+the existing startup topic upsert refreshes it on every restart. Private
+collection timestamps and all unrelated claim/citation fields remain part of
+the exact comparison. Failed preservation comparisons report only a static
+failure label, never the compared private records.
+
 The client honors bounded HTTP 429 retry delays without changing server limits.
 Unexpected authentication or mutation responses stop the rehearsal, rather than
 retrying a potentially completed write. Failure diagnostics expose only

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
 import mongoose from "mongoose";
 import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
 import { seedClaimFields } from "../back-end/dist/data/seedClaims.js";
@@ -32,13 +33,17 @@ function claimContent(seed) {
 }
 
 async function privateSnapshot() {
-	const mutable = new Set([Claim.collection.name, ClaimSource.collection.name, ClaimRevision.collection.name]);
+	const mutable = new Set([Claim.collection.name, ClaimSource.collection.name, ClaimRevision.collection.name, Topic.collection.name]);
 	const collections = await mongoose.connection.db.listCollections({}, { nameOnly: true }).toArray();
 	const snapshot = new Map();
 	for (const { name } of collections.filter(collection => !mutable.has(collection.name))) {
 		snapshot.set(name, await mongoose.connection.db.collection(name).find({}).sort({ _id: 1 }).toArray());
 	}
 	return snapshot;
+}
+
+function topicSnapshot() {
+	return Topic.find({}).select("-updatedAt").sort({ _id: 1 }).lean();
 }
 
 export async function checkClaimNarratives({ api, base, adminCookie, userCookie, restartBackend }) {
@@ -51,6 +56,7 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 	const topic = await Topic.findOne({ slug: seed.topicSlug }).lean();
 	assert.ok(topic);
 	const privateBefore = await privateSnapshot();
+	const topicsBefore = await topicSnapshot();
 	const owned = [];
 	const write = (path, body, options = {}) => api(path, { method: "PATCH", cookie: adminCookie, retryRateLimit: true, body, ...options });
 	try {
@@ -192,8 +198,9 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 		assert.equal(String(publicClaim._id), snapshot.id);
 		for (const field of CLAIM_NARRATIVE_FIELDS) assert.deepEqual(publicClaim[field], snapshot.definition[field]);
 	}
-	assert.deepEqual(await Claim.find({ _id: { $in: unrelated.map(claim => claim._id) } }).sort({ _id: 1 }).lean(), unrelated);
-	assert.deepEqual(await ClaimSource.find({ _id: { $in: unrelatedSources.map(source => source._id) } }).sort({ _id: 1 }).lean(), unrelatedSources);
-	assert.deepEqual(await privateSnapshot(), privateBefore);
+	assert.ok(isDeepStrictEqual(await Claim.find({ _id: { $in: unrelated.map(claim => claim._id) } }).sort({ _id: 1 }).lean(), unrelated), "Unrelated claim records changed.");
+	assert.ok(isDeepStrictEqual(await ClaimSource.find({ _id: { $in: unrelatedSources.map(source => source._id) } }).sort({ _id: 1 }).lean(), unrelatedSources), "Unrelated citation records changed.");
+	assert.ok(isDeepStrictEqual(await topicSnapshot(), topicsBefore), "Public topic identities or content changed.");
+	assert.ok(isDeepStrictEqual(await privateSnapshot(), privateBefore), "Private collection records changed.");
 	console.log("authenticated narrative workflow: 201 actual HTTP creations/edits/publications, 461 HTTP citations, 277 full-length items, explicit bounds, malformed/auth rejection without writes, legacy round trips, retained private state and restart-stable observed IDs passed in the disposable database");
 }
