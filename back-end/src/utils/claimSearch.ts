@@ -72,6 +72,32 @@ const stopWords = new Set((
 	+ "always still ever generally most some any all enough more less much many "
 	+ "ones itself themselves instead rather completely entirely take make go into become"
 ).split(" "));
+const contractions = new Map([
+	["what's", "what is"],
+	["who's", "who is"],
+	["where's", "where is"],
+	["when's", "when is"],
+	["how's", "how is"],
+	["there's", "there is"],
+	["that's", "that is"],
+	["it's", "it is"],
+	["don't", "do not"],
+	["doesn't", "does not"],
+	["didn't", "did not"],
+	["isn't", "is not"],
+	["aren't", "are not"],
+	["wasn't", "was not"],
+	["weren't", "were not"],
+	["can't", "can not"],
+	["couldn't", "could not"],
+	["won't", "will not"],
+	["wouldn't", "would not"],
+	["shouldn't", "should not"],
+	["mustn't", "must not"],
+	["haven't", "have not"],
+	["hasn't", "has not"],
+	["hadn't", "had not"]
+]);
 
 function normalize(value: string) {
 	return value.toLowerCase().normalize("NFKD").replace(/\p{M}/gu, "").replace(/['’]/gu, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
@@ -79,15 +105,17 @@ function normalize(value: string) {
 
 function stem(token: string) {
 	if (aliases.has(token)) return aliases.get(token)!;
+	if (token.length > 4 && /(?:shes|sses|xes|zzes)$/u.test(token)) return token.slice(0, -2);
 	if (token.length > 5 && token.endsWith("ies")) return `${token.slice(0, -3)}y`;
-	if (token.length > 5 && token.endsWith("ing")) return token.slice(0, -3).replace(/(.)\1$/u, "$1");
+	if (token.length > 5 && token.endsWith("ing")) return token.slice(0, -3).replace(/([bcdfghjkmnpqrtvwx])\1$/u, "$1");
 	if (token.length > 5 && token.endsWith("ed")) return token.slice(0, -2);
 	if (token.length > 3 && token.endsWith("s") && !/(?:ss|us|is)$/u.test(token)) return token.slice(0, -1);
 	return token;
 }
 
 function tokens(value: string) {
-	let text = normalize(value);
+	const expanded = value.toLowerCase().replace(/’/gu, "'").replace(/\b[a-z]+'[a-z]+\b/gu, word => contractions.get(word) ?? word).replace(/\b\d{1,3}(?:,\d{3})+\b/gu, number => number.replace(/,/gu, ""));
+	let text = normalize(expanded);
 	for (const [pattern, replacement] of phraseAliases) text = text.replace(pattern, replacement);
 	return [...new Set(text.split(" ").filter(token => (token.length > 1 || /^\d+$/u.test(token)) && !stopWords.has(token)).map(stem).filter(token => !stopWords.has(token)))];
 }
@@ -154,8 +182,8 @@ export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 		const rawTerms = tokens(boundedQuery);
 		let corrected = false;
 		const terms = [...new Set(rawTerms.map((term) => {
-			if (frequencies.has(term) || term.length < 5) return term;
-			const candidates = [...titleVocabulary].filter(candidate => candidate.length >= 5 && oneEditApart(term, candidate));
+			if (frequencies.has(term) || term.length < 5 || /^\d+$/u.test(term)) return term;
+			const candidates = [...titleVocabulary].filter(candidate => candidate.length >= 5 && !/^\d+$/u.test(candidate) && oneEditApart(term, candidate));
 			if (candidates.length !== 1) return term;
 			corrected = true;
 			return candidates[0];

@@ -76,6 +76,43 @@ on other examples does not accept this model for application integration, prove
 answer coverage or turn its ranking scores into scientific confidence. The
 earlier reference provenance still needs reconciliation.
 
+## Additional rejected answer-coverage filters
+
+A separately pinned `cross-encoder/qnli-electra-base` full-precision model
+(`c7dea87c98b2269a935686c31336e97e837cbbeb`, artifact SHA-256
+`595b37541289472b7b784ed2af05bcad6000991a2657aeee4f92f68b42ae61d9`)
+passed eight predeclared synthetic checks but failed the complete original
+covered stratum. Bottom-line passages reached 19 of 42 and longer review-body
+passages 17 of 42 at the unchanged zero-logit filter. They also returned
+candidates for two and one original outside questions, respectively. The
+planned 210-row study was stopped after rejection; 120 scored rows were retained
+at the decision. Its unscored remainder is not a passing result. Publisher byte
+verification and synthetic labels are not independent numerical-reference
+agreement. The rejected model was not integrated.
+
+A local numeric-feature classifier also failed. Canonical-group development
+folds reached 12 of 42 covered questions without class balancing. Balancing
+increased that to 34 of 42 but returned candidates for nineteen outside
+questions. Neither variant changes the application or consumes the fresh set.
+
+## Narrow wording correction, not usefulness acceptance
+
+The subsequent application increment expands common contractions before
+tokenization while retaining negation, recognizes grouped integer digits,
+corrects selected regular plural and doubled-letter stems, and prevents numeric
+values from being changed by spelling tolerance. Exact-title comparison,
+unknown-subject coverage requirements, personal-treatment guards and public-only
+index fields remain intact. Ambiguous `ches` endings retain the existing behavior
+so that roots such as `cache` are not damaged by the plural correction.
+
+Seven synthetic regression tests cover these cases. All 100 older covered
+questions and all 1,001 source titles retain their expected destinations; all
+62 declared outside controls and six partial/gap controls remain empty. However,
+the exposed unfamiliar covered result remains only four of 42. These concrete
+wording fixes do not establish the 90% unfamiliar-question goal, fresh reader
+comprehension, public availability of the prepared additions or completed
+production publication.
+
 ## New external questions, frozen but not evaluated
 
 A separate title-only sample of 72 publicly authored Skeptics Stack Exchange
