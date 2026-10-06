@@ -95,9 +95,95 @@ folds reached 12 of 42 covered questions without class balancing. Balancing
 increased that to 34 of 42 but returned candidates for nineteen outside
 questions. Neither variant changes the application or consumes the fresh set.
 
+## Broader scope studies after v1.38.16
+
+The following studies use source commit
+`f65a01bd4c946e3efc42c7489688ee49c17ba7cb`, not a newly deployed search.
+Their specifications were fixed before predictions. The complete first two
+studies retain all 210 exposed development rows, including every outside,
+partial and gap control. Expected destinations, query identifiers and topic
+labels are not prediction features. Unknown subjects are not silently dropped.
+
+### Same-synset lexical coverage
+
+The [Open English WordNet 2025 release](https://github.com/globalwordnet/english-wordnet/releases/tag/2025-edition)
+was verified against the publisher's archive digest:
+`7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51`.
+The exact archive has 128,009 top-level headwords. An invented minimum-count
+assertion caused the first attempt to exit before predictions; the original
+failure was retained and the count corrected without changing study thresholds
+or question labels. Matching uses shared synsets, not broad parent classes or
+definition-keyword expansion. The original license notices were retained.
+
+| Predeclared variant | Original covered hits / 42 | Outside controls returning results / 62 |
+| --- | --- | --- |
+| Semantic nomination without the added lexical guard | 38 | 17 |
+| Require every nongeneric noun | 17 | 2 |
+| Require every nongeneric noun and adjective | 11 | 1 |
+| Weighted lexical coverage with a literal title anchor | 6 | 2 |
+
+All four variants preserve the 100 older covered regressions and all 1,001
+native title priorities, but none passes. A shared word sense anywhere in a
+review does not establish support for the relationship a question asks about.
+
+### Corpus-contrastive concept coverage
+
+This study compares each informative query concept with the title and bottom
+line of every source review. A candidate must contain that concept literally
+or meet both an absolute similarity threshold and a fixed margin from the
+corpus's strongest concept match. No outcome labels select the comparisons.
+Inference ran inside an explicit network-denied sandbox.
+
+| Predeclared variant | Original covered hits / 42 | Outside controls returning results / 62 |
+| --- | --- | --- |
+| Nouns, maximum contrastive gap 0.08 | 17 | 1 |
+| Nouns, maximum contrastive gap 0.12 | 21 | 4 |
+| Nouns and modifiers, maximum gap 0.08 | 10 | 0 |
+| Nouns and modifiers, maximum gap 0.12 | 18 | 3 |
+| Content words, maximum gap 0.08 | 6 | 0 |
+| Content words, maximum gap 0.12 | 12 | 2 |
+
+Every variant again preserves the 100 older covered regressions and 1,001
+native title priorities. None meets the unfamiliar-question target. The safe
+variants still reject too much ordinary wording; the broader variants can
+connect subjects and outcomes that the nominated review does not cover.
+
+### Stronger passage reranker, stopped after a decisive prefix failure
+
+A separate [BGE passage reranker](https://huggingface.co/BAAI/bge-reranker-base)
+was tested using the [publisher's ONNX conversion](https://huggingface.co/Xenova/bge-reranker-base)
+at revision `280bcc27a84e0b898c251e06fddb25171bd9b101`. Its quantized artifact
+matches the publisher's 279,301,077-byte size and SHA-256:
+`dd98f3e67837d23210a6b7550c08cced4f61845b940ac45be3565840a10f3244`.
+Local inference had outbound network access denied. Two exact tokenizer-pair
+checks, model input/output shape checks and four synthetic relevance-order
+checks passed. These do not constitute an independent numerical reference.
+
+The fixed candidate pool contains thirty semantic nominations, with native
+exact/close lexical priority and four raw-logit thresholds: -2, 0, 2 and 4.
+Passages include the title, bottom line, editor summary and stable core, not
+incidental misconception tags or private editorial state.
+
+The retained ten-question prefix contains seven covered questions and three
+partial/gap questions. It reaches only two covered hits at threshold -2 and
+one at each other threshold. Even perfect results on the remaining 35 covered
+questions could therefore reach only 37 or 36 of 42, below the
+predeclared minimum of 38. Only the verified owned evaluator process was
+stopped, rather than spending resources on an already impossible acceptance.
+The retained prefix records 308 inference calls, no passage truncation and
+approximately five minutes of execution. This is not a completed 210-row
+study: no result is claimed for its unretained remainder or outside controls.
+The larger reproducible model is removable after retaining its exact provenance
+and rejection evidence.
+
+All three approaches remain unshipped. Their specifications and failure records
+are retained without post-score relabeling or a new favorable denominator.
+None opened or scored the frozen external question set, changed reviewed
+content, established reader comprehension or performed public publication.
+
 ## Narrow wording correction, not usefulness acceptance
 
-The subsequent application increment expands common contractions before
+The earlier v1.38.16 application increment expands common contractions before
 tokenization while retaining negation, recognizes grouped integer digits,
 corrects selected regular plural and doubled-letter stems, and prevents numeric
 values from being changed by spelling tolerance. Exact-title comparison,
