@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import type { FeedbackResponse, FeedbackRow } from "~/types/reader-feedback";
 import { comparisonForSlug, evidenceComparisons } from "~/data/comparisons";
-import { feedbackKindLabels, feedbackPriorityLabels, feedbackStatusLabels } from "~/types/reader-feedback";
+import {
+	answerCoverageLabels,
+	explanationClarityLabels,
+	feedbackKindLabels,
+	feedbackPriorityLabels,
+	feedbackStatusLabels
+} from "~/types/reader-feedback";
 import { safeExternalHttpUrl } from "~/utils/external-links";
 
 definePageMeta({ layout: "home" });
@@ -205,7 +211,7 @@ onBeforeUnmount(() => {
 					</select></label
 				>
 				<label
-					>Feedback type<select v-model="kind" :disabled="busy">
+					>Feedback type<select v-model="kind" name="feedback-kind-filter" :disabled="busy">
 						<option value="">All types</option>
 						<option v-for="(label, value) in feedbackKindLabels" :key="value" :value="value">
 							{{ label }}
@@ -253,11 +259,17 @@ onBeforeUnmount(() => {
 				<p v-if="row.kind === 'usefulness'">
 					{{ row.helpful ? "The explanation was useful." : "The explanation was not useful yet." }}
 				</p>
+				<dl v-if="row.kind === 'reader_experience'">
+					<dt>Explanation clarity</dt>
+					<dd>{{ row.clarity ? explanationClarityLabels[row.clarity] : "Not recorded" }}</dd>
+					<dt>Answer coverage</dt>
+					<dd>{{ row.answerCoverage ? answerCoverageLabels[row.answerCoverage] : "Not recorded" }}</dd>
+				</dl>
 				<p v-if="row.area">Missing: {{ row.area }}</p>
 				<p v-if="row.message" class="feedback-queue__message">{{ row.message }}</p>
 				<div class="feedback-queue__links">
 					<NuxtLink
-						v-if="row.kind !== 'usefulness'"
+						v-if="row.kind === 'missing_evidence' || row.kind === 'content_gap'"
 						:to="{ path: '/account/editorial/roadmap', query: { feedbackId: row._id } }"
 						>Prepare a separate public question</NuxtLink
 					>

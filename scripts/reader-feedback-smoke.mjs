@@ -137,7 +137,13 @@ export async function checkReaderFeedback({
 	let fail = false;
 	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
 		if (!fail || url.pathname !== "/api/reader-feedback") return false;
-		void request.respond({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Fixture feedback service unavailable" }) }).catch(() => {});
+		void request
+			.respond({
+				status: 503,
+				contentType: "application/json",
+				body: JSON.stringify({ error: "Fixture feedback service unavailable" })
+			})
+			.catch(() => {});
 		return true;
 	});
 	const errors = [];
@@ -246,6 +252,19 @@ export async function checkReaderFeedback({
 		clickText,
 		browserText
 	});
+	await restartBackend();
+	await checkReaderExperience({
+		api,
+		browser,
+		base,
+		review,
+		adminCookie,
+		userCookie,
+		browserLogin,
+		clickText,
+		browserText,
+		restartBackend
+	});
 	let limited = false;
 	for (let attempt = 0; attempt < 31; attempt++) {
 		const response = await fetch(`${base}/api/reader-feedback`, {
@@ -263,6 +282,213 @@ export async function checkReaderFeedback({
 	assert.equal(limited, true, "Anonymous feedback must have bounded request rates.");
 	console.log(
 		"reader feedback browser: usefulness, retained failed form, no query capture, private suggestion, admin triage/linking, sign-out and responsive accessibility passed"
+	);
+}
+
+async function checkReaderExperience({
+	api,
+	browser,
+	base,
+	review,
+	adminCookie,
+	userCookie,
+	browserLogin,
+	clickText,
+	browserText,
+	restartBackend
+}) {
+	const claimId = String(review._id);
+	const experience = { kind: "reader_experience", claimId, clarity: "partly_clear", answerCoverage: "not_answered" };
+	const scientificBefore = await Claim.findById(claimId).lean();
+	for (const body of [
+		{ ...experience, clarity: "agree" },
+		{ ...experience, answerCoverage: undefined },
+		{ ...experience, claimId: undefined },
+		{ ...experience, helpful: true },
+		{ ...experience, query: "must-not-be-stored" },
+		{ ...experience, captchaToken: "must-not-be-stored" }
+	])
+		await api("/reader-feedback", { method: "POST", body, status: 400 });
+	await api("/reader-feedback", {
+		method: "POST",
+		body: { ...experience, claimId: "000000000000000000000000" },
+		status: 422
+	});
+	assert.equal(await ReaderFeedback.countDocuments({ kind: "reader_experience" }), 0);
+	let failure = "service";
+	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (url.pathname !== "/api/reader-feedback" || request.method() !== "POST") return false;
+		const body = JSON.parse(request.postData());
+		if (body.kind !== "reader_experience") return false;
+		assert.deepEqual(
+			Object.keys(body).sort(),
+			["answerCoverage", body.comparisonSlug ? "comparisonSlug" : "claimId", "clarity", "kind"].sort()
+		);
+		assert.equal(url.search, "");
+		assert.ok(!("cookie" in request.headers()), "Reader ratings must omit account cookies.");
+		if (!failure) return false;
+		void request
+			.respond({
+				status: failure === "service" ? 503 : 200,
+				contentType: "application/json",
+				body: JSON.stringify(
+					failure === "service"
+						? { error: "Fixture answer feedback unavailable" }
+						: { received: false, duplicate: false }
+				)
+			})
+			.catch(() => {});
+		return true;
+	});
+	const errors = [];
+	page.on("pageerror", (error) => errors.push(error.message));
+	try {
+		await page.goto(`${base}/consensus/${review.topic.slug}/${review.slug}?q=discarded-raw-query`, {
+			waitUntil: "networkidle0"
+		});
+		await browserLogin(page);
+		await page.reload({ waitUntil: "networkidle0" });
+		assert.equal(await page.$('[name="feedback-clarity"]'), null);
+		await clickText(page, "Tell us what worked (optional)");
+		assert.equal(await page.$eval('[name="feedback-clarity"]', (element) => element.value), "");
+		assert.equal(await page.$eval('[name="feedback-answer-coverage"]', (element) => element.value), "");
+		await page.select('[name="feedback-clarity"]', "partly_clear");
+		await page.select('[name="feedback-answer-coverage"]', "not_answered");
+		await clickText(page, "Send private answer feedback");
+		await browserText(page, "Fixture answer feedback unavailable");
+		assert.equal(await page.$eval('[name="feedback-clarity"]', (element) => element.value), "partly_clear");
+		failure = "unconfirmed";
+		await clickText(page, "Send private answer feedback");
+		await browserText(page, "Feedback was not confirmed received.");
+		assert.equal(await page.$eval('[name="feedback-answer-coverage"]', (element) => element.value), "not_answered");
+		assert.equal(await ReaderFeedback.countDocuments({ kind: "reader_experience" }), 0);
+		for (const mode of ["light", "dark"]) {
+			await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: mode }]);
+			await page.waitForFunction(
+				(mode) => document.documentElement.classList.contains("dark") === (mode === "dark"),
+				{},
+				mode
+			);
+			await page.evaluate(async () => {
+				await new Promise(requestAnimationFrame);
+				await Promise.all(
+					document
+						.getAnimations()
+						.filter((animation) => Number.isFinite(animation.effect?.getComputedTiming().endTime))
+						.map((animation) => animation.finished.catch(() => {}))
+				);
+			});
+			await page.addScriptTag({ path: createRequire(import.meta.url).resolve("axe-core/axe.min.js") });
+			assert.deepEqual(
+				await page.evaluate(
+					async () => (await window.axe.run(document.querySelector(".reader-feedback"))).violations
+				),
+				[]
+			);
+		}
+		for (const width of [1440, 390, 320]) {
+			await page.setViewport({ width, height: 900 });
+			assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+		}
+		await page.evaluate(() => {
+			document.documentElement.style.fontSize = "200%";
+		});
+		assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+		if (process.env.READER_FEEDBACK_SCREENSHOT_DIR)
+			await (
+				await page.$(".reader-feedback")
+			).screenshot({ path: join(process.env.READER_FEEDBACK_SCREENSHOT_DIR, "reader-experience-mobile.png") });
+		failure = "";
+		await clickText(page, "Send private answer feedback");
+		await browserText(page, "Answer and explanation feedback received");
+		const stored = await ReaderFeedback.findOne({ kind: "reader_experience", claimId }).lean();
+		assert.ok(stored);
+		assert.equal(stored.clarity, "partly_clear");
+		assert.equal(stored.answerCoverage, "not_answered");
+		assert.equal(stored.helpful, undefined);
+		assert.equal(stored.message, undefined);
+		assert.doesNotMatch(
+			JSON.stringify(stored),
+			/discarded-raw-query|must-not-be-stored|captchaToken|sourceIp|userAgent|session|password|authorization|reader-a@example/
+		);
+		assert.ok(await ReaderFeedback.exists({ kind: "usefulness", claimId }));
+		assert.equal(
+			(
+				await api("/reader-feedback", {
+					method: "POST",
+					body: { ...experience, clarity: "clear", answerCoverage: "answered" }
+				})
+			).data.duplicate,
+			true
+		);
+		await restartBackend();
+		assert.equal((await ReaderFeedback.findById(stored._id).lean()).answerCoverage, "not_answered");
+		await api("/admin/reader-feedback?kind=reader_experience", { status: 403 });
+		await api("/admin/reader-feedback?kind=reader_experience", { cookie: userCookie, status: 403 });
+		const result = await api("/admin/reader-feedback?kind=reader_experience", { cookie: adminCookie });
+		assert.match(result.response.headers.get("cache-control"), /private, no-store/);
+		assert.equal(result.data.pagination.total, 1);
+		assert.equal(result.data.rows[0].clarity, "partly_clear");
+		await api("/admin/coverage", {
+			method: "POST",
+			cookie: adminCookie,
+			body: {
+				title: "A separate reviewed coverage question",
+				summary:
+					"This isolated fixture must not turn a fixed-choice reader rating into a published suggestion.",
+				status: "planned",
+				topicId: null,
+				claimId: null,
+				privateNote: "Verify that experience ratings cannot be selected as private suggestions.",
+				feedbackId: stored._id
+			},
+			status: 422
+		});
+		await page.goto(`${base}/account/editorial/reader-feedback`, { waitUntil: "networkidle0" });
+		await page.select('[name="feedback-kind-filter"]', "reader_experience");
+		await clickText(page, "Apply filters / reload");
+		await page.waitForFunction(() => {
+			const cards = [...document.querySelectorAll(".feedback-queue__card")];
+			const apply = [...document.querySelectorAll(".feedback-queue__filters button")].find(
+				(button) => button.textContent.trim() === "Apply filters / reload"
+			);
+			return (
+				apply &&
+				!apply.disabled &&
+				cards.length === 1 &&
+				cards[0].innerText.includes("Answer and explanation feedback")
+			);
+		});
+		await browserText(page, "Some parts were unclear");
+		await browserText(page, "Did not answer my question");
+		assert.equal(await page.$('.feedback-queue__card a[href*="/account/editorial/roadmap"]'), null);
+		const comparison = evidenceComparisons[0];
+		await page.goto(`${base}/compare/${comparison.slug}`, { waitUntil: "networkidle0" });
+		await clickText(page, "Tell us what worked (optional)");
+		assert.equal(await page.$eval('[name="feedback-clarity"]', (element) => element.value), "");
+		await page.select('[name="feedback-clarity"]', "clear");
+		await page.select('[name="feedback-answer-coverage"]', "just_browsing");
+		await clickText(page, "Send private answer feedback");
+		await browserText(page, "Answer and explanation feedback received");
+		const comparisonRating = await ReaderFeedback.findOne({
+			kind: "reader_experience",
+			comparisonSlug: comparison.slug
+		}).lean();
+		assert.ok(comparisonRating);
+		assert.equal(comparisonRating.claimId, undefined);
+		assert.equal(comparisonRating.clarity, "clear");
+		assert.equal(comparisonRating.answerCoverage, "just_browsing");
+		await page.goto(`${base}/compare/${evidenceComparisons[1].slug}`, { waitUntil: "networkidle0" });
+		await clickText(page, "Tell us what worked (optional)");
+		assert.equal(await page.$eval('[name="feedback-clarity"]', (element) => element.value), "");
+		assert.equal(await page.$eval('[name="feedback-answer-coverage"]', (element) => element.value), "");
+		assert.deepEqual(await Claim.findById(claimId).lean(), scientificBefore);
+		assert.deepEqual(errors, []);
+	} finally {
+		await page.close();
+	}
+	console.log(
+		"reader experience: explicit fixed choices, no account/query capture, failed receipt retention, private admin filters, deduplication, restart persistence and responsive accessibility passed"
 	);
 }
 
@@ -304,7 +530,13 @@ async function checkComparisonFeedback({
 	let fail = false;
 	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
 		if (!fail || url.pathname !== "/api/reader-feedback") return false;
-		void request.respond({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Comparison feedback temporarily unavailable" }) }).catch(() => {});
+		void request
+			.respond({
+				status: 503,
+				contentType: "application/json",
+				body: JSON.stringify({ error: "Comparison feedback temporarily unavailable" })
+			})
+			.catch(() => {});
 		return true;
 	});
 	await page.evaluateOnNewDocument(() => localStorage.setItem("nuxt-color-mode", "system"));
