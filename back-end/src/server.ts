@@ -73,6 +73,7 @@ import {
 import { verifyCaptcha } from "./utils/captcha.js";
 import { normalizeCitationStatusSources } from "./utils/citationStatusSources.js";
 import { buildClaimCitationBundle } from "./utils/claimCitations.js";
+import { ClaimNarrativeValidationError, normalizeClaimNarratives } from "./utils/claimNarratives.js";
 import { createClaimSearchIndex } from "./utils/claimSearch.js";
 import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
 import { getActorFromRequest } from "./utils/community.js";
@@ -2573,10 +2574,7 @@ async function main() {
 				confidenceScore: normalizeInteger(req.body?.confidenceScore, 0, 100, 50),
 				reviewMode: normalizeReviewMode(req.body?.reviewMode),
 				bottomLine: normalizeText(req.body?.bottomLine, 2000),
-				stableCore: normalizeList(req.body?.stableCore, 12, 280),
-				openQuestions: normalizeList(req.body?.openQuestions, 12, 280),
-				whatWouldChangeMinds: normalizeList(req.body?.whatWouldChangeMinds, 12, 280),
-				misconceptions: normalizeList(req.body?.misconceptions, 12, 280),
+				...normalizeClaimNarratives(req.body ?? {}),
 				misconceptionTags: normalizeList(req.body?.misconceptionTags, 8, 64),
 				editorSummary: normalizeText(req.body?.editorSummary, 4000),
 				uncertaintySummary: normalizeText(req.body?.uncertaintySummary, 1600),
@@ -2618,6 +2616,7 @@ async function main() {
 			return res.status(201).json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
+			if (error instanceof ClaimNarrativeValidationError) return res.status(400).json({ error: error.message });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to create claim." });
 		}
@@ -2636,6 +2635,7 @@ async function main() {
 			if (req.body?.status !== undefined) {
 				return res.status(400).json({ error: "Use the publish or archive workflow to change claim status." });
 			}
+			const narratives = normalizeClaimNarratives(req.body ?? {}, claim);
 
 			const nextTopicSlug = normalizeText(req.body?.topic, 120);
 			if (nextTopicSlug) {
@@ -2645,10 +2645,11 @@ async function main() {
 			}
 
 			const nextTitle = normalizeText(req.body?.title, 220);
+			const titleChanged = Boolean(nextTitle && nextTitle !== claim.title);
 			if (nextTitle) claim.title = nextTitle;
 
 			const nextSlug = normalizeText(req.body?.slug, 220);
-			if (nextSlug || nextTitle) {
+			if (nextSlug || titleChanged) {
 				claim.slug = slugify(nextSlug || nextTitle || claim.title);
 			}
 
@@ -2679,15 +2680,15 @@ async function main() {
 				claim.reviewMode = normalizeReviewMode(req.body?.reviewMode) as typeof claim.reviewMode;
 			}
 			if (req.body?.bottomLine !== undefined) claim.bottomLine = normalizeText(req.body?.bottomLine, 2000);
-			if (req.body?.stableCore !== undefined) claim.stableCore = normalizeList(req.body?.stableCore, 12, 280);
+			if (req.body?.stableCore !== undefined) claim.stableCore = narratives.stableCore;
 			if (req.body?.openQuestions !== undefined) {
-				claim.openQuestions = normalizeList(req.body?.openQuestions, 12, 280);
+				claim.openQuestions = narratives.openQuestions;
 			}
 			if (req.body?.whatWouldChangeMinds !== undefined) {
-				claim.whatWouldChangeMinds = normalizeList(req.body?.whatWouldChangeMinds, 12, 280);
+				claim.whatWouldChangeMinds = narratives.whatWouldChangeMinds;
 			}
 			if (req.body?.misconceptions !== undefined) {
-				claim.misconceptions = normalizeList(req.body?.misconceptions, 12, 280);
+				claim.misconceptions = narratives.misconceptions;
 			}
 			if (req.body?.misconceptionTags !== undefined) {
 				claim.misconceptionTags = normalizeList(req.body?.misconceptionTags, 8, 64);
@@ -2769,6 +2770,7 @@ async function main() {
 			return res.json({ claim: toEditorialClaim(populated) });
 		}
 		catch (error) {
+			if (error instanceof ClaimNarrativeValidationError) return res.status(400).json({ error: error.message });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to update claim." });
 		}
