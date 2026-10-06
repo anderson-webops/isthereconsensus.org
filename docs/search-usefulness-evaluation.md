@@ -91,3 +91,8 @@ overlong queries, and unsafe origins are rejected rather than silently altered.
 The original exposed question set and failed scores remain development
 evidence. Semantic search experiments are not deployed search and do not
 replace this end-to-end check or the separate fresh-usefulness requirement.
+
+See [the development and fresh-question record](search-usefulness-development-record.md)
+for rejected approaches, retained numerical-reference failures, and the
+unclassified external question freeze. Its frozen candidates are not yet a
+validated evaluator input or a completed usefulness assessment.
