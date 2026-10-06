@@ -284,7 +284,7 @@ useHead({
 				</li>
 			</ol>
 		</details>
-		<ReaderFeedback :comparison-slug="comparison.slug" />
+		<ReaderFeedback :key="comparison.slug" :comparison-slug="comparison.slug" />
 	</article>
 </template>
 

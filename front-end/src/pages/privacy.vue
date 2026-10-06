@@ -98,6 +98,7 @@ const retentionRows: RetentionRow[] = [
 		body: "Feedback and its editorial review history are retained for up to two years. We do not automatically retain your search text or attach your account identity to feedback.",
 		details: [
 			"A keyed code derived from the day, network address and feedback target limits duplicate submissions. The raw address and bot-check token are not stored in feedback records. Shared networks may share a daily usefulness signal.",
+			"Optional answer feedback records only your selected explanation-clarity and answer-coverage choices for a review or comparison. Your question, search text and account identity are not copied into these ratings. The choices remain private to admins; self-selected feedback is not a scientific-consensus vote or a representative reader-success measure.",
 			"Free-text suggestions use the site's bot check. Do not submit personal health details or private links. Feedback helps admins plan work; it is not a scientific vote."
 		]
 	},

@@ -62,7 +62,7 @@ export function createReaderFeedbackRouter(
 				if (!topic) return res.status(422).json({ error: "This topic is no longer available." });
 				topicId = topic._id;
 			}
-			if (data.kind !== "usefulness") {
+			if (data.kind !== "usefulness" && data.kind !== "reader_experience") {
 				const captcha = await verifyCaptcha(data.captchaToken, req.ip);
 				if (!captcha.ok)
 					return res.status(403).json({ error: captcha.error || "Please complete the bot check." });
@@ -76,13 +76,13 @@ export function createReaderFeedbackRouter(
 				...target,
 				...(data.kind === "usefulness"
 					? { helpful: data.helpful }
-					: {
-							message: data.message,
-							sourceUrl: data.sourceUrl,
-							...(data.kind === "missing_evidence"
-								? { area: data.area }
-								: { title: data.title })
-						}),
+					: data.kind === "reader_experience"
+						? { clarity: data.clarity, answerCoverage: data.answerCoverage }
+						: {
+								message: data.message,
+								sourceUrl: data.sourceUrl,
+								...(data.kind === "missing_evidence" ? { area: data.area } : { title: data.title })
+							}),
 				expiresAt: new Date(now.getTime() + 730 * 24 * 60 * 60_000)
 			});
 			return res.status(201).json({ received: true, duplicate: false });

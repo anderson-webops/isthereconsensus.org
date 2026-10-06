@@ -1,5 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-import { feedbackKinds, feedbackStatuses } from "../../utils/readerFeedback.js";
+import {
+	answerCoverageRatings,
+	explanationClarityRatings,
+	feedbackKinds,
+	feedbackStatuses
+} from "../../utils/readerFeedback.js";
 
 const feedbackSchema = new Schema(
 	{
@@ -9,6 +14,8 @@ const feedbackSchema = new Schema(
 		comparisonSlug: { type: String, maxlength: 100, match: /^[a-z0-9]+(?:-[a-z0-9]+)*$/ },
 		topicId: { type: Schema.Types.ObjectId, ref: "Topic" },
 		helpful: { type: Boolean },
+		clarity: { type: String, enum: explanationClarityRatings },
+		answerCoverage: { type: String, enum: answerCoverageRatings },
 		area: { type: String, enum: ["source", "population", "outcome", "explanation", "other"] },
 		title: { type: String, maxlength: 200 },
 		referenceTitle: { type: String, maxlength: 500 },

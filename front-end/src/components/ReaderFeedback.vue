@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { ReaderRating } from "~/types/reader-feedback";
+import { answerCoverageLabels, explanationClarityLabels } from "~/types/reader-feedback";
+
 const props = defineProps<{ claimId?: string; comparisonSlug?: string }>();
 const hasEvidenceTarget = computed(() => Boolean(props.claimId || props.comparisonSlug));
 const evidenceTarget = computed(() =>
@@ -9,6 +12,10 @@ const config = useRuntimeConfig();
 const expanded = ref(false);
 const busy = ref(false);
 const received = ref(false);
+const experienceExpanded = ref(false);
+const experienceReceived = ref(false);
+const clarity = ref<keyof typeof explanationClarityLabels | "">("");
+const answerCoverage = ref<keyof typeof answerCoverageLabels | "">("");
 const notice = ref("");
 const errorMessage = ref("");
 const title = ref("");
@@ -21,10 +28,17 @@ let controller: AbortController | undefined;
 
 onBeforeUnmount(() => controller?.abort());
 
-async function send(helpful?: boolean) {
+async function sendExperience() {
+	if (!clarity.value || !answerCoverage.value) {
+		errorMessage.value = "Choose how clear the explanation was and whether it answered your question.";
+		return;
+	}
+	await send({ kind: "reader_experience", clarity: clarity.value, answerCoverage: answerCoverage.value });
+}
+
+async function send(rating?: ReaderRating) {
 	if (busy.value) return;
-	const usefulness = typeof helpful === "boolean";
-	if (!usefulness && config.public.captchaSiteKey && !captchaToken.value) {
+	if (!rating && config.public.captchaSiteKey && !captchaToken.value) {
 		errorMessage.value = "Please complete the bot check.";
 		return;
 	}
@@ -33,8 +47,8 @@ async function send(helpful?: boolean) {
 	notice.value = "";
 	controller = new AbortController();
 	try {
-		const body = usefulness
-			? { kind: "usefulness", ...evidenceTarget.value, helpful }
+		const body = rating
+			? { ...rating, ...evidenceTarget.value }
 			: {
 					kind: hasEvidenceTarget.value ? "missing_evidence" : "content_gap",
 					...(hasEvidenceTarget.value
@@ -51,11 +65,17 @@ async function send(helpful?: boolean) {
 			signal: controller.signal,
 			retry: 0
 		});
+		if (response.received !== true || typeof response.duplicate !== "boolean") {
+			throw new Error("Feedback receipt was not confirmed.");
+		}
 		notice.value = response.duplicate
 			? "This feedback has already been received today."
 			: "Thank you. Your feedback is in the private editorial queue.";
-		if (usefulness) {
+		if (rating?.kind === "usefulness") {
 			received.value = true;
+		} else if (rating?.kind === "reader_experience") {
+			experienceReceived.value = true;
+			experienceExpanded.value = false;
 		} else {
 			expanded.value = false;
 			title.value = "";
@@ -66,10 +86,10 @@ async function send(helpful?: boolean) {
 		if (controller.signal.aborted) return;
 		const data = (error as { data?: { error?: string } }).data;
 		errorMessage.value =
-			data?.error || "Feedback was not confirmed received. Your text is still here; please retry.";
+			data?.error || "Feedback was not confirmed received. Your input is still here; please retry.";
 	} finally {
 		busy.value = false;
-		if (!usefulness) {
+		if (!rating) {
 			captchaRef.value?.reset();
 			captchaToken.value = "";
 		}
@@ -81,12 +101,61 @@ async function send(helpful?: boolean) {
 	<section class="reader-feedback" aria-label="Reader feedback">
 		<div v-if="hasEvidenceTarget" class="reader-feedback__row">
 			<h2>Was this {{ comparisonSlug ? "comparison" : "review" }} useful?</h2>
-			<button type="button" :disabled="busy || received" @click="send(true)">Yes, useful</button>
-			<button type="button" :disabled="busy || received" @click="send(false)">Not yet</button>
+			<button type="button" :disabled="busy || received" @click="send({ kind: 'usefulness', helpful: true })">
+				Yes, useful
+			</button>
+			<button type="button" :disabled="busy || received" @click="send({ kind: 'usefulness', helpful: false })">
+				Not yet
+			</button>
 		</div>
 		<p v-if="hasEvidenceTarget" class="reader-feedback__hint">
 			This rates the explanation, not whether you agree with the science.
 		</p>
+		<div v-if="hasEvidenceTarget" class="reader-feedback__experience">
+			<button
+				type="button"
+				:aria-expanded="experienceExpanded"
+				:disabled="busy || experienceReceived"
+				@click="experienceExpanded = !experienceExpanded"
+			>
+				{{
+					experienceReceived
+						? "Answer and explanation feedback received"
+						: experienceExpanded
+							? "Close answer feedback"
+							: "Tell us what worked (optional)"
+				}}
+			</button>
+			<form v-if="experienceExpanded" class="reader-feedback__form" @submit.prevent="sendExperience()">
+				<p>
+					These choices are private to admins. They do not record your question, account or search text, and
+					do not rate agreement with the science.
+				</p>
+				<label
+					>How easy was the explanation to follow?
+					<select v-model="clarity" name="feedback-clarity" required :disabled="busy">
+						<option disabled value="">Choose an answer</option>
+						<option v-for="(label, value) in explanationClarityLabels" :key="value" :value="value">
+							{{ label }}
+						</option>
+					</select>
+				</label>
+				<label
+					>Did it answer the question you came with?
+					<select v-model="answerCoverage" name="feedback-answer-coverage" required :disabled="busy">
+						<option disabled value="">Choose an answer</option>
+						<option v-for="(label, value) in answerCoverageLabels" :key="value" :value="value">
+							{{ label }}
+						</option>
+					</select>
+				</label>
+				<div>
+					<button type="submit" :disabled="busy">
+						{{ busy ? "Sending…" : "Send private answer feedback" }}
+					</button>
+				</div>
+			</form>
+		</div>
 		<button type="button" :aria-expanded="expanded" :disabled="busy" @click="expanded = !expanded">
 			{{
 				expanded
@@ -180,6 +249,9 @@ async function send(helpful?: boolean) {
 .reader-feedback__hint {
 	color: var(--consensus-muted);
 	font-size: 0.875rem;
+}
+.reader-feedback__experience {
+	margin-block: 0.75rem;
 }
 .reader-feedback button {
 	min-height: 2.75rem;
