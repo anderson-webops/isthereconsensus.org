@@ -88,22 +88,31 @@ raw messages. A per-question novelty/source record will precede content batches.
   Private notes and identifiers stay outside the index. A general scope gate
   declines personal requests to alter prescribed treatment while preserving
   population-level information. Focused checks and all 838 native tests pass;
-  the full compiled-backend/browser rehearsal also passes. Protected integration
-  of this follow-up remains pending.
+  the full compiled-backend/browser rehearsal also passes. This correction is
+  integrated at `2262965` and source-released as v1.38.14 after all eight
+  exact-head and exact-main checks passed.
   On the exposed original set, only four of 42 covered questions match, 9.52%,
   with all twelve out-of-scope questions correctly empty. This is regression
   evidence, not a fresh evaluation or visitor success; the 90% goal is unchanged.
   Neutralizing or capping unknown-word weights was rejected after false matches.
 - Full release and independent public acceptance: pending.
 - Authenticated publication fidelity: a read-only source audit found that the
-  existing create/update narrative item cap would silently truncate 277 items
+  former create/update narrative item cap would silently truncate 277 items
   across 135 of the 201 expansion reviews: 258 stable-core paragraphs and
   nineteen what-would-change-minds items. The longest paragraph has 651
-  characters; both authenticated paths currently slice each item at 280.
-  The isolated seeded-catalog tests do not prove faithful authenticated creation.
-  Fix these bounded narrative inputs and verify exact full-text preservation
-  through authenticated creation, editing and publication before real publication.
-  This must not weaken source URL validation or alter existing published state.
+  characters. Both authenticated paths now use shared narrative-specific bounds
+  with explicit HTTP 400 rejection instead of shortening text, and preserve
+  unchanged legacy content. Global citation URL validation is unchanged.
+  The first complete HTTP attempt also exposed a full-content save deriving a
+  different slug from an unchanged title. Unchanged titles now retain their
+  canonical URL; explicit slug edits and actual title changes retain the
+  existing behavior. The rehearsal keeps an exact canonical-path assertion.
+  The added full-batch HTTP rehearsal creates, edits and publishes the 201
+  canonical expansion records only in an owned disposable database; seeded
+  fixtures alone are not sufficient. Exact full-text authenticated acceptance
+  and source delivery must be verified before real production publication.
+  See `claim-narrative-preservation.md`; no production article is rewritten by
+  this input-validation change.
 
 ## Current boundary
 
@@ -112,8 +121,9 @@ This goal starts with a clean source checkout at `7fea640`. No private productio
 feedback or reader analytics have been inspected, and no production mutations
 are authorized merely by this planning record.
 
-Anonymous checks on October 5 at 21:53 UTC, after the v1.38.13 source release,
-found healthy frontend v1.38.12,
+Anonymous checks on October 5 at 22:58 UTC, after the v1.38.14 source release,
+found healthy frontend v1.38.13,
 800 publicly readable reviews and no approved public roadmap entries. The new
-economic review APIs and guide were unavailable. This observed public state,
+economic review canary was unavailable; the guide route returned HTTP 200,
+without proving every guide's full public acceptance. This observed public state,
 not source totals or isolated fixture publication, controls publication claims.

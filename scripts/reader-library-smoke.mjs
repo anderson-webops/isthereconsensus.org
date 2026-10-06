@@ -25,6 +25,7 @@ import { checkReaderFeedback } from "./reader-feedback-smoke.mjs";
 import { checkCoverageRoadmap } from "./coverage-roadmap-smoke.mjs";
 import { checkCoverageFollowing } from "./coverage-following-smoke.mjs";
 import { checkEditorialCitations } from "./editorial-citation-smoke.mjs";
+import { checkClaimNarratives } from "./claim-narrative-smoke.mjs";
 import { checkLivingEvidenceRefreshes } from "./living-evidence-refresh-smoke.mjs";
 import { checkReaderContent } from "./reader-content-smoke.mjs";
 import { checkSourceIntegrity } from "./source-integrity-smoke.mjs";
@@ -834,6 +835,7 @@ try {
 	await checkReviewPriority(adminChecks);
 	await checkSourceIntegrity(adminChecks);
 	await checkEditorialCitations(adminChecks);
+	await checkClaimNarratives(adminChecks);
 	await Admin.updateOne({ _id: actor._id }, { $set: { enabled: false } });
 	await api("/library/account", { cookie: editor.cookie, status: 403 });
 	await api("/admin/reader-feedback", { cookie: editor.cookie, status: 403 });
@@ -842,6 +844,15 @@ try {
 	console.log(
 		"built library: anonymous save/follow/reload, account sync/removal/sign-out, clear confirmation, mobile/200% text and revoked sessions passed"
 	);
+} catch (error) {
+	const categories = (processes.get(backend) ?? "").split("\n")
+		.filter((line) => /^Admin auth validation failed: [A-Za-z][A-Za-z0-9:]*$/.test(line));
+	const mongo = [...children].filter((child) => /(?:^|\/)mongod$/.test(child.spawnargs[0]));
+	console.error("Disposable runtime failure:", JSON.stringify({
+		backend: { exitCode: backend?.exitCode, signalCode: backend?.signalCode, categories },
+		mongo: mongo.map((child) => ({ exitCode: child.exitCode, signalCode: child.signalCode }))
+	}));
+	throw error;
 } finally {
 	await browser?.close();
 	await Promise.all(
