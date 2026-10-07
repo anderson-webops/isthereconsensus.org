@@ -250,3 +250,42 @@ The full goal still requires the public reviewed total, substantial public
 guides, moderated roadmap and follow-to-answer/update workflows, and a passing
 fresh usefulness evaluation. A frozen candidate file or green tool tests do
 not complete those requirements.
+
+## Causal-language reranker: stopped at numerical preflight
+
+On October 7, a separate study at source commit
+`efa0aef05e7a3546373c1cbeeecdf163ce8cdbf2` tested the
+[Qwen3 0.6B reranker](https://huggingface.co/Qwen/Qwen3-Reranker-0.6B/blob/e61197ed45024b0ed8a2d74b80b4d909f1255473/README.md)
+using the [publisher's pinned int8 ONNX conversion](https://huggingface.co/onnx-community/Qwen3-Reranker-0.6B-ONNX/tree/9995c50e2310679108a55f5ccd16ba8be9f17c20).
+Its 1,219,344,796-byte artifact matches the published SHA-256
+`c9428382bb48bb31e01a6034647c86d6270761781735cafbf6d5cb4a396d0450`.
+Original and converted tokenizer bytes also match. Inference used audited
+ONNX Runtime 1.30.0, two CPU threads and an explicit network-denied sandbox.
+
+The specification was fixed before inference, with raw-logit absolute tolerance
+0.5 and probability absolute tolerance 0.03. Two original publisher examples
+produce these results using the retained original chat template:
+
+| Reference example | Published logit difference | Observed difference | Absolute difference |
+| --- | --- | --- | --- |
+| Relevant capital-city passage | 7.625 | 5.566754 | 2.058246 |
+| Unrelated gravity passage | -11.375 | -11.958987 | 0.583987 |
+
+Both probability differences are small and pass their separate bound, but both
+raw-logit differences fail. The run stops after two inference calls: zero
+development or fresh questions and zero synthetic relevance controls are scored.
+No prompt, precision or tolerance retry is performed. The original structured
+scope failure also remains unchanged, not converted into a pass.
+
+This is a failure of the declared numerical acceptance check, not evidence that
+this model is generally inaccurate or that it fails the site's question benchmark.
+Rounded publisher examples are not a full independent numerical reference suite;
+quantization, runtime and formatting differences are not isolated by these two
+observations. The lightweight prompt renderer was not independently compared
+with the publisher's template/tokenizer library, so matched reference inputs
+are not established merely by matching template and tokenizer file bytes.
+No search implementation or application dependency changes result.
+The verified large model and private runtime are disposable after retaining
+their provenance, original failure and reproducible specification. The frozen
+72-question input remains unopened and unscored. Fresh public usefulness and
+the complete expansion goal remain unfinished.
