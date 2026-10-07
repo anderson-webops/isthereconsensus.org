@@ -344,3 +344,84 @@ not its contribution to the earlier numerical differences, historical publisher
 environment parity, general model quality or passing search usefulness. No
 application search, dependency, content or production changes result. Fresh
 public usefulness and the complete expansion goal remain unfinished.
+
+## Paired encoder relevance and literal source-scope checks
+
+A separately declared October 7 study at source commit
+`6a09557f85deb4459d3559893b75f0e3faed856e` tests the publisher-pinned
+[ModernBERT relevance reranker](https://huggingface.co/Alibaba-NLP/gte-reranker-modernbert-base/tree/f7481e6055501a30fb19d090657df9ec1f79ab2c).
+Its FP32 ONNX artifact has 598,803,940 bytes and SHA-256
+`c6d3226502addbcd4d2cf273802957ebf8a2a6bf94037dcb9b1d95bfc01e5d93`.
+All five retained configuration/tokenizer/model-card files also match their
+publisher Git blob identities. The private ONNX Runtime 1.30.0 installation has
+zero npm audit findings and sixteen verified registry signatures. This is a
+different architecture, not a prompt, precision or tolerance retry of the failed
+causal-language study.
+
+The official paired AutoTokenizer API and independent JavaScript tokenizer match
+all input IDs and attention-mask elements in fifteen fixed fixtures: the twelve
+unchanged public/synthetic input cases plus three publisher examples. Three
+publisher FP32 raw logits also match within their predeclared absolute bound of
+0.01; the largest observed difference is approximately 0.00000143. All three
+separate probability bounds pass. These three examples are not a full numerical
+reference suite or proof of historical publisher-environment parity. The final
+specification SHA-256 is
+`6cfbfa19e91abf36ad641fc51d13ac319ed78bb2ff674cb49a71844dd1e577f1`.
+An initially mistyped existing nomination-artifact hash was corrected before
+any input comparison or model prediction. The original specification and the
+explicit pre-inference transcription-correction record remain retained.
+
+Input and numerical acceptance do not establish source-scope correctness. With
+the declared 0.8 relevance threshold, the relevance-only pipeline passes five of
+the eight unchanged title-only synthetic scope controls. It returns candidates
+for an unsupported outcome, reversed subject/outcome roles and an unknown
+subject qualifier. Sixteen relevance calls are made; zero development or fresh
+questions are scored in that original stage. Its failed result SHA-256 remains
+`12c3d5dee9f7c65dcc6a94fa74030c93d94b406561d89b17ddce5ac8e4146d7f`.
+Neither threshold tuning nor rewritten fixtures convert this failure into a
+pass. Relevance scores never represent scientific confidence.
+
+A separate literal relational verifier is declared before predictions, with
+specification SHA-256
+`0d78f23e0201e4f9ae066c9052ce62d21ae87cc43702eec0c4537d1a3dc4fa86`.
+It keeps subject and outcome roles separate within one actual public title or
+source sentence, preserves literal qualifiers and numbers, checks a named
+predicate and matches explicit negative polarity. It reuses the real native
+normalization, contractions and demand boost. It does not invent aliases from
+expected destinations, combine unrelated sentences or claim complete English
+entailment; unparsed questions retain the original relevance-only behavior.
+Replaying all eight original predictions through this layer passes all eight
+controls without repeating model inference. The original five-of-eight failure
+and its unchanged scorer remain separate and unaccepted.
+
+The mandatory whole-corpus title-priority check then fails: the combined trial
+preserves 999 of 1,001 canonical first results. Its operational intent filter
+rejects these two genuine population/scientific questions before exact-title
+matching:
+
+| Canonical review | Trial rejection | Actual native result |
+| --- | --- | --- |
+| Are intensive behavioral interventions effective for children with obesity, and does dose matter? | Individual dosing | Correct canonical review first |
+| Are small modular reactors already proven cheaper and faster at commercial scale? | Shopping service | Correct canonical review first |
+
+An independent source-only comparison verifies all 1,001 first-title priorities
+in the unchanged real native search, with zero model calls. Thus the regression
+is in the experimental intent filter, not evidence of a new application search
+bug. Matching the words `dose` with `children`, or `cheaper` alone, is too broad
+to distinguish a reviewed population/economic question from an individual
+decision or shopping request. A subsequent candidate must correct that general
+distinction without weakening the unsupported-question gates or rewriting this
+failure.
+
+The full 210-row exposed development run is still in progress at this checkpoint.
+It retains all original, legacy, additional-outside and partial/gap strata;
+there is no completed development acceptance or fresh score to report. Its
+unchanged cached `full.cls` nomination field uses the original bounded BGE
+encoder, capped at 510 content tokens plus two special tokens. The field name
+does not mean every source paragraph was encoded. Final relevance scoring uses
+the complete public title, bottom line, editor summary and every stable-core
+paragraph, rejecting oversized paired inputs rather than truncating them.
+The failed mandatory title gate already prevents application integration,
+regardless of the eventual development score. No application dependency,
+search, content or production changes result. The frozen seventy-two-question
+input remains unopened and unscored; the full expansion goal remains active.
