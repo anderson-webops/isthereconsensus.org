@@ -516,3 +516,58 @@ The failed mandatory title gate, covered-question gates and outside controls
 each independently prevent application integration. No application dependency,
 search, content or production changes result. The frozen seventy-two-question
 input remains unopened and unscored; the full expansion goal remains active.
+
+## Cached rank fusion, rejected without application changes
+
+An October 7 trial reuses verified, unchanged BGE query/document vectors and
+ModernBERT query/passage scores. It retains valid native explanation/body
+matches, exact-title priority and numeric qualifiers. A thirty-candidate
+fallback uses equal-weight reciprocal-rank fusion with constant 60, the unchanged
+0.65 cosine floor and five-result cap. Unparsed requests retain the unchanged
+0.8 relevance floor; literal source-role evidence is required for parsed requests.
+No expected destinations or benchmark classifications become prediction features.
+
+An initial implementation error is retained separately: a personal-treatment
+control intentionally lacks model diagnostics. Treating that absence as an empty
+score list fixes the loader without inventing scores or changing its rejection.
+The corrected initial method then passes only six of eight unchanged controls;
+direction reversal and explicit negation fail, so it scores no development rows.
+Its specification SHA-256 is
+`452fdcd97ffbd863594c2329600e510dc8af94a6254af532a4ee3d1afece948c`.
+
+A separately declared grammatical correction gives the explicit
+what-effect-of/on and what-effect-does/have-on frames their stated role slots,
+rather than accepting ambiguous noun POS labels as evidence of a verb. Other
+forms retain full-sentence POS checks. Explicit negative requests also exclude
+native rows without matching negative source-clause evidence. All eight original
+controls and all 1,001 canonical first-title priorities then pass. All 2,223
+bounded tokenizer comparisons match, and the three same-backend numerical
+comparisons have zero component difference at the existing 0.00001 bound.
+These are cache reproduction checks, not independent publisher acceptance.
+
+The complete 210-row exposed development evaluation nevertheless fails:
+
+| Stratum | Questions | Canonical top-three matches | Questions returning results |
+| --- | --- | --- | --- |
+| Original covered | 42 | 35 | 40 |
+| Original partial or gap | 6 | Not counted as covered | 3 |
+| Original outside | 12 | Not applicable | 0 |
+| Legacy covered | 100 | 100 | 100 |
+| Legacy outside | 20 | Not applicable | 0 |
+| Additional outside | 30 | Not applicable | 1 |
+
+The remaining outside false positive asks whether noise-cancelling headphones
+reverse climate change. Preserving native matches prevents the earlier four
+legacy regressions, but fusion neither reaches the unchanged 38-of-42 covered
+gate nor eliminates every unsupported result. The seven covered misses retain
+their original canonical destinations; related alternatives do not silently
+replace those labels. No thresholds, denominators or old failures are rewritten.
+
+Specification, scorer and complete result SHA-256 values respectively are
+`ad5764a5000342c1f86212c72f335b0c5a6308c71020f752a296fccae2280505`,
+`ff774e2d4eef663027732eee76eb07e96db9f149a605907c40adb7c9373cb034` and
+`95627bb60f0ca89c8b1d0ec79583e8cade60e30c9043a2a6a1dcafbd82e2507c`.
+The run makes fourteen bounded BGE calls and zero new paired-model calls, with
+networking denied. Its 2.13-second duration uses cached development predictions
+and is not deployed latency. The fresh seventy-two-question input stays sealed.
+No search behavior, dependencies, public content or production services change.
