@@ -25,6 +25,12 @@ connection. Only source identities, counts and digests are printed. Run it again
 with a new output name if the source changes; never relabel an old plan with a new
 commit.
 
+Use this source entrypoint only. A compiled or copied script could contain older
+definitions while observing a newer repository commit, so the tool rejects those
+locations rather than claiming a false source binding. Run it from the original
+verified checkout after the clean install, not from a runtime artifact or copied
+staging subtree.
+
 The proposal includes all 201 explicit canonical paths, exact draft payloads,
 all 461 ordered citation payloads and independent content/citation digests. It
 preserves the 277 narrative items longer than the former 280-character bound.

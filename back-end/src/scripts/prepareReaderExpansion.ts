@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { readerExpansionClaims } from "../data/claim-expansion-reader.js";
@@ -10,8 +11,10 @@ import { createReaderExpansionSourceProposal, READER_EXPANSION_SOURCE_PATHS } fr
 async function run() {
 	const args = process.argv.slice(2);
 	if (args.length !== 2 || args[0] !== "--output" || !args[1].trim() || args[1].startsWith("--")) throw new Error("Use --output with a new private evidence file.");
-	const root = fileURLToPath(new URL("../../../", import.meta.url));
+	const root = resolve(fileURLToPath(new URL("../../../", import.meta.url)));
+	if (fileURLToPath(import.meta.url) !== resolve(root, "back-end/src/scripts/prepareReaderExpansion.ts")) throw new Error("Use the committed source entrypoint, not a potentially stale compiled copy.");
 	const git = (...options: string[]) => execFileSync("git", ["-C", root, ...options], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+	if (resolve(git("rev-parse", "--show-toplevel")) !== root) throw new Error("The executing source must belong to the exact repository root.");
 	if (git("status", "--porcelain", "--untracked-files=normal", "--", ...READER_EXPANSION_SOURCE_PATHS)) throw new Error("Backend source and dependency/toolchain inputs must be committed before preparing an operator proposal.");
 	const identity = { commit: git("rev-parse", "HEAD"), tree: git("rev-parse", "HEAD^{tree}") };
 	const proposal = createReaderExpansionSourceProposal(readerExpansionClaims, defaultClaims, identity, new Date());

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { describe, it } from "node:test";
@@ -10,8 +10,8 @@ import { READER_EXPANSION_SOURCE_PATHS } from "../src/utils/readerExpansionPropo
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const parent = path.join(root, ".ai-work/runs/test-reader-expansion-cli");
-function execute(args: string[]) {
-	return spawnSync(process.execPath, ["--import", "tsx", "back-end/src/scripts/prepareReaderExpansion.ts", ...args], {
+function execute(args: string[], script = "back-end/src/scripts/prepareReaderExpansion.ts") {
+	return spawnSync(process.execPath, ["--import", "tsx", script, ...args], {
 		cwd: root,
 		encoding: "utf8",
 		timeout: 15000,
@@ -40,6 +40,29 @@ describe("source proposal CLI guards", () => {
 			assert.equal(result.status, 2);
 			assert.equal(result.stdout, "");
 			assert.equal(readFileSync(output, "utf8"), "retain-this-original");
+		}
+		finally {
+			rmSync(directory, { recursive: true });
+		}
+	});
+
+	it("rejects copied or renamed source instead of binding stale content to an ancestor commit", () => {
+		mkdirSync(parent, { recursive: true });
+		const directory = mkdtempSync(path.join(parent, "copied-source-"));
+		try {
+			const sourceRoot = path.join(directory, "back-end/src");
+			mkdirSync(path.join(sourceRoot, "scripts"), { recursive: true });
+			for (const module of ["data", "utils"]) symlinkSync(path.join(root, "back-end/src", module), path.join(sourceRoot, module), "dir");
+			for (const name of ["prepareReaderExpansion.ts", "renamedProposal.ts"]) {
+				const script = path.join(sourceRoot, "scripts", name);
+				copyFileSync(path.join(root, "back-end/src/scripts/prepareReaderExpansion.ts"), script);
+				const output = path.join(directory, `${name}.json`);
+				const result = execute(["--output", output], script);
+				assert.equal(result.status, 2);
+				assert.equal(result.stdout, "");
+				assert.equal(existsSync(output), false);
+				assert.match(result.stderr, /Source proposal failed/u);
+			}
 		}
 		finally {
 			rmSync(directory, { recursive: true });
