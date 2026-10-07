@@ -289,3 +289,58 @@ The verified large model and private runtime are disposable after retaining
 their provenance, original failure and reproducible specification. The frozen
 72-question input remains unopened and unscored. Fresh public usefulness and
 the complete expansion goal remain unfinished.
+
+## Independent reference-input diagnosis
+
+A separate October 7 input-only diagnostic at source commit
+`6256ae439f52f7e6fd0e21db63451a924f3ee7e2` compares the actual publisher
+template through Transformers 5.19.0, Tokenizers 0.23.2 and Jinja 3.1.6 against
+the retained original renderer and `@huggingface/tokenizers` 0.2.0. All twelve
+fixed publisher/synthetic fixtures remain present, including contractions,
+composed/decomposed accents, non-Latin text, emoji, literal template markers,
+multiline text and trailing whitespace. Execution is explicitly network-denied;
+no model weights, inference, development relevance controls or fresh questions
+are involved. The diagnostic specification SHA-256 is
+`0d56e22384a91c965a55fae8a11433d1a49e9b2a217ce4170149bee9833125c7`;
+the fixture SHA-256 is
+`452c15cd32bcad07e8eec0c36f60d80ef8d8c25545dcf676119abe8de1488c30`.
+
+The original renderer matches zero of twelve official prompts by bytes or token
+IDs. In contrast, both tokenizer implementations produce identical IDs for all
+twelve cases when given the identical official rendered text. Three specific
+input-handling problems are observed:
+
+- The official Jinja environment has `keep_trailing_newline=False`, producing
+  two final newlines. The manual renderer retains three, changing the final
+  input tokens even in both publisher examples.
+- Sequential placeholder replacements consume a placeholder appearing inside
+  query data. Its remaining-brace assertion also rejects legitimate literal
+  template-marker text rather than merely detecting unresolved template syntax.
+- The publisher tokenizer declares NFC normalization. Both implementations
+  normalize the decomposed-accent fixture identically, so an exact decode-to-raw
+  assertion rejects valid input even in the official library. Eleven other
+  fixtures round-trip exactly; this observation is retained, not discarded.
+
+A separately declared static-template correction removes exactly one final
+newline from the verified template, never from query/document data, and replaces
+its three placeholders in one callback pass. This is not a general Jinja engine.
+It matches all twelve official prompts byte-for-byte and all twelve token-ID
+sequences; every decoded result also matches the official decoder, including its
+NFC-normalized result. The correction specification SHA-256 is
+`b83d2fabc1c49d0daf9e75c05460594efa7ff5c41a328ac56a8cd6574b80a03c`;
+the retained corrected comparison SHA-256 is
+`e31358eea819445d3d91af41a316d1a112f8736f3dcc237a40a7caad6ce1bcea`.
+
+The private reference runtime is hash-locked and has no Torch, TensorFlow or
+Flax. Thirty pinned-package PyPI metadata lookups disclose no advisories, with
+zero lookup failures. This is not a successful OSV scan: guarded OSV and Ruff
+commands stop on installed-version drift, and their original failures remain
+retained. No guarded-tool version policy is bypassed or changed.
+
+The original numerical specification, scorer and failed result remain unchanged.
+No model inference is retried and no tolerance is loosened. These observations
+establish a concrete input mismatch and a bounded fixture-level correction,
+not its contribution to the earlier numerical differences, historical publisher
+environment parity, general model quality or passing search usefulness. No
+application search, dependency, content or production changes result. Fresh
+public usefulness and the complete expansion goal remain unfinished.
