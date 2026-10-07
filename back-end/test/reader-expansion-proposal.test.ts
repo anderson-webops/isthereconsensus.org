@@ -119,7 +119,12 @@ describe("read-only complete reader expansion proposal", () => {
 		for (const alteration of [
 			(definitions: typeof readerExpansionClaims) => { definitions[0].stableCore[0] = "x".repeat(1001); },
 			(definitions: typeof readerExpansionClaims) => { definitions[0].stableCore[0] = ` ${definitions[0].stableCore[0]}`; },
-			(definitions: typeof readerExpansionClaims) => { definitions[0].sources[0].url = "https://name:private@example.test/source"; },
+			(definitions: typeof readerExpansionClaims) => {
+				const sourceUrl = new URL("https://example.test/source");
+				sourceUrl.username = "fixture";
+				sourceUrl.password = "fixture";
+				definitions[0].sources[0].url = sourceUrl.href;
+			},
 			(definitions: typeof readerExpansionClaims) => { definitions[0].sources[0].url = "javascript:alert(1)"; },
 			(definitions: typeof readerExpansionClaims) => { definitions[0].sources[0].title = "x".repeat(321); },
 			(definitions: typeof readerExpansionClaims) => { definitions[0].searchCutoffAt = "not-a-date"; }
