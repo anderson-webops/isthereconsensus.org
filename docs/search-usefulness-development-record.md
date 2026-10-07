@@ -571,3 +571,87 @@ The run makes fourteen bounded BGE calls and zero new paired-model calls, with
 networking denied. Its 2.13-second duration uses cached development predictions
 and is not deployed latency. The fresh seventy-two-question input stays sealed.
 No search behavior, dependencies, public content or production services change.
+
+## Paragraph retrieval and a conservative post-scope candidate
+
+A separately declared October 7 experiment independently encodes each actual
+title with its complete bottom-line, editor-summary or stable-core paragraph.
+All 5,164 source paragraphs fit the unchanged 510-content-token nomination
+bound; the largest contains 133 tokens. Misconceptions are not affirmative
+passage evidence. Thirty unique nominations retain the 0.65 cosine floor,
+the 0.8 relevance floor and exact native-title priority. Ranking retains native
+explanation/body results and retrieval-channel diversity.
+
+New paragraph inputs receive new pinned FP32 ModernBERT predictions, not
+reused whole-article scores. All 1,519 planned paired inputs and 255 padded
+batches match the independent pinned AutoTokenizer API. Three publisher
+FP32 examples pass the existing raw/probability tolerances, and fifteen
+single-versus-batch comparisons pass the existing 0.0001 raw bound. Three
+same-backend BGE query-cache checks reproduce exactly at the unchanged
+0.00001 component bound. These checks do not establish unrestricted numerical
+equivalence or deployed search acceptance.
+
+The complete parent evaluation is still rejected: 38 of 42 original covered
+questions, 100 of 100 legacy covered questions and one unsupported result.
+Its result SHA-256 is
+`7113d50b4569a8676356eed50ace15d115345b1eef05fd8d974e46b3158e033f`.
+All original eight scope controls and 1,001 canonical title priorities pass.
+The unsupported headphones/climate question exposes a noun-participle-noun
+subject incorrectly tagged as a finite clause.
+
+A separately declared conservative verifier first reproduces every parent
+prediction from the actual native preparation and saved admitted top-five
+semantic scores. No below-floor scores are invented and no uncached candidates
+replenish that cap. Additional controls retain three intermediate failures:
+standalone noun disambiguation is insufficient; repeated words select the wrong
+role's POS context; and a source title selects a participial subject modifier as
+its main predicate. Their specifications, programs and failures remain intact.
+
+The final correction locates the outcome after the subject, checks nominal
+ambiguity independently, preserves participial noun modifiers in both roles,
+and uses finite predicates for auxiliary source titles as well as queries.
+Parsed semantic rows still need subject, outcome and requested polarity within
+one actual source clause, with unchanged numeric constraints. This is not a
+named-query alias, a cross-sentence entailment claim or a scientific-confidence
+score. All eight additional grammar controls and three source-scope assertions
+pass without expanding the original eight-control denominator.
+
+The complete corrected exposed-development replay passes its unchanged gates:
+
+| Stratum | Questions | Canonical top-three matches | Questions returning results |
+| --- | --- | --- | --- |
+| Original covered | 42 | 38 | 41 |
+| Original partial or gap | 6 | Not counted as covered | 4 |
+| Original outside | 12 | Not applicable | 0 |
+| Legacy covered | 100 | 100 | 100 |
+| Legacy outside | 20 | Not applicable | 0 |
+| Additional outside | 30 | Not applicable | 0 |
+
+All 210 parent predictions reproduce exactly before correction. Only the
+unsupported result changes. The eight original model-control predictions are
+reused only after proving unchanged preparation and admission, not reported as
+new model calls. All 1,001 canonical first-title priorities are freshly checked.
+Partial/gap results do not become covered answers and none of the four covered
+misses has its original destination replaced.
+
+Final declaration, pipeline, scorer and complete replay result SHA-256 values
+are respectively
+`80d3ab2e25c3338acd9767a7ff8f3eb29d143cf1401384bf869bdd7077558099`,
+`041a9dfeeaee6670178f2c5cbde66db3f723d941d6a4bc2d994cd294a7d6226a`,
+`42d41caca7cfd47265c0c6a10776f0523494c34a6cb54b2b45cd98a69a06cac3` and
+`79213c2321de6c3db52793bf5307c67fe2d4be8a9b11cfb4e9bf701782c61cd9`.
+
+The parent executes 1,534 paired predictions including numerical/control
+checks. Its local scoring-only P50/P95 are 525/5,383 milliseconds, with
+1,374,336 KiB maximum resident memory. These measurements use cached query
+vectors and are not complete request or deployed latency. The 1.04-second
+post-scope replay makes no new model calls and does not erase those costs.
+
+This is an accepted development candidate, not an application integration or
+a fresh-reader acceptance. The seventy-two-question input remains sealed.
+Public-only corpus eligibility, runtime/artifact packaging, actual deployment
+resource/latency suitability, both real search surfaces, fresh usefulness and
+explanation comprehension still require verification. Source-only prepared
+reviews must never leak into anonymous search. No application dependency,
+behavior, release, production service or public content changes in this study;
+the full public-library and reader-expansion goal remains unfinished.
