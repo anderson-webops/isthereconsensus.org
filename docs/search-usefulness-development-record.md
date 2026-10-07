@@ -345,6 +345,75 @@ environment parity, general model quality or passing search usefulness. No
 application search, dependency, content or production changes result. Fresh
 public usefulness and the complete expansion goal remain unfinished.
 
+## Bounded retrieval fallback and cache-runtime diagnosis
+
+A subsequent October 7 study at source commit
+`38af697be0dd4eaee92eb7f1ebe9a928bae9252e` replaces repeated large paired-model
+scoring with the retained pinned BGE `full.cls` retrieval vectors. Native
+exact/close ranking stays first, with at most five semantic fallback results
+from thirty nominations above a fixed cosine floor of 0.65. Cosine is retrieval
+similarity, never scientific confidence. Reliable subject/outcome frames require
+both roles in a single public source clause. Positive questions do not require
+affirmative answers; public misconceptions provide retrieval context, not
+affirmative source-role evidence. Operational filters distinguish personal
+decisions and service requests from population-level evidence and cost questions.
+
+Before ranking, the actual JavaScript tokenizer matches the retained encoder's
+IDs for 2,213 bounded inputs: 2,002 source short/full passages, all 210
+development questions, three synthetic titles and eight synthetic questions.
+This extends the earlier bounded input comparison; it is not an independent
+publisher-tokenizer or whole-model numerical reference.
+
+The initial native-CPU runtime is rejected before any benchmark predictions.
+One of three cached query vectors differs by approximately 0.000108434 per
+normalized CLS component, exceeding the declared absolute bound of 0.00001;
+the other two comparisons pass. Its original specification, program and failed
+result remain intact. A separately declared same-backend check uses the exact
+WASM runtime that produced both caches. All three vectors then reproduce exactly
+at the unchanged bound. This does not make the failed cross-backend comparison
+pass or establish historical publisher parity.
+
+The first same-backend scope trial passes seven of eight controls and stops
+before development scoring: its POS reliability check treats a numeric subject
+as unparsed and loses the numeric qualifier. A separately declared conformance
+correction requires exact normalized numeric terms independently of parsing.
+The original seven-of-eight result remains rejected; no threshold, tolerance,
+question or destination changes. The corrected trial passes all eight controls
+and all 1,001 canonical first-title priorities, then completes all 210 rows:
+
+| Stratum | Questions | Canonical top-three matches | Questions returning results |
+| --- | --- | --- | --- |
+| Original covered | 42 | 36 | 37 |
+| Original partial or gap | 6 | Not counted as covered | 5 |
+| Original outside | 12 | Not applicable | 1 |
+| Legacy covered | 100 | 96 | 96 |
+| Legacy outside | 20 | Not applicable | 6 |
+| Additional outside | 30 | Not applicable | 6 |
+
+The method is rejected, independently failing original coverage, legacy
+regressions and thirteen outside controls. Unparsed relationships still permit
+irrelevant matches, including an unsupported cross-topic relationship and a
+personal-treatment question without explicit prescription wording. A noun-phrase
+POS check is not complete relationship parsing or coverage proof.
+
+A separate current native-source control retains 100 of 100 legacy matches,
+all 1,001 title priorities and empty results for all 62 outside controls, but
+only four of 42 original covered matches. All four lost legacy answers were
+valid native `related` explanation/body matches. Preserving only exact/close
+results therefore does not preserve the actual native compatibility contract;
+a subsequent architecture must retain these public explanation matches too.
+
+The corrected study makes fourteen encoder calls and takes approximately 2.39
+seconds, using precomputed document and development-query vectors. This is not
+fresh-query latency, an end-to-end runtime benchmark or a deployment acceptance.
+Its specification SHA-256 is
+`74dbb2a54265799759e9b684ec9903b0b4d0ec356814ac9bdc4e5edf580fc894`,
+and its complete result SHA-256 is
+`16d5a2abd284437eef1f0f48ce8aa41ad6751e7e5971e43c488c000becf7908b`.
+No application, dependency, reviewed-content or production change results.
+The seventy-two-question fresh file remains sealed and unscored; neither study
+finishes the fresh usefulness or independently understandable-answer requirement.
+
 ## Paired encoder relevance and literal source-scope checks
 
 A separately declared October 7 study at source commit
@@ -413,15 +482,37 @@ decision or shopping request. A subsequent candidate must correct that general
 distinction without weakening the unsupported-question gates or rewriting this
 failure.
 
-The full 210-row exposed development run is still in progress at this checkpoint.
-It retains all original, legacy, additional-outside and partial/gap strata;
-there is no completed development acceptance or fresh score to report. Its
+The full 210-row exposed development run completed on October 7 at
+16:14:14.734 UTC and is rejected. Every original, legacy, additional-outside
+and partial/gap row remains in the report, with unchanged destinations:
+
+| Stratum | Questions | Canonical top-three matches | Questions returning results |
+| --- | --- | --- | --- |
+| Original covered | 42 | 32 | 34 |
+| Original partial or gap | 6 | Not counted as covered | 3 |
+| Original outside | 12 | Not applicable | 0 |
+| Legacy covered | 100 | 81 | 81 |
+| Legacy outside | 20 | Not applicable | 1 |
+| Additional outside | 30 | Not applicable | 2 |
+
+The three false positives concern business opening hours, headphones reversing
+climate change, and a request to diagnose a current headache. They do not become
+covered questions because a related review exists. The unchanged base pipeline
+within this run reaches 36 of 42 original covered and 98 of 100 legacy covered;
+these are diagnostic comparisons, not replacements for the failed scope trial
+or the separately retained five-of-eight synthetic failure.
+
+There are 5,348 actual relevance calls and 4,304 seconds of offline execution.
+This is study duration, not measured deployed request latency. The completed
+result SHA-256 is
+`f046768139a989b2b7aacd3e05f7000d0bfc69a298eb3701938a14e5e1aeae26`.
+Its
 unchanged cached `full.cls` nomination field uses the original bounded BGE
 encoder, capped at 510 content tokens plus two special tokens. The field name
 does not mean every source paragraph was encoded. Final relevance scoring uses
 the complete public title, bottom line, editor summary and every stable-core
 paragraph, rejecting oversized paired inputs rather than truncating them.
-The failed mandatory title gate already prevents application integration,
-regardless of the eventual development score. No application dependency,
+The failed mandatory title gate, covered-question gates and outside controls
+each independently prevent application integration. No application dependency,
 search, content or production changes result. The frozen seventy-two-question
 input remains unopened and unscored; the full expansion goal remains active.
