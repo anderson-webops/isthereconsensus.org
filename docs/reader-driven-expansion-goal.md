@@ -168,3 +168,15 @@ representative demand or real reader comprehension. No query, body label or
 destination was changed after predictions, and the original failures remain.
 See [the complete agency assessment](external-faq-coverage-2026-10-08.md) for all
 36 classifications, source attribution, hashes and the remaining acceptance work.
+
+A subsequent general source correction separates comparison intent from its
+subjects, retrieves coherent public paragraphs without requiring title wording,
+and normalizes agreement forms while retaining scope and privacy controls. The
+complete exposed development sets were preserved and rerun on both source
+cohorts. The agency subset improves to three of three covered destinations in
+each cohort, while the original sixty-question set remains four of forty-two.
+These are source-only development regressions, not fresh or public acceptance.
+The [retrieval follow-up](external-faq-coverage-2026-10-08.md#subsequent-source-only-retrieval-correction)
+records complete denominators, input hashes, retained failures and actual local
+API controls. The full goal and all remaining publication/usefulness gates are
+unchanged.

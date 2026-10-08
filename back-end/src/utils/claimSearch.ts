@@ -16,6 +16,7 @@ export interface SearchableClaim {
 // are interchangeable. A result always links to the original reviewed claim.
 const equivalents = [
 	["caffeine", "coffee"],
+	["agreement", "agree", "agrees", "agreed", "agreeing"],
 	["medicine", "medication", "medications", "drug", "drugs", "medicines"],
 	["vaccine", "vaccines", "vaccination", "vaccinations", "immunization", "immunisation", "vaccinated"],
 	["child", "children", "childhood", "childs"],
@@ -103,8 +104,8 @@ function normalize(value: string) {
 	return value.toLowerCase().normalize("NFKD").replace(/\p{M}/gu, "").replace(/['’]/gu, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
 
-function stem(token: string) {
-	if (aliases.has(token)) return aliases.get(token)!;
+function stem(token: string, applyAliases = true) {
+	if (applyAliases && aliases.has(token)) return aliases.get(token)!;
 	if (token.length > 4 && /(?:shes|sses|xes|zzes)$/u.test(token)) return token.slice(0, -2);
 	if (token.length > 5 && token.endsWith("ies")) return `${token.slice(0, -3)}y`;
 	if (token.length > 5 && token.endsWith("ing")) return token.slice(0, -3).replace(/([bcdfghjkmnpqrtvwx])\1$/u, "$1");
@@ -113,11 +114,57 @@ function stem(token: string) {
 	return token;
 }
 
+function expandedPhrase(value: string) {
+	return normalize(value.toLowerCase().replace(/’/gu, "'").replace(/\b[a-z]+'[a-z]+\b/gu, word => contractions.get(word) ?? word).replace(/\b\d{1,3}(?:,\d{3})+\b/gu, number => number.replace(/,/gu, "")));
+}
+
+function tokenize(value: string, applyAliases: boolean) {
+	let text = expandedPhrase(value);
+	if (applyAliases) {
+		for (const [pattern, replacement] of phraseAliases) text = text.replace(pattern, replacement);
+	}
+	return [...new Set(text.split(" ").filter(token => (token.length > 1 || /^\d+$/u.test(token)) && !stopWords.has(token)).map(token => stem(token, applyAliases)).filter(token => !stopWords.has(token)))];
+}
+
 function tokens(value: string) {
-	const expanded = value.toLowerCase().replace(/’/gu, "'").replace(/\b[a-z]+'[a-z]+\b/gu, word => contractions.get(word) ?? word).replace(/\b\d{1,3}(?:,\d{3})+\b/gu, number => number.replace(/,/gu, ""));
-	let text = normalize(expanded);
-	for (const [pattern, replacement] of phraseAliases) text = text.replace(pattern, replacement);
-	return [...new Set(text.split(" ").filter(token => (token.length > 1 || /^\d+$/u.test(token)) && !stopWords.has(token)).map(stem).filter(token => !stopWords.has(token)))];
+	return tokenize(value, true);
+}
+
+function rawTokens(value: string) {
+	return tokenize(value, false);
+}
+
+function comparisonSubjects(query: string) {
+	const phrase = expandedPhrase(query);
+	const patterns = [
+		/^(?:what is (?:the )?|whats (?:the )?)?differences? between (.+?) and (.+)$/u,
+		/^how (?:do|does|is|are) (.+?) (?:differ|different) from (.+)$/u,
+		/^how (?:do|does|is|are) (.+?) and (.+?) (?:differ|different)$/u,
+		/^compare (.+?) (?:with|to|and) (.+)$/u,
+		/^(.+?) (?:versus|vs) (.+)$/u
+	];
+	for (const pattern of patterns) {
+		const match = phrase.match(pattern);
+		if (!match) continue;
+		const subjects = [rawTokens(match[1]), rawTokens(match[2])];
+		if (subjects.some(subject => !subject.length)) return null;
+		if (subjects[0].every(term => subjects[1].includes(term)) && subjects[1].every(term => subjects[0].includes(term))) return null;
+		return subjects;
+	}
+	return null;
+}
+
+const comparisonCue = /;|\b(?:while|whereas|unlike|versus|vs|different|differences?|differs?|distinguish|contrast|compared)\b|\b(?:is|are) not\b/iu;
+
+function comparesSubjects(text: string, subjects: string[][]) {
+	return text.split(/[.!?](?=\s|$)/u).some((sentence) => {
+		const sentenceTerms = new Set(rawTokens(sentence));
+		if (!subjects.every(subject => subject.every(term => sentenceTerms.has(term)))) return false;
+		if (/\b(?:different|differences?|differs?|distinguish|contrast|compared|versus|vs)\b/iu.test(sentence)) return true;
+		const clauses = sentence.split(/;|\b(?:while|whereas|unlike|rather than|instead of|(?:is|are) not)\b/iu).map(clause => new Set(rawTokens(clause)));
+		const containsSubject = (clause: Set<string>, subject: string[]) => subject.every(term => clause.has(term));
+		return subjects.every((subject, index) => clauses.some(clause => containsSubject(clause, subject) && !containsSubject(clause, subjects[1 - index])));
+	});
 }
 
 const treatmentChangeTerms = new Set(tokens(
@@ -161,29 +208,37 @@ export const claimSearchLanguage = { normalize, tokens, contractions, isPersonal
 export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 	const documents = claims.map((claim) => {
 		const title = new Set(tokens(claim.title));
-		const body = new Set(tokens([
+		const paragraphs = [
 			claim.bottomLine,
 			claim.editorSummary,
 			...(claim.stableCore ?? []),
-			...(claim.misconceptions ?? []),
-			...(claim.misconceptionTags ?? [])
-		].join(" ")));
-		return { claim, title, body, terms: new Set([...title, ...body]) };
+			...(claim.misconceptions ?? [])
+		].filter((value): value is string => typeof value === "string" && Boolean(value.trim()));
+		const body = new Set(tokens([...paragraphs, ...(claim.misconceptionTags ?? [])].join(" ")));
+		const rawTitle = new Set(rawTokens(claim.title));
+		const rawBody = new Set(rawTokens([...paragraphs, ...(claim.misconceptionTags ?? [])].join(" ")));
+		const passages = paragraphs.map(text => ({ text, terms: new Set(tokens(text)), rawTerms: new Set(rawTokens(text)), comparison: comparisonCue.test(text) }));
+		return { claim, title, body, terms: new Set([...title, ...body]), rawTitle, rawBody, rawTerms: new Set([...rawTitle, ...rawBody]), passages };
 	});
 	const frequencies = new Map<string, number>();
+	const rawFrequencies = new Map<string, number>();
 	const titleVocabulary = new Set<string>();
 	for (const document of documents) {
 		for (const term of document.terms) frequencies.set(term, (frequencies.get(term) ?? 0) + 1);
+		for (const term of document.rawTerms) rawFrequencies.set(term, (rawFrequencies.get(term) ?? 0) + 1);
 		for (const term of document.title) titleVocabulary.add(term);
 	}
-	const weight = (term: string) => Math.log(1 + (documents.length + 1) / (1 + (frequencies.get(term) ?? 0)));
 
 	return (query: string, referenceDate = new Date()) => {
 		const boundedQuery = query.slice(0, 160);
 		if (isPersonalTreatmentDecision(boundedQuery)) return [];
-		const rawTerms = tokens(boundedQuery);
+		const subjects = comparisonSubjects(boundedQuery);
+		const rawTerms = subjects ? [...new Set(subjects.flat())] : tokens(boundedQuery);
+		const vocabulary = subjects ? rawFrequencies : frequencies;
+		const weight = (term: string) => Math.log(1 + (documents.length + 1) / (1 + (vocabulary.get(term) ?? 0)));
 		let corrected = false;
 		const terms = [...new Set(rawTerms.map((term) => {
+			if (subjects) return term;
 			if (frequencies.has(term) || term.length < 5 || /^\d+$/u.test(term)) return term;
 			const candidates = [...titleVocabulary].filter(candidate => candidate.length >= 5 && !/^\d+$/u.test(candidate) && oneEditApart(term, candidate));
 			if (candidates.length !== 1) return term;
@@ -194,23 +249,29 @@ export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 		const totalWeight = terms.reduce((sum, term) => sum + weight(term), 0);
 		const exactPhrase = normalize(query);
 
-		return documents.flatMap(({ claim, title, body, terms: documentTerms }) => {
+		return documents.flatMap((document) => {
+			const { claim, passages } = document;
+			const title = subjects ? document.rawTitle : document.title;
+			const body = subjects ? document.rawBody : document.body;
+			const documentTerms = subjects ? document.rawTerms : document.terms;
 			const matched = terms.filter(term => documentTerms.has(term));
 			const titleMatched = terms.filter(term => title.has(term));
 			const matchedWeight = matched.reduce((sum, term) => sum + weight(term), 0);
 			const coverage = matchedWeight / totalWeight;
 			// Unmatched distinctive subjects must not be erased by common words.
-			// At least one query concept must appear in the claim's actual title.
-			if (!titleMatched.length || coverage < 0.72 || (terms.length <= 3 && matched.length !== terms.length) || (terms.length > 1 && matched.length < 2)) return [];
 			const exact = normalize(claim.title) === exactPhrase;
+			const coherentBody = terms.length > 1 && passages.some(passage => terms.every(term => (subjects ? passage.rawTerms : passage.terms).has(term)) && (!subjects || (passage.comparison && comparesSubjects(passage.text, subjects))));
+			const comparisonTitle = subjects && terms.every(term => title.has(term)) && comparisonCue.test(claim.title) && comparesSubjects(claim.title, subjects);
+			if (subjects && !exact && !coherentBody && !comparisonTitle) return [];
+			if ((!titleMatched.length && (!coherentBody || coverage < 0.9)) || coverage < 0.72 || (terms.length <= 3 && matched.length !== terms.length) || (terms.length > 1 && matched.length < 2)) return [];
 			const titleWeight = titleMatched.reduce((sum, term) => sum + weight(term), 0) / totalWeight;
 			const bodyWeight = terms.filter(term => body.has(term)).reduce((sum, term) => sum + weight(term), 0) / totalWeight;
 			const titleFocus = titleMatched.length / Math.max(title.size, 1);
 			const matchScore = exact ? 200 : Math.round(60 * coverage + 65 * titleWeight + 10 * bodyWeight + 10 * titleFocus);
 			const match: SearchMatch = {
 				matchScore,
-				matchStrength: exact ? "exact" : titleWeight >= 0.7 && coverage >= 0.85 ? "close" : "related",
-				matchReason: exact ? "Exact wording match" : corrected ? "Related wording, with spelling tolerance" : titleWeight >= 0.7 ? "Matches the question's main concepts" : "Related evidence; check the review's scope"
+				matchStrength: exact ? "exact" : !subjects && titleWeight >= 0.7 && coverage >= 0.85 ? "close" : "related",
+				matchReason: exact ? "Exact wording match" : corrected ? "Related wording, with spelling tolerance" : !subjects && titleWeight >= 0.7 ? "Matches the question's main concepts" : "Related evidence; check the review's scope"
 			};
 			return [{ claim, match, rankingScore: matchScore + getClaimDemandBoost(claim.topicSlug ?? "", claim.slug, referenceDate) * 0.15 }];
 		}).sort((left, right) => right.rankingScore - left.rankingScore || left.claim.title.localeCompare(right.claim.title));

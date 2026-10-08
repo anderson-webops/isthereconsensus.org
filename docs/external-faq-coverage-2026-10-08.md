@@ -178,6 +178,64 @@ benchmarks and model failures remain unchanged. No private reader submission,
 credential, provider download, production login, editorial mutation or other-chat
 message was used.
 
+## Subsequent source-only retrieval correction
+
+The exposed assessment was used for development after retaining the complete
+nonpassing public result above. No original wording, classification, destination,
+source byte, model asset or scientific review was changed. This correction is
+not a second fresh evaluation or evidence of production activation.
+
+The native index now separates grammatical comparison cues from the original
+subjects. Ordinary retrieval aliases cannot collapse distinct quantities such as
+energy and power in a comparison. A comparison needs both subjects within one
+public sentence with explicit comparison wording or contrasting clauses; an
+incidental mention, a private note, a tag or disconnected sentences is not
+comparison evidence. Strong body-only matches require every query term within
+one allowed public paragraph. The agreement word family is normalized without
+topic-specific question strings. Numerical qualifiers, negation, unknown
+subjects, exact-title priority and individual prescribed-treatment exclusions
+remain covered by tests. The existing scoring formula and thresholds are retained.
+Related comparison matches remain explicitly scope-qualified, not generated
+answers or claims that the scientific conclusion agrees with the query.
+
+Complete development reruns retained all questions in both the historical
+800-review source cohort and the complete 1,001-review source cohort:
+
+| Exposed development set             | Historical 800              | Complete source 1,001       | Outside controls    |
+| ----------------------------------- | --------------------------- | --------------------------- | ------------------- |
+| Original sixty-question set         | 4/42 covered top-three hits | 4/42 covered top-three hits | 12/12 empty in both |
+| Original seventy-two-question set   | No covered denominator      | No covered denominator      | 25/25 empty in both |
+| This thirty-six-question assessment | 3/3 covered top-three hits  | 3/3 covered top-three hits  | 9/9 empty in both   |
+| Existing authored benchmark         | 100/100 top-three hits      | 100/100 top-three hits      | 20/20 empty in both |
+
+The complete source cohort additionally reaches two previously labelled partial
+destinations. Those labels remain partial; source availability does not establish
+that a destination is published. The first development candidate lost one
+expected result from the complete source cohort's top three. That failure and the
+subsequent candidate receipts remain retained, rather than overwritten.
+
+The final complete development receipt is bound by SHA-256
+`58e82c50d966c2dfc2ab929227f24d77b8185bde00d07d1a29df602419d4430b`.
+Original sixty/seventy-two/thirty-six input hashes remain respectively
+`5fb7aebfc9a2f71980e1b6b35f9bacd800e5a34a329c5c3552422d87f22b9b27`,
+`cc2364eb3fef7972bbcae45142324e59778243306ee3ab8bea114f83b640ab1e` and
+`a55308a3e683dbd222347bc0b28af0ab5635668e4ddff8c2f33e6c1d4b60d0e0`.
+
+Seven new synthetic unit tests cover body coherence, agreement forms, unary
+tokenization, comparison syntax, distinct quantities, numerical qualifiers and
+private-field exclusion. The existing compiled HTTP harness adds sixteen
+comparison assertions across both actual local API routes, with a warming
+synthetic worker to exercise native fallback. All fixtures satisfy the existing
+publication-readiness controls; no production data or service is involved.
+This proves local plumbing and specific regressions, not model quality, public
+publication or real reader comprehension.
+
+The old 4/42 result remains a substantial unresolved failure. Neither the small
+3/3 denominator nor the authored 100/100 benchmark meets the goal's genuinely
+fresh, adequately covered 90% usefulness requirement. New source delivery needs
+its own validation and integration; protected publication and the independent
+fresh-question and human-feedback gates below remain required.
+
 ## Next acceptance actions
 
 The delivered review-scope correction has its own

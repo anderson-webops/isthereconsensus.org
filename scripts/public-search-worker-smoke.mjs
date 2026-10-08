@@ -246,8 +246,42 @@ try {
 		assert.equal(received, initialCount + 2, "Cancellation must release the shared worker slot for the other actual search route.");
 		abandon();
 	}
+	const comparisonFixtures = [
+		{ slug: "synthetic-rpc-comparison", title: "Can an installation run steadily?", stableCore: ["Pressure describes a force per area; flow measures volume per time."] },
+		{ slug: "synthetic-rpc-incidental", title: "Can pressure affect a pump?", stableCore: ["Pressure affects pump flow, while installation conditions affect performance."] },
+		{ slug: "synthetic-rpc-energy", title: "How is energy measured?", stableCore: ["Energy is not measured without a convention."] },
+		{ slug: "synthetic-rpc-quantities", title: "Can an instrument distinguish quantities?", stableCore: ["Energy measures an amount, while power describes a rate."] },
+		{ slug: "synthetic-rpc-numerical", title: "Can an installation use another setting?", stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."] }
+	].map(fixture => ({ ...target, _id: new mongoose.Types.ObjectId(), bottomLine: "Synthetic test fixture, not published scientific evidence.", editorSummary: "Fixture used only for isolated transport testing.", misconceptions: [], misconceptionTags: [], ...fixture, stableCore: [...fixture.stableCore, "This fixture provides no scientific conclusion."] }));
+	const retainedSources = await database.collection("claimsources").find({ claim: target._id }).toArray();
+	for (const fixture of comparisonFixtures) {
+		await new Claim(fixture).validate();
+	}
+	await claims.insertMany(comparisonFixtures);
+	await database.collection("claimsources").insertMany(comparisonFixtures.flatMap(fixture => retainedSources.map(source => ({ ...source, _id: new mongoose.Types.ObjectId(), claim: fixture._id }))));
+	mode = "warming";
+	for (const route of ["claims", "search/suggestions"]) {
+		for (const [question, expectedSlug] of [
+			["What’s the difference between pressure and flow?", "synthetic-rpc-comparison"],
+			["How does pressure differ from flow?", "synthetic-rpc-comparison"],
+			["pressure versus flow", "synthetic-rpc-comparison"],
+			["What is the difference between energy and power?", "synthetic-rpc-quantities"],
+			["Compare a pump at 1,000 revolutions with a pump at 10,000 revolutions", "synthetic-rpc-numerical"],
+			["What is the difference between energy and electricity?", null],
+			["What is the difference between pressure and unobtanium?", null],
+			["Compare a pump at 1,001 revolutions with a pump at 10,000 revolutions", null]
+		]) {
+			query = question;
+			const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, { signal: AbortSignal.timeout(15_000) });
+			assert.equal(response.status, 200);
+			const result = await response.json();
+			assert.deepEqual(result.claims.map(claim => claim.slug), expectedSlug ? [expectedSlug] : [], `${route}: ${question}`);
+			assert.doesNotMatch(JSON.stringify(result), /PRIVATE_RPC_|editorialNotes|sessionVersion|passwordHash/u);
+			if (expectedSlug) assert.equal(result.claims[0].matchStrength, "related");
+		}
+	}
 	assert.equal(process.exitCode, undefined);
-	console.log("public search transport smoke passed: both compiled API routes, case preservation, public-only hydration, stale/withdrawn/unready rejection, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
+	console.log("public search transport smoke passed: both compiled API routes, case preservation, public-only hydration, stale/withdrawn/unready rejection, coherent native comparisons, distinct quantities, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
 }
 finally {
 	await Promise.all([...children].filter(child => !child.spawnargs.includes("--dbpath")).map(stop));
