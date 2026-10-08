@@ -4,6 +4,28 @@ import type { ReadingGuideSummary } from "./types";
 // show a guide link, but should not download the entire reading library.
 export const readingGuides: ReadingGuideSummary[] = [
 	{
+		slug: "reading-ai-water-footprints",
+		title: "AI and water: reading the footprint claims",
+		summary:
+			"Distinguish withdrawals, consumption, cooling and electricity generation, then check AI allocation, local scarcity and per-query assumptions.",
+		checkedAt: "2026-10-08",
+		topics: ["climate-and-environment", "energy-and-infrastructure"],
+		reviews: [
+			{
+				path: "/consensus/climate-and-environment/do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
+				label: "Electricity lifecycle emissions: context, not an AI-water estimate"
+			},
+			{
+				path: "/consensus/climate-and-environment/can-electricity-grids-remain-reliable-with-high-shares-of-wind-and-solar",
+				label: "Electricity system planning: context, not a site assessment"
+			},
+			{
+				path: "/consensus/climate-and-environment/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+				label: "Electricity health comparisons: a different impact measure"
+			}
+		]
+	},
+	{
 		slug: "reading-inflation-jobs-and-gdp-headlines",
 		title: "Reading inflation, jobs and GDP headlines",
 		summary:

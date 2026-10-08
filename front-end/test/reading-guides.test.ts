@@ -11,6 +11,29 @@ const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
+	it("keeps AI water accounting, estimation and related electricity context distinct", async () => {
+		const guide = await loadReadingGuide("reading-ai-water-footprints");
+		assert.ok(guide);
+		const summary = readingGuides.find((entry) => entry.slug === "reading-ai-water-footprints")!;
+		assert.equal(summary.checkedAt, "2026-10-08");
+		assert.equal(guide.sources.length, 7);
+		assert.equal(guide.sections.length, 7);
+		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
+		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		assert.ok(text.split(/\s+/u).length >= 850);
+		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.match(guide.scope, /independent expert review has not been completed/);
+		assert.match(guide.scope, /not substitute answers/);
+		assert.match(guide.takeaway, /no single water-per-query figure/);
+		assert.match(text, /modeled historical estimates.*not measured AI-only totals/);
+		assert.match(text, /published in June 2026/);
+		assert.match(text, /not automatically a statistical confidence interval/);
+		assert.match(text, /does not establish how much additional water one extra request causes/);
+		assert.match(text, /hypothetical example/);
+		assert.match(text, /not a validated environmental scoring tool/);
+		assert.ok(summary.reviews.every((review) => /context|different impact/.test(review.label)));
+		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+	});
 	it("connects eighteen economic measurement questions without treating accounting as individual welfare or causal policy evidence", async () => {
 		const guide = await loadReadingGuide("reading-inflation-jobs-and-gdp-headlines");
 		assert.ok(guide);
