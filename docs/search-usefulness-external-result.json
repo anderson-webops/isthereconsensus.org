@@ -1,0 +1,1380 @@
+{
+	"schemaVersion": 1,
+	"sourceCommit": "97ac1660270390ad8b63c9506376ba3fcf132685",
+	"startedAt": "2026-10-08T13:33:38.960Z",
+	"checkedAt": "2026-10-08T13:38:57.283Z",
+	"originalQuestionFileSha256": "dcac84936cf7aae9c365c957cea638912d1feae877d4650883058eb11d5d0c8b",
+	"classificationFileSha256": "4a328edf5c7c6ca220cbf405b3849fab2f7b62786bd67e363155362419c034b1",
+	"inputFileSha256": "cc2364eb3fef7972bbcae45142324e59778243306ee3ab8bea114f83b640ab1e",
+	"firstCompleteRawReportSha256": "f309f8cdc6b21b0c4ef979c1d8afd288d856cda68be4535a473994c1512bc853",
+	"transportReceiptSha256": "0d079436af3a6aa4cb4ea5076319dbbf80fb3f12fecfccab87d2d6523344320a",
+	"frontendIdentityOnly": {
+		"frontend": { "version": "v1.38.22", "commit": "97ac1660270390ad8b63c9506376ba3fcf132685" },
+		"reason": "observed-frontend-identity-only"
+	},
+	"questionAuthorship": "external",
+	"relevanceGrading": "assistant",
+	"humanComprehensionMeasured": false,
+	"sourceOrRankingRetuned": false,
+	"queriesUnchanged": true,
+	"originalRowsPreserved": 72,
+	"anonymousGetOnly": true,
+	"productionMutation": false,
+	"requestCount": 175,
+	"dnsPreference": "ipv6first",
+	"dnsRecordChanges": false,
+	"counts": { "covered": 0, "partial": 15, "gaps": 32, "outside": 25 },
+	"endpointDiagnostics": [
+		{
+			"name": "directory",
+			"coveredHits": 0,
+			"coveredTotal": 0,
+			"coveredPercent": null,
+			"outsideEmpty": 25,
+			"outsideTotal": 25,
+			"partialHits": 0,
+			"partialTotal": 15,
+			"gapNonempty": 0,
+			"gapTotal": 32
+		},
+		{
+			"name": "suggestions",
+			"coveredHits": 0,
+			"coveredTotal": 0,
+			"coveredPercent": null,
+			"outsideEmpty": 25,
+			"outsideTotal": 25,
+			"partialHits": 0,
+			"partialTotal": 15,
+			"gapNonempty": 0,
+			"gapTotal": 32
+		}
+	],
+	"unavailable": [],
+	"unreadable": [],
+	"mechanicalGatePassed": false,
+	"coveredGateHasNoDenominator": true,
+	"publicCatalogObservedBeforeRun": {
+		"uniqueReviews": 800,
+		"sourcePrepared": 1001,
+		"preparedNotPublic": 201,
+		"approvedRoadmapRows": 0
+	},
+	"limitations": "One title-only externally sampled audit with assistant labels. Partial matches are not covered success; no covered percentage can be computed. Raw titles are not redistributed. This is not representative visitor demand, independent human grading, model activation, whole-library publication or completion of the expansion goal.",
+	"rows": [
+		{
+			"id": "skeptics-57385",
+			"querySha256": "b7a6f0573a3d679f299b1e7106c4143a9d8e95ef908ba3ff9528ba46bf22f60e",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/nutrition-and-diet/are-seed-oils-uniquely-toxic-or-inflammatory",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57270",
+			"querySha256": "95eff374d3f0435f5d9a70029ddd8ad75c2ef8ba33b60f146ce2053be437d3be",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56884",
+			"querySha256": "396a86b8213134d7304eb542f99a7f5b62de9bb9ac99395b3404efade275ef71",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56801",
+			"querySha256": "448375484f517a4c20fc7ac673a692e3239258555fbf3828b6ee24dc77d3d025",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56518",
+			"querySha256": "c78ceda10b929b233ce28b3fa7739d0866a4534c51c1747aa99a85028dac5341",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56056",
+			"querySha256": "e0248aaf3f56e107859e2291ec5f2bbbbc53a194171c434275b214c82a6b76cc",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55976",
+			"querySha256": "6969213f329ad9713ca6914fd0bf82b350250ba7be9ebcc095cb302108372b53",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55705",
+			"querySha256": "0c52dd4f12c56fb5493fa90b1343c6dc774c48924fc1fc3ccb2da60ceb06b937",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55613",
+			"querySha256": "5d0262a7823029cd8e01e85f87ebdf55104a08b7f230d464fb7762349cecd33a",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54342",
+			"querySha256": "305acea81177d97e00e91e56ba4854682c811fbd43eadde8d4f71be340b4beb4",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54110",
+			"querySha256": "f72725221e6b9d86f3bed577d0b97d14fd61d461f730f79d611d11acdae563cf",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54075",
+			"querySha256": "8f29d1a2e0ea08bf2649d1edb65d4b0ef350f94687c92be2766b1afc79487ffe",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/active-debates/have-ordinary-microplastic-exposures-been-shown-to-cause-human-disease",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-60646",
+			"querySha256": "c14f45f1afecf85ea8d03adc79242bfe4a2b79b5ca04e6d86d021223d45b51c5",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57659",
+			"querySha256": "b51a5064b743b032eba55171e4e93c4540cff2bc82b1864f7445e91bb02cb0fb",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57014",
+			"querySha256": "de091dae5a584b3dfa0d62e2d42b6bfdcf7c5bc2452e83ed24ab66a7138161c9",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/climate-and-environment/do-heat-pumps-usually-cut-home-heating-emissions-compared-with-fossil-fuel-heating",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56207",
+			"querySha256": "ba200a616b47bdd854099b9267d88ec5dde223319dae2fe55f2af281a600ece5",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/climate-and-environment/has-human-influence-increased-fire-weather-occurrence-in-some-regions",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55709",
+			"querySha256": "d0d9bc1c7af00f8362a11d77369d0f997b04168417d9bbe35fb528e9382ce3bb",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54436",
+			"querySha256": "16b9ba38637f0a4ca0c1be2ade9eb2e358c51a62ceb03d6622f8b09f862e7788",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/climate-and-environment/are-glaciers-and-major-ice-sheets-losing-mass-as-the-climate-warms",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54293",
+			"querySha256": "7b2d7821369c2f83d1ecad854bd1d1780b8088f8c71592806ca88f28638fcc3f",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/oceans-and-marine-science/is-ocean-heat-content-increasing-because-of-human-caused-warming",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54290",
+			"querySha256": "0719e3e1c452ae08c493bc1f245ddd7e6bba2e1a2c2e4639f78c3ee75bbf5e1d",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/energy-and-infrastructure/does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54255",
+			"querySha256": "fb5c3bff662106e3df4c404d42af5e7866c4f23f1f38b19abb85a643d4358229",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54242",
+			"querySha256": "9586270832d046038348d660fc52477d152a8c4bcda2c8ccd59cd652ccbaa4de",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54177",
+			"querySha256": "1cdcb105f84a8303164d90cae9bf9f2b6b279ac6bfa3a5cd9f530bb4552830e4",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/climate-and-environment/can-cutting-methane-emissions-slow-warming-in-the-near-term",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54127",
+			"querySha256": "7493451cb5529dbfcfbb6d2d41602423f35980883f148dd3c2c7585ce039a51d",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/agriculture-and-food-systems/is-grass-fed-beef-always-lower-carbon-than-feedlot-finished-beef",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-60540",
+			"querySha256": "0c027027bfdcc7f8c3b74c6d89760fc171cdd981d91a8b79250e9e222e400136",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-60346",
+			"querySha256": "e6e45771fac961723edc211160e3e301486d41da5cd8a401cceb4ba84fc6ad11",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-59285",
+			"querySha256": "573d03fb5ccbcefbd5afbf08e8170457258b8454d0d24c6dce43a2897d244770",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57576",
+			"querySha256": "fc3e87e1c407688440b04c3e54b63370d05faed1c0b71f79c824a5b257af22dd",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56783",
+			"querySha256": "a3107e3b582d0469b24aae29570aa4fb80728450d452badaf43393e01e9a5d1e",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56190",
+			"querySha256": "f317834d7c6ebbc98a67da36e989edd194696d5e5e4d56b52f1fd6d6800f1763",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56080",
+			"querySha256": "fcbc3a5c2a5fa63b49119d8c89fd0e59d8ebd3c484554012f4dfd4fe2a15e9cf",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/oceans-and-marine-science/can-human-made-underwater-noise-harm-marine-life",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56037",
+			"querySha256": "076561c9f6e658de0a89fca4a57903df94ca8b019007987d1ccf87844d39b93f",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55440",
+			"querySha256": "1ed3b6181823ac17c74d214dfca201f60a4c3d1f1f071fb21333982c74aed168",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/ecology-and-conservation/do-pollinator-declines-threaten-crop-production",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54412",
+			"querySha256": "0cab75226ea0a13a03ddfd023719ce37608dc31f93b8f737b703c4028bcb945e",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-54074",
+			"querySha256": "d7e30148381210ea78f3714e6f772f5df0ac72ccd40211548aedffac7612c05a",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-53593",
+			"querySha256": "3451d258db7d8d00c327db5e16abecc45490839227b247cfb0669854aea4fdf6",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57772",
+			"querySha256": "06bb09ad08fd6305281051cd2fbc4fc8f6cb0838273d58a41b831625805ce9bc",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57709",
+			"querySha256": "b093f2052b203463fea93466f1efd915f727c6517c5bdde979a216e79f2e0b9f",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57479",
+			"querySha256": "05d1e96db1fd97c2300aff4370e031e0cb4ca3cd05b6c16b9889e3deb57e563c",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57402",
+			"querySha256": "2e3cac18c93aa48a6ba7c946d7439d21a2637b26b21fc1222a9d9b945a1e9e20",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57342",
+			"querySha256": "c9304c79b7cd1f2ca9ab485e741f03a1bd2c53d9cda94a53fb1e18f614adbcb6",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57209",
+			"querySha256": "9b9639ded16720a531a0e2389dc21bd29ea7b3a820e12a86f677578c13e7b4f0",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57101",
+			"querySha256": "52ac840550566cf1787b1bc154e53da1556a748e54ba093d54d8f4af3d1b8d96",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56953",
+			"querySha256": "984a766a7024e6f9abef8a2ac88e89c0fcf8e943d46d91aab8b86aeec578457d",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56616",
+			"querySha256": "a25eb1e407485c74b9c7973109d39055109bebbe94c50a9d02412ace563b1af4",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56543",
+			"querySha256": "3314da6786fe3a6677798c4e05639a30c1ad4f796db265cac1d78e599829339e",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56304",
+			"querySha256": "8a942c1926c908a865bc91cf1a05f371f54029b8e42e4f6bf87bbebbf76ce2c3",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56289",
+			"querySha256": "b25327e107930cc4eb0650b895ecd7513266ca81f0f55e8c34a1409b5c61a69a",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-59150",
+			"querySha256": "abdd794926d5ef50c9fc58291e445396d988c428014b14fe01ccff03958b54d3",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57525",
+			"querySha256": "dfd213d606666a036199bd25ea256702b2794537df744d05f3d669bac01e90d3",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/energy-and-infrastructure/can-short-duration-batteries-by-themselves-cover-every-grid-reliability-need",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57326",
+			"querySha256": "350a0a73d1500f7d751ffcb9fc9e1a60f9a30b8b50ec7ff64bba3800b1e7d642",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56338",
+			"querySha256": "68ab96c2d45fbb57ce25a1f8ab4825c04b5f21d571feed129f37cf15df1e2fe7",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-55517",
+			"querySha256": "b6beedb300c530ab4ab69cec22a76f1b9da740be8309eaf4ceb9b279509cc12f",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-53867",
+			"querySha256": "bbcda440cc546bcafaf9d3e2069476e80e493e31d98c0f23b3c79f38d27b3cf3",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-53761",
+			"querySha256": "c170129c346794158a2e05f2672bc43cb57ce1dc020efbaff41fe5afedae7186",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-53174",
+			"querySha256": "d2b851be4ca7c64a9925095638736c4df9bcc64c0dbcfaaea7b6b3fbcaff5e9b",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-53040",
+			"querySha256": "5b19296cfeba979fa91f83bc467cfd30c6ad01af0de0763b2b7721797659a372",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/energy-and-infrastructure/does-clean-energy-mineral-mining-have-environmental-and-social-costs",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-52932",
+			"querySha256": "4aa3ba656ef53fef89e4e5993a25ba21dc4cdfdcc86f417a5c4e7d8df8fdbb32",
+			"classification": "partial",
+			"expected": [
+				{
+					"path": "/consensus/energy-and-infrastructure/can-widespread-electric-vehicle-charging-always-fit-existing-local-grids-without-planning",
+					"readable": true,
+					"reason": "public-api-and-rendered-content"
+				}
+			],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-52607",
+			"querySha256": "ea7656da7c16fa05a2972c77552013a7f9188938536a91c88b8e9f2708ba6448",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-52545",
+			"querySha256": "fbc6689f9d27dc140348c691feff027b4a4c42eecf435472161d6367ef4bd07c",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-60527",
+			"querySha256": "6332bdd16d7aeb8a075c6d8ecd8216ad26f52386996cbff38c20c8adc4bc56b5",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-60343",
+			"querySha256": "db11533c0fc104723fc0629633c5fb024c8984c58683be15b42f68eecd29503d",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-59085",
+			"querySha256": "3387e95b80512ce302094563e0e36fbeec650fe9408c363c2904a7d963a329f4",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-58950",
+			"querySha256": "6a5fca5a9c53a0f33cda082fc049f02333181169e9f3b5e2676fe9fba4313c9e",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-58948",
+			"querySha256": "3fd172f29c27656a78298f246ef0103f399b5ad04a9a4b7926f4c8117c0ee0e1",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57869",
+			"querySha256": "912a8cba475fb7dd44d641901d1076056100be6d65876f44e9627fda9039f973",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57506",
+			"querySha256": "e824b19bda624ae9a82d7b7d46750142a30cf6f21b6fbf6ab0f123591b0e7c11",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57300",
+			"querySha256": "54bf08a542f54df1dbcd8c7bf53dd27641ff8ac032debd6739b225c157367145",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-57102",
+			"querySha256": "a3c8a01a8518f01ee26506dcea4b5fcfde3c157ed02fb1e4cc6f91f6a78b3cf7",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56711",
+			"querySha256": "4ffd9b84ac621830a95da7b3859e2cf136ec2424dac91c9fdb9e1e057b877092",
+			"classification": "gap",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56379",
+			"querySha256": "74a51bc29df7c96923be2ecb392b5ecd85a41a35be3f669f78df7bb8fa051676",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		},
+		{
+			"id": "skeptics-56217",
+			"querySha256": "751deedcac31915ed8e4d464d3da3a050dae676a0b27f6a1e8946f8c35974c92",
+			"classification": "outside",
+			"expected": [],
+			"endpoints": [
+				{ "name": "directory", "available": true, "reason": "ok", "topThree": [], "hit": false, "empty": true },
+				{
+					"name": "suggestions",
+					"available": true,
+					"reason": "ok",
+					"topThree": [],
+					"hit": false,
+					"empty": true
+				}
+			]
+		}
+	]
+}

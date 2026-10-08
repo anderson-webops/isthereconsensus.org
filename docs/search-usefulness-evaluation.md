@@ -28,32 +28,34 @@ Unknown fields are rejected. Keep the original frozen file and its checksum.
 
 ```json
 {
-  "schemaVersion": 1,
-  "publicQueries": true,
-  "provenance": {
-    "kind": "development",
-    "author": "assistant",
-    "contextExposure": "development",
-    "frozenAt": "2026-10-06T00:00:00Z",
-    "baselineSourceCommit": "fae8ee8fb3bc8782ce9800ee88a8af742074b307"
-  },
-  "questions": [
-    {
-      "id": "covered-example",
-      "query": "Does coffee stop working with regular use?",
-      "classification": "covered",
-      "expected": [{
-        "topicSlug": "nutrition-and-diet",
-        "claimSlug": "does-caffeine-become-less-effective-with-regular-daily-use"
-      }]
-    },
-    {
-      "id": "outside-example",
-      "query": "Which train should I board this afternoon?",
-      "classification": "outside",
-      "expected": []
-    }
-  ]
+	"schemaVersion": 1,
+	"publicQueries": true,
+	"provenance": {
+		"kind": "development",
+		"author": "assistant",
+		"contextExposure": "development",
+		"frozenAt": "2026-10-06T00:00:00Z",
+		"baselineSourceCommit": "fae8ee8fb3bc8782ce9800ee88a8af742074b307"
+	},
+	"questions": [
+		{
+			"id": "covered-example",
+			"query": "Does coffee stop working with regular use?",
+			"classification": "covered",
+			"expected": [
+				{
+					"topicSlug": "nutrition-and-diet",
+					"claimSlug": "does-caffeine-become-less-effective-with-regular-daily-use"
+				}
+			]
+		},
+		{
+			"id": "outside-example",
+			"query": "Which train should I board this afternoon?",
+			"classification": "outside",
+			"expected": []
+		}
+	]
 }
 ```
 
@@ -93,6 +95,13 @@ evidence. Semantic search experiments are not deployed search and do not
 replace this end-to-end check or the separate fresh-usefulness requirement.
 
 See [the development and fresh-question record](search-usefulness-development-record.md)
-for rejected approaches, retained numerical-reference failures, and the
-unclassified external question freeze. Its frozen candidates are not yet a
-validated evaluator input or a completed usefulness assessment.
+for rejected approaches and retained numerical-reference failures. The
+[external coverage audit](search-usefulness-external-audit.md) now records all
+72 pre-scoring classifications. Its strict input is validated, but none of
+the questions has a complete covered answer under the unchanged scope rule.
+There is therefore no covered-score denominator: this sample cannot certify
+the 90-percent goal, and partial destinations cannot be counted as successes.
+Its first complete public run is retained separately: both APIs completed all
+72 rows without unavailable or unreadable observations, but neither found a
+preassigned partial destination. No relabeling or denominator replacement was
+used to turn that result into a passing assessment.
