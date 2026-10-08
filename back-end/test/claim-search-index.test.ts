@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
+import { claimSearchLanguage, createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const referenceDate = new Date("2026-10-05T00:00:00Z");
 const fixture = {
@@ -80,6 +80,74 @@ describe("public claim explanation search index", () => {
 	it("retrieves explicitly supplied public misconception tags", () => {
 		const results = createClaimSearchIndex([fixture])("pump countercurrent", referenceDate);
 		assert.equal(results[0]?.claim.slug, fixture.slug);
+	});
+
+	it("retrieves coherent public explanations without requiring title wording", () => {
+		const explanation = { title: "Can an installation run steadily?", slug: "synthetic-body-explanation", stableCore: ["Pump backpressure affects recirculation."] };
+		const scattered = { title: "Can another installation run steadily?", slug: "synthetic-scattered", stableCore: ["Pump backpressure requires measurement.", "Recirculation requires observation."] };
+		const tagsOnly = { title: "Can a third installation run steadily?", slug: "synthetic-tags-only", misconceptionTags: ["pump backpressure recirculation"] };
+		const results = createClaimSearchIndex([scattered, tagsOnly, explanation])("pump backpressure recirculation", referenceDate);
+		assert.deepEqual(results.map(result => result.claim.slug), [explanation.slug]);
+		assert.equal(results[0].match.matchStrength, "related");
+	});
+
+	it("matches agreement word forms without rewriting the public explanations", () => {
+		const claim = { title: "What do pump observations establish?", slug: "synthetic-agreement", stableCore: ["Observers report agreement about pump backpressure."] };
+		const search = createClaimSearchIndex([claim]);
+		for (const verb of ["agree", "agrees", "agreed", "agreeing", "agreement"]) {
+			const result = search(`Observers ${verb} about pump backpressure`, referenceDate)[0];
+			assert.equal(result?.claim, claim, verb);
+			assert.equal(result.match.matchStrength, "related", verb);
+			assert.doesNotMatch(result.match.matchReason, /spelling/u, verb);
+		}
+	});
+
+	it("preserves unary tokenization when passed directly to array map", () => {
+		const phrases = ["coffee energy", "drug power", "vaccinations electricity"];
+		assert.deepEqual(phrases.map(claimSearchLanguage.tokens), phrases.map(phrase => claimSearchLanguage.tokens(phrase)));
+	});
+
+	it("prioritizes explicit comparisons over incidental title and paragraph mentions", () => {
+		const explanation = { title: "Can an installation run steadily?", slug: "synthetic-comparison", stableCore: ["Pressure describes a force per area; flow measures volume per time."] };
+		const incidental = { title: "Can pressure affect a pump?", slug: "synthetic-incidental", stableCore: ["Pressure affects pump flow, while installation conditions affect performance."] };
+		const scattered = { title: "Can flow affect an installation?", slug: "synthetic-comparison-scattered", stableCore: ["Pressure can affect conditions. Flow is not the complete description."] };
+		const search = createClaimSearchIndex([incidental, scattered, explanation]);
+		for (const query of [
+			"What's the difference between pressure and flow?",
+			"What’s the difference between pressure and flow?",
+			"How does pressure differ from flow?",
+			"How are pressure and flow different?",
+			"Compare pressure with flow",
+			"pressure versus flow"
+		]) {
+			const results = search(query, referenceDate);
+			assert.deepEqual(results.map(result => result.claim.slug), [explanation.slug], query);
+			assert.equal(results[0].match.matchStrength, "related", query);
+		}
+	});
+
+	it("requires both comparison subjects rather than collapsing retrieval aliases", () => {
+		const comparison = { title: "How are energy and power different?", slug: "synthetic-energy-power", bottomLine: "Energy measures an amount, while power describes a rate." };
+		const energyOnly = { title: "How is energy measured?", slug: "synthetic-energy-only", bottomLine: "Energy is not measured without a convention." };
+		const search = createClaimSearchIndex([energyOnly, comparison]);
+		assert.deepEqual(search("What is the difference between energy and power?", referenceDate).map(result => result.claim.slug), [comparison.slug]);
+		assert.deepEqual(search("What is the difference between energy and electricity?", referenceDate), []);
+		assert.deepEqual(search("What is the difference between energy and unobtanium?", referenceDate), []);
+		assert.equal(search(comparison.title, referenceDate)[0]?.match.matchStrength, "exact");
+	});
+
+	it("preserves quantities, negation, and unknown qualifiers in body-only comparisons", () => {
+		const claim = { title: "Can an installation run steadily?", slug: "synthetic-quantified-comparison", stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."] };
+		const search = createClaimSearchIndex([claim]);
+		assert.equal(search("Compare a pump at 1,000 revolutions with a pump at 10,000 revolutions", referenceDate)[0]?.claim, claim);
+		assert.deepEqual(search("Compare a pump at 1,001 revolutions with a pump at 10,000 revolutions", referenceDate), []);
+		assert.deepEqual(search("What is the difference between pump and unobtanium recirculation?", referenceDate), []);
+		assert.deepEqual(search("pump not revolutions", referenceDate), []);
+	});
+
+	it("does not use private fields or tags as comparison evidence", () => {
+		const claim = { title: "Can an installation run steadily?", slug: "synthetic-private-comparison", editorNotes: "Pressure and flow measure different quantities.", misconceptionTags: ["pressure and flow are different"] };
+		assert.deepEqual(createClaimSearchIndex([claim])("What is the difference between pressure and flow?", referenceDate), []);
 	});
 
 	it("retains search compatibility when optional explanation arrays are absent", () => {
