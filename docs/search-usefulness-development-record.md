@@ -199,7 +199,7 @@ wording fixes do not establish the 90% unfamiliar-question goal, fresh reader
 comprehension, public availability of the prepared additions or completed
 production publication.
 
-## New external questions, frozen but not evaluated
+## External question freeze, October 6
 
 A separate title-only sample of 72 publicly authored Skeptics Stack Exchange
 questions was frozen at `2026-10-06T05:36:47.863Z`. Its original UTF-8 file has
@@ -219,13 +219,27 @@ with counts retained separately. The publisher's
 [field-filter API](https://api.stackexchange.com/docs/create-filter) allowed
 collection without owner identities, raw question bodies or answers.
 
-Question text was not printed to the search developer and has not been scored
-or used for tuning. The owner-only question file remains local evaluation
-staging, not a published benchmark, approved roadmap or set of site visitor
-requests. Retain the original file, source links, licensing evidence and
+At the original freeze, question text had not been printed to the search
+developer, scored or used for tuning. The owner-only question file remains
+local evaluation staging, not a published benchmark, approved roadmap or set of
+site visitor requests. Retain the original file, source links, licensing evidence and
 checksum until an audited evaluation record supersedes this staging material.
 The publisher's [licensing information](https://stackoverflow.com/help/licensing)
 must accompany any later redistribution or attribution review.
+
+On October 8, after the development and actual-route gates, all 72 titles were
+inspected and classified before fresh retrieval. The
+[complete coverage audit](search-usefulness-external-audit.md) records the
+frozen decisions and limitations. No complete covered answer was identified:
+there are fifteen partial destinations, 32 gaps and 25 outside questions.
+The first complete anonymous public run retained all 72 questions on both APIs,
+with no unavailable or unreadable observations and all 25 outside controls
+empty on each surface. Neither surface retrieved a preassigned partial
+destination. This sample has no covered-score denominator and did not pass
+the 90-percent fresh usefulness requirement. The original file and all original
+rows remain preserved; the pre-scoring rules below were not relaxed to improve
+the result. Its first complete result must remain visible if later development
+uses these now-exposed questions.
 
 Before its first retrieval score:
 

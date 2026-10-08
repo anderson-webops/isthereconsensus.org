@@ -1,0 +1,465 @@
+{
+	"schemaVersion": 1,
+	"frozenAt": "2026-10-08T13:30:33.000Z",
+	"sourceCommit": "97ac1660270390ad8b63c9506376ba3fcf132685",
+	"originalQuestionFileSha256": "dcac84936cf7aae9c365c957cea638912d1feae877d4650883058eb11d5d0c8b",
+	"preparedCorpusFingerprint": "8daaf2280cc582f4e0d2756f0c6e338290a0dfd6a17ca8a7be8785632a5e76fa",
+	"preparedReviews": 1001,
+	"gradingAuthor": "assistant",
+	"predictionsInspectedBeforeFreeze": 0,
+	"method": "Source-only lexical navigation followed by complete scientific-body inspection of plausible related reviews. Labels preserve material outcomes, numbers, populations and context. Gap means no substantively useful answer was identified, not proof that no possible interpretation has related material. Original title-only questions remain unchanged in private evaluation staging; this file does not redistribute them.",
+	"bodyFieldsInspected": [
+		"bottomLine",
+		"editorSummary",
+		"stableCore",
+		"uncertaintySummary",
+		"uncertaintyDrivers",
+		"openQuestions",
+		"whatWouldChangeMinds",
+		"misconceptions",
+		"evidenceSummaries",
+		"inclusionRules",
+		"exclusionRules",
+		"institutionalAnchors"
+	],
+	"rejectedRelatedReview": {
+		"questionId": "skeptics-57270",
+		"claimSlug": "do-probiotics-prevent-antibiotic-associated-diarrhea",
+		"reason": "An antibiotic-associated diarrhea review does not establish the microbiological identity or health benefit of a different beverage. Its own body warns against extending one strain's evidence to every food or supplement."
+	},
+	"counts": { "covered": 0, "partial": 15, "gap": 32, "outside": 25 },
+	"rows": [
+		{
+			"id": "skeptics-57385",
+			"classification": "partial",
+			"relatedClaimSlug": "are-seed-oils-uniquely-toxic-or-inflammatory",
+			"rationale": "The body addresses inflammatory markers and cardiometabolic comparisons, not measured intelligence or cognitive change."
+		},
+		{
+			"id": "skeptics-57270",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No beverage-specific probiotic review identified; evidence about named strains in antibiotic treatment cannot answer the product-identity question."
+		},
+		{
+			"id": "skeptics-56884",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No cookware abrasion, metal migration or resulting food-exposure review identified."
+		},
+		{
+			"id": "skeptics-56801",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical consumption attribution rather than a general research-consensus question; no biological instructions are requested or supplied by this audit."
+		},
+		{
+			"id": "skeptics-56518",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No sprout-specific digestive-outcome review identified; general dietary advice is not this causal comparison."
+		},
+		{
+			"id": "skeptics-56056",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "A quantified global policy-effectiveness question is in remit, but no intervention model establishing the stated annual budget and outcome was identified."
+		},
+		{
+			"id": "skeptics-55976",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No interaction-specific liver-outcome review identified; general alcohol harms cannot establish a food-and-alcohol interaction."
+		},
+		{
+			"id": "skeptics-55705",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Cultural scene attribution with a missing referent, not an empirical research-consensus proposition."
+		},
+		{
+			"id": "skeptics-55613",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No intervention-specific human sexual-function or desire review identified."
+		},
+		{
+			"id": "skeptics-54342",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical wording and advertising-origin attribution, not evidence about a meal's health effects."
+		},
+		{
+			"id": "skeptics-54110",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No food-specific temperature and lipid-oxidation comparison identified; general dietary-fat outcomes do not answer a cooking chemistry question."
+		},
+		{
+			"id": "skeptics-54075",
+			"classification": "partial",
+			"relatedClaimSlug": "have-ordinary-microplastic-exposures-been-shown-to-cause-human-disease",
+			"rationale": "The body distinguishes exposure detection from human disease causation, but does not measure the named product's exposure or diagnose an individual. The first-person title is interpreted only as its general causal question."
+		},
+		{
+			"id": "skeptics-60646",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "An empirical emissions-inventory comparison is in remit, but no matching country, population denominator and year-pair comparison was identified."
+		},
+		{
+			"id": "skeptics-57659",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No transaction-level lifecycle allocation and quantitative emissions review identified."
+		},
+		{
+			"id": "skeptics-57014",
+			"classification": "partial",
+			"relatedClaimSlug": "do-heat-pumps-usually-cut-home-heating-emissions-compared-with-fossil-fuel-heating",
+			"rationale": "The body gives useful system-boundary and U.S. heating comparisons, but the question does not specify the end use or equipment and the review does not establish a general grid-versus-propane comparison."
+		},
+		{
+			"id": "skeptics-56207",
+			"classification": "partial",
+			"relatedClaimSlug": "has-human-influence-increased-fire-weather-occurrence-in-some-regions",
+			"rationale": "The body explicitly separates fire weather from burned area and other outcomes, but does not establish the unspecified global wildfire trend or its denominator."
+		},
+		{
+			"id": "skeptics-55709",
+			"classification": "partial",
+			"relatedClaimSlug": "is-recent-global-warming-mainly-caused-by-human-activity",
+			"rationale": "The body explains physical attribution and fossil-carbon context, but does not work through the named isotope ratio or its proposed inference."
+		},
+		{
+			"id": "skeptics-54436",
+			"classification": "partial",
+			"relatedClaimSlug": "are-glaciers-and-major-ice-sheets-losing-mass-as-the-climate-warms",
+			"rationale": "The body distinguishes sea ice from land ice and explains mass-loss trends, but does not assess the specified percentage, period and ambiguous ice compartment."
+		},
+		{
+			"id": "skeptics-54293",
+			"classification": "partial",
+			"relatedClaimSlug": "is-ocean-heat-content-increasing-because-of-human-caused-warming",
+			"rationale": "The body establishes sustained ocean heat gain, not the specified daily energy equivalence or its conversion assumptions."
+		},
+		{
+			"id": "skeptics-54290",
+			"classification": "partial",
+			"relatedClaimSlug": "does-natural-gas-have-lower-climate-emissions-than-coal-after-methane-leakage",
+			"rationale": "The body explains fuel-comparison boundaries and methane leakage, but does not establish the named state's observed percentage reduction or attribution period."
+		},
+		{
+			"id": "skeptics-54255",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No global economic exposure estimate with the stated fraction and definition of weather sensitivity identified."
+		},
+		{
+			"id": "skeptics-54242",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No organization-specific electricity accounting review identified; a procurement percentage is not inferable from general renewable-energy performance."
+		},
+		{
+			"id": "skeptics-54177",
+			"classification": "partial",
+			"relatedClaimSlug": "can-cutting-methane-emissions-slow-warming-in-the-near-term",
+			"rationale": "The body distinguishes sectors, inventories and measurement uncertainty, but does not attribute the specified year's global change to the named sector."
+		},
+		{
+			"id": "skeptics-54127",
+			"classification": "partial",
+			"relatedClaimSlug": "is-grass-fed-beef-always-lower-carbon-than-feedlot-finished-beef",
+			"rationale": "The body explains beef lifecycle variation and accounting boundaries, but does not establish the stated portion-specific emissions figure."
+		},
+		{
+			"id": "skeptics-60540",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No matching drinking-water exposure, dose and puberty-outcome review identified; hormone-treatment reviews are a different exposure."
+		},
+		{
+			"id": "skeptics-60346",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No comparable environmental source-share inventory identified; health-effect uncertainty does not rank pollutant sources."
+		},
+		{
+			"id": "skeptics-59285",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical invention and public-relations intent attribution, not lifecycle measurement or a general causal research question."
+		},
+		{
+			"id": "skeptics-57576",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No model-operation emissions review with the specified quantity, system boundary and training-versus-inference distinction identified."
+		},
+		{
+			"id": "skeptics-56783",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No matched non-exhaust versus exhaust pollution comparison identified; the pollutant, vehicle and exposure denominator also remain unspecified."
+		},
+		{
+			"id": "skeptics-56190",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Country-specific political-activity event inventory, not a scientific consensus or environmental-effect comparison."
+		},
+		{
+			"id": "skeptics-56080",
+			"classification": "partial",
+			"relatedClaimSlug": "can-human-made-underwater-noise-harm-marine-life",
+			"rationale": "The body addresses source-specific marine noise and the difference between individual effects and population decline, but does not establish the proposed wind-farm mortality attribution or trend."
+		},
+		{
+			"id": "skeptics-56037",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No disorientation or walking-path experimental review identified."
+		},
+		{
+			"id": "skeptics-55440",
+			"classification": "partial",
+			"relatedClaimSlug": "do-pollinator-declines-threaten-crop-production",
+			"rationale": "The body distinguishes managed and wild pollinators and regional trends, but does not establish a defined honey-bee population collapse. The title's catastrophe label is ambiguous."
+		},
+		{
+			"id": "skeptics-54412",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A historical superlative without a defined harm measure is not an assessable scientific comparison as supplied; adding a metric would change the original question."
+		},
+		{
+			"id": "skeptics-54074",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No specified reservoir-area, solar-output and global generation calculation identified; generic solar lifecycle reviews cannot establish that quantitative scenario."
+		},
+		{
+			"id": "skeptics-53593",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No aircraft-versus-car fuel comparison at matched distance, vehicle, occupancy and operating conditions identified."
+		},
+		{
+			"id": "skeptics-57772",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A named administration's regulatory paperwork estimate is an administrative-record question, not learning-effect evidence."
+		},
+		{
+			"id": "skeptics-57709",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No reading-speed and comprehension comparison for the named cognitive process identified; phonics instruction is a different intervention and population."
+		},
+		{
+			"id": "skeptics-57479",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "A population-literacy estimate is in remit, but no matching adult population, definition and percentage review identified; school test-score interpretation is insufficient."
+		},
+		{
+			"id": "skeptics-57402",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Attribution of an unspecified image to a particular examination event, not a research-consensus question."
+		},
+		{
+			"id": "skeptics-57342",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Normative fairness as phrased, not a defined measured reading outcome. Replacing the value judgment with a learning-effect question would change the sample."
+		},
+		{
+			"id": "skeptics-57209",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "An empirical education-demography question is in remit, but no matched regional graduate-share review identified."
+		},
+		{
+			"id": "skeptics-57101",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "An enrollment-population measurement is in remit, but no country-pair, date and student-definition estimate identified."
+		},
+		{
+			"id": "skeptics-56953",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No named-program child-development review identified; teen social-media or evening-light reviews do not match preschool content, stimulation and harm."
+		},
+		{
+			"id": "skeptics-56616",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "A stated school-population prevalence would require representative measurement; no corresponding survey or prevalence review identified."
+		},
+		{
+			"id": "skeptics-56543",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical institutional-event and motive attribution, not the physical validity of a heating technology."
+		},
+		{
+			"id": "skeptics-56304",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Attribution of wording to particular textbooks rather than measured educational effects."
+		},
+		{
+			"id": "skeptics-56289",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical quotation attribution, not a research-consensus question. No harmful quotation or operational content is redistributed here."
+		},
+		{
+			"id": "skeptics-59150",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No matching electrochemical stability-window review identified; general terminal-voltage or capacity concepts do not assess the proposed aqueous-cell limit."
+		},
+		{
+			"id": "skeptics-57525",
+			"classification": "partial",
+			"relatedClaimSlug": "can-short-duration-batteries-by-themselves-cover-every-grid-reliability-need",
+			"rationale": "The body distinguishes discharge power from stored energy and duration, but does not compare a dated global inventory with U.S. peak demand."
+		},
+		{
+			"id": "skeptics-57326",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No computing-specific water-consumption or withdrawal review identified; quantity, location and direct versus electricity-supply use remain unspecified."
+		},
+		{
+			"id": "skeptics-56338",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical industry-size ranking, not a research-consensus or current energy-performance question."
+		},
+		{
+			"id": "skeptics-55517",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No dated resources-versus-reserves and consumption-scenario review identified; the fuel's emissions comparison cannot establish supply lifetime."
+		},
+		{
+			"id": "skeptics-53867",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A monetary liability under unspecified market or contractual rules is not a general electricity-performance question as supplied."
+		},
+		{
+			"id": "skeptics-53761",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical spot or contract-price quotation rather than scientific consensus; date and market-product context are absent."
+		},
+		{
+			"id": "skeptics-53174",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Attribution of a trade-inventory change to a named historical interval, not general energy or climate evidence."
+		},
+		{
+			"id": "skeptics-53040",
+			"classification": "partial",
+			"relatedClaimSlug": "does-clean-energy-mineral-mining-have-environmental-and-social-costs",
+			"rationale": "The body requires common functional units and full lifecycles, but does not establish the stated solar-to-gas material ratio per delivered energy."
+		},
+		{
+			"id": "skeptics-52932",
+			"classification": "partial",
+			"relatedClaimSlug": "can-widespread-electric-vehicle-charging-always-fit-existing-local-grids-without-planning",
+			"rationale": "The body distinguishes bulk energy adequacy from local charging constraints, but does not quantify full U.S. fleet electricity demand against a defined existing or future supply."
+		},
+		{
+			"id": "skeptics-52607",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "An engineering subject is within remit, but this title lacks a testable proposition or identified device; no matching substantive review was identified and no missing claim was invented."
+		},
+		{
+			"id": "skeptics-52545",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "A named experimental-device performance claim is within remit, but no matching thermal-motion device or reproducibility review identified; generic energy conservation is not verification of that experiment."
+		},
+		{
+			"id": "skeptics-60527",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Attribution of a particular chatbot incident rather than a defined general behavior or research result."
+		},
+		{
+			"id": "skeptics-60343",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical cultural and software-popularity attribution, not a scientific evidence question."
+		},
+		{
+			"id": "skeptics-59085",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Verification of a named promotion with a missing referent, not an assessable research-consensus proposition."
+		},
+		{
+			"id": "skeptics-58950",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical archival quantity attribution rather than a general research-consensus question."
+		},
+		{
+			"id": "skeptics-58948",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Historical attribution of a particular weapons capability, not a general physics question. No design or operating guidance is supplied."
+		},
+		{
+			"id": "skeptics-57869",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A named conflict's casualty attribution is a current-event inventory, not a general scientific consensus. No operational military guidance is supplied."
+		},
+		{
+			"id": "skeptics-57506",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No gesture-based age-estimation accuracy, population-validity or deployment review identified."
+		},
+		{
+			"id": "skeptics-57300",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No matching device-performance or window-based acoustic-control review identified; hearing-protection guidance cannot validate the named device."
+		},
+		{
+			"id": "skeptics-57102",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "Attribution of a particular data-breach incident, not a general security effectiveness question; no intrusion instructions are supplied."
+		},
+		{
+			"id": "skeptics-56711",
+			"classification": "gap",
+			"relatedClaimSlug": null,
+			"rationale": "No microphone-based mobile advertising evidence review identified; browser-cookie tracking is a different mechanism and platform."
+		},
+		{
+			"id": "skeptics-56379",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A named conflict's infrastructure inventory, not general research-consensus evidence. No location or operational analysis is supplied."
+		},
+		{
+			"id": "skeptics-56217",
+			"classification": "outside",
+			"relatedClaimSlug": null,
+			"rationale": "A named actor's geographical military capability claim, not a general navigation-science question as supplied. No operational interference guidance is supplied."
+		}
+	]
+}
