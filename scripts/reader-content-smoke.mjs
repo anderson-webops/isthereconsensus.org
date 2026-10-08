@@ -33,6 +33,8 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			const { data } = await api(`/topics/${seed.topicSlug}/claims/${seed.slug}`);
 			assert.equal(data.claim.bottomLine, seed.bottomLine);
 			assert.deepEqual(data.claim.stableCore, seed.stableCore);
+			assert.deepEqual(data.claim.inclusionRules, seed.inclusionRules);
+			assert.deepEqual(data.claim.exclusionRules, seed.exclusionRules);
 			assert.equal(data.claim.sources.length, seed.sources.length);
 			assert.deepEqual(data.claim.sources.map(source => [source.url, source.citationStatus, source.kind, source.appraisal]), seed.sources.map(source => [source.url, source.citationStatus, source.kind, source.appraisal]));
 			const stored = await Claim.findOne({ slug: seed.slug }).lean();
@@ -48,6 +50,16 @@ export async function checkReaderContent({ api, browser, base, restartBackend })
 			await page.$eval("#review-status", element => { element.open = true; });
 			const text = await page.$eval("main", element => element.innerText.replace(/\s+/g, " "));
 			assert.ok(text.includes(seed.bottomLine), seed.slug);
+			const scope = await page.$$eval('[aria-labelledby="review-scope-title"] .review-scope__group', groups =>
+				groups.map(group => ({
+					title: group.querySelector("h3").textContent.trim(),
+					items: Array.from(group.querySelectorAll("li"), item => item.textContent.trim())
+				}))
+			);
+			assert.deepEqual(scope, [
+				{ title: "Included evidence", items: (seed.inclusionRules ?? []).map(rule => rule.trim()).filter(Boolean) },
+				{ title: "Excluded evidence", items: (seed.exclusionRules ?? []).map(rule => rule.trim()).filter(Boolean) }
+			].filter(group => group.items.length), `${seed.slug}: full recorded scope missing or changed`);
 			assert.ok(text.includes("independent expert review not completed"));
 			const technicalSources = seed.sources.filter(source => source.kind === "technical_reference");
 			if (technicalSources.length) {

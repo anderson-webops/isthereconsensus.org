@@ -9,7 +9,11 @@ import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
 import { comparisonsForReview } from "~/data/comparisons";
 import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
-import { selectDistinctUncertaintyLimits, selectVisibleEvidenceSummaries } from "~/utils/claim-presentation";
+import {
+	selectDistinctUncertaintyLimits,
+	selectReviewScopeGroups,
+	selectVisibleEvidenceSummaries
+} from "~/utils/claim-presentation";
 import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
@@ -60,6 +64,7 @@ const evidenceSummaries = computed(() =>
 const evidenceLandscape = computed(() => claim.value?.evidenceLandscape);
 const uncertaintyDrivers = computed(() => claim.value?.uncertaintyDrivers ?? []);
 const sourceCount = computed(() => claim.value?.sources?.length ?? 0);
+const reviewScopeGroups = computed(() => selectReviewScopeGroups(claim.value));
 const claimSnapshotGroups = computed(() => {
 	const groups = [
 		{
@@ -470,6 +475,27 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							</ul>
 						</div>
 					</details>
+				</div>
+			</section>
+
+			<section v-if="reviewScopeGroups.length" class="content-panel" aria-labelledby="review-scope-title">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Review boundaries</p>
+						<h2 id="review-scope-title">Scope of this review</h2>
+					</div>
+				</div>
+				<p class="review-scope__intro">
+					Recorded evidence-selection criteria. Check the population, setting and outcome before applying this
+					conclusion elsewhere.
+				</p>
+				<div class="review-scope__groups">
+					<div v-for="group in reviewScopeGroups" :key="group.key" class="review-scope__group">
+						<h3>{{ group.title }}</h3>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="(item, index) in group.items" :key="index">{{ item }}</li>
+						</ul>
+					</div>
 				</div>
 			</section>
 
@@ -1085,6 +1111,27 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	gap: 10px;
+}
+
+.review-scope__intro {
+	max-width: 68ch;
+	color: var(--consensus-muted);
+}
+
+.review-scope__groups {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 18px;
+}
+
+.review-scope__group {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.review-scope__group h3 {
+	margin: 0 0 8px;
+	font-size: 1rem;
 }
 
 .evidence-summary-card,
