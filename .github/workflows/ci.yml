@@ -248,6 +248,11 @@ jobs:
           READER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}
         run: node scripts/reader-library-smoke.mjs
 
+      - name: Public search worker transport and publication isolation
+        env:
+          SEARCH_WORKER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}
+        run: node scripts/public-search-worker-smoke.mjs
+
       - name: Scoped refresh transaction and CLI checks
         run: node scripts/claim-refresh-promotion-smoke.mjs --docker
 
