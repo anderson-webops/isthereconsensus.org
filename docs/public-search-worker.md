@@ -28,6 +28,18 @@ use native search instead of joining a queue. Requests are limited to 4 MiB,
 responses to 512 KiB, and transport time to eight seconds. An absent, warming,
 disconnected, malformed, stale or timed-out worker falls back to native results.
 
+Reader disconnection or cancellation closes that request's private socket and
+releases the shared transport slot. It does not return an obsolete prediction,
+run a fallback for a departed reader, or cancel another reader's request.
+Normal completion of an incoming GET request is not treated as cancellation.
+If cancellation arrives during an already-running publication check, the
+transport slot is released without waiting for that check. The underlying
+database operation may finish independently, but its result or failure is
+discarded and cannot unlock a later reader's RPC. Request lifecycle listeners
+are removed on every route exit. A future model service must separately stop
+abandoned inference and prove realistic typing behavior; cancelling this API
+transport alone does not establish model-side cancellation or latency.
+
 ## Public-state and privacy boundary
 
 Only currently published reviews passing the existing public-readiness and
@@ -45,7 +57,7 @@ hash, reference timestamp and candidate identifier. Unknown or duplicate slugs,
 extra fields, invalid scores and falsely claimed native results reject the
 whole response. Ranking diagnostics are not scientific confidence percentages.
 
-After every worker attempt, including a failed attempt, the API rechecks the
+After every non-cancelled worker attempt, including a failed attempt, the API rechecks the
 current published corpus and source readiness. Changed wording, withdrawals
 and invalidated source stacks reject the old prediction. Results are hydrated
 from current public database objects, never worker-supplied article text.
@@ -65,8 +77,8 @@ service. Ownership is checked before application startup; cleanup drops only
 that exact database and stops only the harness's children.
 
 The smoke exercises both compiled API routes, private and unready records,
-withdrawal, changed public wording, invalidated sources, stale responses and
-shared concurrency. Its simulated rankings prove transport integration only,
+withdrawal, changed public wording, invalidated sources, stale responses,
+reader cancellation and shared concurrency. Its simulated rankings prove transport integration only,
 not answer relevance, comprehension or a publicly deployed improvement.
 
 Before real activation, retain the frozen development gates, run the complete

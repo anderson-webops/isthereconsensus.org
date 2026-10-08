@@ -28,6 +28,7 @@ let databaseOwned = false;
 let client;
 let mode = "valid";
 let beforeReply = async () => {};
+let observePeerResponse = () => {};
 let received = 0;
 let target;
 let query;
@@ -98,6 +99,7 @@ const worker = http.createServer((request, response) => {
 			assert.ok(payload.corpus.every(claim => claim.status === "published"));
 			assert.doesNotMatch(JSON.stringify(payload), /PRIVATE_RPC_|editorialNotes|sessionVersion|passwordHash|submittedBy/u);
 			received++;
+			observePeerResponse(response);
 			await beforeReply();
 			if (mode === "warming") {
 				response.writeHead(202).end();
@@ -116,10 +118,10 @@ const worker = http.createServer((request, response) => {
 	});
 });
 
-async function api(route, expectedCount) {
+async function api(route, expectedCount, signal) {
 	const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, {
 		headers: { Cookie: "smoke_fixture=PRIVATE_RPC_COOKIE", Authorization: "Bearer PRIVATE_RPC_HEADER", "X-Request-Id": "PRIVATE_RPC_REQUEST" },
-		signal: AbortSignal.timeout(15_000)
+		signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15_000)]) : AbortSignal.timeout(15_000)
 	});
 	assert.equal(response.status, 200);
 	const result = await response.json();
@@ -226,8 +228,26 @@ try {
 	assert.equal(received, count, "The two surfaces must not create separate worker queues.");
 	release();
 	await first;
+	for (const [cancelledRoute, nextRoute] of [["claims", "search/suggestions"], ["search/suggestions", "claims"]]) {
+		let abandon;
+		let disconnected = false;
+		const initialCount = received;
+		beforeReply = () => new Promise(resolve => { abandon = resolve; });
+		observePeerResponse = response => response.once("close", () => { disconnected = true; });
+		const controller = new AbortController();
+		const cancelled = assert.rejects(api(cancelledRoute, 1, controller.signal), { name: "AbortError" });
+		await waitFor(async () => received === initialCount + 1 && typeof abandon === "function", "cancelled route reached the private peer");
+		controller.abort();
+		await cancelled;
+		await waitFor(async () => disconnected, "reader cancellation closed the private peer socket");
+		beforeReply = async () => {};
+		observePeerResponse = () => {};
+		await api(nextRoute, 1);
+		assert.equal(received, initialCount + 2, "Cancellation must release the shared worker slot for the other actual search route.");
+		abandon();
+	}
 	assert.equal(process.exitCode, undefined);
-	console.log("public search transport smoke passed: both compiled API routes, case preservation, public-only hydration, stale/withdrawn/unready rejection, native fallback and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
+	console.log("public search transport smoke passed: both compiled API routes, case preservation, public-only hydration, stale/withdrawn/unready rejection, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
 }
 finally {
 	await Promise.all([...children].filter(child => !child.spawnargs.includes("--dbpath")).map(stop));
