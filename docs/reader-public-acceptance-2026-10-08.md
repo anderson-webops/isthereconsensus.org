@@ -97,6 +97,38 @@ authorized; failed attempts were retained, not counted as passing or replaced
 with an install fallback. Source/CI integration and public activation are
 separate checks; this record does not establish delivery of the scope correction.
 
+## Separate scope-delivery acceptance
+
+A new anonymous readback ran from 21:33:07 to 21:40:34 UTC, after frontend
+v1.38.24 became available at source
+`8a51db85fae3c61aef9b2ed5f95dee2e40c651b7`, build
+`31dd4622-fb1f-4688-bb47-b5064274a319`. That exact frontend identity was stable
+before and after the readback. All eight jobs in
+[exact-main CI run 37845485369](https://github.com/anderson-webops/isthereconsensus.org/actions/runs/37845485369)
+subsequently completed successfully. These are separate activation and source-CI
+observations, not a backend/worker identity or editorial publication receipt.
+
+All 74 previously advertised existing-review API/page pairs passed the complete
+recorded scope check: 376 full inclusion/exclusion criteria were visible in their
+correctly labeled groups. The selected substantive narrative check also passed
+74 of 74. It checked the title, bottom line, editor summary, uncertainty summary,
+stable core, open questions, what-would-change-minds items and misconceptions.
+It did not audit every nested article field or reassess scientific correctness.
+
+The new verifier used block-aware text extraction and twelve synthetic controls
+before any live request. Controls reject missing/wrong groups, lost exclusions,
+truncated long criteria, hydration-only content, inert templates and invented
+legacy scope. The 150 requests were anonymous, sequential and paced; no article,
+account, private feedback, deployment or service state was changed.
+
+The separate passing report has SHA-256
+`b3d7a5eb7d4ee8f2942b577f4f3260aab84ba347199b9378be8ead42b8ef46ff`;
+its control receipt has SHA-256
+`d6983d99bd115b8ac8d0acfcefaf9d5467b537c1cd31c282bfe2133ae7a79bff`.
+The original failed report and original parser retain the hashes above. Their
+earlier failure is not rewritten as a pass. The already completed full-guide
+readback was not rerun solely to create another progress update.
+
 ## Next protected action
 
 Use the existing [publication runbook](reader-expansion-publication-runbook.md)

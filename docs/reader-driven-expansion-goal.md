@@ -146,3 +146,25 @@ The readback also identified missing visible evidence-selection criteria in
 review pages, alongside a block-paragraph separator limitation in the verifier.
 See [the complete public acceptance record](reader-public-acceptance-2026-10-08.md)
 for denominators, retained failures, source correction and verification limits.
+
+A separate 21:33-21:40 UTC anonymous readback verified the delivered v1.38.24
+scope correction at `8a51db8`: all 74 advertised existing reviews displayed their
+376 full recorded scope criteria and selected substantive narratives. Twelve
+synthetic parser controls preceded the 150 requests. Exact-main CI run
+37845485369 also completed with all eight jobs passing. This closes the specific
+scope-delivery gate, not the full publication, freshness or usefulness gates.
+The earlier failed public report and parser remain unchanged.
+
+A separate agency-FAQ assessment retained all 36 acquired questions, frozen
+before body labels and retrieval: three covered, eleven partial, thirteen gaps
+and nine outside administrative requests. Both actual public search APIs reached
+a preassigned readable answer for one of the three covered questions and kept
+all nine outside controls empty. All 72 search responses were available, but
+three prepared partial CPI destinations remained HTTP 404. The native mechanical
+gate failed. The complete twelve-case covered floor and four-source acquisition
+also failed; prior BLS source exposure is not independently excluded, so native
+provenance explicitly remains development. This cannot certify fresh usefulness,
+representative demand or real reader comprehension. No query, body label or
+destination was changed after predictions, and the original failures remain.
+See [the complete agency assessment](external-faq-coverage-2026-10-08.md) for all
+36 classifications, source attribution, hashes and the remaining acceptance work.
