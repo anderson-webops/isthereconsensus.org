@@ -12,3 +12,6 @@ ops
 output/
 .isthereconsensus-release-prepared.json
 .runtime-artifact/
+.search-worker-artifact/
+.search-worker-artifact.tar.gz
+.search-worker-artifact.receipt.json

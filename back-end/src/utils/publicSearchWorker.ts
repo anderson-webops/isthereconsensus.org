@@ -13,6 +13,26 @@ export const PUBLIC_SEARCH_WORKER_RESPONSE_LIMIT = 512 * 1024;
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const digestSchema = z.string().regex(/^[a-f0-9]{64}$/u);
+export const publicSearchWorkerRequestSchema = z.object({
+	protocol: z.literal(PUBLIC_SEARCH_WORKER_PROTOCOL),
+	candidate: z.literal(PUBLIC_SEARCH_WORKER_CANDIDATE),
+	query: z.string().min(1).max(160),
+	queryHash: digestSchema,
+	referenceDate: z.iso.datetime(),
+	corpusHash: digestSchema,
+	corpus: z.array(z.object({
+		title: z.string().min(1),
+		slug: z.string().min(1).max(240),
+		topicSlug: z.string(),
+		status: z.literal("published"),
+		bottomLine: z.string(),
+		editorSummary: z.string(),
+		stableCore: z.array(z.string()),
+		misconceptions: z.array(z.string()),
+		misconceptionTags: z.array(z.string())
+	}).strict()).max(10_000)
+}).strict();
+export type PublicSearchWorkerRequest = z.infer<typeof publicSearchWorkerRequestSchema>;
 const rowSchema = z.discriminatedUnion("kind", [
 	z.object({ slug: z.string().min(1).max(240), kind: z.literal("native") }).strict(),
 	z.object({
@@ -22,7 +42,7 @@ const rowSchema = z.discriminatedUnion("kind", [
 		cosine: z.number().finite().min(0.65).max(1.001)
 	}).strict()
 ]);
-const responseSchema = z.object({
+export const publicSearchWorkerResponseSchema = z.object({
 	protocol: z.literal(PUBLIC_SEARCH_WORKER_PROTOCOL),
 	candidate: z.literal(PUBLIC_SEARCH_WORKER_CANDIDATE),
 	corpusHash: digestSchema,
@@ -30,6 +50,7 @@ const responseSchema = z.object({
 	referenceDate: z.iso.datetime(),
 	rows: z.array(rowSchema).max(10_000)
 }).strict();
+export type PublicSearchWorkerResponse = z.infer<typeof publicSearchWorkerResponseSchema>;
 
 export interface PublicSearchCorpusClaim extends SearchableClaim {
 	status?: string;
@@ -164,9 +185,9 @@ export function createPublicClaimSearch(options: PublicSearchWorkerOptions = {})
 		if (Buffer.byteLength(body) > PUBLIC_SEARCH_WORKER_REQUEST_LIMIT) return native;
 		active = true;
 		try {
-			let reply: z.infer<typeof responseSchema> | undefined;
+			let reply: PublicSearchWorkerResponse | undefined;
 			try {
-				reply = responseSchema.parse(await workerReply(socketPath, body, timeoutMilliseconds, signal));
+				reply = publicSearchWorkerResponseSchema.parse(await workerReply(socketPath, body, timeoutMilliseconds, signal));
 			}
 			catch {
 				reply = undefined;

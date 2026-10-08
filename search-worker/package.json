@@ -1,0 +1,29 @@
+{
+	"name": "search-worker",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"packageManager": "npm@12.0.2",
+	"engines": { "node": ">=24.18.1 <25", "npm": ">=11.19.0 <13" },
+	"main": "dist/search-worker/src/server.js",
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.json",
+		"start": "node dist/search-worker/src/server.js",
+		"lint": "eslint \"{src,test}/**/*.{ts,mjs}\"",
+		"typecheck": "tsc --noEmit -p tsconfig.eslint.json",
+		"test": "node --test --import tsx test/*.test.ts"
+	},
+	"dependencies": {
+		"@huggingface/tokenizers": "0.2.0",
+		"onnxruntime-node": "1.30.0",
+		"onnxruntime-web": "1.30.0",
+		"wink-eng-lite-web-model": "1.8.1",
+		"wink-nlp": "2.4.0",
+		"zod": "4.6.5"
+	},
+	"devDependencies": {
+		"@types/node": "24.13.6",
+		"tsx": "^4.23.15",
+		"typescript": "^6.0.3"
+	}
+}

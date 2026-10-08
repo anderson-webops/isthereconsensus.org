@@ -96,6 +96,15 @@ raw messages. A per-question novelty/source record will precede content batches.
   evidence, not a fresh evaluation or visitor success; the 90% goal is unchanged.
   Neutralizing or capping unknown-word weights was rejected after false matches.
 - Full release and independent public acceptance: pending.
+- Independent model-service implementation: the pinned paragraph candidate now
+  has a separate worker workspace, strict public-only protocol, owned inference
+  cancellation, bounded public vectors and a production-only artifact contract.
+  The source port and numerical/tokenizer references pass; the exact unpacked
+  local artifact passes readiness, synthetic ranking, shutdown and deliberately
+  missing-module checks. This is engineering progress, not fresh usefulness,
+  Linux ARM64 capacity, public activation or additional published reviews.
+  Leave the worker unset until the complete original actual-route, sealed fresh,
+  comprehension and host acceptance gates pass. See [pinned-search-worker.md](pinned-search-worker.md).
 - Authenticated publication fidelity: a read-only source audit found that the
   former create/update narrative item cap would silently truncate 277 items
   across 135 of the 201 expansion reviews: 258 stable-core paragraphs and

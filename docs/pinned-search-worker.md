@@ -1,0 +1,131 @@
+# Pinned, independent search worker
+
+This is an optional source implementation, not an activated public feature.
+Keep the API's `SEARCH_WORKER_SOCKET` unset until every machine-readable
+`search-worker/deployment-contract.json` requirement passes. The API remains
+independently usable with native search, its existing 384 MiB soft and 512 MiB
+hard reference limits, and its unchanged eight-second transport ceiling.
+No model library or inference child belongs in the API's dependency tree or
+service cgroup. A source release never grants production administrative access.
+
+## Immutable inference inputs
+
+`search-worker/models.lock.json` pins seven complete files by size and SHA-256,
+two repository revisions and the exact tokenizer, inference and language runtimes.
+Provision public assets outside the running service, verify them, and retain
+their provenance. Runtime downloads are forbidden; the child disables `fetch`.
+Native optional-package installation never authorizes installer downloads:
+ONNX Runtime's optional CUDA installer and protobuf's version-warning installer
+are explicitly denied. Root clean installs and the standalone runtime lock
+remain strict. The backend standalone lock and policy are unchanged.
+
+- Nomination: `Xenova/bge-small-en-v1.5`, revision
+  `ea104dacec62c0de699686887e3f920caeb4f3e3`,
+  `onnx/model_quantized.onnx`, through the accepted single-thread WASM backend.
+- Paired relevance: `Alibaba-NLP/gte-reranker-modernbert-base`, revision
+  `f7481e6055501a30fb19d090657df9ec1f79ab2c`, `onnx/model.onnx`, FP32 CPU,
+  two intra-operation threads and one inter-operation thread.
+
+Every nonempty actual bottom-line, editor-summary and stable-core paragraph is
+represented in full with its title, in source-field order. Misconceptions do not
+become affirmative evidence. Oversized complete paragraphs fail warming rather
+than being truncated. Query inputs, paired special tokens, masks, right padding,
+CLS pooling and normalization preserve the declared reference.
+
+The port preserves the original parent nomination, admission and five-semantic
+result ceiling before corrected V4 source-scope filtering. It then assembles
+corrected native results with the original channel diversity and demand coefficient.
+No expected destinations, benchmark strata, question identifiers or scientific
+status labels enter model features. Scores indicate retrieval relevance, not
+scientific confidence or a generated answer.
+
+## Request and process lifetime
+
+The transport accepts only a normalized private Unix socket under a protected
+directory. It never creates a TCP listener, replaces an existing socket-path file
+or reads application credentials. Socket mode is 0660; the server owns user,
+group and directory policy. Headers, account state and private editorial fields
+are not forwarded. The strict protocol rejects extra fields, draft rows,
+unsorted or duplicate slugs and incorrect corpus/query/date fingerprints.
+
+`/healthz` means transport liveness. `/readyz` stays unavailable until the complete
+public corpus warms. A cold request starts public-only warming and immediately
+falls back; its query is not sent to the model child. The memory-only cache holds
+at most 20,000 complete public passage vectors and is invalidated on corpus change.
+The worker admits one active query, never an unbounded queue. The inference child
+has a 512 MiB JavaScript heap ceiling, but native model memory is additional:
+this heap setting is not a service-memory budget or an acceptance result.
+
+Cancelling active inference kills that exact owned child and waits for actual
+exit before replacement. Only public vectors survive. Cancelled typing while a
+replacement initializes is discarded without replay; the final settled query is
+the only admitted wording. Repeated faults stop automatic retries for the same
+corpus. Rank work is bounded to 7.5 seconds and cold warming to ten minutes.
+Private scoring-start events carry only an internal job number and owned PID;
+the public response and probes never expose them or query diagnostics.
+
+## Build and exact-artifact checks
+
+Use the repository's pinned Node and npm. Models must already be provisioned in
+an explicitly selected directory. These commands prepare local source artifacts,
+not a server deployment:
+
+```sh
+npm ci
+npm run build
+SEARCH_MODEL_DIR=/absolute/verified/models npm run artifact:worker:build
+npm run artifact:worker:verify
+npm run artifact:worker:smoke
+```
+
+The standalone production-only lock installs the six reviewed runtime packages.
+The builder copies only the seven allowlisted models, compiled entrypoints and
+pure transitive search helpers, with no compiler, source application, private
+configuration, accounts or database. Its archive receipt binds archive, manifest,
+content inventory and source identity. The independent verifier checks entrypoints,
+native addon and shared library outside the archive inventory, exact model pins,
+deployment contract, complete hashes, permissions and dependency presence.
+`SEARCH_WORKER_REQUIRE_CLEAN=true` and `SEARCH_WORKER_EXPECT_COMMIT` enforce clean,
+exact source identity when verifying a release artifact. Dirty local rehearsals
+are not production artifacts.
+
+The exact-unpacked smoke starts the production entrypoint without development
+dependencies or provider access. It checks cold readiness, synthetic ranking,
+graceful shutdown, a deliberately missing runtime module and restored artifact
+integrity. No synthetic review becomes production content. Linux ARM64 glibc
+cross-install checks verify genuine ELF addon/shared-library presence; they do
+not run native inference or establish capacity. Musl remains covered for the
+existing frontend install, not accepted as a model-service target.
+
+## Evidence and remaining gates
+
+The October 8 source port matches all 5,164 complete reference passages, 210
+saved admitted predictions, 1,001 title priorities and the original scope/grammar
+preparation controls. This is parity evidence, not a fresh quality evaluation.
+The actual pinned runtime matches all 1,519 complete paired input IDs/masks and
+255 padded batches. Three independent publisher FP32 examples and fifteen
+single-versus-batched comparisons meet their unchanged numerical bounds.
+
+A real macOS ARM64 child warmed 1,001 prepared fixture reviews and 5,164 complete
+paragraphs in approximately 300 seconds. A real native batch was cancelled and
+the child reaped in approximately 100 milliseconds; recovery from public vectors
+took approximately 3.5 seconds. These are local observations, not Linux ARM64,
+deployed latency, visitor success or a guarantee of a particular memory budget.
+The first actual-route rehearsal was rejected: its disposable fixture omitted
+explicit canonical slugs, changed the corpus fingerprint and exercised safe
+native fallback. It also reached the existing suggestion rate limit. Retain that
+failure; repair the fixture, verify corpus identity and pace real requests rather
+than weakening validation or rate limits.
+
+Before activation, complete all original 210 development rows, eight scope controls
+and 1,001 title controls through the complete service and both actual APIs.
+Only then open and independently classify the sealed fresh question set before
+scoring, with comprehension measured separately. Native Linux ARM64 numerical,
+capacity, whole-service latency and real typing checks, host-approved memory/CPU
+allocation, and retained-artifact activation/rollback rehearsal are still mandatory.
+The worker contract does not invent a host user, port, model directory or budget.
+Protected server automation owns installation, activation and rollback.
+
+The 201 source-prepared reviews and guides still require their separate protected
+publication workflow. No inference implementation, fixture count or source release
+is evidence that they are public, and none changes the whole-library quantity gate.

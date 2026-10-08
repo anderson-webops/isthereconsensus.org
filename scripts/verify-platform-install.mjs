@@ -1,7 +1,7 @@
-import { cp, mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { cp, lstat, mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { spawn } from "node:child_process";
 
 const root = process.cwd();
 const scratchRoot = path.join(root, ".ai-work", "runs");
@@ -33,6 +33,7 @@ async function verifyTarget(libc) {
 	try {
 		await Promise.all([
 			mkdir(path.join(temporaryRoot, "back-end"), { recursive: true }),
+			mkdir(path.join(temporaryRoot, "search-worker"), { recursive: true }),
 			mkdir(path.join(temporaryRoot, "front-end"), { recursive: true })
 		]);
 		await Promise.all([
@@ -45,7 +46,8 @@ async function verifyTarget(libc) {
 			}),
 			cp(path.join(root, "front-end/package.json"), path.join(temporaryRoot, "front-end/package.json"), {
 				recursive: true
-			})
+			}),
+			cp(path.join(root, "search-worker/package.json"), path.join(temporaryRoot, "search-worker/package.json"))
 		]);
 		await run(
 			process.execPath,
@@ -88,6 +90,20 @@ async function verifyTarget(libc) {
 		}
 		if (missing.length) {
 			throw new Error(`Linux ARM64 ${libc} install omitted native packages: ${missing.join(", ")}`);
+		}
+		if (libc === "glibc") {
+			const runtimeDirectory = path.join(temporaryRoot, "search-worker/node_modules/onnxruntime-node");
+			const metadata = JSON.parse(await readFile(path.join(runtimeDirectory, "package.json"), "utf8"));
+			if (metadata.version !== "1.30.0") throw new Error("The worker native runtime is not the reviewed version.");
+			for (const filename of ["onnxruntime_binding.node", "libonnxruntime.so.1"]) {
+				const absolutePath = path.join(runtimeDirectory, "bin/napi-v6/linux/arm64", filename);
+				const stat = await lstat(absolutePath);
+				const bytes = await readFile(absolutePath);
+				if (!stat.isFile() || stat.isSymbolicLink() || bytes.subarray(0, 4).toString("hex") !== "7f454c46" || bytes[4] !== 2 || bytes[5] !== 1 || bytes.readUInt16LE(18) !== 183) {
+					throw new Error("The worker install lacks its genuine Linux ARM64 ELF binding or shared library.");
+				}
+			}
+			process.stdout.write("Verified pinned worker Linux ARM64 ELF files; this cross-install is not native inference or capacity acceptance.\n");
 		}
 		process.stdout.write(`Verified Linux ARM64 ${libc} clean install (${expected.length} native packages).\n`);
 	}

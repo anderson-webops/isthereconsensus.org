@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"candidate": "paragraph-source-scope-v4",
+	"runtime": {
+		"@huggingface/tokenizers": "0.2.0",
+		"onnxruntime-node": "1.30.0",
+		"onnxruntime-web": "1.30.0",
+		"wink-nlp": "2.4.0",
+		"wink-eng-lite-web-model": "1.8.1"
+	},
+	"models": {
+		"bge": { "repository": "Xenova/bge-small-en-v1.5", "revision": "ea104dacec62c0de699686887e3f920caeb4f3e3", "backend": "single-thread-wasm" },
+		"gte": { "repository": "Alibaba-NLP/gte-reranker-modernbert-base", "revision": "f7481e6055501a30fb19d090657df9ec1f79ab2c", "backend": "cpu", "precision": "fp32", "intraOpThreads": 2, "interOpThreads": 1 }
+	},
+	"files": [
+		{ "path": "bge/model.onnx", "size": 34014426, "sha256": "6c9c6101a956d62dfb5e7190c538226c0c5bb9cb27b651234b6df063ee7dbfe4" },
+		{ "path": "bge/tokenizer.json", "size": 711396, "sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66" },
+		{ "path": "bge/tokenizer_config.json", "size": 366, "sha256": "9261e7d79b44c8195c1cada2b453e55b00aeb81e907a6664974b4d7776172ab3" },
+		{ "path": "gte/model.onnx", "size": 598803940, "sha256": "c6d3226502addbcd4d2cf273802957ebf8a2a6bf94037dcb9b1d95bfc01e5d93" },
+		{ "path": "gte/tokenizer.json", "size": 3583499, "sha256": "2aea6ff4701d063e7e029b6be695a1659f2caaa2ae4fb0e8b18285818271becd" },
+		{ "path": "gte/tokenizer_config.json", "size": 21031, "sha256": "626c86908d7c711f93b0feffd8657b782cc2727b391f9be190240e8cafb626d5" },
+		{ "path": "gte/config.json", "size": 1333, "sha256": "c9316ff715158502dad782f35454eee18de984160618dc30afe7508feb46b7ce" }
+	]
+}
