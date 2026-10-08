@@ -155,6 +155,8 @@ function oneEditApart(left: string, right: string) {
 	return true;
 }
 
+export const claimSearchLanguage = { normalize, tokens, contractions, isPersonalTreatmentDecision };
+
 /** Build once per loaded catalog. No database writes or remote search service. */
 export function createClaimSearchIndex<T extends SearchableClaim>(claims: T[]) {
 	const documents = claims.map((claim) => {

@@ -74,7 +74,6 @@ import { verifyCaptcha } from "./utils/captcha.js";
 import { normalizeCitationStatusSources } from "./utils/citationStatusSources.js";
 import { buildClaimCitationBundle } from "./utils/claimCitations.js";
 import { ClaimNarrativeValidationError, normalizeClaimNarratives } from "./utils/claimNarratives.js";
-import { createClaimSearchIndex } from "./utils/claimSearch.js";
 import { claimWorkflowTransitionAllowed } from "./utils/claimWorkflow.js";
 import { getActorFromRequest } from "./utils/community.js";
 import { canReadDiagnostics } from "./utils/diagnostics.js";
@@ -112,6 +111,7 @@ import {
 	toPublicTopicSentimentVote,
 	toReporterQuestionFlag
 } from "./utils/publicRecords.js";
+import { createPublicClaimSearch, PublicSearchStateUnavailableError } from "./utils/publicSearchWorker.js";
 import { planReaderPublication } from "./utils/readerUpdates.js";
 import { classifyPublicRequestError } from "./utils/requestErrors.js";
 import {
@@ -131,6 +131,16 @@ const normalizeQuestionPattern = /[^\p{L}\p{N}\s]/gu;
 
 async function main() {
 	const app = express();
+	const searchPublicClaims = createPublicClaimSearch({ socketPath: env.SEARCH_WORKER_SOCKET });
+	const loadPublicSearchCorpus = async (filter: QueryFilter<IClaim>) => {
+		const claims = await Claim.find(filter).populate("topic").maxTimeMS(1_000).lean();
+		const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
+		const searchableClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap)).map(claim => ({
+			...claim,
+			topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+		}));
+		return { searchableClaims, sourceCountMap };
+	};
 	const isProd = env.NODE_ENV === "production";
 	const isCrossSite = env.CROSS_SITE === "true";
 	const internalDiagnosticsKey = env.INTERNAL_DIAGNOSTICS_KEY;
@@ -1562,7 +1572,7 @@ async function main() {
 
 	api.get("/claims", async (req, res) => {
 		try {
-			const query = normalizeText(req.query.q, 160).toLowerCase();
+			const query = normalizeText(req.query.q, 160);
 			const topicSlug = normalizeText(req.query.topic, 80);
 			const requestedBand = normalizeText(req.query.consensusBand, 24);
 			const consensusBand = ["strong", "broad", "mixed", "unclear"].includes(requestedBand)
@@ -1580,14 +1590,18 @@ async function main() {
 			}
 
 			const claims = await Claim.find(filter).populate("topic").lean();
-			const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
+			let sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 			const searchableClaims = publicReadyClaims.map(claim => ({
 				...claim,
 				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
 			}));
 			const searchResults = query
-				? createClaimSearchIndex(searchableClaims)(query)
+				? await searchPublicClaims(searchableClaims, query, new Date(), async () => {
+						const current = await loadPublicSearchCorpus(filter);
+						sourceCountMap = current.sourceCountMap;
+						return current.searchableClaims;
+					})
 				: searchableClaims.map(claim => ({
 						claim,
 						match: { matchScore: 0, matchStrength: "none" as const, matchReason: "" }
@@ -1649,6 +1663,7 @@ async function main() {
 			});
 		}
 		catch (error) {
+			if (error instanceof PublicSearchStateUnavailableError) return res.status(503).json({ error: "Search is temporarily unavailable. Please try again." });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claims." });
 		}
@@ -1930,7 +1945,7 @@ async function main() {
 
 	api.get("/search/suggestions", searchSuggestionLimiter, async (req, res) => {
 		try {
-			const query = normalizeText(req.query.q, 160).toLowerCase();
+			const query = normalizeText(req.query.q, 160);
 			if (!query || query.length < 2) {
 				return res.json({ claims: [], topics: [], questions: [] });
 			}
@@ -1955,7 +1970,7 @@ async function main() {
 				...claim,
 				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
 			}));
-			const rankedClaims = createClaimSearchIndex(searchableClaims)(query)
+			const rankedClaims = (await searchPublicClaims(searchableClaims, query, new Date(), async () => (await loadPublicSearchCorpus({ status: "published" })).searchableClaims))
 				.slice(0, 6)
 				.map(({ claim, match }) => ({
 					_id: claim._id,
@@ -2032,6 +2047,7 @@ async function main() {
 			});
 		}
 		catch (error) {
+			if (error instanceof PublicSearchStateUnavailableError) return res.status(503).json({ error: "Search is temporarily unavailable. Please try again." });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load suggestions." });
 		}
