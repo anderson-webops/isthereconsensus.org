@@ -3,8 +3,8 @@ import { spawnSync } from "node:child_process";
 import { cpSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const repositoryRoot = new URL("..", import.meta.url);
 
@@ -77,6 +77,9 @@ function runSelectedNpm(args, cwd = repositoryRoot) {
 const rootPackage = readJson("package.json");
 const rootLock = readJson("package-lock.json");
 const backEndLock = readJson("back-end/package-lock.json");
+const workerPackage = readJson("search-worker/package.json");
+const workerRuntime = readJson("search-worker/runtime/package.json");
+const workerLock = readJson("search-worker/runtime/package-lock.json");
 const rootApprovals = ["argon2", "esbuild", "fsevents", "unrs-resolver"];
 const expectedRootPolicy = Object.fromEntries(
 	rootApprovals.map(packageName => [exactApproval(rootLock, packageName), true])
@@ -84,8 +87,16 @@ const expectedRootPolicy = Object.fromEntries(
 expectedRootPolicy["express-rate-limit"] = false;
 expectedRootPolicy.mongodb = false;
 expectedRootPolicy.puppeteer = false;
+expectedRootPolicy["onnxruntime-node"] = false;
+expectedRootPolicy.protobufjs = false;
 
 assert.deepEqual(rootPackage.allowScripts, expectedRootPolicy, "The root install-script policy must match the lockfile.");
+assert.deepEqual(workerRuntime.dependencies, workerPackage.dependencies, "Worker runtime dependencies must match its reviewed workspace.");
+assert.deepEqual(workerLock.packages[""].dependencies, workerRuntime.dependencies);
+assert.deepEqual(workerRuntime.allowScripts, { "onnxruntime-node": false, "protobufjs": false });
+for (const [name, version] of Object.entries(workerRuntime.dependencies)) {
+	assert.equal(workerLock.packages[`node_modules/${name}`]?.version, version, "Worker runtime versions must stay exactly pinned.");
+}
 
 for (const packageName of ["argon2", "esbuild", "fsevents"]) {
 	const approval = exactApproval(backEndLock, packageName);
@@ -114,4 +125,15 @@ finally {
 	rmSync(standaloneRoot, { force: true, recursive: true });
 }
 
-console.log("Install-script policy verified for root and standalone backend clean installs.");
+const workerRoot = mkdtempSync(join(tmpdir(), "isthereconsensus-worker-install-"));
+try {
+	for (const name of ["package.json", "package-lock.json", ".npmrc"]) {
+		cpSync(fileURLToPath(new URL(`search-worker/runtime/${name}`, repositoryRoot)), join(workerRoot, name));
+	}
+	runSelectedNpm(["ci", "--omit=dev", "--include=optional", "--strict-allow-scripts", "--dry-run"], workerRoot);
+}
+finally {
+	rmSync(workerRoot, { force: true, recursive: true });
+}
+
+console.log("Install-script policy verified for root, standalone backend and independently pinned worker clean installs.");

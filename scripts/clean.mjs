@@ -9,6 +9,8 @@ const generatedPaths = [
 	"back-end/dist",
 	"back-end/node_modules",
 	"back-end/tsconfig.tsbuildinfo",
+	"search-worker/dist",
+	"search-worker/node_modules",
 	"front-end/.nuxt",
 	"front-end/.output",
 	"front-end/dist",

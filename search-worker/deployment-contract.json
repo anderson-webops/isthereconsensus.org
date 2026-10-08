@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"service": "isthereconsensus.org-search-worker",
+	"protocol": 1,
+	"candidate": "paragraph-source-scope-v4",
+	"entrypoint": "dist/search-worker/src/server.js",
+	"runtime": { "node": ">=24.18.1 <25", "productionPlatform": "linux", "productionArchitecture": "arm64", "productionLibc": "glibc" },
+	"minimumAdapterCapabilities": ["optional-independent-search-worker-v1", "pinned-offline-models-v1", "private-unix-socket-v1", "owned-child-reaping-v1", "artifact-digest-verification-v1"],
+	"hostOwnedConfiguration": ["SEARCH_WORKER_SOCKET", "SEARCH_MODEL_DIR", "runtime user and group", "service and model memory budgets", "CPU allocation", "socket directory permissions"],
+	"readiness": { "liveness": "GET /healthz", "corpusReady": "GET /readyz", "transport": "private-unix-socket", "coldWarmMaximumMilliseconds": 600000, "rankMaximumMilliseconds": 7500 },
+	"requiredAcceptance": ["exact unpacked artifact and independently required paths", "native Linux ARM64 model input and numerical parity", "whole-corpus cold warm and memory under host-approved budgets", "complete original development, scope and title gates on both actual APIs", "genuinely fresh usefulness and separate comprehension evaluation", "real native inference cancellation and settled-typing recovery", "missing runtime module failure", "repeat, failed activation and retained-artifact rollback rehearsal"],
+	"activationDefault": "unset",
+	"rollback": { "retainedApiProtocol": 1, "workerUnsetUsesNativeSearch": true, "databaseMigration": "none", "persistentWorkerState": "none" },
+	"immutableWritablePaths": [],
+	"externalTransientState": ["host-owned Unix socket directory", "bounded in-memory public passage vectors only"],
+	"forbiddenInputs": ["accounts", "sessions", "private editorial fields", "authorization headers", "cookies", "provider credentials"],
+	"runtimeNetworkDownloads": false,
+	"sourceDeliveryIsActivation": false
+}

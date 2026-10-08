@@ -1,8 +1,9 @@
 # Isolated public-search transport
 
-This source milestone adds an optional transport boundary, not an accepted
-semantic-search implementation. No model daemon, model artifact installation,
-production activation or fresh-question usefulness result is included.
+The optional transport now has a separately compiled, pinned model service in
+`search-worker/`. It remains disabled by default. Shipping its source or building
+its artifact is not search-quality acceptance, native host acceptance, model
+installation or production activation. See [the service runbook](pinned-search-worker.md).
 
 The API's reference service keeps its existing 384 MiB soft and 512 MiB hard
 memory limits. The full-precision development model alone exceeds the hard
@@ -17,8 +18,8 @@ Leave `SEARCH_WORKER_SOCKET` unset. Both `/api/claims?q=...` and
 `/api/search/suggestions?q=...` retain the actual native search by default.
 An explicitly configured, normalized absolute `.sock` path selects the private
 Unix-socket transport. No HTTP/TCP URL or remote inference endpoint is accepted.
-This setting is reserved for isolated testing until the complete worker is
-implemented and accepted. No deployment unit enables it in this milestone.
+This setting remains reserved for isolated testing until the complete acceptance
+contract passes. No deployment unit enables it in this milestone.
 
 Queries keep their bounded original casing. Native normalization is unchanged.
 Exact-title matches remain native without contacting the worker. Individual
@@ -36,9 +37,11 @@ If cancellation arrives during an already-running publication check, the
 transport slot is released without waiting for that check. The underlying
 database operation may finish independently, but its result or failure is
 discarded and cannot unlock a later reader's RPC. Request lifecycle listeners
-are removed on every route exit. A future model service must separately stop
-abandoned inference and prove realistic typing behavior; cancelling this API
-transport alone does not establish model-side cancellation or latency.
+are removed on every route exit. The separate service kills and reaps only its
+owned inference child on cancellation and retains bounded public passage vectors.
+Queries are never retained for replay. Unit typing checks and an actual native
+in-flight cancellation rehearsal are separate evidence from public latency or
+native Linux ARM64 capacity; API transport cancellation alone is not sufficient.
 
 ## Public-state and privacy boundary
 
