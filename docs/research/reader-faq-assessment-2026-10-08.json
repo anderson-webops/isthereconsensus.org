@@ -1,0 +1,2241 @@
+{
+  "schemaVersion": 1,
+  "assessmentType": "curated-agency-faq-development",
+  "baselineSourceCommit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7",
+  "wordingFrozenAt": "2026-10-08T21:39:17.360Z",
+  "classificationFrozenAt": "2026-10-08T21:50:45.059Z",
+  "acquisition": {
+    "originalQuestions": 24,
+    "correctedQuestions": 36,
+    "original24Preserved": true,
+    "requiredStrata": 4,
+    "representedStrata": 3,
+    "sources": [
+      {
+        "id": "nasa",
+        "url": "https://science.nasa.gov/climate-change/faq/",
+        "sourceSha256": "cf5843634b90dc67d59eb1580358c2f9185c0e883274ae9a1944f87004d666b0",
+        "candidates": 35,
+        "selected": 12,
+        "rejected": 23
+      },
+      {
+        "id": "bls",
+        "url": "https://www.bls.gov/cpi/questions-and-answers.htm",
+        "sourceSha256": "afb9476c1492b0be92896a75e392f5452158c8c3e880b3be4ba04a5960b0f65b",
+        "candidates": 28,
+        "selected": 12,
+        "rejected": 16
+      },
+      {
+        "id": "eia",
+        "url": "https://www.eia.gov/tools/faqs/",
+        "sourceSha256": "78dabf584fcf06a348c05c64b65ca7be5a07f1b838275f96570ce2f9728bfe37",
+        "candidates": 108,
+        "selected": 12,
+        "rejected": 96
+      },
+      {
+        "id": "epa",
+        "url": "https://www.epa.gov/ground-water-and-drinking-water/home-drinking-water-filtration-fact-sheet",
+        "sourceSha256": "6f2183d4e58c5080c2a26e74518648cae507e324a623d088132721daf4b2d1d4",
+        "candidates": 0,
+        "selected": 0,
+        "rejected": 0,
+        "documentUrl": "https://www.epa.gov/sites/default/files/2015-11/documents/2005_11_17_faq_fs_healthseries_filtration.pdf",
+        "documentSha256": "e73e751da93508c967bd60214bfddd3235a016f3114e6e94e602b4a99a63d33d"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "development",
+    "author": "external",
+    "contextExposure": "development",
+    "frozenAt": "2026-10-08T21:50:45.059Z",
+    "baselineSourceCommit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7"
+  },
+  "certification": {
+    "eligible": false,
+    "requiredCoveredCases": 12,
+    "actualCoveredCases": 3,
+    "requiredOutsideCases": 6,
+    "actualOutsideCases": 9,
+    "limitations": [
+      "Only three of four fixed source strata yielded literal question headings; visual inspection of all seven EPA PDF pages confirmed declarative headings, not eligible questions.",
+      "Three covered questions are below the predeclared twelve-covered floor; nine genuine administrative controls exceed the six-outside floor.",
+      "Agency FAQs are a curated topical sample, not everyday visitor demand or reader comprehension.",
+      "The BLS FAQ was already a cited, previously checked authoring source; independent prior question non-exposure is not established. Native provenance remains development rather than claiming a sealed fresh candidate.",
+      "All wording and body labels precede retrieval predictions, but temporal freezing alone does not certify independence or representativeness.",
+      "Prepared CPI and electricity-unit reviews return public HTTP 404; source-published status is not actual publication.",
+      "The live consensus review differs from source uncertainty wording; the complete live body was inspected and its unchanged agreement conclusion supports the preassigned destination. No production text was changed."
+    ]
+  },
+  "nativeResult": {
+    "checkedAt": "2026-10-08T21:53:50.310Z",
+    "deploymentObservation": {
+      "frontend": {
+        "version": "v1.38.24",
+        "commit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7"
+      },
+      "reason": "observed-frontend-identity-only"
+    },
+    "counts": {
+      "covered": 3,
+      "partial": 11,
+      "gaps": 13,
+      "outside": 9
+    },
+    "endpointScores": [
+      {
+        "name": "directory",
+        "coveredHits": 1,
+        "coveredTotal": 3,
+        "coveredPercent": 33.333333333333336,
+        "outsideEmpty": 9,
+        "outsideTotal": 9
+      },
+      {
+        "name": "suggestions",
+        "coveredHits": 1,
+        "coveredTotal": 3,
+        "coveredPercent": 33.333333333333336,
+        "outsideEmpty": 9,
+        "outsideTotal": 9
+      }
+    ],
+    "unavailable": [],
+    "unreadable": [
+      {
+        "path": "/consensus/economics-and-social-policy/does-the-published-cpi-equal-every-households-inflation-rate",
+        "reason": "http-404"
+      },
+      {
+        "path": "/consensus/economics-and-social-policy/does-the-cpi-track-the-full-cost-of-buying-a-home",
+        "reason": "http-404"
+      },
+      {
+        "path": "/consensus/economics-and-social-policy/are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure",
+        "reason": "http-404"
+      }
+    ],
+    "mechanicalGatePassed": false,
+    "exitCode": 1,
+    "rows": [
+      {
+        "id": "nasa-001",
+        "classification": "partial",
+        "bodyGradingReason": "The reviews explain long-term climate patterns and attribution, but neither gives a complete general definition spanning the scope of climate change. The attribution guide is adjacent context, not a complete terminology answer.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/do-cold-snaps-or-snowy-winters-disprove-global-warming",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          },
+          {
+            "path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/earth-and-geoscience/are-shifting-magnetic-poles-causing-todays-climate-change",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/can-planting-trees-alone-solve-climate-change",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/does-climate-change-make-hurricanes-wetter-and-coastal-flooding-worse",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/earth-and-geoscience/are-shifting-magnetic-poles-causing-todays-climate-change",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/can-planting-trees-alone-solve-climate-change",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/does-climate-change-make-hurricanes-wetter-and-coastal-flooding-worse",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-002",
+        "classification": "partial",
+        "bodyGradingReason": "The attribution review establishes global warming and its cause, not the explicit distinction between temperature rise and the broader set of climate changes. A shared climate keyword is not sufficient.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-water-vapor-the-main-cause-of-current-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-global-sea-level-rise-influenced-year-to-year-by-climate-cycles-even-as-the-long-term-trend-rises",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/did-global-warming-stop-after-1998",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-water-vapor-the-main-cause-of-current-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-global-sea-level-rise-influenced-year-to-year-by-climate-cycles-even-as-the-long-term-trend-rises",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/did-global-warming-stop-after-1998",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-003",
+        "classification": "covered",
+        "bodyGradingReason": "The complete bottom line and stable-core paragraphs directly distinguish local, short-term weather from long-term statistical climate patterns and explain why isolated cold events do not measure a global climate trend.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/do-cold-snaps-or-snowy-winters-disprove-global-warming",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "nasa-004",
+        "classification": "partial",
+        "bodyGradingReason": "The tree-planting review explains why emissions reductions still matter and why one mitigation tool is insufficient. It does not answer which future changes can still be prevented, the relevant time horizons or the meaning of too late.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/can-planting-trees-alone-solve-climate-change",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "nasa-005",
+        "classification": "covered",
+        "bodyGradingReason": "The entire consensus review answers the core expert-agreement question with assessments, literature studies and limitations on exact agreement percentages. It distinguishes public controversy from expert disagreement.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-there-a-scientific-consensus-that-humans-are-causing-climate-change",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/consensus-foundations/does-scientific-consensus-mean-every-scientist-agrees",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/science-communication/does-communicating-scientific-consensus-change-what-people-believe",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/consensus-foundations/does-scientific-consensus-mean-every-scientist-agrees",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/science-communication/does-communicating-scientific-consensus-change-what-people-believe",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-006",
+        "classification": "outside",
+        "bodyGradingReason": "As phrased this asks for an agency's institutional role, not an evidence-backed claim about a climate outcome. A NASA citation in a review does not supply an organizational-role answer.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "nasa-007",
+        "classification": "partial",
+        "bodyGradingReason": "These complete reviews identify several independent land, ocean, atmosphere and ice indicators, but do not provide a general taxonomy of climate observations and proxy records. Source-linked information is not automatically included in the reviewed body.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          },
+          {
+            "path": "/consensus/climate-and-environment/did-global-warming-stop-after-1998",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-climate-change-making-drought-worse-everywhere",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-climate-change-making-drought-worse-everywhere",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-008",
+        "classification": "partial",
+        "bodyGradingReason": "The body describes controls and homogenization, but not the complete global temperature construction, spatial aggregation and anomaly procedure. An urban-bias explanation alone is not the full measurement answer.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/did-global-warming-stop-after-1998",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-the-sun-causing-recent-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/did-global-warming-stop-after-1998",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-the-sun-causing-recent-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-009",
+        "classification": "covered",
+        "bodyGradingReason": "The full bottom line and stable core directly establish that raw station records need quality controls, adjustments and homogenization for station moves, instruments and urbanization. The misconception discussion explains why a thermometer can require correction without invalidating the global record.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/do-cold-snaps-or-snowy-winters-disprove-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": true,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/do-cold-snaps-or-snowy-winters-disprove-global-warming",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              },
+              {
+                "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": true,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "nasa-010",
+        "classification": "partial",
+        "bodyGradingReason": "The body establishes adjustment and homogenization needs, but does not explicitly distinguish invalid-record elimination from the later processing stages or explain the complete sequence as the question requests.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "nasa-011",
+        "classification": "partial",
+        "bodyGradingReason": "Station moves and neighboring-record comparisons are relevant climate examples, not a complete explanation of changing data provenance in general. The original question lacks a climate qualifier; no source-context words were added to make retrieval easier.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "nasa-012",
+        "classification": "partial",
+        "bodyGradingReason": "Independent datasets and neighboring records provide a relevant validation example, but the broad question asks how data-processing reliability is established generally. The query's missing climate qualifier remains unaltered.",
+        "expected": [
+          {
+            "path": "/consensus/climate-and-environment/is-the-urban-heat-island-effect-responsible-for-the-observed-global-warming-trend",
+            "readable": true,
+            "reason": "public-api-and-rendered-content"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-001",
+        "classification": "partial",
+        "bodyGradingReason": "The prepared review defines population-average price change and weights, but is not a complete CPI introduction. It is not promoted to a complete answer, and its source-published label must not substitute for actual public availability.",
+        "expected": [
+          {
+            "path": "/consensus/economics-and-social-policy/does-the-published-cpi-equal-every-households-inflation-rate",
+            "readable": false,
+            "reason": "http-404"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-002",
+        "classification": "gap",
+        "bodyGradingReason": "The source says defined population without supplying the CPI-U/CPI-W population definitions required to answer whose buying habits are represented. This is a missing named-population explanation, not an outside control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-003",
+        "classification": "partial",
+        "bodyGradingReason": "Prepared reviews explain why CPI is not an individual's complete cost-of-living certificate and separate shelter services from asset purchases. They do not fully explain the CPI's relation to a conceptual cost-of-living index.",
+        "expected": [
+          {
+            "path": "/consensus/economics-and-social-policy/does-the-published-cpi-equal-every-households-inflation-rate",
+            "readable": false,
+            "reason": "http-404"
+          },
+          {
+            "path": "/consensus/economics-and-social-policy/does-the-cpi-track-the-full-cost-of-buying-a-home",
+            "readable": false,
+            "reason": "http-404"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-004",
+        "classification": "gap",
+        "bodyGradingReason": "The source does not identify the particular headline CPI series reported by media. An index-reference explanation is not an answer about the named series; the missing distinction remains a gap.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-005",
+        "classification": "outside",
+        "bodyGradingReason": "This asks for agency release/subscription logistics, not a reviewed scientific or measurement claim. It is retained as an administrative outside control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-006",
+        "classification": "outside",
+        "bodyGradingReason": "This asks where to obtain additional agency information or contact support. It is an administrative resource-navigation request, not an evidence conclusion.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-007",
+        "classification": "gap",
+        "bodyGradingReason": "The actual market-basket determination and expenditure-survey pipeline are missing. Prepared toy weighting examples explicitly disclaim BLS's real estimator and cannot answer this production-method question.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-008",
+        "classification": "gap",
+        "bodyGradingReason": "The actual CPI sampling procedure is missing. General statements about a defined basket, population or source scope do not explain the sample design.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-009",
+        "classification": "gap",
+        "bodyGradingReason": "The prepared numerical examples expressly are not the complete BLS production formula. They cannot be used to claim coverage of how the actual CPI is calculated.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-010",
+        "classification": "partial",
+        "bodyGradingReason": "The prepared body explains revisions to seasonal factors and data vintage, but not the complete distinction among corrected errors, adjusted revisions and unadjusted series policy. Its limited processing explanation remains partial.",
+        "expected": [
+          {
+            "path": "/consensus/economics-and-social-policy/are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure",
+            "readable": false,
+            "reason": "http-404"
+          }
+        ],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-011",
+        "classification": "outside",
+        "bodyGradingReason": "In its fixed CPI-FAQ context this is a request for the agency's publication offerings, not evidence about a measured phenomenon. The unqualified original wording is preserved rather than expanded for retrieval.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "bls-012",
+        "classification": "outside",
+        "bodyGradingReason": "This asks for the agency's area-index availability and publication schedule. No current schedule is inferred from statistical-definition reviews.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-001",
+        "classification": "outside",
+        "bodyGradingReason": "The question asks whether an agency supplies a particular download/data service. It does not ask for the production amounts themselves and is retained as an administrative availability control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-002",
+        "classification": "outside",
+        "bodyGradingReason": "This asks about the agency's forecasting-service coverage at state level, not a particular forecast's scientific accuracy. No forecast or named state result is invented.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-003",
+        "classification": "outside",
+        "bodyGradingReason": "The question concerns whether the agency publishes a price series, not the price value or an energy outcome. It is a series-availability control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-004",
+        "classification": "gap",
+        "bodyGradingReason": "No inspected canonical review provides the short-ton/metric-ton conversion. The site already covers physical measurement definitions, so this missing unit explanation is not reclassified outside merely to improve the denominator.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-005",
+        "classification": "gap",
+        "bodyGradingReason": "This requires dated U.S. coal-reserve inventory, definition and uncertainty. A review about coal-related emissions or diamond origins cannot answer that named quantitative question.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-006",
+        "classification": "gap",
+        "bodyGradingReason": "This requires a dated U.S. generating-plant count and counting convention. Generic grid or power-plant technology discussions do not supply it.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/genetics-and-biotechnology/are-gmos-unregulated-in-the-united-states",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/genetics-and-biotechnology/are-gmos-unregulated-in-the-united-states",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "eia-007",
+        "classification": "gap",
+        "bodyGradingReason": "This requires dated export quantities and destination countries, absent from the reviewed bodies. A climate conclusion about coal is not a trade-inventory answer.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-008",
+        "classification": "gap",
+        "bodyGradingReason": "This requires dated import quantities and origin countries. The missing named-context quantities remain a gap rather than an outside control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-009",
+        "classification": "gap",
+        "bodyGradingReason": "The electricity-unit and lifecycle reviews do not provide fuel quantities per generated kWh with heat content and plant-efficiency assumptions for all three requested fuels. Lifecycle CO2e/kWh is a different quantity.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-010",
+        "classification": "gap",
+        "bodyGradingReason": "The SMR review discusses prospective cost limitations, not comparable generation costs across power-plant types, dates and accounting boundaries. The electricity guides do not supply the missing comparison.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [
+              {
+                "path": "/consensus/climate-and-environment/do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
+                "readable": true,
+                "reason": "public-api-and-rendered-content"
+              }
+            ],
+            "hit": false,
+            "empty": false
+          }
+        ]
+      },
+      {
+        "id": "eia-011",
+        "classification": "gap",
+        "bodyGradingReason": "The lifecycle review reports technology emission-intensity estimates, not the share of dated U.S. CO2 emissions associated with generation. Emission intensity and inventory share must not be substituted.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      },
+      {
+        "id": "eia-012",
+        "classification": "outside",
+        "bodyGradingReason": "This is a catalog/definition request about the agency's price-series offerings, not a substantive coal-price value or causal energy claim. It is retained as a publication-metadata control.",
+        "expected": [],
+        "endpoints": [
+          {
+            "name": "directory",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          },
+          {
+            "name": "suggestions",
+            "available": true,
+            "reason": "ok",
+            "topThree": [],
+            "hit": false,
+            "empty": true
+          }
+        ]
+      }
+    ]
+  },
+  "publicScope": {
+    "startedAt": "2026-10-08T21:33:07.537Z",
+    "completedAt": "2026-10-08T21:40:34.624Z",
+    "controls": 12,
+    "requests": 150,
+    "frontendBefore": {
+      "ok": true,
+      "service": "front-end",
+      "runtime": "nuxt-ssr",
+      "buildId": "31dd4622-fb1f-4688-bb47-b5064274a319",
+      "commit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7",
+      "ref": "v1.38.24",
+      "siteUrl": "https://isthereconsensus.org"
+    },
+    "frontendAfter": {
+      "ok": true,
+      "service": "front-end",
+      "runtime": "nuxt-ssr",
+      "buildId": "31dd4622-fb1f-4688-bb47-b5064274a319",
+      "commit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7",
+      "ref": "v1.38.24",
+      "siteUrl": "https://isthereconsensus.org"
+    },
+    "frontendStable": true,
+    "passed": true,
+    "rows": [
+      {
+        "path": "/consensus/agriculture-and-food-systems/can-smell-and-appearance-tell-whether-food-is-safe",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/agriculture-and-food-systems/does-freezing-food-kill-all-pathogens",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/agriculture-and-food-systems/does-refrigeration-keep-leftovers-safe-indefinitely",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/agriculture-and-food-systems/does-reheating-make-improperly-stored-food-safe",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/agriculture-and-food-systems/does-vacuum-sealing-replace-refrigeration",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/bias-incentives/does-publication-bias-skew-the-published-scientific-record",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/biology-and-evolution/did-humans-evolve-from-chimpanzees-living-today",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/biology-and-evolution/is-antibiotic-resistance-an-example-of-evolution",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/biology-and-evolution/is-evolution-entirely-random",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/biology-and-evolution/is-evolution-just-a-theory",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/cardiovascular-metabolic-and-kidney-health/does-home-blood-pressure-monitoring-help-control-hypertension",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/are-ozone-generators-safe-and-effective-air-cleaners-for-occupied-homes",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/can-diy-box-fan-air-cleaners-match-commercial-particle-cleaners",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/can-electricity-grids-remain-reliable-with-high-shares-of-wind-and-solar",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/can-scientists-attribute-part-of-a-single-extreme-weather-event-to-climate-change",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/do-hepa-air-cleaners-remove-gases-and-carbon-monoxide",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/do-reverse-osmosis-systems-all-use-the-same-amount-of-reject-water",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/do-wind-and-solar-power-have-lower-lifecycle-greenhouse-gas-emissions-than-fossil-fuel-electricity",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-a-high-efficiency-filter-rating-guarantee-clean-air-throughout-a-room",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-a-higher-merv-filter-automatically-improve-whole-home-air-cleaning",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-boiling-water-remove-fuel-and-toxic-chemicals",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-softening-hard-water-make-it-microbiologically-safe",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-ultraviolet-water-disinfection-also-remove-lead-nitrate-and-pfas",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/does-water-filter-certification-mean-it-removes-every-contaminant",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/is-nuclear-power-more-dangerous-than-fossil-fuel-energy",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/is-recent-global-warming-mainly-caused-by-human-activity",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/climate-and-environment/is-the-sun-causing-recent-global-warming",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/consensus-foundations/does-improving-a-surrogate-endpoint-prove-patients-will-benefit",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/consensus-foundations/does-statistical-significance-tell-you-whether-an-effect-is-large-or-important",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/digital-security-and-privacy/can-one-time-authenticator-codes-still-be-phished",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/digital-security-and-privacy/do-passkeys-prevent-phishing-and-all-account-takeovers",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/digital-security-and-privacy/do-synced-passkeys-prevent-lockout-when-a-device-is-lost",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/digital-security-and-privacy/does-changing-passwords-every-month-improve-account-security",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/digital-security-and-privacy/does-installing-a-password-manager-eliminate-password-reuse",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/energy-and-infrastructure/do-heat-pump-efficiency-ratings-predict-a-homes-seasonal-performance",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/energy-and-infrastructure/do-lower-heat-pump-energy-bills-guarantee-lower-total-cost",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/are-10000-daily-steps-necessary-for-health-benefits",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/are-isometric-exercises-clearly-best-for-lowering-blood-pressure",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/can-post-exercise-readings-establish-long-term-blood-pressure-control",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/do-exercise-programs-lower-resting-blood-pressure-in-middle-aged-and-older-adults",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/does-lower-clinic-blood-pressure-after-exercise-imply-lower-24-hour-pressure",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/does-physical-activity-below-the-weekly-guideline-still-improve-health",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/does-research-identify-one-optimal-exercise-dose-for-lowering-blood-pressure",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/exercise-and-sports-science/must-weights-be-heavy-to-build-muscle",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/are-noise-cancelling-headphones-a-substitute-for-hearing-protection",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/can-vaers-reports-prove-that-a-vaccine-caused-an-adverse-event",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/can-you-add-earplug-and-earmuff-ratings-for-double-hearing-protection",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/do-laboratory-mosquito-repellent-protection-times-predict-everyday-protection",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/do-repellent-wristbands-protect-as-well-as-skin-applied-mosquito-repellents",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/do-spatial-emanators-prevent-malaria-and-can-they-replace-bed-nets",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/does-a-hearing-protectors-noise-reduction-rating-predict-my-protection",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/does-a-higher-repellent-concentration-mean-proportionally-better-mosquito-protection",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/does-earplug-fit-training-provide-lasting-protection-without-refreshers",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/does-individual-earplug-fit-training-improve-noise-attenuation",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/does-the-mmr-vaccine-cause-autism",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/is-lemon-eucalyptus-essential-oil-equivalent-to-a-registered-ole-or-pmd-repellent",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/health-and-medicine/is-the-mmr-vaccine-safe-and-highly-effective-at-preventing-measles",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/media-misinformation/can-relative-risk-tell-you-how-likely-something-is-without-absolute-risk",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/neuroscience-and-psychology/is-cognitive-behavioral-therapy-for-insomnia-a-first-line-treatment-for-chronic-insomnia",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/are-dietary-supplements-fda-approved-like-drugs",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/are-ultra-processed-foods-linked-to-worse-health-outcomes-and-how-much-is-causation-versus-confounding",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/do-vitamin-e-or-beta-carotene-supplements-prevent-heart-disease-or-cancer",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/does-a-mediterranean-style-diet-reduce-cardiovascular-events-in-high-risk-adults",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/does-caffeine-become-less-effective-with-regular-daily-use",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/does-creatine-monohydrate-improve-strength-training-and-is-it-generally-safe",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/nutrition-and-diet/does-it-matter-what-replaces-saturated-fat",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/can-brief-behavioral-treatment-improve-chronic-insomnia",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/can-caffeine-consumed-six-hours-before-bedtime-still-disrupt-sleep",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/can-sleep-restriction-therapy-temporarily-increase-daytime-sleepiness",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/do-most-healthy-adults-need-at-least-seven-hours-of-sleep",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/does-fully-automated-digital-cbt-i-match-face-to-face-therapy",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 4,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/is-sleep-hygiene-alone-an-effective-treatment-for-chronic-insomnia",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sleep-and-circadian-health/should-habitual-loud-snoring-prompt-evaluation-for-sleep-apnea",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      },
+      {
+        "path": "/consensus/sports-nutrition-and-supplements/does-caffeine-improve-exercise-performance-in-habitual-caffeine-users",
+        "apiStatus": 200,
+        "published": true,
+        "pageStatus": 200,
+        "headingMatched": true,
+        "scopeMatched": true,
+        "scopeGroups": 2,
+        "scopeCriteria": 6,
+        "selectedNarrativeMatched": true,
+        "missingFields": []
+      }
+    ]
+  },
+  "nativeTests": {
+    "tests": 13,
+    "pass": 13,
+    "fail": 0,
+    "initialSandboxAttempt": "Disposable loopback listener denied; failed attempt retained separately."
+  },
+  "finalPublicState": {
+    "checkedAt": "2026-10-08T21:54:09.048Z",
+    "productionMutation": false,
+    "rows": [
+      {
+        "pathname": "/deployment.json",
+        "status": 200,
+        "frontend": {
+          "ok": true,
+          "service": "front-end",
+          "runtime": "nuxt-ssr",
+          "buildId": "31dd4622-fb1f-4688-bb47-b5064274a319",
+          "commit": "8a51db85fae3c61aef9b2ed5f95dee2e40c651b7",
+          "ref": "v1.38.24",
+          "siteUrl": "https://isthereconsensus.org"
+        }
+      },
+      {
+        "pathname": "/api/claims?limit=1&page=1",
+        "status": 200,
+        "pagination": {
+          "page": 1,
+          "pageSize": 1,
+          "total": 800,
+          "totalPages": 800,
+          "hasMore": true
+        }
+      },
+      {
+        "pathname": "/api/coverage?limit=1&page=1",
+        "status": 200,
+        "pagination": {
+          "page": 1,
+          "limit": 1,
+          "total": 0,
+          "hasMore": false
+        }
+      }
+    ]
+  },
+  "sourceApplicationChanged": false,
+  "productionMutation": false,
+  "hashes": {
+    "originalWordingFile": "6cc13306d64df2c9ed3f836ffaec9f0822b147ef5dda82e36d6e5fbb60a0d503",
+    "correctedWordingFile": "ff9db4e6a40ce8aadd6d9150163e8f5c6a6fe189e2e0b80f02d25900019a0b8b",
+    "bodyLabels": "8af513fc9fe3a6a97c555a51f73cde590f213eccfa8ae664b83e404e5f13a5e8",
+    "classificationReceipt": "bca62e3077213b904f8982bd4fba765e7fbb438dbbf43974de644d7e77d7f721",
+    "publicCandidateBodies": "7ca549270168032beeb300dbd6e92104f7f28f83ae5d891f96b4d793cd5141bf",
+    "nativeInput": "a55308a3e683dbd222347bc0b28af0ab5635668e4ddff8c2f33e6c1d4b60d0e0",
+    "nativeNormalizedDataset": "6ec90f7b3eccf029199efc181f40b9151a600789b8ec2e9087a7108096d6671c",
+    "nativeResult": "150942cf30786bb018ec719a633d0fffd1626dc7868d569eef03b7db0b1ba71e",
+    "scopeResult": "b3d7a5eb7d4ee8f2942b577f4f3260aab84ba347199b9378be8ead42b8ef46ff",
+    "scopeControls": "d6983d99bd115b8ac8d0acfcefaf9d5467b537c1cd31c282bfe2133ae7a79bff"
+  }
+}
