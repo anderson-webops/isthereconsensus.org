@@ -8,7 +8,7 @@ import { analyzeAskQuery, matchExplainers } from "~/utils/ask-flow";
 import { searchComparisons } from "~/utils/comparison-search";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
-import { createLatestRequest } from "~/utils/latest-request";
+import { createLatestRequest, settledSearchWatchOptions } from "~/utils/latest-request";
 import { formatPublicLibrarySummary } from "~/utils/public-library-summary";
 import { selectRecentClaims } from "~/utils/recent-claims";
 import { resolveHomeSearchRoute } from "~/utils/search-routing";
@@ -237,7 +237,7 @@ async function loadSuggestions(value: string) {
 		if (request.isCurrent()) loadingSuggestions.value = false;
 	}
 }
-watchDebounced(searchQuery, loadSuggestions, { debounce: 250, maxWait: 600 });
+watchDebounced(searchQuery, loadSuggestions, settledSearchWatchOptions);
 
 function submitSearch() {
 	const query = searchQuery.value;

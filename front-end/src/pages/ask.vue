@@ -16,7 +16,7 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
 import { searchComparisons } from "~/utils/comparison-search";
-import { createLatestRequest } from "~/utils/latest-request";
+import { createLatestRequest, settledSearchWatchOptions } from "~/utils/latest-request";
 
 interface MatchOption {
 	label: string;
@@ -203,7 +203,7 @@ async function loadSuggestions(value: string) {
 		if (request.isCurrent()) loadingSuggestions.value = false;
 	}
 }
-watchDebounced(query, loadSuggestions, { debounce: 250, maxWait: 600 });
+watchDebounced(query, loadSuggestions, settledSearchWatchOptions);
 onMounted(() => loadSuggestions(query.value));
 
 async function submitQuestion() {
