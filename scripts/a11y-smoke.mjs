@@ -103,6 +103,7 @@ const routes = [
 	"/guides/reading-weather-forecasts-and-measurements",
 	"/guides/reading-test-scores-and-school-comparisons",
 	"/guides/reading-inflation-jobs-and-gdp-headlines",
+	"/guides/reading-ai-water-footprints",
 	"/compare/hearing-protection?outcome=use",
 	"/compare/hearing-protection?context=personal",
 	"/compare/hearing-protection?context=injury",
