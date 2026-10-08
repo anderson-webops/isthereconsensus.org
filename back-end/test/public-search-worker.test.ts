@@ -11,6 +11,7 @@ import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 import {
 	createPublicClaimSearch,
 	PUBLIC_SEARCH_WORKER_RESPONSE_LIMIT,
+	PublicSearchCancelledError,
 	PublicSearchStateUnavailableError,
 	publicSearchWorkerPayload
 } from "../src/utils/publicSearchWorker.js";
@@ -161,6 +162,170 @@ describe("isolated public search transport", () => {
 		assert.equal(received, 1);
 		release();
 		await first;
+	});
+
+	it("rejects pre-cancelled searches without transport or publication work", async (context) => {
+		let received = 0;
+		let refreshed = 0;
+		const socketPath = await workerFixture(context, (payload, request, response) => {
+			received++;
+			response.end(JSON.stringify(reply(payload, [])));
+		});
+		const search = createPublicClaimSearch({ socketPath });
+		const controller = new AbortController();
+		controller.abort("PRIVATE_ABORT_REASON");
+		for (const value of [query, publicClaim.title]) {
+			await assert.rejects(search([publicClaim], value, referenceDate, async () => {
+				refreshed++;
+				return [publicClaim];
+			}, controller.signal), PublicSearchCancelledError);
+		}
+		assert.equal(received, 0);
+		assert.equal(refreshed, 0);
+	});
+
+	it("closes abandoned RPC and lets the next query use the shared worker", async (context) => {
+		let received = 0;
+		let refreshed = 0;
+		let notify: () => void;
+		let disconnected: () => void;
+		let lateReply: () => void;
+		const entered = new Promise<void>((resolve) => {
+			notify = resolve;
+		});
+		const closed = new Promise<void>((resolve) => {
+			disconnected = resolve;
+		});
+		const socketPath = await workerFixture(context, (payload, request, response) => {
+			received++;
+			if (received === 1) {
+				response.once("close", () => disconnected());
+				lateReply = () => response.end(JSON.stringify(reply(payload, [])));
+				notify();
+			}
+			else {
+				response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			}
+		});
+		const search = createPublicClaimSearch({ socketPath });
+		const controller = new AbortController();
+		const first = search([publicClaim], query, referenceDate, async () => {
+			refreshed++;
+			return [publicClaim];
+		}, controller.signal);
+		const rejected = assert.rejects(first, (error: unknown) => {
+			assert.ok(error instanceof PublicSearchCancelledError);
+			assert.doesNotMatch(error.message, /PRIVATE_ABORT_REASON/u);
+			return true;
+		});
+		await entered;
+		controller.abort("PRIVATE_ABORT_REASON");
+		await rejected;
+		await closed;
+		assert.equal(refreshed, 0);
+		const results = await search([publicClaim], "Another unfamiliar inlet question", referenceDate);
+		assert.equal(received, 2);
+		assert.equal(results[0].claim, publicClaim);
+		lateReply();
+	});
+
+	it("does not let one reader's cancellation affect another in-flight search", async (context) => {
+		let release: () => void;
+		let notify: () => void;
+		let received = 0;
+		const entered = new Promise<void>((resolve) => {
+			notify = resolve;
+		});
+		const socketPath = await workerFixture(context, (payload, request, response) => {
+			received++;
+			release = () => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			notify();
+		});
+		const search = createPublicClaimSearch({ socketPath });
+		const first = search([publicClaim], query, referenceDate);
+		await entered;
+		const controller = new AbortController();
+		controller.abort();
+		await assert.rejects(search([publicClaim], "A cancelled second question", referenceDate, undefined, controller.signal), PublicSearchCancelledError);
+		assert.equal(received, 1);
+		release();
+		assert.equal((await first)[0].claim, publicClaim);
+	});
+
+	for (const fails of [false, true]) {
+		it(`discards a cancelled publication check even when it ${fails ? "fails" : "succeeds"}`, { timeout: 5_000 }, async (context) => {
+			let release: () => void;
+			let notify: () => void;
+			const entered = new Promise<void>((resolve) => {
+				notify = resolve;
+			});
+			const checking = new Promise<void>((resolve) => {
+				release = resolve;
+			});
+			const controller = new AbortController();
+			const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }]))));
+			const search = createPublicClaimSearch({ socketPath });
+			const first = search([publicClaim], query, referenceDate, async () => {
+				notify();
+				await checking;
+				if (fails) throw new Error("Unavailable public state");
+				return [publicClaim];
+			}, controller.signal);
+			const rejected = assert.rejects(first, PublicSearchCancelledError);
+			await entered;
+			controller.abort();
+			await rejected;
+			assert.equal((await search([publicClaim], query, referenceDate))[0].claim, publicClaim);
+			release();
+			await checking;
+		});
+	}
+
+	it("does not let a late abandoned publication check unlock another reader's RPC", { timeout: 5_000 }, async (context) => {
+		let releaseRefresh: () => void;
+		let notifyRefresh: () => void;
+		let notifySecond: () => void;
+		let releaseSecond: () => void;
+		let received = 0;
+		const refreshEntered = new Promise<void>((resolve) => {
+			notifyRefresh = resolve;
+		});
+		const refreshPending = new Promise<void>((resolve) => {
+			releaseRefresh = resolve;
+		});
+		const secondEntered = new Promise<void>((resolve) => {
+			notifySecond = resolve;
+		});
+		const socketPath = await workerFixture(context, (payload, request, response) => {
+			received++;
+			const respond = () => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			if (received === 1) {
+				respond();
+			}
+			else {
+				releaseSecond = respond;
+				notifySecond();
+			}
+		});
+		const search = createPublicClaimSearch({ socketPath });
+		const controller = new AbortController();
+		const first = search([publicClaim], query, referenceDate, async () => {
+			notifyRefresh();
+			await refreshPending;
+			return [publicClaim];
+		}, controller.signal);
+		const rejected = assert.rejects(first, PublicSearchCancelledError);
+		await refreshEntered;
+		controller.abort();
+		await rejected;
+		const second = search([publicClaim], "A second unfamiliar question", referenceDate);
+		await secondEntered;
+		releaseRefresh();
+		await refreshPending;
+		assert.deepEqual(await search([publicClaim], "A third unfamiliar question", referenceDate), createClaimSearchIndex([publicClaim])("A third unfamiliar question", referenceDate));
+		assert.equal(received, 2);
+		releaseSecond();
+		assert.equal((await second)[0].claim, publicClaim);
 	});
 
 	it("rechecks publication after an in-flight worker response instead of returning withdrawn content", async (context) => {

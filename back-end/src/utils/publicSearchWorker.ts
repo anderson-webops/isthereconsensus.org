@@ -47,6 +47,36 @@ export class PublicSearchStateUnavailableError extends Error {
 	}
 }
 
+export class PublicSearchCancelledError extends Error {
+	constructor() {
+		super("The reader cancelled this search.");
+		this.name = "PublicSearchCancelledError";
+	}
+}
+
+function requireActiveSearch(signal: AbortSignal | undefined) {
+	if (signal?.aborted) throw new PublicSearchCancelledError();
+}
+
+async function waitForActiveSearch<Value>(operation: Promise<Value>, signal?: AbortSignal): Promise<Value> {
+	if (!signal) return operation;
+	return new Promise<Value>((resolve, reject) => {
+		const abort = () => {
+			signal.removeEventListener("abort", abort);
+			reject(new PublicSearchCancelledError());
+		};
+		signal.addEventListener("abort", abort, { once: true });
+		operation.then((value) => {
+			signal.removeEventListener("abort", abort);
+			resolve(value);
+		}, (error: unknown) => {
+			signal.removeEventListener("abort", abort);
+			reject(error);
+		});
+		if (signal.aborted) abort();
+	});
+}
+
 export function publicSearchWorkerPayload<ClaimType extends PublicSearchCorpusClaim>(claims: ClaimType[], query: string, referenceDate: Date) {
 	const corpus = claims
 		.filter(claim => claim.status === "published")
@@ -77,7 +107,7 @@ function validSocketPath(value: string | undefined): value is string {
 	return Boolean(value && path.isAbsolute(value) && path.normalize(value) === value && value.endsWith(".sock") && Buffer.byteLength(value) <= 100);
 }
 
-async function workerReply(socketPath: string, body: string, timeoutMilliseconds: number) {
+async function workerReply(socketPath: string, body: string, timeoutMilliseconds: number, signal?: AbortSignal) {
 	return new Promise<unknown>((resolve, reject) => {
 		const controller = new AbortController();
 		const deadline = setTimeout(() => controller.abort(), timeoutMilliseconds);
@@ -86,7 +116,7 @@ async function workerReply(socketPath: string, body: string, timeoutMilliseconds
 			method: "POST",
 			path: "/rank",
 			agent: false,
-			signal: controller.signal,
+			signal: signal ? AbortSignal.any([controller.signal, signal]) : controller.signal,
 			headers: { "content-type": "application/json", "content-length": Buffer.byteLength(body) }
 		}, (response) => {
 			if (response.statusCode !== 200) {
@@ -124,7 +154,8 @@ export function createPublicClaimSearch(options: PublicSearchWorkerOptions = {})
 	const socketPath = options.socketPath;
 	const timeoutMilliseconds = Math.max(1, Math.min(options.timeoutMilliseconds ?? 8_000, 8_000));
 	let active = false;
-	return async <ClaimType extends PublicSearchCorpusClaim>(claims: ClaimType[], query: string, referenceDate = new Date(), refresh?: () => Promise<ClaimType[]>) => {
+	return async <ClaimType extends PublicSearchCorpusClaim>(claims: ClaimType[], query: string, referenceDate = new Date(), refresh?: () => Promise<ClaimType[]>, signal?: AbortSignal) => {
+		requireActiveSearch(signal);
 		const publicClaims = claims.filter(claim => claim.status === "published");
 		const native = createClaimSearchIndex(publicClaims)(query, referenceDate);
 		if (!validSocketPath(socketPath) || !query.trim() || query.length > 160 || active || native[0]?.match.matchStrength === "exact" || claimSearchLanguage.isPersonalTreatmentDecision(query)) return native;
@@ -135,20 +166,23 @@ export function createPublicClaimSearch(options: PublicSearchWorkerOptions = {})
 		try {
 			let reply: z.infer<typeof responseSchema> | undefined;
 			try {
-				reply = responseSchema.parse(await workerReply(socketPath, body, timeoutMilliseconds));
+				reply = responseSchema.parse(await workerReply(socketPath, body, timeoutMilliseconds, signal));
 			}
 			catch {
 				reply = undefined;
 			}
+			requireActiveSearch(signal);
 			let currentClaims = publicClaims;
 			if (refresh) {
 				try {
-					currentClaims = (await refresh()).filter(claim => claim.status === "published");
+					currentClaims = (await waitForActiveSearch(refresh(), signal)).filter(claim => claim.status === "published");
 				}
 				catch {
+					requireActiveSearch(signal);
 					throw new PublicSearchStateUnavailableError();
 				}
 			}
+			requireActiveSearch(signal);
 			const currentNative = refresh ? createClaimSearchIndex(currentClaims)(query, referenceDate) : native;
 			const currentPayload = refresh ? publicSearchWorkerPayload(currentClaims, query, referenceDate) : payload;
 			if (!reply || reply.corpusHash !== payload.corpusHash || reply.queryHash !== payload.queryHash || reply.referenceDate !== payload.referenceDate || currentPayload.corpusHash !== payload.corpusHash) return currentNative;

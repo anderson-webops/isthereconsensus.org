@@ -88,6 +88,7 @@ import {
 	validEvidenceTier
 } from "./utils/evidenceDistribution.js";
 import { toPublicEvidenceLandscape } from "./utils/evidenceLandscape.js";
+import { observeHttpRequestCancellation } from "./utils/httpRequestCancellation.js";
 import { resolveMongoConfiguration } from "./utils/mongoConfiguration.js";
 import { createProbeRouter } from "./utils/probes.js";
 import { loadClaimSourceReadinessCountMap } from "./utils/publicClaimQueries.js";
@@ -1571,6 +1572,7 @@ async function main() {
 	});
 
 	api.get("/claims", async (req, res) => {
+		const cancellation = observeHttpRequestCancellation(req, res);
 		try {
 			const query = normalizeText(req.query.q, 160);
 			const topicSlug = normalizeText(req.query.topic, 80);
@@ -1601,7 +1603,7 @@ async function main() {
 						const current = await loadPublicSearchCorpus(filter);
 						sourceCountMap = current.sourceCountMap;
 						return current.searchableClaims;
-					})
+					}, cancellation.signal)
 				: searchableClaims.map(claim => ({
 						claim,
 						match: { matchScore: 0, matchStrength: "none" as const, matchReason: "" }
@@ -1663,10 +1665,12 @@ async function main() {
 			});
 		}
 		catch (error) {
+			if (cancellation.signal.aborted) return;
 			if (error instanceof PublicSearchStateUnavailableError) return res.status(503).json({ error: "Search is temporarily unavailable. Please try again." });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load claims." });
 		}
+		finally { cancellation.dispose(); }
 	});
 
 	api.get("/topics/:topicSlug/claims/:claimSlug", async (req, res) => {
@@ -1944,6 +1948,7 @@ async function main() {
 	});
 
 	api.get("/search/suggestions", searchSuggestionLimiter, async (req, res) => {
+		const cancellation = observeHttpRequestCancellation(req, res);
 		try {
 			const query = normalizeText(req.query.q, 160);
 			if (!query || query.length < 2) {
@@ -1970,7 +1975,7 @@ async function main() {
 				...claim,
 				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
 			}));
-			const rankedClaims = (await searchPublicClaims(searchableClaims, query, new Date(), async () => (await loadPublicSearchCorpus({ status: "published" })).searchableClaims))
+			const rankedClaims = (await searchPublicClaims(searchableClaims, query, new Date(), async () => (await loadPublicSearchCorpus({ status: "published" })).searchableClaims, cancellation.signal))
 				.slice(0, 6)
 				.map(({ claim, match }) => ({
 					_id: claim._id,
@@ -2047,10 +2052,12 @@ async function main() {
 			});
 		}
 		catch (error) {
+			if (cancellation.signal.aborted) return;
 			if (error instanceof PublicSearchStateUnavailableError) return res.status(503).json({ error: "Search is temporarily unavailable. Please try again." });
 			logError("API request failed", error);
 			return res.status(500).json({ error: "Failed to load suggestions." });
 		}
+		finally { cancellation.dispose(); }
 	});
 
 	api.get("/questions", async (req, res) => {
