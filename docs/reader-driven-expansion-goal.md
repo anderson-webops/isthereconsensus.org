@@ -63,8 +63,8 @@ raw messages. A per-question novelty/source record will precede content batches.
   and qualification
   records are retained under `research/reader-*.md`. Existing refreshes and guide
   pages do not count as additions. Actual public publication remains pending.
-- Eight new guides and integrated discovery: source now contains thirty
-  substantial sourced guides, thirteen beyond the seventeen-guide baseline.
+- Eight new guides and integrated discovery: source now contains thirty-one
+  substantial sourced guides, fourteen beyond the seventeen-guide baseline.
   Their full bodies, paragraph citations, canonical links and public-availability
   guards are retained. Source counts do not establish public guide availability.
 - Whole-library quantity copy: implemented for the public catalog, not the source
@@ -136,3 +136,13 @@ found healthy frontend v1.38.13,
 economic review canary was unavailable; the guide route returned HTTP 200,
 without proving every guide's full public acceptance. This observed public state,
 not source totals or isolated fixture publication, controls publication claims.
+
+A complete anonymous public readback on October 8, 20:01-20:21 UTC, independently
+verified all thirty-one guide bodies, citations, directory/sitemap discovery and
+connected-review guards. The public frontend was v1.38.23 at `39ab726`. The
+catalog still contained 800 canonical reviews; all 201 expansion APIs returned
+404 and the approved roadmap remained empty. The overall goal is not complete.
+The readback also identified missing visible evidence-selection criteria in
+review pages, alongside a block-paragraph separator limitation in the verifier.
+See [the complete public acceptance record](reader-public-acceptance-2026-10-08.md)
+for denominators, retained failures, source correction and verification limits.

@@ -1,4 +1,13 @@
-import type { ClaimEvidenceSummary, ClaimUncertaintyDriver } from "~/types/board";
+import type { Claim, ClaimEvidenceSummary, ClaimUncertaintyDriver } from "~/types/board";
+
+export function selectReviewScopeGroups(claim?: Pick<Claim, "inclusionRules" | "exclusionRules"> | null) {
+	return [
+		{ key: "included", title: "Included evidence", items: claim?.inclusionRules ?? [] },
+		{ key: "excluded", title: "Excluded evidence", items: claim?.exclusionRules ?? [] }
+	]
+		.map((group) => ({ ...group, items: group.items.map((item) => item.trim()).filter(Boolean) }))
+		.filter((group) => group.items.length > 0);
+}
 
 const generatedFallbackPopulation =
 	"Public-facing summary built from the highest-weight evidence available for this claim.";

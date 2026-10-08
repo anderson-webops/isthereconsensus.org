@@ -8,6 +8,19 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(testDir, "..", "src/pages/consensus/[topicSlug]/[claimSlug].vue"), "utf8");
 
 describe("claim detail layout", () => {
+	it("shows full recorded scope to all readers before uncertainty", () => {
+		assert.match(source, /const reviewScopeGroups = computed\(\(\) => selectReviewScopeGroups\(claim\.value\)\)/);
+		const scope = source.match(/<section v-if="reviewScopeGroups\.length"[\s\S]*?<\/section>/)?.[0];
+		assert.ok(scope);
+		assert.match(scope, /aria-labelledby="review-scope-title"/);
+		assert.match(scope, /<h2 id="review-scope-title">Scope of this review<\/h2>/);
+		assert.match(scope, /<h3>\{\{ group\.title \}\}<\/h3>/);
+		assert.match(scope, /<li v-for="\(item, index\) in group\.items" :key="index">\{\{ item \}\}<\/li>/);
+		assert.doesNotMatch(scope, /canEditClaim|v-html|slice\(|substring\(/);
+		assert.ok(source.indexOf(scope) < source.indexOf('<section class="uncertainty-strip">'));
+		assert.match(source, /\.review-scope__group \{[\s\S]*overflow-wrap: anywhere;/);
+	});
+
 	it("distinguishes technical references from formal consensus and appraisal", () => {
 		assert.match(source, /key: "technical"[\s\S]*kinds: \["technical_reference"\]/);
 		assert.match(source, /not formal consensus statements, research syntheses or automatically appraised evidence/);

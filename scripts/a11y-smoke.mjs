@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import http from "node:http";
@@ -15,6 +16,7 @@ const projectRoot = resolve(scriptDir, "..");
 const frontendServerEntry = resolve(projectRoot, "front-end/.output/server/index.mjs");
 
 const siteName = "Is There Consensus?";
+const longScopeCriterion = `${"A full synthetic qualification. ".repeat(30)}${"scope".repeat(100)} <script>globalThis.scopeInjected = true</script>`;
 let frontendPort = 0;
 let apiPort = 0;
 let baseUrl = "";
@@ -24,6 +26,8 @@ const routes = [
 	"/consensus",
 	"/consensus?q=creatine%20vs%20protein",
 	"/consensus/a11y-topic/a11y-citation-review",
+	"/consensus/a11y-topic/a11y-scope-legacy",
+	"/consensus/a11y-topic/a11y-scope-long",
 	"/ask",
 	"/ask?question=creatine%20vs%20protein",
 	"/library",
@@ -262,18 +266,21 @@ function responseFor(url) {
 		};
 		return pathname.endsWith("/coverage") ? { rows: [row], pagination: { page: 1, limit: 20, total: 1, hasMore: false } } : { row };
 	}
-	if (pathname.endsWith("/topics/a11y-topic/claims/a11y-citation-review")) {
+	const scopeSlug = pathname.split("/").at(-1);
+	if (pathname.includes("/topics/a11y-topic/claims/") && ["a11y-citation-review", "a11y-scope-legacy", "a11y-scope-long"].includes(scopeSlug)) {
 		return {
 			claim: {
 				_id: "a11y-claim",
 				title: "Does this sample review support accessible citation reuse?",
-				slug: "a11y-citation-review",
+				slug: scopeSlug,
 				status: "published",
 				consensusBand: "broad",
 				evidenceCertainty: "moderate",
 				confidenceScore: 82,
 				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
 				stableCore: ["The review can be copied or exported in standard citation formats."],
+				inclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : [scopeSlug === "a11y-scope-long" ? longScopeCriterion : "Public review pages with keyboard-accessible citation controls in this synthetic fixture."],
+				exclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : ["Private account data and unreviewed submissions are outside this fixture's scope."],
 				openQuestions: ["How will citation use vary by reader?"],
 				whatWouldChangeMinds: ["A browser-level accessibility regression."],
 				misconceptions: [],
@@ -484,8 +491,29 @@ async function analyzePage(browser, route, scheme) {
 	if (scheme === "dark" || scheme === "light") {
 		await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: scheme }]);
 	}
-	await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 });
+	const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 });
 	await page.waitForNetworkIdle({ idleTime: 500, timeout: 8_000 }).catch(() => {});
+	if (route.startsWith("/consensus/a11y-topic/")) {
+		const { claim } = responseFor(new URL(`/topics/a11y-topic/claims/${route.split("/").at(-1)}`, apiUrl));
+		const expected = [
+			{ title: "Included evidence", items: claim.inclusionRules ?? [] },
+			{ title: "Excluded evidence", items: claim.exclusionRules ?? [] }
+		].filter(group => group.items.length);
+		const serverScope = (await response.text()).match(/<section[^>]*aria-labelledby="review-scope-title"[\s\S]*?<\/section>/)?.[0] ?? "";
+		assert.equal(Boolean(serverScope), Boolean(expected.length), `${route}: SSR scope visibility`);
+		for (const group of expected) {
+			for (const item of group.items) {
+				const escaped = item.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+				assert.ok(serverScope.includes(escaped), `${route}: full criterion missing from SSR section`);
+			}
+		}
+		const actual = await page.$$eval('[aria-labelledby="review-scope-title"] .review-scope__group', groups => groups.map(group => ({
+			title: group.querySelector("h3").textContent.trim(),
+			items: Array.from(group.querySelectorAll("li"), item => item.textContent.trim())
+		})));
+		assert.deepEqual(actual, expected, `${route}: hydrated scope differs`);
+		assert.equal(await page.evaluate(() => globalThis.scopeInjected), undefined);
+	}
 	await page.addScriptTag({ path: axeSourcePath });
 	const result = await page.evaluate(async () => {
 		return await globalThis.axe.run(document, {
@@ -529,6 +557,12 @@ async function analyzePage(browser, route, scheme) {
 			negativeLetterSpacing
 		};
 	});
+	if (route.startsWith("/consensus/a11y-topic/")) {
+		await page.setViewport({ width: 320, height: 900, deviceScaleFactor: 1 });
+		await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+		const scopeOverflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
+		assert.equal(scopeOverflow, false, `${route}: scope overflow at 320px and 200% text`);
+	}
 	await page.close();
 	const layoutIssues = [];
 	if (mobileLayout.h1Count !== 1)
