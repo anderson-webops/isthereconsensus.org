@@ -1,3 +1,5 @@
+export const settledSearchWatchOptions = { debounce: 250 } as const;
+
 /** Invalidating on input change prevents an older response replacing newer intent. */
 export function createLatestRequest() {
 	let version = 0;

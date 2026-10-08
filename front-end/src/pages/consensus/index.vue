@@ -10,6 +10,7 @@ import { searchComparisons } from "~/utils/comparison-search";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
+import { createLatestRequest, settledSearchWatchOptions } from "~/utils/latest-request";
 import { matchesSearchQuery } from "~/utils/search-query";
 
 const route = useRoute();
@@ -19,6 +20,9 @@ const search = ref(typeof route.query.q === "string" ? route.query.q : "");
 const query = computed(() => search.value.trim().slice(0, 160));
 const requestedQuery = ref(query.value);
 const comparisonMatches = computed(() => searchComparisons(query.value));
+const directoryRequests = createLatestRequest();
+onScopeDispose(directoryRequests.cancel);
+watch(query, directoryRequests.cancel, { flush: "sync" });
 
 const { data: topicsData } = await useAsyncData("topics", () =>
 	$fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"))
@@ -31,9 +35,12 @@ const {
 } = await useAsyncData(
 	() => `claim-directory-${requestedQuery.value}`,
 	() => {
+		const request = directoryRequests.begin();
 		const searchSuffix = requestedQuery.value ? `&q=${encodeURIComponent(requestedQuery.value)}` : "";
 		return loadCompleteClaimDirectory((page, pageSize) =>
-			$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}${searchSuffix}`))
+			$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}${searchSuffix}`), {
+				signal: request.signal
+			})
 		);
 	}
 );
@@ -183,12 +190,13 @@ useHead(() => ({
 watchDebounced(
 	query,
 	(value) => {
-		requestedQuery.value = value;
+		if (requestedQuery.value === value) void refreshClaims();
+		else requestedQuery.value = value;
 		router.replace({
 			query: value ? { q: value } : undefined
 		});
 	},
-	{ debounce: 250, maxWait: 600 }
+	settledSearchWatchOptions
 );
 
 watch(
