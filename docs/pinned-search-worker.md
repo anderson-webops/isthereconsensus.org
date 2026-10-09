@@ -119,12 +119,20 @@ than weakening validation or rate limits.
 
 Before activation, complete all original 210 development rows, eight scope controls
 and 1,001 title controls through the complete service and both actual APIs.
-Only then open and independently classify the sealed fresh question set before
-scoring, with comprehension measured separately. Native Linux ARM64 numerical,
+The previously sealed seventy-two-question set is now exposed development
+material with no covered denominator. It cannot certify fresh usefulness.
+Only then assess a separately frozen, genuinely unfamiliar and adequately covered
+everyday-question set, independently classified before scoring, with real human
+comprehension measured separately. Native Linux ARM64 numerical,
 capacity, whole-service latency and real typing checks, host-approved memory/CPU
 allocation, and retained-artifact activation/rollback rehearsal are still mandatory.
 The worker contract does not invent a host user, port, model directory or budget.
 Protected server automation owns installation, activation and rollback.
+
+The [complete exposed model regression assessment](search-model-regression-2026-10-08.md)
+records the subsequent ranking/scope correction, all three immutable development
+sets and the final functional-source compatibility boundary. Its 38/42 original
+and 3/3 agency results are not final-release full-control or activation acceptance.
 
 ### Explicit actual-surface acceptance harness
 

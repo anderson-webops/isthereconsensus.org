@@ -40,11 +40,20 @@ export function parseRoles(value: string, query = false, corrected = true): Role
 	const auxiliaryQuestion = new RegExp(`^(?:how )?(?:${auxiliary})\\b`, "u").test(text);
 	const activePredicatePattern = auxiliaryQuestion && (corrected || query) ? finitePredicatePattern : predicatePattern;
 	let matched = /^what (?:is|are) (?:the )?effects? of (.+?) (?:on|upon) (.+)$/u.exec(text);
+	const functional = (
+		/^what is (.+?)(?:'s|') (?:role|function) (?:in|on|for) (.+)$/u.exec(expanded.trim())
+		|| /^what is (?:the )?(?:role|function) of (.+?) (?:in|on|for) (.+)$/u.exec(text)
+		|| /^what (?:role|function) (?:does|do) (.+?) (?:play|have) (?:in|on|for) (.+)$/u.exec(text)
+	);
 	let subject: string | undefined;
 	let outcome: string | undefined;
 	let negative = false;
-	let explicitEffectFrame = Boolean(matched);
-	if (matched) {
+	let explicitEffectFrame = Boolean(matched || functional);
+	if (functional) {
+		[subject, outcome] = [functional[1], functional[2]];
+		negative = /\b(?:not|no|never)\b/u.test(`${subject} ${outcome}`);
+	}
+	else if (matched) {
 		[subject, outcome] = [matched[1], matched[2]];
 	}
 	else {
@@ -108,6 +117,9 @@ function unsupportedIntent(query: string) {
 	if (/\b(?:refund|return)\b/u.test(text) && /\b(?:ordered|bought|purchase|shoes|item|order|laptop)\b/u.test(text)) return "transaction-support";
 	if (/\b(?:write|compose|draft|give me)\b/u.test(text) && /\b(?:card|letter|email|poem|story|recipe)\b/u.test(text)) return "content-generation";
 	if (/\b(?:stock|cryptocurrency|bitcoin|candidate|election|forecast|scores|timetable|football)\b/u.test(text) && /\b(?:will|next|tomorrow|yesterday|this month|end of this month|current)\b/u.test(text)) return "current-prediction";
+	if (/^(?:how|where) (?:can|could|do|should) (?:i|we) (?:get|obtain|access|find|receive|download)\b/u.test(text) && /\b(?:information|data|publications?|releases?|statistics|reports?|updates?)\b/u.test(text)) return "information-access";
+	if (/^how (?:can|could|do|should) (?:i|we) (?:stay|keep) (?:up to date|updated|informed)\b/u.test(text)) return "information-subscription";
+	if (/^(?:what|which) (?:types|kinds|categories) of (?:data|information|statistics|reports|publications) (?:are|is) (?:published|released|available|produced)(?: by .+)?$/u.test(text)) return "information-catalog";
 	return null;
 }
 
@@ -184,10 +196,31 @@ export function createParagraphPipeline(claims: CorpusClaim[], passages: Passage
 		};
 		for (const row of prepared.priority) take(row);
 		const unusedSemantic = semantic.filter(row => !seen.has(row.claim.slug));
-		for (const row of unusedSemantic.slice(0, 2)) take(row);
-		take(prepared.native.find(row => !seen.has(row.claim.slug)));
-		for (const row of unusedSemantic.slice(2)) take(row);
-		for (const row of prepared.native) take(row);
+		if (corrected) {
+			const fused = new Map<string, { row: NativeRow | SemanticRow; score: number; nativeRank: number; semanticRank: number }>();
+			for (const [ranking, kind] of [[prepared.native, "native"], [semantic, "semantic"]] as const) {
+				for (const [index, row] of ranking.entries()) {
+					const previous = fused.get(row.claim.slug) ?? { row, score: 0, nativeRank: Number.POSITIVE_INFINITY, semanticRank: Number.POSITIVE_INFINITY };
+					previous.score += 1 / (60 + index + 1);
+					if (kind === "native") {
+						previous.nativeRank = index + 1;
+					}
+					else {
+						previous.semanticRank = index + 1;
+						previous.row = row;
+					}
+					fused.set(row.claim.slug, previous);
+				}
+			}
+			const ordered = [...fused.values()].sort((left, right) => right.score - left.score || left.nativeRank - right.nativeRank || left.semanticRank - right.semanticRank || left.row.claim.title.localeCompare(right.row.claim.title));
+			for (const entry of ordered) take(entry.row);
+		}
+		else {
+			for (const row of unusedSemantic.slice(0, 2)) take(row);
+			take(prepared.native.find(row => !seen.has(row.claim.slug)));
+			for (const row of unusedSemantic.slice(2)) take(row);
+			for (const row of prepared.native) take(row);
+		}
 		return { ...prepared, results, diagnostics: semantic };
 	}
 	function scopeEligible(query: string, slug: string) {
