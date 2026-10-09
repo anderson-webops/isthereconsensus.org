@@ -202,3 +202,14 @@ process exited. See [the final local service record](search-service-acceptance-2
 This closes an engineering gate, not the genuinely fresh public evaluation,
 human explanation feedback, native-host acceptance or protected publication.
 The full goal and public `1000+` availability condition remain unchanged.
+
+A subsequent independent-authorship audit preserves 184 verbatim agency
+questions before predictions, including all 65 earlier rows and their labels.
+Complete bodies classify 23 covered, 38 partial, 58 gaps and 65 outside. Anonymous
+readback verifies matching published answers for 22 covered questions, above the
+unchanged twelve-question floor. A strict native candidate dataset is prepared,
+not scored. The distinct browser-rendered USGS representation does not erase
+the failed original raw-acquisition gate. Public catalog remains 800, approved
+coverage remains zero, and public model compatibility, genuine fresh usefulness,
+human feedback and protected publication remain pending. See
+[the complete question coverage audit](independent-question-coverage-2026-10-09.md).
