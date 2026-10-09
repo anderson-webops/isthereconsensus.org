@@ -131,9 +131,13 @@ and documentation. Unrelated instruction changes are excluded from delivery.
 
 ## Remaining acceptance requirements
 
-Keep model activation unapproved. Complete all original 210 development rows,
-eight scope controls and 1,001 title controls through the final complete service
-and both actual APIs. The previously sealed seventy-two-question set is now
+Keep model activation unapproved. The subsequent final-source original-210,
+eight scope and 1,001 title controls now pass through the complete local service
+and both actual APIs, with all six browser inference-cancellation cases passing.
+See [the final service acceptance](search-service-acceptance-2026-10-09.md) for
+the separate actual-model evidence, source identity and cleanup. This does not
+retroactively change the earlier study or its structural-proof boundary.
+The previously sealed seventy-two-question set is now
 exposed development material and cannot be reused as fresh certification.
 A separately frozen, genuinely unfamiliar and adequately covered sample is
 required after protected publication, with human explanation-usefulness evidence
