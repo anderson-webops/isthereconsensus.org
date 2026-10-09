@@ -39,4 +39,22 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	assert.equal(typeof publicConfig?.deployment?.commit, "string");
 	assert.equal(typeof publicConfig?.deployment?.ref, "string");
 	assert.deepEqual(config.nitro?.prerender?.routes, []);
+
+	const trackers = (config.app?.head?.script ?? []).filter((script) =>
+		String(script?.src ?? "").endsWith("/script.js")
+	);
+	assert.deepEqual(
+		trackers.map((script) => ({
+			src: script?.src,
+			websiteId: script?.["data-website-id"]
+		})),
+		process.env.NODE_ENV === "development"
+			? []
+			: [
+					{
+						src: "https://analytics.isthereconsensus.org/script.js",
+						websiteId: "6a5e2165-ed75-4c43-9640-b19128069984"
+					}
+				]
+	);
 });

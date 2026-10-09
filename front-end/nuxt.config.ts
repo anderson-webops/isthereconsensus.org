@@ -46,8 +46,6 @@ const deploymentRef =
 	process.env.GITHUB_REF_NAME ||
 	process.env.BRANCH_NAME ||
 	readGitValue(["describe", "--tags", "--exact-match"]);
-const centralAnalyticsDomain = "analytics.jacobdanderson.net";
-const centralAnalyticsWebsiteId = "2d20f4af-99de-4944-8f56-91ea2a32065d";
 const faviconLinks = [
 	{
 		rel: "icon",
@@ -116,14 +114,12 @@ const contentSecurityPolicy = [
 	[
 		"script-src 'self' 'unsafe-inline'",
 		"https://analytics.isthereconsensus.org",
-		`https://${centralAnalyticsDomain}`,
 		"https://challenges.cloudflare.com"
 	].join(" "),
 	[
 		"connect-src 'self'",
 		publicApiOrigin,
 		"https://analytics.isthereconsensus.org",
-		`https://${centralAnalyticsDomain}`,
 		"https://challenges.cloudflare.com"
 	]
 		.filter(Boolean)
@@ -177,11 +173,6 @@ export default defineNuxtConfig({
 							defer: true,
 							src: "https://analytics.isthereconsensus.org/script.js",
 							"data-website-id": "6a5e2165-ed75-4c43-9640-b19128069984"
-						},
-						{
-							defer: true,
-							src: `https://${centralAnalyticsDomain}/script.js`,
-							"data-website-id": centralAnalyticsWebsiteId
 						}
 					]
 		}
