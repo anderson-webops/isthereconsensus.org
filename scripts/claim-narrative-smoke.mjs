@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import mongoose from "mongoose";
 import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
+import { defaultClaims } from "../back-end/dist/data/claims.js";
 import { seedClaimFields } from "../back-end/dist/data/seedClaims.js";
 import { Admin } from "../back-end/dist/models/schemas/Admin.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
@@ -10,6 +12,8 @@ import { ClaimRevision } from "../back-end/dist/models/schemas/ClaimRevision.js"
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { CLAIM_NARRATIVE_FIELDS, CLAIM_NARRATIVE_MAX_ITEMS, CLAIM_NARRATIVE_MAX_LENGTH } from "../back-end/dist/utils/claimNarratives.js";
+import { createReaderExpansionSourceProposal, readerExpansionValueHash } from "../back-end/dist/utils/readerExpansionProposal.js";
+import { createReaderExpansionEditorialApi, prepareReaderExpansionEditorialPlan, publishReaderExpansionEditorialPlan } from "../back-end/dist/utils/readerExpansionPublication.js";
 
 function assertContent(actual, expected, label) {
 	if (expected === undefined) return;
@@ -127,16 +131,39 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 	const snapshots = [];
 	let sourceCount = 0;
 	let preservedLongItems = 0;
-	for (const definition of readerExpansionClaims) {
-		const content = claimContent(definition);
-		const created = await write("/editorial/claims", { ...content, topic: definition.topicSlug, slug: definition.slug }, { method: "POST", status: 201 });
-		const claimId = created.data.claim._id;
+	const assessmentDate = new Date();
+	const git = (...args) => execFileSync("git", args, { encoding: "utf8" }).trim();
+	const proposal = createReaderExpansionSourceProposal(readerExpansionClaims, defaultClaims, { commit: git("rev-parse", "HEAD"), tree: git("rev-parse", "HEAD^{tree}") }, assessmentDate);
+	let requests = 0;
+	let writes = 0;
+	const editorialApi = createReaderExpansionEditorialApi(base, adminCookie, base, async (url, options) => {
+		requests += 1;
+		if (options.method !== "GET") writes += 1;
+		return fetch(url, options);
+	});
+	const plan = await prepareReaderExpansionEditorialPlan(proposal, editorialApi);
+	assert.ok(plan.rows.every(row => row.status === "missing"));
+	assert.equal(writes, 0);
+	const approval = {
+		sourceCommit: proposal.sourceCommit,
+		planSha256: readerExpansionValueHash(plan),
+		backupSha256: "a".repeat(64),
+		restoreVerificationSha256: "b".repeat(64),
+		rehearsalReceiptSha256: "c".repeat(64),
+		backendArtifactSha256: "d".repeat(64),
+		operatorApprovalRef: "Synthetic isolated authenticated expansion rehearsal; not actual backup or production authorization.",
+		reviewedAt: assessmentDate.toISOString()
+	};
+	const events = [];
+	const batch = await publishReaderExpansionEditorialPlan(proposal, plan, approval, editorialApi, async (event) => {
+		events.push(event);
+		if (event.state !== "confirmed") return;
+		const definition = readerExpansionClaims.find(item => event.canonicalPath === `/consensus/${item.topicSlug}/${item.slug}`);
+		assert.ok(definition);
+		const claimId = event.claimId;
 		const path = `/editorial/claims/${claimId}`;
-		const publicPath = `/topics/${definition.topicSlug}/claims/${definition.slug}`;
-		assert.equal(created.data.claim.status, "draft");
-		assertContent(created.data.claim, content, `${definition.slug}: created content`);
-		await api(publicPath, { status: 404 });
-		if (snapshots.length === 0) {
+		if (event.operation === "create" && snapshots.length === 0) {
+			await api(`/topics/${definition.topicSlug}/claims/${definition.slug}`, { status: 404 });
 			const incomplete = await Claim.findById(claimId).lean();
 			const revisionCount = await ClaimRevision.countDocuments({ claim: claimId });
 			await write(`${path}/publish`, { revisionNote: "Incomplete fixture must not publish" }, { method: "POST", status: 422 });
@@ -147,23 +174,10 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 			assert.equal(await ClaimRevision.countDocuments({ claim: claimId }), revisionCount);
 			assert.equal(await ClaimSource.countDocuments({ claim: claimId }), 0);
 		}
-		const sourceIds = [];
-		for (const source of definition.sources) {
-			const added = await write(`${path}/sources`, source, { method: "POST", status: 201 });
-			sourceIds.push(String(added.data.source._id));
-			assertContent(added.data.source, { ...source, url: new URL(source.url).href }, `${definition.slug}: citation`);
-			sourceCount += 1;
-		}
-		const edited = await write(path, content);
-		assert.equal(edited.data.claim.slug, definition.slug, `${definition.slug}: canonical slug changed`);
-		assertContent(edited.data.claim, content, `${definition.slug}: edited content`);
-		const publication = await write(`${path}/publish`, {
-			revisionNote: "Isolated authenticated expansion rehearsal; source-verified qualifications retained.",
-			lastReviewedAt: definition.searchCutoffAt
-		}, { method: "POST" });
-		assert.equal(publication.data.claim.status, "published");
-		assertContent(publication.data.claim, content, `${definition.slug}: published content`);
-		const publicClaim = (await api(publicPath)).data.claim;
+		if (event.operation !== "readback") return;
+		const content = claimContent(definition);
+		const publicClaim = (await api(`/topics/${definition.topicSlug}/claims/${definition.slug}`)).data.claim;
+		const sourceIds = events.filter(item => item.state === "confirmed" && item.operation === "source" && item.claimId === claimId).map(item => item.sourceId);
 		const publicContent = Object.fromEntries(Object.entries(content).filter(([key]) => key !== "surveillanceSpec"));
 		assertContent(publicClaim, publicContent, `${definition.slug}: anonymous content`);
 		assert.deepEqual(publicClaim.sources.map(source => String(source._id)), sourceIds);
@@ -172,15 +186,22 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 		const stored = await Claim.findById(claimId).lean();
 		assert.equal(String(stored.reviewedBy), String(admin._id));
 		assert.equal(stored.reviewDateBasis, "editorial_review");
-		assert.equal(stored.lastReviewedAt.toISOString(), definition.searchCutoffAt);
+		assert.equal(stored.lastReviewedAt.toISOString(), assessmentDate.toISOString());
+		assert.equal(stored.searchCutoffAt.toISOString(), definition.searchCutoffAt);
 		assert.equal(stored.nextReviewAt.getTime() - stored.lastReviewedAt.getTime(), 180 * 86400000);
 		const revisions = await ClaimRevision.find({ claim: claimId }).lean();
 		assert.equal(revisions.length, definition.sources.length + 3);
 		assert.ok(revisions.every(revision => revision.editorModel === "Admin" && String(revision.editor) === String(admin._id)));
 		preservedLongItems += CLAIM_NARRATIVE_FIELDS.reduce((total, field) => total + definition[field].filter(item => item.length > 280).length, 0);
+		sourceCount += sourceIds.length;
 		snapshots.push({ definition, id: String(claimId), sourceIds, publishedAt: stored.publishedAt.toISOString(), updates: JSON.stringify(stored.readerUpdates) });
 		if (snapshots.length % 25 === 0) console.log(`Authenticated expansion rehearsal: ${snapshots.length}/${readerExpansionClaims.length} exact publications passed.`);
-	}
+	});
+	assert.equal(batch.canonicalReviews, 201);
+	assert.equal(batch.orderedCitations, 461);
+	assert.equal(batch.fullPrivateStatePreservationVerified, false);
+	assert.equal(batch.renderedPagesVerified, false);
+	assert.equal(events.filter(event => event.state === "pending").length, 1064);
 	assert.equal(sourceCount, 461);
 	assert.equal(preservedLongItems, 277);
 	await restartBackend();
@@ -189,7 +210,8 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 		assert.equal(String(stored._id), snapshot.id);
 		for (const field of CLAIM_NARRATIVE_FIELDS) assert.deepEqual(stored[field], snapshot.definition[field]);
 		assert.equal(stored.publishedAt.toISOString(), snapshot.publishedAt);
-		assert.equal(stored.lastReviewedAt.toISOString(), snapshot.definition.searchCutoffAt);
+		assert.equal(stored.lastReviewedAt.toISOString(), assessmentDate.toISOString());
+		assert.equal(stored.searchCutoffAt.toISOString(), snapshot.definition.searchCutoffAt);
 		assert.equal(JSON.stringify(stored.readerUpdates), snapshot.updates);
 		assert.equal(await Claim.countDocuments({ topic: stored.topic, slug: stored.slug }), 1);
 		const sources = await ClaimSource.find({ claim: stored._id }).sort({ order: 1, createdAt: 1 }).lean();
@@ -198,9 +220,20 @@ export async function checkClaimNarratives({ api, base, adminCookie, userCookie,
 		assert.equal(String(publicClaim._id), snapshot.id);
 		for (const field of CLAIM_NARRATIVE_FIELDS) assert.deepEqual(publicClaim[field], snapshot.definition[field]);
 	}
+	const publishedBefore = await Claim.find({ _id: { $in: snapshots.map(row => row.id) } }).sort({ _id: 1 }).lean();
+	const publishedSourcesBefore = await ClaimSource.find({ claim: { $in: snapshots.map(row => row.id) } }).sort({ _id: 1 }).lean();
+	const matchingPlan = await prepareReaderExpansionEditorialPlan(proposal, editorialApi);
+	const writesBefore = writes;
+	const repeated = await publishReaderExpansionEditorialPlan(proposal, matchingPlan, { ...approval, planSha256: readerExpansionValueHash(matchingPlan) }, editorialApi, async (event) => {
+		assert.equal(event.operation, "readback");
+	});
+	assert.ok(repeated.results.every(row => row.disposition === "already_matching"));
+	assert.equal(writes, writesBefore);
+	assert.deepEqual(await Claim.find({ _id: { $in: snapshots.map(row => row.id) } }).sort({ _id: 1 }).lean(), publishedBefore);
+	assert.deepEqual(await ClaimSource.find({ claim: { $in: snapshots.map(row => row.id) } }).sort({ _id: 1 }).lean(), publishedSourcesBefore);
 	assert.ok(isDeepStrictEqual(await Claim.find({ _id: { $in: unrelated.map(claim => claim._id) } }).sort({ _id: 1 }).lean(), unrelated), "Unrelated claim records changed.");
 	assert.ok(isDeepStrictEqual(await ClaimSource.find({ _id: { $in: unrelatedSources.map(source => source._id) } }).sort({ _id: 1 }).lean(), unrelatedSources), "Unrelated citation records changed.");
 	assert.ok(isDeepStrictEqual(await topicSnapshot(), topicsBefore), "Public topic identities or content changed.");
 	assert.ok(isDeepStrictEqual(await privateSnapshot(), privateBefore), "Private collection records changed.");
-	console.log("authenticated narrative workflow: 201 actual HTTP creations/edits/publications, 461 HTTP citations, 277 full-length items, explicit bounds, malformed/auth rejection without writes, legacy round trips, retained private state and restart-stable observed IDs passed in the disposable database");
+	console.log(`authenticated operator batch: ${requests} real requests, 201 HTTP creations/edits/publications, 461 HTTP citations, 277 full-length items, explicit bounds, malformed/auth rejection without writes, legacy round trips, retained private state, restart-stable observed IDs and read-only matching-publication replay passed in the disposable database`);
 }

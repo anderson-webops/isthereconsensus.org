@@ -125,6 +125,13 @@ raw messages. A per-question novelty/source record will precede content batches.
 
 ## Current boundary
 
+On October 9, the owner approved the roadmap plan, authorized discretionary
+source work and deferred real-reader feedback because it is not available yet.
+That feedback is a post-launch follow-up, not a reason to withhold ready content;
+it must not be fabricated. Approval of the plan is not blanket approval of private
+reader submissions or a source-side production-access exception. The actual
+1,001-public-review target remains required before marking this goal complete.
+
 The prior living-evidence refresh batch is complete and must not be republished.
 This goal starts with a clean source checkout at `7fea640`. No private production
 feedback or reader analytics have been inspected, and no production mutations

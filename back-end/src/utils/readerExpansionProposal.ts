@@ -10,6 +10,8 @@ const completeFields = ["agreementLevel", "evidenceCertainty", "reviewMode", "se
 
 export const READER_EXPANSION_SOURCE_PATHS = ["back-end/src", "back-end/package.json", "back-end/package-lock.json", "back-end/.npmrc", "package.json", "package-lock.json", ".npmrc", ".node-version", ".nvmrc", "vendor"] as const;
 
+export type ReaderExpansionSourceProposal = ReturnType<typeof createReaderExpansionSourceProposal>;
+
 function canonicalValue(value: unknown): unknown {
 	if (value instanceof Date) {
 		if (Number.isNaN(value.getTime())) throw new Error("Source dates must be valid.");

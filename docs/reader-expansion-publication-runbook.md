@@ -1,7 +1,8 @@
 # Protected reader-expansion publication
 
 This is an operator handoff for the full 201-review source expansion, not
-authorization, an executable publisher or a production receipt. Source authoring
+authorization or a production receipt. The guarded operator runner described
+below uses the existing authenticated editorial APIs. Source authoring
 and disposable fixture publication do not establish public availability. Obtain
 separate permission for coordination, production deployment and actual editorial
 publication. Do not repeat the already completed twenty-review living-evidence
@@ -75,6 +76,100 @@ The repository's `node scripts/reader-library-smoke.mjs` is a regression check,
 not this production-snapshot rehearsal. It deliberately owns and deletes fixtures
 in its disposable database and refuses remote/non-owned destinations. Never aim
 that fixture runner at production or bypass its destination checks.
+
+## Guarded operator runner
+
+Run this only within the separately authorized protected operator workflow or
+an owned isolated rehearsal. Source-workspace agents must not run it against
+production, obtain sessions, deploy services or mutate production records. The
+runner neither logs in nor loads `.env`, seeds records, connects to MongoDB,
+resets accounts, edits compiled files or changes service configuration.
+
+Use the same committed source checkout and pinned installation used to generate
+the proposal. All input files must be absolute paths to operator-owned regular
+files with no group/world permissions. Outputs require an existing private
+directory, are created exclusively with mode 0600 and are never overwritten.
+Keep the existing signed administrator cookie pair in an authorized private
+credential mount, not in command arguments, source, chat or release assets.
+
+Prepare a private JSON options file with these fields:
+
+```json
+{
+  "adminOrigin": "http://127.0.0.1:3011",
+  "publicOrigin": "https://isthereconsensus.org",
+  "cookieFile": "/private/operator/session-cookie",
+  "proposalFile": "/private/evidence/reader-expansion-source-proposal.json",
+  "outputFile": "/private/evidence/reader-expansion-editorial-plan.json"
+}
+```
+
+The port is illustrative. Use the actual operator-owned loopback listener,
+never change the host configuration to fit the example. In an isolated rehearsal,
+both origins must identify the owned loopback fixture. Authenticated traffic is
+restricted to numeric loopback addresses; redirects are refused. The configured
+public origin supplies the existing CSRF origin check without disabling it.
+Anonymous readback never receives cookies or other authentication headers.
+
+```sh
+node --import tsx back-end/src/scripts/runReaderExpansionPublication.ts --mode preview --options /private/operator/preview-options.json
+```
+
+Preview is read-only and checks all 201 source-bound paths. It refuses conflicting
+content, status, notice URLs, ordered citations and duplicate identities. Existing
+provider labels are preserved without allowing arbitrary new labels. Matching
+already-published reviews must also match anonymous full-content readback.
+Existing matching drafts are allowed only when their complete citations and
+content match; partial drafts need a separately reconciled editorial repair.
+
+For explicit publication, create a new options file with a new `outputFile` and
+add `planFile`, `approvalFile`, `journalFile`, and `evidenceFiles`. The latter
+maps each of `backupSha256`, `restoreVerificationSha256`,
+`rehearsalReceiptSha256`, and `backendArtifactSha256` to the exact private
+evidence file. The runner streams and verifies these file hashes before any HTTP
+write. The private approval JSON must contain:
+
+- `sourceCommit`: the exact source proposal and executing checkout commit.
+- `planSha256`: the canonical plan digest printed by preview.
+- The four evidence SHA-256 values named above.
+- `operatorApprovalRef`: a non-sensitive reference to explicit protected approval.
+- `reviewedAt`: the honest completed editorial assessment date, not a future
+  timestamp or the proposal generation time.
+
+These digest bindings do **not** certify that a backup is complete, its restoration
+passed, citations were freshly checked, the deployed artifact matches, or the
+actual-snapshot rehearsal succeeded. The protected operator must inspect those
+results and grant explicit promotion after every preceding gate passes. Synthetic
+fixture hashes cannot serve as production evidence. Source search/citation dates
+remain unchanged; the actual editorial assessment is a distinct recorded date.
+
+```sh
+node --import tsx back-end/src/scripts/runReaderExpansionPublication.ts --mode publish --options /private/operator/publish-options.json
+```
+
+The plan must be no more than 24 hours old. The runner rechecks the whole plan,
+source and authenticated actor before the first write, then preserves existing
+matching identities. It journals and flushes each pending operation **before**
+sending it, followed by confirmed observed IDs and anonymous readback. Missing
+records go through create, ordered source addition, full-content edit and publish.
+Already-matching publications are never rewritten or republished. No approval
+file contents or private approval reference are copied into a public revision note.
+
+Keep an exclusive editorial window. These endpoints do not provide a whole-batch
+transaction or atomic compare-and-swap, so preview is not a lock against concurrent
+editing. A confirmed HTTP 429 with an integer `Retry-After` from 1 to 60 seconds
+gets at most one bounded retry. No timeout, redirect, parse error, failed journal,
+other HTTP refusal or uncertain write is retried automatically. A stopped batch
+can leave completed publications or partial drafts. Preserve its journal, read
+back each pending operation and reconcile before a new plan; do not blindly rerun,
+delete rows or presume rollback.
+
+The result verifies the 201 anonymous article API bodies and their 461 distinct
+ordered citations, and observes a catalog total of at least 1,001. It explicitly
+leaves rendered-page acceptance and full private-state preservation unverified.
+The operator must still complete the following full acceptance checks. Do not
+interpret a batch receipt as proof of every public canonical page or the entire
+expansion goal.
 
 ## Explicit promotion and actual acceptance
 
