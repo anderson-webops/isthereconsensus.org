@@ -192,3 +192,13 @@ not fresh certification, human comprehension or production publication. See
 [the complete model regression assessment](search-model-regression-2026-10-08.md).
 Original full-service controls, a new genuinely unfamiliar adequately covered
 evaluation and protected publication remain required; activation is unapproved.
+
+A subsequent complete final-source acceptance on October 9 at `ec63de54`
+closes the original local service controls: all 210 regression questions retain
+their unchanged thresholds, all sixteen scope HTTP rows and all 2,002 new title
+HTTP rows pass, and all six actual browser typing/inference-cancellation cases
+pass. The full source/runtime/input hashes remained unchanged and every owned
+process exited. See [the final local service record](search-service-acceptance-2026-10-09.md).
+This closes an engineering gate, not the genuinely fresh public evaluation,
+human explanation feedback, native-host acceptance or protected publication.
+The full goal and public `1000+` availability condition remain unchanged.

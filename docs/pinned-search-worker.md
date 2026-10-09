@@ -117,8 +117,11 @@ native fallback. It also reached the existing suggestion rate limit. Retain that
 failure; repair the fixture, verify corpus identity and pace real requests rather
 than weakening validation or rate limits.
 
-Before activation, complete all original 210 development rows, eight scope controls
-and 1,001 title controls through the complete service and both actual APIs.
+The original 210 development rows, eight scope controls and all 1,001 title
+controls have now completed through the final local service and both actual APIs
+on v1.38.26. The six actual browser typing cases also pass. See the
+[final-source service acceptance](search-service-acceptance-2026-10-09.md) for
+complete denominators, unchanged input identities and cleanup evidence.
 The previously sealed seventy-two-question set is now exposed development
 material with no covered denominator. It cannot certify fresh usefulness.
 Only then assess a separately frozen, genuinely unfamiliar and adequately covered
@@ -131,8 +134,9 @@ Protected server automation owns installation, activation and rollback.
 
 The [complete exposed model regression assessment](search-model-regression-2026-10-08.md)
 records the subsequent ranking/scope correction, all three immutable development
-sets and the final functional-source compatibility boundary. Its 38/42 original
-and 3/3 agency results are not final-release full-control or activation acceptance.
+sets and the final functional-source compatibility boundary. Its original study
+and structural proof remain distinct from the subsequent final-release full
+local controls. Neither assessment establishes activation acceptance.
 
 ### Explicit actual-surface acceptance harness
 
