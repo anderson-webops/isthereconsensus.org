@@ -10,12 +10,14 @@ import { join, resolve } from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
+import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
 import { defaultClaims } from "../back-end/dist/data/claims.js";
 import { seedClaimFields, seedReviewDates } from "../back-end/dist/data/seedClaims.js";
 import { defaultTopics } from "../back-end/dist/data/topics.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
+import { APPROVED_READER_RELEASE } from "../back-end/dist/utils/approvedReaderPublication.js";
 import { PUBLIC_SEARCH_WORKER_REQUEST_LIMIT } from "../back-end/dist/utils/publicSearchWorker.js";
 
 const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rpc-XXXXXX", "worker.sock")) <= 100 ? tmpdir() : "/tmp";
@@ -49,8 +51,12 @@ async function stop(child) {
 	const exited = once(child, "exit");
 	const deadline = setTimeout(() => child.kill("SIGKILL"), 8000);
 	child.kill("SIGTERM");
-	try { await exited; }
-	finally { clearTimeout(deadline); }
+	try {
+		await exited;
+	}
+	finally {
+		clearTimeout(deadline);
+	}
 }
 
 async function listen(server, endpoint = 0) {
@@ -81,7 +87,7 @@ async function waitFor(check, label, child) {
 const worker = http.createServer((request, response) => {
 	const chunks = [];
 	let bytes = 0;
-	request.on("data", chunk => {
+	request.on("data", (chunk) => {
 		bytes += chunk.length;
 		if (bytes > PUBLIC_SEARCH_WORKER_REQUEST_LIMIT) request.destroy();
 		else chunks.push(chunk);
@@ -120,7 +126,7 @@ const worker = http.createServer((request, response) => {
 
 async function api(route, expectedCount, signal) {
 	const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, {
-		headers: { Cookie: "smoke_fixture=PRIVATE_RPC_COOKIE", Authorization: "Bearer PRIVATE_RPC_HEADER", "X-Request-Id": "PRIVATE_RPC_REQUEST" },
+		headers: { "Cookie": "smoke_fixture=PRIVATE_RPC_COOKIE", "Authorization": "Bearer PRIVATE_RPC_HEADER", "X-Request-Id": "PRIVATE_RPC_REQUEST" },
 		signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15_000)]) : AbortSignal.timeout(15_000)
 	});
 	assert.equal(response.status, 200);
@@ -185,10 +191,23 @@ try {
 		SEARCH_WORKER_SOCKET: socketPath
 	});
 	await waitFor(async () => {
-		try { return (await fetch(`${base}/readyz`, { signal: AbortSignal.timeout(1000) })).ok; }
-		catch { return false; }
+		try {
+			return (await fetch(`${base}/readyz`, { signal: AbortSignal.timeout(1000) })).ok;
+		}
+		catch {
+			return false;
+		}
 	}, "compiled backend readiness", backend);
+	await waitFor(async () => (processOutput.get(backend) ?? "").includes("Approved assistant-screened content release:"), "approved startup publication completion", backend);
+	const publications = await database.collection("sourcepublications").find({ releaseId: APPROVED_READER_RELEASE }).toArray();
+	assert.equal(publications.length, readerExpansionClaims.length);
+	assert.ok(publications.every(publication => publication.state === "published"));
+	assert.ok(publications.every(publication => !publication.claimId.equals(review._id)), "Owned startup imports must not include the transport baseline.");
+	assert.equal((await database.collection("claimsources").deleteMany({ _id: { $in: publications.flatMap(publication => publication.sourceIds) } })).deletedCount, readerExpansionClaims.reduce((count, claim) => count + claim.sources.length, 0));
 	const claims = database.collection("claims");
+	assert.equal((await claims.deleteMany({ _id: { $in: publications.map(publication => publication.claimId) } })).deletedCount, publications.length);
+	assert.equal((await database.collection("coveragerequests").deleteMany({ _id: { $in: publications.map(publication => publication.coverageId) } })).deletedCount, publications.length);
+	assert.equal(await claims.countDocuments({ status: "published" }), 1, "Transport comparisons require their original isolated synthetic corpus after startup publication finishes.");
 	target = await claims.findOne({ slug: "does-caffeine-become-less-effective-with-regular-daily-use", status: "published" });
 	assert.ok(target);
 	await claims.updateOne({ _id: target._id }, { $set: { "evidenceLandscape.workflow.editorialNotes": "PRIVATE_RPC_EDITORIAL" } });
@@ -203,24 +222,43 @@ try {
 		assert.equal(received, count + 1, "Both actual public surfaces must use the shared private worker.");
 		for (mode of ["warming", "stale", "private-slug"]) await api(route, 0);
 		mode = "valid";
-		beforeReply = async () => { await claims.updateOne({ _id: target._id }, { $set: { status: "draft" } }); };
+		beforeReply = async () => {
+			await claims.updateOne({ _id: target._id }, { $set: { status: "draft" } });
+		};
 		await api(route, 0);
 		await claims.updateOne({ _id: target._id }, { $set: { status: "published" } });
-		beforeReply = async () => { await claims.updateOne({ _id: target._id }, { $set: { bottomLine: "Changed public wording during the synthetic transport test." } }); };
+		beforeReply = async () => {
+			await claims.updateOne({ _id: target._id }, { $set: { bottomLine: "Changed public wording during the synthetic transport test." } });
+		};
 		await api(route, 0);
 		await claims.updateOne({ _id: target._id }, { $set: { bottomLine: target.bottomLine } });
 		const sources = database.collection("claimsources");
 		const originals = await sources.find({ claim: target._id }).toArray();
 		assert.ok(originals.length >= 2);
-		beforeReply = async () => { await sources.updateMany({ claim: target._id }, { $set: { citationStatus: "retracted" } }); };
+		const addedClaimId = new mongoose.Types.ObjectId();
+		beforeReply = async () => {
+			await sources.insertMany(originals.map(source => ({ ...source, _id: new mongoose.Types.ObjectId(), claim: addedClaimId })));
+			await claims.insertOne({ ...target, _id: addedClaimId, slug: "synthetic-rpc-concurrent-publication", title: "Synthetic concurrent publication fixture" });
+		};
+		await api(route, 0);
+		await claims.deleteOne({ _id: addedClaimId });
+		await sources.deleteMany({ claim: addedClaimId });
+		beforeReply = async () => {
+			await sources.updateMany({ claim: target._id }, { $set: { citationStatus: "retracted" } });
+		};
 		await api(route, 0);
 		for (const original of originals) await sources.replaceOne({ _id: original._id }, original);
 		beforeReply = async () => {};
 	}
 	let release;
 	let notify;
-	const entered = new Promise(resolve => { notify = resolve; });
-	beforeReply = () => new Promise(resolve => { release = resolve; notify(); });
+	const entered = new Promise((resolve) => {
+		notify = resolve;
+	});
+	beforeReply = () => new Promise((resolve) => {
+		release = resolve;
+		notify();
+	});
 	const first = api("claims", 1);
 	await entered;
 	const count = received;
@@ -232,8 +270,12 @@ try {
 		let abandon;
 		let disconnected = false;
 		const initialCount = received;
-		beforeReply = () => new Promise(resolve => { abandon = resolve; });
-		observePeerResponse = response => response.once("close", () => { disconnected = true; });
+		beforeReply = () => new Promise((resolve) => {
+			abandon = resolve;
+		});
+		observePeerResponse = response => response.once("close", () => {
+			disconnected = true;
+		});
 		const controller = new AbortController();
 		const cancelled = assert.rejects(api(cancelledRoute, 1, controller.signal), { name: "AbortError" });
 		await waitFor(async () => received === initialCount + 1 && typeof abandon === "function", "cancelled route reached the private peer");
@@ -281,7 +323,7 @@ try {
 		}
 	}
 	assert.equal(process.exitCode, undefined);
-	console.log("public search transport smoke passed: both compiled API routes, case preservation, public-only hydration, stale/withdrawn/unready rejection, coherent native comparisons, distinct quantities, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
+	console.log("public search transport smoke passed: completed startup publication, both compiled API routes, case preservation, public-only hydration, concurrent-publication/stale/withdrawn/unready rejection, coherent native comparisons, distinct quantities, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
 }
 finally {
 	await Promise.all([...children].filter(child => !child.spawnargs.includes("--dbpath")).map(stop));
@@ -294,7 +336,9 @@ finally {
 		}
 	}
 	finally {
-		try { await client?.close(); }
+		try {
+			await client?.close();
+		}
 		finally {
 			await Promise.all([...children].map(stop));
 			rmSync(directory, { recursive: true, force: true });

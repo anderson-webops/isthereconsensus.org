@@ -24,7 +24,7 @@ export default antfu(
 		}
 	},
 	{
-		files: ["scripts/content-first-smoke.mjs"],
+		files: ["scripts/content-first-smoke.mjs", "scripts/public-search-worker-smoke.mjs"],
 		rules: {
 			"antfu/no-import-dist": "off"
 		}
