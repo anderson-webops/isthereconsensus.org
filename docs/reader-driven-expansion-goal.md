@@ -180,3 +180,15 @@ The [retrieval follow-up](external-faq-coverage-2026-10-08.md#subsequent-source-
 records complete denominators, input hashes, retained failures and actual local
 API controls. The full goal and all remaining publication/usefulness gates are
 unchanged.
+
+A complete actual-model development assessment subsequently retained all 168
+exposed questions and rendered destinations. A general ranking/scope correction
+recovers all three covered agency destinations and keeps all nine outside
+requests empty on both local APIs, while retaining 38/42 original covered hits.
+The seventy-two-question set still has no covered denominator and cannot pass.
+The final functional-source compatibility extension has separate structural
+equivalence evidence, not a new full-model run. These are development results,
+not fresh certification, human comprehension or production publication. See
+[the complete model regression assessment](search-model-regression-2026-10-08.md).
+Original full-service controls, a new genuinely unfamiliar adequately covered
+evaluation and protected publication remain required; activation is unapproved.
