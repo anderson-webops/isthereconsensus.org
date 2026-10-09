@@ -260,6 +260,27 @@ try {
 	assert.match(setIdMode.output, /forbidden set-ID or sticky mode bits.*back-end\/dist\/server\.js/iu);
 	await chmod(setIdTarget, originalMode);
 
+	for (const requiredPath of [
+		"back-end/dist/utils/approvedReaderPublication.js",
+		"back-end/dist/models/schemas/SourcePublication.js",
+		"back-end/dist/data/claim-expansion-reader.js"
+	]) {
+		const absolutePath = path.join(artifactRoot, requiredPath);
+		const original = await readFile(absolutePath);
+		await rm(absolutePath);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify({
+			...manifest,
+			files: manifest.files.filter(entry => entry.path !== requiredPath)
+		}));
+		const missingPublicationModule = runSync("independent publication module regression", process.execPath, [verifier, artifactRoot], {
+			cwd: acceptanceRoot,
+			env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_COMMIT: manifest.source.commit })
+		});
+		assert.notEqual(missingPublicationModule.status, 0);
+		assert.ok(missingPublicationModule.output.includes(requiredPath), missingPublicationModule.output);
+		await writeFile(absolutePath, original);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(manifest));
+	}
 	await rm(path.join(artifactRoot, "back-end/dist/utils/runtimeSecurity.js"));
 	const missingModule = runSync("missing module regression", process.execPath, [verifier, artifactRoot], {
 		cwd: acceptanceRoot,

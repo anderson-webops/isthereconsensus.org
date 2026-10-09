@@ -1,6 +1,44 @@
 # Protected reader-expansion publication
 
-This is an operator handoff for the full 201-review source expansion, not
+## Owner-approved content-first release
+
+On October 9, 2026, the owner accepted the prepared material and explicitly
+requested publication after assistant screening, with human moderation afterward.
+The next protected deployment therefore publishes the fixed 201-review source
+batch automatically after the backend starts listening, without blocking login
+or health checks. Shutdown stops new import work, leaving interrupted records
+resumable on the next start. No source agent connects to production
+or obtains an administrator session. The previous requirement for a separate
+human pre-publication promotion is superseded for this unchanged approved batch.
+
+The publisher validates every review and citation before writes, stages missing
+reviews as drafts, adds their complete citations, and applies the unchanged public
+readiness checks before publication. A separate system journal reserves stable
+claim/citation/roadmap identities so interrupted imports can resume. It does not
+invent human reviewers, refresh source-check dates, truncate paragraphs or label
+assistant assessment as independent expert review. Public roadmap entries identify
+coverage-audit selections, not fictional reader submissions.
+
+Existing records are never synchronized, republished, unarchived or overwritten.
+Previously completed imports remain read-only, including later human corrections
+and withdrawn roadmap entries. Divergent drafts and editorial revisions are left
+for normal moderation. Failures leave incomplete work private and do not crash the
+backend or reset accounts. MongoDB without replica-set transactions can leave
+partial drafts or an incomplete journal; owned IDs and explicit readiness prevent
+them from being mistaken for completed publication. Server backup, artifact,
+resource, deployment and rollback safeguards remain in force.
+
+The owner also accepts the current development evidence without requiring fresh
+benchmark or real-reader comprehension certification for this release. Preserve
+those failed/unscored records and treat future evaluation as follow-up, never as a
+passed score. The optional model worker remains unactivated unless its own host
+acceptance succeeds. Verify actual public publication after deployment before
+claiming that the library has reached 1,001 or displaying `1000+`.
+
+## Manual reconciliation workflow
+
+The following remains available for conflicting records or later editorial batches.
+It is an operator handoff for the full 201-review source expansion, not
 authorization or a production receipt. The guarded operator runner described
 below uses the existing authenticated editorial APIs. Source authoring
 and disposable fixture publication do not establish public availability. Obtain

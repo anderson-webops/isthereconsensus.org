@@ -125,6 +125,24 @@ raw messages. A per-question novelty/source record will precede content batches.
 
 ## Current boundary
 
+### October 9 content-first acceptance
+
+The owner subsequently accepted the prepared material as is and requested release
+after assistant screening, with human moderation afterward. The fixed 201-review
+batch now has an insert-only, resumable startup publisher for the protected next
+deployment; it never overwrites existing editorial records or resurrects withdrawals.
+Assistant authorship, source-record dates and the absence of independent expert
+review remain explicit. Public roadmap examples identify coverage-audit selection
+rather than claiming submitted reader demand. Private feedback stays private.
+
+Fresh usefulness, real-reader feedback and optional model-worker activation are
+accepted as deferred follow-ups for this release. Existing failures and unscored
+questions remain intact; no result is relabelled as a pass. This owner decision
+supersedes human pre-publication acceptance for the fixed batch, not technical
+readiness, account security, preserved moderation or protected deployment controls.
+Actual public availability and truthful quantity copy still require verification;
+source delivery alone does not prove that 1,001 reviews are available.
+
 On October 9, the owner approved the roadmap plan, authorized discretionary
 source work and deferred real-reader feedback because it is not available yet.
 That feedback is a post-launch follow-up, not a reason to withhold ready content;

@@ -8,6 +8,11 @@ import { getSourceStandard, sourceStandardList } from "../src/data/sourceStandar
 const testDir = dirname(fileURLToPath(import.meta.url));
 
 describe("source standards", () => {
+	it("discloses content-first assistant screening without implying independent expert review", () => {
+		const source = readFileSync(join(testDir, "..", "src/pages/standards.vue"), "utf8");
+		assert.match(source, /Assistant-screened, source-backed content can be published before human moderation/u);
+		assert.match(source, /Independent expert review is never implied/u);
+	});
 	it("classifies Skeptical Science as supporting climate rebuttal context", () => {
 		const standard = getSourceStandard("climate-and-environment");
 

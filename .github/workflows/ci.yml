@@ -246,7 +246,9 @@ jobs:
       - name: Reader library persistence and browser checks
         env:
           READER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}
-        run: node scripts/reader-library-smoke.mjs
+        run: |
+          node scripts/content-first-smoke.mjs
+          node scripts/reader-library-smoke.mjs
 
       - name: Public search worker transport and publication isolation
         env:

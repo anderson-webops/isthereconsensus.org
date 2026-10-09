@@ -8,6 +8,7 @@ const sourceStack = [
 ];
 
 const publicationRules = [
+	"Assistant-screened, source-backed content can be published before human moderation. Independent expert review is never implied.",
 	"Lead with a short bottom line in plain language.",
 	"Place uncertainty beside the answer, not behind it.",
 	"Make evidence summaries, source stacks, and change logs easy to find."

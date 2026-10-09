@@ -4103,10 +4103,19 @@ async function main() {
 	if (!Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65_535) {
 		throw new Error("PORT must be an integer between 1 and 65535.");
 	}
+	const publicationController = new AbortController();
 	const server = app.listen(
 		parsedPort,
 		runtimeHost,
-		() => console.log(`Server listening on ${runtimeHost}:${parsedPort}.`)
+		() => {
+			console.log(`Server listening on ${runtimeHost}:${parsedPort}.`);
+			if (isProd) {
+				void import("./utils/approvedReaderPublication.js")
+					.then(({ publishApprovedReaderContent }) => publishApprovedReaderContent(publicationController.signal))
+					.then(result => console.log("Approved assistant-screened content release:", result))
+					.catch(error => logError("Approved content release deferred; existing services remain available", error));
+			}
+		}
 	);
 	server.requestTimeout = 15_000;
 	server.headersTimeout = 10_000;
@@ -4120,6 +4129,7 @@ async function main() {
 		}
 
 		isShuttingDown = true;
+		publicationController.abort();
 		console.log(`${signal} received, shutting down gracefully...`);
 
 		try {

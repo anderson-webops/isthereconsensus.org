@@ -20,6 +20,9 @@ const artifactRoot = path.join(root, ".runtime-artifact");
 const manifestName = ".runtime-manifest.json";
 const requiredPaths = [
 	"back-end/dist/server.js",
+	"back-end/dist/utils/approvedReaderPublication.js",
+	"back-end/dist/models/schemas/SourcePublication.js",
+	"back-end/dist/data/claim-expansion-reader.js",
 	"back-end/dist/scripts/monitorSourceIntegrity.js",
 	"back-end/dist/scripts/seedContent.js",
 	"back-end/package.json",

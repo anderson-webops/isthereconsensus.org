@@ -24,6 +24,12 @@ export default antfu(
 		}
 	},
 	{
+		files: ["scripts/content-first-smoke.mjs"],
+		rules: {
+			"antfu/no-import-dist": "off"
+		}
+	},
+	{
 		files: ["README.md", "README.zh-CN.md"],
 		rules: {
 			"markdown/heading-increment": "off"
