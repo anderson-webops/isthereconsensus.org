@@ -22,9 +22,11 @@ The method comes from [Cormack, Clarke and Buettcher's primary paper](https://co
 the site's measured results below, not the paper's results, establish this
 candidate's observed development performance.
 
-Functional questions about an actor's role now require the requested actor
+Paragraph nominations for functional questions now require the requested actor
 and outcome within the same allowed source clause. A topical mention or a
-provider's name in a consensus statement is not sufficient. Generic information
+provider's name in a consensus statement is not sufficient paragraph evidence.
+Native related matches retain their existing scope-qualified behavior, not an
+entailment guarantee. Generic information
 access, update-subscription and unspecified publication-catalog requests are
 declined instead of presented as scientific answers. Scientific outcome and
 data-quality questions remain eligible. No complete question string or agency
