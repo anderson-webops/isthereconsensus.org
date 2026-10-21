@@ -17,7 +17,7 @@ describe("runtime hardening", () => {
 		const build = workflow.split("\n  build:\n")[1].split("\n  linux-arm64-install:")[0];
 		const fixture = build.match(/image: (mongo:8\.0\.34@sha256:[a-f0-9]{64})/);
 		assert.ok(fixture);
-		assert.match(build, /^    runs-on: ubuntu-22\.04$/m);
+		assert.match(build, /^ {4}runs-on: ubuntu-22\.04$/m);
 		assert.ok(promotion.includes(`const image = "${fixture[1]}";`));
 		assert.match(build, /--health-cmd "mongosh --quiet --eval 'db\.adminCommand\(\{ ping: 1 \}\)'"/);
 		assert.match(build, /--health-retries 12/);
