@@ -10,10 +10,14 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 <template>
 	<div class="site-shell">
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<NuxtLink class="site-brand" to="/">
-				<span class="site-brand__name">Is There Consensus?</span>
-				<span class="site-brand__tag">Science, explained in the right order.</span>
+				<span class="site-brand__mark" aria-hidden="true"><span /><span /></span>
+				<span class="site-brand__text">
+					<span class="site-brand__name">Is There Consensus?</span>
+					<span class="site-brand__tag">Science, explained in the right order.</span>
+				</span>
 			</NuxtLink>
 			<nav class="site-nav" aria-label="Primary">
 				<NuxtLink to="/consensus">Browse</NuxtLink>
@@ -24,7 +28,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 			</nav>
 		</header>
 
-		<main class="site-main">
+		<main id="main-content" class="site-main" tabindex="-1">
 			<slot />
 		</main>
 
@@ -65,8 +69,30 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 <style scoped>
 .site-shell {
 	min-height: 100vh;
-	padding: 18px clamp(18px, 3vw, 48px) 42px;
+	padding: 0 clamp(18px, 3vw, 48px) 42px;
 	overflow-x: clip;
+}
+
+.skip-link {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 50;
+	padding: 10px 14px;
+	border-radius: 8px;
+	background: var(--consensus-ink);
+	color: var(--consensus-mist);
+	font-weight: 700;
+	text-decoration: none;
+	transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+	transform: none;
+}
+
+.site-main:focus {
+	outline: none;
 }
 
 .site-header,
@@ -76,18 +102,54 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 }
 
 .site-header {
+	position: sticky;
+	top: 0;
+	z-index: 30;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	gap: 16px;
-	padding-bottom: 16px;
+	min-height: var(--consensus-header-height);
+	padding: 12px 0;
 	border-bottom: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-mist) 84%, transparent);
+	backdrop-filter: saturate(1.4) blur(14px);
 }
 
 .site-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+}
+
+.site-brand__text {
 	display: grid;
 	gap: 1px;
-	text-decoration: none;
+}
+
+.site-brand__mark {
+	display: inline-grid;
+	align-content: center;
+	justify-items: center;
+	gap: 4px;
+	flex: none;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background: var(--consensus-ink);
+	transition: transform 180ms ease;
+}
+
+.site-brand__mark > span {
+	width: 18px;
+	height: 4px;
+	border-radius: 999px;
+	background: var(--consensus-mist);
+}
+
+.site-brand:hover .site-brand__mark {
+	transform: rotate(-6deg);
 }
 
 .site-brand__name,
@@ -105,7 +167,8 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 .site-brand__tag {
 	max-width: 30ch;
-	font-size: 0.88rem;
+	font-size: 0.82rem;
+	line-height: 1.3;
 }
 
 .site-nav {
@@ -143,7 +206,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 .site-main {
 	max-width: 1120px;
 	margin: 0 auto;
-	padding-top: 24px;
+	padding-top: 28px;
 }
 
 .site-footer {
@@ -253,14 +316,28 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 @media (max-width: 700px) {
 	.site-shell {
-		padding: 14px 14px 28px;
+		padding: 0 14px 28px;
 	}
 
 	.site-header {
+		position: static;
 		align-items: stretch;
 		flex-direction: column;
 		gap: 10px;
-		padding-bottom: 12px;
+		padding: 14px 0 12px;
+		backdrop-filter: none;
+		background: transparent;
+	}
+
+	.site-brand__mark {
+		width: 30px;
+		height: 30px;
+		border-radius: 8px;
+	}
+
+	.site-brand__mark > span {
+		width: 14px;
+		height: 3px;
 	}
 
 	.site-nav {

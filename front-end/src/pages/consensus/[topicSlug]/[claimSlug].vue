@@ -18,6 +18,7 @@ import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
+import { certaintyStep, verdictTone } from "~/utils/verdict-tone";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];
@@ -71,24 +72,28 @@ const claimSnapshotGroups = computed(() => {
 			key: "stable-core",
 			eyebrow: "Stable core",
 			title: "What is settled",
+			icon: "i-carbon-checkmark-outline",
 			items: claim.value?.stableCore ?? []
 		},
 		{
 			key: "open-questions",
 			eyebrow: "Open questions",
 			title: "What remains open",
+			icon: "i-carbon-help",
 			items: claim.value?.openQuestions ?? []
 		},
 		{
 			key: "misconceptions",
 			eyebrow: "Reader traps",
 			title: "Common misconceptions",
+			icon: "i-carbon-warning-alt",
 			items: claim.value?.misconceptions ?? []
 		},
 		{
 			key: "change-threshold",
 			eyebrow: "Change threshold",
 			title: "What would change this",
+			icon: "i-carbon-renew",
 			items: claim.value?.whatWouldChangeMinds ?? []
 		}
 	];
@@ -107,12 +112,56 @@ const askLink = computed(() => ({
 const citationExportBase = computed(() =>
 	buildApiUrl(config.public.apiBase as string, `/topics/${topicSlug.value}/claims/${claimSlug.value}/citations`)
 );
-const claimMeta = computed(() => [
-	formatBandLabel(claim.value?.consensusBand),
-	formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
-	formatCountLabel(sourceCount.value, "source"),
-	`Review date recorded: ${formatReviewDate(reviewStatus.value.reviewedAt)}`
-]);
+const claimMeta = computed(() => ({
+	verdict: formatBandLabel(claim.value?.consensusBand),
+	certainty: formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
+	sources: formatCountLabel(sourceCount.value, "source"),
+	reviewed: `Review date recorded: ${formatReviewDate(reviewStatus.value.reviewedAt)}`
+}));
+const claimTone = computed(() => verdictTone({ consensusBand: claim.value?.consensusBand }));
+const claimCertaintyStep = computed(() => certaintyStep(claim.value?.evidenceCertainty));
+const verdictIcons = {
+	strong: "i-carbon-checkmark-filled",
+	broad: "i-carbon-checkmark-outline",
+	debate: "i-carbon-help-filled",
+	unclear: "i-carbon-circle-dash",
+	against: "i-carbon-close-filled"
+} as const;
+const tocItems = computed(() =>
+	[
+		{ id: "claim-evidence", label: "What the evidence says", show: claimSnapshotGroups.value.length > 0 },
+		{ id: "claim-scope", label: "Scope of this review", show: reviewScopeGroups.value.length > 0 },
+		{ id: "claim-certainty", label: "Certainty", show: true },
+		{ id: "claim-assessment", label: "Evidence assessment", show: Boolean(evidenceLandscape.value) },
+		{ id: "claim-findings", label: "Detailed findings", show: evidenceSummaries.value.length > 0 },
+		{ id: "claim-sources", label: "Sources", show: true },
+		{
+			id: "claim-related",
+			label: "Related reviews",
+			show: collectionMemberships.value.length > 0 || relatedClaims.value.length > 0
+		},
+		{ id: "claim-history", label: "Change log", show: true }
+	].filter((item) => item.show)
+);
+const activeSection = ref("");
+let sectionObserver: IntersectionObserver | undefined;
+
+onMounted(() => {
+	if (!("IntersectionObserver" in window)) return;
+	sectionObserver = new IntersectionObserver(
+		(entries) => {
+			const visible = entries.filter((entry) => entry.isIntersecting);
+			if (visible.length) activeSection.value = visible[0].target.id;
+		},
+		{ rootMargin: "-20% 0px -70% 0px" }
+	);
+	for (const item of tocItems.value) {
+		const target = document.getElementById(item.id);
+		if (target) sectionObserver.observe(target);
+	}
+});
+
+onBeforeUnmount(() => sectionObserver?.disconnect());
 const bottomLineParts = computed(() => {
 	const text = claim.value?.bottomLine?.trim() || "";
 	const sentenceEnd = text.match(/[.!?](?:\s|$)/);
@@ -407,383 +456,455 @@ function formatDate(value?: string, fallback = "Not available yet") {
 			Your question was received and added to the queue. The reviewed claim stays separate from community intake.
 		</section>
 
-		<header class="claim-page__header">
-			<div class="claim-page__hero">
-				<p class="eyebrow">Reviewed claim</p>
-				<h1>{{ claim?.title || "Claim review" }}</h1>
+		<article class="claim-answer" :data-verdict-tone="claimTone">
+			<header class="claim-page__header">
+				<div class="claim-page__hero">
+					<p class="eyebrow">Reviewed claim</p>
+					<h1 class="no-page-title-scale">{{ claim?.title || "Claim review" }}</h1>
+					<div class="claim-verdict">
+						<span class="verdict-pill" :data-verdict-tone="claimTone">
+							<span :class="verdictIcons[claimTone]" aria-hidden="true" />
+							{{ claimMeta.verdict }}
+						</span>
+						<span class="certainty-meter">
+							<span class="certainty-meter__steps" aria-hidden="true">
+								<span
+									v-for="step in CERTAINTY_STEP_COUNT"
+									:key="step"
+									class="certainty-meter__step"
+									:class="{ 'certainty-meter__step--on': step <= claimCertaintyStep }"
+								/>
+							</span>
+							{{ claimMeta.certainty }}
+						</span>
+					</div>
+				</div>
+			</header>
+
+			<section class="bottom-line" aria-labelledby="bottom-line-title">
+				<div>
+					<h2 id="bottom-line-title">Bottom line</h2>
+					<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
+					<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
+				</div>
 				<p class="claim-page__description">
 					{{ claim?.editorSummary || "This review summarizes the available evidence for the claim." }}
 				</p>
-			</div>
-			<p class="claim-page__meta">
-				<span v-for="item in claimMeta" :key="item">{{ item }}</span>
-			</p>
-		</header>
-
-		<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
-
-		<section class="bottom-line">
-			<div>
-				<h2>Bottom line</h2>
-				<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
-				<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
-			</div>
-			<div class="bottom-line__actions">
-				<NuxtLink class="button button--ghost" :to="`/consensus/${topicSlug}`">Back to topic</NuxtLink>
-				<NuxtLink class="button button--ghost" :to="askLink">Ask a question</NuxtLink>
-				<NuxtLink
-					v-if="canEditClaim && claim?._id"
-					class="button button--ghost"
-					:to="`/account/editorial/claims/${claim._id}`"
-				>
-					Edit claim
-				</NuxtLink>
-			</div>
-		</section>
-
-		<ClaimReviewStatus v-if="claim" :claim="claim" />
-
-		<section class="content-stack">
-			<section v-if="claimSnapshotGroups.length" class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Evidence</p>
-						<h2>What the evidence says</h2>
-					</div>
-				</div>
-
-				<div class="claim-snapshot-grid">
-					<details
-						v-for="group in claimSnapshotGroups"
-						:key="group.key"
-						class="claim-snapshot-block"
-						:open="group.key === 'stable-core'"
+				<div class="bottom-line__actions">
+					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
+					<NuxtLink class="button button--ghost" :to="askLink">
+						<span class="i-carbon-chat" aria-hidden="true" />
+						Ask a follow-up
+					</NuxtLink>
+					<NuxtLink
+						v-if="canEditClaim && claim?._id"
+						class="button button--ghost"
+						:to="`/account/editorial/claims/${claim._id}`"
 					>
-						<summary class="claim-snapshot-block__summary">
-							<span class="claim-snapshot-block__heading">
-								<span class="eyebrow">{{ group.eyebrow }}</span>
-								<h3 class="claim-snapshot-block__title">{{ group.title }}</h3>
-							</span>
-							<span class="claim-snapshot-block__summary-meta">
-								<span>{{ formatCountLabel(group.items.length, "point") }}</span>
-								<span class="i-carbon-chevron-down claim-snapshot-block__chevron" aria-hidden="true" />
-							</span>
-						</summary>
-						<div class="claim-snapshot-block__body">
-							<ul class="plain-list plain-list--tight">
-								<li v-for="item in group.items" :key="item">{{ item }}</li>
-							</ul>
-						</div>
-					</details>
+						Edit claim
+					</NuxtLink>
 				</div>
 			</section>
 
-			<section v-if="reviewScopeGroups.length" class="content-panel" aria-labelledby="review-scope-title">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Review boundaries</p>
-						<h2 id="review-scope-title">Scope of this review</h2>
-					</div>
-				</div>
-				<p class="review-scope__intro">
-					Recorded evidence-selection criteria. Check the population, setting and outcome before applying this
-					conclusion elsewhere.
+			<footer class="claim-answer__footer">
+				<p class="claim-page__meta">
+					<a href="#claim-sources">{{ claimMeta.sources }}</a>
+					<span>{{ claimMeta.reviewed }}</span>
 				</p>
-				<div class="review-scope__groups">
-					<div v-for="group in reviewScopeGroups" :key="group.key" class="review-scope__group">
-						<h3>{{ group.title }}</h3>
-						<ul class="plain-list plain-list--tight">
-							<li v-for="(item, index) in group.items" :key="index">{{ item }}</li>
-						</ul>
-					</div>
-				</div>
-			</section>
+				<ClaimReviewStatus v-if="claim" :claim="claim" />
+			</footer>
+		</article>
 
-			<section class="uncertainty-strip">
-				<div>
-					<p class="eyebrow">Uncertainty</p>
-					<h2>{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}</h2>
-					<p>{{ uncertaintySummary }}</p>
-				</div>
-				<details v-if="uncertaintyLimits.length" class="uncertainty-strip__limits">
-					<summary>
-						<span>Limits to keep in mind</span>
-						<span>{{ formatCountLabel(uncertaintyLimits.length, "point") }}</span>
-					</summary>
-					<ul class="plain-list plain-list--tight">
-						<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
-					</ul>
-				</details>
-			</section>
-
-			<EvidenceLandscapePanel v-if="evidenceLandscape" :landscape="evidenceLandscape" />
-
-			<section v-if="evidenceSummaries.length" class="content-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Outcome detail</p>
-						<h2>Detailed findings</h2>
-					</div>
-				</div>
-				<div class="outcome-summary-section">
-					<div class="evidence-summary-list">
-						<details
-							v-for="summary in evidenceSummaries"
-							:key="`${summary.question}-${summary.finding}`"
-							class="evidence-summary-card"
+		<div class="claim-layout">
+			<nav v-if="tocItems.length > 2" class="claim-toc" aria-label="On this page">
+				<p class="claim-toc__title">On this page</p>
+				<ol>
+					<li v-for="item in tocItems" :key="item.id">
+						<a
+							:href="`#${item.id}`"
+							:class="{ 'claim-toc__link--active': activeSection === item.id }"
+							:aria-current="activeSection === item.id ? 'location' : undefined"
 						>
-							<summary class="evidence-summary-card__summary">
-								<h3>{{ summary.question }}</h3>
-								<div class="evidence-summary-card__badges">
-									<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
-									<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
+							{{ item.label }}
+						</a>
+					</li>
+				</ol>
+			</nav>
+
+			<section class="content-stack">
+				<section v-if="claimSnapshotGroups.length" id="claim-evidence" class="content-panel">
+					<div class="section-heading">
+						<div>
+							<p class="eyebrow">Evidence</p>
+							<h2>What the evidence says</h2>
+						</div>
+					</div>
+
+					<div class="claim-snapshot-grid">
+						<details
+							v-for="group in claimSnapshotGroups"
+							:key="group.key"
+							class="claim-snapshot-block"
+							:data-snapshot="group.key"
+							:open="group.key === 'stable-core'"
+						>
+							<summary class="claim-snapshot-block__summary">
+								<span :class="group.icon" class="claim-snapshot-block__icon" aria-hidden="true" />
+								<span class="claim-snapshot-block__heading">
+									<span class="eyebrow">{{ group.eyebrow }}</span>
+									<h3 class="claim-snapshot-block__title">{{ group.title }}</h3>
+								</span>
+								<span class="claim-snapshot-block__summary-meta">
+									<span>{{ formatCountLabel(group.items.length, "point") }}</span>
 									<span
-										class="i-carbon-chevron-down evidence-summary-card__chevron"
+										class="i-carbon-chevron-down claim-snapshot-block__chevron"
 										aria-hidden="true"
 									/>
-								</div>
+								</span>
 							</summary>
-							<div class="evidence-summary-card__body">
-								<p v-if="summary.population" class="muted">
-									<strong>Population / context:</strong> {{ summary.population }}
-								</p>
-								<p><strong>Finding:</strong> {{ summary.finding }}</p>
-								<p v-if="summary.magnitude">
-									<strong>Magnitude / range:</strong> {{ summary.magnitude }}
-								</p>
-								<div v-if="summary.limitations?.length">
-									<p class="field-label">Key limitations</p>
-									<ul class="plain-list plain-list--tight">
-										<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
-									</ul>
+							<div class="claim-snapshot-block__body">
+								<ul class="plain-list plain-list--tight">
+									<li v-for="item in group.items" :key="item">{{ item }}</li>
+								</ul>
+							</div>
+						</details>
+					</div>
+				</section>
+
+				<section
+					v-if="reviewScopeGroups.length"
+					id="claim-scope"
+					class="content-panel"
+					aria-labelledby="review-scope-title"
+				>
+					<div class="section-heading">
+						<div>
+							<p class="eyebrow">Review boundaries</p>
+							<h2 id="review-scope-title">Scope of this review</h2>
+						</div>
+					</div>
+					<p class="review-scope__intro">
+						Recorded evidence-selection criteria. Check the population, setting and outcome before applying
+						this conclusion elsewhere.
+					</p>
+					<div class="review-scope__groups">
+						<div v-for="group in reviewScopeGroups" :key="group.key" class="review-scope__group">
+							<h3>{{ group.title }}</h3>
+							<ul class="plain-list plain-list--tight">
+								<li v-for="(item, index) in group.items" :key="index">{{ item }}</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section id="claim-certainty" class="uncertainty-strip">
+					<div>
+						<p class="eyebrow">Uncertainty</p>
+						<h2 class="uncertainty-strip__title">
+							<span class="certainty-meter__steps" aria-hidden="true">
+								<span
+									v-for="step in CERTAINTY_STEP_COUNT"
+									:key="step"
+									class="certainty-meter__step"
+									:class="{ 'certainty-meter__step--on': step <= claimCertaintyStep }"
+								/>
+							</span>
+							{{ formatEvidenceCertaintyLabel(claim?.evidenceCertainty) }}
+						</h2>
+						<p>{{ uncertaintySummary }}</p>
+					</div>
+					<details v-if="uncertaintyLimits.length" class="uncertainty-strip__limits">
+						<summary>
+							<span>Limits to keep in mind</span>
+							<span>{{ formatCountLabel(uncertaintyLimits.length, "point") }}</span>
+						</summary>
+						<ul class="plain-list plain-list--tight">
+							<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
+						</ul>
+					</details>
+				</section>
+
+				<EvidenceLandscapePanel v-if="evidenceLandscape" id="claim-assessment" :landscape="evidenceLandscape" />
+
+				<section v-if="evidenceSummaries.length" id="claim-findings" class="content-panel">
+					<div class="section-heading">
+						<div>
+							<p class="eyebrow">Outcome detail</p>
+							<h2>Detailed findings</h2>
+						</div>
+					</div>
+					<div class="outcome-summary-section">
+						<div class="evidence-summary-list">
+							<details
+								v-for="summary in evidenceSummaries"
+								:key="`${summary.question}-${summary.finding}`"
+								class="evidence-summary-card"
+							>
+								<summary class="evidence-summary-card__summary">
+									<h3>{{ summary.question }}</h3>
+									<div class="evidence-summary-card__badges">
+										<span class="tag">{{ formatEffectDirection(summary.effectDirection) }}</span>
+										<span class="tag">{{ formatEvidenceCertaintyLabel(summary.certainty) }}</span>
+										<span
+											class="i-carbon-chevron-down evidence-summary-card__chevron"
+											aria-hidden="true"
+										/>
+									</div>
+								</summary>
+								<div class="evidence-summary-card__body">
+									<p v-if="summary.population" class="muted">
+										<strong>Population / context:</strong> {{ summary.population }}
+									</p>
+									<p><strong>Finding:</strong> {{ summary.finding }}</p>
+									<p v-if="summary.magnitude">
+										<strong>Magnitude / range:</strong> {{ summary.magnitude }}
+									</p>
+									<div v-if="summary.limitations?.length">
+										<p class="field-label">Key limitations</p>
+										<ul class="plain-list plain-list--tight">
+											<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
+										</ul>
+									</div>
+								</div>
+							</details>
+						</div>
+					</div>
+				</section>
+
+				<section class="content-panel">
+					<div class="section-heading section-heading--sources">
+						<h2 id="claim-sources">Sources</h2>
+						<p>{{ formatCountLabel(sourceCount, "source") }}, highest-weight first.</p>
+					</div>
+
+					<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
+					<div v-else class="source-groups">
+						<details
+							v-for="group in sourceGroups"
+							:key="group.key"
+							class="source-group"
+							:open="group.key === 'tier1'"
+						>
+							<summary class="source-group__summary">
+								<span class="source-group__summary-copy">
+									<span class="eyebrow">{{ group.tier }}</span>
+									<h3 class="source-group__title">{{ group.title }}</h3>
+								</span>
+								<span class="source-group__summary-meta">
+									<span class="source-group__count">{{
+										formatCountLabel(group.items.length, "source")
+									}}</span>
+									<span class="i-carbon-chevron-down source-group__chevron" aria-hidden="true" />
+								</span>
+							</summary>
+							<div class="source-group__body">
+								<p class="source-group__description">{{ group.description }}</p>
+								<div class="source-list">
+									<article
+										v-for="source in group.items"
+										:key="source._id || source.title"
+										class="source-row"
+									>
+										<div class="source-row__content">
+											<h4>{{ source.title }}</h4>
+											<p class="source-row__meta">
+												<span>{{ source.publisher || "Source" }}</span>
+												<span v-if="source.year">{{ source.year }}</span>
+											</p>
+											<p class="source-row__note">{{ source.note }}</p>
+											<div class="source-row__badges">
+												<span v-if="source.isAnchor" class="tag tag--anchor"
+													>Anchor source</span
+												>
+												<span
+													v-if="source.citationStatus && source.citationStatus !== 'current'"
+													class="tag tag--warning"
+												>
+													{{ formatCitationStatus(source.citationStatus) }}
+												</span>
+											</div>
+											<details class="source-row__details">
+												<summary>
+													<span>Source details</span>
+													<span
+														class="i-carbon-chevron-down source-row__details-chevron"
+														aria-hidden="true"
+													/>
+												</summary>
+												<dl class="source-row__details-list">
+													<dt>Type</dt>
+													<dd>{{ formatSourceKind(source.kind) }}</dd>
+													<dt>Appraisal</dt>
+													<dd>{{ formatSourceAppraisal(source.appraisal) }}</dd>
+													<dt>Citation status</dt>
+													<dd>{{ formatCitationStatus(source.citationStatus) }}</dd>
+													<template v-if="source.doi">
+														<dt>DOI</dt>
+														<dd>{{ source.doi }}</dd>
+													</template>
+													<template v-if="source.pmid">
+														<dt>PMID</dt>
+														<dd>{{ source.pmid }}</dd>
+													</template>
+													<template v-if="source.pmcid">
+														<dt>PMCID</dt>
+														<dd>{{ source.pmcid }}</dd>
+													</template>
+													<template v-if="source.citationCheckedAt">
+														<dt>Checked</dt>
+														<dd>
+															{{ formatDate(source.citationCheckedAt, "Date pending") }}
+														</dd>
+													</template>
+												</dl>
+												<div v-if="source.statusSources?.length" class="source-row__integrity">
+													<p class="field-label">Integrity signals</p>
+													<ul class="plain-list plain-list--tight">
+														<li
+															v-for="statusSource in source.statusSources"
+															:key="statusSource"
+														>
+															<a
+																v-if="safeExternalHttpUrl(statusSource)"
+																:href="safeExternalHttpUrl(statusSource)"
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																{{ statusSource }}
+															</a>
+															<span v-else>{{ statusSource }}</span>
+														</li>
+													</ul>
+												</div>
+											</details>
+										</div>
+										<a
+											v-if="sourcePrimaryLink(source)"
+											class="source-row__open"
+											:href="sourcePrimaryLink(source)"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<span>Open source</span>
+											<span class="i-carbon-arrow-up-right" aria-hidden="true" />
+										</a>
+									</article>
 								</div>
 							</div>
 						</details>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<section class="content-panel">
-				<div class="section-heading section-heading--sources">
-					<h2 id="claim-sources">Sources</h2>
-					<p>{{ formatCountLabel(sourceCount, "source") }}, highest-weight first.</p>
-				</div>
-
-				<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
-				<div v-else class="source-groups">
-					<details
-						v-for="group in sourceGroups"
-						:key="group.key"
-						class="source-group"
-						:open="group.key === 'tier1'"
-					>
-						<summary class="source-group__summary">
-							<span class="source-group__summary-copy">
-								<span class="eyebrow">{{ group.tier }}</span>
-								<h3 class="source-group__title">{{ group.title }}</h3>
-							</span>
-							<span class="source-group__summary-meta">
-								<span class="source-group__count">{{
-									formatCountLabel(group.items.length, "source")
-								}}</span>
-								<span class="i-carbon-chevron-down source-group__chevron" aria-hidden="true" />
-							</span>
-						</summary>
-						<div class="source-group__body">
-							<p class="source-group__description">{{ group.description }}</p>
-							<div class="source-list">
-								<article
-									v-for="source in group.items"
-									:key="source._id || source.title"
-									class="source-row"
-								>
-									<div class="source-row__content">
-										<h4>{{ source.title }}</h4>
-										<p class="source-row__meta">
-											<span>{{ source.publisher || "Source" }}</span>
-											<span v-if="source.year">{{ source.year }}</span>
-										</p>
-										<p class="source-row__note">{{ source.note }}</p>
-										<div class="source-row__badges">
-											<span v-if="source.isAnchor" class="tag tag--anchor">Anchor source</span>
-											<span
-												v-if="source.citationStatus && source.citationStatus !== 'current'"
-												class="tag tag--warning"
-											>
-												{{ formatCitationStatus(source.citationStatus) }}
-											</span>
-										</div>
-										<details class="source-row__details">
-											<summary>
-												<span>Source details</span>
-												<span
-													class="i-carbon-chevron-down source-row__details-chevron"
-													aria-hidden="true"
-												/>
-											</summary>
-											<dl class="source-row__details-list">
-												<dt>Type</dt>
-												<dd>{{ formatSourceKind(source.kind) }}</dd>
-												<dt>Appraisal</dt>
-												<dd>{{ formatSourceAppraisal(source.appraisal) }}</dd>
-												<dt>Citation status</dt>
-												<dd>{{ formatCitationStatus(source.citationStatus) }}</dd>
-												<template v-if="source.doi">
-													<dt>DOI</dt>
-													<dd>{{ source.doi }}</dd>
-												</template>
-												<template v-if="source.pmid">
-													<dt>PMID</dt>
-													<dd>{{ source.pmid }}</dd>
-												</template>
-												<template v-if="source.pmcid">
-													<dt>PMCID</dt>
-													<dd>{{ source.pmcid }}</dd>
-												</template>
-												<template v-if="source.citationCheckedAt">
-													<dt>Checked</dt>
-													<dd>{{ formatDate(source.citationCheckedAt, "Date pending") }}</dd>
-												</template>
-											</dl>
-											<div v-if="source.statusSources?.length" class="source-row__integrity">
-												<p class="field-label">Integrity signals</p>
-												<ul class="plain-list plain-list--tight">
-													<li
-														v-for="statusSource in source.statusSources"
-														:key="statusSource"
-													>
-														<a
-															v-if="safeExternalHttpUrl(statusSource)"
-															:href="safeExternalHttpUrl(statusSource)"
-															target="_blank"
-															rel="noopener noreferrer"
-														>
-															{{ statusSource }}
-														</a>
-														<span v-else>{{ statusSource }}</span>
-													</li>
-												</ul>
-											</div>
-										</details>
-									</div>
-									<a
-										v-if="sourcePrimaryLink(source)"
-										class="source-row__open"
-										:href="sourcePrimaryLink(source)"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<span>Open source</span>
-										<span class="i-carbon-arrow-up-right" aria-hidden="true" />
-									</a>
-								</article>
-							</div>
+				<details v-if="citation" class="content-panel citation-panel">
+					<summary class="citation-panel__summary">
+						<span>
+							<span class="eyebrow">Reuse the evidence</span>
+							<span class="citation-panel__title">Cite this review</span>
+						</span>
+						<span class="i-carbon-chevron-down citation-panel__chevron" aria-hidden="true" />
+					</summary>
+					<div class="citation-panel__body">
+						<p>{{ citation.plainText }}</p>
+						<div class="citation-panel__actions">
+							<button class="button button--primary" type="button" @click="copyCitation">
+								{{ citationCopyState === "copied" ? "Citation copied" : "Copy citation" }}
+							</button>
+							<a class="button button--ghost" :href="citationExportUrl('bibtex')">BibTeX</a>
+							<a class="button button--ghost" :href="citationExportUrl('ris')">RIS</a>
+							<a class="button button--ghost" :href="citationExportUrl('markdown')">Markdown</a>
+							<a class="button button--ghost" :href="citationExportUrl('json')">CSL JSON</a>
 						</div>
-					</details>
-				</div>
-			</section>
-
-			<details v-if="citation" class="content-panel citation-panel">
-				<summary class="citation-panel__summary">
-					<span>
-						<span class="eyebrow">Reuse the evidence</span>
-						<span class="citation-panel__title">Cite this review</span>
-					</span>
-					<span class="i-carbon-chevron-down citation-panel__chevron" aria-hidden="true" />
-				</summary>
-				<div class="citation-panel__body">
-					<p>{{ citation.plainText }}</p>
-					<div class="citation-panel__actions">
-						<button class="button button--primary" type="button" @click="copyCitation">
-							{{ citationCopyState === "copied" ? "Citation copied" : "Copy citation" }}
-						</button>
-						<a class="button button--ghost" :href="citationExportUrl('bibtex')">BibTeX</a>
-						<a class="button button--ghost" :href="citationExportUrl('ris')">RIS</a>
-						<a class="button button--ghost" :href="citationExportUrl('markdown')">Markdown</a>
-						<a class="button button--ghost" :href="citationExportUrl('json')">CSL JSON</a>
-					</div>
-					<p v-if="citationCopyState === 'error'" class="citation-panel__error" role="status">
-						Your browser blocked clipboard access. Use one of the downloadable formats instead.
-					</p>
-					<p class="citation-panel__note">
-						Exports include this reviewed page and its displayed source list. Missing author metadata is
-						never invented.
-					</p>
-				</div>
-			</details>
-
-			<ReadingGuideLinks :guides="readingGuides" />
-			<ComparisonLinks :comparisons="comparisonsForReview(`/consensus/${topicSlug}/${claimSlug}`)" />
-
-			<section v-if="collectionMemberships.length || relatedClaims.length" class="content-panel continue-panel">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Continue exploring</p>
-						<h2>Related reviews</h2>
-					</div>
-					<p>Follow the nearest evidence questions instead of returning to a flat directory.</p>
-				</div>
-
-				<div v-if="collectionMemberships.length" class="collection-memberships">
-					<span class="field-label">This review belongs to</span>
-					<NuxtLink
-						v-for="collection in collectionMemberships"
-						:key="collection.slug"
-						class="collection-membership"
-						:to="{ path: `/consensus/${topicSlug}`, hash: `#collection-${collection.slug}` }"
-					>
-						<span>{{ collection.title }}</span>
-						<span>{{ formatCountLabel(collection.claimCount, "review") }}</span>
-					</NuxtLink>
-				</div>
-
-				<div v-if="relatedClaims.length" class="related-claim-grid">
-					<NuxtLink
-						v-for="relatedClaim in relatedClaims"
-						:key="relatedClaim._id"
-						class="related-claim-card"
-						:to="`/consensus/${topicSlug}/${relatedClaim.slug}`"
-					>
-						<div>
-							<span class="eyebrow">{{ formatBandLabel(relatedClaim.consensusBand) }}</span>
-							<h3>{{ relatedClaim.title }}</h3>
-							<p>{{ relatedClaim.bottomLine }}</p>
-						</div>
-						<span class="i-carbon-arrow-right related-claim-card__arrow" aria-hidden="true" />
-					</NuxtLink>
-				</div>
-			</section>
-
-			<details id="claim-history" class="content-panel change-log-panel">
-				<summary class="change-log-panel__summary">
-					<span class="change-log-panel__heading">
-						<span class="eyebrow">Corrections and updates</span>
-						<h2 class="change-log-panel__title">Change log</h2>
-					</span>
-					<span class="change-log-panel__meta">
-						{{ claim?.changeLog?.length || 0 }}
-						{{ claim?.changeLog?.length === 1 ? "entry" : "entries" }}
-					</span>
-				</summary>
-				<div v-if="!claim?.changeLog?.length" class="empty-state">
-					No public change log entries are recorded yet.
-				</div>
-				<div v-else class="change-log">
-					<article
-						v-for="entry in claim.changeLog"
-						:key="`${entry.date}-${entry.summary}`"
-						class="change-log__entry"
-					>
-						<p class="change-log__meta">
-							<span>{{ formatChangeKind(entry.kind) }}</span>
-							<span>{{ formatDate(entry.date, "Date pending") }}</span>
+						<p v-if="citationCopyState === 'error'" class="citation-panel__error" role="status">
+							Your browser blocked clipboard access. Use one of the downloadable formats instead.
 						</p>
-						<p>{{ entry.summary }}</p>
-					</article>
-				</div>
-			</details>
-			<ReaderFeedback v-if="claim?._id" :key="claim._id" :claim-id="claim._id" />
-		</section>
+						<p class="citation-panel__note">
+							Exports include this reviewed page and its displayed source list. Missing author metadata is
+							never invented.
+						</p>
+					</div>
+				</details>
+
+				<ReadingGuideLinks :guides="readingGuides" />
+				<ComparisonLinks :comparisons="comparisonsForReview(`/consensus/${topicSlug}/${claimSlug}`)" />
+
+				<section
+					v-if="collectionMemberships.length || relatedClaims.length"
+					id="claim-related"
+					class="content-panel continue-panel"
+				>
+					<div class="section-heading">
+						<div>
+							<p class="eyebrow">Continue exploring</p>
+							<h2>Related reviews</h2>
+						</div>
+						<p>Follow the nearest evidence questions instead of returning to a flat directory.</p>
+					</div>
+
+					<div v-if="collectionMemberships.length" class="collection-memberships">
+						<span class="field-label">This review belongs to</span>
+						<NuxtLink
+							v-for="collection in collectionMemberships"
+							:key="collection.slug"
+							class="collection-membership"
+							:to="{ path: `/consensus/${topicSlug}`, hash: `#collection-${collection.slug}` }"
+						>
+							<span>{{ collection.title }}</span>
+							<span>{{ formatCountLabel(collection.claimCount, "review") }}</span>
+						</NuxtLink>
+					</div>
+
+					<div v-if="relatedClaims.length" class="related-claim-grid">
+						<NuxtLink
+							v-for="relatedClaim in relatedClaims"
+							:key="relatedClaim._id"
+							class="related-claim-card"
+							:to="`/consensus/${topicSlug}/${relatedClaim.slug}`"
+						>
+							<div>
+								<span
+									class="eyebrow verdict-dot"
+									:data-verdict-tone="verdictTone({ consensusBand: relatedClaim.consensusBand })"
+									>{{ formatBandLabel(relatedClaim.consensusBand) }}</span
+								>
+								<h3>{{ relatedClaim.title }}</h3>
+								<p>{{ relatedClaim.bottomLine }}</p>
+							</div>
+							<span class="i-carbon-arrow-right related-claim-card__arrow" aria-hidden="true" />
+						</NuxtLink>
+					</div>
+				</section>
+
+				<details id="claim-history" class="content-panel change-log-panel">
+					<summary class="change-log-panel__summary">
+						<span class="change-log-panel__heading">
+							<span class="eyebrow">Corrections and updates</span>
+							<h2 class="change-log-panel__title">Change log</h2>
+						</span>
+						<span class="change-log-panel__meta">
+							{{ claim?.changeLog?.length || 0 }}
+							{{ claim?.changeLog?.length === 1 ? "entry" : "entries" }}
+						</span>
+					</summary>
+					<div v-if="!claim?.changeLog?.length" class="empty-state">
+						No public change log entries are recorded yet.
+					</div>
+					<div v-else class="change-log">
+						<article
+							v-for="entry in claim.changeLog"
+							:key="`${entry.date}-${entry.summary}`"
+							class="change-log__entry"
+						>
+							<p class="change-log__meta">
+								<span>{{ formatChangeKind(entry.kind) }}</span>
+								<span>{{ formatDate(entry.date, "Date pending") }}</span>
+							</p>
+							<p>{{ entry.summary }}</p>
+						</article>
+					</div>
+				</details>
+				<ReaderFeedback v-if="claim?._id" :key="claim._id" :claim-id="claim._id" />
+			</section>
+		</div>
 	</div>
 </template>
 
@@ -793,19 +914,172 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	gap: 22px;
 }
 
-.claim-page__header,
-.bottom-line,
+.claim-answer,
 .queue-note {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 18px;
+	border-radius: 20px;
+}
+
+.queue-note {
 	padding: 22px;
+}
+
+.claim-answer {
+	overflow: hidden;
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--verdict-color) 9%, var(--consensus-surface)) 0%,
+		var(--consensus-surface) 260px
+	);
+	border-top: 4px solid var(--verdict-color);
+	box-shadow: var(--consensus-shell-shadow);
 }
 
 .claim-page__header,
 .bottom-line {
 	display: grid;
 	gap: 18px;
+	padding: 32px 40px 0;
+}
+
+.bottom-line {
+	padding-bottom: 28px;
+}
+
+.claim-answer__footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 20px;
+	padding: 12px 40px;
+	border-top: 1px solid var(--consensus-soft-line);
+	background: color-mix(in srgb, var(--consensus-mist) 60%, transparent);
+}
+
+.claim-answer__footer :deep(.review-status) {
+	flex: 1 1 320px;
+}
+
+.claim-answer__footer .claim-page__meta a {
+	color: var(--consensus-link);
+	text-decoration: none;
+}
+
+.claim-answer__footer .claim-page__meta a:hover {
+	text-decoration: underline;
+}
+
+.claim-verdict {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 18px;
+	margin-top: 4px;
+}
+
+.claim-verdict .verdict-pill {
+	font-size: 0.98rem;
+	padding: 8px 14px 8px 11px;
+}
+
+.claim-layout {
+	display: grid;
+	gap: 22px;
+}
+
+.claim-toc {
+	min-width: 0;
+}
+
+.claim-toc__title {
+	margin: 0 0 10px;
+	color: var(--consensus-muted);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.claim-toc ol {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-left: 2px solid var(--consensus-soft-line);
+}
+
+.claim-toc a {
+	display: block;
+	margin-left: -2px;
+	padding: 7px 0 7px 14px;
+	border-left: 2px solid transparent;
+	color: var(--consensus-muted);
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.3;
+	text-decoration: none;
+	transition:
+		color 160ms ease,
+		border-color 160ms ease;
+}
+
+.claim-toc a:hover {
+	color: var(--consensus-ink);
+}
+
+.claim-toc a.claim-toc__link--active {
+	border-left-color: var(--consensus-interactive);
+	color: var(--consensus-ink);
+}
+
+@media (min-width: 1080px) {
+	.claim-layout {
+		grid-template-columns: minmax(0, 1fr) 220px;
+		gap: 56px;
+		align-items: start;
+	}
+
+	.claim-toc {
+		position: sticky;
+		top: calc(var(--consensus-header-height) + 28px);
+		grid-column: 2;
+		grid-row: 1;
+		padding-top: 8px;
+	}
+
+	.content-stack {
+		grid-column: 1;
+		grid-row: 1;
+	}
+}
+
+@media (max-width: 1079px) {
+	.claim-toc__title {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.claim-toc ol {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		border-left: 0;
+	}
+
+	.claim-toc a {
+		margin: 0;
+		padding: 7px 12px;
+		border: 1px solid var(--consensus-soft-line);
+		border-radius: 999px;
+		background: var(--consensus-surface);
+		font-size: 0.84rem;
+	}
 }
 
 .uncertainty-strip {
@@ -846,9 +1120,13 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .claim-page__header h1 {
-	margin-top: 8px;
-	font-size: var(--consensus-page-title-size);
-	line-height: 1.08;
+	max-width: 30ch;
+	margin-top: 4px;
+	color: var(--consensus-ink);
+	font-size: clamp(2rem, 3.2vw, 2.7rem);
+	font-weight: 600;
+	line-height: 1.1;
+	letter-spacing: 0;
 }
 
 .claim-page__description,
@@ -890,20 +1168,37 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .bottom-line {
-	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: end;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 14px;
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--consensus-soft-line);
 }
 
 .bottom-line h2 {
-	line-height: 1.18;
+	color: var(--verdict-color);
+	font-family: inherit;
+	font-size: 0.76rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	line-height: 1.2;
+	text-transform: uppercase;
 }
 
 .bottom-line .bottom-line__text {
-	max-width: 72ch;
-	margin: 8px 0 0;
+	max-width: 60ch;
+	margin: 10px 0 0;
 	color: var(--consensus-ink);
-	font-size: 1.08rem;
-	line-height: 1.62;
+	font-size: 1.32rem;
+	line-height: 1.45;
+}
+
+.bottom-line .claim-page__description {
+	margin: 0;
+	padding-left: 14px;
+	border-left: 3px solid var(--consensus-soft-line);
+	font-size: 0.95rem;
+	line-height: 1.6;
 }
 
 .bottom-line__text--lead {
@@ -911,14 +1206,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .bottom-line__context {
-	max-width: 72ch;
-	margin: 8px 0 0;
+	max-width: 68ch;
+	margin: 10px 0 0;
 	color: var(--consensus-muted);
-	line-height: 1.58;
+	line-height: 1.62;
 }
 
 .uncertainty-strip > div > p:not(.eyebrow):not(.field-label) {
 	max-width: 68ch;
+}
+
+.uncertainty-strip__title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
 }
 
 .uncertainty-strip h2 {
@@ -974,7 +1275,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .bottom-line__actions {
-	justify-content: end;
+	justify-content: start;
+	align-items: center;
+	gap: 10px;
+}
+
+.bottom-line__actions :deep(.library-action) {
+	margin: 0;
+}
+
+.bottom-line__actions .button {
+	gap: 8px;
+	min-height: 36px;
+	padding: 6px 14px;
+	font-size: 0.88rem;
 }
 
 .section-heading {
@@ -1120,8 +1434,16 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .review-scope__groups {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: 18px;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+	gap: 14px;
+}
+
+.review-scope__group {
+	padding: 16px 18px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 12px;
+	background: var(--consensus-field-surface);
+	font-size: 0.95rem;
 }
 
 .review-scope__group {
@@ -1143,6 +1465,34 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	overflow: hidden;
 }
 
+.claim-snapshot-block__icon {
+	width: 22px;
+	height: 22px;
+	color: var(--verdict-unclear);
+}
+
+[data-snapshot="stable-core"] .claim-snapshot-block__icon {
+	color: var(--verdict-strong);
+}
+
+[data-snapshot="open-questions"] .claim-snapshot-block__icon {
+	color: var(--verdict-broad);
+}
+
+[data-snapshot="misconceptions"] .claim-snapshot-block__icon {
+	color: var(--verdict-debate);
+}
+
+.claim-snapshot-block,
+.evidence-summary-card {
+	transition: border-color 160ms ease;
+}
+
+.claim-snapshot-block:hover,
+.evidence-summary-card:hover {
+	border-color: var(--consensus-line);
+}
+
 .claim-snapshot-block__summary,
 .evidence-summary-card__summary {
 	display: grid;
@@ -1153,6 +1503,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	padding: 13px 16px;
 	cursor: pointer;
 	list-style: none;
+}
+
+.claim-snapshot-block__summary {
+	grid-template-columns: auto minmax(0, 1fr) auto;
 }
 
 .claim-snapshot-block__summary::-webkit-details-marker,
@@ -1536,7 +1890,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 11px 18px;
+	padding: 9px 16px;
 	border-radius: 999px;
 	border: 1px solid var(--consensus-line);
 	font-weight: 600;
@@ -1569,6 +1923,21 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	.queue-note {
 		padding: 14px;
 		border-radius: 16px;
+	}
+
+	.claim-page__header {
+		padding-top: 20px;
+	}
+
+	.bottom-line {
+		margin-top: 14px;
+		padding-top: 16px;
+		padding-bottom: 18px;
+		border-radius: 0;
+	}
+
+	.claim-answer__footer {
+		padding: 10px 14px;
 	}
 
 	.claim-page__header,
@@ -1611,13 +1980,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 	.bottom-line .bottom-line__text {
 		margin-top: 6px;
-		font-size: 1.02rem;
-		line-height: 1.48;
+		font-size: 1.14rem;
+		line-height: 1.4;
 	}
 
 	.bottom-line__context {
-		margin-top: 6px;
-		line-height: 1.46;
+		margin-top: 8px;
+		font-size: 0.98rem;
+		line-height: 1.55;
+	}
+
+	.bottom-line .claim-page__description {
+		font-size: 0.92rem;
 	}
 
 	.section-heading {
@@ -1704,7 +2078,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 @media (max-width: 560px) {
 	.claim-snapshot-block__summary {
-		grid-template-columns: 1fr auto;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 	}
 
 	.source-row__details-list {

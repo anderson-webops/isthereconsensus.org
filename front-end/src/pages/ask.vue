@@ -643,7 +643,7 @@ async function submitQuestion() {
 	border: 1px solid var(--consensus-line);
 	border-radius: 999px;
 	color: var(--consensus-muted);
-	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-family: inherit;
 	font-size: 0.82rem;
 	line-height: 16px;
 	text-align: center;

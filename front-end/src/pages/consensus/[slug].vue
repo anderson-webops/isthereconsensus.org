@@ -11,6 +11,7 @@ import { getTopicGuide } from "~/data/topicGuides";
 import { formatCountLabel } from "~/utils/format-count";
 import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
+import { verdictMix, verdictTone } from "~/utils/verdict-tone";
 
 interface TopicRouteParams {
 	slug?: string | string[];
@@ -48,6 +49,36 @@ const collectionLanes = computed(() =>
 		}))
 		.filter((collection) => collection.claims.length > 0)
 );
+const collectionLaneMixes = computed(
+	() => new Map(collectionLanes.value.map((collection) => [collection.slug, verdictMix(collection.claims)]))
+);
+const allLanesOpen = ref(false);
+
+function laneElements() {
+	return import.meta.client ? [...document.querySelectorAll<HTMLDetailsElement>("details.collection-lane")] : [];
+}
+
+function toggleAllLanes() {
+	allLanesOpen.value = !allLanesOpen.value;
+	for (const lane of laneElements()) lane.open = allLanesOpen.value;
+}
+
+// Subtopic lanes are collapsed by default, so open the one a hash link points at.
+function openLaneFromHash(hash: string) {
+	if (!hash.startsWith("#collection-")) return;
+	const lane = document.getElementById(decodeURIComponent(hash.slice(1)));
+	if (lane instanceof HTMLDetailsElement) {
+		lane.open = true;
+		lane.scrollIntoView({ block: "start" });
+	}
+}
+
+onMounted(() => openLaneFromHash(route.hash));
+watch(
+	() => route.hash,
+	(hash) => openLaneFromHash(hash)
+);
+
 const ungroupedClaims = computed(() => {
 	const groupedSlugs = new Set(collectionLanes.value.flatMap((collection) => collection.claimSlugs));
 	return claims.value.filter((claim) => !groupedSlugs.has(claim.slug));
@@ -179,6 +210,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 				</p>
 			</div>
 			<div class="topic-page__actions">
+				<LibraryAction v-if="topic?._id" :id="topic._id" kind="topic" />
 				<NuxtLink class="button button--primary" :to="{ path: '/ask', query: { topic: slug } }">
 					Ask a question
 				</NuxtLink>
@@ -187,10 +219,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 				</NuxtLink>
 			</div>
 		</header>
-
-		<LibraryAction v-if="topic?._id" :id="topic._id" kind="topic" />
-		<ReadingGuideLinks :guides="readingGuides" />
-		<ComparisonLinks :comparisons="comparisonsForTopic(slug)" />
 
 		<section v-if="starterClaims.length" class="start-here">
 			<div class="section-heading">
@@ -208,7 +236,9 @@ function claimSupportLabel(claim: ClaimSummary) {
 				>
 					<div class="starter-card__content">
 						<h3>{{ claim.title }}</h3>
-						<span>{{ claimSupportLabel(claim) }}</span>
+						<span class="verdict-dot" :data-verdict-tone="verdictTone(claim)">{{
+							claimSupportLabel(claim)
+						}}</span>
 					</div>
 					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
@@ -221,38 +251,46 @@ function claimSupportLabel(claim: ClaimSummary) {
 					<p class="eyebrow">Evidence atlas</p>
 					<h2>Browse by subtopic</h2>
 				</div>
-				<p>
-					{{ formatCountLabel(claims.length, "review") }} organized into
-					{{ formatCountLabel(collectionLanes.length, "collection") }}.
-				</p>
+				<div class="atlas-lane__tools">
+					<p>
+						{{ formatCountLabel(claims.length, "review") }} in
+						{{ formatCountLabel(collectionLanes.length, "subtopic") }}. Open one to see its claims.
+					</p>
+					<ClientOnly>
+						<button class="text-button" type="button" :aria-pressed="allLanesOpen" @click="toggleAllLanes">
+							{{ allLanesOpen ? "Collapse all" : "Expand all" }}
+						</button>
+					</ClientOnly>
+				</div>
 			</div>
 
-			<nav class="collection-index" aria-label="Subtopic collections">
-				<a
-					v-for="collection in collectionLanes"
-					:key="collection.slug"
-					class="collection-index__link"
-					:href="`#collection-${collection.slug}`"
-				>
-					<span>{{ collection.title }}</span>
-					<span>{{ collection.claims.length }}</span>
-				</a>
-			</nav>
-
 			<div class="collection-lanes">
-				<section
+				<details
 					v-for="collection in collectionLanes"
 					:id="`collection-${collection.slug}`"
 					:key="collection.slug"
 					class="collection-lane"
 				>
-					<div class="collection-lane__heading">
-						<div>
-							<p class="eyebrow">{{ formatCountLabel(collection.claims.length, "review") }}</p>
-							<h2>{{ collection.title }}</h2>
-						</div>
-						<p>{{ collection.description }}</p>
-					</div>
+					<summary class="collection-lane__heading">
+						<h2>{{ collection.title }}</h2>
+						<span class="collection-lane__description">{{ collection.description }}</span>
+						<span class="collection-lane__meta">
+							<span class="verdict-mix" aria-hidden="true">
+								<span
+									v-for="segment in collectionLaneMixes.get(collection.slug)"
+									:key="segment.tone"
+									class="verdict-mix__segment"
+									:data-verdict-tone="segment.tone"
+									:style="{ flexGrow: segment.count }"
+									:title="`${segment.label}: ${segment.count}`"
+								/>
+							</span>
+							<span class="collection-lane__count">{{
+								formatCountLabel(collection.claims.length, "review")
+							}}</span>
+							<span class="i-carbon-chevron-down collection-lane__chevron" aria-hidden="true" />
+						</span>
+					</summary>
 					<div class="claim-list">
 						<NuxtLink
 							v-for="claim in collection.claims"
@@ -263,13 +301,17 @@ function claimSupportLabel(claim: ClaimSummary) {
 							<div class="claim-row__content">
 								<h3>{{ claim.title }}</h3>
 								<p class="claim-row__meta">
-									<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
+									<span
+										class="claim-row__status verdict-dot"
+										:data-verdict-tone="verdictTone(claim)"
+										>{{ claimSupportLabel(claim) }}</span
+									>
 								</p>
 							</div>
 							<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 						</NuxtLink>
 					</div>
-				</section>
+				</details>
 			</div>
 		</section>
 
@@ -295,13 +337,18 @@ function claimSupportLabel(claim: ClaimSummary) {
 					<div class="claim-row__content">
 						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__meta">
-							<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
+							<span class="claim-row__status verdict-dot" :data-verdict-tone="verdictTone(claim)">{{
+								claimSupportLabel(claim)
+							}}</span>
 						</p>
 					</div>
 					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
 				</NuxtLink>
 			</div>
 		</section>
+
+		<ReadingGuideLinks :guides="readingGuides" />
+		<ComparisonLinks :comparisons="comparisonsForTopic(slug)" />
 	</div>
 </template>
 
@@ -382,10 +429,10 @@ function claimSupportLabel(claim: ClaimSummary) {
 
 .topic-page__actions {
 	display: flex;
-	justify-content: space-between;
-	gap: 16px;
+	justify-content: start;
+	gap: 12px 16px;
 	flex-wrap: wrap;
-	align-items: end;
+	align-items: center;
 }
 
 .section-heading h2,
@@ -426,7 +473,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 }
 
 .starter-card__content > span {
-	color: var(--consensus-interactive);
+	color: var(--consensus-ink);
 	font-size: 0.72rem;
 	font-weight: 800;
 	letter-spacing: 0;
@@ -452,66 +499,140 @@ function claimSupportLabel(claim: ClaimSummary) {
 	gap: 24px;
 }
 
-.collection-index {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 10px;
-}
-
-.collection-index__link {
+.atlas-lane__tools {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	min-height: 54px;
-	padding: 11px 14px;
-	border: 1px solid var(--consensus-soft-line);
-	border-radius: 8px;
-	background: var(--consensus-elevated-surface);
-	color: var(--consensus-ink);
+	justify-content: end;
+	gap: 8px 16px;
+}
+
+.text-button {
+	padding: 6px 2px;
+	border: 0;
+	background: none;
+	color: var(--consensus-link);
+	font-size: 0.9rem;
 	font-weight: 700;
-	line-height: 1.35;
-	text-decoration: none;
-	transition: border-color 160ms ease;
+	cursor: pointer;
 }
 
-.collection-index__link:hover,
-.collection-index__link:focus-visible {
-	border-color: var(--consensus-interactive);
-}
-
-.collection-index__link span:last-child {
-	color: var(--consensus-interactive);
-	font-size: 0.8rem;
+.text-button:hover {
+	text-decoration: underline;
 }
 
 .collection-lanes {
-	gap: 34px;
+	gap: 10px;
 }
 
 .collection-lane {
-	scroll-margin-top: 88px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 14px;
+	background: var(--consensus-surface);
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease;
+}
+
+.collection-lane:hover {
+	border-color: var(--consensus-line);
+}
+
+.collection-lane[open] {
+	box-shadow: var(--consensus-shell-shadow);
 }
 
 .collection-lane__heading {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"title meta"
+		"description meta";
+	gap: 4px 24px;
+	align-items: center;
+	padding: 16px 20px;
+	cursor: pointer;
+	list-style: none;
 }
 
-.collection-lane__heading h2,
-.collection-lane__heading p {
-	margin: 0;
+.collection-lane__heading::-webkit-details-marker {
+	display: none;
 }
 
 .collection-lane__heading h2 {
+	grid-area: title;
+	margin: 0;
 	font-family: "Fraunces", serif;
-	font-size: 1.65rem;
-	line-height: 1.2;
+	font-size: 1.28rem;
+	font-weight: 600;
+	line-height: 1.25;
 }
 
-.collection-lane__heading > p {
-	max-width: 62ch;
+.collection-lane__description {
+	grid-area: description;
+	display: -webkit-box;
+	overflow: hidden;
+	max-width: 70ch;
 	color: var(--consensus-muted);
-	line-height: 1.58;
+	font-size: 0.93rem;
+	line-height: 1.5;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}
+
+.collection-lane[open] .collection-lane__description {
+	-webkit-line-clamp: unset;
+}
+
+.collection-lane__meta {
+	grid-area: meta;
+	display: inline-flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.collection-lane__count {
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.collection-lane__chevron {
+	width: 20px;
+	height: 20px;
+	color: var(--consensus-interactive);
+	transition: transform 160ms ease;
+}
+
+.collection-lane[open] .collection-lane__chevron {
+	transform: rotate(180deg);
+}
+
+.verdict-mix {
+	display: flex;
+	gap: 2px;
+	width: 88px;
+	height: 6px;
+	overflow: hidden;
+	border-radius: 999px;
+}
+
+.verdict-mix__segment {
+	flex-basis: 0;
+	min-width: 4px;
+	background: var(--verdict-color);
+}
+
+.collection-lane .claim-list {
+	margin: 0;
+	padding: 0 12px 12px;
+	gap: 8px;
+}
+
+.collection-lane .claim-row {
+	padding: 14px 16px;
+	background: var(--consensus-field-surface);
 }
 
 .claim-list {
@@ -565,7 +686,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 }
 
 .claim-row__status {
-	color: var(--consensus-interactive);
+	color: var(--consensus-ink);
 }
 
 .card-arrow {
@@ -618,12 +739,24 @@ function claimSupportLabel(claim: ClaimSummary) {
 		align-items: start;
 	}
 
-	.collection-index {
-		grid-template-columns: 1fr;
+	.collection-lanes {
+		gap: 8px;
 	}
 
-	.collection-lanes {
-		gap: 28px;
+	.collection-lane__heading {
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			"title meta"
+			"description description";
+		padding: 14px;
+	}
+
+	.verdict-mix {
+		display: none;
+	}
+
+	.collection-lane .claim-list {
+		padding: 0 8px 8px;
 	}
 
 	.claim-list {
