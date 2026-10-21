@@ -13,7 +13,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		<header class="site-header">
 			<NuxtLink class="site-brand" to="/">
 				<span class="site-brand__name">Is There Consensus?</span>
-				<span class="site-brand__tag">Science, explained in the right order.</span>
 			</NuxtLink>
 			<nav class="site-nav" aria-label="Primary">
 				<NuxtLink to="/consensus">Browse</NuxtLink>
@@ -31,10 +30,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 		<footer class="site-footer">
 			<div class="site-footer__brand">
 				<p class="site-footer__title">Is There Consensus?</p>
-				<p class="site-footer__description">
-					Clear summaries of where the science stands, what is still open, and where public confusion tends to
-					creep in.
-				</p>
 			</div>
 			<div class="site-footer__meta">
 				<div class="site-footer__appearance" aria-label="Appearance controls" role="group">
@@ -97,15 +92,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	color: var(--consensus-ink);
 }
 
-.site-brand__tag,
 .site-footer,
 .site-nav a {
 	color: var(--consensus-muted);
-}
-
-.site-brand__tag {
-	max-width: 30ch;
-	font-size: 0.88rem;
 }
 
 .site-nav {
@@ -159,12 +148,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 .site-footer__title {
 	margin: 0 0 6px;
-}
-
-.site-footer__description {
-	margin: 0;
-	max-width: 560px;
-	line-height: 1.6;
 }
 
 .site-footer__meta {
@@ -296,12 +279,6 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-footer__links {
 		justify-content: start;
-	}
-}
-
-@media (max-width: 480px) {
-	.site-brand__tag {
-		display: none;
 	}
 }
 </style>

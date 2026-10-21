@@ -9,10 +9,8 @@ const accountDeletionSource = readFileSync(join(testDir, "..", "src/pages/accoun
 
 describe("account deletion layout", () => {
 	it("keeps the account deletion request path concise without hiding retention limits", () => {
-		assert.match(
-			accountDeletionSource,
-			/Use this request-based process for account closure, public-content handling, and retained records\./
-		);
+		assert.match(accountDeletionSource, /<h1>Account deletion and retention<\/h1>/);
+		assert.doesNotMatch(accountDeletionSource, /Use this request-based process/);
 		assert.match(accountDeletionSource, /There is no self-serve deletion portal yet/);
 		assert.match(
 			accountDeletionSource,

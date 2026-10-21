@@ -13,8 +13,7 @@ useStaticPageMeta({
 	<div class="comparisons-index">
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Comparisons' }]" />
 		<header>
-			<p class="eyebrow">Evidence comparisons</p>
-			<h1>Compare the evidence, with its limits.</h1>
+			<h1>Evidence comparisons</h1>
 		</header>
 		<article v-for="comparison in evidenceComparisons" :key="comparison.slug">
 			<h2>
@@ -26,7 +25,7 @@ useStaticPageMeta({
 				{{ comparison.datasetLabel }}
 			</p>
 		</article>
-		<p><NuxtLink to="/guides">Explore the reading guides</NuxtLink> for broader explanations.</p>
+		<p><NuxtLink to="/guides">Reading guides</NuxtLink></p>
 	</div>
 </template>
 

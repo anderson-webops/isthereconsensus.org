@@ -194,7 +194,6 @@ useSeoMeta({ title: "My library - Is There Consensus?", robots: "noindex, nofoll
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'My library' }]" />
 		<header>
 			<h1>My library</h1>
-			<p>Keep useful reviews and comparisons, and follow topics and requested questions you want to revisit.</p>
 		</header>
 		<section class="library-settings" aria-label="Library storage">
 			<div class="library-toolbar">

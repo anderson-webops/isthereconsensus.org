@@ -9,7 +9,8 @@ const source = readFileSync(join(testDir, "..", "src/pages/ask.vue"), "utf8");
 
 describe("ask page layout copy", () => {
 	it("keeps the ask flow progressive and framed around uncovered questions", () => {
-		assert.match(source, /Search first\. Ask what is missing\./);
+		assert.match(source, /<h1>Ask a question<\/h1>/);
+		assert.doesNotMatch(source, /Search first\. Ask what is missing\./);
 		assert.match(source, /What are you looking for\?/);
 		assert.match(source, /Does one of these answer it\?/);
 		assert.match(source, /None of these answers my question\./);

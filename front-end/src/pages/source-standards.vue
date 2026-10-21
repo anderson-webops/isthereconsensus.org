@@ -40,12 +40,7 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Topic sourcing notes' }]" />
 
 		<header class="page-header">
-			<p class="eyebrow">Topic sourcing notes</p>
-			<h1>How source stacks change by topic.</h1>
-			<p>
-				Use this reference to see why a reviewed claim may weigh guidelines, assessments, datasets, syntheses,
-				or individual studies differently by field.
-			</p>
+			<h1>Topic sourcing notes</h1>
 		</header>
 
 		<section class="topic-standards-section">

@@ -268,10 +268,8 @@ async function submitQuestion() {
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Ask a question' }]" />
 
 		<header class="ask-page__header">
-			<p class="eyebrow">Ask a question</p>
-			<h1>Search first. Ask what is missing.</h1>
-			<p><NuxtLink to="/roadmap">See the coverage roadmap</NuxtLink> for approved questions being researched.</p>
-			<p>Find the closest reviewed answer, or send the specific gap for review.</p>
+			<h1>Ask a question</h1>
+			<p><NuxtLink to="/roadmap">Coverage roadmap</NuxtLink></p>
 		</header>
 
 		<section class="search-panel">

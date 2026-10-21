@@ -35,12 +35,7 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Misconception modules' }]" />
 
 		<header class="misconception-header">
-			<p class="eyebrow">Misconception modules</p>
-			<h1>Recurring mistakes around science claims.</h1>
-			<p>
-				These short modules correct predictable errors before readers mistake a headline, anecdote, or partial
-				result for the state of the evidence.
-			</p>
+			<h1>Common misconceptions</h1>
 		</header>
 
 		<section class="misconception-grid">
@@ -138,20 +133,12 @@ useStaticPageMeta({
 			</div>
 		</details>
 
-		<section class="misconception-callout">
-			<div>
-				<p class="eyebrow">Next step</p>
-				<h2>Use the right correction, then return to the claim.</h2>
-				<p>
-					The goal is to stop the same interpretation mistake from repeating without pulling readers away from
-					the claim.
-				</p>
-			</div>
+		<nav class="misconception-callout" aria-label="Related reading">
 			<div class="misconception-callout__actions">
 				<NuxtLink class="button button--primary" to="/explainers">Evergreen explainers</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>
-		</section>
+		</nav>
 	</div>
 </template>
 

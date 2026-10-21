@@ -14,14 +14,15 @@ describe("misconception and explainer index layout copy", () => {
 			'<details class="misconception-panel misconception-panel--soft misconception-panel--disclosure">'
 		);
 
-		assert.match(source, /Recurring mistakes around science claims\./);
+		assert.match(source, /<h1>Common misconceptions<\/h1>/);
 		assert.match(source, /Common mistake/);
 		assert.match(source, />Quick checks</);
 		assert.match(source, />Why it persists</);
 		assert.match(source, /same misunderstanding keeps returning/);
 		assert.match(source, /method behind the correction/);
 		assert.match(source, /science claims where they often appear/);
-		assert.match(source, /Use the right correction, then return to the claim\./);
+		assert.match(source, /aria-label="Related reading"/);
+		assert.doesNotMatch(source, /Use the right correction, then return to the claim\./);
 		assert.doesNotMatch(source, /<p class="eyebrow">Module<\/p>/);
 		assert.doesNotMatch(source, />Checks and context</);
 		assert.doesNotMatch(source, /claim pages/i);
@@ -65,7 +66,8 @@ describe("misconception and explainer index layout copy", () => {
 	it("uses public navigation labels from evergreen explainers", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/explainers/index.vue"), "utf8");
 
-		assert.match(source, /See these concepts in context\./);
+		assert.match(source, /aria-label="Related reading"/);
+		assert.doesNotMatch(source, /See these concepts in context\./);
 		assert.match(source, />Browse claim reviews</);
 		assert.doesNotMatch(source, />How reviews work</);
 		assert.doesNotMatch(source, /Read editorial standards/);

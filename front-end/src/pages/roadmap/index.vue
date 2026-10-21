@@ -47,12 +47,7 @@ function browse(nextPage: number, nextStatus = status.value) {
 	<div class="coverage-page">
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Coverage roadmap' }]" />
 		<header>
-			<p class="eyebrow">Coverage roadmap</p>
-			<h1>From a question to a reviewed answer.</h1>
-			<p>
-				See which questions editors have approved for research, what is being worked on, and where an answer is
-				ready.
-			</p>
+			<h1>Coverage roadmap</h1>
 			<p class="muted">
 				Only separately approved summaries appear here. Private suggestions stay private, and requests never
 				determine a scientific conclusion.
