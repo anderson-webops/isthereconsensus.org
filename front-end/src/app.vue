@@ -112,6 +112,11 @@ useSeoMeta({
 	--consensus-page-background: linear-gradient(180deg, #f7faf8 0%, #eef4f1 100%);
 	--consensus-shell-shadow: 0 24px 60px rgba(21, 17, 13, 0.05);
 	--consensus-header-height: 72px;
+	--type-page-title: var(--consensus-page-title-size);
+	--type-section: 1.625rem;
+	--type-card: 1.125rem;
+	--type-label: 0.875rem;
+	--consensus-body: color-mix(in srgb, var(--consensus-ink) 82%, var(--consensus-muted));
 	--verdict-strong: #1f7a4d;
 	--verdict-broad: #1d6f8f;
 	--verdict-debate: #a0620c;
@@ -352,11 +357,43 @@ dd {
 }
 
 .eyebrow {
-	text-transform: uppercase;
-	letter-spacing: 0.16em;
-	font-size: 0.73rem;
+	letter-spacing: 0;
+	font-size: var(--type-label);
 	font-weight: 600;
 	color: var(--consensus-muted);
+}
+
+/*
+ * The UnoCSS preflight resets headings to inherited size and weight, so any heading a page
+ * does not style explicitly fell back to body text. These defaults keep the hierarchy
+ * page title > section > card even when a page only sets margins.
+ */
+.site-main h1,
+.site-main h2,
+.site-main h3 {
+	font-family: "Fraunces", serif;
+	font-weight: 600;
+	color: var(--consensus-ink);
+}
+
+.site-main h1 {
+	font-size: var(--type-page-title);
+	line-height: 1.1;
+}
+
+.site-main h2 {
+	font-size: var(--type-section);
+	line-height: 1.2;
+}
+
+.site-main h3 {
+	font-size: var(--type-card);
+	line-height: 1.3;
+}
+
+/* Comfortable reading measure unless a component sets its own. */
+.site-main :where(p, li, dd) {
+	max-width: 72ch;
 }
 
 :where(.prose, .policy-prose, .plain-list, .policy-list) {
@@ -419,6 +456,21 @@ dd {
 	font-size: 1.05rem;
 }
 
+.verdict-mix {
+	display: flex;
+	gap: 2px;
+	width: 88px;
+	height: 6px;
+	overflow: hidden;
+	border-radius: 999px;
+}
+
+.verdict-mix__segment {
+	flex-basis: 0;
+	min-width: 4px;
+	background: var(--verdict-color);
+}
+
 .certainty-meter {
 	display: inline-flex;
 	align-items: center;
@@ -450,7 +502,6 @@ dd {
 	gap: 24px;
 }
 
-.policy-header,
 .policy-summary-card,
 .policy-detail-card,
 .policy-callout {
@@ -459,7 +510,12 @@ dd {
 	border-radius: 8px;
 }
 
-.policy-header,
+.policy-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .policy-callout {
 	padding: 22px;
 }
@@ -485,13 +541,17 @@ dd {
 	line-height: 1.08;
 }
 
-.policy-header p,
 .policy-summary-card p,
-.policy-detail-card p,
-.policy-list,
-.policy-prose p,
 .policy-callout p {
 	color: var(--consensus-muted);
+	line-height: 1.68;
+}
+
+.policy-header p,
+.policy-detail-card p,
+.policy-list,
+.policy-prose p {
+	color: var(--consensus-body);
 	line-height: 1.68;
 }
 
@@ -663,7 +723,6 @@ body
 		border-radius: 8px;
 	}
 
-	.policy-header,
 	.policy-callout {
 		padding: 16px;
 	}

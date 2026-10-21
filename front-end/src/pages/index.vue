@@ -377,7 +377,6 @@ function claimCardSummary(claim: ClaimSummary) {
 		<section v-if="recentlyReviewedClaims.length" class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Recently reviewed</p>
 					<h2>New and refreshed claim reviews</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
@@ -407,7 +406,6 @@ function claimCardSummary(claim: ClaimSummary) {
 		<section class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Topic clusters</p>
 					<h2>Browse by topic</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Open the directory</NuxtLink>
@@ -595,9 +593,8 @@ function claimCardSummary(claim: ClaimSummary) {
 
 .suggestion-group__label {
 	margin: 0;
-	font-size: 0.82rem;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	font-size: 0.84rem;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
 
@@ -726,10 +723,9 @@ function claimCardSummary(claim: ClaimSummary) {
 	display: flex;
 	gap: 8px 12px;
 	flex-wrap: wrap;
-	font-size: 0.76rem;
+	font-size: 0.84rem;
 	letter-spacing: 0;
 	line-height: 1.35;
-	text-transform: uppercase;
 	color: var(--consensus-muted);
 }
 

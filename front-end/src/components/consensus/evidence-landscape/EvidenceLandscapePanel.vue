@@ -112,7 +112,6 @@ function formatDate(value?: string) {
 	<section class="evidence-landscape-panel">
 		<div class="evidence-landscape-panel__header">
 			<div>
-				<p class="eyebrow">Evidence assessment</p>
 				<h2>How strong is the evidence?</h2>
 			</div>
 			<div class="evidence-landscape-panel__badges" aria-label="Evidence assessment labels">
@@ -273,10 +272,9 @@ function formatDate(value?: string) {
 
 .landscape-stat span {
 	color: var(--consensus-muted);
-	font-size: 0.8rem;
+	font-size: 0.84rem;
 	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 }
 
 .landscape-badge {
@@ -397,10 +395,9 @@ function formatDate(value?: string) {
 
 .landscape-definition-list dt {
 	color: var(--consensus-muted);
-	font-size: 0.82rem;
+	font-size: 0.84rem;
 	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 }
 
 .landscape-definition-list dd {
@@ -480,10 +477,9 @@ function formatDate(value?: string) {
 }
 
 .field-label {
-	font-size: 0.82rem;
+	font-size: 0.84rem;
 	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 }
 
 @media (max-width: 760px) {

@@ -50,6 +50,13 @@ describe("claim detail layout", () => {
 		assert.match(source, /class="evidence-summary-card__summary"/);
 	});
 
+	it("previews long snapshot lists and lets readers expand them", () => {
+		assert.match(source, /const SNAPSHOT_PREVIEW_COUNT = 3;/);
+		assert.match(source, /v-for="item in visibleSnapshotItems\(group\)"/);
+		assert.match(source, /@click="showAllSnapshotItems\(group\.key\)"/);
+		assert.match(source, /Show all \{\{ formatCountLabel\(group\.items\.length, "point"\) \}\}/);
+	});
+
 	it("keeps the uncertainty summary at a readable measure", () => {
 		assert.match(source, /\.uncertainty-strip > div > p:not\(\.eyebrow\):not\(\.field-label\) \{/);
 		assert.match(source, /max-width: 68ch;/);

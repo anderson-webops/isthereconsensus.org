@@ -118,7 +118,6 @@ useSeoMeta({
 	gap: 20px;
 }
 
-.explainer-detail-header,
 .example-card,
 .module-card {
 	background: var(--consensus-surface);
@@ -126,7 +125,12 @@ useSeoMeta({
 	border-radius: 8px;
 }
 
-.explainer-detail-header,
+.explainer-detail-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .explainer-callout {
 	padding: 20px;
 }
@@ -292,7 +296,6 @@ useSeoMeta({
 		grid-template-columns: 1fr;
 	}
 
-	.explainer-detail-header,
 	.explainer-callout {
 		padding: 16px;
 	}
@@ -320,7 +323,6 @@ useSeoMeta({
 		gap: 16px;
 	}
 
-	.explainer-detail-header,
 	.example-card,
 	.module-card {
 		border-radius: 8px;

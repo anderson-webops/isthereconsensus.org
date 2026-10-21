@@ -70,28 +70,24 @@ const claimSnapshotGroups = computed(() => {
 	const groups = [
 		{
 			key: "stable-core",
-			eyebrow: "Stable core",
 			title: "What is settled",
 			icon: "i-carbon-checkmark-outline",
 			items: claim.value?.stableCore ?? []
 		},
 		{
 			key: "open-questions",
-			eyebrow: "Open questions",
 			title: "What remains open",
 			icon: "i-carbon-help",
 			items: claim.value?.openQuestions ?? []
 		},
 		{
 			key: "misconceptions",
-			eyebrow: "Reader traps",
 			title: "Common misconceptions",
 			icon: "i-carbon-warning-alt",
 			items: claim.value?.misconceptions ?? []
 		},
 		{
 			key: "change-threshold",
-			eyebrow: "Change threshold",
 			title: "What would change this",
 			icon: "i-carbon-renew",
 			items: claim.value?.whatWouldChangeMinds ?? []
@@ -105,6 +101,21 @@ const claimSnapshotGroups = computed(() => {
 		}))
 		.filter((group) => group.items.length > 0);
 });
+// Long snapshot lists open on their strongest points; the rest stays one click away.
+const SNAPSHOT_PREVIEW_COUNT = 3;
+const expandedSnapshotGroups = ref(new Set<string>());
+
+function visibleSnapshotItems(group: { key: string; items: string[] }) {
+	const collapsible = group.items.length > SNAPSHOT_PREVIEW_COUNT + 1;
+	return collapsible && !expandedSnapshotGroups.value.has(group.key)
+		? group.items.slice(0, SNAPSHOT_PREVIEW_COUNT)
+		: group.items;
+}
+
+function showAllSnapshotItems(key: string) {
+	expandedSnapshotGroups.value = new Set([...expandedSnapshotGroups.value, key]);
+}
+
 const askLink = computed(() => ({
 	path: "/ask",
 	query: claim.value?.title ? { topic: topicSlug.value, question: claim.value.title } : { topic: topicSlug.value }
@@ -535,7 +546,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<section v-if="claimSnapshotGroups.length" id="claim-evidence" class="content-panel">
 					<div class="section-heading">
 						<div>
-							<p class="eyebrow">Evidence</p>
 							<h2>What the evidence says</h2>
 						</div>
 					</div>
@@ -551,7 +561,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							<summary class="claim-snapshot-block__summary">
 								<span :class="group.icon" class="claim-snapshot-block__icon" aria-hidden="true" />
 								<span class="claim-snapshot-block__heading">
-									<span class="eyebrow">{{ group.eyebrow }}</span>
 									<h3 class="claim-snapshot-block__title">{{ group.title }}</h3>
 								</span>
 								<span class="claim-snapshot-block__summary-meta">
@@ -564,8 +573,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							</summary>
 							<div class="claim-snapshot-block__body">
 								<ul class="plain-list plain-list--tight">
-									<li v-for="item in group.items" :key="item">{{ item }}</li>
+									<li v-for="item in visibleSnapshotItems(group)" :key="item">{{ item }}</li>
 								</ul>
+								<button
+									v-if="visibleSnapshotItems(group).length < group.items.length"
+									class="snapshot-more"
+									type="button"
+									@click="showAllSnapshotItems(group.key)"
+								>
+									Show all {{ formatCountLabel(group.items.length, "point") }}
+									<span class="i-carbon-chevron-down" aria-hidden="true" />
+								</button>
 							</div>
 						</details>
 					</div>
@@ -579,7 +597,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				>
 					<div class="section-heading">
 						<div>
-							<p class="eyebrow">Review boundaries</p>
 							<h2 id="review-scope-title">Scope of this review</h2>
 						</div>
 					</div>
@@ -629,7 +646,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				<section v-if="evidenceSummaries.length" id="claim-findings" class="content-panel">
 					<div class="section-heading">
 						<div>
-							<p class="eyebrow">Outcome detail</p>
 							<h2>Detailed findings</h2>
 						</div>
 					</div>
@@ -996,10 +1012,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .claim-toc__title {
 	margin: 0 0 10px;
 	color: var(--consensus-muted);
-	font-size: 0.72rem;
+	font-size: 0.84rem;
 	font-weight: 700;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
+	letter-spacing: 0;
 }
 
 .claim-toc ol {
@@ -1160,10 +1175,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
-	font-size: 0.82rem;
+	font-size: 0.84rem;
 	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
 
@@ -1178,11 +1192,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .bottom-line h2 {
 	color: var(--verdict-color);
 	font-family: inherit;
-	font-size: 0.76rem;
-	font-weight: 800;
-	letter-spacing: 0.14em;
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0;
 	line-height: 1.2;
-	text-transform: uppercase;
 }
 
 .bottom-line .bottom-line__text {
@@ -1208,8 +1221,27 @@ function formatDate(value?: string, fallback = "Not available yet") {
 .bottom-line__context {
 	max-width: 68ch;
 	margin: 10px 0 0;
-	color: var(--consensus-muted);
+	color: var(--consensus-body);
 	line-height: 1.62;
+}
+
+.snapshot-more {
+	display: inline-flex;
+	align-items: center;
+	justify-self: start;
+	gap: 6px;
+	min-height: 36px;
+	padding: 6px 2px;
+	border: 0;
+	background: none;
+	color: var(--consensus-link);
+	font-size: 0.9rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.snapshot-more:hover {
+	text-decoration: underline;
 }
 
 .uncertainty-strip > div > p:not(.eyebrow):not(.field-label) {
@@ -1231,6 +1263,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .uncertainty-strip p {
 	margin: 0;
+	color: var(--consensus-body);
 }
 
 .uncertainty-strip__limits {
@@ -1258,7 +1291,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .uncertainty-strip__limits > summary span:last-child {
 	color: var(--consensus-muted);
-	font-size: 0.78rem;
+	font-size: 0.84rem;
 }
 
 .uncertainty-strip__limits .plain-list {
@@ -1359,7 +1392,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .collection-membership span:last-child {
 	color: var(--consensus-muted);
-	font-size: 0.76rem;
+	font-size: 0.84rem;
 	white-space: nowrap;
 }
 
@@ -1536,7 +1569,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	align-items: center;
 	gap: 10px;
 	color: var(--consensus-muted);
-	font-size: 0.8rem;
+	font-size: 0.84rem;
 	font-weight: 700;
 	white-space: nowrap;
 }
@@ -1631,7 +1664,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .source-group__count {
 	color: var(--consensus-muted);
-	font-size: 0.8rem;
+	font-size: 0.84rem;
 	font-weight: 700;
 	white-space: nowrap;
 }
@@ -1762,6 +1795,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	padding-left: 20px;
 	display: grid;
 	gap: 10px;
+	color: var(--consensus-body);
 }
 
 .plain-list--tight {
@@ -1776,7 +1810,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	border: 1px solid var(--consensus-line);
 	background: var(--consensus-elevated-surface);
 	color: var(--consensus-ink);
-	font-size: 0.78rem;
+	font-size: 0.84rem;
 	font-weight: 600;
 }
 

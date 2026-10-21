@@ -4,7 +4,18 @@ import ThemeToggle from "~/components/ThemeToggle.vue";
 
 const { currentAccount, role } = useAuth();
 
+const route = useRoute();
 const year = new Date().getFullYear();
+const learnPathPattern = /^\/(?:explainers|guides|compare|misconceptions)(?:\/|$)/;
+const isLearnRoute = computed(() => learnPathPattern.test(route.path));
+const headerSearch = ref("");
+
+async function submitHeaderSearch() {
+	const q = headerSearch.value.trim().slice(0, 160);
+	if (!q) return;
+	await navigateTo({ path: "/consensus", query: { q } });
+	headerSearch.value = "";
+}
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 </script>
 
@@ -19,9 +30,21 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<span class="site-brand__tag">Science, explained in the right order.</span>
 				</span>
 			</NuxtLink>
+			<form class="site-search" role="search" @submit.prevent="submitHeaderSearch">
+				<label class="site-search__label" for="site-search">Search reviewed claims</label>
+				<span class="i-carbon-search site-search__icon" aria-hidden="true" />
+				<input
+					id="site-search"
+					v-model="headerSearch"
+					type="search"
+					placeholder="Search claims"
+					maxlength="160"
+					autocomplete="off"
+				/>
+			</form>
 			<nav class="site-nav" aria-label="Primary">
 				<NuxtLink to="/consensus">Browse</NuxtLink>
-				<NuxtLink to="/explainers">Explainers</NuxtLink>
+				<NuxtLink to="/explainers" :class="{ 'router-link-active': isLearnRoute }">Learn</NuxtLink>
 				<NuxtLink to="/ask">Ask</NuxtLink>
 				<NuxtLink to="/library">My library</NuxtLink>
 				<NuxtLink v-if="canUseEditorial" to="/account/editorial">Editorial</NuxtLink>
@@ -171,6 +194,46 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	line-height: 1.3;
 }
 
+.site-search {
+	position: relative;
+	flex: 0 1 260px;
+	margin-left: auto;
+}
+
+.site-search__label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.site-search__icon {
+	position: absolute;
+	top: 50%;
+	left: 12px;
+	width: 16px;
+	height: 16px;
+	color: var(--consensus-muted);
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+.site-search input {
+	width: 100%;
+	min-height: 40px;
+	padding: 8px 12px 8px 36px;
+	border: 1px solid var(--consensus-line);
+	border-radius: 999px;
+	background: var(--consensus-field-surface);
+	font-size: 0.92rem;
+}
+
+.site-search input:focus-visible {
+	border-color: var(--consensus-interactive);
+}
+
 .site-nav {
 	display: flex;
 	gap: 6px;
@@ -184,7 +247,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	padding: 8px 10px;
 	border-radius: 999px;
 	text-decoration: none;
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 0.92rem;
 	transition:
 		background-color 180ms ease,
@@ -253,11 +316,10 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 .site-footer__appearance-label {
 	color: var(--consensus-muted);
-	font-size: 0.68rem;
+	font-size: 0.84rem;
 	font-weight: 700;
-	letter-spacing: 0.14em;
+	letter-spacing: 0;
 	line-height: 1;
-	text-transform: uppercase;
 	white-space: nowrap;
 }
 
@@ -338,6 +400,11 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 	.site-brand__mark > span {
 		width: 14px;
 		height: 3px;
+	}
+
+	.site-search {
+		flex-basis: auto;
+		margin-left: 0;
 	}
 
 	.site-nav {

@@ -12,6 +12,7 @@ import { formatSlugTitle } from "~/utils/format-slug-title";
 import { serializeJsonLd } from "~/utils/json-ld";
 import { createLatestRequest, settledSearchWatchOptions } from "~/utils/latest-request";
 import { matchesSearchQuery } from "~/utils/search-query";
+import { verdictMix } from "~/utils/verdict-tone";
 
 const route = useRoute();
 const router = useRouter();
@@ -211,6 +212,15 @@ const filteredTopics = computed(() =>
 		return matchesSearchQuery(query.value, [topic.title, topic.description]);
 	})
 );
+const topicVerdictMixes = computed(() => {
+	const claimsByTopic = new Map<string, NonNullable<typeof claimsData.value>["claims"]>();
+	for (const claim of claimsData.value?.claims ?? []) {
+		const slug = claim.topic?.slug;
+		if (!slug) continue;
+		claimsByTopic.set(slug, [...(claimsByTopic.get(slug) ?? []), claim]);
+	}
+	return new Map([...claimsByTopic].map(([slug, topicClaims]) => [slug, verdictMix(topicClaims)]));
+});
 const filteredClaims = computed(() =>
 	claims.value.filter((claim) => claimBand.value === "all" || claim.consensusBand === claimBand.value)
 );
@@ -263,7 +273,6 @@ watch([query, claimBand], () => {
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Browse topics' }]" />
 
 		<header class="directory__header">
-			<p class="eyebrow">Browse topics</p>
 			<h1>Browse topics. Open a reviewed claim.</h1>
 			<p>Search the reviewed claim library, or browse every topic by subject.</p>
 		</header>
@@ -284,7 +293,6 @@ watch([query, claimBand], () => {
 
 		<section v-if="!query" id="topic-directory" class="results-block topic-directory">
 			<div class="section-heading">
-				<p class="eyebrow">Browse by subject</p>
 				<h2>Topics</h2>
 			</div>
 
@@ -308,8 +316,23 @@ watch([query, claimBand], () => {
 				>
 					<div class="topic-row__main">
 						<h3>{{ topic.title }}</h3>
+						<p v-if="topic.description" class="topic-row__description">{{ topic.description }}</p>
 						<div class="topic-row__meta">
 							<span>{{ formatTopicClaimCount(topic) }}</span>
+							<span
+								v-if="topicVerdictMixes.get(topic.slug)?.length"
+								class="verdict-mix"
+								aria-hidden="true"
+							>
+								<span
+									v-for="segment in topicVerdictMixes.get(topic.slug)"
+									:key="segment.tone"
+									class="verdict-mix__segment"
+									:data-verdict-tone="segment.tone"
+									:style="{ flexGrow: segment.count }"
+									:title="`${segment.label}: ${segment.count}`"
+								/>
+							</span>
 						</div>
 					</div>
 					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
@@ -521,10 +544,9 @@ watch([query, claimBand], () => {
 .results-search__label,
 .field-label,
 .topic-row__meta {
-	font-size: 0.82rem;
+	font-size: 0.84rem;
 	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
 
@@ -604,15 +626,16 @@ watch([query, claimBand], () => {
 
 .topic-list {
 	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
 	gap: 12px;
 }
 
 .topic-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: center;
+	align-items: start;
 	gap: 16px;
-	padding: 17px 20px;
+	padding: 18px 20px;
 	color: inherit;
 	text-decoration: none;
 	transition: border-color 160ms ease;
@@ -632,16 +655,29 @@ watch([query, claimBand], () => {
 .topic-row h3 {
 	margin: 0;
 	color: var(--consensus-ink);
-	font-size: 1.26rem;
+	font-size: var(--type-card);
 	font-weight: 600;
 	line-height: 1.3;
 }
 
 .topic-row__meta {
 	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	gap: 10px;
 	flex-wrap: wrap;
 	letter-spacing: 0;
+}
+
+.topic-row__description {
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.92rem;
+	line-height: 1.5;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 
 .claim-directory {
@@ -753,10 +789,9 @@ watch([query, claimBand], () => {
 	flex-wrap: wrap;
 	margin: 0;
 	color: var(--consensus-muted);
-	font-size: 0.78rem;
+	font-size: 0.84rem;
 	font-weight: 700;
 	letter-spacing: 0;
-	text-transform: uppercase;
 }
 
 .claim-card__status {

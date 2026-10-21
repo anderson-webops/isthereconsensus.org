@@ -51,7 +51,7 @@ describe("home entry layout", () => {
 	it("shows genuinely recent claim reviews across multiple topics", () => {
 		assert.match(source, /const recentClaimCandidates = computed/);
 		assert.match(source, /selectRecentClaims\(recentClaimCandidates\.value, 5\)/);
-		assert.match(source, /<p class="eyebrow">Recently reviewed<\/p>/);
+		assert.doesNotMatch(source, /<p class="eyebrow">Recently reviewed<\/p>/);
 		assert.match(source, /<h2>New and refreshed claim reviews<\/h2>/);
 		assert.doesNotMatch(source, /formatClaimReviewLabel|claimReviewTimestamp/);
 	});

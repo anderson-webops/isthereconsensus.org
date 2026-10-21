@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import ComparisonLinks from "~/components/ComparisonLinks.vue";
+import LearnNav from "~/components/LearnNav.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
-import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
-import { evidenceComparisons } from "~/data/comparisons";
 import { evergreenExplainers } from "~/data/explainers";
-import { readingGuides } from "~/data/reading-guides";
 
 useStaticPageMeta({
 	description:
@@ -27,10 +24,9 @@ useStaticPageMeta({
 			</p>
 		</header>
 
-		<ReadingGuideLinks :guides="readingGuides" />
-		<ComparisonLinks :comparisons="evidenceComparisons" />
+		<LearnNav />
 
-		<section class="explainer-grid">
+		<section class="explainer-grid" aria-label="Explainers">
 			<NuxtLink
 				v-for="explainer in evergreenExplainers"
 				:key="explainer.slug"
@@ -38,7 +34,6 @@ useStaticPageMeta({
 				:to="`/explainers/${explainer.slug}`"
 			>
 				<div class="explainer-card__content">
-					<p class="eyebrow">Explainer</p>
 					<h2>{{ explainer.title }}</h2>
 				</div>
 				<span class="i-carbon-arrow-right explainer-card__arrow" aria-hidden="true" />
@@ -47,7 +42,6 @@ useStaticPageMeta({
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Reviewed library</p>
 				<h2>See these concepts in context.</h2>
 			</div>
 			<div class="explainer-callout__actions">
@@ -63,14 +57,18 @@ useStaticPageMeta({
 	gap: 22px;
 }
 
-.explainer-header,
 .explainer-card {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 8px;
+	border-radius: 14px;
 }
 
-.explainer-header,
+.explainer-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .explainer-callout {
 	padding: 22px;
 }
@@ -94,7 +92,7 @@ useStaticPageMeta({
 .explainer-card li,
 .explainer-callout p {
 	color: var(--consensus-muted);
-	line-height: 1.66;
+	line-height: 1.6;
 }
 
 .explainer-header p,
@@ -133,7 +131,7 @@ useStaticPageMeta({
 }
 
 .explainer-card h2 {
-	font-size: 1.24rem;
+	font-size: var(--type-card);
 	font-weight: 600;
 	line-height: 1.3;
 }
@@ -196,13 +194,8 @@ useStaticPageMeta({
 	}
 
 	.explainer-card,
-	.explainer-header,
 	.explainer-callout {
-		padding: 18px;
-	}
-
-	.explainer-card h2 {
-		font-size: 1.12rem;
+		padding: 16px;
 	}
 
 	.explainer-callout {

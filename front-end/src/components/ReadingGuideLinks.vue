@@ -31,30 +31,60 @@ defineProps<{ guides: ReadingGuideSummary[] }>();
 	align-items: baseline;
 	gap: 12px;
 }
+.guide-links__heading a {
+	color: var(--consensus-link);
+	font-size: 0.92rem;
+	font-weight: 600;
+	text-underline-offset: 3px;
+}
 .guide-links h2 {
 	margin: 0;
-	font:
-		600 1.35rem/1.3 "Fraunces",
-		serif;
+	font-size: var(--type-section);
 }
 .guide-links ul {
 	display: grid;
-	gap: 14px;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	gap: 10px;
 	list-style: none;
 	padding: 0;
-	margin: 18px 0 0;
+	margin: 16px 0 0;
+}
+.guide-links li {
+	position: relative;
+	display: grid;
+	gap: 6px;
+	max-width: none;
+	padding: 14px 16px;
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 12px;
+	background: var(--consensus-surface);
+	transition: border-color 160ms ease;
+}
+.guide-links li:hover,
+.guide-links li:focus-within {
+	border-color: var(--consensus-interactive);
 }
 .guide-links li > a {
+	color: var(--consensus-ink);
 	font-weight: 600;
+	line-height: 1.35;
+	text-decoration: none;
 }
-.guide-links a {
-	color: var(--consensus-interactive);
-	text-underline-offset: 3px;
+/* Stretch the title link over the whole card so the card is one target. */
+.guide-links li > a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
 }
 .guide-links p {
-	margin: 5px 0 0;
-	max-width: 72ch;
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 0;
 	color: var(--consensus-muted);
-	line-height: 1.6;
+	font-size: 0.92rem;
+	line-height: 1.5;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 </style>

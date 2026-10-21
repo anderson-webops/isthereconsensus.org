@@ -127,7 +127,6 @@ useStaticPageMeta({
 
 		<section class="standards-callout">
 			<div>
-				<p class="eyebrow">Why this matters</p>
 				<h2>Trust comes from visible evidence, uncertainty, and updates.</h2>
 				<p>
 					Readers can judge a claim faster when the evidence, uncertainty, and update trail stay visible
@@ -150,7 +149,6 @@ useStaticPageMeta({
 	gap: 22px;
 }
 
-.standards-header,
 .standards-panel,
 .institution-card,
 .standards-callout {
@@ -159,7 +157,12 @@ useStaticPageMeta({
 	border-radius: 18px;
 }
 
-.standards-header,
+.standards-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .standards-panel,
 .standards-callout {
 	padding: 22px;
@@ -193,11 +196,20 @@ useStaticPageMeta({
 }
 
 .standards-header p,
-.plain-list,
 .institution-card p,
 .standards-callout p {
 	color: var(--consensus-muted);
 	line-height: 1.66;
+}
+
+.plain-list {
+	color: var(--consensus-body);
+	line-height: 1.6;
+}
+
+.standards-panel .section-heading h2 {
+	font-size: 1.35rem;
+	line-height: 1.25;
 }
 
 .standards-header p,
@@ -277,7 +289,6 @@ useStaticPageMeta({
 		gap: 18px;
 	}
 
-	.standards-header,
 	.standards-panel,
 	.standards-callout {
 		border-radius: 16px;

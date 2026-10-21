@@ -223,7 +223,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 		<section v-if="starterClaims.length" class="start-here">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Start here</p>
 					<h2>Recommended starting points</h2>
 				</div>
 			</div>
@@ -248,7 +247,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 		<section v-if="collectionLanes.length" class="atlas-lane">
 			<div class="section-heading section-heading--split">
 				<div>
-					<p class="eyebrow">Evidence atlas</p>
 					<h2>Browse by subtopic</h2>
 				</div>
 				<div class="atlas-lane__tools">
@@ -318,7 +316,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 		<section v-if="!collectionLanes.length || ungroupedClaims.length" class="claim-lane">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Reviewed claims</p>
 					<h2>{{ collectionLanes.length ? "Other reviewed claims" : "All reviewed claims" }}</h2>
 				</div>
 			</div>
@@ -358,7 +355,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 	gap: 22px;
 }
 
-.topic-page__header,
 .queue-note,
 .claim-row {
 	background: var(--consensus-surface);
@@ -366,7 +362,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 	border-radius: 8px;
 }
 
-.topic-page__header,
 .queue-note {
 	padding: 22px;
 }
@@ -385,6 +380,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 .topic-page__header {
 	display: grid;
 	gap: 16px;
+	padding: 8px 0 4px;
 }
 
 .topic-page__header h1,
@@ -395,7 +391,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 }
 
 .topic-page__header h1 {
-	margin-top: 8px;
+	margin: 8px 0 10px;
 	font-size: var(--consensus-page-title-size);
 	line-height: 1.08;
 }
@@ -474,11 +470,10 @@ function claimSupportLabel(claim: ClaimSummary) {
 
 .starter-card__content > span {
 	color: var(--consensus-ink);
-	font-size: 0.72rem;
+	font-size: 0.84rem;
 	font-weight: 800;
 	letter-spacing: 0;
 	line-height: 1.35;
-	text-transform: uppercase;
 }
 
 .starter-card h3 {
@@ -609,21 +604,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 	transform: rotate(180deg);
 }
 
-.verdict-mix {
-	display: flex;
-	gap: 2px;
-	width: 88px;
-	height: 6px;
-	overflow: hidden;
-	border-radius: 999px;
-}
-
-.verdict-mix__segment {
-	flex-basis: 0;
-	min-width: 4px;
-	background: var(--verdict-color);
-}
-
 .collection-lane .claim-list {
 	margin: 0;
 	padding: 0 12px 12px;
@@ -678,9 +658,8 @@ function claimSupportLabel(claim: ClaimSummary) {
 	display: flex;
 	gap: 8px 12px;
 	flex-wrap: wrap;
-	font-size: 0.76rem;
+	font-size: 0.84rem;
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
@@ -720,7 +699,6 @@ function claimSupportLabel(claim: ClaimSummary) {
 		gap: 18px;
 	}
 
-	.topic-page__header,
 	.queue-note {
 		padding: 18px;
 		border-radius: 8px;

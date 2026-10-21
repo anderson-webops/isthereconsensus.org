@@ -15,7 +15,7 @@ describe("misconception and explainer index layout copy", () => {
 		);
 
 		assert.match(source, /Recurring mistakes around science claims\./);
-		assert.match(source, /Common mistake/);
+		assert.doesNotMatch(source, /<p class="eyebrow">Common mistake<\/p>/);
 		assert.match(source, />Quick checks</);
 		assert.match(source, />Why it persists</);
 		assert.match(source, /same misunderstanding keeps returning/);

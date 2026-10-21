@@ -492,10 +492,9 @@ async function submitQuestion() {
 
 .field-label,
 .match-row__meta {
-	font-size: 0.82rem;
+	font-size: 0.84rem;
 	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
 
