@@ -55,11 +55,34 @@ Layout tests that pinned the old structure were updated to the new one, keeping 
 - `topic-page-layout.test.ts` asserts collapsible lanes, hash opening and the verdict mix, instead of the removed duplicate index nav.
 - `claim-detail-layout.test.ts` and `home-entry-layout.test.ts` loosen exact-string anchors where a class or `id` was added, and update the mobile lead size (1.02rem → 1.14rem, so the answer is no longer smaller than its supporting text).
 
-## Proposed next phases (not built yet)
+## Round 2: type, labels and organisation
 
-1. **Explainers and guides indexes** (~1,000 and ~750 words, 14 and 31 `h2`s). Apply the same collapsible lane pattern, or a filterable card grid with category chips.
-2. **Header search.** A compact search field or command palette (⌘K) in the sticky header, so readers can jump to another claim from any page, not just the home page.
-3. **Claim page sources.** Show a one-line "strongest source" in the answer card, and collapse Tier 2+ source notes to the title and publisher.
-4. **Policy and standards pages.** Lead with a three-item summary card and move the full text below a "Read the full policy" disclosure.
-5. **Verdict tone everywhere.** Apply `verdictTone` in `consensus/index.vue`, search suggestions and the library page so colour meaning stays consistent.
-6. **Motion and polish.** Animate the open and close of `<details>` (using `interpolate-size` where supported), and add a subtle reading-progress line under the sticky header on claim pages.
+A follow-up audit measured contrast, font sizes and weights, all-caps labels, line length and page height on 11 pages, in light and dark, at 1280px and 390px. Contrast already passed everywhere (≥5.06:1 light, ≥7.6:1 dark). The remaining problems were hierarchy, label noise and page organisation.
+
+### Type scale and colour roles (`app.vue`)
+- **Inverted hierarchy fixed.** The UnoCSS preflight resets headings, so any section `h2` a page did not size fell back to 17px regular, smaller than the 20px card titles under it. `.site-main` now gives h1, h2 and h3 defaults: page title, then `--type-section` (26px), then `--type-card` (18px), all Fraunces semibold. Page-specific rules still win.
+- **Sentence-case labels.** `.eyebrow` and every reader-facing uppercase rule (verdict labels, meta rows, "Bottom line", the footer) are now sentence case at 13.5–14px, with no letter-spacing.
+- **Fewer labels.** Eyebrows that only repeated the heading below them were removed: "Evidence" over "What the evidence says", "Common mistake" on every card, and others.
+- **Lighter weights.** Navigation and metadata use 500. 600 is kept for titles, and 700 for the answer and the verdict.
+- **Body colour.** `--consensus-body` is a darker reading tone mixed from ink and muted. It is used for long reading text: claim evidence points, bottom-line context, uncertainty, policy prose and standards lists. Grey is now for metadata only.
+- **Measure.** Paragraphs and list items in `.site-main` default to `max-width: 72ch`.
+- **Small text.** Counts and tags on claim pages were raised from 12–12.8px to 13.5px.
+
+### Organisation
+- **Learn hub.** `LearnNav` links Explainers, Reading guides, Comparisons and Common mistakes, and appears on all four pages. The header's "Explainers" item became **Learn**, which stays active on all four sections.
+- **Header search** on every page except home, which already has a search hero. It routes to `/consensus?q=`.
+- **Explainers** now start with the explainers. The ~20 guides and the comparisons list before them moved to their own pages (6,030px → 1,309px).
+- **Guides and comparisons** are left-aligned like every other page and shown as compact card grids with two-line summaries (guides 6,408px → 2,717px, compare 2,723px → 1,712px).
+- **Browse** shows topics as a card grid with a description and the verdict-mix bar (4,615px → 2,740px).
+- **Consistent page headers.** Card-style headers on topic, explainers, misconceptions, standards, policy, terms, privacy, corrections, guidelines, source standards, explainer detail and account pages are now the same plain title-and-lead header.
+- **Claim evidence lists** longer than four points show the first three, with a "Show all N points" button.
+- `ReadingGuideLinks` and `ComparisonLinks` render as compact cards with near-black titles. Teal is kept for inline links and arrows.
+
+### Verified
+Lint, typecheck, 447 front-end unit tests (including a new `learn-navigation.test.ts`), production build, the axe accessibility smoke on every route in light and dark, and the SSR route and asset smokes.
+
+## Still open
+1. A keyboard search shortcut (⌘K) on top of the header search.
+2. Show a one-line "strongest source" in the claim answer card, and collapse Tier 2+ source notes.
+3. Animate `<details>` open and close where `interpolate-size` is supported, and add a reading-progress line on claim pages.
+4. Apply verdict tones to search suggestions and the library page.
