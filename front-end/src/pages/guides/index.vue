@@ -14,17 +14,11 @@ useStaticPageMeta({
 	<div class="guides-page">
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Reading guides' }]" />
 		<header>
-			<p class="eyebrow">Reading guides</p>
-			<h1>See how the findings fit together.</h1>
-			<p class="guides-intro">
-				Follow a subject from the main takeaway to the evidence, its limits, and the questions worth asking
-				next.
-			</p>
+			<h1>Reading guides</h1>
 		</header>
 		<p class="guides-count">{{ readingGuides.length }} sourced reading guides</p>
 		<p>
-			<NuxtLink to="/compare">Compare options side by side</NuxtLink>, with sources and limits beside each
-			finding.
+			<NuxtLink to="/compare">Evidence comparisons</NuxtLink>
 		</p>
 		<div class="guides-list">
 			<article v-for="guide in readingGuides" :key="guide.slug" class="guide-card">
@@ -36,8 +30,7 @@ useStaticPageMeta({
 			</article>
 		</div>
 		<p class="guides-more">
-			Want help reading evidence itself?
-			<NuxtLink to="/explainers">Explore the core-concept explainers.</NuxtLink>
+			<NuxtLink to="/explainers">Explainers</NuxtLink>
 		</p>
 	</div>
 </template>
@@ -56,13 +49,7 @@ useStaticPageMeta({
 	margin: 8px 0 16px;
 	max-width: 22ch;
 }
-.guides-intro {
-	max-width: 66ch;
-	line-height: 1.65;
-	color: var(--consensus-muted);
-}
-.guides-count,
-.guides-intro {
+.guides-count {
 	margin-bottom: 0;
 }
 .guides-count,

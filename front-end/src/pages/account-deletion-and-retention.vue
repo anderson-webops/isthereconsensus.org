@@ -65,9 +65,7 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Account deletion and retention' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Account deletion and retention</p>
-			<h1>Account deletion and retained records.</h1>
-			<p>Use this request-based process for account closure, public-content handling, and retained records.</p>
+			<h1>Account deletion and retention</h1>
 		</header>
 
 		<section class="policy-summary">

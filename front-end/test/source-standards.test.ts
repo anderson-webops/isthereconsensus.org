@@ -68,8 +68,8 @@ describe("source standards", () => {
 		const crossCuttingIndex = source.indexOf('<section class="panel panel--soft">');
 		const usageIndex = source.indexOf('<section class="panel">');
 
-		assert.match(source, /How source stacks change by topic\./);
-		assert.match(source, /why a reviewed claim may weigh guidelines, assessments, datasets, syntheses/);
+		assert.match(source, /<h1>Topic sourcing notes<\/h1>/);
+		assert.doesNotMatch(source, /Use this reference to see why/);
 		assert.match(source, /When to use this reference/);
 		assert.match(source, /For the public version, start with How Reviews Work\./);
 		assert.doesNotMatch(source, /This reference supports source-stack review/);

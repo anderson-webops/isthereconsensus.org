@@ -66,9 +66,7 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Copyright and trademark complaints' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Copyright and trademark complaints</p>
-			<h1>Rights complaints and takedown requests.</h1>
-			<p>Use this lane for copyright, trademark, and related rights issues.</p>
+			<h1>Copyright and trademark complaints</h1>
 		</header>
 
 		<section class="policy-summary">

@@ -279,12 +279,7 @@ function claimCardSummary(claim: ClaimSummary) {
 	<div class="home">
 		<section class="hero">
 			<div class="hero__copy">
-				<p class="eyebrow">Find out where the science stands</p>
-				<h1>Search a claim. Read the bottom line.</h1>
-				<p class="hero__lead">
-					Clear, reviewed summaries for scientific questions that are often louder in public than they are
-					uncertain in the evidence.
-				</p>
+				<h1>Scientific consensus</h1>
 
 				<form class="search-panel" @submit.prevent="submitSearch">
 					<label class="search-panel__label" for="home-search">Search reviewed claims</label>
@@ -367,7 +362,6 @@ function claimCardSummary(claim: ClaimSummary) {
 		<section v-if="recentlyReviewedClaims.length" class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Recently reviewed</p>
 					<h2>New and refreshed claim reviews</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Browse all topics</NuxtLink>
@@ -395,7 +389,6 @@ function claimCardSummary(claim: ClaimSummary) {
 		<section class="home-section">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Topic clusters</p>
 					<h2>Browse by topic</h2>
 				</div>
 				<NuxtLink class="text-link" to="/consensus">Open the directory</NuxtLink>
@@ -468,16 +461,8 @@ function claimCardSummary(claim: ClaimSummary) {
 	margin: 0;
 }
 
-.hero__lead,
 .search-panel__hint {
 	color: var(--consensus-muted);
-}
-
-.hero__lead {
-	font-size: 1.05rem;
-	line-height: 1.68;
-	max-width: 58ch;
-	margin: 0;
 }
 
 .search-panel {

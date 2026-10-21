@@ -19,12 +19,7 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Evergreen explainers' }]" />
 
 		<header class="explainer-header">
-			<p class="eyebrow">Evergreen explainers</p>
-			<h1>Core concepts behind recurring confusion.</h1>
-			<p>
-				Evidence hierarchies, risk, causation, replication, falsifiability, and the line between settled
-				consensus and frontier debate.
-			</p>
+			<h1>Explainers</h1>
 		</header>
 
 		<ReadingGuideLinks :guides="readingGuides" />
@@ -38,22 +33,17 @@ useStaticPageMeta({
 				:to="`/explainers/${explainer.slug}`"
 			>
 				<div class="explainer-card__content">
-					<p class="eyebrow">Explainer</p>
 					<h2>{{ explainer.title }}</h2>
 				</div>
 				<span class="i-carbon-arrow-right explainer-card__arrow" aria-hidden="true" />
 			</NuxtLink>
 		</section>
 
-		<section class="explainer-callout">
-			<div>
-				<p class="eyebrow">Reviewed library</p>
-				<h2>See these concepts in context.</h2>
-			</div>
+		<nav class="explainer-callout" aria-label="Related reading">
 			<div class="explainer-callout__actions">
 				<NuxtLink class="button button--primary" to="/consensus">Browse claim reviews</NuxtLink>
 			</div>
-		</section>
+		</nav>
 	</div>
 </template>
 

@@ -9,7 +9,8 @@ const rightsSource = readFileSync(join(testDir, "..", "src/pages/copyright-and-t
 
 describe("copyright and trademark layout", () => {
 	it("keeps rights complaint copy concise without changing the review lanes", () => {
-		assert.match(rightsSource, /Use this lane for copyright, trademark, and related rights issues\./);
+		assert.match(rightsSource, /<h1>Copyright and trademark complaints<\/h1>/);
+		assert.doesNotMatch(rightsSource, /Use this lane for copyright/);
 		assert.match(
 			rightsSource,
 			/the right involved: copyright, trademark, impersonation, or another specific legal concern/

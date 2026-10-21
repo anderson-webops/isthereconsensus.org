@@ -263,9 +263,7 @@ watch([query, claimBand], () => {
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Browse topics' }]" />
 
 		<header class="directory__header">
-			<p class="eyebrow">Browse topics</p>
-			<h1>Browse topics. Open a reviewed claim.</h1>
-			<p>Search the reviewed claim library, or browse every topic by subject.</p>
+			<h1>Browse topics</h1>
 		</header>
 
 		<section class="directory__controls" aria-label="Search and filter reviewed claims">
@@ -284,7 +282,6 @@ watch([query, claimBand], () => {
 
 		<section v-if="!query" id="topic-directory" class="results-block topic-directory">
 			<div class="section-heading">
-				<p class="eyebrow">Browse by subject</p>
 				<h2>Topics</h2>
 			</div>
 

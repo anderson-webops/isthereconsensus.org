@@ -9,8 +9,8 @@ const source = readFileSync(join(testDir, "..", "src/pages/index.vue"), "utf8");
 
 describe("home entry layout", () => {
 	it("keeps the first-screen copy concise and search-led", () => {
-		assert.match(source, /<h1>Search a claim\. Read the bottom line\.<\/h1>/);
-		assert.match(source, /Clear, reviewed summaries for scientific questions/);
+		assert.match(source, /<h1>Scientific consensus<\/h1>/);
+		assert.doesNotMatch(source, /Find out where the science stands|hero__lead/);
 		assert.match(source, /Search reviewed claims/);
 		assert.match(source, /class="library-summary"/);
 		assert.match(source, /const librarySummary = computed\(\(\) => formatPublicLibrarySummary\(topics\.value\)\)/);
@@ -51,7 +51,7 @@ describe("home entry layout", () => {
 	it("shows genuinely recent claim reviews across multiple topics", () => {
 		assert.match(source, /const recentClaimCandidates = computed/);
 		assert.match(source, /selectRecentClaims\(recentClaimCandidates\.value, 5\)/);
-		assert.match(source, /<p class="eyebrow">Recently reviewed<\/p>/);
+		assert.doesNotMatch(source, /<p class="eyebrow">Recently reviewed<\/p>/);
 		assert.match(source, /<h2>New and refreshed claim reviews<\/h2>/);
 		assert.doesNotMatch(source, /formatClaimReviewLabel|claimReviewTimestamp/);
 	});
