@@ -73,3 +73,14 @@ the pull-request head before cutting the source release.
 These dependency changes require no content migration and do not authorize
 production deployment, editorial publication or automatic rewriting of stored
 reviews. Release and publication evidence must remain separate.
+
+The October 21 hosted build exposed MongoDB's
+[Ubuntu kernel detection incompatibility](https://jira.mongodb.org/browse/SERVER-136848)
+on the runner's `7.0.0-1017-azure` kernel. Only the Mongo-backed CI build job
+uses `ubuntu-22.04`, whose reviewed runner uses kernel `6.8`. Both disposable
+Mongo fixtures pin the official `8.0.34` image by digest, and the service must
+pass a real database ping before application checks start. No kernel guard is
+disabled and no production database or host configuration changes.
+Revisit this temporary runner choice when MongoDB supports Ubuntu's patched
+kernel version reporting, before the
+[Ubuntu 22.04 runner retirement](https://github.com/actions/runner-images/issues/14254).

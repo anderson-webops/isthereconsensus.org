@@ -32,7 +32,7 @@ const index = join(root, ".ai-work/INDEX.md");
 const entry = `- \`${directory.slice(root.length + 1)}/\`: Owned disposable promotion-test database and CLI fixtures, clean source baseline ${execFileSync("git", ["rev-parse", "--short", "HEAD"], { cwd: root, encoding: "utf8" }).trim()}, reviewed ${new Date().toISOString()}, owner claim-refresh-promotion-smoke. Removed when this process exits.\n`;
 appendFileSync(index, entry);
 const execute = promisify(execFile);
-const image = "mongo:8.0@sha256:4a0f30875898413139bec44c73c02a05fed172578de65b644dcdcee143ae7306";
+const image = "mongo:8.0.34@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907";
 const useDocker = process.argv.includes("--docker");
 const selected = fixtureRefreshes.map(entry => entry.key);
 const approval = plan => ({ planSha256: refreshDigest(plan), backupSha256: "a".repeat(64), operatorNote: "Owned fixture backup and content review for integration testing only." });
