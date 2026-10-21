@@ -24,12 +24,81 @@ describe("reviewed dependency security pins", () => {
 	it("resolves every affected toolchain occurrence to its reviewed override", () => {
 		const manifest = readJson<Manifest>("../../package.json");
 		const lock = readJson<Lockfile>("../../package-lock.json");
-		for (const packageName of ["katex", "source-map-js", "tinypool"]) {
+		for (const packageName of [
+			"katex",
+			"source-map-js",
+			"tinypool",
+			"@modelcontextprotocol/client",
+			"@modelcontextprotocol/server",
+			"launch-editor"
+		]) {
 			const expected = manifest.overrides[packageName];
 			assert.equal(typeof expected, "string", `${packageName}: missing reviewed override`);
 			const versions = lockedVersions(lock, packageName);
 			assert.ok(versions.length, `${packageName}: package is missing from the lock`);
 			assert.ok(versions.every(version => version === expected), `${packageName}: an unreviewed version remains`);
+		}
+	});
+
+	it("keeps every Vite install on the reviewed patch with matching native bindings", () => {
+		const root = readJson<Manifest>("../../package.json");
+		const backend = readJson<Manifest>("../package.json");
+		const frontend = readJson<{
+			devDependencies: Record<string, string>;
+			optionalDependencies: Record<string, string>;
+		}>("../../front-end/package.json");
+		const expected = (root.overrides.vite as Record<string, string>)["."];
+		assert.equal(expected, "8.3.3");
+		assert.equal(frontend.devDependencies.vite, `^${expected}`);
+		assert.equal(backend.overrides.vite, expected);
+		const rootLock = readJson<Lockfile>("../../package-lock.json");
+		assert.ok(lockedVersions(rootLock, "vite").length);
+		for (const path of ["../../package-lock.json", "../package-lock.json"]) {
+			assert.ok(
+				lockedVersions(readJson<Lockfile>(path), "vite").every(version => version === expected),
+				`${path}: unreviewed Vite remains`
+			);
+		}
+		for (const [packageName, version] of Object.entries(frontend.optionalDependencies).filter(([packageName]) =>
+			packageName.startsWith("@rolldown/")
+		)) {
+			const versions = lockedVersions(rootLock, packageName);
+			assert.ok(
+				versions.length && versions.every(locked => locked === version),
+				`${packageName}: native binding drift`
+			);
+		}
+	});
+
+	it("preserves development SDK exports and refuses cross-origin request replay by default", async () => {
+		const frontendRequire = createRequire(new URL("../../front-end/package.json", import.meta.url));
+		const { StreamableHTTPClientTransport } = frontendRequire("@modelcontextprotocol/client");
+		const server = frontendRequire("@modelcontextprotocol/server");
+		assert.equal(typeof server.Server, "function");
+		assert.equal(typeof server.createMcpHandler, "function");
+		assert.equal(typeof frontendRequire("@modelcontextprotocol/client/stdio").StdioClientTransport, "function");
+		assert.equal(typeof frontendRequire("@modelcontextprotocol/server/stdio").StdioServerTransport, "function");
+		assert.equal(typeof frontendRequire("launch-editor"), "function");
+		for (const status of [307, 308, 202]) {
+			const requests: RequestInit[] = [];
+			const transport = new StreamableHTTPClientTransport(new URL("https://mcp.example.test/tools"), {
+				requestInit: { headers: { "X-Synthetic-Test": "synthetic" } },
+				fetch: async (_url: unknown, init?: RequestInit) => {
+					requests.push(init ?? {});
+					return new Response(null, { status, headers: { Location: "https://other.example.test/tools" } });
+				}
+			});
+			await transport.start();
+			try {
+				const result = transport.send({ jsonrpc: "2.0", id: 1, method: "ping" });
+				if (status === 202) await result;
+				else await assert.rejects(result, /redirect/i);
+				assert.equal(requests.length, 1);
+				assert.equal(requests[0].redirect, "manual");
+			}
+			finally {
+				await transport.close();
+			}
 		}
 	});
 

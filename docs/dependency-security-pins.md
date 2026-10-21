@@ -12,6 +12,20 @@ exception. Advisory applicability is not evidence that the site was exploited.
 | `source-map-js` | `1.2.2` | [Prototype pollution](https://github.com/advisories/GHSA-68fv-2mgg-jv7q) |
 | `tinypool` | `2.1.2` | [Worker options](https://github.com/advisories/GHSA-5gmw-xhrv-c9v3), [task options](https://github.com/advisories/GHSA-85c8-ppgw-ccpr) |
 | `proxy-addr` | `2.0.8` | [Proxy trust handling](https://github.com/advisories/GHSA-jqcg-44mw-7w3h) |
+| `@modelcontextprotocol/client` | `2.3.0` | [Cross-origin redirect disclosure](https://github.com/advisories/GHSA-6prh-2h8m-c8cw) |
+| `@modelcontextprotocol/server` | `2.3.0` | [Shared transport isolation](https://github.com/advisories/GHSA-jm63-cq47-j5jp), [validation resource limits](https://github.com/advisories/GHSA-46jr-4wx8-v453), [bearer audience checking](https://github.com/advisories/GHSA-rvq5-wwqv-78pq) |
+| `launch-editor` | `2.14.2` | [Windows argument escaping](https://github.com/advisories/GHSA-698v-4r3x-3vcv), [editor flags](https://github.com/advisories/GHSA-r825-w8mm-5pxw), [Windows path parsing](https://github.com/advisories/GHSA-587h-7wmj-h5pm) |
+| `vite` | `8.3.3`, with Rolldown native bindings `1.2.11` | [Bundled editor fixes](https://github.com/advisories/GHSA-r825-w8mm-5pxw) |
+
+The MCP, editor and Vite packages are development-tool dependencies, not
+standalone backend or search-worker runtime dependencies. The ESLint inspector
+uses Agentic's low-level MCP `Server` with a new server per HTTP request.
+The SDK's separate `McpServer.maxToolInputElements` option is opt-in; upgrading
+does not establish that this option is enabled in upstream development tools.
+These pins remove the affected package versions, not every possible unsafe
+configuration of those tools. No application MCP endpoint is added or changed.
+Vite's required PostCSS and Picomatch patch levels are retained by matching the
+shared pins to `8.5.28` and `4.0.7`; legacy Picomatch 2 consumers keep `2.3.2`.
 
 The root and standalone backend manifests both override `proxy-addr`, and both
 committed locks resolve it to the same reviewed version. A root workspace
