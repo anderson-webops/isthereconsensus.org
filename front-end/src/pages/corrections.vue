@@ -155,7 +155,6 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
-.corrections-header,
 .summary-card,
 .detail-card,
 .corrections-callout {
@@ -164,7 +163,12 @@ useStaticPageMeta({
 	border-radius: 8px;
 }
 
-.corrections-header,
+.corrections-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .corrections-callout {
 	padding: 22px;
 }
@@ -348,14 +352,12 @@ useStaticPageMeta({
 		gap: 18px;
 	}
 
-	.corrections-header,
 	.summary-card,
 	.detail-card,
 	.corrections-callout {
 		border-radius: 8px;
 	}
 
-	.corrections-header,
 	.corrections-callout {
 		padding: 16px;
 	}

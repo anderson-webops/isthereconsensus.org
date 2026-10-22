@@ -45,6 +45,7 @@ let frontend;
 let frontendOutput = "";
 let reviewFixture;
 let topicCountFixture;
+let directoryCountFixture;
 let topicCountsUnavailable = false;
 const api = http.createServer(async (req, res) => {
 	const url = new URL(req.url, "http://localhost");
@@ -84,7 +85,7 @@ const api = http.createServer(async (req, res) => {
 				: { topic };
 	}
 	if (url.pathname === "/api/claims") {
-		const rows = query ? search(query).map((row) => ({ ...row.claim, ...row.match })) : catalog;
+		const rows = query ? search(query).map((row) => ({ ...row.claim, ...row.match })) : directoryCountFixture ?? catalog;
 		const page = Number(url.searchParams.get("page") || 1);
 		const pageSize = Number(url.searchParams.get("limit") || 24);
 		body = {
@@ -386,15 +387,19 @@ try {
 	console.log("PASS guide availability: SSR and hydration preserve sources, gate unpublished links, distinguish failures and recover on retry");
 	await open("/guides");
 	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
-	await page.click(`.guide-card a[href="/guides/${readingGuides[0].slug}"]`);
+	await page.click(`.guide-card[href="/guides/${readingGuides[0].slug}"]`);
 	await page.waitForSelector(".reading-guide");
 	await page.click(".guide-contents summary");
 	await page.click('.guide-contents a[href="#guide-sources"]');
 	await page.waitForFunction(() => location.hash === "#guide-sources");
-	assert.ok(await page.$eval("#guide-sources", (element) => Math.abs(element.getBoundingClientRect().top) < 80));
+	await page.waitForFunction(() => {
+		const top = document.querySelector("#guide-sources")?.getBoundingClientRect().top;
+		const headerBottom = Math.max(0, document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+		return top !== undefined && top >= headerBottom && top <= headerBottom + 100;
+	});
 	await page.click('.guide-footer a[href="/guides"]');
 	await page.waitForSelector(".guide-card");
-	await page.click(`.guide-card a[href="/guides/${readingGuides[1].slug}"]`);
+	await page.click(`.guide-card[href="/guides/${readingGuides[1].slug}"]`);
 	await page.waitForFunction(
 		(title) => document.querySelector("h1")?.textContent === title,
 		{},
@@ -467,7 +472,12 @@ try {
 			assert.ok(html.includes(`href="/guides/${slug}"`), `${path}: missing guide discovery ${slug}`);
 	}
 	await open("/explainers");
-	assert.equal((await page.$$(".guide-links li")).length, readingGuides.length);
+	assert.equal((await page.$$(".learn-nav a")).length, 4);
+	await page.click('.learn-nav a[href="/guides"]');
+	await page.waitForSelector(".guides-list");
+	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
+	for (const guide of readingGuides)
+		assert.ok(await page.$(`.guide-card[href="/guides/${guide.slug}"]`));
 	failures.add("");
 	const independentSitemap = await fetch(`${baseUrl}/sitemap.xml`).then((response) => response.text());
 	for (const guide of readingGuides) assert.ok(independentSitemap.includes(`/guides/${guide.slug}`));
@@ -529,7 +539,7 @@ try {
 	await page.waitForFunction(
 		(expected) => document.querySelector(".results-count")?.textContent === expected,
 		{},
-		`${catalog.length} reviews, ${topics.length} topics`
+		`${Math.floor(catalog.length / 1000) * 1000}+ reviews, ${Math.floor(topics.length / 5) * 5}+ topics`
 	);
 	await page.click("#reviewed-claims summary");
 	assert.equal((await page.$$(".claim-card")).length, 12);
@@ -546,6 +556,9 @@ try {
 		{ label: "below threshold", count: 999, expected: "Browse reviewed claims by topic" },
 		{ label: "threshold", count: 1000, expected: "Browse 1000+ reviewed claims by topic" },
 		{ label: "above threshold", count: 1001, expected: "Browse 1000+ reviewed claims by topic" },
+		{ label: "below second threshold", count: 1999, expected: "Browse 1000+ reviewed claims by topic" },
+		{ label: "second threshold", count: 2000, expected: "Browse 2000+ reviewed claims by topic" },
+		{ label: "third threshold", count: 3001, expected: "Browse 3000+ reviewed claims by topic" },
 		{ label: "incomplete count", count: undefined, expected: "Browse reviewed claims by topic" },
 		{ label: "catalog unavailable", unavailable: true, expected: "Browse reviewed claims by topic" },
 		{ label: "catalog recovered", expected: "Browse 1000+ reviewed claims by topic" }
@@ -556,13 +569,53 @@ try {
 		assert.equal(homeResponse.status, 200);
 		const homeHtml = await homeResponse.text();
 		const serverSummary = homeHtml.match(/<a[^>]*class="library-summary"[^>]*>([\s\S]*?)<\/a>/)?.[1]
-			?.replace(/<!--[\s\S]*?-->/g, "").replace(/\s+/g, " ").trim();
+			?.replace(/<!--[\s\S]*?-->/g, "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 		assert.equal(serverSummary, scenario.expected, `SSR library summary: ${scenario.label}`);
 		await open("/");
 		assert.equal(await page.$eval(".library-summary", (element) => element.textContent.trim()), scenario.expected, `Hydrated library summary: ${scenario.label}`);
 	}
 	topicCountFixture = undefined;
 	topicCountsUnavailable = false;
+	for (const scenario of [
+		{ reviews: 999, topics: 4, expected: "999 reviews, 4 topics" },
+		{ reviews: 1001, topics: 36, expected: "1000+ reviews, 35+ topics" },
+		{ reviews: 1999, topics: 39, expected: "1000+ reviews, 35+ topics" },
+		{ reviews: 2000, topics: 40, expected: "2000+ reviews, 40+ topics" },
+		{ reviews: 3001, topics: 45, expected: "3000+ reviews, 45+ topics" }
+	]) {
+		directoryCountFixture = Array.from({ length: scenario.reviews }, (_, index) => ({
+			...catalog[index % catalog.length],
+			_id: `count-review-${index}`,
+			slug: `count-review-${index}`
+		}));
+		topicCountFixture = Array.from({ length: scenario.topics }, (_, index) => ({
+			...topics[index % topics.length],
+			_id: `count-topic-${index}`,
+			slug: `count-topic-${index}`
+		}));
+		const response = await fetch(`${baseUrl}/consensus`);
+		assert.equal(response.status, 200);
+		const html = await response.text();
+		const serverCount = html.match(/<p[^>]*class="results-count"[^>]*>([\s\S]*?)<\/p>/)?.[1]
+			?.replace(/<!--[\s\S]*?-->/g, "").trim();
+		assert.equal(serverCount, scenario.expected, "SSR whole-library totals");
+		await open("/consensus");
+		assert.equal(await page.$eval(".results-count", (element) => element.textContent.trim()), scenario.expected, "Hydrated whole-library totals");
+		await page.click("#reviewed-claims summary");
+		assert.equal(await page.$eval("#reviewed-claims h2", (element) => element.textContent.trim()), scenario.expected.split(",")[0]);
+		assert.equal((await page.$$(".claim-card")).length, 12);
+		assert.equal(await page.$eval(".claim-directory__more span", (element) => element.textContent.trim()), `${scenario.reviews - 12} reviews remaining`);
+		if (scenario.reviews === 1001 && process.env.SEARCH_SMOKE_SCREENSHOT_DIR) {
+			for (const width of [1280, 390]) {
+				await page.setViewport({ width, height: 900 });
+				assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+				await page.screenshot({ path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, `library-counts-${width}.png`), fullPage: true });
+			}
+			await page.setViewport({ width: 1280, height: 900 });
+		}
+	}
+	directoryCountFixture = undefined;
+	topicCountFixture = undefined;
 	console.log("PASS public-library quantity: SSR/hydration threshold, incomplete and failed counts, recovery and unchanged exact search pagination");
 	await open("/");
 	delays.set("coffee stopped working", 1500);

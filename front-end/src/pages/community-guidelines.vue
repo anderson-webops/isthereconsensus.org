@@ -185,7 +185,6 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
-.guidelines-header,
 .summary-card,
 .detail-card,
 .guidelines-callout {
@@ -194,7 +193,12 @@ useStaticPageMeta({
 	border-radius: 8px;
 }
 
-.guidelines-header,
+.guidelines-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .guidelines-callout {
 	padding: 22px;
 }
@@ -346,14 +350,12 @@ useStaticPageMeta({
 		gap: 18px;
 	}
 
-	.guidelines-header,
 	.summary-card,
 	.detail-card,
 	.guidelines-callout {
 		border-radius: 8px;
 	}
 
-	.guidelines-header,
 	.guidelines-callout {
 		padding: 16px;
 	}

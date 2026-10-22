@@ -177,13 +177,18 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
-.page-header,
 .panel,
 .callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 22px;
 	padding: 22px;
+}
+
+.page-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
 }
 
 .page-header h1,
@@ -457,14 +462,12 @@ useStaticPageMeta({
 		gap: 18px;
 	}
 
-	.page-header,
 	.panel,
 	.callout,
 	.topic-standard {
 		border-radius: 16px;
 	}
 
-	.page-header,
 	.panel,
 	.callout {
 		padding: 16px;

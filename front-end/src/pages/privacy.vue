@@ -417,7 +417,6 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
-.privacy-header,
 .privacy-contents,
 .summary-card,
 .category-card,
@@ -427,7 +426,12 @@ useStaticPageMeta({
 	border-radius: 8px;
 }
 
-.privacy-header,
+.privacy-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .privacy-contents,
 .privacy-callout {
 	padding: 22px;
@@ -638,7 +642,6 @@ code {
 		gap: 18px;
 	}
 
-	.privacy-header,
 	.privacy-contents,
 	.summary-card,
 	.category-card,
@@ -646,7 +649,6 @@ code {
 		border-radius: 8px;
 	}
 
-	.privacy-header,
 	.privacy-contents,
 	.privacy-callout {
 		padding: 16px;

@@ -19,7 +19,7 @@ describe("topic page layout", () => {
 		assert.ok(titleIndex >= 0, "topic claim cards should render the claim title");
 		assert.ok(metaIndex > titleIndex, "metadata should support the title instead of leading the card");
 		assert.match(source, /\.claim-row__content \{[\s\S]*display: grid;[\s\S]*gap: 7px;/);
-		assert.match(claimRow, /class="claim-row__status"/);
+		assert.match(claimRow, /class="claim-row__status[ "]/);
 		assert.match(claimRow, /i-carbon-arrow-right/);
 	});
 
@@ -58,12 +58,15 @@ describe("topic page layout", () => {
 		);
 	});
 
-	it("organizes configured topics into navigable evidence-atlas collections", () => {
+	it("organizes configured topics into collapsible evidence-atlas collections", () => {
 		assert.match(source, /const collectionLanes = computed/);
 		assert.match(source, /<h2>Browse by subtopic<\/h2>/);
-		assert.match(source, /<nav class="collection-index" aria-label="Subtopic collections">/);
-		assert.match(source, /:href="`#collection-\$\{collection\.slug\}`"/);
+		assert.match(source, /<details[\s\S]*v-for="collection in collectionLanes"[\s\S]*class="collection-lane"/);
+		assert.match(source, /<summary class="collection-lane__heading">/);
 		assert.match(source, /:id="`collection-\$\{collection\.slug\}`"/);
+		assert.match(source, /verdictMix\(collection\.claims\)/);
+		assert.match(source, /function openLaneFromHash\(hash: string\)/);
+		assert.match(source, /onMounted\(\(\) => openLaneFromHash\(route\.hash\)\)/);
 		assert.match(source, /v-for="claim in collection\.claims"/);
 		assert.match(source, /v-if="!collectionLanes\.length \|\| ungroupedClaims\.length" class="claim-lane"/);
 		assert.match(source, /collectionLanes\.length \? "Other reviewed claims" : "All reviewed claims"/);

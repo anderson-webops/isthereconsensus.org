@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { formatCountLabel } from "../src/utils/format-count";
-import { formatPublicLibrarySummary } from "../src/utils/public-library-summary";
+import { formatPublicCountLabel, formatPublicLibrarySummary } from "../src/utils/public-library-summary";
 
 const fallback = "Browse reviewed claims by topic";
 const expanded = "Browse 1000+ reviewed claims by topic";
@@ -16,9 +16,60 @@ describe("public whole-library quantity wording", () => {
 		}
 	});
 
-	it("uses stable 1000+ wording only after the public catalog reaches the threshold", () => {
-		for (const claimCount of [1000, 1001, 1002, 25000]) {
-			assert.equal(formatPublicLibrarySummary([{ slug: "topic", claimCount }]), expanded);
+	it("advances the summary only at each thousand-review boundary", () => {
+		for (const [claimCount, lowerBound] of [
+			[1000, 1000],
+			[1001, 1000],
+			[1999, 1000],
+			[2000, 2000],
+			[2999, 2000],
+			[3000, 3000],
+			[25001, 25000]
+		]) {
+			assert.equal(
+				formatPublicLibrarySummary([{ slug: "topic", claimCount }]),
+				`Browse ${lowerBound}+ reviewed claims by topic`
+			);
+		}
+	});
+
+	it("floors whole-library totals in thousands of reviews and groups of five topics", () => {
+		for (const [count, expected] of [
+			[999, "999 reviews"],
+			[1000, "1000+ reviews"],
+			[1001, "1000+ reviews"],
+			[1999, "1000+ reviews"],
+			[2000, "2000+ reviews"],
+			[2999, "2000+ reviews"],
+			[3000, "3000+ reviews"]
+		] as const) {
+			assert.equal(formatPublicCountLabel(count, "review"), expected);
+		}
+		for (const [count, expected] of [
+			[4, "4 topics"],
+			[5, "5+ topics"],
+			[34, "30+ topics"],
+			[35, "35+ topics"],
+			[36, "35+ topics"],
+			[39, "35+ topics"],
+			[40, "40+ topics"],
+			[44, "40+ topics"],
+			[45, "45+ topics"]
+		] as const) {
+			assert.equal(formatPublicCountLabel(count, "topic"), expected);
+		}
+	});
+
+	it("does not invent totals for empty, singular or invalid catalogs", () => {
+		for (const kind of ["review", "topic"] as const) {
+			assert.equal(formatPublicCountLabel(0, kind), `0 ${kind}s`);
+			assert.equal(formatPublicCountLabel(1, kind), `1 ${kind}`);
+			for (const count of [-1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, Number.MAX_SAFE_INTEGER + 1]) {
+				assert.equal(
+					formatPublicCountLabel(count, kind),
+					kind === "review" ? "Reviews unavailable" : "Topics unavailable"
+				);
+			}
 		}
 	});
 
@@ -78,7 +129,7 @@ describe("public whole-library quantity wording", () => {
 		assert.equal(formatPublicLibrarySummary([{ slug: " ", claimCount: 1001 }]), fallback);
 	});
 
-	it("leaves filtered results, individual sources and topic counts exact", () => {
+	it("leaves filtered results, individual sources and per-topic counts exact", () => {
 		assert.equal(formatCountLabel(24, "claim review"), "24 claim reviews");
 		assert.equal(formatCountLabel(3, "source"), "3 sources");
 		assert.equal(formatCountLabel(36, "topic"), "36 topics");

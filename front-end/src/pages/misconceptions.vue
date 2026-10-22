@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LearnNav from "~/components/LearnNav.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getExplainer } from "~/data/explainers";
 import { misconceptionModules } from "~/data/misconceptions";
@@ -38,11 +39,12 @@ useStaticPageMeta({
 			<h1>Common misconceptions</h1>
 		</header>
 
+		<LearnNav />
+
 		<section class="misconception-grid">
 			<details v-for="item in misconceptionModules" :key="item.slug" class="misconception-card">
 				<summary class="misconception-card__summary">
 					<div>
-						<p class="eyebrow">Common mistake</p>
 						<h2>{{ item.title }}</h2>
 					</div>
 					<span class="i-carbon-chevron-down misconception-card__chevron" aria-hidden="true" />
@@ -152,16 +154,20 @@ useStaticPageMeta({
 	min-width: 0;
 }
 
-.misconception-header,
 .misconception-panel,
 .misconception-card,
 .misconception-callout {
 	background: var(--consensus-surface);
 	border: 1px solid var(--consensus-soft-line);
-	border-radius: 22px;
+	border-radius: 14px;
 }
 
-.misconception-header,
+.misconception-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .misconception-panel,
 .misconception-callout {
 	padding: 22px;
@@ -177,9 +183,9 @@ useStaticPageMeta({
 }
 
 .misconception-header h1 {
-	margin-top: 8px;
+	margin: 0;
 	font-size: var(--consensus-page-title-size);
-	line-height: 1;
+	line-height: 1.1;
 }
 
 .misconception-header p,
@@ -460,14 +466,12 @@ useStaticPageMeta({
 		gap: 16px;
 	}
 
-	.misconception-header,
 	.misconception-panel,
 	.misconception-card,
 	.misconception-callout {
-		border-radius: 16px;
+		border-radius: 12px;
 	}
 
-	.misconception-header,
 	.misconception-panel,
 	.misconception-callout {
 		padding: 15px;
@@ -604,9 +608,8 @@ useStaticPageMeta({
 	}
 
 	.reuse-table td:first-child::before {
-		font-size: 0.78rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		font-size: 0.84rem;
+		letter-spacing: 0;
 		color: var(--consensus-muted);
 	}
 }

@@ -10,14 +10,14 @@ const source = readFileSync(join(testDir, "..", "src/pages/consensus/[topicSlug]
 describe("claim detail layout", () => {
 	it("shows full recorded scope to all readers before uncertainty", () => {
 		assert.match(source, /const reviewScopeGroups = computed\(\(\) => selectReviewScopeGroups\(claim\.value\)\)/);
-		const scope = source.match(/<section v-if="reviewScopeGroups\.length"[\s\S]*?<\/section>/)?.[0];
+		const scope = source.match(/<section\s+v-if="reviewScopeGroups\.length"[\s\S]*?<\/section>/)?.[0];
 		assert.ok(scope);
 		assert.match(scope, /aria-labelledby="review-scope-title"/);
 		assert.match(scope, /<h2 id="review-scope-title">Scope of this review<\/h2>/);
 		assert.match(scope, /<h3>\{\{ group\.title \}\}<\/h3>/);
 		assert.match(scope, /<li v-for="\(item, index\) in group\.items" :key="index">\{\{ item \}\}<\/li>/);
 		assert.doesNotMatch(scope, /canEditClaim|v-html|slice\(|substring\(/);
-		assert.ok(source.indexOf(scope) < source.indexOf('<section class="uncertainty-strip">'));
+		assert.ok(source.indexOf(scope) < source.indexOf('<section id="claim-certainty" class="uncertainty-strip">'));
 		assert.match(source, /\.review-scope__group \{[\s\S]*overflow-wrap: anywhere;/);
 	});
 
@@ -50,6 +50,13 @@ describe("claim detail layout", () => {
 		assert.match(source, /class="evidence-summary-card__summary"/);
 	});
 
+	it("previews long snapshot lists and lets readers expand them", () => {
+		assert.match(source, /const SNAPSHOT_PREVIEW_COUNT = 3;/);
+		assert.match(source, /v-for="item in visibleSnapshotItems\(group\)"/);
+		assert.match(source, /@click="showAllSnapshotItems\(group\.key\)"/);
+		assert.match(source, /Show all \{\{ formatCountLabel\(group\.items\.length, "point"\) \}\}/);
+	});
+
 	it("keeps the uncertainty summary at a readable measure", () => {
 		assert.match(source, /\.uncertainty-strip > div > p:not\(\.eyebrow\):not\(\.field-label\) \{/);
 		assert.match(source, /max-width: 68ch;/);
@@ -61,7 +68,7 @@ describe("claim detail layout", () => {
 		assert.match(source, /\.uncertainty-strip \{[\s\S]*grid-template-columns: 1fr;[\s\S]*padding: 14px 0;/);
 		assert.match(source, /\.claim-page__hero \{[\s\S]*gap: 7px;/);
 		assert.match(source, /\.claim-page__header h1 \{[\s\S]*font-size: clamp\(1\.72rem, 7\.2vw, 2\.05rem\);/);
-		assert.match(source, /\.bottom-line \.bottom-line__text \{[\s\S]*font-size: 1\.02rem;/);
+		assert.match(source, /\.bottom-line \.bottom-line__text \{[\s\S]*font-size: 1\.14rem;/);
 		assert.match(
 			source,
 			/@media \(max-width: 560px\) \{[\s\S]*\.bottom-line__actions \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;/
@@ -83,7 +90,7 @@ describe("claim detail layout", () => {
 	it("puts substantive claim content before uncertainty and technical assessment", () => {
 		const stableCoreIndex = source.indexOf('key: "stable-core"');
 		const openQuestionsIndex = source.indexOf('key: "open-questions"');
-		const uncertaintyIndex = source.indexOf('<section class="uncertainty-strip">');
+		const uncertaintyIndex = source.indexOf('<section id="claim-certainty" class="uncertainty-strip">');
 		const assessmentIndex = source.indexOf("<EvidenceLandscapePanel");
 
 		assert.ok(stableCoreIndex >= 0 && stableCoreIndex < openQuestionsIndex);

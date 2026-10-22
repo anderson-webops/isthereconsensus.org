@@ -36,7 +36,9 @@ describe("theme controls", () => {
 			const footer = source.slice(source.indexOf('<footer class="site-footer">'));
 
 			assert.match(header, /to="\/consensus"[\s\S]*Browse/);
-			assert.match(header, /to="\/explainers"[\s\S]*Explainers/);
+			assert.match(header, /to="\/explainers"[\s\S]*Learn/);
+			assert.match(source, /explainers\|guides\|compare\|misconceptions/);
+			assert.match(header, /'router-link-active': isLearnRoute/);
 			assert.match(header, /to="\/ask"[\s\S]*Ask/);
 			assert.doesNotMatch(header, /<NuxtLink to="\/">Home<\/NuxtLink>/);
 			assert.doesNotMatch(header, /to="\/standards"|to="\/account">Account/);

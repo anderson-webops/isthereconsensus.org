@@ -63,7 +63,7 @@ describe("home entry layout", () => {
 
 		assert.ok(claimRow.includes("<h3>{{ claim.title }}</h3>"));
 		assert.ok(claimRow.indexOf("<h3>{{ claim.title }}</h3>") < claimRow.indexOf('class="claim-row__meta"'));
-		assert.match(claimRow, /class="claim-row__status"/);
+		assert.match(claimRow, /class="claim-row__status[ "]/);
 		assert.match(claimRow, /i-carbon-arrow-right/);
 		assert.doesNotMatch(claimRow, /claimCardSummary|claim-row__summary|formatClaimReviewLabel/);
 		assert.match(source, /\.claim-row h3,[\s\S]*font-size: 1\.28rem;/);

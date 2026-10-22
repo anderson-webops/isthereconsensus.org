@@ -25,7 +25,9 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	await page.waitForSelector(".comparison-finding");
 	assert.equal(new URL(page.url()).pathname, "/compare/strength-training-supplements");
 	await open("/compare");
-	assert.equal((await page.$$(".comparisons-index article")).length, evidenceComparisons.length);
+	assert.equal((await page.$$(".comparisons-index .comparison-card")).length, evidenceComparisons.length);
+	for (const comparison of evidenceComparisons)
+		assert.ok(await page.$(`.comparison-card[href="/compare/${comparison.slug}"]`));
 	const pilot = evidenceComparisons[0];
 	const path = `/compare/${pilot.slug}`;
 	for (const from of [
@@ -37,7 +39,7 @@ export async function checkComparisons({ page, baseUrl, open }) {
 	]) {
 		await open(from);
 		assert.ok(
-			await page.$(`a[href="${from === "/guides" ? "/compare" : path}"]`),
+			await page.$(`a[href="${["/guides", "/explainers"].includes(from) ? "/compare" : path}"]`),
 			`${from}: comparison must be discoverable`
 		);
 	}
