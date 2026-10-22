@@ -384,7 +384,6 @@ useStaticPageMeta({
 	gap: 24px;
 }
 
-.terms-header,
 .terms-contents,
 .summary-card,
 .terms-callout {
@@ -393,7 +392,12 @@ useStaticPageMeta({
 	border-radius: 8px;
 }
 
-.terms-header,
+.terms-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .terms-contents,
 .terms-callout {
 	padding: 22px;
@@ -576,14 +580,12 @@ useStaticPageMeta({
 		gap: 18px;
 	}
 
-	.terms-header,
 	.terms-contents,
 	.summary-card,
 	.terms-callout {
 		border-radius: 8px;
 	}
 
-	.terms-header,
 	.terms-contents,
 	.terms-callout {
 		padding: 16px;

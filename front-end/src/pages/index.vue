@@ -12,6 +12,7 @@ import { createLatestRequest, settledSearchWatchOptions } from "~/utils/latest-r
 import { formatPublicLibrarySummary } from "~/utils/public-library-summary";
 import { selectRecentClaims } from "~/utils/recent-claims";
 import { resolveHomeSearchRoute } from "~/utils/search-routing";
+import { VERDICT_TONE_LABELS, VERDICT_TONE_ORDER, verdictTone } from "~/utils/verdict-tone";
 
 definePageMeta({
 	layout: "home"
@@ -126,6 +127,7 @@ const askSearchLink = computed(() => ({
 	path: "/ask",
 	query: { question: searchQuery.value }
 }));
+const legendTones = VERDICT_TONE_ORDER.filter((tone) => tone !== "against");
 const recentClaimCandidates = computed(() =>
 	enrichedTopics.value.flatMap((topic) =>
 		(topic.featuredClaims ?? []).map((claim) => ({
@@ -353,9 +355,17 @@ function claimCardSummary(claim: ClaimSummary) {
 					</div>
 				</form>
 
-				<NuxtLink class="library-summary" to="/consensus">
-					{{ librarySummary }}
-				</NuxtLink>
+				<div class="hero__footer">
+					<NuxtLink class="library-summary" to="/consensus">
+						{{ librarySummary }}
+						<span class="i-carbon-arrow-right" aria-hidden="true" />
+					</NuxtLink>
+					<ul class="verdict-legend" aria-label="Verdict colours used across reviews">
+						<li v-for="tone in legendTones" :key="tone" class="verdict-dot" :data-verdict-tone="tone">
+							{{ VERDICT_TONE_LABELS[tone] }}
+						</li>
+					</ul>
+				</div>
 			</div>
 		</section>
 
@@ -378,7 +388,9 @@ function claimCardSummary(claim: ClaimSummary) {
 						<h3>{{ claim.title }}</h3>
 						<p class="claim-row__meta">
 							<span>{{ claim.topic.title }}</span>
-							<span class="claim-row__status">{{ claimSupportLabel(claim) }}</span>
+							<span class="claim-row__status verdict-dot" :data-verdict-tone="verdictTone(claim)">{{
+								claimSupportLabel(claim)
+							}}</span>
 						</p>
 					</div>
 					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
@@ -417,7 +429,7 @@ function claimCardSummary(claim: ClaimSummary) {
 <style scoped>
 .home {
 	display: grid;
-	gap: 36px;
+	gap: 48px;
 }
 
 .hero {
@@ -439,8 +451,29 @@ function claimCardSummary(claim: ClaimSummary) {
 
 .hero__copy {
 	display: grid;
-	gap: 16px;
-	padding-top: 6px;
+	gap: 18px;
+	padding-top: 20px;
+}
+
+.hero__footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px 24px;
+	max-width: 920px;
+}
+
+.verdict-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: var(--consensus-muted);
+	font-size: 0.82rem;
+	font-weight: 600;
 }
 
 .hero h1,
@@ -455,8 +488,9 @@ function claimCardSummary(claim: ClaimSummary) {
 .hero h1 {
 	max-width: 18ch;
 	color: var(--consensus-ink);
-	font-size: var(--consensus-home-title-size);
-	line-height: 1.08;
+	font-size: calc(var(--consensus-home-title-size) * 1.12);
+	font-weight: 600;
+	line-height: 1.04;
 	letter-spacing: 0;
 	margin: 0;
 }
@@ -470,14 +504,22 @@ function claimCardSummary(claim: ClaimSummary) {
 	padding: 18px 20px;
 	display: grid;
 	gap: 12px;
+	box-shadow: var(--consensus-shell-shadow);
 }
 
 .library-summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 	justify-self: start;
-	color: var(--consensus-muted);
+	color: var(--consensus-link);
 	font-size: 0.9rem;
-	font-weight: 600;
+	font-weight: 700;
 	text-decoration: none;
+}
+
+.library-summary:hover {
+	text-decoration: underline;
 }
 
 .search-panel__label,
@@ -538,9 +580,8 @@ function claimCardSummary(claim: ClaimSummary) {
 
 .suggestion-group__label {
 	margin: 0;
-	font-size: 0.82rem;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	font-size: 0.84rem;
+	letter-spacing: 0;
 	color: var(--consensus-muted);
 }
 
@@ -669,15 +710,29 @@ function claimCardSummary(claim: ClaimSummary) {
 	display: flex;
 	gap: 8px 12px;
 	flex-wrap: wrap;
-	font-size: 0.76rem;
+	font-size: 0.84rem;
 	letter-spacing: 0;
 	line-height: 1.35;
-	text-transform: uppercase;
 	color: var(--consensus-muted);
 }
 
 .claim-row__status {
-	color: var(--consensus-interactive);
+	color: var(--consensus-ink);
+	font-weight: 700;
+}
+
+.topic-list {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+	gap: 12px;
+}
+
+.topic-row {
+	align-items: start;
+	padding: 18px 20px;
+}
+
+.topic-row h3 {
+	font-size: 1.12rem;
 }
 
 .card-arrow {

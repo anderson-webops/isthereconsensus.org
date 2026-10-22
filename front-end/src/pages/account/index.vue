@@ -77,7 +77,6 @@ const accountFacts = computed(() => {
 	gap: 24px;
 }
 
-.account-header,
 .status-card,
 .next-step {
 	background: var(--consensus-surface);
@@ -85,7 +84,10 @@ const accountFacts = computed(() => {
 	border-radius: 22px;
 }
 
-.account-header,
+.account-header {
+	padding: 8px 0 4px;
+}
+
 .next-step {
 	padding: 22px;
 }

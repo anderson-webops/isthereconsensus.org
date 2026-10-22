@@ -39,7 +39,7 @@ useHead(() => ({
 	link: [
 		{
 			rel: "stylesheet",
-			href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+			href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
 		},
 		{
 			key: "canonical",
@@ -111,6 +111,17 @@ useSeoMeta({
 	--consensus-page-title-measure: 20ch;
 	--consensus-page-background: linear-gradient(180deg, #f7faf8 0%, #eef4f1 100%);
 	--consensus-shell-shadow: 0 24px 60px rgba(21, 17, 13, 0.05);
+	--consensus-header-height: 72px;
+	--type-page-title: var(--consensus-page-title-size);
+	--type-section: 1.625rem;
+	--type-card: 1.125rem;
+	--type-label: 0.875rem;
+	--consensus-body: color-mix(in srgb, var(--consensus-ink) 82%, var(--consensus-muted));
+	--verdict-strong: #1f7a4d;
+	--verdict-broad: #1d6f8f;
+	--verdict-debate: #a0620c;
+	--verdict-unclear: #6b6f86;
+	--verdict-against: #b2442a;
 }
 
 .dark {
@@ -142,6 +153,11 @@ useSeoMeta({
 	--consensus-focus-ring: rgba(216, 138, 99, 0.26);
 	--consensus-page-background: linear-gradient(180deg, #0d120f 0%, #111811 100%);
 	--consensus-shell-shadow: 0 30px 80px rgba(0, 0, 0, 0.24);
+	--verdict-strong: #6fd39c;
+	--verdict-broad: #7cc8e8;
+	--verdict-debate: #f0c069;
+	--verdict-unclear: #b3b6cc;
+	--verdict-against: #f39a80;
 }
 
 :root[data-consensus-palette="blue"] {
@@ -237,7 +253,12 @@ body,
 	padding: 0;
 	background: var(--consensus-page-background);
 	color: var(--consensus-ink);
-	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-family:
+		"Public Sans",
+		system-ui,
+		-apple-system,
+		"Segoe UI",
+		sans-serif;
 	overflow-x: clip;
 	transition:
 		background-color 180ms ease,
@@ -258,8 +279,29 @@ video {
 	height: auto;
 }
 
+html {
+	scroll-padding-top: calc(var(--consensus-header-height) + 16px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
 body {
-	line-height: 1.58;
+	font-size: 1.0625rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+:where(h1, h2, h3, h4) {
+	text-wrap: balance;
+}
+
+:where(p, li, dd) {
+	text-wrap: pretty;
 }
 
 img {
@@ -315,15 +357,144 @@ dd {
 }
 
 .eyebrow {
-	text-transform: uppercase;
-	letter-spacing: 0.16em;
-	font-size: 0.73rem;
+	letter-spacing: 0;
+	font-size: var(--type-label);
 	font-weight: 600;
 	color: var(--consensus-muted);
 }
 
+/*
+ * The UnoCSS preflight resets headings to inherited size and weight, so any heading a page
+ * does not style explicitly fell back to body text. These defaults keep the hierarchy
+ * page title > section > card even when a page only sets margins.
+ */
+.site-main h1,
+.site-main h2,
+.site-main h3 {
+	font-family: "Fraunces", serif;
+	font-weight: 600;
+	color: var(--consensus-ink);
+}
+
+.site-main h1 {
+	font-size: var(--type-page-title);
+	line-height: 1.1;
+}
+
+.site-main h2 {
+	font-size: var(--type-section);
+	line-height: 1.2;
+}
+
+.site-main h3 {
+	font-size: var(--type-card);
+	line-height: 1.3;
+}
+
+/* Comfortable reading measure unless a component sets its own. */
+.site-main :where(p, li, dd) {
+	max-width: 72ch;
+}
+
 :where(.prose, .policy-prose, .plain-list, .policy-list) {
 	max-width: 68ch;
+}
+
+/* Verdict tones: one colour per level of agreement, used on every claim label. */
+[data-verdict-tone] {
+	--verdict-color: var(--verdict-unclear);
+}
+
+[data-verdict-tone="strong"] {
+	--verdict-color: var(--verdict-strong);
+}
+
+[data-verdict-tone="broad"] {
+	--verdict-color: var(--verdict-broad);
+}
+
+[data-verdict-tone="debate"] {
+	--verdict-color: var(--verdict-debate);
+}
+
+[data-verdict-tone="against"] {
+	--verdict-color: var(--verdict-against);
+}
+
+.verdict-dot {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+}
+
+.verdict-dot::before {
+	content: "";
+	flex: none;
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: var(--verdict-color);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--verdict-color) 22%, transparent);
+}
+
+.verdict-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px 6px 10px;
+	border: 1px solid color-mix(in srgb, var(--verdict-color) 38%, transparent);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--verdict-color) 12%, transparent);
+	color: var(--consensus-ink);
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.verdict-pill > [class^="i-"] {
+	color: var(--verdict-color);
+	font-size: 1.05rem;
+}
+
+.verdict-mix {
+	display: flex;
+	gap: 2px;
+	width: 88px;
+	height: 6px;
+	overflow: hidden;
+	border-radius: 999px;
+}
+
+.verdict-mix__segment {
+	flex-basis: 0;
+	min-width: 4px;
+	background: var(--verdict-color);
+}
+
+.certainty-meter {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--consensus-muted);
+	font-size: 0.86rem;
+	font-weight: 600;
+}
+
+.certainty-meter__steps {
+	display: inline-grid;
+	grid-auto-flow: column;
+	gap: 3px;
+}
+
+.certainty-meter__step {
+	width: 14px;
+	height: 6px;
+	border-radius: 2px;
+	background: var(--consensus-line);
+}
+
+.certainty-meter__step--on {
+	background: var(--consensus-ink);
 }
 
 .policy-page {
@@ -331,7 +502,6 @@ dd {
 	gap: 24px;
 }
 
-.policy-header,
 .policy-summary-card,
 .policy-detail-card,
 .policy-callout {
@@ -340,7 +510,12 @@ dd {
 	border-radius: 8px;
 }
 
-.policy-header,
+.policy-header {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 4px;
+}
+
 .policy-callout {
 	padding: 22px;
 }
@@ -366,13 +541,17 @@ dd {
 	line-height: 1.08;
 }
 
-.policy-header p,
 .policy-summary-card p,
-.policy-detail-card p,
-.policy-list,
-.policy-prose p,
 .policy-callout p {
 	color: var(--consensus-muted);
+	line-height: 1.68;
+}
+
+.policy-header p,
+.policy-detail-card p,
+.policy-list,
+.policy-prose p {
+	color: var(--consensus-body);
 	line-height: 1.68;
 }
 
@@ -518,6 +697,12 @@ body
 	}
 }
 
+@media (max-width: 560px) {
+	body {
+		font-size: 1rem;
+	}
+}
+
 @media (max-width: 420px) {
 	:root {
 		--consensus-home-title-size: 2rem;
@@ -538,7 +723,6 @@ body
 		border-radius: 8px;
 	}
 
-	.policy-header,
 	.policy-callout {
 		padding: 16px;
 	}
