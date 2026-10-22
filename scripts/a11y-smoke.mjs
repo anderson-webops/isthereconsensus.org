@@ -498,14 +498,16 @@ async function analyzePage(browser, route, scheme) {
 	await page.waitForNetworkIdle({ idleTime: 500, timeout: 8_000 }).catch(() => {});
 	if (route.startsWith("/consensus/a11y-topic/")) {
 		const { claim } = responseFor(new URL(`/topics/a11y-topic/claims/${route.split("/").at(-1)}`, apiUrl));
-		const preparation = await page.$eval(".claim-preparation", element => element.textContent);
-		assert.match(preparation, /Independent expert review not recorded/);
+		assert.equal(await page.$eval("#review-status", element => element.open), false);
+		assert.equal(await page.$(".claim-preparation"), null);
+		const preparation = await page.$eval("#review-status .review-status__body", element => element.textContent);
+		assert.match(preparation, /Independent expert review is not documented/);
 		assert.match(preparation, claim.authorLine.startsWith("AI-assisted") ? /AI-assisted research summary/ : /Preparation method not recorded/);
 		assert.doesNotMatch(await page.$eval(".bottom-line", element => element.textContent), /internal editorial note/);
 		const author = await page.$$eval('script[type="application/ld+json"]', scripts => scripts.map(script => JSON.parse(script.textContent)).find(value => value["@type"] === "Article")?.author);
 		assert.equal(author?.["@type"], "Organization");
 		assert.equal(author?.name, "Is There Consensus");
-		await page.focus('.claim-preparation a[href="#review-status"]');
+		await page.focus("#review-status > summary");
 		await page.keyboard.press("Enter");
 		assert.equal(await page.$eval("#review-status", element => element.open), true);
 		assert.doesNotMatch(await page.$eval("#review-status", element => element.textContent), /Reviewed for evidence quality, scope, and plain-language accuracy/);
