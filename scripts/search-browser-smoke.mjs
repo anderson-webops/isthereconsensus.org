@@ -387,15 +387,19 @@ try {
 	console.log("PASS guide availability: SSR and hydration preserve sources, gate unpublished links, distinguish failures and recover on retry");
 	await open("/guides");
 	assert.equal((await page.$$(".guide-card")).length, readingGuides.length);
-	await page.click(`.guide-card a[href="/guides/${readingGuides[0].slug}"]`);
+	await page.click(`.guide-card[href="/guides/${readingGuides[0].slug}"]`);
 	await page.waitForSelector(".reading-guide");
 	await page.click(".guide-contents summary");
 	await page.click('.guide-contents a[href="#guide-sources"]');
 	await page.waitForFunction(() => location.hash === "#guide-sources");
-	assert.ok(await page.$eval("#guide-sources", (element) => Math.abs(element.getBoundingClientRect().top) < 80));
+	await page.waitForFunction(() => {
+		const top = document.querySelector("#guide-sources")?.getBoundingClientRect().top;
+		const headerBottom = Math.max(0, document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+		return top !== undefined && top >= headerBottom && top <= headerBottom + 100;
+	});
 	await page.click('.guide-footer a[href="/guides"]');
 	await page.waitForSelector(".guide-card");
-	await page.click(`.guide-card a[href="/guides/${readingGuides[1].slug}"]`);
+	await page.click(`.guide-card[href="/guides/${readingGuides[1].slug}"]`);
 	await page.waitForFunction(
 		(title) => document.querySelector("h1")?.textContent === title,
 		{},
