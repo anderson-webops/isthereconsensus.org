@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { defaultClaims } from "../back-end/dist/data/claims.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
+import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 
 export async function checkLivingEvidenceRefreshes({ api, browser, base }) {
 	const registry = JSON.parse(readFileSync(new URL("../docs/living-evidence-refreshes.json", import.meta.url), "utf8"));
@@ -30,9 +31,10 @@ export async function checkLivingEvidenceRefreshes({ api, browser, base }) {
 			assert.equal(data.claim.sources.length, seed.sources.length);
 			assert.deepEqual(
 				data.claim.sources.map(source => [source.doi || "", source.citationStatus]),
-				seed.sources.map(source => [source.doi || "", source.citationStatus])
+				seed.sources.map(source => [source.doi || "", new ClaimSource(source).citationStatus])
 			);
-			assert.equal(data.claim.changeLog.at(-1).summary, seed.readerAnnouncement.summary);
+			assert.deepEqual(data.claim.changeLog.map(entry => entry.summary), seed.changeLog.map(entry => entry.summary));
+			assert.ok(data.claim.changeLog.some(entry => entry.summary === seed.readerAnnouncement.summary));
 			const saved = await Claim.findOne({ slug: seed.slug }).lean();
 			assert.ok(saved.readerUpdates.some(update => update.id === seed.readerAnnouncement.id));
 			assert.equal(saved.reviewDateBasis, "source_record");
