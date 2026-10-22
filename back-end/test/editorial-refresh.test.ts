@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { editorialAuditPreparedAt, refreshEditorialAuditClaim } from "../src/data/claim-audit-refreshes-2026-10.js";
-import { claimsBeforeIntegrityCorrections, defaultClaims } from "../src/data/claims.js";
+import { claimsBeforeEditorialCompletion, claimsBeforeIntegrityCorrections, defaultClaims } from "../src/data/claims.js";
 import { seedClaimFields } from "../src/data/seedClaims.js";
 import { Claim } from "../src/models/schemas/Claim.js";
 import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
@@ -19,7 +19,7 @@ describe("source-prepared editorial audit corrections", () => {
 		assert.throws(() => createEditorialAuditProposal({ commit: "main", tree: "main" }));
 		assert.ok(proposal.targets.every(target => !target.changedFields.includes("lastRetractionCheckAt")));
 		for (const target of proposal.targets) {
-			const canonical = defaultClaims.find(claim => `${claim.topicSlug}/${claim.slug}` === target.key)!;
+			const canonical = claimsBeforeEditorialCompletion.find(claim => `${claim.topicSlug}/${claim.slug}` === target.key)!;
 			assert.deepEqual(target.proposedFields, seedClaimFields(canonical));
 			assert.notEqual(target.proposedFields.reviewerLine, "Reviewed for evidence quality, scope, and plain-language accuracy.");
 		}

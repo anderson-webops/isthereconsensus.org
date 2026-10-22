@@ -6,7 +6,7 @@ import type { ITopic } from "../models/schemas/Topic.js";
 import type { ITopicSentimentVote } from "../models/schemas/TopicSentimentVote.js";
 import { claimReviewStatus } from "./claimReviewStatus.js";
 import { toPublicEvidenceLandscape } from "./evidenceLandscape.js";
-import { isRevisionCommentary, researchIntegrityFields, researchPreparation } from "./researchIntegrity.js";
+import { individualResearchFields, isRevisionCommentary, researchPreparation } from "./researchIntegrity.js";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -316,7 +316,7 @@ export function toPublicClaim(
 	} = {}
 ) {
 	const topic = toPublicTopic(options.topic ?? value.topic);
-	const presentation = researchIntegrityFields(value, typeof topic?.slug === "string" ? topic.slug : "");
+	const presentation = individualResearchFields(value, typeof topic?.slug === "string" ? topic.slug : "");
 	return {
 		_id: value._id,
 		topic,

@@ -32,4 +32,10 @@ describe("bounded editorial catalog audit", () => {
 		assert.equal(row.reasons.some(reason => reason.includes("doi")), false);
 		assert.equal(estimatedReadingGrade(""), null);
 	});
+
+	it("recognizes punctuated U.S. jurisdiction labels without matching unrelated words", () => {
+		const base = defaultClaims[0]!;
+		for (const title of ["Do U.S. FDA-approved medicines help?", "Do US FDA-approved medicines help?", "Do United States FDA-approved medicines help?"]) assert.equal(editorialConcerns({ ...base, title }, 2026).reasons.includes("jurisdiction_label_check"), false);
+		assert.equal(editorialConcerns({ ...base, title: "Do FDA-approved medicines help?" }, 2026).reasons.includes("jurisdiction_label_check"), true);
+	});
 });

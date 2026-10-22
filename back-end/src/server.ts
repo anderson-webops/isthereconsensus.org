@@ -4117,6 +4117,9 @@ async function main() {
 				void import("./utils/ownerContentRelease.js")
 					.then(({ publishOwnerEditorialCorrections }) => publishOwnerEditorialCorrections(publicationController.signal))
 					.then(result => console.log("Owner-approved editorial content corrections:", result))
+					.then(() => import("./utils/editorialCompletionRelease.js"))
+					.then(({ publishEditorialCompletion }) => publishEditorialCompletion(publicationController.signal))
+					.then(result => console.log("Owner-approved editorial completion:", result))
 					.catch(error => logError("Owner content corrections deferred; existing services remain available", error));
 			}
 		}

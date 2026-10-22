@@ -12,7 +12,6 @@ import { buildApiUrl } from "~/utils/api";
 import {
 	regulatoryContextLabel,
 	selectDistinctUncertaintyLimits,
-	selectResearchPreparation,
 	selectReviewScopeGroups,
 	selectVisibleEvidenceSummaries,
 	shortAnswerLabel
@@ -48,7 +47,6 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 );
 
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
-const preparation = computed(() => selectResearchPreparation(claim.value));
 const shortAnswer = computed(() => shortAnswerLabel(claim.value?.bottomLine));
 const regulatoryContext = computed(() => regulatoryContextLabel(claim.value?.title));
 const reviewEvaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
@@ -62,10 +60,6 @@ const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
 const readingGuides = computed(() => guidesForReview(`/consensus/${topicSlug.value}/${claimSlug.value}`));
 const citation = computed(() => claimData.value?.citation);
 const citationCopyState = ref<"copied" | "error" | "idle">("idle");
-function openReviewStatus() {
-	const details = document.getElementById("review-status");
-	if (details instanceof HTMLDetailsElement) details.open = true;
-}
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
@@ -506,10 +500,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
 					<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
 				</div>
-				<p class="claim-preparation">
-					{{ preparation.label }}. Independent expert review not recorded.
-					<a href="#review-status" @click="openReviewStatus">Review details</a>
-				</p>
 				<div class="bottom-line__actions">
 					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
 					<NuxtLink class="button button--ghost" :to="askLink">
@@ -989,13 +979,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-answer__footer .claim-page__meta a:hover {
 	text-decoration: underline;
-}
-
-.claim-preparation {
-	margin: 0;
-	color: var(--consensus-muted);
-	font-size: 0.88rem;
-	line-height: 1.6;
 }
 
 .claim-short-answer {

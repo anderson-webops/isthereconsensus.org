@@ -83,7 +83,7 @@ describe("living evidence refresh delivery", () => {
 			assert.equal(claim.changeLog.at(-1)?.kind, "update");
 			assert.equal(seedReviewDates(claim).reviewDateBasis, "source_record");
 			assert.ok(seedReviewDates(claim).lastReviewedAt!.toISOString() < record.preparedAt);
-			assert.match(claim.reviewerLine, /no independent expert approval/i);
+			assert.match(claim.reviewerLine, /no independent expert approval|Independent expert review is not documented/i);
 			assert.notEqual(announcement.id, record.announcementId);
 		}
 	});

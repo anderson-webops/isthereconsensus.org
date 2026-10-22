@@ -56,7 +56,11 @@ describe("research preparation and answer labels", () => {
 		assert.doesNotMatch(source, /"@type": "Person"/);
 		assert.doesNotMatch(source, /claim\?\.editorSummary/);
 		assert.match(source, /Agreement: \{\{ claimMeta.verdict \}\}/);
-		assert.match(source, /class="claim-preparation"[\s\S]*Independent expert review not recorded/);
-		assert.match(source, /@click="openReviewStatus"/);
+		assert.doesNotMatch(source, /class="claim-preparation"/);
+		assert.match(source, /<ClaimReviewStatus v-if="claim" :claim="claim"/);
+		const disclosure = readFileSync(new URL("../src/components/ClaimReviewStatus.vue", import.meta.url), "utf8");
+		assert.match(disclosure, /<details id="review-status"/);
+		assert.match(disclosure, /preparation.label.*Independent expert review is not documented/);
+		assert.match(disclosure, /automation/);
 	});
 });

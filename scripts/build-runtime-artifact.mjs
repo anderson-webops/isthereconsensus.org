@@ -137,6 +137,10 @@ async function inventory(directory, prefix = "") {
 for (const relativePath of [
 	"back-end/dist/server.js",
 	"back-end/dist/utils/ownerContentRelease.js",
+	"back-end/dist/utils/editorialCompletionRelease.js",
+	"back-end/dist/utils/editorialCompletionProposal.js",
+	"back-end/dist/data/claim-editorial-completion.js",
+	"back-end/dist/data/claim-editorial-completion-baselines.js",
 	"back-end/dist/models/schemas/ContentRelease.js",
 	"back-end/dist/data/claim-audit-refreshes-2026-10.js",
 	"back-end/dist/data/claim-audit-legacy-baselines-2026-10.js",

@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { refreshEditorialAuditClaim } from "../src/data/claim-audit-refreshes-2026-10.js";
-import { claimsBeforeIntegrityCorrections, defaultClaims } from "../src/data/claims.js";
+import { claimsBeforeIntegrityCorrections, claimsBeforeEditorialCompletion as defaultClaims } from "../src/data/claims.js";
 import { legacyAppraisalTools, legacyExclusionRules, legacyInclusionRules } from "../src/data/legacyResearchDefaults.js";
 import { validateApprovedReaderRelease } from "../src/utils/approvedReaderPublication.js";
 import { registeredRefreshes } from "../src/utils/claimRefreshPromotion.js";
 import { toPublicClaim } from "../src/utils/publicRecords.js";
-import { isRevisionCommentary, researchIntegrityFields, researchPreparation } from "../src/utils/researchIntegrity.js";
+import { individualResearchFields, isRevisionCommentary, researchIntegrityFields, researchPreparation } from "../src/utils/researchIntegrity.js";
 
 describe("research preparation and methodology integrity", () => {
 	it("corrects legacy public metadata without mutating editorial records", () => {
@@ -54,6 +54,20 @@ describe("research preparation and methodology integrity", () => {
 		const claim = { inclusionRules: [...legacyInclusionRules({ topicSlug }), "Only measured laboratory quantities."] };
 		assert.deepEqual(researchIntegrityFields(claim, topicSlug), claim);
 		assert.equal(researchPreparation({}).method, "not_recorded");
+	});
+
+	it("removes appended generic assertions while retaining each individual scope criterion", () => {
+		const claim = {
+			inclusionRules: ["Only measured laboratory quantities.", ...legacyInclusionRules({ topicSlug: "" })],
+			exclusionRules: ["Exclude results outside the stated pressure range.", ...legacyExclusionRules({ topicSlug: "" })],
+			appraisalTools: ["Narrative comparison; no formal instrument completed.", ...legacyAppraisalTools("")]
+		};
+		assert.deepEqual(individualResearchFields(claim, "physics-and-chemistry"), {
+			inclusionRules: ["Only measured laboratory quantities."],
+			exclusionRules: ["Exclude results outside the stated pressure range."],
+			appraisalTools: ["Narrative comparison; no formal instrument completed."]
+		});
+		assert.equal(claim.appraisalTools.length, 4);
 	});
 
 	it("removes inferred methodology without introducing unregistered scientific edits", () => {

@@ -258,6 +258,9 @@ jobs:
       - name: Automatic owner-approved content release rehearsal
         run: node scripts/editorial-audit-smoke.mjs --docker
 
+      - name: Complete editorial batch, preservation and rollback rehearsal
+        run: node scripts/editorial-completion-smoke.mjs --docker
+
       - name: Public search worker transport and publication isolation
         env:
           SEARCH_WORKER_SMOKE_MONGO_PORT: ${{ job.services.mongodb.ports['27017'] }}

@@ -8,13 +8,15 @@ import { join, resolve } from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
-import { claimsBeforeIntegrityCorrections } from "../back-end/dist/data/claims.js";
+import { claimsBeforeIntegrityCorrections, defaultClaims } from "../back-end/dist/data/claims.js";
 import { Admin } from "../back-end/dist/models/schemas/Admin.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { ContentRelease } from "../back-end/dist/models/schemas/ContentRelease.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { createEditorialAuditProposal } from "../back-end/dist/utils/editorialAuditProposal.js";
+import { createEditorialCompletionProposal } from "../back-end/dist/utils/editorialCompletionProposal.js";
+import { EDITORIAL_COMPLETION_RELEASE } from "../back-end/dist/utils/editorialCompletionRelease.js";
 import { ownerCorrectionMatches, publishOwnerEditorialCorrections } from "../back-end/dist/utils/ownerContentRelease.js";
 
 const root = resolve(import.meta.dirname, "..");
@@ -152,6 +154,8 @@ try {
 		catch { return false; }
 	}, "isolated backend");
 	await waitFor(async () => await ContentRelease.countDocuments({ releaseId: "owner-content-first-editorial-2026-10-21" }) === fixtures.length, "automatic owner content release");
+	const completionKeys = createEditorialCompletionProposal({ commit: "a".repeat(40), tree: "b".repeat(40) }).targets.map(target => target.key).filter(key => fixtures.some(fixture => fixture.target.key === key));
+	await waitFor(async () => await ContentRelease.countDocuments({ releaseId: EDITORIAL_COMPLETION_RELEASE, key: { $in: completionKeys } }) === completionKeys.length, "later immutable completion release");
 	const headers = { "content-type": "application/json", "origin": "https://editorial-fixture.invalid", "x-forwarded-proto": "https" };
 	assert.equal((await fetch(`${base}/editorial/claims/${fixtures[0].claim._id}`, { headers })).status, 403);
 	const login = await fetch(`${base}/auth/login`, { method: "POST", headers, body: JSON.stringify({ email: admin.email, password }) });
@@ -164,8 +168,12 @@ try {
 		const response = await fetch(base + target.publicApiPath.replace(/^\/api/, ""));
 		assert.equal(response.status, 200);
 		const published = (await response.json()).claim;
-		assert.equal(published.title, target.proposedFields.title);
-		assert.equal(published.bottomLine, target.proposedFields.bottomLine);
+		const canonical = defaultClaims.find(value => `${value.topicSlug}/${value.slug}` === target.key);
+		assert.equal(published.title, canonical.title);
+		assert.equal(published.bottomLine, canonical.bottomLine);
+		const originalReceipt = await ContentRelease.findById(`owner-content-first-editorial-2026-10-21:${target.key}`).lean();
+		assert.equal(originalReceipt.after.claim.title, target.proposedFields.title);
+		assert.equal(originalReceipt.after.claim.bottomLine, target.proposedFields.bottomLine);
 		assert.equal(published.sources.length, target.proposedSources.length);
 		const persisted = await Claim.findById(claim._id).lean();
 		assert.equal(persisted.lastReviewedAt.toISOString(), reviewDate.toISOString());

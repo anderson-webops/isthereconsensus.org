@@ -19,6 +19,7 @@ import type {
 import type { IReaderUpdate } from "../utils/readerUpdates.js";
 import { researchIntegrityFields } from "../utils/researchIntegrity.js";
 import { refreshEditorialAuditClaim } from "./claim-audit-refreshes-2026-10.js";
+import { completeEditorialCopy } from "./claim-editorial-completion.js";
 import { july2026ExpansionClaims } from "./claim-expansion-2026-07.js";
 import { august2026EncyclopediaClaims } from "./claim-expansion-2026-08-encyclopedia.js";
 import { august2026ExpansionClaims } from "./claim-expansion-2026-08.js";
@@ -26865,4 +26866,5 @@ const rawClaims: SeedClaim[] = [
 // Kept separately so a controlled refresh can detect live editorial divergence.
 export const claimsBeforeLivingRefresh: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
 export const claimsBeforeIntegrityCorrections: CompleteSeedClaim[] = claimsBeforeLivingRefresh.map(refreshLivingEvidenceClaim).map(refreshVaccineClaim).map(refreshFoundationsClaim).map(refreshPregnancyClaim).map(refreshLearningClaim).map(refreshBrainClaim).map(refreshSupplementClaim).map(refreshFertilityClaim).map(refreshDnaClaim).map(refreshNuclearClaim).map(refreshSmokingClaim).map(refreshEvolutionClaim).map(refreshClimateClaim).map(refreshMyocarditisClaim);
-export const defaultClaims: CompleteSeedClaim[] = claimsBeforeIntegrityCorrections.map(claim => researchIntegrityFields(claim, claim.topicSlug)).map(refreshEditorialAuditClaim);
+export const claimsBeforeEditorialCompletion: CompleteSeedClaim[] = claimsBeforeIntegrityCorrections.map(claim => researchIntegrityFields(claim, claim.topicSlug)).map(refreshEditorialAuditClaim);
+export const defaultClaims: CompleteSeedClaim[] = claimsBeforeEditorialCompletion.map(completeEditorialCopy);

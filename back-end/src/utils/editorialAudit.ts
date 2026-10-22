@@ -26,7 +26,7 @@ export function editorialConcerns(claim: CompleteSeedClaim, referenceYear: numbe
 	if (newestSourceYear !== null && referenceYear - newestSourceYear >= 8) reasons.push(health ? "health_source_age_check" : "foundational_source_age_check");
 	if (newestSourceYear === null) reasons.push("source_years_not_recorded");
 	if (claim.sources.length <= 2) reasons.push("source_coverage_check");
-	if (/\b(?:FDA|EPA|OSHA|FTC)\b/.test(claim.title) && !/\b(?:US|U\.S\.|United States)\b/.test(claim.title)) reasons.push("jurisdiction_label_check");
+	if (/\b(?:FDA|EPA|OSHA|FTC)\b/.test(claim.title) && !/\bUS\b|\bU\.S\.|\bUnited States\b/.test(claim.title)) reasons.push("jurisdiction_label_check");
 	const readingGrade = estimatedReadingGrade(claim.bottomLine);
 	if (readingGrade !== null && readingGrade > 10) reasons.push("answer_readability_check");
 	return { reasons, newestSourceYear, estimatedReadingGrade: readingGrade };

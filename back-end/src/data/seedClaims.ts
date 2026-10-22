@@ -1,3 +1,4 @@
+import type { Types } from "mongoose";
 import { Claim } from "../models/schemas/Claim.js";
 import { ClaimSource } from "../models/schemas/ClaimSource.js";
 import { Topic } from "../models/schemas/Topic.js";
@@ -39,6 +40,36 @@ interface RetiredSeedClaimUpdate {
 
 export interface SeedClaimsOptions {
 	synchronizeExisting?: boolean;
+}
+
+export function seedSourceIdentity(source: Pick<SeedClaimSource, "title" | "publisher" | "order" | "doi" | "pmid" | "pmcid" | "url">) {
+	for (const field of ["doi", "pmid", "pmcid", "url"] as const) {
+		if (source[field]) return { [field]: source[field] };
+	}
+	return { title: source.title, ...(source.publisher ? { publisher: source.publisher } : {}), order: source.order };
+}
+
+export function canMatchSeedSourceByOrder(existing: ExistingClaimSourceForSeedSync, source: SeedClaimSource) {
+	for (const field of ["doi", "pmid", "pmcid"] as const) {
+		if (existing[field] && source[field] && existing[field] !== source[field]) return false;
+	}
+	return (![existing.url, existing.doi, existing.pmid, existing.pmcid].some(Boolean)) || (existing.title === source.title && existing.publisher === source.publisher);
+}
+
+export async function seedClaimSources(claimId: Types.ObjectId, sources: SeedClaimSource[]) {
+	for (const source of sources) {
+		let existingSource = await ClaimSource.findOne({ claim: claimId, ...seedSourceIdentity(source) });
+		if (!existingSource && typeof source.order === "number") {
+			const candidate = await ClaimSource.findOne({ claim: claimId, order: source.order });
+			if (candidate && canMatchSeedSourceByOrder(candidate, source)) existingSource = candidate;
+		}
+		if (!existingSource) {
+			await ClaimSource.create({ claim: claimId, ...source, citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined });
+			continue;
+		}
+		const sourceUpdate = buildSeedSourceUpdate(existingSource, source);
+		if (hasSeedSourceUpdate(sourceUpdate)) await ClaimSource.updateOne({ _id: existingSource._id }, sourceUpdate);
+	}
 }
 
 interface ExistingClaimSourceForSeedSync {
@@ -326,25 +357,7 @@ export async function seedClaims(options: SeedClaimsOptions = {}) {
 			await Claim.updateOne({ _id: claim._id }, { $set: missingFields, $inc: { __v: 1 } });
 		}
 
-		for (const source of seed.sources) {
-			let existingSource = await ClaimSource.findOne({ claim: claim._id, title: source.title });
-			if (!existingSource && typeof source.order === "number") {
-				existingSource = await ClaimSource.findOne({ claim: claim._id, order: source.order });
-			}
-			if (!existingSource) {
-				await ClaimSource.create({
-					claim: claim._id,
-					...source,
-					citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined
-				});
-				continue;
-			}
-
-			const sourceUpdate = buildSeedSourceUpdate(existingSource, source);
-			if (hasSeedSourceUpdate(sourceUpdate)) {
-				await ClaimSource.updateOne({ _id: existingSource._id }, sourceUpdate);
-			}
-		}
+		await seedClaimSources(claim._id, seed.sources);
 		await recordSeedReaderAnnouncement(claim._id, seed.readerAnnouncement);
 	}
 

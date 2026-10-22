@@ -5,7 +5,9 @@ import {
 	buildRetiredSeedClaimUpdate,
 	buildSeedClaimUpdate,
 	buildSeedSourceUpdate,
-	retiredSeedClaims
+	canMatchSeedSourceByOrder,
+	retiredSeedClaims,
+	seedSourceIdentity
 } from "../src/data/seedClaims.js";
 
 function findSeedSource(claimSlug: string, order: number) {
@@ -17,6 +19,24 @@ function findSeedSource(claimSlug: string, order: number) {
 }
 
 describe("seedClaims source synchronization", () => {
+	it("does not collapse citations from different publishers that share a title", () => {
+		for (const slug of ["does-radon-in-homes-cause-lung-cancer", "does-the-dash-eating-plan-lower-blood-pressure"]) {
+			const sources = defaultClaims.find(claim => claim.slug === slug)!.sources;
+			for (const source of sources) {
+				for (const other of sources.filter(value => value.title === source.title && value.url !== source.url)) {
+					assert.notDeepEqual(seedSourceIdentity(source), seedSourceIdentity(other));
+					assert.equal(canMatchSeedSourceByOrder(other, source), false);
+				}
+			}
+		}
+	});
+
+	it("retains legacy order fallback only for compatible citation identity", () => {
+		const source = findSeedSource("does-radon-in-homes-cause-lung-cancer", 1);
+		assert.equal(canMatchSeedSourceByOrder({ title: "Older title", order: 1 }, source), true);
+		assert.equal(canMatchSeedSourceByOrder({ ...source, doi: "10.1000/different" }, { ...source, doi: "10.1000/expected" }), false);
+		assert.equal(canMatchSeedSourceByOrder({ ...source, url: "https://example.org/previous-location" }, source), true);
+	});
 	it("keeps retired seed claims out of the active seed list", () => {
 		const activeKeys = new Set(defaultClaims.map(claim => `${claim.topicSlug}/${claim.slug}`));
 		assert.ok(

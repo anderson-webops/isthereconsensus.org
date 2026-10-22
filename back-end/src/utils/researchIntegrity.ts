@@ -33,6 +33,17 @@ export function researchPreparation(claim: Pick<Partial<IClaim>, "authorLine" | 
 	};
 }
 
+export function individualResearchFields<ClaimType extends Partial<Pick<IClaim, "inclusionRules" | "exclusionRules" | "appraisalTools" | "reviewerLine" | "authorLine" | "coiSummary">>>(claim: ClaimType, topicSlug: string): ClaimType {
+	const recorded = researchIntegrityFields(claim, topicSlug);
+	const specific = (values: string[] | undefined, template: string[]) => values?.filter(value => !template.includes(value.trim()));
+	return {
+		...recorded,
+		...(recorded.inclusionRules ? { inclusionRules: specific(recorded.inclusionRules, [...legacyInclusionRules({ topicSlug }), ...legacyInclusionRules({ topicSlug: "" })]) } : {}),
+		...(recorded.exclusionRules ? { exclusionRules: specific(recorded.exclusionRules, [...legacyExclusionRules({ topicSlug }), ...legacyExclusionRules({ topicSlug: "" })]) } : {}),
+		...(recorded.appraisalTools ? { appraisalTools: specific(recorded.appraisalTools, [...legacyAppraisalTools(topicSlug), ...legacyAppraisalTools("")]) } : {})
+	};
+}
+
 export function isRevisionCommentary(summary?: string) {
 	return /^(?:(?:this|the) (?:update|refresh|revision|earlier|previous|initial|original)|(?:updated|refreshed|revised|expanded|rewritten) (?:to|with|from|after|for)|replaces? (?:the|an?|earlier)|the (?:page|review) (?:previously|originally))/i.test(summary?.trim() ?? "");
 }

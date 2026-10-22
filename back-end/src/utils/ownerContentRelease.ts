@@ -21,7 +21,7 @@ export const APPROVED_EDITORIAL_DATA_SHA256 = "0d81058d72280b9ad4c9efb32cee438c2
 const sourceFields = ["kind", "title", "publisher", "year", "url", "doi", "pmid", "pmcid", "isAnchor", "appraisal", "stance", "note", "order"] as const;
 const preservedClaimFields = new Set(["status", "changeLog", "lastRetractionCheckAt", "surveillanceSpec"]);
 
-function scientificSources(source: Partial<IClaimSource>) {
+export function scientificSources(source: Partial<IClaimSource>) {
 	return Object.fromEntries(sourceFields.filter(field => source[field] !== undefined && source[field] !== "").map(field => [field, source[field]]));
 }
 
@@ -29,13 +29,13 @@ function withoutHistory(claim: ReturnType<typeof seedClaimFields>) {
 	return Object.fromEntries(Object.entries(claim).filter(([field]) => !preservedClaimFields.has(field)));
 }
 
-export function ownerCorrectionMatches(claim: Partial<IClaim>, sources: Partial<IClaimSource>[], before: CompleteSeedClaim) {
+export function ownerCorrectionMatches(claim: Partial<IClaim>, sources: Partial<IClaimSource>[], before: CompleteSeedClaim, compatibleBaselines = [legacyEditorialBaseline(before)]) {
 	if (claim.status !== "published" || sources.length !== before.sources.length) return false;
 	const workflow = claim.evidenceLandscape?.workflow;
 	if (claim.evidenceLandscape?.publicFlags?.showEvidenceLandscape || workflow?.approvedById || workflow?.reviewedById || ["approved", "published"].includes(workflow?.status ?? "")) return false;
 	if (sources.some(source => source.evidenceProfile?.reviewer?.reviewedById || source.evidenceProfile?.reviewer?.reviewedAt)) return false;
 	const actual = researchIntegrityFields(claim, before.topicSlug);
-	if (![before, legacyEditorialBaseline(before)].some(baseline => approvedReaderContentMatches(actual, withoutHistory(researchIntegrityFields(seedClaimFields(baseline), before.topicSlug))))) return false;
+	if (![before, ...compatibleBaselines].some(baseline => approvedReaderContentMatches(actual, withoutHistory(researchIntegrityFields(seedClaimFields(baseline), before.topicSlug))))) return false;
 	return sources.every((source, index) => approvedReaderContentMatches(scientificSources(source), scientificSources(before.sources[index] as unknown as IClaimSource)));
 }
 

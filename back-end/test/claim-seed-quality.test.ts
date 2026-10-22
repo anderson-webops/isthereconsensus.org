@@ -902,7 +902,7 @@ describe("default claim seed quality", () => {
 		const significance = visibleClaimText(
 			"does-statistical-significance-tell-you-whether-an-effect-is-large-or-important"
 		);
-		assert.match(significance, /does not measure effect size/i);
+		assert.match(significance, /does not measure (?:effect size|an effect's size)/i);
 		assert.match(significance, /practical importance/i);
 
 		const falseBalance = visibleClaimText(
@@ -1038,7 +1038,7 @@ describe("default claim seed quality", () => {
 		assert.match(visibleClaimText("does-reducing-cash-bail-clearly-increase-crime"), /no general inevitable increase/i);
 		assert.match(
 			visibleClaimText("does-transgenerational-epigenetic-inheritance-overturn-modern-evolutionary-theory"),
-			/extend rather than replace|does not.*displac/i
+			/extend(?: evolutionary genetics)? rather than replace|does not.*displac/i
 		);
 		assert.match(
 			visibleClaimText("have-ordinary-microplastic-exposures-been-shown-to-cause-human-disease"),
@@ -1093,10 +1093,10 @@ describe("default claim seed quality", () => {
 		);
 		assert.match(fragmentation, /fragmentation per se/i);
 		assert.match(fragmentation, /habitat amount/i);
-		assert.match(fragmentation, /positive, negative, or neutral/i);
+		assert.match(fragmentation, /positive, negative,? or neutral/i);
 
 		const pollinators = visibleClaimText("do-pollinator-declines-threaten-crop-production");
-		assert.match(pollinators, /wind- or self-pollinated/i);
+		assert.match(pollinators, /wind- or self-pollinated|pollinated by wind or themselves/i);
 		assert.match(pollinators, /not apply equally|not.*every calorie/i);
 
 		const plantations = visibleClaimText(
@@ -1173,7 +1173,7 @@ describe("default claim seed quality", () => {
 		const polygenicEmbryos = visibleClaimText(
 			"are-polygenic-embryo-screening-scores-clinically-proven-to-improve-childrens-health"
 		);
-		assert.match(polygenicEmbryos, /no clinical/i);
+		assert.match(polygenicEmbryos, /no clinical|does not establish a clinical benefit/i);
 		assert.match(polygenicEmbryos, /ancestry/i);
 		assert.match(polygenicEmbryos, /unproven/i);
 
@@ -1185,7 +1185,7 @@ describe("default claim seed quality", () => {
 
 		const polygraph = visibleClaimText("can-polygraph-tests-reliably-detect-lies");
 		assert.match(polygraph, /screening/i);
-		assert.match(polygraph, /false positive/i);
+		assert.match(polygraph, /false positive|falsely labeling truthful people/i);
 
 		const neurofeedback = visibleClaimText("is-neurofeedback-an-established-effective-treatment-for-adhd");
 		assert.match(neurofeedback, /blinded/i);
@@ -1277,8 +1277,8 @@ describe("default claim seed quality", () => {
 			" "
 		);
 
-		assert.match(claim.bottomLine, /They work as a barrier over pits and fissures/);
-		assert.match(claim.bottomLine, /They do not replace fluoride toothpaste, brushing, diet, dental care/);
+		assert.match(claim.bottomLine, /(?:work as|form) a barrier over (?:pits and fissures|grooves)/);
+		assert.match(claim.bottomLine, /They do not replace fluoride toothpaste, brushing, (?:diet, )?dental care/);
 		assert.match(claim.editorSummary, /cavities in pits and fissures of children's molars/);
 		assert.match(visibleSummary, /tooth decay compared with no sealant/);
 		assert.doesNotMatch(visibleSummary, /occlusal caries/i);
@@ -1302,10 +1302,10 @@ describe("default claim seed quality", () => {
 
 		assert.equal(claim.consensusBand, "strong");
 		assert.equal(claim.evidenceCertainty, "high");
-		assert.match(claim.bottomLine, /helps prevent tooth decay/);
+		assert.match(claim.bottomLine, /helps prevent (?:tooth decay|cavities)/);
 		assert.match(visibleSummary, /1000 to 1250 ppm fluoride/);
 		assert.match(visibleSummary, /1450 to 1500 ppm fluoride/);
-		assert.match(visibleSummary, /swallowing too much toothpaste/);
+		assert.match(visibleSummary, /swallowing too much toothpaste|Young children who swallow too much can develop fluorosis/);
 		assert.match(visibleSummary, /age-appropriate amounts and supervision/);
 		assert.match(visibleSummary, /non-fluoride toothpaste/);
 		assert.doesNotMatch(visibleSummary, /\bcaries\b/i);
@@ -1326,7 +1326,7 @@ describe("default claim seed quality", () => {
 			...claim.sources.map(source => source.note)
 		].join(" ");
 
-		assert.match(claim.bottomLine, /organized Diabetes Prevention Program-style interventions/);
+		assert.match(claim.bottomLine, /organized Diabetes Prevention Program-style interventions|Structured programs can prevent or delay type 2 diabetes/);
 		assert.match(visibleSummary, /new diabetes diagnoses/);
 		assert.match(visibleSummary, /heart attacks, strokes, and mortality/);
 		assert.doesNotMatch(visibleSummary, /diabetes-incidence/i);
@@ -1351,8 +1351,9 @@ describe("default claim seed quality", () => {
 			...claim.sources.map(source => source.note)
 		].join(" ");
 
-		assert.match(claim.bottomLine, /reasonable evidence-based treatment option or add-on/);
-		assert.match(claim.bottomLine, /not a guaranteed cure or a blame-the-patient message/);
+		assert.match(claim.bottomLine, /treatment option or (?:add-on|an addition to other care)/);
+		assert.match(claim.bottomLine, /not a guaranteed cure/);
+		assert.match(claim.bottomLine, /Severe symptoms, physical limits, access and safety/);
 		assert.ok(claim.bottomLine.length <= 300, "Exercise/depression bottom line should stay scannable");
 		assert.match(visibleSummary, /73 studies (?:with|and) 4,985 adults/);
 		assert.match(visibleSummary, /218 unique studies and 14,170 participants/);
@@ -1380,7 +1381,7 @@ describe("default claim seed quality", () => {
 			...claim.sources.map(source => source.note)
 		].join(" ");
 
-		assert.match(claim.bottomLine, /appropriately selected adults at elevated cardiovascular risk/);
+		assert.match(claim.bottomLine, /selected adults at (?:elevated cardiovascular risk|higher risk of heart disease or stroke)/);
 		assert.ok(claim.bottomLine.length <= 360, "Statin bottom line should stay scannable");
 		assert.ok(
 			claim.stableCore.every(item => item.length <= 240),
@@ -1395,7 +1396,7 @@ describe("default claim seed quality", () => {
 		assert.match(visibleSummary, /one-fifth fewer/);
 		assert.match(visibleSummary, /11 fewer events per 1000/);
 		assert.match(visibleSummary, /older than 75/);
-		assert.match(visibleSummary, /not automatic for every low-risk adult/);
+		assert.match(visibleSummary, /not automatic for every low-risk adult|not needed by every low-risk adult/);
 		assert.doesNotMatch(visibleSummary, /everyone should take statins/i);
 		assert.doesNotMatch(visibleSummary, /guaranteed prevention/i);
 	});
@@ -1490,15 +1491,15 @@ describe("default claim seed quality", () => {
 			...claim.sources.map(source => source.note)
 		].join(" ");
 
-		assert.match(claim.bottomLine, /Later middle and high school start times/);
+		assert.match(claim.bottomLine, /Later middle and high school start times|Later school starts usually help teens sleep longer/);
 		assert.match(visibleSummary, /adolescent sleep/i);
 		assert.ok(claim.bottomLine.length <= 380, "Later school start time bottom line should stay concise");
-		assert.match(claim.bottomLine, /clearest consensus is on sleep timing and duration/);
+		assert.match(claim.bottomLine, /clearest consensus is on sleep timing and duration|Evidence is clearest for sleep/);
 		assert.match(visibleSummary, /8:30 a\.m\. or later/);
 		assert.match(visibleSummary, /8 to 10 hours/);
 		assert.match(visibleSummary, /28 studies and 1,774,509 participants/);
 		assert.match(visibleSummary, /only 17\.7%/);
-		assert.match(visibleSummary, /depend on implementation/);
+		assert.match(visibleSummary, /depend on implementation|depend on how the change is put into practice/);
 		assert.match(visibleSummary, /do not guarantee better grades/);
 		assert.doesNotMatch(visibleSummary, /will guarantee better grades/i);
 		assert.doesNotMatch(visibleSummary, /guaranteed grade gains/i);
@@ -1711,7 +1712,7 @@ describe("default claim seed quality", () => {
 		].join(" ");
 
 		assert.equal(claim.consensusBand, "broad");
-		assert.match(claim.bottomLine, /Not reliably/);
+		assert.match(claim.bottomLine, /Not reliably|do not find dependable benefit beyond effects compatible with placebo/);
 		assert.ok(claim.bottomLine.length <= 520, "Homeopathy bottom line should stay scannable");
 		assert.match(visibleSummary, /little evidence to support homeopathy as an effective treatment/);
 		assert.match(visibleSummary, /beyond placebo/);
@@ -1777,7 +1778,7 @@ describe("default claim seed quality", () => {
 
 		assert.equal(claim.consensusBand, "broad");
 		assert.equal(claim.evidenceCertainty, "moderate");
-		assert.match(claim.bottomLine, /one layer of risk reduction/);
+		assert.match(claim.bottomLine, /one layer of risk reduction|one way to reduce risk/);
 		assert.match(claim.bottomLine, /virus-carrying particles/);
 		assert.ok(claim.bottomLine.length <= 380, "Ventilation bottom line should stay scannable");
 		assert.match(visibleSummary, /39% lower COVID-19 incidence/);
@@ -1857,7 +1858,7 @@ describe("default claim seed quality", () => {
 			assert.equal(seeded.status, "published");
 			assert.equal(seeded.searchCutoffAt, "2026-09-10T21:00:00.000Z");
 			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T21:00:00.000Z");
-			assert.equal(seeded.sources.length, 3, `${claim.slug} should have three reviewed sources`);
+			assert.equal(seeded.sources.length, claim.sources.length + (claim.slug === "can-vaccination-indirectly-protect-people-who-are-not-vaccinated" ? 1 : 0), `${claim.slug} must retain its original sources and only the recorded surveillance addition`);
 			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
 			assert.ok(
 				seeded.sources.some(
@@ -1866,13 +1867,19 @@ describe("default claim seed quality", () => {
 				`${claim.slug} needs a synthesis source`
 			);
 			assert.ok(
-				seeded.sources.every(
+				seeded.sources.filter(source => claim.sources.some(original => original.doi === source.doi)).every(
 					source => source.doi && source.url === `https://doi.org/${source.doi}`
 				),
-				`${claim.slug} sources should use DOI landing pages`
+				`${claim.slug} original sources should retain DOI landing pages`
 			);
+			for (const source of seeded.sources.filter(source => !claim.sources.some(original => original.doi === source.doi))) {
+				assert.equal(source.doi, "10.1016/S1473-3099(24)00665-0");
+				assert.equal(source.year, 2025);
+				assert.equal(source.citationCheckedAt, undefined);
+				assert.equal(source.appraisal, "not_appraised");
+			}
 			assert.ok(
-				seeded.sources.every(
+				seeded.sources.filter(source => claim.sources.some(original => original.doi === source.doi)).every(
 					source => source.citationCheckedAt === "2026-09-10T21:00:00.000Z"
 				),
 				`${claim.slug} must record the tranche citation review`
@@ -1910,7 +1917,7 @@ describe("default claim seed quality", () => {
 		assert.match(visibleClaimText("did-homo-sapiens-originate-in-africa"), /one tiny birthplace|single-point origin/i);
 		assert.match(visibleClaimText("do-collagen-supplements-improve-joint-pain-or-training-adaptation"), /modest|heterogeneous/i);
 		assert.match(visibleClaimText("are-shorter-antibiotic-courses-effective-for-many-common-infections"), /does not mean stopping|not permission/i);
-		assert.match(visibleClaimText("does-latent-tuberculosis-infection-always-progress-to-active-disease"), /five to ten percent/i);
+		assert.match(visibleClaimText("does-latent-tuberculosis-infection-always-progress-to-active-disease"), /five to ten percent|5% to 10%/i);
 		assert.match(visibleClaimText("can-wastewater-surveillance-provide-early-warning-of-infectious-disease-trends"), /not an individual diagnostic/i);
 	});
 
