@@ -15,6 +15,7 @@ import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
 import { Claim } from "../src/models/schemas/Claim.js";
 import { CLAIM_SOURCE_TITLE_MAX_LENGTH, ClaimSource } from "../src/models/schemas/ClaimSource.js";
+import { researchIntegrityFields } from "../src/utils/researchIntegrity.js";
 
 const launchSensitiveClaimSlugs = [
 	"do-childhood-vaccines-cause-autism",
@@ -738,9 +739,7 @@ describe("default claim seed quality", () => {
 				claim.sources.every(source => source.citationCheckedAt === "2026-08-18T22:00:00.000Z"),
 				`${claim.slug} must record the tranche citation review`
 			);
-			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
-			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
-			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+			assert.deepEqual(researchIntegrityFields(claim, claim.topicSlug), claim);
 		}
 	});
 
@@ -866,9 +865,7 @@ describe("default claim seed quality", () => {
 				claim.sources.every(source => source.citationCheckedAt === "2026-08-18T23:30:00.000Z"),
 				`${claim.slug} must record the fourth-tranche citation review`
 			);
-			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
-			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
-			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+			assert.deepEqual(researchIntegrityFields(claim, claim.topicSlug), claim);
 		}
 	});
 
@@ -991,9 +988,7 @@ describe("default claim seed quality", () => {
 				`${claim.slug} must record the fifth-tranche citation review`
 			);
 			assert.ok(claim.sources.every(source => source.doi && source.url === `https://doi.org/${source.doi}`));
-			assert.ok(claim.inclusionRules.length >= 3, `${claim.slug} needs field-specific inclusion rules`);
-			assert.ok(claim.exclusionRules.length >= 3, `${claim.slug} needs field-specific exclusion rules`);
-			assert.ok(claim.appraisalTools.length >= 3, `${claim.slug} needs field-specific appraisal tools`);
+			assert.deepEqual(researchIntegrityFields(claim, claim.topicSlug), claim);
 		}
 	});
 
@@ -1882,9 +1877,7 @@ describe("default claim seed quality", () => {
 				),
 				`${claim.slug} must record the tranche citation review`
 			);
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
@@ -1981,9 +1974,7 @@ describe("default claim seed quality", () => {
 				),
 				`${claim.slug} must record the tranche citation review`
 			);
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
@@ -2088,9 +2079,7 @@ describe("default claim seed quality", () => {
 				),
 				`${claim.slug} must not include an excluded source`
 			);
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const correctedSources = september2026ClinicalClaims.flatMap(claim =>
@@ -2196,9 +2185,7 @@ describe("default claim seed quality", () => {
 				`${claim.slug} must record the tranche citation review`
 			);
 			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
@@ -2298,9 +2285,7 @@ describe("default claim seed quality", () => {
 			);
 			assert.ok(seeded.sources.every(source => source.citationCheckedAt === "2026-09-11T00:35:00.000Z"));
 			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
@@ -2411,9 +2396,7 @@ describe("default claim seed quality", () => {
 			);
 			assert.ok(seeded.sources.every(source => source.citationCheckedAt === "2026-09-11T04:55:00.000Z"));
 			assert.ok(seeded.sources.every(source => source.citationStatus !== "retracted"));
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 		}
 
 		const preExistingClaims = defaultClaims.filter(claim => !newSlugs.has(claim.slug));
@@ -2540,9 +2523,7 @@ describe("default claim seed quality", () => {
 			assert.ok(seeded.sources.every(source => source.statusSources.length >= 1));
 			assert.equal(new Set(seeded.sources.map(source => primarySourceLink(source))).size, 3);
 			assert.ok(seeded.sources.every(source => source.title.length <= CLAIM_SOURCE_TITLE_MAX_LENGTH));
-			assert.ok(seeded.inclusionRules.length >= 3);
-			assert.ok(seeded.exclusionRules.length >= 3);
-			assert.ok(seeded.appraisalTools.length >= 3);
+			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
 			assert.ok(seeded.uncertaintySummary.trim().length >= 40);
 			assert.ok(seeded.changeLog.some(entry => entry.kind === "publication"));
 		}

@@ -1,5 +1,32 @@
 import type { Claim, ClaimEvidenceSummary, ClaimUncertaintyDriver } from "~/types/board";
 
+export function selectResearchPreparation(claim?: Pick<Claim, "preparation" | "authorLine" | "reviewerLine"> | null) {
+	if (claim?.preparation) return claim.preparation;
+	const aiAssisted = /\bAI[- ]assist|\bAI agent\b|with AI assistance/i.test(
+		`${claim?.authorLine ?? ""} ${claim?.reviewerLine ?? ""}`
+	);
+	return {
+		method: aiAssisted ? ("ai_assisted" as const) : ("not_recorded" as const),
+		label: aiAssisted ? "AI-assisted research summary" : "Preparation method not recorded",
+		independentExpertReview: "not_recorded" as const
+	};
+}
+
+export function shortAnswerLabel(bottomLine?: string) {
+	const answer = bottomLine?.trim() ?? "";
+	if (/^yes[.!](?:\s|$)/i.test(answer)) return "Yes";
+	if (/^yes[,;:]|^usually yes\b/i.test(answer)) return "Yes, with limits";
+	if (/^no[.!](?:\s|$)/i.test(answer)) return "No";
+	if (/^no[,;:]/i.test(answer)) return "No, with limits";
+	if (/^(?:it depends|depends on|mixed|evidence is mixed)\b/i.test(answer)) return "Depends on context";
+	if (/^(?:unclear|not yet|we do not know)\b/i.test(answer)) return "Uncertain";
+	return null;
+}
+
+export function regulatoryContextLabel(title?: string) {
+	return /\bFDA[- ]approved\b/i.test(title ?? "") ? "United States: FDA approval" : null;
+}
+
 export function selectReviewScopeGroups(claim?: Pick<Claim, "inclusionRules" | "exclusionRules"> | null) {
 	return [
 		{ key: "included", title: "Included evidence", items: claim?.inclusionRules ?? [] },

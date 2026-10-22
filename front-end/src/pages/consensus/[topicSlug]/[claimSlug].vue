@@ -10,9 +10,12 @@ import { comparisonsForReview } from "~/data/comparisons";
 import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
 import {
+	regulatoryContextLabel,
 	selectDistinctUncertaintyLimits,
+	selectResearchPreparation,
 	selectReviewScopeGroups,
-	selectVisibleEvidenceSummaries
+	selectVisibleEvidenceSummaries,
+	shortAnswerLabel
 } from "~/utils/claim-presentation";
 import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
@@ -45,6 +48,9 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 );
 
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
+const preparation = computed(() => selectResearchPreparation(claim.value));
+const shortAnswer = computed(() => shortAnswerLabel(claim.value?.bottomLine));
+const regulatoryContext = computed(() => regulatoryContextLabel(claim.value?.title));
 const reviewEvaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
 const reviewStatus = computed(
 	() =>
@@ -56,6 +62,10 @@ const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
 const readingGuides = computed(() => guidesForReview(`/consensus/${topicSlug.value}/${claimSlug.value}`));
 const citation = computed(() => claimData.value?.citation);
 const citationCopyState = ref<"copied" | "error" | "idle">("idle");
+function openReviewStatus() {
+	const details = document.getElementById("review-status");
+	if (details instanceof HTMLDetailsElement) details.open = true;
+}
 const canEditClaim = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const pageUrl = computed(() => `https://isthereconsensus.org/consensus/${topicSlug.value}/${claimSlug.value}`);
 const pageDescription = computed(() => claim.value?.bottomLine || "Evidence-backed claim review.");
@@ -307,15 +317,11 @@ const articleStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "Article",
 	articleSection: claim.value?.topic?.title,
-	author: claim.value?.authorLine
-		? {
-				"@type": "Person",
-				name: claim.value.authorLine
-			}
-		: {
-				"@type": "Organization",
-				name: "Is There Consensus"
-			},
+	author: {
+		"@type": "Organization",
+		name: "Is There Consensus",
+		url: "https://isthereconsensus.org"
+	},
 	citation: (claim.value?.sources ?? []).map((source) => sourcePrimaryLink(source) || source.title),
 	dateModified: claim.value?.updatedAt || claim.value?.lastReviewedAt,
 	datePublished: claim.value?.publishedAt,
@@ -473,9 +479,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					<p class="eyebrow">Reviewed claim</p>
 					<h1 class="no-page-title-scale">{{ claim?.title || "Claim review" }}</h1>
 					<div class="claim-verdict">
+						<span v-if="regulatoryContext" class="tag">{{ regulatoryContext }}</span>
+						<span v-if="shortAnswer" class="claim-short-answer">Answer: {{ shortAnswer }}</span>
 						<span class="verdict-pill" :data-verdict-tone="claimTone">
 							<span :class="verdictIcons[claimTone]" aria-hidden="true" />
-							{{ claimMeta.verdict }}
+							Agreement: {{ claimMeta.verdict }}
 						</span>
 						<span class="certainty-meter">
 							<span class="certainty-meter__steps" aria-hidden="true">
@@ -498,8 +506,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
 					<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
 				</div>
-				<p class="claim-page__description">
-					{{ claim?.editorSummary || "This review summarizes the available evidence for the claim." }}
+				<p class="claim-preparation">
+					{{ preparation.label }}. Independent expert review not recorded.
+					<a href="#review-status" @click="openReviewStatus">Review details</a>
 				</p>
 				<div class="bottom-line__actions">
 					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
@@ -600,10 +609,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							<h2 id="review-scope-title">Scope of this review</h2>
 						</div>
 					</div>
-					<p class="review-scope__intro">
-						Recorded evidence-selection criteria. Check the population, setting and outcome before applying
-						this conclusion elsewhere.
-					</p>
 					<div class="review-scope__groups">
 						<div v-for="group in reviewScopeGroups" :key="group.key" class="review-scope__group">
 							<h3>{{ group.title }}</h3>
@@ -853,7 +858,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							<p class="eyebrow">Continue exploring</p>
 							<h2>Related reviews</h2>
 						</div>
-						<p>Follow the nearest evidence questions instead of returning to a flat directory.</p>
 					</div>
 
 					<div v-if="collectionMemberships.length" class="collection-memberships">
@@ -985,6 +989,17 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .claim-answer__footer .claim-page__meta a:hover {
 	text-decoration: underline;
+}
+
+.claim-preparation {
+	margin: 0;
+	color: var(--consensus-muted);
+	font-size: 0.88rem;
+	line-height: 1.6;
+}
+
+.claim-short-answer {
+	font-weight: 700;
 }
 
 .claim-verdict {

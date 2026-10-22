@@ -70,7 +70,7 @@ const publicStaticPages = [
 	{
 		file: "src/pages/automation-and-ai.vue",
 		path: "/automation-and-ai",
-		description: "See how automation may support"
+		description: "How AI-assisted source screening"
 	},
 	{
 		file: "src/pages/copyright-and-trademark.vue",

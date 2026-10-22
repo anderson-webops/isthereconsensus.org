@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import type { Claim } from "~/types/board";
+import { selectResearchPreparation } from "~/utils/claim-presentation";
 import { claimReviewStatus, formatReviewDate, reviewStatusLabels } from "~/utils/claim-review-status";
 
 const props = defineProps<{ claim: Claim }>();
+const preparation = computed(() => selectResearchPreparation(props.claim));
+const reviewerDisclosure = computed(() =>
+	props.claim.reviewerLine === "Reviewed for evidence quality, scope, and plain-language accuracy."
+		? "The review method and reviewer were not recorded."
+		: props.claim.reviewerLine
+);
 // Preserve SSR/client agreement when a backend predating this field is served.
 const evaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
 const status = computed(
@@ -30,6 +37,7 @@ function openHistory() {
 			<span class="review-status__date">{{ dateLabel }}: {{ formatReviewDate(status.reviewedAt) }}</span>
 		</summary>
 		<div class="review-status__body">
+			<p>{{ preparation.label }}. Independent expert review is not documented in the structured record.</p>
 			<p v-if="status.basis === 'unspecified'">
 				The origin of this review date was not recorded. Some older imports used their import date, so this date
 				alone does not confirm a completed scientific review.
@@ -41,7 +49,15 @@ function openHistory() {
 				This date was recorded through the site's editorial publication or review workflow. The reviewer
 				disclosure describes who performed the review.
 			</p>
-			<p v-if="claim.reviewerLine" class="review-status__reviewer">{{ claim.reviewerLine }}</p>
+			<p v-if="reviewerDisclosure" class="review-status__reviewer">{{ reviewerDisclosure }}</p>
+			<p v-if="claim.authorLine">{{ claim.authorLine }}</p>
+			<p v-if="claim.coiSummary">{{ claim.coiSummary }}</p>
+			<div v-if="claim.appraisalTools?.length">
+				<h3>Recorded assessment approach</h3>
+				<ul>
+					<li v-for="tool in claim.appraisalTools" :key="tool">{{ tool }}</li>
+				</ul>
+			</div>
 			<p v-if="status.state === 'due'">
 				The scheduled follow-up is due. This alone does not mean the conclusion is wrong.
 			</p>
@@ -99,6 +115,7 @@ function openHistory() {
 			</p>
 			<p>Formatting changes do not count as a new evidence review. All dates are shown in UTC.</p>
 			<div class="review-status__links">
+				<NuxtLink to="/automation-and-ai">Preparation and review policy</NuxtLink>
 				<a href="#claim-sources">Read source notes</a
 				><a href="#claim-history" @click="openHistory">Read change log</a>
 			</div>

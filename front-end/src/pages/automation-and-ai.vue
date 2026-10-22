@@ -3,16 +3,16 @@ import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 
 const quickPoints = [
 	{
-		title: "Human gate",
-		body: "Automation can support monitoring, routing, and prioritization, but it does not publish reviewed bottom lines on its own."
+		title: "Research summaries",
+		body: "Summaries may be published after AI-assisted source screening, with human moderation and corrections afterward."
 	},
 	{
-		title: "Named owner",
-		body: "Consequential uses need a human owner who can explain the decision path."
+		title: "Editorial responsibility",
+		body: "The site owner remains responsible for publication. Owner approval is not independent expert review."
 	},
 	{
 		title: "Separate lanes",
-		body: "Monitoring, triage, and drafting assistance stay separate from final editorial judgment."
+		body: "Automated source checks, human editorial review, and independent expert review are different processes."
 	},
 	{
 		title: "Contributor responsibility",
@@ -23,12 +23,13 @@ const quickPoints = [
 const allowedUses = [
 	"Retraction checks, guideline-watch queues, citation-integrity scans, and update alerts.",
 	"Duplicate detection, misconception matching, and query-shape classification.",
-	"Drafting aids that summarize existing material for human review.",
+	"AI-assisted drafting and source screening of research summaries, with preparation and review status disclosed.",
 	"Dashboards that show intake pressure without changing reviewed pages automatically."
 ];
 
 const disallowedUses = [
-	"Auto-publishing or changing a reviewed bottom line without human editorial approval.",
+	"Overwriting an existing human editorial decision or reviewed bottom line without the authorized editorial workflow.",
+	"Claiming human review, expert approval, a systematic search, or a formal appraisal without supporting records.",
 	"Final moderation decisions that cannot be meaningfully appealed to a human reviewer.",
 	"Putting confidential reviewer or applicant materials into outside tools without a clear security basis.",
 	"Presenting generated text as institutional evidence, expert judgment, or peer-reviewed research."
@@ -37,7 +38,7 @@ const disallowedUses = [
 const humanGates = [
 	{
 		title: "Publication gate",
-		body: "A human editor remains responsible for the published claim, uncertainty framing, and public source stack."
+		body: "Publication does not establish independent expert approval. Pages distinguish recorded preparation from review that has not been documented."
 	},
 	{
 		title: "Moderation gate",
@@ -45,7 +46,7 @@ const humanGates = [
 	},
 	{
 		title: "Disclosure gate",
-		body: "When automation materially affects a page, queue, or review step, the site explains its role in plain language."
+		body: "Pages disclose recorded AI assistance. If historical preparation details are missing, the site says so rather than inventing a reviewer or workflow."
 	}
 ];
 
@@ -57,7 +58,7 @@ const contributorRules = [
 
 useStaticPageMeta({
 	description:
-		"See how automation may support drafting, moderation, and operations while editorial publication remains human-controlled.",
+		"How AI-assisted source screening, publication, human moderation, and independent expert review differ.",
 	path: "/automation-and-ai",
 	title: "Automation and AI disclosure - Is There Consensus?"
 });
@@ -69,8 +70,11 @@ useStaticPageMeta({
 
 		<header class="policy-header">
 			<p class="eyebrow">Automation and AI disclosure</p>
-			<h1>Automation support and human review.</h1>
-			<p>These rules keep automation, AI-assisted drafting, and decision support accountable to people.</p>
+			<h1>Preparation and review</h1>
+			<p>
+				AI tools can summarize real research and still misinterpret it. Linked sources support checking the
+				summary; they do not establish expert approval.
+			</p>
 		</header>
 
 		<section class="policy-summary">
@@ -83,7 +87,6 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Allowed support uses</h2>
-				<p>The site can automate monitoring and routing without automating accountability.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in allowedUses" :key="item">{{ item }}</li>
@@ -93,7 +96,6 @@ useStaticPageMeta({
 		<section class="policy-panel policy-panel--soft">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Disallowed uses</h2>
-				<p>These uses stay outside the workflow.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in disallowedUses" :key="item">{{ item }}</li>
@@ -102,8 +104,7 @@ useStaticPageMeta({
 
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
-				<h2>Human review gates</h2>
-				<p>Automation should accelerate judgment while keeping ownership visible.</p>
+				<h2>Publication and moderation</h2>
 			</div>
 			<div class="policy-card-grid">
 				<article v-for="item in humanGates" :key="item.title" class="policy-detail-card">
@@ -116,7 +117,6 @@ useStaticPageMeta({
 		<section class="policy-panel">
 			<div class="policy-section-heading policy-section-heading--tight">
 				<h2>Rules for contributors using AI tools</h2>
-				<p>Editorial convenience does not override confidentiality or source discipline.</p>
 			</div>
 			<ul class="policy-list">
 				<li v-for="item in contributorRules" :key="item">{{ item }}</li>
@@ -125,9 +125,7 @@ useStaticPageMeta({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Related trust pages</p>
-				<h2>Make the human gate visible without exposing private operations.</h2>
-				<p>How Reviews Work covers the public standard; Corrections covers the visible change path.</p>
+				<h2>Related policies</h2>
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/standards">How reviews work</NuxtLink>

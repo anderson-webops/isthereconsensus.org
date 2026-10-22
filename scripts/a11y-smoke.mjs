@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import http from "node:http";
 import { createRequire } from "node:module";
 import net from "node:net";
@@ -277,6 +277,9 @@ function responseFor(url) {
 				consensusBand: "broad",
 				evidenceCertainty: "moderate",
 				confidenceScore: 82,
+				authorLine: scopeSlug === "a11y-scope-legacy" ? "Prepared by the Is There Consensus editorial desk." : "AI-assisted synthesis prepared for Is There Consensus.",
+				reviewerLine: "Reviewed for evidence quality, scope, and plain-language accuracy.",
+				editorSummary: "This update replaces an internal editorial note that must not appear below the answer.",
 				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
 				stableCore: ["The review can be copied or exported in standard citation formats."],
 				inclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : [scopeSlug === "a11y-scope-long" ? longScopeCriterion : "Public review pages with keyboard-accessible citation controls in this synthetic fixture."],
@@ -495,6 +498,23 @@ async function analyzePage(browser, route, scheme) {
 	await page.waitForNetworkIdle({ idleTime: 500, timeout: 8_000 }).catch(() => {});
 	if (route.startsWith("/consensus/a11y-topic/")) {
 		const { claim } = responseFor(new URL(`/topics/a11y-topic/claims/${route.split("/").at(-1)}`, apiUrl));
+		const preparation = await page.$eval(".claim-preparation", element => element.textContent);
+		assert.match(preparation, /Independent expert review not recorded/);
+		assert.match(preparation, claim.authorLine.startsWith("AI-assisted") ? /AI-assisted research summary/ : /Preparation method not recorded/);
+		assert.doesNotMatch(await page.$eval(".bottom-line", element => element.textContent), /internal editorial note/);
+		const author = await page.$$eval('script[type="application/ld+json"]', scripts => scripts.map(script => JSON.parse(script.textContent)).find(value => value["@type"] === "Article")?.author);
+		assert.equal(author?.["@type"], "Organization");
+		assert.equal(author?.name, "Is There Consensus");
+		await page.focus('.claim-preparation a[href="#review-status"]');
+		await page.keyboard.press("Enter");
+		assert.equal(await page.$eval("#review-status", element => element.open), true);
+		assert.doesNotMatch(await page.$eval("#review-status", element => element.textContent), /Reviewed for evidence quality, scope, and plain-language accuracy/);
+		await page.$eval("#review-status", element => { element.open = false; });
+		await page.evaluate(() => globalThis.scrollTo(0, 0));
+		if (process.env.A11Y_SCREENSHOT_DIR && route.endsWith("a11y-citation-review")) {
+			mkdirSync(process.env.A11Y_SCREENSHOT_DIR, { recursive: true });
+			await page.screenshot({ path: resolve(process.env.A11Y_SCREENSHOT_DIR, `claim-${scheme}-desktop.png`), fullPage: true });
+		}
 		const expected = [
 			{ title: "Included evidence", items: claim.inclusionRules ?? [] },
 			{ title: "Excluded evidence", items: claim.exclusionRules ?? [] }
@@ -526,6 +546,9 @@ async function analyzePage(browser, route, scheme) {
 	});
 	await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
 	await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+	if (process.env.A11Y_SCREENSHOT_DIR && route.endsWith("a11y-citation-review")) {
+		await page.screenshot({ path: resolve(process.env.A11Y_SCREENSHOT_DIR, `claim-${scheme}-mobile.png`), fullPage: true });
+	}
 	const mobileLayout = await page.evaluate(() => {
 		const visible = (element) => {
 			const style = globalThis.getComputedStyle(element);

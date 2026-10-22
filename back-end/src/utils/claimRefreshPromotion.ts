@@ -6,7 +6,7 @@ import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
 import mongoose from "mongoose";
 import { z } from "zod";
-import { claimsBeforeLivingRefresh, defaultClaims } from "../data/claims.js";
+import { claimsBeforeIntegrityCorrections, claimsBeforeLivingRefresh } from "../data/claims.js";
 import { seedClaimFields } from "../data/seedClaims.js";
 import { Claim } from "../models/schemas/Claim.js";
 import { ClaimRefreshPromotion } from "../models/schemas/ClaimRefreshPromotion.js";
@@ -79,7 +79,7 @@ function key(seed: CompleteSeedClaim) {
 	return `${seed.topicSlug}/${seed.slug}`;
 }
 export const registeredRefreshes = claimsBeforeLivingRefresh.flatMap((before, index) => {
-	const after = defaultClaims[index]!;
+	const after = claimsBeforeIntegrityCorrections[index]!;
 	return after !== before ? [{ key: key(before), before, after }] : [];
 });
 const selectionSchema = z.array(z.string().regex(/^[a-z0-9-]+\/[a-z0-9-]+$/)).min(1).max(20);

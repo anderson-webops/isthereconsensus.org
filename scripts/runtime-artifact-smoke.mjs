@@ -263,6 +263,9 @@ try {
 	for (const requiredPath of [
 		"back-end/dist/utils/approvedReaderPublication.js",
 		"back-end/dist/models/schemas/SourcePublication.js",
+		"back-end/dist/utils/ownerContentRelease.js",
+		"back-end/dist/models/schemas/ContentRelease.js",
+		"back-end/dist/data/claim-audit-refreshes-2026-10.js",
 		"back-end/dist/data/claim-expansion-reader.js"
 	]) {
 		const absolutePath = path.join(artifactRoot, requiredPath);

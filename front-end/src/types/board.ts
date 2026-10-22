@@ -299,6 +299,11 @@ export interface ClaimSummary {
 }
 
 export interface Claim extends ClaimSummary {
+	preparation?: {
+		method: "ai_assisted" | "not_recorded";
+		label: string;
+		independentExpertReview: "not_recorded";
+	};
 	reviewDateBasis?: ReviewDateBasis;
 	reviewStatus?: ClaimReviewStatus;
 	stableCore: string[];

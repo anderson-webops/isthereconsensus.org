@@ -4114,6 +4114,10 @@ async function main() {
 					.then(({ publishApprovedReaderContent }) => publishApprovedReaderContent(publicationController.signal))
 					.then(result => console.log("Approved assistant-screened content release:", result))
 					.catch(error => logError("Approved content release deferred; existing services remain available", error));
+				void import("./utils/ownerContentRelease.js")
+					.then(({ publishOwnerEditorialCorrections }) => publishOwnerEditorialCorrections(publicationController.signal))
+					.then(result => console.log("Owner-approved editorial content corrections:", result))
+					.catch(error => logError("Owner content corrections deferred; existing services remain available", error));
 			}
 		}
 	);

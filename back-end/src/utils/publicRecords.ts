@@ -6,6 +6,7 @@ import type { ITopic } from "../models/schemas/Topic.js";
 import type { ITopicSentimentVote } from "../models/schemas/TopicSentimentVote.js";
 import { claimReviewStatus } from "./claimReviewStatus.js";
 import { toPublicEvidenceLandscape } from "./evidenceLandscape.js";
+import { isRevisionCommentary, researchIntegrityFields, researchPreparation } from "./researchIntegrity.js";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -314,9 +315,11 @@ export function toPublicClaim(
 		topic?: ITopic | UnknownRecord | null;
 	} = {}
 ) {
+	const topic = toPublicTopic(options.topic ?? value.topic);
+	const presentation = researchIntegrityFields(value, typeof topic?.slug === "string" ? topic.slug : "");
 	return {
 		_id: value._id,
-		topic: toPublicTopic(options.topic ?? value.topic),
+		topic,
 		title: value.title,
 		slug: value.slug,
 		status: value.status,
@@ -333,20 +336,21 @@ export function toPublicClaim(
 		whatWouldChangeMinds: value.whatWouldChangeMinds,
 		misconceptions: value.misconceptions,
 		misconceptionTags: value.misconceptionTags,
-		editorSummary: value.editorSummary,
+		editorSummary: isRevisionCommentary(value.editorSummary) ? undefined : value.editorSummary,
 		uncertaintySummary: value.uncertaintySummary,
 		uncertaintyDrivers: value.uncertaintyDrivers,
 		searchDatabases: value.searchDatabases,
 		searchCutoffAt: value.searchCutoffAt,
-		inclusionRules: value.inclusionRules,
-		exclusionRules: value.exclusionRules,
-		appraisalTools: value.appraisalTools,
+		inclusionRules: presentation.inclusionRules,
+		exclusionRules: presentation.exclusionRules,
+		appraisalTools: presentation.appraisalTools,
 		evidenceSummaries: value.evidenceSummaries,
 		evidenceLandscape: toPublicEvidenceLandscape(value),
 		institutionalAnchors: value.institutionalAnchors,
-		authorLine: value.authorLine,
-		reviewerLine: value.reviewerLine,
-		coiSummary: value.coiSummary,
+		authorLine: presentation.authorLine,
+		reviewerLine: presentation.reviewerLine,
+		coiSummary: presentation.coiSummary,
+		preparation: researchPreparation(presentation),
 		independenceSummary: value.independenceSummary,
 		lastRetractionCheckAt: value.lastRetractionCheckAt,
 		changeLog: value.changeLog,

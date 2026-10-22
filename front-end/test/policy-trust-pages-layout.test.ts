@@ -32,8 +32,13 @@ describe("policy trust pages layout", () => {
 	it("keeps automation disclosure concise without removing human accountability", () => {
 		const source = readPage("src/pages/automation-and-ai.vue");
 
-		assert.match(source, /Consequential uses need a human owner who can explain the decision path\./);
-		assert.match(source, /Drafting aids that summarize existing material for human review\./);
+		assert.match(source, /The site owner remains responsible for publication\./);
+		assert.match(source, /Owner approval is not independent expert review\./);
+		assert.match(source, /AI-assisted drafting and source screening of research summaries/);
+		assert.match(
+			source,
+			/Claiming human review, expert approval, a systematic search, or a formal appraisal without supporting records/
+		);
 		assert.match(source, /Final moderation decisions that cannot be meaningfully appealed to a human reviewer\./);
 		assert.doesNotMatch(source, /Any materially consequential use should have/);
 		assert.doesNotMatch(source, /presenting generated text as if it were/);
