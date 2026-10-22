@@ -23,9 +23,6 @@ const requiredPaths = [
 	"back-end/dist/utils/approvedReaderPublication.js",
 	"back-end/dist/models/schemas/SourcePublication.js",
 	"back-end/dist/data/claim-expansion-reader.js",
-	"back-end/dist/utils/ownerContentRelease.js",
-	"back-end/dist/models/schemas/ContentRelease.js",
-	"back-end/dist/data/claim-audit-refreshes-2026-10.js",
 	"back-end/dist/scripts/monitorSourceIntegrity.js",
 	"back-end/dist/scripts/seedContent.js",
 	"back-end/package.json",
@@ -139,6 +136,10 @@ async function inventory(directory, prefix = "") {
 
 for (const relativePath of [
 	"back-end/dist/server.js",
+	"back-end/dist/utils/ownerContentRelease.js",
+	"back-end/dist/models/schemas/ContentRelease.js",
+	"back-end/dist/data/claim-audit-refreshes-2026-10.js",
+	"back-end/dist/data/claim-audit-legacy-baselines-2026-10.js",
 	"back-end/dist/scripts/monitorSourceIntegrity.js",
 	"back-end/dist/scripts/seedContent.js",
 	"front-end/.output/server/index.mjs",

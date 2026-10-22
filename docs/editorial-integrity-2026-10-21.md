@@ -155,6 +155,12 @@ registry remain unchanged. The new batch has its own approval identifier and
 immutable content digest. A source cadence is not a completed review, and
 existing follow-up dates are not silently replaced.
 
+The existing runtime-manifest contract is unchanged, so installed deployment
+verification and the prior immutable artifact remain compatible. The builder
+explicitly requires the new compiled publisher, receipt model and content
+definitions; all enter the complete hashed inventory. Missing-module regression
+checks cover those files without requiring an operator-side verifier update.
+
 ## Validation
 
 Required checks include native lint, typecheck, frontend/backend/worker tests,

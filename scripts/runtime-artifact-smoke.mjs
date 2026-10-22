@@ -266,6 +266,7 @@ try {
 		"back-end/dist/utils/ownerContentRelease.js",
 		"back-end/dist/models/schemas/ContentRelease.js",
 		"back-end/dist/data/claim-audit-refreshes-2026-10.js",
+		"back-end/dist/data/claim-audit-legacy-baselines-2026-10.js",
 		"back-end/dist/data/claim-expansion-reader.js"
 	]) {
 		const absolutePath = path.join(artifactRoot, requiredPath);
@@ -273,7 +274,7 @@ try {
 		await rm(absolutePath);
 		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify({
 			...manifest,
-			files: manifest.files.filter(entry => entry.path !== requiredPath)
+			files: manifest.requiredPaths.includes(requiredPath) ? manifest.files.filter(entry => entry.path !== requiredPath) : manifest.files
 		}));
 		const missingPublicationModule = runSync("independent publication module regression", process.execPath, [verifier, artifactRoot], {
 			cwd: acceptanceRoot,
