@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { ReaderLibraryController } from "~/utils/reader-library";
 
-const props = defineProps<{ kind: "review" | "topic" | "comparison"; id: string }>();
+// `compact` keeps just the save button for dense placements such as the claim answer card.
+const props = defineProps<{ kind: "review" | "topic" | "comparison"; id: string; compact?: boolean }>();
 const library = useNuxtApp().$readerLibrary as ReaderLibraryController;
 const keys = { review: "savedReviewIds", topic: "followedTopicIds", comparison: "savedComparisonSlugs" } as const;
 const key = computed(() => keys[props.kind]);
@@ -39,8 +40,8 @@ const label = computed(() =>
 				}}</span></template
 			>
 		</ClientOnly>
-		<NuxtLink to="/library">My library</NuxtLink>
-		<span v-if="library.state.ready" class="library-action__scope">{{
+		<NuxtLink v-if="!compact" to="/library">My library</NuxtLink>
+		<span v-if="library.state.ready && !compact" class="library-action__scope">{{
 			library.state.scope === "account" ? "Account" : "This browser"
 		}}</span>
 		<span v-if="library.state.error" role="alert">{{ library.state.error }}</span>

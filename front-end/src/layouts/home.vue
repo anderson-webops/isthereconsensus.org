@@ -8,6 +8,27 @@ const route = useRoute();
 const year = new Date().getFullYear();
 const learnPathPattern = /^\/(?:explainers|guides|compare|misconceptions)(?:\/|$)/;
 const isLearnRoute = computed(() => learnPathPattern.test(route.path));
+
+// Keep --consensus-header-height equal to the real sticky header so anchors and sticky bars clear it when it wraps.
+let headerObserver: ResizeObserver | undefined;
+
+onMounted(() => {
+	const header = document.querySelector<HTMLElement>(".site-header");
+	if (!header || !("ResizeObserver" in window)) return;
+	const root = document.documentElement;
+	headerObserver = new ResizeObserver(([entry]) => {
+		// The header only sticks above the mobile breakpoint; below it the default offset applies.
+		if (getComputedStyle(header).position !== "sticky") {
+			root.style.removeProperty("--consensus-header-height");
+			return;
+		}
+		const height = Math.ceil(entry.borderBoxSize?.[0]?.blockSize ?? header.offsetHeight);
+		root.style.setProperty("--consensus-header-height", `${height}px`);
+	});
+	headerObserver.observe(header);
+});
+
+onBeforeUnmount(() => headerObserver?.disconnect());
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 </script>
 
@@ -357,6 +378,21 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 	.site-footer__links {
 		justify-content: start;
+	}
+}
+
+@media (min-width: 701px) and (max-width: 1079px) {
+	.site-brand__name {
+		white-space: nowrap;
+	}
+
+	.site-nav {
+		flex-wrap: nowrap;
+	}
+
+	.site-nav a {
+		padding: 8px;
+		white-space: nowrap;
 	}
 }
 </style>

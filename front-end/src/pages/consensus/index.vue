@@ -4,6 +4,7 @@ import { watchDebounced } from "@vueuse/core";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
+import { groupByTopicFamily } from "~/data/topicFamilies";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
 import { interleaveClaimsByTopic, loadCompleteClaimDirectory } from "~/utils/claim-directory";
 import { searchComparisons } from "~/utils/comparison-search";
@@ -222,6 +223,7 @@ const topicVerdictMixes = computed(() => {
 	}
 	return new Map([...claimsByTopic].map(([slug, topicClaims]) => [slug, verdictMix(topicClaims)]));
 });
+const topicFamilyGroups = computed(() => groupByTopicFamily(filteredTopics.value, (topic) => topic.slug));
 const filteredClaims = computed(() =>
 	claims.value.filter((claim) => claimBand.value === "all" || claim.consensusBand === claimBand.value)
 );
@@ -310,36 +312,49 @@ watch([query, claimBand], () => {
 					</button>
 				</div>
 			</div>
-			<div v-else class="topic-list">
-				<NuxtLink
-					v-for="topic in filteredTopics"
-					:key="topic.slug"
-					class="topic-row"
-					:to="`/consensus/${topic.slug}`"
+			<div v-else class="topic-families">
+				<section
+					v-for="group in topicFamilyGroups"
+					:key="group.family.slug"
+					class="topic-family"
+					:aria-labelledby="`topic-family-${group.family.slug}`"
 				>
-					<div class="topic-row__main">
-						<h3>{{ topic.title }}</h3>
-						<p v-if="topic.description" class="topic-row__description">{{ topic.description }}</p>
-						<div class="topic-row__meta">
-							<span>{{ formatTopicClaimCount(topic) }}</span>
-							<span
-								v-if="topicVerdictMixes.get(topic.slug)?.length"
-								class="verdict-mix"
-								aria-hidden="true"
-							>
-								<span
-									v-for="segment in topicVerdictMixes.get(topic.slug)"
-									:key="segment.tone"
-									class="verdict-mix__segment"
-									:data-verdict-tone="segment.tone"
-									:style="{ flexGrow: segment.count }"
-									:title="`${segment.label}: ${segment.count}`"
-								/>
-							</span>
-						</div>
+					<h3 :id="`topic-family-${group.family.slug}`" class="topic-family__title">
+						{{ group.family.title }}
+						<span class="topic-family__count">{{ group.items.length }}</span>
+					</h3>
+					<div class="topic-list">
+						<NuxtLink
+							v-for="topic in group.items"
+							:key="topic.slug"
+							class="topic-row"
+							:to="`/consensus/${topic.slug}`"
+						>
+							<div class="topic-row__main">
+								<h4>{{ topic.title }}</h4>
+								<p v-if="topic.description" class="topic-row__description">{{ topic.description }}</p>
+								<div class="topic-row__meta">
+									<span>{{ formatTopicClaimCount(topic) }}</span>
+									<span
+										v-if="topicVerdictMixes.get(topic.slug)?.length"
+										class="verdict-mix"
+										aria-hidden="true"
+									>
+										<span
+											v-for="segment in topicVerdictMixes.get(topic.slug)"
+											:key="segment.tone"
+											class="verdict-mix__segment"
+											:data-verdict-tone="segment.tone"
+											:style="{ flexGrow: segment.count }"
+											:title="`${segment.label}: ${segment.count}`"
+										/>
+									</span>
+								</div>
+							</div>
+							<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
+						</NuxtLink>
 					</div>
-					<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />
-				</NuxtLink>
+				</section>
 			</div>
 		</section>
 
@@ -478,7 +493,7 @@ watch([query, claimBand], () => {
 .directory__header h1,
 .section-heading h2,
 .claim-directory__summary h2,
-.topic-row h3,
+.topic-row h4,
 .claim-card h3 {
 	font-family: "Fraunces", serif;
 }
@@ -633,6 +648,32 @@ watch([query, claimBand], () => {
 	margin: 0;
 }
 
+.topic-families {
+	display: grid;
+	gap: 28px;
+}
+
+.topic-family {
+	display: grid;
+	gap: 12px;
+}
+
+.topic-family__title {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin: 0;
+	font-size: 1.2rem;
+	line-height: 1.3;
+}
+
+.topic-family__count {
+	color: var(--consensus-muted);
+	font-family: "Public Sans", system-ui, sans-serif;
+	font-size: 0.86rem;
+	font-weight: 500;
+}
+
 .topic-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
@@ -661,7 +702,7 @@ watch([query, claimBand], () => {
 	align-content: start;
 }
 
-.topic-row h3 {
+.topic-row h4 {
 	margin: 0;
 	color: var(--consensus-ink);
 	font-size: var(--type-card);
@@ -893,7 +934,7 @@ watch([query, claimBand], () => {
 		gap: 8px;
 	}
 
-	.topic-row h3 {
+	.topic-row h4 {
 		font-size: 1.12rem;
 	}
 

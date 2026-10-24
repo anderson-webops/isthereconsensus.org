@@ -75,7 +75,26 @@ describe("claim detail layout", () => {
 		);
 		assert.match(source, /\.bottom-line__actions \.button \{[\s\S]*flex: 1 1 140px;/);
 		assert.match(source, /formatCountLabel\(sourceCount\.value, "source"\)/);
-		assert.match(source, /formatReviewDate\(reviewStatus\.value\.reviewedAt\)/);
+		assert.match(
+			source,
+			/<footer class="claim-answer__footer">[\s\S]*<ClaimReviewStatus v-if="claim" :claim="claim" \/>/
+		);
+	});
+
+	it("keeps the answer card to a few facts and two actions", () => {
+		const card = source.match(/<article class="claim-answer"[\s\S]*?<\/article>/)?.[0];
+		assert.ok(card);
+		assert.doesNotMatch(card, /editorSummary|claimMeta\.reviewed/);
+		assert.match(card, /<LibraryAction v-if="claim\?\._id" :id="claim\._id" kind="review" compact \/>/);
+		assert.match(card, /<NuxtLink class="answer-link" :to="askLink">/);
+		assert.match(source, /sources: `Based on \$\{formatCountLabel\(sourceCount\.value, "source"\)\}`/);
+	});
+
+	it("keeps a sticky section overview below the desktop rail breakpoint", () => {
+		assert.match(source, /<nav v-if="tocItems\.length > 2" class="claim-toc-compact" aria-label="On this page">/);
+		assert.match(source, /\.claim-toc-compact \{[\s\S]*position: sticky;/);
+		assert.match(source, /@click="closeCompactToc"/);
+		assert.match(source, /@media \(max-width: 1079px\) \{\s*\.claim-toc \{\s*display: none;/);
 	});
 
 	it("splits long bottom-line copy into a lead answer and supporting context", () => {

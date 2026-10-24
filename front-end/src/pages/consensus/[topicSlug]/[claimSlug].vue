@@ -16,7 +16,6 @@ import {
 	selectVisibleEvidenceSummaries,
 	shortAnswerLabel
 } from "~/utils/claim-presentation";
-import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status";
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
@@ -49,12 +48,6 @@ const { data: claimData } = await useAsyncData(`claim-${topicSlug.value}-${claim
 const claim = computed<Claim | undefined>(() => claimData.value?.claim);
 const shortAnswer = computed(() => shortAnswerLabel(claim.value?.bottomLine));
 const regulatoryContext = computed(() => regulatoryContextLabel(claim.value?.title));
-const reviewEvaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
-const reviewStatus = computed(
-	() =>
-		claim.value?.reviewStatus ??
-		claimReviewStatus(claim.value ?? {}, claim.value?.sources, new Date(reviewEvaluatedAt.value))
-);
 const collectionMemberships = computed(() => claimData.value?.collections ?? []);
 const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
 const readingGuides = computed(() => guidesForReview(`/consensus/${topicSlug.value}/${claimSlug.value}`));
@@ -130,8 +123,7 @@ const citationExportBase = computed(() =>
 const claimMeta = computed(() => ({
 	verdict: formatBandLabel(claim.value?.consensusBand),
 	certainty: formatEvidenceCertaintyLabel(claim.value?.evidenceCertainty),
-	sources: formatCountLabel(sourceCount.value, "source"),
-	reviewed: `Review date recorded: ${formatReviewDate(reviewStatus.value.reviewedAt)}`
+	sources: `Based on ${formatCountLabel(sourceCount.value, "source")}`
 }));
 const claimTone = computed(() => verdictTone({ consensusBand: claim.value?.consensusBand }));
 const claimCertaintyStep = computed(() => certaintyStep(claim.value?.evidenceCertainty));
@@ -159,24 +151,46 @@ const tocItems = computed(() =>
 	].filter((item) => item.show)
 );
 const activeSection = ref("");
-let sectionObserver: IntersectionObserver | undefined;
+const activeSectionLabel = computed(
+	() => tocItems.value.find((item) => item.id === activeSection.value)?.label ?? "Jump to a section"
+);
+const compactToc = ref<HTMLDetailsElement>();
 
-onMounted(() => {
-	if (!("IntersectionObserver" in window)) return;
-	sectionObserver = new IntersectionObserver(
-		(entries) => {
-			const visible = entries.filter((entry) => entry.isIntersecting);
-			if (visible.length) activeSection.value = visible[0].target.id;
-		},
-		{ rootMargin: "-20% 0px -70% 0px" }
+function closeCompactToc() {
+	if (compactToc.value) compactToc.value.open = false;
+}
+let sectionFrame = 0;
+
+// The current section is the last one whose heading has scrolled under the sticky header and section bar.
+function updateActiveSection() {
+	sectionFrame = 0;
+	const headerHeight = Number.parseFloat(
+		getComputedStyle(document.documentElement).getPropertyValue("--consensus-header-height")
 	);
+	const threshold = (Number.isFinite(headerHeight) ? headerHeight : 72) + 96;
+	let current = "";
 	for (const item of tocItems.value) {
 		const target = document.getElementById(item.id);
-		if (target) sectionObserver.observe(target);
+		if (target && target.getBoundingClientRect().top <= threshold) current = item.id;
 	}
+	activeSection.value = current;
+}
+
+function scheduleActiveSectionUpdate() {
+	if (!sectionFrame) sectionFrame = window.requestAnimationFrame(updateActiveSection);
+}
+
+onMounted(() => {
+	updateActiveSection();
+	window.addEventListener("scroll", scheduleActiveSectionUpdate, { passive: true });
+	window.addEventListener("resize", scheduleActiveSectionUpdate, { passive: true });
 });
 
-onBeforeUnmount(() => sectionObserver?.disconnect());
+onBeforeUnmount(() => {
+	window.removeEventListener("scroll", scheduleActiveSectionUpdate);
+	window.removeEventListener("resize", scheduleActiveSectionUpdate);
+	if (sectionFrame) window.cancelAnimationFrame(sectionFrame);
+});
 const bottomLineParts = computed(() => {
 	const text = claim.value?.bottomLine?.trim() || "";
 	const sentenceEnd = text.match(/[.!?](?:\s|$)/);
@@ -501,8 +515,8 @@ function formatDate(value?: string, fallback = "Not available yet") {
 					<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
 				</div>
 				<div class="bottom-line__actions">
-					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
-					<NuxtLink class="button button--ghost" :to="askLink">
+					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" compact />
+					<NuxtLink class="answer-link" :to="askLink">
 						<span class="i-carbon-chat" aria-hidden="true" />
 						Ask a follow-up
 					</NuxtLink>
@@ -519,7 +533,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 			<footer class="claim-answer__footer">
 				<p class="claim-page__meta">
 					<a href="#claim-sources">{{ claimMeta.sources }}</a>
-					<span>{{ claimMeta.reviewed }}</span>
 				</p>
 				<ClaimReviewStatus v-if="claim" :claim="claim" />
 			</footer>
@@ -539,6 +552,27 @@ function formatDate(value?: string, fallback = "Not available yet") {
 						</a>
 					</li>
 				</ol>
+			</nav>
+
+			<nav v-if="tocItems.length > 2" class="claim-toc-compact" aria-label="On this page">
+				<details ref="compactToc">
+					<summary>
+						<span class="claim-toc-compact__label">On this page</span>
+						<span class="claim-toc-compact__current">{{ activeSectionLabel }}</span>
+						<span class="i-carbon-chevron-down claim-toc-compact__chevron" aria-hidden="true" />
+					</summary>
+					<ol>
+						<li v-for="item in tocItems" :key="item.id">
+							<a
+								:href="`#${item.id}`"
+								:aria-current="activeSection === item.id ? 'location' : undefined"
+								@click="closeCompactToc"
+							>
+								{{ item.label }}
+							</a>
+						</li>
+					</ol>
+				</details>
 			</nav>
 
 			<section class="content-stack">
@@ -1068,30 +1102,108 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	}
 }
 
+/* Below the rail breakpoint the section list collapses into one sticky bar, so readers keep an overview while scrolling. */
+.claim-toc-compact {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	align-self: start;
+}
+
+.claim-toc-compact details {
+	border: 1px solid var(--consensus-soft-line);
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--consensus-surface) 92%, transparent);
+	box-shadow: 0 8px 24px rgba(21, 17, 13, 0.08);
+	backdrop-filter: blur(12px);
+}
+
+.claim-toc-compact summary {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 48px;
+	padding: 8px 14px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.claim-toc-compact summary::-webkit-details-marker {
+	display: none;
+}
+
+.claim-toc-compact__label {
+	flex: none;
+	color: var(--consensus-muted);
+	font-size: 0.84rem;
+	font-weight: 600;
+}
+
+.claim-toc-compact__current {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	color: var(--consensus-ink);
+	font-size: 0.92rem;
+	font-weight: 600;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.claim-toc-compact__chevron {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	color: var(--consensus-interactive);
+	transition: transform 160ms ease;
+}
+
+.claim-toc-compact details[open] .claim-toc-compact__chevron {
+	transform: rotate(180deg);
+}
+
+.claim-toc-compact ol {
+	display: grid;
+	margin: 0;
+	padding: 4px 8px 10px;
+	list-style: none;
+	border-top: 1px solid var(--consensus-soft-line);
+}
+
+.claim-toc-compact a {
+	display: block;
+	padding: 10px 8px;
+	border-radius: 8px;
+	color: var(--consensus-ink);
+	font-size: 0.94rem;
+	text-decoration: none;
+}
+
+.claim-toc-compact a[aria-current="location"] {
+	background: var(--consensus-soft-accent);
+	font-weight: 600;
+}
+
+@media (min-width: 1080px) {
+	.claim-toc-compact {
+		display: none;
+	}
+}
+
 @media (max-width: 1079px) {
-	.claim-toc__title {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
-		white-space: nowrap;
+	.claim-toc {
+		display: none;
+	}
+}
+
+/* Between 701px and 1079px the site header is sticky too, so the bar sits under it. */
+@media (min-width: 701px) and (max-width: 1079px) {
+	.claim-toc-compact {
+		top: calc(var(--consensus-header-height) + 8px);
 	}
 
-	.claim-toc ol {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-		border-left: 0;
-	}
-
-	.claim-toc a {
-		margin: 0;
-		padding: 7px 12px;
-		border: 1px solid var(--consensus-soft-line);
-		border-radius: 999px;
-		background: var(--consensus-surface);
-		font-size: 0.84rem;
+	.content-stack [id] {
+		scroll-margin-top: 64px;
 	}
 }
 
@@ -1204,12 +1316,20 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	line-height: 1.45;
 }
 
-.bottom-line .claim-page__description {
-	margin: 0;
-	padding-left: 14px;
-	border-left: 3px solid var(--consensus-soft-line);
-	font-size: 0.95rem;
-	line-height: 1.6;
+.answer-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	padding: 0 4px;
+	color: var(--consensus-link);
+	font-size: 0.92rem;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.answer-link:hover {
+	text-decoration: underline;
 }
 
 .bottom-line__text--lead {
@@ -2020,10 +2140,6 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		margin-top: 8px;
 		font-size: 0.98rem;
 		line-height: 1.55;
-	}
-
-	.bottom-line .claim-page__description {
-		font-size: 0.92rem;
 	}
 
 	.section-heading {

@@ -36,6 +36,13 @@ describe("learn navigation", () => {
 		assert.ok(source.indexOf("<LearnNav />") < source.indexOf('class="explainer-grid"'));
 	});
 
+	it("groups reading guides into labelled topic families", () => {
+		const source = read("src/pages/guides/index.vue");
+		assert.match(source, /groupByTopicFamily\(readingGuides, \(guide\) => guide\.topics\[0\]\)/);
+		assert.match(source, /v-for="group in guideFamilies"/);
+		assert.match(source, /<h3>\{\{ guide\.title \}\}<\/h3>/);
+	});
+
 	it("searches reviewed claims from the site header outside the home page", () => {
 		const source = read("src/layouts/default.vue");
 		assert.match(source, /<form class="site-search" role="search" @submit\.prevent="submitHeaderSearch">/);

@@ -2,6 +2,9 @@
 import LearnNav from "~/components/LearnNav.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { readingGuides } from "~/data/reading-guides";
+import { groupByTopicFamily } from "~/data/topicFamilies";
+
+const guideFamilies = groupByTopicFamily(readingGuides, (guide) => guide.topics[0]);
 
 useStaticPageMeta({
 	title: "Reading guides - Is There Consensus?",
@@ -19,16 +22,32 @@ useStaticPageMeta({
 		</header>
 		<LearnNav />
 		<p class="guides-count">{{ readingGuides.length }} sourced reading guides</p>
-		<div class="guides-list">
-			<NuxtLink v-for="guide in readingGuides" :key="guide.slug" class="guide-card" :to="`/guides/${guide.slug}`">
-				<h2>{{ guide.title }}</h2>
-				<p>{{ guide.summary }}</p>
-				<span class="guide-card__meta">
-					{{ guide.reviews.length }} connected reviews
-					<span class="i-carbon-arrow-right" aria-hidden="true" />
-				</span>
-			</NuxtLink>
-		</div>
+		<section
+			v-for="group in guideFamilies"
+			:key="group.family.slug"
+			class="guide-family"
+			:aria-labelledby="`guide-family-${group.family.slug}`"
+		>
+			<h2 :id="`guide-family-${group.family.slug}`" class="guide-family__title">
+				{{ group.family.title }}
+				<span class="guide-family__count">{{ group.items.length }}</span>
+			</h2>
+			<div class="guides-list">
+				<NuxtLink
+					v-for="guide in group.items"
+					:key="guide.slug"
+					class="guide-card"
+					:to="`/guides/${guide.slug}`"
+				>
+					<h3>{{ guide.title }}</h3>
+					<p>{{ guide.summary }}</p>
+					<span class="guide-card__meta">
+						{{ guide.reviews.length }} connected reviews
+						<span class="i-carbon-arrow-right" aria-hidden="true" />
+					</span>
+				</NuxtLink>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -55,6 +74,27 @@ useStaticPageMeta({
 	font-size: 0.9rem;
 }
 
+.guide-family {
+	display: grid;
+	gap: 12px;
+}
+
+.guide-family__title {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin: 6px 0 0;
+	font-size: 1.35rem;
+	line-height: 1.3;
+}
+
+.guide-family__count {
+	color: var(--consensus-muted);
+	font-family: "Public Sans", system-ui, sans-serif;
+	font-size: 0.86rem;
+	font-weight: 500;
+}
+
 .guides-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
@@ -79,7 +119,7 @@ useStaticPageMeta({
 	border-color: var(--consensus-interactive);
 }
 
-.guide-card h2 {
+.guide-card h3 {
 	margin: 0;
 	font-size: var(--type-card);
 	line-height: 1.3;
