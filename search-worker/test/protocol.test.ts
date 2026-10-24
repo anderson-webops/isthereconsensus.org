@@ -2,7 +2,7 @@ import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
 import { fork } from "node:child_process";
 import { once } from "node:events";
-import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { chmod, lstat, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { request } from "node:http";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -103,6 +103,23 @@ describe("private local worker HTTP protocol", () => {
 			await rm(directory, { recursive: true, force: true });
 		});
 		await assert.rejects(createSearchWorkerServer(socketPath, supervisor), /already exists/u);
+	});
+	it("closes the listener when setting socket permissions fails", async (context) => {
+		const directory = await mkdtemp(path.join(tmpdir(), "search-socket-"));
+		const socketPath = path.join(directory, "rank.sock");
+		const supervisor = new SearchSupervisor({ modelDirectory: "/unused-test-models" });
+		let worker: Awaited<ReturnType<typeof createSearchWorkerServer>> | undefined;
+		context.after(async () => {
+			if (worker) await worker.close();
+			await supervisor.close();
+			await rm(directory, { recursive: true, force: true });
+		});
+		await assert.rejects(createSearchWorkerServer(socketPath, supervisor, async () => {
+			throw new Error("Socket mode unavailable.");
+		}), /Socket mode unavailable/u);
+		await assert.rejects(lstat(socketPath), { code: "ENOENT" });
+		worker = await createSearchWorkerServer(socketPath, supervisor);
+		assert.deepEqual(await call(socketPath, "GET", "/healthz"), { status: 200, body: { ok: true } });
 	});
 	it("rejects a world-writable socket directory and non-normalized paths", async (context) => {
 		const directory = await mkdtemp(path.join(tmpdir(), "search-socket-"));

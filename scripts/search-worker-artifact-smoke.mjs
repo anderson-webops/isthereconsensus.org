@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { Buffer } from "node:buffer";
 import { execFileSync, spawn } from "node:child_process";
 import { once } from "node:events";
-import { mkdir, readFile, rename, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rename, rm } from "node:fs/promises";
 import http from "node:http";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
@@ -12,11 +13,11 @@ import { fileDigest, verifyWorkerArtifact } from "./search-worker-artifact-lib.m
 const root = path.resolve(".search-worker-artifact");
 const scratch = path.resolve(".ai-work/runs/20261008-a");
 const unpacked = path.join(scratch, "release");
-const socketPath = path.join(scratch, "worker.sock");
+const socketRoot = await mkdtemp(path.join(tmpdir(), "itc-worker-socket-"));
+const socketPath = path.join(socketRoot, "worker.sock");
 assert.ok(Buffer.byteLength(socketPath) <= 100);
 const receipt = JSON.parse(await readFile(`${root}.receipt.json`, "utf8"));
 assert.equal(await fileDigest(`${root}.tar.gz`), receipt.archiveSha256);
-await mkdir(scratch, { mode: 0o700 });
 const children = [];
 function start() {
 	const child = spawn(process.execPath, [path.join(unpacked, "dist/search-worker/src/server.js")], {
@@ -64,6 +65,7 @@ async function stop(child) {
 	assert.equal(child.exitCode, 0);
 }
 try {
+	await mkdir(scratch, { mode: 0o700 });
 	await mkdir(unpacked);
 	execFileSync("tar", ["-xzf", `${root}.tar.gz`, "-C", unpacked]);
 	const manifest = await verifyWorkerArtifact(unpacked);
@@ -104,4 +106,5 @@ finally {
 		if (child.exitCode === null && child.signalCode === null) await stop(child);
 	}
 	await rm(scratch, { recursive: true, force: true });
+	await rm(socketRoot, { recursive: true, force: true });
 }
