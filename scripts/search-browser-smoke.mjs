@@ -455,7 +455,11 @@ try {
 		await page.click(`.guide-links a[href="/guides/${guide.slug}"]`);
 		await page.waitForFunction((title) => document.querySelector("h1")?.textContent === title, {}, guide.title);
 		await page.click(`.guide-review-links a[href="${exampleReview.path}"]`);
-		await page.waitForSelector(".claim-page h1");
+		await page.waitForFunction(
+			(path) => location.pathname === path && Boolean(document.querySelector(".claim-page h1")),
+			{ timeout: 45_000 },
+			exampleReview.path
+		);
 		for (const path of [
 			...guide.reviews.map((review) => review.path),
 			...guide.topics.map((topic) => `/consensus/${topic}`)
