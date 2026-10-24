@@ -103,7 +103,9 @@ describe("consensus directory metadata", () => {
 		const claimCardEnd = source.indexOf("</NuxtLink>", claimCardStart);
 		const claimCard = source.slice(claimCardStart, claimCardEnd);
 
-		assert.match(topicRow, /<h3>\{\{ topic\.title \}\}<\/h3>/);
+		assert.match(topicRow, /<h4>\{\{ topic\.title \}\}<\/h4>/);
+		assert.match(source, /groupByTopicFamily\(filteredTopics\.value, \(topic\) => topic\.slug\)/);
+		assert.match(source, /<h3 :id="`topic-family-\$\{group\.family\.slug\}`" class="topic-family__title">/);
 		assert.match(topicRow, /formatTopicClaimCount\(topic\)/);
 		assert.doesNotMatch(topicRow, /topicDirectoryDescription|consensusLabel|Open topic/);
 		assert.match(claimCard, /<h3>\{\{ claim\.title \}\}<\/h3>/);
