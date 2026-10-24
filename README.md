@@ -102,6 +102,18 @@ npm audit --omit=dev
 npm audit signatures
 ```
 
+For an annotated `v1.x.y` release, build the exact clean tag on Linux ARM64
+glibc with Node 24.18.1 and npm 12.0.2. After the gates above pass, package the
+same `.runtime-artifact` without rebuilding it:
+
+```bash
+node scripts/package-runtime-artifact.mjs
+```
+
+The package command verifies the unpacked archive and writes an immutable
+runtime archive, `runtime-manifest.json`, `acceptance.json`, and `SHA256SUMS` to
+`.runtime-release-assets/`. Publication and server activation are separate checks.
+
 After production deploys, run the live contract smoke:
 
 ```bash

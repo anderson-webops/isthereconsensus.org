@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
 import { chmod, cp, lstat, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import net from "node:net";
@@ -138,6 +139,55 @@ try {
 		env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_COMMIT: manifest.source.commit })
 	});
 	assert.equal(verification.status, 0, verification.output);
+	if (
+		manifest.target?.platform === "linux" &&
+		manifest.target?.architecture === "arm64" &&
+		manifest.target?.libc === "glibc"
+	) {
+		const bindingPath = "back-end/node_modules/argon2/prebuilds/linux-arm64/argon2.armv8.glibc.node";
+		const binding = path.join(artifactRoot, bindingPath);
+		const original = await readFile(binding);
+		const wrongArchitecture = Buffer.from(original);
+		wrongArchitecture.writeUInt16LE(62, 18);
+		const wrongHash = createHash("sha256").update(wrongArchitecture).digest("hex");
+		const wrongManifest = {
+			...manifest,
+			files: manifest.files.map((entry) => (entry.path === bindingPath ? { ...entry, hash: wrongHash } : entry)),
+			nativeBindings: manifest.nativeBindings.map((entry) =>
+				entry.path === bindingPath ? { ...entry, hash: wrongHash } : entry
+			)
+		};
+		await writeFile(binding, wrongArchitecture);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(wrongManifest));
+		const nativeRejected = runSync(
+			"wrong native architecture regression",
+			process.execPath,
+			[verifier, artifactRoot],
+			{
+				cwd: acceptanceRoot,
+				env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_TARGET: "linux-arm64-glibc" })
+			}
+		);
+		assert.notEqual(nativeRejected.status, 0);
+		assert.match(nativeRejected.output, /Native runtime entry is not Linux ARM64 ELF.*argon2/u);
+		await writeFile(binding, original);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(manifest));
+		const argon2Exercise = runSync(
+			"packaged password hashing",
+			process.execPath,
+			[
+				"--input-type=module",
+				"-e",
+				"import argon2 from 'argon2'; const value = 'synthetic-artifact-password'; const hash = await argon2.hash(value); if (!(await argon2.verify(hash, value))) process.exit(1);"
+			],
+			{
+				cwd: path.join(artifactRoot, "back-end"),
+				env: cleanEnvironment({ NODE_ENV: "production" }),
+				timeout: 15_000
+			}
+		);
+		assert.equal(argon2Exercise.status, 0, argon2Exercise.output);
+	}
 
 	const backendFailClosed = runSync(
 		"backend fail-closed startup",
