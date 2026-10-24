@@ -81,6 +81,15 @@ A follow-up audit measured contrast, font sizes and weights, all-caps labels, li
 ### Verified
 Lint, typecheck, 447 front-end unit tests (including a new `learn-navigation.test.ts`), production build, the axe accessibility smoke on every route in light and dark, and the SSR route and asset smokes.
 
+## Round 3: glanceability limits
+
+Applied the working limits from an evidence review of at-a-glance reading: about 3–4 decision-relevant facts per card, one main action plus one secondary, about 6–10 cards per labelled desktop group, critical content within the first two screens, and an overview that stays available. These are design rules of thumb, not proven cognitive constants.
+
+- **Claim answer card trimmed** from about 8 facts and 6 controls to the question, one verdict line (verdict and certainty), the lead answer, one line of context, **Save** and an **Ask a follow-up** text link. The footer keeps one "Based on N sources" link and the review-status panel, which already holds the review date. The editor summary moved to introduce "What the evidence says". `LibraryAction` gained a `compact` option that drops its library link and scope label.
+- **Browse topics and reading guides are grouped** into six labelled families (`src/data/topicFamilies.ts`): Health & medicine, Food, fitness & sleep, Earth & environment, Life & physical sciences, Society & policy, How science works. No family holds more than 9 topics.
+- **Sticky section overview below 1080px.** The wrapping chip rows became one sticky "On this page" bar that names the current section, opens into the full list, and closes on selection. Section tracking is now scroll-based, so jumping straight to a section labels it correctly.
+- **Header height is measured** while the header is sticky, so `--consensus-header-height` (used for anchor offsets and the sticky bar) stays correct when the header wraps. The tagline hides below 1080px, and the tablet header is tightened so it usually fits on one row.
+
 ## Still open
 1. A keyboard search shortcut (⌘K) on top of the header search.
 2. Show a one-line "strongest source" in the claim answer card, and collapse Tier 2+ source notes.
