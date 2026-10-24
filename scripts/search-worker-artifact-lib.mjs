@@ -28,7 +28,7 @@ export const workerRequiredPaths = [
 	"dist/back-end/src/utils/searchMatch.js",
 	"dist/back-end/src/data/contentDemand.js"
 ];
-export const workerRuntimeVersions = { ...modelReference.runtime, zod: "4.6.5" };
+export const workerRuntimeVersions = { ...modelReference.runtime, zod: "4.6.7" };
 export const sha256 = value => createHash("sha256").update(value).digest("hex");
 export async function fileDigest(filename) {
 	const digest = createHash("sha256");

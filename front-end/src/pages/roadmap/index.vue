@@ -35,6 +35,10 @@ const {
 		}),
 	{ watch: [status, page] }
 );
+const roadmapRows = computed(() => data.value?.rows ?? []);
+const hasMore = computed(() => Boolean(data.value?.pagination.hasMore));
+const roadmapLoading = computed(() => loadStatus.value === "pending");
+const roadmapError = computed(() => Boolean(error.value));
 function browse(nextPage: number, nextStatus = status.value) {
 	return router.push({
 		path: "/roadmap",
@@ -66,17 +70,17 @@ function browse(nextPage: number, nextStatus = status.value) {
 				{{ label }}
 			</button>
 		</nav>
-		<p v-if="loadStatus === 'pending'" role="status">Loading approved questions…</p>
-		<div v-else-if="error" role="alert">
+		<p v-if="roadmapLoading" role="status">Loading approved questions…</p>
+		<div v-else-if="roadmapError" role="alert">
 			<p>The roadmap could not be loaded. This does not mean there are no requests.</p>
 			<button class="button button--ghost" @click="refresh()">Try again</button>
 		</div>
 		<template v-else>
-			<p v-if="!data?.rows.length">
+			<p v-if="!roadmapRows.length">
 				No approved requests match this view yet. You can still browse the
 				<NuxtLink to="/consensus">reviewed library</NuxtLink> or suggest a missing question.
 			</p>
-			<article v-for="request in data?.rows" :key="request._id" class="coverage-card">
+			<article v-for="request in roadmapRows" :key="request._id" class="coverage-card">
 				<p class="eyebrow">{{ coverageStatusLabels[request.status] }}</p>
 				<h2>
 					<NuxtLink :to="`/roadmap/${request._id}`">{{ request.title }}</NuxtLink>
@@ -89,12 +93,10 @@ function browse(nextPage: number, nextStatus = status.value) {
 					answer.
 				</p>
 			</article>
-			<nav v-if="page > 1 || data?.pagination.hasMore" class="coverage-filters" aria-label="Coverage pages">
+			<nav v-if="page > 1 || hasMore" class="coverage-filters" aria-label="Coverage pages">
 				<button class="button button--ghost" :disabled="page <= 1" @click="browse(page - 1)">Previous</button>
 				<span>Page {{ page }}</span>
-				<button class="button button--ghost" :disabled="!data?.pagination.hasMore" @click="browse(page + 1)">
-					Next
-				</button>
+				<button class="button button--ghost" :disabled="!hasMore" @click="browse(page + 1)">Next</button>
 			</nav>
 		</template>
 	</div>

@@ -275,6 +275,7 @@ try {
 	]) {
 		const absolutePath = path.join(artifactRoot, requiredPath);
 		const original = await readFile(absolutePath);
+		const originalMode = (await lstat(absolutePath)).mode & 0o777;
 		await rm(absolutePath);
 		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify({
 			...manifest,
@@ -287,6 +288,7 @@ try {
 		assert.notEqual(missingPublicationModule.status, 0);
 		assert.ok(missingPublicationModule.output.includes(requiredPath), missingPublicationModule.output);
 		await writeFile(absolutePath, original);
+		await chmod(absolutePath, originalMode);
 		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(manifest));
 	}
 	await rm(path.join(artifactRoot, "back-end/dist/utils/runtimeSecurity.js"));
