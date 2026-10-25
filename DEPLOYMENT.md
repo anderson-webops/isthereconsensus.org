@@ -1,164 +1,47 @@
-# Production Deployment
+# Runtime artifact contract
 
-`isthereconsensus.org` is a two-service deployment:
+The application has separate Nuxt SSR and Express API entrypoints. Production
+uses direct Node services behind the existing dual-stack edge.
 
-- `front-end/`: Nuxt 4 SSR app
-- `back-end/`: Express API with MongoDB-backed auth and questions
+## Source and artifact identity
 
-## Recommended topology
+Stable releases come from clean annotated `v1.x.y` tags on reviewed main.
+The Linux ARM64/glibc build uses Node 24.18.1 and npm 12.0.2. The application
+host profile is declared separately in `deploy/host-contract.json`; it retains
+Node 24.22.1 and the `consensus-native` adapter boundary.
 
-- Run the Nuxt SSR server as one systemd service.
-- Run the Express API as a separate systemd service on port `3011`.
-- Terminate TLS in nginx.
-- Serve the public site at the main origin.
-- Proxy `/api/`, `/healthz`, and `/readyz` from nginx to the backend.
-- Keep `/_dbinfo`, `/api/setup/status`, and `/api/setup-prompt` off the public reverse proxy; use them over a host-local listener when diagnostics are explicitly enabled.
-- Prefer same-origin browser API access by setting `NUXT_PUBLIC_API_BASE=/api` in the frontend service.
-- Keep the backend's private address server-only by setting `NUXT_API_INTERNAL_BASE`; never put it in a `NUXT_PUBLIC_*` variable.
+A complete immutable release contains:
 
-## Required environment
+- `isthereconsensus-<12-character-commit>-linux-arm64-runtime.tar.gz`
+- `runtime-manifest.json`
+- `acceptance.json`
+- `SHA256SUMS`
+- `attestation-bundle.jsonl`
 
-Install the pinned Node `24.18.1` and npm `12.0.2` toolchain before building or starting the host services.
+The first four assets are subjects of GitHub-hosted build provenance from this
+repository's `.github/workflows/ci.yml`. Verification binds their exact digests,
+repository, annotated tag, source commit, workflow and signer commit.
+Self-authored inventories and checksums establish integrity, not source provenance.
 
-Backend/runtime:
+The external manifest equals the archive's `.runtime-manifest.json` byte for byte.
+The runtime inventory includes compiled services, production dependencies, native
+bindings, public assets and the host-contract marker. Credentials, databases,
+sessions, content mutations and other durable state remain external.
 
-- `NODE_ENV=production`
-- `SESSION_SECRET` (a unique value of at least 32 characters)
-- `HOST=127.0.0.1`
-- `PORT=3011`
-- `TRUST_PROXY_IPS=127.0.0.1,::1` when nginx connects over loopback; only exact IP addresses are accepted
-- `ALLOW_PUBLIC_LISTENER=false`; production refuses a non-loopback `HOST` unless this is explicitly set to `true`
-- `PUBLIC_SITE_URL`
-- `CAPTCHA_SECRET`
-- `PUBLIC_CAPTCHA_SITEKEY`
+## Acceptance boundaries
 
-Frontend/runtime (`/etc/isthereconsensus/web.env`):
+The standalone tree verifier is `scripts/verify-runtime-artifact.mjs`. Its API
+uses `RUNTIME_ARTIFACT_EXPECT_COMMIT`, `RUNTIME_ARTIFACT_EXPECT_TARGET` and
+`RUNTIME_ARTIFACT_REQUIRE_CLEAN`. It does not authenticate build provenance.
+The packaged archive undergoes the same isolated runtime and missing-module
+checks as the assembled tree.
 
-- `NODE_ENV=production`
-- `NUXT_PUBLIC_SITE_URL=https://isthereconsensus.org`
-- `NUXT_PUBLIC_API_BASE=/api`
-- `NUXT_API_INTERNAL_BASE=http://127.0.0.1:3011`
-- `NUXT_PUBLIC_CAPTCHA_SITE_KEY`
+Legacy source preparation, promotion and host installation entrypoints return
+78 before inspecting candidates. The artifact-only contract remains held for
+protected adapter acceptance. Existing host-owned service identities, listeners,
+configuration and retained rollback controls are independent of repository defaults.
+Database-aware recovery and exact-prior-runtime acceptance remain separate from
+source checks and publication; database compatibility is not yet asserted.
 
-Choose exactly one database-secret path:
-
-- Vault: set `VAULT_ADDR`, `VAULT_ROLE_ID`, and `VAULT_SECRET_ID` together. A configured Vault failure stops startup; it does not silently fall back.
-- Environment: leave both AppRole variables unset and set `MONGODB_URI`.
-
-Optional:
-
-- `CORS_ORIGIN`, as an exact comma-separated origin allowlist when a browser frontend is hosted separately
-- `CROSSREF_MAILTO`, a monitored contact address for Crossref polite-pool source-integrity requests
-- `SOURCE_COMMIT`, `SOURCE_TAG`, or `RELEASE_VERSION` to expose non-secret frontend build identity through `/deployment.json`
-- `CROSS_SITE=true`
-- `ENABLE_TOPIC_CREATION=true`
-- `SEED_CONTENT_MODE=insert` (the safe default), which adds missing source-controlled records without overwriting editorial database changes
-- Backend diagnostics: `ENABLE_INTERNAL_DIAGNOSTICS=true` plus a unique `INTERNAL_DIAGNOSTICS_KEY` of at least 32 characters
-- Frontend diagnostics proxy: `ENABLE_INTERNAL_DIAGNOSTICS=true` plus a matching server-only `NUXT_INTERNAL_DIAGNOSTICS_KEY`
-
-Production security secrets must be unique. Startup rejects reuse among the session, CAPTCHA, internal-diagnostics, and Vault AppRole secrets.
-
-`SEED_CONTENT_MODE=sync` is an explicit content-promotion operation: it synchronizes existing seeded claims and sources and archives source-controlled retirements. Take a database backup, review the source diff, use `sync` for the controlled promotion, and return the service to `insert` afterward. Do not leave restart-time synchronization enabled as a substitute for the authenticated editorial workflow.
-
-For registered living-evidence refreshes, use the [scoped preview and promotion procedure](docs/claim-refresh-promotion.md) or the authenticated editorial workflow. Do not use full-catalog `sync` for these batches: it can replace unrelated editorial content and source-integrity state. The scoped command retains the reviewed backup requirement and refuses unsupported transaction topology before applying changes.
-
-## Prepare and promote a direct release
-
-Install the reviewed host controls and services from an administrator-owned copy of the exact approved commit before allowing the unprivileged deployment account to prepare candidates:
-
-```bash
-sudo ./deploy/systemd/install-services.sh
-```
-
-Do not invoke an installer or promoter from a deployment-user-writable release checkout. The installer places the promoter at `/usr/local/sbin/isthereconsensus-promote-release` and its standalone verifier under `/usr/local/libexec/isthereconsensus/`, both owned by root. It also creates the root-owned immutable artifact root and promotion lock while preserving existing environment files by default.
-
-```bash
-sudo -u isthereconsensus git clone --no-local <repository-url> /srv/isthereconsensus.org/releases/<release>
-sudo -u isthereconsensus /srv/isthereconsensus.org/releases/<release>/deploy/systemd/prepare-release.sh \
-  /srv/isthereconsensus.org/releases/<release>
-sudo /usr/local/sbin/isthereconsensus-promote-release \
-  /srv/isthereconsensus.org/releases/<release> \
-  <full-reviewed-commit> \
-  <independently-reviewed-runtime-manifest-sha256> \
-  <current-reviewed-commit-or-none> \
-  <current-reviewed-runtime-manifest-sha256-or-none>
-```
-
-The preparation script requires a clean checkout and the exact Node/npm toolchain, runs all repository gates, and embeds the candidate commit in `/deployment.json`. It builds `.runtime-artifact/` with only the compiled backend, its standalone production install, and the Nuxt output. `.runtime-manifest.json` records the exact source identity, required entrypoints, native bindings, modes, sizes, and SHA-256 hashes for every artifact entry. The verifier carries an independent required-path list and rejects missing, changed, extra, escaping-symlink, credential, and source-control paths. Record the preparation output's manifest SHA-256 through the reviewed release evidence path; do not derive the approval argument from a mutable candidate during privileged promotion.
-
-The artifact smoke copies that output to a clean temporary directory outside the checkout. It verifies both frontend probes, frontend rendering and graceful shutdown, backend and seeding fail-closed behavior, and a deliberately missing-module regression. CI supplies an isolated synthetic MongoDB database to additionally run the seed entrypoint and verify backend health, readiness, and graceful shutdown. Production preparation never sends real provider messages or embeds credentials in the artifact.
-
-The installed promoter copies the staged artifact into a root-only temporary tree, verifies the supplied manifest digest, source identity, complete inventory, ownership, modes, and absence of set-ID/sticky bits, and then seals it beneath `/srv/isthereconsensus.org/artifact-releases/`. It never executes candidate-owned code. `/srv/isthereconsensus.org/current` is atomically updated to the sealed root-owned artifact, not the source checkout or deployment-user-writable build. Every promotion requires the independently recorded commit and manifest digest for the current release. On the first post-hardening promotion, those values bind the copy of the previously active writable artifact before it can be retained for rollback. Use `none none` only when no current release exists. The promoter restarts both services, verifies API and web readiness plus exact public source identity, and restores the verified prior release on failure. Production does not require Docker, Compose, or a container registry.
-
-The frontend build never reads `back-end/.env`. Supply public build metadata explicitly when needed, and supply secrets only to the running service through the protected frontend or backend environment file. Nuxt runtime overrides use the `NUXT_*` names shown above.
-
-After the public reverse proxy is serving the new build, run:
-
-```bash
-npm run smoke:live
-```
-
-## Source-integrity monitoring
-
-The backend includes bounded Crossref and Europe PMC monitors for DOI sources. It queries registered post-publication update metadata, records each check for two years without retaining raw upstream responses, and places newly corrected, retracted, or concern-flagged sources into the existing human editorial review queue. A successful metadata response with no registered update records that provider's check timestamp but is not treated as proof that the paper is valid, and an automated signal never silently clears a prior warning.
-
-Preview the next batch without changing records:
-
-```bash
-npm run monitor:source-integrity -- --limit 100 --stale-days 30
-```
-
-Apply a reviewed batch:
-
-```bash
-npm run monitor:source-integrity -- --apply --limit 100 --stale-days 30
-```
-
-The reference systemd service and timer run the same applied batch daily with a randomized delay. Install them with the other units, then explicitly opt in after the first release containing the compiled monitor is promoted:
-
-```bash
-sudo deploy/systemd/install-services.sh --enable-integrity-timer
-systemctl list-timers isthereconsensus-source-integrity.timer
-```
-
-Administrators can inspect provider coverage, cache reuse, errors, and retained check history at `/account/editorial/source-integrity`. Use `--provider crossref`, `--provider europepmc`, or `--provider all` (default). Provider coverage is partial; these checks complement publisher, guideline and manual editorial review. See [bounds, caching, cooldowns and privacy](docs/complementary-source-monitor.md).
-
-`smoke:ssr-routes` verifies built-output redirect and indexing headers for deprecated, private, and low-profile routes. `smoke:live` verifies the public homepage, deployment metadata, crawler metadata, security reporting metadata, install manifest, health routes, hidden setup UI, and protected setup diagnostics. For a non-production origin, set `LIVE_SMOKE_BASE_URL` and `LIVE_SMOKE_PROFILE=frontend`. To prove the public origin is running a specific build, also set `LIVE_SMOKE_EXPECT_COMMIT` to the expected commit prefix.
-
-The hardened reference units and reverse-proxy configuration live in `deploy/systemd/` and `deploy/nginx/`. Install releases under `/srv/isthereconsensus.org/releases/`, create a dedicated unprivileged `isthereconsensus` account, keep environment files under `/etc/isthereconsensus/` with owner-only permissions, and validate nginx/systemd configuration before promotion.
-
-If `/deployment.json` returns `404`, `smoke:live` also fetches `/_nuxt/builds/latest.json` and reports the live Nuxt build id/timestamp. Use that fallback to distinguish a stale frontend deploy from a backend/source-stack problem.
-
-The same check is available from GitHub Actions as the manual `Live smoke` workflow. Use it after deploys when shell access to the deployment host is unavailable.
-
-Frontend deployment metadata is served at `/deployment.json` with non-secret fields only. It should report `service: "front-end"`, `runtime: "nuxt-ssr"`, Nuxt's build ID, and the build commit/ref when `SOURCE_COMMIT`, `SOURCE_TAG`, GitHub Actions metadata, or a checked-out `.git` directory is available at build time.
-
-Security reporting metadata is served by Nuxt SSR middleware at `/.well-known/security.txt` and `/security.txt`. Do not depend on nginx or `/var/www` static copies for those paths; `npm run smoke:ssr-assets` verifies the built Nitro server returns them as `text/plain`.
-
-## Health checks
-
-- Frontend readiness: load the homepage over HTTPS.
-- Backend liveness: `GET /healthz`
-- Backend readiness: `GET /readyz`
-- Setup diagnostics: `GET /api/setup/status`
-
-Backend `GET` and `HEAD /readyz` share one bounded MongoDB check. Its result is cached in-process for one second to prevent public probe bursts from multiplying database commands. Responses remain minimal, unauthenticated, and `Cache-Control: no-store`; a failed check returns 503, and a recovered dependency is rechecked after the short cache interval.
-
-Production diagnostics are disabled unless `ENABLE_INTERNAL_DIAGNOSTICS=true`. The `/setup` UI is development-only and should return not-found in production. When diagnostics are enabled, requests require a strong `INTERNAL_DIAGNOSTICS_KEY` supplied as `x-internal-diagnostics-key`; loopback addresses and forwarded headers are not authorization.
-
-## Deployment notes
-
-- Cookie auth expects HTTPS in production.
-- If frontend and backend live on different public origins, configure `CORS_ORIGIN` precisely and keep secure cookie settings aligned.
-- Credential changes increment the account session version. Existing cookies without the current version and all older cookies are rejected, so users may need to sign in again after this release.
-- User, administrator, and expert-application documents use optimistic concurrency. A stale simultaneous credential, status, promotion, or demotion decision fails instead of silently restoring an older privilege state.
-- Disabled administrators cannot log in or retain an authenticated session. Use `npm run -w back-end set-admin-status`, which requires exact email confirmation, revokes sessions, records the action, and refuses to disable the last enabled administrator.
-- Interactive claim publication, review, update requests, archival, restoration, evidence approval, and evidence publication use explicit admin-only state transitions with recorded reasons. Generic edits cannot mutate published or archived claims.
-- Expert approval and demotion both require a rationale. Promotion persists the application decision before granting the user role; demotion revokes the user role before recording the application state, so partial failures fail closed.
-- Admin creation and evidence migrations use the same fail-closed Vault-or-environment database selection as the API. A configured Vault failure never falls back to `MONGODB_URI`.
-- Never copy the repository’s ignored `back-end/.env` into a release checkout or deployment bundle. Keep production environment files mode `0600` outside the release tree.
-- The immutable runtime artifact declares no writable paths. MongoDB is external persistent state; no database, queue, upload, cache, or spool belongs under a release directory. Staging checkouts remain writable only by the deployment account, while active and rollback artifacts are root-owned and not group/world writable. Promotion and rollback therefore leave persistent state untouched.
-- Production seeding runs as `back-end/dist/scripts/seedContent.js` before the API starts, then exits and releases the source-catalog memory. Development keeps automatic insert-only seeding. `SEED_CONTENT_MODE=sync` remains a backup-protected, explicitly reviewed promotion operation.
-- Reference systemd units account for memory and bound each Node process at `MemoryHigh=384M`, `MemoryMax=512M`, and `TasksMax=128`. Measure the deployed working set before tightening those ceilings; do not disable readiness or rollback checks to mask a limit breach.
-- Leave `SEARCH_WORKER_SOCKET` unset until a separately bounded inference service passes runtime and search acceptance. The optional [public-search transport](docs/public-search-worker.md) does not include that service or authorize activation. Never load its development model into the API or raise the API memory ceiling to make it fit.
-- The frontend setup page at `/setup` exposes live readiness data plus a launch prompt only in development. Use the protected setup APIs for production diagnostics.
+The frontend's public API base is distinct from its private SSR API address.
+`NUXT_INTERNAL_DIAGNOSTICS_KEY` remains private and is not embedded in browser assets.

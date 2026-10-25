@@ -1,0 +1,22 @@
+{
+	"schema_version": 1,
+	"site": "isthereconsensus.org",
+	"adapter": {
+		"id": "consensus-native",
+		"minimum_version": 1
+	},
+	"runtime": {
+		"node": "24.22.1",
+		"npm": "12.0.2",
+		"architecture": "arm64"
+	},
+	"artifact_format": "ci-attested-tar-v1",
+	"requires": ["artifact:ci-attested", "rollback:retained-artifact", "acceptance:origin-dual-stack"],
+	"database": {
+		"change": "review-required"
+	},
+	"rollback": {
+		"strategy": "retained-artifact",
+		"database_compatible": false
+	}
+}

@@ -8,8 +8,12 @@ import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
-const sourceArtifact = path.join(root, ".runtime-artifact");
+const sourceArtifact = path.resolve(process.argv[2] || path.join(root, ".runtime-artifact"));
 const verifier = path.join(root, "scripts/verify-runtime-artifact.mjs");
+
+if (process.env.RUNTIME_ARTIFACT_REQUIRE_DATABASE === "true" && !process.env.RUNTIME_ARTIFACT_MONGO_URI) {
+	throw new Error("Release runtime acceptance requires an isolated synthetic MongoDB fixture.");
+}
 
 function cleanEnvironment(overrides = {}) {
 	return {
@@ -222,6 +226,20 @@ try {
 	assert.notEqual(seedFailClosed.status, 0);
 	assert.doesNotMatch(seedFailClosed.output, /ERR_MODULE_NOT_FOUND/u);
 	assert.match(seedFailClosed.output, /Seed content failed: Error/u);
+
+	const monitorFailClosed = runSync(
+		"source-integrity monitor fail-closed startup",
+		process.execPath,
+		[path.join(artifactRoot, "back-end/dist/scripts/monitorSourceIntegrity.js")],
+		{
+			cwd: artifactRoot,
+			env: cleanEnvironment({ DOTENV_CONFIG_PATH: emptyEnvironment, NODE_ENV: "production" }),
+			timeout: 15_000
+		}
+	);
+	assert.notEqual(monitorFailClosed.status, 0);
+	assert.doesNotMatch(monitorFailClosed.output, /ERR_MODULE_NOT_FOUND/u);
+	assert.match(monitorFailClosed.output, /Source integrity monitor failed: Error/u);
 
 	const webPort = await ephemeralPort();
 	const webBaseUrl = `http://127.0.0.1:${webPort}`;

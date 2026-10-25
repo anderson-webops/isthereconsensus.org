@@ -155,14 +155,16 @@ for (const relativePath of [
 await rm(artifactRoot, { force: true, recursive: true });
 await Promise.all([
 	mkdir(path.join(artifactRoot, "back-end"), { recursive: true }),
-	mkdir(path.join(artifactRoot, "front-end"), { recursive: true })
+	mkdir(path.join(artifactRoot, "front-end"), { recursive: true }),
+	mkdir(path.join(artifactRoot, "deploy"), { recursive: true })
 ]);
 await Promise.all([
 	cp(path.join(root, "back-end/dist"), path.join(artifactRoot, "back-end/dist"), { recursive: true }),
 	cp(path.join(root, "front-end/.output"), path.join(artifactRoot, "front-end/.output"), { recursive: true }),
 	cp(path.join(root, "back-end/package.json"), path.join(artifactRoot, "back-end/package.json")),
 	cp(path.join(root, "back-end/package-lock.json"), path.join(artifactRoot, "back-end/package-lock.json")),
-	cp(path.join(root, "back-end/.npmrc"), path.join(artifactRoot, "back-end/.npmrc"))
+	cp(path.join(root, "back-end/.npmrc"), path.join(artifactRoot, "back-end/.npmrc")),
+	cp(path.join(root, "deploy/host-contract.json"), path.join(artifactRoot, "deploy/host-contract.json"))
 ]);
 
 runSelectedNpm(

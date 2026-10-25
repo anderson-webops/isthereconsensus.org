@@ -44,6 +44,10 @@ if (
 if (manifest.toolchain?.node !== "v24.18.1" || manifest.toolchain?.npm !== "12.0.2") {
 	throw new Error("Runtime artifact toolchain does not match the reviewed release contract.");
 }
+git(["merge-base", "--is-ancestor", commit, "refs/remotes/origin/main"]);
+if (!process.env.RUNTIME_ARTIFACT_MONGO_URI) {
+	throw new Error("Release packaging requires an isolated synthetic MongoDB fixture.");
+}
 
 try {
 	await lstat(output);
@@ -93,17 +97,22 @@ try {
 			artifact,
 			".runtime-manifest.json",
 			"back-end",
-			"front-end"
+			"front-end",
+			"deploy"
 		],
 		{ stdio: "inherit", env: { ...process.env, TAR_OPTIONS: "" } }
 	);
 	const unpacked = path.join(staging, "unpacked");
 	await mkdir(unpacked);
-	execFileSync("tar", ["-xzf", archive, "-C", unpacked], { stdio: "inherit" });
+	execFileSync("tar", ["--same-permissions", "-xzf", archive, "-C", unpacked], { stdio: "inherit" });
 	verify(unpacked);
 	if ((await digest(path.join(unpacked, ".runtime-manifest.json"))) !== (await digest(manifestPath))) {
 		throw new Error("Unpacked runtime manifest does not match the accepted artifact.");
 	}
+	execFileSync(process.execPath, ["scripts/runtime-artifact-smoke.mjs", unpacked], {
+		stdio: "inherit",
+		env: { ...process.env, RUNTIME_ARTIFACT_REQUIRE_DATABASE: "true" }
+	});
 	await rm(unpacked, { recursive: true });
 
 	const manifestName = "runtime-manifest.json";

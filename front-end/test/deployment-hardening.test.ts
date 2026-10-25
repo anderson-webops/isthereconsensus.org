@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
@@ -32,58 +33,43 @@ describe("deployment hardening", () => {
 			assert.equal(manifest.engines.node, ">=24.18.1 <25");
 			assert.equal(manifest.engines.npm, ">=11.19.0 <13");
 		}
-
-		assert.match(prepareRelease, /npm --version.*12\.0\.2/s);
 	});
 
-	it("prepares and promotes direct releases without a production container contract", () => {
-		assert.match(prepareRelease, /node --version.*v24\.18\.1/s);
-		assert.match(prepareRelease, /npm --version.*12\.0\.2/s);
-		assert.match(prepareRelease, /NODE_BIN_DIR:-\/usr\/bin/);
-		assert.match(prepareRelease, /git -C "\$candidate" status --porcelain/);
-		assert.match(prepareRelease, /npm ci --include=dev --include=optional --strict-allow-scripts/);
-		assert.match(
-			prepareRelease,
-			/unset NODE_ENV[\s\S]+npm test[\s\S]+export NODE_ENV=production[\s\S]+npm run build/
-		);
-		assert.match(prepareRelease, /npm run artifact:build/);
-		assert.match(prepareRelease, /RUNTIME_ARTIFACT_REQUIRE_CLEAN=true/);
-		assert.match(
-			artifactBuilder,
-			/\["ci", "--omit=dev", "--include=optional", "--strict-allow-scripts", "--no-fund"\]/
-		);
+	it("retires unauthenticated source-build preparation, promotion and installation", () => {
+		for (const [filename, source] of [
+			["prepare-release.sh", prepareRelease],
+			["promote-release.sh", promoteRelease],
+			["install-services.sh", installServices]
+		]) {
+			assert.match(source, /consensus-native attested-artifact contract/);
+			assert.match(source, /exit 78/);
+			assert.doesNotMatch(source, /npm ci|systemctl|install -o|activate_target|seal_runtime_artifact/);
+			const result = spawnSync(
+				"/bin/bash",
+				[join(repositoryRoot, "deploy/systemd", filename), "/nonexistent", "0".repeat(40), "--dry-run"],
+				{ encoding: "utf8" }
+			);
+			assert.equal(result.status, 78, result.stderr);
+			assert.equal(result.stdout, "");
+			assert.match(result.stderr, /protected adapter acceptance/);
+		}
+		assert.match(artifactBuilder, /"deploy\/host-contract.json"/);
 		assert.match(artifactVerifier, /Runtime artifact inventory or hash mismatch/);
-		assert.doesNotMatch(prepareRelease, /npm prune/);
-		assert.match(prepareRelease, /deployment\.commit !== process\.env\.SOURCE_COMMIT/);
-		assert.match(prepareRelease, /runtime manifest SHA-256: \$manifest_digest/);
-		assert.match(deploymentGuide, /\/usr\/local\/sbin\/isthereconsensus-promote-release/);
-		assert.doesNotMatch(deploymentGuide, /sudo \/srv\/isthereconsensus\.org\/releases\/[^\n]+promote-release\.sh/);
-		assert.match(installServices, /promoter_dest=\/usr\/local\/sbin\/isthereconsensus-promote-release/);
-		assert.match(installServices, /verifier_dest="\$verifier_dir\/verify-runtime-artifact\.mjs"/);
-		assert.match(installServices, /install -o root -g root -m 0755 "\$promoter_source"/);
-		assert.match(installServices, /install -o root -g root -m 0644 "\$verifier_source"/);
-		assert.match(installServices, /artifact_release_root="\$site_root\/artifact-releases"/);
-		assert.match(installServices, /promotion_lock="\$site_root\/\.promotion\.lock"/);
-		assert.match(promoteRelease, /script_real.*installed_promoter/s);
-		assert.match(promoteRelease, /Copied runtime manifest does not match the independently reviewed SHA-256/);
-		assert.match(promoteRelease, /current-commit-or-none.*current-manifest-sha256-or-none/);
-		assert.match(
-			promoteRelease,
-			/seal_runtime_artifact "\$initial_target" "\$expected_current_commit" "\$expected_current_manifest_digest"/
-		);
-		assert.match(promoteRelease, /! -type l -perm \/7000/);
 		assert.match(artifactVerifier, /forbidden set-ID or sticky mode bits/);
-		assert.match(promoteRelease, /verify_runtime_artifact "\$active_staging"/);
-		assert.match(promoteRelease, /assert_trusted_tree "\$candidate_target"/);
-		assert.match(promoteRelease, /activate_target "\$candidate_target"/);
-		assert.match(promoteRelease, /mv -Tf/);
-		assert.match(promoteRelease, /api_ready_url/);
-		assert.match(promoteRelease, /web_ready_url/);
-		assert.match(promoteRelease, /previous_target/);
-		assert.match(promoteRelease, /wait_for_target "\$previous_target"/);
-		assert.doesNotMatch(promoteRelease, /"\$candidate\/scripts\/verify-runtime-artifact\.mjs"/);
-		assert.doesNotMatch(promoteRelease, /git -C "\$candidate"/);
-		assert.doesNotMatch(`${prepareRelease}\n${promoteRelease}`, /\b(?:docker|podman|compose)\b/iu);
+	});
+
+	it("declares the independent protected host transition without claiming rollback acceptance", () => {
+		const contract = JSON.parse(readFileSync(join(repositoryRoot, "deploy/host-contract.json"), "utf8"));
+		assert.deepEqual(contract, {
+			schema_version: 1,
+			site: "isthereconsensus.org",
+			adapter: { id: "consensus-native", minimum_version: 1 },
+			runtime: { node: "24.22.1", npm: "12.0.2", architecture: "arm64" },
+			artifact_format: "ci-attested-tar-v1",
+			requires: ["artifact:ci-attested", "rollback:retained-artifact", "acceptance:origin-dual-stack"],
+			database: { change: "review-required" },
+			rollback: { strategy: "retained-artifact", database_compatible: false }
+		});
 	});
 
 	it("keeps both application services private and privilege-restricted", () => {
