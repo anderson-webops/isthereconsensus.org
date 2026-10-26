@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
 import { chmod, cp, lstat, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import net from "node:net";
@@ -7,8 +8,12 @@ import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
-const sourceArtifact = path.join(root, ".runtime-artifact");
+const sourceArtifact = path.resolve(process.argv[2] || path.join(root, ".runtime-artifact"));
 const verifier = path.join(root, "scripts/verify-runtime-artifact.mjs");
+
+if (process.env.RUNTIME_ARTIFACT_REQUIRE_DATABASE === "true" && !process.env.RUNTIME_ARTIFACT_MONGO_URI) {
+	throw new Error("Release runtime acceptance requires an isolated synthetic MongoDB fixture.");
+}
 
 function cleanEnvironment(overrides = {}) {
 	return {
@@ -138,6 +143,55 @@ try {
 		env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_COMMIT: manifest.source.commit })
 	});
 	assert.equal(verification.status, 0, verification.output);
+	if (
+		manifest.target?.platform === "linux" &&
+		manifest.target?.architecture === "arm64" &&
+		manifest.target?.libc === "glibc"
+	) {
+		const bindingPath = "back-end/node_modules/argon2/prebuilds/linux-arm64/argon2.armv8.glibc.node";
+		const binding = path.join(artifactRoot, bindingPath);
+		const original = await readFile(binding);
+		const wrongArchitecture = Buffer.from(original);
+		wrongArchitecture.writeUInt16LE(62, 18);
+		const wrongHash = createHash("sha256").update(wrongArchitecture).digest("hex");
+		const wrongManifest = {
+			...manifest,
+			files: manifest.files.map((entry) => (entry.path === bindingPath ? { ...entry, hash: wrongHash } : entry)),
+			nativeBindings: manifest.nativeBindings.map((entry) =>
+				entry.path === bindingPath ? { ...entry, hash: wrongHash } : entry
+			)
+		};
+		await writeFile(binding, wrongArchitecture);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(wrongManifest));
+		const nativeRejected = runSync(
+			"wrong native architecture regression",
+			process.execPath,
+			[verifier, artifactRoot],
+			{
+				cwd: acceptanceRoot,
+				env: cleanEnvironment({ RUNTIME_ARTIFACT_EXPECT_TARGET: "linux-arm64-glibc" })
+			}
+		);
+		assert.notEqual(nativeRejected.status, 0);
+		assert.match(nativeRejected.output, /Native runtime entry is not Linux ARM64 ELF.*argon2/u);
+		await writeFile(binding, original);
+		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(manifest));
+		const argon2Exercise = runSync(
+			"packaged password hashing",
+			process.execPath,
+			[
+				"--input-type=module",
+				"-e",
+				"import argon2 from 'argon2'; const value = 'synthetic-artifact-password'; const hash = await argon2.hash(value); if (!(await argon2.verify(hash, value))) process.exit(1);"
+			],
+			{
+				cwd: path.join(artifactRoot, "back-end"),
+				env: cleanEnvironment({ NODE_ENV: "production" }),
+				timeout: 15_000
+			}
+		);
+		assert.equal(argon2Exercise.status, 0, argon2Exercise.output);
+	}
 
 	const backendFailClosed = runSync(
 		"backend fail-closed startup",
@@ -172,6 +226,20 @@ try {
 	assert.notEqual(seedFailClosed.status, 0);
 	assert.doesNotMatch(seedFailClosed.output, /ERR_MODULE_NOT_FOUND/u);
 	assert.match(seedFailClosed.output, /Seed content failed: Error/u);
+
+	const monitorFailClosed = runSync(
+		"source-integrity monitor fail-closed startup",
+		process.execPath,
+		[path.join(artifactRoot, "back-end/dist/scripts/monitorSourceIntegrity.js")],
+		{
+			cwd: artifactRoot,
+			env: cleanEnvironment({ DOTENV_CONFIG_PATH: emptyEnvironment, NODE_ENV: "production" }),
+			timeout: 15_000
+		}
+	);
+	assert.notEqual(monitorFailClosed.status, 0);
+	assert.doesNotMatch(monitorFailClosed.output, /ERR_MODULE_NOT_FOUND/u);
+	assert.match(monitorFailClosed.output, /Source integrity monitor failed: Error/u);
 
 	const webPort = await ephemeralPort();
 	const webBaseUrl = `http://127.0.0.1:${webPort}`;
@@ -275,6 +343,7 @@ try {
 	]) {
 		const absolutePath = path.join(artifactRoot, requiredPath);
 		const original = await readFile(absolutePath);
+		const originalMode = (await lstat(absolutePath)).mode & 0o777;
 		await rm(absolutePath);
 		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify({
 			...manifest,
@@ -287,6 +356,7 @@ try {
 		assert.notEqual(missingPublicationModule.status, 0);
 		assert.ok(missingPublicationModule.output.includes(requiredPath), missingPublicationModule.output);
 		await writeFile(absolutePath, original);
+		await chmod(absolutePath, originalMode);
 		await writeFile(path.join(artifactRoot, ".runtime-manifest.json"), JSON.stringify(manifest));
 	}
 	await rm(path.join(artifactRoot, "back-end/dist/utils/runtimeSecurity.js"));

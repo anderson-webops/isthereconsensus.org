@@ -30,8 +30,9 @@ describe("source-integrity operations", () => {
 		assert.match(page, /Admin access required/u);
 	});
 
-	it("installs an opt-in, bounded, hardened daily monitor", () => {
-		assert.match(installServices, /--enable-integrity-timer/u);
+	it("retains the bounded monitor contract while deferring installation to the protected adapter", () => {
+		assert.match(installServices, /protected adapter acceptance/u);
+		assert.match(installServices, /exit 78/u);
 		assert.match(monitorUnit, /--apply --limit 100 --stale-days 30/u);
 		assert.match(monitorUnit, /TimeoutStartSec=25min/u);
 		assert.match(monitorUnit, /NoNewPrivileges=true/u);

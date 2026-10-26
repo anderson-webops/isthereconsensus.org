@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AvailableGuideReview } from "~/utils/guide-review-availability";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { siteUrl } from "~/constants";
@@ -32,11 +33,19 @@ const {
 		),
 	{ default: () => summary.reviews.map((review) => ({ ...review, availability: "unavailable" as const })) }
 );
+const fallbackReviews: AvailableGuideReview[] = summary.reviews.map((review) => ({
+	...review,
+	availability: "unavailable"
+}));
+const reviewsForDisplay = computed<AvailableGuideReview[]>(() =>
+	Array.isArray(connectedReviews.value) ? connectedReviews.value : fallbackReviews
+);
+const checkingReviews = computed(() => connectedStatus.value === "pending");
 const hasUnavailableReviews = computed(() =>
-	connectedReviews.value.some((review) => review.availability === "unavailable")
+	reviewsForDisplay.value.some((review) => review.availability === "unavailable")
 );
 const hasUnpublishedReviews = computed(() =>
-	connectedReviews.value.some((review) => review.availability === "not_published")
+	reviewsForDisplay.value.some((review) => review.availability === "not_published")
 );
 
 const guideText = guide.sections
@@ -139,7 +148,7 @@ useHead({
 		</section>
 		<section id="connected-reviews" class="guide-section" aria-labelledby="connected-reviews-title">
 			<h2 id="connected-reviews-title">Read the individual claim reviews</h2>
-			<p v-if="connectedStatus === 'pending'" role="status">Checking connected review availability…</p>
+			<p v-if="checkingReviews" role="status">Checking connected review availability…</p>
 			<div v-else-if="hasUnavailableReviews || hasUnpublishedReviews" role="status">
 				<p v-if="hasUnavailableReviews">
 					Some connected review availability could not be verified. The guide and its sources remain
@@ -154,18 +163,16 @@ useHead({
 				</button>
 			</div>
 			<ul class="guide-review-links">
-				<li v-for="review in connectedReviews" :key="review.path" :data-review-status="review.availability">
-					<NuxtLink
-						v-if="connectedStatus !== 'pending' && review.availability === 'published'"
-						:to="review.path"
-						>{{ review.label }}</NuxtLink
-					>
+				<li v-for="review in reviewsForDisplay" :key="review.path" :data-review-status="review.availability">
+					<NuxtLink v-if="!checkingReviews && review.availability === 'published'" :to="review.path">{{
+						review.label
+					}}</NuxtLink>
 					<template v-else>
 						<span>{{ review.label }}</span>
 						<span class="guide-source-kind">
 							·
 							{{
-								connectedStatus === "pending"
+								checkingReviews
 									? "Checking availability"
 									: review.availability === "not_published"
 										? "Not currently published"

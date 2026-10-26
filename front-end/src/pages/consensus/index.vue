@@ -47,6 +47,7 @@ const {
 	}
 );
 const searchPending = computed(() => query.value !== requestedQuery.value || claimsStatus.value === "pending");
+const claimsFailed = computed(() => claimsStatus.value === "error");
 const claimBand = ref<"all" | ClaimConsensusBand>("all");
 const claimsPageSize = 12;
 const visibleClaimCount = ref(claimsPageSize);
@@ -299,7 +300,7 @@ watch([query, claimBand], () => {
 				<h2>Topics</h2>
 			</div>
 
-			<div v-if="!filteredTopics.length && !searchPending && claimsStatus !== 'error'" class="empty-state">
+			<div v-if="!filteredTopics.length && !searchPending && !claimsFailed" class="empty-state">
 				<p>No close topic or review match.</p>
 				<div class="empty-state__actions">
 					<NuxtLink v-if="query" class="empty-state__action" :to="askDirectoryLink">
@@ -408,7 +409,7 @@ watch([query, claimBand], () => {
 				<div v-if="searchPending" class="empty-state" aria-live="polite">
 					<p>Loading reviewed claims…</p>
 				</div>
-				<div v-else-if="claimsStatus === 'error'" class="empty-state" role="alert">
+				<div v-else-if="claimsFailed" class="empty-state" role="alert">
 					<p>Unable to load reviewed claims. Please try again.</p>
 					<button class="empty-state__action" type="button" @click="refreshClaims()">Try again</button>
 				</div>

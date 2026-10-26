@@ -17,6 +17,7 @@ const { data, pending, refresh } = await useAsyncData("setup-dashboard", () =>
 );
 const { data: promptData } = await useAsyncData("setup-prompt", () => $fetch<SetupPromptResponse>("/api/setup-prompt"));
 
+const setupPending = computed(() => pending.value);
 const dashboard = computed(() => data.value);
 const frontendChecks = computed<SetupCheck[]>(() => (dashboard.value ? buildFrontendSetupChecks(dashboard.value) : []));
 const backendChecks = computed<SetupCheck[]>(() => dashboard.value?.backendSetup.data?.checks ?? []);
@@ -61,8 +62,8 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 			</div>
 
 			<div class="setup__actions">
-				<button class="cta primary" type="button" :disabled="pending" @click="refreshStatus">
-					{{ pending ? "Refreshing..." : "Refresh status" }}
+				<button class="cta primary" type="button" :disabled="setupPending" @click="refreshStatus">
+					{{ setupPending ? "Refreshing..." : "Refresh status" }}
 				</button>
 				<button class="cta ghost" type="button" :disabled="!serverAgentPrompt" @click="copyPrompt">
 					{{ copied ? "Prompt copied" : "Copy server prompt" }}

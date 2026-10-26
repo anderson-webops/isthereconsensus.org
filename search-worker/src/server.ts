@@ -30,7 +30,7 @@ async function body(request: IncomingMessage) {
 	return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
 }
 
-export async function createSearchWorkerServer(socketPath: string, supervisor: SearchSupervisor) {
+export async function createSearchWorkerServer(socketPath: string, supervisor: SearchSupervisor, setSocketMode: (filename: string, mode: number) => Promise<void> = chmod) {
 	assert.ok(path.isAbsolute(socketPath) && path.normalize(socketPath) === socketPath && socketPath.endsWith(".sock") && Buffer.byteLength(socketPath) <= 100, "A normalized private socket path is required.");
 	const directory = await lstat(path.dirname(socketPath));
 	assert.ok(directory.isDirectory() && !directory.isSymbolicLink() && (directory.mode & 0o002) === 0, "The socket directory must not be world-writable or a symlink.");
@@ -84,11 +84,25 @@ export async function createSearchWorkerServer(socketPath: string, supervisor: S
 	server.headersTimeout = 2_000;
 	server.requestTimeout = 2_000;
 	server.keepAliveTimeout = 1_000;
-	await new Promise<void>((resolve, reject) => {
-		server.once("error", reject);
-		server.listen(socketPath, resolve);
-	});
-	await chmod(socketPath, 0o660);
+	let listening = false;
+	try {
+		await new Promise<void>((resolve, reject) => {
+			server.once("error", reject);
+			server.listen(socketPath, () => {
+				server.off("error", reject);
+				listening = true;
+				resolve();
+			});
+		});
+		await setSocketMode(socketPath, 0o660);
+	}
+	catch (error) {
+		if (listening) {
+			server.closeAllConnections();
+			await new Promise<void>(resolve => server.close(() => resolve()));
+		}
+		throw error;
+	}
 	return {
 		server,
 		async close() {

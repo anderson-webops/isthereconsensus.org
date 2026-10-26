@@ -37,7 +37,7 @@
 		"lint-serve": "npm run -w front-end lint-fix && npm run -w front-end serve",
 		"lint": "npm run -w front-end lint && npm run -w back-end lint && npm run -w search-worker lint && eslint scripts/pinned-search-acceptance.mjs scripts/lib/search-gate-evidence.mjs scripts/test-search-gate-evidence.mjs scripts/content-first-smoke.mjs scripts/public-search-worker-smoke.mjs scripts/editorial-audit-smoke.mjs scripts/editorial-completion-smoke.mjs",
 		"lint-fix": "npm run -w front-end lint-fix && npm run -w back-end lint-fix",
-		"test": "npm run -w front-end test:unit && npm run -w back-end test && npm run -w search-worker test && node --test scripts/test-braces-compat.mjs scripts/test-listhen-compat.mjs scripts/test-search-worker-artifact.mjs scripts/test-search-gate-evidence.mjs",
+		"test": "npm run -w front-end test:unit && npm run -w back-end test && npm run -w search-worker test && node --test scripts/test-braces-compat.mjs scripts/test-listhen-compat.mjs scripts/test-search-worker-artifact.mjs scripts/test-search-gate-evidence.mjs scripts/test-runtime-release.mjs",
 		"typecheck": "npm run -w front-end typecheck && npm run -w back-end typecheck && npm run -w search-worker typecheck",
 		"smoke:live": "node scripts/live-site-smoke.mjs",
 		"smoke:backend-runtime": "node scripts/backend-runtime-smoke.mjs",
@@ -80,7 +80,7 @@
 		"mongoose": "^9.10.1",
 		"oxc-parser": "0.151.0",
 		"prettier": "^3.9.6",
-		"puppeteer": "^25.11.0",
+		"puppeteer": "^25.16.0",
 		"simple-git": "file:vendor/simple-git",
 		"taze": "^21.1.0",
 		"tsx": "^4.23.15",
@@ -88,6 +88,9 @@
 		"unplugin": "^3.4.0"
 	},
 	"overrides": {
+		"nuxt@4.6.2": {
+			"unimport": "7.0.1"
+		},
 		"@bomb.sh/tab": "0.0.22",
 		"@modelcontextprotocol/client": "2.3.0",
 		"@modelcontextprotocol/server": "2.3.0",
@@ -116,7 +119,7 @@
 			"picomatch": "2.3.2"
 		},
 		"rolldown": "1.2.11",
-		"serialize-javascript": "7.0.5",
+		"serialize-javascript": "7.1.4",
 		"@cypress/request": {
 			"uuid": "14.0.0",
 			"qs": "6.16.0"
@@ -127,7 +130,7 @@
 			"simple-git": "4.0.2"
 		},
 		"brace-expansion": "5.0.12",
-		"fast-uri": "3.1.8",
+		"fast-uri": "3.1.9",
 		"js-yaml": "4.3.2",
 		"katex": "0.18.2",
 		"launch-editor": "2.14.2",

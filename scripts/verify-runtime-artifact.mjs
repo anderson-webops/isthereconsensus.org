@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { lstat, readdir, readFile, readlink, realpath } from "node:fs/promises";
+import { lstat, open, readdir, readFile, readlink, realpath } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -20,6 +20,10 @@ const artifactRoot = await realpath(path.resolve(process.argv[2] || ".runtime-ar
 const artifactRootMetadata = await lstat(artifactRoot);
 if (!artifactRootMetadata.isDirectory() || (artifactRootMetadata.mode & 0o7000) !== 0) {
 	throw new Error("Runtime artifact root must be a real directory without set-ID or sticky mode bits.");
+}
+const manifestMetadata = await lstat(path.join(artifactRoot, manifestName));
+if (!manifestMetadata.isFile() || (manifestMetadata.mode & 0o7022) !== 0) {
+	throw new Error("Runtime artifact manifest must be a regular, non-writable-by-others file.");
 }
 
 async function hashFile(absolutePath) {
@@ -79,6 +83,11 @@ if (!/^[a-f0-9]{40}$/u.test(manifest.source?.commit || "")) {
 if (process.env.RUNTIME_ARTIFACT_REQUIRE_CLEAN === "true" && manifest.source?.dirty !== false) {
 	throw new Error("Production runtime artifacts must come from a clean source checkout.");
 }
+const expectedTarget = process.env.RUNTIME_ARTIFACT_EXPECT_TARGET;
+const actualTarget = [manifest.target?.platform, manifest.target?.architecture, manifest.target?.libc].join("-");
+if (expectedTarget && actualTarget !== expectedTarget) {
+	throw new Error(`Runtime artifact target ${actualTarget} does not match ${expectedTarget}.`);
+}
 const expectedCommit = process.env.RUNTIME_ARTIFACT_EXPECT_COMMIT;
 if (expectedCommit && !manifest.source.commit.startsWith(expectedCommit)) {
 	throw new Error(`Runtime artifact source ${manifest.source.commit} does not match ${expectedCommit}.`);
@@ -123,6 +132,36 @@ if (!expectedNativeBindings.length) {
 }
 if (JSON.stringify(expectedNativeBindings) !== JSON.stringify(manifest.nativeBindings)) {
 	throw new Error("Runtime artifact native-binding inventory is incomplete.");
+}
+if (actualTarget === "linux-arm64-glibc") {
+	const requiredBinding = "back-end/node_modules/argon2/prebuilds/linux-arm64/argon2.armv8.glibc.node";
+	if (!expectedNativeBindings.some((entry) => entry.path === requiredBinding)) {
+		throw new Error("Runtime artifact lacks its Linux ARM64 glibc password-hashing binding.");
+	}
+	for (const entry of actualFiles.filter(
+		(file) => file.path.endsWith(".node") || /\.so(?:\.\d+)*$/u.test(file.path)
+	)) {
+		if (entry.type !== "file") throw new Error(`Native runtime entry is not a regular file: ${entry.path}`);
+		const nativeFile = await open(path.join(artifactRoot, entry.path), "r");
+		const header = Buffer.alloc(20);
+		let bytesRead;
+		try {
+			({ bytesRead } = await nativeFile.read(header, 0, header.length, 0));
+		}
+		finally {
+			await nativeFile.close();
+		}
+		if (
+			bytesRead !== header.length ||
+			header.subarray(0, 4).toString("hex") !== "7f454c46" ||
+			header[4] !== 2 ||
+			header[5] !== 1 ||
+			header[6] !== 1 ||
+			header.readUInt16LE(18) !== 183
+		) {
+			throw new Error(`Native runtime entry is not Linux ARM64 ELF: ${entry.path}`);
+		}
+	}
 }
 
 const deployment = JSON.parse(

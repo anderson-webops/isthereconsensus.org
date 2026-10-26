@@ -102,6 +102,18 @@ npm audit --omit=dev
 npm audit signatures
 ```
 
+For an annotated `v1.x.y` release, build the exact clean tag on Linux ARM64
+glibc with Node 24.18.1 and npm 12.0.2. After the gates above pass, package the
+same `.runtime-artifact` without rebuilding it:
+
+```bash
+node scripts/package-runtime-artifact.mjs
+```
+
+The package command verifies the unpacked archive and writes an immutable
+runtime archive, `runtime-manifest.json`, `acceptance.json`, and `SHA256SUMS` to
+`.runtime-release-assets/`. Publication and server activation are separate checks.
+
 After production deploys, run the live contract smoke:
 
 ```bash
@@ -126,14 +138,14 @@ LIVE_SMOKE_BASE_URL=http://127.0.0.1:4068 LIVE_SMOKE_PROFILE=frontend npm run sm
 
 ## Direct production deployment
 
-Production runs without Docker or a container registry. Each release begins as a clean Git checkout under the unprivileged staging root `/srv/isthereconsensus.org/releases/<release>`. Preparation produces a fully hashed `.runtime-artifact/`. The installed root-owned promoter copies that reviewed artifact into `/srv/isthereconsensus.org/artifact-releases/`, verifies its independently supplied manifest digest with the installed verifier, seals ownership and modes, and points `/srv/isthereconsensus.org/current` only to that immutable copy.
+Production uses direct Node services and immutable Linux ARM64 artifacts. The `consensus-native` source contract requires GitHub-hosted provenance for the exact release bundle and protected adapter acceptance. Legacy source-build deployment helpers are retired.
 
 Two hardened systemd services run the compiled Nuxt SSR frontend and Express API from that immutable artifact. The content catalog is loaded by a one-shot API pre-start process, so the long-running API does not retain the source seed catalog in memory. Nginx terminates dual-stack TLS and proxies the public site and API to their loopback listeners. `/var/www/isthereconsensus.org` is intentionally unused because this is an SSR application.
 
-Preparation runs the clean-install, dependency, security, native-binding, test, build, SSR, and accessibility gates. It then installs the standalone backend production graph into the artifact, records every path, hash, mode, entrypoint, and native binding, and exercises a copy from an isolated directory without source or development dependencies. CI additionally uses a synthetic MongoDB database to exercise seeding, API health/readiness, and graceful shutdown. Promotion never executes scripts from the staging checkout. It revalidates the root-owned copy, verifies both service readiness and public source identity, and restores only a verified sealed prior release if any check fails. See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the host setup and commands.
+The release workflow retains clean-install, dependency-signature, audit, native-binding, test, build and isolated packaged-runtime checks. Source publication and protected runtime/database acceptance are separate. See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the source artifact contract.
 
 ## Launch coordination
 
 - `/setup` is a development-only diagnostics page. In production, use the protected diagnostics APIs instead of rendering an operational UI.
-- [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents the recommended production topology and required environment variables.
+- [`DEPLOYMENT.md`](./DEPLOYMENT.md) documents artifact identity and acceptance boundaries.
 - In production same-origin mode, set `NUXT_PUBLIC_API_BASE=/api` and keep the private backend address in `NUXT_API_INTERNAL_BASE`, so browser runtime config never leaks `127.0.0.1`, `localhost`, or an internal port.

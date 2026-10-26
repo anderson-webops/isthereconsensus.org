@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [ main ]
+    tags: [ 'v1.*' ]
   pull_request:
     branches: [ main ]
 
@@ -284,3 +285,137 @@ jobs:
 
       - name: Verify Linux ARM64 glibc and musl installs
         run: npm run verify:platform-install
+
+  native-runtime:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [appearance-controls, lint, typecheck, test, audit, accessibility, build, linux-arm64-install]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    services:
+      mongodb:
+        image: mongo:9.0.4@sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8
+        ports:
+          - 27017/tcp
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install patched npm
+        run: npm install --global "npm@${NPM_VERSION}"
+
+      - name: Verify immutable source and build platform
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF_NAME" =~ ^v1\.[0-9]+\.[0-9]+$ ]]
+          test "$(git cat-file -t "refs/tags/$GITHUB_REF_NAME")" = tag
+          test "$(git rev-parse "refs/tags/$GITHUB_REF_NAME^{commit}")" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test "$(uname -m)" = aarch64
+          test "$(node --version)" = "v$NODE_VERSION"
+          test "$(npm --version)" = "$NPM_VERSION"
+
+      - name: Locked native installation and acceptance
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+          SOURCE_TAG: ${{ github.ref_name }}
+          RUNTIME_ARTIFACT_MONGO_URI: mongodb://127.0.0.1:${{ job.services.mongodb.ports['27017'] }}/consensus_native_acceptance
+        run: |
+          set -euo pipefail
+          npm ci --include=optional --strict-allow-scripts
+          npm run verify:install-scripts
+          npm audit
+          npm audit --omit=dev
+          npm audit --prefix back-end
+          npm audit --prefix back-end --omit=dev
+          npm audit signatures
+          npm run verify:native-lock
+          npm run lint
+          npm run typecheck
+          npm test
+          npm run build
+          npm run smoke:backend-runtime
+          npm run smoke:ssr-assets
+          npm run smoke:ssr-routes
+          npm run artifact:build
+          npm run artifact:verify
+          npm audit --prefix .runtime-artifact/back-end --omit=dev
+          node scripts/package-runtime-artifact.mjs
+
+      - name: Retain accepted exact-byte bundle
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: accepted-consensus-linux-arm64
+          path: .runtime-release-assets/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  publish-runtime:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: native-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: accepted-consensus-linux-arm64
+          path: release-assets
+
+      - name: Verify downloaded immutable subjects
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF_NAME" =~ ^v1\.[0-9]+\.[0-9]+$ ]]
+          test "$(git cat-file -t "refs/tags/$GITHUB_REF_NAME")" = tag
+          test "$(git rev-parse "refs/tags/$GITHUB_REF_NAME^{commit}")" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          node scripts/verify-runtime-release.mjs release-assets "$GITHUB_SHA" "$GITHUB_REF_NAME"
+
+      - name: Attest all four accepted release subjects
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: release-assets/*
+
+      - name: Publish and compare the complete immutable bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          set -euo pipefail
+          test -s "$BUNDLE_PATH"
+          cp "$BUNDLE_PATH" release-assets/attestation-bundle.jsonl
+          node scripts/verify-runtime-release.mjs release-assets "$GITHUB_SHA" "$GITHUB_REF_NAME" --attested
+          gh release create "$GITHUB_REF_NAME" release-assets/* \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
+            --title "$GITHUB_REF_NAME" \
+            --notes 'CI-attested Linux ARM64 runtime. The consensus-native host transition, database recovery and production activation remain separately gated.'
+          mkdir "$RUNNER_TEMP/consensus-asset-check"
+          gh release download "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            --dir "$RUNNER_TEMP/consensus-asset-check"
+          test "$(find "$RUNNER_TEMP/consensus-asset-check" -maxdepth 1 -type f | wc -l)" -eq 5
+          for asset in release-assets/*; do
+            cmp "$asset" "$RUNNER_TEMP/consensus-asset-check/$(basename "$asset")"
+          done
+          gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false

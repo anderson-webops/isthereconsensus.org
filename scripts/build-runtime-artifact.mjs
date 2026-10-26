@@ -155,14 +155,16 @@ for (const relativePath of [
 await rm(artifactRoot, { force: true, recursive: true });
 await Promise.all([
 	mkdir(path.join(artifactRoot, "back-end"), { recursive: true }),
-	mkdir(path.join(artifactRoot, "front-end"), { recursive: true })
+	mkdir(path.join(artifactRoot, "front-end"), { recursive: true }),
+	mkdir(path.join(artifactRoot, "deploy"), { recursive: true })
 ]);
 await Promise.all([
 	cp(path.join(root, "back-end/dist"), path.join(artifactRoot, "back-end/dist"), { recursive: true }),
 	cp(path.join(root, "front-end/.output"), path.join(artifactRoot, "front-end/.output"), { recursive: true }),
 	cp(path.join(root, "back-end/package.json"), path.join(artifactRoot, "back-end/package.json")),
 	cp(path.join(root, "back-end/package-lock.json"), path.join(artifactRoot, "back-end/package-lock.json")),
-	cp(path.join(root, "back-end/.npmrc"), path.join(artifactRoot, "back-end/.npmrc"))
+	cp(path.join(root, "back-end/.npmrc"), path.join(artifactRoot, "back-end/.npmrc")),
+	cp(path.join(root, "deploy/host-contract.json"), path.join(artifactRoot, "deploy/host-contract.json"))
 ]);
 
 runSelectedNpm(
@@ -171,6 +173,19 @@ runSelectedNpm(
 );
 runSelectedNpm(["ls", "--omit=dev", "--all"], path.join(artifactRoot, "back-end"));
 await rm(path.join(artifactRoot, "back-end/node_modules/.bin"), { force: true, recursive: true });
+const linuxGlibc = process.platform === "linux" && Boolean(process.report.getReport().header.glibcVersionRuntime);
+const linuxArm64Glibc = linuxGlibc && process.arch === "arm64";
+if (linuxArm64Glibc) {
+	const prebuilds = path.join(artifactRoot, "back-end/node_modules/argon2/prebuilds");
+	for (const entry of await readdir(prebuilds)) {
+		if (entry !== "linux-arm64") await rm(path.join(prebuilds, entry), { recursive: true, force: true });
+	}
+	for (const entry of await readdir(path.join(prebuilds, "linux-arm64"))) {
+		if (entry !== "argon2.armv8.glibc.node") {
+			await rm(path.join(prebuilds, "linux-arm64", entry), { recursive: true, force: true });
+		}
+	}
+}
 await removeSourceMaps(path.join(artifactRoot, "back-end/dist"));
 await normalizeTree(artifactRoot);
 
@@ -202,6 +217,11 @@ const manifest = {
 		node: process.version,
 		npm: execFileSync(process.execPath, [process.env.npm_execpath, "--version"], { encoding: "utf8" }).trim()
 	},
+	target: {
+		platform: process.platform,
+		architecture: process.arch,
+		libc: linuxGlibc ? "glibc" : null
+	},
 	entrypoints: {
 		api: "back-end/dist/server.js",
 		seed: "back-end/dist/scripts/seedContent.js",
@@ -218,4 +238,5 @@ const manifest = {
 };
 
 await writeFile(path.join(artifactRoot, manifestName), `${JSON.stringify(manifest, null, 2)}\n`, { mode: 0o644 });
+await chmod(path.join(artifactRoot, manifestName), 0o644);
 process.stdout.write(`Built runtime artifact with ${files.length} hashed entries at ${artifactRoot}.\n`);

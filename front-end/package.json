@@ -20,7 +20,7 @@
 	"dependencies": {
 		"@vueuse/core": "^14.4.0",
 		"pinia": "^4.0.3",
-		"vue": "^3.5.43"
+		"vue": "^3.5.44"
 	},
 	"optionalDependencies": {
 		"@esbuild/linux-arm64": "0.28.2",
@@ -63,7 +63,7 @@
 		"@vueuse/nuxt": "^14.4.0",
 		"eslint": "^10.11.0",
 		"eslint-plugin-format": "^2.0.1",
-		"nuxt": "^4.5.2",
+		"nuxt": "^4.6.2",
 		"terser": "^5.51.2",
 		"tsx": "^4.23.15",
 		"typescript": "^6.0.3",
