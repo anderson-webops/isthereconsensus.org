@@ -23,7 +23,7 @@ async function withFixture(run) {
 			service: "isthereconsensus.org",
 			source: { commit, tag, dirty: false },
 			target: { platform: "linux", architecture: "arm64", libc: "glibc" },
-			toolchain: { node: "v24.18.1", npm: "12.0.2" },
+			toolchain: { node: "v24.22.1", npm: "12.2.1" },
 			files: [{ type: "file", path: "synthetic", size: 1 }]
 		};
 		const manifestBytes = Buffer.from(JSON.stringify(manifest));

@@ -78,8 +78,8 @@ export async function verifyReleaseAssets(directory, commit, tag, attested = fal
 		manifest.schemaVersion !== 1 || manifest.service !== "isthereconsensus.org"
 		|| manifest.source?.commit !== commit || manifest.source?.tag !== tag || manifest.source?.dirty !== false
 		|| manifest.target?.platform !== "linux" || manifest.target?.architecture !== "arm64"
-		|| manifest.target?.libc !== "glibc" || manifest.toolchain?.node !== "v24.18.1"
-		|| manifest.toolchain?.npm !== "12.0.2"
+		|| manifest.target?.libc !== "glibc" || manifest.toolchain?.node !== "v24.22.1"
+		|| manifest.toolchain?.npm !== "12.2.1"
 		|| !Array.isArray(manifest.files) || manifest.files.length > 100_000
 		|| manifest.files.some(entry => entry.type === "file" && (!Number.isSafeInteger(entry.size) || entry.size < 0))
 		|| manifest.files.reduce((total, entry) => total + (entry.type === "file" ? entry.size : 0), 0) > 1024 ** 3
