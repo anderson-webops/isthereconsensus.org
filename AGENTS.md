@@ -1,5 +1,36 @@
 # Repository Guidelines
 
+## Standing Dependency Completion Policy
+
+Treat dependency remediation as part of completing authorized work on this
+site, not as an optional follow-up. Proactively resolve vulnerabilities,
+compatibility problems, broken installations and lockfile issues. Cover direct
+and transitive dependencies, production and development dependencies,
+workspaces and root-level tools. Do not dismiss findings because they are
+pre-existing or development-only.
+
+Before creating a release tag or publishing a release, require a clean locked
+installation for every applicable dependency graph, zero known dependency
+vulnerabilities in both full and production audits, and all applicable project
+checks. An unavailable or incomplete audit is not a clean result. Use supported
+upgrades, replacements or maintainable patches that preserve functionality.
+Do not silence findings, weaken checks or force incompatible versions merely
+to obtain a passing result.
+
+Intermediate commits may capture coherent progress. Commit and push validated
+work through this site's authorized delivery process, and complete meaningful
+releases rather than stopping after reporting fixable dependency blockers.
+Documentation-only housekeeping does not require an application release.
+
+Preserve unrelated work, coordinate with other active chats, and retain existing
+security, approval and production-access boundaries. Existing maintenance pauses
+and repository exclusions remain in force; this policy does not expand access
+or authorize otherwise excluded work. If a genuine blocker prevents completion,
+preserve progress and report the exact blocker and remaining work. Distinguish
+a published release from verified live deployment.
+
+Treat this as a standing instruction for this site.
+
 ## Agent Delivery Workflow
 - Do not leave completed work uncommitted. After each coherent, validated change set, create a commit and push it in the same session.
 - Use multiple commits and pushes when that keeps unrelated changes, partial validations, or follow-up fixes clearly separated. Prefer small, logically grouped commits over one mixed commit.
@@ -7,12 +38,12 @@
 - The nested lock and npm configuration are the reviewed policy for reproducible standalone backend deployment installs.
 - Use lowercase annotated semver tags only. Do not invent ad-hoc labels such as `V1`, `torca-r07`, `pre-lfs-migration-*`, or similar one-off names.
 - This repo follows the stable `v1.x` line. Stay on `v1` for routine work; only cut `v2` for an intentional breaking product or API change.
-- Before creating a new tag, check the latest tag in the active semver line and decide whether the new commit is still the same release milestone. If it is, move that existing tag forward to the new validated commit instead of minting a new version number.
-- Keep the GitHub release aligned with that decision: when the commit still belongs to the same milestone, update or recreate the existing release so it points at the moved tag/current commit; only create a brand-new release when the change creates a genuinely new milestone.
+- Before creating a new tag, inspect the active semver line and group validated deployable work into a meaningful new milestone.
+- Keep published tags and release assets immutable. Use a new annotated semver tag and matching verified release for a new milestone; preserve existing release identities and rollback evidence.
 - Cut a fresh semver tag and release only when the work crosses a real release boundary, such as a new deployable milestone, a materially different operator/user-facing state, or a version-line change that deserves its own notes and rollback point.
 - Create an annotated tag when claim/ranking flows, account/API behavior, SSR/runtime behavior, dependency/security, or health/deploy behavior materially changes.
 - Create a GitHub release when that tag represents a real product or operations milestone that should be easy to roll back to. Release notes should summarize scope, validation, rollout notes, and any migration or recovery steps.
-- If the existing tag or release history contains stale drafts, redundant entries, or ad-hoc labels, clean that history up instead of preserving clutter.
+- Preserve shared history. Obtain explicit exact-ref authorization before any published history rewrite.
 - Skip tags and releases for trivial doc-only edits, formatting-only changes, or routine housekeeping unless they change deployment, operations, or a consumer-facing contract.
 
 ## Dependency & Lockfile Discipline
@@ -27,7 +58,7 @@ Required production/dev dependency update flow before every dependency commit:
 2. Review both `dependencies` and `devDependencies` in the root and every workspace package; do not limit updates to production-only packages.
 3. Apply needed updates with the narrowest command that updates the relevant manifest and lockfile together, such as `npm install -w <workspace> <package>@<version>` or `npm install -D -w <workspace> <package>@<version>`.
 4. If the update is only a lockfile/security refresh, regenerate from the root with `npm install --package-lock-only --ignore-scripts --no-fund --no-audit`.
-5. Run `npm audit` from the repository root and resolve remaining production or dev advisories before committing unless a documented upstream limitation prevents it.
+5. Run `npm audit` from the repository root and resolve all known production and development advisories before creating a release tag or publishing a release. Record genuine upstream blockers and keep the release held until they are resolved.
 
 Required dependency verification before every commit/push:
 1. Run `npm ci` from the repository root.
