@@ -23,7 +23,23 @@ exports.find = (node, type) => node.nodes.find(node => node.type === type);
 exports.exceedsLimit = (min, max, step = 1, limit) => {
   if (limit === false) return false;
   if (!exports.isInteger(min) || !exports.isInteger(max)) return false;
-  return ((Number(max) - Number(min)) / Number(step)) >= limit;
+  if (!Number.isSafeInteger(Number(min)) || !Number.isSafeInteger(Number(max))) return true;
+  return (Math.abs(Number(max) - Number(min)) / Math.max(Math.abs(Number(step)), 1)) >= limit;
+};
+
+exports.rangeBudget = (args, options = {}) => {
+  const [start, end, rangeStep] = args;
+  const rawStep = rangeStep || options.step || 1;
+  const step = Math.max(Math.abs(Number(rawStep)), 1);
+  const numeric = exports.isInteger(start) && exports.isInteger(end);
+  if (numeric && (!Number.isSafeInteger(Number(start)) || !Number.isSafeInteger(Number(end)))) {
+    return { items: Infinity, bytes: Infinity, step };
+  }
+  const first = numeric ? Number(start) : String(start).charCodeAt(0);
+  const last = numeric ? Number(end) : String(end).charCodeAt(0);
+  const items = Math.floor(Math.abs(last - first) / step) + 1;
+  const width = numeric ? Math.max(String(start).length, String(end).length, String(rawStep).length) + 4 : 4;
+  return { items, bytes: items * width, step };
 };
 
 /**
