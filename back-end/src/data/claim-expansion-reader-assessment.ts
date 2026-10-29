@@ -3,7 +3,16 @@ import type { SeedClaim } from "./claims.js";
 export const assessmentCheckedAt = "2026-10-05T18:09:31.000Z";
 
 function reference(title: string, publisher: string, url: string, note: string, year?: number): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title, publisher, url, note, year, stance: "supports", order: 1 };
+	return {
+		kind: "technical_reference",
+		title,
+		publisher,
+		url,
+		note,
+		year,
+		stance: "supports",
+		order: 1
+	};
 }
 
 export const readerAssessmentSources = {
@@ -295,7 +304,9 @@ export const readerAssessmentClaims: SeedClaim[] = reviews.map((review, index) =
 	misconceptions: [review.title, "A score label does not establish every educational interpretation, causal claim or individual decision."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
 	searchDatabases: ["Original joint AERA/APA/NCME testing standards and ETS technical guides", "Original NCES methodology and interpretation pages", "Original Pearson/NWEA explanations; Consensus.app discovery not canonical evidence"],
 	searchCutoffAt: assessmentCheckedAt,
 	inclusionRules: ["Identify the construct, population, scale, assessment purpose and uncertainty before interpreting a score.", "Retain historical/product-specific limits and distinguish mathematical counterexamples from actual observations."],
@@ -306,12 +317,51 @@ export const readerAssessmentClaims: SeedClaim[] = reviews.map((review, index) =
 	independenceSummary: "Related NCES pages share agency provenance, and ETS/Pearson/NWEA explanations are not independent trials. Joint professional standards support defined interpretation principles, not a numerical poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing or students assessed accurately. No actual reader demand was measured.",
 	coiSummary: "Testing providers publish several references and have interests in their assessment products. Their marketing comparisons are excluded, not presumed independent. Public-agency and professional-association provenance is identified; funding and conflicts were not exhaustively audited. No vendor is endorsed.",
 	lastRetractionCheckAt: assessmentCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "A defined interpretation or measurement boundary, not a measured intervention benefit, individual prognosis or expert-agreement percentage.", certainty: "moderate", limitations: [review.qualification, "No actual private student records, current product validation or educational decision evaluated"] }],
-	institutionalAnchors: [{ name: readerAssessmentSources[review.sources[0]!].publisher, role: "Technical definition and interpretation-scope reference, not an individual decision or empirical expert poll" }],
-	changeLog: [{ date: assessmentCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: `ae597cc1-79c6-49bf-9b6b-b0cd6dc6${String(index + 1).padStart(4, "0")}`, date: assessmentCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Original corrections and errata for cited references"], guidelineMonitors: ["Joint testing standards and cited program-definition updates"], triggerRules: ["Reassess a verified source correction or assessment-scope change affecting the stated interpretation."] },
-	sources: review.sources.map((key, sourceIndex) => ({ ...readerAssessmentSources[key], order: sourceIndex + 1, isAnchor: sourceIndex === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: assessmentCheckedAt, statusSources: [readerAssessmentSources[key].url!] }))
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "A defined interpretation or measurement boundary, not a measured intervention benefit, individual prognosis or expert-agreement percentage.",
+			certainty: "moderate",
+			limitations: [review.qualification, "No actual private student records, current product validation or educational decision evaluated"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerAssessmentSources[review.sources[0]!].publisher, role: "Technical definition and interpretation-scope reference, not an individual decision or empirical expert poll" }
+	],
+	changeLog: [
+		{ date: assessmentCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: `ae597cc1-79c6-49bf-9b6b-b0cd6dc6${String(index + 1).padStart(4, "0")}`,
+		date: assessmentCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Original corrections and errata for cited references"],
+		guidelineMonitors: ["Joint testing standards and cited program-definition updates"],
+		triggerRules: ["Reassess a verified source correction or assessment-scope change affecting the stated interpretation."]
+	},
+	sources: review.sources.map((key, sourceIndex) => ({
+		...readerAssessmentSources[key],
+		order: sourceIndex + 1,
+		isAnchor: sourceIndex === 0,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: assessmentCheckedAt,
+		statusSources: [readerAssessmentSources[key].url!]
+	}))
 }));
 
-export const readerAssessmentGaps = reviews.map(review => ({ slug: review.slug, gap: review.gap, relatedExistingSlugs: ["does-formative-assessment-improve-k12-learning", "does-retrieval-practice-improve-long-term-learning"] }));
+export const readerAssessmentGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: review.gap,
+	relatedExistingSlugs: ["does-formative-assessment-improve-k12-learning", "does-retrieval-practice-improve-long-term-learning"]
+}));

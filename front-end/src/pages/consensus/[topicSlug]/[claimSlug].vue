@@ -34,11 +34,15 @@ const { currentAccount, role } = useAuth();
 
 const topicSlug = computed(() => {
 	const value = (route.params as ClaimRouteParams).topicSlug;
-	return Array.isArray(value) ? value[0] : String(value ?? "");
+	return Array.isArray(value)
+		? value[0]
+		: String(value ?? "");
 });
 const claimSlug = computed(() => {
 	const value = (route.params as ClaimRouteParams).claimSlug;
-	return Array.isArray(value) ? value[0] : String(value ?? "");
+	return Array.isArray(value)
+		? value[0]
+		: String(value ?? "");
 });
 const postedToQueue = computed(() => route.query.posted === "1");
 
@@ -52,8 +56,8 @@ const regulatoryContext = computed(() => regulatoryContextLabel(claim.value?.tit
 const reviewEvaluatedAt = useState("review-status-evaluated-at", () => new Date().toISOString());
 const reviewStatus = computed(
 	() =>
-		claim.value?.reviewStatus ??
-		claimReviewStatus(claim.value ?? {}, claim.value?.sources, new Date(reviewEvaluatedAt.value))
+		claim.value?.reviewStatus
+		?? claimReviewStatus(claim.value ?? {}, claim.value?.sources, new Date(reviewEvaluatedAt.value))
 );
 const collectionMemberships = computed(() => claimData.value?.collections ?? []);
 const relatedClaims = computed(() => claimData.value?.relatedClaims ?? []);
@@ -99,11 +103,11 @@ const claimSnapshotGroups = computed(() => {
 	];
 
 	return groups
-		.map((group) => ({
+		.map(group => ({
 			...group,
-			items: group.items.map((item) => item.trim()).filter(Boolean)
+			items: group.items.map(item => item.trim()).filter(Boolean)
 		}))
-		.filter((group) => group.items.length > 0);
+		.filter(group => group.items.length > 0);
 });
 // Long snapshot lists open on their strongest points; the rest stays one click away.
 const SNAPSHOT_PREVIEW_COUNT = 3;
@@ -122,7 +126,9 @@ function showAllSnapshotItems(key: string) {
 
 const askLink = computed(() => ({
 	path: "/ask",
-	query: claim.value?.title ? { topic: topicSlug.value, question: claim.value.title } : { topic: topicSlug.value }
+	query: claim.value?.title
+		? { topic: topicSlug.value, question: claim.value.title }
+		: { topic: topicSlug.value }
 }));
 const citationExportBase = computed(() =>
 	buildApiUrl(config.public.apiBase as string, `/topics/${topicSlug.value}/claims/${claimSlug.value}/citations`)
@@ -147,7 +153,11 @@ const tocItems = computed(() =>
 		{ id: "claim-evidence", label: "What the evidence says", show: claimSnapshotGroups.value.length > 0 },
 		{ id: "claim-scope", label: "Scope of this review", show: reviewScopeGroups.value.length > 0 },
 		{ id: "claim-certainty", label: "Certainty", show: true },
-		{ id: "claim-assessment", label: "Evidence assessment", show: Boolean(evidenceLandscape.value) },
+		{
+			id: "claim-assessment",
+			label: "Evidence assessment",
+			show: Boolean(evidenceLandscape.value)
+		},
 		{ id: "claim-findings", label: "Detailed findings", show: evidenceSummaries.value.length > 0 },
 		{ id: "claim-sources", label: "Sources", show: true },
 		{
@@ -156,7 +166,7 @@ const tocItems = computed(() =>
 			show: collectionMemberships.value.length > 0 || relatedClaims.value.length > 0
 		},
 		{ id: "claim-history", label: "Change log", show: true }
-	].filter((item) => item.show)
+	].filter(item => item.show)
 );
 const activeSection = ref("");
 let sectionObserver: IntersectionObserver | undefined;
@@ -165,7 +175,7 @@ onMounted(() => {
 	if (!("IntersectionObserver" in window)) return;
 	sectionObserver = new IntersectionObserver(
 		(entries) => {
-			const visible = entries.filter((entry) => entry.isIntersecting);
+			const visible = entries.filter(entry => entry.isIntersecting);
 			if (visible.length) activeSection.value = visible[0].target.id;
 		},
 		{ rootMargin: "-20% 0px -70% 0px" }
@@ -271,73 +281,73 @@ const sourceGroups = computed(() => {
 	];
 
 	return groups
-		.map((group) => ({
+		.map(group => ({
 			...group,
-			items: (claim.value?.sources ?? []).filter((source) => group.kinds.includes(source.kind))
+			items: (claim.value?.sources ?? []).filter(source => group.kinds.includes(source.kind))
 		}))
-		.filter((group) => group.items.length > 0);
+		.filter(group => group.items.length > 0);
 });
 const breadcrumbStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "BreadcrumbList",
-	itemListElement: [
+	"itemListElement": [
 		{
 			"@type": "ListItem",
-			position: 1,
-			name: "Home",
-			item: "https://isthereconsensus.org/"
+			"position": 1,
+			"name": "Home",
+			"item": "https://isthereconsensus.org/"
 		},
 		{
 			"@type": "ListItem",
-			position: 2,
-			name: "Browse topics",
-			item: "https://isthereconsensus.org/consensus"
+			"position": 2,
+			"name": "Browse topics",
+			"item": "https://isthereconsensus.org/consensus"
 		},
 		{
 			"@type": "ListItem",
-			position: 3,
-			name: claim.value?.topic?.title || "Topic",
-			item: `https://isthereconsensus.org/consensus/${topicSlug.value}`
+			"position": 3,
+			"name": claim.value?.topic?.title || "Topic",
+			"item": `https://isthereconsensus.org/consensus/${topicSlug.value}`
 		},
 		{
 			"@type": "ListItem",
-			position: 4,
-			name: claim.value?.title || "Claim review",
-			item: pageUrl.value
+			"position": 4,
+			"name": claim.value?.title || "Claim review",
+			"item": pageUrl.value
 		}
 	]
 }));
 const articleStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "Article",
-	articleSection: claim.value?.topic?.title,
-	author: {
+	"articleSection": claim.value?.topic?.title,
+	"author": {
 		"@type": "Organization",
-		name: "Is There Consensus",
-		url: "https://isthereconsensus.org"
+		"name": "Is There Consensus",
+		"url": "https://isthereconsensus.org"
 	},
-	citation: (claim.value?.sources ?? []).map((source) => sourcePrimaryLink(source) || source.title),
-	dateModified: claim.value?.updatedAt || claim.value?.lastReviewedAt,
-	datePublished: claim.value?.publishedAt,
-	description: pageDescription.value,
-	headline: claim.value?.title || "Claim review",
-	isPartOf: {
+	"citation": (claim.value?.sources ?? []).map(source => sourcePrimaryLink(source) || source.title),
+	"dateModified": claim.value?.updatedAt || claim.value?.lastReviewedAt,
+	"datePublished": claim.value?.publishedAt,
+	"description": pageDescription.value,
+	"headline": claim.value?.title || "Claim review",
+	"isPartOf": {
 		"@type": "WebSite",
-		name: "Is There Consensus",
-		url: "https://isthereconsensus.org"
+		"name": "Is There Consensus",
+		"url": "https://isthereconsensus.org"
 	},
-	mainEntityOfPage: pageUrl.value,
-	publisher: {
+	"mainEntityOfPage": pageUrl.value,
+	"publisher": {
 		"@type": "Organization",
-		name: "Is There Consensus",
-		url: "https://isthereconsensus.org"
+		"name": "Is There Consensus",
+		"url": "https://isthereconsensus.org"
 	},
-	url: pageUrl.value,
-	about: claim.value?.topic
+	"url": pageUrl.value,
+	"about": claim.value?.topic
 		? {
 				"@type": "Thing",
-				name: claim.value.topic.title,
-				description: claim.value.topic.description
+				"name": claim.value.topic.title,
+				"description": claim.value.topic.description
 			}
 		: undefined
 }));
@@ -346,13 +356,19 @@ useSeoMeta({
 	description: () => pageDescription.value,
 	ogDescription: () => pageDescription.value,
 	ogSiteName: "Is There Consensus",
-	ogTitle: () => (claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus"),
+	ogTitle: () => (claim.value
+		? `${claim.value.title} | Is There Consensus`
+		: "Claim | Is There Consensus"),
 	ogType: "article",
 	ogUrl: () => pageUrl.value,
-	title: () => (claim.value ? `${claim.value.title} - Is There Consensus?` : "Claim - Is There Consensus?"),
+	title: () => (claim.value
+		? `${claim.value.title} - Is There Consensus?`
+		: "Claim - Is There Consensus?"),
 	twitterCard: "summary_large_image",
 	twitterDescription: () => pageDescription.value,
-	twitterTitle: () => (claim.value ? `${claim.value.title} | Is There Consensus` : "Claim | Is There Consensus")
+	twitterTitle: () => (claim.value
+		? `${claim.value.title} | Is There Consensus`
+		: "Claim | Is There Consensus")
 });
 
 useHead(() => ({
@@ -420,15 +436,17 @@ function formatCitationStatus(status?: ClaimSource["citationStatus"]) {
 
 function sourcePrimaryLink(source: ClaimSource) {
 	return (
-		safeExternalHttpUrl(source.url) ||
-		doiResolverUrl(source.doi) ||
-		pubMedUrl(source.pmid) ||
-		pubMedCentralUrl(source.pmcid)
+		safeExternalHttpUrl(source.url)
+		|| doiResolverUrl(source.doi)
+		|| pubMedUrl(source.pmid)
+		|| pubMedCentralUrl(source.pmcid)
 	);
 }
 
 function citationExportUrl(format: "bibtex" | "json" | "markdown" | "ris") {
-	const separator = citationExportBase.value.includes("?") ? "&" : "?";
+	const separator = citationExportBase.value.includes("?")
+		? "&"
+		: "?";
 	return `${citationExportBase.value}${separator}format=${format}`;
 }
 
@@ -437,7 +455,8 @@ async function copyCitation() {
 	try {
 		await window.navigator.clipboard.writeText(citation.value.plainText);
 		citationCopyState.value = "copied";
-	} catch {
+	}
+	catch {
 		citationCopyState.value = "error";
 	}
 }
@@ -459,7 +478,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				{ label: 'Home', to: '/' },
 				{ label: 'Browse topics', to: '/consensus' },
 				{ label: claim?.topic?.title || 'Topic', to: `/consensus/${topicSlug}` },
-				{ label: claim?.title || 'Claim' }
+				{ label: claim?.title || 'Claim' },
 			]"
 		/>
 
@@ -470,8 +489,12 @@ function formatDate(value?: string, fallback = "Not available yet") {
 		<article class="claim-answer" :data-verdict-tone="claimTone">
 			<header class="claim-page__header">
 				<div class="claim-page__hero">
-					<p class="eyebrow">Reviewed claim</p>
-					<h1 class="no-page-title-scale">{{ claim?.title || "Claim review" }}</h1>
+					<p class="eyebrow">
+						Reviewed claim
+					</p>
+					<h1 class="no-page-title-scale">
+						{{ claim?.title || "Claim review" }}
+					</h1>
 					<div class="claim-verdict">
 						<span v-if="regulatoryContext" class="tag">{{ regulatoryContext }}</span>
 						<span v-if="shortAnswer" class="claim-short-answer">Answer: {{ shortAnswer }}</span>
@@ -496,9 +519,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 			<section class="bottom-line" aria-labelledby="bottom-line-title">
 				<div>
-					<h2 id="bottom-line-title">Bottom line</h2>
-					<p class="bottom-line__text bottom-line__text--lead">{{ bottomLineParts.lead }}</p>
-					<p v-if="bottomLineParts.context" class="bottom-line__context">{{ bottomLineParts.context }}</p>
+					<h2 id="bottom-line-title">
+						Bottom line
+					</h2>
+					<p class="bottom-line__text bottom-line__text--lead">
+						{{ bottomLineParts.lead }}
+					</p>
+					<p v-if="bottomLineParts.context" class="bottom-line__context">
+						{{ bottomLineParts.context }}
+					</p>
 				</div>
 				<div class="bottom-line__actions">
 					<LibraryAction v-if="claim?._id" :id="claim._id" kind="review" />
@@ -527,7 +556,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 		<div class="claim-layout">
 			<nav v-if="tocItems.length > 2" class="claim-toc" aria-label="On this page">
-				<p class="claim-toc__title">On this page</p>
+				<p class="claim-toc__title">
+					On this page
+				</p>
 				<ol>
 					<li v-for="item in tocItems" :key="item.id">
 						<a
@@ -572,7 +603,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							</summary>
 							<div class="claim-snapshot-block__body">
 								<ul class="plain-list plain-list--tight">
-									<li v-for="item in visibleSnapshotItems(group)" :key="item">{{ item }}</li>
+									<li v-for="item in visibleSnapshotItems(group)" :key="item">
+										{{ item }}
+									</li>
 								</ul>
 								<button
 									v-if="visibleSnapshotItems(group).length < group.items.length"
@@ -596,14 +629,18 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				>
 					<div class="section-heading">
 						<div>
-							<h2 id="review-scope-title">Scope of this review</h2>
+							<h2 id="review-scope-title">
+								Scope of this review
+							</h2>
 						</div>
 					</div>
 					<div class="review-scope__groups">
 						<div v-for="group in reviewScopeGroups" :key="group.key" class="review-scope__group">
 							<h3>{{ group.title }}</h3>
 							<ul class="plain-list plain-list--tight">
-								<li v-for="(item, index) in group.items" :key="index">{{ item }}</li>
+								<li v-for="(item, index) in group.items" :key="index">
+									{{ item }}
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -611,7 +648,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 				<section id="claim-certainty" class="uncertainty-strip">
 					<div>
-						<p class="eyebrow">Uncertainty</p>
+						<p class="eyebrow">
+							Uncertainty
+						</p>
 						<h2 class="uncertainty-strip__title">
 							<span class="certainty-meter__steps" aria-hidden="true">
 								<span
@@ -631,7 +670,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 							<span>{{ formatCountLabel(uncertaintyLimits.length, "point") }}</span>
 						</summary>
 						<ul class="plain-list plain-list--tight">
-							<li v-for="item in uncertaintyLimits" :key="item">{{ item }}</li>
+							<li v-for="item in uncertaintyLimits" :key="item">
+								{{ item }}
+							</li>
 						</ul>
 					</details>
 				</section>
@@ -671,9 +712,13 @@ function formatDate(value?: string, fallback = "Not available yet") {
 										<strong>Magnitude / range:</strong> {{ summary.magnitude }}
 									</p>
 									<div v-if="summary.limitations?.length">
-										<p class="field-label">Key limitations</p>
+										<p class="field-label">
+											Key limitations
+										</p>
 										<ul class="plain-list plain-list--tight">
-											<li v-for="item in summary.limitations" :key="item">{{ item }}</li>
+											<li v-for="item in summary.limitations" :key="item">
+												{{ item }}
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -684,11 +729,15 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 				<section class="content-panel">
 					<div class="section-heading section-heading--sources">
-						<h2 id="claim-sources">Sources</h2>
+						<h2 id="claim-sources">
+							Sources
+						</h2>
 						<p>{{ formatCountLabel(sourceCount, "source") }}, highest-weight first.</p>
 					</div>
 
-					<div v-if="!claim?.sources?.length" class="empty-state">No sources are attached yet.</div>
+					<div v-if="!claim?.sources?.length" class="empty-state">
+						No sources are attached yet.
+					</div>
 					<div v-else class="source-groups">
 						<details
 							v-for="group in sourceGroups"
@@ -709,7 +758,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 								</span>
 							</summary>
 							<div class="source-group__body">
-								<p class="source-group__description">{{ group.description }}</p>
+								<p class="source-group__description">
+									{{ group.description }}
+								</p>
 								<div class="source-list">
 									<article
 										v-for="source in group.items"
@@ -722,11 +773,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 												<span>{{ source.publisher || "Source" }}</span>
 												<span v-if="source.year">{{ source.year }}</span>
 											</p>
-											<p class="source-row__note">{{ source.note }}</p>
+											<p class="source-row__note">
+												{{ source.note }}
+											</p>
 											<div class="source-row__badges">
-												<span v-if="source.isAnchor" class="tag tag--anchor"
-													>Anchor source</span
-												>
+												<span v-if="source.isAnchor" class="tag tag--anchor">Anchor source</span>
 												<span
 													v-if="source.citationStatus && source.citationStatus !== 'current'"
 													class="tag tag--warning"
@@ -769,7 +820,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 													</template>
 												</dl>
 												<div v-if="source.statusSources?.length" class="source-row__integrity">
-													<p class="field-label">Integrity signals</p>
+													<p class="field-label">
+														Integrity signals
+													</p>
 													<ul class="plain-list plain-list--tight">
 														<li
 															v-for="statusSource in source.statusSources"
@@ -845,7 +898,9 @@ function formatDate(value?: string, fallback = "Not available yet") {
 				>
 					<div class="section-heading">
 						<div>
-							<p class="eyebrow">Continue exploring</p>
+							<p class="eyebrow">
+								Continue exploring
+							</p>
 							<h2>Related reviews</h2>
 						</div>
 					</div>
@@ -874,8 +929,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 								<span
 									class="eyebrow verdict-dot"
 									:data-verdict-tone="verdictTone({ consensusBand: relatedClaim.consensusBand })"
-									>{{ formatBandLabel(relatedClaim.consensusBand) }}</span
-								>
+								>{{ formatBandLabel(relatedClaim.consensusBand) }}</span>
 								<h3>{{ relatedClaim.title }}</h3>
 								<p>{{ relatedClaim.bottomLine }}</p>
 							</div>

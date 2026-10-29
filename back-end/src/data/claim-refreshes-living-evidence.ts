@@ -233,7 +233,9 @@ const refreshes: Record<string, Partial<CompleteSeedClaim>> = {
 };
 
 export function refreshLivingEvidenceClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
-	const refresh = seed.topicSlug === "nutrition-and-diet" ? refreshes[seed.slug] : undefined;
+	const refresh = seed.topicSlug === "nutrition-and-diet"
+		? refreshes[seed.slug]
+		: undefined;
 	if (!refresh) return refreshGmoAndAmrClaim(seed);
 	const sources: Source[] = seed.sources.map(source => ({
 		...source,

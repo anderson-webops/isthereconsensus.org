@@ -9,11 +9,19 @@ import { createEditorialCompletionProposal } from "../src/utils/editorialComplet
 import { completionBaselineMatches, EDITORIAL_COMPLETION_SHA256, publishEditorialCompletion } from "../src/utils/editorialCompletionRelease.js";
 
 describe("immutable editorial completion release", () => {
-	const proposal = createEditorialCompletionProposal({ commit: "a".repeat(40), tree: "b".repeat(40) });
+	const proposal = createEditorialCompletionProposal({
+		commit: "a".repeat(40),
+		tree: "b".repeat(40)
+	});
 	function fixture(index = 0) {
 		const target = proposal.targets[index]!;
 		const before = target.compatibleBaselines[0]!;
-		const claim = new Claim({ ...seedClaimFields(before), ...seedReviewDates(before), topic: new mongoose.Types.ObjectId(), slug: before.slug }).toObject();
+		const claim = new Claim({
+			...seedClaimFields(before),
+			...seedReviewDates(before),
+			topic: new mongoose.Types.ObjectId(),
+			slug: before.slug
+		}).toObject();
 		const sources = before.sources.map(source => new ClaimSource({ ...source, claim: claim._id }).toObject());
 		return { target, before, claim, sources };
 	}
@@ -23,7 +31,11 @@ describe("immutable editorial completion release", () => {
 		for (const [index, target] of proposal.targets.entries()) {
 			const original = claimsBeforeEditorialCompletion.find(claim => `${claim.topicSlug}/${claim.slug}` === target.key)!;
 			for (const before of [original, fixture(index).before]) {
-				const claim = new Claim({ ...seedClaimFields(before), topic: new mongoose.Types.ObjectId(), slug: before.slug }).toObject();
+				const claim = new Claim({
+					...seedClaimFields(before),
+					topic: new mongoose.Types.ObjectId(),
+					slug: before.slug
+				}).toObject();
 				const sources = before.sources.map(source => new ClaimSource({ ...source, claim: claim._id }).toObject());
 				assert.equal(completionBaselineMatches(claim, sources, before), true, target.key);
 			}

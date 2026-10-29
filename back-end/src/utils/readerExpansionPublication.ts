@@ -59,8 +59,20 @@ export function createReaderExpansionEditorialApi(adminOrigin: string, cookieHea
 				credentials: "omit",
 				cache: "no-store",
 				signal: AbortSignal.timeout(30000),
-				headers: { Accept: "application/json", ...(options.anonymous ? {} : { Cookie: cookieHeader, Origin: publicUrl.origin }), ...(options.body ? { "Content-Type": "application/json" } : {}) },
-				...(options.body ? { body: JSON.stringify(options.body) } : {})
+				headers: {
+					Accept: "application/json",
+					...(options.anonymous
+						? {}
+						: { Cookie: cookieHeader, Origin: publicUrl.origin }),
+					...(options.body
+						? { "Content-Type": "application/json" }
+						: {})
+				},
+				...(options.body
+					? {
+							body: JSON.stringify(options.body)
+						}
+					: {})
 			});
 			let response = await send();
 			if (response.status === 429) {
@@ -87,7 +99,10 @@ export function createReaderExpansionEditorialApi(adminOrigin: string, cookieHea
 				}
 			}
 			finally { await reader.cancel(); }
-			return { status: response.status, data: JSON.parse(Buffer.concat(chunks).toString("utf8")) };
+			return {
+				status: response.status,
+				data: JSON.parse(Buffer.concat(chunks).toString("utf8"))
+			};
 		}
 		catch { throw new ReaderExpansionPublicationConflict("Editorial transport failed. Read back pending operations before retrying."); }
 	};
@@ -129,7 +144,10 @@ function projectedValue(actual: unknown, expected: unknown): unknown {
 	}
 	if (expected !== null && typeof expected === "object") {
 		const values = record(actual);
-		return Object.fromEntries(Object.entries(expected).map(([key, value]) => [key, projectedValue(values[key], value)]));
+		return Object.fromEntries(Object.entries(expected).map(([key, value]) => [
+			key,
+			projectedValue(values[key], value)
+		]));
 	}
 	return actual;
 }
@@ -145,8 +163,13 @@ function verifySources(actual: unknown, target: ReaderExpansionSourceProposal["t
 	return actual.map((value, index) => {
 		const source = record(value);
 		const desired = target.sourcePayloads[index];
-		const existingLabels = Array.isArray(source.statusSources) ? source.statusSources as string[] : [];
-		const expected = { ...desired, statusSources: normalizeCitationStatusSources(desired.statusSources ?? [], existingLabels) };
+		const existingLabels = Array.isArray(source.statusSources)
+			? source.statusSources as string[]
+			: [];
+		const expected = {
+			...desired,
+			statusSources: normalizeCitationStatusSources(desired.statusSources ?? [], existingLabels)
+		};
 		requireCondition(readerExpansionValueHash(projectedValue(source, expected)) === readerExpansionValueHash(expected), "Citation content, notices or ordering differs from the approved source.");
 		return identifier(source._id);
 	});
@@ -173,7 +196,13 @@ export async function prepareReaderExpansionEditorialPlan(proposal: ReaderExpans
 		const matches = inventory.claims.map(record).filter(claim => claim.slug === target.createPayload.slug && record(claim.topic).slug === target.createPayload.topic);
 		requireCondition(matches.length <= 1, "Duplicate canonical editorial records require operator reconciliation.");
 		if (!matches.length) {
-			rows.push({ canonicalPath: target.canonicalPath, claimId: null, sourceIds: [], status: "missing", snapshotSha256: readerExpansionValueHash(null) });
+			rows.push({
+				canonicalPath: target.canonicalPath,
+				claimId: null,
+				sourceIds: [],
+				status: "missing",
+				snapshotSha256: readerExpansionValueHash(null)
+			});
 			continue;
 		}
 		const claimId = identifier(matches[0]._id);
@@ -187,12 +216,65 @@ export async function prepareReaderExpansionEditorialPlan(proposal: ReaderExpans
 			verifyClaim(publicClaim, target, true);
 			requireCondition(readerExpansionValueHash(verifySources(publicClaim.sources, target)) === readerExpansionValueHash(sourceIds), "Anonymous citation identities differ from the editorial records.");
 		}
-		rows.push({ canonicalPath: target.canonicalPath, claimId, sourceIds, status: observed.claim.status, snapshotSha256: readerExpansionValueHash(observed) });
+		rows.push({
+			canonicalPath: target.canonicalPath,
+			claimId,
+			sourceIds,
+			status: observed.claim.status,
+			snapshotSha256: readerExpansionValueHash(observed)
+		});
 	}
-	const claimIds = rows.flatMap(row => row.claimId === null ? [] : [row.claimId]);
+	const claimIds = rows.flatMap(row => row.claimId === null
+		? []
+		: [row.claimId]);
 	const sourceIds = rows.flatMap(row => row.sourceIds);
 	requireCondition(new Set(claimIds).size === claimIds.length && new Set(sourceIds).size === sourceIds.length, "Existing editorial identities must be distinct before any mutation.");
-	return { schemaVersion: 1, sourceCommit: proposal.sourceCommit, proposalDataSha256: proposal.proposalDataSha256, preparedAt: preparedAt.toISOString(), adminId, rows };
+	return {
+		schemaVersion: 1,
+		sourceCommit: proposal.sourceCommit,
+		proposalDataSha256: proposal.proposalDataSha256,
+		preparedAt: preparedAt.toISOString(),
+		adminId,
+		rows
+	};
+}
+
+async function verifyAnonymousExpansionReadback(
+	api: ReaderExpansionEditorialApi,
+	target: ReaderExpansionSourceProposal["targets"][number],
+	claimId: string,
+	expectedSourceIds: string[]
+) {
+	const article = record((await request(api, target.publicApiPath.replace(/^\/api/u, ""), { anonymous: true })).claim);
+	requireCondition(identifier(article._id) === claimId && article.status === "published", "Canonical anonymous publication readback failed.");
+	verifyClaim(article, target, true);
+	const sourceIds = verifySources(article.sources, target);
+	requireCondition(readerExpansionValueHash(sourceIds) === readerExpansionValueHash(expectedSourceIds), "Ordered citation identities changed during public readback.");
+	return sourceIds;
+}
+
+function validatePublicationApproval(
+	proposal: ReaderExpansionSourceProposal,
+	plan: ReaderExpansionEditorialPlan,
+	approval: ReaderExpansionPublicationApproval,
+	now: Date
+) {
+	validateProposal(proposal);
+	requireCondition(approval.sourceCommit === proposal.sourceCommit && plan.sourceCommit === proposal.sourceCommit, "Approval and plan must bind the exact proposal source.");
+	for (const value of [
+		approval.planSha256,
+		approval.backupSha256,
+		approval.restoreVerificationSha256,
+		approval.rehearsalReceiptSha256,
+		approval.backendArtifactSha256
+	]) requireCondition(/^[a-f\d]{64}$/u.test(value), "Reviewed backup, restore, rehearsal, artifact and plan digests are required.");
+	requireCondition(typeof approval.operatorApprovalRef === "string" && approval.operatorApprovalRef.trim().length >= 20 && approval.operatorApprovalRef.length <= 500, "An explicit protected operator approval reference is required.");
+	const preparedAt = new Date(plan.preparedAt);
+	const reviewedAt = new Date(approval.reviewedAt);
+	requireCondition(Number.isFinite(now.getTime()) && Number.isFinite(preparedAt.getTime()) && preparedAt <= now && now.getTime() - preparedAt.getTime() <= 86400000, "The reviewed plan is stale or invalid.");
+	requireCondition(Number.isFinite(reviewedAt.getTime()) && reviewedAt <= now, "Supply the actual completed editorial assessment date, not a generated future date.");
+	requireCondition(readerExpansionValueHash(plan) === approval.planSha256, "The reviewed plan digest differs.");
+	return { preparedAt, reviewedAt };
 }
 
 export async function publishReaderExpansionEditorialPlan(
@@ -203,15 +285,7 @@ export async function publishReaderExpansionEditorialPlan(
 	journal: (event: ReaderExpansionPublicationEvent) => Promise<void>,
 	now = new Date()
 ) {
-	validateProposal(proposal);
-	requireCondition(approval.sourceCommit === proposal.sourceCommit && plan.sourceCommit === proposal.sourceCommit, "Approval and plan must bind the exact proposal source.");
-	for (const value of [approval.planSha256, approval.backupSha256, approval.restoreVerificationSha256, approval.rehearsalReceiptSha256, approval.backendArtifactSha256]) requireCondition(/^[a-f\d]{64}$/u.test(value), "Reviewed backup, restore, rehearsal, artifact and plan digests are required.");
-	requireCondition(typeof approval.operatorApprovalRef === "string" && approval.operatorApprovalRef.trim().length >= 20 && approval.operatorApprovalRef.length <= 500, "An explicit protected operator approval reference is required.");
-	const preparedAt = new Date(plan.preparedAt);
-	const reviewedAt = new Date(approval.reviewedAt);
-	requireCondition(Number.isFinite(now.getTime()) && Number.isFinite(preparedAt.getTime()) && preparedAt <= now && now.getTime() - preparedAt.getTime() <= 86400000, "The reviewed plan is stale or invalid.");
-	requireCondition(Number.isFinite(reviewedAt.getTime()) && reviewedAt <= now, "Supply the actual completed editorial assessment date, not a generated future date.");
-	requireCondition(readerExpansionValueHash(plan) === approval.planSha256, "The reviewed plan digest differs.");
+	const { preparedAt, reviewedAt } = validatePublicationApproval(proposal, plan, approval, now);
 	const current = await prepareReaderExpansionEditorialPlan(proposal, api, preparedAt);
 	requireCondition(readerExpansionValueHash(current) === approval.planSha256, "Editorial state or authenticated actor changed after preview; reconcile a new plan.");
 	const results = [];
@@ -220,10 +294,28 @@ export async function publishReaderExpansionEditorialPlan(
 		let claimId = planned.claimId;
 		const expectedSourceIds = [...planned.sourceIds];
 		const write = async (operation: "create" | "source" | "edit" | "publish", path: string, body: Record<string, unknown>, sourceIndex?: number) => {
-			const event = { operation, canonicalPath: target.canonicalPath, ...(claimId ? { claimId } : {}), ...(sourceIndex === undefined ? {} : { sourceIndex }) };
+			const event = {
+				operation,
+				canonicalPath: target.canonicalPath,
+				...(claimId
+					? { claimId }
+					: {}),
+				...(sourceIndex === undefined
+					? {}
+					: { sourceIndex })
+			};
 			await journal({ ...event, state: "pending" });
-			const data = await request(api, path, { method: operation === "edit" ? "PATCH" : "POST", body }, operation === "create" || operation === "source" ? 201 : 200);
-			const observedId = identifier(record(operation === "source" ? data.source : data.claim)._id);
+			const data = await request(api, path, {
+				method: operation === "edit"
+					? "PATCH"
+					: "POST",
+				body
+			}, operation === "create" || operation === "source"
+				? 201
+				: 200);
+			const observedId = identifier(record(operation === "source"
+				? data.source
+				: data.claim)._id);
 			if (operation !== "source") {
 				requireCondition(claimId === null || claimId === observedId, "Mutation returned a different observed identity.");
 				claimId = observedId;
@@ -231,7 +323,14 @@ export async function publishReaderExpansionEditorialPlan(
 			else {
 				expectedSourceIds.push(observedId);
 			}
-			await journal({ ...event, state: "confirmed", claimId: claimId!, ...(operation === "source" ? { sourceId: observedId } : {}) });
+			await journal({
+				...event,
+				state: "confirmed",
+				claimId: claimId!,
+				...(operation === "source"
+					? { sourceId: observedId }
+					: {})
+			});
 			return data;
 		};
 		if (planned.status === "missing") {
@@ -249,25 +348,54 @@ export async function publishReaderExpansionEditorialPlan(
 			if (planned.status === "draft") requireCondition(readerExpansionValueHash(observed) === planned.snapshotSha256, "An existing draft changed during the batch; reconcile it before publication.");
 			verifyClaim(observed.claim, target);
 			requireCondition(readerExpansionValueHash(verifySources(observed.sources, target)) === readerExpansionValueHash(expectedSourceIds), "Ordered citation identities changed before publication.");
-			const published = await write("publish", `/editorial/claims/${claimId}/publish`, { revisionNote: "Protected reader-expansion editorial assessment; source qualifications retained. No independent expert review is implied.", lastReviewedAt: reviewedAt.toISOString() });
+			const published = await write("publish", `/editorial/claims/${claimId}/publish`, {
+				revisionNote: "Protected reader-expansion editorial assessment; source qualifications retained. No independent expert review is implied.",
+				lastReviewedAt: reviewedAt.toISOString()
+			});
 			requireCondition(record(published.claim).status === "published", "Publication was not confirmed.");
 			verifyClaim(record(published.claim), target);
 		}
 		else {
-			await journal({ state: "already_published", operation: "readback", canonicalPath: target.canonicalPath, claimId });
+			await journal({
+				state: "already_published",
+				operation: "readback",
+				canonicalPath: target.canonicalPath,
+				claimId
+			});
 		}
-		const article = record((await request(api, target.publicApiPath.replace(/^\/api/u, ""), { anonymous: true })).claim);
-		requireCondition(identifier(article._id) === claimId && article.status === "published", "Canonical anonymous publication readback failed.");
-		verifyClaim(article, target, true);
-		const sourceIds = verifySources(article.sources, target);
-		requireCondition(readerExpansionValueHash(sourceIds) === readerExpansionValueHash(expectedSourceIds), "Ordered citation identities changed during public readback.");
-		await journal({ state: "confirmed", operation: "readback", canonicalPath: target.canonicalPath, claimId });
-		results.push({ canonicalPath: target.canonicalPath, claimId, sourceIds, disposition: planned.status === "published" ? "already_matching" : "published" });
+		const sourceIds = await verifyAnonymousExpansionReadback(api, target, claimId, expectedSourceIds);
+		await journal({
+			state: "confirmed",
+			operation: "readback",
+			canonicalPath: target.canonicalPath,
+			claimId
+		});
+		results.push({
+			canonicalPath: target.canonicalPath,
+			claimId,
+			sourceIds,
+			disposition: planned.status === "published"
+				? "already_matching"
+				: "published"
+		});
 	}
 	const catalog = await request(api, "/claims?limit=1", { anonymous: true });
 	const catalogTotal = record(catalog.pagination).total;
 	requireCondition(new Set(results.map(row => row.claimId)).size === proposal.proposalClaimCount, "The batch does not contain distinct observed review identities.");
 	requireCondition(new Set(results.flatMap(row => row.sourceIds)).size === proposal.proposalCitationCount, "The batch does not contain distinct observed citation identities.");
 	requireCondition(typeof catalogTotal === "number" && catalogTotal >= proposal.publicAcceptanceMinimum, "The public catalog has not reached the required publication threshold.");
-	return { artifactKind: "reader-expansion-authenticated-api-batch-readback", sourceCommit: proposal.sourceCommit, proposalDataSha256: proposal.proposalDataSha256, planSha256: approval.planSha256, completedAt: new Date().toISOString(), canonicalReviews: results.length, orderedCitations: results.reduce((total, row) => total + row.sourceIds.length, 0), catalogTotal, results, fullPrivateStatePreservationVerified: false, renderedPagesVerified: false, independentExpertReviewClaimed: false };
+	return {
+		artifactKind: "reader-expansion-authenticated-api-batch-readback",
+		sourceCommit: proposal.sourceCommit,
+		proposalDataSha256: proposal.proposalDataSha256,
+		planSha256: approval.planSha256,
+		completedAt: new Date().toISOString(),
+		canonicalReviews: results.length,
+		orderedCitations: results.reduce((total, row) => total + row.sourceIds.length, 0),
+		catalogTotal,
+		results,
+		fullPrivateStatePreservationVerified: false,
+		renderedPagesVerified: false,
+		independentExpertReviewClaimed: false
+	};
 }

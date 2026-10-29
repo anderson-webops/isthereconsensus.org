@@ -22,7 +22,9 @@ describe("review status without false freshness", () => {
 		assert.equal(recordedDate("2026-08-01T24:00:00Z"), undefined);
 	});
 	it("does not infer scientific review from recent check, publication, or update dates", () => {
-		const result = claimReviewStatus({ lastRetractionCheckAt: now, status: "published" }, [{ citationCheckedAt: now, citationStatus: "current" }], now);
+		const result = claimReviewStatus({ lastRetractionCheckAt: now, status: "published" }, [
+			{ citationCheckedAt: now, citationStatus: "current" }
+		], now);
 		assert.equal(result.state, "provenance_unknown");
 		assert.equal(result.reviewedAt, undefined);
 		assert.equal(result.sourceChecks.recorded, 1);
@@ -34,10 +36,23 @@ describe("review status without false freshness", () => {
 	});
 	it("uses the explicit deadline including its boundary, never an age-based validity score", () => {
 		assert.equal(claimReviewStatus({ ...reviewed, nextReviewAt: now }, [], now).state, "due");
-		assert.equal(claimReviewStatus({ ...reviewed, lastReviewedAt: "2001-01-01", searchCutoffAt: "2000-01-01", nextReviewAt: undefined }, [], now).state, "unscheduled");
+		assert.equal(claimReviewStatus({
+			...reviewed,
+			lastReviewedAt: "2001-01-01",
+			searchCutoffAt: "2000-01-01",
+			nextReviewAt: undefined
+		}, [], now).state, "unscheduled");
 	});
 	it("keeps publication notices visible even after a fresh review or a current legacy status", () => {
-		const result = claimReviewStatus(reviewed, [{ citationStatus: "current", evidenceProfile: { publicationIntegrity: { retracted: true } } }, { citationStatus: "corrected" }], now);
+		const result = claimReviewStatus(reviewed, [
+			{
+				citationStatus: "current",
+				evidenceProfile: {
+					publicationIntegrity: { retracted: true }
+				}
+			},
+			{ citationStatus: "corrected" }
+		], now);
 		assert.equal(result.state, "source_notice");
 		assert.equal(result.flaggedSourceCount, 2);
 	});
@@ -46,14 +61,36 @@ describe("review status without false freshness", () => {
 		const result = claimReviewStatus({ ...reviewed, searchCutoffAt: "2026-08-02", nextReviewAt: "2026-07-01" }, [], now);
 		assert.equal(result.issues.length, 2);
 		assert.equal(claimReviewStatus({ ...reviewed, nextReviewAt: "yesterday" }, [], now).state, "dates_need_verification");
-		for (const date of ["today", "09/12/2026", "2026-02-30", "2026-13-01", new Date(Number.NaN)]) assert.equal(recordedDate(date), undefined);
+		for (const date of [
+			"today",
+			"09/12/2026",
+			"2026-02-30",
+			"2026-13-01",
+			new Date(Number.NaN)
+		]) assert.equal(recordedDate(date), undefined);
 	});
 	it("reports partial source-check coverage and its oldest date instead of implying all sources were just checked", () => {
-		const result = claimReviewStatus(reviewed, [{ citationCheckedAt: "2025-01-01" }, { citationCheckedAt: now }, {}, { citationCheckedAt: "2030-01-01" }, { citationCheckedAt: "bad" }], now);
-		assert.deepEqual(result.sourceChecks, { total: 5, recorded: 2, oldest: "2025-01-01T00:00:00.000Z", latest: now.toISOString() });
+		const result = claimReviewStatus(reviewed, [
+			{ citationCheckedAt: "2025-01-01" },
+			{ citationCheckedAt: now },
+			{},
+			{ citationCheckedAt: "2030-01-01" },
+			{ citationCheckedAt: "bad" }
+		], now);
+		assert.deepEqual(result.sourceChecks, {
+			total: 5,
+			recorded: 2,
+			oldest: "2025-01-01T00:00:00.000Z",
+			latest: now.toISOString()
+		});
 	});
 	it("serializes public status without reviewer identifiers or arbitrary private properties", () => {
-		const record = new Claim({ ...reviewed, reviewedBy: "507f1f77bcf86cd799439011", title: "Fixture", slug: "fixture" });
+		const record = new Claim({
+			...reviewed,
+			reviewedBy: "507f1f77bcf86cd799439011",
+			title: "Fixture",
+			slug: "fixture"
+		});
 		const result = toPublicClaim(record.toObject());
 		assert.equal(result.reviewStatus.basis, "editorial_review");
 		assert.equal("reviewedBy" in result, false);
@@ -63,18 +100,24 @@ describe("review status without false freshness", () => {
 
 describe("seed review dates", () => {
 	it("uses the dated record even when imported later and ignores a newer cosmetic update", () => {
-		const dates = seedReviewDates({ changeLog: [
-			{ kind: "publication", date: "2020-01-01T12:00:00Z", summary: "Published" },
-			{ kind: "review", date: "2021-02-01T12:00:00Z", summary: "Reviewed" },
-			{ kind: "update", date: "2026-09-12T12:00:00Z", summary: "Formatting only" }
-		] });
+		const dates = seedReviewDates({
+			changeLog: [
+				{ kind: "publication", date: "2020-01-01T12:00:00Z", summary: "Published" },
+				{ kind: "review", date: "2021-02-01T12:00:00Z", summary: "Reviewed" },
+				{ kind: "update", date: "2026-09-12T12:00:00Z", summary: "Formatting only" }
+			]
+		});
 		assert.equal(dates.lastReviewedAt?.toISOString(), "2021-02-01T12:00:00.000Z");
 		assert.equal(dates.reviewDateBasis, "source_record");
 		assert.equal(dates.nextReviewAt?.toISOString(), "2021-07-31T12:00:00.000Z");
 	});
 	it("leaves absent or malformed records undated", () => {
 		assert.deepEqual(seedReviewDates({ changeLog: [] }), {});
-		assert.deepEqual(seedReviewDates({ changeLog: [{ kind: "review", date: "today", summary: "Unverified" }] }), {});
+		assert.deepEqual(seedReviewDates({
+			changeLog: [
+				{ kind: "review", date: "today", summary: "Unverified" }
+			]
+		}), {});
 	});
 	it("supports every current seed without using import time or asserting expert review", () => {
 		for (const claim of defaultClaims) {

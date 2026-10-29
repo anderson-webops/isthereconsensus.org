@@ -81,7 +81,8 @@ const fallbackTopics: Topic[] = [
 const { data: topicsData } = await useAsyncData("home-topics", async () => {
 	try {
 		return await $fetch<TopicResponse>(apiUrl("/topics?includeCounts=true&includeClaims=true"));
-	} catch {
+	}
+	catch {
 		return { topics: fallbackTopics };
 	}
 });
@@ -89,19 +90,23 @@ const { data: topicsData } = await useAsyncData("home-topics", async () => {
 const topics = computed<Topic[]>(() => topicsData.value?.topics ?? []);
 const enrichedTopics = computed(() =>
 	topics.value
-		.map((topic) => ({
+		.map(topic => ({
 			...topic,
 			guide: getTopicGuide(topic.slug)
 		}))
 		.sort((left, right) => {
 			const leftIndex = starterOrder.indexOf(left.slug);
 			const rightIndex = starterOrder.indexOf(right.slug);
-			const leftRank = leftIndex === -1 ? starterOrder.length : leftIndex;
-			const rightRank = rightIndex === -1 ? starterOrder.length : rightIndex;
+			const leftRank = leftIndex === -1
+				? starterOrder.length
+				: leftIndex;
+			const rightRank = rightIndex === -1
+				? starterOrder.length
+				: rightIndex;
 			return (
-				leftRank - rightRank ||
-				(right.claimCount ?? 0) - (left.claimCount ?? 0) ||
-				left.title.localeCompare(right.title)
+				leftRank - rightRank
+				|| (right.claimCount ?? 0) - (left.claimCount ?? 0)
+				|| left.title.localeCompare(right.title)
 			);
 		})
 );
@@ -114,10 +119,10 @@ const explainerSuggestions = computed(() => matchExplainers(searchQuery.value).s
 const comparisonSuggestions = computed(() => searchComparisons(searchQuery.value));
 const hasSuggestions = computed(() =>
 	Boolean(
-		claimSuggestions.value.length ||
-		topicSuggestions.value.length ||
-		explainerSuggestions.value.length ||
-		comparisonSuggestions.value.length
+		claimSuggestions.value.length
+		|| topicSuggestions.value.length
+		|| explainerSuggestions.value.length
+		|| comparisonSuggestions.value.length
 	)
 );
 const showNoCloseMatch = computed(
@@ -127,10 +132,10 @@ const askSearchLink = computed(() => ({
 	path: "/ask",
 	query: { question: searchQuery.value }
 }));
-const legendTones = VERDICT_TONE_ORDER.filter((tone) => tone !== "against");
+const legendTones = VERDICT_TONE_ORDER.filter(tone => tone !== "against");
 const recentClaimCandidates = computed(() =>
-	enrichedTopics.value.flatMap((topic) =>
-		(topic.featuredClaims ?? []).map((claim) => ({
+	enrichedTopics.value.flatMap(topic =>
+		(topic.featuredClaims ?? []).map(claim => ({
 			...claim,
 			topic
 		}))
@@ -186,13 +191,13 @@ useHead({
 			innerHTML: serializeJsonLd({
 				"@context": "https://schema.org",
 				"@type": "FAQPage",
-				mainEntity: faqEntries.map((entry) => ({
+				"mainEntity": faqEntries.map(entry => ({
 					"@type": "Question",
-					acceptedAnswer: {
+					"acceptedAnswer": {
 						"@type": "Answer",
-						text: entry.answer
+						"text": entry.answer
 					},
-					name: entry.question
+					"name": entry.question
 				}))
 			}),
 			key: "faq-jsonld",
@@ -231,11 +236,13 @@ async function loadSuggestions(value: string) {
 			signal: request.signal
 		});
 		if (request.isCurrent()) suggestions.value = result;
-	} catch {
+	}
+	catch {
 		if (!request.isCurrent()) return;
 		suggestions.value = { claims: [], topics: [], questions: [] };
 		suggestionError.value = "Suggestion lookup is unavailable right now.";
-	} finally {
+	}
+	finally {
 		if (request.isCurrent()) loadingSuggestions.value = false;
 	}
 }
@@ -244,7 +251,10 @@ watchDebounced(searchQuery, loadSuggestions, settledSearchWatchOptions);
 function submitSearch() {
 	const query = searchQuery.value;
 	if (query && (loadingSuggestions.value || suggestionError.value)) {
-		router.push({ path: "/consensus", query: { q: query } });
+		router.push({
+			path: "/consensus",
+			query: { q: query }
+		});
 		return;
 	}
 	router.push(
@@ -291,20 +301,24 @@ function claimCardSummary(claim: ClaimSummary) {
 							v-model="search"
 							type="text"
 							placeholder="Try vaccines, climate, or GMOs"
-						/>
+						>
 						<button class="button button--primary" type="submit" aria-label="Search">
 							<span class="i-carbon-search search-panel__search-icon" aria-hidden="true" />
 							<span class="search-panel__button-label">Search</span>
 						</button>
 					</div>
-					<p v-if="suggestionError" class="search-panel__hint">{{ suggestionError }}</p>
+					<p v-if="suggestionError" class="search-panel__hint">
+						{{ suggestionError }}
+					</p>
 					<div v-else-if="loadingSuggestions && searchQuery.length >= 3" class="search-panel__hint">
 						Checking reviewed pages...
 					</div>
 
 					<div v-if="hasSuggestions" class="suggestion-groups">
 						<div v-if="claimSuggestions.length" class="suggestion-group">
-							<p class="suggestion-group__label">Claim reviews</p>
+							<p class="suggestion-group__label">
+								Claim reviews
+							</p>
 							<ul class="suggestion-list">
 								<li v-for="claim in claimSuggestions" :key="claim._id">
 									<NuxtLink :to="`/consensus/${claim.topic?.slug}/${claim.slug}`">
@@ -318,7 +332,9 @@ function claimCardSummary(claim: ClaimSummary) {
 						</div>
 
 						<div v-if="topicSuggestions.length" class="suggestion-group">
-							<p class="suggestion-group__label">Topics</p>
+							<p class="suggestion-group__label">
+								Topics
+							</p>
 							<ul class="suggestion-list">
 								<li v-for="topic in topicSuggestions" :key="topic._id">
 									<NuxtLink :to="`/consensus/${topic.slug}`">
@@ -330,7 +346,9 @@ function claimCardSummary(claim: ClaimSummary) {
 						</div>
 
 						<div v-if="comparisonSuggestions.length" class="suggestion-group comparison-suggestions">
-							<p class="suggestion-group__label">Practical comparisons</p>
+							<p class="suggestion-group__label">
+								Practical comparisons
+							</p>
 							<ul class="suggestion-list">
 								<li v-for="comparison in comparisonSuggestions" :key="comparison.slug">
 									<NuxtLink :to="`/compare/${comparison.slug}`">{{ comparison.title }}</NuxtLink>
@@ -338,7 +356,9 @@ function claimCardSummary(claim: ClaimSummary) {
 							</ul>
 						</div>
 						<div v-if="explainerSuggestions.length" class="suggestion-group">
-							<p class="suggestion-group__label">Explain concepts</p>
+							<p class="suggestion-group__label">
+								Explain concepts
+							</p>
 							<ul class="suggestion-list">
 								<li v-for="item in explainerSuggestions" :key="item.slug">
 									<NuxtLink :to="`/explainers/${item.slug}`">

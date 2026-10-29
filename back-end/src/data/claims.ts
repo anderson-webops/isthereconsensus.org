@@ -74,8 +74,10 @@ interface SeedClaimChangeLogEntry {
 }
 
 export interface SeedClaim {
-	// Explicit, stable publication metadata for source-controlled releases.
-	// Never derive announcements from startup time or legacy change logs.
+	/**
+	 * Explicit, stable publication metadata for source-controlled releases.
+	 * Never derive announcements from startup time or legacy change logs.
+	 */
 	readerAnnouncement?: Omit<IReaderUpdate, "date"> & { date: string };
 	topicSlug: string;
 	title: string;
@@ -154,98 +156,237 @@ function inferEvidenceCertainty(confidenceScore: number): ClaimEvidenceCertainty
 }
 
 function defaultSearchDatabases(topicSlug: string) {
-	if (topicSlug === "active-debates") {
-		return ["Web of Science", "PubMed and trial registries", "Scopus", "OpenAlex and Crossref"];
+	switch (topicSlug) {
+		case "active-debates": {
+			return [
+				"Web of Science",
+				"PubMed and trial registries",
+				"Scopus",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "biology-and-evolution":
+		case "human-origins-and-paleontology": {
+			return [
+				"Web of Science",
+				"PubMed",
+				"OpenAlex and Crossref",
+				"Genomic, phylogenetic, and natural-history repositories"
+			];
+		}
+		case "consensus-foundations": {
+			return [
+				"Web of Science",
+				"PsycINFO",
+				"PubMed",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "media-misinformation": {
+			return [
+				"Communication & Mass Media Complete",
+				"PsycINFO",
+				"Web of Science",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "bias-incentives": {
+			return [
+				"Web of Science",
+				"PubMed",
+				"OpenAlex and Crossref",
+				"Retraction Watch and publisher notices"
+			];
+		}
+		case "science-communication": {
+			return [
+				"Communication & Mass Media Complete",
+				"PsycINFO",
+				"PubMed",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "education-and-learning": {
+			return [
+				"ERIC",
+				"PsycINFO",
+				"OpenAlex",
+				"Crossref"
+			];
+		}
+		case "sleep-and-circadian-health": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"OpenAlex",
+				"Crossref"
+			];
+		}
+		case "exercise-and-sports-science":
+		case "sports-nutrition-and-supplements": {
+			return [
+				"PubMed",
+				"SPORTDiscus",
+				"OpenAlex",
+				"Crossref"
+			];
+		}
+		case "infection-immunity-and-vaccines": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"ClinicalTrials.gov",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "mental-health-and-treatment": {
+			return [
+				"PubMed",
+				"PsycINFO",
+				"Cochrane Library and ClinicalTrials.gov",
+				"OpenAlex and Crossref"
+			];
+		}
+		case "reproductive-and-sexual-health": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"ClinicalTrials.gov",
+				"WHO, CDC, ACOG, and ASRM guidance"
+			];
+		}
+		case "aging-and-longevity": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"ClinicalTrials.gov",
+				"NIH / NIA, OpenAlex, and Crossref"
+			];
+		}
+		case "cancer-prevention-and-care": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"ClinicalTrials.gov",
+				"NCI, USPSTF, OpenAlex, and Crossref"
+			];
+		}
+		case "cardiovascular-metabolic-and-kidney-health": {
+			return [
+				"PubMed",
+				"Cochrane Library",
+				"ClinicalTrials.gov",
+				"AHA / ACC, KDIGO, ADA, OpenAlex, and Crossref"
+			];
+		}
+		case "substance-use-and-addiction": {
+			return [
+				"PubMed",
+				"PsycINFO",
+				"Cochrane Library and ClinicalTrials.gov",
+				"SAMHSA, CDC, ASAM, OpenAlex, and Crossref"
+			];
+		}
+		case "crime-and-justice": {
+			return [
+				"Campbell Library",
+				"National Criminal Justice Reference Service",
+				"OpenAlex",
+				"Crossref"
+			];
+		}
+		case "astronomy-and-space": {
+			return [
+				"NASA ADS",
+				"OpenAlex",
+				"Crossref",
+				"NASA and ESA mission archives"
+			];
+		}
+		case "earth-and-geoscience": {
+			return [
+				"GeoRef",
+				"OpenAlex",
+				"Crossref",
+				"U.S. Geological Survey"
+			];
+		}
+		case "ecology-and-conservation": {
+			return [
+				"Web of Science",
+				"OpenAlex",
+				"Crossref",
+				"IPBES and IUCN assessments"
+			];
+		}
+		case "energy-and-infrastructure": {
+			return [
+				"Scopus",
+				"OpenAlex",
+				"Crossref",
+				"IPCC, IEA, DOE, and national-laboratory assessments"
+			];
+		}
+		case "agriculture-and-food-systems": {
+			return [
+				"CAB Abstracts",
+				"AGRIS",
+				"Web of Science",
+				"FAO and WHO assessments"
+			];
+		}
+		case "oceans-and-marine-science": {
+			return [
+				"Web of Science",
+				"OpenAlex",
+				"Crossref",
+				"IPCC, NOAA, FAO, and UNEP assessments"
+			];
+		}
+		case "physics-and-chemistry": {
+			return [
+				"Web of Science",
+				"OpenAlex",
+				"Crossref",
+				"NIST and national-laboratory archives"
+			];
+		}
+		case "economics-and-social-policy": {
+			return [
+				"EconLit",
+				"NBER",
+				"OpenAlex",
+				"National Academies and multilateral reviews"
+			];
+		}
+		case "health-and-medicine":
+		case "nutrition-and-diet":
+		case "neuroscience-and-psychology": {
+			return ["PubMed", "OpenAlex", "Crossref"];
+		}
+		case "climate-and-environment": {
+			return ["OpenAlex", "Crossref", "IPCC assessment reports"];
+		}
+		case "historical-case-studies": {
+			return [
+				"JSTOR and HathiTrust",
+				"PubMed",
+				"OpenAlex and Crossref",
+				"Official scientific and policy archives"
+			];
+		}
+		case "public-policy-and-safety": {
+			return [
+				"Campbell Library",
+				"Cochrane Library",
+				"PubMed",
+				"The Community Guide and official program evaluations"
+			];
+		}
+		default: {
+			return ["OpenAlex", "Crossref", "Major institutional reports"];
+		}
 	}
-	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
-		return ["Web of Science", "PubMed", "OpenAlex and Crossref", "Genomic, phylogenetic, and natural-history repositories"];
-	}
-	if (topicSlug === "consensus-foundations") {
-		return ["Web of Science", "PsycINFO", "PubMed", "OpenAlex and Crossref"];
-	}
-	if (topicSlug === "media-misinformation") {
-		return ["Communication & Mass Media Complete", "PsycINFO", "Web of Science", "OpenAlex and Crossref"];
-	}
-	if (topicSlug === "bias-incentives") {
-		return ["Web of Science", "PubMed", "OpenAlex and Crossref", "Retraction Watch and publisher notices"];
-	}
-	if (topicSlug === "science-communication") {
-		return ["Communication & Mass Media Complete", "PsycINFO", "PubMed", "OpenAlex and Crossref"];
-	}
-	if (topicSlug === "education-and-learning") {
-		return ["ERIC", "PsycINFO", "OpenAlex", "Crossref"];
-	}
-	if (topicSlug === "sleep-and-circadian-health") {
-		return ["PubMed", "Cochrane Library", "OpenAlex", "Crossref"];
-	}
-	if (topicSlug === "exercise-and-sports-science" || topicSlug === "sports-nutrition-and-supplements") {
-		return ["PubMed", "SPORTDiscus", "OpenAlex", "Crossref"];
-	}
-	if (topicSlug === "infection-immunity-and-vaccines") {
-		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "OpenAlex and Crossref"];
-	}
-	if (topicSlug === "mental-health-and-treatment") {
-		return ["PubMed", "PsycINFO", "Cochrane Library and ClinicalTrials.gov", "OpenAlex and Crossref"];
-	}
-	if (topicSlug === "reproductive-and-sexual-health") {
-		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "WHO, CDC, ACOG, and ASRM guidance"];
-	}
-	if (topicSlug === "aging-and-longevity") {
-		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "NIH / NIA, OpenAlex, and Crossref"];
-	}
-	if (topicSlug === "cancer-prevention-and-care") {
-		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "NCI, USPSTF, OpenAlex, and Crossref"];
-	}
-	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
-		return ["PubMed", "Cochrane Library", "ClinicalTrials.gov", "AHA / ACC, KDIGO, ADA, OpenAlex, and Crossref"];
-	}
-	if (topicSlug === "substance-use-and-addiction") {
-		return ["PubMed", "PsycINFO", "Cochrane Library and ClinicalTrials.gov", "SAMHSA, CDC, ASAM, OpenAlex, and Crossref"];
-	}
-	if (topicSlug === "crime-and-justice") {
-		return ["Campbell Library", "National Criminal Justice Reference Service", "OpenAlex", "Crossref"];
-	}
-	if (topicSlug === "astronomy-and-space") {
-		return ["NASA ADS", "OpenAlex", "Crossref", "NASA and ESA mission archives"];
-	}
-	if (topicSlug === "earth-and-geoscience") {
-		return ["GeoRef", "OpenAlex", "Crossref", "U.S. Geological Survey"];
-	}
-	if (topicSlug === "ecology-and-conservation") {
-		return ["Web of Science", "OpenAlex", "Crossref", "IPBES and IUCN assessments"];
-	}
-	if (topicSlug === "energy-and-infrastructure") {
-		return ["Scopus", "OpenAlex", "Crossref", "IPCC, IEA, DOE, and national-laboratory assessments"];
-	}
-	if (topicSlug === "agriculture-and-food-systems") {
-		return ["CAB Abstracts", "AGRIS", "Web of Science", "FAO and WHO assessments"];
-	}
-	if (topicSlug === "oceans-and-marine-science") {
-		return ["Web of Science", "OpenAlex", "Crossref", "IPCC, NOAA, FAO, and UNEP assessments"];
-	}
-	if (topicSlug === "physics-and-chemistry") {
-		return ["Web of Science", "OpenAlex", "Crossref", "NIST and national-laboratory archives"];
-	}
-	if (topicSlug === "economics-and-social-policy") {
-		return ["EconLit", "NBER", "OpenAlex", "National Academies and multilateral reviews"];
-	}
-	if (
-		topicSlug === "health-and-medicine"
-		|| topicSlug === "nutrition-and-diet"
-		|| topicSlug === "neuroscience-and-psychology"
-	) {
-		return ["PubMed", "OpenAlex", "Crossref"];
-	}
-	if (topicSlug === "climate-and-environment") {
-		return ["OpenAlex", "Crossref", "IPCC assessment reports"];
-	}
-	if (topicSlug === "historical-case-studies") {
-		return ["JSTOR and HathiTrust", "PubMed", "OpenAlex and Crossref", "Official scientific and policy archives"];
-	}
-	if (topicSlug === "public-policy-and-safety") {
-		return ["Campbell Library", "Cochrane Library", "PubMed", "The Community Guide and official program evaluations"];
-	}
-	return ["OpenAlex", "Crossref", "Major institutional reports"];
 }
 
 function defaultSurveillanceCadenceDays(seed: SeedClaim) {
@@ -307,106 +448,111 @@ function defaultIntegrityMonitors(topicSlug: string) {
 }
 
 function defaultGuidelineMonitors(topicSlug: string) {
-	if (topicSlug === "active-debates") {
-		return ["National Academies frontier assessments", "WHO and major regulator updates", "IPCC and field-specific living reviews"];
+	switch (topicSlug) {
+		case "active-debates": {
+			return ["National Academies frontier assessments", "WHO and major regulator updates", "IPCC and field-specific living reviews"];
+		}
+		case "biology-and-evolution":
+		case "human-origins-and-paleontology": {
+			return ["Major evolutionary-biology reviews", "National Academies science-education assessments", "Genomics and taxonomy synthesis updates"];
+		}
+		case "consensus-foundations": {
+			return ["National Academies methods reports", "ASA and major statistical-society statements", "Cochrane methods updates"];
+		}
+		case "media-misinformation": {
+			return ["Major misinformation meta-analysis updates", "Platform transparency and methods reports", "National Academies communication reviews"];
+		}
+		case "bias-incentives": {
+			return ["COPE guidance and cases", "National Academies integrity reviews", "EQUATOR and Registered Reports updates"];
+		}
+		case "science-communication": {
+			return ["National Academies communication reviews", "WHO and CDC risk-communication guidance", "IPDAS evidence updates"];
+		}
+		case "health-and-medicine": {
+			return ["WHO guidance streams", "CDC guidance updates", "Cochrane review updates"];
+		}
+		case "nutrition-and-diet": {
+			return ["Dietary Guidelines for Americans", "WHO nutrition updates", "AHA / ACC updates"];
+		}
+		case "climate-and-environment": {
+			return ["IPCC assessment cycle", "NASA climate indicators", "NOAA climate updates"];
+		}
+		case "genetics-and-biotechnology": {
+			return ["WHO biotechnology guidance", "FAO food-safety updates", "National Academies reviews"];
+		}
+		case "neuroscience-and-psychology": {
+			return ["APA guidance", "NIH / NIMH review updates", "Campbell review updates"];
+		}
+		case "historical-case-studies": {
+			return ["Field-specific retrospective reviews", "National Academies archives", "Public-health archive updates"];
+		}
+		case "public-policy-and-safety": {
+			return ["The Community Guide", "WHO and federal safety guidance", "Campbell and Cochrane review updates"];
+		}
+		case "education-and-learning": {
+			return ["IES and NICHD updates", "Education Endowment Foundation reviews", "Campbell review updates"];
+		}
+		case "sleep-and-circadian-health": {
+			return ["AASM guidance", "NHLBI updates", "Cochrane review updates"];
+		}
+		case "exercise-and-sports-science": {
+			return ["WHO activity guidance", "AAP and ACSM updates", "Major position-statement updates"];
+		}
+		case "sports-nutrition-and-supplements": {
+			return ["IOC and ACSM consensus updates", "Australian Institute of Sport supplement framework", "Major sports-nutrition review updates"];
+		}
+		case "infection-immunity-and-vaccines": {
+			return ["WHO guidance streams", "CDC surveillance and guidance updates", "Cochrane and major living-review updates"];
+		}
+		case "mental-health-and-treatment": {
+			return ["WHO and major psychiatric guideline updates", "NIMH and regulator safety updates", "Cochrane and major living-review updates"];
+		}
+		case "reproductive-and-sexual-health": {
+			return ["WHO and CDC reproductive-health guidance", "ACOG and ASRM practice updates", "Major contraception, fertility, and menopause review updates"];
+		}
+		case "aging-and-longevity": {
+			return ["NIH / NIA healthy-aging updates", "FDA drug and supplement safety updates", "Major gerontology and geroscience review updates"];
+		}
+		case "cancer-prevention-and-care": {
+			return ["NCI and USPSTF cancer guidance", "ASCO, NCCN, and major oncology guideline updates", "Major screening, survivorship, and supportive-care review updates"];
+		}
+		case "cardiovascular-metabolic-and-kidney-health": {
+			return ["AHA / ACC cardiovascular guidance", "KDIGO and ADA kidney-metabolic guidance", "Major cardiovascular and kidney outcome-trial updates"];
+		}
+		case "substance-use-and-addiction": {
+			return ["SAMHSA and CDC treatment and harm-reduction guidance", "ASAM and major addiction guideline updates", "Cochrane and major treatment-outcome review updates"];
+		}
+		case "crime-and-justice": {
+			return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
+		}
+		case "astronomy-and-space": {
+			return ["NASA and ESA mission archives", "Particle Data Group reviews", "National Academies decadal surveys"];
+		}
+		case "earth-and-geoscience": {
+			return ["USGS hazard and monitoring updates", "National Academies reviews", "Major geoscience synthesis updates"];
+		}
+		case "ecology-and-conservation": {
+			return ["IPBES assessment cycle", "IUCN and CBD updates", "Major conservation synthesis updates"];
+		}
+		case "energy-and-infrastructure": {
+			return ["IPCC and IEA assessment cycles", "DOE and national-laboratory updates", "Grid and lifecycle synthesis updates"];
+		}
+		case "agriculture-and-food-systems": {
+			return ["FAO agrifood assessments", "WHO One Health guidance", "Major agricultural meta-analysis updates"];
+		}
+		case "oceans-and-marine-science": {
+			return ["IPCC ocean assessments", "NOAA and FAO observing updates", "UNEP and National Academies marine reviews"];
+		}
+		case "physics-and-chemistry": {
+			return ["NIST standards and measurement updates", "National-laboratory replication reports", "Major field-review and retraction updates"];
+		}
+		case "economics-and-social-policy": {
+			return ["National Academies policy reviews", "Cochrane and Campbell updates", "Major administrative-data and meta-analysis updates"];
+		}
+		default: {
+			return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
+		}
 	}
-	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
-		return ["Major evolutionary-biology reviews", "National Academies science-education assessments", "Genomics and taxonomy synthesis updates"];
-	}
-	if (topicSlug === "consensus-foundations") {
-		return ["National Academies methods reports", "ASA and major statistical-society statements", "Cochrane methods updates"];
-	}
-	if (topicSlug === "media-misinformation") {
-		return ["Major misinformation meta-analysis updates", "Platform transparency and methods reports", "National Academies communication reviews"];
-	}
-	if (topicSlug === "bias-incentives") {
-		return ["COPE guidance and cases", "National Academies integrity reviews", "EQUATOR and Registered Reports updates"];
-	}
-	if (topicSlug === "science-communication") {
-		return ["National Academies communication reviews", "WHO and CDC risk-communication guidance", "IPDAS evidence updates"];
-	}
-	if (topicSlug === "health-and-medicine") {
-		return ["WHO guidance streams", "CDC guidance updates", "Cochrane review updates"];
-	}
-	if (topicSlug === "nutrition-and-diet") {
-		return ["Dietary Guidelines for Americans", "WHO nutrition updates", "AHA / ACC updates"];
-	}
-	if (topicSlug === "climate-and-environment") {
-		return ["IPCC assessment cycle", "NASA climate indicators", "NOAA climate updates"];
-	}
-	if (topicSlug === "genetics-and-biotechnology") {
-		return ["WHO biotechnology guidance", "FAO food-safety updates", "National Academies reviews"];
-	}
-	if (topicSlug === "neuroscience-and-psychology") {
-		return ["APA guidance", "NIH / NIMH review updates", "Campbell review updates"];
-	}
-	if (topicSlug === "historical-case-studies") {
-		return ["Field-specific retrospective reviews", "National Academies archives", "Public-health archive updates"];
-	}
-	if (topicSlug === "public-policy-and-safety") {
-		return ["The Community Guide", "WHO and federal safety guidance", "Campbell and Cochrane review updates"];
-	}
-	if (topicSlug === "education-and-learning") {
-		return ["IES and NICHD updates", "Education Endowment Foundation reviews", "Campbell review updates"];
-	}
-	if (topicSlug === "sleep-and-circadian-health") {
-		return ["AASM guidance", "NHLBI updates", "Cochrane review updates"];
-	}
-	if (topicSlug === "exercise-and-sports-science") {
-		return ["WHO activity guidance", "AAP and ACSM updates", "Major position-statement updates"];
-	}
-	if (topicSlug === "sports-nutrition-and-supplements") {
-		return ["IOC and ACSM consensus updates", "Australian Institute of Sport supplement framework", "Major sports-nutrition review updates"];
-	}
-	if (topicSlug === "infection-immunity-and-vaccines") {
-		return ["WHO guidance streams", "CDC surveillance and guidance updates", "Cochrane and major living-review updates"];
-	}
-	if (topicSlug === "mental-health-and-treatment") {
-		return ["WHO and major psychiatric guideline updates", "NIMH and regulator safety updates", "Cochrane and major living-review updates"];
-	}
-	if (topicSlug === "reproductive-and-sexual-health") {
-		return ["WHO and CDC reproductive-health guidance", "ACOG and ASRM practice updates", "Major contraception, fertility, and menopause review updates"];
-	}
-	if (topicSlug === "aging-and-longevity") {
-		return ["NIH / NIA healthy-aging updates", "FDA drug and supplement safety updates", "Major gerontology and geroscience review updates"];
-	}
-	if (topicSlug === "cancer-prevention-and-care") {
-		return ["NCI and USPSTF cancer guidance", "ASCO, NCCN, and major oncology guideline updates", "Major screening, survivorship, and supportive-care review updates"];
-	}
-	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
-		return ["AHA / ACC cardiovascular guidance", "KDIGO and ADA kidney-metabolic guidance", "Major cardiovascular and kidney outcome-trial updates"];
-	}
-	if (topicSlug === "substance-use-and-addiction") {
-		return ["SAMHSA and CDC treatment and harm-reduction guidance", "ASAM and major addiction guideline updates", "Cochrane and major treatment-outcome review updates"];
-	}
-	if (topicSlug === "crime-and-justice") {
-		return ["National Academies reviews", "NIJ and Community Guide updates", "Campbell review updates"];
-	}
-	if (topicSlug === "astronomy-and-space") {
-		return ["NASA and ESA mission archives", "Particle Data Group reviews", "National Academies decadal surveys"];
-	}
-	if (topicSlug === "earth-and-geoscience") {
-		return ["USGS hazard and monitoring updates", "National Academies reviews", "Major geoscience synthesis updates"];
-	}
-	if (topicSlug === "ecology-and-conservation") {
-		return ["IPBES assessment cycle", "IUCN and CBD updates", "Major conservation synthesis updates"];
-	}
-	if (topicSlug === "energy-and-infrastructure") {
-		return ["IPCC and IEA assessment cycles", "DOE and national-laboratory updates", "Grid and lifecycle synthesis updates"];
-	}
-	if (topicSlug === "agriculture-and-food-systems") {
-		return ["FAO agrifood assessments", "WHO One Health guidance", "Major agricultural meta-analysis updates"];
-	}
-	if (topicSlug === "oceans-and-marine-science") {
-		return ["IPCC ocean assessments", "NOAA and FAO observing updates", "UNEP and National Academies marine reviews"];
-	}
-	if (topicSlug === "physics-and-chemistry") {
-		return ["NIST standards and measurement updates", "National-laboratory replication reports", "Major field-review and retraction updates"];
-	}
-	if (topicSlug === "economics-and-social-policy") {
-		return ["National Academies policy reviews", "Cochrane and Campbell updates", "Major administrative-data and meta-analysis updates"];
-	}
-	return ["Major institutional reviews", "Guideline registries", "Editorial manual review"];
 }
 
 function defaultWatchTerms(seed: SeedClaim) {
@@ -449,244 +595,249 @@ function defaultSurveillanceSpec(seed: SeedClaim): IClaimSurveillanceSpec {
 }
 
 function defaultInstitutionalAnchors(topicSlug: string): IClaimInstitutionalAnchor[] {
-	if (topicSlug === "active-debates") {
-		return [
-			{ name: "National Academies", role: "Independent frontier, technology-readiness, and governance assessment anchor" },
-			{ name: "WHO / major public regulators", role: "Human-health, safety, and phased-evaluation anchor where applicable" },
-			{ name: "Current systematic reviews and pivotal trials", role: "Evidence-maturity and live-disagreement anchor" }
-		];
+	switch (topicSlug) {
+		case "active-debates": {
+			return [
+				{ name: "National Academies", role: "Independent frontier, technology-readiness, and governance assessment anchor" },
+				{ name: "WHO / major public regulators", role: "Human-health, safety, and phased-evaluation anchor where applicable" },
+				{ name: "Current systematic reviews and pivotal trials", role: "Evidence-maturity and live-disagreement anchor" }
+			];
+		}
+		case "biology-and-evolution":
+		case "human-origins-and-paleontology": {
+			return [
+				{ name: "Major evolutionary-biology reviews", role: "Population, genomic, phylogenetic, and experimental synthesis anchor" },
+				{ name: "National Academies", role: "Independent evolution and science-education assessment anchor" },
+				{ name: "Curated genomic and natural-history repositories", role: "Primary comparative and observational evidence anchor" }
+			];
+		}
+		case "consensus-foundations": {
+			return [
+				{ name: "National Academies", role: "Scientific methods, replication, and evidence-synthesis anchor" },
+				{ name: "Cochrane Methods", role: "Systematic-review and risk-of-bias methods anchor" },
+				{ name: "American Statistical Association", role: "Statistical interpretation and practice-statement anchor" }
+			];
+		}
+		case "media-misinformation": {
+			return [
+				{ name: "National Academies", role: "Independent science-communication and information-system assessment anchor" },
+				{ name: "Major misinformation meta-analyses", role: "Belief, correction, sharing, and intervention synthesis anchor" },
+				{ name: "Audited platform and survey data", role: "Real-world exposure, diffusion, and selection anchor" }
+			];
+		}
+		case "bias-incentives": {
+			return [
+				{ name: "National Academies", role: "Research-integrity system assessment anchor" },
+				{ name: "Committee on Publication Ethics", role: "Correction, retraction, and publication-practice anchor" },
+				{ name: "EQUATOR Network / Center for Open Science", role: "Reporting, registration, and transparency-practice anchor" }
+			];
+		}
+		case "science-communication": {
+			return [
+				{ name: "National Academies", role: "Science-communication research and goal-setting anchor" },
+				{ name: "World Health Organization", role: "Risk and emergency communication guidance anchor" },
+				{ name: "Centers for Disease Control and Prevention", role: "Plain-language and public-information design anchor" }
+			];
+		}
+		case "health-and-medicine": {
+			return [
+				{ name: "World Health Organization", role: "Global public-health guideline anchor" },
+				{
+					name: "Centers for Disease Control and Prevention",
+					role: "Current U.S. implementation and safety anchor"
+				},
+				{ name: "Cochrane", role: "Evidence-synthesis anchor for intervention questions" }
+			];
+		}
+		case "nutrition-and-diet": {
+			return [
+				{ name: "Dietary Guidelines for Americans", role: "Structured nutrition evidence-review anchor" },
+				{ name: "World Health Organization", role: "Global nutrition guidance anchor" },
+				{ name: "American Heart Association", role: "Cardiometabolic risk interpretation anchor" }
+			];
+		}
+		case "climate-and-environment": {
+			return [
+				{ name: "IPCC", role: "Primary climate assessment anchor" },
+				{ name: "NASA", role: "Observational climate evidence anchor" },
+				{ name: "NOAA", role: "Attribution, trends, and indicator anchor" }
+			];
+		}
+		case "genetics-and-biotechnology": {
+			return [
+				{ name: "World Health Organization", role: "Public-health and biotechnology governance anchor" },
+				{ name: "FAO", role: "Food and agricultural safety anchor" },
+				{ name: "National Academies", role: "Independent risk and evidence review anchor" }
+			];
+		}
+		case "neuroscience-and-psychology": {
+			return [
+				{ name: "American Psychological Association", role: "Professional practice and evidence-synthesis anchor" },
+				{ name: "NIH / NIMH", role: "Research and review anchor for brain and mental-health claims" },
+				{ name: "Campbell Collaboration", role: "Intervention-review anchor for social and behavioral claims" }
+			];
+		}
+		case "historical-case-studies": {
+			return [
+				{ name: "National Academies", role: "Retrospective evidence and policy-review anchor" },
+				{ name: "CDC / Surgeon General archives", role: "Public-health record anchor where relevant" },
+				{ name: "Major field-specific reviews", role: "Historical synthesis anchor for how the consensus shifted" }
+			];
+		}
+		case "public-policy-and-safety": {
+			return [
+				{ name: "The Community Guide", role: "Population-intervention evidence anchor" },
+				{ name: "Centers for Disease Control and Prevention", role: "Current U.S. prevention guidance anchor" },
+				{ name: "Cochrane / Campbell Collaboration", role: "Independent policy and intervention review anchor" }
+			];
+		}
+		case "education-and-learning": {
+			return [
+				{ name: "Institute of Education Sciences", role: "U.S. education evidence and practice anchor" },
+				{ name: "Education Endowment Foundation", role: "Teaching-intervention synthesis anchor" },
+				{ name: "Campbell Collaboration", role: "Independent education-review anchor" }
+			];
+		}
+		case "sleep-and-circadian-health": {
+			return [
+				{ name: "American Academy of Sleep Medicine", role: "Clinical sleep guidance anchor" },
+				{ name: "National Heart, Lung, and Blood Institute", role: "Public-health and circadian evidence anchor" },
+				{ name: "Cochrane", role: "Sleep-intervention evidence-synthesis anchor" }
+			];
+		}
+		case "exercise-and-sports-science": {
+			return [
+				{ name: "World Health Organization", role: "Global physical-activity guidance anchor" },
+				{ name: "American Academy of Pediatrics", role: "Youth activity and training safety anchor" },
+				{ name: "American College of Sports Medicine", role: "Exercise-science guidance anchor" }
+			];
+		}
+		case "sports-nutrition-and-supplements": {
+			return [
+				{ name: "International Olympic Committee", role: "Supplement efficacy, safety, and elite-sport consensus anchor" },
+				{ name: "Australian Institute of Sport", role: "Evidence-graded sports-supplement framework anchor" },
+				{ name: "American College of Sports Medicine", role: "Exercise nutrition and performance guidance anchor" }
+			];
+		}
+		case "infection-immunity-and-vaccines": {
+			return [
+				{ name: "World Health Organization", role: "Global infectious-disease and immunization guidance anchor" },
+				{ name: "Centers for Disease Control and Prevention", role: "Current U.S. surveillance and implementation anchor" },
+				{ name: "Cochrane", role: "Independent prevention and treatment evidence-synthesis anchor" }
+			];
+		}
+		case "mental-health-and-treatment": {
+			return [
+				{ name: "World Health Organization", role: "Global mental-health treatment and service guidance anchor" },
+				{ name: "National Institute of Mental Health", role: "Current disorder, treatment, and research-context anchor" },
+				{ name: "Cochrane and major psychiatric reviews", role: "Comparative benefit, harm, and certainty anchor" }
+			];
+		}
+		case "reproductive-and-sexual-health": {
+			return [
+				{ name: "World Health Organization", role: "Global reproductive and sexual-health guidance anchor" },
+				{ name: "CDC / American College of Obstetricians and Gynecologists", role: "Current U.S. contraception and clinical-practice anchor" },
+				{ name: "American Society for Reproductive Medicine / The Menopause Society", role: "Fertility and menopause evidence anchor" }
+			];
+		}
+		case "aging-and-longevity": {
+			return [
+				{ name: "National Institute on Aging", role: "Healthy-aging, function, and geroscience research anchor" },
+				{ name: "Cochrane and major gerontology reviews", role: "Intervention benefit, harm, and certainty anchor" },
+				{ name: "U.S. Food and Drug Administration", role: "Drug, supplement, indication, and safety-status anchor" }
+			];
+		}
+		case "cancer-prevention-and-care": {
+			return [
+				{ name: "National Cancer Institute", role: "Cancer biology, prevention, screening, treatment, and supportive-care anchor" },
+				{ name: "U.S. Preventive Services Task Force", role: "Average-risk screening benefit, harm, and population-boundary anchor" },
+				{ name: "Major oncology guidelines and systematic reviews", role: "Treatment, survivorship, symptom, and outcome-synthesis anchor" }
+			];
+		}
+		case "cardiovascular-metabolic-and-kidney-health": {
+			return [
+				{ name: "American Heart Association / American College of Cardiology", role: "Cardiovascular prevention, diagnosis, and treatment-guidance anchor" },
+				{ name: "Kidney Disease: Improving Global Outcomes", role: "Chronic-kidney-disease classification and treatment anchor" },
+				{ name: "Major randomized outcome trials and systematic reviews", role: "Kidney, metabolic, cardiovascular-event, harm, and certainty anchor" }
+			];
+		}
+		case "substance-use-and-addiction": {
+			return [
+				{ name: "Substance Abuse and Mental Health Services Administration", role: "Treatment access, medication, recovery, and implementation anchor" },
+				{ name: "American Society of Addiction Medicine", role: "Withdrawal, substance-use-disorder, and clinical-practice anchor" },
+				{ name: "Cochrane and major harm-reduction reviews", role: "Treatment, behavior, overdose, implementation, and certainty anchor" }
+			];
+		}
+		case "crime-and-justice": {
+			return [
+				{ name: "National Academies", role: "Independent justice-evidence assessment anchor" },
+				{ name: "National Institute of Justice", role: "U.S. criminal-justice research anchor" },
+				{ name: "Campbell Collaboration", role: "Crime and justice intervention-review anchor" }
+			];
+		}
+		case "astronomy-and-space": {
+			return [
+				{ name: "NASA", role: "Mission, observation, and public evidence archive" },
+				{ name: "European Space Agency", role: "Independent mission and observational anchor" },
+				{ name: "Particle Data Group / National Academies", role: "Field synthesis and frontier-review anchor" }
+			];
+		}
+		case "earth-and-geoscience": {
+			return [
+				{ name: "U.S. Geological Survey", role: "Measurement, hazards, and geologic evidence anchor" },
+				{ name: "National Academies", role: "Independent geoscience assessment anchor" },
+				{ name: "Major peer-reviewed geoscience reviews", role: "Field synthesis and uncertainty anchor" }
+			];
+		}
+		case "ecology-and-conservation": {
+			return [
+				{ name: "IPBES", role: "Global biodiversity assessment anchor" },
+				{ name: "International Union for Conservation of Nature", role: "Species status and conservation-practice anchor" },
+				{ name: "Major conservation meta-analyses", role: "Intervention-effectiveness and uncertainty anchor" }
+			];
+		}
+		case "energy-and-infrastructure": {
+			return [
+				{ name: "Intergovernmental Panel on Climate Change", role: "Lifecycle and energy-system assessment anchor" },
+				{ name: "International Energy Agency", role: "Technology, deployment, and energy-market synthesis anchor" },
+				{ name: "U.S. Department of Energy / national laboratories", role: "Operational research and infrastructure evidence anchor" }
+			];
+		}
+		case "agriculture-and-food-systems": {
+			return [
+				{ name: "Food and Agriculture Organization of the United Nations", role: "Agrifood systems and nutrient assessment anchor" },
+				{ name: "World Health Organization", role: "Food safety and One Health guidance anchor" },
+				{ name: "Major agricultural meta-analyses", role: "Practice, yield, soil, and ecosystem-effect anchor" }
+			];
+		}
+		case "oceans-and-marine-science": {
+			return [
+				{ name: "IPCC / NOAA", role: "Ocean observation, climate, and circulation assessment anchor" },
+				{ name: "FAO / UNEP", role: "Fisheries and marine-pollution assessment anchor" },
+				{ name: "National Academies", role: "Independent marine intervention and governance anchor" }
+			];
+		}
+		case "physics-and-chemistry": {
+			return [
+				{ name: "National Institute of Standards and Technology", role: "Measurement and physical-standards anchor" },
+				{ name: "National laboratories and major collaborations", role: "Experimental and replication anchor" },
+				{ name: "Major field reviews and retraction records", role: "Discovery-status and integrity anchor" }
+			];
+		}
+		case "economics-and-social-policy": {
+			return [
+				{ name: "National Academies", role: "Independent policy-evidence assessment anchor" },
+				{ name: "Cochrane / major systematic reviews", role: "Intervention and outcome synthesis anchor" },
+				{ name: "Administrative and quasi-experimental research", role: "Causal and distributional effect anchor" }
+			];
+		}
+		default: {
+			return [
+				{ name: "National Academies", role: "General evidence-synthesis anchor" },
+				{ name: "Major institutional reviews", role: "Field-specific consensus anchor" }
+			];
+		}
 	}
-	if (topicSlug === "biology-and-evolution" || topicSlug === "human-origins-and-paleontology") {
-		return [
-			{ name: "Major evolutionary-biology reviews", role: "Population, genomic, phylogenetic, and experimental synthesis anchor" },
-			{ name: "National Academies", role: "Independent evolution and science-education assessment anchor" },
-			{ name: "Curated genomic and natural-history repositories", role: "Primary comparative and observational evidence anchor" }
-		];
-	}
-	if (topicSlug === "consensus-foundations") {
-		return [
-			{ name: "National Academies", role: "Scientific methods, replication, and evidence-synthesis anchor" },
-			{ name: "Cochrane Methods", role: "Systematic-review and risk-of-bias methods anchor" },
-			{ name: "American Statistical Association", role: "Statistical interpretation and practice-statement anchor" }
-		];
-	}
-	if (topicSlug === "media-misinformation") {
-		return [
-			{ name: "National Academies", role: "Independent science-communication and information-system assessment anchor" },
-			{ name: "Major misinformation meta-analyses", role: "Belief, correction, sharing, and intervention synthesis anchor" },
-			{ name: "Audited platform and survey data", role: "Real-world exposure, diffusion, and selection anchor" }
-		];
-	}
-	if (topicSlug === "bias-incentives") {
-		return [
-			{ name: "National Academies", role: "Research-integrity system assessment anchor" },
-			{ name: "Committee on Publication Ethics", role: "Correction, retraction, and publication-practice anchor" },
-			{ name: "EQUATOR Network / Center for Open Science", role: "Reporting, registration, and transparency-practice anchor" }
-		];
-	}
-	if (topicSlug === "science-communication") {
-		return [
-			{ name: "National Academies", role: "Science-communication research and goal-setting anchor" },
-			{ name: "World Health Organization", role: "Risk and emergency communication guidance anchor" },
-			{ name: "Centers for Disease Control and Prevention", role: "Plain-language and public-information design anchor" }
-		];
-	}
-	if (topicSlug === "health-and-medicine") {
-		return [
-			{ name: "World Health Organization", role: "Global public-health guideline anchor" },
-			{
-				name: "Centers for Disease Control and Prevention",
-				role: "Current U.S. implementation and safety anchor"
-			},
-			{ name: "Cochrane", role: "Evidence-synthesis anchor for intervention questions" }
-		];
-	}
-	if (topicSlug === "nutrition-and-diet") {
-		return [
-			{ name: "Dietary Guidelines for Americans", role: "Structured nutrition evidence-review anchor" },
-			{ name: "World Health Organization", role: "Global nutrition guidance anchor" },
-			{ name: "American Heart Association", role: "Cardiometabolic risk interpretation anchor" }
-		];
-	}
-	if (topicSlug === "climate-and-environment") {
-		return [
-			{ name: "IPCC", role: "Primary climate assessment anchor" },
-			{ name: "NASA", role: "Observational climate evidence anchor" },
-			{ name: "NOAA", role: "Attribution, trends, and indicator anchor" }
-		];
-	}
-	if (topicSlug === "genetics-and-biotechnology") {
-		return [
-			{ name: "World Health Organization", role: "Public-health and biotechnology governance anchor" },
-			{ name: "FAO", role: "Food and agricultural safety anchor" },
-			{ name: "National Academies", role: "Independent risk and evidence review anchor" }
-		];
-	}
-	if (topicSlug === "neuroscience-and-psychology") {
-		return [
-			{ name: "American Psychological Association", role: "Professional practice and evidence-synthesis anchor" },
-			{ name: "NIH / NIMH", role: "Research and review anchor for brain and mental-health claims" },
-			{ name: "Campbell Collaboration", role: "Intervention-review anchor for social and behavioral claims" }
-		];
-	}
-	if (topicSlug === "historical-case-studies") {
-		return [
-			{ name: "National Academies", role: "Retrospective evidence and policy-review anchor" },
-			{ name: "CDC / Surgeon General archives", role: "Public-health record anchor where relevant" },
-			{ name: "Major field-specific reviews", role: "Historical synthesis anchor for how the consensus shifted" }
-		];
-	}
-	if (topicSlug === "public-policy-and-safety") {
-		return [
-			{ name: "The Community Guide", role: "Population-intervention evidence anchor" },
-			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. prevention guidance anchor" },
-			{ name: "Cochrane / Campbell Collaboration", role: "Independent policy and intervention review anchor" }
-		];
-	}
-	if (topicSlug === "education-and-learning") {
-		return [
-			{ name: "Institute of Education Sciences", role: "U.S. education evidence and practice anchor" },
-			{ name: "Education Endowment Foundation", role: "Teaching-intervention synthesis anchor" },
-			{ name: "Campbell Collaboration", role: "Independent education-review anchor" }
-		];
-	}
-	if (topicSlug === "sleep-and-circadian-health") {
-		return [
-			{ name: "American Academy of Sleep Medicine", role: "Clinical sleep guidance anchor" },
-			{ name: "National Heart, Lung, and Blood Institute", role: "Public-health and circadian evidence anchor" },
-			{ name: "Cochrane", role: "Sleep-intervention evidence-synthesis anchor" }
-		];
-	}
-	if (topicSlug === "exercise-and-sports-science") {
-		return [
-			{ name: "World Health Organization", role: "Global physical-activity guidance anchor" },
-			{ name: "American Academy of Pediatrics", role: "Youth activity and training safety anchor" },
-			{ name: "American College of Sports Medicine", role: "Exercise-science guidance anchor" }
-		];
-	}
-	if (topicSlug === "sports-nutrition-and-supplements") {
-		return [
-			{ name: "International Olympic Committee", role: "Supplement efficacy, safety, and elite-sport consensus anchor" },
-			{ name: "Australian Institute of Sport", role: "Evidence-graded sports-supplement framework anchor" },
-			{ name: "American College of Sports Medicine", role: "Exercise nutrition and performance guidance anchor" }
-		];
-	}
-	if (topicSlug === "infection-immunity-and-vaccines") {
-		return [
-			{ name: "World Health Organization", role: "Global infectious-disease and immunization guidance anchor" },
-			{ name: "Centers for Disease Control and Prevention", role: "Current U.S. surveillance and implementation anchor" },
-			{ name: "Cochrane", role: "Independent prevention and treatment evidence-synthesis anchor" }
-		];
-	}
-	if (topicSlug === "mental-health-and-treatment") {
-		return [
-			{ name: "World Health Organization", role: "Global mental-health treatment and service guidance anchor" },
-			{ name: "National Institute of Mental Health", role: "Current disorder, treatment, and research-context anchor" },
-			{ name: "Cochrane and major psychiatric reviews", role: "Comparative benefit, harm, and certainty anchor" }
-		];
-	}
-	if (topicSlug === "reproductive-and-sexual-health") {
-		return [
-			{ name: "World Health Organization", role: "Global reproductive and sexual-health guidance anchor" },
-			{ name: "CDC / American College of Obstetricians and Gynecologists", role: "Current U.S. contraception and clinical-practice anchor" },
-			{ name: "American Society for Reproductive Medicine / The Menopause Society", role: "Fertility and menopause evidence anchor" }
-		];
-	}
-	if (topicSlug === "aging-and-longevity") {
-		return [
-			{ name: "National Institute on Aging", role: "Healthy-aging, function, and geroscience research anchor" },
-			{ name: "Cochrane and major gerontology reviews", role: "Intervention benefit, harm, and certainty anchor" },
-			{ name: "U.S. Food and Drug Administration", role: "Drug, supplement, indication, and safety-status anchor" }
-		];
-	}
-	if (topicSlug === "cancer-prevention-and-care") {
-		return [
-			{ name: "National Cancer Institute", role: "Cancer biology, prevention, screening, treatment, and supportive-care anchor" },
-			{ name: "U.S. Preventive Services Task Force", role: "Average-risk screening benefit, harm, and population-boundary anchor" },
-			{ name: "Major oncology guidelines and systematic reviews", role: "Treatment, survivorship, symptom, and outcome-synthesis anchor" }
-		];
-	}
-	if (topicSlug === "cardiovascular-metabolic-and-kidney-health") {
-		return [
-			{ name: "American Heart Association / American College of Cardiology", role: "Cardiovascular prevention, diagnosis, and treatment-guidance anchor" },
-			{ name: "Kidney Disease: Improving Global Outcomes", role: "Chronic-kidney-disease classification and treatment anchor" },
-			{ name: "Major randomized outcome trials and systematic reviews", role: "Kidney, metabolic, cardiovascular-event, harm, and certainty anchor" }
-		];
-	}
-	if (topicSlug === "substance-use-and-addiction") {
-		return [
-			{ name: "Substance Abuse and Mental Health Services Administration", role: "Treatment access, medication, recovery, and implementation anchor" },
-			{ name: "American Society of Addiction Medicine", role: "Withdrawal, substance-use-disorder, and clinical-practice anchor" },
-			{ name: "Cochrane and major harm-reduction reviews", role: "Treatment, behavior, overdose, implementation, and certainty anchor" }
-		];
-	}
-	if (topicSlug === "crime-and-justice") {
-		return [
-			{ name: "National Academies", role: "Independent justice-evidence assessment anchor" },
-			{ name: "National Institute of Justice", role: "U.S. criminal-justice research anchor" },
-			{ name: "Campbell Collaboration", role: "Crime and justice intervention-review anchor" }
-		];
-	}
-	if (topicSlug === "astronomy-and-space") {
-		return [
-			{ name: "NASA", role: "Mission, observation, and public evidence archive" },
-			{ name: "European Space Agency", role: "Independent mission and observational anchor" },
-			{ name: "Particle Data Group / National Academies", role: "Field synthesis and frontier-review anchor" }
-		];
-	}
-	if (topicSlug === "earth-and-geoscience") {
-		return [
-			{ name: "U.S. Geological Survey", role: "Measurement, hazards, and geologic evidence anchor" },
-			{ name: "National Academies", role: "Independent geoscience assessment anchor" },
-			{ name: "Major peer-reviewed geoscience reviews", role: "Field synthesis and uncertainty anchor" }
-		];
-	}
-	if (topicSlug === "ecology-and-conservation") {
-		return [
-			{ name: "IPBES", role: "Global biodiversity assessment anchor" },
-			{ name: "International Union for Conservation of Nature", role: "Species status and conservation-practice anchor" },
-			{ name: "Major conservation meta-analyses", role: "Intervention-effectiveness and uncertainty anchor" }
-		];
-	}
-	if (topicSlug === "energy-and-infrastructure") {
-		return [
-			{ name: "Intergovernmental Panel on Climate Change", role: "Lifecycle and energy-system assessment anchor" },
-			{ name: "International Energy Agency", role: "Technology, deployment, and energy-market synthesis anchor" },
-			{ name: "U.S. Department of Energy / national laboratories", role: "Operational research and infrastructure evidence anchor" }
-		];
-	}
-	if (topicSlug === "agriculture-and-food-systems") {
-		return [
-			{ name: "Food and Agriculture Organization of the United Nations", role: "Agrifood systems and nutrient assessment anchor" },
-			{ name: "World Health Organization", role: "Food safety and One Health guidance anchor" },
-			{ name: "Major agricultural meta-analyses", role: "Practice, yield, soil, and ecosystem-effect anchor" }
-		];
-	}
-	if (topicSlug === "oceans-and-marine-science") {
-		return [
-			{ name: "IPCC / NOAA", role: "Ocean observation, climate, and circulation assessment anchor" },
-			{ name: "FAO / UNEP", role: "Fisheries and marine-pollution assessment anchor" },
-			{ name: "National Academies", role: "Independent marine intervention and governance anchor" }
-		];
-	}
-	if (topicSlug === "physics-and-chemistry") {
-		return [
-			{ name: "National Institute of Standards and Technology", role: "Measurement and physical-standards anchor" },
-			{ name: "National laboratories and major collaborations", role: "Experimental and replication anchor" },
-			{ name: "Major field reviews and retraction records", role: "Discovery-status and integrity anchor" }
-		];
-	}
-	if (topicSlug === "economics-and-social-policy") {
-		return [
-			{ name: "National Academies", role: "Independent policy-evidence assessment anchor" },
-			{ name: "Cochrane / major systematic reviews", role: "Intervention and outcome synthesis anchor" },
-			{ name: "Administrative and quasi-experimental research", role: "Causal and distributional effect anchor" }
-		];
-	}
-	return [
-		{ name: "National Academies", role: "General evidence-synthesis anchor" },
-		{ name: "Major institutional reviews", role: "Field-specific consensus anchor" }
-	];
 }
 
 function inferEffectDirection(consensusBand: ClaimConsensusBand): ClaimEvidenceDirection {
@@ -842,118 +993,151 @@ function defaultSourceAppraisal(kind: ClaimSourceKind): ClaimSourceAppraisal {
 	return "not_appraised";
 }
 
+const defaultMisconceptionTopicRules = [
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "active-debates"),
+		tags: [
+			"uncertainty-isnt-ignorance",
+			"mechanism-is-not-real-world-effect",
+			"one-study-doesnt-overturn-evidence",
+			"preprints-are-preliminary",
+			"hazard-is-not-the-same-as-risk"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "biology-and-evolution" || seed.topicSlug === "human-origins-and-paleontology"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"uncertainty-isnt-ignorance",
+			"mechanism-is-not-real-world-effect"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "health-and-medicine"
+			|| seed.topicSlug === "infection-immunity-and-vaccines"
+			|| seed.topicSlug === "mental-health-and-treatment"
+			|| seed.topicSlug === "reproductive-and-sexual-health"
+			|| seed.topicSlug === "aging-and-longevity"
+			|| seed.topicSlug === "cancer-prevention-and-care"
+			|| seed.topicSlug === "cardiovascular-metabolic-and-kidney-health"
+			|| seed.topicSlug === "substance-use-and-addiction"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"relative-risk-can-mislead",
+			"anecdotes-are-not-population-evidence",
+			"mechanism-is-not-real-world-effect",
+			"scientists-changing-their-minds-is-normal"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "mental-health-and-treatment"),
+		tags: ["correlation-isnt-causation", "p-values-are-not-the-whole-story"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "reproductive-and-sexual-health"),
+		tags: ["correlation-isnt-causation", "hazard-is-not-the-same-as-risk"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "aging-and-longevity"),
+		tags: ["correlation-isnt-causation", "preprints-are-preliminary"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "cancer-prevention-and-care"),
+		tags: ["hazard-is-not-the-same-as-risk", "cherry-picking-distorts-the-evidence"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "cardiovascular-metabolic-and-kidney-health"),
+		tags: ["correlation-isnt-causation", "p-values-are-not-the-whole-story"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "substance-use-and-addiction"),
+		tags: ["correlation-isnt-causation", "uncertainty-isnt-ignorance"]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "nutrition-and-diet"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"correlation-isnt-causation",
+			"relative-risk-can-mislead",
+			"cherry-picking-distorts-the-evidence",
+			"mechanism-is-not-real-world-effect",
+			"hazard-is-not-the-same-as-risk"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "sports-nutrition-and-supplements"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"mechanism-is-not-real-world-effect",
+			"relative-risk-can-mislead",
+			"cherry-picking-distorts-the-evidence"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "climate-and-environment"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"false-balance-misleads",
+			"uncertainty-isnt-ignorance",
+			"scientists-changing-their-minds-is-normal"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "genetics-and-biotechnology"),
+		tags: [
+			"mechanism-is-not-real-world-effect",
+			"hazard-is-not-the-same-as-risk",
+			"false-balance-misleads",
+			"one-study-doesnt-overturn-evidence",
+			"uncertainty-isnt-ignorance"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "neuroscience-and-psychology"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"correlation-isnt-causation",
+			"p-values-are-not-the-whole-story",
+			"preprints-are-preliminary",
+			"scientists-changing-their-minds-is-normal",
+			"mechanism-is-not-real-world-effect"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "historical-case-studies"),
+		tags: [
+			"scientists-changing-their-minds-is-normal",
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"false-balance-misleads"
+		]
+	},
+	{
+		matches: (seed: SeedClaim) => (seed.topicSlug === "astronomy-and-space"
+			|| seed.topicSlug === "earth-and-geoscience"
+			|| seed.topicSlug === "ecology-and-conservation"
+			|| seed.topicSlug === "energy-and-infrastructure"
+			|| seed.topicSlug === "agriculture-and-food-systems"
+			|| seed.topicSlug === "oceans-and-marine-science"
+			|| seed.topicSlug === "physics-and-chemistry"
+			|| seed.topicSlug === "economics-and-social-policy"),
+		tags: [
+			"one-study-doesnt-overturn-evidence",
+			"cherry-picking-distorts-the-evidence",
+			"uncertainty-isnt-ignorance",
+			"false-balance-misleads"
+		]
+	}
+];
+
 function defaultMisconceptionTags(seed: SeedClaim) {
 	const tags = new Set<string>();
-	if (seed.topicSlug === "active-debates") {
-		tags.add("uncertainty-isnt-ignorance");
-		tags.add("mechanism-is-not-real-world-effect");
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("preprints-are-preliminary");
-		tags.add("hazard-is-not-the-same-as-risk");
-	}
-	if (seed.topicSlug === "biology-and-evolution" || seed.topicSlug === "human-origins-and-paleontology") {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("cherry-picking-distorts-the-evidence");
-		tags.add("uncertainty-isnt-ignorance");
-		tags.add("mechanism-is-not-real-world-effect");
-	}
-
-	if (
-		seed.topicSlug === "health-and-medicine"
-		|| seed.topicSlug === "infection-immunity-and-vaccines"
-		|| seed.topicSlug === "mental-health-and-treatment"
-		|| seed.topicSlug === "reproductive-and-sexual-health"
-		|| seed.topicSlug === "aging-and-longevity"
-		|| seed.topicSlug === "cancer-prevention-and-care"
-		|| seed.topicSlug === "cardiovascular-metabolic-and-kidney-health"
-		|| seed.topicSlug === "substance-use-and-addiction"
-	) {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("relative-risk-can-mislead");
-		tags.add("anecdotes-are-not-population-evidence");
-		tags.add("mechanism-is-not-real-world-effect");
-		tags.add("scientists-changing-their-minds-is-normal");
-	}
-	if (seed.topicSlug === "mental-health-and-treatment") {
-		tags.add("correlation-isnt-causation");
-		tags.add("p-values-are-not-the-whole-story");
-	}
-	if (seed.topicSlug === "reproductive-and-sexual-health") {
-		tags.add("correlation-isnt-causation");
-		tags.add("hazard-is-not-the-same-as-risk");
-	}
-	if (seed.topicSlug === "aging-and-longevity") {
-		tags.add("correlation-isnt-causation");
-		tags.add("preprints-are-preliminary");
-	}
-	if (seed.topicSlug === "cancer-prevention-and-care") {
-		tags.add("hazard-is-not-the-same-as-risk");
-		tags.add("cherry-picking-distorts-the-evidence");
-	}
-	if (seed.topicSlug === "cardiovascular-metabolic-and-kidney-health") {
-		tags.add("correlation-isnt-causation");
-		tags.add("p-values-are-not-the-whole-story");
-	}
-	if (seed.topicSlug === "substance-use-and-addiction") {
-		tags.add("correlation-isnt-causation");
-		tags.add("uncertainty-isnt-ignorance");
-	}
-	if (seed.topicSlug === "nutrition-and-diet") {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("correlation-isnt-causation");
-		tags.add("relative-risk-can-mislead");
-		tags.add("cherry-picking-distorts-the-evidence");
-		tags.add("mechanism-is-not-real-world-effect");
-		tags.add("hazard-is-not-the-same-as-risk");
-	}
-	if (seed.topicSlug === "sports-nutrition-and-supplements") {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("mechanism-is-not-real-world-effect");
-		tags.add("relative-risk-can-mislead");
-		tags.add("cherry-picking-distorts-the-evidence");
-	}
-	if (seed.topicSlug === "climate-and-environment") {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("cherry-picking-distorts-the-evidence");
-		tags.add("false-balance-misleads");
-		tags.add("uncertainty-isnt-ignorance");
-		tags.add("scientists-changing-their-minds-is-normal");
-	}
-	if (seed.topicSlug === "genetics-and-biotechnology") {
-		tags.add("mechanism-is-not-real-world-effect");
-		tags.add("hazard-is-not-the-same-as-risk");
-		tags.add("false-balance-misleads");
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("uncertainty-isnt-ignorance");
-	}
-	if (seed.topicSlug === "neuroscience-and-psychology") {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("correlation-isnt-causation");
-		tags.add("p-values-are-not-the-whole-story");
-		tags.add("preprints-are-preliminary");
-		tags.add("scientists-changing-their-minds-is-normal");
-		tags.add("mechanism-is-not-real-world-effect");
-	}
-	if (seed.topicSlug === "historical-case-studies") {
-		tags.add("scientists-changing-their-minds-is-normal");
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("cherry-picking-distorts-the-evidence");
-		tags.add("false-balance-misleads");
-	}
-	if (
-		seed.topicSlug === "astronomy-and-space"
-		|| seed.topicSlug === "earth-and-geoscience"
-		|| seed.topicSlug === "ecology-and-conservation"
-		|| seed.topicSlug === "energy-and-infrastructure"
-		|| seed.topicSlug === "agriculture-and-food-systems"
-		|| seed.topicSlug === "oceans-and-marine-science"
-		|| seed.topicSlug === "physics-and-chemistry"
-		|| seed.topicSlug === "economics-and-social-policy"
-	) {
-		tags.add("one-study-doesnt-overturn-evidence");
-		tags.add("cherry-picking-distorts-the-evidence");
-		tags.add("uncertainty-isnt-ignorance");
-		tags.add("false-balance-misleads");
+	for (const rule of defaultMisconceptionTopicRules) {
+		if (rule.matches(seed)) {
+			for (const tag of rule.tags) tags.add(tag);
+		}
 	}
 
 	const title = seed.title.toLowerCase();
@@ -1039,7 +1223,9 @@ function withResearchDefaults(seed: SeedClaim): CompleteSeedClaim {
 		changeLog: seed.changeLog ?? [
 			{
 				date: seedTimestamp,
-				kind: seed.status === "published" ? "publication" : "update",
+				kind: seed.status === "published"
+					? "publication"
+					: "update",
 				summary:
 					seed.status === "published"
 						? "Initial canonical claim page published."
@@ -2230,7 +2416,13 @@ const rawClaims: SeedClaim[] = [
 					"Effect sizes can differ between high-income and low-resource settings, term and preterm infants, vaccinated and unvaccinated populations, and households with different infection exposures."
 			}
 		],
-		searchDatabases: ["Consensus", "PubMed", "CDC", "American Academy of Pediatrics", "WHO"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"CDC",
+			"American Academy of Pediatrics",
+			"WHO"
+		],
 		searchCutoffAt: "2026-07-04T19:33:41.000Z",
 		inclusionRules: [
 			"Prioritize systematic reviews, meta-analyses, pediatric policy statements, and public-health guidance that distinguish infection outcomes from broader breastfeeding claims.",
@@ -2899,7 +3091,14 @@ const rawClaims: SeedClaim[] = [
 					"The best concentration and amount for very young children depends on cavity risk, swallowing risk, and total fluoride exposure."
 			}
 		],
-		searchDatabases: ["Consensus", "Cochrane Library", "PubMed", "CDC", "ADA", "AAPD"],
+		searchDatabases: [
+			"Consensus",
+			"Cochrane Library",
+			"PubMed",
+			"CDC",
+			"ADA",
+			"AAPD"
+		],
 		searchCutoffAt: "2026-07-05T12:30:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T12:30:00.000Z",
 		inclusionRules: [
@@ -7848,7 +8047,13 @@ const rawClaims: SeedClaim[] = [
 					"The climate benefit depends on methane cuts happening alongside CO2 reductions, not instead of long-lived greenhouse-gas mitigation."
 			}
 		],
-		searchDatabases: ["Consensus", "IPCC", "UNEP", "Climate and Clean Air Coalition", "IEA"],
+		searchDatabases: [
+			"Consensus",
+			"IPCC",
+			"UNEP",
+			"Climate and Clean Air Coalition",
+			"IEA"
+		],
 		searchCutoffAt: "2026-07-05T10:08:44.000Z",
 		lastRetractionCheckAt: "2026-07-05T10:08:44.000Z",
 		inclusionRules: [
@@ -8846,7 +9051,12 @@ const rawClaims: SeedClaim[] = [
 					"Public explanations need to avoid the outdated ladder-like 'missing link' frame while still naming concrete fossil examples."
 			}
 		],
-		searchDatabases: ["Consensus", "National Academies", "UC Berkeley Understanding Evolution", "Cambridge Core"],
+		searchDatabases: [
+			"Consensus",
+			"National Academies",
+			"UC Berkeley Understanding Evolution",
+			"Cambridge Core"
+		],
 		searchCutoffAt: "2026-07-04T21:45:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:45:00.000Z",
 		inclusionRules: [
@@ -9125,7 +9335,12 @@ const rawClaims: SeedClaim[] = [
 					"Short-term contemporary signals should not be projected far into the future without strong assumptions about changing environments and fertility patterns."
 			}
 		],
-		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"OpenAlex",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-03T15:58:00.000Z",
 		inclusionRules: [
 			"Prioritize reviews and population-genetic studies that directly address contemporary or recent human evolutionary change.",
@@ -9293,7 +9508,13 @@ const rawClaims: SeedClaim[] = [
 			"Evolutionary processes are directly observable today. Deep-time common ancestry is supported by experiments, field observations, fossils, genetics, and comparative biology, so the common 'no one has seen evolution happen' objection misses the scale distinction.",
 		uncertaintySummary:
 			"The consensus that evolution can be observed is very strong. Uncertainty is mainly about the durability, repeatability, and long-term implications of particular short-term examples, not about whether heritable population change occurs.",
-		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "National Academies"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"OpenAlex",
+			"Crossref",
+			"National Academies"
+		],
 		searchCutoffAt: "2026-07-04T05:23:57.000Z",
 		inclusionRules: [
 			"Prioritize institutional science-education anchors, experimental evolution records, and long-running field studies with genetic or trait-level evidence.",
@@ -9499,7 +9720,14 @@ const rawClaims: SeedClaim[] = [
 			"Antibiotic resistance is a concrete public-health example of evolution in action. The key is evolutionary mechanisms in microbes, not a claim that the human body becomes antibiotic resistant.",
 		uncertaintySummary:
 			"The evolutionary basis of antibiotic resistance is very strong. Uncertainty is mainly about forecasting which pathway will dominate in a particular pathogen, patient, hospital, farm, community, or environment.",
-		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "CDC", "WHO"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"OpenAlex",
+			"Crossref",
+			"CDC",
+			"WHO"
+		],
 		searchCutoffAt: "2026-07-04T18:41:00.000Z",
 		inclusionRules: [
 			"Prioritize official public-health sources, major microbiology reviews, and experimental or genomic studies that directly connect resistance to evolutionary mechanisms.",
@@ -10196,7 +10424,13 @@ const rawClaims: SeedClaim[] = [
 					"Long-term maintenance and relapse prevention after exercise programs end are less certain than short-term symptom change."
 			}
 		],
-		searchDatabases: ["Consensus", "PubMed", "Cochrane", "NICE", "WHO"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"Cochrane",
+			"NICE",
+			"WHO"
+		],
 		searchCutoffAt: "2026-07-05T06:10:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T06:10:00.000Z",
 		inclusionRules: [
@@ -10356,7 +10590,14 @@ const rawClaims: SeedClaim[] = [
 					"Sleep duration is the most direct outcome; grades, mood, crashes, behavior, and physical-health outcomes sit farther downstream and have thinner evidence."
 			}
 		],
-		searchDatabases: ["PubMed", "Europe PMC", "Crossref", "CDC MMWR", "AAP", "AASM"],
+		searchDatabases: [
+			"PubMed",
+			"Europe PMC",
+			"Crossref",
+			"CDC MMWR",
+			"AAP",
+			"AASM"
+		],
 		searchCutoffAt: "2026-07-05T05:54:13.000Z",
 		lastRetractionCheckAt: "2026-07-05T05:54:13.000Z",
 		inclusionRules: [
@@ -10663,7 +10904,13 @@ const rawClaims: SeedClaim[] = [
 				detail: "Small-study effects, expectancy, incomplete blinding, publication bias, and supplement-industry incentives can affect interpretation."
 			}
 		],
-		searchDatabases: ["PubMed", "PsycINFO", "Cochrane Library", "Embase", "Consensus"],
+		searchDatabases: [
+			"PubMed",
+			"PsycINFO",
+			"Cochrane Library",
+			"Embase",
+			"Consensus"
+		],
 		searchCutoffAt: "2026-07-03T20:04:33.000Z",
 		inclusionRules: [
 			"Prioritize randomized trials, systematic reviews, meta-analyses, and clinical guidelines that specify population, strain or formulation, dose, duration, comparator, and mental-health outcome.",
@@ -11163,7 +11410,12 @@ const rawClaims: SeedClaim[] = [
 					"Insecticide resistance can weaken pyrethroid-only nets, making local resistance monitoring and newer net choices important."
 			}
 		],
-		searchDatabases: ["Consensus", "Cochrane Library", "WHO Global Malaria Programme", "CDC"],
+		searchDatabases: [
+			"Consensus",
+			"Cochrane Library",
+			"WHO Global Malaria Programme",
+			"CDC"
+		],
 		searchCutoffAt: "2026-07-05T10:20:38.000Z",
 		lastRetractionCheckAt: "2026-07-05T10:20:38.000Z",
 		inclusionRules: [
@@ -11451,7 +11703,12 @@ const rawClaims: SeedClaim[] = [
 				detail: "Cancer-site-specific analyses often rely on fewer cases and yield estimates with wider uncertainty than overall-cancer analyses."
 			}
 		],
-		searchDatabases: ["PubMed", "OpenAlex", "Crossref", "IARC/JECFA/FDA/EFSA assessments"],
+		searchDatabases: [
+			"PubMed",
+			"OpenAlex",
+			"Crossref",
+			"IARC/JECFA/FDA/EFSA assessments"
+		],
 		searchCutoffAt: "2026-07-03T19:31:53.000Z",
 		inclusionRules: [
 			"Prioritize IARC, JECFA, FDA, EFSA, NCI, large prospective cohorts, umbrella reviews, and meta-analyses that separate aspartame from other sweeteners when possible.",
@@ -11630,7 +11887,13 @@ const rawClaims: SeedClaim[] = [
 				detail: "Open-label designs, changing COVID-19 standards of care, supplement adherence, and publication of small positive trials can all affect pooled estimates."
 			}
 		],
-		searchDatabases: ["PubMed", "Cochrane Library", "Embase", "Consensus", "NIH/NICE guidance"],
+		searchDatabases: [
+			"PubMed",
+			"Cochrane Library",
+			"Embase",
+			"Consensus",
+			"NIH/NICE guidance"
+		],
 		searchCutoffAt: "2026-07-03T21:10:00.000Z",
 		inclusionRules: [
 			"Prioritize randomized trials, systematic reviews, meta-analyses, and current institutional guidance that distinguish prevention, early outpatient treatment, hospitalized treatment, deficiency correction, and long COVID.",
@@ -12533,7 +12796,13 @@ const rawClaims: SeedClaim[] = [
 					"Ethical concerns include consent by future persons, justice, equity, enhancement pressure, and eugenics."
 			}
 		],
-		searchDatabases: ["Consensus", "WHO", "National Academies", "ISSCR", "FDA"],
+		searchDatabases: [
+			"Consensus",
+			"WHO",
+			"National Academies",
+			"ISSCR",
+			"FDA"
+		],
 		searchCutoffAt: "2026-07-04T17:55:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T17:55:00.000Z",
 		inclusionRules: [
@@ -12793,7 +13062,12 @@ const rawClaims: SeedClaim[] = [
 			"Polygenic risk scores are scientifically real and can be useful in some settings, but they do not work equally well for every ancestry group. Clinical use can widen inequities if portability, calibration, and follow-up access are afterthoughts.",
 		uncertaintySummary:
 			"The direction of the portability problem is well supported. Uncertainty is higher for specific diseases, locally calibrated scores, multi-ancestry methods, and whether returning scores improves outcomes equitably in real health systems.",
-		searchDatabases: ["Consensus", "PubMed", "NHGRI / Genome.gov", "Crossref"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"NHGRI / Genome.gov",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-04T18:45:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T18:45:00.000Z",
 		evidenceSummaries: [
@@ -13148,7 +13422,16 @@ const rawClaims: SeedClaim[] = [
 			"Asbestos is a historical consensus case with current relevance: industrial and construction exposures created a clear cancer burden. Practical risk communication still depends on disturbance, dose, fiber type, latency, and safe abatement.",
 		uncertaintySummary:
 			"The causal consensus is very strong for asbestos causing mesothelioma and lung cancer. Remaining uncertainty concerns exact risk size for specific fiber types, products, low-dose exposure settings, and legacy-material scenarios, not whether asbestos is carcinogenic.",
-		searchDatabases: ["Consensus", "PubMed", "OpenAlex", "Crossref", "WHO", "NCI", "CDC", "EPA"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"OpenAlex",
+			"Crossref",
+			"WHO",
+			"NCI",
+			"CDC",
+			"EPA"
+		],
 		searchCutoffAt: "2026-07-04T18:55:00.000Z",
 		inclusionRules: [
 			"Prioritize IARC/WHO, NCI, CDC, EPA, major occupational-health reviews, and systematic or quantitative reviews of mesothelioma and lung-cancer risk.",
@@ -13374,7 +13657,12 @@ const rawClaims: SeedClaim[] = [
 			"This is one of the clearest examples of evidence changing minds for the right reason: the new explanation fit the data and changed treatment outcomes.",
 		uncertaintySummary:
 			"The historical correction is settled: H. pylori is a major cause of peptic ulcer disease and eradication changed routine care. Remaining uncertainty is mostly about regional resistance, best treatment regimens, non-H. pylori ulcers, and how to teach the case without making all consensus sound fragile.",
-		searchDatabases: ["Consensus", "PubMed", "NIDDK / NIH", "ACG guidance"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"NIDDK / NIH",
+			"ACG guidance"
+		],
 		searchCutoffAt: "2026-07-04T19:10:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T19:10:00.000Z",
 		evidenceSummaries: [
@@ -13745,7 +14033,13 @@ const rawClaims: SeedClaim[] = [
 					"Blood lead declines are direct exposure evidence; broader social outcomes require more assumptions and are more debated in magnitude."
 			}
 		],
-		searchDatabases: ["Consensus", "CDC", "EPA", "WHO", "NHANES"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"EPA",
+			"WHO",
+			"NHANES"
+		],
 		searchCutoffAt: "2026-07-04T21:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:00:00.000Z",
 		inclusionRules: [
@@ -13925,7 +14219,14 @@ const rawClaims: SeedClaim[] = [
 					"Historical mortality attribution is strong but not isolated from simultaneous improvements in vaccination, nutrition, sanitation, health access, and case management."
 			}
 		],
-		searchDatabases: ["Consensus", "WHO", "UNICEF", "CDC", "PubMed", "Crossref"],
+		searchDatabases: [
+			"Consensus",
+			"WHO",
+			"UNICEF",
+			"CDC",
+			"PubMed",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-04T22:55:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:55:00.000Z",
 		inclusionRules: [
@@ -16493,7 +16794,12 @@ const rawClaims: SeedClaim[] = [
 					"Privacy, consent, intellectual-property, security, and data-governance limits can require controlled access rather than public release."
 			}
 		],
-		searchDatabases: ["Consensus", "National Academies", "NIH", "Center for Open Science"],
+		searchDatabases: [
+			"Consensus",
+			"National Academies",
+			"NIH",
+			"Center for Open Science"
+		],
 		searchCutoffAt: "2026-07-04T15:40:20.000Z",
 		inclusionRules: [
 			"Prioritize institutional reproducibility guidance, open-science policy frameworks, and empirical audits that attempted to rerun analyses from shared materials.",
@@ -17183,7 +17489,13 @@ const rawClaims: SeedClaim[] = [
 					"Many estimates come from modeled life-cycle or building-stock simulations rather than randomized household experiments."
 			}
 		],
-		searchDatabases: ["Consensus", "OpenAlex", "Crossref", "IEA", "IPCC assessment reports"],
+		searchDatabases: [
+			"Consensus",
+			"OpenAlex",
+			"Crossref",
+			"IEA",
+			"IPCC assessment reports"
+		],
 		searchCutoffAt: "2026-07-05T06:25:00.000Z",
 		inclusionRules: [
 			"Prioritize life-cycle studies, building-stock simulations, assessment reports, and reviews that compare heat pumps with fossil-fuel boilers, furnaces, or direct combustion heating.",
@@ -17363,7 +17675,12 @@ const rawClaims: SeedClaim[] = [
 					"Evidence from early 20th-century U.S. cities does not automatically solve present-day risks in low-resource settings, private wells, emergencies, or aging distribution systems."
 			}
 		],
-		searchDatabases: ["Consensus", "CDC Stacks", "EPA", "National Academies / NCBI Bookshelf"],
+		searchDatabases: [
+			"Consensus",
+			"CDC Stacks",
+			"EPA",
+			"National Academies / NCBI Bookshelf"
+		],
 		searchCutoffAt: "2026-07-04T22:35:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:35:00.000Z",
 		inclusionRules: [
@@ -18670,7 +18987,12 @@ const rawClaims: SeedClaim[] = [
 				detail: "Dietary residues, occupational use, and glyphosate-based formulations are not the same exposure scenario."
 			}
 		],
-		searchDatabases: ["PubMed", "OpenAlex", "Crossref", "IARC/EPA/EFSA/JMPR assessments"],
+		searchDatabases: [
+			"PubMed",
+			"OpenAlex",
+			"Crossref",
+			"IARC/EPA/EFSA/JMPR assessments"
+		],
 		searchCutoffAt: "2026-07-03T19:21:12.000Z",
 		inclusionRules: [
 			"Prioritize IARC, EPA, EFSA/ECHA, JMPR, large prospective cohorts, pooled analyses, and systematic reviews or meta-analyses of glyphosate and cancer.",
@@ -19329,7 +19651,12 @@ const rawClaims: SeedClaim[] = [
 					"Benefits depend on sustained access, tolerability, nutrition support, physical activity, and clinical monitoring."
 			}
 		],
-		searchDatabases: ["Consensus", "FDA", "PubMed", "ClinicalTrials.gov"],
+		searchDatabases: [
+			"Consensus",
+			"FDA",
+			"PubMed",
+			"ClinicalTrials.gov"
+		],
 		searchCutoffAt: "2026-07-04T23:16:14.000Z",
 		lastRetractionCheckAt: "2026-07-04T23:16:14.000Z",
 		inclusionRules: [
@@ -19354,7 +19681,13 @@ const rawClaims: SeedClaim[] = [
 				"unapproved compounded GLP-1 FDA warning"
 			],
 			integrityMonitors: ["FDA safety communications", "Retraction Watch", "PubMed retraction notices"],
-			guidelineMonitors: ["FDA", "NIH", "Endocrine Society", "AACE", "Obesity Medicine Association"],
+			guidelineMonitors: [
+				"FDA",
+				"NIH",
+				"Endocrine Society",
+				"AACE",
+				"Obesity Medicine Association"
+			],
 			triggerRules: [
 				"Update if FDA changes approved indications, contraindications, boxed warnings, or major safety language for semaglutide or tirzepatide obesity products.",
 				"Update if a large randomized trial materially changes estimated weight loss, discontinuation, cardiovascular outcomes, or post-withdrawal maintenance.",
@@ -19651,7 +19984,13 @@ const rawClaims: SeedClaim[] = [
 					"Medication interactions, kidney dosing, access fast enough to start within 5 days, and prescribing workflow shape real-world effectiveness and safety."
 			}
 		],
-		searchDatabases: ["Consensus", "CDC", "IDSA", "PubMed", "Crossref"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"IDSA",
+			"PubMed",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-05T10:45:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T10:45:00.000Z",
 		inclusionRules: [
@@ -19837,7 +20176,12 @@ const rawClaims: SeedClaim[] = [
 					"Long COVID likely includes multiple pathways and symptom clusters rather than one uniform disease process."
 			}
 		],
-		searchDatabases: ["Consensus", "CDC", "WHO", "National Academies"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"WHO",
+			"National Academies"
+		],
 		searchCutoffAt: "2026-07-04T17:40:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T17:40:00.000Z",
 		inclusionRules: [
@@ -20232,7 +20576,13 @@ const rawClaims: SeedClaim[] = [
 					"Direct cognitive-outcome estimates come from heterogeneous study designs and are less precise than iodine-status and goiter outcomes."
 			}
 		],
-		searchDatabases: ["Consensus", "WHO", "UNICEF", "NIH ODS", "CDC"],
+		searchDatabases: [
+			"Consensus",
+			"WHO",
+			"UNICEF",
+			"NIH ODS",
+			"CDC"
+		],
 		searchCutoffAt: "2026-07-04T22:06:55.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:06:55.000Z",
 		inclusionRules: [
@@ -21718,7 +22068,12 @@ const rawClaims: SeedClaim[] = [
 			"The narrow consensus is strong: wear a compliant, well-fitted, fastened helmet every ride. Helmet-law design and enforcement are policy questions; they do not erase the protective evidence.",
 		uncertaintySummary:
 			"The protective direction is strong, but exact effect sizes vary by crash speed, impact angle, impairment, helmet standard and type, fit, fastening, ejection, age, road context, vehicle type, and rider behavior.",
-		searchDatabases: ["Consensus", "NHTSA", "CDC", "The Community Guide"],
+		searchDatabases: [
+			"Consensus",
+			"NHTSA",
+			"CDC",
+			"The Community Guide"
+		],
 		searchCutoffAt: "2026-07-04T21:33:30.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:33:30.000Z",
 		inclusionRules: [
@@ -22049,7 +22404,13 @@ const rawClaims: SeedClaim[] = [
 			"The practical consensus is clear: speed cameras can reduce speeding and crash harm, especially at data-selected high-risk locations. The main policy question is program design: safety purpose, transparent placement, equitable fines, public engagement, and ongoing evaluation.",
 		uncertaintySummary:
 			"The direction of effect is well supported, but exact benefit size is context-dependent. Evidence is mostly observational or quasi-experimental, and results vary by camera type, road geometry, enforcement threshold, publicity, baseline speeding, comparison sites, spillover assumptions, and whether programs are adjusted over time.",
-		searchDatabases: ["Consensus", "CDC", "NHTSA", "FHWA", "PubMed"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"NHTSA",
+			"FHWA",
+			"PubMed"
+		],
 		searchCutoffAt: "2026-07-04T23:20:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T23:20:00.000Z",
 		inclusionRules: [
@@ -22250,7 +22611,13 @@ const rawClaims: SeedClaim[] = [
 			"Graduated driver licensing is one of the better-supported policies for reducing crashes among young novice drivers. The clearest support is for 16-year-old drivers and stronger programs; the evidence does not show that every state provision or every older-novice rule works equally well.",
 		uncertaintySummary:
 			"The direction of effect is well supported, but the evidence is mostly observational or quasi-experimental because states set licensing laws. Estimates vary by state, baseline crash risk, licensing age, enforcement, exposure, program strength, and whether analysts look at 16-year-olds, all teen drivers, or older novice drivers.",
-		searchDatabases: ["Consensus", "CDC", "NHTSA", "IIHS", "PubMed"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"NHTSA",
+			"IIHS",
+			"PubMed"
+		],
 		searchCutoffAt: "2026-07-04T22:55:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:55:00.000Z",
 		inclusionRules: [
@@ -22610,7 +22977,12 @@ const rawClaims: SeedClaim[] = [
 			"Life jackets are clearest as a worn, fitted, activity-appropriate drowning-prevention layer for boating, not as generic flotation or a substitute for safer boating behavior.",
 		uncertaintySummary:
 			"The benefit direction is strong, but exact size is observational and depends on incident severity, boat type, water temperature, alcohol use, swimming ability, injury, device fit, whether the jacket was worn and fastened, and incomplete incident records.",
-		searchDatabases: ["Consensus", "CDC", "U.S. Coast Guard", "AAP"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"U.S. Coast Guard",
+			"AAP"
+		],
 		searchCutoffAt: "2026-07-04T22:27:00.000Z",
 		lastRetractionCheckAt: "2026-07-04T22:27:00.000Z",
 		inclusionRules: [
@@ -23160,7 +23532,13 @@ const rawClaims: SeedClaim[] = [
 			"Working CO alarms are a recommended warning layer for an invisible hazard. Prevention still starts with fuel-burning equipment safety, generator placement, and fast evacuation when alarms sound.",
 		uncertaintySummary:
 			"Agency guidance and the warning mechanism are strong, and household exposure evidence supports lower poisoning severity when alarms sound. Effects on community death rates are less certain because CO deaths are rare, exposures and alarm laws vary, and homes with alarms may be more likely to detect and report incidents.",
-		searchDatabases: ["Consensus", "CDC", "CPSC", "EPA", "USFA"],
+		searchDatabases: [
+			"Consensus",
+			"CDC",
+			"CPSC",
+			"EPA",
+			"USFA"
+		],
 		searchCutoffAt: "2026-07-04T21:43:43.000Z",
 		lastRetractionCheckAt: "2026-07-04T21:43:43.000Z",
 		inclusionRules: [
@@ -23536,7 +23914,13 @@ const rawClaims: SeedClaim[] = [
 			"Ivermectin is a useful COVID-era evidence-integrity page because the public controversy came less from one definitive trial than from how weak early signals, preprints, and meta-analyses were amplified before higher-quality trials arrived.",
 		uncertaintySummary:
 			"The main uncertainty is not whether ivermectin is established COVID-19 care; it is not. Remaining nuance concerns unusual parasite-endemic confounding, changing background immunity and variants, and whether future antiviral or host-response hypotheses could justify new trials.",
-		searchDatabases: ["Consensus", "PubMed", "WHO", "FDA", "NIH COVID-19 Treatment Guidelines"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"WHO",
+			"FDA",
+			"NIH COVID-19 Treatment Guidelines"
+		],
 		searchCutoffAt: "2026-07-05T16:15:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:15:00.000Z",
 		inclusionRules: [
@@ -23696,7 +24080,12 @@ const rawClaims: SeedClaim[] = [
 			"Vitamin C and colds is a useful nutrition page because the truthful answer is not simply 'works' or 'doesn't work'; it separates prevention, treatment, duration, severity, baseline diet, and special high-stress settings.",
 		uncertaintySummary:
 			"The prevention conclusion is fairly stable for ordinary community use. More uncertainty remains around high-dose early treatment, people with low baseline intake, children, and physically stressed subgroups.",
-		searchDatabases: ["Consensus", "PubMed", "Cochrane", "NIH Office of Dietary Supplements"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"Cochrane",
+			"NIH Office of Dietary Supplements"
+		],
 		searchCutoffAt: "2026-07-05T16:20:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:20:00.000Z",
 		inclusionRules: [
@@ -23830,7 +24219,12 @@ const rawClaims: SeedClaim[] = [
 			"Creatine is a good example of a supplement claim where the mainstream answer is more favorable than the public stereotype, but only when the claim is bounded to monohydrate, resistance/high-intensity outcomes, usual doses, and healthy-user safety.",
 		uncertaintySummary:
 			"Benefit is strongest for strength, power, lean mass, and repeated high-intensity work. Safety confidence is best for healthy users at standard doses; it is weaker for pregnancy, kidney disease, long-term pediatric use, contaminated products, and some clinical populations.",
-		searchDatabases: ["Consensus", "PubMed", "NIH Office of Dietary Supplements", "ISSN"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"NIH Office of Dietary Supplements",
+			"ISSN"
+		],
 		searchCutoffAt: "2026-07-05T16:25:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:25:00.000Z",
 		inclusionRules: [
@@ -23988,7 +24382,13 @@ const rawClaims: SeedClaim[] = [
 			"EMDR is a good psychology-consensus page because the evidence-backed answer sits between dismissal and hype: it is a legitimate PTSD treatment, but claims about uniqueness, mechanism, and broad non-PTSD applications need tighter boundaries.",
 		uncertaintySummary:
 			"EMDR's PTSD benefit versus inactive controls is reasonably supported. Greater uncertainty remains around relative advantage versus other trauma-focused therapies, long-term outcomes in complex populations, and the specific contribution of eye movements.",
-		searchDatabases: ["Consensus", "PubMed", "VA/DoD", "APA", "NICE"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"VA/DoD",
+			"APA",
+			"NICE"
+		],
 		searchCutoffAt: "2026-07-05T16:30:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:30:00.000Z",
 		inclusionRules: [
@@ -24147,7 +24547,14 @@ const rawClaims: SeedClaim[] = [
 			"DTC genetic testing is a high-interest biotechnology page because it is neither useless nor clinically equivalent to medical genetics. The public answer needs to separate curiosity, screening, ancestry, raw data, rare variants, polygenic scores, and diagnosis.",
 		uncertaintySummary:
 			"The technology is improving, especially for selected polygenic scores and clinically supervised pathways. The uncertain part is whether broad consumer-facing use delivers accurate, equitable, useful medical decisions across diverse people and conditions.",
-		searchDatabases: ["Consensus", "PubMed", "FDA", "MedlinePlus", "ACOG", "AHA"],
+		searchDatabases: [
+			"Consensus",
+			"PubMed",
+			"FDA",
+			"MedlinePlus",
+			"ACOG",
+			"AHA"
+		],
 		searchCutoffAt: "2026-07-05T16:35:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:35:00.000Z",
 		inclusionRules: [
@@ -24306,7 +24713,13 @@ const rawClaims: SeedClaim[] = [
 			"Tree planting is a high-interest climate page because it lets the site affirm a real nature-based solution while rejecting the oversimplified claim that planting enough trees can replace emissions cuts.",
 		uncertaintySummary:
 			"The core answer is stable: tree planting alone is insufficient. Project-level benefit is more uncertain and depends heavily on local ecology, baseline assumptions, permanence, governance, and whether carbon-only accounting ignores albedo, water, fire, biodiversity, and social trade-offs.",
-		searchDatabases: ["Consensus", "IPCC", "UNEP", "OpenAlex", "Crossref"],
+		searchDatabases: [
+			"Consensus",
+			"IPCC",
+			"UNEP",
+			"OpenAlex",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-05T16:40:00.000Z",
 		lastRetractionCheckAt: "2026-07-05T16:40:00.000Z",
 		inclusionRules: [
@@ -24474,7 +24887,13 @@ const rawClaims: SeedClaim[] = [
 			"This biotechnology claim adds a concrete example of gene editing moving from hype to regulated medicine while preserving the practical caveats that matter to patients.",
 		uncertaintySummary:
 			"The short-term efficacy signal is strong for eligible trial populations, but real-world access, earlier pediatric use, transplant-related harms, fertility effects, durability, and rare late safety outcomes remain active surveillance questions.",
-		searchDatabases: ["FDA", "PubMed", "Consensus", "ClinicalTrials.gov", "Crossref"],
+		searchDatabases: [
+			"FDA",
+			"PubMed",
+			"Consensus",
+			"ClinicalTrials.gov",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24553,7 +24972,13 @@ const rawClaims: SeedClaim[] = [
 			"NIPT is a useful biotechnology page because the practical consensus is not anti-testing. It is pro-accurate counseling: use good screening tools, but do not let screening language turn into diagnostic certainty.",
 		uncertaintySummary:
 			"The diagnostic boundary is settled. Remaining uncertainty is about expanded panels, laboratory oversight, condition-specific predictive value, and how best to communicate residual risk.",
-		searchDatabases: ["ACOG", "SMFM", "FDA", "PubMed", "Crossref"],
+		searchDatabases: [
+			"ACOG",
+			"SMFM",
+			"FDA",
+			"PubMed",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24640,7 +25065,13 @@ const rawClaims: SeedClaim[] = [
 			"BRCA1/2 is a high-value genetics page because it explains a real, clinically actionable genetic risk while avoiding deterministic language.",
 		uncertaintySummary:
 			"The direction of risk is settled. The uncertainty is in individualized risk prediction, variant interpretation, prevention choices, and equitable access to counseling and high-quality testing.",
-		searchDatabases: ["NCI", "PubMed", "USPSTF", "GeneReviews", "Crossref"],
+		searchDatabases: [
+			"NCI",
+			"PubMed",
+			"USPSTF",
+			"GeneReviews",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24718,7 +25149,13 @@ const rawClaims: SeedClaim[] = [
 			"Pharmacogenomics is useful for the site because it sits between precision-medicine hype and real clinical utility: some gene-drug pairs are actionable, while many broad claims need restraint.",
 		uncertaintySummary:
 			"Evidence is strongest for selected actionable pairs and weaker for broad panel-driven outcome claims. Implementation quality, decision support, ancestry diversity, and clinical workflow determine whether testing improves care.",
-		searchDatabases: ["FDA", "CPIC", "Consensus", "PubMed", "Crossref"],
+		searchDatabases: [
+			"FDA",
+			"CPIC",
+			"Consensus",
+			"PubMed",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24804,7 +25241,12 @@ const rawClaims: SeedClaim[] = [
 			"RPE65 gene therapy gives the biotechnology section a concrete rare-disease success story while keeping scope tight enough to avoid generic gene-therapy hype.",
 		uncertaintySummary:
 			"The evidence supports functional benefit in the approved rare condition. Uncertainty is mainly about durability, long-term retinal change, patient selection, and generalizability to other genes or diseases.",
-		searchDatabases: ["FDA", "PubMed", "Crossref", "ClinicalTrials.gov"],
+		searchDatabases: [
+			"FDA",
+			"PubMed",
+			"Crossref",
+			"ClinicalTrials.gov"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24881,7 +25323,13 @@ const rawClaims: SeedClaim[] = [
 			"Sugary beverages are a high-value nutrition claim because they connect dietary guidance, public-health policy, and everyday choices without turning nutrition into purity language.",
 		uncertaintySummary:
 			"The direction of evidence is strong. Remaining uncertainty is mostly about magnitude, substitution patterns, policy design, and how much of diabetes risk is mediated by adiposity versus other pathways.",
-		searchDatabases: ["WHO", "CDC", "PubMed", "Crossref", "Dietary Guidelines for Americans"],
+		searchDatabases: [
+			"WHO",
+			"CDC",
+			"PubMed",
+			"Crossref",
+			"Dietary Guidelines for Americans"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -24981,7 +25429,13 @@ const rawClaims: SeedClaim[] = [
 			"The Mediterranean-diet claim strengthens nutrition coverage by showing a positive dietary-pattern consensus, not only debunking supplement and fad-diet claims.",
 		uncertaintySummary:
 			"The cardiovascular direction is reasonably supported for high-risk adults. Uncertainty remains around exact active ingredients, lower-risk populations, cultural translation, adherence, and alcohol messaging.",
-		searchDatabases: ["PubMed", "AHA", "Cochrane", "Crossref", "Dietary Guidelines for Americans"],
+		searchDatabases: [
+			"PubMed",
+			"AHA",
+			"Cochrane",
+			"Crossref",
+			"Dietary Guidelines for Americans"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25060,7 +25514,13 @@ const rawClaims: SeedClaim[] = [
 			"Mindfulness is a good psychology page because it avoids both dismissal and wellness hype: structured programs can help, but the benefit is modest and context-dependent.",
 		uncertaintySummary:
 			"The direction is supportive for modest symptom improvement. Uncertainty remains around active ingredients, comparator quality, long-term adherence, app-based delivery, trauma adaptation, and who should use mindfulness as adjunctive versus primary care.",
-		searchDatabases: ["PubMed", "NICE", "AHRQ", "Consensus", "Crossref"],
+		searchDatabases: [
+			"PubMed",
+			"NICE",
+			"AHRQ",
+			"Consensus",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25212,7 +25672,13 @@ const rawClaims: SeedClaim[] = [
 			"Newborn screening is a practical biotechnology and public-health page: it shows how early genetic or metabolic detection can save lives while keeping the screening-versus-diagnosis boundary visible.",
 		uncertaintySummary:
 			"The value of established newborn screening is high-confidence. Uncertainty is concentrated in expansion decisions, genomic screening, long-term follow-up, false-positive burden, and unequal access to confirmatory care or treatment.",
-		searchDatabases: ["HRSA", "National Academies", "PubMed", "Consensus", "Crossref"],
+		searchDatabases: [
+			"HRSA",
+			"National Academies",
+			"PubMed",
+			"Consensus",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25291,7 +25757,12 @@ const rawClaims: SeedClaim[] = [
 			"SMA gene therapy adds a concrete rare-disease biotechnology page that is more mature than hype but still bounded by eligibility, timing, safety, cost, and long-term uncertainty.",
 		uncertaintySummary:
 			"Short- and medium-term benefit is credible for eligible patients, especially infants treated early. The main uncertainties are long-term durability, safety surveillance, comparative sequencing with other SMA therapies, and equitable access after newborn screening.",
-		searchDatabases: ["FDA", "PubMed", "ClinicalTrials.gov", "Crossref"],
+		searchDatabases: [
+			"FDA",
+			"PubMed",
+			"ClinicalTrials.gov",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25469,7 +25940,12 @@ const rawClaims: SeedClaim[] = [
 			"CBT for anxiety adds a mainstream psychology treatment page with stronger evidence than many wellness claims, while keeping diagnosis, comparator, access, and individual fit visible.",
 		uncertaintySummary:
 			"The overall CBT benefit signal is reliable, but estimates vary by anxiety diagnosis, comparator, delivery format, therapist fidelity, comorbidity, and follow-up duration. Implementation quality is central to the public answer.",
-		searchDatabases: ["NICE", "PubMed", "Consensus", "Crossref"],
+		searchDatabases: [
+			"NICE",
+			"PubMed",
+			"Consensus",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25559,7 +26035,12 @@ const rawClaims: SeedClaim[] = [
 			"This nutrition claim gives the site a constructive cancer-prevention page that complements existing processed-meat coverage and keeps food-pattern advice separate from cure claims.",
 		uncertaintySummary:
 			"The direction is supportive, but nutrition evidence is mostly observational for cancer endpoints. Uncertainty remains around effect size, sources of fiber, substitution patterns, residual confounding, and how fiber-rich diets interact with screening and other risk factors.",
-		searchDatabases: ["WCRF", "PubMed", "Crossref", "Dietary Guidelines for Americans"],
+		searchDatabases: [
+			"WCRF",
+			"PubMed",
+			"Crossref",
+			"Dietary Guidelines for Americans"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25647,7 +26128,13 @@ const rawClaims: SeedClaim[] = [
 			"This climate page turns a visible but often cherry-picked indicator into a source-backed claim about mass balance, trend scale, and sea-level relevance.",
 		uncertaintySummary:
 			"The observed mass-loss direction is high-confidence. Uncertainty is larger for future acceleration, regional freshwater impacts, Antarctic ice-sheet dynamics, and the exact sea-level contribution under each emissions pathway.",
-		searchDatabases: ["IPCC", "NASA", "NOAA", "OpenAlex", "Crossref"],
+		searchDatabases: [
+			"IPCC",
+			"NASA",
+			"NOAA",
+			"OpenAlex",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25735,7 +26222,13 @@ const rawClaims: SeedClaim[] = [
 			"This is a high-value reproductive-health clarity page: the consensus answer separates emergency contraception from abortion while keeping timing, access, and method differences visible.",
 		uncertaintySummary:
 			"The established-pregnancy boundary is high-confidence. More uncertainty remains around practical access, comparative effectiveness by timing and body weight, and how labels should communicate mechanism without confusing patients.",
-		searchDatabases: ["ACOG", "PubMed", "FDA", "WHO", "Crossref"],
+		searchDatabases: [
+			"ACOG",
+			"PubMed",
+			"FDA",
+			"WHO",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25823,7 +26316,13 @@ const rawClaims: SeedClaim[] = [
 			"Adult immunization pages help the library feel practical, not only controversy-driven. Shingles vaccine is a clear example where efficacy, eligibility, and side-effect expectations all matter.",
 		uncertaintySummary:
 			"The prevention effect is strong. The main uncertainty is operational: durability, booster policy, immunocompromised subgroups, timing after shingles, and how to improve adult vaccine uptake.",
-		searchDatabases: ["CDC", "ACIP", "PubMed", "ClinicalTrials.gov", "Crossref"],
+		searchDatabases: [
+			"CDC",
+			"ACIP",
+			"PubMed",
+			"ClinicalTrials.gov",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -25911,7 +26410,13 @@ const rawClaims: SeedClaim[] = [
 			"Carrier screening adds a practical genetics page that distinguishes useful preconception risk information from deterministic or overbroad genetic promises.",
 		uncertaintySummary:
 			"The clinical utility of well-counseled carrier screening for selected conditions is well supported. Uncertainty remains around panel design, equitable access, residual-risk communication, reproductive autonomy, and ancestry portability of variant interpretation.",
-		searchDatabases: ["ACOG", "ACMG", "PubMed", "GeneReviews", "Crossref"],
+		searchDatabases: [
+			"ACOG",
+			"ACMG",
+			"PubMed",
+			"GeneReviews",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26000,7 +26505,13 @@ const rawClaims: SeedClaim[] = [
 			"DASH is a useful nutrition consensus page because it is one of the clearest diet-pattern trials: practical, evidence-based, and less fad-driven than many nutrition claims.",
 		uncertaintySummary:
 			"The blood-pressure effect is high-confidence. Uncertainty is mostly about long-term adherence, personalization, equity, sodium targets, kidney-disease adaptation, and translation from feeding trials to ordinary food environments.",
-		searchDatabases: ["NHLBI", "PubMed", "AHA", "ACC", "Crossref"],
+		searchDatabases: [
+			"NHLBI",
+			"PubMed",
+			"AHA",
+			"ACC",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26088,7 +26599,13 @@ const rawClaims: SeedClaim[] = [
 			"This nutrition page is deliberately qualified: it helps users distinguish food guidance, supplements, prescription products, primary prevention, and secondary prevention instead of collapsing them into one 'fish oil works' answer.",
 		uncertaintySummary:
 			"Evidence is mixed because trial populations, doses, formulations, baseline intake, and endpoints differ. Confidence is moderate that routine low-dose supplementation is not a broad primary-prevention solution for everyone.",
-		searchDatabases: ["NIH ODS", "PubMed", "Cochrane", "AHA", "Crossref"],
+		searchDatabases: [
+			"NIH ODS",
+			"PubMed",
+			"Cochrane",
+			"AHA",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26177,7 +26694,12 @@ const rawClaims: SeedClaim[] = [
 			"Keto belongs in the library because the evidence is neither dismissive nor hype-confirming: it can work for some people, but the universal long-term superiority claim is too strong.",
 		uncertaintySummary:
 			"Evidence supports weight loss for some adults, especially short-term. The uncertain part is comparative durability, safety, diet quality, lipid response, adherence, and whether clinical outcomes improve more than with other sustainable dietary patterns.",
-		searchDatabases: ["PubMed", "Consensus", "Obesity guidelines", "Crossref"],
+		searchDatabases: [
+			"PubMed",
+			"Consensus",
+			"Obesity guidelines",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26264,7 +26786,13 @@ const rawClaims: SeedClaim[] = [
 			"Melatonin is a practical sleep page because the public question is common and the answer is neither blanket dismissal nor supplement hype.",
 		uncertaintySummary:
 			"Evidence is mixed for adult chronic insomnia. Confidence is higher for circadian timing uses than for treating chronic insomnia broadly, and product variability makes real-world translation harder.",
-		searchDatabases: ["NCCIH", "AASM", "PubMed", "Consensus", "Crossref"],
+		searchDatabases: [
+			"NCCIH",
+			"AASM",
+			"PubMed",
+			"Consensus",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26353,7 +26881,13 @@ const rawClaims: SeedClaim[] = [
 			"Seasonal depression is a high-search psychology topic where the consensus is useful and bounded: bright light can help, but the details and safety screening matter.",
 		uncertaintySummary:
 			"The treatment signal is supportive but not perfect. Uncertainty remains around long-term comparative effectiveness, prevention of recurrence, device parameters, adherence, and how to manage bipolar or ocular-risk subgroups.",
-		searchDatabases: ["PubMed", "Consensus", "APA", "Cochrane", "Crossref"],
+		searchDatabases: [
+			"PubMed",
+			"Consensus",
+			"APA",
+			"Cochrane",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26441,7 +26975,13 @@ const rawClaims: SeedClaim[] = [
 			"This page gives the climate/environment section an agricultural-ecology claim with the right balance: real pesticide risk without pretending one chemical class explains all pollinator decline.",
 		uncertaintySummary:
 			"The hazard and pollinator-risk direction is credible, especially for bees and wild pollinators. Uncertainty is larger for exact population impacts by crop, landscape, compound, species, mitigation policy, and combined stressors.",
-		searchDatabases: ["IPBES", "PubMed", "EFSA", "EPA", "Crossref"],
+		searchDatabases: [
+			"IPBES",
+			"PubMed",
+			"EFSA",
+			"EPA",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26529,7 +27069,12 @@ const rawClaims: SeedClaim[] = [
 			"Biodiversity loss is a foundational environmental consensus page. It connects climate, agriculture, conservation, and human well-being without treating the issue as only a species-count story.",
 		uncertaintySummary:
 			"The direction and human-driver conclusion are high-confidence. Uncertainty remains around exact counts for poorly monitored taxa, regional trends, future scenarios, restoration effectiveness, and policy tradeoffs.",
-		searchDatabases: ["IPBES", "IUCN", "OpenAlex", "Crossref"],
+		searchDatabases: [
+			"IPBES",
+			"IUCN",
+			"OpenAlex",
+			"Crossref"
+		],
 		searchCutoffAt: "2026-07-06T12:00:00.000Z",
 		lastRetractionCheckAt: "2026-07-06T12:00:00.000Z",
 		sources: [
@@ -26863,7 +27408,7 @@ const rawClaims: SeedClaim[] = [
 	...readerExpansionClaims
 ];
 
-// Kept separately so a controlled refresh can detect live editorial divergence.
+/** Kept separately so a controlled refresh can detect live editorial divergence. */
 export const claimsBeforeLivingRefresh: CompleteSeedClaim[] = rawClaims.map(withResearchDefaults);
 export const claimsBeforeIntegrityCorrections: CompleteSeedClaim[] = claimsBeforeLivingRefresh.map(refreshLivingEvidenceClaim).map(refreshVaccineClaim).map(refreshFoundationsClaim).map(refreshPregnancyClaim).map(refreshLearningClaim).map(refreshBrainClaim).map(refreshSupplementClaim).map(refreshFertilityClaim).map(refreshDnaClaim).map(refreshNuclearClaim).map(refreshSmokingClaim).map(refreshEvolutionClaim).map(refreshClimateClaim).map(refreshMyocarditisClaim);
 export const claimsBeforeEditorialCompletion: CompleteSeedClaim[] = claimsBeforeIntegrityCorrections.map(claim => researchIntegrityFields(claim, claim.topicSlug)).map(refreshEditorialAuditClaim);

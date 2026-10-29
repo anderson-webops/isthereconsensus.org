@@ -47,7 +47,9 @@ describe("sitemap static route list", () => {
 
 	for (const route of publicStaticRoutes) {
 		it(`keeps ${route} discoverable`, () => {
-			assert.match(sitemapSource, new RegExp(`path: "${route === "/" ? "\\/" : route}"`));
+			assert.match(sitemapSource, new RegExp(`path: "${route === "/"
+				? "\\/"
+				: route}"`));
 		});
 	}
 

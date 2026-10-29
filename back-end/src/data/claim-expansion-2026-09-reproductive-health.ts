@@ -34,9 +34,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Contraceptive effectiveness is high-confidence. Continuation, satisfaction, bleeding, pain, and access vary across products, populations, and care settings.",
 		sources: [
-			["guideline", "About Contraception", "Centers for Disease Control and Prevention", 2024, "https://www.cdc.gov/contraception/about/index.html", "Current U.S. public-health overview compares contraceptive methods and identifies implants and IUDs among the most effective reversible options."],
-			["meta_analysis", "Long-acting reversible contraception in adolescents: a systematic review and meta-analysis", "American Journal of Obstetrics and Gynecology", 2017, "10.1016/j.ajog.2016.12.024", "Synthesis finds strong contraceptive effectiveness and continuation in adolescents while documenting method-specific bleeding and insertion outcomes."],
-			["systematic_review", "A systematic review on clinical effectiveness, side-effect profile and meta-analysis on continuation rate of etonogestrel contraceptive implant", "Reproductive Health", 2021, "10.1186/s12978-020-01054-y", "Implant review confirms high effectiveness and examines continuation and bleeding-related discontinuation."]
+			[
+				"guideline",
+				"About Contraception",
+				"Centers for Disease Control and Prevention",
+				2024,
+				"https://www.cdc.gov/contraception/about/index.html",
+				"Current U.S. public-health overview compares contraceptive methods and identifies implants and IUDs among the most effective reversible options."
+			],
+			[
+				"meta_analysis",
+				"Long-acting reversible contraception in adolescents: a systematic review and meta-analysis",
+				"American Journal of Obstetrics and Gynecology",
+				2017,
+				"10.1016/j.ajog.2016.12.024",
+				"Synthesis finds strong contraceptive effectiveness and continuation in adolescents while documenting method-specific bleeding and insertion outcomes."
+			],
+			[
+				"systematic_review",
+				"A systematic review on clinical effectiveness, side-effect profile and meta-analysis on continuation rate of etonogestrel contraceptive implant",
+				"Reproductive Health",
+				2021,
+				"10.1186/s12978-020-01054-y",
+				"Implant review confirms high effectiveness and examines continuation and bleeding-related discontinuation."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Safety and eligibility are high-confidence. Individual insertion experience and the comparative effectiveness of pain-control strategies remain less predictable.",
 		sources: [
-			["guideline", "Intrauterine Contraception", "Centers for Disease Control and Prevention", 2024, "https://www.cdc.gov/contraception/hcp/usspr/intrauterine-contraception.html", "Current practice guidance covers initiation, infection screening, placement, bleeding, and management for copper and levonorgestrel IUDs."],
-			["systematic_review", "Intrauterine device use is safe among nulligravidas and adolescent girls", "Acta Obstetricia et Gynecologica Scandinavica", 2021, "10.1111/aogs.14097", "Systematic review directly evaluates IUD safety among adolescents and people with no prior pregnancy."],
-			["systematic_review", "Levonorgestrel-Releasing Intrauterine System as a Contraceptive Method in Nulliparous Women: A Systematic Review", "Journal of Clinical Medicine", 2020, "10.3390/jcm9072101", "Review finds high effectiveness and generally favorable continuation in nulliparous users while examining insertion and adverse events."]
+			[
+				"guideline",
+				"Intrauterine Contraception",
+				"Centers for Disease Control and Prevention",
+				2024,
+				"https://www.cdc.gov/contraception/hcp/usspr/intrauterine-contraception.html",
+				"Current practice guidance covers initiation, infection screening, placement, bleeding, and management for copper and levonorgestrel IUDs."
+			],
+			[
+				"systematic_review",
+				"Intrauterine device use is safe among nulligravidas and adolescent girls",
+				"Acta Obstetricia et Gynecologica Scandinavica",
+				2021,
+				"10.1111/aogs.14097",
+				"Systematic review directly evaluates IUD safety among adolescents and people with no prior pregnancy."
+			],
+			[
+				"systematic_review",
+				"Levonorgestrel-Releasing Intrauterine System as a Contraceptive Method in Nulliparous Women: A Systematic Review",
+				"Journal of Clinical Medicine",
+				2020,
+				"10.3390/jcm9072101",
+				"Review finds high effectiveness and generally favorable continuation in nulliparous users while examining insertion and adverse events."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The causal direction is high-confidence. Exact absolute rates and differences among newer formulations are less precise because the event is uncommon and prescribing is not random.",
 		sources: [
-			["meta_analysis", "A systematic review and meta-analysis of venous thrombosis risk among users of combined oral contraception", "International Journal of Gynecology & Obstetrics", 2018, "10.1002/ijgo.12455", "Meta-analysis quantifies the elevated venous-thrombosis risk among combined oral contraceptive users."],
-			["meta_analysis", "Systematic review and meta-analysis of the association of combined oral contraceptives on the risk of venous thromboembolism: The role of the progestogen type and estrogen dose", "Thrombosis Research", 2018, "10.1016/j.thromres.2018.03.005", "Synthesis examines how estrogen dose and progestin type modify the relative risk."],
-			["meta_analysis", "Are natural estrogens used in contraception at lower risk of venous thromboembolism than synthetic ones? A systematic literature review and meta-analysis", "Frontiers in Endocrinology", 2024, "10.3389/fendo.2024.1428597", "Review evaluates newer estrogen formulations while emphasizing limitations in comparative evidence."]
+			[
+				"meta_analysis",
+				"A systematic review and meta-analysis of venous thrombosis risk among users of combined oral contraception",
+				"International Journal of Gynecology & Obstetrics",
+				2018,
+				"10.1002/ijgo.12455",
+				"Meta-analysis quantifies the elevated venous-thrombosis risk among combined oral contraceptive users."
+			],
+			[
+				"meta_analysis",
+				"Systematic review and meta-analysis of the association of combined oral contraceptives on the risk of venous thromboembolism: The role of the progestogen type and estrogen dose",
+				"Thrombosis Research",
+				2018,
+				"10.1016/j.thromres.2018.03.005",
+				"Synthesis examines how estrogen dose and progestin type modify the relative risk."
+			],
+			[
+				"meta_analysis",
+				"Are natural estrogens used in contraception at lower risk of venous thromboembolism than synthetic ones? A systematic literature review and meta-analysis",
+				"Frontiers in Endocrinology",
+				2024,
+				"10.3389/fendo.2024.1428597",
+				"Review evaluates newer estrogen formulations while emphasizing limitations in comparative evidence."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty reflects consistent site-specific patterns but reliance on observational data, changing formulations, long latency, and confounding by reproductive and screening factors.",
 		sources: [
-			["systematic_review", "Assessing the impact of contraceptive use on reproductive cancer risk among women of reproductive age: a systematic review", "Frontiers in Global Women's Health", 2024, "10.3389/fgwh.2024.1487820", "Broad review maps method-specific associations across breast, cervical, ovarian, and endometrial cancers."],
-			["meta_analysis", "Effect of duration of hormonal contraceptive use on breast cancer risk: a systematic review and meta-analysis of cohort studies", "Maturitas", 2025, "10.1016/j.maturitas.2025.108750", "Cohort synthesis examines the small breast-cancer association and how it varies with duration."],
-			["meta_analysis", "Association of oral contraceptives and risk of endometrial cancer: A systematic review and meta-analysis", "Acta Obstetricia et Gynecologica Scandinavica", 2025, "10.1111/aogs.15043", "Updated synthesis supports lower endometrial-cancer risk after oral contraceptive use."]
+			[
+				"systematic_review",
+				"Assessing the impact of contraceptive use on reproductive cancer risk among women of reproductive age: a systematic review",
+				"Frontiers in Global Women's Health",
+				2024,
+				"10.3389/fgwh.2024.1487820",
+				"Broad review maps method-specific associations across breast, cervical, ovarian, and endometrial cancers."
+			],
+			[
+				"meta_analysis",
+				"Effect of duration of hormonal contraceptive use on breast cancer risk: a systematic review and meta-analysis of cohort studies",
+				"Maturitas",
+				2025,
+				"10.1016/j.maturitas.2025.108750",
+				"Cohort synthesis examines the small breast-cancer association and how it varies with duration."
+			],
+			[
+				"meta_analysis",
+				"Association of oral contraceptives and risk of endometrial cancer: A systematic review and meta-analysis",
+				"Acta Obstetricia et Gynecologica Scandinavica",
+				2025,
+				"10.1111/aogs.15043",
+				"Updated synthesis supports lower endometrial-cancer risk after oral contraceptive use."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Effectiveness and serious-complication rates are high-confidence. Exact performance varies with gestational age, regimen, adherence, and follow-up pathway.",
 		sources: [
-			["guideline", "Abortion care guideline", "World Health Organization", 2022, "https://www.who.int/publications-detail-redirect/9789240039483/", "Global evidence-based guideline recommends medication and procedural abortion methods by gestational age and care context."],
-			["guideline", "Medication Abortion Up to 70 Days of Gestation", "American College of Obstetricians and Gynecologists", 2020, "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2020/10/medication-abortion-up-to-70-days-of-gestation", "Clinical bulletin reviews efficacy, contraindications, expected symptoms, follow-up, and uncommon complications."],
-			["consensus_statement", "The Safety and Quality of Abortion Care in the United States", "National Academies of Sciences, Engineering, and Medicine", 2018, "10.17226/24950", "Independent evidence review finds legal abortion in the United States safe and effective, with serious complications rare."]
+			[
+				"guideline",
+				"Abortion care guideline",
+				"World Health Organization",
+				2022,
+				"https://www.who.int/publications-detail-redirect/9789240039483/",
+				"Global evidence-based guideline recommends medication and procedural abortion methods by gestational age and care context."
+			],
+			[
+				"guideline",
+				"Medication Abortion Up to 70 Days of Gestation",
+				"American College of Obstetricians and Gynecologists",
+				2020,
+				"https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2020/10/medication-abortion-up-to-70-days-of-gestation",
+				"Clinical bulletin reviews efficacy, contraindications, expected symptoms, follow-up, and uncommon complications."
+			],
+			[
+				"consensus_statement",
+				"The Safety and Quality of Abortion Care in the United States",
+				"National Academies of Sciences, Engineering, and Medicine",
+				2018,
+				"10.17226/24950",
+				"Independent evidence review finds legal abortion in the United States safe and effective, with serious complications rare."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The absence of a general infertility effect is high-confidence. Precise estimates for uncommon complications and some later obstetric outcomes vary by method and study design.",
 		sources: [
-			["consensus_statement", "The Safety and Quality of Abortion Care in the United States", "National Academies of Sciences, Engineering, and Medicine", 2018, "10.17226/24950", "Independent review concludes that abortion does not increase secondary infertility and distinguishes stronger from confounded long-term evidence."],
-			["guideline", "Induced Abortion", "American College of Obstetricians and Gynecologists", 2024, "https://www.acog.org/womens-health/faqs/induced-abortion", "Patient guidance explains medication and procedural methods, recovery, complications, and return of fertility."],
-			["guideline", "Abortion care guideline", "World Health Organization", 2022, "https://www.who.int/publications-detail-redirect/9789240039483/", "Global guideline distinguishes safe evidence-based abortion care from preventable harms associated with unsafe care."]
+			[
+				"consensus_statement",
+				"The Safety and Quality of Abortion Care in the United States",
+				"National Academies of Sciences, Engineering, and Medicine",
+				2018,
+				"10.17226/24950",
+				"Independent review concludes that abortion does not increase secondary infertility and distinguishes stronger from confounded long-term evidence."
+			],
+			[
+				"guideline",
+				"Induced Abortion",
+				"American College of Obstetricians and Gynecologists",
+				2024,
+				"https://www.acog.org/womens-health/faqs/induced-abortion",
+				"Patient guidance explains medication and procedural methods, recovery, complications, and return of fertility."
+			],
+			[
+				"guideline",
+				"Abortion care guideline",
+				"World Health Organization",
+				2022,
+				"https://www.who.int/publications-detail-redirect/9789240039483/",
+				"Global guideline distinguishes safe evidence-based abortion care from preventable harms associated with unsafe care."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty reflects agreement across stronger reviews and prospective comparisons, with unavoidable nonrandomization, attrition, stigma, and variation in personal circumstances.",
 		sources: [
-			["landmark_study", "Women's Mental Health and Well-being 5 Years After Receiving or Being Denied an Abortion", "JAMA Psychiatry", 2017, "10.1001/jamapsychiatry.2016.3478", "Prospective Turnaway Study comparison finds no worse long-term mental-health trajectory after receiving versus being denied a wanted abortion."],
-			["consensus_statement", "The Safety and Quality of Abortion Care in the United States", "National Academies of Sciences, Engineering, and Medicine", 2018, "10.17226/24950", "Independent review concludes that abortion does not increase risk of depression, anxiety, or post-traumatic stress disorder."],
-			["guideline", "Identifying and Combating Abortion Myths and Misinformation", "American College of Obstetricians and Gynecologists", 2025, "https://www.acog.org/advocacy/facts-are-important/identifying-combating-abortion-myths-misinformation", "Clinical organization summarizes evidence against claims of a distinct post-abortion psychiatric syndrome."]
+			[
+				"landmark_study",
+				"Women's Mental Health and Well-being 5 Years After Receiving or Being Denied an Abortion",
+				"JAMA Psychiatry",
+				2017,
+				"10.1001/jamapsychiatry.2016.3478",
+				"Prospective Turnaway Study comparison finds no worse long-term mental-health trajectory after receiving versus being denied a wanted abortion."
+			],
+			[
+				"consensus_statement",
+				"The Safety and Quality of Abortion Care in the United States",
+				"National Academies of Sciences, Engineering, and Medicine",
+				2018,
+				"10.17226/24950",
+				"Independent review concludes that abortion does not increase risk of depression, anxiety, or post-traumatic stress disorder."
+			],
+			[
+				"guideline",
+				"Identifying and Combating Abortion Myths and Misinformation",
+				"American College of Obstetricians and Gynecologists",
+				2025,
+				"https://www.acog.org/advocacy/facts-are-important/identifying-combating-abortion-myths-misinformation",
+				"Clinical organization summarizes evidence against claims of a distinct post-abortion psychiatric syndrome."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The population-level age pattern is high-confidence. Individual prediction remains limited, and cohorts differ in pregnancy intention, frequency of intercourse, partner fertility, and treatment access.",
 		sources: [
-			["guideline", "Fertility evaluation of infertile women: a committee opinion", "American Society for Reproductive Medicine", 2021, "https://integration.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/", "Clinical guidance uses age-sensitive evaluation timelines while emphasizing a complete reproductive history rather than one threshold."],
-			["meta_analysis", "Age-related natural fertility outcomes in women over 35 years: a systematic review and individual participant data meta-analysis", "Human Reproduction", 2020, "10.1093/humrep/deaa129", "Individual-participant synthesis quantifies continuous age-related changes in natural conception and pregnancy outcomes."],
-			["landmark_study", "Role of maternal age and pregnancy history in risk of miscarriage: prospective register based study", "BMJ", 2019, "10.1136/bmj.l869", "Large registry study shows miscarriage risk increasing progressively with maternal age and reproductive history."]
+			[
+				"guideline",
+				"Fertility evaluation of infertile women: a committee opinion",
+				"American Society for Reproductive Medicine",
+				2021,
+				"https://integration.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/",
+				"Clinical guidance uses age-sensitive evaluation timelines while emphasizing a complete reproductive history rather than one threshold."
+			],
+			[
+				"meta_analysis",
+				"Age-related natural fertility outcomes in women over 35 years: a systematic review and individual participant data meta-analysis",
+				"Human Reproduction",
+				2020,
+				"10.1093/humrep/deaa129",
+				"Individual-participant synthesis quantifies continuous age-related changes in natural conception and pregnancy outcomes."
+			],
+			[
+				"landmark_study",
+				"Role of maternal age and pregnancy history in risk of miscarriage: prospective register based study",
+				"BMJ",
+				2019,
+				"10.1136/bmj.l869",
+				"Large registry study shows miscarriage risk increasing progressively with maternal age and reproductive history."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The age gradient is high-confidence. Individual prognosis and the value of add-on procedures remain variable, and clinic-reported denominators can make comparisons difficult.",
 		sources: [
-			["guideline", "Success Rates", "Society for Assisted Reproductive Technology", 2026, "https://www.sart.org/patients/a-patients-guide-to-assisted-reproductive-technology/general-information/success-rates/", "Patient guidance explains how age, diagnosis, cycle stage, and reporting denominator shape assisted-reproduction success rates."],
-			["meta_analysis", "Does maternal age affect assisted reproduction technology success rates after euploid embryo transfer? A systematic review and meta-analysis", "Fertility and Sterility", 2023, "10.1016/j.fertnstert.2023.02.036", "Synthesis examines residual age effects after transfer of embryos screened as euploid."],
-			["meta_analysis", "A meta-analysis and systematic review of advanced maternal age patients in IVF", "Human Reproduction Update", 2025, "10.1093/humupd/dmaf020", "Updated review evaluates treatment outcomes and interventions among patients of advanced maternal age."]
+			[
+				"guideline",
+				"Success Rates",
+				"Society for Assisted Reproductive Technology",
+				2026,
+				"https://www.sart.org/patients/a-patients-guide-to-assisted-reproductive-technology/general-information/success-rates/",
+				"Patient guidance explains how age, diagnosis, cycle stage, and reporting denominator shape assisted-reproduction success rates."
+			],
+			[
+				"meta_analysis",
+				"Does maternal age affect assisted reproduction technology success rates after euploid embryo transfer? A systematic review and meta-analysis",
+				"Fertility and Sterility",
+				2023,
+				"10.1016/j.fertnstert.2023.02.036",
+				"Synthesis examines residual age effects after transfer of embryos screened as euploid."
+			],
+			[
+				"meta_analysis",
+				"A meta-analysis and systematic review of advanced maternal age patients in IVF",
+				"Human Reproduction Update",
+				2025,
+				"10.1093/humupd/dmaf020",
+				"Updated review evaluates treatment outcomes and interventions among patients of advanced maternal age."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026ReproductiveHealthClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Symptom efficacy is high-confidence. Rare long-term harms and comparisons among modern routes and formulations are less precise because many outcome data come from older regimens or observational studies.",
 		sources: [
-			["systematic_review", "Management of Menopausal Symptoms", "JAMA", 2023, "10.1001/jama.2022.24140", "Evidence review identifies hormone therapy as the most effective treatment for vasomotor symptoms and summarizes individualized contraindications and alternatives."],
-			["systematic_review", "Menopausal hormone therapy and women's health: An umbrella review", "PLOS Medicine", 2021, "10.1371/journal.pmed.1003731", "Umbrella review maps benefits and harms across randomized and observational syntheses, emphasizing differences by outcome and regimen."],
-			["guideline", "Hormone Therapy", "The Menopause Society", 2026, "https://menopause.org/patient-education/menopause-topics/hormone-therapy", "Current patient guidance explains symptom benefit, uterus-specific regimens, routes, timing, and individualized risk assessment."]
+			[
+				"systematic_review",
+				"Management of Menopausal Symptoms",
+				"JAMA",
+				2023,
+				"10.1001/jama.2022.24140",
+				"Evidence review identifies hormone therapy as the most effective treatment for vasomotor symptoms and summarizes individualized contraindications and alternatives."
+			],
+			[
+				"systematic_review",
+				"Menopausal hormone therapy and women's health: An umbrella review",
+				"PLOS Medicine",
+				2021,
+				"10.1371/journal.pmed.1003731",
+				"Umbrella review maps benefits and harms across randomized and observational syntheses, emphasizing differences by outcome and regimen."
+			],
+			[
+				"guideline",
+				"Hormone Therapy",
+				"The Menopause Society",
+				2026,
+				"https://menopause.org/patient-education/menopause-topics/hormone-therapy",
+				"Current patient guidance explains symptom benefit, uterus-specific regimens, routes, timing, and individualized risk assessment."
+			]
 		]
 	})
 ];

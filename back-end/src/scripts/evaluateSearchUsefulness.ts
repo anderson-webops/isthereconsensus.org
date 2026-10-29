@@ -5,7 +5,12 @@ import { evaluateSearchUsefulness } from "../utils/searchUsefulness.js";
 
 async function run() {
 	const args = process.argv.slice(2);
-	const allowed = new Set(["--dataset", "--origin", "--output", "--interval-ms"]);
+	const allowed = new Set([
+		"--dataset",
+		"--origin",
+		"--output",
+		"--interval-ms"
+	]);
 	if (!args.length || args.length % 2 || args.some((argument, index) => index % 2 === 0 && !allowed.has(argument))) throw new Error("Use --dataset <public-question-file> --origin <site-origin> [--output <report-file>] [--interval-ms <milliseconds>].");
 	const options = new Map(Array.from({ length: args.length / 2 }, (_, index) => [args[index * 2], args[index * 2 + 1]]));
 	if (options.size !== args.length / 2 || !options.get("--dataset") || !options.get("--origin")) throw new Error("Dataset and origin are required; flags cannot be repeated.");
@@ -19,9 +24,14 @@ async function run() {
 	}
 	catch { throw new Error("Dataset must contain valid JSON."); }
 	const report = await evaluateSearchUsefulness(dataset, options.get("--origin")!, {
-		intervalMs: options.has("--interval-ms") ? Number(options.get("--interval-ms")) : undefined
+		intervalMs: options.has("--interval-ms")
+			? Number(options.get("--interval-ms"))
+			: undefined
 	});
-	const output = `${JSON.stringify({ ...report, inputFileSha256: createHash("sha256").update(bytes).digest("hex") }, null, 2)}\n`;
+	const output = `${JSON.stringify({
+		...report,
+		inputFileSha256: createHash("sha256").update(bytes).digest("hex")
+	}, null, 2)}\n`;
 	if (options.get("--output")) await writeFile(options.get("--output")!, output, { mode: 0o600, flag: "wx" });
 	else process.stdout.write(output);
 	if (!report.mechanicalGatePassed) process.exitCode = 1;

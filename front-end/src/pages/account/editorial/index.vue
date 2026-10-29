@@ -55,7 +55,7 @@ const testingGuide = [
 
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
 const isAdmin = computed(() => role.value === "admin");
-const draftClaims = computed(() => claims.value.filter((claim) => claim.status === "draft"));
+const draftClaims = computed(() => claims.value.filter(claim => claim.status === "draft"));
 const reviewClaims = computed(() =>
 	claims.value.filter((claim) => {
 		if (claim.status === "needs_update") return true;
@@ -67,7 +67,7 @@ const reviewClaims = computed(() =>
 const topicScopedClaims = computed(() =>
 	unassignedQuestions.value.reduce<Record<string, ClaimSummary[]>>((map, question) => {
 		const topicKey = question.topic._id;
-		map[topicKey] = claims.value.filter((claim) => claim.topic?._id === topicKey && claim.status !== "archived");
+		map[topicKey] = claims.value.filter(claim => claim.topic?._id === topicKey && claim.status !== "archived");
 		return map;
 	}, {})
 );
@@ -87,9 +87,9 @@ const topicPressure = computed(() =>
 			}
 			map[topicKey].count += 1;
 			if (
-				question.title &&
-				!map[topicKey].sampleTitles.includes(question.title) &&
-				map[topicKey].sampleTitles.length < 3
+				question.title
+				&& !map[topicKey].sampleTitles.includes(question.title)
+				&& map[topicKey].sampleTitles.length < 3
 			) {
 				map[topicKey].sampleTitles.push(question.title);
 			}
@@ -113,7 +113,9 @@ function daysSince(value?: string) {
 }
 
 function cadenceDays(claim: ClaimSummary) {
-	return claim.surveillanceSpec?.cadenceDays ?? (claim.reviewMode === "living" ? 30 : 90);
+	return claim.surveillanceSpec?.cadenceDays ?? (claim.reviewMode === "living"
+		? 30
+		: 90);
 }
 
 function buildOpsReasons(claim: ClaimSummary) {
@@ -128,9 +130,9 @@ function buildOpsReasons(claim: ClaimSummary) {
 		reasons.push(formatCountLabel(claim.correctedSourceCount, "corrected citation"));
 	}
 	if (
-		(claim.flaggedSourceCount ?? 0) > 0 &&
-		(claim.retractedSourceCount ?? 0) === 0 &&
-		(claim.concernSourceCount ?? 0) === 0
+		(claim.flaggedSourceCount ?? 0) > 0
+		&& (claim.retractedSourceCount ?? 0) === 0
+		&& (claim.concernSourceCount ?? 0) === 0
 	) {
 		reasons.push(formatCountLabel(claim.flaggedSourceCount, "flagged citation"));
 	}
@@ -152,54 +154,63 @@ function buildOpsReasons(claim: ClaimSummary) {
 
 const criticalOpsClaims = computed(() =>
 	claims.value
-		.filter((claim) => (claim.retractedSourceCount ?? 0) > 0 || (claim.concernSourceCount ?? 0) > 0)
-		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+		.filter(claim => (claim.retractedSourceCount ?? 0) > 0 || (claim.concernSourceCount ?? 0) > 0)
+		.map(claim => ({
+			claim,
+			reasons: buildOpsReasons(claim)
+		}))
 );
 
 const highPriorityOpsClaims = computed(() =>
 	claims.value
-		.filter((claim) => !criticalOpsClaims.value.some((entry) => entry.claim._id === claim._id))
-		.filter((claim) => claim.status === "published" || claim.status === "needs_update")
+		.filter(claim => !criticalOpsClaims.value.some(entry => entry.claim._id === claim._id))
+		.filter(claim => claim.status === "published" || claim.status === "needs_update")
 		.filter(
-			(claim) =>
-				(claim.flaggedSourceCount ?? 0) > 0 ||
-				daysSince(claim.lastRetractionCheckAt) > cadenceDays(claim) ||
-				daysSince(claim.searchCutoffAt) > cadenceDays(claim) ||
-				(!!claim.nextReviewAt && new Date(claim.nextReviewAt).getTime() <= Date.now())
+			claim =>
+				(claim.flaggedSourceCount ?? 0) > 0
+				|| daysSince(claim.lastRetractionCheckAt) > cadenceDays(claim)
+				|| daysSince(claim.searchCutoffAt) > cadenceDays(claim)
+				|| (!!claim.nextReviewAt && new Date(claim.nextReviewAt).getTime() <= Date.now())
 		)
-		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+		.map(claim => ({
+			claim,
+			reasons: buildOpsReasons(claim)
+		}))
 		.slice(0, 8)
 );
 
 const routineOpsClaims = computed(() =>
 	claims.value
 		.filter(
-			(claim) =>
-				!criticalOpsClaims.value.some((entry) => entry.claim._id === claim._id) &&
-				!highPriorityOpsClaims.value.some((entry) => entry.claim._id === claim._id)
+			claim =>
+				!criticalOpsClaims.value.some(entry => entry.claim._id === claim._id)
+				&& !highPriorityOpsClaims.value.some(entry => entry.claim._id === claim._id)
 		)
 		.filter(
-			(claim) =>
-				!claim.surveillanceSpec?.focus ||
-				!claim.surveillanceSpec?.watchTerms?.length ||
-				!claim.surveillanceSpec?.integrityMonitors?.length ||
-				!claim.surveillanceSpec?.guidelineMonitors?.length ||
-				!claim.surveillanceSpec?.triggerRules?.length
+			claim =>
+				!claim.surveillanceSpec?.focus
+				|| !claim.surveillanceSpec?.watchTerms?.length
+				|| !claim.surveillanceSpec?.integrityMonitors?.length
+				|| !claim.surveillanceSpec?.guidelineMonitors?.length
+				|| !claim.surveillanceSpec?.triggerRules?.length
 		)
-		.map((claim) => ({ claim, reasons: buildOpsReasons(claim) }))
+		.map(claim => ({
+			claim,
+			reasons: buildOpsReasons(claim)
+		}))
 		.slice(0, 8)
 );
-const loadedQuestionCount = computed(() => unassignedQuestions.value.filter((question) => question.loadedFrame).length);
+const loadedQuestionCount = computed(() => unassignedQuestions.value.filter(question => question.loadedFrame).length);
 const bundledQuestionCount = computed(
-	() => unassignedQuestions.value.filter((question) => question.multiQuestion).length
+	() => unassignedQuestions.value.filter(question => question.multiQuestion).length
 );
 const conceptQuestionCount = computed(
-	() => unassignedQuestions.value.filter((question) => question.askKind === "concept").length
+	() => unassignedQuestions.value.filter(question => question.askKind === "concept").length
 );
 const roadmapPreview = firstWaveClaims.slice(0, 4);
 const roadmapFollowOn = secondWaveClaims.slice(0, 3);
 const roadmapBacklog = backlogClaims
-	.filter((item) => item.wave === "backlog")
+	.filter(item => item.wave === "backlog")
 	.slice(-4)
 	.reverse();
 const roadmapHolds = holdClaims.slice(0, 3);
@@ -228,9 +239,11 @@ async function refreshEditorial() {
 		]);
 		claims.value = claimsResponse.claims;
 		unassignedQuestions.value = questionsResponse.questions;
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load the editorial workspace.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -252,9 +265,11 @@ async function createDraftClaim(question: Question) {
 		);
 		await refreshEditorial();
 		await router.push(`/account/editorial/claims/${response.claim._id}`);
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to create a draft claim from that question.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -270,9 +285,11 @@ async function linkQuestion(question: Question) {
 			body: { claimId }
 		});
 		await refreshEditorial();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to link that question to a claim.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -289,9 +306,11 @@ async function markDuplicate(question: Question) {
 		});
 		delete duplicateReason.value[question._id];
 		await refreshEditorial();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to mark that question as duplicate.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -310,9 +329,11 @@ async function deleteQuestion(question: Question) {
 		delete deletionReason.value[question._id];
 		delete deletionConfirmed.value[question._id];
 		await refreshEditorial();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to delete that question.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -334,13 +355,15 @@ watch(
 			:items="[
 				{ label: 'Home', to: '/' },
 				{ label: 'Account', to: '/account' },
-				{ label: 'Editorial workspace' }
+				{ label: 'Editorial workspace' },
 			]"
 		/>
 
 		<header class="editorial-header">
 			<div>
-				<p class="eyebrow">Editorial workspace</p>
+				<p class="eyebrow">
+					Editorial workspace
+				</p>
 				<h1>Route intake, maintain canonical claims, and keep the board clean.</h1>
 				<p>
 					This area is for verified experts and admins. Topic hubs stay public; canonical claim reviews and
@@ -356,7 +379,9 @@ watch(
 		</header>
 
 		<section v-if="!ready" class="locked-panel">
-			<p class="eyebrow">Checking access</p>
+			<p class="eyebrow">
+				Checking access
+			</p>
 			<h2>Loading your editorial permissions.</h2>
 		</section>
 		<AuthPanel
@@ -365,13 +390,17 @@ watch(
 			hint="Editorial access requires a logged-in account."
 		/>
 		<section v-else-if="!canUseEditorial" class="locked-panel">
-			<p class="eyebrow">Restricted area</p>
+			<p class="eyebrow">
+				Restricted area
+			</p>
 			<h2>Verified experts and admins only.</h2>
 			<p>Member accounts can apply for expert review from the main account page.</p>
 			<NuxtLink class="button button--ghost" to="/account">Back to account</NuxtLink>
 		</section>
 		<template v-else>
-			<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+			<p v-if="errorMessage" class="error">
+				{{ errorMessage }}
+			</p>
 
 			<section class="summary-strip">
 				<article class="summary-card">
@@ -407,7 +436,9 @@ watch(
 			<section class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Evidence-ops inbox</p>
+						<p class="eyebrow">
+							Evidence-ops inbox
+						</p>
 						<h2>Monitoring signals that need human review</h2>
 					</div>
 					<p>
@@ -422,7 +453,9 @@ watch(
 							<h3>Critical</h3>
 							<p>Retractions and expressions of concern should never wait for the next routine review.</p>
 						</div>
-						<div v-if="!criticalOpsClaims.length" class="empty-state">No critical evidence alerts.</div>
+						<div v-if="!criticalOpsClaims.length" class="empty-state">
+							No critical evidence alerts.
+						</div>
 						<div v-else class="claim-list">
 							<article v-for="entry in criticalOpsClaims" :key="entry.claim._id" class="claim-card">
 								<p class="queue-card__meta">
@@ -431,7 +464,9 @@ watch(
 								</p>
 								<h3>{{ entry.claim.title }}</h3>
 								<ul class="plain-chip-list">
-									<li v-for="reason in entry.reasons" :key="reason">{{ reason }}</li>
+									<li v-for="reason in entry.reasons" :key="reason">
+										{{ reason }}
+									</li>
 								</ul>
 								<NuxtLink
 									class="button button--ghost"
@@ -459,7 +494,9 @@ watch(
 								</p>
 								<h3>{{ entry.claim.title }}</h3>
 								<ul class="plain-chip-list">
-									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">{{ reason }}</li>
+									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">
+										{{ reason }}
+									</li>
 								</ul>
 								<NuxtLink
 									class="button button--ghost"
@@ -487,7 +524,9 @@ watch(
 								</p>
 								<h3>{{ entry.claim.title }}</h3>
 								<ul class="plain-chip-list">
-									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">{{ reason }}</li>
+									<li v-for="reason in entry.reasons.slice(0, 4)" :key="reason">
+										{{ reason }}
+									</li>
 								</ul>
 								<NuxtLink
 									class="button button--ghost"
@@ -505,31 +544,37 @@ watch(
 				<section id="moderation-guide" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Routing guide</p>
+							<p class="eyebrow">
+								Routing guide
+							</p>
 							<h2>How to route incoming questions</h2>
 						</div>
 						<p>These rules keep the site from creating multiple competing answers to the same claim.</p>
 					</div>
 					<ul class="guide-list">
-						<li v-for="item in workflowGuide" :key="item">{{ item }}</li>
+						<li v-for="item in workflowGuide" :key="item">
+							{{ item }}
+						</li>
 					</ul>
 				</section>
 
 				<section class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Moderation guide</p>
+							<p class="eyebrow">
+								Moderation guide
+							</p>
 							<h2>How to handle conflict without flattening the workflow</h2>
 						</div>
 						<p>Community discussion is useful, but canonical pages should not become live edit wars.</p>
 					</div>
 					<ul class="guide-list">
-						<li v-for="item in moderationGuide" :key="item">{{ item }}</li>
+						<li v-for="item in moderationGuide" :key="item">
+							{{ item }}
+						</li>
 					</ul>
 					<div class="editorial-panel__links">
-						<NuxtLink class="button button--ghost" to="/community-guidelines"
-							>Community guidelines</NuxtLink
-						>
+						<NuxtLink class="button button--ghost" to="/community-guidelines">Community guidelines</NuxtLink>
 						<NuxtLink class="button button--ghost" to="/corrections">Corrections policy</NuxtLink>
 					</div>
 				</section>
@@ -537,7 +582,9 @@ watch(
 				<section id="policy-surfaces" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Ask-flow guide</p>
+							<p class="eyebrow">
+								Ask-flow guide
+							</p>
 							<h2>Signals from the public question form</h2>
 						</div>
 						<p>
@@ -545,7 +592,9 @@ watch(
 						</p>
 					</div>
 					<ul class="guide-list">
-						<li v-for="item in askFlowGuide" :key="item">{{ item }}</li>
+						<li v-for="item in askFlowGuide" :key="item">
+							{{ item }}
+						</li>
 					</ul>
 					<p class="muted">
 						{{ conceptQuestionCount }} concept asks, {{ loadedQuestionCount }} loaded asks, and
@@ -556,7 +605,9 @@ watch(
 				<section class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Policy surfaces</p>
+							<p class="eyebrow">
+								Policy surfaces
+							</p>
 							<h2>Operational pages that now back the workflow</h2>
 						</div>
 						<p>
@@ -565,40 +616,44 @@ watch(
 						</p>
 					</div>
 					<ul class="guide-list">
-						<li v-for="item in policyGuide" :key="item">{{ item }}</li>
+						<li v-for="item in policyGuide" :key="item">
+							{{ item }}
+						</li>
 					</ul>
 					<div class="editorial-panel__links">
-						<NuxtLink class="button button--ghost" to="/conflicts-and-funding"
-							>Conflict disclosure</NuxtLink
-						>
-						<NuxtLink class="button button--ghost" to="/expert-review-program"
-							>Verified expert review</NuxtLink
-						>
-						<NuxtLink class="button button--ghost" to="/moderation-and-appeals"
-							>Moderation and appeals</NuxtLink
-						>
+						<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict disclosure</NuxtLink>
+						<NuxtLink class="button button--ghost" to="/expert-review-program">Verified expert review</NuxtLink>
+						<NuxtLink class="button button--ghost" to="/moderation-and-appeals">Moderation and appeals</NuxtLink>
 					</div>
 				</section>
 
 				<section id="canonical-backlog" class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Trust and wording guide</p>
+							<p class="eyebrow">
+								Trust and wording guide
+							</p>
 							<h2>How to keep public copy credible without sounding pushy</h2>
 						</div>
 						<p>Claim pages work better when the tone stays plain, calm, and visibly evidence-led.</p>
 					</div>
 					<ul class="guide-list">
-						<li v-for="item in trustGuide" :key="item">{{ item }}</li>
+						<li v-for="item in trustGuide" :key="item">
+							{{ item }}
+						</li>
 					</ul>
-					<p class="muted">{{ testingGuide.join(" ") }}</p>
+					<p class="muted">
+						{{ testingGuide.join(" ") }}
+					</p>
 				</section>
 			</section>
 
 			<section class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Ask pressure</p>
+						<p class="eyebrow">
+							Ask pressure
+						</p>
 						<h2>Where new claim demand is building</h2>
 					</div>
 					<p>
@@ -607,7 +662,9 @@ watch(
 					</p>
 				</div>
 
-				<div v-if="!topicPressure.length" class="empty-state">No topic pressure is building right now.</div>
+				<div v-if="!topicPressure.length" class="empty-state">
+					No topic pressure is building right now.
+				</div>
 				<div v-else class="pressure-grid">
 					<article v-for="item in topicPressure" :key="item.topic._id" class="pressure-card">
 						<p class="queue-card__meta">
@@ -617,7 +674,9 @@ watch(
 						</p>
 						<h3>{{ item.topic.description || "Claim demand is building in this topic." }}</h3>
 						<ul class="pressure-card__list">
-							<li v-for="title in item.sampleTitles" :key="title">{{ title }}</li>
+							<li v-for="title in item.sampleTitles" :key="title">
+								{{ title }}
+							</li>
 						</ul>
 					</article>
 				</div>
@@ -626,7 +685,9 @@ watch(
 			<section class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Canonical backlog</p>
+						<p class="eyebrow">
+							Canonical backlog
+						</p>
 						<h2>Research-backed claims worth building next</h2>
 					</div>
 					<p>
@@ -745,7 +806,9 @@ watch(
 			<section id="search-demand-signals" class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Search-demand signals</p>
+						<p class="eyebrow">
+							Search-demand signals
+						</p>
 						<h2>What public query phrasing should push upward in the queue</h2>
 					</div>
 					<p>
@@ -770,7 +833,9 @@ watch(
 								<details class="decision-item__details">
 									<summary>Example searches</summary>
 									<ul>
-										<li v-for="example in item.examples" :key="example">{{ example }}</li>
+										<li v-for="example in item.examples" :key="example">
+											{{ example }}
+										</li>
 									</ul>
 								</details>
 							</article>
@@ -827,7 +892,9 @@ watch(
 							<p>Use these checks to confirm the search-demand work is actually reducing confusion.</p>
 						</div>
 						<ul class="guide-list">
-							<li v-for="item in demandMeasurement" :key="item">{{ item }}</li>
+							<li v-for="item in demandMeasurement" :key="item">
+								{{ item }}
+							</li>
 						</ul>
 					</section>
 				</div>
@@ -836,7 +903,9 @@ watch(
 			<section id="future-roadmap" class="editorial-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Future roadmap</p>
+						<p class="eyebrow">
+							Future roadmap
+						</p>
 						<h2>What the next product phase should harden first</h2>
 					</div>
 					<p>
@@ -862,7 +931,9 @@ watch(
 			<section class="editorial-panel">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Queue 1</p>
+						<p class="eyebrow">
+							Queue 1
+						</p>
 						<h2>Unassigned community questions</h2>
 					</div>
 					<p>
@@ -871,7 +942,9 @@ watch(
 					</p>
 				</div>
 
-				<div v-if="!unassignedQuestions.length" class="empty-state">No unassigned questions are waiting.</div>
+				<div v-if="!unassignedQuestions.length" class="empty-state">
+					No unassigned questions are waiting.
+				</div>
 				<div v-else class="queue-list">
 					<article v-for="question in unassignedQuestions" :key="question._id" class="queue-card">
 						<div class="queue-card__content">
@@ -884,15 +957,19 @@ watch(
 							<p>{{ question.body || "No additional context provided." }}</p>
 							<ul
 								v-if="
-									question.loadedFrame ||
-									question.multiQuestion ||
-									(question.sourceContextType && question.sourceContextType !== 'other') ||
-									question.closestMatchLabel
+									question.loadedFrame
+										|| question.multiQuestion
+										|| (question.sourceContextType && question.sourceContextType !== 'other')
+										|| question.closestMatchLabel
 								"
 								class="plain-chip-list"
 							>
-								<li v-if="question.loadedFrame">loaded frame</li>
-								<li v-if="question.multiQuestion">multi-question bundle</li>
+								<li v-if="question.loadedFrame">
+									loaded frame
+								</li>
+								<li v-if="question.multiQuestion">
+									multi-question bundle
+								</li>
 								<li v-if="question.sourceContextType && question.sourceContextType !== 'other'">
 									{{ question.sourceContextType }}
 								</li>
@@ -915,7 +992,9 @@ watch(
 
 						<div class="queue-card__actions">
 							<select v-model="selectedClaim[question._id]">
-								<option value="">Link to an existing claim</option>
+								<option value="">
+									Link to an existing claim
+								</option>
 								<option
 									v-for="claim in topicScopedClaims[question.topic._id] || []"
 									:key="claim._id"
@@ -930,20 +1009,18 @@ watch(
 								type="text"
 								maxlength="1000"
 								placeholder="Reason for duplicate decision"
-							/>
+							>
 							<input
 								v-if="isAdmin"
 								v-model="deletionReason[question._id]"
 								type="text"
 								maxlength="500"
 								placeholder="Moderation reason required for removal"
-							/>
+							>
 							<label v-if="isAdmin" class="queue-card__confirmation">
-								<input v-model="deletionConfirmed[question._id]" type="checkbox" />
-								<span
-									>Remove public content and public account attribution while retaining moderation
-									records</span
-								>
+								<input v-model="deletionConfirmed[question._id]" type="checkbox">
+								<span>Remove public content and public account attribution while retaining moderation
+									records</span>
 							</label>
 							<div class="queue-card__buttons">
 								<button
@@ -976,9 +1053,9 @@ watch(
 									class="button button--ghost button--danger"
 									type="button"
 									:disabled="
-										!deletionReason[question._id]?.trim() ||
-										!deletionConfirmed[question._id] ||
-										actionState === question._id
+										!deletionReason[question._id]?.trim()
+											|| !deletionConfirmed[question._id]
+											|| actionState === question._id
 									"
 									@click="deleteQuestion(question)"
 								>
@@ -994,13 +1071,17 @@ watch(
 				<section class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Queue 2</p>
+							<p class="eyebrow">
+								Queue 2
+							</p>
 							<h2>Draft claims</h2>
 						</div>
 						<p>These are waiting for structured editorial review and publication.</p>
 					</div>
 
-					<div v-if="!draftClaims.length" class="empty-state">No draft claims yet.</div>
+					<div v-if="!draftClaims.length" class="empty-state">
+						No draft claims yet.
+					</div>
 					<div v-else class="claim-list">
 						<article v-for="claim in draftClaims" :key="claim._id" class="claim-card">
 							<p class="queue-card__meta">
@@ -1019,7 +1100,9 @@ watch(
 				<section class="editorial-panel">
 					<div class="section-heading section-heading--tight">
 						<div>
-							<p class="eyebrow">Queue 3</p>
+							<p class="eyebrow">
+								Queue 3
+							</p>
 							<h2>Claims needing review</h2>
 						</div>
 						<p>Published claims whose review date has passed or which are marked for update.</p>
@@ -1032,12 +1115,10 @@ watch(
 						<article v-for="claim in reviewClaims" :key="claim._id" class="claim-card">
 							<p class="queue-card__meta">
 								<span>{{ claim.topic?.title }}</span>
-								<span
-									>Next review
+								<span>Next review
 									{{
 										claim.nextReviewAt ? new Date(claim.nextReviewAt).toLocaleDateString() : "n/a"
-									}}</span
-								>
+									}}</span>
 							</p>
 							<h3>{{ claim.title }}</h3>
 							<p>{{ claim.bottomLine }}</p>
@@ -1050,18 +1131,14 @@ watch(
 			</section>
 
 			<section v-if="isAdmin" class="editorial-panel">
-				<NuxtLink class="button button--ghost" to="/account/editorial/roadmap"
-					>Public coverage moderation</NuxtLink
-				>
-				<NuxtLink class="button button--ghost" to="/account/editorial/review-priority"
-					>Review priorities and schedules</NuxtLink
-				>
-				<NuxtLink class="button button--ghost" to="/account/editorial/reader-feedback"
-					>Reader feedback and priorities</NuxtLink
-				>
+				<NuxtLink class="button button--ghost" to="/account/editorial/roadmap">Public coverage moderation</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/account/editorial/review-priority">Review priorities and schedules</NuxtLink>
+				<NuxtLink class="button button--ghost" to="/account/editorial/reader-feedback">Reader feedback and priorities</NuxtLink>
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Queue 4</p>
+						<p class="eyebrow">
+							Queue 4
+						</p>
 						<h2>Admin moderation</h2>
 					</div>
 					<p>Admin-only review queues for flagged content and expert applications.</p>

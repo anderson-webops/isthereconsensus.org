@@ -3,11 +3,13 @@ import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
 import { defaultClaims } from "../src/data/claims.js";
-import { seedClaimFields } from "../src/data/seedClaims.js";
 import { CLAIM_NARRATIVE_FIELDS } from "../src/utils/claimNarratives.js";
 import { createReaderExpansionSourceProposal, readerExpansionValueHash } from "../src/utils/readerExpansionProposal.js";
 
-const identity = { commit: "a".repeat(40), tree: "b".repeat(40) };
+const identity = {
+	commit: "a".repeat(40),
+	tree: "b".repeat(40)
+};
 const generatedAt = new Date("2026-10-06T13:00:00.000Z");
 const build = (expansion = readerExpansionClaims, catalog = defaultClaims) => createReaderExpansionSourceProposal(expansion, catalog, identity, generatedAt);
 
@@ -32,8 +34,18 @@ describe("read-only complete reader expansion proposal", () => {
 		const proposal = build();
 		for (const [index, definition] of readerExpansionClaims.entries()) {
 			const target = proposal.targets[index];
-			const expected = Object.fromEntries(Object.entries(seedClaimFields(definition)).filter(([key, value]) => !["status", "changeLog"].includes(key) && value !== undefined));
-			assert.deepEqual(target.createPayload, { ...JSON.parse(JSON.stringify(expected)), topic: definition.topicSlug, slug: definition.slug });
+			const expected = Object.fromEntries(Object.entries(definition).filter(([key, value]) => ![
+				"topicSlug",
+				"sources",
+				"readerAnnouncement",
+				"status",
+				"changeLog"
+			].includes(key) && value !== undefined));
+			assert.deepEqual(target.createPayload, {
+				...JSON.parse(JSON.stringify(expected)),
+				topic: definition.topicSlug,
+				slug: definition.slug
+			});
 			for (const field of CLAIM_NARRATIVE_FIELDS) assert.deepEqual(target.createPayload[field], definition[field]);
 			assert.equal(target.sourcePayloads.length, definition.sources.length);
 			for (const [sourceIndex, source] of definition.sources.entries()) {
@@ -54,10 +66,22 @@ describe("read-only complete reader expansion proposal", () => {
 
 	it("rejects editorial title, path and check-date violations even when the canonical source agrees", () => {
 		const cases = [
-			{ field: "title", value: "x".repeat(221), error: /Source titles must survive/u },
+			{
+				field: "title",
+				value: "x".repeat(221),
+				error: /Source titles must survive/u
+			},
 			{ field: "title", value: " trailing title ", error: /Source titles must survive/u },
-			{ field: "topicSlug", value: "x".repeat(121), error: /bounded valid slugs/u },
-			{ field: "slug", value: "x".repeat(201), error: /bounded valid slugs/u }
+			{
+				field: "topicSlug",
+				value: "x".repeat(121),
+				error: /bounded valid slugs/u
+			},
+			{
+				field: "slug",
+				value: "x".repeat(201),
+				error: /bounded valid slugs/u
+			}
 		];
 		for (const { field, value, error } of cases) {
 			const definitions = structuredClone(readerExpansionClaims);
@@ -79,7 +103,10 @@ describe("read-only complete reader expansion proposal", () => {
 		const definitions = structuredClone(readerExpansionClaims);
 		const catalog = structuredClone(defaultClaims);
 		const canonical = catalog.find(definition => definition.topicSlug === definitions[0].topicSlug && definition.slug === definitions[0].slug)!;
-		const provenance = { citationCheckedAt: "2026-10-05T18:00:00-04:00", statusSources: ["Crossref", "https://example.test/correction"] };
+		const provenance = {
+			citationCheckedAt: "2026-10-05T18:00:00-04:00",
+			statusSources: ["Crossref", "https://example.test/correction"]
+		};
 		Object.assign(definitions[0].sources[0], provenance);
 		Object.assign(canonical.sources[0], provenance);
 		const source = build(definitions, catalog).targets[0].sourcePayloads[0];
@@ -89,7 +116,11 @@ describe("read-only complete reader expansion proposal", () => {
 
 	it("does not forward seed status, planned announcements, database IDs or unknown secret fields", () => {
 		const definitions = structuredClone(readerExpansionClaims);
-		Object.assign(definitions[0], { password: "must-not-forward", _id: "invented-id", readerAnnouncement: { id: "invented-announcement" } });
+		Object.assign(definitions[0], {
+			password: "must-not-forward",
+			_id: "invented-id",
+			readerAnnouncement: { id: "invented-announcement" }
+		});
 		Object.assign(definitions[0].sources[0], { authorization: "must-not-forward", _id: "invented-source-id" });
 		const serialized = JSON.stringify(build(definitions));
 		assert.doesNotMatch(serialized, /must-not-forward|invented-id|invented-announcement|invented-source-id|"status":|"changeLog":|"password":|"authorization":|"_id":/u);

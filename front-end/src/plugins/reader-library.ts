@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	const { currentAccount, role, ready } = useAuth();
 	const library = createReaderLibrary({
 		storage: () => window.localStorage,
-		loadAccount: (signal) => $fetch<AccountLibrary>(apiUrl("/library/account"), { credentials: "include", signal }),
+		loadAccount: signal => $fetch<AccountLibrary>(apiUrl("/library/account"), { credentials: "include", signal }),
 		saveAccount: (body, signal) =>
 			$fetch<AccountLibrary>(apiUrl("/library/account"), {
 				method: "PATCH",
@@ -19,10 +19,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 		nuxtApp.hook("app:mounted", () => {
 			void library.initialize();
 			watch(
-				() => (ready.value ? `${role.value || ""}:${currentAccount.value?._id || ""}` : ""),
+				() => (ready.value
+					? `${role.value || ""}:${currentAccount.value?._id || ""}`
+					: ""),
 				() => {
-					const owner =
-						ready.value && role.value && currentAccount.value?._id
+					const owner
+						= ready.value && role.value && currentAccount.value?._id
 							? `${role.value}:${currentAccount.value._id}`
 							: null;
 					void library.setOwner(owner);
@@ -34,5 +36,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 			});
 		});
 	}
-	return { provide: { readerLibrary: library } };
+	return {
+		provide: { readerLibrary: library }
+	};
 });

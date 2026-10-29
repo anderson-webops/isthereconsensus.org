@@ -32,21 +32,40 @@ export const atlasCollections = [
 		slug: "prices-baskets-and-real-income",
 		title: "Prices, baskets and purchasing power",
 		description: "Separate price levels, household baskets, shelter services, reference bases, real pay and seasonal processing.",
-		claimSlugs: ["does-a-falling-inflation-rate-mean-that-prices-are-falling", "does-the-published-cpi-equal-every-households-inflation-rate", "does-the-cpi-track-the-full-cost-of-buying-a-home", "can-cpi-index-levels-be-compared-directly-when-their-reference-bases-differ", "does-a-pay-rise-guarantee-increased-purchasing-power", "are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure"]
+		claimSlugs: [
+			"does-a-falling-inflation-rate-mean-that-prices-are-falling",
+			"does-the-published-cpi-equal-every-households-inflation-rate",
+			"does-the-cpi-track-the-full-cost-of-buying-a-home",
+			"can-cpi-index-levels-be-compared-directly-when-their-reference-bases-differ",
+			"does-a-pay-rise-guarantee-increased-purchasing-power",
+			"are-seasonally-adjusted-and-unadjusted-inflation-changes-the-same-measure"
+		]
 	},
 	{
 		topicSlug: "economics-and-social-policy",
 		slug: "employment-units-and-denominators",
 		title: "Employment units and denominators",
 		description: "Read labor-force ratios, participation changes, jobs versus people, survey differences and broader work needs.",
-		claimSlugs: ["is-the-unemployment-rate-the-percentage-of-everyone-without-a-job", "does-a-falling-unemployment-rate-prove-that-more-people-found-work", "does-the-payroll-jobs-count-equal-the-number-of-employed-people", "does-disagreement-between-household-and-payroll-employment-surveys-prove-an-error", "does-the-headline-unemployment-rate-measure-everyone-who-wants-more-work"]
+		claimSlugs: [
+			"is-the-unemployment-rate-the-percentage-of-everyone-without-a-job",
+			"does-a-falling-unemployment-rate-prove-that-more-people-found-work",
+			"does-the-payroll-jobs-count-equal-the-number-of-employed-people",
+			"does-disagreement-between-household-and-payroll-employment-surveys-prove-an-error",
+			"does-the-headline-unemployment-rate-measure-everyone-who-wants-more-work"
+		]
 	},
 	{
 		topicSlug: "economics-and-social-policy",
 		slug: "national-output-and-growth-accounting",
 		title: "National output and growth accounting",
 		description: "Check price-adjusted production, annualized rates, value added, foreign content and chained-dollar aggregation.",
-		claimSlugs: ["does-higher-nominal-gdp-prove-that-more-goods-and-services-were-produced", "is-an-annualized-quarterly-gdp-growth-rate-the-actual-growth-during-that-quarter", "does-gdp-add-every-sale-at-every-stage-of-production", "does-subtracting-imports-from-gdp-prove-that-importing-automatically-harms-domestic-output", "can-chained-dollar-real-gdp-components-always-be-added-to-recover-the-total"]
+		claimSlugs: [
+			"does-higher-nominal-gdp-prove-that-more-goods-and-services-were-produced",
+			"is-an-annualized-quarterly-gdp-growth-rate-the-actual-growth-during-that-quarter",
+			"does-gdp-add-every-sale-at-every-stage-of-production",
+			"does-subtracting-imports-from-gdp-prove-that-importing-automatically-harms-domestic-output",
+			"can-chained-dollar-real-gdp-components-always-be-added-to-recover-the-total"
+		]
 	},
 	{
 		topicSlug: "economics-and-social-policy",
@@ -60,28 +79,52 @@ export const atlasCollections = [
 		slug: "learning-methods-and-feedback",
 		title: "Learning methods and feedback",
 		description: "Browse the existing reviews of reading instruction, retrieval, spacing, tutoring, active learning and formative feedback.",
-		claimSlugs: ["does-systematic-phonics-instruction-help-children-learn-to-read", "does-retrieval-practice-improve-long-term-learning", "does-spacing-study-sessions-improve-retention", "does-matching-instruction-to-a-students-learning-style-improve-achievement", "does-intensive-tutoring-improve-student-achievement", "does-active-learning-outperform-traditional-lecture-in-undergraduate-stem", "does-formative-assessment-improve-k12-learning"]
+		claimSlugs: [
+			"does-systematic-phonics-instruction-help-children-learn-to-read",
+			"does-retrieval-practice-improve-long-term-learning",
+			"does-spacing-study-sessions-improve-retention",
+			"does-matching-instruction-to-a-students-learning-style-improve-achievement",
+			"does-intensive-tutoring-improve-student-achievement",
+			"does-active-learning-outperform-traditional-lecture-in-undergraduate-stem",
+			"does-formative-assessment-improve-k12-learning"
+		]
 	},
 	{
 		topicSlug: "education-and-learning",
 		slug: "school-organization-and-resources",
 		title: "School organization and resources",
 		description: "Connect the existing reviews of start times, class size, retention, uniforms and student devices.",
-		claimSlugs: ["do-later-school-start-times-improve-adolescent-sleep-and-well-being", "do-smaller-classes-substantially-improve-student-achievement", "does-making-a-student-repeat-a-grade-reliably-improve-long-term-outcomes", "do-school-uniforms-improve-academic-achievement-or-student-behavior", "does-giving-every-student-a-laptop-reliably-improve-learning"]
+		claimSlugs: [
+			"do-later-school-start-times-improve-adolescent-sleep-and-well-being",
+			"do-smaller-classes-substantially-improve-student-achievement",
+			"does-making-a-student-repeat-a-grade-reliably-improve-long-term-outcomes",
+			"do-school-uniforms-improve-academic-achievement-or-student-behavior",
+			"does-giving-every-student-a-laptop-reliably-improve-learning"
+		]
 	},
 	{
 		topicSlug: "education-and-learning",
 		slug: "development-and-study-support",
 		title: "Development and study support",
 		description: "Read the existing evidence on homework, growth-mindset programs, social-emotional learning and preschool.",
-		claimSlugs: ["does-homework-improve-academic-achievement", "do-brief-growth-mindset-interventions-produce-large-reliable-academic-gains", "do-universal-school-social-emotional-learning-programs-improve-outcomes", "does-high-quality-preschool-improve-later-educational-outcomes"]
+		claimSlugs: [
+			"does-homework-improve-academic-achievement",
+			"do-brief-growth-mindset-interventions-produce-large-reliable-academic-gains",
+			"do-universal-school-social-emotional-learning-programs-improve-outcomes",
+			"does-high-quality-preschool-improve-later-educational-outcomes"
+		]
 	},
 	{
 		topicSlug: "education-and-learning",
 		slug: "assessment-norms-and-equivalents",
 		title: "Norms, ranks and grade equivalents",
 		description: "Keep relative position, percentage correct, longitudinal growth and curriculum coverage distinct.",
-		claimSlugs: ["does-a-test-percentile-show-the-percentage-of-questions-answered-correctly", "can-percentile-ranks-be-averaged-as-if-they-were-equal-interval-test-scores", "does-a-rise-in-test-score-guarantee-a-rise-in-percentile-rank", "does-a-grade-equivalent-score-mean-a-student-has-mastered-that-grades-curriculum"]
+		claimSlugs: [
+			"does-a-test-percentile-show-the-percentage-of-questions-answered-correctly",
+			"can-percentile-ranks-be-averaged-as-if-they-were-equal-interval-test-scores",
+			"does-a-rise-in-test-score-guarantee-a-rise-in-percentile-rank",
+			"does-a-grade-equivalent-score-mean-a-student-has-mastered-that-grades-curriculum"
+		]
 	},
 	{
 		topicSlug: "education-and-learning",
@@ -102,14 +145,24 @@ export const atlasCollections = [
 		slug: "assessment-validity-and-administration",
 		title: "Validity, adaptation and access",
 		description: "Connect interpretations to their evidence and distinguish adaptive paths and accessible administration.",
-		claimSlugs: ["does-a-reliable-test-score-guarantee-a-valid-interpretation", "does-validating-a-test-for-one-purpose-validate-every-use", "does-a-computer-adaptive-test-give-everyone-the-same-questions", "does-an-assessment-accommodation-automatically-change-what-the-test-measures"]
+		claimSlugs: [
+			"does-a-reliable-test-score-guarantee-a-valid-interpretation",
+			"does-validating-a-test-for-one-purpose-validate-every-use",
+			"does-a-computer-adaptive-test-give-everyone-the-same-questions",
+			"does-an-assessment-accommodation-automatically-change-what-the-test-measures"
+		]
 	},
 	{
 		topicSlug: "education-and-learning",
 		slug: "population-assessment-interpretation",
 		title: "Group reports and school comparisons",
 		description: "Separate item gaps, school attribution, sampled group estimates and framework-specific proficiency labels.",
-		claimSlugs: ["is-a-test-item-biased-whenever-groups-have-different-success-rates", "does-a-higher-average-test-score-prove-that-a-school-caused-more-learning", "does-a-national-assessment-sample-reveal-every-individual-students-achievement", "are-naep-proficient-and-a-states-proficient-label-interchangeable"]
+		claimSlugs: [
+			"is-a-test-item-biased-whenever-groups-have-different-success-rates",
+			"does-a-higher-average-test-score-prove-that-a-school-caused-more-learning",
+			"does-a-national-assessment-sample-reveal-every-individual-students-achievement",
+			"are-naep-proficient-and-a-states-proficient-label-interchangeable"
+		]
 	},
 	{
 		topicSlug: "earth-and-geoscience",
@@ -123,7 +176,13 @@ export const atlasCollections = [
 		slug: "humidity-dew-and-frost",
 		title: "Humidity, dew and frost",
 		description: "Separate vapor measures, saturation, surface phase changes and observation-height differences.",
-		claimSlugs: ["can-relative-humidity-rise-without-adding-water-vapor-to-the-air", "do-two-days-with-the-same-relative-humidity-contain-the-same-amount-of-water-vapor", "does-100-percent-relative-humidity-mean-that-rain-must-be-falling", "is-morning-dew-simply-rain-that-fell-overnight", "can-frost-form-when-the-reported-air-temperature-is-above-freezing"]
+		claimSlugs: [
+			"can-relative-humidity-rise-without-adding-water-vapor-to-the-air",
+			"do-two-days-with-the-same-relative-humidity-contain-the-same-amount-of-water-vapor",
+			"does-100-percent-relative-humidity-mean-that-rain-must-be-falling",
+			"is-morning-dew-simply-rain-that-fell-overnight",
+			"can-frost-form-when-the-reported-air-temperature-is-above-freezing"
+		]
 	},
 	{
 		topicSlug: "earth-and-geoscience",
@@ -137,14 +196,25 @@ export const atlasCollections = [
 		slug: "frozen-precipitation",
 		title: "Frozen precipitation",
 		description: "Follow the particle's formation, descent, density and arrival rather than relying on one surface temperature.",
-		claimSlugs: ["does-ten-inches-of-snow-always-equal-one-inch-of-water", "can-snow-reach-the-ground-when-surface-air-is-above-freezing", "are-sleet-and-freezing-rain-the-same-because-both-involve-ice", "can-hail-fall-on-a-warm-day"]
+		claimSlugs: [
+			"does-ten-inches-of-snow-always-equal-one-inch-of-water",
+			"can-snow-reach-the-ground-when-surface-air-is-above-freezing",
+			"are-sleet-and-freezing-rain-the-same-because-both-involve-ice",
+			"can-hail-fall-on-a-warm-day"
+		]
 	},
 	{
 		topicSlug: "earth-and-geoscience",
 		slug: "weather-observations-and-maps",
 		title: "Weather observations and maps",
 		description: "Distinguish radar volumes, satellite targets, pressure datums and three-dimensional fronts from their map representations.",
-		claimSlugs: ["does-a-precipitation-echo-on-radar-prove-that-rain-is-reaching-the-ground-there", "is-every-colored-return-on-a-weather-radar-image-precipitation", "does-infrared-weather-satellite-imagery-directly-measure-the-air-temperature-at-ground-level", "is-sea-level-pressure-the-same-as-the-pressure-measured-at-a-mountain-weather-station", "is-a-weather-front-just-the-thin-line-drawn-on-a-surface-map"]
+		claimSlugs: [
+			"does-a-precipitation-echo-on-radar-prove-that-rain-is-reaching-the-ground-there",
+			"is-every-colored-return-on-a-weather-radar-image-precipitation",
+			"does-infrared-weather-satellite-imagery-directly-measure-the-air-temperature-at-ground-level",
+			"is-sea-level-pressure-the-same-as-the-pressure-measured-at-a-mountain-weather-station",
+			"is-a-weather-front-just-the-thin-line-drawn-on-a-surface-map"
+		]
 	},
 	{
 		topicSlug: "digital-security-and-privacy",
@@ -199,7 +269,15 @@ export const atlasCollections = [
 		slug: "motion-and-contact-forces",
 		title: "Motion and contact forces",
 		description: "Separate paths, velocity, force pairs, weight and responsive contact forces.",
-		claimSlugs: ["are-distance-traveled-and-displacement-always-the-same", "is-average-speed-always-the-magnitude-of-average-velocity", "does-zero-net-force-mean-an-object-must-be-at-rest", "does-an-unchanged-mass-have-the-same-gravitational-weight-everywhere", "do-newtons-third-law-force-pairs-cancel-on-the-same-object", "must-the-normal-contact-force-always-equal-gravitational-weight", "is-static-friction-always-equal-to-its-maximum-value"]
+		claimSlugs: [
+			"are-distance-traveled-and-displacement-always-the-same",
+			"is-average-speed-always-the-magnitude-of-average-velocity",
+			"does-zero-net-force-mean-an-object-must-be-at-rest",
+			"does-an-unchanged-mass-have-the-same-gravitational-weight-everywhere",
+			"do-newtons-third-law-force-pairs-cancel-on-the-same-object",
+			"must-the-normal-contact-force-always-equal-gravitational-weight",
+			"is-static-friction-always-equal-to-its-maximum-value"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
@@ -213,49 +291,89 @@ export const atlasCollections = [
 		slug: "mechanical-work-and-energy-balances",
 		title: "Mechanical work and energy balances",
 		description: "Distinguish signed path work, kinetic scaling and mechanical energy from the complete energy account.",
-		claimSlugs: ["does-doubling-speed-merely-double-kinetic-energy", "can-a-force-do-negative-mechanical-work", "does-returning-to-the-starting-point-make-every-forces-work-zero", "does-exerting-a-force-without-displacement-necessarily-do-mechanical-work", "does-conservation-of-energy-require-mechanical-energy-to-remain-unchanged"]
+		claimSlugs: [
+			"does-doubling-speed-merely-double-kinetic-energy",
+			"can-a-force-do-negative-mechanical-work",
+			"does-returning-to-the-starting-point-make-every-forces-work-zero",
+			"does-exerting-a-force-without-displacement-necessarily-do-mechanical-work",
+			"does-conservation-of-energy-require-mechanical-energy-to-remain-unchanged"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "momentum-and-collision-models",
 		title: "Momentum and collision models",
 		description: "Separate impulse, system momentum, elastic allocation and center-of-mass motion.",
-		claimSlugs: ["does-conserved-collision-momentum-guarantee-conserved-kinetic-energy", "does-an-elastic-collision-leave-each-objects-kinetic-energy-unchanged", "does-peak-force-alone-determine-a-change-in-momentum", "must-an-isolated-systems-center-of-mass-remain-stationary"]
+		claimSlugs: [
+			"does-conserved-collision-momentum-guarantee-conserved-kinetic-energy",
+			"does-an-elastic-collision-leave-each-objects-kinetic-energy-unchanged",
+			"does-peak-force-alone-determine-a-change-in-momentum",
+			"must-an-isolated-systems-center-of-mass-remain-stationary"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "torque-inertia-and-rotational-energy",
 		title: "Torque, inertia and rotational energy",
 		description: "Identify axes, force geometry, mass distribution and rotational energy before applying a conservation shortcut.",
-		claimSlugs: ["does-force-magnitude-alone-determine-torque-about-an-axis", "are-torque-and-energy-the-same-quantity-because-both-involve-newton-meters", "is-rotational-inertia-determined-only-by-total-mass", "does-conserved-angular-momentum-require-constant-angular-speed", "does-a-rolling-rigid-bodys-kinetic-energy-include-only-translation"]
+		claimSlugs: [
+			"does-force-magnitude-alone-determine-torque-about-an-axis",
+			"are-torque-and-energy-the-same-quantity-because-both-involve-newton-meters",
+			"is-rotational-inertia-determined-only-by-total-mass",
+			"does-conserved-angular-momentum-require-constant-angular-speed",
+			"does-a-rolling-rigid-bodys-kinetic-energy-include-only-translation"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "fluid-quantities-and-static-pressure",
 		title: "Fluid quantities and static pressure",
 		description: "Distinguish force, pressure, depth, viscosity and ideal force multiplication without inventing energy.",
-		claimSlugs: ["is-pressure-the-same-quantity-as-total-force", "does-more-total-fluid-volume-always-mean-greater-pressure-at-the-same-depth", "does-ideal-hydraulic-force-multiplication-create-extra-energy", "are-fluid-density-and-viscosity-the-same-property"]
+		claimSlugs: [
+			"is-pressure-the-same-quantity-as-total-force",
+			"does-more-total-fluid-volume-always-mean-greater-pressure-at-the-same-depth",
+			"does-ideal-hydraulic-force-multiplication-create-extra-energy",
+			"are-fluid-density-and-viscosity-the-same-property"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "buoyancy-and-flow-balances",
 		title: "Buoyancy and flow balances",
 		description: "Keep displaced-fluid forces, floating equilibrium, continuity and scoped Bernoulli conditions distinct.",
-		claimSlugs: ["is-buoyant-force-determined-by-an-objects-mass-alone", "must-buoyant-force-exceed-weight-for-an-object-to-float-at-rest", "does-faster-fluid-flow-always-imply-lower-pressure", "does-constant-fluid-flow-rate-mean-the-speed-is-the-same-everywhere"]
+		claimSlugs: [
+			"is-buoyant-force-determined-by-an-objects-mass-alone",
+			"must-buoyant-force-exceed-weight-for-an-object-to-float-at-rest",
+			"does-faster-fluid-flow-always-imply-lower-pressure",
+			"does-constant-fluid-flow-rate-mean-the-speed-is-the-same-everywhere"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "electrical-quantities-and-ratings",
 		title: "Electrical quantities and ratings",
 		description: "Separate charge, voltage, power, energy, source loading and dissipation before interpreting a number.",
-		claimSlugs: ["are-amps-and-volts-two-names-for-the-same-electrical-quantity", "does-a-batterys-terminal-voltage-always-equal-its-unloaded-voltage", "does-the-same-amp-hour-battery-capacity-imply-the-same-stored-energy", "are-watts-and-watt-hours-interchangeable-measures-of-electricity-use", "does-doubling-current-through-a-fixed-resistor-merely-double-its-heating-power"]
+		claimSlugs: [
+			"are-amps-and-volts-two-names-for-the-same-electrical-quantity",
+			"does-a-batterys-terminal-voltage-always-equal-its-unloaded-voltage",
+			"does-the-same-amp-hour-battery-capacity-imply-the-same-stored-energy",
+			"are-watts-and-watt-hours-interchangeable-measures-of-electricity-use",
+			"does-doubling-current-through-a-fixed-resistor-merely-double-its-heating-power"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "charge-flow-and-circuit-models",
 		title: "Charge flow and circuit models",
 		description: "Check charge conservation, signal propagation, linear-response limits, connections and the physical state of conductors.",
-		claimSlugs: ["is-electric-current-used-up-as-it-passes-through-a-resistor", "does-a-signal-in-a-metal-wire-travel-at-the-electron-drift-speed", "does-ohms-law-guarantee-that-every-device-has-constant-resistance", "do-the-same-resistors-have-the-same-total-resistance-in-series-and-parallel", "do-components-in-series-always-have-the-same-voltage-across-them", "must-the-electric-field-be-zero-inside-an-ordinary-current-carrying-metal"]
+		claimSlugs: [
+			"is-electric-current-used-up-as-it-passes-through-a-resistor",
+			"does-a-signal-in-a-metal-wire-travel-at-the-electron-drift-speed",
+			"does-ohms-law-guarantee-that-every-device-has-constant-resistance",
+			"do-the-same-resistors-have-the-same-total-resistance-in-series-and-parallel",
+			"do-components-in-series-always-have-the-same-voltage-across-them",
+			"must-the-electric-field-be-zero-inside-an-ordinary-current-carrying-metal"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
@@ -269,28 +387,51 @@ export const atlasCollections = [
 		slug: "storage-fields-and-induction",
 		title: "Storage, fields and induction",
 		description: "Read capacitor and inductor states, flux changes, point-charge forces and transformer energy accounting with explicit assumptions.",
-		claimSlugs: ["can-an-ideal-capacitor-remain-charged-without-a-sustained-current", "is-a-linear-capacitors-stored-energy-always-final-charge-times-final-voltage", "does-an-ideal-inductor-oppose-an-unchanged-dc-current-forever", "does-a-stationary-magnet-by-itself-induce-a-sustained-current-in-a-stationary-loop", "can-the-magnetic-lorentz-force-alone-increase-a-point-charges-kinetic-energy", "does-a-step-up-transformer-create-extra-electrical-power-when-it-raises-voltage"]
+		claimSlugs: [
+			"can-an-ideal-capacitor-remain-charged-without-a-sustained-current",
+			"is-a-linear-capacitors-stored-energy-always-final-charge-times-final-voltage",
+			"does-an-ideal-inductor-oppose-an-unchanged-dc-current-forever",
+			"does-a-stationary-magnet-by-itself-induce-a-sustained-current-in-a-stationary-loop",
+			"can-the-magnetic-lorentz-force-alone-increase-a-point-charges-kinetic-energy",
+			"does-a-step-up-transformer-create-extra-electrical-power-when-it-raises-voltage"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "consensus-and-replication",
 		title: "Consensus and replication",
 		description: "How agreement develops, what it does not imply and how replication informs a body of evidence.",
-		claimSlugs: ["how-does-scientific-consensus-form", "does-scientific-consensus-mean-every-scientist-agrees", "must-a-replication-copy-the-original-study-exactly-to-be-informative", "does-one-failed-replication-prove-the-original-finding-was-false"]
+		claimSlugs: [
+			"how-does-scientific-consensus-form",
+			"does-scientific-consensus-mean-every-scientist-agrees",
+			"must-a-replication-copy-the-original-study-exactly-to-be-informative",
+			"does-one-failed-replication-prove-the-original-finding-was-false"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "study-design-and-causal-inference",
 		title: "Study design and causal inference",
 		description: "Read randomization, observational evidence, synthesis and convergence without treating any method as an automatic answer.",
-		claimSlugs: ["does-randomization-automatically-answer-every-causal-or-policy-question", "are-observational-studies-useless-for-learning-about-causal-effects", "can-converging-evidence-from-different-methods-strengthen-a-causal-conclusion", "can-a-meta-analysis-rescue-a-body-of-biased-or-low-quality-studies"]
+		claimSlugs: [
+			"does-randomization-automatically-answer-every-causal-or-policy-question",
+			"are-observational-studies-useless-for-learning-about-causal-effects",
+			"can-converging-evidence-from-different-methods-strengthen-a-causal-conclusion",
+			"can-a-meta-analysis-rescue-a-body-of-biased-or-low-quality-studies"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "significance-and-interval-interpretation",
 		title: "Significance and interval interpretation",
 		description: "Distinguish statistical evidence, effect magnitude, null results, interval coverage and multiple comparisons.",
-		claimSlugs: ["does-a-p-value-below-005-prove-a-claim-is-true", "does-statistical-significance-tell-you-whether-an-effect-is-large-or-important", "does-a-non-significant-result-prove-there-is-no-effect", "does-a-95-percent-confidence-interval-give-a-95-percent-probability-that-the-true-value-is-inside-it", "can-testing-many-hypotheses-create-false-positive-findings-without-adjustment"]
+		claimSlugs: [
+			"does-a-p-value-below-005-prove-a-claim-is-true",
+			"does-statistical-significance-tell-you-whether-an-effect-is-large-or-important",
+			"does-a-non-significant-result-prove-there-is-no-effect",
+			"does-a-95-percent-confidence-interval-give-a-95-percent-probability-that-the-true-value-is-inside-it",
+			"can-testing-many-hypotheses-create-false-positive-findings-without-adjustment"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
@@ -304,28 +445,52 @@ export const atlasCollections = [
 		slug: "averages-and-data-displays",
 		title: "Averages and data displays",
 		description: "Read centers, group weights, aggregation, missing values and histogram choices without changing the question being answered.",
-		claimSlugs: ["do-the-mean-and-median-always-describe-the-same-typical-value", "can-group-averages-be-averaged-without-accounting-for-group-sizes", "can-combining-groups-reverse-an-association-present-within-every-group", "can-missing-measurements-be-replaced-by-zero-without-changing-the-conclusion", "does-changing-histogram-bin-width-leave-the-apparent-distribution-unchanged"]
+		claimSlugs: [
+			"do-the-mean-and-median-always-describe-the-same-typical-value",
+			"can-group-averages-be-averaged-without-accounting-for-group-sizes",
+			"can-combining-groups-reverse-an-association-present-within-every-group",
+			"can-missing-measurements-be-replaced-by-zero-without-changing-the-conclusion",
+			"does-changing-histogram-bin-width-leave-the-apparent-distribution-unchanged"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "percentages-and-conditioning",
 		title: "Percentages and conditioning",
 		description: "Follow the baseline and reference set before interpreting changes, conditional probabilities or overlapping events.",
-		claimSlugs: ["is-a-percentage-point-increase-the-same-as-a-percent-increase", "does-an-equal-percent-increase-and-decrease-return-a-value-to-its-starting-point", "can-successive-percentage-changes-be-added-to-get-the-total-change", "can-a-conditional-probability-be-reversed-without-changing-its-value", "can-the-probabilities-of-overlapping-events-simply-be-added"]
+		claimSlugs: [
+			"is-a-percentage-point-increase-the-same-as-a-percent-increase",
+			"does-an-equal-percent-increase-and-decrease-return-a-value-to-its-starting-point",
+			"can-successive-percentage-changes-be-added-to-get-the-total-change",
+			"can-a-conditional-probability-be-reversed-without-changing-its-value",
+			"can-the-probabilities-of-overlapping-events-simply-be-added"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "independence-and-probability-models",
 		title: "Independence and probability models",
 		description: "Separate disjointness, sampling dependence, continuous density, exact points and independent-trial convergence.",
-		claimSlugs: ["are-mutually-exclusive-events-the-same-as-independent-events", "does-random-sampling-without-replacement-make-successive-draws-independent", "does-probability-zero-always-mean-an-outcome-is-impossible", "is-a-probability-density-above-one-an-invalid-probability", "does-the-law-of-large-numbers-make-the-next-independent-outcome-compensate-for-a-streak"]
+		claimSlugs: [
+			"are-mutually-exclusive-events-the-same-as-independent-events",
+			"does-random-sampling-without-replacement-make-successive-draws-independent",
+			"does-probability-zero-always-mean-an-outcome-is-impossible",
+			"is-a-probability-density-above-one-an-invalid-probability",
+			"does-the-law-of-large-numbers-make-the-next-independent-outcome-compensate-for-a-streak"
+		]
 	},
 	{
 		topicSlug: "consensus-foundations",
 		slug: "expectation-spread-and-sampling-uncertainty",
 		title: "Expectation, spread and sampling uncertainty",
 		description: "Distinguish individual outcomes, nonlinear dependence, spread units, estimator precision and conditional normal-model coverage.",
-		claimSlugs: ["must-an-expected-value-be-a-possible-individual-outcome", "does-zero-pearson-correlation-prove-that-two-variables-are-independent", "are-variance-and-standard-deviation-interchangeable-measures-in-the-same-units", "does-a-small-standard-error-mean-individual-observations-vary-very-little", "does-the-68-95-997-rule-apply-to-every-distribution"]
+		claimSlugs: [
+			"must-an-expected-value-be-a-possible-individual-outcome",
+			"does-zero-pearson-correlation-prove-that-two-variables-are-independent",
+			"are-variance-and-standard-deviation-interchangeable-measures-in-the-same-units",
+			"does-a-small-standard-error-mean-individual-observations-vary-very-little",
+			"does-the-68-95-997-rule-apply-to-every-distribution"
+		]
 	},
 	{
 		topicSlug: "agriculture-and-food-systems",
@@ -1908,28 +2073,52 @@ export const atlasCollections = [
 		slug: "temperature-energy-and-phase-changes",
 		title: "Temperature, energy and phase changes",
 		description: "Distinguish thermal state, energy transfer, boiling pressure and lower-temperature evaporation.",
-		claimSlugs: ["do-two-objects-at-the-same-temperature-contain-the-same-internal-energy", "is-heat-a-substance-stored-inside-a-hot-object", "does-water-always-boil-at-exactly-100-degrees-celsius", "can-liquid-water-evaporate-without-reaching-its-boiling-point", "does-adding-energy-as-heat-always-raise-a-substances-temperature"]
+		claimSlugs: [
+			"do-two-objects-at-the-same-temperature-contain-the-same-internal-energy",
+			"is-heat-a-substance-stored-inside-a-hot-object",
+			"does-water-always-boil-at-exactly-100-degrees-celsius",
+			"can-liquid-water-evaporate-without-reaching-its-boiling-point",
+			"does-adding-energy-as-heat-always-raise-a-substances-temperature"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "thermal-paths-and-surface-measurements",
 		title: "Thermal paths and surface measurements",
 		description: "Contact sensation, insulation, radiative transfer and the limits of infrared surface inference.",
-		claimSlugs: ["must-metal-that-feels-colder-than-wood-actually-be-at-a-lower-temperature", "can-thermal-energy-be-transferred-across-a-vacuum", "does-ordinary-insulation-generate-heat-by-itself", "does-an-infrared-thermometer-directly-reveal-exact-surface-temperature-regardless-of-emissivity", "can-an-ordinary-thermal-camera-directly-see-objects-through-an-opaque-wall"]
+		claimSlugs: [
+			"must-metal-that-feels-colder-than-wood-actually-be-at-a-lower-temperature",
+			"can-thermal-energy-be-transferred-across-a-vacuum",
+			"does-ordinary-insulation-generate-heat-by-itself",
+			"does-an-infrared-thermometer-directly-reveal-exact-surface-temperature-regardless-of-emissivity",
+			"can-an-ordinary-thermal-camera-directly-see-objects-through-an-opaque-wall"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "optical-paths-images-and-resolution",
 		title: "Optical paths, images and resolution",
 		description: "Real and virtual images, refracted apparent depth, ordinary lens conditions and detail versus enlargement.",
-		claimSlugs: ["does-increasing-magnification-automatically-reveal-more-detail", "can-a-plane-mirrors-virtual-image-be-caught-on-a-screen-at-its-apparent-location", "does-an-underwater-objects-apparent-depth-always-equal-its-actual-depth", "does-a-single-ordinary-diverging-lens-form-a-real-image-of-a-real-object", "does-visible-light-travel-through-ordinary-glass-at-the-vacuum-speed-of-light"]
+		claimSlugs: [
+			"does-increasing-magnification-automatically-reveal-more-detail",
+			"can-a-plane-mirrors-virtual-image-be-caught-on-a-screen-at-its-apparent-location",
+			"does-an-underwater-objects-apparent-depth-always-equal-its-actual-depth",
+			"does-a-single-ordinary-diverging-lens-form-a-real-image-of-a-real-object",
+			"does-visible-light-travel-through-ordinary-glass-at-the-vacuum-speed-of-light"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
 		slug: "spectra-scattering-and-observer-dependent-color",
 		title: "Spectra, scattering and observer-dependent color",
 		description: "White-light mixtures, prism dispersion, rainbows, polarized reflections and the clear blue sky.",
-		claimSlugs: ["is-ordinary-white-light-a-single-visible-wavelength", "does-an-ordinary-prism-create-new-colors-rather-than-separate-incident-light", "is-a-rainbow-a-fixed-colored-object-located-at-one-place-for-every-observer", "do-polarizing-sunglasses-block-all-reflected-light-equally", "is-earths-clear-daytime-sky-blue-mainly-because-it-reflects-the-ocean"]
+		claimSlugs: [
+			"is-ordinary-white-light-a-single-visible-wavelength",
+			"does-an-ordinary-prism-create-new-colors-rather-than-separate-incident-light",
+			"is-a-rainbow-a-fixed-colored-object-located-at-one-place-for-every-observer",
+			"do-polarizing-sunglasses-block-all-reflected-light-equally",
+			"is-earths-clear-daytime-sky-blue-mainly-because-it-reflects-the-ocean"
+		]
 	},
 	{
 		topicSlug: "physics-and-chemistry",
@@ -2087,7 +2276,9 @@ export function rankRelatedClaimSlugs(
 		}
 	}
 
-	return [...rankings.entries()]
+	return [
+		...rankings.entries()
+	]
 		.sort(([leftSlug, left], [rightSlug, right]) =>
 			right.sharedCollectionCount - left.sharedCollectionCount
 			|| left.nearestPosition - right.nearestPosition

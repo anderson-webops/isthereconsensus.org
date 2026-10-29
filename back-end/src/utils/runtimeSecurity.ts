@@ -4,7 +4,9 @@ const loopbackHosts = new Set(["127.0.0.1", "::1", "localhost"]);
 
 export function parseTrustedProxyIps(rawValue: string | undefined, isProduction: boolean) {
 	const values = rawValue === undefined
-		? isProduction ? ["127.0.0.1", "::1"] : []
+		? isProduction
+			? ["127.0.0.1", "::1"]
+			: []
 		: rawValue
 				.split(",")
 				.map(value => value.trim())
@@ -13,7 +15,9 @@ export function parseTrustedProxyIps(rawValue: string | undefined, isProduction:
 	if (values.some(value => isIP(value) === 0)) {
 		throw new Error("TRUST_PROXY_IPS accepts exact IP addresses only.");
 	}
-	return [...new Set(values)];
+	return [
+		...new Set(values)
+	];
 }
 
 export function parseRuntimeHost(

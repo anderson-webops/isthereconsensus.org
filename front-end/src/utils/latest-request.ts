@@ -14,7 +14,10 @@ export function createLatestRequest() {
 			cancel();
 			controller = new AbortController();
 			const current = version;
-			return { signal: controller.signal, isCurrent: () => current === version };
+			return {
+				signal: controller.signal,
+				isCurrent: () => current === version
+			};
 		}
 	};
 }

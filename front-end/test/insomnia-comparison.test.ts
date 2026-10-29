@@ -13,11 +13,18 @@ const comparison = comparisonForSlug("non-drug-insomnia-treatments")!;
 describe("non-drug insomnia comparison", () => {
 	it("distinguishes symptom evidence from demands across six individually sourced approaches", () => {
 		assert.deepEqual(
-			comparison.options.map((option) => option.id),
-			["cbt-i", "brief", "stimulus-control", "sleep-restriction", "relaxation", "sleep-hygiene"]
+			comparison.options.map(option => option.id),
+			[
+				"cbt-i",
+				"brief",
+				"stimulus-control",
+				"sleep-restriction",
+				"relaxation",
+				"sleep-hygiene"
+			]
 		);
 		assert.deepEqual(
-			comparison.outcomes.map((outcome) => outcome.id),
+			comparison.outcomes.map(outcome => outcome.id),
 			["symptoms", "demands"]
 		);
 		for (const option of comparison.options) {
@@ -35,7 +42,7 @@ describe("non-drug insomnia comparison", () => {
 
 	it("retains the source numbers, correction and limitations in the relevant cells", () => {
 		const cells = Object.fromEntries(
-			comparison.options.map((option) => [option.id, option.findingsByContext!["adult-insomnia"]!])
+			comparison.options.map(option => [option.id, option.findingsByContext!["adult-insomnia"]!])
 		);
 		assert.match(cells.brief!.symptoms!.evidence, /55%.*13%.*four weeks/);
 		assert.match(cells.brief!.symptoms!.limitation, /SD to SE/);
@@ -53,7 +60,7 @@ describe("non-drug insomnia comparison", () => {
 		});
 		assert.equal(result.outcome.id, "demands");
 		assert.deepEqual(
-			result.options.map((option) => option.id),
+			result.options.map(option => option.id),
 			["cbt-i", "brief"]
 		);
 		assert.equal(resolveComparisonSelection(comparison, { options: "" }).options.length, 0);

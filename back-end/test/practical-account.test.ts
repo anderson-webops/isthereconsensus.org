@@ -38,7 +38,13 @@ describe("practical account-protection evidence", () => {
 	});
 	it("finds the new questions from ordinary reader searches", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ passkeys: "passkeys phishing", codes: "authenticator codes", manager: "password manager reuse", recovery: "lost device passkeys", expiry: "monthly password changes" })) {
+		for (const [key, query] of Object.entries({
+			passkeys: "passkeys phishing",
+			codes: "authenticator codes",
+			manager: "password manager reuse",
+			recovery: "lost device passkeys",
+			expiry: "monthly password changes"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === accountProtectionSlugs[key as keyof typeof accountProtectionSlugs]), query);
 		}
 	});

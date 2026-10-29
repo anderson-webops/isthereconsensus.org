@@ -8,7 +8,11 @@ import { buildSourceIntegrityUpdate, runSourceIntegrityMonitor } from "../src/ut
 const fixtures = JSON.parse(readFileSync(new URL("./fixtures/europepmc-integrity.json", import.meta.url), "utf8"));
 const original = fixtures.find((fixture: any) => fixture.url.includes("DOI%3A"));
 function payload(records = original.records) {
-	return { version: "6.9", hitCount: records.length, resultList: { result: records } };
+	return {
+		version: "6.9",
+		hitCount: records.length,
+		resultList: { result: records }
+	};
 }
 
 describe("Europe PMC complementary metadata", () => {
@@ -20,7 +24,12 @@ describe("Europe PMC complementary metadata", () => {
 		assert.deepEqual(observation.recordIds, ["MED:12145110"]);
 		assert.deepEqual(observation.signals.map(signal => signal.type), ["expression_of_concern", "retraction"]);
 		assert.ok(observation.statusSources.includes("https://europepmc.org/article/MED/36216386"));
-		const before = { citationStatus: "current" as const, evidenceProfile: { publicationIntegrity: { integrityNotes: "Existing human appraisal", correctionOrErratum: true } } as any };
+		const before = {
+			citationStatus: "current" as const,
+			evidenceProfile: {
+				publicationIntegrity: { integrityNotes: "Existing human appraisal", correctionOrErratum: true }
+			} as any
+		};
 		const result = buildSourceIntegrityUpdate(before, observation, new Date());
 		assert.equal(result.update["evidenceProfile.publicationIntegrity.retracted"], true);
 		assert.equal(result.update["evidenceProfile.publicationIntegrity.expressionOfConcern"], true);
@@ -37,10 +46,20 @@ describe("Europe PMC complementary metadata", () => {
 	});
 
 	it("handles an erratum on a notice as a correction of that notice", () => {
-		const record = { id: "42", source: "MED", doi: "10.1000/notice", pubTypeList: { pubType: ["Retraction of Publication"] }, commentCorrectionList: { commentCorrection: [
-			{ type: "Retraction of", id: "40", source: "MED" },
-			{ type: "Erratum in", id: "43", source: "MED" }
-		] } };
+		const record = {
+			id: "42",
+			source: "MED",
+			doi: "10.1000/notice",
+			pubTypeList: {
+				pubType: ["Retraction of Publication"]
+			},
+			commentCorrectionList: {
+				commentCorrection: [
+					{ type: "Retraction of", id: "40", source: "MED" },
+					{ type: "Erratum in", id: "43", source: "MED" }
+				]
+			}
+		};
 		const result = parseEuropePmcIntegrityResponse(payload([record]), record.doi);
 		assert.equal(result.outcome, "corrected");
 		assert.equal(result.signals.length, 1);
@@ -51,16 +70,80 @@ describe("Europe PMC complementary metadata", () => {
 		assert.equal(observation.outcome, "not_indexed");
 		const result = buildSourceIntegrityUpdate({ evidenceProfile: {} as any }, observation, new Date());
 		assert.deepEqual(result.update, {});
-		const indexed = parseEuropePmcIntegrityResponse(payload([{ id: "1", source: "MED", doi: "10.1000/clear" }]), "10.1000/clear");
+		const indexed = parseEuropePmcIntegrityResponse(payload([
+			{ id: "1", source: "MED", doi: "10.1000/clear" }
+		]), "10.1000/clear");
 		assert.equal(indexed.outcome, "no_registered_update");
 		assert.equal(indexed.suggestedStatus, undefined);
 	});
 
 	it("rejects mismatched, malformed, partial and oversized results rather than reporting absence", () => {
-		for (const bad of [null, {}, { hitCount: 0 }, { ...payload([]), hitCount: 1 }, { ...payload([]), hitCount: -1 }, payload([{ ...original.records[0], doi: "10.1000/other" }]), payload([{ ...original.records[0], commentCorrectionList: {} }]), payload([{ ...original.records[0], pubTypeList: { pubType: [null] } }]), payload(Array.from({ length: 101 }).fill(original.records[0]))]) {
+		for (const bad of [
+			null,
+			{},
+			{ hitCount: 0 },
+			{
+				...payload([]),
+				hitCount: 1
+			},
+			{
+				...payload([]),
+				hitCount: -1
+			},
+			payload([
+				{ ...original.records[0], doi: "10.1000/other" }
+			]),
+			payload([
+				{ ...original.records[0], commentCorrectionList: {} }
+			]),
+			payload([
+				{
+					...original.records[0],
+					pubTypeList: {
+						pubType: [null]
+					}
+				}
+			]),
+			payload(Array.from({ length: 101 }).fill(original.records[0]))
+		]) {
 			assert.throws(() => parseEuropePmcIntegrityResponse(bad, original.records[0].doi));
 		}
-		for (const bad of [null, {}, { message: {} }, { status: "error", message: { items: [] } }, { message: { items: [null] } }, { message: { items: [{ DOI: "10.1000/notice" }] } }, { message: { items: [{ "DOI": "10.1000/notice", "update-to": [{ DOI: "10.1000/other", type: "retraction" }] }] } }, { message: { "total-results": 1, "items": [] } }]) {
+		for (const bad of [
+			null,
+			{},
+			{ message: {} },
+			{
+				status: "error",
+				message: { items: [] }
+			},
+			{
+				message: {
+					items: [null]
+				}
+			},
+			{
+				message: {
+					items: [
+						{ DOI: "10.1000/notice" }
+					]
+				}
+			},
+			{
+				message: {
+					items: [
+						{
+							"DOI": "10.1000/notice",
+							"update-to": [
+								{ DOI: "10.1000/other", type: "retraction" }
+							]
+						}
+					]
+				}
+			},
+			{
+				message: { "total-results": 1, "items": [] }
+			}
+		]) {
 			assert.throws(() => parseCrossrefIntegrityResponse(bad, "10.1000/target"));
 		}
 	});
@@ -75,14 +158,31 @@ describe("Europe PMC complementary metadata", () => {
 	it("preserves stable notice provenance on repeated checks and does not reduce a check date", () => {
 		const observation = parseEuropePmcIntegrityResponse(payload(), original.records[0].doi);
 		const newer = new Date("2026-09-12T12:00:00Z");
-		const result = buildSourceIntegrityUpdate({ citationStatus: "retracted", citationCheckedAt: newer, evidenceProfile: {} as any, statusSources: ["https://publisher.example/manual", ...observation.signals.map(signal => signal.url!)] }, observation, new Date("2026-09-11"));
+		const result = buildSourceIntegrityUpdate({
+			citationStatus: "retracted",
+			citationCheckedAt: newer,
+			evidenceProfile: {} as any,
+			statusSources: [
+				"https://publisher.example/manual",
+				...observation.signals.map(signal => signal.url!)
+			]
+		}, observation, new Date("2026-09-11"));
 		assert.equal(result.update.citationCheckedAt, newer);
-		assert.deepEqual(result.update.statusSources, ["https://publisher.example/manual", ...observation.signals.map(signal => signal.url!)]);
-		assert.throws(() => buildSourceIntegrityUpdate({ evidenceProfile: {} as any, statusSources: Array.from({ length: 200 }, (_, i) => `https://example.org/${i}`) }, observation, newer), /notice_capacity_requires_review/);
+		assert.deepEqual(result.update.statusSources, [
+			"https://publisher.example/manual",
+			...observation.signals.map(signal => signal.url!)
+		]);
+		assert.throws(() => buildSourceIntegrityUpdate({
+			evidenceProfile: {} as any,
+			statusSources: Array.from({ length: 200 }, (_, i) => `https://example.org/${i}`)
+		}, observation, newer), /notice_capacity_requires_review/);
 	});
 
 	it("classifies HTTP errors before parsing HTML bodies and bounds upstream retry instructions", () => {
-		assert.throws(() => requireIntegrityResponse(new Response("<html>Busy</html>", { status: 429, headers: { "Retry-After": "120" } })), (error: any) => error.code === "http_429" && error.retryAfterMs === 120000);
+		assert.throws(() => requireIntegrityResponse(new Response("<html>Busy</html>", {
+			status: 429,
+			headers: { "Retry-After": "120" }
+		})), (error: any) => error.code === "http_429" && error.retryAfterMs === 120000);
 		assert.equal(retryAfterMilliseconds("garbage"), 0);
 		assert.equal(retryAfterMilliseconds("99999999999999"), 86400000);
 		assert.equal(retryAfterMilliseconds("Sat, 12 Sep 2026 13:00:00 GMT", Date.parse("2026-09-12T12:00:00Z")), 3600000);
@@ -93,9 +193,13 @@ describe("bounded integrity transport", () => {
 	it("cancels a declared oversized body without reading it", async () => {
 		let cancelled = false;
 		const originalFetch = globalThis.fetch;
-		globalThis.fetch = async () => new Response(new ReadableStream({ cancel() {
-			cancelled = true;
-		} }), { headers: { "content-length": "2097153" } });
+		globalThis.fetch = async () => new Response(new ReadableStream({
+			cancel() {
+				cancelled = true;
+			}
+		}), {
+			headers: { "content-length": "2097153" }
+		});
 		try {
 			const { fetchJsonBounded } = await import("../src/utils/boundedFetch.js");
 			await assert.rejects(fetchJsonBounded("https://fixture.invalid", {}, { maxBytes: 2097152 }), /exceeded/);
@@ -117,9 +221,11 @@ describe("bounded integrity transport", () => {
 			const { fetchJsonBounded } = await import("../src/utils/boundedFetch.js");
 			await assert.rejects(fetchJsonBounded("https://fixture.invalid", {}, { maxBytes: 15 }), /exceeded/);
 			assert.equal(cancelled, 1);
-			globalThis.fetch = async () => new Response(new ReadableStream({ cancel() {
-				cancelled += 1;
-			} }), { status: 503 });
+			globalThis.fetch = async () => new Response(new ReadableStream({
+				cancel() {
+					cancelled += 1;
+				}
+			}), { status: 503 });
 			await assert.rejects(fetchJsonBounded("https://fixture.invalid", {}, { validateResponse: requireIntegrityResponse }), /http_503/);
 			assert.equal(cancelled, 2);
 		}
@@ -140,7 +246,19 @@ describe("bounded integrity transport", () => {
 });
 
 it("rejects invalid batch bounds before opening a database or provider client", async () => {
-	for (const options of [{ limit: 0 }, { limit: 501 }, { limit: 1.5 }, { staleDays: 0 }, { staleDays: 3651 }, { providers: [] }]) {
-		await assert.rejects(runSourceIntegrityMonitor({ apply: false, limit: 10, staleDays: 30, ...options }));
+	for (const options of [
+		{ limit: 0 },
+		{ limit: 501 },
+		{ limit: 1.5 },
+		{ staleDays: 0 },
+		{ staleDays: 3651 },
+		{ providers: [] }
+	]) {
+		await assert.rejects(runSourceIntegrityMonitor({
+			apply: false,
+			limit: 10,
+			staleDays: 30,
+			...options
+		}));
 	}
 });

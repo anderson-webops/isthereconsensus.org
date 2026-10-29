@@ -9,12 +9,12 @@ import {
 } from "../src/utils/evidence-comparison.js";
 
 const comparison = comparisonForSlug("mosquito-bite-prevention")!;
-const findings = (id: string) => comparison.options.find((option) => option.id === id)!.findingsByContext!.general!;
+const findings = (id: string) => comparison.options.find(option => option.id === id)!.findingsByContext!.general!;
 describe("mosquito-prevention comparison", () => {
 	it("keeps unlike endpoints qualitative and links each finding to its evidence", () => {
 		assert.equal(comparison.options.length, 6);
 		assert.deepEqual(
-			comparison.outcomes.map((outcome) => outcome.id),
+			comparison.outcomes.map(outcome => outcome.id),
 			["evidence", "use"]
 		);
 		for (const option of comparison.options) {
@@ -22,7 +22,7 @@ describe("mosquito-prevention comparison", () => {
 				assert.equal(estimateForSelection(option, outcome, comparison.contexts[0]!), undefined);
 				const finding = findingForSelection(option, outcome, comparison.contexts[0]!)!;
 				assert.ok(finding);
-				for (const id of finding.sourceIds) assert.ok(comparison.sources.some((source) => source.id === id));
+				for (const id of finding.sourceIds) assert.ok(comparison.sources.some(source => source.id === id));
 			}
 		}
 		assert.match(findings("spatial").evidence!.evidence, /0\.77.*0\.56–1\.05.*0\.67.*0\.56–0\.81/);
@@ -44,9 +44,14 @@ describe("mosquito-prevention comparison", () => {
 		}
 	});
 	it("supports discovery, shared selections and a stable update entry", () => {
-		for (const query of ["mosquito", "picaridin", "wristbands", "spatial emanators"]) {
+		for (const query of [
+			"mosquito",
+			"picaridin",
+			"wristbands",
+			"spatial emanators"
+		]) {
 			assert.ok(
-				searchComparisons(query).some((result) => result.slug === comparison.slug),
+				searchComparisons(query).some(result => result.slug === comparison.slug),
 				query
 			);
 		}
@@ -57,7 +62,7 @@ describe("mosquito-prevention comparison", () => {
 		});
 		assert.equal(selected.outcome.id, "use");
 		assert.deepEqual(
-			selected.options.map((option) => option.id),
+			selected.options.map(option => option.id),
 			["ole", "clothing"]
 		);
 		assert.equal(comparisonHistory(comparison, new Date("2026-09-13T00:00:00Z")).length, 1);

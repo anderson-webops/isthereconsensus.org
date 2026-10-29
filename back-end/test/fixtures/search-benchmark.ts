@@ -1,6 +1,8 @@
-// Authored against the reviewed catalog before changing ranking. Expected destinations
-// express editorial relevance, not agreement with a query's premise. This is a
-// development regression set, not an independent or traffic-weighted evaluation.
+/**
+ * Authored against the reviewed catalog before changing ranking. Expected destinations
+ * express editorial relevance, not agreement with a query's premise. This is a
+ * development regression set, not an independent or traffic-weighted evaluation.
+ */
 export const coveredSearchQuestions: Array<[string, string]> = [
 	["coffee stopped working", "does-caffeine-become-less-effective-with-regular-daily-use"],
 	["does daily caffiene lose its effect", "does-caffeine-become-less-effective-with-regular-daily-use"],

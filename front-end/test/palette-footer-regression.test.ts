@@ -11,10 +11,10 @@ describe("palette footer regression guard", () => {
 	for (const file of layoutFiles) {
 		it(`keeps background palette controls in the footer for ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const headerStart = source.indexOf('<header class="site-header">');
+			const headerStart = source.indexOf("<header class=\"site-header\">");
 			const headerEnd = source.indexOf("</header>", headerStart);
 			const header = source.slice(headerStart, headerEnd);
-			const footerControls = source.indexOf('class="site-footer__appearance" aria-label="Appearance controls"');
+			const footerControls = source.indexOf("class=\"site-footer__appearance\" aria-label=\"Appearance controls\"");
 			const paletteRender = source.indexOf("<PaletteSwitcher />");
 			const themeRender = source.indexOf("<ThemeToggle />");
 

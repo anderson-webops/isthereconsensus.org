@@ -20,12 +20,19 @@ useStaticPageMeta({
 const { apiUrl } = useApi();
 const route = useRoute();
 const reviewId = computed(() =>
-	typeof route.query.reviewId === "string" && /^[a-f\d]{24}$/.test(route.query.reviewId) ? route.query.reviewId : ""
+	typeof route.query.reviewId === "string" && /^[a-f\d]{24}$/.test(route.query.reviewId)
+		? route.query.reviewId
+		: ""
 );
 const { ready, role, currentAccount, refreshAuth } = useAuth();
 const isAdmin = computed(() => ready.value && role.value === "admin");
 const rows = ref<FeedbackRow[]>([]);
-const pagination = ref({ page: 1, limit: 25, total: 0, hasMore: false });
+const pagination = ref({
+	page: 1,
+	limit: 25,
+	total: 0,
+	hasMore: false
+});
 const status = ref(reviewId.value ? "" : "new");
 const kind = ref("");
 const priority = ref("");
@@ -56,7 +63,8 @@ async function request<T>(path: string, body?: Record<string, unknown>) {
 			credentials: "include",
 			retry: 0
 		});
-	} catch (error) {
+	}
+	catch (error) {
 		if ((error as { statusCode?: number }).statusCode === 403) {
 			rows.value = [];
 			editing.value = null;
@@ -74,7 +82,10 @@ async function load(page = 1) {
 	const run = ++generation;
 	busy.value = true;
 	errorMessage.value = "";
-	const params = new URLSearchParams({ page: String(page), limit: String(pagination.value.limit) });
+	const params = new URLSearchParams({
+		page: String(page),
+		limit: String(pagination.value.limit)
+	});
 	if (status.value) params.set("status", status.value);
 	if (kind.value) params.set("kind", kind.value);
 	if (priority.value) params.set("priority", priority.value);
@@ -86,16 +97,20 @@ async function load(page = 1) {
 		rows.value = result.rows;
 		pagination.value = result.pagination;
 		editing.value = null;
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation)
 			errorMessage.value = requestError(error, "The queue could not be loaded. Please retry.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
 function edit(row: FeedbackRow) {
 	editing.value = row;
-	reviewStatus.value = row.status === "new" ? "reviewing" : row.status;
+	reviewStatus.value = row.status === "new"
+		? "reviewing"
+		: row.status;
 	reviewPriority.value = row.priority;
 	note.value = "";
 	targets.value = [];
@@ -122,13 +137,15 @@ async function searchTargets() {
 		}>(`/admin/reader-feedback/targets?query=${encodeURIComponent(targetQuery.value)}`);
 		if (run !== generation) return;
 		targets.value = [
-			...result.claims.map((item) => ({ ...item, type: "claim" as const })),
-			...result.topics.map((item) => ({ ...item, type: "topic" as const }))
+			...result.claims.map(item => ({ ...item, type: "claim" as const })),
+			...result.topics.map(item => ({ ...item, type: "topic" as const }))
 		];
 		if (!targets.value.length) notice.value = "No destinations match. Try another word.";
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) errorMessage.value = requestError(error, "Destinations could not be loaded.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -149,21 +166,32 @@ async function save() {
 		if (run !== generation) return;
 		notice.value = "Editorial priority saved. No scientific conclusion or publication state was changed.";
 		await load(pagination.value.page);
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation)
 			errorMessage.value = requestError(error, "The change was not confirmed saved. Reload before retrying.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
 function chooseTarget(target: (typeof targets.value)[number]) {
-	linkedClaimId.value = target.type === "claim" ? target._id : null;
-	linkedTopicId.value = target.type === "topic" ? target._id : null;
+	linkedClaimId.value = target.type === "claim"
+		? target._id
+		: null;
+	linkedTopicId.value = target.type === "topic"
+		? target._id
+		: null;
 	linkLabel.value = target.title;
 	targets.value = [];
 }
 watch(
-	[ready, role, () => currentAccount.value?._id, reviewId],
+	[
+		ready,
+		role,
+		() => currentAccount.value?._id,
+		reviewId
+	],
 	() => {
 		generation++;
 		controller?.abort();
@@ -173,7 +201,12 @@ watch(
 		errorMessage.value = "";
 		notice.value = "";
 		busy.value = false;
-		pagination.value = { page: 1, limit: 25, total: 0, hasMore: false };
+		pagination.value = {
+			page: 1,
+			limit: 25,
+			total: 0,
+			hasMore: false
+		};
 		if (import.meta.client && isAdmin.value) void load();
 	},
 	{ immediate: true, flush: "sync" }
@@ -194,51 +227,49 @@ onBeforeUnmount(() => {
 				scientific agreement or counts of unique people.
 			</p>
 		</header>
-		<p v-if="!ready">Checking access…</p>
-		<p v-else-if="!isAdmin">This queue is only available to admins. <NuxtLink to="/account">Sign in</NuxtLink></p>
+		<p v-if="!ready">
+			Checking access…
+		</p>
+		<p v-else-if="!isAdmin">
+			This queue is only available to admins. <NuxtLink to="/account">Sign in</NuxtLink>
+		</p>
 		<template v-else>
 			<p v-if="reviewId">
 				Showing feedback submitted for or linked to this review.
 				<NuxtLink to="/account/editorial/reader-feedback">Show all feedback</NuxtLink>
 			</p>
 			<form class="feedback-queue__filters" @submit.prevent="load()">
-				<label
-					>Status<select v-model="status" :disabled="busy">
-						<option value="">All statuses</option>
-						<option v-for="(label, value) in feedbackStatusLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-					</select></label
-				>
-				<label
-					>Feedback type<select v-model="kind" name="feedback-kind-filter" :disabled="busy">
-						<option value="">All types</option>
-						<option v-for="(label, value) in feedbackKindLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-					</select></label
-				>
-				<label
-					>Priority<select v-model="priority" :disabled="busy">
-						<option value="">All priorities</option>
-						<option v-for="(label, index) in feedbackPriorityLabels" :key="label" :value="String(index)">
-							{{ label }}
-						</option>
-					</select></label
-				>
-				<label
-					>Comparison<select v-model="comparisonSlug" name="comparison-filter" :disabled="busy">
-						<option value="">All feedback</option>
-						<option
-							v-for="comparison in evidenceComparisons"
-							:key="comparison.slug"
-							:value="comparison.slug"
-						>
-							{{ comparison.title }}
-						</option>
-					</select></label
-				>
-				<button class="button button--ghost" type="submit" :disabled="busy">Apply filters / reload</button>
+				<label>Status<select v-model="status" :disabled="busy">
+					<option value="">All statuses</option>
+					<option v-for="(label, value) in feedbackStatusLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+				</select></label>
+				<label>Feedback type<select v-model="kind" name="feedback-kind-filter" :disabled="busy">
+					<option value="">All types</option>
+					<option v-for="(label, value) in feedbackKindLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+				</select></label>
+				<label>Priority<select v-model="priority" :disabled="busy">
+					<option value="">All priorities</option>
+					<option v-for="(label, index) in feedbackPriorityLabels" :key="label" :value="String(index)">
+						{{ label }}
+					</option>
+				</select></label>
+				<label>Comparison<select v-model="comparisonSlug" name="comparison-filter" :disabled="busy">
+					<option value="">All feedback</option>
+					<option
+						v-for="comparison in evidenceComparisons"
+						:key="comparison.slug"
+						:value="comparison.slug"
+					>
+						{{ comparison.title }}
+					</option>
+				</select></label>
+				<button class="button button--ghost" type="submit" :disabled="busy">
+					Apply filters / reload
+				</button>
 			</form>
 			<p role="status">
 				{{
@@ -247,8 +278,12 @@ onBeforeUnmount(() => {
 						: notice || `${pagination.total} matching submissions. High priority first, then newest.`
 				}}
 			</p>
-			<p v-if="errorMessage" role="alert">{{ errorMessage }}</p>
-			<p v-if="!busy && !errorMessage && !rows.length">No reader feedback matches these filters.</p>
+			<p v-if="errorMessage" role="alert">
+				{{ errorMessage }}
+			</p>
+			<p v-if="!busy && !errorMessage && !rows.length">
+				No reader feedback matches these filters.
+			</p>
 			<article v-for="row in rows" :key="row._id" class="feedback-queue__card">
 				<p>
 					{{ feedbackKindLabels[row.kind] }} · {{ feedbackStatusLabels[row.status] }} ·
@@ -265,36 +300,31 @@ onBeforeUnmount(() => {
 					<dt>Answer coverage</dt>
 					<dd>{{ row.answerCoverage ? answerCoverageLabels[row.answerCoverage] : "Not recorded" }}</dd>
 				</dl>
-				<p v-if="row.area">Missing: {{ row.area }}</p>
-				<p v-if="row.message" class="feedback-queue__message">{{ row.message }}</p>
+				<p v-if="row.area">
+					Missing: {{ row.area }}
+				</p>
+				<p v-if="row.message" class="feedback-queue__message">
+					{{ row.message }}
+				</p>
 				<div class="feedback-queue__links">
 					<NuxtLink
 						v-if="row.kind === 'missing_evidence' || row.kind === 'content_gap'"
 						:to="{ path: '/account/editorial/roadmap', query: { feedbackId: row._id } }"
-						>Prepare a separate public question</NuxtLink
-					>
+					>Prepare a separate public question</NuxtLink>
 					<NuxtLink
 						v-if="row.comparisonSlug && comparisonForSlug(row.comparisonSlug)"
 						:to="`/compare/${row.comparisonSlug}`"
-						>Open original comparison</NuxtLink
-					>
+					>Open original comparison</NuxtLink>
 					<span v-else-if="row.comparisonSlug">Original comparison is no longer public.</span>
-					<NuxtLink v-if="row.claimId" :to="`/account/editorial/claims/${row.claimId}`"
-						>Open original review</NuxtLink
-					>
+					<NuxtLink v-if="row.claimId" :to="`/account/editorial/claims/${row.claimId}`">Open original review</NuxtLink>
 					<a
 						v-if="safeExternalHttpUrl(row.sourceUrl)"
 						:href="safeExternalHttpUrl(row.sourceUrl)"
 						target="_blank"
 						rel="noopener noreferrer"
-						>Submitted source link</a
-					>
-					<NuxtLink v-if="row.linkedClaimId" :to="`/account/editorial/claims/${row.linkedClaimId}`"
-						>Open linked review</NuxtLink
-					>
-					<NuxtLink v-if="row.linkedTopic" :to="`/consensus/${row.linkedTopic.slug}`"
-						>Linked topic: {{ row.linkedTopic.title }}</NuxtLink
-					>
+					>Submitted source link</a>
+					<NuxtLink v-if="row.linkedClaimId" :to="`/account/editorial/claims/${row.linkedClaimId}`">Open linked review</NuxtLink>
+					<NuxtLink v-if="row.linkedTopic" :to="`/consensus/${row.linkedTopic.slug}`">Linked topic: {{ row.linkedTopic.title }}</NuxtLink>
 				</div>
 				<details v-if="row.reviews.length">
 					<summary>Editorial review history ({{ row.reviews.length }})</summary>
@@ -303,7 +333,9 @@ onBeforeUnmount(() => {
 							{{ feedbackStatusLabels[review.status] }} · {{ feedbackPriorityLabels[review.priority] }} ·
 							{{ new Date(review.date).toLocaleDateString() }}
 						</p>
-						<p class="feedback-queue__message">{{ review.note }}</p>
+						<p class="feedback-queue__message">
+							{{ review.note }}
+						</p>
 					</div>
 				</details>
 				<button
@@ -316,38 +348,32 @@ onBeforeUnmount(() => {
 					Review feedback
 				</button>
 				<form v-else class="feedback-queue__review" @submit.prevent="save">
-					<label
-						>Review status<select v-model="reviewStatus" :disabled="busy">
-							<option v-for="(label, value) in feedbackStatusLabels" :key="value" :value="value">
-								{{ label }}
-							</option>
-						</select></label
-					>
-					<label
-						>Editorial priority<select v-model.number="reviewPriority" :disabled="busy">
-							<option v-for="(label, index) in feedbackPriorityLabels" :key="label" :value="index">
-								{{ label }}
-							</option>
-						</select></label
-					>
-					<label
-						>Reason / next action (10-1,000 characters)<textarea
-							v-model="note"
-							:disabled="busy"
-							name="review-note"
-							minlength="10"
-							maxlength="1000"
-							required
-							rows="3"
-						/>
+					<label>Review status<select v-model="reviewStatus" :disabled="busy">
+						<option v-for="(label, value) in feedbackStatusLabels" :key="value" :value="value">
+							{{ label }}
+						</option>
+					</select></label>
+					<label>Editorial priority<select v-model.number="reviewPriority" :disabled="busy">
+						<option v-for="(label, index) in feedbackPriorityLabels" :key="label" :value="index">
+							{{ label }}
+						</option>
+					</select></label>
+					<label>Reason / next action (10-1,000 characters)<textarea
+						v-model="note"
+						:disabled="busy"
+						name="review-note"
+						minlength="10"
+						maxlength="1000"
+						required
+						rows="3"
+					/>
 					</label>
-					<label
-						>Find a review or topic to link<input
-							v-model="targetQuery"
-							:disabled="busy"
-							name="target-query"
-							maxlength="100"
-					/></label>
+					<label>Find a review or topic to link<input
+						v-model="targetQuery"
+						:disabled="busy"
+						name="target-query"
+						maxlength="100"
+					></label>
 					<div>
 						<button type="button" :disabled="busy || targetQuery.trim().length < 3" @click="searchTargets">
 							Find destination
@@ -374,16 +400,17 @@ onBeforeUnmount(() => {
 					</p>
 					<div class="feedback-queue__links">
 						<button class="button button--primary" type="submit" :disabled="busy">
-							Save editorial review</button
-						><button type="button" :disabled="busy" @click="editing = null">Cancel</button>
+							Save editorial review
+						</button><button type="button" :disabled="busy" @click="editing = null">
+							Cancel
+						</button>
 					</div>
 				</form>
 			</article>
 			<nav aria-label="Feedback pages" class="feedback-queue__links">
 				<button type="button" :disabled="busy || pagination.page === 1" @click="load(pagination.page - 1)">
-					Previous page</button
-				><span>Page {{ pagination.page }}</span
-				><button type="button" :disabled="busy || !pagination.hasMore" @click="load(pagination.page + 1)">
+					Previous page
+				</button><span>Page {{ pagination.page }}</span><button type="button" :disabled="busy || !pagination.hasMore" @click="load(pagination.page + 1)">
 					Next page
 				</button>
 			</nav>

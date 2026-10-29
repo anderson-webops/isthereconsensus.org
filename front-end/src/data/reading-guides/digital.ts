@@ -131,7 +131,12 @@ export const digitalGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "These references include protocol specifications, definitions and institutional guidance, not interchangeable experiments or an expert poll. Related MLS documents describe one design, and multiple NIST documents share institutional provenance. The fingerprinting document is a Group Note rather than a W3C Recommendation. Older publications are used for scoped concepts, not presumed current approval of all their implementation details. Two Consensus.app discovery searches and fetched records helped locate historical fingerprinting papers, but original full texts were unavailable and their percentages were excluded. No Deep Review, current prevalence estimate, actual reader-demand measurement or independent expert approval is claimed. An unknown product property should remain unknown until evidence establishes it.",
-					sources: ["architecture", "fingerprinting", "hash", "disk"]
+					sources: [
+						"architecture",
+						"fingerprinting",
+						"hash",
+						"disk"
+					]
 				}
 			]
 		}

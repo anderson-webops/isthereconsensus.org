@@ -249,7 +249,11 @@ describe("claim evidence landscape", () => {
 			}
 		});
 
-		await Promise.all([included.validate(), lowQuality.validate(), retracted.validate()]);
+		await Promise.all([
+			included.validate(),
+			lowQuality.validate(),
+			retracted.validate()
+		]);
 		const result = recomputeEvidenceLandscapeFromSources([included, lowQuality, retracted]);
 
 		assert.equal(result.distribution.supportsClaim.count, 1);

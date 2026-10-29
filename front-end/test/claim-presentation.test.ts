@@ -19,8 +19,16 @@ describe("recorded review scope", () => {
 				exclusionRules: ["Excluded setting."]
 			}),
 			[
-				{ key: "included", title: "Included evidence", items: ["First criterion.", "Second criterion."] },
-				{ key: "excluded", title: "Excluded evidence", items: ["Excluded setting."] }
+				{
+					key: "included",
+					title: "Included evidence",
+					items: ["First criterion.", "Second criterion."]
+				},
+				{
+					key: "excluded",
+					title: "Excluded evidence",
+					items: ["Excluded setting."]
+				}
 			]
 		);
 	});
@@ -31,23 +39,42 @@ describe("recorded review scope", () => {
 			null,
 			{},
 			{ inclusionRules: [], exclusionRules: [] },
-			{ inclusionRules: [" ", "\n"] }
+			{
+				inclusionRules: [" ", "\n"]
+			}
 		]) {
 			assert.deepEqual(selectReviewScopeGroups(claim), []);
 		}
-		assert.deepEqual(selectReviewScopeGroups({ exclusionRules: ["Not reviewed.", ""] }), [
-			{ key: "excluded", title: "Excluded evidence", items: ["Not reviewed."] }
-		]);
+		assert.deepEqual(
+			selectReviewScopeGroups({
+				exclusionRules: ["Not reviewed.", ""]
+			}),
+			[
+				{
+					key: "excluded",
+					title: "Excluded evidence",
+					items: ["Not reviewed."]
+				}
+			]
+		);
 	});
 
 	it("preserves full long criteria and treats markup as data", () => {
 		const criterion = `${"A full scope qualification. ".repeat(30)}<script>not executable</script>`;
-		assert.equal(selectReviewScopeGroups({ inclusionRules: [criterion] })[0]?.items[0], criterion);
+		assert.equal(
+			selectReviewScopeGroups({
+				inclusionRules: [criterion]
+			})[0]?.items[0],
+			criterion
+		);
 	});
 
 	it("never mutates input arrays or silently discards repeated rules", () => {
 		const inclusionRules = Object.freeze([" A criterion. ", " A criterion. "]);
-		const claim = { inclusionRules: [...inclusionRules], exclusionRules: [" Outside scope. "] };
+		const claim = {
+			inclusionRules: [...inclusionRules],
+			exclusionRules: [" Outside scope. "]
+		};
 		const before = structuredClone(claim);
 		assert.equal(selectReviewScopeGroups(claim)[0]?.items.length, 2);
 		assert.deepEqual(claim, before);

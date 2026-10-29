@@ -69,7 +69,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Automation and AI disclosure' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Automation and AI disclosure</p>
+			<p class="eyebrow">
+				Automation and AI disclosure
+			</p>
 			<h1>Preparation and review</h1>
 			<p>
 				AI tools can summarize real research and still misinterpret it. Linked sources support checking the
@@ -89,7 +91,9 @@ useStaticPageMeta({
 				<h2>Allowed support uses</h2>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in allowedUses" :key="item">{{ item }}</li>
+				<li v-for="item in allowedUses" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -98,7 +102,9 @@ useStaticPageMeta({
 				<h2>Disallowed uses</h2>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in disallowedUses" :key="item">{{ item }}</li>
+				<li v-for="item in disallowedUses" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -119,7 +125,9 @@ useStaticPageMeta({
 				<h2>Rules for contributors using AI tools</h2>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in contributorRules" :key="item">{{ item }}</li>
+				<li v-for="item in contributorRules" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 

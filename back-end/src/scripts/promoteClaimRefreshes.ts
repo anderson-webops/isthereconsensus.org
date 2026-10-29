@@ -35,17 +35,19 @@ async function verifyBackup(path: string, expected: string) {
 }
 
 async function main() {
-	const { values } = parseArgs({ options: {
-		"help": { type: "boolean" },
-		"preview": { type: "boolean" },
-		"apply": { type: "boolean" },
-		"review": { type: "string", multiple: true },
-		"plan": { type: "string" },
-		"plan-sha256": { type: "string" },
-		"backup-file": { type: "string" },
-		"backup-sha256": { type: "string" },
-		"operator-note": { type: "string" }
-	} });
+	const { values } = parseArgs({
+		options: {
+			"help": { type: "boolean" },
+			"preview": { type: "boolean" },
+			"apply": { type: "boolean" },
+			"review": { type: "string", multiple: true },
+			"plan": { type: "string" },
+			"plan-sha256": { type: "string" },
+			"backup-file": { type: "string" },
+			"backup-sha256": { type: "string" },
+			"operator-note": { type: "string" }
+		}
+	});
 	if (values.help) {
 		console.log("Preview: --preview --review topic/claim [--review topic/claim] --plan /private/plan.json\nApply: --apply --plan /private/plan.json --plan-sha256 <reviewed-digest> --backup-file /private/backup.archive --backup-sha256 <reviewed-digest> --operator-note <backup-restore-check-and-content-review-record>\nUses protected runtime MongoDB configuration. Read docs/claim-refresh-promotion.md first. A backup digest identifies an artifact; it does not verify restoration or authorize editorial changes.");
 		return;
@@ -63,7 +65,13 @@ async function main() {
 	}
 	const { uri } = await resolveMongoConfiguration();
 	// Preview must not implicitly create collections or indexes via model initialization.
-	await mongoose.connect(uri, { autoCreate: false, autoIndex: false, connectTimeoutMS: 10_000, serverSelectionTimeoutMS: 10_000, socketTimeoutMS: 70_000 });
+	await mongoose.connect(uri, {
+		autoCreate: false,
+		autoIndex: false,
+		connectTimeoutMS: 10_000,
+		serverSelectionTimeoutMS: 10_000,
+		socketTimeoutMS: 70_000
+	});
 	if (reviewed) {
 		const result = await applyClaimRefreshes(reviewed, { planSha256: values["plan-sha256"]!, backupSha256: values["backup-sha256"]!, operatorNote: values["operator-note"]! });
 		console.log(JSON.stringify(result));
@@ -75,7 +83,11 @@ async function main() {
 			await file.writeFile(canonicalRefreshJSON(plan));
 		}
 		finally { await file.close(); }
-		console.log(JSON.stringify({ status: "preview", selection: plan.selection, planSha256: refreshDigest(plan) }));
+		console.log(JSON.stringify({
+			status: "preview",
+			selection: plan.selection,
+			planSha256: refreshDigest(plan)
+		}));
 	}
 }
 

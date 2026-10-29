@@ -13,7 +13,9 @@ describe("isolated browser fixture request boundary", () => {
 				intercept = handler;
 			}
 		};
-		assert.equal(await createIsolatedBrowserPage({ newPage: async () => page }, "http://127.0.0.1:45678"), page);
+		assert.equal(await createIsolatedBrowserPage({
+			newPage: async () => page
+		}, "http://127.0.0.1:45678"), page);
 		for (const [url, expected] of [
 			["http://127.0.0.1:45678/api/library/account", "continue"],
 			["data:text/css,body{}", "continue"],
@@ -37,14 +39,24 @@ describe("isolated browser fixture request boundary", () => {
 		const context = {
 			newPage: async () => { assert.fail("invalid origins must not create pages"); }
 		};
-		for (const base of ["https://isthereconsensus.org", "http://localhost:45678", "https://127.0.0.1:45678", "http://fixture:credential@127.0.0.1:45678"]) {
+		for (const base of [
+			"https://isthereconsensus.org",
+			"http://localhost:45678",
+			"https://127.0.0.1:45678",
+			"http://fixture:credential@127.0.0.1:45678"
+		]) {
 			await assert.rejects(createIsolatedBrowserPage(context, base));
 		}
 	});
 
 	it("permits an explicit IPv6 loopback fixture", async () => {
-		const page = { setRequestInterception: async () => {}, on: () => {} };
-		assert.equal(await createIsolatedBrowserPage({ newPage: async () => page }, "http://[::1]:45678"), page);
+		const page = {
+			setRequestInterception: async () => {},
+			on: () => {}
+		};
+		assert.equal(await createIsolatedBrowserPage({
+			newPage: async () => page
+		}, "http://[::1]:45678"), page);
 	});
 
 	it("keeps injected failures inside the owned origin without disabling isolation", async () => {
@@ -55,13 +67,19 @@ describe("isolated browser fixture request boundary", () => {
 			setRequestInterception: async () => {},
 			on: (_event: string, handler: typeof intercept) => { intercept = handler; }
 		};
-		await createIsolatedBrowserPage({ newPage: async () => page }, "http://127.0.0.1:45678", (request: { respond: () => Promise<void> }, url: URL) => {
+		await createIsolatedBrowserPage({
+			newPage: async () => page
+		}, "http://127.0.0.1:45678", (request: Parameters<typeof intercept>[0], url: URL) => {
 			overrides += 1;
 			if (url.pathname !== "/api/reader-feedback") return false;
 			void request.respond();
 			return true;
 		});
-		for (const [url, expected] of [["https://isthereconsensus.org/api/reader-feedback", "abort"], ["http://127.0.0.1:45678/api/reader-feedback", "respond"], ["http://127.0.0.1:45678/library", "continue"]]) {
+		for (const [url, expected] of [
+			["https://isthereconsensus.org/api/reader-feedback", "abort"],
+			["http://127.0.0.1:45678/api/reader-feedback", "respond"],
+			["http://127.0.0.1:45678/library", "continue"]
+		]) {
 			intercept!({
 				url: () => url,
 				continue: async () => { decision = "continue"; },
@@ -74,7 +92,17 @@ describe("isolated browser fixture request boundary", () => {
 	});
 
 	it("uses the boundary for every new page in the complete reader rehearsal", () => {
-		for (const file of ["reader-library", "reader-content", "coverage-following", "coverage-roadmap", "living-evidence-refresh", "reader-feedback", "review-priority", "source-integrity", "editorial-citation"]) {
+		for (const file of [
+			"reader-library",
+			"reader-content",
+			"coverage-following",
+			"coverage-roadmap",
+			"living-evidence-refresh",
+			"reader-feedback",
+			"review-priority",
+			"source-integrity",
+			"editorial-citation"
+		]) {
 			const source = readFileSync(new URL(`../../scripts/${file}-smoke.mjs`, import.meta.url), "utf8");
 			assert.ok(source.includes("createIsolatedBrowserPage("), file);
 			assert.doesNotMatch(source, /await (?:browser|context)\.newPage\(/, file);

@@ -44,8 +44,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"The occurrence of the fusion is exceptionally well established. Its exact date, population dynamics, and any phenotypic consequences remain active research questions.",
 		sources: [
 			academiesEvolutionSource,
-			["landmark_study", "Origin of human chromosome 2: an ancestral telomere-telomere fusion", "Proceedings of the National Academy of Sciences", 1991, "10.1073/pnas.88.20.9051", "Molecular analysis identified degenerate telomeric repeats in the predicted orientation at the human chromosome 2 fusion site."],
-			["landmark_study", "Incomplete lineage sorting of segmental duplications defines the human chromosome 2 fusion site early during African great ape speciation", "Cell Genomics", 2026, "10.1016/j.xgen.2025.101079", "High-resolution ape genomes refine the complex duplicated sequence and lineage history surrounding the established fusion site."]
+			[
+				"landmark_study",
+				"Origin of human chromosome 2: an ancestral telomere-telomere fusion",
+				"Proceedings of the National Academy of Sciences",
+				1991,
+				"10.1073/pnas.88.20.9051",
+				"Molecular analysis identified degenerate telomeric repeats in the predicted orientation at the human chromosome 2 fusion site."
+			],
+			[
+				"landmark_study",
+				"Incomplete lineage sorting of segmental duplications defines the human chromosome 2 fusion site early during African great ape speciation",
+				"Cell Genomics",
+				2026,
+				"10.1016/j.xgen.2025.101079",
+				"High-resolution ape genomes refine the complex duplicated sequence and lineage history surrounding the established fusion site."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -80,9 +94,30 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The common-ancestry inference is strong. Individual retroviral families can have complicated histories involving recombination, lineage-specific loss, incomplete lineage sorting, or cross-species transmission.",
 		sources: [
-			["landmark_study", "Constructing primate phylogenies from ancient retrovirus sequences", "Proceedings of the National Academy of Sciences", 1999, "10.1073/pnas.96.18.10254", "Shared endogenous retroviral loci were used as independent markers to reconstruct primate relationships."],
-			["landmark_study", "Identification, characterization and comparative genomics of chimpanzee endogenous retroviruses", "Genome Biology", 2006, "10.1186/gb-2006-7-6-r51", "Comparative genomic analysis identified orthologous and lineage-specific retroviral families across chimpanzees and humans."],
-			["systematic_review", "Origins and evolutionary consequences of ancient endogenous retroviruses", "Nature Reviews Microbiology", 2019, "10.1038/s41579-019-0189-2", "Review explains germline endogenization, inherited viral loci, long host-virus histories, and evolutionary co-option across vertebrates."]
+			[
+				"landmark_study",
+				"Constructing primate phylogenies from ancient retrovirus sequences",
+				"Proceedings of the National Academy of Sciences",
+				1999,
+				"10.1073/pnas.96.18.10254",
+				"Shared endogenous retroviral loci were used as independent markers to reconstruct primate relationships."
+			],
+			[
+				"landmark_study",
+				"Identification, characterization and comparative genomics of chimpanzee endogenous retroviruses",
+				"Genome Biology",
+				2006,
+				"10.1186/gb-2006-7-6-r51",
+				"Comparative genomic analysis identified orthologous and lineage-specific retroviral families across chimpanzees and humans."
+			],
+			[
+				"systematic_review",
+				"Origins and evolutionary consequences of ancient endogenous retroviruses",
+				"Nature Reviews Microbiology",
+				2019,
+				"10.1038/s41579-019-0189-2",
+				"Review explains germline endogenization, inherited viral loci, long host-virus histories, and evolutionary co-option across vertebrates."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -118,8 +153,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"The mechanism is well established. The relative importance of selection, drift, dosage balance, and regulatory change varies among organisms and duplicate families.",
 		sources: [
 			academiesEvolutionSource,
-			["context", "The multiple fates of gene duplications: Deletion, hypofunctionalization, subfunctionalization, neofunctionalization, dosage balance constraints, and neutral variation", "The Plant Cell", 2022, "10.1093/plcell/koac076", "Review organizes the empirically observed outcomes of duplicated genes rather than treating novelty as their only possible fate."],
-			["context", "Retention of duplicated genes in evolution", "Trends in Genetics", 2022, "10.1016/j.tig.2021.06.016", "Review explains how redundancy, dosage, entanglement, and functional divergence can retain duplicate genes over evolutionary time."]
+			[
+				"context",
+				"The multiple fates of gene duplications: Deletion, hypofunctionalization, subfunctionalization, neofunctionalization, dosage balance constraints, and neutral variation",
+				"The Plant Cell",
+				2022,
+				"10.1093/plcell/koac076",
+				"Review organizes the empirically observed outcomes of duplicated genes rather than treating novelty as their only possible fate."
+			],
+			[
+				"context",
+				"Retention of duplicated genes in evolution",
+				"Trends in Genetics",
+				2022,
+				"10.1016/j.tig.2021.06.016",
+				"Review explains how redundancy, dosage, entanglement, and functional divergence can retain duplicate genes over evolutionary time."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -155,8 +204,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"Existence is supported, while rates and individual classifications remain sensitive to genome quality, taxon sampling, homology detection, and definitions of function.",
 		sources: [
 			academiesEvolutionSource,
-			["context", "Functional innovation through new genes as a general evolutionary process", "Nature Genetics", 2025, "10.1038/s41588-024-02059-0", "Review surveys mechanisms and evidence showing that newly originated genes can contribute to lineage-specific functions."],
-			["context", "New genes from non-coding sequence: the role of de novo protein-coding genes in eukaryotic evolutionary innovation", "Philosophical Transactions of the Royal Society B", 2015, "10.1098/rstb.2014.0332", "Review evaluates de novo gene candidates across eukaryotes and the evidentiary challenges in establishing origin and function."]
+			[
+				"context",
+				"Functional innovation through new genes as a general evolutionary process",
+				"Nature Genetics",
+				2025,
+				"10.1038/s41588-024-02059-0",
+				"Review surveys mechanisms and evidence showing that newly originated genes can contribute to lineage-specific functions."
+			],
+			[
+				"context",
+				"New genes from non-coding sequence: the role of de novo protein-coding genes in eukaryotic evolutionary innovation",
+				"Philosophical Transactions of the Royal Society B",
+				2015,
+				"10.1098/rstb.2014.0332",
+				"Review evaluates de novo gene candidates across eukaryotes and the evidentiary challenges in establishing origin and function."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -192,8 +255,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"The definition and general phenomenon are stable. The classification and remaining function of individual structures can change with better comparative or experimental evidence.",
 		sources: [
 			academiesEvolutionSource,
-			["landmark_study", "Loss of ancestral function in duckweed roots is accompanied by progressive anatomical reduction and a re-distribution of nutrient transporters", "Current Biology", 2023, "10.1016/j.cub.2023.03.025", "Closely related duckweeds provide a living comparative sequence of anatomical reduction and loss of an ancestral root function."],
-			["landmark_study", "Neural network detected in a presumed vestigial trait: ultrastructure of the salmonid adipose fin", "Proceedings of the Royal Society B", 2012, "10.1098/rspb.2011.1009", "Functional anatomy in a presumed vestige illustrates why residual function and evolutionary reduction must be assessed separately."]
+			[
+				"landmark_study",
+				"Loss of ancestral function in duckweed roots is accompanied by progressive anatomical reduction and a re-distribution of nutrient transporters",
+				"Current Biology",
+				2023,
+				"10.1016/j.cub.2023.03.025",
+				"Closely related duckweeds provide a living comparative sequence of anatomical reduction and loss of an ancestral root function."
+			],
+			[
+				"landmark_study",
+				"Neural network detected in a presumed vestigial trait: ultrastructure of the salmonid adipose fin",
+				"Proceedings of the Royal Society B",
+				2012,
+				"10.1098/rspb.2011.1009",
+				"Functional anatomy in a presumed vestige illustrates why residual function and evolutionary reduction must be assessed separately."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -229,8 +306,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"The feasibility and evolutionary continuity of functional intermediates are strongly supported. Exact historical routes differ among lineages and are reconstructed with unequal detail.",
 		sources: [
 			academiesEvolutionSource,
-			["context", "The evolution of eyes and visually guided behaviour", "Philosophical Transactions of the Royal Society B", 2009, "10.1098/rstb.2009.0083", "Comparative review identifies successive functional innovations in photoreception, directionality, receptor organization, and focusing optics."],
-			["landmark_study", "A pessimistic estimate of the time required for an eye to evolve", "Proceedings of the Royal Society B", 1994, "10.1098/rspb.1994.0048", "Quantitative model demonstrates a plausible sequence of small, performance-improving morphological changes from a light-sensitive patch to a camera-type eye."]
+			[
+				"context",
+				"The evolution of eyes and visually guided behaviour",
+				"Philosophical Transactions of the Royal Society B",
+				2009,
+				"10.1098/rstb.2009.0083",
+				"Comparative review identifies successive functional innovations in photoreception, directionality, receptor organization, and focusing optics."
+			],
+			[
+				"landmark_study",
+				"A pessimistic estimate of the time required for an eye to evolve",
+				"Proceedings of the Royal Society B",
+				1994,
+				"10.1098/rspb.1994.0048",
+				"Quantitative model demonstrates a plausible sequence of small, performance-improving morphological changes from a light-sensitive patch to a camera-type eye."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -265,9 +356,30 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Multiple routes are well established. Their terminology, equivalence, and empirical contribution remain contested, especially for culture-rich human cooperation.",
 		sources: [
-			["landmark_study", "Five Rules for the Evolution of Cooperation", "Science", 2006, "10.1126/science.1133755", "Formal synthesis shows how kin selection, direct and indirect reciprocity, network structure, and group selection can favor cooperation."],
-			["context", "The evolution of human cooperation", "Current Biology", 2019, "10.1016/j.cub.2019.03.036", "Review connects biological and cultural mechanisms to the unusually broad scale of human cooperation."],
-			["context", "The evolution of cooperation and altruism: the basic conditions are simple and well known", "Journal of Evolutionary Biology", 2006, "10.1111/j.1420-9101.2006.01172.x", "Review clarifies fitness conditions and terminology behind mutualistic and altruistic helping."]
+			[
+				"landmark_study",
+				"Five Rules for the Evolution of Cooperation",
+				"Science",
+				2006,
+				"10.1126/science.1133755",
+				"Formal synthesis shows how kin selection, direct and indirect reciprocity, network structure, and group selection can favor cooperation."
+			],
+			[
+				"context",
+				"The evolution of human cooperation",
+				"Current Biology",
+				2019,
+				"10.1016/j.cub.2019.03.036",
+				"Review connects biological and cultural mechanisms to the unusually broad scale of human cooperation."
+			],
+			[
+				"context",
+				"The evolution of cooperation and altruism: the basic conditions are simple and well known",
+				"Journal of Evolutionary Biology",
+				2006,
+				"10.1111/j.1420-9101.2006.01172.x",
+				"Review clarifies fitness conditions and terminology behind mutualistic and altruistic helping."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -302,9 +414,30 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The mechanism is established, while the size and even direction of survival associations vary by trait, sex, environment, and study design.",
 		sources: [
-			["meta_analysis", "Sexually Selected Traits and Adult Survival: A Meta-Analysis", "The Quarterly Review of Biology", 2001, "10.1086/393743", "Synthesis finds that larger sexual traits do not uniformly predict lower survival, emphasizing condition dependence and the need to measure costs directly."],
-			["meta_analysis", "Meta-analytic evidence that sexual selection improves population fitness", "Nature Communications", 2019, "10.1038/s41467-019-10074-7", "Experimental synthesis finds average population-fitness benefits while showing variation by sex and environment."],
-			["landmark_study", "Environmental heterogeneity generates fluctuating selection on a secondary sexual trait", "Current Biology", 2008, "10.1016/j.cub.2008.04.059", "Wild-population data document changing fecundity and survival associations for a sexually selected trait across environments."]
+			[
+				"meta_analysis",
+				"Sexually Selected Traits and Adult Survival: A Meta-Analysis",
+				"The Quarterly Review of Biology",
+				2001,
+				"10.1086/393743",
+				"Synthesis finds that larger sexual traits do not uniformly predict lower survival, emphasizing condition dependence and the need to measure costs directly."
+			],
+			[
+				"meta_analysis",
+				"Meta-analytic evidence that sexual selection improves population fitness",
+				"Nature Communications",
+				2019,
+				"10.1038/s41467-019-10074-7",
+				"Experimental synthesis finds average population-fitness benefits while showing variation by sex and environment."
+			],
+			[
+				"landmark_study",
+				"Environmental heterogeneity generates fluctuating selection on a secondary sexual trait",
+				"Current Biology",
+				2008,
+				"10.1016/j.cub.2008.04.059",
+				"Wild-population data document changing fecundity and survival associations for a sexually selected trait across environments."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -340,8 +473,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"Horizontal transfer is undisputed and especially important in prokaryotes. Its frequency, ancient reach, and best representation at the deepest branches remain debated.",
 		sources: [
 			academiesEvolutionSource,
-			["context", "Horizontal gene transfer in evolution: facts and challenges", "Proceedings of the Royal Society B", 2010, "10.1098/rspb.2009.1679", "Review explains why pervasive transfer expands evolutionary theory and complicates universal-tree reconstruction without negating descent."],
-			["context", "Horizontal gene transfer in eukaryotes: aligning theory with data", "Nature Reviews Genetics", 2024, "10.1038/s41576-023-00688-5", "Current review separates well-supported eukaryotic transfers from contamination, endosymbiosis, and overgeneralized claims."]
+			[
+				"context",
+				"Horizontal gene transfer in evolution: facts and challenges",
+				"Proceedings of the Royal Society B",
+				2010,
+				"10.1098/rspb.2009.1679",
+				"Review explains why pervasive transfer expands evolutionary theory and complicates universal-tree reconstruction without negating descent."
+			],
+			[
+				"context",
+				"Horizontal gene transfer in eukaryotes: aligning theory with data",
+				"Nature Reviews Genetics",
+				2024,
+				"10.1038/s41576-023-00688-5",
+				"Current review separates well-supported eukaryotic transfers from contamination, endosymbiosis, and overgeneralized claims."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -377,8 +524,22 @@ export const september2026DemandDepthEvolutionClaims: SeedClaim[] = [
 			"The phenomenon is extensively documented. Predicting when convergence will occur and whether it will reuse the same molecular path remains an active research frontier.",
 		sources: [
 			academiesEvolutionSource,
-			["context", "Understanding natural selection and similarity: Convergent, parallel and repeated evolution", "Molecular Ecology", 2023, "10.1111/mec.17132", "Review provides a framework for separating convergence, parallelism, and repeated evolution across levels of biological similarity."],
-			["context", "Convergence, adaptation, and constraint", "Evolution", 2011, "10.1111/j.1558-5646.2011.01289.x", "Comparative review examines how selection and constraint produce repeated phenotypes without requiring identical histories."]
+			[
+				"context",
+				"Understanding natural selection and similarity: Convergent, parallel and repeated evolution",
+				"Molecular Ecology",
+				2023,
+				"10.1111/mec.17132",
+				"Review provides a framework for separating convergence, parallelism, and repeated evolution across levels of biological similarity."
+			],
+			[
+				"context",
+				"Convergence, adaptation, and constraint",
+				"Evolution",
+				2011,
+				"10.1111/j.1558-5646.2011.01289.x",
+				"Comparative review examines how selection and constraint produce repeated phenotypes without requiring identical histories."
+			]
 		]
 	})
 ];

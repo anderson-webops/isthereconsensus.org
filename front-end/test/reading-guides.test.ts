@@ -6,22 +6,22 @@ import { defaultTopics } from "../../back-end/src/data/topics.js";
 import { guidesForReview, guidesForTopic, readingGuides } from "../src/data/reading-guides/index.js";
 import { loadReadingGuide } from "../src/data/reading-guides/load.js";
 
-const claimPaths = new Set(defaultClaims.map((claim) => `/consensus/${claim.topicSlug}/${claim.slug}`));
-const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
+const claimPaths = new Set(defaultClaims.map(claim => `/consensus/${claim.topicSlug}/${claim.slug}`));
+const topicSlugs = new Set(defaultTopics.map(topic => topic.slug));
 const safeSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe("sourced reading guides", () => {
 	it("keeps AI water accounting, estimation and related electricity context distinct", async () => {
 		const guide = await loadReadingGuide("reading-ai-water-footprints");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-ai-water-footprints")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-ai-water-footprints")!;
 		assert.equal(summary.checkedAt, "2026-10-08");
 		assert.equal(guide.sources.length, 7);
 		assert.equal(guide.sections.length, 7);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/u).length >= 850);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(guide.scope, /not substitute answers/);
 		assert.match(guide.takeaway, /no single water-per-query figure/);
@@ -31,21 +31,21 @@ describe("sourced reading guides", () => {
 		assert.match(text, /does not establish how much additional water one extra request causes/);
 		assert.match(text, /hypothetical example/);
 		assert.match(text, /not a validated environmental scoring tool/);
-		assert.ok(summary.reviews.every((review) => /context|different impact/.test(review.label)));
-		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+		assert.ok(summary.reviews.every(review => /context|different impact/.test(review.label)));
+		assert.ok(guide.sources.every(source => !source.url.includes("consensus.app")));
 	});
 	it("connects eighteen economic measurement questions without treating accounting as individual welfare or causal policy evidence", async () => {
 		const guide = await loadReadingGuide("reading-inflation-jobs-and-gdp-headlines");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-inflation-jobs-and-gdp-headlines")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-inflation-jobs-and-gdp-headlines")!;
 		assert.equal(summary.reviews.length, 18);
 		assert.deepEqual(summary.topics, ["economics-and-social-policy"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		assert.equal(guide.sources.length, 17);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1800);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(guide.scope, /independently constructed and hypothetical/);
 		assert.match(text, /does not certify exact personal welfare/);
@@ -56,20 +56,20 @@ describe("sourced reading guides", () => {
 		assert.match(text, /not automatically a feasible policy counterfactual/);
 		assert.match(text, /reference-period reconciliation/);
 		assert.match(text, /not cash balances or forecasts/);
-		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+		assert.ok(guide.sources.every(source => !source.url.includes("consensus.app")));
 	});
 	it("connects eighteen assessment questions with substantive explanation and honest score-use limits", async () => {
 		const guide = await loadReadingGuide("reading-test-scores-and-school-comparisons");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-test-scores-and-school-comparisons")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-test-scores-and-school-comparisons")!;
 		assert.equal(summary.reviews.length, 18);
 		assert.deepEqual(summary.topics, ["education-and-learning"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		assert.equal(guide.sources.length, 15);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1800);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(guide.scope, /independently constructed and hypothetical/);
 		assert.match(text, /rank of a mean score/);
@@ -78,20 +78,20 @@ describe("sourced reading guides", () => {
 		assert.match(text, /absence of a detected flag/);
 		assert.match(text, /not a universal menu of entitlements/);
 		assert.match(text, /group-estimation machinery|Group-estimation machinery/);
-		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+		assert.ok(guide.sources.every(source => !source.url.includes("consensus.app")));
 	});
 	it("connects eighteen weather reviews with scoped references and no live-forecast or safety promises", async () => {
 		const guide = await loadReadingGuide("reading-weather-forecasts-and-measurements");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-weather-forecasts-and-measurements")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-weather-forecasts-and-measurements")!;
 		assert.equal(summary.reviews.length, 18);
 		assert.deepEqual(summary.topics, ["earth-and-geoscience"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		assert.equal(guide.sources.length, 23);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1800);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(guide.scope, /not a live forecast/);
 		assert.match(text, /explicitly invented mathematical example/);
@@ -105,39 +105,39 @@ describe("sourced reading guides", () => {
 		const guide = await loadReadingGuide("reading-digital-security-and-data-protection-claims");
 		assert.ok(guide);
 		const summary = readingGuides.find(
-			(entry) => entry.slug === "reading-digital-security-and-data-protection-claims"
+			entry => entry.slug === "reading-digital-security-and-data-protection-claims"
 		)!;
 		assert.equal(summary.reviews.length, 16);
 		assert.deepEqual(summary.topics, ["digital-security-and-privacy"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		assert.equal(guide.sources.length, 20);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1900);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(text, /library does not establish it/);
 		assert.match(text, /Group Note rather than a W3C Recommendation/);
 		assert.match(text, /RFC 9989/);
 		assert.match(text, /original full texts were unavailable and their percentages were excluded/);
 		assert.match(text, /untested is more informative/);
-		assert.ok(guide.sources.every((source) => !source.url.includes("consensus.app")));
+		assert.ok(guide.sources.every(source => !source.url.includes("consensus.app")));
 	});
 	it("connects thirty-two distinct mechanical-model questions without claiming measurements or expert votes", async () => {
 		const guide = await loadReadingGuide("reading-motion-forces-and-energy-claims");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-motion-forces-and-energy-claims")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-motion-forces-and-energy-claims")!;
 		assert.equal(summary.reviews.length, 32);
 		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		assert.equal(guide.sources.length, 39);
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 2000);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independently constructed and hypothetical/);
 		assert.match(guide.scope, /independent expert review has not been completed/);
-		assert.ok(guide.sections.some((section) => section.title === "A conserved total does not freeze every part"));
+		assert.ok(guide.sections.some(section => section.title === "A conserved total does not freeze every part"));
 		assert.match(text, /3 N m through 2 radians does 6 J/);
 		assert.match(text, /1\.5 N s and 3 N s/);
 		assert.match(text, /not a numerical poll of scientists/);
@@ -147,16 +147,16 @@ describe("sourced reading guides", () => {
 		const guide = await loadReadingGuide("reading-electrical-quantities-and-circuit-claims");
 		assert.ok(guide);
 		const summary = readingGuides.find(
-			(entry) => entry.slug === "reading-electrical-quantities-and-circuit-claims"
+			entry => entry.slug === "reading-electrical-quantities-and-circuit-claims"
 		)!;
 		assert.equal(summary.reviews.length, 20);
 		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1500);
 		assert.equal(guide.sources.length, 22);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independently constructed and hypothetical/);
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(text, /charge balance, the energy balance and the propagation question/);
@@ -170,7 +170,7 @@ describe("sourced reading guides", () => {
 
 	it("has a unique discoverable entry for all ten planned subjects", () => {
 		assert.ok(readingGuides.length >= 10);
-		assert.equal(new Set(readingGuides.map((guide) => guide.slug)).size, readingGuides.length);
+		assert.equal(new Set(readingGuides.map(guide => guide.slug)).size, readingGuides.length);
 		for (const slug of [
 			"caffeine-tolerance-and-sleep",
 			"making-sense-of-supplements",
@@ -183,7 +183,7 @@ describe("sourced reading guides", () => {
 			"understanding-evolution",
 			"interpreting-medical-evidence"
 		])
-			assert.ok(readingGuides.some((guide) => guide.slug === slug));
+			assert.ok(readingGuides.some(guide => guide.slug === slug));
 	});
 
 	for (const summary of readingGuides) {
@@ -197,11 +197,11 @@ describe("sourced reading guides", () => {
 			assert.ok(guide.scope.length > 80);
 			assert.match(summary.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
 			assert.ok(Date.parse(summary.checkedAt) <= Date.now(), "source checks cannot be future dated");
-			const sources = new Set(guide.sources.map((source) => source.id));
+			const sources = new Set(guide.sources.map(source => source.id));
 			assert.equal(sources.size, guide.sources.length);
-			assert.equal(new Set(guide.sections.map((section) => section.id)).size, guide.sections.length);
-			const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-			const body = paragraphs.map((paragraph) => paragraph.text).join(" ");
+			assert.equal(new Set(guide.sections.map(section => section.id)).size, guide.sections.length);
+			const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+			const body = paragraphs.map(paragraph => paragraph.text).join(" ");
 			assert.ok(body.split(/\s+/).length >= 500, `${summary.slug} needs a substantive body`);
 			for (const section of guide.sections) {
 				assert.match(section.id, safeSlug);
@@ -215,7 +215,7 @@ describe("sourced reading guides", () => {
 			for (const source of guide.sources) {
 				assert.match(source.id, safeSlug);
 				assert.ok(
-					paragraphs.some((paragraph) => paragraph.sources.includes(source.id)),
+					paragraphs.some(paragraph => paragraph.sources.includes(source.id)),
 					"no decorative sources"
 				);
 				assert.equal(new URL(source.url).protocol, "https:");
@@ -239,7 +239,13 @@ describe("sourced reading guides", () => {
 	}
 
 	it("rejects unknown and prototype-property slugs without importing arbitrary paths", async () => {
-		for (const slug of ["not-a-guide", "__proto__", "constructor", "../../account", "toString"])
+		for (const slug of [
+			"not-a-guide",
+			"__proto__",
+			"constructor",
+			"../../account",
+			"toString"
+		])
 			assert.equal(await loadReadingGuide(slug), undefined);
 		assert.deepEqual(guidesForTopic("unknown"), []);
 		assert.deepEqual(guidesForReview("/consensus/unknown/unknown"), []);
@@ -261,22 +267,22 @@ describe("sourced reading guides", () => {
 		assert.match(guide.scope, /not a provider ranking, independent security audit/);
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		const text = guide.sections
-			.flatMap((section) => section.paragraphs)
-			.map((paragraph) => paragraph.text)
+			.flatMap(section => section.paragraphs)
+			.map(paragraph => paragraph.text)
 			.join(" ");
 		assert.match(text, /dishonest website can use HTTPS/);
 		assert.match(text, /does not mean it can automatically decrypt/);
 		assert.match(text, /old implementation findings cannot establish/);
 		assert.notEqual(guide, await loadReadingGuide("account-protection"));
-		const summary = readingGuides.find((entry) => entry.slug === "browsing-privacy")!;
+		const summary = readingGuides.find(entry => entry.slug === "browsing-privacy")!;
 		assert.equal(summary.reviews.length, 3);
-		assert.equal(new Set(summary.reviews.map((review) => review.path)).size, 3);
+		assert.equal(new Set(summary.reviews.map(review => review.path)).size, 3);
 	});
 
 	it("keeps guide routes in the sitemap even when the backend is unavailable", () => {
 		const source = readFileSync(new URL("../server/routes/sitemap.xml.ts", import.meta.url), "utf8");
 		assert.match(source, /const guideRoutes = readingGuides\.map/);
-		assert.match(source, /\.\.\.staticRoutes, \.\.\.guideRoutes, \.\.\.comparisonRoutes, \.\.\.dynamicRoutes/);
+		assert.match(source, /\.\.\.staticRoutes,\s*\.\.\.guideRoutes,\s*\.\.\.comparisonRoutes,\s*\.\.\.dynamicRoutes/);
 	});
 
 	it("adds a distinct evidence-chain guide without overstating reconstructions", async () => {
@@ -285,8 +291,8 @@ describe("sourced reading guides", () => {
 		assert.match(guide.scope, /not a laboratory protocol, medical diet recommendation/);
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		const text = guide.sections
-			.flatMap((section) => section.paragraphs)
-			.map((paragraph) => paragraph.text)
+			.flatMap(section => section.paragraphs)
+			.map(paragraph => paragraph.text)
 			.join(" ");
 		assert.match(text, /not a catch-all name/);
 		assert.match(text, /not the brain itself/);
@@ -294,7 +300,7 @@ describe("sourced reading guides", () => {
 		assert.match(text, /still includes animal foods/);
 		assert.match(text, /not two independent studies/);
 		assert.notEqual(guide, await loadReadingGuide("understanding-evolution"));
-		const summary = readingGuides.find((entry) => entry.slug === "reading-fossil-and-ancestry-evidence")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-fossil-and-ancestry-evidence")!;
 		assert.equal(summary.reviews.length, 5);
 	});
 
@@ -303,15 +309,15 @@ describe("sourced reading guides", () => {
 		assert.ok(guide);
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		const text = guide.sections
-			.flatMap((section) => section.paragraphs)
-			.map((paragraph) => paragraph.text)
+			.flatMap(section => section.paragraphs)
+			.map(paragraph => paragraph.text)
 			.join(" ");
 		assert.match(text, /not a resolved photograph/);
 		assert.match(text, /not two independent confirmations/);
 		assert.match(text, /not a direct identification/);
 		assert.match(text, /not an exhaustive review of later comparisons/);
 		assert.match(text, /not a movie of one galaxy/);
-		assert.equal(readingGuides.find((entry) => entry.slug === "reading-space-observations")!.reviews.length, 10);
+		assert.equal(readingGuides.find(entry => entry.slug === "reading-space-observations")!.reviews.length, 10);
 		assert.notEqual(guide, await loadReadingGuide("reading-fossil-and-ancestry-evidence"));
 	});
 
@@ -319,10 +325,10 @@ describe("sourced reading guides", () => {
 		for (const slug of ["reading-flood-and-groundwater-claims", "reading-tides-waves-and-ocean-measurements"]) {
 			const guide = await loadReadingGuide(slug);
 			assert.ok(guide);
-			assert.equal(readingGuides.find((entry) => entry.slug === slug)!.reviews.length, 10);
+			assert.equal(readingGuides.find(entry => entry.slug === slug)!.reviews.length, 10);
 			const text = guide.sections
-				.flatMap((section) => section.paragraphs)
-				.map((paragraph) => paragraph.text)
+				.flatMap(section => section.paragraphs)
+				.map(paragraph => paragraph.text)
 				.join(" ");
 			assert.ok(text.split(/\s+/).length >= 900);
 			assert.match(guide.scope, /independent expert review has not been completed/);
@@ -333,13 +339,13 @@ describe("sourced reading guides", () => {
 	it("connects twenty heat and optics reviews with a substantial original guide", async () => {
 		const guide = await loadReadingGuide("reading-heat-and-light-claims");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-heat-and-light-claims")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-heat-and-light-claims")!;
 		assert.equal(summary.reviews.length, 20);
 		assert.deepEqual(summary.topics, ["physics-and-chemistry"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
 		const text = guide.sections
-			.flatMap((section) => section.paragraphs)
-			.map((paragraph) => paragraph.text)
+			.flatMap(section => section.paragraphs)
+			.map(paragraph => paragraph.text)
 			.join(" ");
 		assert.ok(text.split(/\s+/).length >= 1100);
 		assert.equal(guide.sources.length, 19);
@@ -356,15 +362,15 @@ describe("sourced reading guides", () => {
 	it("connects twenty statistics questions with a substantial original guide and model boundaries", async () => {
 		const guide = await loadReadingGuide("reading-averages-percentages-and-probability");
 		assert.ok(guide);
-		const summary = readingGuides.find((entry) => entry.slug === "reading-averages-percentages-and-probability")!;
+		const summary = readingGuides.find(entry => entry.slug === "reading-averages-percentages-and-probability")!;
 		assert.equal(summary.reviews.length, 20);
 		assert.deepEqual(summary.topics, ["consensus-foundations"]);
 		assert.equal(summary.checkedAt, "2026-10-05");
-		const paragraphs = guide.sections.flatMap((section) => section.paragraphs);
-		const text = paragraphs.map((paragraph) => paragraph.text).join(" ");
+		const paragraphs = guide.sections.flatMap(section => section.paragraphs);
+		const text = paragraphs.map(paragraph => paragraph.text).join(" ");
 		assert.ok(text.split(/\s+/).length >= 1400);
 		assert.equal(guide.sources.length, 27);
-		assert.ok(paragraphs.every((paragraph) => paragraph.sources.length > 0));
+		assert.ok(paragraphs.every(paragraph => paragraph.sources.length > 0));
 		assert.match(guide.scope, /independently constructed and hypothetical/);
 		assert.match(guide.scope, /independent expert review has not been completed/);
 		assert.match(text, /68\/110 versus 75\/110/);
@@ -395,7 +401,7 @@ describe("sourced reading guides", () => {
 	it("includes every guide in both-theme accessibility coverage", () => {
 		const source = readFileSync(new URL("../../scripts/a11y-smoke.mjs", import.meta.url), "utf8");
 		for (const guide of readingGuides) assert.ok(source.includes(`"/guides/${guide.slug}"`));
-		assert.ok(source.includes('"light,dark"'));
+		assert.ok(source.includes("\"light,dark\""));
 	});
 
 	it("preserves important population, correction, and uncertainty qualifications", async () => {

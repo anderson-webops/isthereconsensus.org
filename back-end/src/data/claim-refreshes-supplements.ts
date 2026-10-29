@@ -208,14 +208,24 @@ export function refreshSupplementClaim(seed: CompleteSeedClaim): CompleteSeedCla
 				...source,
 				kind: source.doi ? source.kind : "context" as const,
 				appraisal: "not_appraised" as const,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original USPSTF recommendation and rationale read. Insufficient evidence for multivitamins/most nutrients in CVD and cancer prevention; recommends against beta carotene and vitamin E for those purposes. Not a verdict on every supplement or deficiency treatment."
 					: "NIH consumer guidance; original effectiveness and safety sections read. Context for specific indications, ingredients and interactions, not a randomized trial or formal clinical recommendation for every healthy adult."
 			})),
-			...additions.map(source => ({ ...source, appraisal: "not_appraised" as const, citationStatus: "current" as const, citationCheckedAt: noticeChecks[source.doi!.toLowerCase()] }))
+			...additions.map(source => ({
+				...source,
+				appraisal: "not_appraised" as const,
+				citationStatus: "current" as const,
+				citationCheckedAt: noticeChecks[source.doi!.toLowerCase()]
+			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

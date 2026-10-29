@@ -58,6 +58,8 @@ describe("practical insomnia evidence", () => {
 
 	it("does not erase early safety signals or mislabel the later trial's odds ratio", () => {
 		const claim = sleepPracticalClaims[4]!;
+		assert.ok(claim.evidenceSummaries![0]!.population);
+		assert.ok(claim.evidenceSummaries![1]!.population);
 		assert.match(claim.evidenceSummaries![0]!.population, /16 patients.*uncontrolled/);
 		assert.match(claim.evidenceSummaries![1]!.population, /150 postmenopausal women/);
 		assert.match(

@@ -21,11 +21,19 @@ export async function prepareSearchGateOutput(root, output) {
 		assert.ok(stat.isDirectory() && !stat.isSymbolicLink() && (stat.mode & 0o002) === 0, "Evidence parents must be protected real directories.");
 	}
 	assert.equal((await lstat(output)).mode & 0o077, 0, "The evidence directory must be private.");
-	await writeFile(path.join(output, "run-owner.json"), `${JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() })}\n`, { mode: 0o600, flag: "wx" });
+	await writeFile(path.join(output, "run-owner.json"), `${JSON.stringify({
+		pid: process.pid,
+		startedAt: new Date().toISOString()
+	})}\n`, { mode: 0o600, flag: "wx" });
 }
 
 export function writeSearchGateOwnership(output, state) {
-	assert.deepEqual(Object.keys(state).sort(), ["children", "parentPid", "phase", "scratch"]);
+	assert.deepEqual(Object.keys(state).sort(), [
+		"children",
+		"parentPid",
+		"phase",
+		"scratch"
+	]);
 	assert.ok(Number.isInteger(state.parentPid) && state.parentPid > 0);
 	assert.match(state.phase, /^[a-z-]{1,80}$/u);
 	assert.ok(path.isAbsolute(state.scratch) && path.normalize(state.scratch) === state.scratch);
@@ -33,10 +41,19 @@ export function writeSearchGateOwnership(output, state) {
 	for (const child of state.children) {
 		assert.deepEqual(Object.keys(child).sort(), ["pid", "role"]);
 		assert.ok(Number.isInteger(child.pid) && child.pid > 0);
-		assert.ok(["backend", "frontend", "database", "model", "browser"].includes(child.role));
+		assert.ok([
+			"backend",
+			"frontend",
+			"database",
+			"model",
+			"browser"
+		].includes(child.role));
 	}
 	const temporary = path.join(output, `.ownership-${process.pid}`);
-	writeFileSync(temporary, `${JSON.stringify({ observedAt: new Date().toISOString(), ...state }, null, 2)}\n`, { mode: 0o600, flag: "wx" });
+	writeFileSync(temporary, `${JSON.stringify({
+		observedAt: new Date().toISOString(),
+		...state
+	}, null, 2)}\n`, { mode: 0o600, flag: "wx" });
 	renameSync(temporary, path.join(output, "ownership.json"));
 }
 
@@ -46,7 +63,13 @@ export function validateCompletedTitleRows(rows, claims) {
 	for (const [index, claim] of claims.entries()) {
 		for (const [offset, route] of ["claims", "search/suggestions"].entries()) {
 			const row = titles[index * 2 + offset];
-			assert.deepEqual(Object.keys(row).sort(), ["kind", "passed", "predicted", "route", "slug"]);
+			assert.deepEqual(Object.keys(row).sort(), [
+				"kind",
+				"passed",
+				"predicted",
+				"route",
+				"slug"
+			]);
 			assert.equal(row.route, route);
 			assert.equal(row.slug, claim.slug);
 			assert.equal(row.passed, true);

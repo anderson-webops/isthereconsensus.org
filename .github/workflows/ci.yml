@@ -159,6 +159,9 @@ jobs:
           npm audit --omit=dev
           npm audit --prefix back-end
           npm audit --prefix back-end --omit=dev
+          npm audit --prefix search-worker/runtime --workspaces=false
+          npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
+          npm run audit:qs
           npm audit signatures
           npm run verify:native-lock
 
@@ -340,6 +343,9 @@ jobs:
           npm audit --omit=dev
           npm audit --prefix back-end
           npm audit --prefix back-end --omit=dev
+          npm audit --prefix search-worker/runtime --workspaces=false
+          npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
+          npm run audit:qs
           npm audit signatures
           npm run verify:native-lock
           npm run lint

@@ -28,6 +28,36 @@ export function integrityCacheId(provider: SourceIntegrityProvider, doi: string)
 	return createHash("sha256").update(`${SOURCE_INTEGRITY_CACHE_VERSION}:${provider}:${doi}`).digest("hex");
 }
 
+function failureCacheEntry(
+	id: string,
+	provider: SourceIntegrityProvider,
+	doi: string,
+	attemptedAt: Date,
+	failedAt: Date,
+	cached: IntegrityCacheEntry | null | undefined,
+	error: unknown
+): IntegrityCacheEntry {
+	const failures = Math.min((cached?.failures ?? 0) + 1, 8);
+	const retryMs = Math.max(
+		Math.min(15 * 60 * 1000 * 2 ** (failures - 1), DAY),
+		error instanceof IntegrityProviderError
+			? error.retryAfterMs
+			: 0
+	);
+	return {
+		_id: id,
+		provider,
+		doi,
+		attemptedAt,
+		failures,
+		diagnosticCode: error instanceof IntegrityProviderError
+			? error.code
+			: "provider_request_failed",
+		retryAt: new Date(failedAt.getTime() + retryMs),
+		purgeAt: new Date(failedAt.getTime() + 90 * DAY)
+	};
+}
+
 export class SourceIntegrityClient {
 	private owner = randomUUID();
 	private cache = new Map<string, IntegrityCacheEntry>();
@@ -39,14 +69,22 @@ export class SourceIntegrityClient {
 		if (this.options.apply) {
 			try {
 				await SourceIntegrityLease.updateOne({ _id: "monitor" }, {
-					$setOnInsert: { leaseUntil: new Date(0) }
+					$setOnInsert: {
+						leaseUntil: new Date(0)
+					}
 				}, { upsert: true });
 			}
 			catch (error) {
 				if ((error as { code?: number }).code !== 11000) throw error;
 			}
-			const acquired = await SourceIntegrityLease.updateOne({ _id: "monitor", leaseUntil: { $lte: now } }, {
-				$set: { owner: this.owner, leaseUntil: new Date(now.getTime() + 60_000) }
+			const acquired = await SourceIntegrityLease.updateOne({
+				_id: "monitor",
+				leaseUntil: { $lte: now }
+			}, {
+				$set: {
+					owner: this.owner,
+					leaseUntil: new Date(now.getTime() + 60_000)
+				}
 			});
 			if (acquired.modifiedCount !== 1) throw new IntegrityProviderError("monitor_already_running");
 		}
@@ -64,14 +102,20 @@ export class SourceIntegrityClient {
 			_id: "monitor",
 			owner: this.owner,
 			leaseUntil: { $gt: now }
-		}, { $set: { leaseUntil: new Date(now.getTime() + 60_000) } });
+		}, {
+			$set: {
+				leaseUntil: new Date(now.getTime() + 60_000)
+			}
+		});
 		if (result.matchedCount !== 1) throw new IntegrityProviderError("monitor_lease_lost");
 	}
 
 	async close() {
 		if (this.options.apply) {
 			await SourceIntegrityLease.updateOne({ _id: "monitor", owner: this.owner }, {
-				$set: { leaseUntil: new Date(0) },
+				$set: {
+					leaseUntil: new Date(0)
+				},
 				$unset: { owner: 1 }
 			});
 		}
@@ -111,28 +155,16 @@ export class SourceIntegrityClient {
 				observedAt,
 				observation,
 				failures: 0,
-				retryAt: new Date(observedAt.getTime() + (observation.outcome === "not_indexed" ? 7 * DAY : DAY)),
+				retryAt: new Date(observedAt.getTime() + (observation.outcome === "not_indexed"
+					? 7 * DAY
+					: DAY)),
 				purgeAt: new Date(observedAt.getTime() + 90 * DAY)
 			};
 			this.nextRequest[provider] = new Date(observedAt.getTime() + MINIMUM_INTERVAL);
 		}
 		catch (error) {
 			const failedAt = this.options.clock();
-			const failures = Math.min((cached?.failures ?? 0) + 1, 8);
-			const retryMs = Math.max(
-				Math.min(15 * 60 * 1000 * 2 ** (failures - 1), DAY),
-				error instanceof IntegrityProviderError ? error.retryAfterMs : 0
-			);
-			entry = {
-				_id: id,
-				provider,
-				doi,
-				attemptedAt,
-				failures,
-				diagnosticCode: error instanceof IntegrityProviderError ? error.code : "provider_request_failed",
-				retryAt: new Date(failedAt.getTime() + retryMs),
-				purgeAt: new Date(failedAt.getTime() + 90 * DAY)
-			};
+			entry = failureCacheEntry(id, provider, doi, attemptedAt, failedAt, cached, error);
 			// Stop this provider's batch on failure; the other provider can continue.
 			this.nextRequest[provider] = entry.retryAt;
 		}

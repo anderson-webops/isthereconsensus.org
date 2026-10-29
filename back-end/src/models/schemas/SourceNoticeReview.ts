@@ -10,7 +10,10 @@ const snapshotSchema = new Schema<NoticeSnapshot>(
 		doi: { type: String, default: "", maxlength: 240 },
 		url: { type: String, default: "", maxlength: 500 },
 		integrityNotes: { type: String, default: "", maxlength: 1000 },
-		statusSources: { type: [String], default: [] }
+		statusSources: {
+			type: [String],
+			default: []
+		}
 	},
 	{ _id: false, strict: "throw" }
 );
@@ -18,8 +21,17 @@ const historySchema = new Schema(
 	{
 		fingerprint: { type: String, required: true },
 		snapshot: { type: snapshotSchema, required: true },
-		decision: { type: String, required: true, enum: ["open", "addressed"] },
-		note: { type: String, required: true, minlength: 20, maxlength: 1000 },
+		decision: {
+			type: String,
+			required: true,
+			enum: ["open", "addressed"]
+		},
+		note: {
+			type: String,
+			required: true,
+			minlength: 20,
+			maxlength: 1000
+		},
 		adminId: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
 		date: { type: Date, required: true }
 	},
@@ -30,12 +42,24 @@ const historySchema = new Schema(
 const schema = new Schema(
 	{
 		_id: { type: Schema.Types.ObjectId, ref: "ClaimSource", required: true },
-		claim: { type: Schema.Types.ObjectId, ref: "Claim", required: true, index: true },
+		claim: {
+			type: Schema.Types.ObjectId,
+			ref: "Claim",
+			required: true,
+			index: true
+		},
 		snapshot: { type: snapshotSchema, required: true },
 		fingerprint: { type: String, required: true, match: /^[a-f\d]{64}$/ },
-		decision: { type: String, required: true, enum: ["open", "addressed"] },
+		decision: {
+			type: String,
+			required: true,
+			enum: ["open", "addressed"]
+		},
 		revision: { type: Number, required: true, min: 1 },
-		history: { type: [historySchema], default: [] }
+		history: {
+			type: [historySchema],
+			default: []
+		}
 	},
 	{ timestamps: true, versionKey: false, strict: "throw" }
 );

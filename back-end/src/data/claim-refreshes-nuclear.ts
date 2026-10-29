@@ -211,8 +211,12 @@ export function refreshNuclearClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 				...source,
 				appraisal: "not_appraised",
 				isAnchor: false,
-				kind: source.doi || source.publisher === "IAEA" ? "context" : source.kind,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt,
+				kind: source.doi || source.publisher === "IAEA"
+					? "context"
+					: source.kind,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original indexed abstract assessed. A historical fuel-cycle review, not a primary clinical cohort; full methods, disclosures and underlying studies not appraised."
 					: source.publisher === "IAEA"
@@ -224,10 +228,15 @@ export function refreshNuclearClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 				appraisal: "not_appraised",
 				isAnchor: false,
 				citationStatus: source.citationStatus ?? "current",
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt
 			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

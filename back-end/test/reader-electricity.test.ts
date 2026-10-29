@@ -13,7 +13,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerElectricityClaims.find(claim => claim.slug === readerElectricitySlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 
 describe("electrical-science reader expansion", () => {
 	it("adds twenty unique substantial canonical questions with stable identities and real dates", () => {
@@ -34,7 +40,14 @@ describe("electrical-science reader expansion", () => {
 	});
 
 	it("does not move any prior cohort's source-check dates", () => {
-		for (const [claims, checkedAt] of [[readerPrivacyClaims, privacyCheckedAt], [readerOriginsClaims, originsCheckedAt], [readerSpaceClaims, spaceCheckedAt], [readerWaterClaims, waterCheckedAt], [readerPhysicsClaims, physicsCheckedAt], [readerProbabilityClaims, probabilityCheckedAt]] as const) {
+		for (const [claims, checkedAt] of [
+			[readerPrivacyClaims, privacyCheckedAt],
+			[readerOriginsClaims, originsCheckedAt],
+			[readerSpaceClaims, spaceCheckedAt],
+			[readerWaterClaims, waterCheckedAt],
+			[readerPhysicsClaims, physicsCheckedAt],
+			[readerProbabilityClaims, probabilityCheckedAt]
+		] as const) {
 			for (const claim of claims) assert.equal(claim.searchCutoffAt, checkedAt);
 		}
 	});
@@ -64,10 +77,30 @@ describe("electrical-science reader expansion", () => {
 
 	it("places each question in exactly one intentional electrical collection", () => {
 		const groups = {
-			"electrical-quantities-and-ratings": ["quantities", "terminal", "capacity", "energyUnits", "heating"],
-			"charge-flow-and-circuit-models": ["conservation", "propagation", "ohmic", "topology", "drops", "field"],
+			"electrical-quantities-and-ratings": [
+				"quantities",
+				"terminal",
+				"capacity",
+				"energyUnits",
+				"heating"
+			],
+			"charge-flow-and-circuit-models": [
+				"conservation",
+				"propagation",
+				"ohmic",
+				"topology",
+				"drops",
+				"field"
+			],
 			"alternating-current-and-energy-transfer": ["apparent", "rms", "alternation"],
-			"storage-fields-and-induction": ["charged", "capacitorEnergy", "inductor", "staticFlux", "magneticWork", "transformer"]
+			"storage-fields-and-induction": [
+				"charged",
+				"capacitorEnergy",
+				"inductor",
+				"staticFlux",
+				"magneticWork",
+				"transformer"
+			]
 		};
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("physics-and-chemistry", readerElectricitySlugs[key]!).map(collection => collection.slug), [group]);
@@ -150,7 +183,9 @@ describe("electrical-science reader expansion", () => {
 	});
 
 	it("checks constant-flux induction and point-charge magnetic work with explicit scope", () => {
-		assert.equal((0.02 - 0.02) / 2, 0);
+		const initialFlux = 0.02;
+		const finalFlux = 0.02;
+		assert.equal((finalFlux - initialFlux) / 2, 0);
 		assert.match(textFor("staticFlux"), /time derivative is zero even though the flux is not zero/);
 		const velocity = [3, 4, 5];
 		const magneticField = [2, -1, 6];
@@ -164,7 +199,28 @@ describe("electrical-science reader expansion", () => {
 
 	it("finds all diagnostic terminology without changing the ranker or frozen usefulness set", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { quantities: "amps volts electrical quantity", conservation: "current used up resistor", propagation: "electron drift signal speed", ohmic: "Ohm law constant resistance", topology: "resistors series parallel total resistance", drops: "series same voltage", terminal: "battery terminal unloaded voltage", capacity: "amp hour battery energy", energyUnits: "watts watt hours electricity", apparent: "AC average real power", rms: "AC zero average heating", alternation: "electrons AC source load cycle", charged: "capacitor charged without current", capacitorEnergy: "capacitor stored energy charge voltage", inductor: "inductor unchanged DC current", staticFlux: "stationary magnet stationary loop", magneticWork: "magnetic Lorentz force kinetic energy", transformer: "step up transformer electrical power", heating: "doubling current heating power", field: "electric field current carrying metal" };
+		const queries = {
+			quantities: "amps volts electrical quantity",
+			conservation: "current used up resistor",
+			propagation: "electron drift signal speed",
+			ohmic: "Ohm law constant resistance",
+			topology: "resistors series parallel total resistance",
+			drops: "series same voltage",
+			terminal: "battery terminal unloaded voltage",
+			capacity: "amp hour battery energy",
+			energyUnits: "watts watt hours electricity",
+			apparent: "AC average real power",
+			rms: "AC zero average heating",
+			alternation: "electrons AC source load cycle",
+			charged: "capacitor charged without current",
+			capacitorEnergy: "capacitor stored energy charge voltage",
+			inductor: "inductor unchanged DC current",
+			staticFlux: "stationary magnet stationary loop",
+			magneticWork: "magnetic Lorentz force kinetic energy",
+			transformer: "step up transformer electrical power",
+			heating: "doubling current heating power",
+			field: "electric field current carrying metal"
+		};
 		const missingQueries = Object.entries(queries).filter(([key, query]) => !search(query).some(result => result.claim.slug === readerElectricitySlugs[key]));
 		assert.deepEqual(missingQueries, []);
 	});

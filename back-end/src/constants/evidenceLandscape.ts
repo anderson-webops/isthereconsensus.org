@@ -79,9 +79,20 @@ export const EVIDENCE_STUDY_DESIGNS = [
 	"not_coded"
 ] as const;
 
-export const EVIDENCE_RISK_OF_BIAS_LEVELS = ["low", "some_concerns", "high", "critical", "not_assessed"] as const;
+export const EVIDENCE_RISK_OF_BIAS_LEVELS = [
+	"low",
+	"some_concerns",
+	"high",
+	"critical",
+	"not_assessed"
+] as const;
 
-export const EVIDENCE_DIRECTNESS_LEVELS = ["direct", "partially_direct", "indirect", "not_assessed"] as const;
+export const EVIDENCE_DIRECTNESS_LEVELS = [
+	"direct",
+	"partially_direct",
+	"indirect",
+	"not_assessed"
+] as const;
 
 export const EVIDENCE_CONSISTENCY_LEVELS = [
 	"consistent_with_body",
@@ -90,7 +101,12 @@ export const EVIDENCE_CONSISTENCY_LEVELS = [
 	"not_assessed"
 ] as const;
 
-export const EVIDENCE_PRECISION_LEVELS = ["precise", "imprecise", "not_applicable", "not_assessed"] as const;
+export const EVIDENCE_PRECISION_LEVELS = [
+	"precise",
+	"imprecise",
+	"not_applicable",
+	"not_assessed"
+] as const;
 
 export const EVIDENCE_SOURCE_EXCLUSION_REASONS = [
 	"",

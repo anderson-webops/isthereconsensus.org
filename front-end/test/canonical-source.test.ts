@@ -19,7 +19,7 @@ describe("canonical links", () => {
 	for (const file of canonicalFiles) {
 		it(`keys the canonical link in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const canonicalIndex = source.indexOf('rel: "canonical"');
+			const canonicalIndex = source.indexOf("rel: \"canonical\"");
 			assert.notEqual(canonicalIndex, -1);
 
 			const precedingBlock = source.slice(Math.max(0, canonicalIndex - 80), canonicalIndex);

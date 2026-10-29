@@ -311,8 +311,16 @@ function publication(
 ): Pick<SeedClaim, "changeLog" | "readerAnnouncement" | "surveillanceSpec"> {
 	const summary = `New review: ${focus}.`;
 	return {
-		changeLog: [{ date: waterCheckedAt, kind: "publication", summary }],
-		readerAnnouncement: { id, date: waterCheckedAt, kind: "new_review", bottomLineImpact: "new", summary },
+		changeLog: [
+			{ date: waterCheckedAt, kind: "publication", summary }
+		],
+		readerAnnouncement: {
+			id,
+			date: waterCheckedAt,
+			kind: "new_review",
+			bottomLineImpact: "new",
+			summary
+		},
 		surveillanceSpec: {
 			focus,
 			cadenceDays: 90,
@@ -375,7 +383,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Local threshold", "Finite observations", "Possible nonstationarity"]
 			}
 		],
-		institutionalAnchors: [{ name: "USGS Water Science School", role: "Flood-frequency definition" }],
+		institutionalAnchors: [
+			{ name: "USGS Water Science School", role: "Flood-frequency definition" }
+		],
 		coiSummary:
 			"USGS and NWS explain definitions and hazards. These are institutional references, not an independent appraisal of a particular flood map.",
 		...publication("21460a90-58e7-4a00-9fd4-6d00b97dc1f3", "annual flood probability versus a calendar"),
@@ -403,7 +413,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"The same height in two rivers is not necessarily the same flow.",
 			"A rating curve is a measured relationship, not a permanent universal constant."
 		],
-		misconceptionTags: ["river level", "stream stage", "discharge", "rating curve", "water flow"],
+		misconceptionTags: [
+			"river level",
+			"stream stage",
+			"discharge",
+			"rating curve",
+			"water flow"
+		],
 		uncertaintySummary:
 			"The definitions are established. Converting an observed level to flow requires the applicable local relation and its uncertainty; no live gauge reading is interpreted here.",
 		uncertaintyDrivers: [
@@ -420,7 +436,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Changing channel", "Station datum", "Calibration uncertainty"]
 			}
 		],
-		institutionalAnchors: [{ name: "USGS stream gauging", role: "Stage-discharge measurement methods" }],
+		institutionalAnchors: [
+			{ name: "USGS stream gauging", role: "Stage-discharge measurement methods" }
+		],
 		coiSummary:
 			"The two USGS explanations share institutional provenance. No raw station observations, current ratings or local flood assessment were independently checked.",
 		...publication("dadee950-06e1-48a2-bb43-9c8181b2ba5d", "river height versus measured discharge"),
@@ -448,7 +466,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"A wet soil surface is not a direct measurement of deep recharge.",
 			"A rainy year does not cancel every legacy of groundwater withdrawal."
 		],
-		misconceptionTags: ["aquifer recharge", "rainy season", "groundwater refill", "infiltration", "recharge lag"],
+		misconceptionTags: [
+			"aquifer recharge",
+			"rainy season",
+			"groundwater refill",
+			"infiltration",
+			"recharge lag"
+		],
 		uncertaintySummary:
 			"Response time and the amount recharged are site-dependent. Conceptual diagram ages are illustrative, not a clock assigned to every water reserve.",
 		uncertaintyDrivers: [
@@ -468,7 +492,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Geologic variation", "Withdrawals", "No local water budget"]
 			}
 		],
-		institutionalAnchors: [{ name: "USGS groundwater science", role: "Recharge and flow-path distinctions" }],
+		institutionalAnchors: [
+			{ name: "USGS groundwater science", role: "Recharge and flow-path distinctions" }
+		],
 		coiSummary:
 			"USGS teaching resources provide conceptual mechanisms, not multiple independent recovery studies. No present basin budget or well record was reanalyzed.",
 		...publication("b4971581-04d5-43ba-9546-ed61630bb29a", "rainfall, recharge pathways and aquifer recovery"),
@@ -496,10 +522,18 @@ export const readerWaterClaims: SeedClaim[] = [
 			"A pump need not be in the river to affect river flow.",
 			"An effect that is delayed is not necessarily absent."
 		],
-		misconceptionTags: ["groundwater pumping", "streamflow depletion", "capture", "rivers", "recharge lag"],
+		misconceptionTags: [
+			"groundwater pumping",
+			"streamflow depletion",
+			"capture",
+			"rivers",
+			"recharge lag"
+		],
 		uncertaintySummary:
 			"The mechanism is established; attribution and rates require a local analysis. The original paper was checked at abstract and metadata level, not independently appraised in full.",
-		uncertaintyDrivers: [{ type: "indirectness", detail: "Model examples do not measure every well's effect." }],
+		uncertaintyDrivers: [
+			{ type: "indirectness", detail: "Model examples do not measure every well's effect." }
+		],
 		evidenceSummaries: [
 			{
 				question: "Can aquifer withdrawals change connected streamflow?",
@@ -541,7 +575,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Artesian and flowing artesian are not identical labels.",
 			"A deeper hole is not automatically an artesian supply."
 		],
-		misconceptionTags: ["artesian well", "flowing artesian", "hydraulic head", "confined aquifer", "well pressure"],
+		misconceptionTags: [
+			"artesian well",
+			"flowing artesian",
+			"hydraulic head",
+			"confined aquifer",
+			"well pressure"
+		],
 		uncertaintySummary:
 			"The definitions are established; head, outlet elevation and changes over time are local observations. No well condition or drinking-water quality is certified.",
 		uncertaintyDrivers: [
@@ -561,7 +601,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Outlet elevation", "Changing head", "Local aquifer geometry"]
 			}
 		],
-		institutionalAnchors: [{ name: "USGS Water Science School", role: "Artesian and flowing-well definitions" }],
+		institutionalAnchors: [
+			{ name: "USGS Water Science School", role: "Artesian and flowing-well definitions" }
+		],
 		coiSummary:
 			"Both educational references are from USGS. They explain terms, not independently tested performance claims for a named well or commercial water source.",
 		...publication("8bd50a4f-9d41-489c-ad0e-9fe167a789d0", "artesian head versus surface flow"),
@@ -589,7 +631,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Natural emergence does not imply endless supply.",
 			"Clear flowing water is not a drinking-water certificate."
 		],
-		misconceptionTags: ["spring water", "groundwater spring", "perennial spring", "drought", "spring flow"],
+		misconceptionTags: [
+			"spring water",
+			"groundwater spring",
+			"perennial spring",
+			"drought",
+			"spring flow"
+		],
 		uncertaintySummary:
 			"Flow sensitivity and persistence differ by spring and aquifer. No local flow series or quality analysis was performed.",
 		uncertaintyDrivers: [
@@ -636,7 +684,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Many pores do not necessarily make fast connected flow paths.",
 			"A water volume and a water-supply rate are not the same measurement."
 		],
-		misconceptionTags: ["porosity", "permeability", "aquifer productivity", "groundwater storage", "well yield"],
+		misconceptionTags: [
+			"porosity",
+			"permeability",
+			"aquifer productivity",
+			"groundwater storage",
+			"well yield"
+		],
 		uncertaintySummary:
 			"The property distinction is established; formation-scale properties, yield and recharge require local evidence. No drilling or yield certification is supplied.",
 		uncertaintyDrivers: [
@@ -653,7 +707,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Formation heterogeneity", "Saturation", "Local geometry"]
 			}
 		],
-		institutionalAnchors: [{ name: "USGS Water Science School", role: "Storage versus transmission definitions" }],
+		institutionalAnchors: [
+			{ name: "USGS Water Science School", role: "Storage versus transmission definitions" }
+		],
 		coiSummary:
 			"USGS supplies both conceptual references. These are not two independent commercial aquifer surveys or endorsements of a particular groundwater-development claim.",
 		...publication("a1f77489-f613-4165-b41d-8f07f6bb3166", "porosity versus groundwater transmission"),
@@ -690,7 +746,9 @@ export const readerWaterClaims: SeedClaim[] = [
 		],
 		uncertaintySummary:
 			"Local connection and flow direction need observations. The established possibility of exchange in either direction does not prove every stream is equally connected.",
-		uncertaintyDrivers: [{ type: "generalizability", detail: "Exchange varies across reaches, geology and time." }],
+		uncertaintyDrivers: [
+			{ type: "generalizability", detail: "Exchange varies across reaches, geology and time." }
+		],
 		evidenceSummaries: [
 			{
 				question: "Is river-groundwater exchange always outward from the aquifer?",
@@ -732,7 +790,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Flood-producing rain need not fall where flooding is observed.",
 			"A blue sky is not a river-flow measurement."
 		],
-		misconceptionTags: ["flooding without rain", "upstream rain", "snowmelt", "ice jam", "river flood"],
+		misconceptionTags: [
+			"flooding without rain",
+			"upstream rain",
+			"snowmelt",
+			"ice jam",
+			"river flood"
+		],
 		uncertaintySummary:
 			"Event timing and cause require current catchment and river information. No present hazard or safe condition is determined here.",
 		uncertaintyDrivers: [
@@ -749,7 +813,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Travel time", "Upstream conditions", "Current observations required"]
 			}
 		],
-		institutionalAnchors: [{ name: "National Weather Service", role: "Flood-generating mechanisms" }],
+		institutionalAnchors: [
+			{ name: "National Weather Service", role: "Flood-generating mechanisms" }
+		],
 		coiSummary:
 			"NWS hazard education and USGS gauging methods are complementary agency references, not independent forecasts for a named river or current emergency advice.",
 		...publication("1e7aa713-ddd4-4197-82d4-862b7ab8173b", "upstream and nonlocal causes of flooding"),
@@ -779,7 +845,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Risk reduction is not risk elimination.",
 			"A levee's existence does not certify every structure behind it."
 		],
-		misconceptionTags: ["levee", "floodwall", "residual flood risk", "flood protection", "overtopping"],
+		misconceptionTags: [
+			"levee",
+			"floodwall",
+			"residual flood risk",
+			"flood protection",
+			"overtopping"
+		],
 		uncertaintySummary:
 			"System condition and event-specific performance require appropriate local assessment. No technical certification, current safety judgment or intervention instructions are supplied.",
 		uncertaintyDrivers: [
@@ -828,7 +900,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Energy propagation does not mean a fixed water parcel crosses with each crest.",
 			"An educational oscillation diagram is not proof of zero net transport."
 		],
-		misconceptionTags: ["ocean waves", "water particles", "Stokes drift", "wave energy", "crest motion"],
+		misconceptionTags: [
+			"ocean waves",
+			"water particles",
+			"Stokes drift",
+			"wave energy",
+			"crest motion"
+		],
 		uncertaintySummary:
 			"Exact parcel motion depends on waves, currents, depth and breaking. The cited study was checked at abstract level; its site-specific magnitudes were not generalized.",
 		uncertaintyDrivers: [
@@ -848,7 +926,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Currents", "Breaking", "Abstract-only supplementary study"]
 			}
 		],
-		institutionalAnchors: [{ name: "NOAA ocean education", role: "Wave propagation versus parcel motion" }],
+		institutionalAnchors: [
+			{ name: "NOAA ocean education", role: "Wave propagation versus parcel motion" }
+		],
 		coiSummary:
 			"NOAA provides the basic explanation; the original paper abstract provides a bounded drift qualification. Full funding and disclosures were not audited; manuscript and journal article are one study.",
 		...publication("70416737-ce21-4708-b519-8146a6e3532b", "wave propagation versus water-parcel transport"),
@@ -876,7 +956,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Two daily high tides need not be equal.",
 			"One coast's tidal pattern is not a universal timetable."
 		],
-		misconceptionTags: ["diurnal tide", "semidiurnal tide", "mixed tide", "high tides", "tidal day"],
+		misconceptionTags: [
+			"diurnal tide",
+			"semidiurnal tide",
+			"mixed tide",
+			"high tides",
+			"tidal day"
+		],
 		uncertaintySummary:
 			"Cycle types are established; heights, timing and non-tidal changes are local. No unspecified shore's tide schedule is predicted.",
 		uncertaintyDrivers: [
@@ -893,7 +979,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Local geometry", "Tidal versus civil day", "Non-tidal water levels"]
 			}
 		],
-		institutionalAnchors: [{ name: "NOAA National Ocean Service", role: "Tidal-cycle classification" }],
+		institutionalAnchors: [
+			{ name: "NOAA National Ocean Service", role: "Tidal-cycle classification" }
+		],
 		coiSummary:
 			"NOAA teaching and product descriptions share agency provenance. They are not independent new tidal records, and no current station series was analyzed.",
 		...publication("6889914d-8a5c-47eb-9a3a-2c55e4103956", "local tidal cycles and unequal high waters"),
@@ -921,7 +1009,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Spring tide is not a tide season.",
 			"Large range does not mean a single universal high-water elevation."
 		],
-		misconceptionTags: ["spring tide", "full moon", "new moon", "tidal range", "spring season"],
+		misconceptionTags: [
+			"spring tide",
+			"full moon",
+			"new moon",
+			"tidal range",
+			"spring season"
+		],
 		uncertaintySummary:
 			"The naming and forcing distinction is established. Local range and timing depend on the coastal response; no universal exact height or hour is asserted.",
 		uncertaintyDrivers: [
@@ -938,7 +1032,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Geography", "Local timing", "Water-level datum"]
 			}
 		],
-		institutionalAnchors: [{ name: "NOAA tide education", role: "Lunar-cycle terminology" }],
+		institutionalAnchors: [
+			{ name: "NOAA tide education", role: "Lunar-cycle terminology" }
+		],
 		coiSummary:
 			"The NOAA range and cycle explanations are complementary resources within one agency, not independent estimates of researcher agreement or new local measurements.",
 		...publication("c6d896a5-e309-493e-8b7d-355c8229f980", "spring-tide range versus the spring season"),
@@ -966,7 +1062,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Neap periods still contain high tides.",
 			"Reduced range is not the same as a current low-water reading."
 		],
-		misconceptionTags: ["neap tide", "low tide", "quarter moon", "reduced tidal range", "high water"],
+		misconceptionTags: [
+			"neap tide",
+			"low tide",
+			"quarter moon",
+			"reduced tidal range",
+			"high water"
+		],
 		uncertaintySummary:
 			"The definition is established; exact local range, phase and current response vary. No safe navigation or crossing condition follows from the name.",
 		uncertaintyDrivers: [
@@ -983,7 +1085,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Coastal response", "Phase", "Currents separately measured"]
 			}
 		],
-		institutionalAnchors: [{ name: "NOAA tidal science", role: "Range, phase and current distinctions" }],
+		institutionalAnchors: [
+			{ name: "NOAA tidal science", role: "Range, phase and current distinctions" }
+		],
 		coiSummary:
 			"NOAA educational references define the variables. They do not provide independent local measurements or certify low-risk coastal conditions.",
 		...publication("5040deaa-0744-4b0e-ba46-fc92decb6841", "neap range versus the low-water phase"),
@@ -1008,7 +1112,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"Local measured and predicted currents can establish an applicable timing relation, not a universal high-water rule."
 		],
 		misconceptions: ["High tide is not always maximum current.", "High tide is not always slack water either."],
-		misconceptionTags: ["high tide current", "slack water", "maximum tidal current", "tide height", "tidal phase"],
+		misconceptionTags: [
+			"high tide current",
+			"slack water",
+			"maximum tidal current",
+			"tide height",
+			"tidal phase"
+		],
 		uncertaintySummary:
 			"Timing and actual current depend on location and conditions. The distinction is clear; no navigation rule or local current forecast is supplied.",
 		uncertaintyDrivers: [
@@ -1111,7 +1221,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"A two-dimensional map need not show all water motion.",
 			"Upwelling is a direction of exchange, not one universal rate."
 		],
-		misconceptionTags: ["upwelling", "downwelling", "vertical ocean current", "ocean circulation", "surface water"],
+		misconceptionTags: [
+			"upwelling",
+			"downwelling",
+			"vertical ocean current",
+			"ocean circulation",
+			"surface water"
+		],
 		uncertaintySummary:
 			"Vertical-motion magnitude and timing depend on local conditions. No present regional circulation rate or collapse probability is inferred.",
 		uncertaintyDrivers: [
@@ -1128,7 +1244,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Local forcing", "Depth resolution", "No regional forecast"]
 			}
 		],
-		institutionalAnchors: [{ name: "NOAA ocean science", role: "Upwelling and downwelling mechanisms" }],
+		institutionalAnchors: [
+			{ name: "NOAA ocean science", role: "Upwelling and downwelling mechanisms" }
+		],
 		coiSummary:
 			"NOAA's circulation and temperature explanations are institutional references, not separate measurements of the same location or a new circulation-model comparison.",
 		...publication("76a2d490-28aa-41af-ba88-f51401cd7219", "vertical ocean motion and depth-resolved observations"),
@@ -1156,7 +1274,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"River delivery is not the only seawater chemical pathway.",
 			"Hydrothermal exchange does not add every ion without removing anything."
 		],
-		misconceptionTags: ["ocean salt origin", "rivers", "weathering", "hydrothermal exchange", "dissolved salts"],
+		misconceptionTags: [
+			"ocean salt origin",
+			"rivers",
+			"weathering",
+			"hydrothermal exchange",
+			"dissolved salts"
+		],
 		uncertaintySummary:
 			"Exact constituent budgets require dedicated measurements. The institutional explanation establishes pathways, not fixed current global fractions.",
 		uncertaintyDrivers: [
@@ -1232,7 +1356,9 @@ export const readerWaterClaims: SeedClaim[] = [
 				limitations: ["Depth", "Time", "Measurement convention"]
 			}
 		],
-		institutionalAnchors: [{ name: "NASA JPL PO.DAAC", role: "Salinity variation and measurement context" }],
+		institutionalAnchors: [
+			{ name: "NASA JPL PO.DAAC", role: "Salinity variation and measurement context" }
+		],
 		coiSummary:
 			"NASA and NOAA institutional resources explain processes, not independent analyses of one present salinity product. Historical mission projections are not presented as current capability claims.",
 		...publication("9a1fc102-f6c4-4f98-97a9-e1937183219d", "variable seawater salinity and measurement scope"),
@@ -1262,7 +1388,13 @@ export const readerWaterClaims: SeedClaim[] = [
 			"A sea-surface color map is not a temperature map of the entire water column.",
 			"A textbook thermocline depth is not universal."
 		],
-		misconceptionTags: ["ocean temperature", "thermocline", "mixed layer", "deep water", "sea surface temperature"],
+		misconceptionTags: [
+			"ocean temperature",
+			"thermocline",
+			"mixed layer",
+			"deep water",
+			"sea surface temperature"
+		],
 		uncertaintySummary:
 			"Profile structure varies by location and time. The cited historical map description explains the measurement layer, not current values or a new whole-ocean warming trend.",
 		uncertaintyDrivers: [

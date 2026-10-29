@@ -30,6 +30,40 @@ interface BuildSetupStatusOptions {
 	mongoSource: MongoConfigSource;
 }
 
+function mongoCredentialDetail(source: MongoConfigSource) {
+	if (source === "vault") return "MongoDB credentials are loading from Vault.";
+	if (source === "env") return "MongoDB credentials are loading from MONGODB_URI.";
+	return "No MongoDB credentials are configured.";
+}
+
+function mongoConnectionDetail(connected: boolean, databaseName: string) {
+	if (!connected) return "The API is not connected to MongoDB.";
+	return `MongoDB is connected${databaseName
+		? ` to ${databaseName}`
+		: ""}.`;
+}
+
+function corsDetail(crossSite: boolean, origin: string) {
+	if (!crossSite) return "Same-origin mode is assumed, so explicit CORS is optional.";
+	if (origin === "*") return "CORS_ORIGIN is '*', which breaks credentialed auth requests.";
+	return origin
+		? `Cross-site requests are allowed from ${origin}.`
+		: "CROSS_SITE=true but CORS_ORIGIN is not configured.";
+}
+
+function captchaDetail(secret: boolean, siteKey: boolean) {
+	if (secret && siteKey) return "Turnstile is configured on both the frontend and backend.";
+	if (secret || siteKey) return "Captcha is only partially configured.";
+	return "Captcha is disabled; posting is open without challenge protection.";
+}
+
+function cookieDetail(production: boolean, crossSite: boolean) {
+	if (!production) return "Development cookie settings are active.";
+	return crossSite
+		? "Production cookies are configured for cross-site usage with SameSite=None and Secure."
+		: "Production cookies are configured with SameSite=Lax and Secure.";
+}
+
 export function buildSetupStatus({
 	isProd,
 	isCrossSite,
@@ -57,12 +91,7 @@ export function buildSetupStatus({
 			label: "MongoDB credentials",
 			ok: mongoSource !== "missing",
 			severity: "critical",
-			detail:
-				mongoSource === "vault"
-					? "MongoDB credentials are loading from Vault."
-					: mongoSource === "env"
-						? "MongoDB credentials are loading from MONGODB_URI."
-						: "No MongoDB credentials are configured.",
+			detail: mongoCredentialDetail(mongoSource),
 			action: "Provide Vault AppRole credentials or set MONGODB_URI."
 		},
 		{
@@ -70,9 +99,7 @@ export function buildSetupStatus({
 			label: "MongoDB connection",
 			ok: mongoConnected,
 			severity: "critical",
-			detail: mongoConnected
-				? `MongoDB is connected${databaseName ? ` to ${databaseName}` : ""}.`
-				: "The API is not connected to MongoDB.",
+			detail: mongoConnectionDetail(mongoConnected, databaseName),
 			action: "Confirm the database host is reachable and the credentials are valid."
 		},
 		{
@@ -88,13 +115,7 @@ export function buildSetupStatus({
 			label: "Cross-site CORS",
 			ok: !isCrossSite || (!!corsOrigin && corsOrigin !== "*"),
 			severity: "warning",
-			detail: !isCrossSite
-				? "Same-origin mode is assumed, so explicit CORS is optional."
-				: corsOrigin === "*"
-					? "CORS_ORIGIN is '*', which breaks credentialed auth requests."
-					: corsOrigin
-						? `Cross-site requests are allowed from ${corsOrigin}.`
-						: "CROSS_SITE=true but CORS_ORIGIN is not configured.",
+			detail: corsDetail(isCrossSite, corsOrigin),
 			action: "If frontend and backend use different origins, set CORS_ORIGIN to the exact frontend origin."
 		},
 		{
@@ -102,12 +123,7 @@ export function buildSetupStatus({
 			label: "Captcha protection",
 			ok: hasCaptchaSecret && hasCaptchaSiteKey,
 			severity: "warning",
-			detail:
-				hasCaptchaSecret && hasCaptchaSiteKey
-					? "Turnstile is configured on both the frontend and backend."
-					: hasCaptchaSecret || hasCaptchaSiteKey
-						? "Captcha is only partially configured."
-						: "Captcha is disabled; posting is open without challenge protection.",
+			detail: captchaDetail(hasCaptchaSecret, hasCaptchaSiteKey),
 			action: "Set both CAPTCHA_SECRET and PUBLIC_CAPTCHA_SITEKEY for production posting."
 		},
 		{
@@ -125,11 +141,7 @@ export function buildSetupStatus({
 			label: "Secure cookies",
 			ok: true,
 			severity: "info",
-			detail: isProd
-				? isCrossSite
-					? "Production cookies are configured for cross-site usage with SameSite=None and Secure."
-					: "Production cookies are configured with SameSite=Lax and Secure."
-				: "Development cookie settings are active.",
+			detail: cookieDetail(isProd, isCrossSite),
 			action: "Terminate TLS at the proxy so secure cookies stay valid."
 		},
 		{

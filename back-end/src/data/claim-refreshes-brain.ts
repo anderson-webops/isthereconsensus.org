@@ -149,19 +149,31 @@ export function refreshBrainClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 		sources: [
 			...seed.sources.map(source => ({
 				...source,
-				stance: source.doi === "10.1073/pnas.98.2.676" ? "supports" as const : "context" as const,
+				stance: source.doi === "10.1073/pnas.98.2.676"
+					? "supports" as const
+					: "context" as const,
 				isAnchor: source.doi === "10.1073/pnas.98.2.676",
 				appraisal: "not_appraised" as const,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt
+					: source.citationCheckedAt,
 				note: source.doi === "10.1073/pnas.98.2.676"
 					? "Original abstract, cohort methods, selected results/discussion and funding read. Baseline-relative oxygen-extraction findings do not imply absent metabolism. Visual figures, full tables and independent data analysis were not appraised."
 					: source.doi === "10.3389/fpsyg.2012.00429"
 						? "Historical teacher-belief survey, not a measurement of brain activity. Selected original methods and result-table text read. No claim of global current prevalence or independent full appraisal."
 						: "Historical explanatory journalism; original body read. Retained for context, without adopting its imprecise momentary-use, cell-ratio or knowledge-percentage statements as quantitative evidence."
 			})),
-			...additions.map(source => ({ ...source, appraisal: "not_appraised" as const, citationStatus: "current" as const, citationCheckedAt: noticeChecks[source.doi!.toLowerCase()] }))
+			...additions.map(source => ({
+				...source,
+				appraisal: "not_appraised" as const,
+				citationStatus: "current" as const,
+				citationCheckedAt: noticeChecks[source.doi!.toLowerCase()]
+			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

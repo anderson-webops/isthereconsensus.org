@@ -10,8 +10,10 @@ const privacySource = readFileSync(join(testDir, "..", "src/pages/privacy.vue"),
 function publicParagraphText(source: string) {
 	const template = source.match(/<template[\s\S]*<\/template>/)?.[0] || "";
 
-	return [...template.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
-		.map((match) =>
+	return [
+		...template.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)
+	]
+		.map(match =>
 			match[1]
 				.replace(/<[^>]+>/g, " ")
 				.replace(/\{\{[^}]+\}\}/g, " ")
@@ -63,7 +65,7 @@ describe("privacy page layout", () => {
 	});
 
 	it("keeps public privacy paragraphs short enough to scan", () => {
-		const longParagraphs = publicParagraphText(privacySource).filter((text) => text.length > 230);
+		const longParagraphs = publicParagraphText(privacySource).filter(text => text.length > 230);
 
 		assert.deepEqual(longParagraphs, []);
 		assert.match(privacySource, /That process can involve IP address and standard browser\/device signals/);

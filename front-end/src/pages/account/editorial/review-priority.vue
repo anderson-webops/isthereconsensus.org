@@ -17,7 +17,12 @@ function emptyQueue(): PriorityResponse {
 	return {
 		evaluatedAt: "",
 		rows: [],
-		pagination: { page: 1, limit: 25, total: 0, hasMore: false }
+		pagination: {
+			page: 1,
+			limit: 25,
+			total: 0,
+			hasMore: false
+		}
 	};
 }
 const result = ref(emptyQueue());
@@ -61,7 +66,8 @@ async function request<T>(path: string, body?: Record<string, unknown>) {
 			signal: controller.signal,
 			retry: 0
 		});
-	} catch (error) {
+	}
+	catch (error) {
 		if ((error as { statusCode?: number }).statusCode === 403) {
 			result.value = emptyQueue();
 			detail.value = null;
@@ -73,9 +79,9 @@ async function request<T>(path: string, body?: Record<string, unknown>) {
 	}
 }
 function reportError(error: unknown) {
-	errorMessage.value =
-		(error as { data?: { error?: string } }).data?.error ||
-		"The request was not confirmed. Reload before retrying.";
+	errorMessage.value
+		= (error as { data?: { error?: string } }).data?.error
+			|| "The request was not confirmed. Reload before retrying.";
 }
 function setDetail(value: PriorityDetail) {
 	detail.value = value;
@@ -103,9 +109,11 @@ async function load(page = 1, keepId?: string) {
 			const selected = await request<PriorityDetail>(`/admin/review-priority/${keepId}`);
 			if (run === generation) setDetail(selected);
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) reportError(error);
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -123,9 +131,11 @@ async function openReview(id: string, sourcePage = 1) {
 			await nextTick();
 			if (run === generation) detailHeading.value?.focus();
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) reportError(error);
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -141,9 +151,11 @@ async function save(path: string, body: Record<string, unknown>, message: string
 		if (run !== generation) return;
 		notice.value = message;
 		await load(result.value.pagination.page, id);
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) reportError(error);
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -174,7 +186,11 @@ function decide(source: NoticeRow) {
 	);
 }
 watch(
-	[ready, role, () => currentAccount.value?._id],
+	[
+		ready,
+		role,
+		() => currentAccount.value?._id
+	],
 	() => {
 		generation++;
 		controller?.abort();
@@ -201,33 +217,41 @@ onBeforeUnmount(() => {
 	<div class="review-priority">
 		<NuxtLink to="/account/editorial">Back to editorial workspace</NuxtLink>
 		<header>
-			<p class="eyebrow">Evidence maintenance</p>
+			<p class="eyebrow">
+				Evidence maintenance
+			</p>
 			<h1>Review priorities</h1>
 			<p>
 				See what needs attention and record the next step. Priority reflects review work, not whether a
 				scientific claim is true.
 			</p>
 		</header>
-		<p v-if="!ready">Checking access...</p>
-		<p v-else-if="!isAdmin">This queue is only available to admins. <NuxtLink to="/account">Sign in</NuxtLink></p>
+		<p v-if="!ready">
+			Checking access...
+		</p>
+		<p v-else-if="!isAdmin">
+			This queue is only available to admins. <NuxtLink to="/account">Sign in</NuxtLink>
+		</p>
 		<template v-else>
 			<form class="priority-filters" @submit.prevent="load()">
-				<label
-					>Show<select v-model="reason" :disabled="busy">
-						<option value="attention">Needs attention</option>
-						<option v-for="(label, value) in priorityReasonLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-						<option value="all">All published reviews</option>
-					</select></label
-				>
-				<label>Find a review<input v-model="query" type="search" maxlength="100" :disabled="busy" /></label>
+				<label>Show<select v-model="reason" :disabled="busy">
+					<option value="attention">Needs attention</option>
+					<option v-for="(label, value) in priorityReasonLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+					<option value="all">All published reviews</option>
+				</select></label>
+				<label>Find a review<input v-model="query" type="search" maxlength="100" :disabled="busy"></label>
 				<button class="button button--ghost" type="submit" :disabled="busy">
 					{{ busy ? "Loading..." : "Apply filters" }}
 				</button>
 			</form>
-			<p v-if="errorMessage" role="alert">{{ errorMessage }}</p>
-			<p v-if="notice" role="status">{{ notice }}</p>
+			<p v-if="errorMessage" role="alert">
+				{{ errorMessage }}
+			</p>
+			<p v-if="notice" role="status">
+				{{ notice }}
+			</p>
 			<p aria-live="polite">
 				{{ result.pagination.total }} {{ result.pagination.total === 1 ? "review" : "reviews" }} match.
 				<NuxtLink to="/account/editorial/reader-feedback">All reader feedback</NuxtLink> ·
@@ -247,27 +271,34 @@ onBeforeUnmount(() => {
 					</caption>
 					<thead>
 						<tr>
-							<th scope="col">Review</th>
-							<th scope="col">Needs attention</th>
-							<th scope="col">Next review</th>
-							<th scope="col">Action</th>
+							<th scope="col">
+								Review
+							</th>
+							<th scope="col">
+								Needs attention
+							</th>
+							<th scope="col">
+								Next review
+							</th>
+							<th scope="col">
+								Action
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="row in result.rows" :key="row._id">
 							<th scope="row">
-								<span>{{ row.topic?.title }}</span
-								>{{ row.title }}
+								<span>{{ row.topic?.title }}</span>{{ row.title }}
 							</th>
 							<td>
 								<ul v-if="row.reasons.length">
 									<li v-for="item in row.reasons" :key="item">
 										{{ priorityReasonLabels[item]
 										}}<template v-if="item === 'source_notice'">
-											({{ row.openNoticeCount }})</template
-										><template v-if="item === 'evidence_request'">
-											({{ row.feedbackCount }})</template
-										>
+											({{ row.openNoticeCount }})
+										</template><template v-if="item === 'evidence_request'">
+											({{ row.feedbackCount }})
+										</template>
 									</li>
 								</ul>
 								<span v-else>No open task recorded</span>
@@ -297,9 +328,8 @@ onBeforeUnmount(() => {
 					:disabled="busy || result.pagination.page <= 1"
 					@click="load(result.pagination.page - 1)"
 				>
-					Previous</button
-				><span>Page {{ result.pagination.page }}</span
-				><button
+					Previous
+				</button><span>Page {{ result.pagination.page }}</span><button
 					type="button"
 					:disabled="busy || !result.pagination.hasMore"
 					@click="load(result.pagination.page + 1)"
@@ -309,13 +339,13 @@ onBeforeUnmount(() => {
 			</nav>
 			<section v-if="detail" class="priority-detail" aria-labelledby="selected-review-title">
 				<header>
-					<h2 id="selected-review-title" ref="detailHeading" tabindex="-1">{{ detail.claim.title }}</h2>
+					<h2 id="selected-review-title" ref="detailHeading" tabindex="-1">
+						{{ detail.claim.title }}
+					</h2>
 					<p>
 						<NuxtLink :to="`/account/editorial/claims/${detail.claim._id}`">Open editorial review</NuxtLink>
 						·
-						<NuxtLink :to="`/account/editorial/reader-feedback?reviewId=${detail.claim._id}`"
-							>Review reader evidence requests</NuxtLink
-						>
+						<NuxtLink :to="`/account/editorial/reader-feedback?reviewId=${detail.claim._id}`">Review reader evidence requests</NuxtLink>
 					</p>
 				</header>
 				<p>
@@ -326,25 +356,25 @@ onBeforeUnmount(() => {
 					The origin of the recorded review date is unknown. Scheduling does not establish a completed review.
 				</p>
 				<ul v-if="detail.claim.reviewStatus.issues.length">
-					<li v-for="issue in detail.claim.reviewStatus.issues" :key="issue">{{ issue }}</li>
+					<li v-for="issue in detail.claim.reviewStatus.issues" :key="issue">
+						{{ issue }}
+					</li>
 				</ul>
 				<form class="schedule-form" @submit.prevent="saveSchedule">
 					<h3>Schedule the next review</h3>
-					<label>Next review date (UTC)<input v-model="nextDate" type="date" :disabled="busy" /></label>
+					<label>Next review date (UTC)<input v-model="nextDate" type="date" :disabled="busy"></label>
 					<p>
 						Leave the date empty to remove the deadline. Source notices and reader requests remain in the
 						queue.
 					</p>
-					<label
-						>Reason for this schedule<textarea
-							v-model="scheduleNote"
-							required
-							minlength="20"
-							maxlength="1000"
-							rows="3"
-							:disabled="busy"
-						/></label
-					><button class="button button--primary" :disabled="busy || scheduleNote.trim().length < 20">
+					<label>Reason for this schedule<textarea
+						v-model="scheduleNote"
+						required
+						minlength="20"
+						maxlength="1000"
+						rows="3"
+						:disabled="busy"
+					/></label><button class="button button--primary" :disabled="busy || scheduleNote.trim().length < 20">
 						Save schedule
 					</button>
 				</form>
@@ -353,8 +383,7 @@ onBeforeUnmount(() => {
 					<p>The most recent {{ detail.historyLimit }} actions are retained.</p>
 					<ol>
 						<li v-for="(entry, index) in [...detail.schedule.history].reverse()" :key="index">
-							<strong>{{ formatDate(entry.date) }}</strong
-							>: {{ formatDate(entry.previousAt) }} →
+							<strong>{{ formatDate(entry.date) }}</strong>: {{ formatDate(entry.previousAt) }} →
 							{{ entry.nextAt ? formatDate(entry.nextAt) : "Unscheduled" }}
 							<p>{{ entry.note }}</p>
 							<p>Recorded by {{ entry.adminName || "Former admin" }} ({{ entry.adminId }}).</p>
@@ -376,7 +405,9 @@ onBeforeUnmount(() => {
 						{{ source.addressed ? "Handled for the current notice" : "Needs assessment" }} ·
 						{{ noticeLabel(source) }}
 					</p>
-					<p v-if="source.snapshot.integrityNotes">{{ source.snapshot.integrityNotes }}</p>
+					<p v-if="source.snapshot.integrityNotes">
+						{{ source.snapshot.integrityNotes }}
+					</p>
 					<ul>
 						<li
 							v-for="url in source.snapshot.statusSources.filter((value) => safeExternalHttpUrl(value))"
@@ -386,16 +417,14 @@ onBeforeUnmount(() => {
 						</li>
 					</ul>
 					<form @submit.prevent="decide(source)">
-						<label
-							>Assessment and next step<textarea
-								v-model="sourceNotes[source._id]"
-								required
-								minlength="20"
-								maxlength="1000"
-								rows="3"
-								:disabled="busy"
-							/></label
-						><button
+						<label>Assessment and next step<textarea
+							v-model="sourceNotes[source._id]"
+							required
+							minlength="20"
+							maxlength="1000"
+							rows="3"
+							:disabled="busy"
+						/></label><button
 							class="button button--ghost"
 							:disabled="busy || (sourceNotes[source._id]?.trim().length ?? 0) < 20"
 						>
@@ -407,17 +436,15 @@ onBeforeUnmount(() => {
 						<p>The most recent {{ detail.historyLimit }} actions are retained.</p>
 						<ol>
 							<li v-for="(entry, index) in [...source.history].reverse()" :key="index">
-								<strong
-									>{{ formatDate(entry.date) }}:
-									{{ entry.decision === "addressed" ? "Handled" : "Reopened" }}</strong
-								>
+								<strong>{{ formatDate(entry.date) }}:
+									{{ entry.decision === "addressed" ? "Handled" : "Reopened" }}</strong>
 								<p>{{ entry.note }}</p>
 								<p>Recorded by {{ entry.adminName || "Former admin" }} ({{ entry.adminId }}).</p>
 								<p>Notice assessed: {{ noticeLabel({ snapshot: entry.snapshot }) }}.</p>
 								<ul>
 									<li
 										v-for="url in entry.snapshot.statusSources.filter((value) =>
-											safeExternalHttpUrl(value)
+											safeExternalHttpUrl(value),
 										)"
 										:key="url"
 									>
@@ -439,9 +466,8 @@ onBeforeUnmount(() => {
 						:disabled="busy || detail.pagination.page <= 1"
 						@click="openReview(detail.claim._id, detail.pagination.page - 1)"
 					>
-						Previous notices</button
-					><span>Page {{ detail.pagination.page }}</span
-					><button
+						Previous notices
+					</button><span>Page {{ detail.pagination.page }}</span><button
 						:disabled="busy || !detail.pagination.hasMore"
 						@click="openReview(detail.claim._id, detail.pagination.page + 1)"
 					>

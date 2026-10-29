@@ -16,8 +16,11 @@ async function probeJson<T>(
 			detail: successDetail(data),
 			data
 		};
-	} catch (error) {
-		const message = error instanceof Error ? error.message : "Request failed";
+	}
+	catch (error) {
+		const message = error instanceof Error
+			? error.message
+			: "Request failed";
 		return {
 			ok: false,
 			detail: `${url} is unreachable: ${message}`
@@ -61,12 +64,12 @@ export default defineEventHandler(async (event): Promise<SetupDashboardResponse>
 			joinBaseUrl(internalApiBase, "/healthz"),
 			() => "Backend /healthz responded successfully."
 		),
-		probeJson<{ ok: boolean }>(joinBaseUrl(internalApiBase, "/readyz"), (data) =>
+		probeJson<{ ok: boolean }>(joinBaseUrl(internalApiBase, "/readyz"), data =>
 			data.ok ? "Backend /readyz reports its dependencies are ready." : "Backend /readyz reports not ready."
 		),
 		probeJson<SetupStatusResponse>(
 			buildApiUrl(internalApiBase, "/setup/status"),
-			(data) => data.summary,
+			data => data.summary,
 			diagnosticsHeaders
 		)
 	]);

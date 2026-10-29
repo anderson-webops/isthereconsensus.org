@@ -41,12 +41,19 @@ function hasAtLeast(value: unknown, minimum: number): boolean {
 
 function hasDateLikeValue(value: unknown): boolean {
 	if (!value) return false;
-	const date = value instanceof Date ? value : new Date(String(value));
+	const date = value instanceof Date
+		? value
+		: new Date(String(value));
 	return !Number.isNaN(date.getTime());
 }
 
 export function sourceHasPublicLink(source: Pick<IClaimSource, "doi" | "pmcid" | "pmid" | "url">): boolean {
-	return [source.url, source.doi, source.pmid, source.pmcid].some(hasText);
+	return [
+		source.url,
+		source.doi,
+		source.pmid,
+		source.pmcid
+	].some(hasText);
 }
 
 export function sourceIsUsableForPublicReadiness(source: ReadinessSource): boolean {
@@ -58,9 +65,13 @@ export function summarizeClaimSourceReadiness(sources: ReadinessSource[]): Publi
 	return sources.filter(sourceIsUsableForPublicReadiness).reduce<PublicClaimSourceReadinessCounts>(
 		(counts, source) => ({
 			sourceCount: counts.sourceCount + 1,
-			linkedSourceCount: counts.linkedSourceCount + (sourceHasPublicLink(source) ? 1 : 0),
+			linkedSourceCount: counts.linkedSourceCount + (sourceHasPublicLink(source)
+				? 1
+				: 0),
 			decisionWeightSourceCount:
-				counts.decisionWeightSourceCount + (decisionWeightSourceKinds.has(source.kind) ? 1 : 0)
+				counts.decisionWeightSourceCount + (decisionWeightSourceKinds.has(source.kind)
+					? 1
+					: 0)
 		}),
 		{ ...emptyPublicClaimSourceReadinessCounts }
 	);

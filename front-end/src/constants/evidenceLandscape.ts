@@ -7,7 +7,13 @@ export const EVIDENCE_LANDSCAPE_SUPPORT_LABELS = [
 	"unsupported_fringe"
 ] as const;
 
-export const EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS = ["high", "moderate", "low", "very_low", "not_assessable"] as const;
+export const EVIDENCE_LANDSCAPE_CERTAINTY_LEVELS = [
+	"high",
+	"moderate",
+	"low",
+	"very_low",
+	"not_assessable"
+] as const;
 
 export const EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS = [
 	"high",
@@ -73,9 +79,20 @@ export const EVIDENCE_STUDY_DESIGNS = [
 	"not_coded"
 ] as const;
 
-export const EVIDENCE_RISK_OF_BIAS_LEVELS = ["low", "some_concerns", "high", "critical", "not_assessed"] as const;
+export const EVIDENCE_RISK_OF_BIAS_LEVELS = [
+	"low",
+	"some_concerns",
+	"high",
+	"critical",
+	"not_assessed"
+] as const;
 
-export const EVIDENCE_DIRECTNESS_LEVELS = ["direct", "partially_direct", "indirect", "not_assessed"] as const;
+export const EVIDENCE_DIRECTNESS_LEVELS = [
+	"direct",
+	"partially_direct",
+	"indirect",
+	"not_assessed"
+] as const;
 
 export const EVIDENCE_CONSISTENCY_LEVELS = [
 	"consistent_with_body",
@@ -84,7 +101,12 @@ export const EVIDENCE_CONSISTENCY_LEVELS = [
 	"not_assessed"
 ] as const;
 
-export const EVIDENCE_PRECISION_LEVELS = ["precise", "imprecise", "not_applicable", "not_assessed"] as const;
+export const EVIDENCE_PRECISION_LEVELS = [
+	"precise",
+	"imprecise",
+	"not_applicable",
+	"not_assessed"
+] as const;
 
 export const EVIDENCE_SOURCE_EXCLUSION_REASONS = [
 	"",
@@ -239,27 +261,29 @@ export function formatEvidenceSourcePositionLabel(value?: EvidenceSourcePosition
 }
 
 export function formatEvidenceStudyDesignLabel(value?: EvidenceStudyDesign) {
-	if (value === "systematic_review") return "Systematic review";
-	if (value === "meta_analysis") return "Meta-analysis";
-	if (value === "living_review") return "Living review";
-	if (value === "evidence_based_guideline") return "Evidence-based guideline";
-	if (value === "consensus_statement") return "Consensus statement";
-	if (value === "randomized_trial") return "Randomized trial";
-	if (value === "non_randomized_trial") return "Non-randomized trial";
-	if (value === "cohort_study") return "Cohort study";
-	if (value === "case_control_study") return "Case-control study";
-	if (value === "cross_sectional_study") return "Cross-sectional study";
-	if (value === "case_series") return "Case series";
-	if (value === "ecological_study") return "Ecological study";
-	if (value === "mechanistic_human") return "Mechanistic human study";
-	if (value === "animal_study") return "Animal study";
-	if (value === "in_vitro_study") return "In vitro study";
-	if (value === "modeling_study") return "Modeling study";
-	if (value === "expert_commentary") return "Expert commentary";
-	if (value === "news_or_secondary_reporting") return "News or secondary reporting";
-	if (value === "retracted_or_expression_of_concern") return "Retracted or expression of concern";
-	if (value === "other") return "Other";
-	return "Not coded";
+	switch (value) {
+		case "systematic_review": return "Systematic review";
+		case "meta_analysis": return "Meta-analysis";
+		case "living_review": return "Living review";
+		case "evidence_based_guideline": return "Evidence-based guideline";
+		case "consensus_statement": return "Consensus statement";
+		case "randomized_trial": return "Randomized trial";
+		case "non_randomized_trial": return "Non-randomized trial";
+		case "cohort_study": return "Cohort study";
+		case "case_control_study": return "Case-control study";
+		case "cross_sectional_study": return "Cross-sectional study";
+		case "case_series": return "Case series";
+		case "ecological_study": return "Ecological study";
+		case "mechanistic_human": return "Mechanistic human study";
+		case "animal_study": return "Animal study";
+		case "in_vitro_study": return "In vitro study";
+		case "modeling_study": return "Modeling study";
+		case "expert_commentary": return "Expert commentary";
+		case "news_or_secondary_reporting": return "News or secondary reporting";
+		case "retracted_or_expression_of_concern": return "Retracted or expression of concern";
+		case "other": return "Other";
+		default: return "Not coded";
+	}
 }
 
 export function formatEvidenceRiskOfBiasLabel(value?: EvidenceRiskOfBiasLevel) {

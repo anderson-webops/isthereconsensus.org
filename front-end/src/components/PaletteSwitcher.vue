@@ -22,7 +22,9 @@ function applyPalette(value: PaletteValue) {
 
 onMounted(() => {
 	const savedPalette = localStorage.getItem(storageKey);
-	applyPalette(isPaletteValue(savedPalette) ? savedPalette : "green");
+	applyPalette(isPaletteValue(savedPalette)
+		? savedPalette
+		: "green");
 });
 </script>
 

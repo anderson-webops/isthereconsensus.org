@@ -167,6 +167,66 @@ function incrementEvidenceBaseSize(
 	}
 }
 
+function accumulateEvidenceDistribution(
+	source: EvidenceSourceForDistribution,
+	distribution: ReturnType<typeof createEmptyEvidenceLandscapeDistribution>,
+	evidenceBaseSize: ReturnType<typeof createEmptyEvidenceBaseSize>
+) {
+	const profile = source.evidenceProfile;
+	const position = profile.positionRelativeToClaim;
+	const weight = EVIDENCE_TIER_WEIGHTS[profile.evidenceTier] ?? 0;
+	const newsAsEvidence = profile.studyDesign === "news_or_secondary_reporting" && position !== "background_context";
+	const retractedOrInvalid = isRetractedOrInvalid(source);
+
+	evidenceBaseSize.totalSources += 1;
+
+	if (retractedOrInvalid || position === "excluded_retracted") {
+		distribution.excludedRetracted.count += 1;
+		evidenceBaseSize.excludedSources += 1;
+		incrementEvidenceBaseSize(evidenceBaseSize, source, false);
+		return;
+	}
+
+	if (position === "excluded_low_quality") {
+		distribution.excludedLowQuality.count += 1;
+		evidenceBaseSize.excludedSources += 1;
+		return;
+	}
+
+	if (position === "excluded_fringe") {
+		distribution.excludedFringe.count += 1;
+		evidenceBaseSize.excludedSources += 1;
+		return;
+	}
+
+	const included
+		= profile.inclusion.includedInLandscape && isPublicEvidenceSourcePosition(position) && !newsAsEvidence;
+
+	if (!included) {
+		incrementEvidenceBaseSize(evidenceBaseSize, source, false);
+		return;
+	}
+
+	evidenceBaseSize.includedSources += 1;
+	incrementEvidenceBaseSize(evidenceBaseSize, source, true);
+
+	if (position === "supports_claim") {
+		incrementWeightedBucket(distribution.supportsClaim, weight);
+	}
+	else if (position === "supports_with_caveats") {
+		incrementWeightedBucket(distribution.supportsWithCaveats, weight);
+	}
+	else if (position === "opposes_claim") {
+		incrementWeightedBucket(distribution.opposesClaim, weight);
+	}
+	else if (position === "inconclusive_or_mixed") {
+		incrementWeightedBucket(distribution.inconclusiveOrMixed, weight);
+	}
+	else if (position === "background_context") {
+		incrementWeightedBucket(distribution.backgroundContext, weight);
+	}
+}
+
 export function recomputeEvidenceLandscapeFromSources(
 	sources: EvidenceSourceForDistribution[]
 ): Pick<IClaimEvidenceLandscape, "distribution" | "evidenceBaseSize"> {
@@ -174,59 +234,7 @@ export function recomputeEvidenceLandscapeFromSources(
 	const evidenceBaseSize = createEmptyEvidenceBaseSize();
 
 	for (const source of sources) {
-		const profile = source.evidenceProfile;
-		const position = profile.positionRelativeToClaim;
-		const weight = EVIDENCE_TIER_WEIGHTS[profile.evidenceTier] ?? 0;
-		const newsAsEvidence = profile.studyDesign === "news_or_secondary_reporting" && position !== "background_context";
-		const retractedOrInvalid = isRetractedOrInvalid(source);
-
-		evidenceBaseSize.totalSources += 1;
-
-		if (retractedOrInvalid || position === "excluded_retracted") {
-			distribution.excludedRetracted.count += 1;
-			evidenceBaseSize.excludedSources += 1;
-			incrementEvidenceBaseSize(evidenceBaseSize, source, false);
-			continue;
-		}
-
-		if (position === "excluded_low_quality") {
-			distribution.excludedLowQuality.count += 1;
-			evidenceBaseSize.excludedSources += 1;
-			continue;
-		}
-
-		if (position === "excluded_fringe") {
-			distribution.excludedFringe.count += 1;
-			evidenceBaseSize.excludedSources += 1;
-			continue;
-		}
-
-		const included
-			= profile.inclusion.includedInLandscape && isPublicEvidenceSourcePosition(position) && !newsAsEvidence;
-
-		if (!included) {
-			incrementEvidenceBaseSize(evidenceBaseSize, source, false);
-			continue;
-		}
-
-		evidenceBaseSize.includedSources += 1;
-		incrementEvidenceBaseSize(evidenceBaseSize, source, true);
-
-		if (position === "supports_claim") {
-			incrementWeightedBucket(distribution.supportsClaim, weight);
-		}
-		else if (position === "supports_with_caveats") {
-			incrementWeightedBucket(distribution.supportsWithCaveats, weight);
-		}
-		else if (position === "opposes_claim") {
-			incrementWeightedBucket(distribution.opposesClaim, weight);
-		}
-		else if (position === "inconclusive_or_mixed") {
-			incrementWeightedBucket(distribution.inconclusiveOrMixed, weight);
-		}
-		else if (position === "background_context") {
-			incrementWeightedBucket(distribution.backgroundContext, weight);
-		}
+		accumulateEvidenceDistribution(source, distribution, evidenceBaseSize);
 	}
 
 	return { distribution, evidenceBaseSize };

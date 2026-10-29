@@ -18,7 +18,9 @@ useStaticPageMeta({
 			<h1>Reading guides</h1>
 		</header>
 		<LearnNav />
-		<p class="guides-count">{{ readingGuides.length }} sourced reading guides</p>
+		<p class="guides-count">
+			{{ readingGuides.length }} sourced reading guides
+		</p>
 		<div class="guides-list">
 			<NuxtLink v-for="guide in readingGuides" :key="guide.slug" class="guide-card" :to="`/guides/${guide.slug}`">
 				<h2>{{ guide.title }}</h2>

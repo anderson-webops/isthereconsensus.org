@@ -10,14 +10,42 @@ import { passwordPlugin } from "../plugins/password.js";
  */
 const adminSchema: Schema<IAdmin> = new Schema(
 	{
-		name: { type: String, required: true, trim: true, maxlength: 80 },
-		email: { type: String, required: true, unique: true, lowercase: true, trim: true, index: true },
+		name: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 80
+		},
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+			lowercase: true,
+			trim: true,
+			index: true
+		},
 		password: { type: String, required: true },
-		sessionVersion: { type: Number, required: true, default: 0, min: 0, select: true },
-		enabled: { type: Boolean, required: true, default: true, index: true },
+		sessionVersion: {
+			type: Number,
+			required: true,
+			default: 0,
+			min: 0,
+			select: true
+		},
+		enabled: {
+			type: Boolean,
+			required: true,
+			default: true,
+			index: true
+		},
 		editAdmins: { type: Boolean, default: false, required: true }, // Added required: true
 		saveEdit: { type: String, default: "Edit", required: true }, // Added required: true
-		role: { type: String, default: "admin", enum: ["admin"], immutable: true }
+		role: {
+			type: String,
+			default: "admin",
+			enum: ["admin"],
+			immutable: true
+		}
 	},
 	{ optimisticConcurrency: true, timestamps: true }
 );

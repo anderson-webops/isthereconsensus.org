@@ -3,11 +3,28 @@ import type { SeedClaim } from "./claims.js";
 export const mechanicsCheckedAt = "2026-10-05T13:59:14.000Z";
 
 function textbook(section: string, title: string, note: string): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title: `College Physics 2e: ${title}`, publisher: "OpenStax, Rice University; Paul Peter Urone and Roger Hinrichs", year: 2022, url: `https://openstax.org/books/college-physics-2e/pages/${section}`, stance: "supports", order: 1, note };
+	return {
+		kind: "technical_reference",
+		title: `College Physics 2e: ${title}`,
+		publisher: "OpenStax, Rice University; Paul Peter Urone and Roger Hinrichs",
+		year: 2022,
+		url: `https://openstax.org/books/college-physics-2e/pages/${section}`,
+		stance: "supports",
+		order: 1,
+		note
+	};
 }
 
 function lecture(volume: string, chapter: string, title: string, note: string): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title: `The Feynman Lectures on Physics, Volume ${volume}, Chapter ${Number(chapter)}: ${title}`, publisher: "Caltech; Richard Feynman, Robert Leighton and Matthew Sands", url: `https://www.feynmanlectures.caltech.edu/${volume}_${chapter}.html`, stance: "supports", order: 1, note };
+	return {
+		kind: "technical_reference",
+		title: `The Feynman Lectures on Physics, Volume ${volume}, Chapter ${Number(chapter)}: ${title}`,
+		publisher: "Caltech; Richard Feynman, Robert Leighton and Matthew Sands",
+		url: `https://www.feynmanlectures.caltech.edu/${volume}_${chapter}.html`,
+		stance: "supports",
+		order: 1,
+		note
+	};
 }
 
 export const readerMechanicsSources = {
@@ -49,7 +66,15 @@ export const readerMechanicsSources = {
 	rotationLecture: lecture("I", "18", "Rotation in Two Dimensions", "Original constant-mass center-of-mass motion, rotational inertia and angular momentum checked. Human demonstrations, apparatus and propulsion procedures are not imported."),
 	fluidLecture: lecture("II", "40", "The Flow of Dry Water", "Original explicitly ideal fluid model, continuity and steady same-streamline Bernoulli condition checked. The title does not describe measured water with zero viscosity; real losses remain exclusions."),
 	springLecture: lecture("I", "21", "The Harmonic Oscillator", "Original constant-coefficient linear oscillator and natural angular-frequency relation checked. Forced response, biological analogies and source experiment instructions are not imported."),
-	si: { kind: "technical_reference", title: "SP 330: The International System of Units, Section 2", publisher: "NIST", url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-2", stance: "supports", order: 1, note: "Original coherent mechanical units and explicit torque-versus-energy notation checked. This citation supports quantities and units, not an independent experimental test of every mechanical model." }
+	si: {
+		kind: "technical_reference",
+		title: "SP 330: The International System of Units, Section 2",
+		publisher: "NIST",
+		url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-2",
+		stance: "supports",
+		order: 1,
+		note: "Original coherent mechanical units and explicit torque-versus-energy notation checked. This citation supports quantities and units, not an independent experimental test of every mechanical model."
+	}
 } satisfies Record<string, SeedClaim["sources"][number]>;
 
 interface MechanicsReview {
@@ -472,8 +497,15 @@ export const readerMechanicsClaims: SeedClaim[] = reviews.map(review => ({
 	misconceptions: [review.title, "A scoped ideal relation is not a measured performance result or a safety certification."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
-	searchDatabases: ["Original OpenStax mechanics and fluid definitions", "Original Caltech classical mechanics and ideal-fluid discussions", "Original NIST coherent unit definitions", "Consensus.app force-and-motion discovery; original paper unavailable and not used as evidence"],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
+	searchDatabases: [
+		"Original OpenStax mechanics and fluid definitions",
+		"Original Caltech classical mechanics and ideal-fluid discussions",
+		"Original NIST coherent unit definitions",
+		"Consensus.app force-and-motion discovery; original paper unavailable and not used as evidence"
+	],
 	searchCutoffAt: mechanicsCheckedAt,
 	inclusionRules: ["State physical quantities, reference frames, system boundaries and model conditions.", "Use original source checks and independently constructed hypothetical numerical examples."],
 	exclusionRules: ["No copied source prose, exercises, images, material tables or apparatus instructions.", "No biological procedures, impact or injury estimates, engineering designs, operating limits, invented reader demand or expert votes."],
@@ -483,12 +515,51 @@ export const readerMechanicsClaims: SeedClaim[] = reviews.map(review => ({
 	independenceSummary: "OpenStax sections share textbook authorship and institutional provenance; Caltech chapters share authorship. NIST supplies unit definitions, not independent tests of all models. These are not independent experiments or an expert poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing. No actual reader demand or apparatus dataset was analyzed.",
 	coiSummary: "Institutional teaching and unit references are not equipment, product or safety endorsements. Funding and conflicts were not exhaustively audited. No formal consensus vote or independent expert approval is claimed.",
 	lastRetractionCheckAt: mechanicsCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "Independently constructed arithmetic, not an observed effect size or measured performance.", certainty: "moderate", limitations: [review.qualification, "Shared teaching-source provenance; no apparatus testing or expert survey"] }],
-	institutionalAnchors: [{ name: readerMechanicsSources[review.sources[0]!].publisher, role: "Definition or model reference, not formal consensus or expert approval" }],
-	changeLog: [{ date: mechanicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: review.id, date: mechanicsCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Corrections and notices for cited original references"], guidelineMonitors: ["Original definitions and model-condition revisions"], triggerRules: ["Reassess if an original correction or applicability change alters the conclusion."] },
-	sources: review.sources.map((key, index) => ({ ...readerMechanicsSources[key], order: index + 1, isAnchor: index === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: mechanicsCheckedAt, statusSources: [readerMechanicsSources[key].url!] }))
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "Independently constructed arithmetic, not an observed effect size or measured performance.",
+			certainty: "moderate",
+			limitations: [review.qualification, "Shared teaching-source provenance; no apparatus testing or expert survey"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerMechanicsSources[review.sources[0]!].publisher, role: "Definition or model reference, not formal consensus or expert approval" }
+	],
+	changeLog: [
+		{ date: mechanicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: review.id,
+		date: mechanicsCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Corrections and notices for cited original references"],
+		guidelineMonitors: ["Original definitions and model-condition revisions"],
+		triggerRules: ["Reassess if an original correction or applicability change alters the conclusion."]
+	},
+	sources: review.sources.map((key, index) => ({
+		...readerMechanicsSources[key],
+		order: index + 1,
+		isAnchor: index === 0,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: mechanicsCheckedAt,
+		statusSources: [readerMechanicsSources[key].url!]
+	}))
 }));
 
-export const readerMechanicsGaps = reviews.map(review => ({ slug: review.slug, gap: `Adds the distinct proposition "${review.title}" with independently constructed examples, definitions and model limits; baseline vacuum-fall, perpetual-motion and glass reviews and earlier expansion orbital-weightlessness and magnetic-work reviews do not answer this question.`, relatedExistingSlugs: ["do-heavier-objects-fall-faster-than-lighter-objects-in-a-vacuum", "can-a-perpetual-motion-machine-produce-net-energy-indefinitely", "is-old-window-glass-slowly-flowing-downward-at-room-temperature"] }));
+export const readerMechanicsGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: `Adds the distinct proposition "${review.title}" with independently constructed examples, definitions and model limits; baseline vacuum-fall, perpetual-motion and glass reviews and earlier expansion orbital-weightlessness and magnetic-work reviews do not answer this question.`,
+	relatedExistingSlugs: ["do-heavier-objects-fall-faster-than-lighter-objects-in-a-vacuum", "can-a-perpetual-motion-machine-produce-net-energy-indefinitely", "is-old-window-glass-slowly-flowing-downward-at-room-temperature"]
+}));

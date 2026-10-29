@@ -1,21 +1,25 @@
 import type { EvidenceComparison } from "./types.js";
 
-// A dated comparison synthesis, not a replacement for canonical claim reviews.
-// Values are transcribed from Table 1, not calculated from phase medians.
+/**
+ * A dated comparison synthesis, not a replacement for canonical claim reviews.
+ * Values are transcribed from Table 1, not calculated from phase medians.
+ */
 export const electricityComparison: EvidenceComparison = {
 	slug: "electricity-emissions",
 	title: "Compare electricity emissions",
 	description:
 		"Compare generation technologies using the same published emissions measure, then check what the comparison leaves out.",
 	checkedAt: "2026-09-11",
-	readerUpdates: [{
-		id: "de80df99-1514-43d0-8e39-f54d893740c1",
-		date: "2026-09-11T19:27:39Z",
-		kind: "new_comparison",
-		summary: "Added a same-measure comparison of electricity generation emissions, with life-cycle boundaries and whole-grid limitations made explicit.",
-		bottomLineImpact: "new",
-		sourceIds: ["nrel-2021"]
-	}],
+	readerUpdates: [
+		{
+			id: "de80df99-1514-43d0-8e39-f54d893740c1",
+			date: "2026-09-11T19:27:39Z",
+			kind: "new_comparison",
+			summary: "Added a same-measure comparison of electricity generation emissions, with life-cycle boundaries and whole-grid limitations made explicit.",
+			bottomLineImpact: "new",
+			sourceIds: ["nrel-2021"]
+		}
+	],
 	datasetLabel: "NREL's September 2021 literature compilation",
 	resultNote: "Published medians hide variation; these are not predictions.",
 	measureNote:
@@ -69,8 +73,16 @@ export const electricityComparison: EvidenceComparison = {
 			label: "Coal",
 			scope: "Coal generation",
 			estimates: {
-				lifecycle: { value: 1001, qualifier: "reported", sourceIds: ["nrel-2021"] },
-				upstream: { value: 5, qualifier: "less_than", sourceIds: ["nrel-2021"] }
+				lifecycle: {
+					value: 1001,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				},
+				upstream: {
+					value: 5,
+					qualifier: "less_than",
+					sourceIds: ["nrel-2021"]
+				}
 			}
 		},
 		{
@@ -78,8 +90,16 @@ export const electricityComparison: EvidenceComparison = {
 			label: "Natural gas",
 			scope: "Natural gas generation",
 			estimates: {
-				lifecycle: { value: 486, qualifier: "reported", sourceIds: ["nrel-2021"] },
-				upstream: { value: 0.8, qualifier: "reported", sourceIds: ["nrel-2021"] }
+				lifecycle: {
+					value: 486,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				},
+				upstream: {
+					value: 0.8,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				}
 			}
 		},
 		{
@@ -87,8 +107,16 @@ export const electricityComparison: EvidenceComparison = {
 			label: "Solar PV",
 			scope: "Thin-film and crystalline silicon",
 			estimates: {
-				lifecycle: { value: 43, qualifier: "reported", sourceIds: ["nrel-2021"] },
-				upstream: { value: 28, qualifier: "approximately", sourceIds: ["nrel-2021"] }
+				lifecycle: {
+					value: 43,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				},
+				upstream: {
+					value: 28,
+					qualifier: "approximately",
+					sourceIds: ["nrel-2021"]
+				}
 			}
 		},
 		{
@@ -96,8 +124,16 @@ export const electricityComparison: EvidenceComparison = {
 			label: "Wind",
 			scope: "Land-based and offshore",
 			estimates: {
-				lifecycle: { value: 13, qualifier: "reported", sourceIds: ["nrel-2021"] },
-				upstream: { value: 12, qualifier: "reported", sourceIds: ["nrel-2021"] }
+				lifecycle: {
+					value: 13,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				},
+				upstream: {
+					value: 12,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				}
 			}
 		},
 		{
@@ -105,8 +141,16 @@ export const electricityComparison: EvidenceComparison = {
 			label: "Nuclear",
 			scope: "Light-water reactors only",
 			estimates: {
-				lifecycle: { value: 13, qualifier: "reported", sourceIds: ["nrel-2021"] },
-				upstream: { value: 2, qualifier: "reported", sourceIds: ["nrel-2021"] }
+				lifecycle: {
+					value: 13,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				},
+				upstream: {
+					value: 2,
+					qualifier: "reported",
+					sourceIds: ["nrel-2021"]
+				}
 			}
 		}
 	],

@@ -43,7 +43,13 @@ describe("practical hearing-protection reviews", () => {
 	});
 	it("retrieves practical hearing questions from ordinary queries", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ rating: "noise reduction rating", training: "earplug fit training", retention: "earplug refreshers", anc: "noise cancelling headphones", dual: "double hearing protection" })) {
+		for (const [key, query] of Object.entries({
+			rating: "noise reduction rating",
+			training: "earplug fit training",
+			retention: "earplug refreshers",
+			anc: "noise cancelling headphones",
+			dual: "double hearing protection"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === hearingSlugs[key as keyof typeof hearingSlugs]), query);
 		}
 	});

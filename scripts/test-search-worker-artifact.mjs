@@ -1,16 +1,39 @@
 import assert from "node:assert/strict";
-import { chmod, mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { assertWorkerRequiredPaths, verifyWorkerArtifact, workerInventory, workerRequiredPaths, workerRuntimeVersions } from "./search-worker-artifact-lib.mjs";
+
+test("the workspace, standalone lock and model profile bind the same explicit worker runtimes", async () => {
+	const readJson = async filename => JSON.parse(await readFile(new URL(filename, import.meta.url), "utf8"));
+	const workspace = await readJson("../search-worker/package.json");
+	const rootLock = await readJson("../package-lock.json");
+	const standalone = await readJson("../search-worker/runtime/package.json");
+	const standaloneLock = await readJson("../search-worker/runtime/package-lock.json");
+	for (const [name, version] of Object.entries(workerRuntimeVersions)) {
+		assert.match(version, /^\d+\.\d+\.\d+$/u);
+		assert.equal(workspace.dependencies[name], version, name);
+		assert.equal(rootLock.packages["search-worker"].dependencies[name], version, name);
+		assert.equal(standalone.dependencies[name], version, name);
+		assert.equal(standaloneLock.packages[""].dependencies[name], version, name);
+		assert.equal(standaloneLock.packages[`node_modules/${name}`].version, version, name);
+	}
+});
 
 async function fixture(context) {
 	const root = await mkdtemp(path.join(tmpdir(), "worker-artifact-test-"));
 	context.after(() => rm(root, { recursive: true, force: true }));
 	const native = "node_modules/onnxruntime-node/bin/napi-v6/linux/arm64";
 	const required = [...workerRequiredPaths, `${native}/onnxruntime_binding.node`, `${native}/libonnxruntime.so.1`];
-	for (const name of ["@huggingface/tokenizers", "onnxruntime-node", "onnxruntime-web", "wink-nlp", "wink-eng-lite-web-model", "zod"]) required.push(`node_modules/${name}/package.json`);
+	for (const name of [
+		"@huggingface/tokenizers",
+		"onnxruntime-node",
+		"onnxruntime-web",
+		"wink-nlp",
+		"wink-eng-lite-web-model",
+		"zod"
+	]) required.push(`node_modules/${name}/package.json`);
 	for (const filename of required) {
 		await mkdir(path.dirname(path.join(root, filename)), { recursive: true });
 		await writeFile(path.join(root, filename), "synthetic artifact fixture");
@@ -52,8 +75,17 @@ test("worker rejects unreviewed native targets", async (context) => {
 });
 test("worker source identity cannot be substituted", async (context) => {
 	const root = await fixture(context);
-	await writeFile(path.join(root, ".worker-manifest.json"), JSON.stringify({ schemaVersion: 1, service: "isthereconsensus.org-search-worker", source: { commit: "a".repeat(40), dirty: false } }));
-	await assert.rejects(verifyWorkerArtifact(root, { expectedCommit: "b".repeat(40) }));
+	await writeFile(path.join(root, ".worker-manifest.json"), JSON.stringify({
+		schemaVersion: 1,
+		service: "isthereconsensus.org-search-worker",
+		source: {
+			commit: "a".repeat(40),
+			dirty: false
+		}
+	}));
+	await assert.rejects(verifyWorkerArtifact(root, {
+		expectedCommit: "b".repeat(40)
+	}));
 });
 test("worker requires its offline WASM assets independently", async (context) => {
 	const root = await fixture(context);

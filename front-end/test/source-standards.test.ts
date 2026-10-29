@@ -17,21 +17,21 @@ describe("source standards", () => {
 		const standard = getSourceStandard("climate-and-environment");
 
 		assert.equal(
-			standard.primaryAnchors.some((anchor) => anchor.name === "Skeptical Science"),
+			standard.primaryAnchors.some(anchor => anchor.name === "Skeptical Science"),
 			false
 		);
 		assert.ok(
 			standard.secondaryAnchors.some(
-				(anchor) =>
-					anchor.name === "Skeptical Science" &&
-					/supporting rebuttal library/i.test(anchor.note) &&
-					/after/i.test(anchor.note)
+				anchor =>
+					anchor.name === "Skeptical Science"
+					&& /supporting rebuttal library/i.test(anchor.note)
+					&& /after/i.test(anchor.note)
 			)
 		);
 		assert.match(standard.supportContextRule, /Skeptical Science rebuttals/);
 		assert.ok(
 			standard.sourceHierarchy.some(
-				(tier) => /Rebuttal explainers/.test(tier.title) && /rebuttal pages do not outrank/i.test(tier.body)
+				tier => /Rebuttal explainers/.test(tier.title) && /rebuttal pages do not outrank/i.test(tier.body)
 			)
 		);
 	});
@@ -42,13 +42,13 @@ describe("source standards", () => {
 		assert.match(standard.supportContextRule, /AI-generated literature summaries/);
 		assert.ok(
 			standard.sourceHierarchy.some(
-				(tier) =>
-					/Discovery tools/.test(tier.title) &&
-					/Consensus\.app/.test(tier.body) &&
-					/underlying sources need direct verification/i.test(tier.body)
+				tier =>
+					/Discovery tools/.test(tier.title)
+					&& /Consensus\.app/.test(tier.body)
+					&& /underlying sources need direct verification/i.test(tier.body)
 			)
 		);
-		assert.ok(standard.avoidOverweighting.some((item) => /AI search summaries/.test(item)));
+		assert.ok(standard.avoidOverweighting.some(item => /AI search summaries/.test(item)));
 	});
 
 	it("renders topic-specific source-standard anchors on the reference page", () => {
@@ -59,14 +59,14 @@ describe("source standards", () => {
 		assert.match(source, /function openHashTarget\(\)/);
 		assert.match(source, /target instanceof HTMLDetailsElement/);
 		assert.ok(sourceStandardList.length > 0);
-		assert.ok(sourceStandardList.every((standard) => standard.slug && standard.summary));
+		assert.ok(sourceStandardList.every(standard => standard.slug && standard.summary));
 	});
 
 	it("keeps the reference framing readable for first-time visitors", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/source-standards.vue"), "utf8");
-		const topicNotesIndex = source.indexOf('<section class="topic-standards-section">');
-		const crossCuttingIndex = source.indexOf('<section class="panel panel--soft">');
-		const usageIndex = source.indexOf('<section class="panel">');
+		const topicNotesIndex = source.indexOf("<section class=\"topic-standards-section\">");
+		const crossCuttingIndex = source.indexOf("<section class=\"panel panel--soft\">");
+		const usageIndex = source.indexOf("<section class=\"panel\">");
 
 		assert.match(source, /<h1>Topic sourcing notes<\/h1>/);
 		assert.doesNotMatch(source, /Use this reference to see why/);

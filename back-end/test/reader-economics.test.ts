@@ -8,7 +8,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerEconomicsClaims.find(claim => claim.slug === readerEconomicsSlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 const closeTo = (actual: number, expected: number) => assert.ok(Math.abs(actual - expected) < 1e-9);
 
 describe("economic measurement expansion", () => {
@@ -48,6 +54,7 @@ describe("economic measurement expansion", () => {
 				assert.equal(source.evidenceProfile.studyDesign, "not_coded");
 				assert.equal(source.evidenceProfile.reviewer.reviewedById, undefined);
 				assert.equal(source.citationCheckedAt!.toISOString(), economicsCheckedAt);
+				assert.ok(source.statusSources);
 				assert.ok(source.statusSources.includes(entry.url!));
 			}
 		}
@@ -86,7 +93,10 @@ describe("economic measurement expansion", () => {
 		closeTo(100 * 4 / (54 + 4), 6.896551724137931);
 		closeTo(100 * (6 + 2 + 4) / (60 + 2), 19.35483870967742);
 		assert.notEqual(100 * 12 / 62, 100 * 12 / 60);
-		const coveredJobs = [{ person: "worker-one", job: "position-one" }, { person: "worker-one", job: "position-two" }];
+		const coveredJobs = [
+			{ person: "worker-one", job: "position-one" },
+			{ person: "worker-one", job: "position-two" }
+		];
 		assert.equal(coveredJobs.length, 2);
 		assert.equal(new Set(coveredJobs.map(job => job.person)).size, 1);
 		assert.match(textFor("unemployedShare"), /temporary-layoff/);
@@ -142,7 +152,12 @@ describe("economic measurement expansion", () => {
 		const newSlugs = new Set(readerEconomicsClaims.map(claim => claim.slug));
 		const existing = defaultClaims.filter(claim => claim.topicSlug === "economics-and-social-policy" && !newSlugs.has(claim.slug));
 		assert.equal(existing.length, 20);
-		const oldGroups = ["work-wages-leave-and-care", "cash-poverty-and-child-development", "housing-supply-stability-and-rents", "markets-prices-and-public-externalities"];
+		const oldGroups = [
+			"work-wages-leave-and-care",
+			"cash-poverty-and-child-development",
+			"housing-supply-stability-and-rents",
+			"markets-prices-and-public-externalities"
+		];
 		for (const claim of existing) {
 			const memberships = getAtlasCollectionMemberships(claim.topicSlug, claim.slug);
 			assert.equal(memberships.length, 1);
@@ -150,9 +165,28 @@ describe("economic measurement expansion", () => {
 		}
 		assert.deepEqual(buildPublicAtlasCollections("economics-and-social-policy", existing.map(claim => claim.slug)).map(group => group.slug), oldGroups);
 		const groups = {
-			"prices-baskets-and-real-income": ["disinflation", "personalBasket", "housing", "basePeriod", "realPay", "seasonal"],
-			"employment-units-and-denominators": ["unemployedShare", "fallingUnemployment", "payrollPeople", "surveyConflict", "underutilization"],
-			"national-output-and-growth-accounting": ["nominalGdp", "annualGdp", "valueAdded", "imports", "chainAdd"],
+			"prices-baskets-and-real-income": [
+				"disinflation",
+				"personalBasket",
+				"housing",
+				"basePeriod",
+				"realPay",
+				"seasonal"
+			],
+			"employment-units-and-denominators": [
+				"unemployedShare",
+				"fallingUnemployment",
+				"payrollPeople",
+				"surveyConflict",
+				"underutilization"
+			],
+			"national-output-and-growth-accounting": [
+				"nominalGdp",
+				"annualGdp",
+				"valueAdded",
+				"imports",
+				"chainAdd"
+			],
 			"per-person-and-international-comparisons": ["perCapita", "pppForecast"]
 		};
 		assert.equal(Object.values(groups).flat().length, 18);
@@ -160,7 +194,26 @@ describe("economic measurement expansion", () => {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("economics-and-social-policy", readerEconomicsSlugs[key]!).map(membership => membership.slug), [group]);
 		}
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { disinflation: "falling inflation prices", personalBasket: "household CPI inflation", housing: "CPI buying home", basePeriod: "CPI reference bases", realPay: "pay rise purchasing power", seasonal: "seasonally adjusted inflation", unemployedShare: "unemployment everyone without job", fallingUnemployment: "falling unemployment found work", payrollPeople: "payroll jobs employed people", surveyConflict: "household payroll surveys disagreement", underutilization: "unemployment wants more work", nominalGdp: "nominal GDP goods produced", annualGdp: "annualized quarterly GDP growth", valueAdded: "GDP every sale production", imports: "subtract imports domestic output", chainAdd: "chained dollar GDP components", perCapita: "GDP per capita income wellbeing", pppForecast: "purchasing power parity exchange rate" };
+		const queries = {
+			disinflation: "falling inflation prices",
+			personalBasket: "household CPI inflation",
+			housing: "CPI buying home",
+			basePeriod: "CPI reference bases",
+			realPay: "pay rise purchasing power",
+			seasonal: "seasonally adjusted inflation",
+			unemployedShare: "unemployment everyone without job",
+			fallingUnemployment: "falling unemployment found work",
+			payrollPeople: "payroll jobs employed people",
+			surveyConflict: "household payroll surveys disagreement",
+			underutilization: "unemployment wants more work",
+			nominalGdp: "nominal GDP goods produced",
+			annualGdp: "annualized quarterly GDP growth",
+			valueAdded: "GDP every sale production",
+			imports: "subtract imports domestic output",
+			chainAdd: "chained dollar GDP components",
+			perCapita: "GDP per capita income wellbeing",
+			pppForecast: "purchasing power parity exchange rate"
+		};
 		for (const [key, query] of Object.entries(queries)) assert.ok(search(query).some(result => result.claim.slug === readerEconomicsSlugs[key]), query);
 	});
 });

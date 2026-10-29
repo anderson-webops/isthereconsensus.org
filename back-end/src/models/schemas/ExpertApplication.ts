@@ -21,24 +21,76 @@ export interface IExpertApplication {
 
 const expertApplicationSchema: Schema<IExpertApplication> = new Schema(
 	{
-		user: { type: Schema.Types.ObjectId, ref: "User", required: true, unique: true, index: true },
-		name: { type: String, required: true, trim: true, maxlength: 120 },
-		affiliation: { type: String, default: "", trim: true, maxlength: 160 },
-		credentialLabel: { type: String, required: true, trim: true, maxlength: 160 },
-		expertiseAreas: { type: [String], default: [] },
-		evidenceLinks: { type: [String], default: [] },
-		statement: { type: String, required: true, trim: true, maxlength: 4000 },
-		conflictDisclosure: { type: String, default: "", trim: true, maxlength: 1200 },
-		fundingDisclosure: { type: String, default: "", trim: true, maxlength: 1200 },
+		user: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+			unique: true,
+			index: true
+		},
+		name: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 120
+		},
+		affiliation: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 160
+		},
+		credentialLabel: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 160
+		},
+		expertiseAreas: {
+			type: [String],
+			default: []
+		},
+		evidenceLinks: {
+			type: [String],
+			default: []
+		},
+		statement: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 4000
+		},
+		conflictDisclosure: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1200
+		},
+		fundingDisclosure: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1200
+		},
 		attestsDisclosurePolicy: { type: Boolean, default: false },
 		attestsReviewStandards: { type: Boolean, default: false },
 		status: {
 			type: String,
 			default: "pending",
-			enum: ["pending", "approved", "rejected", "needs-info"],
+			enum: [
+				"pending",
+				"approved",
+				"rejected",
+				"needs-info"
+			],
 			index: true
 		},
-		reviewNotes: { type: String, default: "", trim: true, maxlength: 2000 },
+		reviewNotes: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 2000
+		},
 		reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
 		reviewedAt: { type: Date }
 	},

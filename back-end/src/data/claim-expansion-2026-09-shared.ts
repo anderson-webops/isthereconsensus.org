@@ -43,7 +43,9 @@ export function september2026TrafficClaim(seed: TrafficClaim): SeedClaim {
 			order: index + 1,
 			stance: stance ?? "supports",
 			isAnchor: index === 0,
-			appraisal: index === 0 ? "high" : "moderate",
+			appraisal: index === 0
+				? "high"
+				: "moderate",
 			citationStatus: "current",
 			citationCheckedAt: september2026TrafficReviewTimestamp,
 			statusSources: [`https://doi.org/${doi}`]

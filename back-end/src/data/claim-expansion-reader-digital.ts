@@ -3,7 +3,16 @@ import type { SeedClaim } from "./claims.js";
 export const digitalCheckedAt = "2026-10-05T15:40:09.000Z";
 
 function reference(title: string, publisher: string, year: number, url: string, note: string): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title, publisher, year, url, note, stance: "supports", order: 1 };
+	return {
+		kind: "technical_reference",
+		title,
+		publisher,
+		year,
+		url,
+		note,
+		stance: "supports",
+		order: 1
+	};
 }
 
 export const readerDigitalSources = {
@@ -274,8 +283,15 @@ export const readerDigitalClaims: SeedClaim[] = reviews.map((review, index) => (
 	misconceptions: [review.title, "A named security mechanism is not a certification of every property of the surrounding system."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "implementation", detail: review.qualification }],
-	searchDatabases: ["Original IETF specifications and architecture", "Original NIST guidance and definitions", "Original W3C Privacy Working Group Note", "Consensus.app fingerprinting discovery; inaccessible original papers not used as evidence"],
+	uncertaintyDrivers: [
+		{ type: "implementation", detail: review.qualification }
+	],
+	searchDatabases: [
+		"Original IETF specifications and architecture",
+		"Original NIST guidance and definitions",
+		"Original W3C Privacy Working Group Note",
+		"Consensus.app fingerprinting discovery; inaccessible original papers not used as evidence"
+	],
 	searchCutoffAt: digitalCheckedAt,
 	inclusionRules: ["Distinguish confidentiality, integrity, identity, availability and factual trust.", "Name the protected information, observer, state and control boundary; retain publication dates and source status."],
 	exclusionRules: ["No attack instructions, destructive commands, private mail or incident diagnosis.", "No invented reader requests, current product rankings, expert polls, fingerprinting percentages or universally guaranteed protection."],
@@ -285,12 +301,51 @@ export const readerDigitalClaims: SeedClaim[] = reviews.map((review, index) => (
 	independenceSummary: "Standards and guidance can share authors, institutional provenance and references. MLS protocol and architecture describe one related design; NIST documents are not independent efficacy trials. The legacy confidence score is editorial, not a measured fraction of researchers agreeing or attacks prevented. No actual reader demand or contemporary product population was measured.",
 	coiSummary: "IETF and W3C contributors include industry participants; the sanitization reference includes a semiconductor-industry coauthor. Institutional provenance is not product independence or certification. Funding and conflicts were not exhaustively audited; no vendor is endorsed.",
 	lastRetractionCheckAt: digitalCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "A technical distinction or conditional mechanism, not a measured attack-prevention percentage.", certainty: "moderate", limitations: [review.qualification, "No product testing, incident analysis or expert-agreement survey"] }],
-	institutionalAnchors: [{ name: readerDigitalSources[review.sources[0]!].publisher, role: "Technical scope reference, not formal scientific consensus, a clinical guideline or product approval" }],
-	changeLog: [{ date: digitalCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: `fa45f3a0-82b1-485f-bbe5-f31cd74a${String(index + 1).padStart(4, "0")}`, date: digitalCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Original corrections and errata for cited references"], guidelineMonitors: ["IETF, NIST and W3C source-status or scope revisions"], triggerRules: ["Reassess a verified source revision or applicability finding that changes the stated boundary."] },
-	sources: review.sources.map((key, index) => ({ ...readerDigitalSources[key], order: index + 1, isAnchor: index === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: digitalCheckedAt, statusSources: [readerDigitalSources[key].url!] }))
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "A technical distinction or conditional mechanism, not a measured attack-prevention percentage.",
+			certainty: "moderate",
+			limitations: [review.qualification, "No product testing, incident analysis or expert-agreement survey"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerDigitalSources[review.sources[0]!].publisher, role: "Technical scope reference, not formal scientific consensus, a clinical guideline or product approval" }
+	],
+	changeLog: [
+		{ date: digitalCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: `fa45f3a0-82b1-485f-bbe5-f31cd74a${String(index + 1).padStart(4, "0")}`,
+		date: digitalCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Original corrections and errata for cited references"],
+		guidelineMonitors: ["IETF, NIST and W3C source-status or scope revisions"],
+		triggerRules: ["Reassess a verified source revision or applicability finding that changes the stated boundary."]
+	},
+	sources: review.sources.map((key, index) => ({
+		...readerDigitalSources[key],
+		order: index + 1,
+		isAnchor: index === 0,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: digitalCheckedAt,
+		statusSources: [readerDigitalSources[key].url!]
+	}))
 }));
 
-export const readerDigitalGaps = reviews.map(review => ({ slug: review.slug, gap: review.gap, relatedExistingSlugs: ["do-passkeys-prevent-phishing-and-all-account-takeovers", "does-installing-a-password-manager-eliminate-password-reuse", "do-synced-passkeys-prevent-lockout-when-a-device-is-lost"] }));
+export const readerDigitalGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: review.gap,
+	relatedExistingSlugs: ["do-passkeys-prevent-phishing-and-all-account-takeovers", "does-installing-a-password-manager-eliminate-password-reuse", "do-synced-passkeys-prevent-lockout-when-a-device-is-lost"]
+}));

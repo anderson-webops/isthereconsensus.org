@@ -10,7 +10,10 @@ async function fixture(context) {
 	await mkdir(workingArea, { recursive: true, mode: 0o700 });
 	const root = await mkdtemp(path.join(workingArea, "evidence-unit-"));
 	context.after(() => rm(root, { recursive: true, force: true }));
-	return { root, output: path.join(root, ".ai-work/runs/result") };
+	return {
+		root,
+		output: path.join(root, ".ai-work/runs/result")
+	};
 }
 
 test("evidence output is private and has an exclusive owner", async (context) => {
@@ -57,30 +60,80 @@ test("evidence does not change an existing nonprivate directory", async (context
 test("ownership records only typed process identities", async (context) => {
 	const { root, output } = await fixture(context);
 	await prepareSearchGateOutput(root, output);
-	const state = { parentPid: process.pid, phase: "setup", scratch: path.join(root, ".ai-work/runs/sg-test"), children: [{ pid: process.pid, role: "model" }] };
+	const state = {
+		parentPid: process.pid,
+		phase: "setup",
+		scratch: path.join(root, ".ai-work/runs/sg-test"),
+		children: [
+			{ pid: process.pid, role: "model" }
+		]
+	};
 	writeSearchGateOwnership(output, state);
 	const recorded = JSON.parse(await readFile(path.join(output, "ownership.json")));
 	assert.equal(recorded.parentPid, process.pid);
 	assert.deepEqual(recorded.children, state.children);
 	assert.throws(() => writeSearchGateOwnership(output, { ...state, authorization: "not-saved" }));
-	assert.throws(() => writeSearchGateOwnership(output, { ...state, children: [{ pid: process.pid, role: "model", cookie: "not-saved" }] }));
+	assert.throws(() => writeSearchGateOwnership(output, {
+		...state,
+		children: [
+			{ pid: process.pid, role: "model", cookie: "not-saved" }
+		]
+	}));
 	assert.equal(await readFile(path.join(output, "ownership.json"), "utf8"), `${JSON.stringify(recorded, null, 2)}\n`);
 });
 
 test("ownership rejects invalid process identifiers and unknown roles", async (context) => {
 	const { root, output } = await fixture(context);
 	await prepareSearchGateOutput(root, output);
-	const state = { parentPid: process.pid, phase: "setup", scratch: path.join(root, ".ai-work/runs/sg-test"), children: [] };
-	for (const invalid of [{ ...state, parentPid: 0 }, { ...state, phase: "unknown/path" }, { ...state, children: [{ pid: 0, role: "model" }] }, { ...state, children: [{ pid: process.pid, role: "unknown" }] }]) assert.throws(() => writeSearchGateOwnership(output, invalid));
+	const state = {
+		parentPid: process.pid,
+		phase: "setup",
+		scratch: path.join(root, ".ai-work/runs/sg-test"),
+		children: []
+	};
+	for (const invalid of [
+		{ ...state, parentPid: 0 },
+		{ ...state, phase: "unknown/path" },
+		{
+			...state,
+			children: [
+				{ pid: 0, role: "model" }
+			]
+		},
+		{
+			...state,
+			children: [
+				{ pid: process.pid, role: "unknown" }
+			]
+		}
+	]) assert.throws(() => writeSearchGateOwnership(output, invalid));
 });
 
 test("retained titles require every original slug first on both actual routes", () => {
-	const claims = [{ slug: "first" }, { slug: "second" }];
-	const rows = claims.flatMap(claim => ["claims", "search/suggestions"].map(route => ({ kind: "title", route, slug: claim.slug, passed: true, predicted: [claim.slug] })));
+	const claims = [
+		{ slug: "first" },
+		{ slug: "second" }
+	];
+	const rows = claims.flatMap(claim => ["claims", "search/suggestions"].map(route => ({
+		kind: "title",
+		route,
+		slug: claim.slug,
+		passed: true,
+		predicted: [claim.slug]
+	})));
 	assert.equal(validateCompletedTitleRows(rows, claims), 4);
 	assert.throws(() => validateCompletedTitleRows(rows.slice(0, 3), claims));
 	assert.throws(() => validateCompletedTitleRows(rows.toReversed(), claims));
-	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0 ? { ...row, predicted: ["unrelated", row.slug] } : row), claims));
-	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0 ? { ...row, passed: false } : row), claims));
-	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0 ? { ...row, token: "not-accepted" } : row), claims));
+	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0
+		? {
+				...row,
+				predicted: ["unrelated", row.slug]
+			}
+		: row), claims));
+	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0
+		? { ...row, passed: false }
+		: row), claims));
+	assert.throws(() => validateCompletedTitleRows(rows.map((row, index) => index === 0
+		? { ...row, token: "not-accepted" }
+		: row), claims));
 });

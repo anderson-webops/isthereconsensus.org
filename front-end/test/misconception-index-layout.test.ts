@@ -9,9 +9,9 @@ const testDir = dirname(fileURLToPath(import.meta.url));
 describe("misconception and explainer index layout copy", () => {
 	it("keeps misconception library framing reader-facing", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
-		const gridIndex = source.indexOf('<section class="misconception-grid">');
+		const gridIndex = source.indexOf("<section class=\"misconception-grid\">");
 		const libraryFitIndex = source.indexOf(
-			'<details class="misconception-panel misconception-panel--soft misconception-panel--disclosure">'
+			"<details class=\"misconception-panel misconception-panel--soft misconception-panel--disclosure\">"
 		);
 
 		assert.match(source, /<h1>Common misconceptions<\/h1>/);
@@ -43,11 +43,11 @@ describe("misconception and explainer index layout copy", () => {
 
 	it("keeps each misconception title visible while its answer stays optional", () => {
 		const source = readFileSync(join(testDir, "..", "src/pages/misconceptions.vue"), "utf8");
-		const detailsIndex = source.indexOf('<details v-for="item in misconceptionModules"');
-		const summaryIndex = source.indexOf('<summary class="misconception-card__summary">', detailsIndex);
-		const detailsBodyIndex = source.indexOf('<div class="misconception-card__body">', summaryIndex);
+		const detailsIndex = source.indexOf("<details v-for=\"item in misconceptionModules\"");
+		const summaryIndex = source.indexOf("<summary class=\"misconception-card__summary\">", detailsIndex);
+		const detailsBodyIndex = source.indexOf("<div class=\"misconception-card__body\">", summaryIndex);
 		const linksIndex = source.indexOf(
-			'<section class="misconception-card__section misconception-card__section--links">'
+			"<section class=\"misconception-card__section misconception-card__section--links\">"
 		);
 		const detailsCloseIndex = source.indexOf("</details>", detailsBodyIndex);
 

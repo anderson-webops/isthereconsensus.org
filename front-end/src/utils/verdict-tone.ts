@@ -24,7 +24,7 @@ const bandTones: Record<ClaimConsensusBand, VerdictTone> = {
 	unclear: "unclear"
 };
 
-// One colour family per verdict so readers can scan agreement before reading labels.
+/** One colour family per verdict so readers can scan agreement before reading labels. */
 export function verdictTone(claim: VerdictSource | null | undefined): VerdictTone {
 	const supportLabel = claim?.evidenceLandscape?.supportLabel;
 	if (supportLabel && supportLabel in supportLabelTones) return supportLabelTones[supportLabel];
@@ -42,10 +42,18 @@ const certaintySteps: Record<ClaimEvidenceCertainty, number> = {
 export const CERTAINTY_STEP_COUNT = 4;
 
 export function certaintyStep(certainty: ClaimEvidenceCertainty | null | undefined) {
-	return certainty && certainty in certaintySteps ? certaintySteps[certainty] : 0;
+	return certainty && certainty in certaintySteps
+		? certaintySteps[certainty]
+		: 0;
 }
 
-export const VERDICT_TONE_ORDER: readonly VerdictTone[] = ["strong", "broad", "debate", "unclear", "against"];
+export const VERDICT_TONE_ORDER: readonly VerdictTone[] = [
+	"strong",
+	"broad",
+	"debate",
+	"unclear",
+	"against"
+];
 
 export const VERDICT_TONE_LABELS: Record<VerdictTone, string> = {
 	strong: "Strong consensus",
@@ -61,7 +69,7 @@ export function verdictMix(claims: readonly VerdictSource[]) {
 		const tone = verdictTone(claim);
 		counts.set(tone, (counts.get(tone) ?? 0) + 1);
 	}
-	return VERDICT_TONE_ORDER.filter((tone) => counts.has(tone)).map((tone) => ({
+	return VERDICT_TONE_ORDER.filter(tone => counts.has(tone)).map(tone => ({
 		tone,
 		count: counts.get(tone) ?? 0,
 		label: VERDICT_TONE_LABELS[tone]

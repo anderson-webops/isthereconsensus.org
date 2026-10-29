@@ -34,9 +34,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The general conclusion is stable, but exact risk varies by tumor, needle route, technique, follow-up, and whether microscopic deposits ever become clinically important.",
 		sources: [
-			["guideline", "Common Cancer Myths and Misconceptions", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/risk/myths", "NCI explains that the chance surgery or biopsy causes cancer to spread is extremely low and that standard precautions reduce it."],
-			["systematic_review", "Tumor Seeding With Needle Biopsy of Hepatocellular Carcinoma: A Systematic Review", "The American Journal of Gastroenterology", 2025, "10.14309/ajg.0000000000003210", "Tumor-specific synthesis estimates a low but nonzero needle-tract seeding rate after biopsy for hepatocellular carcinoma."],
-			["systematic_review", "Does the taking of biopsies affect the metastatic potential of tumours? A systematic review of reports on veterinary and human cases and animal models", "The Veterinary Journal", 2011, "10.1016/j.tvjl.2011.04.010", "Cross-species review documents possible mechanisms and cases while showing why possibility should not be mistaken for a common clinical outcome."]
+			[
+				"guideline",
+				"Common Cancer Myths and Misconceptions",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/risk/myths",
+				"NCI explains that the chance surgery or biopsy causes cancer to spread is extremely low and that standard precautions reduce it."
+			],
+			[
+				"systematic_review",
+				"Tumor Seeding With Needle Biopsy of Hepatocellular Carcinoma: A Systematic Review",
+				"The American Journal of Gastroenterology",
+				2025,
+				"10.14309/ajg.0000000000003210",
+				"Tumor-specific synthesis estimates a low but nonzero needle-tract seeding rate after biopsy for hepatocellular carcinoma."
+			],
+			[
+				"systematic_review",
+				"Does the taking of biopsies affect the metastatic potential of tumours? A systematic review of reports on veterinary and human cases and animal models",
+				"The Veterinary Journal",
+				2011,
+				"10.1016/j.tvjl.2011.04.010",
+				"Cross-species review documents possible mechanisms and cases while showing why possibility should not be mistaken for a common clinical outcome."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence against sugar elimination as a cure is strong. Trials of ketogenic and other metabolic diets remain small and heterogeneous, with no established survival benefit for routine cancer care.",
 		sources: [
-			["guideline", "Common Cancer Myths and Misconceptions", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/risk/myths", "NCI distinguishes cancer cells' glucose use from the unsupported claim that eating or avoiding sugar controls tumor growth."],
-			["systematic_review", "The use of ketogenic diets in cancer patients: a systematic review", "Clinical and Experimental Medicine", 2021, "10.1007/s10238-021-00710-2", "Review finds limited, heterogeneous clinical evidence and no basis for replacing established treatment with a ketogenic diet."],
-			["systematic_review", "A systematic review of the use of ketogenic diets in adult patients with cancer", "Journal of Human Nutrition and Dietetics", 2018, "10.1111/jhn.12587", "Review describes biological rationale but emphasizes the gap between mechanism, early clinical research, and proven patient benefit."]
+			[
+				"guideline",
+				"Common Cancer Myths and Misconceptions",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/risk/myths",
+				"NCI distinguishes cancer cells' glucose use from the unsupported claim that eating or avoiding sugar controls tumor growth."
+			],
+			[
+				"systematic_review",
+				"The use of ketogenic diets in cancer patients: a systematic review",
+				"Clinical and Experimental Medicine",
+				2021,
+				"10.1007/s10238-021-00710-2",
+				"Review finds limited, heterogeneous clinical evidence and no basis for replacing established treatment with a ketogenic diet."
+			],
+			[
+				"systematic_review",
+				"A systematic review of the use of ketogenic diets in adult patients with cancer",
+				"Journal of Human Nutrition and Dietetics",
+				2018,
+				"10.1111/jhn.12587",
+				"Review describes biological rationale but emphasizes the gap between mechanism, early clinical research, and proven patient benefit."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Randomizing patients to abandon effective care would be unethical, so replacement-harm estimates are observational and may include selection differences. The direction is nevertheless consistent, large, and biologically plausible.",
 		sources: [
-			["guideline", "Complementary and Alternative Medicine", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/treatment/cam", "NCI distinguishes complementary from alternative use and advises discussing products and practices with the cancer-care team."],
-			["landmark_study", "Use of Alternative Medicine for Cancer and Its Impact on Survival", "JNCI: Journal of the National Cancer Institute", 2018, "10.1093/jnci/djx145", "National cohort study found greater mortality among patients using alternative medicine instead of conventional cancer treatment."],
-			["landmark_study", "Complementary Medicine, Refusal of Conventional Cancer Therapy, and Survival Among Patients With Curable Cancers", "JAMA Oncology", 2018, "10.1001/jamaoncol.2018.2487", "Observational analysis links complementary-medicine use with refusal of conventional care and poorer survival, clarifying treatment substitution as a major pathway."]
+			[
+				"guideline",
+				"Complementary and Alternative Medicine",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/treatment/cam",
+				"NCI distinguishes complementary from alternative use and advises discussing products and practices with the cancer-care team."
+			],
+			[
+				"landmark_study",
+				"Use of Alternative Medicine for Cancer and Its Impact on Survival",
+				"JNCI: Journal of the National Cancer Institute",
+				2018,
+				"10.1093/jnci/djx145",
+				"National cohort study found greater mortality among patients using alternative medicine instead of conventional cancer treatment."
+			],
+			[
+				"landmark_study",
+				"Complementary Medicine, Refusal of Conventional Cancer Therapy, and Survival Among Patients With Curable Cancers",
+				"JAMA Oncology",
+				2018,
+				"10.1001/jamaoncol.2018.2487",
+				"Observational analysis links complementary-medicine use with refusal of conventional care and poorer survival, clarifying treatment substitution as a major pathway."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Quality-of-life and symptom benefits are well supported, though programs and patient populations vary. Survival estimates are less consistent and should not be treated as the primary expected effect.",
 		sources: [
-			["guideline", "Palliative Care in Cancer", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/advanced-cancer/care-choices/palliative-care-fact-sheet", "NCI explains that palliative care can accompany cancer treatment from diagnosis and is not limited to end-of-life care."],
-			["meta_analysis", "Effects of early palliative care on patients with incurable cancer: A meta-analysis and systematic review", "European Journal of Cancer Care", 2022, "10.1111/ecc.13620", "Synthesis supports quality-of-life, mood, and symptom benefits while documenting heterogeneity and evidence limitations."],
-			["landmark_study", "Early Palliative Care for Patients with Metastatic Non-Small-Cell Lung Cancer", "The New England Journal of Medicine", 2010, "10.1056/NEJMoa1000678", "Randomized trial found better quality of life and mood, less aggressive end-of-life care, and no survival shortening in one cancer population."]
+			[
+				"guideline",
+				"Palliative Care in Cancer",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/advanced-cancer/care-choices/palliative-care-fact-sheet",
+				"NCI explains that palliative care can accompany cancer treatment from diagnosis and is not limited to end-of-life care."
+			],
+			[
+				"meta_analysis",
+				"Effects of early palliative care on patients with incurable cancer: A meta-analysis and systematic review",
+				"European Journal of Cancer Care",
+				2022,
+				"10.1111/ecc.13620",
+				"Synthesis supports quality-of-life, mood, and symptom benefits while documenting heterogeneity and evidence limitations."
+			],
+			[
+				"landmark_study",
+				"Early Palliative Care for Patients with Metastatic Non-Small-Cell Lung Cancer",
+				"The New England Journal of Medicine",
+				2010,
+				"10.1056/NEJMoa1000678",
+				"Randomized trial found better quality of life and mood, less aggressive end-of-life care, and no survival shortening in one cancer population."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Supportive outcomes are high-confidence across many trials. Less evidence addresses uncommon cancers, severe comorbidity, advanced complications, long-term adherence, recurrence, and survival.",
 		sources: [
-			["consensus_statement", "Exercise Guidelines for Cancer Survivors: Consensus Statement from International Multidisciplinary Roundtable", "Medicine & Science in Sports & Exercise", 2019, "10.1249/MSS.0000000000002116", "International expert review translates trial evidence into exercise prescriptions and safety considerations for common cancer-related outcomes."],
-			["meta_analysis", "Comparative effects of different types of exercise on health-related quality of life during and after active cancer treatment: A systematic review and network meta-analysis", "Journal of Sport and Health Science", 2023, "10.1016/j.jshs.2023.01.002", "Network synthesis compares exercise modes and supports quality-of-life benefit during and after active treatment."],
-			["guideline", "Physical Activity and Cancer Fact Sheet", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/risk/obesity/physical-activity-fact-sheet", "NCI summarizes activity guidance, benefits, and the need to account for cancer-specific health and safety considerations."]
+			[
+				"consensus_statement",
+				"Exercise Guidelines for Cancer Survivors: Consensus Statement from International Multidisciplinary Roundtable",
+				"Medicine & Science in Sports & Exercise",
+				2019,
+				"10.1249/MSS.0000000000002116",
+				"International expert review translates trial evidence into exercise prescriptions and safety considerations for common cancer-related outcomes."
+			],
+			[
+				"meta_analysis",
+				"Comparative effects of different types of exercise on health-related quality of life during and after active cancer treatment: A systematic review and network meta-analysis",
+				"Journal of Sport and Health Science",
+				2023,
+				"10.1016/j.jshs.2023.01.002",
+				"Network synthesis compares exercise modes and supports quality-of-life benefit during and after active treatment."
+			],
+			[
+				"guideline",
+				"Physical Activity and Cancer Fact Sheet",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/risk/obesity/physical-activity-fact-sheet",
+				"NCI summarizes activity guidance, benefits, and the need to account for cancer-specific health and safety considerations."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Most survival evidence is observational because long-term randomized smoking assignment is unethical. Residual confounding and variation across cancers affect magnitude, but the direction is consistent with treatment and biological evidence.",
 		sources: [
-			["guideline", "Harms of Cigarette Smoking and Health Benefits of Quitting", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/risk/tobacco/cessation-fact-sheet", "NCI summarizes immediate and long-term health gains from cessation, including benefit after cancer diagnosis."],
-			["meta_analysis", "Upgrading your best chances: postdiagnosis smoking cessation boosts life expectancy of patients with cancer - a systematic review and meta-analysis", "Tobacco Control", 2025, "10.1136/tc-2024-058873", "Survival synthesis across cancer cohorts finds lower mortality among patients who stop smoking, while noting heterogeneity and publication bias."],
-			["meta_analysis", "The effectiveness of smoking cessation interventions after cancer diagnosis: A systematic review and meta-analysis", "Journal of Cancer Policy", 2024, "10.1016/j.jcpo.2023.100463", "Intervention synthesis assesses how cessation support performs after diagnosis and where oncology delivery can improve."]
+			[
+				"guideline",
+				"Harms of Cigarette Smoking and Health Benefits of Quitting",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/risk/tobacco/cessation-fact-sheet",
+				"NCI summarizes immediate and long-term health gains from cessation, including benefit after cancer diagnosis."
+			],
+			[
+				"meta_analysis",
+				"Upgrading your best chances: postdiagnosis smoking cessation boosts life expectancy of patients with cancer - a systematic review and meta-analysis",
+				"Tobacco Control",
+				2025,
+				"10.1136/tc-2024-058873",
+				"Survival synthesis across cancer cohorts finds lower mortality among patients who stop smoking, while noting heterogeneity and publication bias."
+			],
+			[
+				"meta_analysis",
+				"The effectiveness of smoking cessation interventions after cancer diagnosis: A systematic review and meta-analysis",
+				"Journal of Cancer Policy",
+				2024,
+				"10.1016/j.jcpo.2023.100463",
+				"Intervention synthesis assesses how cessation support performs after diagnosis and where oncology delivery can improve."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The absence of demonstrated average-risk benefit and known downstream harms make the current recommendation stable. Future biomarkers could change the balance only if outcome trials show more than earlier detection.",
 		sources: [
-			["guideline", "Recommendation: Pancreatic Cancer: Screening", "U.S. Preventive Services Task Force", 2019, "https://www.uspreventiveservicestaskforce.org/uspstf/document/RecommendationStatementFinal/pancreatic-cancer-screening", "USPSTF recommends against screening asymptomatic adults not known to be at high risk and separates this population from inherited-risk surveillance."],
-			["systematic_review", "Screening for Pancreatic Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force", "JAMA", 2019, "10.1001/jama.2019.6190", "Evidence review found no direct mortality evidence for average-risk screening and documented false positives and treatment harms."],
-			["guideline", "Screening for Pancreatic Cancer: US Preventive Services Task Force Reaffirmation Recommendation Statement", "JAMA", 2019, "10.1001/jama.2019.10232", "Recommendation statement weighs low disease prevalence, uncertain test accuracy, absent outcome benefit, and potentially substantial treatment harms."]
+			[
+				"guideline",
+				"Recommendation: Pancreatic Cancer: Screening",
+				"U.S. Preventive Services Task Force",
+				2019,
+				"https://www.uspreventiveservicestaskforce.org/uspstf/document/RecommendationStatementFinal/pancreatic-cancer-screening",
+				"USPSTF recommends against screening asymptomatic adults not known to be at high risk and separates this population from inherited-risk surveillance."
+			],
+			[
+				"systematic_review",
+				"Screening for Pancreatic Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				"JAMA",
+				2019,
+				"10.1001/jama.2019.6190",
+				"Evidence review found no direct mortality evidence for average-risk screening and documented false positives and treatment harms."
+			],
+			[
+				"guideline",
+				"Screening for Pancreatic Cancer: US Preventive Services Task Force Reaffirmation Recommendation Statement",
+				"JAMA",
+				2019,
+				"10.1001/jama.2019.10232",
+				"Recommendation statement weighs low disease prevalence, uncertain test accuracy, absent outcome benefit, and potentially substantial treatment harms."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Mortality evidence from large trials is high-confidence for current strategies. It does not rule out future tests with different biology, accuracy, treatment pathways, or demonstrated mortality benefit.",
 		sources: [
-			["guideline", "Recommendation: Ovarian Cancer: Screening", "U.S. Preventive Services Task Force", 2018, "https://www.uspreventiveservicestaskforce.org/uspstf/document/RecommendationStatementFinal/ovarian-cancer-screening", "USPSTF recommends against screening asymptomatic average-risk women because trials show no mortality benefit and important false-positive surgical harms."],
-			["systematic_review", "Screening for Ovarian Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force", "JAMA", 2018, "10.1001/jama.2017.21421", "Systematic review synthesizes randomized screening outcomes and quantifies downstream testing and surgery."],
-			["landmark_study", "Ovarian cancer population screening and mortality after long-term follow-up in the UK Collaborative Trial of Ovarian Cancer Screening (UKCTOCS): a randomised controlled trial", "The Lancet", 2021, "10.1016/S0140-6736(21)00731-5", "Long-term randomized follow-up found no significant mortality reduction despite stage changes in one screening strategy."]
+			[
+				"guideline",
+				"Recommendation: Ovarian Cancer: Screening",
+				"U.S. Preventive Services Task Force",
+				2018,
+				"https://www.uspreventiveservicestaskforce.org/uspstf/document/RecommendationStatementFinal/ovarian-cancer-screening",
+				"USPSTF recommends against screening asymptomatic average-risk women because trials show no mortality benefit and important false-positive surgical harms."
+			],
+			[
+				"systematic_review",
+				"Screening for Ovarian Cancer: Updated Evidence Report and Systematic Review for the US Preventive Services Task Force",
+				"JAMA",
+				2018,
+				"10.1001/jama.2017.21421",
+				"Systematic review synthesizes randomized screening outcomes and quantifies downstream testing and surgery."
+			],
+			[
+				"landmark_study",
+				"Ovarian cancer population screening and mortality after long-term follow-up in the UK Collaborative Trial of Ovarian Cancer Screening (UKCTOCS): a randomised controlled trial",
+				"The Lancet",
+				2021,
+				"10.1016/S0140-6736(21)00731-5",
+				"Long-term randomized follow-up found no significant mortality reduction despite stage changes in one screening strategy."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The broad minority estimate is stable, but prevalence depends on cohort selection, gene panels, ancestry representation, variant classification, tumor type, and whether lower-penetrance variants are counted.",
 		sources: [
-			["guideline", "Genetic Testing for Inherited Cancer Risk", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/genetics/genetic-testing-fact-sheet", "NCI explains germline testing, who may benefit, result categories, counseling, family implications, and the distinction between inherited and tumor testing."],
-			["guideline", "The Genetics of Cancer", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/genetics", "NCI estimates that inherited harmful changes account for up to about 10% of cancers and explains that most changes arise during life."],
-			["landmark_study", "Pathogenic germline variants in 10,389 adult cancers", "Cell", 2018, "10.1016/j.cell.2018.03.039", "Large pan-cancer analysis shows clinically important germline findings across cancers without supporting the claim that inherited variants explain most cases."]
+			[
+				"guideline",
+				"Genetic Testing for Inherited Cancer Risk",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/genetics/genetic-testing-fact-sheet",
+				"NCI explains germline testing, who may benefit, result categories, counseling, family implications, and the distinction between inherited and tumor testing."
+			],
+			[
+				"guideline",
+				"The Genetics of Cancer",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/genetics",
+				"NCI estimates that inherited harmful changes account for up to about 10% of cancers and explains that most changes arise during life."
+			],
+			[
+				"landmark_study",
+				"Pathogenic germline variants in 10,389 adult cancers",
+				"Cell",
+				2018,
+				"10.1016/j.cell.2018.03.039",
+				"Large pan-cancer analysis shows clinically important germline findings across cancers without supporting the claim that inherited variants explain most cases."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026CancerCareClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The ordinary-contact conclusion is exceptionally secure. Scientific interest remains in rare iatrogenic or maternal-fetal transfer and naturally contagious tumors in a few nonhuman species.",
 		sources: [
-			["guideline", "Common Cancer Myths and Misconceptions", "National Cancer Institute", 2024, "https://www.cancer.gov/about-cancer/causes-prevention/risk/myths", "NCI states that cancer is not contagious and distinguishes ordinary contact from infection-related cancer risk and rare transplant transmission."],
-			["systematic_review", "A Sixth Modality of Infectious Disease: Contagious Cancer from Devils to Clams and Beyond", "PLOS Pathogens", 2016, "10.1371/journal.ppat.1005904", "Comparative review describes rare naturally transmissible cancers in animals and the unusual biological conditions that permit them."],
-			["systematic_review", "Contagious Cancer", "The Oncologist", 2011, "10.1634/theoncologist.2010-0301", "Clinical review distinguishes ordinary noncontagious human cancer from rare transmission involving transplantation, pregnancy, laboratory accidents, or severe immune circumstances."]
+			[
+				"guideline",
+				"Common Cancer Myths and Misconceptions",
+				"National Cancer Institute",
+				2024,
+				"https://www.cancer.gov/about-cancer/causes-prevention/risk/myths",
+				"NCI states that cancer is not contagious and distinguishes ordinary contact from infection-related cancer risk and rare transplant transmission."
+			],
+			[
+				"systematic_review",
+				"A Sixth Modality of Infectious Disease: Contagious Cancer from Devils to Clams and Beyond",
+				"PLOS Pathogens",
+				2016,
+				"10.1371/journal.ppat.1005904",
+				"Comparative review describes rare naturally transmissible cancers in animals and the unusual biological conditions that permit them."
+			],
+			[
+				"systematic_review",
+				"Contagious Cancer",
+				"The Oncologist",
+				2011,
+				"10.1634/theoncologist.2010-0301",
+				"Clinical review distinguishes ordinary noncontagious human cancer from rare transmission involving transplantation, pregnancy, laboratory accidents, or severe immune circumstances."
+			]
 		]
 	})
 ];

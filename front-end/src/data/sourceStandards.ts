@@ -652,7 +652,7 @@ export const sourceStandards: SourceStandard[] = [
 	}
 ];
 
-const sourceStandardMap = Object.fromEntries(sourceStandards.map((item) => [item.slug, item])) as Record<
+const sourceStandardMap = Object.fromEntries(sourceStandards.map(item => [item.slug, item])) as Record<
 	string,
 	SourceStandard
 >;

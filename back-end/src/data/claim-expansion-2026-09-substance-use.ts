@@ -34,9 +34,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty reflects consistent signals for some birth outcomes alongside residual confounding, self-reported exposure, changing potency, and limited long-term developmental evidence.",
 		sources: [
-			["guideline", "Cannabis Use During Pregnancy and Lactation", "American College of Obstetricians and Gynecologists", 2025, "https://www.acog.org/clinical/clinical-guidance/clinical-consensus/articles/2025/10/cannabis-use-during-pregnancy-and-lactation", "Current clinical consensus recommends screening and counseling without stigma, avoidance during pregnancy, and evidence-based treatment for underlying symptoms."],
-			["meta_analysis", "Cannabis Use in Pregnancy and Neonatal Outcomes: A Systematic Review and Meta-Analysis", "Cannabis and Cannabinoid Research", 2024, "10.1089/can.2022.0262", "Adjusted synthesis reports associations with selected neonatal outcomes while documenting heterogeneity and confounding limits."],
-			["meta_analysis", "Birth Outcomes of Neonates Exposed to Marijuana in Utero: A Systematic Review and Meta-analysis", "JAMA Network Open", 2022, "10.1001/jamanetworkopen.2021.45653", "Large synthesis examines preterm birth, birth weight, and neonatal outcomes and shows why co-exposures and study design matter."]
+			[
+				"guideline",
+				"Cannabis Use During Pregnancy and Lactation",
+				"American College of Obstetricians and Gynecologists",
+				2025,
+				"https://www.acog.org/clinical/clinical-guidance/clinical-consensus/articles/2025/10/cannabis-use-during-pregnancy-and-lactation",
+				"Current clinical consensus recommends screening and counseling without stigma, avoidance during pregnancy, and evidence-based treatment for underlying symptoms."
+			],
+			[
+				"meta_analysis",
+				"Cannabis Use in Pregnancy and Neonatal Outcomes: A Systematic Review and Meta-Analysis",
+				"Cannabis and Cannabinoid Research",
+				2024,
+				"10.1089/can.2022.0262",
+				"Adjusted synthesis reports associations with selected neonatal outcomes while documenting heterogeneity and confounding limits."
+			],
+			[
+				"meta_analysis",
+				"Birth Outcomes of Neonates Exposed to Marijuana in Utero: A Systematic Review and Meta-analysis",
+				"JAMA Network Open",
+				2022,
+				"10.1001/jamanetworkopen.2021.45653",
+				"Large synthesis examines preterm birth, birth weight, and neonatal outcomes and shows why co-exposures and study design matter."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Benefits are high-confidence at the group level, while individual response varies. Trials use different drinking goals, psychosocial co-interventions, adherence levels, and follow-up periods.",
 		sources: [
-			["meta_analysis", "Pharmacotherapy for Alcohol Use Disorder: A Systematic Review and Meta-Analysis", "JAMA", 2023, "10.1001/jama.2023.19761", "Large review supports oral naltrexone and acamprosate as first-line treatments and reports outcome-specific numbers needed to treat."],
-			["meta_analysis", "Pharmacotherapies for Adults With Alcohol Use Disorders: A Systematic Review and Network Meta-analysis", "Journal of Addiction Medicine", 2022, "10.1097/ADM.0000000000000992", "Network synthesis compares multiple medicines across abstinence, heavy drinking, adverse effects, and acceptability."],
-			["guideline", "Naltrexone", "Substance Abuse and Mental Health Services Administration", 2026, "https://www.samhsa.gov/substance-use/treatment/options/naltrexone", "SAMHSA explains oral and extended-release naltrexone, opioid and liver precautions, and its role within alcohol-use-disorder care."]
+			[
+				"meta_analysis",
+				"Pharmacotherapy for Alcohol Use Disorder: A Systematic Review and Meta-Analysis",
+				"JAMA",
+				2023,
+				"10.1001/jama.2023.19761",
+				"Large review supports oral naltrexone and acamprosate as first-line treatments and reports outcome-specific numbers needed to treat."
+			],
+			[
+				"meta_analysis",
+				"Pharmacotherapies for Adults With Alcohol Use Disorders: A Systematic Review and Network Meta-analysis",
+				"Journal of Addiction Medicine",
+				2022,
+				"10.1097/ADM.0000000000000992",
+				"Network synthesis compares multiple medicines across abstinence, heavy drinking, adverse effects, and acceptability."
+			],
+			[
+				"guideline",
+				"Naltrexone",
+				"Substance Abuse and Mental Health Services Administration",
+				2026,
+				"https://www.samhsa.gov/substance-use/treatment/options/naltrexone",
+				"SAMHSA explains oral and extended-release naltrexone, opioid and liver precautions, and its role within alcohol-use-disorder care."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"During-treatment benefit is high-confidence. Effect size varies by target and design, and evidence is less certain for long-term outcomes after incentives end and for population-scale implementation.",
 		sources: [
-			["guideline", "The ASAM/AAAP Clinical Practice Guideline on the Management of Stimulant Use Disorder", "Journal of Addiction Medicine", 2024, "10.1097/ADM.0000000000001299", "Multisociety guideline identifies contingency management as the current standard of care and describes combinations, monitoring, and implementation."],
-			["systematic_review", "Psychosocial interventions for stimulant use disorder", "Cochrane Database of Systematic Reviews", 2024, "10.1002/14651858.CD011866.pub3", "Randomized-evidence synthesis compares contingency management and other psychosocial interventions across abstinence, retention, and harms."],
-			["systematic_review", "Contingency management for the treatment of methamphetamine use disorder: A systematic review", "Drug and Alcohol Dependence", 2020, "10.1016/j.drugalcdep.2020.108307", "Methamphetamine-focused review finds broad treatment-period benefit while highlighting program and follow-up differences."]
+			[
+				"guideline",
+				"The ASAM/AAAP Clinical Practice Guideline on the Management of Stimulant Use Disorder",
+				"Journal of Addiction Medicine",
+				2024,
+				"10.1097/ADM.0000000000001299",
+				"Multisociety guideline identifies contingency management as the current standard of care and describes combinations, monitoring, and implementation."
+			],
+			[
+				"systematic_review",
+				"Psychosocial interventions for stimulant use disorder",
+				"Cochrane Database of Systematic Reviews",
+				2024,
+				"10.1002/14651858.CD011866.pub3",
+				"Randomized-evidence synthesis compares contingency management and other psychosocial interventions across abstinence, retention, and harms."
+			],
+			[
+				"systematic_review",
+				"Contingency management for the treatment of methamphetamine use disorder: A systematic review",
+				"Drug and Alcohol Dependence",
+				2020,
+				"10.1016/j.drugalcdep.2020.108307",
+				"Methamphetamine-focused review finds broad treatment-period benefit while highlighting program and follow-up differences."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty reflects consistent associations but serious risk of time-varying confounding in much of the evidence. Withdrawal timing, psychiatric diagnosis, medication metabolism, and support needs vary.",
 		sources: [
-			["systematic_review", "Smoking cessation for improving mental health", "Cochrane Database of Systematic Reviews", 2021, "10.1002/14651858.CD013522.pub2", "Cochrane review finds no mental-health worsening and small-to-moderate improvements while rating certainty from very low to moderate because most evidence is observational."],
-			["guideline", "Smoking and Depression and Anxiety", "Centers for Disease Control and Prevention", 2023, "https://www.cdc.gov/tobacco/campaign/tips/diseases/depression-anxiety.html", "CDC explains nicotine-withdrawal relief, longer-term mental-health evidence, and the value of supported cessation."],
-			["landmark_study", "Association Between Smoking Abstinence and Depression and Anxiety Symptoms After Hospital Discharge: The Helping HAND 4 Trial", "Journal of Addiction Medicine", 2025, "10.1097/ADM.0000000000001358", "Prospective trial-cohort analysis adds contemporary evidence that verified abstinence was not associated with worsening depression or anxiety after hospitalization."]
+			[
+				"systematic_review",
+				"Smoking cessation for improving mental health",
+				"Cochrane Database of Systematic Reviews",
+				2021,
+				"10.1002/14651858.CD013522.pub2",
+				"Cochrane review finds no mental-health worsening and small-to-moderate improvements while rating certainty from very low to moderate because most evidence is observational."
+			],
+			[
+				"guideline",
+				"Smoking and Depression and Anxiety",
+				"Centers for Disease Control and Prevention",
+				2023,
+				"https://www.cdc.gov/tobacco/campaign/tips/diseases/depression-anxiety.html",
+				"CDC explains nicotine-withdrawal relief, longer-term mental-health evidence, and the value of supported cessation."
+			],
+			[
+				"landmark_study",
+				"Association Between Smoking Abstinence and Depression and Anxiety Symptoms After Hospital Discharge: The Helping HAND 4 Trial",
+				"Journal of Addiction Medicine",
+				2025,
+				"10.1097/ADM.0000000000001358",
+				"Prospective trial-cohort analysis adds contemporary evidence that verified abstinence was not associated with worsening depression or anxiety after hospitalization."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence supports no overall harm and possible recovery benefit, but older trials, changing tobacco products, variable treatment intensity, and self-selection limit the exact causal magnitude.",
 		sources: [
-			["meta_analysis", "A meta-analysis of smoking cessation interventions with individuals in substance abuse treatment or recovery", "Journal of Consulting and Clinical Psychology", 2004, "10.1037/0022-006X.72.6.1144", "Randomized-trial synthesis found short-term tobacco benefit and no compromise of other-substance recovery, with a higher likelihood of long-term sobriety."],
-			["guideline", "Behavioral Health and Tobacco Use", "Centers for Disease Control and Prevention", 2023, "https://www.cdc.gov/tobacco-health-equity/collection/behavioral-health-interactions.html", "CDC summarizes disproportionate tobacco harm and supports integrating evidence-based cessation into behavioral-health and substance-use care."],
-			["landmark_study", "Cigarette Smoking During Recovery From Substance Use Disorders", "JAMA Psychiatry", 2025, "10.1001/jamapsychiatry.2025.1976", "Large longitudinal within-person analysis associates transition to smoking abstinence with improved recovery from other substance-use disorders while retaining observational limits."]
+			[
+				"meta_analysis",
+				"A meta-analysis of smoking cessation interventions with individuals in substance abuse treatment or recovery",
+				"Journal of Consulting and Clinical Psychology",
+				2004,
+				"10.1037/0022-006X.72.6.1144",
+				"Randomized-trial synthesis found short-term tobacco benefit and no compromise of other-substance recovery, with a higher likelihood of long-term sobriety."
+			],
+			[
+				"guideline",
+				"Behavioral Health and Tobacco Use",
+				"Centers for Disease Control and Prevention",
+				2023,
+				"https://www.cdc.gov/tobacco-health-equity/collection/behavioral-health-interactions.html",
+				"CDC summarizes disproportionate tobacco harm and supports integrating evidence-based cessation into behavioral-health and substance-use care."
+			],
+			[
+				"landmark_study",
+				"Cigarette Smoking During Recovery From Substance Use Disorders",
+				"JAMA Psychiatry",
+				2025,
+				"10.1001/jamapsychiatry.2025.1976",
+				"Large longitudinal within-person analysis associates transition to smoking abstinence with improved recovery from other substance-use disorders while retaining observational limits."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The existence and seriousness of severe withdrawal are exceptionally secure. Individual prediction and the safest setting depend on history, current symptoms, medical status, supports, and local clinical capacity.",
 		sources: [
-			["guideline", "The ASAM Clinical Practice Guideline on Alcohol Withdrawal Management", "Journal of Addiction Medicine", 2020, "10.1097/ADM.0000000000000732", "Clinical guideline defines severity, risk factors, emergency features, monitoring, medications, and transitions from withdrawal management to continuing treatment."],
-			["systematic_review", "Benzodiazepines for alcohol withdrawal", "Cochrane Database of Systematic Reviews", 2010, "10.1002/14651858.CD005063.pub3", "Randomized-evidence synthesis supports benzodiazepines for preventing and treating key withdrawal complications while comparing regimens and alternatives."],
-			["systematic_review", "Clinical management of alcohol withdrawal: A systematic review", "Industrial Psychiatry Journal", 2013, "10.4103/0972-6748.132914", "Clinical synthesis describes the time course from early symptoms to seizures and delirium and reviews risk-based management."]
+			[
+				"guideline",
+				"The ASAM Clinical Practice Guideline on Alcohol Withdrawal Management",
+				"Journal of Addiction Medicine",
+				2020,
+				"10.1097/ADM.0000000000000732",
+				"Clinical guideline defines severity, risk factors, emergency features, monitoring, medications, and transitions from withdrawal management to continuing treatment."
+			],
+			[
+				"systematic_review",
+				"Benzodiazepines for alcohol withdrawal",
+				"Cochrane Database of Systematic Reviews",
+				2010,
+				"10.1002/14651858.CD005063.pub3",
+				"Randomized-evidence synthesis supports benzodiazepines for preventing and treating key withdrawal complications while comparing regimens and alternatives."
+			],
+			[
+				"systematic_review",
+				"Clinical management of alcohol withdrawal: A systematic review",
+				"Industrial Psychiatry Journal",
+				2013,
+				"10.4103/0972-6748.132914",
+				"Clinical synthesis describes the time course from early symptoms to seizures and delirium and reviews risk-based management."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Uncertainty remains about low-dose effects in specific older populations and outcomes. Confidence is stronger that observational protection has been overstated and that total health effects cannot be inferred from coronary disease alone.",
 		sources: [
-			["consensus_statement", "Alcohol Use and Cardiovascular Disease", "Circulation", 2025, "10.1161/CIR.0000000000001341", "American Heart Association scientific statement weighs observational signals against causal limitations and alcohol-related cardiovascular harms."],
-			["systematic_review", "Alcohol consumption in relation to cardiovascular diseases and mortality: a systematic review of Mendelian randomization studies", "European Journal of Epidemiology", 2022, "10.1007/s10654-021-00799-5", "Genetic-instrument review finds little support for a cardioprotective causal effect and challenges the observational J-shaped interpretation."],
-			["landmark_study", "Association of Habitual Alcohol Intake With Risk of Cardiovascular Disease", "JAMA Network Open", 2022, "10.1001/jamanetworkopen.2022.3849", "Large cohort and genetic analysis shows nonlinear observational patterns alongside evidence consistent with risk across consumption levels."]
+			[
+				"consensus_statement",
+				"Alcohol Use and Cardiovascular Disease",
+				"Circulation",
+				2025,
+				"10.1161/CIR.0000000000001341",
+				"American Heart Association scientific statement weighs observational signals against causal limitations and alcohol-related cardiovascular harms."
+			],
+			[
+				"systematic_review",
+				"Alcohol consumption in relation to cardiovascular diseases and mortality: a systematic review of Mendelian randomization studies",
+				"European Journal of Epidemiology",
+				2022,
+				"10.1007/s10654-021-00799-5",
+				"Genetic-instrument review finds little support for a cardioprotective causal effect and challenges the observational J-shaped interpretation."
+			],
+			[
+				"landmark_study",
+				"Association of Habitual Alcohol Intake With Risk of Cardiovascular Disease",
+				"JAMA Network Open",
+				2022,
+				"10.1001/jamanetworkopen.2022.3849",
+				"Large cohort and genetic analysis shows nonlinear observational patterns alongside evidence consistent with risk across consumption levels."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,32 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty for population mortality reflects only a handful of observational studies, changing fentanyl exposure, geographic spillovers, concurrent policies, and difficult counterfactuals. Onsite outcomes are more direct and consistent.",
 		sources: [
-			["systematic_review", "Supervised consumption sites and population-level overdose mortality: a systematic review of recent evidence, 2016-2024", "Health Promotion and Chronic Disease Prevention in Canada", 2025, "10.24095/hpcdp.45.9.02", "Focused review finds mixed population-level mortality associations and clearly separates them from onsite overdose reversal and service linkage; a 2026 corrigendum added clarification about one included study.", "debate", "corrected"],
-			["systematic_review", "Supervised Injection Facilities as Harm Reduction: A Systematic Review", "American Journal of Preventive Medicine", 2021, "10.1016/j.amepre.2021.04.017", "Review supports improvements in overdose response, safer behavior, care access, and public order while noting concentration of evidence in a small number of sites."],
-			["systematic_review", "Effectiveness of drug consumption facilities to reduce harm and support people who use drugs: a systematic review", "Current HIV/AIDS Reports", 2017, "10.1007/s11904-017-0363-y", "Earlier synthesis finds client and community benefits but highlights observational methods and limits on causal population estimates."]
+			[
+				"systematic_review",
+				"Supervised consumption sites and population-level overdose mortality: a systematic review of recent evidence, 2016-2024",
+				"Health Promotion and Chronic Disease Prevention in Canada",
+				2025,
+				"10.24095/hpcdp.45.9.02",
+				"Focused review finds mixed population-level mortality associations and clearly separates them from onsite overdose reversal and service linkage; a 2026 corrigendum added clarification about one included study.",
+				"debate",
+				"corrected"
+			],
+			[
+				"systematic_review",
+				"Supervised Injection Facilities as Harm Reduction: A Systematic Review",
+				"American Journal of Preventive Medicine",
+				2021,
+				"10.1016/j.amepre.2021.04.017",
+				"Review supports improvements in overdose response, safer behavior, care access, and public order while noting concentration of evidence in a small number of sites."
+			],
+			[
+				"systematic_review",
+				"Effectiveness of drug consumption facilities to reduce harm and support people who use drugs: a systematic review",
+				"Current HIV/AIDS Reports",
+				2017,
+				"10.1007/s11904-017-0363-y",
+				"Earlier synthesis finds client and community benefits but highlights observational methods and limits on causal population estimates."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +500,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty for overdose prevention reflects no randomized trials and very few studies measuring overdose outcomes. Sensitivity, acceptability, and feasibility are better established than durable behavior or mortality effects.",
 		sources: [
-			["systematic_review", "Fentanyl Test Strips for Harm Reduction: A Scoping Review", "Journal of Addiction Medicine", 2024, "10.1097/ADM.0000000000001321", "Review of 91 reports finds strong sensitivity, specificity, feasibility, and acceptability evidence but very limited overdose-outcome research."],
-			["guideline", "Fentanyl Facts", "Centers for Disease Control and Prevention", 2025, "https://www.cdc.gov/overdose-prevention/about/fentanyl.html", "CDC explains test-strip use and limitations and places drug checking alongside naloxone, avoiding use alone, and other overdose precautions."],
-			["landmark_study", "A rapid fentanyl test strip intervention to reduce overdose risk among young adults who use drugs: A pilot study", "Harm Reduction Journal", 2018, "10.1186/s12954-018-0252-8", "Prospective pilot shows feasibility and reported risk-reduction responses while remaining too small and uncontrolled to establish mortality benefit."]
+			[
+				"systematic_review",
+				"Fentanyl Test Strips for Harm Reduction: A Scoping Review",
+				"Journal of Addiction Medicine",
+				2024,
+				"10.1097/ADM.0000000000001321",
+				"Review of 91 reports finds strong sensitivity, specificity, feasibility, and acceptability evidence but very limited overdose-outcome research."
+			],
+			[
+				"guideline",
+				"Fentanyl Facts",
+				"Centers for Disease Control and Prevention",
+				2025,
+				"https://www.cdc.gov/overdose-prevention/about/fentanyl.html",
+				"CDC explains test-strip use and limitations and places drug checking alongside naloxone, avoiding use alone, and other overdose precautions."
+			],
+			[
+				"landmark_study",
+				"A rapid fentanyl test strip intervention to reduce overdose risk among young adults who use drugs: A pilot study",
+				"Harm Reduction Journal",
+				2018,
+				"10.1186/s12954-018-0252-8",
+				"Prospective pilot shows feasibility and reported risk-reduction responses while remaining too small and uncontrolled to establish mortality benefit."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +558,30 @@ export const september2026SubstanceUseClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The mortality advantage of remaining in medication treatment and the post-treatment risk spike are highly consistent. Optimal medication, duration, delivery, and support should still be individualized.",
 		sources: [
-			["guideline", "The ASAM National Practice Guideline for the Treatment of Opioid Use Disorder: 2020 Focused Update", "Journal of Addiction Medicine", 2020, "10.1097/ADM.0000000000000633", "Clinical guideline states that withdrawal management alone is not opioid-use-disorder treatment and warns about relapse and overdose after lost tolerance."],
-			["meta_analysis", "Mortality risk during and after opioid substitution treatment: systematic review and meta-analysis of cohort studies", "The BMJ", 2017, "10.1136/bmj.j1550", "Large cohort synthesis finds substantially lower mortality during methadone or buprenorphine treatment and elevated risk after treatment cessation."],
-			["landmark_study", "Loss of tolerance and overdose mortality after inpatient opiate detoxification: follow up study", "The BMJ", 2003, "10.1136/bmj.326.7396.959", "Follow-up study directly illustrates overdose deaths after detoxification among people who had lost tolerance."]
+			[
+				"guideline",
+				"The ASAM National Practice Guideline for the Treatment of Opioid Use Disorder: 2020 Focused Update",
+				"Journal of Addiction Medicine",
+				2020,
+				"10.1097/ADM.0000000000000633",
+				"Clinical guideline states that withdrawal management alone is not opioid-use-disorder treatment and warns about relapse and overdose after lost tolerance."
+			],
+			[
+				"meta_analysis",
+				"Mortality risk during and after opioid substitution treatment: systematic review and meta-analysis of cohort studies",
+				"The BMJ",
+				2017,
+				"10.1136/bmj.j1550",
+				"Large cohort synthesis finds substantially lower mortality during methadone or buprenorphine treatment and elevated risk after treatment cessation."
+			],
+			[
+				"landmark_study",
+				"Loss of tolerance and overdose mortality after inpatient opiate detoxification: follow up study",
+				"The BMJ",
+				2003,
+				"10.1136/bmj.326.7396.959",
+				"Follow-up study directly illustrates overdose deaths after detoxification among people who had lost tolerance."
+			]
 		]
 	})
 ];

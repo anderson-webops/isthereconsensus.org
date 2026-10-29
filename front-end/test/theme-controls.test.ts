@@ -11,11 +11,11 @@ describe("theme controls", () => {
 	for (const file of layoutFiles) {
 		it(`keeps the palette switcher next to the compact color-mode toggle in the footer in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const headerStart = source.indexOf('<header class="site-header">');
+			const headerStart = source.indexOf("<header class=\"site-header\">");
 			const headerEnd = source.indexOf("</header>", headerStart);
 			const header = source.slice(headerStart, headerEnd);
 			const footerControlsIndex = source.indexOf(
-				'class="site-footer__appearance" aria-label="Appearance controls"'
+				"class=\"site-footer__appearance\" aria-label=\"Appearance controls\""
 			);
 			const paletteRenderIndex = source.indexOf("<PaletteSwitcher />");
 			const themeRenderIndex = source.indexOf("<ThemeToggle />");
@@ -30,10 +30,10 @@ describe("theme controls", () => {
 
 		it(`keeps first-time navigation focused while preserving utility links in ${file}`, () => {
 			const source = readFileSync(join(testDir, "..", file), "utf8");
-			const headerStart = source.indexOf('<header class="site-header">');
+			const headerStart = source.indexOf("<header class=\"site-header\">");
 			const headerEnd = source.indexOf("</header>", headerStart);
 			const header = source.slice(headerStart, headerEnd);
-			const footer = source.slice(source.indexOf('<footer class="site-footer">'));
+			const footer = source.slice(source.indexOf("<footer class=\"site-footer\">"));
 
 			assert.match(header, /to="\/consensus"[\s\S]*Browse/);
 			assert.match(header, /to="\/explainers"[\s\S]*Learn/);

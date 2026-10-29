@@ -18,15 +18,26 @@ import {
 
 describe("review maintenance policy", () => {
 	it("requires bounded filters, UTC calendar dates, revisions and meaningful reasons", () => {
-		assert.deepEqual(reviewPriorityQuery.parse({}), { page: 1, limit: 25, reason: "attention", query: "" });
+		assert.deepEqual(reviewPriorityQuery.parse({}), {
+			page: 1,
+			limit: 25,
+			reason: "attention",
+			query: ""
+		});
 		for (const query of [
 			{ page: 0 },
 			{ page: 10001 },
 			{ limit: 51 },
 			{ reason: "truth" },
-			{ query: { $gt: "" } },
-			{ query: "x".repeat(101) },
-			{ topicId: { $ne: null } },
+			{
+				query: { $gt: "" }
+			},
+			{
+				query: "x".repeat(101)
+			},
+			{
+				topicId: { $ne: null }
+			},
 			{ status: "published" }
 		])
 			assert.equal(reviewPriorityQuery.safeParse(query).success, false);
@@ -39,7 +50,13 @@ describe("review maintenance policy", () => {
 		};
 		assert.ok(reviewScheduleChange.safeParse(change).success);
 		assert.ok(reviewScheduleChange.safeParse({ ...change, nextReviewAt: null }).success);
-		for (const value of ["2026-02-29", "2026-13-01", "2026-01-01T24:00:00Z", "tomorrow", "2026-02-30"])
+		for (const value of [
+			"2026-02-29",
+			"2026-13-01",
+			"2026-01-01T24:00:00Z",
+			"tomorrow",
+			"2026-02-30"
+		])
 			assert.equal(reviewScheduleChange.safeParse({ ...change, nextReviewAt: value }).success, false);
 		for (const extra of [
 			{ note: "short" },
@@ -49,19 +66,36 @@ describe("review maintenance policy", () => {
 			{ lastReviewedAt: "2026-01-01" },
 			{ status: "published" },
 			{ password: "secret" }
-		])
-			assert.equal(reviewScheduleChange.safeParse({ ...change, ...extra }).success, false);
-		const decision = { revision: 0, fingerprint: "a".repeat(64), decision: "addressed", note: change.note };
+		]) {
+			assert.equal(reviewScheduleChange.safeParse({
+				...change,
+				...extra
+			}).success, false);
+		}
+		const decision = {
+			revision: 0,
+			fingerprint: "a".repeat(64),
+			decision: "addressed",
+			note: change.note
+		};
 		assert.ok(sourceNoticeDecision.safeParse(decision).success);
 		for (const extra of [
 			{ decision: "clear_warning" },
 			{ citationStatus: "current" },
 			{ fingerprint: "wrong" },
 			{ note: " " }
-		])
-			assert.equal(sourceNoticeDecision.safeParse({ ...decision, ...extra }).success, false);
-		assert.ok(readerFeedbackQuery.safeParse({ reviewId: "a".repeat(24) }).success);
-		assert.equal(readerFeedbackQuery.safeParse({ reviewId: { $ne: null } }).success, false);
+		]) {
+			assert.equal(sourceNoticeDecision.safeParse({
+				...decision,
+				...extra
+			}).success, false);
+		}
+		assert.ok(readerFeedbackQuery.safeParse({
+			reviewId: "a".repeat(24)
+		}).success);
+		assert.equal(readerFeedbackQuery.safeParse({
+			reviewId: { $ne: null }
+		}).success, false);
 	});
 	it("ties a handling decision to notice identity, not routine checks or link order", () => {
 		const source = new ClaimSource({
@@ -124,7 +158,12 @@ describe("review maintenance policy", () => {
 		}).toObject();
 		assert.doesNotMatch(JSON.stringify(toEditorialClaim(claim)), /maintenance|Private operational|adminId/);
 		assert.doesNotMatch(JSON.stringify(toPublicClaim(claim)), /maintenance|Private operational|adminId/);
-		for (const key of ["password", "session", "captchaToken", "authorization"])
+		for (const key of [
+			"password",
+			"session",
+			"captchaToken",
+			"authorization"
+		])
 			assert.throws(() => new SourceNoticeReview({ [key]: "must not persist" }), /strict mode/);
 	});
 });

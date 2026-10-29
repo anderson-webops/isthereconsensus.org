@@ -37,9 +37,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Sleep-wake estimates are improving, but device-specific validation, opaque updates, stage accuracy, and performance in clinical populations limit diagnostic use.",
 		sources: sources([
-			["meta_analysis", "Performance of consumer wrist-worn sleep tracking devices compared to polysomnography: a meta-analysis", "Journal of Clinical Sleep Medicine", 2025, "10.5664/jcsm.11460", "Device-level synthesis showing useful average measures alongside material disagreement with polysomnography."],
-			["landmark_study", "Performance of seven consumer sleep-tracking devices compared with polysomnography", "Sleep", 2020, "10.1093/sleep/zsaa291", "Head-to-head laboratory validation demonstrating substantial variation by device and sleep measure."],
-			["systematic_review", "Wearable Sleep Technology in Clinical and Research Settings", "Medicine & Science in Sports & Exercise", 2019, "10.1249/MSS.0000000000001947", "Review distinguishing consumer trend uses from validated clinical assessment and diagnosis."]
+			[
+				"meta_analysis",
+				"Performance of consumer wrist-worn sleep tracking devices compared to polysomnography: a meta-analysis",
+				"Journal of Clinical Sleep Medicine",
+				2025,
+				"10.5664/jcsm.11460",
+				"Device-level synthesis showing useful average measures alongside material disagreement with polysomnography."
+			],
+			[
+				"landmark_study",
+				"Performance of seven consumer sleep-tracking devices compared with polysomnography",
+				"Sleep",
+				2020,
+				"10.1093/sleep/zsaa291",
+				"Head-to-head laboratory validation demonstrating substantial variation by device and sleep measure."
+			],
+			[
+				"systematic_review",
+				"Wearable Sleep Technology in Clinical and Research Settings",
+				"Medicine & Science in Sports & Exercise",
+				2019,
+				"10.1249/MSS.0000000000001947",
+				"Review distinguishing consumer trend uses from validated clinical assessment and diagnosis."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -74,9 +95,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Average acute benefits are clear, while the best duration and timing vary and evidence on long-term habitual napping is more confounded.",
 		sources: sources([
-			["meta_analysis", "Effects of a Short Daytime Nap on the Cognitive Performance: A Systematic Review and Meta-Analysis", "International Journal of Environmental Research and Public Health", 2021, "10.3390/ijerph181910212", "Synthesis finding post-nap improvements across several cognitive outcomes and timing conditions."],
-			["systematic_review", "The effects of napping on cognitive functioning", "Progress in Brain Research", 2010, "10.1016/B978-0-444-53702-7.00009-9", "Review of sleep inertia and cognitive benefits across nap lengths and prior-sleep conditions."],
-			["systematic_review", "Benefits of napping in healthy adults: impact of nap length, time of day, age, and experience with napping", "Journal of Sleep Research", 2009, "10.1111/j.1365-2869.2008.00718.x", "Review mapping how individual and scheduling factors alter nap outcomes."]
+			[
+				"meta_analysis",
+				"Effects of a Short Daytime Nap on the Cognitive Performance: A Systematic Review and Meta-Analysis",
+				"International Journal of Environmental Research and Public Health",
+				2021,
+				"10.3390/ijerph181910212",
+				"Synthesis finding post-nap improvements across several cognitive outcomes and timing conditions."
+			],
+			[
+				"systematic_review",
+				"The effects of napping on cognitive functioning",
+				"Progress in Brain Research",
+				2010,
+				"10.1016/B978-0-444-53702-7.00009-9",
+				"Review of sleep inertia and cognitive benefits across nap lengths and prior-sleep conditions."
+			],
+			[
+				"systematic_review",
+				"Benefits of napping in healthy adults: impact of nap length, time of day, age, and experience with napping",
+				"Journal of Sleep Research",
+				2009,
+				"10.1111/j.1365-2869.2008.00718.x",
+				"Review mapping how individual and scheduling factors alter nap outcomes."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -111,9 +153,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Self-reported sleep improves more consistently than every objective measure; interventions and populations are heterogeneous.",
 		sources: sources([
-			["meta_analysis", "Effects of Exercise on Sleep Quality and Insomnia in Adults: A Systematic Review and Meta-Analysis of Randomized Controlled Trials", "Frontiers in Psychiatry", 2021, "10.3389/fpsyt.2021.664499", "Randomized-trial synthesis finding improved sleep quality and insomnia outcomes."],
-			["meta_analysis", "The effects of physical activity on sleep: a meta-analytic review", "Journal of Behavioral Medicine", 2015, "10.1007/s10865-015-9617-6", "Broad synthesis separating acute and regular activity effects on subjective and objective sleep."],
-			["meta_analysis", "Exercise can improve sleep quality: a systematic review and meta-analysis", "PeerJ", 2018, "10.7717/peerj.5172", "Updated analysis of exercise interventions and sleep-quality outcomes across adult populations."]
+			[
+				"meta_analysis",
+				"Effects of Exercise on Sleep Quality and Insomnia in Adults: A Systematic Review and Meta-Analysis of Randomized Controlled Trials",
+				"Frontiers in Psychiatry",
+				2021,
+				"10.3389/fpsyt.2021.664499",
+				"Randomized-trial synthesis finding improved sleep quality and insomnia outcomes."
+			],
+			[
+				"meta_analysis",
+				"The effects of physical activity on sleep: a meta-analytic review",
+				"Journal of Behavioral Medicine",
+				2015,
+				"10.1007/s10865-015-9617-6",
+				"Broad synthesis separating acute and regular activity effects on subjective and objective sleep."
+			],
+			[
+				"meta_analysis",
+				"Exercise can improve sleep quality: a systematic review and meta-analysis",
+				"PeerJ",
+				2018,
+				"10.7717/peerj.5172",
+				"Updated analysis of exercise interventions and sleep-quality outcomes across adult populations."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -148,9 +211,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The synthesis is limited by small, heterogeneous studies, inconsistent comparators, short follow-up, and possible publication bias.",
 		sources: sources([
-			["systematic_review", "Noise as a sleep aid: A systematic review", "Sleep Medicine Reviews", 2021, "10.1016/j.smrv.2020.101385", "Review concluding that evidence for continuous noise as a general sleep aid is low quality and inconsistent."],
-			["landmark_study", "Broadband Sound Administration Improves Sleep Onset Latency in Healthy Subjects in a Model of Transient Insomnia", "Frontiers in Neurology", 2017, "10.3389/fneur.2017.00718", "Small controlled study illustrating potential benefit under a specific transient-insomnia model."],
-			["landmark_study", "The influence of white noise on sleep in subjects exposed to ICU noise", "Sleep Medicine", 2005, "10.1016/j.sleep.2004.12.004", "Small experimental study testing noise masking in an unusually noisy simulated environment."]
+			[
+				"systematic_review",
+				"Noise as a sleep aid: A systematic review",
+				"Sleep Medicine Reviews",
+				2021,
+				"10.1016/j.smrv.2020.101385",
+				"Review concluding that evidence for continuous noise as a general sleep aid is low quality and inconsistent."
+			],
+			[
+				"landmark_study",
+				"Broadband Sound Administration Improves Sleep Onset Latency in Healthy Subjects in a Model of Transient Insomnia",
+				"Frontiers in Neurology",
+				2017,
+				"10.3389/fneur.2017.00718",
+				"Small controlled study illustrating potential benefit under a specific transient-insomnia model."
+			],
+			[
+				"landmark_study",
+				"The influence of white noise on sleep in subjects exposed to ICU noise",
+				"Sleep Medicine",
+				2005,
+				"10.1016/j.sleep.2004.12.004",
+				"Small experimental study testing noise masking in an unusually noisy simulated environment."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -185,9 +269,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Samples are small, blinding is difficult, subjective outcomes dominate, and populations and blanket protocols differ substantially.",
 		sources: sources([
-			["meta_analysis", "The effect of weighted blankets on sleep quality and mental health symptoms in people with psychiatric disorders in inpatient and outpatient settings: A systematic review and meta-analysis", "Journal of Psychiatric Research", 2024, "10.1016/j.jpsychires.2024.09.027", "Current synthesis finding possible benefits while emphasizing small, heterogeneous clinical evidence."],
-			["landmark_study", "A randomized controlled study of weighted chain blankets for insomnia in psychiatric disorders", "Journal of Clinical Sleep Medicine", 2020, "10.5664/jcsm.8636", "Randomized trial reporting subjective insomnia improvement in a selected psychiatric sample."],
-			["systematic_review", "Weighted Blanket Use: A Systematic Review", "American Journal of Occupational Therapy", 2020, "10.5014/ajot.2020.037358", "Review finding more support for anxiety reduction than for broad objective sleep improvement."]
+			[
+				"meta_analysis",
+				"The effect of weighted blankets on sleep quality and mental health symptoms in people with psychiatric disorders in inpatient and outpatient settings: A systematic review and meta-analysis",
+				"Journal of Psychiatric Research",
+				2024,
+				"10.1016/j.jpsychires.2024.09.027",
+				"Current synthesis finding possible benefits while emphasizing small, heterogeneous clinical evidence."
+			],
+			[
+				"landmark_study",
+				"A randomized controlled study of weighted chain blankets for insomnia in psychiatric disorders",
+				"Journal of Clinical Sleep Medicine",
+				2020,
+				"10.5664/jcsm.8636",
+				"Randomized trial reporting subjective insomnia improvement in a selected psychiatric sample."
+			],
+			[
+				"systematic_review",
+				"Weighted Blanket Use: A Systematic Review",
+				"American Journal of Occupational Therapy",
+				2020,
+				"10.5014/ajot.2020.037358",
+				"Review finding more support for anxiety reduction than for broad objective sleep improvement."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -222,9 +327,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The evidence base is too small and selective for general safety or treatment claims, and rare but serious harms are poorly measured.",
 		sources: sources([
-			["systematic_review", "Breaking social media fads and uncovering the safety and efficacy of mouth taping in patients with mouth breathing, sleep disordered breathing, or obstructive sleep apnea: A systematic review", "PLOS One", 2025, "10.1371/journal.pone.0323643", "Systematic review finding limited heterogeneous evidence and important safety concerns."],
-			["landmark_study", "The Impact of Mouth-Taping in Mouth-Breathers with Mild Obstructive Sleep Apnea: A Preliminary Study", "Healthcare", 2022, "10.3390/healthcare10091755", "Small selected pilot that cannot establish effectiveness or safety for general or severe apnea populations."],
-			["landmark_study", "The Efficacy of a Chinstrap in Treating Sleep Disordered Breathing and Snoring", "Journal of Clinical Sleep Medicine", 2014, "10.5664/jcsm.3962", "Test of a different mouth-closing approach finding that closure alone did not improve obstructive sleep apnea."]
+			[
+				"systematic_review",
+				"Breaking social media fads and uncovering the safety and efficacy of mouth taping in patients with mouth breathing, sleep disordered breathing, or obstructive sleep apnea: A systematic review",
+				"PLOS One",
+				2025,
+				"10.1371/journal.pone.0323643",
+				"Systematic review finding limited heterogeneous evidence and important safety concerns."
+			],
+			[
+				"landmark_study",
+				"The Impact of Mouth-Taping in Mouth-Breathers with Mild Obstructive Sleep Apnea: A Preliminary Study",
+				"Healthcare",
+				2022,
+				"10.3390/healthcare10091755",
+				"Small selected pilot that cannot establish effectiveness or safety for general or severe apnea populations."
+			],
+			[
+				"landmark_study",
+				"The Efficacy of a Chinstrap in Treating Sleep Disordered Breathing and Snoring",
+				"Journal of Clinical Sleep Medicine",
+				2014,
+				"10.5664/jcsm.3962",
+				"Test of a different mouth-closing approach finding that closure alone did not improve obstructive sleep apnea."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -259,9 +385,31 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Current estimates are imprecise and at risk of bias; deficiency status and supplement formulation may be important but under-tested moderators.",
 		sources: sources([
-			["meta_analysis", "Oral magnesium supplementation for insomnia in older adults: a Systematic Review & Meta-Analysis", "BMC Complementary Medicine and Therapies", 2021, "10.1186/s12906-021-03297-z", "Review finding low-certainty signals from a small number of older-adult trials."],
-			["systematic_review", "The Role of Magnesium in Sleep Health: a Systematic Review of Available Literature", "Biological Trace Element Research", 2022, "10.1007/s12011-022-03162-1", "Broader review finding mixed observational and intervention evidence and major design limitations."],
-			["landmark_study", "The Effect of Melatonin, Magnesium, and Zinc on Primary Insomnia in Long-Term Care Facility Residents in Italy: A Double-Blind, Placebo-Controlled Clinical Trial", "Journal of the American Geriatrics Society", 2011, "10.1111/j.1532-5415.2010.03232.x", "Small combination-supplement trial that cannot isolate magnesium's contribution or generalize beyond selected older adults.", "context"]
+			[
+				"meta_analysis",
+				"Oral magnesium supplementation for insomnia in older adults: a Systematic Review & Meta-Analysis",
+				"BMC Complementary Medicine and Therapies",
+				2021,
+				"10.1186/s12906-021-03297-z",
+				"Review finding low-certainty signals from a small number of older-adult trials."
+			],
+			[
+				"systematic_review",
+				"The Role of Magnesium in Sleep Health: a Systematic Review of Available Literature",
+				"Biological Trace Element Research",
+				2022,
+				"10.1007/s12011-022-03162-1",
+				"Broader review finding mixed observational and intervention evidence and major design limitations."
+			],
+			[
+				"landmark_study",
+				"The Effect of Melatonin, Magnesium, and Zinc on Primary Insomnia in Long-Term Care Facility Residents in Italy: A Double-Blind, Placebo-Controlled Clinical Trial",
+				"Journal of the American Geriatrics Society",
+				2011,
+				"10.1111/j.1532-5415.2010.03232.x",
+				"Small combination-supplement trial that cannot isolate magnesium's contribution or generalize beyond selected older adults.",
+				"context"
+			]
 		])
 	}),
 	reviewedClaim({
@@ -296,9 +444,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Small short trials, indirect populations, variable products, subjective outcomes, and limited harm follow-up keep certainty low.",
 		sources: sources([
-			["meta_analysis", "Medical cannabis and cannabinoids for impaired sleep: a systematic review and meta-analysis of randomized clinical trials", "Sleep", 2021, "10.1093/sleep/zsab234", "Synthesis finding small sleep benefits largely in chronic-pain populations and increased adverse effects."],
-			["systematic_review", "Is There a Place for Medicinal Cannabis in Treating Patients with Sleep Disorders? What We Know so Far", "Nature and Science of Sleep", 2022, "10.2147/NSS.S340949", "Clinical review emphasizing sparse disorder-specific evidence, product differences, and safety questions."],
-			["landmark_study", "Treating insomnia symptoms with medicinal cannabis: a randomized, crossover trial of the efficacy of a cannabinoid medicine compared with placebo", "Sleep", 2021, "10.1093/sleep/zsab149", "Short small crossover trial illustrating possible efficacy but not long-term effectiveness or safety."]
+			[
+				"meta_analysis",
+				"Medical cannabis and cannabinoids for impaired sleep: a systematic review and meta-analysis of randomized clinical trials",
+				"Sleep",
+				2021,
+				"10.1093/sleep/zsab234",
+				"Synthesis finding small sleep benefits largely in chronic-pain populations and increased adverse effects."
+			],
+			[
+				"systematic_review",
+				"Is There a Place for Medicinal Cannabis in Treating Patients with Sleep Disorders? What We Know so Far",
+				"Nature and Science of Sleep",
+				2022,
+				"10.2147/NSS.S340949",
+				"Clinical review emphasizing sparse disorder-specific evidence, product differences, and safety questions."
+			],
+			[
+				"landmark_study",
+				"Treating insomnia symptoms with medicinal cannabis: a randomized, crossover trial of the efficacy of a cannabinoid medicine compared with placebo",
+				"Sleep",
+				2021,
+				"10.1093/sleep/zsab149",
+				"Short small crossover trial illustrating possible efficacy but not long-term effectiveness or safety."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -333,9 +502,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The recommendation against routine use is stable; exact long-term harm rates and the safest discontinuation supports need better study.",
 		sources: sources([
-			["guideline", "Clinical Practice Guideline for the Pharmacologic Treatment of Chronic Insomnia in Adults", "Journal of Clinical Sleep Medicine", 2017, "10.5664/jcsm.6470", "American Academy of Sleep Medicine guideline suggesting clinicians not use diphenhydramine for chronic insomnia."],
-			["systematic_review", "Pharmacologic Treatment of Insomnia Disorder: An Evidence Report for a Clinical Practice Guideline by the American College of Physicians", "Annals of Internal Medicine", 2016, "10.7326/M15-1781", "Evidence review finding insufficient durable support for many common over-the-counter approaches."],
-			["guideline", "Management of Chronic Insomnia Disorder in Adults: A Clinical Practice Guideline From the American College of Physicians", "Annals of Internal Medicine", 2016, "10.7326/M15-2175", "Guideline recommending cognitive behavioral therapy as initial treatment for chronic insomnia."]
+			[
+				"guideline",
+				"Clinical Practice Guideline for the Pharmacologic Treatment of Chronic Insomnia in Adults",
+				"Journal of Clinical Sleep Medicine",
+				2017,
+				"10.5664/jcsm.6470",
+				"American Academy of Sleep Medicine guideline suggesting clinicians not use diphenhydramine for chronic insomnia."
+			],
+			[
+				"systematic_review",
+				"Pharmacologic Treatment of Insomnia Disorder: An Evidence Report for a Clinical Practice Guideline by the American College of Physicians",
+				"Annals of Internal Medicine",
+				2016,
+				"10.7326/M15-1781",
+				"Evidence review finding insufficient durable support for many common over-the-counter approaches."
+			],
+			[
+				"guideline",
+				"Management of Chronic Insomnia Disorder in Adults: A Clinical Practice Guideline From the American College of Physicians",
+				"Annals of Internal Medicine",
+				2016,
+				"10.7326/M15-2175",
+				"Guideline recommending cognitive behavioral therapy as initial treatment for chronic insomnia."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -370,9 +560,30 @@ export const august2026SleepFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Natural experiments are vulnerable to coding, weather, weekday, and secular confounding, and results differ by outcome and jurisdiction.",
 		sources: sources([
-			["meta_analysis", "Daylight Saving Time and Acute Myocardial Infarction: A Meta-Analysis", "Journal of Clinical Medicine", 2019, "10.3390/jcm8030404", "Meta-analysis finding a small transient increase in acute myocardial infarction after the spring transition."],
-			["consensus_statement", "Daylight saving time: an American Academy of Sleep Medicine position statement", "Journal of Clinical Sleep Medicine", 2020, "10.5664/jcsm.8780", "Sleep-medicine position linking clock changes to circadian disruption and favoring permanent standard time."],
-			["landmark_study", "Daylight saving time transitions and acute myocardial infarction", "Chronobiology International", 2013, "10.3109/07420528.2013.775144", "Population time-series study illustrating the short-lived cardiovascular signal and its uncertainty."]
+			[
+				"meta_analysis",
+				"Daylight Saving Time and Acute Myocardial Infarction: A Meta-Analysis",
+				"Journal of Clinical Medicine",
+				2019,
+				"10.3390/jcm8030404",
+				"Meta-analysis finding a small transient increase in acute myocardial infarction after the spring transition."
+			],
+			[
+				"consensus_statement",
+				"Daylight saving time: an American Academy of Sleep Medicine position statement",
+				"Journal of Clinical Sleep Medicine",
+				2020,
+				"10.5664/jcsm.8780",
+				"Sleep-medicine position linking clock changes to circadian disruption and favoring permanent standard time."
+			],
+			[
+				"landmark_study",
+				"Daylight saving time transitions and acute myocardial infarction",
+				"Chronobiology International",
+				2013,
+				"10.3109/07420528.2013.775144",
+				"Population time-series study illustrating the short-lived cardiovascular signal and its uncertainty."
+			]
 		])
 	})
 ];

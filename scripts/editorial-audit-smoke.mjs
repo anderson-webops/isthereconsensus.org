@@ -44,7 +44,11 @@ async function freePort() {
 }
 
 function start(executable, args, env) {
-	const child = spawn(executable, args, { cwd: root, env, stdio: ["ignore", "pipe", "pipe"] });
+	const child = spawn(executable, args, {
+		cwd: root,
+		env,
+		stdio: ["ignore", "pipe", "pipe"]
+	});
 	children.push(child);
 	child.on("error", (error) => {
 		logs += error.message;
@@ -61,7 +65,10 @@ async function stop(child) {
 	if (!child.pid || child.exitCode !== null || child.signalCode !== null) return;
 	const exited = once(child, "exit");
 	child.kill("SIGTERM");
-	await Promise.race([exited, delay(8000)]);
+	await Promise.race([
+		exited,
+		delay(8000)
+	]);
 	if (child.exitCode === null && child.signalCode === null) {
 		child.kill("SIGKILL");
 		await exited;
@@ -79,20 +86,51 @@ async function waitFor(check, label) {
 
 try {
 	const mongoPort = await freePort();
-	const replicaArgs = ["--replSet", "ownerEditorialSmoke", "--wiredTigerCacheSizeGB", "0.25"];
+	const replicaArgs = [
+		"--replSet",
+		"ownerEditorialSmoke",
+		"--wiredTigerCacheSizeGB",
+		"0.25"
+	];
 	if (useDocker) {
-		execFileSync("docker", ["run", "--rm", "--detach", "--name", container, "--publish", `127.0.0.1:${mongoPort}:27017`, "mongo:8.0.34@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907", "--bind_ip_all", ...replicaArgs], { stdio: "pipe", timeout: 60000 });
+		execFileSync("docker", [
+			"run",
+			"--rm",
+			"--detach",
+			"--name",
+			container,
+			"--publish",
+			`127.0.0.1:${mongoPort}:27017`,
+			"mongo:8.0.34@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907",
+			"--bind_ip_all",
+			...replicaArgs
+		], { stdio: "pipe", timeout: 60000 });
 		containerOwned = true;
 	}
 	else {
 		mkdirSync(join(directory, "db"));
-		start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", ["--bind_ip", "127.0.0.1", "--port", String(mongoPort), "--dbpath", join(directory, "db"), ...replicaArgs], { PATH: process.env.PATH });
+		start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", [
+			"--bind_ip",
+			"127.0.0.1",
+			"--port",
+			String(mongoPort),
+			"--dbpath",
+			join(directory, "db"),
+			...replicaArgs
+		], { PATH: process.env.PATH });
 	}
 	const uri = `mongodb://127.0.0.1:${mongoPort}/${database}?directConnection=true`;
 	const inspector = new mongoose.mongo.MongoClient(uri, { serverSelectionTimeoutMS: 20000 });
 	try {
 		await inspector.connect();
-		await inspector.db("admin").command({ replSetInitiate: { _id: "ownerEditorialSmoke", members: [{ _id: 0, host: `127.0.0.1:${useDocker ? 27017 : mongoPort}` }] } });
+		await inspector.db("admin").command({
+			replSetInitiate: {
+				_id: "ownerEditorialSmoke",
+				members: [
+					{ _id: 0, host: `127.0.0.1:${useDocker ? 27017 : mongoPort}` }
+				]
+			}
+		});
 		await waitFor(async () => (await inspector.db("admin").command({ hello: 1 })).isWritablePrimary, "owned replica primary");
 		assert.equal((await inspector.db(database).listCollections().toArray()).length, 0);
 		ownsDatabase = true;
@@ -104,16 +142,37 @@ try {
 	connected = true;
 	await ContentRelease.init();
 	const admin = await Admin.create({ name: "Editorial Fixture", email: "editorial-fixture@example.invalid", password });
-	const proposal = createEditorialAuditProposal({ commit: "a".repeat(40), tree: "b".repeat(40) });
+	const proposal = createEditorialAuditProposal({
+		commit: "a".repeat(40),
+		tree: "b".repeat(40)
+	});
 	const fixtures = [];
 	const reviewDate = new Date("2026-09-13T12:00:00Z");
 	const nextDate = new Date("2026-12-01T12:00:00Z");
 	for (const target of proposal.targets) {
 		const [topicSlug, slug] = target.key.split("/");
-		const topic = await Topic.findOneAndUpdate({ slug: topicSlug }, { $setOnInsert: { title: topicSlug, slug: topicSlug } }, { upsert: true, returnDocument: "after" });
-		const claim = await Claim.create({ ...target.compatibleLegacyBaseline, topic: topic._id, slug, lastReviewedAt: reviewDate, reviewDateBasis: "source_record", nextReviewAt: nextDate, publishedAt: reviewDate });
+		const topic = await Topic.findOneAndUpdate({ slug: topicSlug }, {
+			$setOnInsert: { title: topicSlug, slug: topicSlug }
+		}, { upsert: true, returnDocument: "after" });
+		const claim = await Claim.create({
+			...target.compatibleLegacyBaseline,
+			topic: topic._id,
+			slug,
+			lastReviewedAt: reviewDate,
+			reviewDateBasis: "source_record",
+			nextReviewAt: nextDate,
+			publishedAt: reviewDate
+		});
 		const sources = [];
-		for (const source of target.expectedSources) sources.push(await ClaimSource.create({ ...source, claim: claim._id, citationStatus: "corrected", statusSources: ["Crossref", "https://example.org/retained-fixture-notice"], citationCheckedAt: reviewDate }));
+		for (const source of target.expectedSources) {
+			sources.push(await ClaimSource.create({
+				...source,
+				claim: claim._id,
+				citationStatus: "corrected",
+				statusSources: ["Crossref", "https://example.org/retained-fixture-notice"],
+				citationCheckedAt: reviewDate
+			}));
+		}
 		const baseline = claimsBeforeIntegrityCorrections.find(value => value.topicSlug === topicSlug && value.slug === slug);
 		assert.equal(ownerCorrectionMatches(claim.toObject(), sources.map(source => source.toObject()), baseline), true, `Synthetic baseline did not match: ${target.key}`);
 		fixtures.push({ target, claim, sources });
@@ -126,7 +185,12 @@ try {
 		return saveReceipt.apply(this, args);
 	};
 	try {
-		assert.deepEqual(await publishOwnerEditorialCorrections(), { published: 4, preserved: 0, conflicts: 0, failed: 1 });
+		assert.deepEqual(await publishOwnerEditorialCorrections(), {
+			published: 4,
+			preserved: 0,
+			conflicts: 0,
+			failed: 1
+		});
 	}
 	finally {
 		ContentRelease.prototype.save = saveReceipt;
@@ -154,15 +218,29 @@ try {
 		catch { return false; }
 	}, "isolated backend");
 	await waitFor(async () => await ContentRelease.countDocuments({ releaseId: "owner-content-first-editorial-2026-10-21" }) === fixtures.length, "automatic owner content release");
-	const completionKeys = createEditorialCompletionProposal({ commit: "a".repeat(40), tree: "b".repeat(40) }).targets.map(target => target.key).filter(key => fixtures.some(fixture => fixture.target.key === key));
-	await waitFor(async () => await ContentRelease.countDocuments({ releaseId: EDITORIAL_COMPLETION_RELEASE, key: { $in: completionKeys } }) === completionKeys.length, "later immutable completion release");
+	const completionKeys = createEditorialCompletionProposal({
+		commit: "a".repeat(40),
+		tree: "b".repeat(40)
+	}).targets.map(target => target.key).filter(key => fixtures.some(fixture => fixture.target.key === key));
+	await waitFor(async () => await ContentRelease.countDocuments({
+		releaseId: EDITORIAL_COMPLETION_RELEASE,
+		key: { $in: completionKeys }
+	}) === completionKeys.length, "later immutable completion release");
 	const headers = { "content-type": "application/json", "origin": "https://editorial-fixture.invalid", "x-forwarded-proto": "https" };
 	assert.equal((await fetch(`${base}/editorial/claims/${fixtures[0].claim._id}`, { headers })).status, 403);
-	const login = await fetch(`${base}/auth/login`, { method: "POST", headers, body: JSON.stringify({ email: admin.email, password }) });
+	const login = await fetch(`${base}/auth/login`, {
+		method: "POST",
+		headers,
+		body: JSON.stringify({ email: admin.email, password })
+	});
 	assert.equal(login.status, 200);
 	const cookie = login.headers.getSetCookie().map(value => value.split(";")[0]).join("; ");
 	assert.ok(cookie.includes(".sig="));
-	const blocked = await fetch(`${base}/editorial/claims/${fixtures[0].claim._id}`, { method: "PATCH", headers: { ...headers, cookie }, body: JSON.stringify({ bottomLine: "Unapproved direct edit." }) });
+	const blocked = await fetch(`${base}/editorial/claims/${fixtures[0].claim._id}`, {
+		method: "PATCH",
+		headers: { ...headers, cookie },
+		body: JSON.stringify({ bottomLine: "Unapproved direct edit." })
+	});
 	assert.equal(blocked.status, 403, "Existing published-content edit protection must remain enabled.");
 	for (const { target, claim, sources } of fixtures) {
 		const response = await fetch(base + target.publicApiPath.replace(/^\/api/, ""));
@@ -187,14 +265,43 @@ try {
 			assert.deepEqual(retained.statusSources, ["Crossref", "https://example.org/retained-fixture-notice"]);
 		}
 	}
-	const beforeReplay = JSON.stringify(await Claim.find({ _id: { $in: fixtures.map(value => value.claim._id) } }).sort({ _id: 1 }).lean());
-	assert.deepEqual(await publishOwnerEditorialCorrections(), { published: 0, preserved: 5, conflicts: 0, failed: 0 });
-	assert.equal(JSON.stringify(await Claim.find({ _id: { $in: fixtures.map(value => value.claim._id) } }).sort({ _id: 1 }).lean()), beforeReplay);
-	await Claim.updateOne({ _id: fixtures[0].claim._id }, { $set: { bottomLine: "Later human correction retained." } });
+	const beforeReplay = JSON.stringify(await Claim.find({
+		_id: {
+			$in: fixtures.map(value => value.claim._id)
+		}
+	}).sort({ _id: 1 }).lean());
+	assert.deepEqual(await publishOwnerEditorialCorrections(), {
+		published: 0,
+		preserved: 5,
+		conflicts: 0,
+		failed: 0
+	});
+	assert.equal(JSON.stringify(await Claim.find({
+		_id: {
+			$in: fixtures.map(value => value.claim._id)
+		}
+	}).sort({ _id: 1 }).lean()), beforeReplay);
+	await Claim.updateOne({ _id: fixtures[0].claim._id }, {
+		$set: { bottomLine: "Later human correction retained." }
+	});
 	await publishOwnerEditorialCorrections();
 	assert.equal((await Claim.findById(fixtures[0].claim._id)).bottomLine, "Later human correction retained.");
 	assert.equal(logs.includes(password), false);
-	console.log(JSON.stringify({ accepted: true, fixtureOnly: true, automaticallyPublished: fixtures.length, legacyCitationsPreserved: fixtures.reduce((sum, fixture) => sum + fixture.sources.length, 0), addedCitations: 2, editProtectionsPreserved: true, privateRollbackReceipts: 5, lateFailureRollbackVerified: true, sourceIdsAndNoticesPreserved: true, datesAndSchedulesPreserved: true, replayReadOnly: true, laterHumanEditPreserved: true, passwordAbsentFromLogs: true }));
+	console.log(JSON.stringify({
+		accepted: true,
+		fixtureOnly: true,
+		automaticallyPublished: fixtures.length,
+		legacyCitationsPreserved: fixtures.reduce((sum, fixture) => sum + fixture.sources.length, 0),
+		addedCitations: 2,
+		editProtectionsPreserved: true,
+		privateRollbackReceipts: 5,
+		lateFailureRollbackVerified: true,
+		sourceIdsAndNoticesPreserved: true,
+		datesAndSchedulesPreserved: true,
+		replayReadOnly: true,
+		laterHumanEditPreserved: true,
+		passwordAbsentFromLogs: true
+	}));
 }
 finally {
 	if (api) await stop(api);

@@ -3,7 +3,16 @@ import type { SeedClaim } from "./claims.js";
 export const weatherCheckedAt = "2026-10-05T16:44:10.000Z";
 
 function reference(title: string, publisher: string, url: string, note: string, year?: number): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title, publisher, url, note, year, stance: "supports", order: 1 };
+	return {
+		kind: "technical_reference",
+		title,
+		publisher,
+		url,
+		note,
+		year,
+		stance: "supports",
+		order: 1
+	};
 }
 
 export const readerWeatherSources = {
@@ -303,7 +312,9 @@ export const readerWeatherClaims: SeedClaim[] = reviews.map((review, index) => (
 	misconceptions: [review.title, "A weather label, index or image does not measure every part of the atmosphere or certify local safety."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
 	searchDatabases: ["Original NOAA, NWS and NESDIS educational and measurement references", "Original NSIDC explanation", "Consensus.app communication discovery; inaccessible original paper excluded"],
 	searchCutoffAt: weatherCheckedAt,
 	inclusionRules: ["Specify the event, physical quantity, sampled location/height, valid period and reference conditions.", "Retain conditional mechanisms, original provenance and product-specific interpretation limits."],
@@ -314,12 +325,51 @@ export const readerWeatherClaims: SeedClaim[] = reviews.map((review, index) => (
 	independenceSummary: "Most references share NOAA institutional provenance; related educational explanations are not independent experiments. NSIDC supplies separately hosted scientific explanation, not an expert-agreement poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing or forecasts succeeding. No actual reader demand was measured.",
 	coiSummary: "Public agency and university provenance is identified, not assumed to remove every institutional interest. The NASA/JPL precipitation page identifies NOAA program funding. Funding and conflicts were not exhaustively audited; no weather vendor is endorsed.",
 	lastRetractionCheckAt: weatherCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "A defined quantity or conditional physical relationship, not a measured local forecast skill or researcher-agreement percentage.", certainty: "moderate", limitations: [review.qualification, "No current local observations, forecast verification or app comparison"] }],
-	institutionalAnchors: [{ name: readerWeatherSources[review.sources[0]!].publisher, role: "Definition and measurement-scope reference, not a formal consensus statement or local safety forecast" }],
-	changeLog: [{ date: weatherCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: `0aa86e93-24ea-46fc-8be9-47d3a669${String(index + 1).padStart(4, "0")}`, date: weatherCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Original corrections and errata for cited references"], guidelineMonitors: ["NOAA/NWS and NSIDC definition and source-scope revisions"], triggerRules: ["Reassess a verified correction or product-scope change that alters the stated interpretation."] },
-	sources: review.sources.map((key, sourceIndex) => ({ ...readerWeatherSources[key], order: sourceIndex + 1, isAnchor: sourceIndex === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: weatherCheckedAt, statusSources: [readerWeatherSources[key].url!] }))
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "A defined quantity or conditional physical relationship, not a measured local forecast skill or researcher-agreement percentage.",
+			certainty: "moderate",
+			limitations: [review.qualification, "No current local observations, forecast verification or app comparison"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerWeatherSources[review.sources[0]!].publisher, role: "Definition and measurement-scope reference, not a formal consensus statement or local safety forecast" }
+	],
+	changeLog: [
+		{ date: weatherCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: `0aa86e93-24ea-46fc-8be9-47d3a669${String(index + 1).padStart(4, "0")}`,
+		date: weatherCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Original corrections and errata for cited references"],
+		guidelineMonitors: ["NOAA/NWS and NSIDC definition and source-scope revisions"],
+		triggerRules: ["Reassess a verified correction or product-scope change that alters the stated interpretation."]
+	},
+	sources: review.sources.map((key, sourceIndex) => ({
+		...readerWeatherSources[key],
+		order: sourceIndex + 1,
+		isAnchor: sourceIndex === 0,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: weatherCheckedAt,
+		statusSources: [readerWeatherSources[key].url!]
+	}))
 }));
 
-export const readerWeatherGaps = reviews.map(review => ({ slug: review.slug, gap: review.gap, relatedExistingSlugs: ["is-recent-global-warming-mainly-caused-by-human-activity", "do-cold-snaps-or-snowy-winters-disprove-global-warming"] }));
+export const readerWeatherGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: review.gap,
+	relatedExistingSlugs: ["is-recent-global-warming-mainly-caused-by-human-activity", "do-cold-snaps-or-snowy-winters-disprove-global-warming"]
+}));

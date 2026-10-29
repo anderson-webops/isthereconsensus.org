@@ -94,7 +94,9 @@ useStaticPageMeta({
 				<p>The workflow is manual, so precise requests are easier to review correctly.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in requestSteps" :key="item">{{ item }}</li>
+				<li v-for="item in requestSteps" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="policy-prose">
 				<p>
@@ -111,13 +113,17 @@ useStaticPageMeta({
 				<p>Know what account deletion can and cannot reach before you submit a request.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in expectationNotes" :key="item">{{ item }}</li>
+				<li v-for="item in expectationNotes" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Related rights pages</p>
+				<p class="eyebrow">
+					Related rights pages
+				</p>
 				<h2>Privacy maps data; account closure covers retained records.</h2>
 				<p>
 					The Privacy Policy explains collection and legal request channels. Account-closure guidance explains

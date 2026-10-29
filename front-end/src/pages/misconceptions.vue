@@ -50,7 +50,9 @@ useStaticPageMeta({
 					<span class="i-carbon-chevron-down misconception-card__chevron" aria-hidden="true" />
 				</summary>
 				<div class="misconception-card__body">
-					<p class="misconception-card__diagnosis">{{ item.diagnosis }}</p>
+					<p class="misconception-card__diagnosis">
+						{{ item.diagnosis }}
+					</p>
 					<section class="misconception-card__section misconception-card__section--correction">
 						<h3>Short correction</h3>
 						<p>{{ item.shortCorrection }}</p>
@@ -58,7 +60,9 @@ useStaticPageMeta({
 					<section class="misconception-card__section">
 						<h3>Quick checks</h3>
 						<ul>
-							<li v-for="entry in item.quickChecks" :key="entry">{{ entry }}</li>
+							<li v-for="entry in item.quickChecks" :key="entry">
+								{{ entry }}
+							</li>
 						</ul>
 					</section>
 					<section class="misconception-card__section">
@@ -114,17 +118,21 @@ useStaticPageMeta({
 						<thead>
 							<tr>
 								<th>Module</th>
-								<th v-for="cluster in clusterLabels" :key="cluster.slug">{{ cluster.label }}</th>
+								<th v-for="cluster in clusterLabels" :key="cluster.slug">
+									{{ cluster.label }}
+								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr v-for="item in misconceptionModules" :key="item.slug">
-								<td data-label="Module">{{ item.title }}</td>
+								<td data-label="Module">
+									{{ item.title }}
+								</td>
 								<td v-for="cluster in clusterLabels" :key="cluster.slug" :data-label="cluster.label">
 									{{
 										formatRelevance(
-											item.clusterUse.find((entry) => entry.slug === cluster.slug)?.relevance ||
-												"occasional"
+											item.clusterUse.find((entry) => entry.slug === cluster.slug)?.relevance
+												|| "occasional",
 										)
 									}}
 								</td>

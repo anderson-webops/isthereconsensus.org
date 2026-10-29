@@ -23,19 +23,108 @@ const electricity = comparisonForSlug("electricity-emissions")!;
 const caffeine = comparisonForSlug("caffeine-dose-and-sleep")!;
 const strength = comparisonForSlug("strength-training-supplements")!;
 const safeId = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const claimPaths = new Set(defaultClaims.map((claim) => `/consensus/${claim.topicSlug}/${claim.slug}`));
-const topicSlugs = new Set(defaultTopics.map((topic) => topic.slug));
+const claimPaths = new Set(defaultClaims.map(claim => `/consensus/${claim.topicSlug}/${claim.slug}`));
+const topicSlugs = new Set(defaultTopics.map(topic => topic.slug));
 
 function uniqueIds(items: Array<{ id: string }>) {
 	assert.ok(items.length > 0);
-	assert.equal(new Set(items.map((item) => item.id)).size, items.length);
+	assert.equal(new Set(items.map(item => item.id)).size, items.length);
 	for (const item of items) assert.match(item.id, safeId);
+}
+
+type ComparisonDefinition = (typeof evidenceComparisons)[number];
+type ComparisonOption = ComparisonDefinition["options"][number];
+
+function assertComparisonGuidance(comparison: ComparisonDefinition, sourceIds: Set<string>, cited: Set<string>) {
+	if (comparison.guidance) {
+		assert.ok(comparison.guidance.text.length > 50);
+		assert.ok(comparison.guidance.sourceIds.length > 0);
+		assert.equal(new Set(comparison.guidance.sourceIds).size, comparison.guidance.sourceIds.length);
+		for (const id of comparison.guidance.sourceIds) {
+			assert.ok(sourceIds.has(id), `missing guidance source ${id}`);
+			cited.add(id);
+		}
+	}
+}
+
+function assertComparisonEstimates(comparison: ComparisonDefinition, option: ComparisonOption, sourceIds: Set<string>, cited: Set<string>) {
+	const estimateGroups = [
+		option.estimates,
+		...Object.values(option.estimatesByContext || {})
+	];
+	for (const contextId of Object.keys(option.estimatesByContext || {})) {
+		assert.ok(
+			comparison.contexts.some(context => context.id === contextId && context.supportsEstimates)
+		);
+	}
+	for (const [outcome, estimate] of estimateGroups.flatMap(group => Object.entries(group))) {
+		assert.ok(comparison.outcomes.some(item => item.id === outcome));
+		assert.ok(Number.isFinite(estimate.value));
+		assert.ok(["reported", "approximately", "less_than"].includes(estimate.qualifier));
+		assert.ok(estimate.sourceIds.length > 0);
+		assert.equal(new Set(estimate.sourceIds).size, estimate.sourceIds.length);
+		if (estimate.uncertainty) {
+			const { lower, upper, estimate: point, metric, level } = estimate.uncertainty;
+			assert.ok([lower, upper, point].every(Number.isFinite));
+			assert.ok(lower <= point && point <= upper);
+			assert.ok(metric.length > 10);
+			assert.equal(level, 95);
+			assert.ok([undefined, "confidence", "credible"].includes(estimate.uncertainty.kind));
+			assert.ok(estimate.interpretation);
+		}
+		for (const id of estimate.sourceIds) {
+			assert.ok(sourceIds.has(id), `missing source ${id}`);
+			cited.add(id);
+		}
+	}
+}
+
+function assertComparisonFindings(comparison: ComparisonDefinition, option: ComparisonOption, sourceIds: Set<string>, cited: Set<string>) {
+	for (const [contextId, findings] of Object.entries(option.findingsByContext || {})) {
+		const context = comparison.contexts.find(entry => entry.id === contextId)!;
+		assert.ok(context?.supportsEstimates);
+		for (const [outcomeId, finding] of Object.entries(findings)) {
+			const outcome = comparison.outcomes.find(entry => entry.id === outcomeId)!;
+			assert.ok(outcome);
+			assert.equal(
+				estimateForSelection(option, outcome, context),
+				undefined,
+				"one rendering mode per cell"
+			);
+			for (const field of [
+				finding.headline,
+				finding.summary,
+				finding.evidence,
+				finding.scope,
+				finding.limitation
+			])
+				assert.ok(field.length > 20);
+			assert.ok(finding.sourceIds.length > 0);
+			assert.equal(new Set(finding.sourceIds).size, finding.sourceIds.length);
+			for (const id of finding.sourceIds) {
+				assert.ok(sourceIds.has(id), `missing finding source ${id}`);
+				cited.add(id);
+			}
+		}
+	}
+}
+
+function assertComparisonCells(comparison: ComparisonDefinition, option: ComparisonOption) {
+	for (const context of comparison.contexts.filter(entry => entry.supportsEstimates)) {
+		for (const outcome of comparison.outcomes) {
+			assert.ok(
+				estimateForSelection(option, outcome, context)
+				|| findingForSelection(option, outcome, context),
+				"supported cells need evidence"
+			);
+		}
+	}
 }
 
 describe("practical evidence comparisons", () => {
 	it("publishes only individually sourced definitions connected to real content", () => {
 		assert.ok(evidenceComparisons.length > 0);
-		assert.equal(new Set(evidenceComparisons.map((item) => item.slug)).size, evidenceComparisons.length);
+		assert.equal(new Set(evidenceComparisons.map(item => item.slug)).size, evidenceComparisons.length);
 		for (const comparison of evidenceComparisons) {
 			assert.match(comparison.slug, safeId);
 			assert.match(comparison.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
@@ -48,87 +137,20 @@ describe("practical evidence comparisons", () => {
 			uniqueIds(comparison.outcomes);
 			uniqueIds(comparison.contexts);
 			uniqueIds(comparison.sources);
-			assert.ok(comparison.contexts.some((context) => !context.supportsEstimates));
+			assert.ok(comparison.contexts.some(context => !context.supportsEstimates));
 			for (const context of comparison.contexts) assert.ok(context.explanation.length > 40);
-			const sourceIds = new Set(comparison.sources.map((source) => source.id));
+			const sourceIds = new Set(comparison.sources.map(source => source.id));
 			const cited = new Set<string>();
-			if (comparison.guidance) {
-				assert.ok(comparison.guidance.text.length > 50);
-				assert.ok(comparison.guidance.sourceIds.length > 0);
-				assert.equal(new Set(comparison.guidance.sourceIds).size, comparison.guidance.sourceIds.length);
-				for (const id of comparison.guidance.sourceIds) {
-					assert.ok(sourceIds.has(id), `missing guidance source ${id}`);
-					cited.add(id);
-				}
-			}
+			assertComparisonGuidance(comparison, sourceIds, cited);
 			for (const outcome of comparison.outcomes) {
 				assert.ok(outcome.unit.length > 0, "a measure needs an explicit unit or study-specific label");
 				assert.ok(outcome.explanation.length > 40);
 			}
 			for (const option of comparison.options) {
 				assert.ok(option.scope.length > 10, "population/technology scope must accompany figures");
-				const estimateGroups = [option.estimates, ...Object.values(option.estimatesByContext || {})];
-				for (const contextId of Object.keys(option.estimatesByContext || {})) {
-					assert.ok(
-						comparison.contexts.some((context) => context.id === contextId && context.supportsEstimates)
-					);
-				}
-				for (const [outcome, estimate] of estimateGroups.flatMap((group) => Object.entries(group))) {
-					assert.ok(comparison.outcomes.some((item) => item.id === outcome));
-					assert.ok(Number.isFinite(estimate.value));
-					assert.ok(["reported", "approximately", "less_than"].includes(estimate.qualifier));
-					assert.ok(estimate.sourceIds.length > 0);
-					assert.equal(new Set(estimate.sourceIds).size, estimate.sourceIds.length);
-					if (estimate.uncertainty) {
-						const { lower, upper, estimate: point, metric, level } = estimate.uncertainty;
-						assert.ok([lower, upper, point].every(Number.isFinite));
-						assert.ok(lower <= point && point <= upper);
-						assert.ok(metric.length > 10);
-						assert.equal(level, 95);
-						assert.ok([undefined, "confidence", "credible"].includes(estimate.uncertainty.kind));
-						assert.ok(estimate.interpretation);
-					}
-					for (const id of estimate.sourceIds) {
-						assert.ok(sourceIds.has(id), `missing source ${id}`);
-						cited.add(id);
-					}
-				}
-				for (const [contextId, findings] of Object.entries(option.findingsByContext || {})) {
-					const context = comparison.contexts.find((entry) => entry.id === contextId)!;
-					assert.ok(context?.supportsEstimates);
-					for (const [outcomeId, finding] of Object.entries(findings)) {
-						const outcome = comparison.outcomes.find((entry) => entry.id === outcomeId)!;
-						assert.ok(outcome);
-						assert.equal(
-							estimateForSelection(option, outcome, context),
-							undefined,
-							"one rendering mode per cell"
-						);
-						for (const field of [
-							finding.headline,
-							finding.summary,
-							finding.evidence,
-							finding.scope,
-							finding.limitation
-						])
-							assert.ok(field.length > 20);
-						assert.ok(finding.sourceIds.length > 0);
-						assert.equal(new Set(finding.sourceIds).size, finding.sourceIds.length);
-						for (const id of finding.sourceIds) {
-							assert.ok(sourceIds.has(id), `missing finding source ${id}`);
-							cited.add(id);
-						}
-					}
-				}
-				for (const context of comparison.contexts.filter((entry) => entry.supportsEstimates)) {
-					for (const outcome of comparison.outcomes) {
-						assert.ok(
-							estimateForSelection(option, outcome, context) ||
-								findingForSelection(option, outcome, context),
-							"supported cells need evidence"
-						);
-					}
-				}
+				assertComparisonEstimates(comparison, option, sourceIds, cited);
+				assertComparisonFindings(comparison, option, sourceIds, cited);
+				assertComparisonCells(comparison, option);
 			}
 			for (const source of comparison.sources) {
 				const url = new URL(source.url);
@@ -138,7 +160,7 @@ describe("practical evidence comparisons", () => {
 				assert.ok(source.note.length > 50);
 				assert.ok(cited.has(source.id), "no decorative citations");
 			}
-			assert.ok(readingGuides.some((guide) => `/guides/${guide.slug}` === comparison.guidePath));
+			assert.ok(readingGuides.some(guide => `/guides/${guide.slug}` === comparison.guidePath));
 			assert.ok(comparisonsForGuide(comparison.guidePath).includes(comparison));
 			for (const topic of comparison.topics) {
 				assert.ok(topicSlugs.has(topic), `unknown topic ${topic}`);
@@ -198,7 +220,7 @@ describe("practical evidence comparisons", () => {
 	});
 
 	it("preserves all twelve caffeine placebo contrasts from the inspected supplementary Table S4", () => {
-		const actual = caffeine.options.flatMap((option) =>
+		const actual = caffeine.options.flatMap(option =>
 			Object.entries(option.estimatesByContext!).flatMap(([context, estimates]) =>
 				Object.entries(estimates).map(([outcome, estimate]) => [
 					option.id,
@@ -213,18 +235,126 @@ describe("practical evidence comparisons", () => {
 			)
 		);
 		assert.deepEqual(actual, [
-			["100-mg", "four-hours", "total-sleep", -4.47, -0.03, -0.25, 0.19, "= 1.000"],
-			["100-mg", "four-hours", "deep-sleep", 4.19, 0.07, -0.15, 0.29, "= 1.000"],
-			["100-mg", "eight-hours", "total-sleep", -7.58, -0.05, -0.27, 0.17, "= 1.000"],
-			["100-mg", "eight-hours", "deep-sleep", -8.39, -0.14, -0.36, 0.08, "= 0.374"],
-			["100-mg", "twelve-hours", "total-sleep", -7.2, -0.05, -0.27, 0.17, "= 1.000"],
-			["100-mg", "twelve-hours", "deep-sleep", -0.59, -0.01, -0.23, 0.21, "= 1.000"],
-			["400-mg", "four-hours", "total-sleep", -50.64, -0.36, -0.59, -0.14, "< 0.001"],
-			["400-mg", "four-hours", "deep-sleep", -29.65, -0.5, -0.73, -0.27, "< 0.001"],
-			["400-mg", "eight-hours", "total-sleep", -28.66, -0.21, -0.43, 0.02, "= 0.076"],
-			["400-mg", "eight-hours", "deep-sleep", -15.29, -0.26, -0.48, -0.04, "= 0.016"],
-			["400-mg", "twelve-hours", "total-sleep", -30.02, -0.22, -0.44, 0.01, "= 0.060"],
-			["400-mg", "twelve-hours", "deep-sleep", -20.63, -0.35, -0.57, -0.12, "= 0.001"]
+			[
+				"100-mg",
+				"four-hours",
+				"total-sleep",
+				-4.47,
+				-0.03,
+				-0.25,
+				0.19,
+				"= 1.000"
+			],
+			[
+				"100-mg",
+				"four-hours",
+				"deep-sleep",
+				4.19,
+				0.07,
+				-0.15,
+				0.29,
+				"= 1.000"
+			],
+			[
+				"100-mg",
+				"eight-hours",
+				"total-sleep",
+				-7.58,
+				-0.05,
+				-0.27,
+				0.17,
+				"= 1.000"
+			],
+			[
+				"100-mg",
+				"eight-hours",
+				"deep-sleep",
+				-8.39,
+				-0.14,
+				-0.36,
+				0.08,
+				"= 0.374"
+			],
+			[
+				"100-mg",
+				"twelve-hours",
+				"total-sleep",
+				-7.2,
+				-0.05,
+				-0.27,
+				0.17,
+				"= 1.000"
+			],
+			[
+				"100-mg",
+				"twelve-hours",
+				"deep-sleep",
+				-0.59,
+				-0.01,
+				-0.23,
+				0.21,
+				"= 1.000"
+			],
+			[
+				"400-mg",
+				"four-hours",
+				"total-sleep",
+				-50.64,
+				-0.36,
+				-0.59,
+				-0.14,
+				"< 0.001"
+			],
+			[
+				"400-mg",
+				"four-hours",
+				"deep-sleep",
+				-29.65,
+				-0.5,
+				-0.73,
+				-0.27,
+				"< 0.001"
+			],
+			[
+				"400-mg",
+				"eight-hours",
+				"total-sleep",
+				-28.66,
+				-0.21,
+				-0.43,
+				0.02,
+				"= 0.076"
+			],
+			[
+				"400-mg",
+				"eight-hours",
+				"deep-sleep",
+				-15.29,
+				-0.26,
+				-0.48,
+				-0.04,
+				"= 0.016"
+			],
+			[
+				"400-mg",
+				"twelve-hours",
+				"total-sleep",
+				-30.02,
+				-0.22,
+				-0.44,
+				0.01,
+				"= 0.060"
+			],
+			[
+				"400-mg",
+				"twelve-hours",
+				"deep-sleep",
+				-20.63,
+				-0.35,
+				-0.57,
+				-0.12,
+				"= 0.001"
+			]
 		]);
 	});
 
@@ -236,7 +366,10 @@ describe("practical evidence comparisons", () => {
 		assert.equal(estimateForSelection(option, outcome, caffeine.contexts[3]!), undefined);
 		assert.equal(
 			estimateForSelection(
-				{ ...option, estimates: { "total-sleep": option.estimatesByContext!["four-hours"]!["total-sleep"]! } },
+				{
+					...option,
+					estimates: { "total-sleep": option.estimatesByContext!["four-hours"]!["total-sleep"]! }
+				},
 				outcome,
 				{ ...caffeine.contexts[0]!, id: "missing" }
 			),
@@ -280,16 +413,16 @@ describe("practical evidence comparisons", () => {
 		);
 		const first = update({ outcome: "deep-sleep" });
 		const second = update({ context: "twelve-hours" });
-		const third = update((current) => ({
+		const third = update(current => ({
 			options: current.options
-				.filter((option) => option.id !== "100-mg")
-				.map((option) => option.id)
+				.filter(option => option.id !== "100-mg")
+				.map(option => option.id)
 				.join(",")
 		}));
-		const fourth = update((current) => ({
+		const fourth = update(current => ({
 			options: current.options
-				.filter((option) => option.id !== "400-mg")
-				.map((option) => option.id)
+				.filter(option => option.id !== "400-mg")
+				.map(option => option.id)
 				.join(",")
 		}));
 		assert.deepEqual(writes, []);
@@ -320,7 +453,7 @@ describe("practical evidence comparisons", () => {
 
 	it("preserves the visually checked Table 1 medians and qualifications, with no derived scores", () => {
 		assert.deepEqual(
-			electricity.options.map((option) => [
+			electricity.options.map(option => [
 				option.id,
 				formatComparisonEstimate(option.estimates.lifecycle!),
 				formatComparisonEstimate(option.estimates.upstream!)
@@ -339,8 +472,8 @@ describe("practical evidence comparisons", () => {
 		assert.match(electricity.limitations.join(" "), /different study pools/);
 		assert.match(electricity.limitations.join(" "), /no uncertainty interval/);
 		assert.ok(
-			electricity.options.every((option) =>
-				Object.values(option.estimates).every((estimate) => estimate.value >= 0)
+			electricity.options.every(option =>
+				Object.values(option.estimates).every(estimate => estimate.value >= 0)
 			)
 		);
 		assert.deepEqual(Object.keys(electricity.options[0]!.estimates), ["lifecycle", "upstream"]);
@@ -367,7 +500,7 @@ describe("practical evidence comparisons", () => {
 		assert.equal(selection.outcome.id, "upstream");
 		assert.equal(selection.context.supportsEstimates, false);
 		assert.deepEqual(
-			selection.options.map((option) => option.id),
+			selection.options.map(option => option.id),
 			["coal", "solar"]
 		);
 	});
@@ -376,7 +509,11 @@ describe("practical evidence comparisons", () => {
 		assert.deepEqual(resolveComparisonSelection(electricity, { options: "" }).options, []);
 		for (const query of [
 			{ options: "unknown", outcome: "__proto__", context: "constructor" },
-			{ options: ["coal", "solar"], outcome: ["upstream"], context: ["whole-grid"] },
+			{
+				options: ["coal", "solar"],
+				outcome: ["upstream"],
+				context: ["whole-grid"]
+			},
 			{ options: null },
 			{ options: "all" }
 		]) {
@@ -388,7 +525,13 @@ describe("practical evidence comparisons", () => {
 	});
 
 	it("rejects unknown/prototype slugs without arbitrary dynamic imports", () => {
-		for (const slug of ["__proto__", "constructor", "toString", "../../account", "unknown"])
+		for (const slug of [
+			"__proto__",
+			"constructor",
+			"toString",
+			"../../account",
+			"unknown"
+		])
 			assert.equal(comparisonForSlug(slug), undefined);
 		assert.deepEqual(comparisonsForReview("unknown"), []);
 		assert.deepEqual(comparisonsForTopic("unknown"), []);

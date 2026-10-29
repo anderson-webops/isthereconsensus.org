@@ -30,7 +30,12 @@ const readerLibrarySchema = new Schema<IReaderLibrary>(
 		// The authenticated role and id form the key. The intrinsic _id index also
 		// makes simultaneous first writes safe without relying on index creation.
 		_id: { type: String, required: true, match: /^(user|admin):[a-f\d]{24}$/ },
-		revision: { type: Number, required: true, min: 1, validate: Number.isSafeInteger },
+		revision: {
+			type: Number,
+			required: true,
+			min: 1,
+			validate: Number.isSafeInteger
+		},
 		savedReviewIds: ids(MAX_SAVED_REVIEWS),
 		followedTopicIds: ids(MAX_FOLLOWED_TOPICS),
 		followedCoverageRequestIds: ids(MAX_FOLLOWED_COVERAGE_REQUESTS),

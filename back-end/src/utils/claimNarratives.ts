@@ -1,6 +1,11 @@
 export const CLAIM_NARRATIVE_MAX_ITEMS = 12;
 export const CLAIM_NARRATIVE_MAX_LENGTH = 1000;
-export const CLAIM_NARRATIVE_FIELDS = ["stableCore", "openQuestions", "whatWouldChangeMinds", "misconceptions"] as const;
+export const CLAIM_NARRATIVE_FIELDS = [
+	"stableCore",
+	"openQuestions",
+	"whatWouldChangeMinds",
+	"misconceptions"
+] as const;
 
 type ClaimNarrativeField = (typeof CLAIM_NARRATIVE_FIELDS)[number];
 type ClaimNarratives = Record<ClaimNarrativeField, readonly string[]>;
@@ -27,7 +32,9 @@ export function normalizeClaimNarratives(
 			continue;
 		}
 		const known = new Set(previous);
-		const normalized = value.map(item => known.has(item) ? item : item.trim()).filter(Boolean);
+		const normalized = value.map(item => known.has(item)
+			? item
+			: item.trim()).filter(Boolean);
 		if (normalized.length > CLAIM_NARRATIVE_MAX_ITEMS) {
 			throw new ClaimNarrativeValidationError(`${field} must contain at most ${CLAIM_NARRATIVE_MAX_ITEMS} items; nothing was saved.`);
 		}

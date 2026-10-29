@@ -23,7 +23,7 @@ describe("particle air-cleaner comparison", () => {
 			});
 		});
 		assert.deepEqual(
-			comparison.outcomes.map((item) => item.unit),
+			comparison.outcomes.map(item => item.unit),
 			["CFM", "W"]
 		);
 		assert.match(
@@ -47,7 +47,7 @@ describe("particle air-cleaner comparison", () => {
 		});
 		assert.deepEqual(
 			selection.options.map(
-				(option) => estimateForSelection(option, selection.outcome, selection.context)!.value
+				option => estimateForSelection(option, selection.outcome, selection.context)!.value
 			),
 			[76, 41.1]
 		);

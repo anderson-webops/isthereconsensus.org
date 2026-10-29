@@ -25,8 +25,22 @@ published entrypoints. Its source and compatibility contract are recorded in
 recursive/array merges and ordinary options; an installed-consumer check proves
 the Rollup resolver loads that fork. No request-controlled merge path is claimed.
 
-Both workspace and independent backend graphs use qs 6.16.1. Regression tests
+Both workspace and independent backend graphs use the reviewed canonical
+qs 6.17.2-webops.1 package. Regression tests
 exercise hostile comma serialization and preserve ordinary serialization and
 repeated, bracketed and dotted query parsing. The independent worker graph
 retains its own lockfile and exact dependency declarations. Full and production
-audits apply independently to all three graphs.
+audits apply independently to the root, backend, worker-runtime and vendored graphs.
+
+Backend typechecking covers both production source and test fixtures. Synthetic
+fixtures retain runtime presence checks and explicit request boundaries rather
+than weakening strict types or substituting unchecked values.
+
+## Preserved scientific prose
+
+The prose-style exception binds the 28 scientific data snapshots in
+`scripts/lib/approved-data-prose.mjs` to exact SHA-256 digests. Only unchanged
+snapshots bypass the em-dash rule; changed input, including editor or stdin
+content, receives the original rule. All other lint rules remain enabled.
+Snapshot changes require scientific-data review, not automatic lint repair.
+These style snapshots do not grant editorial, publication or deployment approval.

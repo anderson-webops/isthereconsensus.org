@@ -28,12 +28,16 @@ export interface ClaimCitationBundle {
 }
 
 function cleanText(value: unknown) {
-	return typeof value === "string" ? value.replaceAll(/\s+/g, " ").trim() : "";
+	return typeof value === "string"
+		? value.replaceAll(/\s+/g, " ").trim()
+		: "";
 }
 
 function citationDate(value: Date | string | undefined, now: Date) {
 	const date = recordedDate(value);
-	return date && date <= now.toISOString() ? new Date(date) : undefined;
+	return date && date <= now.toISOString()
+		? new Date(date)
+		: undefined;
 }
 
 function isoDate(value: Date | undefined) {
@@ -102,10 +106,16 @@ function sourceUrl(source: CitationSource) {
 		resolver.pathname = `/${doi}`;
 		return resolver.toString();
 	}
-	const pmcid = /^PMC\d+$/iu.test(cleanText(source.pmcid)) ? cleanText(source.pmcid).toUpperCase() : "";
+	const pmcid = /^PMC\d+$/iu.test(cleanText(source.pmcid))
+		? cleanText(source.pmcid).toUpperCase()
+		: "";
 	if (pmcid) return `https://pmc.ncbi.nlm.nih.gov/articles/${pmcid}/`;
-	const pmid = /^\d{1,12}$/u.test(cleanText(source.pmid)) ? cleanText(source.pmid) : "";
-	return pmid ? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/` : "";
+	const pmid = /^\d{1,12}$/u.test(cleanText(source.pmid))
+		? cleanText(source.pmid)
+		: "";
+	return pmid
+		? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`
+		: "";
 }
 
 function bibtexEntry(key: string, fields: Array<[string, unknown]>, type = "misc") {
@@ -114,7 +124,9 @@ function bibtexEntry(key: string, fields: Array<[string, unknown]>, type = "misc
 			const escapedValue = bibtexValue(value);
 			return [
 				name,
-				name === "author" && cleanText(value) === REVIEW_AUTHOR ? `{${escapedValue}}` : escapedValue
+				name === "author" && cleanText(value) === REVIEW_AUTHOR
+					? `{${escapedValue}}`
+					: escapedValue
 			] as const;
 		})
 		.filter(([, value]) => Boolean(value))
@@ -125,7 +137,10 @@ function bibtexEntry(key: string, fields: Array<[string, unknown]>, type = "misc
 function risRecord(fields: Array<[string, unknown]>) {
 	return [
 		...fields
-			.map(([name, value]) => [name, cleanText(value)] as const)
+			.map(([name, value]) => [
+				name,
+				cleanText(value)
+			] as const)
 			.filter(([, value]) => Boolean(value))
 			.map(([name, value]) => `${name}  - ${value}`),
 		"ER  -"
@@ -156,7 +171,9 @@ export function buildClaimCitationBundle(params: {
 	const reviewUrl = `${origin}/consensus/${encodeURIComponent(params.topic.slug)}/${encodeURIComponent(params.claim.slug)}`;
 	const reviewKey = `isthereconsensus_${citationKey(params.claim.slug, "review")}_${reviewedDate?.getUTCFullYear() ?? "undated"}`;
 	const reviewTitle = cleanText(params.claim.title);
-	const reviewTitleSentence = /[.!?]$/u.test(reviewTitle) ? reviewTitle : `${reviewTitle}.`;
+	const reviewTitleSentence = /[.!?]$/u.test(reviewTitle)
+		? reviewTitle
+		: `${reviewTitle}.`;
 	const plainText = `${REVIEW_AUTHOR}. “${reviewTitleSentence}” Is There Consensus. ${dateNote}. ${reviewUrl}`;
 	const reviewMarkdown = `[${cleanText(params.claim.title)}](${reviewUrl}). *Is There Consensus*. ${dateNote}.`;
 	const reviewBibtex = bibtexEntry(reviewKey, [
@@ -174,7 +191,10 @@ export function buildClaimCitationBundle(params: {
 		["T2", "Is There Consensus"],
 		["PY", citationYear],
 		["UR", reviewUrl],
-		["Y2", isoDate(generatedAt)],
+		[
+			"Y2",
+			isoDate(generatedAt)
+		],
 		["N1", dateNote]
 	]);
 
@@ -186,26 +206,50 @@ export function buildClaimCitationBundle(params: {
 			["publisher", source.publisher],
 			["year", source.year],
 			["doi", doi],
-			["url", sourceUrl(source)],
+			[
+				"url",
+				sourceUrl(source)
+			],
 			["note", source.note]
 		]);
 	});
 	const sourceRis = params.sources.map(source => risRecord([
-		["TY", source.kind === "landmark_study" ? "JOUR" : "GEN"],
+		[
+			"TY",
+			source.kind === "landmark_study"
+				? "JOUR"
+				: "GEN"
+		],
 		["TI", source.title],
 		["PB", source.publisher],
 		["PY", source.year],
-		["DO", normalizeDoi(source.doi)],
-		["UR", sourceUrl(source)],
+		[
+			"DO",
+			normalizeDoi(source.doi)
+		],
+		[
+			"UR",
+			sourceUrl(source)
+		],
 		["N1", source.note]
 	]));
 	const sourceMarkdown = params.sources.map((source, index) => {
 		const link = sourceUrl(source);
-		const linkedTitle = link ? `[${markdownText(source.title)}](<${link}>)` : markdownText(source.title);
-		const details = [cleanText(source.publisher), source.year ? String(source.year) : "", normalizeDoi(source.doi)]
+		const linkedTitle = link
+			? `[${markdownText(source.title)}](<${link}>)`
+			: markdownText(source.title);
+		const details = [
+			cleanText(source.publisher),
+			source.year
+				? String(source.year)
+				: "",
+			normalizeDoi(source.doi)
+		]
 			.filter(Boolean)
 			.join(", ");
-		return `${index + 1}. ${linkedTitle}${details ? `. ${details}.` : "."}`;
+		return `${index + 1}. ${linkedTitle}${details
+			? `. ${details}.`
+			: "."}`;
 	});
 	const markdown = [
 		`# ${cleanText(params.claim.title)}`,
@@ -222,17 +266,37 @@ export function buildClaimCitationBundle(params: {
 			"type": "webpage",
 			"title": cleanText(params.claim.title),
 			"container-title": "Is There Consensus",
-			"author": [{ literal: REVIEW_AUTHOR }],
-			"issued": publishedDate ? { "date-parts": [[publishedDate.getUTCFullYear(), publishedDate.getUTCMonth() + 1, publishedDate.getUTCDate()]] } : undefined,
+			"author": [
+				{ literal: REVIEW_AUTHOR }
+			],
+			"issued": publishedDate
+				? {
+						"date-parts": [
+							[
+								publishedDate.getUTCFullYear(),
+								publishedDate.getUTCMonth() + 1,
+								publishedDate.getUTCDate()
+							]
+						]
+					}
+				: undefined,
 			"note": dateNote,
 			"URL": reviewUrl
 		},
 		...params.sources.map((source, index) => ({
 			id: `itc-source-${index + 1}`,
-			type: source.kind === "landmark_study" ? "article-journal" : "report",
+			type: source.kind === "landmark_study"
+				? "article-journal"
+				: "report",
 			title: cleanText(source.title),
 			publisher: cleanText(source.publisher) || undefined,
-			issued: source.year ? { "date-parts": [[source.year]] } : undefined,
+			issued: source.year
+				? {
+						"date-parts": [
+							[source.year]
+						]
+					}
+				: undefined,
 			DOI: normalizeDoi(source.doi) || undefined,
 			URL: sourceUrl(source) || undefined,
 			note: cleanText(source.note) || undefined

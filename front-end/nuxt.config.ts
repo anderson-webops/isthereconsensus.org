@@ -21,7 +21,8 @@ function readGitValue(args: string[]): string {
 			encoding: "utf8",
 			stdio: ["ignore", "pipe", "ignore"]
 		}).trim();
-	} catch {
+	}
+	catch {
 		return "";
 	}
 }
@@ -32,20 +33,20 @@ const internalApiBase = normalizeInternalApiBase(
 	process.env.NUXT_API_INTERNAL_BASE || process.env.INTERNAL_API_BASE || process.env.API_INTERNAL_BASE
 );
 const publicSiteUrl = normalizePublicSiteUrl(process.env.NUXT_PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL, isDev);
-const deploymentCommit =
-	process.env.SOURCE_COMMIT ||
-	process.env.SOURCE_VERSION ||
-	process.env.GITHUB_SHA ||
-	process.env.VERCEL_GIT_COMMIT_SHA ||
-	process.env.COMMIT_SHA ||
-	process.env.BUILD_SHA ||
-	readGitValue(["rev-parse", "--short=12", "HEAD"]);
-const deploymentRef =
-	process.env.SOURCE_TAG ||
-	process.env.RELEASE_VERSION ||
-	process.env.GITHUB_REF_NAME ||
-	process.env.BRANCH_NAME ||
-	readGitValue(["describe", "--tags", "--exact-match"]);
+const deploymentCommit
+	= process.env.SOURCE_COMMIT
+		|| process.env.SOURCE_VERSION
+		|| process.env.GITHUB_SHA
+		|| process.env.VERCEL_GIT_COMMIT_SHA
+		|| process.env.COMMIT_SHA
+		|| process.env.BUILD_SHA
+		|| readGitValue(["rev-parse", "--short=12", "HEAD"]);
+const deploymentRef
+	= process.env.SOURCE_TAG
+		|| process.env.RELEASE_VERSION
+		|| process.env.GITHUB_REF_NAME
+		|| process.env.BRANCH_NAME
+		|| readGitValue(["describe", "--tags", "--exact-match"]);
 const faviconLinks = [
 	{
 		rel: "icon",
@@ -98,7 +99,8 @@ const legacyNoindexHeaders = {
 const publicApiOrigin = (() => {
 	try {
 		return new URL(publicApiBase).origin;
-	} catch {
+	}
+	catch {
 		return "";
 	}
 })();
@@ -145,7 +147,13 @@ export default defineNuxtConfig({
 		"@": srcAlias
 	},
 
-	modules: ["@vueuse/nuxt", "@unocss/nuxt", "@pinia/nuxt", "@nuxtjs/color-mode", "@nuxt/eslint"],
+	modules: [
+		"@vueuse/nuxt",
+		"@unocss/nuxt",
+		"@pinia/nuxt",
+		"@nuxtjs/color-mode",
+		"@nuxt/eslint"
+	],
 
 	srcDir: "src",
 
@@ -170,8 +178,8 @@ export default defineNuxtConfig({
 				? []
 				: [
 						{
-							defer: true,
-							src: "https://analytics.isthereconsensus.org/script.js",
+							"defer": true,
+							"src": "https://analytics.isthereconsensus.org/script.js",
 							"data-website-id": "6a5e2165-ed75-4c43-9640-b19128069984"
 						}
 					]
@@ -343,7 +351,9 @@ export default defineNuxtConfig({
 		},
 		server: {
 			fs: {
-				allow: [path.resolve(__dirname, "..", "..")]
+				allow: [
+					path.resolve(__dirname, "..", "..")
+				]
 			}
 		}
 	}

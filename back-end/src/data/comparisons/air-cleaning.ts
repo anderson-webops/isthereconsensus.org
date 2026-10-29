@@ -51,7 +51,10 @@ const configurations = [
 ];
 export const airCleaningComparison: EvidenceComparison = {
 	slug: "particle-air-cleaner-designs",
-	guidance: { text: "For DIY units, follow EPA guidance on newer safety-marked fans, manufacturer precautions and working smoke alarms. Limited testing does not certify every assembly. Particle cleaning does not remove all gases or replace source control and appropriate ventilation. Avoid intentionally ozone-producing cleaners in occupied spaces.", sourceIds: ["epa-diy", "epa-guide"] },
+	guidance: {
+		text: "For DIY units, follow EPA guidance on newer safety-marked fans, manufacturer precautions and working smoke alarms. Limited testing does not certify every assembly. Particle cleaning does not remove all gases or replace source control and appropriate ventilation. Avoid intentionally ozone-producing cleaners in occupied spaces.",
+		sourceIds: ["epa-diy", "epa-guide"]
+	},
 	title: "Compare particle air-cleaner designs",
 	description:
 		"DIY box fans, shrouds, four-filter boxes and a commercial comparator: compare smoke-particle clean-air delivery and electrical power in one laboratory study.",

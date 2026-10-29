@@ -201,14 +201,18 @@ export const september2026AtlasBreadthGeoscienceClaims: SeedClaim[] = [
 			"Fluid injection can induce earthquakes, but the dominant operation in many U.S. sequences has been wastewater disposal rather than the brief rock-fracturing stage itself.",
 		uncertaintySummary:
 			"The mechanism and regional associations are well supported. Attribution and maximum-magnitude risk remain specific to local faults, pressure pathways, and operating history.",
-		sources: [inducedEarthquakeFacts, inducedSeismicityAssessment, [
-			"consensus_statement",
-			"Induced Seismicity Strategic Vision",
-			"U.S. Geological Survey",
-			2023,
-			"https://pubs.usgs.gov/circ/1509/circ1509.pdf",
-			"USGS research strategy synthesizes observations, hazard modeling, operational data gaps, and mitigation priorities for injection-induced earthquakes."
-		]]
+		sources: [
+			inducedEarthquakeFacts,
+			inducedSeismicityAssessment,
+			[
+				"consensus_statement",
+				"Induced Seismicity Strategic Vision",
+				"U.S. Geological Survey",
+				2023,
+				"https://pubs.usgs.gov/circ/1509/circ1509.pdf",
+				"USGS research strategy synthesizes observations, hazard modeling, operational data gaps, and mitigation priorities for injection-induced earthquakes."
+			]
+		]
 	}),
 	reviewedClaim({
 		topicSlug: "earth-and-geoscience",

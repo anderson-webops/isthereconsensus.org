@@ -11,14 +11,21 @@ import { APPROVED_EDITORIAL_DATA_SHA256, ownerCorrectionMatches } from "../src/u
 
 function fixture() {
 	const before = claimsBeforeIntegrityCorrections.find(claim => claim.slug === "do-modest-minimum-wage-increases-always-cause-large-job-losses")!;
-	const claim = new Claim({ ...seedClaimFields(before), topic: new mongoose.Types.ObjectId(), slug: before.slug }).toObject();
+	const claim = new Claim({
+		...seedClaimFields(before),
+		topic: new mongoose.Types.ObjectId(),
+		slug: before.slug
+	}).toObject();
 	const sources = before.sources.map(source => new ClaimSource({ ...source, claim: claim._id }).toObject());
 	return { before, claim, sources };
 }
 
 describe("owner-approved automatic editorial corrections", () => {
 	it("binds the exact five-target release instead of accepting arbitrary catalog changes", () => {
-		const proposal = createEditorialAuditProposal({ commit: "a".repeat(40), tree: "b".repeat(40) });
+		const proposal = createEditorialAuditProposal({
+			commit: "a".repeat(40),
+			tree: "b".repeat(40)
+		});
 		assert.equal(proposal.targets.length, 5);
 		assert.equal(proposal.contentSha256, APPROVED_EDITORIAL_DATA_SHA256);
 	});
@@ -65,7 +72,11 @@ describe("owner-approved automatic editorial corrections", () => {
 		value.claim.reviewedBy = new mongoose.Types.ObjectId();
 		value.claim.nextReviewAt = new Date("2026-12-01T00:00:00Z");
 		value.claim.surveillanceSpec.watchTerms.push("A privately maintained monitoring term.");
-		value.claim.changeLog.push({ date: new Date(), kind: "review", summary: "An earlier administrative record retained." });
+		value.claim.changeLog.push({
+			date: new Date(),
+			kind: "review",
+			summary: "An earlier administrative record retained."
+		});
 		value.sources[0]!.citationStatus = "corrected";
 		value.sources[0]!.statusSources = ["Crossref", "https://example.org/existing-notice"];
 		assert.equal(ownerCorrectionMatches(value.claim, value.sources, value.before), true);

@@ -19,17 +19,24 @@ const { data: promptData } = await useAsyncData("setup-prompt", () => $fetch<Set
 
 const setupPending = computed(() => pending.value);
 const dashboard = computed(() => data.value);
-const frontendChecks = computed<SetupCheck[]>(() => (dashboard.value ? buildFrontendSetupChecks(dashboard.value) : []));
+const frontendChecks = computed<SetupCheck[]>(() => (dashboard.value
+	? buildFrontendSetupChecks(dashboard.value)
+	: []));
 const backendChecks = computed<SetupCheck[]>(() => dashboard.value?.backendSetup.data?.checks ?? []);
-const allChecks = computed<SetupCheck[]>(() => [...frontendChecks.value, ...backendChecks.value]);
-const blockingChecks = computed(() => allChecks.value.filter((check) => check.severity === "critical" && !check.ok));
-const warningChecks = computed(() => allChecks.value.filter((check) => check.severity === "warning" && !check.ok));
-const passCount = computed(() => allChecks.value.filter((check) => check.ok).length);
+const allChecks = computed<SetupCheck[]>(() => [
+	...frontendChecks.value,
+	...backendChecks.value
+]);
+const blockingChecks = computed(() => allChecks.value.filter(check => check.severity === "critical" && !check.ok));
+const warningChecks = computed(() => allChecks.value.filter(check => check.severity === "warning" && !check.ok));
+const passCount = computed(() => allChecks.value.filter(check => check.ok).length);
 const serverAgentPrompt = computed(() => promptData.value?.prompt || "");
 const serverPreparationTasks = computed(() => promptData.value?.serverPreparationTasks ?? []);
 const launchValidationTasks = computed(() => promptData.value?.launchValidationTasks ?? []);
 const lastUpdated = computed(() =>
-	dashboard.value?.generatedAt ? new Date(dashboard.value.generatedAt).toLocaleString() : "Not available yet"
+	dashboard.value?.generatedAt
+		? new Date(dashboard.value.generatedAt).toLocaleString()
+		: "Not available yet"
 );
 
 async function copyPrompt() {
@@ -53,7 +60,9 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 	<div class="setup">
 		<header class="setup__hero">
 			<div class="setup__copy">
-				<p class="eyebrow">Launch HQ</p>
+				<p class="eyebrow">
+					Launch HQ
+				</p>
 				<h1>Bring the server and the site into the same shape.</h1>
 				<p>
 					This development-only page gives you a live readiness view, the production concerns this app has,
@@ -73,22 +82,30 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 
 		<section class="status-strip">
 			<article class="status-card">
-				<p class="status-card__label">Overall</p>
+				<p class="status-card__label">
+					Overall
+				</p>
 				<h2>{{ blockingChecks.length ? "Needs work" : "Ready to finish" }}</h2>
 				<p>{{ passCount }}/{{ allChecks.length || 1 }} checks passing</p>
 			</article>
 			<article class="status-card">
-				<p class="status-card__label">Blocking</p>
+				<p class="status-card__label">
+					Blocking
+				</p>
 				<h2>{{ blockingChecks.length }}</h2>
 				<p>Critical items still failing</p>
 			</article>
 			<article class="status-card">
-				<p class="status-card__label">Warnings</p>
+				<p class="status-card__label">
+					Warnings
+				</p>
 				<h2>{{ warningChecks.length }}</h2>
 				<p>Non-blocking fixes worth closing</p>
 			</article>
 			<article class="status-card">
-				<p class="status-card__label">Updated</p>
+				<p class="status-card__label">
+					Updated
+				</p>
 				<h2>{{ lastUpdated }}</h2>
 				<p>Live status from this deployment</p>
 			</article>
@@ -113,13 +130,19 @@ function statusTone(ok: boolean, severity: SetupCheck["severity"]) {
 						:class="`check--${statusTone(check.ok, check.severity)}`"
 					>
 						<div class="check__top">
-							<p class="check__label">{{ check.label }}</p>
+							<p class="check__label">
+								{{ check.label }}
+							</p>
 							<span class="check__badge">
 								{{ check.ok ? "Passing" : check.severity === "critical" ? "Blocking" : "Attention" }}
 							</span>
 						</div>
-						<p class="check__detail">{{ check.detail }}</p>
-						<p v-if="check.action" class="check__action">{{ check.action }}</p>
+						<p class="check__detail">
+							{{ check.detail }}
+						</p>
+						<p v-if="check.action" class="check__action">
+							{{ check.action }}
+						</p>
 					</article>
 				</div>
 			</div>

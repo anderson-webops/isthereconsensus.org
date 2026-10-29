@@ -1,5 +1,7 @@
-// Pure presentation policy shared by the API, reader UI and editorial queue.
-// Dates describe records, not the validity or certainty of a scientific claim.
+/**
+ * Pure presentation policy shared by the API, reader UI and editorial queue.
+ * Dates describe records, not the validity or certainty of a scientific claim.
+ */
 export type ReviewDateBasis = "source_record" | "editorial_review" | "unspecified";
 export type ReviewState = "source_notice" | "update_requested" | "due" | "dates_need_verification" | "provenance_unknown" | "scheduled" | "unscheduled";
 
@@ -33,7 +35,25 @@ export function recordedDate(value: DateInput): string | undefined {
 		if (!Number.isFinite(day.getTime()) || day.toISOString().slice(0, 10) !== value.slice(0, 10)) return undefined;
 	}
 	const date = new Date(value);
-	return Number.isFinite(date.getTime()) ? date.toISOString() : undefined;
+	return Number.isFinite(date.getTime())
+		? date.toISOString()
+		: undefined;
+}
+
+function selectReviewState(status: string | undefined, facts: {
+	flaggedSourceCount: number;
+	due: boolean;
+	issues: string[];
+	reviewedAt: string | undefined;
+	basis: ReviewDateBasis;
+	nextReviewAt: string | undefined;
+}): ReviewState {
+	if (facts.flaggedSourceCount > 0) return "source_notice";
+	if (status === "needs_update") return "update_requested";
+	if (facts.due) return "due";
+	if (facts.issues.length) return "dates_need_verification";
+	if (!facts.reviewedAt || facts.basis === "unspecified") return "provenance_unknown";
+	return facts.nextReviewAt ? "scheduled" : "unscheduled";
 }
 
 export function claimReviewStatus(claim: ReviewStatusInput, sources: ReviewSourceInput[] = [], now = new Date()) {
@@ -75,20 +95,14 @@ export function claimReviewStatus(claim: ReviewStatusInput, sources: ReviewSourc
 		? claim.reviewDateBasis!
 		: "unspecified";
 	const due = Boolean(nextReviewAt && nextReviewAt <= evaluatedAt);
-	const state: ReviewState
-		= flaggedSourceCount > 0
-			? "source_notice"
-			: claim.status === "needs_update"
-				? "update_requested"
-				: due
-					? "due"
-					: issues.length
-						? "dates_need_verification"
-						: !reviewedAt || basis === "unspecified"
-								? "provenance_unknown"
-								: nextReviewAt
-									? "scheduled"
-									: "unscheduled";
+	const state = selectReviewState(claim.status, {
+		flaggedSourceCount,
+		due,
+		issues,
+		reviewedAt,
+		basis,
+		nextReviewAt
+	});
 	return {
 		evaluatedAt,
 		state,

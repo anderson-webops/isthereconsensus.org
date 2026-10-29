@@ -10,7 +10,9 @@ import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 describe("human-origins reader expansion", () => {
 	it("places every addition in exactly one suitable browse collection", () => {
 		for (const claim of readerOriginsClaims) {
-			const expected = [readerOriginsSlugs.radiocarbon, readerOriginsSlugs.dna].includes(claim.slug) ? "reading-fossil-evidence" : "human-origins-and-hominin-lives";
+			const expected = [readerOriginsSlugs.radiocarbon, readerOriginsSlugs.dna].includes(claim.slug)
+				? "reading-fossil-evidence"
+				: "human-origins-and-hominin-lives";
 			assert.deepEqual(getAtlasCollectionMemberships(claim.topicSlug, claim.slug).map(collection => collection.slug), [expected]);
 		}
 	});
@@ -61,7 +63,13 @@ describe("human-origins reader expansion", () => {
 
 	it("retrieves diagnostic origin questions without changing search ranking", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ bipedalism: "upright walking big brains", radiocarbon: "carbon dating fossil age", mitochondrialEve: "mitochondrial Eve maternal lineage", diet: "Palaeolithic ancient plant foods", dna: "ancient DNA fossil preservation" })) {
+		for (const [key, query] of Object.entries({
+			bipedalism: "upright walking big brains",
+			radiocarbon: "carbon dating fossil age",
+			mitochondrialEve: "mitochondrial Eve maternal lineage",
+			diet: "Palaeolithic ancient plant foods",
+			dna: "ancient DNA fossil preservation"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === readerOriginsSlugs[key as keyof typeof readerOriginsSlugs]), query);
 		}
 	});

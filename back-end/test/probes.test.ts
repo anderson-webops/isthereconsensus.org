@@ -66,7 +66,11 @@ describe("monitoring probes", () => {
 			await delay(50);
 			return true;
 		});
-		const requests = Array.from({ length: 32 }, (_, index) => fetch(`${baseUrl}/readyz`, { method: index % 2 ? "HEAD" : "GET" }));
+		const requests = Array.from({ length: 32 }, (_, index) => fetch(`${baseUrl}/readyz`, {
+			method: index % 2
+				? "HEAD"
+				: "GET"
+		}));
 		const responses = await Promise.all(requests);
 		for (const response of responses) {
 			assert.equal(response.status, 200);

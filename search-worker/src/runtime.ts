@@ -17,10 +17,18 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 	const gteConfiguration = await readJson("gte/config.json");
 	assert.equal(gteConfiguration.pad_token_id, 50283);
 	wasm.env.wasm.numThreads = 1;
-	const embedding = await wasm.InferenceSession.create(await readFile(paths["bge/model.onnx"]), { executionProviders: ["wasm"], logSeverityLevel: 3 });
+	const embedding = await wasm.InferenceSession.create(await readFile(paths["bge/model.onnx"]), {
+		executionProviders: ["wasm"],
+		logSeverityLevel: 3
+	});
 	let scoring: cpu.InferenceSession;
 	try {
-		scoring = await cpu.InferenceSession.create(paths["gte/model.onnx"], { executionProviders: ["cpu"], intraOpNumThreads: 2, interOpNumThreads: 1, logSeverityLevel: 3 });
+		scoring = await cpu.InferenceSession.create(paths["gte/model.onnx"], {
+			executionProviders: ["cpu"],
+			intraOpNumThreads: 2,
+			interOpNumThreads: 1,
+			logSeverityLevel: 3
+		});
 		assert.deepEqual(scoring.inputNames.toSorted(), ["attention_mask", "input_ids"]);
 		assert.deepEqual(scoring.outputNames, ["logits"]);
 	}
@@ -28,7 +36,12 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 		await embedding.release();
 		throw error;
 	}
-	const diagnostics = { embeddingCalls: 0, scoringBatches: 0, scoringPairs: 0, maximumPairTokens: 0 };
+	const diagnostics = {
+		embeddingCalls: 0,
+		scoringBatches: 0,
+		scoringPairs: 0,
+		maximumPairTokens: 0
+	};
 	function embeddingInput(text: string) {
 		const content = bgeTokenizer.encode(text, { add_special_tokens: false }).ids;
 		assert.ok(content.length <= 510, "A complete paragraph or query exceeds the embedding bound.");
@@ -55,7 +68,10 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 			return vector.map(value => value / norm);
 		}
 		finally {
-			for (const tensor of [...Object.values(tensors), ...Object.values(output ?? {})]) tensor.dispose();
+			for (const tensor of [
+				...Object.values(tensors),
+				...Object.values(output ?? {})
+			]) tensor.dispose();
 		}
 	}
 	function pairInput(query: string, document: string) {
@@ -69,8 +85,14 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 		const length = Math.max(...rows.map(row => row.inputIds.length));
 		return {
 			length,
-			inputIds: rows.map(row => [...row.inputIds, ...Array.from({ length: length - row.inputIds.length }).fill(50283)]),
-			attentionMask: rows.map(row => [...row.attentionMask, ...Array.from({ length: length - row.attentionMask.length }).fill(0)])
+			inputIds: rows.map(row => [
+				...row.inputIds,
+				...Array.from({ length: length - row.inputIds.length }).fill(50283)
+			]),
+			attentionMask: rows.map(row => [
+				...row.attentionMask,
+				...Array.from({ length: length - row.attentionMask.length }).fill(0)
+			])
 		};
 	}
 	async function score(query: string, documents: string[]) {
@@ -99,7 +121,10 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 				diagnostics.maximumPairTokens = Math.max(diagnostics.maximumPairTokens, padded.length);
 			}
 			finally {
-				for (const tensor of [...Object.values(tensors), ...Object.values(output ?? {})]) tensor.dispose();
+				for (const tensor of [
+					...Object.values(tensors),
+					...Object.values(output ?? {})
+				]) tensor.dispose();
 			}
 		}
 		return results;
@@ -137,12 +162,28 @@ export async function createPinnedRuntime(paths: Record<string, string>, onNativ
 					const predictions = await score(payload.query, prepared.candidates.map(row => row.document));
 					rows = pipeline.finish(prepared, predictions);
 				}
-				return { protocol: payload.protocol, candidate: payload.candidate, corpusHash: payload.corpusHash, queryHash: payload.queryHash, referenceDate: payload.referenceDate, rows };
+				return {
+					protocol: payload.protocol,
+					candidate: payload.candidate,
+					corpusHash: payload.corpusHash,
+					queryHash: payload.queryHash,
+					referenceDate: payload.referenceDate,
+					rows
+				};
 			}
 		};
 	}
-	return { encode, embeddingInput, pairInput, paddedInput, score, warm, diagnostics, release: async () => {
-		await scoring.release();
-		await embedding.release();
-	} };
+	return {
+		encode,
+		embeddingInput,
+		pairInput,
+		paddedInput,
+		score,
+		warm,
+		diagnostics,
+		release: async () => {
+			await scoring.release();
+			await embedding.release();
+		}
+	};
 }

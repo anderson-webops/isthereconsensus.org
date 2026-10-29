@@ -27,7 +27,9 @@ const TERMS_VERSION = "2026-04-11";
 const dummyPasswordHash = argon2.hash("not-a-real-account-password");
 
 function accountType(entity: Entity): "admin" | "user" {
-	return entity instanceof Admin ? "admin" : "user";
+	return entity instanceof Admin
+		? "admin"
+		: "user";
 }
 
 function accountTarget(entity: Entity): AccountActivityTarget {
@@ -79,10 +81,32 @@ async function consumeDummyPasswordCheck(password: string) {
 	await argon2.verify(hash, password);
 }
 
+function loginFailureReason(disabledAdmin: boolean, matchesExactlyOneAccount: boolean) {
+	if (disabledAdmin) return "disabled_account";
+	return matchesExactlyOneAccount ? "bad_credentials" : "unknown_or_ambiguous_account";
+}
+
+function configureLoginSession(req: Parameters<RequestHandler>[0], entity: Entity, rememberRequested: boolean) {
+	const options = (req.sessionOptions ??= {});
+	const admin = entity instanceof Admin;
+	const remember = !admin && rememberRequested;
+	options.maxAge = admin
+		? ADMIN_SESSION_MAX_AGE_MS
+		: remember ? THIRTY_DAYS_MS : undefined;
+	return {
+		remember: remember ? "true" : "false",
+		sessionClass: admin
+			? "admin_8h"
+			: remember ? "remembered_user" : "browser_session"
+	};
+}
+
 export const registerUser: RequestHandler = async (req, res) => {
 	const parsed = registrationSchema.safeParse(req.body);
 	if (!parsed.success) {
-		return res.status(400).json({ error: firstValidationError(parsed.error) });
+		return res.status(400).json({
+			error: firstValidationError(parsed.error)
+		});
 	}
 
 	const captcha = await verifyCaptcha(parsed.data.captchaToken, req.ip);
@@ -139,7 +163,9 @@ export const login: RequestHandler = async (req, res) => {
 		Admin.findOne({ email: parsed.data.email }).exec()
 	]);
 	const matchesExactlyOneAccount = Number(Boolean(user)) + Number(Boolean(admin)) === 1;
-	const entity = matchesExactlyOneAccount ? (admin ?? user) : null;
+	const entity = matchesExactlyOneAccount
+		? (admin ?? user)
+		: null;
 	const matches = entity
 		? await entity.comparePassword(parsed.data.password)
 		: (await consumeDummyPasswordCheck(parsed.data.password), false);
@@ -150,30 +176,25 @@ export const login: RequestHandler = async (req, res) => {
 			req,
 			action: "login.failed",
 			actor: { type: "anonymous" },
-			target: entity ? accountTarget(entity) : { type: "unknown", email: parsed.data.email },
+			target: entity
+				? accountTarget(entity)
+				: { type: "unknown", email: parsed.data.email },
 			metadata: {
-				reason: disabledAdmin
-					? "disabled_account"
-					: matchesExactlyOneAccount ? "bad_credentials" : "unknown_or_ambiguous_account"
+				reason: loginFailureReason(disabledAdmin, matchesExactlyOneAccount)
 			}
 		});
 		return res.status(403).json({ error: "Invalid email or password." });
 	}
 
 	setSession(req, entity);
-	const options = ((req as unknown as { sessionOptions?: { maxAge?: number } }).sessionOptions ??= {});
-	const remember = !(entity instanceof Admin) && parsed.data.remember;
-	options.maxAge = entity instanceof Admin ? ADMIN_SESSION_MAX_AGE_MS : remember ? THIRTY_DAYS_MS : undefined;
+	const metadata = configureLoginSession(req, entity, parsed.data.remember);
 
 	await recordAccountActivity({
 		req,
 		action: "login.success",
 		actor: accountActor(entity),
 		target: accountTarget(entity),
-		metadata: {
-			remember: remember ? "true" : "false",
-			sessionClass: entity instanceof Admin ? "admin_8h" : remember ? "remembered_user" : "browser_session"
-		}
+		metadata
 	});
 
 	return entity instanceof Admin
@@ -240,7 +261,9 @@ export const changeEmail: RequestHandler = async (req, res) => {
 
 	const parsed = emailChangeSchema.safeParse(req.body);
 	if (!parsed.success) {
-		return res.status(400).json({ error: firstValidationError(parsed.error) });
+		return res.status(400).json({
+			error: firstValidationError(parsed.error)
+		});
 	}
 
 	if (!(await entity.comparePassword(parsed.data.currentPassword))) {
@@ -249,8 +272,18 @@ export const changeEmail: RequestHandler = async (req, res) => {
 
 	const isAdmin = entity instanceof Admin;
 	const conflicts = await Promise.all([
-		User.exists(isAdmin ? { email: parsed.data.email } : { email: parsed.data.email, _id: { $ne: entity._id } }),
-		Admin.exists(isAdmin ? { email: parsed.data.email, _id: { $ne: entity._id } } : { email: parsed.data.email })
+		User.exists(isAdmin
+			? { email: parsed.data.email }
+			: {
+					email: parsed.data.email,
+					_id: { $ne: entity._id }
+				}),
+		Admin.exists(isAdmin
+			? {
+					email: parsed.data.email,
+					_id: { $ne: entity._id }
+				}
+			: { email: parsed.data.email })
 	]);
 	if (conflicts.some(Boolean)) {
 		return res.status(409).json({ error: "Email already in use." });
@@ -288,12 +321,16 @@ export const changePassword: RequestHandler = async (req, res) => {
 
 	const parsed = passwordChangeSchema.safeParse(req.body);
 	if (!parsed.success) {
-		return res.status(400).json({ error: firstValidationError(parsed.error) });
+		return res.status(400).json({
+			error: firstValidationError(parsed.error)
+		});
 	}
 	if (entity instanceof Admin) {
 		const adminPassword = adminPasswordSchema.safeParse(parsed.data.newPassword);
 		if (!adminPassword.success) {
-			return res.status(400).json({ error: firstValidationError(adminPassword.error) });
+			return res.status(400).json({
+				error: firstValidationError(adminPassword.error)
+			});
 		}
 	}
 	if (!(await entity.comparePassword(parsed.data.currentPassword))) {

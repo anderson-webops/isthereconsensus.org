@@ -1,6 +1,18 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
+interface CancellationEvents<Event extends string> {
+	once: (event: Event, listener: () => void) => unknown;
+	off: (event: Event, listener: () => void) => unknown;
+}
 
-export function observeHttpRequestCancellation(request: IncomingMessage, response: ServerResponse) {
+interface CancellationRequest extends CancellationEvents<"aborted"> {
+	aborted: boolean;
+}
+
+interface CancellationResponse extends CancellationEvents<"close"> {
+	writableEnded: boolean;
+	destroyed: boolean;
+}
+
+export function observeHttpRequestCancellation(request: CancellationRequest, response: CancellationResponse) {
 	const controller = new AbortController();
 	const abort = () => controller.abort();
 	const close = () => {

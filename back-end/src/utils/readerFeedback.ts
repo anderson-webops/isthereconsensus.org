@@ -2,13 +2,32 @@ import { createHmac } from "node:crypto";
 import { z } from "zod";
 import { comparisonSlugPattern } from "./comparisonLibrary.js";
 
-export const feedbackKinds = ["usefulness", "reader_experience", "missing_evidence", "content_gap"] as const;
+export const feedbackKinds = [
+	"usefulness",
+	"reader_experience",
+	"missing_evidence",
+	"content_gap"
+] as const;
 export const explanationClarityRatings = ["clear", "partly_clear", "unclear"] as const;
-export const answerCoverageRatings = ["answered", "partly_answered", "not_answered", "just_browsing"] as const;
-export const feedbackStatuses = ["new", "reviewing", "planned", "resolved", "dismissed"] as const;
+export const answerCoverageRatings = [
+	"answered",
+	"partly_answered",
+	"not_answered",
+	"just_browsing"
+] as const;
+export const feedbackStatuses = [
+	"new",
+	"reviewing",
+	"planned",
+	"resolved",
+	"dismissed"
+] as const;
 const objectId = z.string().regex(/^[a-f\d]{24}$/);
 const comparisonSlug = z.string().max(100).regex(comparisonSlugPattern);
-const evidenceTarget = { claimId: objectId.optional(), comparisonSlug: comparisonSlug.optional() };
+const evidenceTarget = {
+	claimId: objectId.optional(),
+	comparisonSlug: comparisonSlug.optional()
+};
 const sourceUrl = z
 	.string()
 	.trim()
@@ -30,7 +49,11 @@ const suggestion = {
 };
 export const readerFeedbackSubmission = z
 	.discriminatedUnion("kind", [
-		z.object({ kind: z.literal("usefulness"), ...evidenceTarget, helpful: z.boolean() }).strict(),
+		z.object({
+			kind: z.literal("usefulness"),
+			...evidenceTarget,
+			helpful: z.boolean()
+		}).strict(),
 		z
 			.object({
 				kind: z.literal("reader_experience"),
@@ -43,7 +66,13 @@ export const readerFeedbackSubmission = z
 			.object({
 				kind: z.literal("missing_evidence"),
 				...evidenceTarget,
-				area: z.enum(["source", "population", "outcome", "explanation", "other"]),
+				area: z.enum([
+					"source",
+					"population",
+					"outcome",
+					"explanation",
+					"other"
+				]),
 				...suggestion
 			})
 			.strict(),
@@ -88,9 +117,11 @@ export const readerFeedbackQuery = z
 	})
 	.strict();
 
-// The key is specific to the UTC day, target and feedback kind. It does not
-// identify a person across topics/days. Shared networks can share one signal.
-// Never persist or log the network address, cookies or CAPTCHA token.
+/**
+ * The key is specific to the UTC day, target and feedback kind. It does not
+ * identify a person across topics/days. Shared networks can share one signal.
+ * Never persist or log the network address, cookies or CAPTCHA token.
+ */
 export function feedbackSubmissionKey(
 	secret: string,
 	network: string,
@@ -103,10 +134,19 @@ export function feedbackSubmissionKey(
 			: data.comparisonSlug
 				? `comparison:${data.comparisonSlug}`
 				: data.claimId;
-	const detail = data.kind === "usefulness" || data.kind === "reader_experience" ? "" : data.message.toLowerCase();
+	const detail = data.kind === "usefulness" || data.kind === "reader_experience"
+		? ""
+		: data.message.toLowerCase();
 	return createHmac("sha256", secret)
 		.update(
-			JSON.stringify(["reader-feedback-v1", now.toISOString().slice(0, 10), network, data.kind, target, detail])
+			JSON.stringify([
+				"reader-feedback-v1",
+				now.toISOString().slice(0, 10),
+				network,
+				data.kind,
+				target,
+				detail
+			])
 		)
 		.digest("hex");
 }

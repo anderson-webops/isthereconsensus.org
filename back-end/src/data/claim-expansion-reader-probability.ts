@@ -3,7 +3,15 @@ import type { SeedClaim } from "./claims.js";
 export const probabilityCheckedAt = "2026-10-05T11:14:00.000Z";
 
 function reference(title: string, publisher: string, url: string, note: string): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title, publisher, url, note, stance: "supports", order: 1 };
+	return {
+		kind: "technical_reference",
+		title,
+		publisher,
+		url,
+		note,
+		stance: "supports",
+		order: 1
+	};
 }
 
 function lesson(course: string, number: string, title: string, note: string) {
@@ -316,8 +324,17 @@ export const readerProbabilityClaims: SeedClaim[] = reviews.map(review => ({
 	misconceptions: [review.title, "A correct mathematical identity does not validate an unspecified dataset, sampling design or causal conclusion."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
-	searchDatabases: ["Original Penn State probability and statistical-reasoning lessons", "Original NIST statistical-method definitions", "Original StatLect definitions and theorem conditions", "Original Eurostat and BLS percentage definitions", "Original ONS codebook and UK Data Service missing-value definition", "Consensus.app targeted Simpson-reversal discovery; fetched record not used as original-paper evidence"],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
+	searchDatabases: [
+		"Original Penn State probability and statistical-reasoning lessons",
+		"Original NIST statistical-method definitions",
+		"Original StatLect definitions and theorem conditions",
+		"Original Eurostat and BLS percentage definitions",
+		"Original ONS codebook and UK Data Service missing-value definition",
+		"Consensus.app targeted Simpson-reversal discovery; fetched record not used as original-paper evidence"
+	],
 	searchCutoffAt: probabilityCheckedAt,
 	inclusionRules: ["Separate mathematical identities, model assumptions, descriptive summaries and empirical conclusions.", "Use independently constructed hypothetical examples, retaining denominators, units and source provenance."],
 	exclusionRules: ["No copied textbook exercises, invented reader requests, expert votes, raw-data analyses or universal model applicability.", "No clinical, financial, gambling or biological-procedure recommendation."],
@@ -327,14 +344,49 @@ export const readerProbabilityClaims: SeedClaim[] = reviews.map(review => ({
 	independenceSummary: "Penn State sections share course/institution provenance, NIST sections share a handbook and StatLect sections share an author. They are not independent experiments or an expert poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing. No actual reader demand, sample or raw research dataset was analyzed.",
 	coiSummary: "Institutional and author-owned teaching sources establish definitions and scoped models, not clinical certification. Funding and conflicts across cited teaching records were not exhaustively audited; no commercial product or scientific vote is endorsed.",
 	lastRetractionCheckAt: probabilityCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "Hypothetical arithmetic is not an observed effect size or real-world prevalence.", certainty: "moderate", limitations: [review.qualification, "Shared teaching-source provenance; no actual dataset validation or expert survey"] }],
-	institutionalAnchors: [{ name: readerProbabilitySources[review.sources[0]!].publisher, role: "Method-defining reference, not formal consensus statement or expert approval" }],
-	changeLog: [{ date: probabilityCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: review.id, date: probabilityCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Corrections and notices for cited original references"], guidelineMonitors: ["Original definitions and model-applicability revisions"], triggerRules: ["Reassess if a reference correction or applicable model assumptions change the conclusion."] },
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "Hypothetical arithmetic is not an observed effect size or real-world prevalence.",
+			certainty: "moderate",
+			limitations: [review.qualification, "Shared teaching-source provenance; no actual dataset validation or expert survey"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerProbabilitySources[review.sources[0]!].publisher, role: "Method-defining reference, not formal consensus statement or expert approval" }
+	],
+	changeLog: [
+		{ date: probabilityCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: review.id,
+		date: probabilityCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Corrections and notices for cited original references"],
+		guidelineMonitors: ["Original definitions and model-applicability revisions"],
+		triggerRules: ["Reassess if a reference correction or applicable model assumptions change the conclusion."]
+	},
 	sources: review.sources.map((key, index) => {
 		const entry = readerProbabilitySources[key];
-		return { ...entry, order: index + 1, isAnchor: index === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: probabilityCheckedAt, statusSources: [entry.url!] };
+		return {
+			...entry,
+			order: index + 1,
+			isAnchor: index === 0,
+			appraisal: "not_appraised",
+			citationStatus: "current",
+			citationCheckedAt: probabilityCheckedAt,
+			statusSources: [entry.url!]
+		};
 	})
 }));
 

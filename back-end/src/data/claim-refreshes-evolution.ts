@@ -144,7 +144,9 @@ export function refreshEvolutionClaim(seed: CompleteSeedClaim): CompleteSeedClai
 				...source,
 				appraisal: "not_appraised",
 				isAnchor: false,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original 2008 book via a museum-hosted PDF: selected conceptual passages on printed pages 11 and 39 plus funding assessed. The current publisher reader exposed no chapter body. Not a full reappraisal of the book or its references."
 					: source.publisher === "American Association for the Advancement of Science"
@@ -160,6 +162,9 @@ export function refreshEvolutionClaim(seed: CompleteSeedClaim): CompleteSeedClai
 			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

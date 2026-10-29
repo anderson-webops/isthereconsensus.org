@@ -32,8 +32,13 @@ describe("interleaveClaimsByTopic", () => {
 		const ordered = interleaveClaimsByTopic(sourceClaims, ["health", "climate", "nutrition"]);
 
 		assert.deepEqual(
-			ordered.map((entry) => entry._id),
-			["health-new", "climate", "nutrition", "health-old"]
+			ordered.map(entry => entry._id),
+			[
+				"health-new",
+				"climate",
+				"nutrition",
+				"health-old"
+			]
 		);
 	});
 
@@ -46,7 +51,7 @@ describe("interleaveClaimsByTopic", () => {
 		interleaveClaimsByTopic(sourceClaims, ["health"]);
 
 		assert.deepEqual(
-			sourceClaims.map((entry) => entry._id),
+			sourceClaims.map(entry => entry._id),
 			["older", "newer"]
 		);
 	});
@@ -56,12 +61,28 @@ describe("loadCompleteClaimDirectory", () => {
 	it("combines every API page so libraries larger than 500 remain searchable", async () => {
 		const pages: Record<number, ClaimsResponse> = {
 			1: {
-				claims: [claim("first", "health", "First", "2026-01-01")],
-				pagination: { page: 1, pageSize: 500, total: 501, totalPages: 2, hasMore: true }
+				claims: [
+					claim("first", "health", "First", "2026-01-01")
+				],
+				pagination: {
+					page: 1,
+					pageSize: 500,
+					total: 501,
+					totalPages: 2,
+					hasMore: true
+				}
 			},
 			2: {
-				claims: [claim("last", "sleep", "Last", "2026-01-02")],
-				pagination: { page: 2, pageSize: 500, total: 501, totalPages: 2, hasMore: false }
+				claims: [
+					claim("last", "sleep", "Last", "2026-01-02")
+				],
+				pagination: {
+					page: 2,
+					pageSize: 500,
+					total: 501,
+					totalPages: 2,
+					hasMore: false
+				}
 			}
 		};
 		const requestedPages: number[] = [];
@@ -76,7 +97,7 @@ describe("loadCompleteClaimDirectory", () => {
 
 		assert.deepEqual(requestedPages, [1, 2]);
 		assert.deepEqual(
-			result.claims.map((entry) => entry._id),
+			result.claims.map(entry => entry._id),
 			["first", "last"]
 		);
 		assert.equal(result.pagination?.total, 501);

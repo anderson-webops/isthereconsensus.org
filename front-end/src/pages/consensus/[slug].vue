@@ -23,7 +23,9 @@ const { currentAccount, role } = useAuth();
 
 const slug = computed(() => {
 	const value = (route.params as TopicRouteParams).slug;
-	return Array.isArray(value) ? value[0] : String(value ?? "");
+	return Array.isArray(value)
+		? value[0]
+		: String(value ?? "");
 });
 const postedToQueue = computed(() => route.query.posted === "1");
 
@@ -38,24 +40,31 @@ const topic = computed(() => topicData.value?.topic);
 const guide = computed(() => getTopicGuide(slug.value));
 const readingGuides = computed(() => guidesForTopic(slug.value));
 const claims = computed<ClaimSummary[]>(() => claimsData.value?.claims ?? []);
-const claimsBySlug = computed(() => new Map(claims.value.map((claim) => [claim.slug, claim])));
+const claimsBySlug = computed(() => new Map(claims.value.map(claim => [claim.slug, claim])));
 const collectionLanes = computed(() =>
 	(claimsData.value?.collections ?? [])
-		.map((collection) => ({
+		.map(collection => ({
 			...collection,
 			claims: collection.claimSlugs
-				.map((claimSlug) => claimsBySlug.value.get(claimSlug))
+				.map(claimSlug => claimsBySlug.value.get(claimSlug))
 				.filter((claim): claim is ClaimSummary => Boolean(claim))
 		}))
-		.filter((collection) => collection.claims.length > 0)
+		.filter(collection => collection.claims.length > 0)
 );
 const collectionLaneMixes = computed(
-	() => new Map(collectionLanes.value.map((collection) => [collection.slug, verdictMix(collection.claims)]))
+	() => new Map(collectionLanes.value.map(collection => [
+		collection.slug,
+		verdictMix(collection.claims)
+	]))
 );
 const allLanesOpen = ref(false);
 
 function laneElements() {
-	return import.meta.client ? [...document.querySelectorAll<HTMLDetailsElement>("details.collection-lane")] : [];
+	return import.meta.client
+		? [
+				...document.querySelectorAll<HTMLDetailsElement>("details.collection-lane")
+			]
+		: [];
 }
 
 function toggleAllLanes() {
@@ -76,16 +85,16 @@ function openLaneFromHash(hash: string) {
 onMounted(() => openLaneFromHash(route.hash));
 watch(
 	() => route.hash,
-	(hash) => openLaneFromHash(hash)
+	hash => openLaneFromHash(hash)
 );
 
 const ungroupedClaims = computed(() => {
-	const groupedSlugs = new Set(collectionLanes.value.flatMap((collection) => collection.claimSlugs));
-	return claims.value.filter((claim) => !groupedSlugs.has(claim.slug));
+	const groupedSlugs = new Set(collectionLanes.value.flatMap(collection => collection.claimSlugs));
+	return claims.value.filter(claim => !groupedSlugs.has(claim.slug));
 });
 const starterClaims = computed(() => {
 	return (guide.value.starterClaimSlugs ?? [])
-		.map((starterSlug) => claimsBySlug.value.get(starterSlug))
+		.map(starterSlug => claimsBySlug.value.get(starterSlug))
 		.filter((claim): claim is ClaimSummary => Boolean(claim));
 });
 const canEditTopic = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
@@ -95,58 +104,58 @@ const pageDescription = computed(() => topic.value?.description || guide.value.s
 const breadcrumbStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "BreadcrumbList",
-	itemListElement: [
+	"itemListElement": [
 		{
 			"@type": "ListItem",
-			position: 1,
-			name: "Home",
-			item: "https://isthereconsensus.org/"
+			"position": 1,
+			"name": "Home",
+			"item": "https://isthereconsensus.org/"
 		},
 		{
 			"@type": "ListItem",
-			position: 2,
-			name: "Browse topics",
-			item: "https://isthereconsensus.org/consensus"
+			"position": 2,
+			"name": "Browse topics",
+			"item": "https://isthereconsensus.org/consensus"
 		},
 		{
 			"@type": "ListItem",
-			position: 3,
-			name: topicTitle.value,
-			item: pageUrl.value
+			"position": 3,
+			"name": topicTitle.value,
+			"item": pageUrl.value
 		}
 	]
 }));
 const topicStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "CollectionPage",
-	description: pageDescription.value,
-	isPartOf: {
+	"description": pageDescription.value,
+	"isPartOf": {
 		"@type": "WebSite",
-		name: "Is There Consensus",
-		url: "https://isthereconsensus.org"
+		"name": "Is There Consensus",
+		"url": "https://isthereconsensus.org"
 	},
-	mainEntity: {
+	"mainEntity": {
 		"@type": "ItemList",
-		itemListElement: claims.value.map((entry, index) => ({
+		"itemListElement": claims.value.map((entry, index) => ({
 			"@type": "ListItem",
-			position: index + 1,
-			url: `https://isthereconsensus.org/consensus/${slug.value}/${entry.slug}`,
-			name: entry.title
+			"position": index + 1,
+			"url": `https://isthereconsensus.org/consensus/${slug.value}/${entry.slug}`,
+			"name": entry.title
 		}))
 	},
-	name: `${topicTitle.value} topic page | Is There Consensus`,
-	publisher: {
+	"name": `${topicTitle.value} topic page | Is There Consensus`,
+	"publisher": {
 		"@type": "Organization",
-		name: "Is There Consensus",
-		url: "https://isthereconsensus.org"
+		"name": "Is There Consensus",
+		"url": "https://isthereconsensus.org"
 	},
-	url: pageUrl.value,
-	about: {
+	"url": pageUrl.value,
+	"about": {
 		"@type": "Thing",
-		name: topicTitle.value,
-		description: pageDescription.value
+		"name": topicTitle.value,
+		"description": pageDescription.value
 	},
-	dateModified: topic.value?.updatedAt
+	"dateModified": topic.value?.updatedAt
 }));
 
 useSeoMeta({
@@ -203,7 +212,9 @@ function claimSupportLabel(claim: ClaimSummary) {
 
 		<header class="topic-page__header">
 			<div>
-				<p class="eyebrow">Topic</p>
+				<p class="eyebrow">
+					Topic
+				</p>
 				<h1>{{ topicTitle }}</h1>
 				<p class="topic-page__description">
 					{{ topic?.description || guide.snapshot }}
@@ -302,8 +313,7 @@ function claimSupportLabel(claim: ClaimSummary) {
 									<span
 										class="claim-row__status verdict-dot"
 										:data-verdict-tone="verdictTone(claim)"
-										>{{ claimSupportLabel(claim) }}</span
-									>
+									>{{ claimSupportLabel(claim) }}</span>
 								</p>
 							</div>
 							<span class="i-carbon-arrow-right card-arrow" aria-hidden="true" />

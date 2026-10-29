@@ -5,7 +5,7 @@ export interface TopicGuideResource {
 
 export interface TopicGuide {
 	slug: string;
-	// Retained for older records; new topics need no invented numerical score.
+	/** Retained for older records; new topics need no invented numerical score. */
 	consensusScore?: number;
 	consensusLabel: string;
 	snapshot: string;
@@ -335,7 +335,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 92,
 		consensusLabel: "Strong lessons from past consensus shifts",
 		snapshot:
-			"Historical cases show how evidence, institutions, technology, and policy changed together—from hand disinfection and insulin to clean air and acid-rain controls—without turning every episode into a lone-genius fable.",
+			"Historical cases show how evidence, institutions, technology, and policy changed together, from hand disinfection and insulin to clean air and acid-rain controls, without turning every episode into a lone-genius fable.",
 		stableCore: [
 			"Many famous consensus shifts did not happen because people suddenly became open-minded; they happened because new evidence held up under challenge.",
 			"Industry pressure, media confusion, and professional inertia can delay consensus without defeating it forever.",
@@ -378,7 +378,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 94,
 		consensusLabel: "Strong consensus on the basic process",
 		snapshot:
-			"Scientific knowledge becomes trustworthy through explicit assumptions, estimates with uncertainty, criticism, replication, triangulation, and useful prediction—not a p-value threshold, prestige, charisma, or repetition.",
+			"Scientific knowledge becomes trustworthy through explicit assumptions, estimates with uncertainty, criticism, replication, triangulation, and useful prediction, not a p-value threshold, prestige, charisma, or repetition.",
 		stableCore: [
 			"Consensus is the residue of repeated challenge, not the absence of disagreement.",
 			"Methods, measurement, and replication matter more than a single flashy result.",
@@ -536,7 +536,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 		consensusScore: 71,
 		consensusLabel: "Clear patterns, with room for experimentation",
 		snapshot:
-			"Good science communication makes scale and uncertainty legible, matches the audience and decision, and tests comprehension—not just engagement—while keeping the evidence unchanged beneath the format.",
+			"Good science communication makes scale and uncertainty legible, matches the audience and decision, and tests comprehension, not just engagement, while keeping the evidence unchanged beneath the format.",
 		stableCore: [
 			"Clear explanations outperform jargon-heavy certainty theater.",
 			"Audience trust improves when uncertainty is named precisely instead of hidden.",
@@ -1046,7 +1046,7 @@ export const topicGuides: Record<string, TopicGuide> = {
 			"Physics and chemistry often allow unusually precise tests. Persistent myths usually confuse a technical term or system boundary, while frontier claims fail when one dramatic signal is mistaken for a complete independent replication.",
 		stableCore: [
 			"Atomic structure, thermodynamics, relativity, quantum correlations, and radiation interactions make quantitative predictions tested across technologies.",
-			"A discovery requires the full diagnostic signature, controlled energy or matter accounting, and independent reproduction—not a video, one curve, or one laboratory.",
+			"A discovery requires the full diagnostic signature, controlled energy or matter accounting, and independent reproduction, not a video, one curve, or one laboratory.",
 			"Scientific milestones can be genuine and important without already constituting a practical commercial technology."
 		],
 		openQuestions: [

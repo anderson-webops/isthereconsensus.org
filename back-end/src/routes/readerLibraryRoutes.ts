@@ -1,3 +1,4 @@
+import type { QueryFilter } from "mongoose";
 import type { IClaim } from "../models/schemas/Claim.js";
 import type { IReaderLibrary } from "../models/schemas/ReaderLibrary.js";
 import type { IReaderUpdate } from "../utils/readerUpdates.js";
@@ -44,9 +45,49 @@ const replacement = selection
 	})
 	.strict();
 // Older clients send savedComparisonSlugs but still expect review-only rows.
-const updateRequest = selection.extend({ cursor: z.string().max(400).optional(), includeComparisons: z.boolean().optional(), includeCoverageRequests: z.boolean().optional() }).strict();
+const updateRequest = selection.extend({
+	cursor: z.string().max(400).optional(),
+	includeComparisons: z.boolean().optional(),
+	includeCoverageRequests: z.boolean().optional()
+}).strict();
 
 export type LoadVisibleClaims = (claimIds: string[]) => Promise<IClaim[]>;
+
+function initialUpdateSelection(data: ReturnType<typeof updateRequest.parse>) {
+	const selected: QueryFilter<IClaim>[] = [];
+	if (data.savedReviewIds.length) {
+		selected.push({
+			_id: {
+				$in: data.savedReviewIds.map(value => new mongoose.Types.ObjectId(value))
+			}
+		});
+	}
+	if (data.followedTopicIds.length) {
+		selected.push({
+			topic: {
+				$in: data.followedTopicIds.map(value => new mongoose.Types.ObjectId(value))
+			}
+		});
+	}
+	return selected;
+}
+
+function updateCursorFilter(cursor: ReturnType<typeof decodeReaderUpdateCursor> | undefined) {
+	if (!cursor) return {};
+	return {
+		$or: [
+			{
+				"readerUpdates.date": {
+					$lt: new Date(cursor.before)
+				}
+			},
+			{
+				"readerUpdates.date": new Date(cursor.before),
+				"readerUpdates.id": { $lt: cursor.id }
+			}
+		]
+	};
+}
 
 function publicLibrary(library: IReaderLibrary | null) {
 	return {
@@ -110,13 +151,22 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 				return res.status(422).json({ error: "A selected comparison is no longer available." });
 			}
 			const [reviews, topics, publicRequests] = await Promise.all([
-				addedReviews.length ? loadVisibleClaims(addedReviews) : [],
+				addedReviews.length
+					? loadVisibleClaims(addedReviews)
+					: [],
 				addedTopics.length
-					? Topic.find({ _id: { $in: addedTopics } })
+					? Topic.find({
+							_id: { $in: addedTopics }
+						})
 							.select("_id")
 							.lean()
 					: [],
-				addedCoverageRequests.length ? CoverageRequest.find({ _id: { $in: addedCoverageRequests }, visibility: "public" }).select("_id").maxTimeMS(5000).lean() : []
+				addedCoverageRequests.length
+					? CoverageRequest.find({
+							_id: { $in: addedCoverageRequests },
+							visibility: "public"
+						}).select("_id").maxTimeMS(5000).lean()
+					: []
 			]);
 			if (reviews.length !== addedReviews.length || topics.length !== addedTopics.length || publicRequests.length !== addedCoverageRequests.length) {
 				return res.status(422).json({ error: "A selected review, topic or requested question is no longer available." });
@@ -157,9 +207,13 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 		if (!parsed.success) return res.status(400).json({ error: "Invalid library selection." });
 		try {
 			const [claims, topics, coverage] = await Promise.all([
-				parsed.data.savedReviewIds.length ? loadVisibleClaims(parsed.data.savedReviewIds) : [],
+				parsed.data.savedReviewIds.length
+					? loadVisibleClaims(parsed.data.savedReviewIds)
+					: [],
 				parsed.data.followedTopicIds.length
-					? Topic.find({ _id: { $in: parsed.data.followedTopicIds } }).lean()
+					? Topic.find({
+							_id: { $in: parsed.data.followedTopicIds }
+						}).lean()
 					: [],
 				loadPublicCoverageSelection(parsed.data.followedCoverageRequestIds ?? [], loadVisibleClaims)
 			]);
@@ -169,7 +223,11 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 				coverageRequests: coverage.requests,
 				comparisons: (parsed.data.savedComparisonSlugs ?? []).flatMap((slug) => {
 					const comparison = comparisonForSlug(slug);
-					return comparison ? [{ slug, title: comparison.title, description: comparison.description }] : [];
+					return comparison
+						? [
+								{ slug, title: comparison.title, description: comparison.description }
+							]
+						: [];
 				})
 			});
 		}
@@ -192,23 +250,23 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 		catch {
 			return res.status(400).json({ error: "Invalid update page. Refresh the feed." });
 		}
-		const asOf = cursor ? new Date(cursor.asOf) : now;
+		const asOf = cursor
+			? new Date(cursor.asOf)
+			: now;
 		const windowStart = new Date(asOf.getTime() - 90 * 24 * 60 * 60 * 1000);
-		const selected = [];
-		if (parsed.data.savedReviewIds.length) {
-			selected.push({
-				_id: { $in: parsed.data.savedReviewIds.map(value => new mongoose.Types.ObjectId(value)) }
-			});
-		}
-		if (parsed.data.followedTopicIds.length) {
-			selected.push({
-				topic: { $in: parsed.data.followedTopicIds.map(value => new mongoose.Types.ObjectId(value)) }
-			});
-		}
+		const selected = initialUpdateSelection(parsed.data);
 		try {
-			const coverageIds = parsed.data.includeCoverageRequests ? parsed.data.followedCoverageRequestIds ?? [] : [];
+			const coverageIds = parsed.data.includeCoverageRequests
+				? parsed.data.followedCoverageRequestIds ?? []
+				: [];
 			const coverage = await loadPublicCoverageSelection(coverageIds, loadVisibleClaims);
-			if (coverage.answerIds.length) selected.push({ _id: { $in: coverage.answerIds.map(value => new mongoose.Types.ObjectId(value)) } });
+			if (coverage.answerIds.length) {
+				selected.push({
+					_id: {
+						$in: coverage.answerIds.map(value => new mongoose.Types.ObjectId(value))
+					}
+				});
+			}
 			const claimRows = selected.length
 				? await Claim.aggregate<{ claimId: mongoose.Types.ObjectId; topicId: mongoose.Types.ObjectId; update: IReaderUpdate }>([
 						{
@@ -222,43 +280,65 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 						{
 							$match: {
 								"readerUpdates.date": { $gte: windowStart, $lte: asOf },
-								...(cursor
-									? {
-											$or: [
-												{ "readerUpdates.date": { $lt: new Date(cursor.before) } },
-												{
-													"readerUpdates.date": new Date(cursor.before),
-													"readerUpdates.id": { $lt: cursor.id }
-												}
-											]
-										}
-									: {})
+								...updateCursorFilter(cursor)
 							}
 						},
-						{ $sort: { "readerUpdates.date": -1, "readerUpdates.id": -1 } },
+						{
+							$sort: { "readerUpdates.date": -1, "readerUpdates.id": -1 }
+						},
 						{ $limit: 31 },
-						{ $project: { _id: 0, claimId: "$_id", topicId: "$topic", update: "$readerUpdates" } }
+						{
+							$project: {
+								_id: 0,
+								claimId: "$_id",
+								topicId: "$topic",
+								update: "$readerUpdates"
+							}
+						}
 					]).option({ maxTimeMS: 5000 })
 				: [];
 			const topics = parsed.data.includeComparisons && parsed.data.followedTopicIds.length
-				? await Topic.find({ _id: { $in: parsed.data.followedTopicIds } }).select("slug").maxTimeMS(5000).lean()
+				? await Topic.find({
+						_id: { $in: parsed.data.followedTopicIds }
+					}).select("slug").maxTimeMS(5000).lean()
 				: [];
 			const comparisonRows = parsed.data.includeComparisons
 				? selectedComparisonUpdates(evidenceComparisons, parsed.data.savedComparisonSlugs ?? [], topics.map(topic => topic.slug), asOf, windowStart, cursor)
 				: [];
 			const coverageRows = selectedCoverageUpdates(coverage.requests, asOf, windowStart, cursor);
-			const rows = [...claimRows, ...comparisonRows, ...coverageRows].sort((first, second) => compareUpdatePosition(first.update, second.update)).slice(0, 31);
+			const rows = [
+				...claimRows,
+				...comparisonRows,
+				...coverageRows
+			].sort((first, second) => compareUpdatePosition(first.update, second.update)).slice(0, 31);
 			const page = rows.slice(0, 30);
-			const claimIds = [...new Set(page.flatMap(row => "claimId" in row ? [String(row.claimId)] : []))];
-			const visible = claimIds.length ? await loadVisibleClaims(claimIds) : [];
-			const claims = new Map(visible.map(claim => [String(claim._id), claim]));
+			const claimIds = [
+				...new Set(page.flatMap(row => "claimId" in row
+					? [
+							String(row.claimId)
+						]
+					: []))
+			];
+			const visible = claimIds.length
+				? await loadVisibleClaims(claimIds)
+				: [];
+			const claims = new Map(visible.map(claim => [
+				String(claim._id),
+				claim
+			]));
 			const latestCoverage = await loadPublicCoverageSelection(coverageIds, loadVisibleClaims);
 			const currentRequests = new Map(latestCoverage.requests.map(request => [request._id, request]));
 			const last = page.at(-1);
 			return res.json({
 				updates: page.map((row) => {
 					const { update } = row;
-					const fields = { id: update.id, date: update.date, kind: update.kind, summary: update.summary, bottomLineImpact: update.bottomLineImpact };
+					const fields = {
+						id: update.id,
+						date: update.date,
+						kind: update.kind,
+						summary: update.summary,
+						bottomLineImpact: update.bottomLineImpact
+					};
 					if ("comparison" in row) return { ...fields, comparison: row.comparison };
 					if ("coverageRequest" in row) {
 						const request = currentRequests.get(row.coverageRequest._id);
@@ -268,10 +348,17 @@ export function createReaderLibraryRouter(loadVisibleClaims: LoadVisibleClaims =
 					}
 					if (!parsed.data.savedReviewIds.includes(String(row.claimId)) && !parsed.data.followedTopicIds.includes(String(row.topicId)) && !latestCoverage.answerIds.includes(String(row.claimId))) return null;
 					const claim = claims.get(String(row.claimId));
-					return claim ? { ...fields, review: toPublicClaimSummary(claim) } : null;
+					return claim
+						? {
+								...fields,
+								review: toPublicClaimSummary(claim)
+							}
+						: null;
 				}).filter(row => row !== null),
 				nextCursor:
-					rows.length > 30 && last ? encodeReaderUpdateCursor(last.update.date, last.update.id, asOf) : null,
+					rows.length > 30 && last
+						? encodeReaderUpdateCursor(last.update.date, last.update.id, asOf)
+						: null,
 				asOf,
 				windowStart
 			});

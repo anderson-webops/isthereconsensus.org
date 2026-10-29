@@ -40,8 +40,15 @@ function option(
 		label,
 		scope,
 		estimates: {},
-		estimatesByContext: { resting: { systolic: estimate(...systolic), diastolic: estimate(...diastolic) } },
-		findingsByContext: { ambulatory: { systolic: finding, diastolic: finding } }
+		estimatesByContext: {
+			resting: {
+				systolic: estimate(...systolic),
+				diastolic: estimate(...diastolic)
+			}
+		},
+		findingsByContext: {
+			ambulatory: { systolic: finding, diastolic: finding }
+		}
 	};
 }
 

@@ -22,7 +22,9 @@ describe("research preparation and methodology integrity", () => {
 			changeLog: []
 		};
 		const before = structuredClone(legacy);
-		const publicClaim = toPublicClaim(legacy, { topic: { slug: topicSlug } });
+		const publicClaim = toPublicClaim(legacy, {
+			topic: { slug: topicSlug }
+		});
 		assert.deepEqual(legacy, before);
 		assert.deepEqual(publicClaim.inclusionRules, []);
 		assert.deepEqual(publicClaim.exclusionRules, []);
@@ -51,16 +53,30 @@ describe("research preparation and methodology integrity", () => {
 
 	it("does not erase a customized template or infer missing preparation records", () => {
 		const topicSlug = "physics-and-chemistry";
-		const claim = { inclusionRules: [...legacyInclusionRules({ topicSlug }), "Only measured laboratory quantities."] };
+		const claim = {
+			inclusionRules: [
+				...legacyInclusionRules({ topicSlug }),
+				"Only measured laboratory quantities."
+			]
+		};
 		assert.deepEqual(researchIntegrityFields(claim, topicSlug), claim);
 		assert.equal(researchPreparation({}).method, "not_recorded");
 	});
 
 	it("removes appended generic assertions while retaining each individual scope criterion", () => {
 		const claim = {
-			inclusionRules: ["Only measured laboratory quantities.", ...legacyInclusionRules({ topicSlug: "" })],
-			exclusionRules: ["Exclude results outside the stated pressure range.", ...legacyExclusionRules({ topicSlug: "" })],
-			appraisalTools: ["Narrative comparison; no formal instrument completed.", ...legacyAppraisalTools("")]
+			inclusionRules: [
+				"Only measured laboratory quantities.",
+				...legacyInclusionRules({ topicSlug: "" })
+			],
+			exclusionRules: [
+				"Exclude results outside the stated pressure range.",
+				...legacyExclusionRules({ topicSlug: "" })
+			],
+			appraisalTools: [
+				"Narrative comparison; no formal instrument completed.",
+				...legacyAppraisalTools("")
+			]
 		};
 		assert.deepEqual(individualResearchFields(claim, "physics-and-chemistry"), {
 			inclusionRules: ["Only measured laboratory quantities."],
@@ -74,7 +90,17 @@ describe("research preparation and methodology integrity", () => {
 		assert.equal(defaultClaims.length, 1001);
 		for (const [index, claim] of defaultClaims.entries()) {
 			const before = refreshEditorialAuditClaim(claimsBeforeIntegrityCorrections[index]!);
-			for (const field of ["slug", "title", "bottomLine", "sources", "consensusBand", "confidenceScore", "searchCutoffAt", "changeLog", "surveillanceSpec"] as const) {
+			for (const field of [
+				"slug",
+				"title",
+				"bottomLine",
+				"sources",
+				"consensusBand",
+				"confidenceScore",
+				"searchCutoffAt",
+				"changeLog",
+				"surveillanceSpec"
+			] as const) {
 				assert.deepEqual(claim[field], before[field], `${claim.slug}: ${field}`);
 			}
 			assert.notEqual(claim.reviewerLine, "Reviewed for evidence quality, scope, and plain-language accuracy.");
@@ -89,7 +115,13 @@ describe("research preparation and methodology integrity", () => {
 
 	it("keeps revision commentary out of the public summary without deleting history", () => {
 		const summary = "This update replaces blanket institutional agreement with scoped findings.";
-		const history = [{ date: new Date("2026-09-13"), kind: "update" as const, summary }];
+		const history = [
+			{
+				date: new Date("2026-09-13"),
+				kind: "update" as const,
+				summary
+			}
+		];
 		assert.equal(isRevisionCommentary(summary), true);
 		assert.equal(toPublicClaim({ editorSummary: summary, changeLog: history }).editorSummary, undefined);
 		assert.deepEqual(toPublicClaim({ changeLog: history }).changeLog, history);

@@ -12,16 +12,18 @@ export function createEditorialAuditProposal(identity: { commit: string; tree: s
 		const after = refreshEditorialAuditClaim(researchIntegrityFields(before, before.topicSlug));
 		const expected = seedClaimFields(before);
 		const proposed = seedClaimFields(after);
-		return [{
-			key: `${before.topicSlug}/${before.slug}`,
-			publicApiPath: `/api/topics/${before.topicSlug}/claims/${before.slug}`,
-			expectedSourceBaseline: expected,
-			compatibleLegacyBaseline: seedClaimFields(legacyEditorialBaseline(before)),
-			proposedFields: proposed,
-			changedFields: Object.keys(proposed).filter(field => JSON.stringify(proposed[field as keyof typeof proposed]) !== JSON.stringify(expected[field as keyof typeof expected])),
-			expectedSources: before.sources,
-			proposedSources: after.sources
-		}];
+		return [
+			{
+				key: `${before.topicSlug}/${before.slug}`,
+				publicApiPath: `/api/topics/${before.topicSlug}/claims/${before.slug}`,
+				expectedSourceBaseline: expected,
+				compatibleLegacyBaseline: seedClaimFields(legacyEditorialBaseline(before)),
+				proposedFields: proposed,
+				changedFields: Object.keys(proposed).filter(field => JSON.stringify(proposed[field as keyof typeof proposed]) !== JSON.stringify(expected[field as keyof typeof expected])),
+				expectedSources: before.sources,
+				proposedSources: after.sources
+			}
+		];
 	});
 	const contentSha256 = createHash("sha256").update(JSON.stringify(targets)).digest("hex");
 	return {

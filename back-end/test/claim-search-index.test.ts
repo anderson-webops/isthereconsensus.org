@@ -41,7 +41,13 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("recognizes regular es plurals without claiming a spelling correction", () => {
-		for (const [singular, plural] of [["loss", "losses"], ["class", "classes"], ["brush", "brushes"], ["box", "boxes"], ["buzz", "buzzes"]]) {
+		for (const [singular, plural] of [
+			["loss", "losses"],
+			["class", "classes"],
+			["brush", "brushes"],
+			["box", "boxes"],
+			["buzz", "buzzes"]
+		]) {
 			const claim = { title: `Can a pump affect ${singular}?`, slug: `synthetic-${singular}` };
 			const result = createClaimSearchIndex([claim])(`pump ${plural}`, referenceDate)[0];
 			assert.equal(result?.claim, claim, plural);
@@ -50,14 +56,24 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("keeps silent e roots distinct from regular es endings", () => {
-		for (const [singular, plural] of [["cache", "caches"], ["quiche", "quiches"], ["headache", "headaches"]]) {
+		for (const [singular, plural] of [
+			["cache", "caches"],
+			["quiche", "quiches"],
+			["headache", "headaches"]
+		]) {
 			const claim = { title: `Can a pump affect ${singular}?`, slug: `synthetic-${singular}` };
 			assert.equal(createClaimSearchIndex([claim])(`pump ${plural}`, referenceDate)[0]?.claim, claim, plural);
 		}
 	});
 
 	it("retains root vowels and doubled l or s when stemming ing forms", () => {
-		for (const [verb, participle] of [["agree", "agreeing"], ["call", "calling"], ["fall", "falling"], ["assess", "assessing"], ["stop", "stopping"]]) {
+		for (const [verb, participle] of [
+			["agree", "agreeing"],
+			["call", "calling"],
+			["fall", "falling"],
+			["assess", "assessing"],
+			["stop", "stopping"]
+		]) {
 			const claim = { title: `Can a pump ${verb}?`, slug: `synthetic-${verb}` };
 			const result = createClaimSearchIndex([claim])(`pump ${participle}`, referenceDate)[0];
 			assert.equal(result?.claim, claim, participle);
@@ -83,18 +99,40 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("retrieves coherent public explanations without requiring title wording", () => {
-		const explanation = { title: "Can an installation run steadily?", slug: "synthetic-body-explanation", stableCore: ["Pump backpressure affects recirculation."] };
-		const scattered = { title: "Can another installation run steadily?", slug: "synthetic-scattered", stableCore: ["Pump backpressure requires measurement.", "Recirculation requires observation."] };
-		const tagsOnly = { title: "Can a third installation run steadily?", slug: "synthetic-tags-only", misconceptionTags: ["pump backpressure recirculation"] };
+		const explanation = {
+			title: "Can an installation run steadily?",
+			slug: "synthetic-body-explanation",
+			stableCore: ["Pump backpressure affects recirculation."]
+		};
+		const scattered = {
+			title: "Can another installation run steadily?",
+			slug: "synthetic-scattered",
+			stableCore: ["Pump backpressure requires measurement.", "Recirculation requires observation."]
+		};
+		const tagsOnly = {
+			title: "Can a third installation run steadily?",
+			slug: "synthetic-tags-only",
+			misconceptionTags: ["pump backpressure recirculation"]
+		};
 		const results = createClaimSearchIndex([scattered, tagsOnly, explanation])("pump backpressure recirculation", referenceDate);
 		assert.deepEqual(results.map(result => result.claim.slug), [explanation.slug]);
 		assert.equal(results[0].match.matchStrength, "related");
 	});
 
 	it("matches agreement word forms without rewriting the public explanations", () => {
-		const claim = { title: "What do pump observations establish?", slug: "synthetic-agreement", stableCore: ["Observers report agreement about pump backpressure."] };
+		const claim = {
+			title: "What do pump observations establish?",
+			slug: "synthetic-agreement",
+			stableCore: ["Observers report agreement about pump backpressure."]
+		};
 		const search = createClaimSearchIndex([claim]);
-		for (const verb of ["agree", "agrees", "agreed", "agreeing", "agreement"]) {
+		for (const verb of [
+			"agree",
+			"agrees",
+			"agreed",
+			"agreeing",
+			"agreement"
+		]) {
 			const result = search(`Observers ${verb} about pump backpressure`, referenceDate)[0];
 			assert.equal(result?.claim, claim, verb);
 			assert.equal(result.match.matchStrength, "related", verb);
@@ -108,9 +146,21 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("prioritizes explicit comparisons over incidental title and paragraph mentions", () => {
-		const explanation = { title: "Can an installation run steadily?", slug: "synthetic-comparison", stableCore: ["Pressure describes a force per area; flow measures volume per time."] };
-		const incidental = { title: "Can pressure affect a pump?", slug: "synthetic-incidental", stableCore: ["Pressure affects pump flow, while installation conditions affect performance."] };
-		const scattered = { title: "Can flow affect an installation?", slug: "synthetic-comparison-scattered", stableCore: ["Pressure can affect conditions. Flow is not the complete description."] };
+		const explanation = {
+			title: "Can an installation run steadily?",
+			slug: "synthetic-comparison",
+			stableCore: ["Pressure describes a force per area; flow measures volume per time."]
+		};
+		const incidental = {
+			title: "Can pressure affect a pump?",
+			slug: "synthetic-incidental",
+			stableCore: ["Pressure affects pump flow, while installation conditions affect performance."]
+		};
+		const scattered = {
+			title: "Can flow affect an installation?",
+			slug: "synthetic-comparison-scattered",
+			stableCore: ["Pressure can affect conditions. Flow is not the complete description."]
+		};
 		const search = createClaimSearchIndex([incidental, scattered, explanation]);
 		for (const query of [
 			"What's the difference between pressure and flow?",
@@ -137,7 +187,11 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("preserves quantities, negation, and unknown qualifiers in body-only comparisons", () => {
-		const claim = { title: "Can an installation run steadily?", slug: "synthetic-quantified-comparison", stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."] };
+		const claim = {
+			title: "Can an installation run steadily?",
+			slug: "synthetic-quantified-comparison",
+			stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."]
+		};
 		const search = createClaimSearchIndex([claim]);
 		assert.equal(search("Compare a pump at 1,000 revolutions with a pump at 10,000 revolutions", referenceDate)[0]?.claim, claim);
 		assert.deepEqual(search("Compare a pump at 1,001 revolutions with a pump at 10,000 revolutions", referenceDate), []);
@@ -146,7 +200,12 @@ describe("public claim explanation search index", () => {
 	});
 
 	it("does not use private fields or tags as comparison evidence", () => {
-		const claim = { title: "Can an installation run steadily?", slug: "synthetic-private-comparison", editorNotes: "Pressure and flow measure different quantities.", misconceptionTags: ["pressure and flow are different"] };
+		const claim = {
+			title: "Can an installation run steadily?",
+			slug: "synthetic-private-comparison",
+			editorNotes: "Pressure and flow measure different quantities.",
+			misconceptionTags: ["pressure and flow are different"]
+		};
 		assert.deepEqual(createClaimSearchIndex([claim])("What is the difference between pressure and flow?", referenceDate), []);
 	});
 

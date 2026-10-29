@@ -17,7 +17,8 @@ function withOutputDir(callback: (outputDir: string) => void) {
 		mkdirSync(join(outputDir, "public", "_nuxt", "builds"), { recursive: true });
 		writeFileSync(join(outputDir, "public", "_nuxt", "builds", "latest.json"), JSON.stringify({ id: "build-123" }));
 		callback(outputDir);
-	} finally {
+	}
+	finally {
 		rmSync(outputDir, { recursive: true, force: true });
 	}
 }

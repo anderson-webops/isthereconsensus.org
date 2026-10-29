@@ -134,8 +134,12 @@ describe("account activity logging", () => {
 		delete process.env.CAPTCHA_SECRET;
 		const createdLogs: any[] = [];
 		const user = testUser("member@example.com");
-		User.findOne = (() => ({ exec: async () => user })) as any;
-		Admin.findOne = (() => ({ exec: async () => null })) as any;
+		User.findOne = (() => ({
+			exec: async () => user
+		})) as any;
+		Admin.findOne = (() => ({
+			exec: async () => null
+		})) as any;
 		AccountActivityLog.create = (async (entry: any) => {
 			createdLogs.push(entry);
 			return entry;
@@ -236,6 +240,45 @@ describe("account activity logging", () => {
 			total: 3
 		});
 		assert.equal((res.body as any).logs.length, 1);
+	});
+
+	it("rejects invalid activity filters before querying the database", async (context) => {
+		context.mock.method(AccountActivityLog, "find", () => assert.fail("Invalid filters must not query activity records."));
+		context.mock.method(AccountActivityLog, "countDocuments", () => assert.fail("Invalid filters must not count activity records."));
+		for (const [query, error] of [
+			[
+				{ action: "unknown", actorType: "unknown" },
+				"Invalid account activity action."
+			],
+			[
+				{ actorType: "unknown" },
+				"Invalid actor type."
+			],
+			[
+				{ targetType: "unsupported-target" },
+				"Invalid target type."
+			],
+			[
+				{ actorId: "invalid" },
+				"Invalid actor id."
+			],
+			[
+				{ targetId: "invalid" },
+				"Invalid target id."
+			],
+			[
+				{ from: "invalid", to: "invalid" },
+				"Invalid from date."
+			],
+			[
+				{ to: "invalid" },
+				"Invalid to date."
+			]
+		] as const) {
+			const response = await runHandler(listAccountActivity, mockRequest({ query }), mockResponse());
+			assert.equal(response.statusCode, 400, JSON.stringify(query));
+			assert.deepEqual(response.body, { error });
+		}
 	});
 
 	it("removes raw secret fields and raw email fields from metadata", () => {

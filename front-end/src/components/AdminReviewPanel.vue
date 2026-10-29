@@ -29,7 +29,7 @@ const activityLabels: Record<AccountActivityAction, string> = {
 	"admin.deleted": "Admin deleted",
 	"login.success": "Login success",
 	"login.failed": "Login failed",
-	logout: "Logout",
+	"logout": "Logout",
 	"password.changed": "Password changed",
 	"email.changed": "Email changed",
 	"expert_application.created": "Expert application created",
@@ -52,7 +52,9 @@ function activityLabel(action: AccountActivityAction) {
 }
 
 function activityActor(log: AccountActivityLog) {
-	return log.actorId ? `${log.actorType} ${log.actorId.slice(-6)}` : log.actorType;
+	return log.actorId
+		? `${log.actorType} ${log.actorId.slice(-6)}`
+		: log.actorType;
 }
 
 function activityMetadata(log: AccountActivityLog) {
@@ -78,9 +80,11 @@ async function refreshQueues() {
 		applicationQueue.value = applicationsResponse.applications;
 		flagQueue.value = flagsResponse.flags;
 		activityLogs.value = activityResponse.logs;
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load admin review queues.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -102,9 +106,11 @@ async function reviewApplication(id: string, decision: "approved" | "rejected" |
 		});
 		delete reviewNotes.value[id];
 		await refreshQueues();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to review that application.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -126,9 +132,11 @@ async function reviewFlag(id: string, decision: "reviewed" | "dismissed") {
 		});
 		delete flagReviewNotes.value[id];
 		await refreshQueues();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to review that flag.";
-	} finally {
+	}
+	finally {
 		actionState.value = "";
 	}
 }
@@ -162,7 +170,9 @@ watch(
 			</div>
 		</header>
 
-		<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+		<p v-if="errorMessage" class="error">
+			{{ errorMessage }}
+		</p>
 
 		<div class="admin-summary">
 			<article class="summary-card">
@@ -182,14 +192,20 @@ watch(
 		<details class="queue-panel" :open="applicationQueue.length > 0">
 			<summary>Expert applications</summary>
 			<div class="queue-panel__body">
-				<div v-if="!applicationQueue.length" class="muted">No expert applications waiting.</div>
+				<div v-if="!applicationQueue.length" class="muted">
+					No expert applications waiting.
+				</div>
 				<div v-else class="queue-list">
 					<article v-for="application in applicationQueue" :key="application._id" class="queue-card">
 						<div>
 							<h3>{{ application.name }}</h3>
 							<p>{{ application.credentialLabel }}</p>
-							<p class="muted">{{ application.expertiseAreas.join(", ") }}</p>
-							<p v-if="application.affiliation" class="muted">{{ application.affiliation }}</p>
+							<p class="muted">
+								{{ application.expertiseAreas.join(", ") }}
+							</p>
+							<p v-if="application.affiliation" class="muted">
+								{{ application.affiliation }}
+							</p>
 							<p v-if="application.conflictDisclosure" class="muted">
 								<strong>Conflicts:</strong> {{ application.conflictDisclosure }}
 							</p>
@@ -243,14 +259,20 @@ watch(
 		<details class="queue-panel" :open="flagQueue.length > 0">
 			<summary>Question flags</summary>
 			<div class="queue-panel__body">
-				<div v-if="!flagQueue.length" class="muted">No flagged questions waiting.</div>
+				<div v-if="!flagQueue.length" class="muted">
+					No flagged questions waiting.
+				</div>
 				<div v-else class="queue-list">
 					<article v-for="flag in flagQueue" :key="flag._id" class="queue-card">
 						<div>
 							<h3>{{ flag.question?.title || "Flagged question" }}</h3>
 							<p>{{ flag.reason }}</p>
-							<p v-if="flag.note" class="muted"><strong>Reporter note:</strong> {{ flag.note }}</p>
-							<p class="muted">{{ flag.reporterName || "Unknown reporter" }}</p>
+							<p v-if="flag.note" class="muted">
+								<strong>Reporter note:</strong> {{ flag.note }}
+							</p>
+							<p class="muted">
+								{{ flag.reporterName || "Unknown reporter" }}
+							</p>
 						</div>
 						<div class="queue-actions queue-actions--stacked">
 							<textarea
@@ -284,11 +306,15 @@ watch(
 		<details class="queue-panel" open>
 			<summary>Recent account activity</summary>
 			<div class="queue-panel__body">
-				<div v-if="!activityLogs.length" class="muted">No account activity logged yet.</div>
+				<div v-if="!activityLogs.length" class="muted">
+					No account activity logged yet.
+				</div>
 				<div v-else class="queue-list">
 					<article v-for="log in activityLogs" :key="log._id" class="queue-card queue-card--activity">
 						<div>
-							<p class="activity-kicker">{{ activityLabel(log.action) }}</p>
+							<p class="activity-kicker">
+								{{ activityLabel(log.action) }}
+							</p>
 							<h3>{{ log.targetType }} target</h3>
 							<p class="muted">
 								Actor: {{ activityActor(log) }} · Target:

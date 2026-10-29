@@ -8,7 +8,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerWeatherClaims.find(claim => claim.slug === readerWeatherSlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 
 describe("weather quantities and measurement expansion", () => {
 	it("adds eighteen substantive unique questions with stable honest dates, without counting old reviews or guides", () => {
@@ -53,8 +59,17 @@ describe("weather quantities and measurement expansion", () => {
 	});
 
 	it("checks event thresholds rather than treating likelihood as duration or amount", () => {
-		const likelyLight = [0, 0, ...Array.from({ length: 8 }).fill(0.02)];
-		const lessLikelyHeavy = [...Array.from({ length: 7 }).fill(0), 1, 1, 1];
+		const likelyLight = [
+			0,
+			0,
+			...Array.from<number>({ length: 8 }).fill(0.02)
+		];
+		const lessLikelyHeavy = [
+			...Array.from<number>({ length: 7 }).fill(0),
+			1,
+			1,
+			1
+		];
 		assert.equal(likelyLight.filter(amount => amount >= 0.01).length, 8);
 		assert.equal(lessLikelyHeavy.filter(amount => amount >= 0.01).length, 3);
 		assert.equal(likelyLight.filter(amount => amount >= 0.5).length, 0);
@@ -113,17 +128,53 @@ describe("weather quantities and measurement expansion", () => {
 	it("deliberately places each question in one collection and retrieves diagnostic questions without ranker changes", () => {
 		const groups = {
 			"weather-forecast-quantities": ["chance", "amount"],
-			"humidity-dew-and-frost": ["cooling", "equalHumidity", "saturation", "dew", "frost"],
+			"humidity-dew-and-frost": [
+				"cooling",
+				"equalHumidity",
+				"saturation",
+				"dew",
+				"frost"
+			],
 			"weather-exposure-indices": ["windChill", "heatIndex"],
-			"frozen-precipitation": ["snowRatio", "snowAboveFreezing", "sleet", "hail"],
-			"weather-observations-and-maps": ["radarGround", "radarTargets", "satellite", "pressure", "front"]
+			"frozen-precipitation": [
+				"snowRatio",
+				"snowAboveFreezing",
+				"sleet",
+				"hail"
+			],
+			"weather-observations-and-maps": [
+				"radarGround",
+				"radarTargets",
+				"satellite",
+				"pressure",
+				"front"
+			]
 		};
 		assert.equal(Object.values(groups).flat().length, 18);
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("earth-and-geoscience", readerWeatherSlugs[key]!).map(collection => collection.slug), [group]);
 		}
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { chance: "chance rain percent duration", amount: "higher chance heavier rainfall", cooling: "relative humidity cooling", equalHumidity: "same humidity water vapor", saturation: "100 percent humidity rain", dew: "morning dew overnight rain", frost: "frost above freezing", windChill: "wind chill dry object", heatIndex: "heat index sun shade", snowRatio: "ten inches snow water", snowAboveFreezing: "snow above freezing", sleet: "sleet freezing rain", hail: "hail warm day", radarGround: "radar echo ground virga", radarTargets: "radar colored birds clutter", satellite: "infrared weather satellite temperature", pressure: "sea level mountain station pressure", front: "weather front surface map" };
+		const queries = {
+			chance: "chance rain percent duration",
+			amount: "higher chance heavier rainfall",
+			cooling: "relative humidity cooling",
+			equalHumidity: "same humidity water vapor",
+			saturation: "100 percent humidity rain",
+			dew: "morning dew overnight rain",
+			frost: "frost above freezing",
+			windChill: "wind chill dry object",
+			heatIndex: "heat index sun shade",
+			snowRatio: "ten inches snow water",
+			snowAboveFreezing: "snow above freezing",
+			sleet: "sleet freezing rain",
+			hail: "hail warm day",
+			radarGround: "radar echo ground virga",
+			radarTargets: "radar colored birds clutter",
+			satellite: "infrared weather satellite temperature",
+			pressure: "sea level mountain station pressure",
+			front: "weather front surface map"
+		};
 		for (const [key, query] of Object.entries(queries)) assert.ok(search(query).some(result => result.claim.slug === readerWeatherSlugs[key]), query);
 	});
 });

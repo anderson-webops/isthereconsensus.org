@@ -34,9 +34,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Strength and function benefits are high-confidence. The optimal prescription, long-term adherence, and effect size in medically complex or very frail adults are less certain.",
 		sources: [
-			["meta_analysis", "Exercise for sarcopenia in older people: A systematic review and network meta-analysis", "Journal of Cachexia, Sarcopenia and Muscle", 2023, "10.1002/jcsm.13225", "Network synthesis compares exercise modes and supports resistance-based programs for strength and functional outcomes."],
-			["meta_analysis", "Optimal resistance training prescriptions to improve muscle strength, physical function, and muscle mass in older adults diagnosed with sarcopenia: a systematic review and meta-analysis", "Aging Clinical and Experimental Research", 2025, "10.1007/s40520-025-03235-w", "Updated synthesis evaluates prescription features and distinguishes strength, function, and muscle-mass outcomes."],
-			["meta_analysis", "Effects of resistance training on muscle mass, strength, and physical function in older women with sarcopenia: a systematic review and meta-analysis", "Frontiers in Public Health", 2026, "10.3389/fpubh.2025.1735899", "Sex-specific review finds benefits while documenting heterogeneity in program design and outcome measurement."]
+			[
+				"meta_analysis",
+				"Exercise for sarcopenia in older people: A systematic review and network meta-analysis",
+				"Journal of Cachexia, Sarcopenia and Muscle",
+				2023,
+				"10.1002/jcsm.13225",
+				"Network synthesis compares exercise modes and supports resistance-based programs for strength and functional outcomes."
+			],
+			[
+				"meta_analysis",
+				"Optimal resistance training prescriptions to improve muscle strength, physical function, and muscle mass in older adults diagnosed with sarcopenia: a systematic review and meta-analysis",
+				"Aging Clinical and Experimental Research",
+				2025,
+				"10.1007/s40520-025-03235-w",
+				"Updated synthesis evaluates prescription features and distinguishes strength, function, and muscle-mass outcomes."
+			],
+			[
+				"meta_analysis",
+				"Effects of resistance training on muscle mass, strength, and physical function in older women with sarcopenia: a systematic review and meta-analysis",
+				"Frontiers in Public Health",
+				2026,
+				"10.3389/fpubh.2025.1735899",
+				"Sex-specific review finds benefits while documenting heterogeneity in program design and outcome measurement."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Fall-rate and functional benefits are high-confidence. Fracture and mortality outcomes are rarer, and results vary with baseline frailty, adherence, and delivery format.",
 		sources: [
-			["meta_analysis", "Effects of multicomponent exercise on frailty status and physical function in frail older adults: A meta-analysis and systematic review", "Experimental Gerontology", 2024, "10.1016/j.exger.2024.112604", "Synthesis finds improvements in frailty and physical function across multicomponent programs."],
-			["meta_analysis", "Association of Long-term Exercise Training With Risk of Falls, Fractures, Hospitalizations, and Mortality in Older Adults", "JAMA Internal Medicine", 2019, "10.1001/jamainternmed.2018.5406", "Long-duration randomized evidence supports fewer falls and injurious falls while rarer outcomes remain less certain."],
-			["meta_analysis", "Adherence and effectiveness of multicomponent exercise fall prevention programmes across delivery formats in community-dwelling older adults: a systematic review and multilevel meta-analysis", "Archives of Gerontology and Geriatrics", 2026, "10.1016/j.archger.2026.106304", "Review links effectiveness to delivery format and adherence across community programs."]
+			[
+				"meta_analysis",
+				"Effects of multicomponent exercise on frailty status and physical function in frail older adults: A meta-analysis and systematic review",
+				"Experimental Gerontology",
+				2024,
+				"10.1016/j.exger.2024.112604",
+				"Synthesis finds improvements in frailty and physical function across multicomponent programs."
+			],
+			[
+				"meta_analysis",
+				"Association of Long-term Exercise Training With Risk of Falls, Fractures, Hospitalizations, and Mortality in Older Adults",
+				"JAMA Internal Medicine",
+				2019,
+				"10.1001/jamainternmed.2018.5406",
+				"Long-duration randomized evidence supports fewer falls and injurious falls while rarer outcomes remain less certain."
+			],
+			[
+				"meta_analysis",
+				"Adherence and effectiveness of multicomponent exercise fall prevention programmes across delivery formats in community-dwelling older adults: a systematic review and multilevel meta-analysis",
+				"Archives of Gerontology and Geriatrics",
+				2026,
+				"10.1016/j.archger.2026.106304",
+				"Review links effectiveness to delivery format and adherence across community programs."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty reflects small average benefits, different baseline diets, supplement doses, training programs, diagnostic criteria, and inconsistent functional outcomes.",
 		sources: [
-			["meta_analysis", "The effectiveness of protein supplementation combined with resistance exercise programs among community-dwelling older adults with sarcopenia: a systematic review and meta-analysis", "Epidemiology and Health", 2024, "10.4178/epih.e2024030", "Sarcopenia-focused synthesis reports added effects on muscle and selected performance outcomes."],
-			["meta_analysis", "Protein interventions augment the effect of resistance exercise on appendicular lean mass and handgrip strength in older adults: a systematic review and meta-analysis of randomized controlled trials", "The American Journal of Clinical Nutrition", 2022, "10.1093/ajcn/nqab355", "Randomized-trial synthesis finds modest augmentation of lean mass and handgrip strength."],
-			["meta_analysis", "Protein supplementation alone or combined with exercise for sarcopenia and physical frailty: A systematic review and meta-analysis of randomized controlled trials", "Archives of Gerontology and Geriatrics", 2025, "10.1016/j.archger.2025.105783", "Updated review separates protein-only from combined interventions and finds heterogeneous outcome effects."]
+			[
+				"meta_analysis",
+				"The effectiveness of protein supplementation combined with resistance exercise programs among community-dwelling older adults with sarcopenia: a systematic review and meta-analysis",
+				"Epidemiology and Health",
+				2024,
+				"10.4178/epih.e2024030",
+				"Sarcopenia-focused synthesis reports added effects on muscle and selected performance outcomes."
+			],
+			[
+				"meta_analysis",
+				"Protein interventions augment the effect of resistance exercise on appendicular lean mass and handgrip strength in older adults: a systematic review and meta-analysis of randomized controlled trials",
+				"The American Journal of Clinical Nutrition",
+				2022,
+				"10.1093/ajcn/nqab355",
+				"Randomized-trial synthesis finds modest augmentation of lean mass and handgrip strength."
+			],
+			[
+				"meta_analysis",
+				"Protein supplementation alone or combined with exercise for sarcopenia and physical frailty: A systematic review and meta-analysis of randomized controlled trials",
+				"Archives of Gerontology and Geriatrics",
+				2025,
+				"10.1016/j.archger.2025.105783",
+				"Updated review separates protein-only from combined interventions and finds heterogeneous outcome effects."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The association is consistent and large-scale, but causal magnitude and the ability of specific interventions to reduce medical events or mortality remain uncertain.",
 		sources: [
-			["meta_analysis", "A systematic review and meta-analysis of 90 cohort studies of social isolation, loneliness and mortality", "Nature Human Behaviour", 2023, "10.1038/s41562-023-01617-6", "Large cohort synthesis finds both isolation and loneliness associated with all-cause and cancer mortality, with isolation also associated with cardiovascular mortality."],
-			["meta_analysis", "Loneliness, social isolation, and living alone: a comprehensive systematic review, meta-analysis, and meta-regression of mortality risks in older adults", "Aging Clinical and Experimental Research", 2025, "10.1007/s40520-024-02925-1", "Older-adult synthesis separates related social exposures and examines sources of heterogeneity."],
-			["meta_analysis", "Facing the Next Geriatric Giant: A Systematic Literature Review and Meta-Analysis of Interventions Tackling Loneliness and Social Isolation Among Older Adults", "Journal of the American Medical Directors Association", 2024, "10.1016/j.jamda.2024.105110", "Intervention review finds smaller and more variable effects than the observational risk literature might imply."]
+			[
+				"meta_analysis",
+				"A systematic review and meta-analysis of 90 cohort studies of social isolation, loneliness and mortality",
+				"Nature Human Behaviour",
+				2023,
+				"10.1038/s41562-023-01617-6",
+				"Large cohort synthesis finds both isolation and loneliness associated with all-cause and cancer mortality, with isolation also associated with cardiovascular mortality."
+			],
+			[
+				"meta_analysis",
+				"Loneliness, social isolation, and living alone: a comprehensive systematic review, meta-analysis, and meta-regression of mortality risks in older adults",
+				"Aging Clinical and Experimental Research",
+				2025,
+				"10.1007/s40520-024-02925-1",
+				"Older-adult synthesis separates related social exposures and examines sources of heterogeneity."
+			],
+			[
+				"meta_analysis",
+				"Facing the Next Geriatric Giant: A Systematic Literature Review and Meta-Analysis of Interventions Tackling Loneliness and Social Isolation Among Older Adults",
+				"Journal of the American Medical Directors Association",
+				2024,
+				"10.1016/j.jamda.2024.105110",
+				"Intervention review finds smaller and more variable effects than the observational risk literature might imply."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate certainty applies to selected intermediate outcomes over two years. Lifespan, major disease, disability, long-term adherence, and net benefit across diverse populations remain unknown.",
 		sources: [
-			["meta_analysis", "Is Caloric Restriction Associated with Better Healthy Aging Outcomes? A Systematic Review and Meta-Analysis of Randomized Controlled Trials", "Nutrients", 2020, "10.3390/nu12082290", "Randomized-trial synthesis finds improvements in several cardiometabolic measures while identifying insufficient evidence for multidimensional health and longevity."],
-			["landmark_study", "2 years of calorie restriction and cardiometabolic risk (CALERIE): exploratory outcomes of a multicentre, phase 2, randomised controlled trial", "The Lancet Diabetes & Endocrinology", 2019, "10.1016/s2213-8587(19)30151-2", "Randomized CALERIE analysis reports broad cardiometabolic risk-factor improvements during moderate calorie restriction."],
-			["landmark_study", "Effect of long-term caloric restriction on DNA methylation measures of biological aging in healthy adults from the CALERIE trial", "Nature Aging", 2023, "10.1038/s43587-022-00357-y", "CALERIE secondary analysis finds a small slowing in one pace-of-aging measure without establishing lifespan extension."],
+			[
+				"meta_analysis",
+				"Is Caloric Restriction Associated with Better Healthy Aging Outcomes? A Systematic Review and Meta-Analysis of Randomized Controlled Trials",
+				"Nutrients",
+				2020,
+				"10.3390/nu12082290",
+				"Randomized-trial synthesis finds improvements in several cardiometabolic measures while identifying insufficient evidence for multidimensional health and longevity."
+			],
+			[
+				"landmark_study",
+				"2 years of calorie restriction and cardiometabolic risk (CALERIE): exploratory outcomes of a multicentre, phase 2, randomised controlled trial",
+				"The Lancet Diabetes & Endocrinology",
+				2019,
+				"10.1016/s2213-8587(19)30151-2",
+				"Randomized CALERIE analysis reports broad cardiometabolic risk-factor improvements during moderate calorie restriction."
+			],
+			[
+				"landmark_study",
+				"Effect of long-term caloric restriction on DNA methylation measures of biological aging in healthy adults from the CALERIE trial",
+				"Nature Aging",
+				2023,
+				"10.1038/s43587-022-00357-y",
+				"CALERIE secondary analysis finds a small slowing in one pace-of-aging measure without establishing lifespan extension."
+			],
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty reflects indirect populations, observational comparisons, mixed animal findings, surrogate outcomes, and the absence of completed mortality or multimorbidity trials in healthy users.",
 		sources: [
-			["meta_analysis", "Metformin reduces all-cause mortality and diseases of ageing independent of its effect on diabetes control: A systematic review and meta-analysis", "Ageing Research Reviews", 2017, "10.1016/j.arr.2017.08.003", "Synthesis identifies favorable associations largely in diabetes populations and motivates rather than proves preventive use in healthy aging."],
-			["systematic_review", "A Critical Review of the Evidence That Metformin Is a Putative Anti-Aging Drug That Enhances Healthspan and Extends Lifespan", "Frontiers in Endocrinology", 2021, "10.3389/fendo.2021.718942", "Critical review details substantial gaps between mechanistic, animal, diabetes, and healthy-human evidence."],
-			["systematic_review", "Metformin and Aging: A Review", "Gerontology", 2019, "10.1159/000502257", "Review summarizes candidate mechanisms and clinical evidence while identifying the need for prospective aging endpoints."]
+			[
+				"meta_analysis",
+				"Metformin reduces all-cause mortality and diseases of ageing independent of its effect on diabetes control: A systematic review and meta-analysis",
+				"Ageing Research Reviews",
+				2017,
+				"10.1016/j.arr.2017.08.003",
+				"Synthesis identifies favorable associations largely in diabetes populations and motivates rather than proves preventive use in healthy aging."
+			],
+			[
+				"systematic_review",
+				"A Critical Review of the Evidence That Metformin Is a Putative Anti-Aging Drug That Enhances Healthspan and Extends Lifespan",
+				"Frontiers in Endocrinology",
+				2021,
+				"10.3389/fendo.2021.718942",
+				"Critical review details substantial gaps between mechanistic, animal, diabetes, and healthy-human evidence."
+			],
+			[
+				"systematic_review",
+				"Metformin and Aging: A Review",
+				"Gerontology",
+				2019,
+				"10.1159/000502257",
+				"Review summarizes candidate mechanisms and clinical evidence while identifying the need for prospective aging endpoints."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty reflects the absence of human longevity endpoints, small heterogeneous trials, short follow-up, and unresolved translation from disease-specific use to prevention.",
 		sources: [
-			["systematic_review", "Targeting ageing with rapamycin and its derivatives in humans: a systematic review", "The Lancet Healthy Longevity", 2024, "10.1016/s2666-7568(23)00258-1", "Systematic review finds signals across selected physiological systems but no proof of longer healthy human life and limited long-term safety evidence."],
-			["landmark_study", "A randomized control trial to establish the feasibility and safety of rapamycin treatment in an older human cohort: Immunological, physical performance, and cognitive effects", "Experimental Gerontology", 2018, "10.1016/j.exger.2017.12.026", "Small placebo-controlled trial tests short-term feasibility and selected outcomes rather than longevity."],
-			["landmark_study", "mTOR inhibition improves immune function in the elderly", "Science Translational Medicine", 2014, "10.1126/scitranslmed.3009892", "Short human trial reports improved influenza-vaccine response with an mTOR inhibitor, an intermediate immune outcome rather than lifespan evidence."]
+			[
+				"systematic_review",
+				"Targeting ageing with rapamycin and its derivatives in humans: a systematic review",
+				"The Lancet Healthy Longevity",
+				2024,
+				"10.1016/s2666-7568(23)00258-1",
+				"Systematic review finds signals across selected physiological systems but no proof of longer healthy human life and limited long-term safety evidence."
+			],
+			[
+				"landmark_study",
+				"A randomized control trial to establish the feasibility and safety of rapamycin treatment in an older human cohort: Immunological, physical performance, and cognitive effects",
+				"Experimental Gerontology",
+				2018,
+				"10.1016/j.exger.2017.12.026",
+				"Small placebo-controlled trial tests short-term feasibility and selected outcomes rather than longevity."
+			],
+			[
+				"landmark_study",
+				"mTOR inhibition improves immune function in the elderly",
+				"Science Translational Medicine",
+				2014,
+				"10.1126/scitranslmed.3009892",
+				"Short human trial reports improved influenza-vaccine response with an mTOR inhibitor, an intermediate immune outcome rather than lifespan evidence."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty for anti-aging benefit reflects small samples, short follow-up, inconsistent outcomes, product heterogeneity, and almost no direct disease-free survival or lifespan evidence.",
 		sources: [
-			["systematic_review", "NAD+ supplementation for anti-aging and wellness: A PRISMA-guided systematic review of preclinical and clinical evidence", "Ageing Research Reviews", 2026, "10.1016/j.arr.2026.103057", "Current review distinguishes consistent biochemical target engagement from sparse and inconsistent clinical benefit."],
-			["landmark_study", "Chronic nicotinamide riboside supplementation is well-tolerated and elevates NAD+ in healthy middle-aged and older adults", "Nature Communications", 2018, "10.1038/s41467-018-03421-7", "Randomized trial demonstrates increased NAD metabolites and short-term tolerability without establishing a general anti-aging outcome."],
-			["meta_analysis", "The Effect of Nicotinamide Mononucleotide and Riboside on Skeletal Muscle Mass and Function: A Systematic Review and Meta-Analysis", "Journal of Cachexia, Sarcopenia and Muscle", 2025, "10.1002/jcsm.13799", "Clinical synthesis does not find a reliable broad improvement in muscle mass or function."]
+			[
+				"systematic_review",
+				"NAD+ supplementation for anti-aging and wellness: A PRISMA-guided systematic review of preclinical and clinical evidence",
+				"Ageing Research Reviews",
+				2026,
+				"10.1016/j.arr.2026.103057",
+				"Current review distinguishes consistent biochemical target engagement from sparse and inconsistent clinical benefit."
+			],
+			[
+				"landmark_study",
+				"Chronic nicotinamide riboside supplementation is well-tolerated and elevates NAD+ in healthy middle-aged and older adults",
+				"Nature Communications",
+				2018,
+				"10.1038/s41467-018-03421-7",
+				"Randomized trial demonstrates increased NAD metabolites and short-term tolerability without establishing a general anti-aging outcome."
+			],
+			[
+				"meta_analysis",
+				"The Effect of Nicotinamide Mononucleotide and Riboside on Skeletal Muscle Mass and Function: A Systematic Review and Meta-Analysis",
+				"Journal of Cachexia, Sarcopenia and Muscle",
+				2025,
+				"10.1002/jcsm.13799",
+				"Clinical synthesis does not find a reliable broad improvement in muscle mass or function."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Very low certainty for broad clinical benefit reflects tiny early trials, disease-specific populations, unvalidated surrogate markers, heterogeneous agents, and absent long-term outcomes.",
 		sources: [
-			["landmark_study", "Senolytics decrease senescent cells in humans: Preliminary report from a clinical trial of Dasatinib plus Quercetin in individuals with diabetic kidney disease", "EBioMedicine", 2019, "10.1016/j.ebiom.2019.08.069", "Small preliminary human study reports changes in tissue and circulating senescence markers without testing lifespan or broad clinical benefit."],
-			["systematic_review", "Senolytic drugs: from discovery to translation", "Journal of Internal Medicine", 2020, "10.1111/joim.13141", "Translational review explains candidate mechanisms, cell-type complexity, animal evidence, and early clinical limitations."],
-			["landmark_study", "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial", "Nature Medicine", 2024, "10.1038/s41591-024-03096-2", "Phase 2 trial evaluates a specific skeletal indication and illustrates mixed, subgroup-sensitive clinical findings rather than general age reversal."]
+			[
+				"landmark_study",
+				"Senolytics decrease senescent cells in humans: Preliminary report from a clinical trial of Dasatinib plus Quercetin in individuals with diabetic kidney disease",
+				"EBioMedicine",
+				2019,
+				"10.1016/j.ebiom.2019.08.069",
+				"Small preliminary human study reports changes in tissue and circulating senescence markers without testing lifespan or broad clinical benefit."
+			],
+			[
+				"systematic_review",
+				"Senolytic drugs: from discovery to translation",
+				"Journal of Internal Medicine",
+				2020,
+				"10.1111/joim.13141",
+				"Translational review explains candidate mechanisms, cell-type complexity, animal evidence, and early clinical limitations."
+			],
+			[
+				"landmark_study",
+				"Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+				"Nature Medicine",
+				2024,
+				"10.1038/s41591-024-03096-2",
+				"Phase 2 trial evaluates a specific skeletal indication and illustrates mixed, subgroup-sensitive clinical findings rather than general age reversal."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026AgingLongevityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty for consumer clinical utility reflects platform variation, limited repeatability data, cohort-dependent calibration, sparse intervention validation, and no agreed treatment thresholds.",
 		sources: [
-			["meta_analysis", "The epigenetic clock as a predictor of disease and mortality risk: a systematic review and meta-analysis", "Clinical Epigenetics", 2019, "10.1186/s13148-019-0656-7", "Synthesis supports population-level associations while documenting heterogeneity and limited evidence for individual clinical use."],
-			["systematic_review", "A systematic review of phenotypic and epigenetic clocks used for aging and mortality quantification in humans", "Aging", 2024, "10.18632/aging.206098", "Review compares clock construction, outcomes, strengths, and limitations across a fragmented measurement landscape."],
-			["landmark_study", "Effect of long-term caloric restriction on DNA methylation measures of biological aging in healthy adults from the CALERIE trial", "Nature Aging", 2023, "10.1038/s43587-022-00357-y", "Randomized intervention analysis finds a small change in one pace measure but not every clock, illustrating why score changes are not interchangeable with clinical rejuvenation."]
+			[
+				"meta_analysis",
+				"The epigenetic clock as a predictor of disease and mortality risk: a systematic review and meta-analysis",
+				"Clinical Epigenetics",
+				2019,
+				"10.1186/s13148-019-0656-7",
+				"Synthesis supports population-level associations while documenting heterogeneity and limited evidence for individual clinical use."
+			],
+			[
+				"systematic_review",
+				"A systematic review of phenotypic and epigenetic clocks used for aging and mortality quantification in humans",
+				"Aging",
+				2024,
+				"10.18632/aging.206098",
+				"Review compares clock construction, outcomes, strengths, and limitations across a fragmented measurement landscape."
+			],
+			[
+				"landmark_study",
+				"Effect of long-term caloric restriction on DNA methylation measures of biological aging in healthy adults from the CALERIE trial",
+				"Nature Aging",
+				2023,
+				"10.1038/s43587-022-00357-y",
+				"Randomized intervention analysis finds a small change in one pace measure but not every clock, illustrating why score changes are not interchangeable with clinical rejuvenation."
+			]
 		]
 	})
 ];

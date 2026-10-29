@@ -103,7 +103,12 @@ export const probabilityGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "Zero Pearson correlation is not universal independence. An equally likely invented variable taking -2, zero and 2 has zero correlation with its square, yet the second value is fully determined by the first. Linear covariance can cancel while nonlinear information remains. Likewise, under independent fixed-probability trials a streak does not change the next probability. A law of large numbers concerns convergence under conditions, not obligatory catch-up, monotonic improvement or a deadline. Checking an uncertain process model is different from a known independent process having to compensate.",
-					sources: ["correlation", "independent-variables", "large-numbers", "independence"]
+					sources: [
+						"correlation",
+						"independent-variables",
+						"large-numbers",
+						"independence"
+					]
 				},
 				{
 					text: "The 68–95–99.7 rule describes approximate normal-model coverage, not every distribution with a mean and standard deviation. An equally likely variable at -1 and 1 has all its mass within the inclusive one-standard-deviation interval. It is symmetric but not normal. A central limit result can concern suitably standardized averages under stated conditions without making individual observations normal. A finite sample's histogram also need not match theoretical percentages exactly. Ask which distribution is being approximated and how well its assumptions fit the intended use.",

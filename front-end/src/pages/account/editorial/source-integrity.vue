@@ -83,7 +83,9 @@ function formatSignalType(value: string) {
 }
 
 function providerLabel(value: string) {
-	return value === "europepmc" ? "Europe PMC" : "Crossref";
+	return value === "europepmc"
+		? "Europe PMC"
+		: "Crossref";
 }
 async function loadChecks(page = response.value.pagination.page) {
 	if (!import.meta.client || !isAdmin.value) return;
@@ -93,7 +95,10 @@ async function loadChecks(page = response.value.pagination.page) {
 	loading.value = true;
 	errorMessage.value = "";
 	try {
-		const params = new URLSearchParams({ limit: "25", page: String(page) });
+		const params = new URLSearchParams({
+			limit: "25",
+			page: String(page)
+		});
 		if (outcome.value) params.set("outcome", outcome.value);
 		if (provider.value) params.set("provider", provider.value);
 		const result = await $fetch<SourceIntegrityResponse>(apiUrl(`/admin/source-integrity?${params}`), {
@@ -102,12 +107,14 @@ async function loadChecks(page = response.value.pagination.page) {
 			retry: 0
 		});
 		if (run === generation) response.value = result;
-	} catch (error) {
+	}
+	catch (error) {
 		if (run !== generation) return;
 		response.value = emptyResponse();
 		if ((error as { statusCode?: number }).statusCode === 403) await refreshAuth();
 		errorMessage.value = "Unable to load source-integrity activity.";
-	} finally {
+	}
+	finally {
 		if (run === generation) loading.value = false;
 	}
 }
@@ -135,13 +142,15 @@ onBeforeUnmount(() => {
 				{ label: 'Home', to: '/' },
 				{ label: 'Account', to: '/account' },
 				{ label: 'Editorial workspace', to: '/account/editorial' },
-				{ label: 'Source integrity' }
+				{ label: 'Source integrity' },
 			]"
 		/>
 
 		<header class="integrity-header">
 			<div>
-				<p class="eyebrow">Evidence operations</p>
+				<p class="eyebrow">
+					Evidence operations
+				</p>
 				<h1>Source integrity</h1>
 				<p>
 					Crossref and Europe PMC metadata are checked in bounded batches. Retractions, corrections, and
@@ -193,15 +202,16 @@ onBeforeUnmount(() => {
 			</section>
 
 			<section class="integrity-panel" aria-labelledby="provider-coverage-heading">
-				<h2 id="provider-coverage-heading">Provider coverage</h2>
+				<h2 id="provider-coverage-heading">
+					Provider coverage
+				</h2>
 				<p>
 					Successful metadata checks have their own dates. Earlier imported dates are not assigned to a
 					provider. These counts do not measure scientific validity.
 				</p>
 				<ul>
 					<li v-for="item in response.providerCoverage" :key="item.provider">
-						<strong>{{ providerLabel(item.provider) }}</strong
-						>: {{ item.checked }} sources with a successful check; {{ item.due }} due or never attempted;
+						<strong>{{ providerLabel(item.provider) }}</strong>: {{ item.checked }} sources with a successful check; {{ item.due }} due or never attempted;
 						{{ item.notIndexed }} last reported not indexed; {{ item.errors }} last attempt failed.
 					</li>
 				</ul>
@@ -234,7 +244,9 @@ onBeforeUnmount(() => {
 					</label>
 				</div>
 
-				<p v-if="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
+				<p v-if="errorMessage" class="error" role="alert">
+					{{ errorMessage }}
+				</p>
 				<div v-if="!response.checks.length && !loading" class="empty-state">
 					No source checks match this filter yet.
 				</div>
@@ -250,28 +262,25 @@ onBeforeUnmount(() => {
 						<p>
 							<strong>{{ providerLabel(check.provider) }}</strong>
 							<span v-if="check.providerVersion"> (API {{ check.providerVersion }})</span>.
-							<span v-if="check.observedAt"
-								>Metadata retrieved {{ formatDate(check.observedAt)
-								}}{{ check.cached ? "; reused from cache" : "" }}.</span
-							>
+							<span v-if="check.observedAt">Metadata retrieved {{ formatDate(check.observedAt)
+							}}{{ check.cached ? "; reused from cache" : "" }}.</span>
 							<span v-else>Successful retrieval date not recorded.</span>
 							<span v-if="check.cached && !check.observedAt"> Reused failure record from cache.</span>
 							<span v-if="check.providerAttemptedAt">
-								Provider request {{ formatDate(check.providerAttemptedAt) }}.</span
-							>
-							<span v-if="check.outcome === 'not_indexed'"
-								>The queried DOI was not indexed. No successful coverage date was advanced.</span
-							>
+								Provider request {{ formatDate(check.providerAttemptedAt) }}.</span>
+							<span v-if="check.outcome === 'not_indexed'">The queried DOI was not indexed. No successful coverage date was advanced.</span>
 							<span v-if="!check.applied">No source observation was applied.</span>
 						</p>
 						<p v-if="safeExternalHttpUrl(check.queryUrl)">
-							<a :href="safeExternalHttpUrl(check.queryUrl)!" target="_blank" rel="noopener noreferrer"
-								>Provider query</a
-							>
+							<a :href="safeExternalHttpUrl(check.queryUrl)!" target="_blank" rel="noopener noreferrer">Provider query</a>
 							<span v-if="check.recordIds?.length"> · Matched {{ check.recordIds.join(", ") }}</span>
 						</p>
-						<p v-if="check.retryAt">Next eligible attempt {{ formatDate(check.retryAt) }}</p>
-						<p v-if="check.doi" class="check-card__doi">DOI {{ check.doi }}</p>
+						<p v-if="check.retryAt">
+							Next eligible attempt {{ formatDate(check.retryAt) }}
+						</p>
+						<p v-if="check.doi" class="check-card__doi">
+							DOI {{ check.doi }}
+						</p>
 						<p v-if="check.claim">
 							Review:
 							<NuxtLink

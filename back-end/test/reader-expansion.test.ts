@@ -32,7 +32,11 @@ describe("reader-driven canonical expansion", () => {
 		const announcementIds = new Set<string>();
 		for (const entry of readerExpansionClaims) {
 			const seed = defaultClaims.find(claim => claim.slug === entry.slug)!;
-			const claim = new Claim({ topic: new mongoose.Types.ObjectId(), slug: seed.slug, ...buildSeedClaimUpdate({}, seed).$set });
+			const claim = new Claim({
+				topic: new mongoose.Types.ObjectId(),
+				slug: seed.slug,
+				...buildSeedClaimUpdate({}, seed).$set
+			});
 			await claim.validate();
 			for (const source of seed.sources) await new ClaimSource({ claim: claim._id, ...source }).validate();
 			const announcement = seedReaderAnnouncementSchema.parse(seed.readerAnnouncement);
@@ -46,7 +50,7 @@ describe("reader-driven canonical expansion", () => {
 			assert.equal(seedReviewDates(seed).reviewDateBasis, "source_record");
 			assert.equal(new Set(seed.sources.map(source => source.url)).size, seed.sources.length);
 			assert.ok(seed.sources.every(source => source.citationCheckedAt === seed.searchCutoffAt && source.appraisal === "not_appraised"));
-			assert.ok(seed.sources.every(source => source.statusSources.includes(source.url!) && !source.url!.includes("consensus.app")));
+			assert.ok(seed.sources.every(source => source.statusSources !== undefined && source.statusSources.includes(source.url!) && !source.url!.includes("consensus.app")));
 			assert.match(seed.reviewerLine, /independent expert review not completed/);
 			assert.match(seed.independenceSummary, /editorial, not a measured fraction/);
 		}
@@ -68,14 +72,21 @@ describe("reader-driven canonical expansion", () => {
 
 	it("places the new questions deliberately without repurposing existing reviews", () => {
 		for (const claim of readerPrivacyClaims) {
-			const expected = claim.slug === readerPrivacySlugs.passwordRules ? "account-protection" : "browsing-privacy";
+			const expected = claim.slug === readerPrivacySlugs.passwordRules
+				? "account-protection"
+				: "browsing-privacy";
 			assert.deepEqual(getAtlasCollectionMemberships(claim.topicSlug, claim.slug).map(collection => collection.slug), [expected]);
 		}
 	});
 
 	it("retrieves the additions through diagnostic keywords without tuning the ranker", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ privateBrowsing: "incognito browser history", https: "HTTPS website trust", passwordRules: "password character classes", vpn: "VPN provider trust" })) {
+		for (const [key, query] of Object.entries({
+			privateBrowsing: "incognito browser history",
+			https: "HTTPS website trust",
+			passwordRules: "password character classes",
+			vpn: "VPN provider trust"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === readerPrivacySlugs[key as keyof typeof readerPrivacySlugs]), query);
 		}
 	});

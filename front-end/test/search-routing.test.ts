@@ -41,14 +41,27 @@ describe("home search routing", () => {
 			query: "creatine vs protein",
 			hasComparisons: true
 		};
-		assert.deepEqual(resolveHomeSearchRoute(input), { path: "/consensus", query: { q: input.query } });
-		assert.deepEqual(resolveHomeSearchRoute({ ...input, claims: [claim({ matchStrength: "exact" })] }), {
-			path: "/consensus/science/reviewed-claim"
+		assert.deepEqual(resolveHomeSearchRoute(input), {
+			path: "/consensus",
+			query: { q: input.query }
 		});
+		assert.deepEqual(
+			resolveHomeSearchRoute({
+				...input,
+				claims: [
+					claim({ matchStrength: "exact" })
+				]
+			}),
+			{
+				path: "/consensus/science/reviewed-claim"
+			}
+		);
 	});
 	it("opens one exact claim title directly", () => {
 		const route = resolveHomeSearchRoute({
-			claims: [claim({ matchStrength: "exact" })],
+			claims: [
+				claim({ matchStrength: "exact" })
+			],
 			preferExplainer: false,
 			query: "Reviewed claim",
 			topics: []
@@ -59,13 +72,21 @@ describe("home search routing", () => {
 
 	it("keeps ambiguous related matches as a filtered choice", () => {
 		const route = resolveHomeSearchRoute({
-			claims: [claim({ matchStrength: "related" }), claim({ _id: "claim-2", slug: "another" })],
+			claims: [
+				claim({ matchStrength: "related" }),
+				claim({ _id: "claim-2", slug: "another" })
+			],
 			preferExplainer: false,
 			query: "vaccines",
-			topics: [topic({ matchStrength: "related" })]
+			topics: [
+				topic({ matchStrength: "related" })
+			]
 		});
 
-		assert.deepEqual(route, { path: "/consensus", query: { q: "vaccines" } });
+		assert.deepEqual(route, {
+			path: "/consensus",
+			query: { q: "vaccines" }
+		});
 	});
 
 	it("sends a genuine no-match to Ask with the question preserved", () => {

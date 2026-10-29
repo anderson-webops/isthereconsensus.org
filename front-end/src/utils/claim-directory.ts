@@ -10,7 +10,7 @@ export async function loadCompleteClaimDirectory(loadPage: ClaimsPageLoader, pag
 	const remainingPages = await Promise.all(
 		Array.from({ length: totalPages - 1 }, (_, index) => loadPage(index + 2, pageSize))
 	);
-	const claims = [firstPage, ...remainingPages].flatMap((response) => response.claims);
+	const claims = [firstPage, ...remainingPages].flatMap(response => response.claims);
 
 	return {
 		claims,
@@ -26,25 +26,36 @@ export async function loadCompleteClaimDirectory(loadPage: ClaimsPageLoader, pag
 
 function reviewTime(claim: ClaimSummary) {
 	const parsed = Date.parse(claim.lastReviewedAt ?? claim.publishedAt ?? "");
-	return Number.isNaN(parsed) ? 0 : parsed;
+	return Number.isNaN(parsed)
+		? 0
+		: parsed;
 }
 
 export function interleaveClaimsByTopic(sourceClaims: ClaimSummary[], preferredTopicOrder: string[] = []) {
 	const groups = new Map<string, ClaimSummary[]>();
 	for (const claim of sourceClaims) {
 		const topicSlug = claim.topic?.slug ?? "other-questions";
-		groups.set(topicSlug, [...(groups.get(topicSlug) ?? []), claim]);
+		groups.set(topicSlug, [
+			...(groups.get(topicSlug) ?? []),
+			claim
+		]);
 	}
 
 	for (const group of groups.values()) {
 		group.sort((left, right) => reviewTime(right) - reviewTime(left) || left.title.localeCompare(right.title));
 	}
 
-	const topicSlugs = [...groups.keys()].sort((left, right) => {
+	const topicSlugs = [
+		...groups.keys()
+	].sort((left, right) => {
 		const leftIndex = preferredTopicOrder.indexOf(left);
 		const rightIndex = preferredTopicOrder.indexOf(right);
-		const leftRank = leftIndex === -1 ? preferredTopicOrder.length : leftIndex;
-		const rightRank = rightIndex === -1 ? preferredTopicOrder.length : rightIndex;
+		const leftRank = leftIndex === -1
+			? preferredTopicOrder.length
+			: leftIndex;
+		const rightRank = rightIndex === -1
+			? preferredTopicOrder.length
+			: rightIndex;
 		return leftRank - rightRank || left.localeCompare(right);
 	});
 	const interleaved: ClaimSummary[] = [];

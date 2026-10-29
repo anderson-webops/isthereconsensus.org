@@ -506,5 +506,5 @@ export const evergreenExplainers: ExplainerItem[] = [
 ];
 
 export function getExplainer(slug: string) {
-	return evergreenExplainers.find((item) => item.slug === slug);
+	return evergreenExplainers.find(item => item.slug === slug);
 }

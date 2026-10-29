@@ -1,7 +1,15 @@
 import type { CompleteSeedClaim } from "../data/claims.js";
 import { isRevisionCommentary, researchPreparation } from "./researchIntegrity.js";
 
-const healthTopics = new Set(["health-and-medicine", "infection-immunity-and-vaccines", "mental-health-and-treatment", "cancer-prevention-and-care", "cardiovascular-metabolic-and-kidney-health", "reproductive-and-sexual-health", "substance-use-and-addiction"]);
+const healthTopics = new Set([
+	"health-and-medicine",
+	"infection-immunity-and-vaccines",
+	"mental-health-and-treatment",
+	"cancer-prevention-and-care",
+	"cardiovascular-metabolic-and-kidney-health",
+	"reproductive-and-sexual-health",
+	"substance-use-and-addiction"
+]);
 
 export function estimatedReadingGrade(text: string) {
 	const words = text.toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g) ?? [];
@@ -14,16 +22,28 @@ export function estimatedReadingGrade(text: string) {
 	return Math.round((0.39 * words.length / sentences + 11.8 * syllables / words.length - 15.59) * 10) / 10;
 }
 
+function sourceAgeConcern(newestSourceYear: number | null, referenceYear: number, health: boolean) {
+	if (newestSourceYear !== null && referenceYear - newestSourceYear >= 8) {
+		return health ? "health_source_age_check" : "foundational_source_age_check";
+	}
+	return undefined;
+}
+
 export function editorialConcerns(claim: CompleteSeedClaim, referenceYear: number) {
 	const reasons: string[] = [];
-	const years = claim.sources.flatMap(source => Number.isInteger(source.year) ? [source.year!] : []);
-	const newestSourceYear = years.length ? Math.max(...years) : null;
+	const years = claim.sources.flatMap(source => Number.isInteger(source.year)
+		? [source.year!]
+		: []);
+	const newestSourceYear = years.length
+		? Math.max(...years)
+		: null;
 	const health = healthTopics.has(claim.topicSlug);
 	if (isRevisionCommentary(claim.editorSummary)) reasons.push("revision_commentary");
 	if (/\b(?:always|every|proven|alone|reliably)\b/i.test(claim.title)) reasons.push("absolute_wording_check");
 	if (/\band\s+(?:do|does|is|are|can|will|should)\b/i.test(claim.title)) reasons.push("bundled_question_check");
 	if (health && claim.reviewMode !== "living") reasons.push("health_followup_not_scheduled");
-	if (newestSourceYear !== null && referenceYear - newestSourceYear >= 8) reasons.push(health ? "health_source_age_check" : "foundational_source_age_check");
+	const sourceAge = sourceAgeConcern(newestSourceYear, referenceYear, health);
+	if (sourceAge) reasons.push(sourceAge);
 	if (newestSourceYear === null) reasons.push("source_years_not_recorded");
 	if (claim.sources.length <= 2) reasons.push("source_coverage_check");
 	if (/\b(?:FDA|EPA|OSHA|FTC)\b/.test(claim.title) && !/\bUS\b|\bU\.S\.|\bUnited States\b/.test(claim.title)) reasons.push("jurisdiction_label_check");

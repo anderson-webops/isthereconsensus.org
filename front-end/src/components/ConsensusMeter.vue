@@ -24,7 +24,9 @@ const clampedLevel = computed(() => Math.min(Math.max(props.level, 0), 100));
 			<strong>{{ clampedLevel }}%</strong>
 			<span v-if="props.label">{{ props.label }}</span>
 		</div>
-		<p v-if="props.caption" class="meter__caption">{{ props.caption }}</p>
+		<p v-if="props.caption" class="meter__caption">
+			{{ props.caption }}
+		</p>
 	</div>
 </template>
 

@@ -35,7 +35,13 @@ describe("practical food-storage evidence", () => {
 	});
 	it("finds each review through an ordinary food question", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ chill: "refrigerator leftovers", freeze: "freezing food pathogens", reheat: "reheating food toxins", senses: "smell food safe", vacuum: "vacuum sealing refrigeration" })) {
+		for (const [key, query] of Object.entries({
+			chill: "refrigerator leftovers",
+			freeze: "freezing food pathogens",
+			reheat: "reheating food toxins",
+			senses: "smell food safe",
+			vacuum: "vacuum sealing refrigeration"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === foodStorageSlugs[key as keyof typeof foodStorageSlugs]), query);
 		}
 	});

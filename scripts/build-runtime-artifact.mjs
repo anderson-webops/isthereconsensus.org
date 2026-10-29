@@ -164,6 +164,7 @@ await Promise.all([
 	cp(path.join(root, "back-end/package.json"), path.join(artifactRoot, "back-end/package.json")),
 	cp(path.join(root, "back-end/package-lock.json"), path.join(artifactRoot, "back-end/package-lock.json")),
 	cp(path.join(root, "back-end/.npmrc"), path.join(artifactRoot, "back-end/.npmrc")),
+	cp(path.join(root, "back-end/vendor/qs-6.17.2-webops.1.tgz"), path.join(artifactRoot, "back-end/vendor/qs-6.17.2-webops.1.tgz")),
 	cp(path.join(root, "deploy/host-contract.json"), path.join(artifactRoot, "deploy/host-contract.json"))
 ]);
 
@@ -172,6 +173,7 @@ runSelectedNpm(
 	path.join(artifactRoot, "back-end")
 );
 runSelectedNpm(["ls", "--omit=dev", "--all"], path.join(artifactRoot, "back-end"));
+await rm(path.join(artifactRoot, "back-end/vendor"), { recursive: true });
 await rm(path.join(artifactRoot, "back-end/node_modules/.bin"), { force: true, recursive: true });
 const linuxGlibc = process.platform === "linux" && Boolean(process.report.getReport().header.glibcVersionRuntime);
 const linuxArm64Glibc = linuxGlibc && process.arch === "arm64";

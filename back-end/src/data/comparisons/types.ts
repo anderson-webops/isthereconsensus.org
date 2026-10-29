@@ -1,10 +1,10 @@
-// Pure public content shared by the standalone backend and Nuxt.
+/** Pure public content shared by the standalone backend and Nuxt. */
 export interface ComparisonEstimate {
 	value: number;
 	qualifier: "reported" | "approximately" | "less_than";
 	sourceIds: string[];
 	interpretation?: string;
-	// The interval's metric is explicit: a standardized effect is not minutes.
+	/** The interval's metric is explicit: a standardized effect is not minutes. */
 	uncertainty?: {
 		metric: string;
 		estimate: number;
@@ -16,8 +16,10 @@ export interface ComparisonEstimate {
 	pValue?: string;
 }
 
-// When studies cannot share a defensible numeric scale, compare their findings
-// and expose each study's own units and scope without computing a ranking.
+/**
+ * When studies cannot share a defensible numeric scale, compare their findings
+ * and expose each study's own units and scope without computing a ranking.
+ */
 export interface ComparisonFinding {
 	headline: string;
 	summary: string;
@@ -46,8 +48,10 @@ export interface EvidenceComparison {
 	measureNote: string;
 	resultNote: string;
 	protocolNote?: string;
-	// Contextual guidance must be cited separately, not attached to numeric
-	// estimates as though it were an independent measurement source.
+	/**
+	 * Contextual guidance must be cited separately, not attached to numeric
+	 * estimates as though it were an independent measurement source.
+	 */
 	guidance?: { text: string; sourceIds: string[] };
 	topics: string[];
 	guidePath: string;
@@ -59,7 +63,7 @@ export interface EvidenceComparison {
 		label: string;
 		scope: string;
 		estimates: Record<string, ComparisonEstimate>;
-		// When present, never fall back to another context's estimates.
+		/** When present, never fall back to another context's estimates. */
 		estimatesByContext?: Record<string, Record<string, ComparisonEstimate>>;
 		findingsByContext?: Record<string, Record<string, ComparisonFinding>>;
 	}>;

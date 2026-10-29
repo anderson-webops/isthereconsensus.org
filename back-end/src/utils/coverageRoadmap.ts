@@ -42,7 +42,9 @@ export const adminCoverageQuery = coverageQuery.extend({
 export function coverageTransition(visibility: typeof coverageVisibilities[number], change: z.infer<typeof coverageChange>) {
 	const nextVisibility = change.operation === "approve"
 		? "public"
-		: change.operation === "withdraw" ? "withdrawn" : visibility;
+		: change.operation === "withdraw"
+			? "withdrawn"
+			: visibility;
 	if (nextVisibility === "public" && (!change.publicSummaryApproved || change.publicUpdateSummary.length < 10)) {
 		return { ok: false as const, error: "Explicitly approve the public summary and provide a public update explanation." };
 	}
@@ -60,7 +62,13 @@ interface CoveragePublicRecord {
 
 export function coverageEventId(requestId: string, event: CoveragePublicRecord["publicHistory"][number]) {
 	if (event.id) return event.id;
-	const digest = createHash("sha256").update(JSON.stringify(["coverage-public-progress-v1", requestId, event.date.toISOString(), event.status, event.summary])).digest("hex");
+	const digest = createHash("sha256").update(JSON.stringify([
+		"coverage-public-progress-v1",
+		requestId,
+		event.date.toISOString(),
+		event.status,
+		event.summary
+	])).digest("hex");
 	return `${digest.slice(0, 8)}-${digest.slice(8, 12)}-8${digest.slice(13, 16)}-${(8 + (Number.parseInt(digest[16]!, 16) % 4)).toString(16)}${digest.slice(17, 20)}-${digest.slice(20, 32)}`;
 }
 
@@ -87,11 +95,18 @@ export function publicCoverageRequest(
 		summary: row.summary,
 		status: row.status,
 		updatedAt: row.publicUpdatedAt ?? null,
-		topic: topic ? { title: topic.title, slug: topic.slug } : null,
+		topic: topic
+			? { title: topic.title, slug: topic.slug }
+			: null,
 		answer: row.status === "published" && answer
 			? { title: answer.title, path: `/consensus/${answer.topic.slug}/${answer.slug}` }
 			: null,
 		answerUnavailable: row.status === "published" && !answer,
-		history: row.publicHistory.map(event => ({ id: coverageEventId(String(row._id), event), date: event.date, status: event.status, summary: event.summary }))
+		history: row.publicHistory.map(event => ({
+			id: coverageEventId(String(row._id), event),
+			date: event.date,
+			status: event.status,
+			summary: event.summary
+		}))
 	};
 }

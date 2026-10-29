@@ -25,12 +25,12 @@ export function resolveHomeSearchRoute({
 	const normalizedQuery = query.trim();
 	if (!normalizedQuery) return { path: "/consensus" };
 
-	const exactClaims = claims.filter((claim) => claim.matchStrength === "exact");
+	const exactClaims = claims.filter(claim => claim.matchStrength === "exact");
 	if (exactClaims.length === 1 && exactClaims[0]?.topic?.slug) {
 		return { path: `/consensus/${exactClaims[0].topic.slug}/${exactClaims[0].slug}` };
 	}
 
-	const exactTopics = topics.filter((topic) => topic.matchStrength === "exact");
+	const exactTopics = topics.filter(topic => topic.matchStrength === "exact");
 	if (!claims.length && exactTopics.length === 1 && exactTopics[0]?.slug) {
 		return { path: `/consensus/${exactTopics[0].slug}` };
 	}

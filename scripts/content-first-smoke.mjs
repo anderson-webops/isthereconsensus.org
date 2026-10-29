@@ -35,7 +35,11 @@ async function port() {
 	return number;
 }
 function start(executable, args, env) {
-	const child = spawn(executable, args, { cwd: directory, env, stdio: ["ignore", "pipe", "pipe"] });
+	const child = spawn(executable, args, {
+		cwd: directory,
+		env,
+		stdio: ["ignore", "pipe", "pipe"]
+	});
 	children.add(child);
 	logs.set(child, "");
 	for (const stream of [child.stdout, child.stderr]) stream.on("data", bytes => logs.set(child, (logs.get(child) + bytes).slice(-6000)));
@@ -60,17 +64,28 @@ async function wait(check, child) {
 		if (await check()) return;
 		await delay(100);
 	}
-	throw new Error(`Owned fixture readiness timed out: ${child ? logs.get(child) : "local disposable database"}`);
+	throw new Error(`Owned fixture readiness timed out: ${child
+		? logs.get(child)
+		: "local disposable database"}`);
 }
 try {
 	const configuredPort = process.env.READER_SMOKE_MONGO_PORT;
 	assert.ok(!configuredPort || (/^[1-9]\d{0,4}$/u.test(configuredPort) && Number(configuredPort) <= 65535));
-	const mongoPort = configuredPort ? Number(configuredPort) : await port();
+	const mongoPort = configuredPort
+		? Number(configuredPort)
+		: await port();
 	let mongo;
 	if (!configuredPort) {
 		const dbpath = join(directory, "mongo");
 		mkdirSync(dbpath);
-		mongo = start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", ["--bind_ip", "127.0.0.1", "--port", String(mongoPort), "--dbpath", dbpath], { PATH: process.env.PATH });
+		mongo = start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", [
+			"--bind_ip",
+			"127.0.0.1",
+			"--port",
+			String(mongoPort),
+			"--dbpath",
+			dbpath
+		], { PATH: process.env.PATH });
 	}
 	const uri = `mongodb://127.0.0.1:${mongoPort}/${databaseName}`;
 	await wait(async () => {
@@ -93,10 +108,22 @@ try {
 	await SourcePublication.init();
 	await seedTopics();
 	await seedClaims();
-	const expansion = await Claim.find({ slug: { $in: readerExpansionClaims.map(seed => seed.slug) } });
+	const expansion = await Claim.find({
+		slug: {
+			$in: readerExpansionClaims.map(seed => seed.slug)
+		}
+	});
 	assert.equal(expansion.length, 201);
-	await ClaimSource.deleteMany({ claim: { $in: expansion.map(claim => claim._id) } });
-	await Claim.deleteMany({ _id: { $in: expansion.map(claim => claim._id) } });
+	await ClaimSource.deleteMany({
+		claim: {
+			$in: expansion.map(claim => claim._id)
+		}
+	});
+	await Claim.deleteMany({
+		_id: {
+			$in: expansion.map(claim => claim._id)
+		}
+	});
 	assert.equal(await Claim.countDocuments({ status: "published" }), 800);
 	const baseline = await Claim.findOne({ status: "published" });
 	baseline.editorSummary = "Preserved human correction in an existing review.";
@@ -104,7 +131,13 @@ try {
 	const baselineBefore = await Claim.findById(baseline._id).lean();
 	const privateCollection = mongoose.connection.collection("users");
 	const privateId = new mongoose.Types.ObjectId();
-	await privateCollection.insertOne({ _id: privateId, name: "Private synthetic fixture", email: "fixture@example.invalid", passwordHash: "synthetic-unused", privateNote: "Must not enter public content" });
+	await privateCollection.insertOne({
+		_id: privateId,
+		name: "Private synthetic fixture",
+		email: "fixture@example.invalid",
+		passwordHash: "synthetic-unused",
+		privateNote: "Must not enter public content"
+	});
 	const privateBefore = await privateCollection.findOne({ _id: privateId });
 	const seed = readerExpansionClaims[0];
 	const topic = await Topic.findOne({ slug: seed.topicSlug });
@@ -112,15 +145,36 @@ try {
 	const sourceIds = seed.sources.map(() => new mongoose.Types.ObjectId());
 	const partial = await Claim.create(fields);
 	await ClaimSource.create({ ...seed.sources[0], claim: partial._id, _id: sourceIds[0] });
-	await SourcePublication.create({ key: `${seed.topicSlug}/${seed.slug}`, releaseId: APPROVED_READER_RELEASE, contentHash: readerExpansionValueHash({ fields, sources: seed.sources }), claimId: partial._id, sourceIds, coverageId: new mongoose.Types.ObjectId() });
+	await SourcePublication.create({
+		key: `${seed.topicSlug}/${seed.slug}`,
+		releaseId: APPROVED_READER_RELEASE,
+		contentHash: readerExpansionValueHash({ fields, sources: seed.sources }),
+		claimId: partial._id,
+		sourceIds,
+		coverageId: new mongoose.Types.ObjectId()
+	});
 	const backendPort = await port();
 	const base = `http://127.0.0.1:${backendPort}`;
-	const environment = { PATH: process.env.PATH, HOST: "127.0.0.1", PORT: String(backendPort), NODE_ENV: "production", MONGODB_URI: uri, SESSION_SECRET: randomUUID() + randomUUID(), CAPTCHA_SECRET: randomUUID() + randomUUID(), PUBLIC_SITE_URL: "https://isthereconsensus.org", DOTENV_CONFIG_PATH: join(directory, "no-env-file") };
+	const environment = {
+		PATH: process.env.PATH,
+		HOST: "127.0.0.1",
+		PORT: String(backendPort),
+		NODE_ENV: "production",
+		MONGODB_URI: uri,
+		SESSION_SECRET: randomUUID() + randomUUID(),
+		CAPTCHA_SECRET: randomUUID() + randomUUID(),
+		PUBLIC_SITE_URL: "https://isthereconsensus.org",
+		DOTENV_CONFIG_PATH: join(directory, "no-env-file")
+	};
 	async function boot() {
-		backend = start(process.execPath, [resolve("back-end/dist/server.js")], environment);
+		backend = start(process.execPath, [
+			resolve("back-end/dist/server.js")
+		], environment);
 		await wait(async () => {
 			try {
-				return (await fetch(`${base}/healthz`, { signal: AbortSignal.timeout(1000) })).ok;
+				return (await fetch(`${base}/healthz`, {
+					signal: AbortSignal.timeout(1000)
+				})).ok;
 			}
 			catch {
 				return false;
@@ -137,7 +191,10 @@ try {
 	assert.equal((await Claim.findById(partial._id)).status, "published");
 	const identities = await SourcePublication.find().sort({ key: 1 }).lean();
 	for (const definition of readerExpansionClaims) {
-		const response = await fetch(`${base}/api/topics/${definition.topicSlug}/claims/${definition.slug}`, { redirect: "error", signal: AbortSignal.timeout(10000) });
+		const response = await fetch(`${base}/api/topics/${definition.topicSlug}/claims/${definition.slug}`, {
+			redirect: "error",
+			signal: AbortSignal.timeout(10000)
+		});
 		assert.equal(response.status, 200);
 		const { claim } = await response.json();
 		const expected = approvedReaderDraft(definition, claim.topic._id);
@@ -151,19 +208,41 @@ try {
 		assert.match(claim.reviewerLine, /independent expert review not completed/u);
 	}
 	await stop(backend);
-	const approvedBefore = await Claim.find({ _id: { $in: identities.map(row => row.claimId) } }).sort({ _id: 1 }).lean();
-	const sourcesBefore = await ClaimSource.find({ claim: { $in: identities.map(row => row.claimId) } }).sort({ _id: 1 }).lean();
+	const approvedBefore = await Claim.find({
+		_id: {
+			$in: identities.map(row => row.claimId)
+		}
+	}).sort({ _id: 1 }).lean();
+	const sourcesBefore = await ClaimSource.find({
+		claim: {
+			$in: identities.map(row => row.claimId)
+		}
+	}).sort({ _id: 1 }).lean();
 	await boot();
 	assert.deepEqual(await SourcePublication.find().sort({ key: 1 }).lean(), identities);
-	assert.deepEqual(await Claim.find({ _id: { $in: identities.map(row => row.claimId) } }).sort({ _id: 1 }).lean(), approvedBefore);
-	assert.deepEqual(await ClaimSource.find({ claim: { $in: identities.map(row => row.claimId) } }).sort({ _id: 1 }).lean(), sourcesBefore);
+	assert.deepEqual(await Claim.find({
+		_id: {
+			$in: identities.map(row => row.claimId)
+		}
+	}).sort({ _id: 1 }).lean(), approvedBefore);
+	assert.deepEqual(await ClaimSource.find({
+		claim: {
+			$in: identities.map(row => row.claimId)
+		}
+	}).sort({ _id: 1 }).lean(), sourcesBefore);
 	await stop(backend);
-	await Claim.updateOne({ _id: partial._id }, { $set: { status: "archived", bottomLine: "Withdrawn by human moderation." } });
-	await CoverageRequest.updateOne({ _id: identities.find(row => row.claimId.equals(partial._id)).coverageId }, { $set: { visibility: "withdrawn" } });
+	await Claim.updateOne({ _id: partial._id }, {
+		$set: { status: "archived", bottomLine: "Withdrawn by human moderation." }
+	});
+	await CoverageRequest.updateOne({ _id: identities.find(row => row.claimId.equals(partial._id)).coverageId }, {
+		$set: { visibility: "withdrawn" }
+	});
 	const moderatedBefore = await Claim.findById(partial._id).lean();
 	const foreign = identities.find(row => !row.claimId.equals(partial._id));
 	await SourcePublication.deleteOne({ _id: foreign._id });
-	await Claim.updateOne({ _id: foreign.claimId }, { $set: { status: "draft", bottomLine: "Human-controlled unpublished draft." } });
+	await Claim.updateOne({ _id: foreign.claimId }, {
+		$set: { status: "draft", bottomLine: "Human-controlled unpublished draft." }
+	});
 	const foreignBefore = await Claim.findById(foreign.claimId).lean();
 	await boot();
 	assert.deepEqual(await Claim.findById(partial._id).lean(), moderatedBefore);

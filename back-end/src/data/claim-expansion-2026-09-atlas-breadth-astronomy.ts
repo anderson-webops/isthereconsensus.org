@@ -323,14 +323,18 @@ export const september2026AtlasBreadthAstronomyClaims: SeedClaim[] = [
 			"Gravitational-wave astronomy is an observational field, not just a theoretical proposal. Repeated, cross-checked detections now probe otherwise invisible cosmic mergers.",
 		uncertaintySummary:
 			"Detection itself is settled. Event rates, source formation, extreme-matter physics, and possible weak backgrounds remain under active study.",
-		sources: [gravitationalWaveDetection, gravitationalWaveReview, [
-			"consensus_statement",
-			"Gravitational Waves",
-			"LIGO Laboratory",
-			2026,
-			"https://ligo.org/gravitational-wave-science/",
-			"LIGO describes interferometric detection, cross-detector validation, noise controls, and the growing catalog of astrophysical events."
-		]]
+		sources: [
+			gravitationalWaveDetection,
+			gravitationalWaveReview,
+			[
+				"consensus_statement",
+				"Gravitational Waves",
+				"LIGO Laboratory",
+				2026,
+				"https://ligo.org/gravitational-wave-science/",
+				"LIGO describes interferometric detection, cross-detector validation, noise controls, and the growing catalog of astrophysical events."
+			]
+		]
 	}),
 	reviewedClaim({
 		topicSlug: "astronomy-and-space",

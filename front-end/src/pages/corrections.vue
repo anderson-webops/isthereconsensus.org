@@ -73,7 +73,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Corrections policy' }]" />
 
 		<header class="corrections-header">
-			<p class="eyebrow">Corrections policy</p>
+			<p class="eyebrow">
+				Corrections policy
+			</p>
 			<h1>Corrections and major updates.</h1>
 			<p>The goal is a visible record that shows what changed, why it changed, and when a page moved.</p>
 		</header>
@@ -106,7 +108,9 @@ useStaticPageMeta({
 				</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in submitChecklist" :key="item">{{ item }}</li>
+				<li v-for="item in submitChecklist" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -116,7 +120,9 @@ useStaticPageMeta({
 				<p>Corrections move through a bounded workflow with a visible result.</p>
 			</div>
 			<ol class="step-list">
-				<li v-for="item in responseFlow" :key="item">{{ item }}</li>
+				<li v-for="item in responseFlow" :key="item">
+					{{ item }}
+				</li>
 			</ol>
 		</section>
 
@@ -126,13 +132,17 @@ useStaticPageMeta({
 				<p>Some changes should trigger immediate review even if the next scheduled review is far away.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in triggerExamples" :key="item">{{ item }}</li>
+				<li v-for="item in triggerExamples" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
 		<section class="corrections-callout">
 			<div>
-				<p class="eyebrow">Report a problem</p>
+				<p class="eyebrow">
+					Report a problem
+				</p>
 				<h2>Send correction evidence to the review team.</h2>
 				<p>
 					For factual correction requests, source-stack problems, or major update triggers, email

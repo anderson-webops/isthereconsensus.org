@@ -22,7 +22,13 @@ describe("reader feedback contract", () => {
 			"missing_evidence",
 			"content_gap"
 		]);
-		assert.deepEqual(Object.keys(feedbackStatusLabels), ["new", "reviewing", "planned", "resolved", "dismissed"]);
+		assert.deepEqual(Object.keys(feedbackStatusLabels), [
+			"new",
+			"reviewing",
+			"planned",
+			"resolved",
+			"dismissed"
+		]);
 		assert.deepEqual(feedbackPriorityLabels, ["Low", "Normal", "High"]);
 	});
 	it("offers distinct optional clarity and answer-coverage choices without assuming a rating", () => {

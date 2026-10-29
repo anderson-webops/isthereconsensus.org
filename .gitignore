@@ -3,6 +3,12 @@ node_modules
 *.log
 *.tsbuildinfo
 dist
+!vendor/deepmerge/dist/
+!vendor/deepmerge/dist/cjs.js
+!vendor/deepmerge/dist/umd.js
+!vendor/qs/dist/
+!vendor/qs/dist/qs.js
+!vendor/qs/dist/qs.js.LICENSES.txt
 .output
 .nuxt
 .env

@@ -21,11 +21,17 @@ export async function resolveMongoConfiguration(): Promise<MongoConfiguration> {
 
 	if (vaultState === "configured") {
 		const { uri } = await readMongoSecret();
-		return { source: "vault", uri: validateMongoUri(uri) };
+		return {
+			source: "vault",
+			uri: validateMongoUri(uri)
+		};
 	}
 
 	if (!env.MONGODB_URI) {
 		throw new Error("No MongoDB URI available (Vault and MONGODB_URI missing).");
 	}
-	return { source: "env", uri: validateMongoUri(env.MONGODB_URI) };
+	return {
+		source: "env",
+		uri: validateMongoUri(env.MONGODB_URI)
+	};
 }

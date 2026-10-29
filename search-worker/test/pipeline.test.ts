@@ -26,8 +26,20 @@ describe("complete paragraph search representation", () => {
 		assert.ok(passages.every(row => !row.text.includes("orbital drift")));
 	});
 	it("keeps whole title-only fixtures rather than inventing a paragraph", () => {
-		const titleOnly = { ...corpus[0], bottomLine: "", editorSummary: "", stableCore: [] };
-		assert.deepEqual(publicPassages([titleOnly]), [{ id: "synthetic-pump:title:0", slug: "synthetic-pump", ordinal: 0, text: claim.title }]);
+		const titleOnly = {
+			...corpus[0],
+			bottomLine: "",
+			editorSummary: "",
+			stableCore: []
+		};
+		assert.deepEqual(publicPassages([titleOnly]), [
+			{
+				id: "synthetic-pump:title:0",
+				slug: "synthetic-pump",
+				ordinal: 0,
+				text: claim.title
+			}
+		]);
 	});
 	it("preserves exact title priority before unsupported-intent filtering", () => {
 		const pipeline = createAcceptedPipeline(corpus, [], [], referenceDate);
@@ -40,12 +52,24 @@ describe("complete paragraph search representation", () => {
 		assert.deepEqual(parseRoles(claim.title)?.subject, parseRoles(claim.title, true)?.subject);
 	});
 	it("applies the parent five-result ceiling before corrected scope, without replenishment", () => {
-		const claims = Array.from({ length: 6 }, (_, index) => ({ ...corpus[0], slug: `synthetic-${index}`, title: `Distinct system ${index}`, bottomLine: "Pressure balancing valves reduce pressure.", editorSummary: "", stableCore: [] }));
+		const claims = Array.from({ length: 6 }, (_, index) => ({
+			...corpus[0],
+			slug: `synthetic-${index}`,
+			title: `Distinct system ${index}`,
+			bottomLine: "Pressure balancing valves reduce pressure.",
+			editorSummary: "",
+			stableCore: []
+		}));
 		claims[0].bottomLine = "Can engine cooling pumps reduce pressure?";
 		const query = "Can engine cooling pumps reduce pressure?";
 		const pipeline = createAcceptedPipeline(claims, [], [], referenceDate);
 		const prepared = pipeline.prepare(query);
-		prepared.candidates = claims.map(source => ({ slug: source.slug, cosine: 0.9, passageId: `${source.slug}:bottomLine:0`, document: source.bottomLine }));
+		prepared.candidates = claims.map(source => ({
+			slug: source.slug,
+			cosine: 0.9,
+			passageId: `${source.slug}:bottomLine:0`,
+			document: source.bottomLine
+		}));
 		const predictions = claims.map((source, index) => ({ rawLogit: 5 - index * 0.1, relevance: 0.99 - index * 0.01 }));
 		const result = pipeline.finish(prepared, predictions);
 		assert.equal(result.filter(row => row.kind === "paragraph").length, 1);
@@ -56,40 +80,102 @@ describe("complete paragraph search representation", () => {
 		assert.notDeepEqual(parseRoles("Can pressure reduce engine cooling pumps?", true), parseRoles(claim.title, true));
 		const pipeline = createAcceptedPipeline(corpus, [], [], referenceDate);
 		const prepared = pipeline.prepare("Can 10000 engine cooling pumps reduce pressure?");
-		prepared.candidates = [{ slug: claim.slug, cosine: 0.9, passageId: "synthetic-pump:bottomLine:0", document: claim.bottomLine }];
-		assert.deepEqual(pipeline.finish(prepared, [{ rawLogit: 5, relevance: 0.99 }]), []);
+		prepared.candidates = [
+			{
+				slug: claim.slug,
+				cosine: 0.9,
+				passageId: "synthetic-pump:bottomLine:0",
+				document: claim.bottomLine
+			}
+		];
+		assert.deepEqual(pipeline.finish(prepared, [
+			{ rawLogit: 5, relevance: 0.99 }
+		]), []);
 	});
 	it("grounds functional questions in source subject and outcome roles", () => {
-		for (const query of ["What is a pump's role in pressure?", "What’s a pump’s role in pressure?", "What is pumps' role in pressure?", "What is the function of a pump in pressure?", "What role does a pump play in pressure?"]) {
-			assert.deepEqual(parseRoles(query, true), { subject: ["pump"], outcome: ["pressure"], negative: false }, query);
+		for (const query of [
+			"What is a pump's role in pressure?",
+			"What’s a pump’s role in pressure?",
+			"What is pumps' role in pressure?",
+			"What is the function of a pump in pressure?",
+			"What role does a pump play in pressure?"
+		]) {
+			assert.deepEqual(parseRoles(query, true), {
+				subject: ["pump"],
+				outcome: ["pressure"],
+				negative: false
+			}, query);
 			const pipeline = createAcceptedPipeline(corpus, [], [], referenceDate);
 			const prepared = pipeline.prepare(query);
-			prepared.candidates = [{ slug: claim.slug, cosine: 0.9, passageId: "synthetic-pump:bottomLine:0", document: claim.bottomLine }];
-			assert.equal(pipeline.finish(prepared, [{ rawLogit: 5, relevance: 0.99 }])[0]?.slug, claim.slug, query);
+			prepared.candidates = [
+				{
+					slug: claim.slug,
+					cosine: 0.9,
+					passageId: "synthetic-pump:bottomLine:0",
+					document: claim.bottomLine
+				}
+			];
+			assert.equal(pipeline.finish(prepared, [
+				{ rawLogit: 5, relevance: 0.99 }
+			])[0]?.slug, claim.slug, query);
 		}
 	});
 	it("rejects topical functional matches without the requested actor and outcome", () => {
 		const pipeline = createAcceptedPipeline(corpus, [], [], referenceDate);
-		for (const query of ["What is Orion Agency's role in pressure research?", "What is a pump's role in orbital drift?", "What is pressure's role in pumps?", "What is a pump's role in 10001 pressure?", "What is a pump's role in no pressure?"]) {
+		for (const query of [
+			"What is Orion Agency's role in pressure research?",
+			"What is a pump's role in orbital drift?",
+			"What is pressure's role in pumps?",
+			"What is a pump's role in 10001 pressure?",
+			"What is a pump's role in no pressure?"
+		]) {
 			const prepared = pipeline.prepare(query);
-			prepared.candidates = [{ slug: claim.slug, cosine: 0.99, passageId: "synthetic-pump:bottomLine:0", document: claim.bottomLine }];
-			assert.deepEqual(pipeline.finish(prepared, [{ rawLogit: 10, relevance: 0.9999 }]), [], query);
+			prepared.candidates = [
+				{
+					slug: claim.slug,
+					cosine: 0.99,
+					passageId: "synthetic-pump:bottomLine:0",
+					document: claim.bottomLine
+				}
+			];
+			assert.deepEqual(pipeline.finish(prepared, [
+				{ rawLogit: 10, relevance: 0.9999 }
+			]), [], query);
 		}
 	});
 	it("nominates functional source titles without requiring a causal predicate", () => {
 		for (const title of ["What is a pump's role in pressure?", "What is the role of a pump in pressure?", "What role does a pump play in pressure?"]) {
-			const source = { ...corpus[0], title, bottomLine: "Pressure measurements depend on this installation.", editorSummary: "", stableCore: [] };
+			const source = {
+				...corpus[0],
+				title,
+				bottomLine: "Pressure measurements depend on this installation.",
+				editorSummary: "",
+				stableCore: []
+			};
 			const passages = publicPassages([source]);
-			const vector = Array.from({ length: 384 }, (_, index) => index === 0 ? 1 : 0);
+			const vector = Array.from({ length: 384 }, (_, index) => index === 0
+				? 1
+				: 0);
 			const vectors = passages.map(passage => ({ id: passage.id, slug: passage.slug, vector }));
 			const pipeline = createAcceptedPipeline([source], passages, vectors, referenceDate);
-			assert.deepEqual(parseRoles(title), { subject: ["pump"], outcome: ["pressure"], negative: false }, title);
+			assert.deepEqual(parseRoles(title), {
+				subject: ["pump"],
+				outcome: ["pressure"],
+				negative: false
+			}, title);
 			const query = "What function does a pump have in pressure?";
 			const prepared = pipeline.prepare(query, vector);
 			assert.equal(prepared.terminal, false, title);
 			assert.equal(prepared.candidates[0]?.slug, source.slug, title);
-			assert.equal(pipeline.finish(prepared, [{ rawLogit: 5, relevance: 0.99 }])[0]?.slug, source.slug, title);
-			for (const outside of ["What function does Orion Agency have in pressure?", "What function does pressure have in a pump?", "What function does a pump have in 10001 pressure?", "What function does a pump have in no pressure?"]) {
+			assert.equal(pipeline.finish(prepared, [
+				{ rawLogit: 5, relevance: 0.99 }
+			])[0]?.slug, source.slug, title);
+			for (const outside of [
+				"What function does Orion Agency have in pressure?",
+				"What function does pressure have in a pump?",
+				"What function does a pump have in 10001 pressure?",
+				"What function does a pump have in no pressure?"
+			]) {
 				assert.deepEqual(pipeline.prepare(outside, vector).candidates, [], outside);
 			}
 		}
@@ -105,19 +191,49 @@ describe("complete paragraph search representation", () => {
 		]) {
 			assert.equal(pipeline.terminal(query).reason, reason, query);
 		}
-		for (const query of ["Can cooling pumps reduce pressure?", "Can better information reduce pressure measurement errors?", "What types of noise barriers reduce pressure?", "What types of data are needed to compare pump pressure?"]) {
+		for (const query of [
+			"Can cooling pumps reduce pressure?",
+			"Can better information reduce pressure measurement errors?",
+			"What types of noise barriers reduce pressure?",
+			"What types of data are needed to compare pump pressure?"
+		]) {
 			assert.equal(pipeline.terminal(query).terminal, false, query);
 		}
 	});
 	it("retains a second native answer in balanced fusion without adding semantic candidates", () => {
 		const nativeClaims = [
-			{ ...corpus[0], slug: "synthetic-native-first", title: "Can pressure comparisons guide an installation?", bottomLine: "Pressure comparisons guide an installation." },
-			{ ...corpus[0], slug: "synthetic-native-second", title: "Can an installation use this observation?", bottomLine: "Pressure comparisons guide an installation." }
+			{
+				...corpus[0],
+				slug: "synthetic-native-first",
+				title: "Can pressure comparisons guide an installation?",
+				bottomLine: "Pressure comparisons guide an installation."
+			},
+			{
+				...corpus[0],
+				slug: "synthetic-native-second",
+				title: "Can an installation use this observation?",
+				bottomLine: "Pressure comparisons guide an installation."
+			}
 		];
-		const semanticClaims = Array.from({ length: 3 }, (_, index) => ({ ...corpus[0], slug: `synthetic-semantic-${index}`, title: `A distinct reviewed system ${index}`, bottomLine: "A separate observation concerns coolant temperature.", editorSummary: "", stableCore: [] }));
-		const pipeline = createAcceptedPipeline([...nativeClaims, ...semanticClaims], [], [], referenceDate);
+		const semanticClaims = Array.from({ length: 3 }, (_, index) => ({
+			...corpus[0],
+			slug: `synthetic-semantic-${index}`,
+			title: `A distinct reviewed system ${index}`,
+			bottomLine: "A separate observation concerns coolant temperature.",
+			editorSummary: "",
+			stableCore: []
+		}));
+		const pipeline = createAcceptedPipeline([
+			...nativeClaims,
+			...semanticClaims
+		], [], [], referenceDate);
 		const prepared = pipeline.prepare("pressure comparisons guide installation");
-		prepared.candidates = semanticClaims.map(source => ({ slug: source.slug, cosine: 0.9, passageId: `${source.slug}:bottomLine:0`, document: source.bottomLine }));
+		prepared.candidates = semanticClaims.map(source => ({
+			slug: source.slug,
+			cosine: 0.9,
+			passageId: `${source.slug}:bottomLine:0`,
+			document: source.bottomLine
+		}));
 		const predictions = semanticClaims.map((source, index) => ({ rawLogit: 5 - index * 0.1, relevance: 0.99 - index * 0.01 }));
 		const result = pipeline.finish(prepared, predictions);
 		assert.ok(result.slice(0, 3).some(row => row.slug === "synthetic-native-second"));

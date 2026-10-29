@@ -8,10 +8,12 @@ import { settledSearchWatchOptions } from "../src/utils/latest-request.js";
 describe("settled public search typing", () => {
 	for (const cadence of [35, 100]) {
 		it(`waits for the final query during eight prefixes at ${cadence} ms intervals`, async (context) => {
-			context.mock.timers.enable({ apis: ["setTimeout"] });
+			context.mock.timers.enable({
+				apis: ["setTimeout"]
+			});
 			const query = ref("");
 			const forwarded: string[] = [];
-			const stop = watchDebounced(query, (value) => forwarded.push(value), settledSearchWatchOptions);
+			const stop = watchDebounced(query, value => forwarded.push(value), settledSearchWatchOptions);
 			context.after(stop);
 			for (const prefix of [
 				"c",

@@ -1,7 +1,9 @@
 import type { ReadingGuideSummary } from "./types";
 
-// Keep discovery metadata separate from article bodies: every claim page may
-// show a guide link, but should not download the entire reading library.
+/**
+ * Keep discovery metadata separate from article bodies: every claim page may
+ * show a guide link, but should not download the entire reading library.
+ */
 export const readingGuides: ReadingGuideSummary[] = [
 	{
 		slug: "reading-ai-water-footprints",
@@ -1422,9 +1424,9 @@ export const readingGuides: ReadingGuideSummary[] = [
 ];
 
 export function guidesForTopic(topic: string) {
-	return readingGuides.filter((guide) => guide.topics.includes(topic));
+	return readingGuides.filter(guide => guide.topics.includes(topic));
 }
 
 export function guidesForReview(path: string) {
-	return readingGuides.filter((guide) => guide.reviews.some((review) => review.path === path));
+	return readingGuides.filter(guide => guide.reviews.some(review => review.path === path));
 }

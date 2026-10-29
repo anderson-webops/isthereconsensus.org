@@ -13,11 +13,26 @@ const catalog = new Map(defaultClaims.map(claim => [claim.slug, claim]));
 function baseline(query: string, directory: boolean) {
 	return defaultClaims.map((claim) => {
 		const topic = topics.get(claim.topicSlug);
-		const haystack = [claim.bottomLine, claim.editorSummary, ...claim.misconceptions, ...(claim.misconceptionTags ?? []), topic?.title ?? "", directory ? topic?.description ?? "" : ""].join(" ").trim();
+		const haystack = [
+			claim.bottomLine,
+			claim.editorSummary,
+			...claim.misconceptions,
+			...(claim.misconceptionTags ?? []),
+			topic?.title ?? "",
+			directory
+				? topic?.description ?? ""
+				: ""
+		].join(" ").trim();
 		const title = analyzeSearchMatch(query, claim.title);
 		const body = analyzeSearchMatch(query, haystack);
-		const match = title.matchScore >= body.matchScore ? title : body;
-		return { claim, match, score: getDemandAdjustedClaimSearchScore(match.matchScore, claim.topicSlug, claim.slug, referenceDate) };
+		const match = title.matchScore >= body.matchScore
+			? title
+			: body;
+		return {
+			claim,
+			match,
+			score: getDemandAdjustedClaimSearchScore(match.matchScore, claim.topicSlug, claim.slug, referenceDate)
+		};
 	}).filter(row => searchMatchIsDisplayable(row.match)).sort((left, right) => right.score - left.score || (directory
 		? (topics.get(left.claim.topicSlug)?.title ?? "").localeCompare(topics.get(right.claim.topicSlug)?.title ?? "")
 		: 0) || left.claim.title.localeCompare(right.claim.title));
@@ -44,7 +59,9 @@ console.log(JSON.stringify({
 	oldDirectoryCorrectlyEmpty: unsupportedSearchQuestions.filter(query => !baseline(query, true).length).length,
 	currentCorrectlyEmpty: unsupportedSearchQuestions.filter(query => !search(query, referenceDate).length).length,
 	indexBuildMs: Math.round(indexMs),
-	perTopic: [...new Set(rows.map(row => row.topic))].sort().map(topic => ({
+	perTopic: [
+		...new Set(rows.map(row => row.topic))
+	].sort().map(topic => ({
 		topic,
 		questions: rows.filter(row => row.topic === topic).length,
 		topThree: rows.filter(row => row.topic === topic && row.current).length

@@ -10,11 +10,16 @@ import {
 
 export async function loadClaimSourceReadinessCountMap(claimIds: Types.ObjectId[]) {
 	if (!claimIds.length) return new Map<string, PublicClaimSourceReadinessCounts>();
-	const sources = await ClaimSource.find({ claim: { $in: claimIds } }).lean();
+	const sources = await ClaimSource.find({
+		claim: { $in: claimIds }
+	}).lean();
 	const sourcesByClaim = new Map<string, typeof sources>();
 	for (const source of sources) {
 		const key = source.claim.toString();
-		sourcesByClaim.set(key, [...(sourcesByClaim.get(key) ?? []), source]);
+		sourcesByClaim.set(key, [
+			...(sourcesByClaim.get(key) ?? []),
+			source
+		]);
 	}
 	const sourceCountMap = new Map<string, PublicClaimSourceReadinessCounts>();
 	for (const [claimId, claimSources] of sourcesByClaim)
@@ -24,7 +29,10 @@ export async function loadClaimSourceReadinessCountMap(claimIds: Types.ObjectId[
 
 export async function loadVisibleLibraryClaims(claimIds: string[]) {
 	if (!claimIds.length) return [];
-	const claims = await Claim.find({ _id: { $in: claimIds }, status: "published" })
+	const claims = await Claim.find({
+		_id: { $in: claimIds },
+		status: "published"
+	})
 		.populate("topic")
 		.lean();
 	const counts = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));

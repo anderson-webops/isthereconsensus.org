@@ -81,8 +81,8 @@ function tokens(value: string) {
 			normalize(value)
 				.split(" ")
 				.filter(Boolean)
-				.filter((token) => !stopWords.has(token))
-				.filter((token) => token.length >= 3 || shortScientificTerms.has(token))
+				.filter(token => !stopWords.has(token))
+				.filter(token => token.length >= 3 || shortScientificTerms.has(token))
 				.map(canonicalize)
 		)
 	];
@@ -99,7 +99,9 @@ export function matchesSearchQuery(query: string, values: Array<string | undefin
 	if (` ${haystack} `.includes(` ${normalizedQuery} `)) return true;
 
 	const haystackTokens = new Set(tokens(haystack));
-	const overlap = queryTokens.filter((token) => haystackTokens.has(token)).length;
-	const minimumOverlap = queryTokens.length === 1 ? 1 : Math.max(2, Math.ceil(queryTokens.length / 2));
+	const overlap = queryTokens.filter(token => haystackTokens.has(token)).length;
+	const minimumOverlap = queryTokens.length === 1
+		? 1
+		: Math.max(2, Math.ceil(queryTokens.length / 2));
 	return overlap >= minimumOverlap;
 }

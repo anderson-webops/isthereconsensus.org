@@ -28,7 +28,10 @@ describe("owner-approved content-first release", () => {
 		const draft = approvedReaderDraft(readerExpansionClaims[0], new mongoose.Types.ObjectId());
 		assert.equal(approvedReaderContentMatches({ ...draft, unrelatedField: "not part of the approved payload" }, draft), true);
 		assert.equal(approvedReaderContentMatches({ ...draft, bottomLine: "Different answer" }, draft), false);
-		assert.equal(approvedReaderContentMatches({ ...draft, stableCore: [...draft.stableCore, "Unapproved addition"] }, draft), false);
+		assert.equal(approvedReaderContentMatches({
+			...draft,
+			stableCore: [...draft.stableCore, "Unapproved addition"]
+		}, draft), false);
 	});
 	it("rejects changes to the approved batch before any publication", async () => {
 		const original = readerExpansionClaims[0].bottomLine;

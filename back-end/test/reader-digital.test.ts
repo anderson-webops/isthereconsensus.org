@@ -8,7 +8,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerDigitalClaims.find(claim => claim.slug === readerDigitalSlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 
 describe("digital-security boundary expansion", () => {
 	it("adds sixteen substantive unique canonical questions rather than counting guides or old refreshes", () => {
@@ -124,9 +130,25 @@ describe("digital-security boundary expansion", () => {
 
 	it("deliberately places every review in one of four collections", () => {
 		const groups = {
-			"message-and-password-cryptography": ["transport", "metadata", "endpoint", "hashing"],
-			"dns-and-browser-identifiers": ["doh", "dnssec", "tracking", "cookieDeletion", "address"],
-			"files-backups-and-storage": ["sync", "reachableBackup", "deletion", "disk"],
+			"message-and-password-cryptography": [
+				"transport",
+				"metadata",
+				"endpoint",
+				"hashing"
+			],
+			"dns-and-browser-identifiers": [
+				"doh",
+				"dnssec",
+				"tracking",
+				"cookieDeletion",
+				"address"
+			],
+			"files-backups-and-storage": [
+				"sync",
+				"reachableBackup",
+				"deletion",
+				"disk"
+			],
 			"software-and-email-trust": ["signing", "updates", "email"]
 		};
 		assert.equal(Object.values(groups).flat().length, 16);
@@ -137,7 +159,24 @@ describe("digital-security boundary expansion", () => {
 
 	it("retrieves diagnostic questions without changing search or the frozen evaluation", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { transport: "encrypted messaging connection", metadata: "message metadata timing", endpoint: "end-to-end compromised device", hashing: "hashing password encrypting", doh: "encrypted DNS resolver", dnssec: "DNSSEC encrypt lookups", tracking: "blocking cookies tracking", cookieDeletion: "deleting cookies website records", address: "IP address identify person", sync: "file synchronization backup", reachableBackup: "ransomware writable backup", deletion: "deleting file recovered", disk: "full-disk encryption malware", signing: "valid software signature safe", updates: "software updated cyberattack", email: "email authentication truthful" };
+		const queries = {
+			transport: "encrypted messaging connection",
+			metadata: "message metadata timing",
+			endpoint: "end-to-end compromised device",
+			hashing: "hashing password encrypting",
+			doh: "encrypted DNS resolver",
+			dnssec: "DNSSEC encrypt lookups",
+			tracking: "blocking cookies tracking",
+			cookieDeletion: "deleting cookies website records",
+			address: "IP address identify person",
+			sync: "file synchronization backup",
+			reachableBackup: "ransomware writable backup",
+			deletion: "deleting file recovered",
+			disk: "full-disk encryption malware",
+			signing: "valid software signature safe",
+			updates: "software updated cyberattack",
+			email: "email authentication truthful"
+		};
 		for (const [key, query] of Object.entries(queries)) assert.ok(search(query).some(result => result.claim.slug === readerDigitalSlugs[key]), query);
 	});
 });

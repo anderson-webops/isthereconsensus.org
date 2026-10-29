@@ -32,15 +32,25 @@ const datasetSchema = z.object({
 	if (new Set(value.questions.map(item => item.query.toLowerCase())).size !== value.questions.length) context.addIssue({ code: "custom", message: "Question wording must be unique." });
 	if (value.provenance.kind === "fresh-candidate" && value.provenance.contextExposure !== "unexposed") context.addIssue({ code: "custom", message: "Development questions cannot be labelled fresh." });
 });
-const searchResponse = z.object({ claims: z.array(z.object({ slug, title: z.string().min(1), topic: z.object({ slug }) })).max(500) });
-const articleResponse = z.object({ claim: z.object({
-	slug,
-	status: z.literal("published"),
-	title: z.string().trim().min(1),
-	bottomLine: z.string().trim().min(1),
-	topic: z.object({ slug }),
-	sources: z.array(z.object({ url: z.url({ protocol: /^https?$/u }) })).min(1)
-}) });
+const searchResponse = z.object({
+	claims: z.array(z.object({
+		slug,
+		title: z.string().min(1),
+		topic: z.object({ slug })
+	})).max(500)
+});
+const articleResponse = z.object({
+	claim: z.object({
+		slug,
+		status: z.literal("published"),
+		title: z.string().trim().min(1),
+		bottomLine: z.string().trim().min(1),
+		topic: z.object({ slug }),
+		sources: z.array(z.object({
+			url: z.url({ protocol: /^https?$/u })
+		})).min(1)
+	})
+});
 
 export type SearchUsefulnessDataset = z.infer<typeof datasetSchema>;
 export type SearchUsefulnessDestination = z.infer<typeof destination>;
@@ -60,7 +70,9 @@ export function normalizeSearchEvaluationOrigin(value: string) {
 	const origin = new URL(value);
 	const local = ["localhost", "127.0.0.1", "[::1]"].includes(origin.hostname);
 	if (origin.username || origin.password || origin.search || origin.hash || origin.pathname !== "/"
-		|| (local ? !["http:", "https:"].includes(origin.protocol) : origin.protocol !== "https:" || origin.hostname !== "isthereconsensus.org")) {
+		|| (local
+			? !["http:", "https:"].includes(origin.protocol)
+			: origin.protocol !== "https:" || origin.hostname !== "isthereconsensus.org")) {
 		throw new Error("Evaluation origin must be the public site or a loopback HTTP(S) origin, without credentials or a path.");
 	}
 	return { origin: origin.origin, local };
@@ -71,18 +83,81 @@ function canonicalPath(target: SearchUsefulnessDestination) {
 }
 
 function visibleText(html: string) {
-	const entities: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: "\"", apos: "'", nbsp: " " };
+	const entities: Record<string, string> = {
+		amp: "&",
+		lt: "<",
+		gt: ">",
+		quot: "\"",
+		apos: "'",
+		nbsp: " "
+	};
 	return html
 		.replace(/<!--[\s\S]*?-->|<(script|style|template|head)\b[^>]*>[\s\S]*?<\/\1>/giu, "")
 		.replace(/<[^>]*>/gu, " ")
 		.replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/giu, (_match, entity: string) => {
 			if (!entity.startsWith("#")) return entities[entity.toLowerCase()];
-			const code = entity.toLowerCase().startsWith("#x") ? Number.parseInt(entity.slice(2), 16) : Number.parseInt(entity.slice(1), 10);
-			return code <= 0x10FFFF ? String.fromCodePoint(code) : "";
+			const code = entity.toLowerCase().startsWith("#x")
+				? Number.parseInt(entity.slice(2), 16)
+				: Number.parseInt(entity.slice(1), 10);
+			return code <= 0x10FFFF
+				? String.fromCodePoint(code)
+				: "";
 		})
 		.normalize("NFKC")
 		.replace(/\s+/gu, " ")
 		.trim();
+}
+
+interface ReadableEvaluationTarget {
+	path: string;
+	readable: boolean;
+	reason: string;
+}
+
+type EvaluationJsonResponse = { ok: true; value: unknown } | { ok: false; reason: string };
+
+async function evaluateSearchEndpoint(
+	name: "directory" | "suggestions",
+	query: string,
+	expected: ReadableEvaluationTarget[],
+	getJson: (path: string) => Promise<EvaluationJsonResponse>,
+	probe: (target: SearchUsefulnessDestination) => Promise<{ readable: boolean; reason: string }>
+) {
+	const parameters = new URLSearchParams({ q: query });
+	if (name === "directory") parameters.set("limit", "3");
+	const response = await getJson(`${name === "directory"
+		? "/api/claims"
+		: "/api/search/suggestions"}?${parameters}`);
+	const parsed = response.ok
+		? searchResponse.safeParse(response.value)
+		: null;
+	if (!parsed?.success) {
+		return {
+			name,
+			available: false,
+			reason: response.ok ? "invalid-search-response" : response.reason,
+			topThree: [],
+			hit: false,
+			empty: false
+		};
+	}
+	const topThree = [];
+	for (const candidate of parsed.data.claims.slice(0, 3)) {
+		const target = { topicSlug: candidate.topic.slug, claimSlug: candidate.slug };
+		topThree.push({
+			path: canonicalPath(target),
+			...await probe(target)
+		});
+	}
+	const hit = topThree.some(candidate => candidate.readable && expected.some(target => target.readable && candidate.path === target.path));
+	return {
+		name,
+		available: true,
+		reason: "ok",
+		topThree,
+		hit,
+		empty: !parsed.data.claims.length
+	};
 }
 
 export async function evaluateSearchUsefulness(input: unknown, originValue: string, options: SearchUsefulnessOptions = {}) {
@@ -98,7 +173,13 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 		if (!local && lastRequestAt) await delay(Math.max(0, 250 - (Date.now() - lastRequestAt)));
 		lastRequestAt = Date.now();
 		try {
-			const response = await request(new URL(path, origin), { method: "GET", credentials: "omit", redirect: "manual", headers: { Accept: accepts }, signal: AbortSignal.timeout(10_000) });
+			const response = await request(new URL(path, origin), {
+				method: "GET",
+				credentials: "omit",
+				redirect: "manual",
+				headers: { Accept: accepts },
+				signal: AbortSignal.timeout(10_000)
+			});
 			if (response.status !== 200) {
 				await response.body?.cancel();
 				return { ok: false as const, reason: `http-${response.status}` };
@@ -117,7 +198,10 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 				}
 				chunks.push(chunk.value);
 			}
-			return { ok: true as const, text: Buffer.concat(chunks).toString("utf8") };
+			return {
+				ok: true as const,
+				text: Buffer.concat(chunks).toString("utf8")
+			};
 		}
 		catch {
 			return { ok: false as const, reason: "transport-unavailable" };
@@ -127,7 +211,10 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 		const response = await get(path, "application/json");
 		if (!response.ok) return response;
 		try {
-			return { ok: true as const, value: JSON.parse(response.text) as unknown };
+			return {
+				ok: true as const,
+				value: JSON.parse(response.text) as unknown
+			};
 		}
 		catch { return { ok: false as const, reason: "invalid-json" }; }
 	}
@@ -138,10 +225,14 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 		ref: releaseRef.optional(),
 		commit: z.string().regex(/^[a-f0-9]{12,40}$/u)
 	}).refine(value => Boolean(value.version || value.ref) && (!value.version || !value.ref || value.version === value.ref)).transform(value => ({ version: value.version ?? value.ref!, commit: value.commit }));
-	const deployment = deploymentResponse.ok ? deploymentSchema.safeParse(deploymentResponse.value) : null;
+	const deployment = deploymentResponse.ok
+		? deploymentSchema.safeParse(deploymentResponse.value)
+		: null;
 	const deploymentObservation = {
 		frontend: deployment?.success ? deployment.data : null,
-		reason: deployment?.success ? "observed-frontend-identity-only" : deploymentResponse.ok ? "invalid-deployment-response" : deploymentResponse.reason
+		reason: deployment?.success
+			? "observed-frontend-identity-only"
+			: deploymentResponse.ok ? "invalid-deployment-response" : deploymentResponse.reason
 	};
 	const destinations = new Map<string, { readable: boolean; reason: string }>();
 	async function probe(target: SearchUsefulnessDestination) {
@@ -149,7 +240,10 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 		const previous = destinations.get(path);
 		if (previous) return previous;
 		const response = await getJson(`/api/topics/${target.topicSlug}/claims/${target.claimSlug}`);
-		let result = { readable: false, reason: response.ok ? "invalid-public-article" : response.reason };
+		let result = {
+			readable: false,
+			reason: response.ok ? "invalid-public-article" : response.reason
+		};
 		if (response.ok) {
 			const article = articleResponse.safeParse(response.value);
 			if (article.success && article.data.claim.slug === target.claimSlug && article.data.claim.topic.slug === target.topicSlug) {
@@ -159,48 +253,62 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 				}
 				else {
 					const withoutInert = page.text.replace(/<!--[\s\S]*?-->|<(script|style|template|head)\b[^>]*>[\s\S]*?<\/\1>/giu, "");
-					const headings = [...withoutInert.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/giu)].map(match => visibleText(match[1]));
+					const headings = [
+						...withoutInert.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/giu)
+					].map(match => visibleText(match[1]));
 					const body = visibleText(withoutInert);
 					const normalizePublicText = (text: string) => text.normalize("NFKC").replace(/\s+/gu, " ").trim();
 					const readable = headings.includes(normalizePublicText(article.data.claim.title)) && body.includes(normalizePublicText(article.data.claim.bottomLine));
-					result = { readable, reason: readable ? "public-api-and-rendered-content" : "rendered-content-mismatch" };
+					result = {
+						readable,
+						reason: readable ? "public-api-and-rendered-content" : "rendered-content-mismatch"
+					};
 				}
 			}
 		}
 		destinations.set(path, result);
 		return result;
 	}
+	async function evaluateQuestion(item: SearchUsefulnessDataset["questions"][number]) {
+		const expected: Array<{ path: string; readable: boolean; reason: string }> = [];
+		for (const target of item.expected) {
+			expected.push({
+				path: canonicalPath(target),
+				...await probe(target)
+			});
+		}
+		const endpoints = [];
+		for (const name of ["directory", "suggestions"] as const) {
+			endpoints.push(await evaluateSearchEndpoint(name, item.query, expected, getJson, probe));
+		}
+		return {
+			id: item.id,
+			query: item.query,
+			classification: item.classification,
+			expected,
+			endpoints
+		};
+	}
 	const rows = [];
 	for (const [position, item] of dataset.questions.entries()) {
 		if (position) await delay(intervalMs);
-		const expected: Array<{ path: string; readable: boolean; reason: string }> = [];
-		for (const target of item.expected) expected.push({ path: canonicalPath(target), ...await probe(target) });
-		const endpoints = [];
-		for (const name of ["directory", "suggestions"] as const) {
-			const parameters = new URLSearchParams({ q: item.query });
-			if (name === "directory") parameters.set("limit", "3");
-			const response = await getJson(`${name === "directory" ? "/api/claims" : "/api/search/suggestions"}?${parameters}`);
-			const parsed = response.ok ? searchResponse.safeParse(response.value) : null;
-			if (!parsed?.success) {
-				endpoints.push({ name, available: false, reason: response.ok ? "invalid-search-response" : response.reason, topThree: [], hit: false, empty: false });
-				continue;
-			}
-			const topThree = [];
-			for (const candidate of parsed.data.claims.slice(0, 3)) {
-				const target = { topicSlug: candidate.topic.slug, claimSlug: candidate.slug };
-				topThree.push({ path: canonicalPath(target), ...await probe(target) });
-			}
-			const hit = topThree.some(candidate => candidate.readable && expected.some(target => target.readable && candidate.path === target.path));
-			endpoints.push({ name, available: true, reason: "ok", topThree, hit, empty: !parsed.data.claims.length });
-		}
-		rows.push({ id: item.id, query: item.query, classification: item.classification, expected, endpoints });
+		rows.push(await evaluateQuestion(item));
 	}
 	const covered = rows.filter(row => row.classification === "covered");
 	const outside = rows.filter(row => row.classification === "outside");
 	const endpointScores = ["directory", "suggestions"].map((name) => {
 		const coveredHits = covered.filter(row => row.endpoints.find(endpoint => endpoint.name === name)?.hit).length;
 		const outsideEmpty = outside.filter(row => row.endpoints.find(endpoint => endpoint.name === name)?.empty).length;
-		return { name, coveredHits, coveredTotal: covered.length, coveredPercent: covered.length ? coveredHits * 100 / covered.length : null, outsideEmpty, outsideTotal: outside.length };
+		return {
+			name,
+			coveredHits,
+			coveredTotal: covered.length,
+			coveredPercent: covered.length
+				? coveredHits * 100 / covered.length
+				: null,
+			outsideEmpty,
+			outsideTotal: outside.length
+		};
 	});
 	const unavailable = rows.filter(row => row.endpoints.some(endpoint => !endpoint.available)).map(row => row.id);
 	const unreadable = [...destinations].filter(([, result]) => !result.readable).map(([path, result]) => ({ path, reason: result.reason }));
@@ -212,7 +320,12 @@ export async function evaluateSearchUsefulness(input: unknown, originValue: stri
 		datasetSha256: createHash("sha256").update(JSON.stringify(dataset)).digest("hex"),
 		provenance: dataset.provenance,
 		limitations: "Mechanical public retrieval and rendered-text check only. Provenance is declared, not independently certified. Scientific relevance, comprehensibility, visual accessibility, and freshness require separate review.",
-		counts: { covered: covered.length, partial: rows.filter(row => row.classification === "partial").length, gaps: rows.filter(row => row.classification === "gap").length, outside: outside.length },
+		counts: {
+			covered: covered.length,
+			partial: rows.filter(row => row.classification === "partial").length,
+			gaps: rows.filter(row => row.classification === "gap").length,
+			outside: outside.length
+		},
 		endpointScores,
 		unavailable,
 		unreadable,

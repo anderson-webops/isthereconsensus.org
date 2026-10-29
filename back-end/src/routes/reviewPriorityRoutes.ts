@@ -23,7 +23,9 @@ import {
 import { logError } from "../utils/safeLog.js";
 
 const validId = (value: unknown): value is string => typeof value === "string" && /^[a-f\d]{24}$/.test(value);
-const visibleStatus = { $in: ["published", "needs_update"] as const };
+const visibleStatus = {
+	$in: ["published", "needs_update"] as const
+};
 
 export function createReviewPriorityRouter() {
 	const router = express.Router();
@@ -44,14 +46,34 @@ export function createReviewPriorityRouter() {
 			const now = new Date();
 			const initialFilter: Record<string, unknown> = {};
 			if (topicId) initialFilter.topic = new mongoose.Types.ObjectId(topicId);
-			if (query) initialFilter.title = { $regex: query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), $options: "i" };
-			const pipeline: PipelineStage[] = [{ $match: initialFilter }, ...priorityPipeline(now)];
-			if (reason === "attention") pipeline.push({ $match: { "reasons.0": { $exists: true } } });
-			else if (reason !== "all") pipeline.push({ $match: { reasons: reason } });
+			if (query) {
+				initialFilter.title = {
+					$regex: query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+					$options: "i"
+				};
+			}
+			const pipeline: PipelineStage[] = [
+				{ $match: initialFilter },
+				...priorityPipeline(now)
+			];
+			if (reason === "attention") {
+				pipeline.push({
+					$match: {
+						"reasons.0": { $exists: true }
+					}
+				});
+			}
+			else if (reason !== "all") {
+				pipeline.push({
+					$match: { reasons: reason }
+				});
+			}
 			pipeline.push({
 				$facet: {
 					rows: [
-						{ $sort: { priority: 1, nextReviewAt: 1, _id: 1 } },
+						{
+							$sort: { priority: 1, nextReviewAt: 1, _id: 1 }
+						},
 						{ $skip: (page - 1) * limit },
 						{ $limit: limit },
 						{
@@ -59,13 +81,25 @@ export function createReviewPriorityRouter() {
 								from: "topics",
 								localField: "topic",
 								foreignField: "_id",
-								pipeline: [{ $project: { title: 1, slug: 1 } }],
+								pipeline: [
+									{
+										$project: { title: 1, slug: 1 }
+									}
+								],
 								as: "topic"
 							}
 						},
-						{ $set: { topic: { $arrayElemAt: ["$topic", 0] } } }
+						{
+							$set: {
+								topic: {
+									$arrayElemAt: ["$topic", 0]
+								}
+							}
+						}
 					],
-					total: [{ $count: "count" }]
+					total: [
+						{ $count: "count" }
+					]
 				}
 			});
 			const [result] = await Claim.aggregate(pipeline).option({ maxTimeMS: 8000 });
@@ -73,7 +107,12 @@ export function createReviewPriorityRouter() {
 			return res.json({
 				evaluatedAt: now,
 				rows: result.rows,
-				pagination: { page, limit, total, hasMore: page * limit < total }
+				pagination: {
+					page,
+					limit,
+					total,
+					hasMore: page * limit < total
+				}
 			});
 		}
 		catch (error) {
@@ -101,21 +140,37 @@ export function createReviewPriorityRouter() {
 			const [sources, total] = await Promise.all([
 				ClaimSource.aggregate([
 					{ $match: filter },
-					{ $sort: { _id: 1 } },
+					{
+						$sort: { _id: 1 }
+					},
 					{ $skip: (sourcePage - 1) * 10 },
 					{ $limit: 10 },
 					...noticeStages(true),
-					{ $project: { title: 1, noticeSnapshot: 1, noticeAddressed: 1, noticeReview: 1 } }
+					{
+						$project: {
+							title: 1,
+							noticeSnapshot: 1,
+							noticeAddressed: 1,
+							noticeReview: 1
+						}
+					}
 				]).option({ maxTimeMS: 5000 }),
 				ClaimSource.countDocuments(filter).maxTimeMS(5000)
 			]);
 			const schedule = claim.maintenance ?? { revision: 0, history: [] };
-			const adminIds = [...new Set<string>([
-				...schedule.history.map(entry => String(entry.adminId)),
-				...sources.flatMap(source => (source.noticeReview?.history ?? []).map((entry: { adminId: unknown }) => String(entry.adminId)))
-			])];
-			const admins = await Admin.find({ _id: { $in: adminIds } }).select("name").maxTimeMS(5000).lean();
-			const names = new Map(admins.map(admin => [String(admin._id), admin.name]));
+			const adminIds = [
+				...new Set<string>([
+					...schedule.history.map(entry => String(entry.adminId)),
+					...sources.flatMap(source => (source.noticeReview?.history ?? []).map((entry: { adminId: unknown }) => String(entry.adminId)))
+				])
+			];
+			const admins = await Admin.find({
+				_id: { $in: adminIds }
+			}).select("name").maxTimeMS(5000).lean();
+			const names = new Map(admins.map(admin => [
+				String(admin._id),
+				admin.name
+			]));
 			const withAdmin = <T extends { adminId: unknown }>(entry: T) => ({ ...entry, adminName: names.get(String(entry.adminId)) ?? null });
 			return res.json({
 				claim: {
@@ -127,23 +182,35 @@ export function createReviewPriorityRouter() {
 					nextReviewAt: claim.nextReviewAt ?? null,
 					reviewStatus: claimReviewStatus(claim)
 				},
-				schedule: { revision: schedule.revision, history: schedule.history.map(withAdmin) },
+				schedule: {
+					revision: schedule.revision,
+					history: schedule.history.map(withAdmin)
+				},
 				sources: sources.map(source => ({
 					_id: source._id,
 					title: source.title,
 					snapshot: {
 						...source.noticeSnapshot,
-						statusSources: [...new Set<string>(source.noticeSnapshot.statusSources)].sort()
+						statusSources: [
+							...new Set<string>(source.noticeSnapshot.statusSources)
+						].sort()
 					},
 					fingerprint: noticeFingerprint({
 						...source.noticeSnapshot,
-						statusSources: [...new Set<string>(source.noticeSnapshot.statusSources)].sort()
+						statusSources: [
+							...new Set<string>(source.noticeSnapshot.statusSources)
+						].sort()
 					}),
 					addressed: source.noticeAddressed === true,
 					revision: source.noticeReview?.revision ?? 0,
 					history: (source.noticeReview?.history ?? []).map(withAdmin)
 				})),
-				pagination: { page: sourcePage, limit: 10, total, hasMore: sourcePage * 10 < total },
+				pagination: {
+					page: sourcePage,
+					limit: 10,
+					total,
+					hasMore: sourcePage * 10 < total
+				},
 				historyLimit: maintenanceHistoryLimit
 			});
 		}
@@ -162,10 +229,14 @@ export function createReviewPriorityRouter() {
 		}
 		const { revision, expectedNextReviewAt, nextReviewAt, note } = parsed.data;
 		const now = new Date();
-		const nextAt = nextReviewAt ? new Date(recordedDate(nextReviewAt)!) : null;
+		const nextAt = nextReviewAt
+			? new Date(recordedDate(nextReviewAt)!)
+			: null;
 		if (nextAt && nextAt.getTime() > now.getTime() + 5 * 366 * 86400000)
 			return res.status(400).json({ error: "Choose a review date within five years." });
-		const previousAt = expectedNextReviewAt ? new Date(recordedDate(expectedNextReviewAt)!) : null;
+		const previousAt = expectedNextReviewAt
+			? new Date(recordedDate(expectedNextReviewAt)!)
+			: null;
 		try {
 			const result = await Claim.findOneAndUpdate(
 				{
@@ -174,14 +245,29 @@ export function createReviewPriorityRouter() {
 					nextReviewAt: previousAt,
 					...(revision
 						? { "maintenance.revision": revision }
-						: { $or: [{ "maintenance.revision": 0 }, { "maintenance.revision": { $exists: false } }] })
+						: {
+								$or: [
+									{ "maintenance.revision": 0 },
+									{
+										"maintenance.revision": { $exists: false }
+									}
+								]
+							})
 				},
 				{
 					$set: { nextReviewAt: nextAt },
 					$inc: { "maintenance.revision": 1, "__v": 1 },
 					$push: {
 						"maintenance.history": {
-							$each: [{ date: now, adminId: req.currentAdmin!._id, previousAt, nextAt, note }],
+							$each: [
+								{
+									date: now,
+									adminId: req.currentAdmin!._id,
+									previousAt,
+									nextAt,
+									note
+								}
+							],
 							$slice: -maintenanceHistoryLimit
 						}
 					}
@@ -224,7 +310,12 @@ export function createReviewPriorityRouter() {
 			const result = await SourceNoticeReview.findOneAndUpdate(
 				{ _id: source._id, revision },
 				{
-					$set: { claim: claim._id, snapshot, fingerprint, decision },
+					$set: {
+						claim: claim._id,
+						snapshot,
+						fingerprint,
+						decision
+					},
 					$inc: { revision: 1 },
 					$push: {
 						history: {

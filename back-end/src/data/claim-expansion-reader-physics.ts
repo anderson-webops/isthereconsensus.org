@@ -368,8 +368,17 @@ export const readerPhysicsClaims: SeedClaim[] = reviews.map(review => ({
 	misconceptions: [review.title, "A familiar illustration does not establish unrestricted behavior for every material, instrument or geometry."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
-	searchDatabases: ["Original OpenStax definitions and conditional physical models", "NIST original SI and calibration-report records", "NASA original light and scattering explanations", "Consensus.app targeted emissivity discovery and original author record", "Original FLIR explanation with manufacturer interest retained", "Crossref DOI identity and linked-update metadata for the two DOI-bearing records"],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
+	searchDatabases: [
+		"Original OpenStax definitions and conditional physical models",
+		"NIST original SI and calibration-report records",
+		"NASA original light and scattering explanations",
+		"Consensus.app targeted emissivity discovery and original author record",
+		"Original FLIR explanation with manufacturer interest retained",
+		"Crossref DOI identity and linked-update metadata for the two DOI-bearing records"
+	],
 	searchCutoffAt: physicsCheckedAt,
 	inclusionRules: ["Separate definitions, mechanisms, measured quantities and conditional model predictions.", "Retain source provenance, measurement assumptions and ordinary-versus-specialized scope."],
 	exclusionRules: ["No invented expert votes, reader requests, raw-data reanalysis or unqualified universal rules.", "No clinical recommendation, biological procedure, optical safety experiment, pressure-vessel instruction, surveillance or evasion procedure."],
@@ -379,14 +388,49 @@ export const readerPhysicsClaims: SeedClaim[] = reviews.map(review => ({
 	independenceSummary: "OpenStax sections share textbook provenance; NASA pages share agency provenance. They are not independent experiments or a consensus poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing. No material samples, optical apparatus or raw measurements were independently analyzed.",
 	coiSummary: "Institutional/textbook records provide definitions and qualified models, not clinical or commercial certification. Manufacturer explanations retain commercial interest. The contextual building-material paper's full funding and conflicts were not audited.",
 	lastRetractionCheckAt: physicsCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "No universal effect size or instrument error inferred.", certainty: "moderate", limitations: [review.qualification, "Shared teaching-source provenance; no independent apparatus test"] }],
-	institutionalAnchors: [{ name: readerPhysicsSources[review.sources[0]!].publisher, role: "Method-defining reference, not formal consensus statement or expert approval" }],
-	changeLog: [{ date: physicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: review.id, date: physicsCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Corrections and notices for cited original sources"], guidelineMonitors: ["Original textbook and measurement-reference revisions"], triggerRules: ["Reassess if definitions, applicable model assumptions or documented measurement limitations change the conclusion."] },
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "No universal effect size or instrument error inferred.",
+			certainty: "moderate",
+			limitations: [review.qualification, "Shared teaching-source provenance; no independent apparatus test"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerPhysicsSources[review.sources[0]!].publisher, role: "Method-defining reference, not formal consensus statement or expert approval" }
+	],
+	changeLog: [
+		{ date: physicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: review.id,
+		date: physicsCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Corrections and notices for cited original sources"],
+		guidelineMonitors: ["Original textbook and measurement-reference revisions"],
+		triggerRules: ["Reassess if definitions, applicable model assumptions or documented measurement limitations change the conclusion."]
+	},
 	sources: review.sources.map((key, index) => {
 		const entry = readerPhysicsSources[key];
-		return { ...entry, order: index + 1, isAnchor: index === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: physicsCheckedAt, statusSources: [entry.url!] };
+		return {
+			...entry,
+			order: index + 1,
+			isAnchor: index === 0,
+			appraisal: "not_appraised",
+			citationStatus: "current",
+			citationCheckedAt: physicsCheckedAt,
+			statusSources: [entry.url!]
+		};
 	})
 }));
 

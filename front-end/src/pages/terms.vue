@@ -84,7 +84,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Terms of Service' }]" />
 
 		<header class="terms-header">
-			<p class="eyebrow">Terms of Service</p>
+			<p class="eyebrow">
+				Terms of Service
+			</p>
 			<h1>Ground rules for using isthereconsensus.org.</h1>
 			<p>
 				Effective April 11, 2026. These terms govern public browsing, member accounts, question submissions,
@@ -100,7 +102,9 @@ useStaticPageMeta({
 		</section>
 
 		<section class="terms-contents" aria-labelledby="terms-contents-heading">
-			<h2 id="terms-contents-heading">On this page</h2>
+			<h2 id="terms-contents-heading">
+				On this page
+			</h2>
 			<nav class="terms-contents__links" aria-label="Terms sections">
 				<a v-for="item in termsSections" :key="item.id" :href="`#${item.id}`">{{ item.label }}</a>
 			</nav>
@@ -161,7 +165,9 @@ useStaticPageMeta({
 				<h2>4. Public content and community submissions</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in contentRules" :key="item">{{ item }}</li>
+				<li v-for="item in contentRules" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<p>
@@ -176,7 +182,9 @@ useStaticPageMeta({
 				<h2>5. Your content and the license you give us</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in licensePoints" :key="item">{{ item }}</li>
+				<li v-for="item in licensePoints" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<p>
@@ -194,7 +202,9 @@ useStaticPageMeta({
 				<p>You may not:</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in acceptableUse" :key="item">{{ item }}</li>
+				<li v-for="item in acceptableUse" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -232,7 +242,9 @@ useStaticPageMeta({
 				<h2>8. Expert applications and editorial access</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in expertPoints" :key="item">{{ item }}</li>
+				<li v-for="item in expertPoints" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -241,7 +253,9 @@ useStaticPageMeta({
 				<h2>9. Editorial content and no professional advice</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in editorialPoints" :key="item">{{ item }}</li>
+				<li v-for="item in editorialPoints" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<h3>Professional advice</h3>
@@ -360,7 +374,9 @@ useStaticPageMeta({
 
 		<section class="terms-callout">
 			<div>
-				<p class="eyebrow">Questions</p>
+				<p class="eyebrow">
+					Questions
+				</p>
 				<h2>Contact the site operator</h2>
 				<p>
 					For terms, copyright, or policy questions, email

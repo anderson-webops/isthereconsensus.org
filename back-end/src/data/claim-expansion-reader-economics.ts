@@ -3,7 +3,16 @@ import type { SeedClaim } from "./claims.js";
 export const economicsCheckedAt = "2026-10-05T19:26:48.000Z";
 
 function reference(title: string, publisher: string, url: string, note: string, year?: number): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title, publisher, url, note, year, stance: "supports", order: 1 };
+	return {
+		kind: "technical_reference",
+		title,
+		publisher,
+		url,
+		note,
+		year,
+		stance: "supports",
+		order: 1
+	};
 }
 
 export const readerEconomicsSources = {
@@ -297,7 +306,9 @@ export const readerEconomicsClaims: SeedClaim[] = reviews.map((review, index) =>
 	misconceptions: [review.title, "A statistical definition does not by itself establish a causal policy effect, individual welfare or a forecast."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
 	searchDatabases: ["Original BLS price and labor methodology", "Original BEA national-account definitions and technical references", "Original World Bank ICP methodology and St. Louis Fed explanation; Consensus.app discovery not canonical evidence"],
 	searchCutoffAt: economicsCheckedAt,
 	inclusionRules: ["Identify the measured population, unit, denominator, price treatment, comparison period and data vintage.", "Distinguish mathematical counterexamples from actual observations and measurement identities from causal effects."],
@@ -308,12 +319,51 @@ export const readerEconomicsClaims: SeedClaim[] = reviews.map((review, index) =>
 	independenceSummary: "Related BLS, BEA and World Bank pages share agency provenance rather than constitute independent trials. Definitions and accounting principles are not an empirical opinion poll. The legacy confidence score is editorial, not a measured fraction of economists agreeing or forecasts succeeding. No actual reader demand was measured.",
 	coiSummary: "Public agencies publish their own measurement methods; provenance does not guarantee exhaustive integrity or absence of institutional incentives. The Federal Reserve educational essay states that its views are not necessarily those of the institution or System. Funding and conflicts were not exhaustively audited. No product, policy or financial service is endorsed.",
 	lastRetractionCheckAt: economicsCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "A defined measurement or accounting boundary, not an estimated policy benefit, current economic rate or numerical expert vote.", certainty: "moderate", limitations: [review.qualification, "No current country release, private household data or causal policy counterfactual audited"] }],
-	institutionalAnchors: [{ name: readerEconomicsSources[review.sources[0]!].publisher, role: "Original definition and measurement-scope reference, not independent causal validation or an expert poll" }],
-	changeLog: [{ date: economicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: `ecb1f520-79c6-49bf-9b6b-0cd6dc6a${String(index + 1).padStart(4, "0")}`, date: economicsCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Original corrections and errata for cited references"], guidelineMonitors: ["BLS, BEA and ICP measurement-definition updates"], triggerRules: ["Reassess a verified source correction or definition change affecting the stated measurement boundary."] },
-	sources: review.sources.map((key, sourceIndex) => ({ ...readerEconomicsSources[key], order: sourceIndex + 1, isAnchor: sourceIndex === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: economicsCheckedAt, statusSources: [readerEconomicsSources[key].url!] }))
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "A defined measurement or accounting boundary, not an estimated policy benefit, current economic rate or numerical expert vote.",
+			certainty: "moderate",
+			limitations: [review.qualification, "No current country release, private household data or causal policy counterfactual audited"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerEconomicsSources[review.sources[0]!].publisher, role: "Original definition and measurement-scope reference, not independent causal validation or an expert poll" }
+	],
+	changeLog: [
+		{ date: economicsCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: `ecb1f520-79c6-49bf-9b6b-0cd6dc6a${String(index + 1).padStart(4, "0")}`,
+		date: economicsCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Original corrections and errata for cited references"],
+		guidelineMonitors: ["BLS, BEA and ICP measurement-definition updates"],
+		triggerRules: ["Reassess a verified source correction or definition change affecting the stated measurement boundary."]
+	},
+	sources: review.sources.map((key, sourceIndex) => ({
+		...readerEconomicsSources[key],
+		order: sourceIndex + 1,
+		isAnchor: sourceIndex === 0,
+		appraisal: "not_appraised",
+		citationStatus: "current",
+		citationCheckedAt: economicsCheckedAt,
+		statusSources: [readerEconomicsSources[key].url!]
+	}))
 }));
 
-export const readerEconomicsGaps = reviews.map(review => ({ slug: review.slug, gap: review.gap, relatedExistingSlugs: ["does-international-trade-create-broad-gains-while-imposing-concentrated-local-losses", "does-unemployment-insurance-only-delay-peoples-return-to-work"] }));
+export const readerEconomicsGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: review.gap,
+	relatedExistingSlugs: ["does-international-trade-create-broad-gains-while-imposing-concentrated-local-losses", "does-unemployment-insurance-only-delay-peoples-return-to-work"]
+}));

@@ -515,13 +515,13 @@ export const misconceptionModules: MisconceptionModule[] = [
 ];
 
 export function getMisconceptionModule(slug: string) {
-	return misconceptionModules.find((item) => item.slug === slug);
+	return misconceptionModules.find(item => item.slug === slug);
 }
 
 export function getMisconceptionModulesBySlugs(slugs: string[]) {
 	const seen = new Set<string>();
 	return slugs
-		.map((slug) => getMisconceptionModule(slug))
+		.map(slug => getMisconceptionModule(slug))
 		.filter((item): item is MisconceptionModule => Boolean(item))
 		.filter((item) => {
 			if (seen.has(item.slug)) return false;

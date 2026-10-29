@@ -53,7 +53,13 @@ describe("exercise and blood-pressure comparison", () => {
 		assert.match(comparison.options[3]!.scope, /All 11.*handgrip.*not represent wall squats/);
 	});
 	it("preserves existing confidence intervals without relabeling them as Bayesian", () => {
-		const interval = { metric: "Mean difference", estimate: 1, lower: 0, upper: 2, level: 95 as const };
+		const interval = {
+			metric: "Mean difference",
+			estimate: 1,
+			lower: 0,
+			upper: 2,
+			level: 95 as const
+		};
 		assert.equal(comparisonIntervalLabel(interval), "95% CI");
 		assert.equal(comparisonIntervalLabel({ ...interval, kind: "confidence" }), "95% CI");
 	});
@@ -85,7 +91,7 @@ describe("exercise and blood-pressure comparison", () => {
 		assert.equal(selected.context.id, "ambulatory");
 		assert.equal(selected.outcome.id, "diastolic");
 		assert.deepEqual(
-			selected.options.map((option) => option.id),
+			selected.options.map(option => option.id),
 			["continuous", "handgrip"]
 		);
 		assert.equal(resolveComparisonSelection(comparison, { options: "" }).options.length, 0);

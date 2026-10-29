@@ -183,8 +183,12 @@ describe("account security", () => {
 			saveEdit: "Edit"
 		});
 		(admin as any).comparePassword = async () => true;
-		User.findOne = (() => ({ exec: async () => null })) as any;
-		Admin.findOne = (() => ({ exec: async () => admin })) as any;
+		User.findOne = (() => ({
+			exec: async () => null
+		})) as any;
+		Admin.findOne = (() => ({
+			exec: async () => admin
+		})) as any;
 		AccountActivityLog.create = (async (entry: unknown) => entry) as any;
 		const req: any = {
 			body: {
@@ -218,8 +222,12 @@ describe("account security", () => {
 			saveEdit: "Edit"
 		});
 		(admin as any).comparePassword = async () => true;
-		User.findOne = (() => ({ exec: async () => null })) as any;
-		Admin.findOne = (() => ({ exec: async () => admin })) as any;
+		User.findOne = (() => ({
+			exec: async () => null
+		})) as any;
+		Admin.findOne = (() => ({
+			exec: async () => admin
+		})) as any;
 		AccountActivityLog.create = (async (entry: unknown) => entry) as any;
 		const req: any = {
 			body: {

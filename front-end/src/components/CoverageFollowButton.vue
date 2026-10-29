@@ -23,8 +23,12 @@ async function toggle() {
 		>
 			{{ following ? "Following question" : "Follow question" }}
 		</button>
-		<p v-if="interacted && library.state.error" role="alert">{{ library.state.error }}</p>
-		<p v-else-if="interacted && library.state.notice" role="status">{{ library.state.notice }}</p>
+		<p v-if="interacted && library.state.error" role="alert">
+			{{ library.state.error }}
+		</p>
+		<p v-else-if="interacted && library.state.notice" role="status">
+			{{ library.state.notice }}
+		</p>
 		<NuxtLink to="/library#followed-questions">View followed questions in My library</NuxtLink>
 	</div>
 </template>

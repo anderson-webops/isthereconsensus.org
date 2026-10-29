@@ -1,22 +1,22 @@
 export type ContributorTier = "member" | "contributor" | "trusted" | "expert";
 export type ExpertiseStatus = "none" | "pending" | "verified" | "rejected";
-export type AccountActivityAction =
-	| "user.registered"
-	| "user.deleted"
-	| "admin.created"
-	| "admin.disabled"
-	| "admin.enabled"
-	| "admin.deleted"
-	| "login.success"
-	| "login.failed"
-	| "logout"
-	| "password.changed"
-	| "email.changed"
-	| "expert_application.created"
-	| "expert_application.reviewed"
-	| "question.deleted"
-	| "question.moderated"
-	| "question_flag.reviewed";
+export type AccountActivityAction
+	= | "user.registered"
+		| "user.deleted"
+		| "admin.created"
+		| "admin.disabled"
+		| "admin.enabled"
+		| "admin.deleted"
+		| "login.success"
+		| "login.failed"
+		| "logout"
+		| "password.changed"
+		| "email.changed"
+		| "expert_application.created"
+		| "expert_application.reviewed"
+		| "question.deleted"
+		| "question.moderated"
+		| "question_flag.reviewed";
 
 export type AccountActivityActorType = "user" | "admin" | "system" | "anonymous";
 export type AccountActivityTargetType = "user" | "admin" | "expert_application" | "question" | "unknown";
@@ -47,14 +47,14 @@ export interface AccountActivityResponse {
 	};
 }
 
-export type SourceIntegrityOutcome =
-	| "no_registered_update"
-	| "corrected"
-	| "expression_of_concern"
-	| "retracted"
-	| "not_indexed"
-	| "unsupported"
-	| "error";
+export type SourceIntegrityOutcome
+	= | "no_registered_update"
+		| "corrected"
+		| "expression_of_concern"
+		| "retracted"
+		| "not_indexed"
+		| "unsupported"
+		| "error";
 
 export interface SourceIntegritySignal {
 	type: string;

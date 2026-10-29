@@ -29,7 +29,12 @@ describe("reader publication announcements", () => {
 		assert.equal(planReaderPublication({ ...base, kind: "evidence_update" }).ok, false);
 		assert.equal(planReaderPublication({ ...base, kind: "correction", bottomLineImpact: "guaranteed" }).ok, false);
 		assert.equal(
-			planReaderPublication({ ...base, kind: "evidence_update", bottomLineImpact: "changed", summary: "" }).ok,
+			planReaderPublication({
+				...base,
+				kind: "evidence_update",
+				bottomLineImpact: "changed",
+				summary: ""
+			}).ok,
 			false
 		);
 	});
@@ -40,13 +45,23 @@ describe("reader publication announcements", () => {
 		for (const kind of ["correction", "evidence_update"]) {
 			const result = planReaderPublication({ ...base, kind, bottomLineImpact: "unchanged" });
 			assert.ok(result.ok && result.update);
-			assert.deepEqual(Object.keys(result.update).sort(), ["bottomLineImpact", "date", "id", "kind", "summary"]);
+			assert.deepEqual(Object.keys(result.update).sort(), [
+				"bottomLineImpact",
+				"date",
+				"id",
+				"kind",
+				"summary"
+			]);
 			assert.equal(result.update.kind, kind);
 			assert.equal(result.update.bottomLineImpact, "unchanged");
 		}
 	});
 	it("does not backfill fresh announcements from legacy change logs", () => {
-		const claim = new Claim({ changeLog: [{ date: now, kind: "publication", summary: "Legacy publication" }] });
+		const claim = new Claim({
+			changeLog: [
+				{ date: now, kind: "publication", summary: "Legacy publication" }
+			]
+		});
 		assert.deepEqual(
 			claim.readerUpdates?.map(value => value.id),
 			[]

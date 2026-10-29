@@ -30,7 +30,12 @@ describe("everyday heat and optical measurement expansion", () => {
 	});
 
 	it("does not advance earlier cohorts' research cutoffs", () => {
-		for (const [claims, checkedAt] of [[readerPrivacyClaims, privacyCheckedAt], [readerOriginsClaims, originsCheckedAt], [readerSpaceClaims, spaceCheckedAt], [readerWaterClaims, waterCheckedAt]] as const) {
+		for (const [claims, checkedAt] of [
+			[readerPrivacyClaims, privacyCheckedAt],
+			[readerOriginsClaims, originsCheckedAt],
+			[readerSpaceClaims, spaceCheckedAt],
+			[readerWaterClaims, waterCheckedAt]
+		] as const) {
 			for (const claim of claims) assert.equal(claim.searchCutoffAt, checkedAt);
 		}
 	});
@@ -55,10 +60,34 @@ describe("everyday heat and optical measurement expansion", () => {
 
 	it("assigns each new review once to an intentional physics collection", () => {
 		const groups: Record<string, string[]> = {
-			"temperature-energy-and-phase-changes": ["energy", "heat", "boiling", "evaporation", "phase"],
-			"thermal-paths-and-surface-measurements": ["touch", "vacuum", "insulation", "infrared", "walls"],
-			"optical-paths-images-and-resolution": ["resolution", "mirror", "depth", "concave", "speed"],
-			"spectra-scattering-and-observer-dependent-color": ["white", "prism", "rainbow", "polarization", "sky"]
+			"temperature-energy-and-phase-changes": [
+				"energy",
+				"heat",
+				"boiling",
+				"evaporation",
+				"phase"
+			],
+			"thermal-paths-and-surface-measurements": [
+				"touch",
+				"vacuum",
+				"insulation",
+				"infrared",
+				"walls"
+			],
+			"optical-paths-images-and-resolution": [
+				"resolution",
+				"mirror",
+				"depth",
+				"concave",
+				"speed"
+			],
+			"spectra-scattering-and-observer-dependent-color": [
+				"white",
+				"prism",
+				"rainbow",
+				"polarization",
+				"sky"
+			]
 		};
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("physics-and-chemistry", readerPhysicsSlugs[key]!).map(collection => collection.slug), [group]);
