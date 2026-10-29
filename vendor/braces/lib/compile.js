@@ -2,9 +2,11 @@
 
 const fill = require('fill-range');
 const assertDepth = require('./assert-depth');
+const { MAX_EXPANSION_ITEMS, MAX_EXPANSION_BYTES } = require('./constants');
 const utils = require('./utils');
 
 const compile = (ast, options = {}) => {
+  const budget = { items: 0, bytes: 0 };
   const walk = (node, parent = {}, depth = 0) => {
     assertDepth(depth);
     const invalidBlock = utils.isInvalidBrace(parent);
@@ -40,6 +42,17 @@ const compile = (ast, options = {}) => {
 
     if (node.nodes && node.ranges > 0) {
       const args = utils.reduce(node.nodes);
+      const projected = utils.rangeBudget(args, options);
+      if (projected.items === Infinity) {
+        throw new RangeError('compiled range exceeds cumulative output budget.');
+      }
+      if (projected.step > 1) {
+        if (projected.items > MAX_EXPANSION_ITEMS - budget.items || projected.bytes > MAX_EXPANSION_BYTES - budget.bytes) {
+          throw new RangeError('compiled range exceeds cumulative output budget.');
+        }
+        budget.items += projected.items;
+        budget.bytes += projected.bytes;
+      }
       const range = fill(...args, { ...options, wrap: false, toRegex: true, strictZeros: true });
 
       if (range.length !== 0) {
