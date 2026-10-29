@@ -22,7 +22,7 @@ describe("ask page layout copy", () => {
 
 	it("uses one question field instead of asking visitors to repeat themselves", () => {
 		assert.match(source, /id="claim-question"/);
-		assert.match(source, /class="posting-form__question">\{\{ query \}\}/);
+		assert.match(source, /class="posting-form__question">\s*\{\{ query \}\}/);
 		assert.match(source, /Add context, source, or what differs/);
 		assert.match(source, /describe what differs from the closest match/);
 		assert.doesNotMatch(source, /id="core-question"/);

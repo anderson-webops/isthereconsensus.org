@@ -16,13 +16,18 @@ function harness(response: unknown, server = false) {
 	const { code } = transformSync(readFileSync(new URL("../src/composables/useAuth.ts", import.meta.url), "utf8"), {
 		loader: "ts",
 		format: "cjs",
-		define: { "import.meta.client": String(!server), "import.meta.server": String(server) }
+		define: {
+			"import.meta.client": String(!server),
+			"import.meta.server": String(server)
+		}
 	});
 	runInNewContext(code, {
 		module,
 		exports: module.exports,
 		computed,
-		useApi: () => ({ apiUrl: (path: string) => `/api${path}` }),
+		useApi: () => ({
+			apiUrl: (path: string) => `/api${path}`
+		}),
 		useState: (key: string, init: () => unknown) => {
 			if (!states.has(key)) states.set(key, ref(init()));
 			return states.get(key);
@@ -42,8 +47,12 @@ describe("initial authentication hydration", () => {
 		it(`keeps SSR state until ready, then resolves one ${role} lookup across consumers`, async () => {
 			const account = { _id: "fixture", name: "Fixture" };
 			const runtime = harness({
-				currentUser: role === "user" ? account : null,
-				currentAdmin: role === "admin" ? account : null
+				currentUser: role === "user"
+					? account
+					: null,
+				currentAdmin: role === "admin"
+					? account
+					: null
 			});
 			const first = runtime.useAuth();
 			const second = runtime.useAuth();
@@ -56,8 +65,12 @@ describe("initial authentication hydration", () => {
 			assert.deepEqual(runtime.calls, ["/api/auth/me"]);
 			assert.equal(first.ready.value, true);
 			assert.equal(second.ready.value, true);
-			assert.equal(first.role.value, role === "anonymous" ? null : role);
-			assert.equal(second.currentAccount.value?._id ?? null, role === "anonymous" ? null : "fixture");
+			assert.equal(first.role.value, role === "anonymous"
+				? null
+				: role);
+			assert.equal(second.currentAccount.value?._id ?? null, role === "anonymous"
+				? null
+				: "fixture");
 			runtime.useAuth();
 			assert.equal(runtime.calls.length, 1);
 		});

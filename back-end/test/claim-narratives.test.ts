@@ -25,7 +25,9 @@ describe("bounded claim narratives", () => {
 
 	it("trims newly supplied items and removes blank entries without shortening text", () => {
 		const paragraph = "Detailed explanation. ".repeat(30).trim();
-		const result = normalizeClaimNarratives({ stableCore: ["", "  ", `  ${paragraph}  `] });
+		const result = normalizeClaimNarratives({
+			stableCore: ["", "  ", `  ${paragraph}  `]
+		});
 		assert.deepEqual(result.stableCore, [paragraph]);
 		assert.deepEqual(result.openQuestions, []);
 	});
@@ -38,7 +40,11 @@ describe("bounded claim narratives", () => {
 	it("rejects rather than truncating an oversized new item in any narrative field", () => {
 		for (const field of CLAIM_NARRATIVE_FIELDS) {
 			assert.throws(
-				() => normalizeClaimNarratives({ [field]: ["x".repeat(CLAIM_NARRATIVE_MAX_LENGTH + 1)] }),
+				() => normalizeClaimNarratives({
+					[field]: [
+						"x".repeat(CLAIM_NARRATIVE_MAX_LENGTH + 1)
+					]
+				}),
 				ClaimNarrativeValidationError
 			);
 		}
@@ -47,14 +53,23 @@ describe("bounded claim narratives", () => {
 	it("rejects excess items instead of silently dropping the final item", () => {
 		for (const field of CLAIM_NARRATIVE_FIELDS) {
 			assert.throws(
-				() => normalizeClaimNarratives({ [field]: Array.from({ length: CLAIM_NARRATIVE_MAX_ITEMS + 1 }, (_entry, index) => `A bounded item ${index}.`) }),
+				() => normalizeClaimNarratives({
+					[field]: Array.from({ length: CLAIM_NARRATIVE_MAX_ITEMS + 1 }, (_entry, index) => `A bounded item ${index}.`)
+				}),
 				ClaimNarrativeValidationError
 			);
 		}
 	});
 
 	it("rejects malformed lists and does not put submitted content into errors", () => {
-		for (const value of [null, "Private submitted content", {}, [7], [null], ["A point", {}]]) {
+		for (const value of [
+			null,
+			"Private submitted content",
+			{},
+			[7],
+			[null],
+			["A point", {}]
+		]) {
 			assert.throws(() => normalizeClaimNarratives({ stableCore: value }), (error: unknown) => {
 				assert.ok(error instanceof ClaimNarrativeValidationError);
 				assert.equal(error.message, "stableCore must be a list of text items; nothing was saved.");
@@ -75,16 +90,25 @@ describe("bounded claim narratives", () => {
 
 	it("allows a retained oversized item beside a changed bounded item but rejects new oversized text", () => {
 		const retained = "x".repeat(CLAIM_NARRATIVE_MAX_LENGTH + 1);
-		const previous = { stableCore: [retained, "Original bounded point."] };
+		const previous = {
+			stableCore: [retained, "Original bounded point."]
+		};
 		assert.deepEqual(
-			normalizeClaimNarratives({ stableCore: [retained, "Changed bounded point."] }, previous).stableCore,
+			normalizeClaimNarratives({
+				stableCore: [retained, "Changed bounded point."]
+			}, previous).stableCore,
 			[retained, "Changed bounded point."]
 		);
-		assert.throws(() => normalizeClaimNarratives({ stableCore: [`${retained}Changed`] }, previous), ClaimNarrativeValidationError);
+		assert.throws(() => normalizeClaimNarratives({
+			stableCore: [`${retained}Changed`]
+		}, previous), ClaimNarrativeValidationError);
 	});
 
 	it("allows clearing a field without changing another legacy field", () => {
-		const previous = { stableCore: ["Retained explanation."], misconceptions: ["Old misconception."] };
+		const previous = {
+			stableCore: ["Retained explanation."],
+			misconceptions: ["Old misconception."]
+		};
 		const result = normalizeClaimNarratives({ misconceptions: [] }, previous);
 		assert.deepEqual(result.stableCore, previous.stableCore);
 		assert.deepEqual(result.misconceptions, []);
@@ -93,7 +117,12 @@ describe("bounded claim narratives", () => {
 	it("does not mutate input or legacy arrays, including when another field fails", () => {
 		const values = Object.freeze(["Original explanation."]);
 		const previous = Object.freeze({ stableCore: values });
-		const input = Object.freeze({ stableCore: values, openQuestions: Object.freeze(["x".repeat(CLAIM_NARRATIVE_MAX_LENGTH + 1)]) });
+		const input = Object.freeze({
+			stableCore: values,
+			openQuestions: Object.freeze([
+				"x".repeat(CLAIM_NARRATIVE_MAX_LENGTH + 1)
+			])
+		});
 		assert.throws(() => normalizeClaimNarratives(input, previous), ClaimNarrativeValidationError);
 		assert.deepEqual(values, ["Original explanation."]);
 		assert.notEqual(normalizeClaimNarratives({}, previous).stableCore, values);

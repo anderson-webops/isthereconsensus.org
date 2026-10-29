@@ -5,22 +5,51 @@ import { buildClaimCitationBundle } from "../src/utils/claimCitations.js";
 describe("claim citation exports", () => {
 	it("never substitutes publication time for a missing review date in any export", () => {
 		const bundle = buildClaimCitationBundle({
-			claim: { title: "Undated review", slug: "undated", publishedAt: new Date("2020-01-01") },
+			claim: {
+				title: "Undated review",
+				slug: "undated",
+				publishedAt: new Date("2020-01-01")
+			},
 			topic: { title: "Methods", slug: "methods" },
 			sources: [],
 			siteOrigin: "https://isthereconsensus.org",
 			generatedAt: new Date("2026-09-12")
 		});
 		assert.equal(bundle.reviewedAt, undefined);
-		for (const text of [bundle.plainText, bundle.markdown, bundle.bibtex, bundle.ris, JSON.stringify(bundle.cslJson)]) assert.ok(text.includes("Review date not recorded"));
-		assert.deepEqual(bundle.cslJson[0].issued, { "date-parts": [[2020, 1, 1]] });
+		for (const text of [
+			bundle.plainText,
+			bundle.markdown,
+			bundle.bibtex,
+			bundle.ris,
+			JSON.stringify(bundle.cslJson)
+		]) assert.ok(text.includes("Review date not recorded"));
+		assert.deepEqual(bundle.cslJson[0].issued, {
+			"date-parts": [
+				[2020, 1, 1]
+			]
+		});
 		assert.match(bundle.ris, /Y2 {2}- 2026-09-12/u);
 	});
 	it("preserves review provenance and withholds invalid or future dates", () => {
 		for (const basis of ["source_record", "editorial_review", "unspecified"] as const) {
-			const make = (date: Date) => buildClaimCitationBundle({ claim: { title: "Record", slug: "record", lastReviewedAt: date, reviewDateBasis: basis }, topic: { title: "Methods", slug: "methods" }, sources: [], siteOrigin: "https://isthereconsensus.org", generatedAt: new Date("2026-09-12") });
+			const make = (date: Date) => buildClaimCitationBundle({
+				claim: {
+					title: "Record",
+					slug: "record",
+					lastReviewedAt: date,
+					reviewDateBasis: basis
+				},
+				topic: { title: "Methods", slug: "methods" },
+				sources: [],
+				siteOrigin: "https://isthereconsensus.org",
+				generatedAt: new Date("2026-09-12")
+			});
 			const bundle = make(new Date("2026-08-01"));
-			assert.ok(bundle.plainText.includes(basis === "source_record" ? "Content record dated" : basis === "editorial_review" ? "Editorial review recorded" : "provenance not recorded"));
+			assert.ok(bundle.plainText.includes(basis === "source_record"
+				? "Content record dated"
+				: basis === "editorial_review"
+					? "Editorial review recorded"
+					: "provenance not recorded"));
 			assert.equal(make(new Date("2030-01-01")).reviewedAt, undefined);
 			assert.equal(make(new Date(Number.NaN)).reviewedAt, undefined);
 		}
@@ -65,7 +94,9 @@ describe("claim citation exports", () => {
 		assert.match(bundle.ris, /TY {2}- ELEC/u);
 		assert.match(bundle.ris, /DO {2}- 10\.1000\/example/u);
 		assert.equal(bundle.cslJson.length, 2);
-		assert.deepEqual(bundle.cslJson[0]?.author, [{ literal: "Is There Consensus editorial team" }]);
+		assert.deepEqual(bundle.cslJson[0]?.author, [
+			{ literal: "Is There Consensus editorial team" }
+		]);
 		assert.equal(JSON.stringify(bundle).includes("undefined"), false);
 	});
 

@@ -177,16 +177,29 @@ export function refreshMyocarditisClaim(seed: CompleteSeedClaim): CompleteSeedCl
 				...source,
 				appraisal: "not_appraised",
 				isAnchor: false,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original author abstract verified through Europe PMC, with study identity, clinical outcomes and comparison limits. Full text was not successfully assessed in this refresh; no complete methods, disclosures, supplements or formal grading claim."
 					: source.kind === "context"
 						? "Original June 25, 2025 slide 24 visually assessed. Its recovery figures concern reported cases from 2021, and the one-year data are expressly unpublished. Other slides and underlying studies not comprehensively appraised."
 						: "Original clinical myocarditis section read; page dated November 4, 2025. Current interval wording is narrowly scoped, not generic dosing advice. No new publication or source-notice date inferred from access."
 			})),
-			...additions.map((source): Source => ({ ...source, appraisal: "not_appraised", isAnchor: false, citationStatus: "current", citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : undefined }))
+			...additions.map((source): Source => ({
+				...source,
+				appraisal: "not_appraised",
+				isAnchor: false,
+				citationStatus: "current",
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: undefined
+			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

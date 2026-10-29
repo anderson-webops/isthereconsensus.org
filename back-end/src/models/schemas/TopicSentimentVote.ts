@@ -12,12 +12,35 @@ export interface ITopicSentimentVote {
 
 const topicSentimentVoteSchema: Schema<ITopicSentimentVote> = new Schema(
 	{
-		topic: { type: Schema.Types.ObjectId, ref: "Topic", required: true, index: true },
+		topic: {
+			type: Schema.Types.ObjectId,
+			ref: "Topic",
+			required: true,
+			index: true
+		},
 		voter: { type: Schema.Types.ObjectId, required: true, index: true },
-		voterModel: { type: String, enum: ["User", "Admin"], required: true },
-		stance: { type: String, enum: ["aligns", "uncertain", "skeptical"], required: true },
-		confidence: { type: Number, min: 1, max: 5, default: 3 },
-		note: { type: String, default: "", trim: true, maxlength: 300 }
+		voterModel: {
+			type: String,
+			enum: ["User", "Admin"],
+			required: true
+		},
+		stance: {
+			type: String,
+			enum: ["aligns", "uncertain", "skeptical"],
+			required: true
+		},
+		confidence: {
+			type: Number,
+			min: 1,
+			max: 5,
+			default: 3
+		},
+		note: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 300
+		}
 	},
 	{ timestamps: true }
 );

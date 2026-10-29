@@ -19,7 +19,12 @@ const feedbackId = computed(() =>
 		: ""
 );
 const rows = ref<AdminCoverageRequest[]>([]);
-const pagination = ref({ page: 1, limit: 20, total: 0, hasMore: false });
+const pagination = ref({
+	page: 1,
+	limit: 20,
+	total: 0,
+	hasMore: false
+});
 const visibilityFilter = ref("");
 const editing = ref<AdminCoverageRequest | null>(null);
 const title = ref("");
@@ -72,7 +77,8 @@ async function request<Result>(path: string, method: "GET" | "POST" | "PATCH" = 
 			retry: 0,
 			signal: controller.signal
 		});
-	} catch (error) {
+	}
+	catch (error) {
 		if ((error as { statusCode?: number }).statusCode === 403) {
 			rows.value = [];
 			reset();
@@ -90,7 +96,10 @@ async function load(page = 1) {
 	busy.value = true;
 	errorMessage.value = "";
 	try {
-		const params = new URLSearchParams({ page: String(page), limit: "20" });
+		const params = new URLSearchParams({
+			page: String(page),
+			limit: "20"
+		});
 		if (visibilityFilter.value) params.set("visibility", visibilityFilter.value);
 		const result = await request<CoverageResponse<AdminCoverageRequest>>(`/admin/coverage?${params}`);
 		if (run !== generation) return;
@@ -98,9 +107,11 @@ async function load(page = 1) {
 		pagination.value = result.pagination;
 		mustReload.value = false;
 		reset();
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) errorMessage.value = errorText(error, "The moderation queue could not be loaded.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -117,13 +128,15 @@ async function searchTargets() {
 		if (run !== generation) return;
 		targets.value = [
 			...result.claims
-				.filter((item) => item.status === "published")
-				.map((item) => ({ ...item, type: "claim" as const })),
-			...result.topics.map((item) => ({ ...item, type: "topic" as const }))
+				.filter(item => item.status === "published")
+				.map(item => ({ ...item, type: "claim" as const })),
+			...result.topics.map(item => ({ ...item, type: "topic" as const }))
 		];
-	} catch (error) {
+	}
+	catch (error) {
 		if (run === generation) errorMessage.value = errorText(error, "Destinations could not be loaded.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
@@ -144,7 +157,9 @@ async function save(operation: "save" | "approve" | "withdraw" = "save") {
 			privateNote: privateNote.value
 		};
 		const result = await request<{ row: AdminCoverageRequest }>(
-			existing ? `/admin/coverage/${existing._id}` : "/admin/coverage",
+			existing
+				? `/admin/coverage/${existing._id}`
+				: "/admin/coverage",
 			existing ? "PATCH" : "POST",
 			existing
 				? {
@@ -154,28 +169,43 @@ async function save(operation: "save" | "approve" | "withdraw" = "save") {
 						publicSummaryApproved: publicSummaryApproved.value,
 						publicUpdateSummary: publicUpdateSummary.value
 					}
-				: { ...fields, ...(feedbackId.value ? { feedbackId: feedbackId.value } : {}) }
+				: {
+						...fields,
+						...(feedbackId.value
+							? { feedbackId: feedbackId.value }
+							: {})
+					}
 		);
 		if (run !== generation) return;
 		edit(result.row);
-		rows.value = [result.row, ...rows.value.filter((row) => row._id !== result.row._id)];
-		notice.value =
-			result.row.visibility === "public"
+		rows.value = [
+			result.row,
+			...rows.value.filter(row => row._id !== result.row._id)
+		];
+		notice.value
+			= result.row.visibility === "public"
 				? "Approved summary saved on the public roadmap. No scientific conclusion was changed."
 				: result.row.visibility === "withdrawn"
 					? "The request is withdrawn from the public roadmap."
 					: "Private draft saved. Review the public preview before approving it.";
-	} catch (error) {
+	}
+	catch (error) {
 		if (run !== generation) return;
 		const statusCode = (error as { statusCode?: number }).statusCode;
 		mustReload.value = statusCode === 409 || !statusCode || statusCode >= 500;
 		errorMessage.value = errorText(error, "The change was not confirmed saved. Reload before retrying.");
-	} finally {
+	}
+	finally {
 		if (run === generation) busy.value = false;
 	}
 }
 watch(
-	[ready, role, () => currentAccount.value?._id, feedbackId],
+	[
+		ready,
+		role,
+		() => currentAccount.value?._id,
+		feedbackId
+	],
 	() => {
 		++generation;
 		controller?.abort();
@@ -198,7 +228,9 @@ onScopeDispose(() => {
 <template>
 	<div class="coverage-moderation">
 		<header>
-			<p class="eyebrow">Admin editorial workspace</p>
+			<p class="eyebrow">
+				Admin editorial workspace
+			</p>
 			<h1>Coverage moderation</h1>
 			<p>
 				Write a separate public question and scope. Never copy personal details or private messages into the
@@ -206,25 +238,33 @@ onScopeDispose(() => {
 			</p>
 			<NuxtLink to="/account/editorial/reader-feedback">Return to private reader suggestions</NuxtLink>
 		</header>
-		<p v-if="!ready" role="status">Checking account…</p>
-		<p v-else-if="!isAdmin">Only administrators can approve the public coverage roadmap.</p>
+		<p v-if="!ready" role="status">
+			Checking account…
+		</p>
+		<p v-else-if="!isAdmin">
+			Only administrators can approve the public coverage roadmap.
+		</p>
 		<template v-else>
 			<form class="coverage-moderation__controls" @submit.prevent="load()">
-				<label
-					>Visibility<select v-model="visibilityFilter" :disabled="busy">
-						<option value="">All requests</option>
-						<option v-for="(label, value) in coverageVisibilityLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-					</select></label
-				>
-				<button class="button button--ghost" :disabled="busy">Reload queue</button>
+				<label>Visibility<select v-model="visibilityFilter" :disabled="busy">
+					<option value="">All requests</option>
+					<option v-for="(label, value) in coverageVisibilityLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+				</select></label>
+				<button class="button button--ghost" :disabled="busy">
+					Reload queue
+				</button>
 				<button class="button button--ghost" type="button" :disabled="busy || mustReload" @click="reset()">
 					New private draft
 				</button>
 			</form>
-			<p v-if="notice || busy" role="status">{{ busy ? "Working…" : notice }}</p>
-			<p v-if="errorMessage" role="alert">{{ errorMessage }}</p>
+			<p v-if="notice || busy" role="status">
+				{{ busy ? "Working…" : notice }}
+			</p>
+			<p v-if="errorMessage" role="alert">
+				{{ errorMessage }}
+			</p>
 			<p v-if="mustReload">
 				Reload the queue before another write. The previous change may already have been saved.
 			</p>
@@ -237,37 +277,32 @@ onScopeDispose(() => {
 					{{ coverageVisibilityLabels[editing.visibility] }} · revision {{ editing.revision }}
 				</p>
 				<fieldset :disabled="busy || mustReload">
-					<label
-						>Public question<input
-							v-model="title"
-							name="coverage-title"
-							required
-							minlength="10"
-							maxlength="200"
-					/></label>
-					<label
-						>Public scope summary<textarea
-							v-model="summary"
-							name="coverage-summary"
-							required
-							minlength="40"
-							maxlength="1200"
-							rows="4"
-						/>
+					<label>Public question<input
+						v-model="title"
+						name="coverage-title"
+						required
+						minlength="10"
+						maxlength="200"
+					></label>
+					<label>Public scope summary<textarea
+						v-model="summary"
+						name="coverage-summary"
+						required
+						minlength="40"
+						maxlength="1200"
+						rows="4"
+					/>
 					</label>
-					<label
-						>Research status<select v-model="requestStatus" name="coverage-status">
-							<option v-for="(label, value) in coverageStatusLabels" :key="value" :value="value">
-								{{ label }}
-							</option>
-						</select></label
-					>
-					<label
-						>Find a topic or published review<input
-							v-model="targetQuery"
-							name="coverage-target-query"
-							maxlength="100"
-					/></label>
+					<label>Research status<select v-model="requestStatus" name="coverage-status">
+						<option v-for="(label, value) in coverageStatusLabels" :key="value" :value="value">
+							{{ label }}
+						</option>
+					</select></label>
+					<label>Find a topic or published review<input
+						v-model="targetQuery"
+						name="coverage-target-query"
+						maxlength="100"
+					></label>
 					<button class="button button--ghost" type="button" @click="searchTargets()">
 						Find destinations
 					</button>
@@ -298,36 +333,34 @@ onScopeDispose(() => {
 						Published status requires an available reviewed answer. Linking never publishes or edits that
 						answer.
 					</p>
-					<label
-						>Private audit note<textarea
-							v-model="privateNote"
-							name="coverage-private-note"
-							required
-							minlength="10"
-							maxlength="1000"
-							rows="2"
-						/>
+					<label>Private audit note<textarea
+						v-model="privateNote"
+						name="coverage-private-note"
+						required
+						minlength="10"
+						maxlength="1000"
+						rows="2"
+					/>
 					</label>
 					<section class="coverage-moderation__preview" aria-label="Public summary preview">
-						<p class="eyebrow">Public preview</p>
+						<p class="eyebrow">
+							Public preview
+						</p>
 						<h3>{{ title || "Question title" }}</h3>
 						<p>{{ summary || "Approved research scope will appear here." }}</p>
 						<p>{{ coverageStatusLabels[requestStatus] }}</p>
 					</section>
 					<template v-if="editing">
-						<label
-							>Public progress explanation<textarea
-								v-model="publicUpdateSummary"
-								name="coverage-public-update"
-								maxlength="500"
-								rows="2"
-							/>
+						<label>Public progress explanation<textarea
+							v-model="publicUpdateSummary"
+							name="coverage-public-update"
+							maxlength="500"
+							rows="2"
+						/>
 						</label>
-						<label class="coverage-moderation__confirmation"
-							><input v-model="publicSummaryApproved" name="coverage-public-approved" type="checkbox" />I
+						<label class="coverage-moderation__confirmation"><input v-model="publicSummaryApproved" name="coverage-public-approved" type="checkbox">I
 							checked the public preview and progress explanation. They contain no private submission text
-							or personal details.</label
-						>
+							or personal details.</label>
 					</template>
 					<div class="coverage-moderation__controls">
 						<button class="button button--primary" type="submit">
@@ -356,15 +389,15 @@ onScopeDispose(() => {
 			</form>
 			<section aria-label="Coverage moderation queue">
 				<h2>Moderation queue</h2>
-				<p v-if="!rows.length && !busy && !errorMessage">No requests match these filters.</p>
+				<p v-if="!rows.length && !busy && !errorMessage">
+					No requests match these filters.
+				</p>
 				<article v-for="row in rows" :key="row._id" class="coverage-moderation__row">
 					<p>{{ coverageVisibilityLabels[row.visibility] }} · {{ coverageStatusLabels[row.status] }}</p>
 					<h3>{{ row.title }}</h3>
 					<button class="button button--ghost" :disabled="busy || mustReload" @click="edit(row)">
-						Edit request</button
-					><NuxtLink v-if="row.visibility === 'public'" :to="`/roadmap/${row._id}`"
-						>View public question</NuxtLink
-					>
+						Edit request
+					</button><NuxtLink v-if="row.visibility === 'public'" :to="`/roadmap/${row._id}`">View public question</NuxtLink>
 					<details v-if="row.audit.length">
 						<summary>Private moderation history</summary>
 						<p v-for="event in row.audit" :key="event.revision">
@@ -378,9 +411,8 @@ onScopeDispose(() => {
 						:disabled="busy || pagination.page <= 1"
 						@click="load(pagination.page - 1)"
 					>
-						Previous</button
-					><span>Page {{ pagination.page }}</span
-					><button
+						Previous
+					</button><span>Page {{ pagination.page }}</span><button
 						class="button button--ghost"
 						:disabled="busy || !pagination.hasMore"
 						@click="load(pagination.page + 1)"

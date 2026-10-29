@@ -12,7 +12,9 @@ describe("public whole-library quantity wording", () => {
 		assert.equal(formatPublicLibrarySummary(null), fallback);
 		assert.equal(formatPublicLibrarySummary([]), fallback);
 		for (const claimCount of [0, 1, 800, 999]) {
-			assert.equal(formatPublicLibrarySummary([{ slug: "topic", claimCount }]), fallback);
+			assert.equal(formatPublicLibrarySummary([
+				{ slug: "topic", claimCount }
+			]), fallback);
 		}
 	});
 
@@ -27,7 +29,9 @@ describe("public whole-library quantity wording", () => {
 			[25001, 25000]
 		]) {
 			assert.equal(
-				formatPublicLibrarySummary([{ slug: "topic", claimCount }]),
+				formatPublicLibrarySummary([
+					{ slug: "topic", claimCount }
+				]),
 				`Browse ${lowerBound}+ reviewed claims by topic`
 			);
 		}
@@ -64,10 +68,18 @@ describe("public whole-library quantity wording", () => {
 		for (const kind of ["review", "topic"] as const) {
 			assert.equal(formatPublicCountLabel(0, kind), `0 ${kind}s`);
 			assert.equal(formatPublicCountLabel(1, kind), `1 ${kind}`);
-			for (const count of [-1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, Number.MAX_SAFE_INTEGER + 1]) {
+			for (const count of [
+				-1,
+				1.5,
+				Number.NaN,
+				Number.POSITIVE_INFINITY,
+				Number.MAX_SAFE_INTEGER + 1
+			]) {
 				assert.equal(
 					formatPublicCountLabel(count, kind),
-					kind === "review" ? "Reviews unavailable" : "Topics unavailable"
+					kind === "review"
+						? "Reviews unavailable"
+						: "Topics unavailable"
 				);
 			}
 		}
@@ -125,8 +137,12 @@ describe("public whole-library quantity wording", () => {
 			]),
 			fallback
 		);
-		assert.equal(formatPublicLibrarySummary([{ slug: "", claimCount: 1001 }]), fallback);
-		assert.equal(formatPublicLibrarySummary([{ slug: " ", claimCount: 1001 }]), fallback);
+		assert.equal(formatPublicLibrarySummary([
+			{ slug: "", claimCount: 1001 }
+		]), fallback);
+		assert.equal(formatPublicLibrarySummary([
+			{ slug: " ", claimCount: 1001 }
+		]), fallback);
 	});
 
 	it("leaves filtered results, individual sources and per-topic counts exact", () => {

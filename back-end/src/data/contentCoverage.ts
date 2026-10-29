@@ -54,7 +54,9 @@ export function summarizeContentCoverage(
 			reviewedClaimCount: reviewedClaimsByTopic.get(topic.slug) ?? 0
 		}));
 	const activeTopicCount = topicCoverage.filter(topic => topic.reviewedClaimCount > 0).length;
-	const unlistedTopicSlugs = [...reviewedClaimsByTopic.keys()]
+	const unlistedTopicSlugs = [
+		...reviewedClaimsByTopic.keys()
+	]
 		.filter(slug => !topicSlugs.has(slug))
 		.toSorted();
 

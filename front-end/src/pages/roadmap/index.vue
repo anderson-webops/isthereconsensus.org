@@ -18,8 +18,12 @@ const status = computed(() =>
 		: ""
 );
 const page = computed(() => {
-	const value = typeof route.query.page === "string" ? Number(route.query.page) : 1;
-	return Number.isInteger(value) && value >= 1 && value <= 200 ? value : 1;
+	const value = typeof route.query.page === "string"
+		? Number(route.query.page)
+		: 1;
+	return Number.isInteger(value) && value >= 1 && value <= 200
+		? value
+		: 1;
 });
 const {
 	data,
@@ -30,10 +34,18 @@ const {
 	"coverage-roadmap",
 	() =>
 		$fetch<CoverageResponse>(apiUrl("/coverage"), {
-			query: { page: page.value, limit: 20, ...(status.value ? { status: status.value } : {}) },
+			query: {
+				page: page.value,
+				limit: 20,
+				...(status.value
+					? { status: status.value }
+					: {})
+			},
 			retry: 0
 		}),
-	{ watch: [status, page] }
+	{
+		watch: [status, page]
+	}
 );
 const roadmapRows = computed(() => data.value?.rows ?? []);
 const hasMore = computed(() => Boolean(data.value?.pagination.hasMore));
@@ -42,7 +54,16 @@ const roadmapError = computed(() => Boolean(error.value));
 function browse(nextPage: number, nextStatus = status.value) {
 	return router.push({
 		path: "/roadmap",
-		query: { ...(nextStatus ? { status: nextStatus } : {}), ...(nextPage > 1 ? { page: String(nextPage) } : {}) }
+		query: {
+			...(nextStatus
+				? { status: nextStatus }
+				: {}),
+			...(nextPage > 1
+				? {
+						page: String(nextPage)
+					}
+				: {})
+		}
 	});
 }
 </script>
@@ -59,7 +80,9 @@ function browse(nextPage: number, nextStatus = status.value) {
 			<NuxtLink to="/ask">Suggest a question for review</NuxtLink>
 		</header>
 		<nav class="coverage-filters" aria-label="Filter coverage requests">
-			<button class="button button--ghost" :aria-pressed="!status" @click="browse(1, '')">All requests</button>
+			<button class="button button--ghost" :aria-pressed="!status" @click="browse(1, '')">
+				All requests
+			</button>
 			<button
 				v-for="(label, value) in coverageStatusLabels"
 				:key="value"
@@ -70,10 +93,14 @@ function browse(nextPage: number, nextStatus = status.value) {
 				{{ label }}
 			</button>
 		</nav>
-		<p v-if="roadmapLoading" role="status">Loading approved questions…</p>
+		<p v-if="roadmapLoading" role="status">
+			Loading approved questions…
+		</p>
 		<div v-else-if="roadmapError" role="alert">
 			<p>The roadmap could not be loaded. This does not mean there are no requests.</p>
-			<button class="button button--ghost" @click="refresh()">Try again</button>
+			<button class="button button--ghost" @click="refresh()">
+				Try again
+			</button>
 		</div>
 		<template v-else>
 			<p v-if="!roadmapRows.length">
@@ -81,7 +108,9 @@ function browse(nextPage: number, nextStatus = status.value) {
 				<NuxtLink to="/consensus">reviewed library</NuxtLink> or suggest a missing question.
 			</p>
 			<article v-for="request in roadmapRows" :key="request._id" class="coverage-card">
-				<p class="eyebrow">{{ coverageStatusLabels[request.status] }}</p>
+				<p class="eyebrow">
+					{{ coverageStatusLabels[request.status] }}
+				</p>
 				<h2>
 					<NuxtLink :to="`/roadmap/${request._id}`">{{ request.title }}</NuxtLink>
 				</h2>
@@ -94,9 +123,13 @@ function browse(nextPage: number, nextStatus = status.value) {
 				</p>
 			</article>
 			<nav v-if="page > 1 || hasMore" class="coverage-filters" aria-label="Coverage pages">
-				<button class="button button--ghost" :disabled="page <= 1" @click="browse(page - 1)">Previous</button>
+				<button class="button button--ghost" :disabled="page <= 1" @click="browse(page - 1)">
+					Previous
+				</button>
 				<span>Page {{ page }}</span>
-				<button class="button button--ghost" :disabled="!hasMore" @click="browse(page + 1)">Next</button>
+				<button class="button button--ghost" :disabled="!hasMore" @click="browse(page + 1)">
+					Next
+				</button>
 			</nav>
 		</template>
 	</div>

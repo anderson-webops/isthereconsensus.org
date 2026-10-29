@@ -64,7 +64,9 @@ const { currentAccount, isLoggedIn, ready, role } = useAuth();
 
 const routeId = computed(() => {
 	const value = (route.params as EditorialClaimRouteParams).id;
-	return Array.isArray(value) ? value[0] : String(value ?? "new");
+	return Array.isArray(value)
+		? value[0]
+		: String(value ?? "new");
 });
 const isNew = computed(() => routeId.value === "new");
 const isAdmin = computed(() => role.value === "admin");
@@ -157,11 +159,11 @@ const form = reactive({
 const selectedSourceStandard = computed(() => getSourceStandard(form.topic));
 const hasClaimLayerA = computed(
 	() =>
-		institutionalAnchorRows.value.length > 0 ||
-		sourceRows.value.some((source) => ["guideline", "consensus_statement"].includes(source.kind))
+		institutionalAnchorRows.value.length > 0
+		|| sourceRows.value.some(source => ["guideline", "consensus_statement"].includes(source.kind))
 );
 const hasClaimLayerB = computed(() =>
-	sourceRows.value.some((source) => ["systematic_review", "meta_analysis"].includes(source.kind))
+	sourceRows.value.some(source => ["systematic_review", "meta_analysis"].includes(source.kind))
 );
 const landscapeEvidenceBaseSize = computed(() => claim.value?.evidenceLandscape?.evidenceBaseSize);
 const landscapeDistribution = computed(() => claim.value?.evidenceLandscape?.distribution);
@@ -173,7 +175,7 @@ useHead({
 function parseLines(value: string) {
 	return value
 		.split("\n")
-		.map((item) => item.trim())
+		.map(item => item.trim())
 		.filter(Boolean);
 }
 
@@ -215,7 +217,9 @@ function defaultSourceEvidenceProfile(existing?: Partial<ClaimSourceEvidenceProf
 			population: existing?.extraction?.population ?? "",
 			exposureOrIntervention: existing?.extraction?.exposureOrIntervention ?? "",
 			comparator: existing?.extraction?.comparator ?? "",
-			outcomes: [...(existing?.extraction?.outcomes ?? [])],
+			outcomes: [
+				...(existing?.extraction?.outcomes ?? [])
+			],
 			sampleSize: existing?.extraction?.sampleSize ?? "",
 			effectEstimate: {
 				metric: existing?.extraction?.effectEstimate?.metric ?? "",
@@ -262,7 +266,7 @@ function sourceEvidenceProfilePayload(source: ClaimSource) {
 			population: profile.extraction.population?.trim() || "",
 			exposureOrIntervention: profile.extraction.exposureOrIntervention?.trim() || "",
 			comparator: profile.extraction.comparator?.trim() || "",
-			outcomes: profile.extraction.outcomes.map((item) => item.trim()).filter(Boolean),
+			outcomes: profile.extraction.outcomes.map(item => item.trim()).filter(Boolean),
 			sampleSize: profile.extraction.sampleSize?.trim() || "",
 			effectEstimate: {
 				metric: profile.extraction.effectEstimate.metric?.trim() || "",
@@ -283,11 +287,11 @@ function sourceEvidenceProfileChanged(source: ClaimSource) {
 		evidenceProfile: defaultSourceEvidenceProfile()
 	} as ClaimSource;
 	const originalSource = source._id
-		? (claim.value?.sources?.find((record) => record._id === source._id) ?? fallbackSource)
+		? (claim.value?.sources?.find(record => record._id === source._id) ?? fallbackSource)
 		: fallbackSource;
 	return (
-		JSON.stringify(sourceEvidenceProfilePayload(source)) !==
-		JSON.stringify(sourceEvidenceProfilePayload(originalSource))
+		JSON.stringify(sourceEvidenceProfilePayload(source))
+		!== JSON.stringify(sourceEvidenceProfilePayload(originalSource))
 	);
 }
 
@@ -305,7 +309,7 @@ function sourceMetadataPayload(source: ClaimSource) {
 		appraisal: source.appraisal || "not_appraised",
 		citationStatus: source.citationStatus || "current",
 		citationCheckedAt: source.citationCheckedAt || undefined,
-		statusSources: (source.statusSources || []).map((item) => item.trim()).filter(Boolean),
+		statusSources: (source.statusSources || []).map(item => item.trim()).filter(Boolean),
 		stance: source.stance,
 		note: source.note?.trim() || "",
 		order: source.order ?? 0
@@ -314,13 +318,15 @@ function sourceMetadataPayload(source: ClaimSource) {
 
 function sourceMetadataChanged(source: ClaimSource) {
 	if (!source._id) return true;
-	const originalSource = claim.value?.sources?.find((record) => record._id === source._id);
+	const originalSource = claim.value?.sources?.find(record => record._id === source._id);
 	if (!originalSource) return true;
 	return JSON.stringify(sourceMetadataPayload(source)) !== JSON.stringify(sourceMetadataPayload(originalSource));
 }
 
 function landscapePayload() {
-	const supportScore = typeof form.landscapeSupportScore === "number" ? form.landscapeSupportScore : null;
+	const supportScore = typeof form.landscapeSupportScore === "number"
+		? form.landscapeSupportScore
+		: null;
 	return {
 		claimType: form.landscapeClaimType,
 		supportLabel: form.landscapeSupportLabel,
@@ -406,8 +412,8 @@ function hydrateClaim(record: Claim | null) {
 	form.landscapeShowEvidenceLandscape = !!record?.evidenceLandscape?.publicFlags?.showEvidenceLandscape;
 	form.landscapeShowCredibleMinorityView = !!record?.evidenceLandscape?.publicFlags?.showCredibleMinorityView;
 	form.landscapeShowFalseBalanceWarning = !!record?.evidenceLandscape?.publicFlags?.showFalseBalanceWarning;
-	form.landscapeMedicalOrPublicHealthSensitive =
-		!!record?.evidenceLandscape?.publicFlags?.medicalOrPublicHealthSensitive;
+	form.landscapeMedicalOrPublicHealthSensitive
+		= !!record?.evidenceLandscape?.publicFlags?.medicalOrPublicHealthSensitive;
 	form.landscapeRequiresProfessionalContext = !!record?.evidenceLandscape?.publicFlags?.requiresProfessionalContext;
 	form.landscapeWorkflowStatus = record?.evidenceLandscape?.workflow?.status || "not_started";
 	form.landscapeLastAssessedAt = formatDateInput(record?.evidenceLandscape?.workflow?.lastAssessedAt);
@@ -415,8 +421,8 @@ function hydrateClaim(record: Claim | null) {
 	form.landscapeEditorialNotes = record?.evidenceLandscape?.workflow?.editorialNotes || "";
 	form.landscapeWorkflowNote = "";
 	form.landscapeApplicabilityPopulation = record?.evidenceLandscape?.applicability?.population || "";
-	form.landscapeApplicabilityExposureOrIntervention =
-		record?.evidenceLandscape?.applicability?.exposureOrIntervention || "";
+	form.landscapeApplicabilityExposureOrIntervention
+		= record?.evidenceLandscape?.applicability?.exposureOrIntervention || "";
 	form.landscapeApplicabilityComparator = record?.evidenceLandscape?.applicability?.comparator || "";
 	form.landscapeApplicabilityOutcomes = formatLines(record?.evidenceLandscape?.applicability?.outcomes);
 	form.landscapeApplicabilitySetting = record?.evidenceLandscape?.applicability?.setting || "";
@@ -440,23 +446,25 @@ function hydrateClaim(record: Claim | null) {
 	form.lastReviewedAt = formatDateInput(record?.lastReviewedAt);
 	form.nextReviewAt = formatDateInput(record?.nextReviewAt);
 	form.revisionNote = "";
-	sourceRows.value =
-		record?.sources?.map((source) => ({
+	sourceRows.value
+		= record?.sources?.map(source => ({
 			...source,
 			citationCheckedAt: formatDateInput(source.citationCheckedAt),
 			evidenceProfile: defaultSourceEvidenceProfile(source.evidenceProfile)
 		})) || [];
-	evidenceSummaryRows.value =
-		record?.evidenceSummaries?.map((summary) => ({
+	evidenceSummaryRows.value
+		= record?.evidenceSummaries?.map(summary => ({
 			...summary,
-			limitations: [...(summary.limitations || [])]
+			limitations: [
+				...(summary.limitations || [])
+			]
 		})) || [];
-	institutionalAnchorRows.value =
-		record?.institutionalAnchors?.map((anchor) => ({
+	institutionalAnchorRows.value
+		= record?.institutionalAnchors?.map(anchor => ({
 			...anchor
 		})) || [];
-	uncertaintyDriverRows.value =
-		record?.uncertaintyDrivers?.map((driver) => ({
+	uncertaintyDriverRows.value
+		= record?.uncertaintyDrivers?.map(driver => ({
 			...driver
 		})) || [];
 }
@@ -489,9 +497,11 @@ async function loadClaim() {
 		]);
 		hydrateClaim(claimResponse.claim);
 		revisions.value = revisionsResponse.revisions;
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load the claim editor.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -529,28 +539,28 @@ function claimPayload() {
 		},
 		appraisalTools: parseLines(form.appraisalTools),
 		evidenceSummaries: evidenceSummaryRows.value
-			.map((summary) => ({
+			.map(summary => ({
 				question: summary.question.trim(),
 				population: summary.population?.trim() || "",
 				finding: summary.finding.trim(),
 				effectDirection: summary.effectDirection,
 				magnitude: summary.magnitude?.trim() || "",
 				certainty: summary.certainty,
-				limitations: (summary.limitations || []).map((item) => item.trim()).filter(Boolean)
+				limitations: (summary.limitations || []).map(item => item.trim()).filter(Boolean)
 			}))
-			.filter((summary) => summary.question && summary.finding),
+			.filter(summary => summary.question && summary.finding),
 		institutionalAnchors: institutionalAnchorRows.value
-			.map((anchor) => ({
+			.map(anchor => ({
 				name: anchor.name.trim(),
 				role: anchor.role.trim()
 			}))
-			.filter((anchor) => anchor.name && anchor.role),
+			.filter(anchor => anchor.name && anchor.role),
 		uncertaintyDrivers: uncertaintyDriverRows.value
-			.map((driver) => ({
+			.map(driver => ({
 				type: driver.type,
 				detail: driver.detail.trim()
 			}))
-			.filter((driver) => driver.detail),
+			.filter(driver => driver.detail),
 		authorLine: form.authorLine.trim(),
 		reviewerLine: form.reviewerLine.trim(),
 		coiSummary: form.coiSummary.trim(),
@@ -563,8 +573,8 @@ function claimPayload() {
 }
 
 async function syncSources(claimId: string) {
-	const existingIds = new Set((claim.value?.sources || []).map((source) => source._id).filter(Boolean) as string[]);
-	const currentIds = new Set(sourceRows.value.map((source) => source._id).filter(Boolean) as string[]);
+	const existingIds = new Set((claim.value?.sources || []).map(source => source._id).filter(Boolean) as string[]);
+	const currentIds = new Set(sourceRows.value.map(source => source._id).filter(Boolean) as string[]);
 
 	for (const sourceId of existingIds) {
 		if (!currentIds.has(sourceId)) {
@@ -593,7 +603,8 @@ async function syncSources(claimId: string) {
 					body: sourceEvidenceProfilePayload(source)
 				});
 			}
-		} else if (body.title) {
+		}
+		else if (body.title) {
 			const response = await $fetch<{ source: ClaimSource }>(apiUrl(`/editorial/claims/${claimId}/sources`), {
 				method: "POST",
 				credentials: "include",
@@ -646,10 +657,12 @@ async function saveClaim() {
 		actionMessage.value = "Claim saved.";
 		await loadClaim();
 		return true;
-	} catch (error) {
+	}
+	catch (error) {
 		errorMessage.value = readApiError(error, "Unable to save the claim.");
 		return false;
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -672,11 +685,11 @@ async function runLandscapeAction(action: LandscapeAction) {
 	}
 
 	const actionCopy = {
-		recompute: "Evidence distribution recomputed.",
+		"recompute": "Evidence distribution recomputed.",
 		"submit-review": "Evidence landscape submitted for review.",
 		"request-changes": "Evidence landscape changes requested.",
-		approve: "Evidence landscape approved.",
-		publish: "Evidence landscape published."
+		"approve": "Evidence landscape approved.",
+		"publish": "Evidence landscape published."
 	} satisfies Record<LandscapeAction, string>;
 
 	saving.value = true;
@@ -693,9 +706,11 @@ async function runLandscapeAction(action: LandscapeAction) {
 		actionMessage.value = actionCopy[action];
 		form.landscapeWorkflowNote = "";
 		await loadClaim();
-	} catch (error) {
+	}
+	catch (error) {
 		errorMessage.value = readApiError(error, "Unable to update the evidence landscape workflow.");
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -722,9 +737,11 @@ async function publishClaim() {
 		});
 		actionMessage.value = "Claim published.";
 		await loadClaim();
-	} catch (error) {
+	}
+	catch (error) {
 		errorMessage.value = readApiError(error, "Unable to publish the claim.");
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -740,10 +757,10 @@ async function runClaimStatusAction(action: ClaimStatusAction) {
 	}
 
 	const successCopy = {
-		archive: "Claim archived.",
+		"archive": "Claim archived.",
 		"request-update": "Claim marked for update.",
 		"restore-draft": "Claim restored to draft.",
-		review: "Claim review recorded."
+		"review": "Claim review recorded."
 	} satisfies Record<ClaimStatusAction, string>;
 
 	saving.value = true;
@@ -761,9 +778,11 @@ async function runClaimStatusAction(action: ClaimStatusAction) {
 		});
 		actionMessage.value = successCopy[action];
 		await loadClaim();
-	} catch (error) {
+	}
+	catch (error) {
 		errorMessage.value = readApiError(error, "Unable to update the claim workflow.");
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -868,13 +887,15 @@ watch(
 				{ label: 'Home', to: '/' },
 				{ label: 'Account', to: '/account' },
 				{ label: 'Editorial workspace', to: '/account/editorial' },
-				{ label: isNew ? 'New claim' : claim?.title || 'Claim editor' }
+				{ label: isNew ? 'New claim' : claim?.title || 'Claim editor' },
 			]"
 		/>
 
 		<header class="editor-header">
 			<div>
-				<p class="eyebrow">Claim editor</p>
+				<p class="eyebrow">
+					Claim editor
+				</p>
 				<h1>{{ isNew ? "Create a canonical claim" : claim?.title || "Edit claim" }}</h1>
 				<p>Use the structured form below. The public page should always read in a predictable order.</p>
 			</div>
@@ -891,7 +912,9 @@ watch(
 		</header>
 
 		<section v-if="!ready" class="locked-panel">
-			<p class="eyebrow">Checking access</p>
+			<p class="eyebrow">
+				Checking access
+			</p>
 			<h2>Loading your editorial permissions.</h2>
 		</section>
 		<AuthPanel
@@ -900,7 +923,9 @@ watch(
 			hint="Editorial access requires a verified expert or admin."
 		/>
 		<section v-else-if="!canUseEditorial" class="locked-panel">
-			<p class="eyebrow">Restricted area</p>
+			<p class="eyebrow">
+				Restricted area
+			</p>
 			<h2>Verified experts and admins only.</h2>
 			<p>Member accounts can apply for expert review from the main account page.</p>
 			<NuxtLink class="button button--ghost" to="/account">Back to account</NuxtLink>
@@ -924,12 +949,12 @@ watch(
 
 					<label class="field field--full">
 						<span class="field-label">Claim title</span>
-						<input v-model="form.title" type="text" placeholder="How does scientific consensus form?" />
+						<input v-model="form.title" type="text" placeholder="How does scientific consensus form?">
 					</label>
 
 					<label class="field">
 						<span class="field-label">Slug</span>
-						<input v-model="form.slug" type="text" placeholder="how-does-scientific-consensus-form" />
+						<input v-model="form.slug" type="text" placeholder="how-does-scientific-consensus-form">
 					</label>
 
 					<label class="field">
@@ -944,7 +969,7 @@ watch(
 
 					<label class="field">
 						<span class="field-label">Confidence score</span>
-						<input v-model.number="form.confidenceScore" type="number" min="0" max="100" />
+						<input v-model.number="form.confidenceScore" type="number" min="0" max="100">
 					</label>
 
 					<label class="field">
@@ -977,22 +1002,22 @@ watch(
 
 					<label class="field">
 						<span class="field-label">Search cutoff</span>
-						<input v-model="form.searchCutoffAt" type="date" />
+						<input v-model="form.searchCutoffAt" type="date">
 					</label>
 
 					<label class="field">
 						<span class="field-label">Retraction check</span>
-						<input v-model="form.lastRetractionCheckAt" type="date" />
+						<input v-model="form.lastRetractionCheckAt" type="date">
 					</label>
 
 					<label class="field">
 						<span class="field-label">Last reviewed</span>
-						<input v-model="form.lastReviewedAt" type="date" />
+						<input v-model="form.lastReviewedAt" type="date">
 					</label>
 
 					<label class="field">
 						<span class="field-label">Next review</span>
-						<input v-model="form.nextReviewAt" type="date" />
+						<input v-model="form.nextReviewAt" type="date">
 					</label>
 
 					<label class="field field--full">
@@ -1038,7 +1063,7 @@ watch(
 								<button
 									v-if="
 										['not_started', 'draft', 'changes_requested'].includes(
-											form.landscapeWorkflowStatus
+											form.landscapeWorkflowStatus,
 										)
 									"
 									class="button button--ghost"
@@ -1051,7 +1076,7 @@ watch(
 								<button
 									v-if="
 										['not_started', 'draft', 'changes_requested'].includes(
-											form.landscapeWorkflowStatus
+											form.landscapeWorkflowStatus,
 										)
 									"
 									class="button button--ghost"
@@ -1063,8 +1088,8 @@ watch(
 								</button>
 								<button
 									v-if="
-										isAdmin &&
-										['ready_for_review', 'approved'].includes(form.landscapeWorkflowStatus)
+										isAdmin
+											&& ['ready_for_review', 'approved'].includes(form.landscapeWorkflowStatus)
 									"
 									class="button button--ghost button--danger"
 									type="button"
@@ -1138,7 +1163,7 @@ watch(
 									min="0"
 									max="100"
 									placeholder="Optional"
-								/>
+								>
 							</label>
 
 							<label class="field">
@@ -1182,7 +1207,7 @@ watch(
 									v-model="form.landscapeOneSentenceSummary"
 									type="text"
 									placeholder="The broad answer, stated without collapsing uncertainty into a score."
-								/>
+								>
 							</label>
 
 							<label class="field field--full">
@@ -1250,12 +1275,12 @@ watch(
 
 							<label class="field">
 								<span class="field-label">Last landscape assessment</span>
-								<input v-model="form.landscapeLastAssessedAt" type="date" />
+								<input v-model="form.landscapeLastAssessedAt" type="date">
 							</label>
 
 							<label class="field">
 								<span class="field-label">Next landscape review</span>
-								<input v-model="form.landscapeNextReviewDueAt" type="date" />
+								<input v-model="form.landscapeNextReviewDueAt" type="date">
 							</label>
 
 							<label class="field field--full">
@@ -1264,17 +1289,17 @@ watch(
 									v-model="form.landscapeApplicabilityPopulation"
 									type="text"
 									placeholder="Who or what this assessment applies to."
-								/>
+								>
 							</label>
 
 							<label class="field">
 								<span class="field-label">Exposure / intervention</span>
-								<input v-model="form.landscapeApplicabilityExposureOrIntervention" type="text" />
+								<input v-model="form.landscapeApplicabilityExposureOrIntervention" type="text">
 							</label>
 
 							<label class="field">
 								<span class="field-label">Comparator</span>
-								<input v-model="form.landscapeApplicabilityComparator" type="text" />
+								<input v-model="form.landscapeApplicabilityComparator" type="text">
 							</label>
 
 							<label class="field field--full">
@@ -1284,36 +1309,36 @@ watch(
 
 							<label class="field">
 								<span class="field-label">Setting</span>
-								<input v-model="form.landscapeApplicabilitySetting" type="text" />
+								<input v-model="form.landscapeApplicabilitySetting" type="text">
 							</label>
 
 							<label class="field">
 								<span class="field-label">Timeframe</span>
-								<input v-model="form.landscapeApplicabilityTimeframe" type="text" />
+								<input v-model="form.landscapeApplicabilityTimeframe" type="text">
 							</label>
 
 							<label class="field field--checkbox">
-								<input v-model="form.landscapeShowEvidenceLandscape" type="checkbox" />
+								<input v-model="form.landscapeShowEvidenceLandscape" type="checkbox">
 								<span class="field-label">Show landscape publicly</span>
 							</label>
 
 							<label class="field field--checkbox">
-								<input v-model="form.landscapeShowCredibleMinorityView" type="checkbox" />
+								<input v-model="form.landscapeShowCredibleMinorityView" type="checkbox">
 								<span class="field-label">Show credible minority view</span>
 							</label>
 
 							<label class="field field--checkbox">
-								<input v-model="form.landscapeShowFalseBalanceWarning" type="checkbox" />
+								<input v-model="form.landscapeShowFalseBalanceWarning" type="checkbox">
 								<span class="field-label">Show false-balance warning</span>
 							</label>
 
 							<label class="field field--checkbox">
-								<input v-model="form.landscapeMedicalOrPublicHealthSensitive" type="checkbox" />
+								<input v-model="form.landscapeMedicalOrPublicHealthSensitive" type="checkbox">
 								<span class="field-label">Medical/public-health sensitive</span>
 							</label>
 
 							<label class="field field--checkbox">
-								<input v-model="form.landscapeRequiresProfessionalContext" type="checkbox" />
+								<input v-model="form.landscapeRequiresProfessionalContext" type="checkbox">
 								<span class="field-label">Professional context reviewed</span>
 							</label>
 
@@ -1502,7 +1527,7 @@ watch(
 
 					<label class="field">
 						<span class="field-label">Surveillance cadence (days)</span>
-						<input v-model.number="form.surveillanceCadenceDays" type="number" min="1" max="3650" />
+						<input v-model.number="form.surveillanceCadenceDays" type="number" min="1" max="3650">
 					</label>
 
 					<label class="field field--full">
@@ -1569,12 +1594,12 @@ watch(
 								<div class="structured-card__grid">
 									<label class="field field--full">
 										<span class="field-label">Question</span>
-										<input v-model="summary.question" type="text" />
+										<input v-model="summary.question" type="text">
 									</label>
 
 									<label class="field field--full">
 										<span class="field-label">Population / context</span>
-										<input v-model="summary.population" type="text" />
+										<input v-model="summary.population" type="text">
 									</label>
 
 									<label class="field">
@@ -1603,7 +1628,7 @@ watch(
 
 									<label class="field field--full">
 										<span class="field-label">Magnitude / range</span>
-										<input v-model="summary.magnitude" type="text" />
+										<input v-model="summary.magnitude" type="text">
 									</label>
 
 									<label class="field field--full">
@@ -1650,12 +1675,12 @@ watch(
 								<div class="structured-card__grid">
 									<label class="field">
 										<span class="field-label">Institution</span>
-										<input v-model="anchor.name" type="text" />
+										<input v-model="anchor.name" type="text">
 									</label>
 
 									<label class="field field--full">
 										<span class="field-label">Role on the page</span>
-										<input v-model="anchor.role" type="text" />
+										<input v-model="anchor.role" type="text">
 									</label>
 								</div>
 
@@ -1676,7 +1701,7 @@ watch(
 							v-model="form.authorLine"
 							type="text"
 							placeholder="Prepared by the Is There Consensus editorial desk."
-						/>
+						>
 					</label>
 
 					<label class="field field--full">
@@ -1685,7 +1710,7 @@ watch(
 							v-model="form.reviewerLine"
 							type="text"
 							placeholder="Reviewed for evidence quality and plain-language accuracy."
-						/>
+						>
 					</label>
 
 					<label class="field field--full">
@@ -1731,13 +1756,19 @@ watch(
 				<section class="sources-panel">
 					<div class="section-heading">
 						<div>
-							<p class="eyebrow">Sources</p>
+							<p class="eyebrow">
+								Sources
+							</p>
 							<h2>Evidence list</h2>
 						</div>
-						<button class="button button--ghost" type="button" @click="addSource">Add source</button>
+						<button class="button button--ghost" type="button" @click="addSource">
+							Add source
+						</button>
 					</div>
 
-					<div v-if="!sourceRows.length" class="empty-state">No sources attached yet.</div>
+					<div v-if="!sourceRows.length" class="empty-state">
+						No sources attached yet.
+					</div>
 					<div v-else class="source-list">
 						<article v-for="(source, index) in sourceRows" :key="source._id || index" class="source-editor">
 							<div class="source-editor__grid">
@@ -1765,37 +1796,37 @@ watch(
 
 								<label class="field field--full">
 									<span class="field-label">Title</span>
-									<input v-model="source.title" type="text" />
+									<input v-model="source.title" type="text">
 								</label>
 
 								<label class="field">
 									<span class="field-label">Publisher</span>
-									<input v-model="source.publisher" type="text" />
+									<input v-model="source.publisher" type="text">
 								</label>
 
 								<label class="field">
 									<span class="field-label">Year</span>
-									<input v-model.number="source.year" type="number" min="0" max="9999" />
+									<input v-model.number="source.year" type="number" min="0" max="9999">
 								</label>
 
 								<label class="field field--full">
 									<span class="field-label">URL</span>
-									<input v-model="source.url" type="url" />
+									<input v-model="source.url" type="url">
 								</label>
 
 								<label class="field">
 									<span class="field-label">DOI</span>
-									<input v-model="source.doi" type="text" />
+									<input v-model="source.doi" type="text">
 								</label>
 
 								<label class="field">
 									<span class="field-label">PMID</span>
-									<input v-model="source.pmid" type="text" />
+									<input v-model="source.pmid" type="text">
 								</label>
 
 								<label class="field">
 									<span class="field-label">PMCID</span>
-									<input v-model="source.pmcid" type="text" />
+									<input v-model="source.pmcid" type="text">
 								</label>
 
 								<label class="field">
@@ -1820,7 +1851,7 @@ watch(
 
 								<label class="field">
 									<span class="field-label">Citation checked</span>
-									<input v-model="source.citationCheckedAt" type="date" />
+									<input v-model="source.citationCheckedAt" type="date">
 								</label>
 
 								<label class="field field--full">
@@ -1833,13 +1864,13 @@ watch(
 								</label>
 
 								<label class="field field--checkbox">
-									<input v-model="source.isAnchor" type="checkbox" />
+									<input v-model="source.isAnchor" type="checkbox">
 									<span class="field-label">Anchor source</span>
 								</label>
 
 								<label class="field">
 									<span class="field-label">Order</span>
-									<input v-model.number="source.order" type="number" min="0" />
+									<input v-model.number="source.order" type="number" min="0">
 								</label>
 
 								<label class="field field--full">
@@ -1857,7 +1888,7 @@ watch(
 									<span>Evidence coding</span>
 									<strong>{{
 										formatEvidenceSourcePositionLabel(
-											source.evidenceProfile.positionRelativeToClaim
+											source.evidenceProfile.positionRelativeToClaim,
 										)
 									}}</strong>
 								</summary>
@@ -1962,7 +1993,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.inclusion.includedInLandscape"
 											type="checkbox"
-										/>
+										>
 										<span class="field-label">Count in landscape</span>
 									</label>
 
@@ -1970,7 +2001,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.publicationIntegrity.retracted"
 											type="checkbox"
-										/>
+										>
 										<span class="field-label">Retracted / invalid</span>
 									</label>
 
@@ -1978,7 +2009,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.publicationIntegrity.expressionOfConcern"
 											type="checkbox"
-										/>
+										>
 										<span class="field-label">Expression of concern</span>
 									</label>
 
@@ -1986,7 +2017,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.publicationIntegrity.correctionOrErratum"
 											type="checkbox"
-										/>
+										>
 										<span class="field-label">Correction / erratum</span>
 									</label>
 
@@ -1996,7 +2027,7 @@ watch(
 												source.evidenceProfile.publicationIntegrity.predatoryOrQuestionableVenue
 											"
 											type="checkbox"
-										/>
+										>
 										<span class="field-label">Questionable venue</span>
 									</label>
 
@@ -2007,7 +2038,7 @@ watch(
 												source.evidenceProfile.publicationIntegrity.citationStatusCheckedAt
 											"
 											type="date"
-										/>
+										>
 									</label>
 
 									<label class="field field--full">
@@ -2022,7 +2053,7 @@ watch(
 
 									<label class="field">
 										<span class="field-label">Population</span>
-										<input v-model="source.evidenceProfile.extraction.population" type="text" />
+										<input v-model="source.evidenceProfile.extraction.population" type="text">
 									</label>
 
 									<label class="field">
@@ -2030,17 +2061,17 @@ watch(
 										<input
 											v-model="source.evidenceProfile.extraction.exposureOrIntervention"
 											type="text"
-										/>
+										>
 									</label>
 
 									<label class="field">
 										<span class="field-label">Comparator</span>
-										<input v-model="source.evidenceProfile.extraction.comparator" type="text" />
+										<input v-model="source.evidenceProfile.extraction.comparator" type="text">
 									</label>
 
 									<label class="field">
 										<span class="field-label">Sample size</span>
-										<input v-model="source.evidenceProfile.extraction.sampleSize" type="text" />
+										<input v-model="source.evidenceProfile.extraction.sampleSize" type="text">
 									</label>
 
 									<label class="field field--full">
@@ -2057,7 +2088,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.extraction.effectEstimate.metric"
 											type="text"
-										/>
+										>
 									</label>
 
 									<label class="field">
@@ -2065,7 +2096,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.extraction.effectEstimate.value"
 											type="text"
-										/>
+										>
 									</label>
 
 									<label class="field">
@@ -2075,7 +2106,7 @@ watch(
 												source.evidenceProfile.extraction.effectEstimate.confidenceInterval
 											"
 											type="text"
-										/>
+										>
 									</label>
 
 									<label class="field">
@@ -2083,7 +2114,7 @@ watch(
 										<input
 											v-model="source.evidenceProfile.extraction.effectEstimate.pValue"
 											type="text"
-										/>
+										>
 									</label>
 
 									<label class="field field--full">
@@ -2146,8 +2177,7 @@ watch(
 					v-if="isAdmin && claim?.publishedAt && ['draft', 'needs_update'].includes(form.status)"
 					class="field field--full"
 				>
-					<label class="field"
-						><span class="field-label">Reader update on publication</span>
+					<label class="field"><span class="field-label">Reader update on publication</span>
 						<select v-model="readerUpdateKind">
 							<option value="">Choose the significance of this update</option>
 							<option value="none">Cosmetic or administrative edit; no feed announcement</option>
@@ -2155,8 +2185,7 @@ watch(
 							<option value="correction">Correction</option>
 						</select>
 					</label>
-					<label v-if="readerUpdateKind && readerUpdateKind !== 'none'" class="field"
-						><span class="field-label">Effect on the bottom line</span>
+					<label v-if="readerUpdateKind && readerUpdateKind !== 'none'" class="field"><span class="field-label">Effect on the bottom line</span>
 						<select v-model="bottomLineImpact">
 							<option value="">Choose the effect</option>
 							<option value="changed">The bottom line changed</option>
@@ -2169,8 +2198,12 @@ watch(
 						successful publication.
 					</p>
 				</div>
-				<p v-if="actionMessage" class="success">{{ actionMessage }}</p>
-				<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+				<p v-if="actionMessage" class="success">
+					{{ actionMessage }}
+				</p>
+				<p v-if="errorMessage" class="error">
+					{{ errorMessage }}
+				</p>
 
 				<div class="editor-actions">
 					<button class="button button--primary" type="submit" :disabled="saving || !canEditClaim">
@@ -2227,14 +2260,20 @@ watch(
 			<aside class="revision-panel">
 				<div class="section-heading section-heading--tight">
 					<div>
-						<p class="eyebrow">Revision history</p>
+						<p class="eyebrow">
+							Revision history
+						</p>
 						<h2>Recent snapshots</h2>
 					</div>
 					<p>Each publish or update records a serialized snapshot of the public claim.</p>
 				</div>
 
-				<div v-if="loading" class="empty-state">Loading claim data...</div>
-				<div v-else-if="!revisions.length" class="empty-state">No revisions recorded yet.</div>
+				<div v-if="loading" class="empty-state">
+					Loading claim data...
+				</div>
+				<div v-else-if="!revisions.length" class="empty-state">
+					No revisions recorded yet.
+				</div>
 				<div v-else class="revision-list">
 					<article v-for="revision in revisions" :key="revision._id" class="revision-card">
 						<p class="revision-card__meta">

@@ -190,8 +190,21 @@ const amr: Partial<CompleteSeedClaim> = {
 
 function gmoSources(seed: CompleteSeedClaim): Source[] {
 	return [
-		{ ...seed.sources[0]!, year: 2014, appraisal: "not_appraised", citationCheckedAt: checkedAt, statusSources: [], note: "Dated WHO page inspected for its assessed-product scope; manual institutional check, no DOI-provider coverage." },
-		{ ...seed.sources[1]!, appraisal: "not_appraised", citationCheckedAt: "2026-09-12T18:01:36.175Z", statusSources: [], note: "Health-chapter conclusions and Box 5-5 read through NCBI Bookshelf. Full report not assessed. Crossref checked; Europe PMC did not index this DOI." },
+		{
+			...seed.sources[0]!,
+			year: 2014,
+			appraisal: "not_appraised",
+			citationCheckedAt: checkedAt,
+			statusSources: [],
+			note: "Dated WHO page inspected for its assessed-product scope; manual institutional check, no DOI-provider coverage."
+		},
+		{
+			...seed.sources[1]!,
+			appraisal: "not_appraised",
+			citationCheckedAt: "2026-09-12T18:01:36.175Z",
+			statusSources: [],
+			note: "Health-chapter conclusions and Box 5-5 read through NCBI Bookshelf. Full report not assessed. Crossref checked; Europe PMC did not index this DOI."
+		},
 		{
 			kind: "guideline",
 			title: "Assessment of genetically modified maize DP202216 for food and feed uses, under Regulation (EC) No 1829/2003 (application EFSA-GMO-NL-2019-159)",
@@ -260,9 +273,27 @@ function gmoSources(seed: CompleteSeedClaim): Source[] {
 
 function amrSources(seed: CompleteSeedClaim): Source[] {
 	return [
-		{ ...seed.sources[0]!, appraisal: "not_appraised", citationCheckedAt: checkedAt, statusSources: [], note: "CDC overview and selection/transmission sections read. Dated January 2025; manual page check, not DOI-provider coverage." },
-		{ ...seed.sources[1]!, appraisal: "not_appraised", citationCheckedAt: checkedAt, statusSources: [], note: "WHO overview and drivers sections checked for overuse, access and prevention context; manual institutional check." },
-		{ ...seed.sources[2]!, appraisal: "not_appraised", citationCheckedAt: "2026-09-12T18:01:50.359Z", statusSources: [], note: "Complete official summary and abstract read; full review supplement not assessed. Provider checks used DOI 10.1002/14651858.CD003543.pub4; the existing citation URL identity is retained." },
+		{
+			...seed.sources[0]!,
+			appraisal: "not_appraised",
+			citationCheckedAt: checkedAt,
+			statusSources: [],
+			note: "CDC overview and selection/transmission sections read. Dated January 2025; manual page check, not DOI-provider coverage."
+		},
+		{
+			...seed.sources[1]!,
+			appraisal: "not_appraised",
+			citationCheckedAt: checkedAt,
+			statusSources: [],
+			note: "WHO overview and drivers sections checked for overuse, access and prevention context; manual institutional check."
+		},
+		{
+			...seed.sources[2]!,
+			appraisal: "not_appraised",
+			citationCheckedAt: "2026-09-12T18:01:50.359Z",
+			statusSources: [],
+			note: "Complete official summary and abstract read; full review supplement not assessed. Provider checks used DOI 10.1002/14651858.CD003543.pub4; the existing citation URL identity is retained."
+		},
 		{
 			kind: "systematic_review",
 			title: "Effect of antibiotic prescribing in primary care on antimicrobial resistance in individual patients: systematic review and meta-analysis",
@@ -317,13 +348,20 @@ function amrSources(seed: CompleteSeedClaim): Source[] {
 export function refreshGmoAndAmrClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 	const refresh = seed.topicSlug === "genetics-and-biotechnology" && seed.slug === gmoSlug
 		? gmo
-		: seed.topicSlug === "health-and-medicine" && seed.slug === amrSlug ? amr : undefined;
+		: seed.topicSlug === "health-and-medicine" && seed.slug === amrSlug
+			? amr
+			: undefined;
 	if (!refresh) return seed;
 	return {
 		...seed,
 		...common,
 		...refresh,
-		sources: seed.slug === gmoSlug ? gmoSources(seed) : amrSources(seed),
-		changeLog: [...seed.changeLog, { date: checkedAt, kind: "update", summary: refresh.readerAnnouncement!.summary }]
+		sources: seed.slug === gmoSlug
+			? gmoSources(seed)
+			: amrSources(seed),
+		changeLog: [
+			...seed.changeLog,
+			{ date: checkedAt, kind: "update", summary: refresh.readerAnnouncement!.summary }
+		]
 	};
 }

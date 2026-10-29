@@ -3,35 +3,75 @@ import { isRevisionCommentary } from "../utils/researchIntegrity.js";
 
 export const editorialCompletionPreparedAt = "2026-10-22T11:40:48.000Z";
 
-export const clinicalMaintenanceTopics = new Set(["health-and-medicine", "nutrition-and-diet", "neuroscience-and-psychology", "sleep-and-circadian-health", "exercise-and-sports-science", "sports-nutrition-and-supplements", "infection-immunity-and-vaccines", "mental-health-and-treatment", "reproductive-and-sexual-health", "aging-and-longevity", "cancer-prevention-and-care", "cardiovascular-metabolic-and-kidney-health", "substance-use-and-addiction"]);
+export const clinicalMaintenanceTopics = new Set([
+	"health-and-medicine",
+	"nutrition-and-diet",
+	"neuroscience-and-psychology",
+	"sleep-and-circadian-health",
+	"exercise-and-sports-science",
+	"sports-nutrition-and-supplements",
+	"infection-immunity-and-vaccines",
+	"mental-health-and-treatment",
+	"reproductive-and-sexual-health",
+	"aging-and-longevity",
+	"cancer-prevention-and-care",
+	"cardiovascular-metabolic-and-kidney-health",
+	"substance-use-and-addiction"
+]);
 export const unsupportedAppraisalClaims = new Set(["do-early-or-small-studies-often-overestimate-effects", "does-preregistration-guarantee-a-study-is-trustworthy", "do-glp-1-based-medications-produce-meaningful-weight-loss-for-adults-with-obesity"]);
 
 function correctedSources(seed: CompleteSeedClaim): CompleteSeedClaim["sources"] {
 	if (seed.slug === "do-routine-childhood-vaccines-overwhelm-or-weaken-the-immune-system") {
-		return seed.sources.map(source => source.url === "https://www.cdc.gov/vaccine-safety/about/multiples.html" ? { ...source, year: 2024 } : source);
+		return seed.sources.map(source => source.url === "https://www.cdc.gov/vaccine-safety/about/multiples.html"
+			? { ...source, year: 2024 }
+			: source);
 	}
 	if (seed.slug === "does-induced-abortion-increase-breast-cancer-risk") {
-		return seed.sources.map(source => source.url === "https://www.cancer.org/cancer/risk-prevention/medical-treatments/abortion-and-breast-cancer-risk.html" ? { ...source, year: 2024 } : source);
+		return seed.sources.map(source => source.url === "https://www.cancer.org/cancer/risk-prevention/medical-treatments/abortion-and-breast-cancer-risk.html"
+			? { ...source, year: 2024 }
+			: source);
 	}
 	if (seed.slug === "does-radon-in-homes-cause-lung-cancer") {
-		return seed.sources.map(source => source.url === "https://www.who.int/news-room/fact-sheets/detail/radon-and-health" ? { ...source, appraisal: "not_appraised" as const, citationCheckedAt: undefined, citationStatus: undefined, statusSources: [], note: "WHO public-health guidance identifies radon as a cause of lung cancer, with greater risk among people who smoke. No separate formal appraisal was performed by this site." } : source);
+		return seed.sources.map(source => source.url === "https://www.who.int/news-room/fact-sheets/detail/radon-and-health"
+			? {
+					...source,
+					appraisal: "not_appraised" as const,
+					citationCheckedAt: undefined,
+					citationStatus: undefined,
+					statusSources: [],
+					note: "WHO public-health guidance identifies radon as a cause of lung cancer, with greater risk among people who smoke. No separate formal appraisal was performed by this site."
+				}
+			: source);
 	}
 	if (seed.slug === "does-the-dash-eating-plan-lower-blood-pressure") {
-		return seed.sources.map(source => source.url === "https://www.nhlbi.nih.gov/health/dash-eating-plan" ? { ...source, year: 2026, appraisal: "not_appraised" as const, citationCheckedAt: undefined, citationStatus: undefined, statusSources: [], note: "NHLBI public guidance, revised February 25, 2026, describes the DASH eating pattern and the additional blood-pressure benefit of reduced sodium. No separate formal appraisal was performed by this site." } : source);
+		return seed.sources.map(source => source.url === "https://www.nhlbi.nih.gov/health/dash-eating-plan"
+			? {
+					...source,
+					year: 2026,
+					appraisal: "not_appraised" as const,
+					citationCheckedAt: undefined,
+					citationStatus: undefined,
+					statusSources: [],
+					note: "NHLBI public guidance, revised February 25, 2026, describes the DASH eating pattern and the additional blood-pressure benefit of reduced sodium. No separate formal appraisal was performed by this site."
+				}
+			: source);
 	}
 	if (seed.slug === "can-vaccination-indirectly-protect-people-who-are-not-vaccinated") {
-		return [...seed.sources, {
-			kind: "landmark_study",
-			title: "Global impact of ten-valent and 13-valent pneumococcal conjugate vaccines on invasive pneumococcal disease in all ages (the PSERENADE project): a global surveillance analysis",
-			publisher: "The Lancet Infectious Diseases",
-			year: 2025,
-			doi: "10.1016/S1473-3099(24)00665-0",
-			url: "https://researchportal.ukhsa.gov.uk/en/publications/global-impact-of-ten-valent-and-13-valent-pneumococcal-conjugate-/",
-			stance: "supports",
-			appraisal: "not_appraised",
-			order: seed.sources.length + 1,
-			note: "Surveillance analysis across 30 countries, predominantly high-income settings. Disease due to covered serotypes declined in older age groups after childhood programs, while non-vaccine serotypes increased. Not a randomized estimate of a universal herd-immunity threshold. Published in the April 2025 issue after online publication in 2024; author abstract and publication metadata checked, without a new formal appraisal."
-		}];
+		return [
+			...seed.sources,
+			{
+				kind: "landmark_study",
+				title: "Global impact of ten-valent and 13-valent pneumococcal conjugate vaccines on invasive pneumococcal disease in all ages (the PSERENADE project): a global surveillance analysis",
+				publisher: "The Lancet Infectious Diseases",
+				year: 2025,
+				doi: "10.1016/S1473-3099(24)00665-0",
+				url: "https://researchportal.ukhsa.gov.uk/en/publications/global-impact-of-ten-valent-and-13-valent-pneumococcal-conjugate-/",
+				stance: "supports",
+				appraisal: "not_appraised",
+				order: seed.sources.length + 1,
+				note: "Surveillance analysis across 30 countries, predominantly high-income settings. Disease due to covered serotypes declined in older age groups after childhood programs, while non-vaccine serotypes increased. Not a randomized estimate of a universal herd-immunity threshold. Published in the April 2025 issue after online publication in 2024; author abstract and publication metadata checked, without a new formal appraisal."
+			}
+		];
 	}
 	return seed.sources;
 }
@@ -330,9 +370,22 @@ export function completeEditorialCopy(seed: CompleteSeedClaim): CompleteSeedClai
 		sources,
 		reviewMode: living ? "living" : seed.reviewMode,
 		editorSummary: commentary ? seed.stableCore[0]! : seed.editorSummary,
-		appraisalTools: unsupportedAppraisal ? [] : seed.appraisalTools,
+		appraisalTools: unsupportedAppraisal
+			? []
+			: seed.appraisalTools,
 		reviewerLine: correction ? "Lead wording edited with AI assistance against the existing source record. Independent expert review is not documented." : seed.reviewerLine,
-		evidenceSummaries: seed.evidenceSummaries.map(summary => summary.question === seed.title && summary.finding === seed.bottomLine && summary.population?.startsWith("Public-facing summary built from") ? { ...summary, question: title, finding: bottomLine } : summary),
-		changeLog: [...seed.changeLog, { date: editorialCompletionPreparedAt, kind: "update", summary: sources !== seed.sources ? "Verified selected source metadata or added the specified surveillance study. No new comprehensive evidence review or independent expert appraisal is claimed." : correction ? "Clarified the question and lead answer while retaining scientific qualifications. This wording change is not a new evidence review." : "Corrected recorded editorial metadata or added a living-review maintenance classification. No new evidence review is claimed." }]
+		evidenceSummaries: seed.evidenceSummaries.map(summary => summary.question === seed.title && summary.finding === seed.bottomLine && summary.population?.startsWith("Public-facing summary built from")
+			? { ...summary, question: title, finding: bottomLine }
+			: summary),
+		changeLog: [
+			...seed.changeLog,
+			{
+				date: editorialCompletionPreparedAt,
+				kind: "update",
+				summary: sources !== seed.sources
+					? "Verified selected source metadata or added the specified surveillance study. No new comprehensive evidence review or independent expert appraisal is claimed."
+					: correction ? "Clarified the question and lead answer while retaining scientific qualifications. This wording change is not a new evidence review." : "Corrected recorded editorial metadata or added a living-review maintenance classification. No new evidence review is claimed."
+			}
+		]
 	};
 }

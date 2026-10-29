@@ -1,8 +1,10 @@
 import type { EvidenceComparison } from "./types.js";
 import { insomniaSources, sleepPracticalClaims } from "../claim-expansion-practical-sleep.js";
 
-// Recommendations, modeled component effects and single-trial results are not
-// a common-scale ranking. Each cell retains its own comparator and limitations.
+/**
+ * Recommendations, modeled component effects and single-trial results are not
+ * a common-scale ranking. Each cell retains its own comparator and limitations.
+ */
 export const insomniaComparison: EvidenceComparison = {
 	slug: "non-drug-insomnia-treatments",
 	title: "Compare non-drug insomnia treatments",
@@ -17,7 +19,14 @@ export const insomniaComparison: EvidenceComparison = {
 			bottomLineImpact: "new",
 			summary:
 				"Added six non-drug insomnia approaches, separating symptom evidence from treatment demands, early safety signals and unstudied contexts.",
-			sourceIds: ["guideline", "components", "brief", "digital", "acute", "safety"]
+			sourceIds: [
+				"guideline",
+				"components",
+				"brief",
+				"digital",
+				"acute",
+				"safety"
+			]
 		}
 	],
 	datasetLabel: "AASM recommendations, component synthesis and selected clinical studies",
@@ -283,7 +292,14 @@ export const insomniaComparison: EvidenceComparison = {
 		"Early safety and end-of-treatment outcomes differ. Absence of a detected effect, particularly with wide intervals, is not proof of equivalence or zero risk."
 	],
 	sources: [
-		...(["guideline", "components", "brief", "digital", "acute", "safety"] as const).map(id => ({
+		...([
+			"guideline",
+			"components",
+			"brief",
+			"digital",
+			"acute",
+			"safety"
+		] as const).map(id => ({
 			id,
 			title: insomniaSources[id].title,
 			url: insomniaSources[id].url!,

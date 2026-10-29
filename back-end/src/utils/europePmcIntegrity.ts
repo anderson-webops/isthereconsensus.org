@@ -55,6 +55,36 @@ const incomingNotices: Record<string, string> = {
 	"retracted and republished in": "retraction"
 };
 
+function appendEuropePmcRecord(value: unknown, doi: string, signals: SourceIntegritySignal[], recordIds: string[]) {
+	const record = object(value);
+	if (normalizeDoi(record.doi) !== doi) throw new IntegrityProviderError("identity_mismatch");
+	const id = text(record.id);
+	const source = text(record.source);
+	const url = recordUrl(id, source);
+	recordIds.push(`${source}:${id}`);
+	for (const item of list(record.commentCorrectionList, "commentCorrection")) {
+		const relation = object(item);
+		const label = text(relation.type);
+		const type = incomingNotices[label.toLowerCase()];
+		if (!type) continue;
+		signals.push({
+			type,
+			label,
+			url: recordUrl(text(relation.id), text(relation.source)),
+			source: `Europe PMC ${source}`
+		});
+	}
+	if (list(record.pubTypeList, "pubType").some(type => text(type).toLowerCase() === "retracted publication")
+		&& !signals.some(signal => signal.type === "retraction")) {
+		signals.push({
+			type: "retraction",
+			label: "Retracted publication",
+			url,
+			source: `Europe PMC ${source}`
+		});
+	}
+}
+
 export function parseEuropePmcIntegrityResponse(payload: unknown, targetDoi: string): SourceIntegrityObservation {
 	const doi = normalizeDoi(targetDoi);
 	if (!doi) throw new IntegrityProviderError("invalid_doi");
@@ -68,45 +98,37 @@ export function parseEuropePmcIntegrityResponse(payload: unknown, targetDoi: str
 	const signals: SourceIntegritySignal[] = [];
 	const recordIds: string[] = [];
 	for (const value of records) {
-		const record = object(value);
-		if (normalizeDoi(record.doi) !== doi) throw new IntegrityProviderError("identity_mismatch");
-		const id = text(record.id);
-		const source = text(record.source);
-		const url = recordUrl(id, source);
-		recordIds.push(`${source}:${id}`);
-		for (const item of list(record.commentCorrectionList, "commentCorrection")) {
-			const relation = object(item);
-			const label = text(relation.type);
-			const type = incomingNotices[label.toLowerCase()];
-			if (!type) continue;
-			signals.push({
-				type,
-				label,
-				url: recordUrl(text(relation.id), text(relation.source)),
-				source: `Europe PMC ${source}`
-			});
-		}
-		if (list(record.pubTypeList, "pubType").some(type => text(type).toLowerCase() === "retracted publication")
-			&& !signals.some(signal => signal.type === "retraction")) {
-			signals.push({ type: "retraction", label: "Retracted publication", url, source: `Europe PMC ${source}` });
-		}
+		appendEuropePmcRecord(value, doi, signals, recordIds);
 	}
-	const compact = [...new Map(signals.map(signal => [`${signal.type}:${signal.url}`, signal])).values()]
+	const compact = [
+		...new Map(signals.map(signal => [`${signal.type}:${signal.url}`, signal])).values()
+	]
 		.sort((left, right) => `${left.type}:${left.url}`.localeCompare(`${right.type}:${right.url}`));
 	if (compact.length > 100) throw new IntegrityProviderError("too_many_notices");
 	let status = strongerCitationStatus("current");
 	for (const signal of compact) status = strongerCitationStatus(status, statusForUpdateType(signal.type));
-	const suggestedStatus = status === "current" ? undefined : status;
+	const suggestedStatus = status === "current"
+		? undefined
+		: status;
 	return {
 		provider: "europepmc",
 		doi,
 		queryUrl,
-		providerVersion: response.version === undefined ? undefined : text(response.version).slice(0, 40),
-		recordIds: [...new Set(recordIds)].sort(),
+		providerVersion: response.version === undefined
+			? undefined
+			: text(response.version).slice(0, 40),
+		recordIds: [
+			...new Set(recordIds)
+		].sort(),
 		outcome: suggestedStatus ?? (records.length ? "no_registered_update" : "not_indexed"),
 		suggestedStatus,
 		signals: compact,
-		statusSources: [...new Set([...compact.map(signal => signal.url!), queryUrl])]
+		statusSources: [
+			...new Set([
+				...compact.map(signal => signal.url!),
+				queryUrl
+			])
+		]
 	};
 }
 

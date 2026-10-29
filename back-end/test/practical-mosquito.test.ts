@@ -49,7 +49,13 @@ describe("practical mosquito-prevention reviews", () => {
 	});
 	it("retrieves the new practical questions from ordinary searches", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ duration: "repellent concentration", oil: "lemon eucalyptus essential oil", wristbands: "repellent wristbands", methods: "laboratory mosquito protection times", spatial: "spatial emanators malaria" })) {
+		for (const [key, query] of Object.entries({
+			duration: "repellent concentration",
+			oil: "lemon eucalyptus essential oil",
+			wristbands: "repellent wristbands",
+			methods: "laboratory mosquito protection times",
+			spatial: "spatial emanators malaria"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === mosquitoSlugs[key as keyof typeof mosquitoSlugs]), query);
 		}
 	});

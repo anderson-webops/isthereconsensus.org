@@ -11,7 +11,9 @@ import { individualResearchFields, isRevisionCommentary, researchPreparation } f
 type UnknownRecord = Record<string, unknown>;
 
 function asRecord(value: unknown): UnknownRecord | null {
-	return value && typeof value === "object" ? (value as UnknownRecord) : null;
+	return value && typeof value === "object"
+		? (value as UnknownRecord)
+		: null;
 }
 
 type ApplicantExpertApplicationInput = Partial<IExpertApplication> & {
@@ -105,7 +107,9 @@ export function toPublicQuestion(
 		createdAt: value.createdAt,
 		updatedAt: value.updatedAt,
 		topic: toPublicTopic(value.topic),
-		claim: toPublicQuestionClaim(options.claim === undefined ? value.claim : options.claim)
+		claim: toPublicQuestionClaim(options.claim === undefined
+			? value.claim
+			: options.claim)
 	};
 }
 
@@ -166,7 +170,12 @@ export function toEditorialEvidenceLandscape(value: unknown) {
 	const sanitizedWorkflow = workflow
 		? Object.fromEntries(
 				Object.entries(workflow).filter(
-					([key]) => !["assignedEditorId", "reviewedById", "approvedById", "assessedBy"].includes(key)
+					([key]) => ![
+						"assignedEditorId",
+						"reviewedById",
+						"approvedById",
+						"assessedBy"
+					].includes(key)
 				)
 			)
 		: null;
@@ -195,7 +204,9 @@ export function toEditorialClaim(value: unknown) {
 				}
 			: {}),
 		...(Array.isArray(sources)
-			? { sources: sources.map(toEditorialClaimSource).filter(Boolean) }
+			? {
+					sources: sources.map(toEditorialClaimSource).filter(Boolean)
+				}
 			: {})
 	};
 }
@@ -316,7 +327,9 @@ export function toPublicClaim(
 	} = {}
 ) {
 	const topic = toPublicTopic(options.topic ?? value.topic);
-	const presentation = individualResearchFields(value, typeof topic?.slug === "string" ? topic.slug : "");
+	const presentation = individualResearchFields(value, typeof topic?.slug === "string"
+		? topic.slug
+		: "");
 	return {
 		_id: value._id,
 		topic,
@@ -336,7 +349,9 @@ export function toPublicClaim(
 		whatWouldChangeMinds: value.whatWouldChangeMinds,
 		misconceptions: value.misconceptions,
 		misconceptionTags: value.misconceptionTags,
-		editorSummary: isRevisionCommentary(value.editorSummary) ? undefined : value.editorSummary,
+		editorSummary: isRevisionCommentary(value.editorSummary)
+			? undefined
+			: value.editorSummary,
 		uncertaintySummary: value.uncertaintySummary,
 		uncertaintyDrivers: value.uncertaintyDrivers,
 		searchDatabases: value.searchDatabases,

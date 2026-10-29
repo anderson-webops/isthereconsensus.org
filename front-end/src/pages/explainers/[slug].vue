@@ -10,7 +10,9 @@ interface ExplainerRouteParams {
 const route = useRoute();
 const slug = computed(() => {
 	const value = (route.params as ExplainerRouteParams).slug;
-	return Array.isArray(value) ? value[0] : String(value ?? "");
+	return Array.isArray(value)
+		? value[0]
+		: String(value ?? "");
 });
 
 const explainer = computed(() => getExplainer(slug.value));
@@ -32,12 +34,14 @@ useSeoMeta({
 			:items="[
 				{ label: 'Home', to: '/' },
 				{ label: 'Evergreen explainers', to: '/explainers' },
-				{ label: explainer?.title || 'Explainer' }
+				{ label: explainer?.title || 'Explainer' },
 			]"
 		/>
 
 		<header class="explainer-detail-header">
-			<p class="eyebrow">Evergreen explainer</p>
+			<p class="eyebrow">
+				Evergreen explainer
+			</p>
 			<h1>{{ explainer?.title }}</h1>
 			<p>{{ explainer?.summary }}</p>
 		</header>
@@ -55,7 +59,9 @@ useSeoMeta({
 		<section class="explainer-detail-panel">
 			<h2>How scientists handle this in practice</h2>
 			<ul class="plain-list">
-				<li v-for="item in explainer?.howScientistsHandleIt || []" :key="item">{{ item }}</li>
+				<li v-for="item in explainer?.howScientistsHandleIt || []" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -63,14 +69,18 @@ useSeoMeta({
 			<section class="explainer-detail-panel">
 				<h2>Common traps</h2>
 				<ul class="plain-list plain-list--tight">
-					<li v-for="item in explainer?.commonTraps || []" :key="item">{{ item }}</li>
+					<li v-for="item in explainer?.commonTraps || []" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
 			<section class="explainer-detail-panel">
 				<h2>Good sources for this concept</h2>
 				<ul class="plain-list plain-list--tight">
-					<li v-for="item in explainer?.goodSources || []" :key="item">{{ item }}</li>
+					<li v-for="item in explainer?.goodSources || []" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 		</section>
@@ -100,7 +110,9 @@ useSeoMeta({
 
 		<section class="explainer-callout">
 			<div>
-				<p class="eyebrow">Reviewed claims</p>
+				<p class="eyebrow">
+					Reviewed claims
+				</p>
 				<h2>See the concept applied.</h2>
 				<p>{{ explainer?.whyItMatters }}</p>
 			</div>

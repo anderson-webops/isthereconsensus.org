@@ -68,7 +68,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Moderation and appeals' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Moderation and appeals</p>
+			<p class="eyebrow">
+				Moderation and appeals
+			</p>
 			<h1>Moderation decisions and appeals.</h1>
 			<p>These notice, action, and appeal rules support the community guidelines.</p>
 		</header>
@@ -86,7 +88,9 @@ useStaticPageMeta({
 				<p>Moderation starts with the smallest accurate tool before escalating further.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in actionTypes" :key="item">{{ item }}</li>
+				<li v-for="item in actionTypes" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -96,7 +100,9 @@ useStaticPageMeta({
 				<p>Affected users receive reasons, not just outcomes.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in noticeElements" :key="item">{{ item }}</li>
+				<li v-for="item in noticeElements" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -119,7 +125,9 @@ useStaticPageMeta({
 				<p>Fairness is easier to trust when the process can be audited later.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in transparencyCommitments" :key="item">{{ item }}</li>
+				<li v-for="item in transparencyCommitments" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="policy-prose">
 				<p>
@@ -132,7 +140,9 @@ useStaticPageMeta({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Keep the lanes separate</p>
+				<p class="eyebrow">
+					Keep the lanes separate
+				</p>
 				<h2>Corrections handle facts; appeals handle enforcement.</h2>
 				<p>
 					Factual problems belong in corrections. Conduct-enforcement problems belong here and in the

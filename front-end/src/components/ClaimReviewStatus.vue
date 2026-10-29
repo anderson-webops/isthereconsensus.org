@@ -31,9 +31,7 @@ function openHistory() {
 <template>
 	<details id="review-status" class="review-status">
 		<summary>
-			<span class="review-status__heading"
-				>Review status <span>{{ reviewStatusLabels[status.state] }}</span></span
-			>
+			<span class="review-status__heading">Review status <span>{{ reviewStatusLabels[status.state] }}</span></span>
 			<span class="review-status__date">{{ dateLabel }}: {{ formatReviewDate(status.reviewedAt) }}</span>
 		</summary>
 		<div class="review-status__body">
@@ -49,13 +47,21 @@ function openHistory() {
 				This date was recorded through the site's editorial publication or review workflow. The reviewer
 				disclosure describes who performed the review.
 			</p>
-			<p v-if="reviewerDisclosure" class="review-status__reviewer">{{ reviewerDisclosure }}</p>
-			<p v-if="claim.authorLine">{{ claim.authorLine }}</p>
-			<p v-if="claim.coiSummary">{{ claim.coiSummary }}</p>
+			<p v-if="reviewerDisclosure" class="review-status__reviewer">
+				{{ reviewerDisclosure }}
+			</p>
+			<p v-if="claim.authorLine">
+				{{ claim.authorLine }}
+			</p>
+			<p v-if="claim.coiSummary">
+				{{ claim.coiSummary }}
+			</p>
 			<div v-if="claim.appraisalTools?.length">
 				<h3>Recorded assessment approach</h3>
 				<ul>
-					<li v-for="tool in claim.appraisalTools" :key="tool">{{ tool }}</li>
+					<li v-for="tool in claim.appraisalTools" :key="tool">
+						{{ tool }}
+					</li>
 				</ul>
 			</div>
 			<p v-if="status.state === 'due'">
@@ -67,7 +73,9 @@ function openHistory() {
 				significance.
 			</p>
 			<ul v-if="status.issues.length">
-				<li v-for="issue in status.issues" :key="issue">{{ issue }}</li>
+				<li v-for="issue in status.issues" :key="issue">
+					{{ issue }}
+				</li>
 			</ul>
 			<dl>
 				<div>
@@ -75,8 +83,7 @@ function openHistory() {
 					<dd>
 						<time v-if="status.reviewedAt" :datetime="status.reviewedAt">{{
 							formatReviewDate(status.reviewedAt)
-						}}</time
-						><span v-else>Not recorded or needs verification</span>
+						}}</time><span v-else>Not recorded or needs verification</span>
 					</dd>
 				</div>
 				<div>
@@ -84,8 +91,7 @@ function openHistory() {
 					<dd>
 						<time v-if="status.searchCutoffAt" :datetime="status.searchCutoffAt">{{
 							formatReviewDate(status.searchCutoffAt)
-						}}</time
-						><span v-else>Not recorded or needs verification</span>
+						}}</time><span v-else>Not recorded or needs verification</span>
 					</dd>
 				</div>
 				<div>
@@ -93,8 +99,7 @@ function openHistory() {
 					<dd>
 						<time v-if="status.nextReviewAt" :datetime="status.nextReviewAt">{{
 							formatReviewDate(status.nextReviewAt)
-						}}</time
-						><span v-else>Not scheduled</span>
+						}}</time><span v-else>Not scheduled</span>
 					</dd>
 				</div>
 				<div>
@@ -102,9 +107,8 @@ function openHistory() {
 					<dd>
 						{{ status.sourceChecks.recorded }} of {{ status.sourceChecks.total }} displayed sources<span
 							v-if="status.sourceChecks.oldest"
-							>; earliest {{ formatReviewDate(status.sourceChecks.oldest) }}, latest
-							{{ formatReviewDate(status.sourceChecks.latest) }}</span
-						>
+						>; earliest {{ formatReviewDate(status.sourceChecks.oldest) }}, latest
+							{{ formatReviewDate(status.sourceChecks.latest) }}</span>
 					</dd>
 				</div>
 			</dl>
@@ -116,8 +120,7 @@ function openHistory() {
 			<p>Formatting changes do not count as a new evidence review. All dates are shown in UTC.</p>
 			<div class="review-status__links">
 				<NuxtLink to="/automation-and-ai">Preparation and review policy</NuxtLink>
-				<a href="#claim-sources">Read source notes</a
-				><a href="#claim-history" @click="openHistory">Read change log</a>
+				<a href="#claim-sources">Read source notes</a><a href="#claim-history" @click="openHistory">Read change log</a>
 			</div>
 		</div>
 	</details>

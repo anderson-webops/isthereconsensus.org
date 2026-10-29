@@ -34,9 +34,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The existence of admixture is high-confidence. Exact event counts, locations, sex bias, and phenotype effects remain model-dependent.",
 		sources: [
-			["systematic_review", "Something old, something borrowed: admixture and adaptation in human evolution", "Current Opinion in Genetics & Development", 2018, "10.1016/j.gde.2018.05.009", "Review of archaic admixture evidence and the uncertain functional consequences of surviving introgressed DNA."],
-			["landmark_study", "Multiple episodes of interbreeding between Neanderthal and modern humans", "Nature Ecology & Evolution", 2018, "10.1038/s41559-018-0735-8", "Population-genetic modeling supports multiple contributions rather than a single simple admixture event."],
-			["landmark_study", "Recurrent gene flow between Neanderthals and modern humans over the past 200,000 years", "Science", 2024, "10.1126/science.adi1768", "Ancient and modern genomes indicate recurrent gene flow in both directions."]
+			[
+				"systematic_review",
+				"Something old, something borrowed: admixture and adaptation in human evolution",
+				"Current Opinion in Genetics & Development",
+				2018,
+				"10.1016/j.gde.2018.05.009",
+				"Review of archaic admixture evidence and the uncertain functional consequences of surviving introgressed DNA."
+			],
+			[
+				"landmark_study",
+				"Multiple episodes of interbreeding between Neanderthal and modern humans",
+				"Nature Ecology & Evolution",
+				2018,
+				"10.1038/s41559-018-0735-8",
+				"Population-genetic modeling supports multiple contributions rather than a single simple admixture event."
+			],
+			[
+				"landmark_study",
+				"Recurrent gene flow between Neanderthals and modern humans over the past 200,000 years",
+				"Science",
+				2024,
+				"10.1126/science.adi1768",
+				"Ancient and modern genomes indicate recurrent gene flow in both directions."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Gene flow is secure, while the number, identity, geography, and dates of contributing Denisovan populations continue to be refined.",
 		sources: [
-			["systematic_review", "Archaic hominin introgression into modern human genomes", "American Journal of Physical Anthropology", 2019, "10.1002/ajpa.23951", "Review synthesizing multiple archaic gene-flow events and their genomic signatures."],
-			["systematic_review", "A history of multiple Denisovan introgression events in modern humans", "Nature Genetics", 2024, "10.1038/s41588-024-01960-y", "Recent review concludes that distinct Denisovan populations introgressed into modern humans multiple times."],
-			["landmark_study", "Analysis of human sequence data reveals two pulses of archaic Denisovan admixture", "Cell", 2018, "10.1016/j.cell.2018.02.031", "Genome analysis identifies at least two Denisovan-related admixture pulses from differentiated sources."]
+			[
+				"systematic_review",
+				"Archaic hominin introgression into modern human genomes",
+				"American Journal of Physical Anthropology",
+				2019,
+				"10.1002/ajpa.23951",
+				"Review synthesizing multiple archaic gene-flow events and their genomic signatures."
+			],
+			[
+				"systematic_review",
+				"A history of multiple Denisovan introgression events in modern humans",
+				"Nature Genetics",
+				2024,
+				"10.1038/s41588-024-01960-y",
+				"Recent review concludes that distinct Denisovan populations introgressed into modern humans multiple times."
+			],
+			[
+				"landmark_study",
+				"Analysis of human sequence data reveals two pulses of archaic Denisovan admixture",
+				"Cell",
+				2018,
+				"10.1016/j.cell.2018.02.031",
+				"Genome analysis identifies at least two Denisovan-related admixture pulses from differentiated sources."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Confidence is high in African origin and lower in the exact population structure, geographic centers, and contribution of poorly sampled regions.",
 		sources: [
-			["systematic_review", "The origin and evolution of Homo sapiens", "Philosophical Transactions of the Royal Society B", 2016, "10.1098/rstb.2015.0237", "Review integrates African fossils, genetics, and later archaic gene flow while rejecting a simple linear sequence."],
-			["landmark_study", "A weakly structured stem for human origins in Africa", "Nature", 2023, "10.1038/s41586-023-06055-y", "Demographic modeling supports connected ancestral African populations rather than one sharply isolated stem."],
-			["systematic_review", "Rethinking the dispersal of Homo sapiens out of Africa", "Evolutionary Anthropology", 2015, "10.1002/evan.21455", "Review of fossil, archaeological, environmental, and genomic evidence for complex dispersals from an African origin."]
+			[
+				"systematic_review",
+				"The origin and evolution of Homo sapiens",
+				"Philosophical Transactions of the Royal Society B",
+				2016,
+				"10.1098/rstb.2015.0237",
+				"Review integrates African fossils, genetics, and later archaic gene flow while rejecting a simple linear sequence."
+			],
+			[
+				"landmark_study",
+				"A weakly structured stem for human origins in Africa",
+				"Nature",
+				2023,
+				"10.1038/s41586-023-06055-y",
+				"Demographic modeling supports connected ancestral African populations rather than one sharply isolated stem."
+			],
+			[
+				"systematic_review",
+				"Rethinking the dispersal of Homo sapiens out of Africa",
+				"Evolutionary Anthropology",
+				2015,
+				"10.1002/evan.21455",
+				"Review of fossil, archaeological, environmental, and genomic evidence for complex dispersals from an African origin."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The branching and mosaic framework is secure; particular branch placements and species labels remain actively revised.",
 		sources: [
-			["systematic_review", "Reconstructing human evolution: Achievements, challenges, and opportunities", "Proceedings of the National Academy of Sciences", 2010, "10.1073/pnas.1001649107", "Review explains the resolved branching structure and the taxonomic limits of a fragmentary hominin record."],
-			["systematic_review", "Mosaic evolution and the pattern of transitions in the hominin lineage", "Philosophical Transactions of the Royal Society B", 2016, "10.1098/rstb.2015.0244", "Review finds continuous, cumulative, mosaic change rather than one bundled leap."],
-			["context", "Trees and ladders: A critique of the theory of human cognitive and behavioural evolution in Palaeolithic archaeology", "Quaternary International", 2011, "10.1016/j.quaint.2011.03.007", "Critique of ladder-like narratives in archaeological accounts of cognition and behavior."]
+			[
+				"systematic_review",
+				"Reconstructing human evolution: Achievements, challenges, and opportunities",
+				"Proceedings of the National Academy of Sciences",
+				2010,
+				"10.1073/pnas.1001649107",
+				"Review explains the resolved branching structure and the taxonomic limits of a fragmentary hominin record."
+			],
+			[
+				"systematic_review",
+				"Mosaic evolution and the pattern of transitions in the hominin lineage",
+				"Philosophical Transactions of the Royal Society B",
+				2016,
+				"10.1098/rstb.2015.0244",
+				"Review finds continuous, cumulative, mosaic change rather than one bundled leap."
+			],
+			[
+				"context",
+				"Trees and ladders: A critique of the theory of human cognitive and behavioural evolution in Palaeolithic archaeology",
+				"Quaternary International",
+				2011,
+				"10.1016/j.quaint.2011.03.007",
+				"Critique of ladder-like narratives in archaeological accounts of cognition and behavior."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Tools and flexible behavior are well supported. Symbolic intent, language, burial, and population-wide prevalence carry greater inferential uncertainty.",
 		sources: [
-			["systematic_review", "The cultural capacities of Neandertals: a review and re-evaluation", "Journal of Human Evolution", 1993, "10.1006/jhev.1993.1010", "Early comprehensive reassessment challenged simplistic claims of categorical cultural inferiority."],
-			["systematic_review", "Behavioural Complexity in Eurasian Neanderthal Populations: a Chronological Examination of the Archaeological Evidence", "Cambridge Archaeological Journal", 2008, "10.1017/S0959774308000371", "Chronological review documents variation and increasing evidence for complex practices."],
-			["landmark_study", "A 51,000-year-old engraved bone reveals Neanderthals' capacity for symbolic behaviour", "Nature Ecology & Evolution", 2021, "10.1038/s41559-021-01487-z", "Contextual analysis supports deliberate production of an engraved object before modern humans arrived locally."]
+			[
+				"systematic_review",
+				"The cultural capacities of Neandertals: a review and re-evaluation",
+				"Journal of Human Evolution",
+				1993,
+				"10.1006/jhev.1993.1010",
+				"Early comprehensive reassessment challenged simplistic claims of categorical cultural inferiority."
+			],
+			[
+				"systematic_review",
+				"Behavioural Complexity in Eurasian Neanderthal Populations: a Chronological Examination of the Archaeological Evidence",
+				"Cambridge Archaeological Journal",
+				2008,
+				"10.1017/S0959774308000371",
+				"Chronological review documents variation and increasing evidence for complex practices."
+			],
+			[
+				"landmark_study",
+				"A 51,000-year-old engraved bone reveals Neanderthals' capacity for symbolic behaviour",
+				"Nature Ecology & Evolution",
+				2021,
+				"10.1038/s41559-021-01487-z",
+				"Contextual analysis supports deliberate production of an engraved object before modern humans arrived locally."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The theropod origin is exceptionally well supported. Debate concerns detailed branching and the sequence of flight-related adaptations.",
 		sources: [
-			["systematic_review", "An integrative approach to understanding bird origins", "Science", 2014, "10.1126/science.1253293", "Review integrates fossils, development, biomechanics, and phylogeny across the dinosaur-bird transition."],
-			["systematic_review", "Paravian Phylogeny and the Dinosaur-Bird Transition: An Overview", "Frontiers in Earth Science", 2019, "10.3389/feart.2018.00252", "Overview of competing detailed trees within the established theropod framework."],
-			["landmark_study", "Gradual assembly of avian body plan culminated in rapid rates of evolution across the dinosaur-bird transition", "Current Biology", 2014, "10.1016/j.cub.2014.08.034", "Large comparative analysis finds gradual trait assembly and rapid evolution along the avian stem."]
+			[
+				"systematic_review",
+				"An integrative approach to understanding bird origins",
+				"Science",
+				2014,
+				"10.1126/science.1253293",
+				"Review integrates fossils, development, biomechanics, and phylogeny across the dinosaur-bird transition."
+			],
+			[
+				"systematic_review",
+				"Paravian Phylogeny and the Dinosaur-Bird Transition: An Overview",
+				"Frontiers in Earth Science",
+				2019,
+				"10.3389/feart.2018.00252",
+				"Overview of competing detailed trees within the established theropod framework."
+			],
+			[
+				"landmark_study",
+				"Gradual assembly of avian body plan culminated in rapid rates of evolution across the dinosaur-bird transition",
+				"Current Biology",
+				2014,
+				"10.1016/j.cub.2014.08.034",
+				"Large comparative analysis finds gradual trait assembly and rapid evolution along the avian stem."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Cause, timing, and broad mechanism are high-confidence. Regional severity, exact atmospheric loading, and interacting stresses retain uncertainty.",
 		sources: [
-			["consensus_statement", "The Chicxulub Asteroid Impact and Mass Extinction at the Cretaceous-Paleogene Boundary", "Science", 2010, "10.1126/science.1177265", "International synthesis concludes that Chicxulub triggered the boundary mass extinction."],
-			["systematic_review", "The Chicxulub impact and its environmental consequences", "Nature Reviews Earth & Environment", 2022, "10.1038/s43017-022-00283-y", "Review connects crater physics, ejecta, darkness, cooling, ocean change, and extinction selectivity."],
-			["systematic_review", "From impact to extinction to recovery: Discoveries of IODP-ICDP Expedition 364 to the Chicxulub impact structure", "Marine Geology", 2025, "10.1016/j.margeo.2025.107661", "Recent synthesis of direct crater-core evidence and recovery after impact."]
+			[
+				"consensus_statement",
+				"The Chicxulub Asteroid Impact and Mass Extinction at the Cretaceous-Paleogene Boundary",
+				"Science",
+				2010,
+				"10.1126/science.1177265",
+				"International synthesis concludes that Chicxulub triggered the boundary mass extinction."
+			],
+			[
+				"systematic_review",
+				"The Chicxulub impact and its environmental consequences",
+				"Nature Reviews Earth & Environment",
+				2022,
+				"10.1038/s43017-022-00283-y",
+				"Review connects crater physics, ejecta, darkness, cooling, ocean change, and extinction selectivity."
+			],
+			[
+				"systematic_review",
+				"From impact to extinction to recovery: Discoveries of IODP-ICDP Expedition 364 to the Chicxulub impact structure",
+				"Marine Geology",
+				2025,
+				"10.1016/j.margeo.2025.107661",
+				"Recent synthesis of direct crater-core evidence and recovery after impact."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Pre-flight feather diversity is well established. The deepest origin and first function remain debated because skin impressions preserve unevenly.",
 		sources: [
-			["systematic_review", "The origin and early evolution of feathers: implications, uncertainties and future prospects", "Biology Letters", 2025, "10.1098/rsbl.2024.0517", "Current review of fossil, developmental, chemical, and preservation evidence."],
-			["systematic_review", "The Evolutionary Origin And Diversification Of Feathers", "The Quarterly Review of Biology", 2002, "10.1086/341993", "Classic synthesis documents feather diversification in non-avian theropods before birds and flight."],
-			["systematic_review", "The Early Origin of Feathers", "Trends in Ecology & Evolution", 2019, "10.1016/j.tree.2019.04.018", "Review considers evidence that feather-like coverings may extend deeper than Theropoda."]
+			[
+				"systematic_review",
+				"The origin and early evolution of feathers: implications, uncertainties and future prospects",
+				"Biology Letters",
+				2025,
+				"10.1098/rsbl.2024.0517",
+				"Current review of fossil, developmental, chemical, and preservation evidence."
+			],
+			[
+				"systematic_review",
+				"The Evolutionary Origin And Diversification Of Feathers",
+				"The Quarterly Review of Biology",
+				2002,
+				"10.1086/341993",
+				"Classic synthesis documents feather diversification in non-avian theropods before birds and flight."
+			],
+			[
+				"systematic_review",
+				"The Early Origin of Feathers",
+				"Trends in Ecology & Evolution",
+				2019,
+				"10.1016/j.tree.2019.04.018",
+				"Review considers evidence that feather-like coverings may extend deeper than Theropoda."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Its broad evolutionary placement is secure. Fine phylogenetic position and flight performance shift with new specimens and methods.",
 		sources: [
-			["systematic_review", "The origin and early evolution of birds", "Biological Reviews", 1998, "10.1111/j.1469-185X.1997.tb00024.x", "Broad review locates Archaeopteryx within theropod ancestry and the staged assembly of the avian body plan."],
-			["landmark_study", "Archaeopteryx and the origin of birds", "Biological Journal of the Linnean Society", 1976, "10.1111/j.1095-8312.1976.tb00244.x", "Foundational anatomical comparison established close affinities with small theropod dinosaurs."],
-			["landmark_study", "Chicago Archaeopteryx informs on the early evolution of the avian bauplan", "Nature", 2025, "10.1038/s41586-025-08912-4", "A newly described specimen refines the mosaic of skull, foot, tail, and plumage traits."]
+			[
+				"systematic_review",
+				"The origin and early evolution of birds",
+				"Biological Reviews",
+				1998,
+				"10.1111/j.1469-185X.1997.tb00024.x",
+				"Broad review locates Archaeopteryx within theropod ancestry and the staged assembly of the avian body plan."
+			],
+			[
+				"landmark_study",
+				"Archaeopteryx and the origin of birds",
+				"Biological Journal of the Linnean Society",
+				1976,
+				"10.1111/j.1095-8312.1976.tb00244.x",
+				"Foundational anatomical comparison established close affinities with small theropod dinosaurs."
+			],
+			[
+				"landmark_study",
+				"Chicago Archaeopteryx informs on the early evolution of the avian bauplan",
+				"Nature",
+				2025,
+				"10.1038/s41586-025-08912-4",
+				"A newly described specimen refines the mosaic of skull, foot, tail, and plumage traits."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026HumanOriginsClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The terrestrial origin and broad sequence are high-confidence. Exact relationships among some early families remain revisable.",
 		sources: [
-			["systematic_review", "From Land to Water: the Origin of Whales, Dolphins, and Porpoises", "Evolution: Education and Outreach", 2009, "10.1007/s12052-009-0135-2", "Review synthesizes transitional families and organ-system changes across the aquatic transition."],
-			["systematic_review", "The origin and early evolution of whales: macroevolution documented on the Indian Subcontinent", "Journal of Biosciences", 2009, "10.1007/s12038-009-0060-0", "Review of the exceptionally informative South Asian fossil sequence."],
-			["context", "The Walking Whales: From Land to Water in Eight Million Years", "University of California Press", 2014, "10.1525/9780520959415", "Book-length synthesis by a leading researcher connects fossil discovery, anatomy, and environmental reconstruction."]
+			[
+				"systematic_review",
+				"From Land to Water: the Origin of Whales, Dolphins, and Porpoises",
+				"Evolution: Education and Outreach",
+				2009,
+				"10.1007/s12052-009-0135-2",
+				"Review synthesizes transitional families and organ-system changes across the aquatic transition."
+			],
+			[
+				"systematic_review",
+				"The origin and early evolution of whales: macroevolution documented on the Indian Subcontinent",
+				"Journal of Biosciences",
+				2009,
+				"10.1007/s12038-009-0060-0",
+				"Review of the exceptionally informative South Asian fossil sequence."
+			],
+			[
+				"context",
+				"The Walking Whales: From Land to Water in Eight Million Years",
+				"University of California Press",
+				2014,
+				"10.1525/9780520959415",
+				"Book-length synthesis by a leading researcher connects fossil discovery, anatomy, and environmental reconstruction."
+			]
 		]
 	})
 ];

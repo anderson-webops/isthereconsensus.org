@@ -162,7 +162,9 @@ export function refreshSmokingClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 				...source,
 				appraisal: "not_appraised",
 				isAnchor: false,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original scans: selected methods and summary visually assessed on pages 740 and 747; acknowledgments checked separately. Not every table, figure or underlying record appraised."
 					: "Original causality framework on printed page 20 and conclusions on page 31 assessed; page 31 visually checked. Historical assessment, not a fresh review of every underlying study."
@@ -172,10 +174,15 @@ export function refreshSmokingClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 				appraisal: "not_appraised",
 				isAnchor: false,
 				citationStatus: "current",
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : undefined
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: undefined
 			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

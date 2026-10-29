@@ -154,8 +154,16 @@ function publication(
 	focus: string
 ): Pick<SeedClaim, "changeLog" | "readerAnnouncement" | "surveillanceSpec"> {
 	return {
-		changeLog: [{ date: checkedAt, kind: "publication", summary }],
-		readerAnnouncement: { id, date: checkedAt, kind: "new_review", bottomLineImpact: "new", summary },
+		changeLog: [
+			{ date: checkedAt, kind: "publication", summary }
+		],
+		readerAnnouncement: {
+			id,
+			date: checkedAt,
+			kind: "new_review",
+			bottomLineImpact: "new",
+			summary
+		},
 		surveillanceSpec: {
 			focus,
 			cadenceDays: 180,
@@ -194,7 +202,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 			"A 95% credible interval is not 95% scientific agreement or a prediction interval for one person.",
 			"A useful exercise effect is not evidence to stop prescribed treatment."
 		],
-		misconceptionTags: ["exercise blood pressure", "aerobic training", "resistance training", "hypertension"],
+		misconceptionTags: [
+			"exercise blood pressure",
+			"aerobic training",
+			"resistance training",
+			"hypertension"
+		],
 		editorSummary:
 			"Compare the same outcome over the same time horizon. These training programs concern resting pressure after weeks of exercise, not pressure while lifting a weight. Background care and baseline risk remain relevant, and safe, sustainable activity matters beyond one biomarker.",
 		uncertaintySummary:
@@ -256,7 +269,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 			"The largest point estimate is not necessarily the most trustworthy estimate.",
 			"A category named isometric does not validate every device or exercise marketed under that label."
 		],
-		misconceptionTags: ["isometric exercise", "handgrip", "wall squats", "best exercise for blood pressure"],
+		misconceptionTags: [
+			"isometric exercise",
+			"handgrip",
+			"wall squats",
+			"best exercise for blood pressure"
+		],
 		editorSummary:
 			"The key question is not whether an exercise can help, but whether evidence establishes that it is better under comparable conditions. A network draws partly on indirect comparisons, so differences between the studies themselves can influence the apparent order.",
 		uncertaintySummary:
@@ -358,7 +376,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 		sources: [
 			exerciseBpSources.schneider,
 			exerciseBpSources.pinto,
-			{ ...exerciseBpSources.hu, order: 3, stance: "context", isAnchor: false }
+			{
+				...exerciseBpSources.hu,
+				order: 3,
+				stance: "context",
+				isAnchor: false
+			}
 		]
 	},
 	{
@@ -385,7 +408,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 			"MET-minutes combine intensity and duration; they are not simply minutes of any activity.",
 			"A population-level curve is not a substitute for a safe program matched to someone's health."
 		],
-		misconceptionTags: ["exercise dose", "MET minutes", "optimal workout", "blood pressure dose response"],
+		misconceptionTags: [
+			"exercise dose",
+			"MET minutes",
+			"optimal workout",
+			"blood pressure dose response"
+		],
 		editorSummary:
 			"The dose curve is a hypothesis-generating summary, not a precision prescription. Exposure coding, sparse data and differences between trials can shape its maximum. General activity guidance and individual safety decisions should not be collapsed into a statistically optimized number.",
 		uncertaintySummary:
@@ -445,7 +473,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 			"A higher workout reading is not directly comparable to a standardized resting reading.",
 			"This distinction is not a reason to dismiss concerning symptoms or delay medical care."
 		],
-		misconceptionTags: ["post exercise blood pressure", "home monitoring", "resting reading", "measurement timing"],
+		misconceptionTags: [
+			"post exercise blood pressure",
+			"home monitoring",
+			"resting reading",
+			"measurement timing"
+		],
 		editorSummary:
 			"Keep the measurement question separate from the exercise question. Routine home tracking, supervised exercise testing and research follow-up serve different purposes. Interpret the record with a healthcare professional rather than using this review or one reading as a diagnosis.",
 		uncertaintySummary:
@@ -475,7 +508,12 @@ export const exerciseBpPracticalClaims: SeedClaim[] = [
 		),
 		sources: [
 			exerciseBpSources.measurement,
-			{ ...exerciseBpSources.hu, order: 2, stance: "context", isAnchor: false }
+			{
+				...exerciseBpSources.hu,
+				order: 2,
+				stance: "context",
+				isAnchor: false
+			}
 		]
 	}
 ];

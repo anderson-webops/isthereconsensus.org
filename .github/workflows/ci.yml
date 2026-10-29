@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 24.18.1
-  NPM_VERSION: 12.0.2
+  NODE_VERSION: 24.22.1
+  NPM_VERSION: 12.2.1
 
 permissions:
   contents: read
@@ -103,7 +103,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 24.18.1 ]
+        node-version: [ 24.22.1 ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -159,6 +159,9 @@ jobs:
           npm audit --omit=dev
           npm audit --prefix back-end
           npm audit --prefix back-end --omit=dev
+          npm audit --prefix search-worker/runtime --workspaces=false
+          npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
+          npm run audit:qs
           npm audit signatures
           npm run verify:native-lock
 
@@ -340,6 +343,9 @@ jobs:
           npm audit --omit=dev
           npm audit --prefix back-end
           npm audit --prefix back-end --omit=dev
+          npm audit --prefix search-worker/runtime --workspaces=false
+          npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
+          npm run audit:qs
           npm audit signatures
           npm run verify:native-lock
           npm run lint
@@ -355,7 +361,7 @@ jobs:
           node scripts/package-runtime-artifact.mjs
 
       - name: Retain accepted exact-byte bundle
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: accepted-consensus-linux-arm64
           path: .runtime-release-assets/
@@ -378,7 +384,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: accepted-consensus-linux-arm64
           path: release-assets

@@ -96,7 +96,18 @@ describe("space-observation reader expansion", () => {
 
 	it("retrieves diagnostic questions without changing search ranking", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { orbit: "astronaut weightless free fall", phases: "moon phases shadow", retrograde: "retrograde planet orbit", lookback: "galaxy lookback time", color: "Webb infrared color images", transit: "exoplanet transit mass composition", habitable: "habitable zone guarantee", lensing: "gravitational lensing multiple images", darkEnergy: "dark energy physical cause", brightness: "brighter star closer parallax" };
+		const queries = {
+			orbit: "astronaut weightless free fall",
+			phases: "moon phases shadow",
+			retrograde: "retrograde planet orbit",
+			lookback: "galaxy lookback time",
+			color: "Webb infrared color images",
+			transit: "exoplanet transit mass composition",
+			habitable: "habitable zone guarantee",
+			lensing: "gravitational lensing multiple images",
+			darkEnergy: "dark energy physical cause",
+			brightness: "brighter star closer parallax"
+		};
 		for (const [key, query] of Object.entries(queries)) assert.ok(search(query).some(result => result.claim.slug === readerSpaceSlugs[key as keyof typeof readerSpaceSlugs]), query);
 	});
 });

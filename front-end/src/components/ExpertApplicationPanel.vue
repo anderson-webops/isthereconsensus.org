@@ -62,9 +62,11 @@ async function refreshApplication() {
 		});
 		application.value = response.application;
 		hydrateForm(response.application);
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load expert application status.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -82,11 +84,11 @@ async function submitApplication() {
 				affiliation: affiliation.value.trim(),
 				expertiseAreas: expertiseAreas.value
 					.split(",")
-					.map((item) => item.trim())
+					.map(item => item.trim())
 					.filter(Boolean),
 				evidenceLinks: evidenceLinks.value
 					.split("\n")
-					.map((item) => item.trim())
+					.map(item => item.trim())
 					.filter(Boolean),
 				statement: statement.value.trim(),
 				conflictDisclosure: conflictDisclosure.value.trim(),
@@ -98,9 +100,11 @@ async function submitApplication() {
 		application.value = response.application;
 		successMessage.value = "Application submitted for review.";
 		await refreshAuth();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to submit the expert application.";
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -126,11 +130,15 @@ watch(
 			</div>
 		</header>
 
-		<div v-if="!isLoggedIn" class="muted">Sign in with a member account to apply.</div>
+		<div v-if="!isLoggedIn" class="muted">
+			Sign in with a member account to apply.
+		</div>
 		<div v-else-if="role !== 'user'" class="muted">
 			Admin accounts review applications and do not need to apply.
 		</div>
-		<div v-else-if="loading" class="muted">Loading your application...</div>
+		<div v-else-if="loading" class="muted">
+			Loading your application...
+		</div>
 		<div v-else class="expert-panel__body">
 			<div class="status-strip">
 				<article class="status-card">
@@ -157,7 +165,9 @@ watch(
 				</article>
 			</div>
 
-			<p v-if="application?.reviewNotes" class="review-note">{{ application.reviewNotes }}</p>
+			<p v-if="application?.reviewNotes" class="review-note">
+				{{ application.reviewNotes }}
+			</p>
 
 			<details class="application-details" :open="!application">
 				<summary>{{ application ? "Update application" : "Apply for expert review" }}</summary>
@@ -174,7 +184,7 @@ watch(
 								v-model="credentialLabel"
 								type="text"
 								placeholder="PhD in biology, climate researcher, science journalist"
-							/>
+							>
 
 							<label class="field-label" for="affiliation">Affiliation</label>
 							<input
@@ -182,7 +192,7 @@ watch(
 								v-model="affiliation"
 								type="text"
 								placeholder="University, lab, institution"
-							/>
+							>
 
 							<label class="field-label" for="expertise-areas">Expertise areas</label>
 							<input
@@ -190,7 +200,7 @@ watch(
 								v-model="expertiseAreas"
 								type="text"
 								placeholder="Comma-separated: epidemiology, climate modeling, statistics"
-							/>
+							>
 						</div>
 					</div>
 
@@ -224,9 +234,7 @@ watch(
 							<p>Disclose interests that could affect how readers interpret your reviews.</p>
 						</div>
 						<div class="field-grid">
-							<label class="field-label" for="conflict-disclosure"
-								>Relevant conflicts or advocacy roles</label
-							>
+							<label class="field-label" for="conflict-disclosure">Relevant conflicts or advocacy roles</label>
 							<textarea
 								id="conflict-disclosure"
 								v-model="conflictDisclosure"
@@ -234,9 +242,7 @@ watch(
 								placeholder="List any consulting, advocacy, testimony, board roles, litigation, or other interests a reader should know about."
 							/>
 
-							<label class="field-label" for="funding-disclosure"
-								>Relevant funding or sponsorship disclosure</label
-							>
+							<label class="field-label" for="funding-disclosure">Relevant funding or sponsorship disclosure</label>
 							<textarea
 								id="funding-disclosure"
 								v-model="fundingDisclosure"
@@ -245,7 +251,7 @@ watch(
 							/>
 
 							<label class="checkbox-row">
-								<input v-model="attestsDisclosurePolicy" type="checkbox" />
+								<input v-model="attestsDisclosurePolicy" type="checkbox">
 								<span>
 									I have read the
 									<NuxtLink to="/conflicts-and-funding">Conflict and funding disclosure</NuxtLink>
@@ -254,7 +260,7 @@ watch(
 							</label>
 
 							<label class="checkbox-row">
-								<input v-model="attestsReviewStandards" type="checkbox" />
+								<input v-model="attestsReviewStandards" type="checkbox">
 								<span>
 									I have read the
 									<NuxtLink to="/expert-review-program">Verified expert review program</NuxtLink>
@@ -270,8 +276,12 @@ watch(
 						<NuxtLink to="/account-deletion-and-retention">Account deletion and retention</NuxtLink>, and
 						<NuxtLink to="/standards">How reviews work</NuxtLink> for related rules.
 					</p>
-					<p v-if="successMessage" class="success">{{ successMessage }}</p>
-					<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+					<p v-if="successMessage" class="success">
+						{{ successMessage }}
+					</p>
+					<p v-if="errorMessage" class="error">
+						{{ errorMessage }}
+					</p>
 					<button class="button button--primary" type="submit" :disabled="saving">
 						{{ saving ? "Submitting..." : application ? "Update application" : "Apply for review" }}
 					</button>

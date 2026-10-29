@@ -35,8 +35,8 @@ describe("home entry layout", () => {
 	});
 
 	it("keeps library depth subordinate to the search task", () => {
-		const searchIndex = source.indexOf('class="search-panel"');
-		const summaryIndex = source.indexOf('class="library-summary"');
+		const searchIndex = source.indexOf("class=\"search-panel\"");
+		const summaryIndex = source.indexOf("class=\"library-summary\"");
 
 		assert.ok(searchIndex >= 0);
 		assert.ok(summaryIndex > searchIndex);
@@ -57,12 +57,12 @@ describe("home entry layout", () => {
 	});
 
 	it("keeps browse cards title-led and sends readers to the full answer", () => {
-		const claimRowStart = source.indexOf('class="claim-row"');
+		const claimRowStart = source.indexOf("class=\"claim-row\"");
 		const claimRowEnd = source.indexOf("</NuxtLink>", claimRowStart);
 		const claimRow = source.slice(claimRowStart, claimRowEnd);
 
 		assert.ok(claimRow.includes("<h3>{{ claim.title }}</h3>"));
-		assert.ok(claimRow.indexOf("<h3>{{ claim.title }}</h3>") < claimRow.indexOf('class="claim-row__meta"'));
+		assert.ok(claimRow.indexOf("<h3>{{ claim.title }}</h3>") < claimRow.indexOf("class=\"claim-row__meta\""));
 		assert.match(claimRow, /class="claim-row__status[ "]/);
 		assert.match(claimRow, /i-carbon-arrow-right/);
 		assert.doesNotMatch(claimRow, /claimCardSummary|claim-row__summary|formatClaimReviewLabel/);

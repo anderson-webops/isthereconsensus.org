@@ -13,7 +13,10 @@ const headerSearch = ref("");
 async function submitHeaderSearch() {
 	const q = headerSearch.value.trim().slice(0, 160);
 	if (!q) return;
-	await navigateTo({ path: "/consensus", query: { q } });
+	await navigateTo({
+		path: "/consensus",
+		query: { q }
+	});
 	headerSearch.value = "";
 }
 const canUseEditorial = computed(() => role.value === "admin" || currentAccount.value?.expertiseStatus === "verified");
@@ -39,7 +42,7 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					placeholder="Search claims"
 					maxlength="160"
 					autocomplete="off"
-				/>
+				>
 			</form>
 			<nav class="site-nav" aria-label="Primary">
 				<NuxtLink to="/consensus">Browse</NuxtLink>
@@ -56,7 +59,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 
 		<footer class="site-footer">
 			<div class="site-footer__brand">
-				<p class="site-footer__title">Is There Consensus?</p>
+				<p class="site-footer__title">
+					Is There Consensus?
+				</p>
 			</div>
 			<div class="site-footer__meta">
 				<div class="site-footer__appearance" aria-label="Appearance controls" role="group">
@@ -78,7 +83,9 @@ const canUseEditorial = computed(() => role.value === "admin" || currentAccount.
 					<NuxtLink to="/privacy">Privacy</NuxtLink>
 					<NuxtLink to="/terms">Terms</NuxtLink>
 				</nav>
-				<p class="site-footer__copyright">&copy; {{ year }} Is There Consensus?</p>
+				<p class="site-footer__copyright">
+					&copy; {{ year }} Is There Consensus?
+				</p>
 			</div>
 		</footer>
 	</div>

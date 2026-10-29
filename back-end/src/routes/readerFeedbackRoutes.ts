@@ -1,3 +1,4 @@
+import type { Types } from "mongoose";
 import type { LoadVisibleClaims } from "./readerLibraryRoutes.js";
 import express from "express";
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
@@ -15,6 +16,50 @@ import {
 	readerFeedbackSubmission
 } from "../utils/readerFeedback.js";
 import { logError } from "../utils/safeLog.js";
+
+class FeedbackTargetError extends Error {}
+
+interface FeedbackTarget {
+	topicId?: Types.ObjectId;
+	referenceTitle?: string;
+	target: { comparisonSlug?: string; claimId?: string };
+}
+
+async function resolveFeedbackTarget(data: ReturnType<typeof readerFeedbackSubmission.parse>, loadVisibleClaims: LoadVisibleClaims): Promise<FeedbackTarget> {
+	if (data.kind !== "content_gap" && data.comparisonSlug) {
+		const comparison = comparisonForSlug(data.comparisonSlug);
+		if (!comparison) throw new FeedbackTargetError("This comparison is no longer available for feedback.");
+		return {
+			referenceTitle: comparison.title,
+			target: { comparisonSlug: comparison.slug }
+		};
+	}
+	if (data.kind !== "content_gap") {
+		const [claim] = await loadVisibleClaims([data.claimId!]);
+		if (!claim) throw new FeedbackTargetError("This review is no longer available for feedback.");
+		return {
+			topicId: claim.topic._id,
+			referenceTitle: claim.title,
+			target: { claimId: data.claimId }
+		};
+	}
+	if (!data.topicId) return { target: {} };
+	const topic = await Topic.findById(data.topicId).select("_id").lean();
+	if (!topic) throw new FeedbackTargetError("This topic is no longer available.");
+	return { topicId: topic._id, target: {} };
+}
+
+function storedFeedbackContent(data: ReturnType<typeof readerFeedbackSubmission.parse>) {
+	if (data.kind === "usefulness") return { helpful: data.helpful };
+	if (data.kind === "reader_experience") return { clarity: data.clarity, answerCoverage: data.answerCoverage };
+	return {
+		message: data.message,
+		sourceUrl: data.sourceUrl,
+		...(data.kind === "missing_evidence"
+			? { area: data.area }
+			: { title: data.title })
+	};
+}
 
 export function createReaderFeedbackRouter(
 	secret: string,
@@ -41,27 +86,7 @@ export function createReaderFeedbackRouter(
 			const now = new Date();
 			const key = feedbackSubmissionKey(secret, ipKeyGenerator(req.ip || "unknown"), data, now);
 			if (await ReaderFeedback.exists({ _id: key })) return res.json({ received: true, duplicate: true });
-			let topicId;
-			let referenceTitle;
-			let target: { comparisonSlug?: string; claimId?: string } = {};
-			if (data.kind !== "content_gap" && data.comparisonSlug) {
-				const comparison = comparisonForSlug(data.comparisonSlug);
-				if (!comparison) return res.status(422).json({ error: "This comparison is no longer available for feedback." });
-				referenceTitle = comparison.title;
-				target = { comparisonSlug: comparison.slug };
-			}
-			else if (data.kind !== "content_gap") {
-				const [claim] = await loadVisibleClaims([data.claimId!]);
-				if (!claim) return res.status(422).json({ error: "This review is no longer available for feedback." });
-				topicId = claim.topic._id;
-				referenceTitle = claim.title;
-				target = { claimId: data.claimId };
-			}
-			else if (data.topicId) {
-				const topic = await Topic.findById(data.topicId).select("_id").lean();
-				if (!topic) return res.status(422).json({ error: "This topic is no longer available." });
-				topicId = topic._id;
-			}
+			const { topicId, referenceTitle, target } = await resolveFeedbackTarget(data, loadVisibleClaims);
 			if (data.kind !== "usefulness" && data.kind !== "reader_experience") {
 				const captcha = await verifyCaptcha(data.captchaToken, req.ip);
 				if (!captcha.ok)
@@ -74,20 +99,13 @@ export function createReaderFeedbackRouter(
 				topicId,
 				referenceTitle,
 				...target,
-				...(data.kind === "usefulness"
-					? { helpful: data.helpful }
-					: data.kind === "reader_experience"
-						? { clarity: data.clarity, answerCoverage: data.answerCoverage }
-						: {
-								message: data.message,
-								sourceUrl: data.sourceUrl,
-								...(data.kind === "missing_evidence" ? { area: data.area } : { title: data.title })
-							}),
+				...storedFeedbackContent(data),
 				expiresAt: new Date(now.getTime() + 730 * 24 * 60 * 60_000)
 			});
 			return res.status(201).json({ received: true, duplicate: false });
 		}
 		catch (error) {
+			if (error instanceof FeedbackTargetError) return res.status(422).json({ error: error.message });
 			if (error && typeof error === "object" && "code" in error && error.code === 11000)
 				return res.json({ received: true, duplicate: true });
 			logError("Reader feedback submission failed", error);
@@ -102,13 +120,17 @@ export function createReaderFeedbackRouter(
 		const text = query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 		try {
 			const [claims, topics] = await Promise.all([
-				Claim.find({ title: { $regex: text, $options: "i" } })
+				Claim.find({
+					title: { $regex: text, $options: "i" }
+				})
 					.select("_id title status")
 					.sort({ title: 1 })
 					.limit(20)
 					.maxTimeMS(5000)
 					.lean(),
-				Topic.find({ title: { $regex: text, $options: "i" } })
+				Topic.find({
+					title: { $regex: text, $options: "i" }
+				})
 					.select("_id title")
 					.sort({ title: 1 })
 					.limit(20)
@@ -130,8 +152,17 @@ export function createReaderFeedbackRouter(
 		try {
 			const filter = {
 				...filters,
-				expiresAt: { $gt: new Date() },
-				...(reviewId ? { $or: [{ claimId: reviewId }, { linkedClaimId: reviewId }] } : {})
+				expiresAt: {
+					$gt: new Date()
+				},
+				...(reviewId
+					? {
+							$or: [
+								{ claimId: reviewId },
+								{ linkedClaimId: reviewId }
+							]
+						}
+					: {})
 			};
 			const [rows, total] = await Promise.all([
 				ReaderFeedback.find(filter)
@@ -142,12 +173,32 @@ export function createReaderFeedbackRouter(
 					.lean(),
 				ReaderFeedback.countDocuments(filter).maxTimeMS(5000)
 			]);
-			const linkedTopics = await Topic.find({ _id: { $in: rows.flatMap(row => row.linkedTopicId ? [row.linkedTopicId] : []) } })
+			const linkedTopics = await Topic.find({
+				_id: {
+					$in: rows.flatMap(row => row.linkedTopicId
+						? [row.linkedTopicId]
+						: [])
+				}
+			})
 				.select("_id title slug")
 				.maxTimeMS(5000)
 				.lean();
-			const topicMap = new Map(linkedTopics.map(topic => [String(topic._id), topic]));
-			return res.json({ rows: rows.map(row => ({ ...row, linkedTopic: topicMap.get(String(row.linkedTopicId)) })), pagination: { page, limit, total, hasMore: page * limit < total } });
+			const topicMap = new Map(linkedTopics.map(topic => [
+				String(topic._id),
+				topic
+			]));
+			return res.json({
+				rows: rows.map(row => ({
+					...row,
+					linkedTopic: topicMap.get(String(row.linkedTopicId))
+				})),
+				pagination: {
+					page,
+					limit,
+					total,
+					hasMore: page * limit < total
+				}
+			});
 		}
 		catch (error) {
 			logError("Reader feedback queue failed", error);
@@ -165,18 +216,35 @@ export function createReaderFeedbackRouter(
 		try {
 			const { revision, note, ...change } = parsed.data;
 			const [claim, topic] = await Promise.all([
-				change.linkedClaimId ? Claim.exists({ _id: change.linkedClaimId }) : true,
-				change.linkedTopicId ? Topic.exists({ _id: change.linkedTopicId }) : true
+				change.linkedClaimId
+					? Claim.exists({ _id: change.linkedClaimId })
+					: true,
+				change.linkedTopicId
+					? Topic.exists({ _id: change.linkedTopicId })
+					: true
 			]);
 			if (!claim || !topic) return res.status(422).json({ error: "The linked claim or topic does not exist." });
 			const row = await ReaderFeedback.findOneAndUpdate(
-				{ _id: String(req.params.id), revision, expiresAt: { $gt: new Date() } },
+				{
+					_id: String(req.params.id),
+					revision,
+					expiresAt: {
+						$gt: new Date()
+					}
+				},
 				{
 					$set: change,
 					$inc: { revision: 1 },
 					$push: {
 						reviews: {
-							$each: [{ ...change, note, adminId: req.currentAdmin!._id, date: new Date() }],
+							$each: [
+								{
+									...change,
+									note,
+									adminId: req.currentAdmin!._id,
+									date: new Date()
+								}
+							],
 							$slice: -50
 						}
 					}

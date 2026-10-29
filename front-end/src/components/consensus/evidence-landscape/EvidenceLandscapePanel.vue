@@ -37,7 +37,7 @@ const notes = computed(() =>
 				? props.landscape.fringeOrUnsupportedViewSummary
 				: ""
 		}
-	].filter((item) => item.value?.trim())
+	].filter(item => item.value?.trim())
 );
 
 const evidenceBaseStats = computed(() => {
@@ -48,7 +48,7 @@ const evidenceBaseStats = computed(() => {
 		{ key: "syntheses", label: "Reviews / meta-analyses", value: size.systematicReviews + size.metaAnalyses },
 		{ key: "guidelines", label: "Guidelines / consensus", value: size.evidenceBasedGuidelines },
 		{ key: "excluded", label: "Separated sources", value: size.excludedSources }
-	].filter((item) => item.value > 0 || item.key === "included");
+	].filter(item => item.value > 0 || item.key === "included");
 });
 
 const distributionRows = computed(() => {
@@ -61,7 +61,7 @@ const distributionRows = computed(() => {
 		{ key: "mixed", label: "Mixed / inconclusive", bucket: distribution.inconclusiveOrMixed },
 		{ key: "background", label: "Background only", bucket: distribution.backgroundContext }
 	];
-	return rows.filter((row) => row.bucket.count > 0);
+	return rows.filter(row => row.bucket.count > 0);
 });
 
 const excludedCounts = computed(() => {
@@ -71,7 +71,7 @@ const excludedCounts = computed(() => {
 		{ key: "low-quality", label: "Low quality", value: distribution.excludedLowQuality.count },
 		{ key: "retracted", label: "Retracted / invalid", value: distribution.excludedRetracted.count },
 		{ key: "fringe", label: "Fringe / unsupported", value: distribution.excludedFringe.count }
-	].filter((item) => item.value > 0);
+	].filter(item => item.value > 0);
 });
 
 const applicabilityItems = computed(() => {
@@ -81,19 +81,23 @@ const applicabilityItems = computed(() => {
 		{ key: "population", label: "Population", value: applicability.population },
 		{ key: "exposure", label: "Exposure / intervention", value: applicability.exposureOrIntervention },
 		{ key: "comparator", label: "Comparator", value: applicability.comparator },
-		{ key: "outcomes", label: "Outcomes", value: applicability.outcomes?.join(", ") },
+		{
+			key: "outcomes",
+			label: "Outcomes",
+			value: applicability.outcomes?.join(", ")
+		},
 		{ key: "setting", label: "Setting", value: applicability.setting },
 		{ key: "timeframe", label: "Timeframe", value: applicability.timeframe }
-	].filter((item) => item.value?.trim());
+	].filter(item => item.value?.trim());
 });
 
 const boundaryConditions = computed(
-	() => props.landscape.boundaryConditions?.filter((item) => item.label?.trim()) ?? []
+	() => props.landscape.boundaryConditions?.filter(item => item.label?.trim()) ?? []
 );
 const showSafetyContext = computed(
 	() =>
-		props.landscape.publicFlags?.medicalOrPublicHealthSensitive ||
-		props.landscape.publicFlags?.requiresProfessionalContext
+		props.landscape.publicFlags?.medicalOrPublicHealthSensitive
+		|| props.landscape.publicFlags?.requiresProfessionalContext
 );
 const lastAssessedAt = computed(() => props.landscape.lastAssessedAt || props.landscape.workflow?.lastAssessedAt);
 const nextReviewDueAt = computed(() => props.landscape.nextReviewDueAt || props.landscape.workflow?.nextReviewDueAt);
@@ -129,7 +133,9 @@ function formatDate(value?: string) {
 
 		<div v-if="notes.length" class="evidence-landscape-panel__notes">
 			<article v-for="note in notes" :key="note.key" class="landscape-note">
-				<p class="field-label">{{ note.label }}</p>
+				<p class="field-label">
+					{{ note.label }}
+				</p>
 				<p>{{ note.value }}</p>
 			</article>
 		</div>
@@ -164,7 +170,9 @@ function formatDate(value?: string) {
 
 				<section v-if="distributionRows.length" class="landscape-distribution">
 					<div class="landscape-section-heading">
-						<p class="field-label">Credible source positions</p>
+						<p class="field-label">
+							Credible source positions
+						</p>
 						<p>Counts describe the reviewed source set; they are not votes.</p>
 					</div>
 					<div class="distribution-list">
@@ -177,7 +185,9 @@ function formatDate(value?: string) {
 
 				<section v-if="boundaryConditions.length || applicabilityItems.length" class="landscape-limits">
 					<div v-if="boundaryConditions.length" class="landscape-limit-card">
-						<p class="field-label">Boundary conditions</p>
+						<p class="field-label">
+							Boundary conditions
+						</p>
 						<ul class="landscape-list">
 							<li v-for="boundary in boundaryConditions" :key="`${boundary.dimension}-${boundary.label}`">
 								<strong>{{ boundary.label }}:</strong> {{ boundary.explanation }}
@@ -185,7 +195,9 @@ function formatDate(value?: string) {
 						</ul>
 					</div>
 					<div v-if="applicabilityItems.length" class="landscape-limit-card">
-						<p class="field-label">Applies to</p>
+						<p class="field-label">
+							Applies to
+						</p>
 						<dl class="landscape-definition-list">
 							<template v-for="item in applicabilityItems" :key="item.key">
 								<dt>{{ item.label }}</dt>
@@ -196,7 +208,9 @@ function formatDate(value?: string) {
 				</section>
 
 				<div v-if="excludedCounts.length" class="excluded-source-note">
-					<p class="field-label">Separated from the evidence distribution</p>
+					<p class="field-label">
+						Separated from the evidence distribution
+					</p>
 					<p>
 						<span v-for="item in excludedCounts" :key="item.key">{{ item.value }} {{ item.label }}</span>
 					</p>

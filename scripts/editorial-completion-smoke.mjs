@@ -43,7 +43,11 @@ async function freePort() {
 }
 
 function start(executable, args, env) {
-	const child = spawn(executable, args, { cwd: root, env, stdio: ["ignore", "pipe", "pipe"] });
+	const child = spawn(executable, args, {
+		cwd: root,
+		env,
+		stdio: ["ignore", "pipe", "pipe"]
+	});
 	children.push(child);
 	child.on("error", (error) => {
 		logs += error.message;
@@ -60,7 +64,10 @@ async function stop(child) {
 	if (!child.pid || child.exitCode !== null || child.signalCode !== null) return;
 	const exited = once(child, "exit");
 	child.kill("SIGTERM");
-	await Promise.race([exited, delay(8000)]);
+	await Promise.race([
+		exited,
+		delay(8000)
+	]);
 	if (child.exitCode === null && child.signalCode === null) {
 		child.kill("SIGKILL");
 		await exited;
@@ -78,20 +85,51 @@ async function waitFor(check, label) {
 
 try {
 	const mongoPort = await freePort();
-	const replicaArgs = ["--replSet", "ownerEditorialSmoke", "--wiredTigerCacheSizeGB", "0.25"];
+	const replicaArgs = [
+		"--replSet",
+		"ownerEditorialSmoke",
+		"--wiredTigerCacheSizeGB",
+		"0.25"
+	];
 	if (useDocker) {
-		execFileSync("docker", ["run", "--rm", "--detach", "--name", container, "--publish", `127.0.0.1:${mongoPort}:27017`, "mongo:8.0.34@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907", "--bind_ip_all", ...replicaArgs], { stdio: "pipe", timeout: 60000 });
+		execFileSync("docker", [
+			"run",
+			"--rm",
+			"--detach",
+			"--name",
+			container,
+			"--publish",
+			`127.0.0.1:${mongoPort}:27017`,
+			"mongo:8.0.34@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907",
+			"--bind_ip_all",
+			...replicaArgs
+		], { stdio: "pipe", timeout: 60000 });
 		containerOwned = true;
 	}
 	else {
 		mkdirSync(join(directory, "db"));
-		start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", ["--bind_ip", "127.0.0.1", "--port", String(mongoPort), "--dbpath", join(directory, "db"), ...replicaArgs], { PATH: process.env.PATH });
+		start(process.env.MONGOD_BINARY || "/opt/homebrew/bin/mongod", [
+			"--bind_ip",
+			"127.0.0.1",
+			"--port",
+			String(mongoPort),
+			"--dbpath",
+			join(directory, "db"),
+			...replicaArgs
+		], { PATH: process.env.PATH });
 	}
 	const uri = `mongodb://127.0.0.1:${mongoPort}/${database}?directConnection=true`;
 	const inspector = new mongoose.mongo.MongoClient(uri, { serverSelectionTimeoutMS: 20000 });
 	try {
 		await inspector.connect();
-		await inspector.db("admin").command({ replSetInitiate: { _id: "ownerEditorialSmoke", members: [{ _id: 0, host: `127.0.0.1:${useDocker ? 27017 : mongoPort}` }] } });
+		await inspector.db("admin").command({
+			replSetInitiate: {
+				_id: "ownerEditorialSmoke",
+				members: [
+					{ _id: 0, host: `127.0.0.1:${useDocker ? 27017 : mongoPort}` }
+				]
+			}
+		});
 		await waitFor(async () => (await inspector.db("admin").command({ hello: 1 })).isWritablePrimary, "owned replica primary");
 		assert.equal((await inspector.db(database).listCollections().toArray()).length, 0);
 		ownsDatabase = true;
@@ -113,15 +151,30 @@ try {
 	await seedClaimSources(probeClaimId, probeSources);
 	assert.deepEqual((await ClaimSource.find({ claim: probeClaimId }).sort({ order: 1 }).lean()).map(value => value._id.toString()), probeBefore.map(value => value._id.toString()));
 	await ClaimSource.deleteMany({ claim: probeClaimId });
-	const proposal = createEditorialCompletionProposal({ commit: "a".repeat(40), tree: "b".repeat(40) });
+	const proposal = createEditorialCompletionProposal({
+		commit: "a".repeat(40),
+		tree: "b".repeat(40)
+	});
 	const fixtures = [];
 	const customNext = new Date("2026-12-01T12:00:00Z");
 	const publishedAt = new Date("2026-09-13T12:00:00Z");
 	for (const [index, target] of proposal.targets.entries()) {
 		const before = target.compatibleBaselines[0];
-		const topic = await Topic.findOneAndUpdate({ slug: before.topicSlug }, { $setOnInsert: { title: before.topicSlug, slug: before.topicSlug } }, { upsert: true, returnDocument: "after" });
+		const topic = await Topic.findOneAndUpdate({ slug: before.topicSlug }, {
+			$setOnInsert: { title: before.topicSlug, slug: before.topicSlug }
+		}, { upsert: true, returnDocument: "after" });
 		const dates = seedReviewDates(before);
-		const legacyFixture = new Claim({ ...seedClaimFields(before), ...dates, topic: topic._id, slug: before.slug, publishedAt, reviewedBy: admin._id, ...(index % 2 ? { nextReviewAt: customNext } : {}) });
+		const legacyFixture = new Claim({
+			...seedClaimFields(before),
+			...dates,
+			topic: topic._id,
+			slug: before.slug,
+			publishedAt,
+			reviewedBy: admin._id,
+			...(index % 2
+				? { nextReviewAt: customNext }
+				: {})
+		});
 		let legacyValidation;
 		try {
 			await legacyFixture.validate();
@@ -132,10 +185,24 @@ try {
 			legacyValidation = error;
 		}
 		const claim = await legacyFixture.save({ validateBeforeSave: !legacyValidation });
-		await Claim.updateOne({ _id: claim._id }, { $push: { "surveillanceSpec.watchTerms": "Private fixture monitoring term." } });
+		await Claim.updateOne({ _id: claim._id }, {
+			$push: { "surveillanceSpec.watchTerms": "Private fixture monitoring term." }
+		});
 		const sources = [];
-		for (const source of before.sources) sources.push(await ClaimSource.create({ ...source, claim: claim._id, citationStatus: "corrected", statusSources: ["Crossref", "https://example.org/retained-completion-notice"], citationCheckedAt: publishedAt }));
-		fixtures.push({ target, claim: await Claim.findById(claim._id).lean(), sources: sources.map(value => value.toObject()) });
+		for (const source of before.sources) {
+			sources.push(await ClaimSource.create({
+				...source,
+				claim: claim._id,
+				citationStatus: "corrected",
+				statusSources: ["Crossref", "https://example.org/retained-completion-notice"],
+				citationCheckedAt: publishedAt
+			}));
+		}
+		fixtures.push({
+			target,
+			claim: await Claim.findById(claim._id).lean(),
+			sources: sources.map(value => value.toObject())
+		});
 	}
 	const first = fixtures.find(fixture => fixture.target.key === "health-and-medicine/does-radon-in-homes-cause-lung-cancer");
 	assert.ok(first);
@@ -161,7 +228,18 @@ try {
 	assert.equal(retried.failed + retried.conflicts, 0);
 	const port = await freePort();
 	const base = `http://127.0.0.1:${port}/api`;
-	api = start(process.execPath, ["back-end/dist/server.js"], { PATH: process.env.PATH, NODE_ENV: "production", HOST: "127.0.0.1", PORT: String(port), MONGODB_URI: uri, SESSION_SECRET: randomUUID() + randomUUID(), CAPTCHA_SECRET: randomUUID(), PUBLIC_SITE_URL: "https://editorial-fixture.invalid", TRUST_PROXY_IPS: "127.0.0.1,::1", DOTENV_CONFIG_PATH: join(directory, "no-environment-file") });
+	api = start(process.execPath, ["back-end/dist/server.js"], {
+		PATH: process.env.PATH,
+		NODE_ENV: "production",
+		HOST: "127.0.0.1",
+		PORT: String(port),
+		MONGODB_URI: uri,
+		SESSION_SECRET: randomUUID() + randomUUID(),
+		CAPTCHA_SECRET: randomUUID(),
+		PUBLIC_SITE_URL: "https://editorial-fixture.invalid",
+		TRUST_PROXY_IPS: "127.0.0.1,::1",
+		DOTENV_CONFIG_PATH: join(directory, "no-environment-file")
+	});
 	await waitFor(async () => {
 		try {
 			return (await fetch(base.replace(/\/api$/, "/readyz"))).ok;
@@ -172,11 +250,19 @@ try {
 	}, "isolated completion backend");
 	const headers = { "content-type": "application/json", "origin": "https://editorial-fixture.invalid", "x-forwarded-proto": "https" };
 	assert.equal((await fetch(`${base}/editorial/claims/${first.claim._id}`, { headers })).status, 403);
-	const login = await fetch(`${base}/auth/login`, { method: "POST", headers, body: JSON.stringify({ email: admin.email, password }) });
+	const login = await fetch(`${base}/auth/login`, {
+		method: "POST",
+		headers,
+		body: JSON.stringify({ email: admin.email, password })
+	});
 	assert.equal(login.status, 200);
 	const cookie = login.headers.getSetCookie().map(value => value.split(";")[0]).join("; ");
 	assert.ok(cookie.includes(".sig="));
-	assert.equal((await fetch(`${base}/editorial/claims/${first.claim._id}`, { method: "PATCH", headers: { ...headers, cookie }, body: JSON.stringify({ bottomLine: "Unapproved change." }) })).status, 403);
+	assert.equal((await fetch(`${base}/editorial/claims/${first.claim._id}`, {
+		method: "PATCH",
+		headers: { ...headers, cookie },
+		body: JSON.stringify({ bottomLine: "Unapproved change." })
+	})).status, 403);
 	let retainedSources = 0;
 	let addedSources = 0;
 	let scheduled = 0;
@@ -215,14 +301,47 @@ try {
 	assert.ok(scheduled > 0);
 	const receipts = await ContentRelease.find({ releaseId: EDITORIAL_COMPLETION_RELEASE }).sort({ _id: 1 }).lean();
 	assert.equal(receipts.length, fixtures.length);
-	const replayBefore = JSON.stringify(await Claim.find({ _id: { $in: fixtures.map(value => value.claim._id) } }).sort({ _id: 1 }).lean());
-	assert.deepEqual(await publishEditorialCompletion(), { published: 0, preserved: fixtures.length, conflicts: 0, failed: 0, scheduled: 0 });
-	assert.equal(JSON.stringify(await Claim.find({ _id: { $in: fixtures.map(value => value.claim._id) } }).sort({ _id: 1 }).lean()), replayBefore);
-	await Claim.updateOne({ _id: first.claim._id }, { $set: { bottomLine: "Later human correction retained." } });
+	const replayBefore = JSON.stringify(await Claim.find({
+		_id: {
+			$in: fixtures.map(value => value.claim._id)
+		}
+	}).sort({ _id: 1 }).lean());
+	assert.deepEqual(await publishEditorialCompletion(), {
+		published: 0,
+		preserved: fixtures.length,
+		conflicts: 0,
+		failed: 0,
+		scheduled: 0
+	});
+	assert.equal(JSON.stringify(await Claim.find({
+		_id: {
+			$in: fixtures.map(value => value.claim._id)
+		}
+	}).sort({ _id: 1 }).lean()), replayBefore);
+	await Claim.updateOne({ _id: first.claim._id }, {
+		$set: { bottomLine: "Later human correction retained." }
+	});
 	await publishEditorialCompletion();
 	assert.equal((await Claim.findById(first.claim._id)).bottomLine, "Later human correction retained.");
 	assert.equal(logs.includes(password), false);
-	console.log(JSON.stringify({ accepted: true, fixtureOnly: true, approvedTargets: fixtures.length, publicArticleReadbacks: fixtures.length, retainedSources, addedSources, defaultSchedulesUpdated: scheduled, customSchedulesPreserved: true, reviewDatesPreserved: true, sourceIdsAndNoticesPreserved: true, privateStatePreserved: true, lateFailureRollbackVerified: true, replayReadOnly: true, laterHumanEditPreserved: true, duplicateCitationTitleRegression: true, passwordAbsentFromLogs: true }));
+	console.log(JSON.stringify({
+		accepted: true,
+		fixtureOnly: true,
+		approvedTargets: fixtures.length,
+		publicArticleReadbacks: fixtures.length,
+		retainedSources,
+		addedSources,
+		defaultSchedulesUpdated: scheduled,
+		customSchedulesPreserved: true,
+		reviewDatesPreserved: true,
+		sourceIdsAndNoticesPreserved: true,
+		privateStatePreserved: true,
+		lateFailureRollbackVerified: true,
+		replayReadOnly: true,
+		laterHumanEditPreserved: true,
+		duplicateCitationTitleRegression: true,
+		passwordAbsentFromLogs: true
+	}));
 }
 finally {
 	if (api) await stop(api);

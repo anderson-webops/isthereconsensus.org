@@ -177,18 +177,48 @@ function defaultEvidenceProfile(): IClaimSourceEvidenceProfile {
 
 const effectEstimateSchema = new Schema<IClaimSourceEffectEstimate>(
 	{
-		metric: { type: String, default: "", trim: true, maxlength: 120 },
-		value: { type: String, default: "", trim: true, maxlength: 160 },
-		confidenceInterval: { type: String, default: "", trim: true, maxlength: 160 },
-		pValue: { type: String, default: "", trim: true, maxlength: 80 },
-		notes: { type: String, default: "", trim: true, maxlength: 500 }
+		metric: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 120
+		},
+		value: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 160
+		},
+		confidenceInterval: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 160
+		},
+		pValue: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 80
+		},
+		notes: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 500
+		}
 	},
 	{ _id: false }
 );
 
 const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 	{
-		schemaVersion: { type: Number, required: true, default: EVIDENCE_LANDSCAPE_SCHEMA_VERSION, min: 1 },
+		schemaVersion: {
+			type: Number,
+			required: true,
+			default: EVIDENCE_LANDSCAPE_SCHEMA_VERSION,
+			min: 1
+		},
 		positionRelativeToClaim: {
 			type: String,
 			required: true,
@@ -210,19 +240,49 @@ const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 			enum: EVIDENCE_STUDY_DESIGNS,
 			index: true
 		},
-		riskOfBias: { type: String, required: true, default: "not_assessed", enum: EVIDENCE_RISK_OF_BIAS_LEVELS },
-		directness: { type: String, required: true, default: "not_assessed", enum: EVIDENCE_DIRECTNESS_LEVELS },
-		consistency: { type: String, required: true, default: "not_assessed", enum: EVIDENCE_CONSISTENCY_LEVELS },
-		precision: { type: String, required: true, default: "not_assessed", enum: EVIDENCE_PRECISION_LEVELS },
+		riskOfBias: {
+			type: String,
+			required: true,
+			default: "not_assessed",
+			enum: EVIDENCE_RISK_OF_BIAS_LEVELS
+		},
+		directness: {
+			type: String,
+			required: true,
+			default: "not_assessed",
+			enum: EVIDENCE_DIRECTNESS_LEVELS
+		},
+		consistency: {
+			type: String,
+			required: true,
+			default: "not_assessed",
+			enum: EVIDENCE_CONSISTENCY_LEVELS
+		},
+		precision: {
+			type: String,
+			required: true,
+			default: "not_assessed",
+			enum: EVIDENCE_PRECISION_LEVELS
+		},
 		publicationIntegrity: {
 			type: new Schema<IClaimSourcePublicationIntegrity>(
 				{
-					retracted: { type: Boolean, required: true, default: false, index: true },
+					retracted: {
+						type: Boolean,
+						required: true,
+						default: false,
+						index: true
+					},
 					expressionOfConcern: { type: Boolean, required: true, default: false },
 					correctionOrErratum: { type: Boolean, required: true, default: false },
 					predatoryOrQuestionableVenue: { type: Boolean, required: true, default: false },
 					citationStatusCheckedAt: { type: Date },
-					integrityNotes: { type: String, default: "", trim: true, maxlength: 1000 }
+					integrityNotes: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					}
 				},
 				{ _id: false }
 			),
@@ -231,9 +291,19 @@ const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 		inclusion: {
 			type: new Schema<IClaimSourceInclusionProfile>(
 				{
-					includedInLandscape: { type: Boolean, required: true, default: false, index: true },
+					includedInLandscape: {
+						type: Boolean,
+						required: true,
+						default: false,
+						index: true
+					},
 					exclusionReason: { type: String, default: "", enum: EVIDENCE_SOURCE_EXCLUSION_REASONS },
-					exclusionNotes: { type: String, default: "", trim: true, maxlength: 1000 }
+					exclusionNotes: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					}
 				},
 				{ _id: false }
 			),
@@ -242,14 +312,50 @@ const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 		extraction: {
 			type: new Schema<IClaimSourceExtractionProfile>(
 				{
-					keyFinding: { type: String, default: "", trim: true, maxlength: 1000 },
-					limitations: { type: String, default: "", trim: true, maxlength: 1000 },
-					population: { type: String, default: "", trim: true, maxlength: 280 },
-					exposureOrIntervention: { type: String, default: "", trim: true, maxlength: 280 },
-					comparator: { type: String, default: "", trim: true, maxlength: 280 },
-					outcomes: { type: [String], default: [] },
-					sampleSize: { type: String, default: "", trim: true, maxlength: 120 },
-					effectEstimate: { type: effectEstimateSchema, default: () => defaultEffectEstimate() }
+					keyFinding: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					},
+					limitations: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					},
+					population: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 280
+					},
+					exposureOrIntervention: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 280
+					},
+					comparator: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 280
+					},
+					outcomes: {
+						type: [String],
+						default: []
+					},
+					sampleSize: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 120
+					},
+					effectEstimate: {
+						type: effectEstimateSchema,
+						default: () => defaultEffectEstimate()
+					}
 				},
 				{ _id: false }
 			),
@@ -262,7 +368,12 @@ const evidenceProfileSchema = new Schema<IClaimSourceEvidenceProfile>(
 					codedAt: { type: Date },
 					reviewedById: { type: Schema.Types.ObjectId, ref: "User" },
 					reviewedAt: { type: Date },
-					notes: { type: String, default: "", trim: true, maxlength: 1000 }
+					notes: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					}
 				},
 				{ _id: false }
 			),
@@ -282,7 +393,12 @@ const integrityProgressSchema = new Schema<IntegrityProviderProgress>({
 
 const claimSourceSchema: Schema<IClaimSource> = new Schema(
 	{
-		claim: { type: Schema.Types.ObjectId, ref: "Claim", required: true, index: true },
+		claim: {
+			type: Schema.Types.ObjectId,
+			ref: "Claim",
+			required: true,
+			index: true
+		},
 		integrityMonitoring: {
 			type: new Schema({ crossref: integrityProgressSchema, europepmc: integrityProgressSchema }, { _id: false }),
 			default: undefined,
@@ -302,33 +418,81 @@ const claimSourceSchema: Schema<IClaimSource> = new Schema(
 				"context"
 			]
 		},
-		title: { type: String, required: true, trim: true, maxlength: CLAIM_SOURCE_TITLE_MAX_LENGTH },
-		publisher: { type: String, default: "", trim: true, maxlength: 160 },
+		title: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: CLAIM_SOURCE_TITLE_MAX_LENGTH
+		},
+		publisher: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 160
+		},
 		year: { type: Number, min: 0, max: 9999 },
-		url: { type: String, default: "", trim: true, maxlength: 500 },
-		doi: { type: String, default: "", trim: true, maxlength: 200 },
-		pmid: { type: String, default: "", trim: true, maxlength: 40 },
-		pmcid: { type: String, default: "", trim: true, maxlength: 40 },
+		url: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 500
+		},
+		doi: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 200
+		},
+		pmid: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 40
+		},
+		pmcid: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 40
+		},
 		isAnchor: { type: Boolean, default: false },
 		appraisal: {
 			type: String,
 			default: "not_appraised",
-			enum: ["high", "moderate", "low", "not_appraised"]
+			enum: [
+				"high",
+				"moderate",
+				"low",
+				"not_appraised"
+			]
 		},
 		citationStatus: {
 			type: String,
 			default: "current",
-			enum: ["current", "corrected", "retracted", "expression_of_concern"]
+			enum: [
+				"current",
+				"corrected",
+				"retracted",
+				"expression_of_concern"
+			]
 		},
 		citationCheckedAt: { type: Date },
-		statusSources: { type: [String], default: [] },
+		statusSources: {
+			type: [String],
+			default: []
+		},
 		stance: {
 			type: String,
 			required: true,
 			default: "context",
 			enum: ["supports", "context", "debate"]
 		},
-		note: { type: String, default: "", trim: true, maxlength: 1000 },
+		note: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1000
+		},
 		order: { type: Number, default: 0 },
 		evidenceProfile: {
 			type: evidenceProfileSchema,

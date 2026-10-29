@@ -33,11 +33,11 @@ const label = computed(() =>
 				<span :class="selected ? 'i-carbon-bookmark-filled' : 'i-carbon-bookmark'" aria-hidden="true" />
 				{{ label }}
 			</button>
-			<template #fallback
-				><span class="library-action__placeholder">{{
+			<template #fallback>
+				<span class="library-action__placeholder">{{
 					kind === "comparison" ? "Save comparison" : kind === "review" ? "Save review" : "Follow topic"
-				}}</span></template
-			>
+				}}</span>
+			</template>
 		</ClientOnly>
 		<NuxtLink to="/library">My library</NuxtLink>
 		<span v-if="library.state.ready" class="library-action__scope">{{

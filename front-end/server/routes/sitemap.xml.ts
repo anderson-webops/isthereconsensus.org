@@ -11,7 +11,7 @@ function xmlEscape(value: string) {
 		.replaceAll("&", "&amp;")
 		.replaceAll("<", "&lt;")
 		.replaceAll(">", "&gt;")
-		.replaceAll('"', "&quot;")
+		.replaceAll("\"", "&quot;")
 		.replaceAll("'", "&apos;");
 }
 
@@ -85,18 +85,27 @@ export default defineEventHandler(async (event) => {
 			})
 		);
 
-		dynamicRoutes = [...topicRoutes, ...claimRouteGroups.flat()];
-	} catch {
+		dynamicRoutes = [
+			...topicRoutes,
+			...claimRouteGroups.flat()
+		];
+	}
+	catch {
 		dynamicRoutes = [];
 	}
 
 	const seen = new Set<string>();
-	const guideRoutes = readingGuides.map((guide) => ({ path: `/guides/${guide.slug}`, lastmod: guide.checkedAt }));
-	const comparisonRoutes = evidenceComparisons.map((comparison) => ({
+	const guideRoutes = readingGuides.map(guide => ({ path: `/guides/${guide.slug}`, lastmod: guide.checkedAt }));
+	const comparisonRoutes = evidenceComparisons.map(comparison => ({
 		path: `/compare/${comparison.slug}`,
 		lastmod: comparison.checkedAt
 	}));
-	const body = [...staticRoutes, ...guideRoutes, ...comparisonRoutes, ...dynamicRoutes]
+	const body = [
+		...staticRoutes,
+		...guideRoutes,
+		...comparisonRoutes,
+		...dynamicRoutes
+	]
 		.filter((entry) => {
 			if (seen.has(entry.path)) return false;
 			seen.add(entry.path);
@@ -105,7 +114,11 @@ export default defineEventHandler(async (event) => {
 		.map((entry) => {
 			const loc = new URL(entry.path, `${origin}/`).toString();
 			const lastmod = formatLastmod(entry.lastmod);
-			return `<url><loc>${xmlEscape(loc)}</loc>${lastmod ? `<lastmod>${xmlEscape(lastmod)}</lastmod>` : ""}</url>`;
+			return `<url><loc>${xmlEscape(loc)}</loc>${
+				lastmod
+					? `<lastmod>${xmlEscape(lastmod)}</lastmod>`
+					: ""
+			}</url>`;
 		})
 		.join("");
 

@@ -58,7 +58,13 @@ const actions: AccountActivityAction[] = [
 	"question_flag.reviewed"
 ];
 const actorTypes: AccountActivityActorType[] = ["user", "admin", "system", "anonymous"];
-const targetTypes: AccountActivityTargetType[] = ["user", "admin", "expert_application", "question", "unknown"];
+const targetTypes: AccountActivityTargetType[] = [
+	"user",
+	"admin",
+	"expert_application",
+	"question",
+	"unknown"
+];
 const actionLabels: Record<AccountActivityAction, string> = {
 	"user.registered": "Public user registration",
 	"user.deleted": "User deleted",
@@ -68,7 +74,7 @@ const actionLabels: Record<AccountActivityAction, string> = {
 	"admin.deleted": "Admin deleted",
 	"login.success": "Login success",
 	"login.failed": "Login failed",
-	logout: "Logout",
+	"logout": "Logout",
 	"password.changed": "Password changed",
 	"email.changed": "Email changed",
 	"expert_application.created": "Expert application created",
@@ -91,11 +97,15 @@ function rowAction(actionName: AccountActivityAction) {
 }
 
 function rowActor(actorTypeName: AccountActivityActorType, id?: string) {
-	return id ? `${actorTypeName} ${id.slice(-8)}` : actorTypeName;
+	return id
+		? `${actorTypeName} ${id.slice(-8)}`
+		: actorTypeName;
 }
 
 function rowTarget(type: AccountActivityTargetType, id?: string) {
-	return id ? `${type} ${id.slice(-8)}` : type;
+	return id
+		? `${type} ${id.slice(-8)}`
+		: type;
 }
 
 function metadataEntries(metadata?: Record<string, string>) {
@@ -127,9 +137,11 @@ async function loadActivity(page = pagination.value.page) {
 		});
 		logs.value = response.logs;
 		pagination.value = response.pagination;
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load account activity.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -170,13 +182,15 @@ watch(
 				{ label: 'Home', to: '/' },
 				{ label: 'Account', to: '/account' },
 				{ label: 'Editorial', to: '/account/editorial' },
-				{ label: 'Account activity' }
+				{ label: 'Account activity' },
 			]"
 		/>
 
 		<section class="activity-header">
 			<div>
-				<p class="eyebrow">Admin</p>
+				<p class="eyebrow">
+					Admin
+				</p>
 				<h1>Account activity</h1>
 			</div>
 			<button
@@ -214,7 +228,7 @@ watch(
 				</label>
 				<label>
 					<span>Actor id</span>
-					<input v-model="actorId" type="text" autocomplete="off" />
+					<input v-model="actorId" type="text" autocomplete="off">
 				</label>
 				<label>
 					<span>Target type</span>
@@ -225,29 +239,33 @@ watch(
 				</label>
 				<label>
 					<span>Target id</span>
-					<input v-model="targetId" type="text" autocomplete="off" />
+					<input v-model="targetId" type="text" autocomplete="off">
 				</label>
 				<label>
 					<span>Source IP</span>
-					<input v-model="sourceIp" type="text" autocomplete="off" />
+					<input v-model="sourceIp" type="text" autocomplete="off">
 				</label>
 				<label>
 					<span>From</span>
-					<input v-model="from" type="datetime-local" />
+					<input v-model="from" type="datetime-local">
 				</label>
 				<label>
 					<span>To</span>
-					<input v-model="to" type="datetime-local" />
+					<input v-model="to" type="datetime-local">
 				</label>
 				<div class="filter-actions">
-					<button class="button button--primary" type="submit" :disabled="loading">Apply</button>
+					<button class="button button--primary" type="submit" :disabled="loading">
+						Apply
+					</button>
 					<button class="button button--ghost" type="button" :disabled="loading" @click="clearFilters">
 						Clear
 					</button>
 				</div>
 			</form>
 
-			<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+			<p v-if="errorMessage" class="error">
+				{{ errorMessage }}
+			</p>
 
 			<div class="activity-table-wrap">
 				<table class="activity-table">
@@ -264,7 +282,9 @@ watch(
 					</thead>
 					<tbody>
 						<tr v-if="!logs.length">
-							<td colspan="7">No account activity found.</td>
+							<td colspan="7">
+								No account activity found.
+							</td>
 						</tr>
 						<tr v-for="log in logs" :key="log._id">
 							<td>{{ formatDate(log.createdAt) }}</td>

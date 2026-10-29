@@ -13,8 +13,10 @@ import { waterPracticalClaims, waterPracticalGaps } from "./claim-expansion-prac
 const checkedAt = "2026-09-11T19:38:00.000Z";
 const morningDelaySlug = "does-delaying-morning-caffeine-prevent-an-afternoon-crash";
 
-// Only genuinely new canonical questions belong here. The comparison pages
-// and revisions to existing claims do not count toward the fifty-review goal.
+/**
+ * Only genuinely new canonical questions belong here. The comparison pages
+ * and revisions to existing claims do not count toward the fifty-review goal.
+ */
 export const practicalEvidenceGaps = [
 	{
 		slug: morningDelaySlug,

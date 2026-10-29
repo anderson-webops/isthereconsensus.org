@@ -10,3 +10,4 @@
 *.ts text eol=lf
 *.vue text eol=lf
 *.yml text eol=lf
+vendor/qs/** text eol=lf

@@ -30,9 +30,11 @@ async function search() {
 				q: value
 			}
 		});
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load literature results right now.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -65,13 +67,15 @@ watch(
 				v-model="query"
 				type="text"
 				placeholder="Try climate attribution, replication bias, or consensus formation"
-			/>
+			>
 		</div>
 
 		<p v-if="response" class="muted">
 			Provider: {{ response.provider }}{{ response.configured ? " (configured)" : " (public mode)" }}
 		</p>
-		<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+		<p v-if="errorMessage" class="error">
+			{{ errorMessage }}
+		</p>
 
 		<div v-if="response?.results.length" class="result-grid">
 			<article v-for="result in response.results" :key="result.id" class="result-card">
@@ -80,8 +84,12 @@ watch(
 					<span v-if="result.citedByCount">Cited {{ result.citedByCount }} times</span>
 				</div>
 				<h3>{{ result.title }}</h3>
-				<p v-if="result.journal" class="result-meta">{{ result.journal }}</p>
-				<p v-if="result.authors.length" class="result-meta">{{ result.authors.join(", ") }}</p>
+				<p v-if="result.journal" class="result-meta">
+					{{ result.journal }}
+				</p>
+				<p v-if="result.authors.length" class="result-meta">
+					{{ result.authors.join(", ") }}
+				</p>
 				<a
 					v-if="safeExternalHttpUrl(result.url)"
 					:href="safeExternalHttpUrl(result.url)"

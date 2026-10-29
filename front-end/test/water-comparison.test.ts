@@ -9,12 +9,12 @@ import {
 } from "../src/utils/evidence-comparison.js";
 
 const comparison = comparisonForSlug("household-water-treatment")!;
-const findings = (id: string) => comparison.options.find((option) => option.id === id)!.findingsByContext!.mechanisms!;
+const findings = (id: string) => comparison.options.find(option => option.id === id)!.findingsByContext!.mechanisms!;
 describe("household water treatment comparison", () => {
 	it("compares six methods and three separate outcomes without inventing numeric removal rankings", () => {
 		assert.equal(comparison.options.length, 6);
 		assert.deepEqual(
-			comparison.outcomes.map((outcome) => outcome.id),
+			comparison.outcomes.map(outcome => outcome.id),
 			["microbes", "chemicals", "resources"]
 		);
 		for (const option of comparison.options) {
@@ -57,7 +57,7 @@ describe("household water treatment comparison", () => {
 		});
 		assert.equal(selected.outcome.id, "chemicals");
 		assert.deepEqual(
-			selected.options.map((option) => option.id),
+			selected.options.map(option => option.id),
 			["carbon", "uv"]
 		);
 		assert.equal(resolveComparisonSelection(comparison, { options: "" }).options.length, 0);

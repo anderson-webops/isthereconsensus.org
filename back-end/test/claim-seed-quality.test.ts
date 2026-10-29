@@ -367,8 +367,13 @@ function titleSimilarity(left: string, right: string) {
 	const leftTokens = titleTokens(left);
 	const rightTokens = titleTokens(right);
 	const intersection = [...leftTokens].filter(token => rightTokens.has(token)).length;
-	const union = new Set([...leftTokens, ...rightTokens]).size;
-	return union === 0 ? 0 : intersection / union;
+	const union = new Set([
+		...leftTokens,
+		...rightTokens
+	]).size;
+	return union === 0
+		? 0
+		: intersection / union;
 }
 
 function primarySourceLink(source: (typeof defaultClaims)[number]["sources"][number]) {
@@ -389,7 +394,9 @@ describe("default claim seed quality", () => {
 				...(buildSeedClaimUpdate({}, seed).$set ?? {}),
 				lastReviewedAt: new Date(),
 				nextReviewAt: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
-				publishedAt: seed.status === "published" ? new Date() : undefined
+				publishedAt: seed.status === "published"
+					? new Date()
+					: undefined
 			});
 			await assert.doesNotReject(() => document.validate(), seed.slug);
 		}
@@ -468,7 +475,9 @@ describe("default claim seed quality", () => {
 		assert.equal(expansionClaims.length, 30);
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -520,7 +529,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 281, "The library must retain the 281-claim August milestone");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -577,7 +588,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 305, "The first encyclopedia tranche must bring the library to 305 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -635,7 +648,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 335, "The second encyclopedia tranche must bring the library to 335 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -691,7 +706,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 385, "The third encyclopedia tranche must bring the library to 385 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -827,7 +844,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 445, "The fourth encyclopedia tranche must bring the library to 445 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -949,7 +968,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 500, "The fifth encyclopedia tranche must bring the library to 500 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(expansionClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(expansionClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -1273,7 +1294,12 @@ describe("default claim seed quality", () => {
 		);
 		assert.ok(claim, "Missing dental sealant claim seed");
 
-		const visibleSummary = [claim.bottomLine, claim.editorSummary, ...claim.stableCore, ...claim.sources.map(source => source.note)].join(
+		const visibleSummary = [
+			claim.bottomLine,
+			claim.editorSummary,
+			...claim.stableCore,
+			...claim.sources.map(source => source.note)
+		].join(
 			" "
 		);
 
@@ -1836,7 +1862,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 29, "The traffic-informed tranche must bring the directory to 29 topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026TrafficClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026TrafficClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -1858,7 +1886,9 @@ describe("default claim seed quality", () => {
 			assert.equal(seeded.status, "published");
 			assert.equal(seeded.searchCutoffAt, "2026-09-10T21:00:00.000Z");
 			assert.equal(seeded.lastRetractionCheckAt, "2026-09-10T21:00:00.000Z");
-			assert.equal(seeded.sources.length, claim.sources.length + (claim.slug === "can-vaccination-indirectly-protect-people-who-are-not-vaccinated" ? 1 : 0), `${claim.slug} must retain its original sources and only the recorded surveillance addition`);
+			assert.equal(seeded.sources.length, claim.sources.length + (claim.slug === "can-vaccination-indirectly-protect-people-who-are-not-vaccinated"
+				? 1
+				: 0), `${claim.slug} must retain its original sources and only the recorded surveillance addition`);
 			assert.ok(seeded.sources.some(source => source.isAnchor), `${claim.slug} needs an anchor source`);
 			assert.ok(
 				seeded.sources.some(
@@ -1927,7 +1957,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 32, "The healthspan tranche must bring the directory to 32 topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026HealthspanClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026HealthspanClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2026,7 +2058,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 35, "The clinical tranche must bring the directory to 35 topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026ClinicalClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026ClinicalClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2140,7 +2174,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026DemandDepthClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026DemandDepthClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2250,7 +2286,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026VisitorDepthClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026VisitorDepthClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2362,7 +2400,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultClaims.length >= 680, "The demand-essentials tranche must bring the library to 680 claims");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026DemandEssentialsClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026DemandEssentialsClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2482,7 +2522,9 @@ describe("default claim seed quality", () => {
 		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
 		assert.deepEqual(
 			Object.fromEntries(
-				[...new Set(september2026AtlasBreadthClaims.map(claim => claim.topicSlug))]
+				[
+					...new Set(september2026AtlasBreadthClaims.map(claim => claim.topicSlug))
+				]
 					.sort()
 					.map(topicSlug => [
 						topicSlug,
@@ -2527,7 +2569,7 @@ describe("default claim seed quality", () => {
 				`${claim.slug} should record the atlas-breadth citation review`
 			);
 			assert.ok(seeded.sources.every(source => source.citationStatus === "current"));
-			assert.ok(seeded.sources.every(source => source.statusSources.length >= 1));
+			assert.ok(seeded.sources.every(source => source.statusSources !== undefined && source.statusSources.length >= 1));
 			assert.equal(new Set(seeded.sources.map(source => primarySourceLink(source))).size, 3);
 			assert.ok(seeded.sources.every(source => source.title.length <= CLAIM_SOURCE_TITLE_MAX_LENGTH));
 			assert.deepEqual(researchIntegrityFields(seeded, seeded.topicSlug), seeded);
@@ -2620,7 +2662,9 @@ describe("default claim seed quality", () => {
 				const sourceDocument = new ClaimSource({
 					claim: new mongoose.Types.ObjectId(),
 					...source,
-					citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined
+					citationCheckedAt: source.citationCheckedAt
+						? new Date(source.citationCheckedAt)
+						: undefined
 				});
 				await assert.doesNotReject(
 					() => sourceDocument.validate(),

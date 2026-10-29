@@ -82,7 +82,9 @@ useStaticPageMeta({
 				<p>Specific notices move faster than vague demands.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in noticeRequirements" :key="item">{{ item }}</li>
+				<li v-for="item in noticeRequirements" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -105,7 +107,9 @@ useStaticPageMeta({
 				<p>Some disputes belong in corrections, moderation, or direct policy contact.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in scopeNotes" :key="item">{{ item }}</li>
+				<li v-for="item in scopeNotes" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="policy-prose">
 				<p>
@@ -118,7 +122,9 @@ useStaticPageMeta({
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Rights lane</p>
+				<p class="eyebrow">
+					Rights lane
+				</p>
 				<h2>Choose the right workflow for the dispute.</h2>
 				<p>
 					Send scientific errors to corrections, community enforcement to moderation, and rights assertions

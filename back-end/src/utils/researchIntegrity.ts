@@ -11,12 +11,24 @@ function matchesTemplate(values: string[] | undefined, template: string[]) {
 
 export function researchIntegrityFields<ClaimType extends Partial<Pick<IClaim, "inclusionRules" | "exclusionRules" | "appraisalTools" | "reviewerLine" | "authorLine" | "coiSummary">>>(claim: ClaimType, topicSlug: string): ClaimType {
 	const fields = {
-		inclusionRules: matchesTemplate(claim.inclusionRules, legacyInclusionRules({ topicSlug })) ? [] : claim.inclusionRules,
-		exclusionRules: matchesTemplate(claim.exclusionRules, legacyExclusionRules({ topicSlug })) ? [] : claim.exclusionRules,
-		appraisalTools: matchesTemplate(claim.appraisalTools, legacyAppraisalTools(topicSlug)) ? [] : claim.appraisalTools,
-		authorLine: legacyAuthors.has(claim.authorLine ?? "") ? "Is There Consensus" : claim.authorLine,
-		reviewerLine: claim.reviewerLine === legacyReviewer ? "The review method and reviewer were not recorded. Independent expert review is not documented." : claim.reviewerLine,
-		coiSummary: claim.coiSummary === legacyConflicts ? "A complete funding and conflict-of-interest assessment was not recorded." : claim.coiSummary
+		inclusionRules: matchesTemplate(claim.inclusionRules, legacyInclusionRules({ topicSlug }))
+			? []
+			: claim.inclusionRules,
+		exclusionRules: matchesTemplate(claim.exclusionRules, legacyExclusionRules({ topicSlug }))
+			? []
+			: claim.exclusionRules,
+		appraisalTools: matchesTemplate(claim.appraisalTools, legacyAppraisalTools(topicSlug))
+			? []
+			: claim.appraisalTools,
+		authorLine: legacyAuthors.has(claim.authorLine ?? "")
+			? "Is There Consensus"
+			: claim.authorLine,
+		reviewerLine: claim.reviewerLine === legacyReviewer
+			? "The review method and reviewer were not recorded. Independent expert review is not documented."
+			: claim.reviewerLine,
+		coiSummary: claim.coiSummary === legacyConflicts
+			? "A complete funding and conflict-of-interest assessment was not recorded."
+			: claim.coiSummary
 	};
 	return {
 		...claim,
@@ -38,9 +50,30 @@ export function individualResearchFields<ClaimType extends Partial<Pick<IClaim, 
 	const specific = (values: string[] | undefined, template: string[]) => values?.filter(value => !template.includes(value.trim()));
 	return {
 		...recorded,
-		...(recorded.inclusionRules ? { inclusionRules: specific(recorded.inclusionRules, [...legacyInclusionRules({ topicSlug }), ...legacyInclusionRules({ topicSlug: "" })]) } : {}),
-		...(recorded.exclusionRules ? { exclusionRules: specific(recorded.exclusionRules, [...legacyExclusionRules({ topicSlug }), ...legacyExclusionRules({ topicSlug: "" })]) } : {}),
-		...(recorded.appraisalTools ? { appraisalTools: specific(recorded.appraisalTools, [...legacyAppraisalTools(topicSlug), ...legacyAppraisalTools("")]) } : {})
+		...(recorded.inclusionRules
+			? {
+					inclusionRules: specific(recorded.inclusionRules, [
+						...legacyInclusionRules({ topicSlug }),
+						...legacyInclusionRules({ topicSlug: "" })
+					])
+				}
+			: {}),
+		...(recorded.exclusionRules
+			? {
+					exclusionRules: specific(recorded.exclusionRules, [
+						...legacyExclusionRules({ topicSlug }),
+						...legacyExclusionRules({ topicSlug: "" })
+					])
+				}
+			: {}),
+		...(recorded.appraisalTools
+			? {
+					appraisalTools: specific(recorded.appraisalTools, [
+						...legacyAppraisalTools(topicSlug),
+						...legacyAppraisalTools("")
+					])
+				}
+			: {})
 	};
 }
 

@@ -34,9 +34,31 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Mechanism and carnosine loading are well established. Effect magnitude varies by protocol, training status, sex representation, and event duration.",
 		sources: [
-			["meta_analysis", "β-alanine supplementation to improve exercise capacity and performance: a systematic review and meta-analysis", "British Journal of Sports Medicine", 2016, "10.1136/bjsports-2016-096396", "Large multilevel synthesis finds small benefits concentrated in particular high-intensity exercise durations."],
-			["meta_analysis", "Effects of β-alanine supplementation on exercise performance: a meta-analysis", "Amino Acids", 2012, "10.1007/s00726-011-1200-z", "Earlier synthesis identifies greater effects for exercise capacity than for direct performance tests."],
-			["meta_analysis", "No ergogenic effect of beta-alanine on repeated sprint ability: a systematic review and multilevel meta-analysis of randomized controlled trials", "Frontiers in Nutrition", 2026, "10.3389/fnut.2026.1818755", "Outcome-specific counterevidence finds no reliable benefit for repeated sprint ability.", "debate"]
+			[
+				"meta_analysis",
+				"β-alanine supplementation to improve exercise capacity and performance: a systematic review and meta-analysis",
+				"British Journal of Sports Medicine",
+				2016,
+				"10.1136/bjsports-2016-096396",
+				"Large multilevel synthesis finds small benefits concentrated in particular high-intensity exercise durations."
+			],
+			[
+				"meta_analysis",
+				"Effects of β-alanine supplementation on exercise performance: a meta-analysis",
+				"Amino Acids",
+				2012,
+				"10.1007/s00726-011-1200-z",
+				"Earlier synthesis identifies greater effects for exercise capacity than for direct performance tests."
+			],
+			[
+				"meta_analysis",
+				"No ergogenic effect of beta-alanine on repeated sprint ability: a systematic review and multilevel meta-analysis of randomized controlled trials",
+				"Frontiers in Nutrition",
+				2026,
+				"10.3389/fnut.2026.1818755",
+				"Outcome-specific counterevidence finds no reliable benefit for repeated sprint ability.",
+				"debate"
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +93,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The direction is reasonably consistent in selected settings, while practical magnitude and individual response remain variable.",
 		sources: [
-			["meta_analysis", "The Effect of Dietary Nitrate Supplementation on Endurance Exercise Performance in Healthy Adults: A Systematic Review and Meta-Analysis", "Sports Medicine", 2016, "10.1007/s40279-016-0617-7", "Synthesis finds modest endurance benefits and evaluates important moderators."],
-			["meta_analysis", "Factors that Moderate the Effect of Nitrate Ingestion On Exercise Performance in Adults: A Systematic Review With Meta-Analyses and Meta-Regressions", "Advances in Nutrition", 2022, "10.1093/advances/nmac054", "Randomized-trial synthesis shows that protocol, participant, and oral-microbiome factors modify outcomes."],
-			["systematic_review", "Effects of Beetroot Juice on Physical Performance in Professional Athletes and Healthy Individuals: An Umbrella Review", "Nutrients", 2025, "10.3390/nu17121958", "Review of reviews emphasizes outcome heterogeneity and smaller effects in some professional-athlete settings."]
+			[
+				"meta_analysis",
+				"The Effect of Dietary Nitrate Supplementation on Endurance Exercise Performance in Healthy Adults: A Systematic Review and Meta-Analysis",
+				"Sports Medicine",
+				2016,
+				"10.1007/s40279-016-0617-7",
+				"Synthesis finds modest endurance benefits and evaluates important moderators."
+			],
+			[
+				"meta_analysis",
+				"Factors that Moderate the Effect of Nitrate Ingestion On Exercise Performance in Adults: A Systematic Review With Meta-Analyses and Meta-Regressions",
+				"Advances in Nutrition",
+				2022,
+				"10.1093/advances/nmac054",
+				"Randomized-trial synthesis shows that protocol, participant, and oral-microbiome factors modify outcomes."
+			],
+			[
+				"systematic_review",
+				"Effects of Beetroot Juice on Physical Performance in Professional Athletes and Healthy Individuals: An Umbrella Review",
+				"Nutrients",
+				2025,
+				"10.3390/nu17121958",
+				"Review of reviews emphasizes outcome heterogeneity and smaller effects in some professional-athlete settings."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +151,31 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Average high-intensity effects are supported, but event specificity, optimal timing, and large individual variation reduce certainty for any one athlete.",
 		sources: [
-			["systematic_review", "Effects of sodium bicarbonate supplementation on exercise performance: an umbrella review", "Journal of the International Society of Sports Nutrition", 2021, "10.1186/s12970-021-00469-7", "Umbrella review grades evidence across strength, endurance, and high-intensity outcomes."],
-			["meta_analysis", "Extracellular Buffering Supplements to Improve Exercise Capacity and Performance: A Comprehensive Systematic Review and Meta-analysis", "Sports Medicine", 2021, "10.1007/s40279-021-01575-x", "Large synthesis quantifies the small overall effect and protocol moderators."],
-			["meta_analysis", "Negligible benefit of oral single-dose sodium bicarbonate on continuous running performance: systematic review with meta-analysis of randomized, double-blind, placebo-controlled trials", "Journal of the International Society of Sports Nutrition", 2025, "10.1080/15502783.2025.2538606", "Specific counterevidence shows that the result should not be generalized to continuous running.", "debate"]
+			[
+				"systematic_review",
+				"Effects of sodium bicarbonate supplementation on exercise performance: an umbrella review",
+				"Journal of the International Society of Sports Nutrition",
+				2021,
+				"10.1186/s12970-021-00469-7",
+				"Umbrella review grades evidence across strength, endurance, and high-intensity outcomes."
+			],
+			[
+				"meta_analysis",
+				"Extracellular Buffering Supplements to Improve Exercise Capacity and Performance: A Comprehensive Systematic Review and Meta-analysis",
+				"Sports Medicine",
+				2021,
+				"10.1007/s40279-021-01575-x",
+				"Large synthesis quantifies the small overall effect and protocol moderators."
+			],
+			[
+				"meta_analysis",
+				"Negligible benefit of oral single-dose sodium bicarbonate on continuous running performance: systematic review with meta-analysis of randomized, double-blind, placebo-controlled trials",
+				"Journal of the International Society of Sports Nutrition",
+				2025,
+				"10.1080/15502783.2025.2538606",
+				"Specific counterevidence shows that the result should not be generalized to continuous running.",
+				"debate"
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +210,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Confidence is moderate because outcomes and controls vary. A small soreness effect remains possible, while added muscle and performance benefits are poorly supported.",
 		sources: [
-			["systematic_review", "The Effect of Oral Pure Branched-Chain Amino Acid Supplementation on Exercise Performance and Body Composition: A Systematic Review", "Cureus", 2025, "10.7759/cureus.96017", "Randomized-trial review finds equivocal performance and body-composition evidence."],
-			["systematic_review", "Branched-Chain Amino Acids Supplementation and Post-Exercise Recovery: An Overview of Systematic Reviews", "Journal of the American Nutrition Association", 2024, "10.1080/27697061.2023.2297899", "Overview critically appraises small and inconsistent recovery findings."],
-			["meta_analysis", "The effect of branched-chain amino acid on muscle damage markers and performance following strenuous exercise: a systematic review and meta-analysis", "Applied Physiology, Nutrition, and Metabolism", 2021, "10.1139/apnm-2021-0110", "Meta-analysis separates biomarker and soreness effects from functional performance."]
+			[
+				"systematic_review",
+				"The Effect of Oral Pure Branched-Chain Amino Acid Supplementation on Exercise Performance and Body Composition: A Systematic Review",
+				"Cureus",
+				2025,
+				"10.7759/cureus.96017",
+				"Randomized-trial review finds equivocal performance and body-composition evidence."
+			],
+			[
+				"systematic_review",
+				"Branched-Chain Amino Acids Supplementation and Post-Exercise Recovery: An Overview of Systematic Reviews",
+				"Journal of the American Nutrition Association",
+				2024,
+				"10.1080/27697061.2023.2297899",
+				"Overview critically appraises small and inconsistent recovery findings."
+			],
+			[
+				"meta_analysis",
+				"The effect of branched-chain amino acid on muscle damage markers and performance following strenuous exercise: a systematic review and meta-analysis",
+				"Applied Physiology, Nutrition, and Metabolism",
+				2021,
+				"10.1139/apnm-2021-0110",
+				"Meta-analysis separates biomarker and soreness effects from functional performance."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +268,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Certainty is limited by small trials, heterogeneous products and outcomes, industry involvement, and sparse long-term structural evidence.",
 		sources: [
-			["systematic_review", "The effects of collagen peptide supplementation on body composition, collagen synthesis, and recovery from joint injury and exercise: a systematic review", "Amino Acids", 2021, "10.1007/s00726-021-03072-x", "Review finds promising but heterogeneous evidence when collagen is paired with exercise."],
-			["meta_analysis", "Effect of collagen supplementation on knee osteoarthritis: an updated systematic review and meta-analysis of randomised controlled trials", "Clinical and Experimental Rheumatology", 2024, "10.55563/clinexprheumatol/kflfr5", "Pooled randomized evidence suggests symptom benefit in knee osteoarthritis."],
-			["meta_analysis", "Impact of Collagen Peptide Supplementation in Combination with Long-Term Physical Training on Strength, Musculotendinous Remodeling, Functional Recovery, and Body Composition in Healthy Adults: A Systematic Review with Meta-analysis", "Sports Medicine", 2024, "10.1007/s40279-024-02079-0", "Meta-analysis reports selected training-related effects but highlights limited and varied trials."]
+			[
+				"systematic_review",
+				"The effects of collagen peptide supplementation on body composition, collagen synthesis, and recovery from joint injury and exercise: a systematic review",
+				"Amino Acids",
+				2021,
+				"10.1007/s00726-021-03072-x",
+				"Review finds promising but heterogeneous evidence when collagen is paired with exercise."
+			],
+			[
+				"meta_analysis",
+				"Effect of collagen supplementation on knee osteoarthritis: an updated systematic review and meta-analysis of randomised controlled trials",
+				"Clinical and Experimental Rheumatology",
+				2024,
+				"10.55563/clinexprheumatol/kflfr5",
+				"Pooled randomized evidence suggests symptom benefit in knee osteoarthritis."
+			],
+			[
+				"meta_analysis",
+				"Impact of Collagen Peptide Supplementation in Combination with Long-Term Physical Training on Strength, Musculotendinous Remodeling, Functional Recovery, and Body Composition in Healthy Adults: A Systematic Review with Meta-analysis",
+				"Sports Medicine",
+				2024,
+				"10.1007/s40279-024-02079-0",
+				"Meta-analysis reports selected training-related effects but highlights limited and varied trials."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +326,31 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty reflects small samples, multiple outcomes, formulation heterogeneity, limited independent replication, and incomplete long-term safety evidence.",
 		sources: [
-			["meta_analysis", "Effects of Ashwagandha (Withania somnifera) on Physical Performance: Systematic Review and Bayesian Meta-Analysis", "Journal of Functional Morphology and Kinesiology", 2021, "10.3390/jfmk6010020", "Early synthesis reports favorable signals while drawing from a small heterogeneous trial base."],
-			["meta_analysis", "Effects of Withania somnifera (Ashwagandha) Supplementation on Exercise Performance: A Systematic Review and Three-Level Meta-Analysis", "Nutrients", 2026, "10.3390/nu18121915", "Recent multilevel analysis evaluates formulation and participant moderators but remains constrained by source trials."],
-			["systematic_review", "Biopsychological Effects of Ashwagandha (Withania somnifera) in Athletes and Healthy Individuals: A Systematic Review", "Muscles", 2025, "10.3390/muscles4030024", "Critical review emphasizes limited and sometimes inconsistent scientific support.", "debate"]
+			[
+				"meta_analysis",
+				"Effects of Ashwagandha (Withania somnifera) on Physical Performance: Systematic Review and Bayesian Meta-Analysis",
+				"Journal of Functional Morphology and Kinesiology",
+				2021,
+				"10.3390/jfmk6010020",
+				"Early synthesis reports favorable signals while drawing from a small heterogeneous trial base."
+			],
+			[
+				"meta_analysis",
+				"Effects of Withania somnifera (Ashwagandha) Supplementation on Exercise Performance: A Systematic Review and Three-Level Meta-Analysis",
+				"Nutrients",
+				2026,
+				"10.3390/nu18121915",
+				"Recent multilevel analysis evaluates formulation and participant moderators but remains constrained by source trials."
+			],
+			[
+				"systematic_review",
+				"Biopsychological Effects of Ashwagandha (Withania somnifera) in Athletes and Healthy Individuals: A Systematic Review",
+				"Muscles",
+				2025,
+				"10.3390/muscles4030024",
+				"Critical review emphasizes limited and sometimes inconsistent scientific support.",
+				"debate"
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +385,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Hydration physiology is established, while individualized thresholds and real-world performance effects vary widely.",
 		sources: [
-			["meta_analysis", "The Hydrating Effects of Hypertonic, Isotonic and Hypotonic Sports Drinks and Waters on Central Hydration During Continuous Exercise: A Systematic Meta-Analysis and Perspective", "Sports Medicine", 2021, "10.1007/s40279-021-01558-y", "Meta-analysis compares water and beverage tonicity during continuous exercise."],
-			["systematic_review", "Oral rehydration beverages for treating exercise-associated dehydration: a systematic review. Part I: carbohydrate-electrolyte solutions", "Journal of Athletic Training", 2023, "10.4085/1062-6050-0682.22", "Controlled-study review focuses on rehydration after meaningful exercise-associated fluid loss."],
-			["systematic_review", "Sports Drinks for Rehydration, Amelioration of Fatigue, and Recovery from Exertion", "Nutrients", 2026, "10.3390/nu18111687", "Review distinguishes formulation-specific benefits from broad commercial sports-drink claims."]
+			[
+				"meta_analysis",
+				"The Hydrating Effects of Hypertonic, Isotonic and Hypotonic Sports Drinks and Waters on Central Hydration During Continuous Exercise: A Systematic Meta-Analysis and Perspective",
+				"Sports Medicine",
+				2021,
+				"10.1007/s40279-021-01558-y",
+				"Meta-analysis compares water and beverage tonicity during continuous exercise."
+			],
+			[
+				"systematic_review",
+				"Oral rehydration beverages for treating exercise-associated dehydration: a systematic review. Part I: carbohydrate-electrolyte solutions",
+				"Journal of Athletic Training",
+				2023,
+				"10.4085/1062-6050-0682.22",
+				"Controlled-study review focuses on rehydration after meaningful exercise-associated fluid loss."
+			],
+			[
+				"systematic_review",
+				"Sports Drinks for Rehydration, Amelioration of Fatigue, and Recovery from Exertion",
+				"Nutrients",
+				2026,
+				"10.3390/nu18111687",
+				"Review distinguishes formulation-specific benefits from broad commercial sports-drink claims."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +443,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty reflects small heterogeneous studies, variable products, subjective outcomes, and sparse evidence on long-term adaptation.",
 		sources: [
-			["meta_analysis", "Tart Cherry Supplementation and Recovery From Strenuous Exercise: A Systematic Review and Meta-Analysis", "International Journal of Sport Nutrition and Exercise Metabolism", 2021, "10.1123/ijsnem.2020-0145", "Pooled evidence suggests small benefits for selected soreness and recovery outcomes."],
-			["meta_analysis", "Effects of Tart Cherry Juice Supplementation on Recovery from Exercise-Induced Muscle Damage in Athletes: A Systematic Review and Meta-Analysis", "Sports Medicine - Open", 2026, "10.1186/s40798-026-00993-3", "Recent athlete-specific synthesis evaluates physical, biochemical, and perceptual recovery markers."],
-			["systematic_review", "The effect of Montmorency tart cherry consumption on athletic performance and post-exercise recovery in healthy adults: a scoping review", "Frontiers in Nutrition", 2026, "10.3389/fnut.2026.1794292", "Scoping review maps wide variation in products, protocols, and outcomes."]
+			[
+				"meta_analysis",
+				"Tart Cherry Supplementation and Recovery From Strenuous Exercise: A Systematic Review and Meta-Analysis",
+				"International Journal of Sport Nutrition and Exercise Metabolism",
+				2021,
+				"10.1123/ijsnem.2020-0145",
+				"Pooled evidence suggests small benefits for selected soreness and recovery outcomes."
+			],
+			[
+				"meta_analysis",
+				"Effects of Tart Cherry Juice Supplementation on Recovery from Exercise-Induced Muscle Damage in Athletes: A Systematic Review and Meta-Analysis",
+				"Sports Medicine - Open",
+				2026,
+				"10.1186/s40798-026-00993-3",
+				"Recent athlete-specific synthesis evaluates physical, biochemical, and perceptual recovery markers."
+			],
+			[
+				"systematic_review",
+				"The effect of Montmorency tart cherry consumption on athletic performance and post-exercise recovery in healthy adults: a scoping review",
+				"Frontiers in Nutrition",
+				2026,
+				"10.3389/fnut.2026.1794292",
+				"Scoping review maps wide variation in products, protocols, and outcomes."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +501,31 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Low certainty follows conflicting pooled results, population differences, small trials, and concerns about unusually large effects in parts of the literature.",
 		sources: [
-			["systematic_review", "Ergogenic Benefits of β-Hydroxy-β-Methyl Butyrate (HMB) Supplementation on Body Composition and Muscle Strength: An Umbrella Review of Meta-Analyses", "Journal of Cachexia, Sarcopenia and Muscle", 2025, "10.1002/jcsm.13671", "Umbrella review shows that estimated benefits vary substantially across populations and analyses."],
-			["meta_analysis", "Effects of beta-hydroxy-beta-methylbutyrate supplementation on strength and body composition in trained and competitive athletes: A meta-analysis of randomized controlled trials", "Journal of Science and Medicine in Sport", 2017, "10.1016/j.jsams.2017.11.003", "Athlete-focused randomized-trial meta-analysis finds no significant strength or body-composition benefit.", "debate"],
-			["meta_analysis", "Effects of β-Hydroxy-β-Methylbutyrate Supplementation During Resistance Training on Strength, Body Composition, and Muscle Damage in Trained and Untrained Young Men: A Meta-Analysis", "Journal of Strength and Conditioning Research", 2009, "10.1519/JSC.0b013e3181a00c80", "Earlier synthesis illustrates differences by training status and the variable evidence base."]
+			[
+				"systematic_review",
+				"Ergogenic Benefits of β-Hydroxy-β-Methyl Butyrate (HMB) Supplementation on Body Composition and Muscle Strength: An Umbrella Review of Meta-Analyses",
+				"Journal of Cachexia, Sarcopenia and Muscle",
+				2025,
+				"10.1002/jcsm.13671",
+				"Umbrella review shows that estimated benefits vary substantially across populations and analyses."
+			],
+			[
+				"meta_analysis",
+				"Effects of beta-hydroxy-beta-methylbutyrate supplementation on strength and body composition in trained and competitive athletes: A meta-analysis of randomized controlled trials",
+				"Journal of Science and Medicine in Sport",
+				2017,
+				"10.1016/j.jsams.2017.11.003",
+				"Athlete-focused randomized-trial meta-analysis finds no significant strength or body-composition benefit.",
+				"debate"
+			],
+			[
+				"meta_analysis",
+				"Effects of β-Hydroxy-β-Methylbutyrate Supplementation During Resistance Training on Strength, Body Composition, and Muscle Damage in Trained and Untrained Young Men: A Meta-Analysis",
+				"Journal of Strength and Conditioning Research",
+				2009,
+				"10.1519/JSC.0b013e3181a00c80",
+				"Earlier synthesis illustrates differences by training status and the variable evidence base."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +560,30 @@ export const september2026SportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Direction varies by compound, dose, timing, baseline status, and outcome. Confidence is higher against routine megadosing than about any one athlete's response.",
 		sources: [
-			["systematic_review", "Antioxidant Supplementation and Adaptive Response to Training: A Systematic Review", "Current Pharmaceutical Design", 2019, "10.2174/1381612825666190701164923", "Review finds inconsistent benefits and evidence that some high-dose supplements can attenuate adaptation."],
-			["systematic_review", "Antioxidant supplements and endurance exercise: Current evidence and mechanistic insights", "Redox Biology", 2020, "10.1016/j.redox.2020.101471", "Review concludes that endurance-performance effects are inconclusive or contradictory."],
-			["systematic_review", "Antioxidants and Exercise: A Redox-Informed Framework for Training Adaptation, Performance, and Recovery", "Antioxidants", 2026, "10.3390/antiox15040456", "Current review emphasizes dose, timing, nutrient class, and the tradeoff between recovery and adaptive signaling."]
+			[
+				"systematic_review",
+				"Antioxidant Supplementation and Adaptive Response to Training: A Systematic Review",
+				"Current Pharmaceutical Design",
+				2019,
+				"10.2174/1381612825666190701164923",
+				"Review finds inconsistent benefits and evidence that some high-dose supplements can attenuate adaptation."
+			],
+			[
+				"systematic_review",
+				"Antioxidant supplements and endurance exercise: Current evidence and mechanistic insights",
+				"Redox Biology",
+				2020,
+				"10.1016/j.redox.2020.101471",
+				"Review concludes that endurance-performance effects are inconclusive or contradictory."
+			],
+			[
+				"systematic_review",
+				"Antioxidants and Exercise: A Redox-Informed Framework for Training Adaptation, Performance, and Recovery",
+				"Antioxidants",
+				2026,
+				"10.3390/antiox15040456",
+				"Current review emphasizes dose, timing, nutrient class, and the tradeoff between recovery and adaptive signaling."
+			]
 		]
 	})
 ];

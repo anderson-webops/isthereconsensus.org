@@ -3,7 +3,16 @@ import type { SeedClaim } from "./claims.js";
 export const electricityCheckedAt = "2026-10-05T12:25:57.000Z";
 
 function textbook(section: string, title: string, note: string): SeedClaim["sources"][number] {
-	return { kind: "technical_reference", title: `College Physics 2e: ${title}`, publisher: "OpenStax, Rice University; Paul Peter Urone and Roger Hinrichs", year: 2022, url: `https://openstax.org/books/college-physics-2e/pages/${section}`, stance: "supports", order: 1, note };
+	return {
+		kind: "technical_reference",
+		title: `College Physics 2e: ${title}`,
+		publisher: "OpenStax, Rice University; Paul Peter Urone and Roger Hinrichs",
+		year: 2022,
+		url: `https://openstax.org/books/college-physics-2e/pages/${section}`,
+		stance: "supports",
+		order: 1,
+		note
+	};
 }
 
 export const readerElectricitySources = {
@@ -25,10 +34,42 @@ export const readerElectricitySources = {
 	inductance: textbook("23-9-inductance", "Inductance", "Original self-inductance, current-change and stored magnetic energy relations checked. Constant inductance is assumed; winding resistance and core losses are separate. Source construction suggestions and operating procedures are not reproduced."),
 	acPower: textbook("23-12-rlc-series-ac-circuits", "RLC Series AC Circuits", "Original sinusoidal phase-angle and average-power distinctions checked. Cosine phase factor is not silently applied to distorted waveforms. Ideal reactive storage and return are distinguished from real dissipative losses."),
 	electrostatic: textbook("18-7-conductors-and-electric-fields-in-static-equilibrium", "Conductors and Electric Fields in Static Equilibrium", "Original zero-interior-field theorem checked specifically for electrostatic equilibrium. It is not extended to ordinary resistive current flow. Lightning, vehicle and fallen-wire safety passages are not adopted as instructions or protection guarantees."),
-	fieldEnergy: { kind: "technical_reference", title: "The Feynman Lectures on Physics, Volume II, Chapter 27: Field Energy and Field Momentum", publisher: "Caltech; Richard Feynman, Robert Leighton and Matthew Sands", url: "https://www.feynmanlectures.caltech.edu/II_27.html", stance: "supports", order: 1, note: "Original electromagnetic energy-balance and resistive-wire discussion checked. No figure, source prose or apparatus is reproduced. A special field geometry does not establish one universal energy-flow path or permit instantaneous transmission; historical intuition and magnet-spin shortcuts are not adopted." },
-	si: { kind: "technical_reference", title: "SP 330: The International System of Units, Section 2", publisher: "NIST", url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-2", stance: "supports", order: 1, note: "Original coherent units for current, charge, potential difference, resistance, capacitance, energy and power checked. Defined unit relations are not measured device performance or expert-agreement percentages." },
-	hour: { kind: "technical_reference", title: "SP 330: Non-SI units accepted for use with the SI, Section 4", publisher: "NIST", url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-4", stance: "supports", order: 1, note: "Original hour-to-second conversion checked. Combining this with ampere and watt definitions yields charge and energy units, not a verified battery capacity, runtime or electricity price." },
-	measuring: { kind: "technical_reference", title: "Measuring electricity", publisher: "U.S. Energy Information Administration", url: "https://www.eia.gov/energyexplained/electricity/measuring-electricity.php", stance: "supports", order: 1, note: "Original power-versus-time-integrated-energy distinction checked. Source household consumption, tariff examples and product numbers are not imported. A different FAQ URL initially opened household consumption and is not cited." }
+	fieldEnergy: {
+		kind: "technical_reference",
+		title: "The Feynman Lectures on Physics, Volume II, Chapter 27: Field Energy and Field Momentum",
+		publisher: "Caltech; Richard Feynman, Robert Leighton and Matthew Sands",
+		url: "https://www.feynmanlectures.caltech.edu/II_27.html",
+		stance: "supports",
+		order: 1,
+		note: "Original electromagnetic energy-balance and resistive-wire discussion checked. No figure, source prose or apparatus is reproduced. A special field geometry does not establish one universal energy-flow path or permit instantaneous transmission; historical intuition and magnet-spin shortcuts are not adopted."
+	},
+	si: {
+		kind: "technical_reference",
+		title: "SP 330: The International System of Units, Section 2",
+		publisher: "NIST",
+		url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-2",
+		stance: "supports",
+		order: 1,
+		note: "Original coherent units for current, charge, potential difference, resistance, capacitance, energy and power checked. Defined unit relations are not measured device performance or expert-agreement percentages."
+	},
+	hour: {
+		kind: "technical_reference",
+		title: "SP 330: Non-SI units accepted for use with the SI, Section 4",
+		publisher: "NIST",
+		url: "https://www.nist.gov/pml/special-publication-330/sp-330-section-4",
+		stance: "supports",
+		order: 1,
+		note: "Original hour-to-second conversion checked. Combining this with ampere and watt definitions yields charge and energy units, not a verified battery capacity, runtime or electricity price."
+	},
+	measuring: {
+		kind: "technical_reference",
+		title: "Measuring electricity",
+		publisher: "U.S. Energy Information Administration",
+		url: "https://www.eia.gov/energyexplained/electricity/measuring-electricity.php",
+		stance: "supports",
+		order: 1,
+		note: "Original power-versus-time-integrated-energy distinction checked. Source household consumption, tariff examples and product numbers are not imported. A different FAQ URL initially opened household consumption and is not cited."
+	}
 } satisfies Record<string, SeedClaim["sources"][number]>;
 
 interface ElectricityReview {
@@ -307,8 +348,16 @@ export const readerElectricityClaims: SeedClaim[] = reviews.map(review => ({
 	misconceptions: [review.title, "A correct ideal model is not a measured device specification or an equipment-safety assessment."],
 	misconceptionTags: review.tags,
 	uncertaintySummary: review.qualification,
-	uncertaintyDrivers: [{ type: "generalizability", detail: review.qualification }],
-	searchDatabases: ["Original electrical and electromagnetic definitions in College Physics 2e", "Original NIST SI definitions and accepted time units", "Original Caltech field-energy discussion", "Original EIA electricity-measurement definitions", "Consensus.app circuit-field discovery; fetched record not used as original-paper evidence"],
+	uncertaintyDrivers: [
+		{ type: "generalizability", detail: review.qualification }
+	],
+	searchDatabases: [
+		"Original electrical and electromagnetic definitions in College Physics 2e",
+		"Original NIST SI definitions and accepted time units",
+		"Original Caltech field-energy discussion",
+		"Original EIA electricity-measurement definitions",
+		"Consensus.app circuit-field discovery; fetched record not used as original-paper evidence"
+	],
 	searchCutoffAt: electricityCheckedAt,
 	inclusionRules: ["Separate physical quantities, conservation laws, scoped ideal models and measured performance.", "Use original reference checks and independently constructed hypothetical examples with compatible units."],
 	exclusionRules: ["No copied textbook expression, exercises, diagrams, equipment ratings or clinical examples.", "No invented reader demand, expert votes, apparatus testing, wiring, device construction, exposure or safety recommendations."],
@@ -318,15 +367,54 @@ export const readerElectricityClaims: SeedClaim[] = reviews.map(review => ({
 	independenceSummary: "OpenStax sections share textbook authorship, NIST sections share institutional provenance and Caltech chapters share authors. These are not independent experiments or an expert poll. The legacy confidence score is editorial, not a measured fraction of researchers agreeing. No actual reader request, apparatus or raw research dataset was analyzed.",
 	coiSummary: "Institutional teaching and unit references define scoped models, not product approval or safety certification. Funding and conflicts across teaching records were not exhaustively audited. No product, equipment procedure or expert-agreement percentage is endorsed.",
 	lastRetractionCheckAt: electricityCheckedAt,
-	evidenceSummaries: [{ question: review.title, population: review.qualification, finding: review.bottomLine, effectDirection: "supports", magnitude: "Hypothetical arithmetic is not an observed device effect size or measured performance.", certainty: "moderate", limitations: [review.qualification, "Shared teaching-source provenance; no independent apparatus testing or expert survey"] }],
-	institutionalAnchors: [{ name: readerElectricitySources[review.sources[0]!].publisher, role: "Definition or model reference, not a formal consensus statement or expert approval" }],
-	changeLog: [{ date: electricityCheckedAt, kind: "publication", summary: `New review: ${review.title}` }],
-	readerAnnouncement: { id: review.id, date: electricityCheckedAt, kind: "new_review", bottomLineImpact: "new", summary: `New review: ${review.title}` },
-	surveillanceSpec: { focus: review.title, cadenceDays: 90, watchTerms: review.tags, integrityMonitors: ["Corrections and notices for cited original references"], guidelineMonitors: ["Original definitions and model-applicability revisions"], triggerRules: ["Reassess if a reference correction or applicable model assumptions change the conclusion."] },
+	evidenceSummaries: [
+		{
+			question: review.title,
+			population: review.qualification,
+			finding: review.bottomLine,
+			effectDirection: "supports",
+			magnitude: "Hypothetical arithmetic is not an observed device effect size or measured performance.",
+			certainty: "moderate",
+			limitations: [review.qualification, "Shared teaching-source provenance; no independent apparatus testing or expert survey"]
+		}
+	],
+	institutionalAnchors: [
+		{ name: readerElectricitySources[review.sources[0]!].publisher, role: "Definition or model reference, not a formal consensus statement or expert approval" }
+	],
+	changeLog: [
+		{ date: electricityCheckedAt, kind: "publication", summary: `New review: ${review.title}` }
+	],
+	readerAnnouncement: {
+		id: review.id,
+		date: electricityCheckedAt,
+		kind: "new_review",
+		bottomLineImpact: "new",
+		summary: `New review: ${review.title}`
+	},
+	surveillanceSpec: {
+		focus: review.title,
+		cadenceDays: 90,
+		watchTerms: review.tags,
+		integrityMonitors: ["Corrections and notices for cited original references"],
+		guidelineMonitors: ["Original definitions and model-applicability revisions"],
+		triggerRules: ["Reassess if a reference correction or applicable model assumptions change the conclusion."]
+	},
 	sources: review.sources.map((key, index) => {
 		const entry = readerElectricitySources[key];
-		return { ...entry, order: index + 1, isAnchor: index === 0, appraisal: "not_appraised", citationStatus: "current", citationCheckedAt: electricityCheckedAt, statusSources: [entry.url!] };
+		return {
+			...entry,
+			order: index + 1,
+			isAnchor: index === 0,
+			appraisal: "not_appraised",
+			citationStatus: "current",
+			citationCheckedAt: electricityCheckedAt,
+			statusSources: [entry.url!]
+		};
 	})
 }));
 
-export const readerElectricityGaps = reviews.map(review => ({ slug: review.slug, gap: `Adds the distinct electrical-science question "${review.title}" with physical quantities, constructed examples and applicability boundaries; existing grid, perpetual-motion, atomic and heat/optics reviews do not answer this proposition.`, relatedExistingSlugs: ["can-a-perpetual-motion-machine-produce-net-energy-indefinitely", "will-ordinary-rooftop-solar-panels-keep-a-home-powered-during-a-grid-outage"] }));
+export const readerElectricityGaps = reviews.map(review => ({
+	slug: review.slug,
+	gap: `Adds the distinct electrical-science question "${review.title}" with physical quantities, constructed examples and applicability boundaries; existing grid, perpetual-motion, atomic and heat/optics reviews do not answer this proposition.`,
+	relatedExistingSlugs: ["can-a-perpetual-motion-machine-produce-net-energy-indefinitely", "will-ordinary-rooftop-solar-panels-keep-a-home-powered-during-a-grid-outage"]
+}));

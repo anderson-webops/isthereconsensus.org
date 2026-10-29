@@ -73,7 +73,10 @@ async function run() {
 	if (args.length !== 4 || args[0] !== "--mode" || !["preview", "publish"].includes(args[1]) || args[2] !== "--options") throw new Error("Use --mode preview or publish with --options and a private configuration file.");
 	const root = resolve(fileURLToPath(new URL("../../../", import.meta.url)));
 	if (fileURLToPath(import.meta.url) !== resolve(root, "back-end/src/scripts/runReaderExpansionPublication.ts")) throw new Error("Use the verified committed source entrypoint, not a compiled copy.");
-	const git = (...options: string[]) => execFileSync("git", ["-C", root, ...options], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+	const git = (...options: string[]) => execFileSync("git", ["-C", root, ...options], {
+		encoding: "utf8",
+		stdio: ["ignore", "pipe", "pipe"]
+	}).trim();
 	if (resolve(git("rev-parse", "--show-toplevel")) !== root || git("status", "--porcelain", "--untracked-files=normal", "--", ...READER_EXPANSION_SOURCE_PATHS)) throw new Error("Source and toolchain inputs must be committed.");
 	const options = JSON.parse(await privateText(args[3])) as OperatorOptions;
 	const proposal = JSON.parse(await privateText(options.proposalFile)) as ReaderExpansionSourceProposal;
@@ -85,7 +88,12 @@ async function run() {
 	if (args[1] === "publish") {
 		plan = JSON.parse(await privateText(options.planFile!)) as ReaderExpansionEditorialPlan;
 		approval = JSON.parse(await privateText(options.approvalFile!)) as ReaderExpansionPublicationApproval;
-		for (const key of ["backupSha256", "restoreVerificationSha256", "rehearsalReceiptSha256", "backendArtifactSha256"] as const) {
+		for (const key of [
+			"backupSha256",
+			"restoreVerificationSha256",
+			"rehearsalReceiptSha256",
+			"backendArtifactSha256"
+		] as const) {
 			if (await evidenceHash(options.evidenceFiles![key]) !== approval[key]) throw new Error("Reviewed evidence bytes differ from the approval.");
 		}
 	}
@@ -95,15 +103,34 @@ async function run() {
 		if (args[1] === "preview") {
 			const prepared = await prepareReaderExpansionEditorialPlan(proposal, api);
 			await durableWrite(output, prepared);
-			console.log(JSON.stringify({ operation: "preview", sourceCommit: proposal.sourceCommit, planSha256: readerExpansionValueHash(prepared), targets: prepared.rows.length, published: false }));
+			console.log(JSON.stringify({
+				operation: "preview",
+				sourceCommit: proposal.sourceCommit,
+				planSha256: readerExpansionValueHash(prepared),
+				targets: prepared.rows.length,
+				published: false
+			}));
 			return;
 		}
 		if (!plan || !approval) throw new Error("Publication requires a reviewed plan and explicit approval.");
 		journal = await privateOutput(options.journalFile!);
-		await durableWrite(journal, { operation: "batch_preflight", sourceCommit: proposal.sourceCommit, proposalDataSha256: proposal.proposalDataSha256, planSha256: readerExpansionValueHash(plan) });
+		await durableWrite(journal, {
+			operation: "batch_preflight",
+			sourceCommit: proposal.sourceCommit,
+			proposalDataSha256: proposal.proposalDataSha256,
+			planSha256: readerExpansionValueHash(plan)
+		});
 		const report = await publishReaderExpansionEditorialPlan(proposal, plan, approval, api, event => durableWrite(journal!, event));
 		await durableWrite(output, report);
-		console.log(JSON.stringify({ operation: "authenticated-api-batch-readback", sourceCommit: proposal.sourceCommit, targets: report.canonicalReviews, citations: report.orderedCitations, catalogTotal: report.catalogTotal, fullPrivateStatePreservationVerified: false, renderedPagesVerified: false }));
+		console.log(JSON.stringify({
+			operation: "authenticated-api-batch-readback",
+			sourceCommit: proposal.sourceCommit,
+			targets: report.canonicalReviews,
+			citations: report.orderedCitations,
+			catalogTotal: report.catalogTotal,
+			fullPrivateStatePreservationVerified: false,
+			renderedPagesVerified: false
+		}));
 	}
 	finally {
 		await journal?.close();

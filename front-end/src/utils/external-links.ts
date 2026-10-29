@@ -1,5 +1,7 @@
 function normalizedIdentifier(value: unknown) {
-	return typeof value === "string" ? value.trim() : "";
+	return typeof value === "string"
+		? value.trim()
+		: "";
 }
 
 export function safeExternalHttpUrl(value: unknown) {
@@ -12,7 +14,8 @@ export function safeExternalHttpUrl(value: unknown) {
 			return "";
 		}
 		return parsed.toString();
-	} catch {
+	}
+	catch {
 		return "";
 	}
 }
@@ -22,13 +25,15 @@ export function doiResolverUrl(value: unknown) {
 	if (!/^10\.\d{4,9}\/[^\s\\]+$/.test(candidate)) return "";
 
 	const [prefix, ...suffixParts] = candidate.split("/");
-	const encodedSuffix = suffixParts.map((part) => encodeURIComponent(part)).join("/");
+	const encodedSuffix = suffixParts.map(part => encodeURIComponent(part)).join("/");
 	return `https://doi.org/${encodeURIComponent(prefix || "")}/${encodedSuffix}`;
 }
 
 export function pubMedUrl(value: unknown) {
 	const candidate = normalizedIdentifier(value);
-	return /^\d{1,40}$/.test(candidate) ? `https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(candidate)}/` : "";
+	return /^\d{1,40}$/.test(candidate)
+		? `https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(candidate)}/`
+		: "";
 }
 
 export function pubMedCentralUrl(value: unknown) {

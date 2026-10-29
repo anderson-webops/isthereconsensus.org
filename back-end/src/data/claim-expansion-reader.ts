@@ -26,4 +26,17 @@ export const readerExpansionClaims: SeedClaim[] = [
 	...readerAssessmentClaims,
 	...readerEconomicsClaims
 ];
-export const readerExpansionGaps = [...readerPrivacyGaps, ...readerOriginsGaps, ...readerSpaceGaps, ...readerWaterGaps, ...readerPhysicsGaps, ...readerProbabilityGaps, ...readerElectricityGaps, ...readerMechanicsGaps, ...readerDigitalGaps, ...readerWeatherGaps, ...readerAssessmentGaps, ...readerEconomicsGaps];
+export const readerExpansionGaps = [
+	...readerPrivacyGaps,
+	...readerOriginsGaps,
+	...readerSpaceGaps,
+	...readerWaterGaps,
+	...readerPhysicsGaps,
+	...readerProbabilityGaps,
+	...readerElectricityGaps,
+	...readerMechanicsGaps,
+	...readerDigitalGaps,
+	...readerWeatherGaps,
+	...readerAssessmentGaps,
+	...readerEconomicsGaps
+];

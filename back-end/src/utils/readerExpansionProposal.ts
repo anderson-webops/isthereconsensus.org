@@ -4,24 +4,80 @@ import { seedClaimFields } from "../data/seedClaims.js";
 import { CLAIM_SOURCE_TITLE_MAX_LENGTH } from "../models/schemas/ClaimSource.js";
 import { CLAIM_NARRATIVE_FIELDS, normalizeClaimNarratives } from "./claimNarratives.js";
 
-const citationFields = ["kind", "title", "publisher", "year", "url", "doi", "pmid", "pmcid", "isAnchor", "appraisal", "citationStatus", "citationCheckedAt", "statusSources", "stance", "note", "order"] as const;
+const citationFields = [
+	"kind",
+	"title",
+	"publisher",
+	"year",
+	"url",
+	"doi",
+	"pmid",
+	"pmcid",
+	"isAnchor",
+	"appraisal",
+	"citationStatus",
+	"citationCheckedAt",
+	"statusSources",
+	"stance",
+	"note",
+	"order"
+] as const;
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
-const completeFields = ["agreementLevel", "evidenceCertainty", "reviewMode", "searchDatabases", "searchCutoffAt", "inclusionRules", "exclusionRules", "surveillanceSpec", "appraisalTools", "evidenceSummaries", "institutionalAnchors", "misconceptionTags", "authorLine", "reviewerLine", "coiSummary", "independenceSummary", "uncertaintySummary", "uncertaintyDrivers", "lastRetractionCheckAt", "changeLog"] as const satisfies readonly (keyof CompleteSeedClaim)[];
+const completeFields = [
+	"agreementLevel",
+	"evidenceCertainty",
+	"reviewMode",
+	"searchDatabases",
+	"searchCutoffAt",
+	"inclusionRules",
+	"exclusionRules",
+	"surveillanceSpec",
+	"appraisalTools",
+	"evidenceSummaries",
+	"institutionalAnchors",
+	"misconceptionTags",
+	"authorLine",
+	"reviewerLine",
+	"coiSummary",
+	"independenceSummary",
+	"uncertaintySummary",
+	"uncertaintyDrivers",
+	"lastRetractionCheckAt",
+	"changeLog"
+] as const satisfies readonly (keyof CompleteSeedClaim)[];
 
-export const READER_EXPANSION_SOURCE_PATHS = ["back-end/src", "back-end/package.json", "back-end/package-lock.json", "back-end/.npmrc", "package.json", "package-lock.json", ".npmrc", ".node-version", ".nvmrc", "vendor"] as const;
+export const READER_EXPANSION_SOURCE_PATHS = [
+	"back-end/src",
+	"back-end/package.json",
+	"back-end/package-lock.json",
+	"back-end/.npmrc",
+	"package.json",
+	"package-lock.json",
+	".npmrc",
+	".node-version",
+	".nvmrc",
+	"vendor"
+] as const;
 
 export type ReaderExpansionSourceProposal = ReturnType<typeof createReaderExpansionSourceProposal>;
 
 function canonicalValue(value: unknown): unknown {
 	if (value instanceof Date) {
-		if (Number.isNaN(value.getTime())) throw new Error("Source dates must be valid.");
+		if (Number.isNaN(value.getTime())) throw new TypeError("Source dates must be valid.");
 		return value.toISOString();
 	}
 	if (Array.isArray(value)) return value.map(canonicalValue);
 	if (value && typeof value === "object") {
-		return Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== undefined).sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0).map(([key, entry]) => [key, canonicalValue(entry)]));
+		return Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== undefined).sort(([left], [right]) => left < right
+			? -1
+			: left > right
+				? 1
+				: 0).map(([key, entry]) => [
+			key,
+			canonicalValue(entry)
+		]));
 	}
-	if (typeof value === "number" && !Number.isFinite(value)) throw new Error("Source numbers must be finite.");
+	if (typeof value === "number" && !Number.isFinite(value)) throw new TypeError("Source numbers must be finite.");
 	return value;
 }
 
@@ -50,10 +106,15 @@ function proposalSources(definition: SeedClaim) {
 		if (!source.title.trim() || source.title.length > CLAIM_SOURCE_TITLE_MAX_LENGTH) throw new Error("Citation titles must respect the current schema bound.");
 		const url = new URL(source.url ?? "");
 		if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) throw new Error("Citation URLs must be HTTP(S) without credentials.");
-		const payload = Object.fromEntries(citationFields.filter(field => source[field] !== undefined).map(field => [field, field === "url" ? url.href : source[field]]));
+		const payload = Object.fromEntries(citationFields.filter(field => source[field] !== undefined).map(field => [
+			field,
+			field === "url"
+				? url.href
+				: source[field]
+		]));
 		if (source.citationCheckedAt !== undefined) {
 			const checked = new Date(source.citationCheckedAt);
-			if (Number.isNaN(checked.getTime())) throw new Error("Citation check dates must be valid when supplied.");
+			if (Number.isNaN(checked.getTime())) throw new TypeError("Citation check dates must be valid when supplied.");
 			payload.citationCheckedAt = checked.toISOString();
 		}
 		return canonicalValue(payload) as Record<string, unknown>;
@@ -67,7 +128,7 @@ export function createReaderExpansionSourceProposal(
 	generatedAt: Date
 ) {
 	if (!/^[a-f\d]{40}$/u.test(identity.commit) || !/^[a-f\d]{40}$/u.test(identity.tree)) throw new Error("Verified Git commit and tree identities are required.");
-	if (Number.isNaN(generatedAt.getTime())) throw new Error("Proposal generation date must be valid.");
+	if (Number.isNaN(generatedAt.getTime())) throw new TypeError("Proposal generation date must be valid.");
 	if (expansion.length !== 201 || catalog.length < 1001) throw new Error("The complete expansion and canonical library are required.");
 	const catalogByPath = new Map(catalog.map(definition => [`${definition.topicSlug}/${definition.slug}`, definition]));
 	if (catalogByPath.size !== catalog.length) throw new Error("Canonical source paths must be unique.");
@@ -88,7 +149,7 @@ export function createReaderExpansionSourceProposal(
 				if (readerExpansionValueHash(value) !== readerExpansionValueHash(canonicalSources[index][field])) throw new Error("Expansion citations differ from the canonical source library.");
 			}
 		}
-		const createPayload = { ...content, topic: definition.topicSlug, slug: definition.slug };
+		const createPayload: Record<string, unknown> & { topic: string; slug: string } = { ...content, topic: definition.topicSlug, slug: definition.slug };
 		return {
 			canonicalPath: `/consensus/${definition.topicSlug}/${definition.slug}`,
 			publicApiPath: `/api/topics/${definition.topicSlug}/claims/${definition.slug}`,
@@ -115,7 +176,15 @@ export function createReaderExpansionSourceProposal(
 		proposalCitationCount: targets.reduce((total, target) => total + target.sourcePayloads.length, 0),
 		longNarrativeItems,
 		publicAcceptanceMinimum: 1001,
-		requiredOperatorGates: ["separate authorization", "fresh complete restore-tested backup", "exact deployed source and artifact identity", "live baseline and conflict review", "complete authenticated isolated rehearsal", "explicit production promotion approval", "actual anonymous full-content and identity readback"],
+		requiredOperatorGates: [
+			"separate authorization",
+			"fresh complete restore-tested backup",
+			"exact deployed source and artifact identity",
+			"live baseline and conflict review",
+			"complete authenticated isolated rehearsal",
+			"explicit production promotion approval",
+			"actual anonymous full-content and identity readback"
+		],
 		targets
 	};
 }

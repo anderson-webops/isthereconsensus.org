@@ -6,13 +6,13 @@ import { topicGuides } from "../src/data/topicGuides.js";
 
 describe("topic guide starter claims", () => {
 	it("provides one guide for every seeded topic", () => {
-		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map((topic) => topic.slug)));
+		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map(topic => topic.slug)));
 	});
 
 	it("provides three distinct, seeded entry points for every topic guide", () => {
 		const allStarters: string[] = [];
 		// Check the actual composed catalog, including claims with shared constants.
-		const claimTopics = new Map(defaultClaims.map((claim) => [claim.slug, claim.topicSlug]));
+		const claimTopics = new Map(defaultClaims.map(claim => [claim.slug, claim.topicSlug]));
 
 		for (const [topicSlug, guide] of Object.entries(topicGuides)) {
 			const starters = guide.starterClaimSlugs ?? [];

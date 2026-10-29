@@ -1,6 +1,6 @@
 export type ClaimRoadmapPageType = "canonical claim page" | "evergreen explainer" | "topic-hub-only section";
-export type ClaimRoadmapTier =
-	"strong consensus" | "broad but qualified agreement" | "mixed evidence" | "frontier debate";
+export type ClaimRoadmapTier
+	= "strong consensus" | "broad but qualified agreement" | "mixed evidence" | "frontier debate";
 export type ClaimRoadmapCertainty = "high" | "moderate" | "low" | "very low";
 
 export interface ClaimRoadmapEntry {
@@ -166,7 +166,12 @@ export const topPriorityClaims: ClaimRoadmapEntry[] = [
 			"Fluoridation is a recurring flashpoint where misunderstood policy reversals can increase caries burden, especially for lower-income families. The topic also fits a clean benefit-versus-dose structure.",
 		consensusTier: "broad but qualified agreement",
 		evidenceCertainty: "high",
-		anchors: ["CDC", "WHO", "Cochrane", "National Academies"],
+		anchors: [
+			"CDC",
+			"WHO",
+			"Cochrane",
+			"National Academies"
+		],
 		misconceptions: [
 			"chemical equals poison",
 			"fluorosis equals systemic toxicity",
@@ -267,7 +272,12 @@ export const topPriorityClaims: ClaimRoadmapEntry[] = [
 			"Alcohol is normalized in everyday life, so the cancer link is still under-recognized. The page can separate causal consensus from the harder question of how dose changes individual net risk.",
 		consensusTier: "strong consensus",
 		evidenceCertainty: "high",
-		anchors: ["CDC", "National Cancer Institute", "WHO", "HHS"],
+		anchors: [
+			"CDC",
+			"National Cancer Institute",
+			"WHO",
+			"HHS"
+		],
 		misconceptions: [
 			"wine is protective",
 			"only heavy drinking matters",
@@ -309,7 +319,12 @@ export const topPriorityClaims: ClaimRoadmapEntry[] = [
 			"This is a classic two-truths-at-once topic: combustible cigarettes are far more harmful, but vaping is not harmless and is especially problematic for youth. The page can map adult cessation evidence against youth harms.",
 		consensusTier: "broad but qualified agreement",
 		evidenceCertainty: "moderate",
-		anchors: ["National Academies", "Cochrane", "CDC", "WHO"],
+		anchors: [
+			"National Academies",
+			"Cochrane",
+			"CDC",
+			"WHO"
+		],
 		misconceptions: [
 			"safer than smoking means safe",
 			"adult harm reduction resolves youth risk",
@@ -937,7 +952,12 @@ export const backlogClaims: ClaimRoadmapEntry[] = [
 			"Families search for this at the boundary between everyday hearing care and dementia prevention. The page should encourage hearing evaluation while making clear that hearing aids are not guaranteed dementia prevention.",
 		consensusTier: "broad but qualified agreement",
 		evidenceCertainty: "moderate",
-		anchors: ["Lancet Commission", "NIH", "NIDCD", "ACHIEVE trial"],
+		anchors: [
+			"Lancet Commission",
+			"NIH",
+			"NIDCD",
+			"ACHIEVE trial"
+		],
 		misconceptions: ["hearing aids guarantee dementia prevention", "hearing loss is only an inconvenience"],
 		whatWouldChangeMinds:
 			"Longer randomized trials showing hearing intervention does or does not reduce cognitive decline or incident dementia across well-defined risk groups.",
@@ -946,11 +966,17 @@ export const backlogClaims: ClaimRoadmapEntry[] = [
 	}
 ];
 
-export const firstWaveClaims = topPriorityClaims.filter((item) => item.wave === "first-wave");
-export const secondWaveClaims = [...topPriorityClaims, ...backlogClaims].filter((item) => item.wave === "second-wave");
-export const holdClaims = backlogClaims.filter((item) => item.wave === "hold");
+export const firstWaveClaims = topPriorityClaims.filter(item => item.wave === "first-wave");
+export const secondWaveClaims = [
+	...topPriorityClaims,
+	...backlogClaims
+].filter(item => item.wave === "second-wave");
+export const holdClaims = backlogClaims.filter(item => item.wave === "hold");
 
-export const claimRoadmapPreview = [...firstWaveClaims, ...secondWaveClaims].slice(0, 6);
+export const claimRoadmapPreview = [
+	...firstWaveClaims,
+	...secondWaveClaims
+].slice(0, 6);
 
 export const backlogByCluster = Object.entries(
 	backlogClaims.reduce<Record<string, ClaimRoadmapEntry[]>>((map, item) => {

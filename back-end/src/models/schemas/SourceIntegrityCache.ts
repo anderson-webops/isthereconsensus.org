@@ -20,12 +20,24 @@ const observationSchema = new Schema<SourceIntegrityObservation>({
 	provider: { type: String, enum: SOURCE_INTEGRITY_PROVIDERS, required: true },
 	doi: { type: String, required: true, maxlength: 240 },
 	outcome: { type: String, enum: SOURCE_INTEGRITY_OUTCOMES, required: true },
-	suggestedStatus: { type: String, enum: ["corrected", "expression_of_concern", "retracted"] },
+	suggestedStatus: {
+		type: String,
+		enum: ["corrected", "expression_of_concern", "retracted"]
+	},
 	queryUrl: { type: String, maxlength: 1000 },
 	providerVersion: { type: String, maxlength: 40 },
-	recordIds: { type: [String], default: undefined },
-	signals: { type: [sourceIntegritySignalSchema], default: [] },
-	statusSources: { type: [String], default: [] }
+	recordIds: {
+		type: [String],
+		default: undefined
+	},
+	signals: {
+		type: [sourceIntegritySignalSchema],
+		default: []
+	},
+	statusSources: {
+		type: [String],
+		default: []
+	}
 }, { _id: false, strict: "throw" });
 
 const cacheSchema = new Schema<IntegrityCacheEntry>({

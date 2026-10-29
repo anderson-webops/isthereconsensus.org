@@ -23,8 +23,8 @@ describe("live smoke workflow", () => {
 		assert.match(workflowSource, /actions\/checkout@[0-9a-f]{40} # v7/);
 		assert.match(workflowSource, /actions\/setup-node@[0-9a-f]{40} # v7/);
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v\d/);
-		assert.match(workflowSource, /NODE_VERSION: 24\.18\.1/);
-		assert.match(workflowSource, /NPM_VERSION: 12\.0\.2/);
+		assert.match(workflowSource, /NODE_VERSION: 24\.22\.1/);
+		assert.match(workflowSource, /NPM_VERSION: 12\.2\.1/);
 		assert.match(workflowSource, /run: npm install --global "npm@\$\{NPM_VERSION\}"/);
 		assert.match(workflowSource, /LIVE_SMOKE_BASE_URL: \$\{\{ inputs\.base_url \}\}/);
 		assert.match(workflowSource, /LIVE_SMOKE_PROFILE: \$\{\{ inputs\.profile \}\}/);

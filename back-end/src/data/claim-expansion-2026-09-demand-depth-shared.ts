@@ -34,19 +34,25 @@ export function september2026DemandDepthClaim(seed: DemandDepthClaim): SeedClaim
 			}
 		],
 		sources: seed.sources.map(([kind, title, publisher, year, locator, note, stance, citationStatus], index) => {
-			const url = locator.startsWith("http") ? locator : `https://doi.org/${locator}`;
+			const url = locator.startsWith("http")
+				? locator
+				: `https://doi.org/${locator}`;
 			return {
 				kind,
 				title,
 				publisher,
 				year,
-				...(locator.startsWith("http") ? {} : { doi: locator }),
+				...(locator.startsWith("http")
+					? {}
+					: { doi: locator }),
 				url,
 				note,
 				order: index + 1,
 				stance: stance ?? "supports",
 				isAnchor: index === 0,
-				appraisal: index === 0 ? "high" : "moderate",
+				appraisal: index === 0
+					? "high"
+					: "moderate",
 				citationStatus: citationStatus ?? "current",
 				citationCheckedAt: september2026DemandDepthReviewTimestamp,
 				statusSources: [url]

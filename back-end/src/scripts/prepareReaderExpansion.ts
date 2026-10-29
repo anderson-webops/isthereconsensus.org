@@ -13,14 +13,29 @@ async function run() {
 	if (args.length !== 2 || args[0] !== "--output" || !args[1].trim() || args[1].startsWith("--")) throw new Error("Use --output with a new private evidence file.");
 	const root = resolve(fileURLToPath(new URL("../../../", import.meta.url)));
 	if (fileURLToPath(import.meta.url) !== resolve(root, "back-end/src/scripts/prepareReaderExpansion.ts")) throw new Error("Use the committed source entrypoint, not a potentially stale compiled copy.");
-	const git = (...options: string[]) => execFileSync("git", ["-C", root, ...options], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+	const git = (...options: string[]) => execFileSync("git", ["-C", root, ...options], {
+		encoding: "utf8",
+		stdio: ["ignore", "pipe", "pipe"]
+	}).trim();
 	if (resolve(git("rev-parse", "--show-toplevel")) !== root) throw new Error("The executing source must belong to the exact repository root.");
 	if (git("status", "--porcelain", "--untracked-files=normal", "--", ...READER_EXPANSION_SOURCE_PATHS)) throw new Error("Backend source and dependency/toolchain inputs must be committed before preparing an operator proposal.");
-	const identity = { commit: git("rev-parse", "HEAD"), tree: git("rev-parse", "HEAD^{tree}") };
+	const identity = {
+		commit: git("rev-parse", "HEAD"),
+		tree: git("rev-parse", "HEAD^{tree}")
+	};
 	const proposal = createReaderExpansionSourceProposal(readerExpansionClaims, defaultClaims, identity, new Date());
 	const output = `${JSON.stringify(proposal, null, 2)}\n`;
 	await writeFile(args[1], output, { mode: 0o600, flag: "wx" });
-	process.stdout.write(`${JSON.stringify({ artifactKind: proposal.artifactKind, sourceCommit: proposal.sourceCommit, proposalClaimCount: proposal.proposalClaimCount, proposalCitationCount: proposal.proposalCitationCount, longNarrativeItems: proposal.longNarrativeItems, proposalDataSha256: proposal.proposalDataSha256, fileSha256: createHash("sha256").update(output).digest("hex"), isPublicationReceipt: false })}\n`);
+	process.stdout.write(`${JSON.stringify({
+		artifactKind: proposal.artifactKind,
+		sourceCommit: proposal.sourceCommit,
+		proposalClaimCount: proposal.proposalClaimCount,
+		proposalCitationCount: proposal.proposalCitationCount,
+		longNarrativeItems: proposal.longNarrativeItems,
+		proposalDataSha256: proposal.proposalDataSha256,
+		fileSha256: createHash("sha256").update(output).digest("hex"),
+		isPublicationReceipt: false
+	})}\n`);
 }
 
 run().catch(() => {

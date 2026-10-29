@@ -50,7 +50,15 @@ function source(entry: SeedClaim["sources"][number]): SeedClaim["sources"][numbe
 	};
 }
 export const airSources = {
-	coSafety: source({ kind: "guideline", title: "Carbon Monoxide Poisoning: Protect Your Family and Yourself Factsheet", publisher: "US Environmental Protection Agency", url: "https://www.epa.gov/indoor-air-quality-iaq/carbon-monoxide-poisoning-protect-your-family-and-yourself-factsheet", stance: "context", order: 3, note: "Full text checked for the separate roles of CO alarms and proper fuel-appliance installation, ventilation and maintenance. This is prevention guidance, not evidence that a particle cleaner controls carbon monoxide. No placement distances or legal requirements are generalized here." }),
+	coSafety: source({
+		kind: "guideline",
+		title: "Carbon Monoxide Poisoning: Protect Your Family and Yourself Factsheet",
+		publisher: "US Environmental Protection Agency",
+		url: "https://www.epa.gov/indoor-air-quality-iaq/carbon-monoxide-poisoning-protect-your-family-and-yourself-factsheet",
+		stance: "context",
+		order: 3,
+		note: "Full text checked for the separate roles of CO alarms and proper fuel-appliance installation, ventilation and maintenance. This is prevention guidance, not evidence that a particle cleaner controls carbon monoxide. No placement distances or legal requirements are generalized here."
+	}),
 	technical: source({
 		kind: "guideline",
 		title: "Residential Air Cleaners: A Technical Summary, Third Edition",
@@ -161,8 +169,16 @@ function publication(
 	focus: string
 ): Pick<SeedClaim, "changeLog" | "readerAnnouncement" | "surveillanceSpec"> {
 	return {
-		changeLog: [{ date: checkedAt, kind: "publication", summary }],
-		readerAnnouncement: { id, date: checkedAt, kind: "new_review", bottomLineImpact: "new", summary },
+		changeLog: [
+			{ date: checkedAt, kind: "publication", summary }
+		],
+		readerAnnouncement: {
+			id,
+			date: checkedAt,
+			kind: "new_review",
+			bottomLineImpact: "new",
+			summary
+		},
 		surveillanceSpec: {
 			focus,
 			cadenceDays: 180,
@@ -201,7 +217,12 @@ export const airPracticalClaims: SeedClaim[] = [
 			"A room-area recommendation assumes a ceiling height and does not automatically cover adjoining rooms.",
 			"A particle CADR is not a gas-removal rating or a clinical effectiveness score."
 		],
-		misconceptionTags: ["HEPA efficiency", "CADR", "air purifier room size", "fan speed"],
+		misconceptionTags: [
+			"HEPA efficiency",
+			"CADR",
+			"air purifier room size",
+			"fan speed"
+		],
 		editorSummary:
 			"Check both the filter and the air moving through it. A highly efficient medium with little airflow can remove less pollution from a room than a lower-efficiency system that processes more air. Use the relevant particle CADR at the setting that will actually be used.",
 		uncertaintySummary:
@@ -255,7 +276,12 @@ export const airPracticalClaims: SeedClaim[] = [
 			"One commercial comparator does not establish that DIY devices beat all commercial cleaners.",
 			"Limited safety tests do not certify every fan or assembly. Follow current EPA safety guidance rather than improvising electrical modifications."
 		],
-		misconceptionTags: ["DIY air cleaner", "Corsi-Rosenthal box", "box fan filter", "wildfire smoke"],
+		misconceptionTags: [
+			"DIY air cleaner",
+			"Corsi-Rosenthal box",
+			"box fan filter",
+			"wildfire smoke"
+		],
 		editorSummary:
 			"The meaningful comparison is between specified devices under the same test, then the compromises that determine whether people use them. EPA advises safety-marked newer fans, manufacturer precautions and working smoke alarms. A particle cleaner is only one part of reducing exposure and staying safe during smoke and heat events.",
 		uncertaintySummary:
@@ -320,7 +346,12 @@ export const airPracticalClaims: SeedClaim[] = [
 			"A high particle CADR does not certify gas removal.",
 			"A carbon filter is not a carbon-monoxide safety system."
 		],
-		misconceptionTags: ["HEPA gases", "carbon monoxide", "activated carbon", "VOC filters"],
+		misconceptionTags: [
+			"HEPA gases",
+			"carbon monoxide",
+			"activated carbon",
+			"VOC filters"
+		],
 		editorSummary:
 			"Identify the pollutant before choosing the control. Particle filtration can help with smoke particles while leaving gaseous hazards unresolved. Sorbents need appropriate chemistry, enough material and replacement; removing the source and providing appropriate clean-air ventilation remain important.",
 		uncertaintySummary:
@@ -377,7 +408,12 @@ export const airPracticalClaims: SeedClaim[] = [
 			"Odor masking is not detoxification.",
 			"Evidence for a professionally controlled unoccupied treatment cannot be transferred to routine occupied-room use."
 		],
-		misconceptionTags: ["ozone air cleaner", "ionizer", "energized oxygen", "EPA establishment number"],
+		misconceptionTags: [
+			"ozone air cleaner",
+			"ionizer",
+			"energized oxygen",
+			"EPA establishment number"
+		],
 		editorSummary:
 			"Avoid devices that intentionally produce ozone for routine home air cleaning. Technologies that incidentally emit ozone need their own emissions checks; this is not a claim that every UV or electrostatic device is identical. Mechanical particle filtration avoids intentionally adding a reactive gas.",
 		uncertaintySummary:
@@ -408,7 +444,15 @@ export const airPracticalClaims: SeedClaim[] = [
 			"New review: why intentional ozone generation is inappropriate in occupied homes.",
 			"Ozone generators and occupied-space air-cleaning safety"
 		),
-		sources: [airSources.ozone, { ...airSources.technical, stance: "context", isAnchor: false, order: 2 }]
+		sources: [
+			airSources.ozone,
+			{
+				...airSources.technical,
+				stance: "context",
+				isAnchor: false,
+				order: 2
+			}
+		]
 	},
 	{
 		...common,
@@ -434,7 +478,12 @@ export const airPracticalClaims: SeedClaim[] = [
 			"A heating or cooling thermostat does not guarantee continuous filtration.",
 			"A ductless cooling unit's small protective filter is not automatically a substitute for a suitable particle cleaner."
 		],
-		misconceptionTags: ["MERV 13", "HVAC filter", "furnace airflow", "filter bypass"],
+		misconceptionTags: [
+			"MERV 13",
+			"HVAC filter",
+			"furnace airflow",
+			"filter bypass"
+		],
 		editorSummary:
 			"Treat filtration as a system, not a shopping contest for the highest label. Fit, available fan pressure, replacement and operating time all matter. Longer fan operation can improve filtration but carries energy and sometimes humidity trade-offs, so this review does not prescribe one schedule for every home.",
 		uncertaintySummary:

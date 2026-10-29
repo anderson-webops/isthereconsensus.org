@@ -48,7 +48,13 @@ describe("practical household water reviews", () => {
 	});
 	it("finds new questions while preserving adjacent municipal and PFAS reviews", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ boiling: "boiling water toxic chemicals", certification: "water filter certification", uv: "ultraviolet water lead", ro: "reverse osmosis reject water", softening: "softening hard water" })) {
+		for (const [key, query] of Object.entries({
+			boiling: "boiling water toxic chemicals",
+			certification: "water filter certification",
+			uv: "ultraviolet water lead",
+			ro: "reverse osmosis reject water",
+			softening: "softening hard water"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === waterSlugs[key as keyof typeof waterSlugs]), query);
 		}
 		for (const gap of waterPracticalGaps) {

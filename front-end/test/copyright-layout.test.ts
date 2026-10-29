@@ -17,7 +17,7 @@ describe("copyright and trademark layout", () => {
 		);
 		assert.match(rightsSource, /Fair-use quoting for commentary, source explanation, or educational criticism/);
 		assert.match(rightsSource, /Send scientific errors to corrections, community enforcement to moderation/);
-		assert.match(rightsSource, /<p class="eyebrow">Rights lane<\/p>/);
+		assert.match(rightsSource, /<p class="eyebrow">\s*Rights lane\s*<\/p>/);
 		assert.doesNotMatch(rightsSource, /intellectual-property concerns tied to site content or submissions/);
 		assert.doesNotMatch(
 			rightsSource,

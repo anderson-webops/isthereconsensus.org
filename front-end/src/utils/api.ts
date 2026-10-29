@@ -7,14 +7,17 @@ function trimTrailingSlash(value: string) {
 }
 
 function ensureLeadingSlash(value: string) {
-	return value.startsWith("/") ? value : `/${value}`;
+	return value.startsWith("/")
+		? value
+		: `/${value}`;
 }
 
 function normalizeAbsoluteHttpBase(value: string, label: string) {
 	let parsed: URL;
 	try {
 		parsed = new URL(value);
-	} catch {
+	}
+	catch {
 		throw new Error(`${label} must be a relative path or an absolute HTTP or HTTPS URL.`);
 	}
 	if (!["http:", "https:"].includes(parsed.protocol) || parsed.username || parsed.password) {
@@ -42,7 +45,9 @@ export function normalizePublicApiBase(value: string | undefined, isDev: boolean
 	}
 
 	const normalized = normalizeAbsoluteHttpBase(candidate, "PUBLIC_API_BASE");
-	return !isDev && isLocalApiBase(normalized) ? "/api" : normalized;
+	return !isDev && isLocalApiBase(normalized)
+		? "/api"
+		: normalized;
 }
 
 export function normalizeInternalApiBase(value: string | undefined) {
@@ -74,7 +79,9 @@ export function joinBaseUrl(base: string, path: string) {
 }
 
 export function withApiPrefix(base: string) {
-	const normalizedBase = base.startsWith("/") ? ensureLeadingSlash(trimTrailingSlash(base)) : trimTrailingSlash(base);
+	const normalizedBase = base.startsWith("/")
+		? ensureLeadingSlash(trimTrailingSlash(base))
+		: trimTrailingSlash(base);
 
 	if (!normalizedBase) return "/api";
 	if (normalizedBase === "/api" || normalizedBase.endsWith("/api")) return normalizedBase;

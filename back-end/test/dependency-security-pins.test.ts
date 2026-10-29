@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 
 interface Lockfile {
 	packages: Record<string, { version?: string; resolved?: string; link?: boolean }>;
@@ -48,7 +49,7 @@ describe("reviewed dependency security pins", () => {
 			optionalDependencies: Record<string, string>;
 		}>("../../front-end/package.json");
 		const expected = (root.overrides.vite as Record<string, string>)["."];
-		assert.equal(expected, "8.3.3");
+		assert.equal(expected, "8.3.5");
 		assert.equal(frontend.devDependencies.vite, `^${expected}`);
 		assert.equal(backend.overrides.vite, expected);
 		const rootLock = readJson<Lockfile>("../../package-lock.json");
@@ -82,10 +83,15 @@ describe("reviewed dependency security pins", () => {
 		for (const status of [307, 308, 202]) {
 			const requests: RequestInit[] = [];
 			const transport = new StreamableHTTPClientTransport(new URL("https://mcp.example.test/tools"), {
-				requestInit: { headers: { "X-Synthetic-Test": "synthetic" } },
+				requestInit: {
+					headers: { "X-Synthetic-Test": "synthetic" }
+				},
 				fetch: async (_url: unknown, init?: RequestInit) => {
 					requests.push(init ?? {});
-					return new Response(null, { status, headers: { Location: "https://other.example.test/tools" } });
+					return new Response(null, {
+						status,
+						headers: { Location: "https://other.example.test/tools" }
+					});
 				}
 			});
 			await transport.start();
@@ -137,7 +143,10 @@ describe("reviewed dependency security pins", () => {
 		assert.deepEqual(root.overrides["simple-git"], { ".": "$simple-git", "simple-git": "4.0.2" });
 		assert.equal(adapter.dependencies["simple-git"], "4.0.2");
 		const lock = readJson<Lockfile>("../../package-lock.json");
-		for (const [packageName, expected] of [["simple-git", "4.0.2"], ["@simple-git/argv-parser", "2.0.1"]]) {
+		for (const [packageName, expected] of [
+			["simple-git", "4.0.2"],
+			["@simple-git/argv-parser", "2.0.1"]
+		]) {
 			const versions = lockedVersions(lock, packageName);
 			const installed = versions.filter(Boolean);
 			assert.ok(installed.length && installed.every(version => version === expected), `${packageName}: patched implementation drift`);
@@ -152,7 +161,9 @@ describe("reviewed dependency security pins", () => {
 		for (const exports of [esm, commonjs]) {
 			assert.equal(typeof exports.GitError, "function");
 			assert.equal(typeof exports.simpleGit, "function");
-			const client = exports.simpleGit({ baseDir: new URL("../..", import.meta.url).pathname });
+			const client = exports.simpleGit({
+				baseDir: fileURLToPath(new URL("../..", import.meta.url))
+			});
 			assert.equal(await client.checkIsRepo(), true);
 			assert.equal(typeof (await client.status()).isClean(), "boolean");
 		}

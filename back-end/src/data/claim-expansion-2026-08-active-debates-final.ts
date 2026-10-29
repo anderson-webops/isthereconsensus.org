@@ -37,9 +37,31 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Observational confounding, dietary misclassification, a broad exposure category, and very limited long-term randomization prevent a clean independent-processing estimate.",
 		sources: sources([
-			["systematic_review", "Ultra-processed food exposure and adverse health outcomes: umbrella review of epidemiological meta-analyses", "BMJ", 2024, "10.1136/bmj-2023-077310", "Umbrella review finding numerous adverse associations while grading much of the evidence as observational and low certainty."],
-			["landmark_study", "Ultra-Processed Diets Cause Excess Calorie Intake and Weight Gain: An Inpatient Randomized Controlled Trial of Ad Libitum Food Intake", "Cell Metabolism", 2019, "10.1016/j.cmet.2019.05.008", "Controlled crossover trial showing greater spontaneous intake and short-term weight gain under the offered ultra-processed diet."],
-			["systematic_review", "Does the concept of ultra-processed foods help inform dietary guidelines, beyond conventional classification systems? NO", "The American Journal of Clinical Nutrition", 2022, "10.1093/ajcn/nqac123", "Evidence-based critique of category definition, mechanisms, and added value beyond conventional nutrition measures.", "debate"]
+			[
+				"systematic_review",
+				"Ultra-processed food exposure and adverse health outcomes: umbrella review of epidemiological meta-analyses",
+				"BMJ",
+				2024,
+				"10.1136/bmj-2023-077310",
+				"Umbrella review finding numerous adverse associations while grading much of the evidence as observational and low certainty."
+			],
+			[
+				"landmark_study",
+				"Ultra-Processed Diets Cause Excess Calorie Intake and Weight Gain: An Inpatient Randomized Controlled Trial of Ad Libitum Food Intake",
+				"Cell Metabolism",
+				2019,
+				"10.1016/j.cmet.2019.05.008",
+				"Controlled crossover trial showing greater spontaneous intake and short-term weight gain under the offered ultra-processed diet."
+			],
+			[
+				"systematic_review",
+				"Does the concept of ultra-processed foods help inform dietary guidelines, beyond conventional classification systems? NO",
+				"The American Journal of Clinical Nutrition",
+				2022,
+				"10.1093/ajcn/nqac123",
+				"Evidence-based critique of category definition, mechanisms, and added value beyond conventional nutrition measures.",
+				"debate"
+			]
 		])
 	}),
 	reviewedClaim({
@@ -74,9 +96,31 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Rapidly evolving assays, contamination risk, inconsistent particle definitions, indirect dose evidence, and sparse prospective cohorts keep certainty very low.",
 		sources: sources([
-			["systematic_review", "Effects of Microplastic Exposure on Human Digestive, Reproductive, and Respiratory Health: A Rapid Systematic Review", "Environmental Science & Technology", 2024, "10.1021/acs.est.3c09524", "Rapid systematic review integrating human and experimental evidence while identifying major exposure and causal gaps."],
-			["landmark_study", "Microplastics and Nanoplastics in Atheromas and Cardiovascular Events", "New England Journal of Medicine", 2024, "10.1056/NEJMoa2309822", "Prospective observational study linking detected particles in carotid plaque with events, without establishing causal attribution."],
-			["landmark_study", "Discovery and quantification of plastic particle pollution in human blood", "Environment International", 2022, "10.1016/j.envint.2022.107199", "Analytical study supporting systemic exposure while illustrating the measurement and contamination challenges.", "context"]
+			[
+				"systematic_review",
+				"Effects of Microplastic Exposure on Human Digestive, Reproductive, and Respiratory Health: A Rapid Systematic Review",
+				"Environmental Science & Technology",
+				2024,
+				"10.1021/acs.est.3c09524",
+				"Rapid systematic review integrating human and experimental evidence while identifying major exposure and causal gaps."
+			],
+			[
+				"landmark_study",
+				"Microplastics and Nanoplastics in Atheromas and Cardiovascular Events",
+				"New England Journal of Medicine",
+				2024,
+				"10.1056/NEJMoa2309822",
+				"Prospective observational study linking detected particles in carotid plaque with events, without establishing causal attribution."
+			],
+			[
+				"landmark_study",
+				"Discovery and quantification of plastic particle pollution in human blood",
+				"Environment International",
+				2022,
+				"10.1016/j.envint.2022.107199",
+				"Analytical study supporting systemic exposure while illustrating the measurement and contamination challenges.",
+				"context"
+			]
 		])
 	}),
 	reviewedClaim({
@@ -111,9 +155,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Efficacy trials are strong for selected early disease, but minimal clinically important difference, long-term outcomes, external validity, and system-level value remain contested.",
 		sources: sources([
-			["meta_analysis", "Clinically Important Benefits and Harms of Monoclonal Antibodies Targeting Amyloid for the Treatment of Alzheimer Disease: A Systematic Review and Meta-Analysis", "The Annals of Family Medicine", 2024, "10.1370/afm.3050", "Synthesis weighing average cognitive effects against accepted clinical-importance thresholds and amyloid-related harm."],
-			["landmark_study", "Lecanemab in Early Alzheimer's Disease", "New England Journal of Medicine", 2023, "10.1056/NEJMoa2212948", "Phase 3 trial showing slower decline and substantial amyloid removal alongside infusion and imaging-related adverse events."],
-			["landmark_study", "Donanemab in Early Symptomatic Alzheimer Disease: The TRAILBLAZER-ALZ 2 Randomized Clinical Trial", "JAMA", 2023, "10.1001/jama.2023.13239", "Phase 3 trial showing modest average slowing and clinically important amyloid-related imaging risks."]
+			[
+				"meta_analysis",
+				"Clinically Important Benefits and Harms of Monoclonal Antibodies Targeting Amyloid for the Treatment of Alzheimer Disease: A Systematic Review and Meta-Analysis",
+				"The Annals of Family Medicine",
+				2024,
+				"10.1370/afm.3050",
+				"Synthesis weighing average cognitive effects against accepted clinical-importance thresholds and amyloid-related harm."
+			],
+			[
+				"landmark_study",
+				"Lecanemab in Early Alzheimer's Disease",
+				"New England Journal of Medicine",
+				2023,
+				"10.1056/NEJMoa2212948",
+				"Phase 3 trial showing slower decline and substantial amyloid removal alongside infusion and imaging-related adverse events."
+			],
+			[
+				"landmark_study",
+				"Donanemab in Early Symptomatic Alzheimer Disease: The TRAILBLAZER-ALZ 2 Randomized Clinical Trial",
+				"JAMA",
+				2023,
+				"10.1001/jama.2023.13239",
+				"Phase 3 trial showing modest average slowing and clinically important amyloid-related imaging risks."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -148,9 +213,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Definitions, controls, variants, vaccination, reinfection, timing, assay platforms, and small samples make individual biomarkers inconsistent.",
 		sources: sources([
-			["systematic_review", "Biomarkers in long COVID-19: A systematic review", "Frontiers in Medicine", 2023, "10.3389/fmed.2023.1085988", "Systematic review cataloguing immune, inflammatory, vascular, organ, and other biomarker findings and limitations."],
-			["systematic_review", "Long COVID: major findings, mechanisms and recommendations", "Nature Reviews Microbiology", 2023, "10.1038/s41579-022-00846-2", "Broad mechanistic synthesis integrating epidemiology, organ effects, immune dysregulation, persistence, and research needs."],
-			["landmark_study", "Development of a Definition of Postacute Sequelae of SARS-CoV-2 Infection", "JAMA", 2023, "10.1001/jama.2023.8823", "Large prospective cohort deriving a symptom-based research definition while demonstrating heterogeneity and lack of a single test."]
+			[
+				"systematic_review",
+				"Biomarkers in long COVID-19: A systematic review",
+				"Frontiers in Medicine",
+				2023,
+				"10.3389/fmed.2023.1085988",
+				"Systematic review cataloguing immune, inflammatory, vascular, organ, and other biomarker findings and limitations."
+			],
+			[
+				"systematic_review",
+				"Long COVID: major findings, mechanisms and recommendations",
+				"Nature Reviews Microbiology",
+				2023,
+				"10.1038/s41579-022-00846-2",
+				"Broad mechanistic synthesis integrating epidemiology, organ effects, immune dysregulation, persistence, and research needs."
+			],
+			[
+				"landmark_study",
+				"Development of a Definition of Postacute Sequelae of SARS-CoV-2 Infection",
+				"JAMA",
+				2023,
+				"10.1001/jama.2023.8823",
+				"Large prospective cohort deriving a symptom-based research definition while demonstrating heterogeneity and lack of a single test."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -185,9 +271,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Small samples, weak blinding, variable drugs and doses, healthy volunteers, short follow-up, and expectancy make modest true effects difficult to resolve.",
 		sources: sources([
-			["systematic_review", "Microdosing Psychedelics: Current Evidence From Controlled Studies", "Biological Psychiatry: Cognitive Neuroscience and Neuroimaging", 2024, "10.1016/j.bpsc.2024.01.002", "Review of controlled evidence finding limited and inconsistent support for advertised mood and cognitive benefits."],
-			["landmark_study", "Self-blinding citizen science to explore psychedelic microdosing", "eLife", 2021, "10.7554/eLife.62878", "Large self-blinding study finding improvements in both microdose and placebo groups consistent with expectancy."],
-			["landmark_study", "Microdosing with psilocybin mushrooms: a double-blind placebo-controlled study", "Translational Psychiatry", 2022, "10.1038/s41398-022-02039-0", "Controlled study finding noticeable subjective effects but no evidence supporting broad well-being, creativity, or cognitive gains."]
+			[
+				"systematic_review",
+				"Microdosing Psychedelics: Current Evidence From Controlled Studies",
+				"Biological Psychiatry: Cognitive Neuroscience and Neuroimaging",
+				2024,
+				"10.1016/j.bpsc.2024.01.002",
+				"Review of controlled evidence finding limited and inconsistent support for advertised mood and cognitive benefits."
+			],
+			[
+				"landmark_study",
+				"Self-blinding citizen science to explore psychedelic microdosing",
+				"eLife",
+				2021,
+				"10.7554/eLife.62878",
+				"Large self-blinding study finding improvements in both microdose and placebo groups consistent with expectancy."
+			],
+			[
+				"landmark_study",
+				"Microdosing with psilocybin mushrooms: a double-blind placebo-controlled study",
+				"Translational Psychiatry",
+				2022,
+				"10.1038/s41398-022-02039-0",
+				"Controlled study finding noticeable subjective effects but no evidence supporting broad well-being, creativity, or cognitive gains."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -222,9 +329,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Few prospective randomized programs, short follow-up, vendor specificity, workflow dependence, and limited mortality evidence keep the conclusion emerging.",
 		sources: sources([
-			["systematic_review", "Use of artificial intelligence for image analysis in breast cancer screening programmes: systematic review of test accuracy", "BMJ", 2021, "10.1136/bmj.n1872", "Review showing promising retrospective accuracy but insufficient prospective evidence for safe program replacement."],
-			["landmark_study", "Artificial intelligence-supported screen reading versus standard double reading in the Mammography Screening with Artificial Intelligence trial: a clinical safety analysis", "The Lancet Oncology", 2023, "10.1016/S1470-2045(23)00298-X", "Interim randomized trial showing reduced reading workload and increased detection without a clear false-positive increase."],
-			["landmark_study", "Screening performance and characteristics of breast cancer detected in the Mammography Screening with Artificial Intelligence trial", "The Lancet Digital Health", 2025, "10.1016/S2589-7500(24)00267-X", "Subsequent randomized screening analysis characterizing detected cancers while longer outcome follow-up remains necessary."]
+			[
+				"systematic_review",
+				"Use of artificial intelligence for image analysis in breast cancer screening programmes: systematic review of test accuracy",
+				"BMJ",
+				2021,
+				"10.1136/bmj.n1872",
+				"Review showing promising retrospective accuracy but insufficient prospective evidence for safe program replacement."
+			],
+			[
+				"landmark_study",
+				"Artificial intelligence-supported screen reading versus standard double reading in the Mammography Screening with Artificial Intelligence trial: a clinical safety analysis",
+				"The Lancet Oncology",
+				2023,
+				"10.1016/S1470-2045(23)00298-X",
+				"Interim randomized trial showing reduced reading workload and increased detection without a clear false-positive increase."
+			],
+			[
+				"landmark_study",
+				"Screening performance and characteristics of breast cancer detected in the Mammography Screening with Artificial Intelligence trial",
+				"The Lancet Digital Health",
+				2025,
+				"10.1016/S2589-7500(24)00267-X",
+				"Subsequent randomized screening analysis characterizing detected cancers while longer outcome follow-up remains necessary."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -259,9 +387,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Most large-scale costs and resource needs are modeled or vendor-reported, process designs differ, and public multi-year operating data remain scarce.",
 		sources: sources([
-			["consensus_statement", "Negative Emissions Technologies and Reliable Sequestration: A Research Agenda", "National Academies Press", 2019, "10.17226/25259", "Independent assessment of DAC energetics, costs, lifecycle boundaries, storage, research needs, and scale constraints."],
-			["landmark_study", "A Process for Capturing CO2 from the Atmosphere", "Joule", 2018, "10.1016/j.joule.2018.05.006", "Detailed process and techno-economic analysis demonstrating an engineering pathway while relying on modeled commercial assumptions."],
-			["systematic_review", "An inter-model assessment of the role of direct air capture in deep mitigation pathways", "Nature Communications", 2019, "10.1038/s41467-019-10842-5", "Model comparison showing possible climate-system roles and the sensitivity to cost, energy, storage, and policy assumptions."]
+			[
+				"consensus_statement",
+				"Negative Emissions Technologies and Reliable Sequestration: A Research Agenda",
+				"National Academies Press",
+				2019,
+				"10.17226/25259",
+				"Independent assessment of DAC energetics, costs, lifecycle boundaries, storage, research needs, and scale constraints."
+			],
+			[
+				"landmark_study",
+				"A Process for Capturing CO2 from the Atmosphere",
+				"Joule",
+				2018,
+				"10.1016/j.joule.2018.05.006",
+				"Detailed process and techno-economic analysis demonstrating an engineering pathway while relying on modeled commercial assumptions."
+			],
+			[
+				"systematic_review",
+				"An inter-model assessment of the role of direct air capture in deep mitigation pathways",
+				"Nature Communications",
+				2019,
+				"10.1038/s41467-019-10842-5",
+				"Model comparison showing possible climate-system roles and the sensitivity to cost, energy, storage, and policy assumptions."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -296,9 +445,31 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Missing commercial inventories force strong assumptions about media, sterility, energy, yields, capital equipment, co-products, and future electricity.",
 		sources: sources([
-			["systematic_review", "Ex-ante life cycle assessment of commercial-scale cultivated meat production in 2030", "The International Journal of Life Cycle Assessment", 2023, "10.1007/s11367-022-02128-8", "Prospective assessment finding potential benefits under food-grade scale-up and low-carbon energy assumptions."],
-			["landmark_study", "Environmental Impacts of Cultured Meat: A Cradle-to-Gate Life Cycle Assessment", "ACS Food Science & Technology", 2024, "10.1021/acsfoodscitech.4c00281", "Assessment of a current high-purification production pathway finding potentially high energy and warming impacts."],
-			["landmark_study", "Climate Impacts of Cultured Meat and Beef Cattle", "Frontiers in Sustainable Food Systems", 2019, "10.3389/fsufs.2019.00005", "Dynamic climate comparison showing results depend on energy emissions, methane, consumption trajectory, and time horizon.", "debate"]
+			[
+				"systematic_review",
+				"Ex-ante life cycle assessment of commercial-scale cultivated meat production in 2030",
+				"The International Journal of Life Cycle Assessment",
+				2023,
+				"10.1007/s11367-022-02128-8",
+				"Prospective assessment finding potential benefits under food-grade scale-up and low-carbon energy assumptions."
+			],
+			[
+				"landmark_study",
+				"Environmental Impacts of Cultured Meat: A Cradle-to-Gate Life Cycle Assessment",
+				"ACS Food Science & Technology",
+				2024,
+				"10.1021/acsfoodscitech.4c00281",
+				"Assessment of a current high-purification production pathway finding potentially high energy and warming impacts."
+			],
+			[
+				"landmark_study",
+				"Climate Impacts of Cultured Meat and Beef Cattle",
+				"Frontiers in Sustainable Food Systems",
+				2019,
+				"10.3389/fsufs.2019.00005",
+				"Dynamic climate comparison showing results depend on energy emissions, methane, consumption trajectory, and time horizon.",
+				"debate"
+			]
 		])
 	}),
 	reviewedClaim({
@@ -333,9 +504,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence comes mainly from models, process studies, and imperfect volcanic analogues; no deployment-scale experiment can establish the full coupled human and Earth-system outcome in advance.",
 		sources: sources([
-			["consensus_statement", "Reflecting Sunlight: Recommendations for Solar Geoengineering Research and Research Governance", "National Academies Press", 2021, "10.17226/25762", "Independent assessment separating a governed research agenda from deployment and cataloguing physical, social, ethical, and governance risks."],
-			["systematic_review", "The Risk of Termination Shock From Solar Geoengineering", "Earth's Future", 2018, "10.1002/2017EF000735", "Analysis of rapid warming risk if a large sustained intervention ends while greenhouse-gas concentrations remain high."],
-			["systematic_review", "Sulfur injections for a cooler planet", "Science", 2017, "10.1126/science.aan3317", "Review of aerosol microphysics, delivery assumptions, cooling potential, side effects, and major research gaps."]
+			[
+				"consensus_statement",
+				"Reflecting Sunlight: Recommendations for Solar Geoengineering Research and Research Governance",
+				"National Academies Press",
+				2021,
+				"10.17226/25762",
+				"Independent assessment separating a governed research agenda from deployment and cataloguing physical, social, ethical, and governance risks."
+			],
+			[
+				"systematic_review",
+				"The Risk of Termination Shock From Solar Geoengineering",
+				"Earth's Future",
+				2018,
+				"10.1002/2017EF000735",
+				"Analysis of rapid warming risk if a large sustained intervention ends while greenhouse-gas concentrations remain high."
+			],
+			[
+				"systematic_review",
+				"Sulfur injections for a cooler planet",
+				"Science",
+				2017,
+				"10.1126/science.aan3317",
+				"Review of aerosol microphysics, delivery assumptions, cooling potential, side effects, and major research gaps."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -370,9 +562,30 @@ export const august2026ActiveDebatesFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"No open population-scale epidemiologic evidence exists; wild evolution, ecology, spread, reversibility, monitoring, and governance cannot be resolved by cages alone.",
 		sources: sources([
-			["consensus_statement", "Gene Drives on the Horizon: Advancing Science, Navigating Uncertainty, and Aligning Research with Public Values", "National Academies Press", 2016, "10.17226/23405", "Independent framework for phased research, ecological risk assessment, public values, and governance before release."],
-			["landmark_study", "A CRISPR-Cas9 gene drive system targeting female reproduction in the malaria mosquito vector Anopheles gambiae", "Nature Biotechnology", 2016, "10.1038/nbt.3439", "Laboratory proof of inheritance bias and suppression potential alongside resistance and translation questions."],
-			["landmark_study", "A CRISPR-Cas9 gene drive targeting doublesex causes complete population suppression in caged Anopheles gambiae mosquitoes", "Nature Biotechnology", 2018, "10.1038/nbt.4245", "Cage-population demonstration of suppression that establishes mechanism, not open-field safety or malaria outcomes."]
+			[
+				"consensus_statement",
+				"Gene Drives on the Horizon: Advancing Science, Navigating Uncertainty, and Aligning Research with Public Values",
+				"National Academies Press",
+				2016,
+				"10.17226/23405",
+				"Independent framework for phased research, ecological risk assessment, public values, and governance before release."
+			],
+			[
+				"landmark_study",
+				"A CRISPR-Cas9 gene drive system targeting female reproduction in the malaria mosquito vector Anopheles gambiae",
+				"Nature Biotechnology",
+				2016,
+				"10.1038/nbt.3439",
+				"Laboratory proof of inheritance bias and suppression potential alongside resistance and translation questions."
+			],
+			[
+				"landmark_study",
+				"A CRISPR-Cas9 gene drive targeting doublesex causes complete population suppression in caged Anopheles gambiae mosquitoes",
+				"Nature Biotechnology",
+				2018,
+				"10.1038/nbt.4245",
+				"Cage-population demonstration of suppression that establishes mechanism, not open-field safety or malaria outcomes."
+			]
 		])
 	})
 ];

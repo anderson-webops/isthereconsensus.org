@@ -42,7 +42,9 @@ const accountError = ref("");
 const busy = ref(false);
 
 const accountName = computed(() => currentAccount.value?.name || "Account");
-const accountRole = computed(() => (role.value === "admin" ? "Admin" : "Member"));
+const accountRole = computed(() => (role.value === "admin"
+	? "Admin"
+	: "Member"));
 
 async function handleLogin() {
 	authError.value = "";
@@ -56,9 +58,11 @@ async function handleLogin() {
 		});
 		authSuccess.value = "Signed in.";
 		loginPassword.value = "";
-	} catch {
+	}
+	catch {
 		authError.value = "Unable to sign in. Check your credentials and try again.";
-	} finally {
+	}
+	finally {
 		busy.value = false;
 	}
 }
@@ -86,9 +90,11 @@ async function handleRegister() {
 		authSuccess.value = "Account created. You are now signed in.";
 		registerPassword.value = "";
 		acceptedTerms.value = false;
-	} catch {
+	}
+	catch {
 		authError.value = "Unable to create an account. Please try again.";
-	} finally {
+	}
+	finally {
 		busy.value = false;
 	}
 }
@@ -100,9 +106,11 @@ async function handleLogout() {
 	try {
 		await logout();
 		accountMessage.value = "Signed out.";
-	} catch {
+	}
+	catch {
 		accountError.value = "Unable to sign out right now.";
-	} finally {
+	}
+	finally {
 		busy.value = false;
 	}
 }
@@ -119,9 +127,11 @@ async function handleChangeEmail() {
 		accountMessage.value = "Email updated.";
 		emailUpdate.value = "";
 		emailCurrentPassword.value = "";
-	} catch {
+	}
+	catch {
 		accountError.value = "Unable to update email right now.";
-	} finally {
+	}
+	finally {
 		busy.value = false;
 	}
 }
@@ -138,9 +148,11 @@ async function handleChangePassword() {
 		accountMessage.value = "Password updated.";
 		currentPassword.value = "";
 		newPassword.value = "";
-	} catch {
+	}
+	catch {
 		accountError.value = "Unable to update password right now.";
-	} finally {
+	}
+	finally {
 		busy.value = false;
 	}
 }
@@ -151,17 +163,25 @@ async function handleChangePassword() {
 		<header class="auth-panel__header">
 			<div>
 				<h2>{{ props.title }}</h2>
-				<p v-if="props.hint">{{ props.hint }}</p>
+				<p v-if="props.hint">
+					{{ props.hint }}
+				</p>
 			</div>
 		</header>
 
-		<div v-if="!ready" class="muted">Checking your session...</div>
+		<div v-if="!ready" class="muted">
+			Checking your session...
+		</div>
 
 		<div v-else-if="isLoggedIn" class="account-state">
 			<div class="account-state__summary">
 				<div>
-					<p class="account-state__name">{{ accountName }}</p>
-					<p class="muted">{{ currentAccount?.email }} · {{ accountRole }}</p>
+					<p class="account-state__name">
+						{{ accountName }}
+					</p>
+					<p class="muted">
+						{{ currentAccount?.email }} · {{ accountRole }}
+					</p>
 				</div>
 				<button class="button button--ghost" type="button" :disabled="busy" @click="handleLogout">
 					Sign out
@@ -171,7 +191,9 @@ async function handleChangePassword() {
 			<section class="account-details" aria-labelledby="account-settings-title">
 				<div class="account-details__summary">
 					<div>
-						<h3 id="account-settings-title">Account settings</h3>
+						<h3 id="account-settings-title">
+							Account settings
+						</h3>
 						<p>Update your sign-in email or password.</p>
 					</div>
 				</div>
@@ -181,7 +203,7 @@ async function handleChangePassword() {
 							<h3>Email</h3>
 							<p>Change the address used for sign-in and account notices.</p>
 						</div>
-						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden />
+						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden>
 						<div class="setting-card__fields setting-card__fields--password">
 							<div class="field-stack">
 								<label class="field-label" for="email-update">New email</label>
@@ -193,7 +215,7 @@ async function handleChangePassword() {
 									maxlength="254"
 									placeholder="you@email.com"
 									required
-								/>
+								>
 							</div>
 							<div class="field-stack">
 								<label class="field-label" for="email-current-password">Current password</label>
@@ -204,7 +226,7 @@ async function handleChangePassword() {
 									autocomplete="current-password"
 									maxlength="1024"
 									required
-								/>
+								>
 							</div>
 							<div class="setting-card__actions">
 								<button
@@ -219,7 +241,7 @@ async function handleChangePassword() {
 					</form>
 
 					<form class="account-form setting-card" @submit.prevent="handleChangePassword">
-						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden />
+						<input :value="currentAccount?.email" type="email" autocomplete="username" readonly hidden>
 						<div class="setting-card__intro">
 							<h3>Password</h3>
 							<p>Use your current password before setting a new one.</p>
@@ -234,7 +256,7 @@ async function handleChangePassword() {
 									autocomplete="current-password"
 									maxlength="1024"
 									required
-								/>
+								>
 							</div>
 							<div class="field-stack">
 								<label class="field-label" for="new-password">New password</label>
@@ -246,7 +268,7 @@ async function handleChangePassword() {
 									:minlength="role === 'admin' ? 16 : 12"
 									maxlength="256"
 									required
-								/>
+								>
 							</div>
 						</div>
 						<div class="setting-card__actions">
@@ -258,8 +280,12 @@ async function handleChangePassword() {
 				</div>
 			</section>
 
-			<p v-if="accountMessage" class="success">{{ accountMessage }}</p>
-			<p v-if="accountError" class="error">{{ accountError }}</p>
+			<p v-if="accountMessage" class="success">
+				{{ accountMessage }}
+			</p>
+			<p v-if="accountError" class="error">
+				{{ accountError }}
+			</p>
 		</div>
 
 		<div v-else class="auth-state">
@@ -281,7 +307,7 @@ async function handleChangePassword() {
 					autocomplete="email"
 					maxlength="254"
 					required
-				/>
+				>
 				<label class="field-label" for="login-password">Password</label>
 				<input
 					id="login-password"
@@ -290,12 +316,14 @@ async function handleChangePassword() {
 					autocomplete="current-password"
 					maxlength="1024"
 					required
-				/>
+				>
 				<label class="checkbox">
-					<input v-model="rememberMe" type="checkbox" />
+					<input v-model="rememberMe" type="checkbox">
 					<span>Remember me</span>
 				</label>
-				<button class="button button--primary" type="submit" :disabled="busy">Log in</button>
+				<button class="button button--primary" type="submit" :disabled="busy">
+					Log in
+				</button>
 			</form>
 
 			<form v-else class="auth-form" @submit.prevent="handleRegister">
@@ -308,7 +336,7 @@ async function handleChangePassword() {
 					minlength="2"
 					maxlength="80"
 					required
-				/>
+				>
 				<label class="field-label" for="register-email">Email</label>
 				<input
 					id="register-email"
@@ -317,7 +345,7 @@ async function handleChangePassword() {
 					autocomplete="email"
 					maxlength="254"
 					required
-				/>
+				>
 				<label class="field-label" for="register-password">Password</label>
 				<input
 					id="register-password"
@@ -327,10 +355,10 @@ async function handleChangePassword() {
 					minlength="12"
 					maxlength="256"
 					required
-				/>
+				>
 				<CaptchaWidget v-model="registerCaptcha" />
 				<label class="checkbox checkbox--legal">
-					<input v-model="acceptedTerms" type="checkbox" />
+					<input v-model="acceptedTerms" type="checkbox">
 					<span>
 						I confirm I am at least 13 and agree to the
 						<NuxtLink to="/terms">Terms of Service</NuxtLink>.
@@ -340,12 +368,20 @@ async function handleChangePassword() {
 					Read the <NuxtLink to="/privacy">Privacy Policy</NuxtLink> to learn how account data, secure
 					sessions, captcha checks, and public posting work on this site.
 				</p>
-				<button class="button button--primary" type="submit" :disabled="busy">Create account</button>
-				<p class="muted">Admin accounts are managed separately.</p>
+				<button class="button button--primary" type="submit" :disabled="busy">
+					Create account
+				</button>
+				<p class="muted">
+					Admin accounts are managed separately.
+				</p>
 			</form>
 
-			<p v-if="authSuccess" class="success">{{ authSuccess }}</p>
-			<p v-if="authError" class="error">{{ authError }}</p>
+			<p v-if="authSuccess" class="success">
+				{{ authSuccess }}
+			</p>
+			<p v-if="authError" class="error">
+				{{ authError }}
+			</p>
 		</div>
 	</section>
 </template>

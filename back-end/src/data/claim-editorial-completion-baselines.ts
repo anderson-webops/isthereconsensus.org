@@ -1179,7 +1179,16 @@ export function observedEditorialCompletionBaseline(seed: CompleteSeedClaim): Co
 		const variant = variations[index]!;
 		const original = seed[variant.field as keyof CompleteSeedClaim];
 		if (variant.append && (!Array.isArray(original) || !Array.isArray(variant.value))) throw new Error("Invalid observed compatibility definition.");
-		fields[variant.field] = variant.append ? [...original as unknown[], ...variant.value as unknown[]] : variant.value;
+		fields[variant.field] = variant.append
+			? [
+					...original as unknown[],
+					...variant.value as unknown[]
+				]
+			: variant.value;
 	}
-	return { ...seed, ...fields, sources: seed.sources.filter(source => !(omittedUrls[key] ?? []).includes(source.url ?? "")) } as CompleteSeedClaim;
+	return {
+		...seed,
+		...fields,
+		sources: seed.sources.filter(source => !(omittedUrls[key] ?? []).includes(source.url ?? ""))
+	} as CompleteSeedClaim;
 }

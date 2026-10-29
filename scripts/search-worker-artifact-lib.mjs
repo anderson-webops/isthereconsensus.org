@@ -51,11 +51,22 @@ export async function workerInventory(root, directory = root) {
 			const destination = path.resolve(path.dirname(filename), target);
 			assert.ok(!path.isAbsolute(target) && destination.startsWith(`${root}${path.sep}`), "Artifact links must stay inside the tree.");
 			await lstat(destination);
-			rows.push({ path: relative, type: "symlink", target, sha256: sha256(target) });
+			rows.push({
+				path: relative,
+				type: "symlink",
+				target,
+				sha256: sha256(target)
+			});
 		}
 		else {
 			assert.ok(stat.isFile(), "Artifact entries must be files, directories or internal links.");
-			rows.push({ path: relative, type: "file", size: stat.size, mode: stat.mode & 0o777, sha256: await fileDigest(filename) });
+			rows.push({
+				path: relative,
+				type: "file",
+				size: stat.size,
+				mode: stat.mode & 0o777,
+				sha256: await fileDigest(filename)
+			});
 		}
 	}
 	return rows.sort((left, right) => left.path.localeCompare(right.path));
@@ -63,8 +74,16 @@ export async function workerInventory(root, directory = root) {
 export async function assertWorkerRequiredPaths(root, platform, architecture) {
 	assert.ok(["linux", "darwin"].includes(platform) && architecture === "arm64", "Only reviewed ARM64 artifact targets are supported.");
 	const nativeRoot = `node_modules/onnxruntime-node/bin/napi-v6/${platform}/${architecture}`;
-	const bindings = ["onnxruntime_binding.node", platform === "linux" ? "libonnxruntime.so.1" : "libonnxruntime.1.dylib"];
-	for (const relative of [...workerRequiredPaths, ...bindings.map(filename => `${nativeRoot}/${filename}`)]) {
+	const bindings = [
+		"onnxruntime_binding.node",
+		platform === "linux"
+			? "libonnxruntime.so.1"
+			: "libonnxruntime.1.dylib"
+	];
+	for (const relative of [
+		...workerRequiredPaths,
+		...bindings.map(filename => `${nativeRoot}/${filename}`)
+	]) {
 		const stat = await lstat(path.join(root, relative));
 		assert.ok(stat.isFile() && !stat.isSymbolicLink(), "An independent required runtime file is missing.");
 	}
@@ -74,7 +93,14 @@ export async function assertWorkerRequiredPaths(root, platform, architecture) {
 		const metadata = JSON.parse(await readFile(path.join(root, "node_modules", name, "package.json"), "utf8"));
 		assert.equal(metadata.version, version, "The artifact production runtime version must be exactly pinned.");
 	}
-	const forbidden = [".env", ".git", "src", "test", "node_modules/tsx", "node_modules/typescript"];
+	const forbidden = [
+		".env",
+		".git",
+		"src",
+		"test",
+		"node_modules/tsx",
+		"node_modules/typescript"
+	];
 	for (const relative of forbidden) {
 		try {
 			await lstat(path.join(root, relative));

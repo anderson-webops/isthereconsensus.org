@@ -146,7 +146,9 @@ export function refreshClimateClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 				kind: source.doi ? "context" : source.kind,
 				appraisal: "not_appraised",
 				isAnchor: false,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()]
+					: source.citationCheckedAt,
 				note: source.doi
 					? "Original reply: selected methods, Table 1 and continuation, conclusions and acknowledgments assessed. It summarizes agreement estimates, not a pooled physical-attribution effect; underlying classifications and studies not all reappraised."
 					: source.publisher === "IPCC"
@@ -155,9 +157,18 @@ export function refreshClimateClaim(seed: CompleteSeedClaim): CompleteSeedClaim 
 							? "Selected original overview, warming, ocean and ice explanations read. Some rankings and data endpoints are older; no fresh publication date, current ranking or assessment of every reference inferred."
 							: "Contextual rebuttal resource, used for explanation rather than as the assessment anchor. Original basic explanation and selected further details read; dated July 2, 2023. Not a new independent dataset; linked studies not all appraised."
 			})),
-			...additions.map((source): Source => ({ ...source, appraisal: "not_appraised", isAnchor: false, citationStatus: "current", citationCheckedAt: noticeChecks[source.doi!.toLowerCase()] }))
+			...additions.map((source): Source => ({
+				...source,
+				appraisal: "not_appraised",
+				isAnchor: false,
+				citationStatus: "current",
+				citationCheckedAt: noticeChecks[source.doi!.toLowerCase()]
+			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

@@ -98,7 +98,12 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is the flagship climate consensus claim and remains a high-leverage first click for policy, energy, and public-understanding questions.",
-		anchors: ["IPCC", "NASA", "NOAA", "Skeptical Science rebuttal context"],
+		anchors: [
+			"IPCC",
+			"NASA",
+			"NOAA",
+			"Skeptical Science rebuttal context"
+		],
 		querySignals: [
 			"is climate change caused by humans",
 			"human activity global warming",
@@ -120,7 +125,12 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is a classic gotcha claim with very stable wording and a straightforward quantitative answer from authoritative sources.",
-		anchors: ["USGS", "NASA", "climate assessment summaries", "Skeptical Science rebuttal context"],
+		anchors: [
+			"USGS",
+			"NASA",
+			"climate assessment summaries",
+			"Skeptical Science rebuttal context"
+		],
 		querySignals: [
 			"volcanoes emit more co2 than humans",
 			"volcanoes vs humans carbon dioxide",
@@ -133,7 +143,12 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"This is a manufactured-uncertainty claim that stays evergreen even as specific climate news cycles change.",
-		anchors: ["IPCC", "NASA", "consensus literature summaries", "Skeptical Science rebuttal context"],
+		anchors: [
+			"IPCC",
+			"NASA",
+			"consensus literature summaries",
+			"Skeptical Science rebuttal context"
+		],
 		querySignals: [
 			"no climate consensus",
 			"scientists disagree on climate change",
@@ -300,7 +315,12 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"Readers need a clear separation between the hearing-loss association, the immediate value of hearing care, and the narrower evidence on whether hearing aids slow cognitive decline.",
-		anchors: ["Lancet Commission", "NIH", "NIDCD", "ACHIEVE trial"],
+		anchors: [
+			"Lancet Commission",
+			"NIH",
+			"NIDCD",
+			"ACHIEVE trial"
+		],
 		querySignals: ["hearing loss dementia", "do hearing aids prevent dementia", "hearing aids cognitive decline"]
 	},
 	{
@@ -327,7 +347,12 @@ export const demandOpportunities: SearchDemandOpportunity[] = [
 		format: "claim page",
 		whyItMatters:
 			"Mold questions spike after leaks, floods, and rental or workplace disputes. A canonical page can separate respiratory-risk consensus and moisture remediation from black-mold panic or overconfident symptom attribution.",
-		anchors: ["WHO indoor air guidance", "CDC", "EPA", "systematic reviews"],
+		anchors: [
+			"WHO indoor air guidance",
+			"CDC",
+			"EPA",
+			"systematic reviews"
+		],
 		querySignals: [
 			"is indoor mold dangerous",
 			"does mold cause asthma",

@@ -16,18 +16,54 @@ export interface IQuestionFlag {
 
 const questionFlagSchema: Schema<IQuestionFlag> = new Schema(
 	{
-		question: { type: Schema.Types.ObjectId, ref: "Question", required: true, index: true },
+		question: {
+			type: Schema.Types.ObjectId,
+			ref: "Question",
+			required: true,
+			index: true
+		},
 		reporter: { type: Schema.Types.ObjectId, required: true, index: true },
-		reporterModel: { type: String, enum: ["User", "Admin"], required: true },
-		reporterName: { type: String, required: true, trim: true, maxlength: 80 },
-		reason: {
+		reporterModel: {
 			type: String,
-			enum: ["off-topic", "duplicate", "misleading", "low-quality", "needs-sources", "abusive"],
+			enum: ["User", "Admin"],
 			required: true
 		},
-		note: { type: String, default: "", trim: true, maxlength: 500 },
-		status: { type: String, enum: ["open", "reviewed", "dismissed"], default: "open", index: true },
-		reviewNote: { type: String, default: "", trim: true, maxlength: 1000 },
+		reporterName: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 80
+		},
+		reason: {
+			type: String,
+			enum: [
+				"off-topic",
+				"duplicate",
+				"misleading",
+				"low-quality",
+				"needs-sources",
+				"abusive"
+			],
+			required: true
+		},
+		note: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 500
+		},
+		status: {
+			type: String,
+			enum: ["open", "reviewed", "dismissed"],
+			default: "open",
+			index: true
+		},
+		reviewNote: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1000
+		},
 		reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
 		reviewedAt: { type: Date }
 	},

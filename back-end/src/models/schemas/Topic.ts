@@ -15,8 +15,20 @@ export interface ITopic {
 
 const topicSchema: Schema<ITopic> = new Schema(
 	{
-		title: { type: String, required: true, trim: true, unique: true },
-		slug: { type: String, required: true, trim: true, lowercase: true, unique: true, index: true },
+		title: {
+			type: String,
+			required: true,
+			trim: true,
+			unique: true
+		},
+		slug: {
+			type: String,
+			required: true,
+			trim: true,
+			lowercase: true,
+			unique: true,
+			index: true
+		},
 		description: { type: String, default: "", trim: true },
 		order: { type: Number, default: 0 },
 		accent: { type: String, default: "" }

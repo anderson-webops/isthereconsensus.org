@@ -1,4 +1,3 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
 import { describe, it } from "node:test";
@@ -7,7 +6,7 @@ import { observeHttpRequestCancellation } from "../src/utils/httpRequestCancella
 function lifecycleFixture() {
 	const request = Object.assign(new EventEmitter(), { aborted: false });
 	const response = Object.assign(new EventEmitter(), { writableEnded: false, destroyed: false });
-	const observation = observeHttpRequestCancellation(request as unknown as IncomingMessage, response as unknown as ServerResponse);
+	const observation = observeHttpRequestCancellation(request, response);
 	return { request, response, ...observation };
 }
 
@@ -46,7 +45,7 @@ describe("HTTP reader cancellation", () => {
 		it(`recognizes an already ${state} lifecycle`, () => {
 			const request = Object.assign(new EventEmitter(), { aborted: state === "request-aborted" });
 			const response = Object.assign(new EventEmitter(), { writableEnded: false, destroyed: state === "response-destroyed" });
-			const observation = observeHttpRequestCancellation(request as unknown as IncomingMessage, response as unknown as ServerResponse);
+			const observation = observeHttpRequestCancellation(request, response);
 			assert.equal(observation.signal.aborted, true);
 			observation.dispose();
 		});
@@ -58,7 +57,7 @@ describe("HTTP reader cancellation", () => {
 		const existing = () => {};
 		request.on("aborted", existing);
 		response.on("close", existing);
-		const observation = observeHttpRequestCancellation(request as unknown as IncomingMessage, response as unknown as ServerResponse);
+		const observation = observeHttpRequestCancellation(request, response);
 		assert.equal(request.listenerCount("aborted"), 2);
 		assert.equal(response.listenerCount("close"), 2);
 		observation.dispose();

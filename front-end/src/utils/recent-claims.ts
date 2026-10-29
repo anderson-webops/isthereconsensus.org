@@ -18,18 +18,22 @@ export function claimReviewTimestamp(claim: ClaimReviewDate) {
 	const value = claim.lastReviewedAt || claim.publishedAt || claim.updatedAt;
 	if (!value) return 0;
 	const timestamp = Date.parse(value);
-	return Number.isNaN(timestamp) ? 0 : timestamp;
+	return Number.isNaN(timestamp)
+		? 0
+		: timestamp;
 }
 
 export function selectRecentClaims<T extends RecentClaimCandidate>(claims: readonly T[], limit = 5) {
 	if (limit <= 0) return [];
 
-	const uniqueClaims = [...new Map(claims.map((claim) => [claim._id, claim])).values()].sort(
+	const uniqueClaims = [
+		...new Map(claims.map(claim => [claim._id, claim])).values()
+	].sort(
 		(left, right) =>
-			claimReviewTimestamp(right) - claimReviewTimestamp(left) ||
-			(right.sourceCount ?? 0) - (left.sourceCount ?? 0) ||
-			right.confidenceScore - left.confidenceScore ||
-			left.title.localeCompare(right.title)
+			claimReviewTimestamp(right) - claimReviewTimestamp(left)
+			|| (right.sourceCount ?? 0) - (left.sourceCount ?? 0)
+			|| right.confidenceScore - left.confidenceScore
+			|| left.title.localeCompare(right.title)
 	);
 	const selected: T[] = [];
 	const selectedIds = new Set<string>();

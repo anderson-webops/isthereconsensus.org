@@ -12,10 +12,29 @@ export interface IClaimRevision {
 
 const claimRevisionSchema: Schema<IClaimRevision> = new Schema(
 	{
-		claim: { type: Schema.Types.ObjectId, ref: "Claim", required: true, index: true },
-		editor: { type: Schema.Types.ObjectId, refPath: "editorModel", required: true, index: true },
-		editorModel: { type: String, enum: ["User", "Admin"], required: true },
-		summary: { type: String, default: "", trim: true, maxlength: 2000 },
+		claim: {
+			type: Schema.Types.ObjectId,
+			ref: "Claim",
+			required: true,
+			index: true
+		},
+		editor: {
+			type: Schema.Types.ObjectId,
+			refPath: "editorModel",
+			required: true,
+			index: true
+		},
+		editorModel: {
+			type: String,
+			enum: ["User", "Admin"],
+			required: true
+		},
+		summary: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 2000
+		},
 		snapshot: { type: Schema.Types.Mixed, required: true }
 	},
 	{ timestamps: true }

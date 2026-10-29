@@ -25,11 +25,21 @@ export const mechanicsGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "Zero resultant force in the constant-mass inertial-frame Newtonian model means unchanged velocity, not compulsory rest. A point initially moving at 3 m/s can continue at 3 m/s; its initial state is not erased by the force balance. Nonzero opposing forces can also sum to zero. Third-law interaction partners, however, act on different objects and cannot both be placed on one object's force list. The force of A on B belongs to B's account, and B's force on A belongs to A's account. Internal cancellation in the complete pair does not prevent the parts from changing their individual momenta or having unequal accelerations.",
-					sources: ["first", "third", "newton", "momentum-lecture"]
+					sources: [
+						"first",
+						"third",
+						"newton",
+						"momentum-lecture"
+					]
 				},
 				{
 					text: "Contact and weight need their own definitions. An unchanged 2 kg mass has hypothetical gravitational weight 16 N at acceleration 8 m/s squared and 6 N at 3 m/s squared. Those are constructed fields, not actual planetary observations. A normal contact force is perpendicular to its surface and need not equal that weight. In another constructed balance, a 2 kg body with downward gravity 8 m/s squared and upward acceleration 2 m/s squared needs a 20 N upward normal force if no other vertical force acts. Static friction likewise responds up to a limit: an 8 N maximum does not turn a balanced 3 N tangential demand into an actual 8 N force.",
-					sources: ["second", "normal", "friction", "forces"]
+					sources: [
+						"second",
+						"normal",
+						"friction",
+						"forces"
+					]
 				}
 			]
 		},
@@ -67,11 +77,21 @@ export const mechanicsGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "At fixed mass, ordinary translational kinetic energy scales with speed squared. A hypothetical 2 kg point has 9 J at 3 m/s and 36 J at 6 m/s, an increase of 27 J rather than another 9 J. This is not an injury or damage prediction. Conservation of total energy also does not require unchanged macroscopic mechanical energy. An illustrative isolated balance can change from 9 J mechanical energy to 4 J mechanical plus 5 J additional internal energy. Identifying those terms is essential: casually naming an unexplained difference heat is not a measured energy balance, and internal energy is not simply one unspecified object's temperature.",
-					sources: ["kinetic", "energy", "nonconservative", "si"]
+					sources: [
+						"kinetic",
+						"energy",
+						"nonconservative",
+						"si"
+					]
 				},
 				{
 					text: "Momentum and kinetic energy impose different constraints. Equal hypothetical 2 kg masses initially moving at 4 m/s and zero can stick at 2 m/s when the pair's external impulse is negligible. Momentum stays 8 kg m/s while translation energy changes from 16 J to 8 J; other channels must complete the energy account. In a separate ideal elastic example, equal 1 kg masses exchange velocities 3 m/s and zero. Total kinetic energy stays 4.5 J even though each object's share changes. Elasticity refers to the appropriate before-and-after total, not preservation of every part's velocity or of that selected kinetic sum at every intermediate contact instant.",
-					sources: ["momentum", "inelastic", "elastic", "momentum-lecture"]
+					sources: [
+						"momentum",
+						"inelastic",
+						"elastic",
+						"momentum-lecture"
+					]
 				}
 			]
 		},
@@ -95,11 +115,21 @@ export const mechanicsGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "Torque depends on an axis and a force line of action. A hypothetical 3 N force with a 2 m perpendicular lever arm gives 6 N m; a line through the axis gives zero about that axis. The force's magnitude alone lacks the necessary geometry. Torque shares dimensions with energy but is not the same quantity: NIST distinguishes its notation from the joule used for energy. A compatible constant torque 3 N m through 2 radians does 6 J of work, whereas an unmoved rotation contributes no such work. Individual moments must be summed about the same axis, and zero resultant force does not on its own establish rotational equilibrium.",
-					sources: ["torque", "rotation", "rotation-lecture", "si"]
+					sources: [
+						"torque",
+						"rotation",
+						"rotation-lecture",
+						"si"
+					]
 				},
 				{
 					text: "Rotational inertia needs an axis and a mass distribution. A hypothetical 2 kg point at perpendicular distance 1 m contributes 2 kg m squared; at 2 m it contributes 8. Under an applicable angular-momentum model, inertia changing from 4 to 2 kg m squared at conserved angular momentum 8 kg m squared per second changes angular speed from 2 to 4 radians per second. Rotational energy increases from 8 to 16 J and needs internal work or another energy source, not free creation. A rolling rigid body also combines center-of-mass translation with rotation: our compatible example has 4 J plus 2 J, totaling 6 J. Nonslip kinematics and rigid-body assumptions remain explicit.",
-					sources: ["inertia", "angular", "rotation", "rotation-lecture"]
+					sources: [
+						"inertia",
+						"angular",
+						"rotation",
+						"rotation-lecture"
+					]
 				}
 			]
 		},
@@ -113,7 +143,13 @@ export const mechanicsGuide: ReadingGuideContent = {
 				},
 				{
 					text: "Density specifies mass per volume, while dynamic viscosity describes shear response to a velocity gradient in an applicable constitutive model. Their units and roles differ; a heavier fluid need not be more viscous. Kinematic viscosity divides dynamic viscosity by density without making them identical. A non-Newtonian response may need rate or history dependence rather than one constant. Ideal hydraulic force multiplication likewise needs its full balance: an abstract area ratio five gives 20 N to 100 N while compatible displacements 0.5 m to 0.1 m preserve 10 J. Extra output work would need another energy source. Neither property labels nor area ratios certify measured performance, operating limits or equipment safety.",
-					sources: ["viscosity", "density", "pascal", "work", "energy"]
+					sources: [
+						"viscosity",
+						"density",
+						"pascal",
+						"work",
+						"energy"
+					]
 				}
 			]
 		},
@@ -123,7 +159,12 @@ export const mechanicsGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "Ordinary hydrostatic buoyancy equals the weight of displaced fluid, not the object's mass alone. Our constructed density 500 kg per cubic meter, gravity 8 m/s squared and displaced volume 0.004 cubic meters give 16 N. Whether a body floats needs its weight, available geometry and other forces. A freely floating 2 kg body at rest in that field has 16 N weight balanced by 16 N buoyancy, not a persistent upward surplus. The simple two-force description excludes surface tension, external support and acceleration. Changing submerged volume or a fluid density gradient changes the account. This numerical balance is not flotation capacity, load advice or personal safety guidance.",
-					sources: ["buoyancy", "hydrostatic", "first", "second"]
+					sources: [
+						"buoyancy",
+						"hydrostatic",
+						"first",
+						"second"
+					]
 				},
 				{
 					text: "Continuity constrains volume rates in a steady incompressible unbranched balance, not equal speeds everywhere. Our hypothetical 0.06 cubic meters per second gives section averages 3 m/s through 0.02 square meters and 2 m/s through 0.03 square meters. Pointwise profiles can differ from the averages, and compressible flow needs the more general mass-rate account. Bernoulli's familiar faster-flow/lower-pressure comparison additionally needs steady inviscid incompressible flow along a compatible streamline without added work. At equal height, density 2 kg per cubic meter and speeds 2 and 4 m/s give a 12 Pa decrease in that ideal balance. Height changes, losses, different streamline constants and supplied energy prevent applying the slogan universally.",
@@ -137,11 +178,21 @@ export const mechanicsGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "These reviews connect established definitions and explicitly scoped classical models, not a numerical poll of scientists or a collection of independent experimental replications. OpenStax chapters share authorship and institutional provenance; Caltech chapters share authorship too. NIST defines units and notation, not every model's empirical validity. Multiple source links can clarify conditions without creating independent votes. The numerical examples here are independently constructed and hypothetical, not copied source exercises, measured apparatus results or material specifications. Original definitions and model conditions were checked on the stated date, but independent expert review has not been completed. The interface's legacy confidence score must not be interpreted as a measured fraction of researchers agreeing.",
-					sources: ["newton", "rotation-lecture", "fluid-lecture", "si"]
+					sources: [
+						"newton",
+						"rotation-lecture",
+						"fluid-lecture",
+						"si"
+					]
 				},
 				{
 					text: "A useful reading sequence is to identify the quantity, reference frame, included objects and time interval, then list what is assumed constant and what can cross the boundary. Check directions and units, but do not treat correct arithmetic as proof that the assumptions apply. A missing force, changing material state or omitted energy channel can invalidate the application without invalidating the underlying scoped relation. These are conceptual reviews, not biological procedures, engineering designs or apparatus operating advice. Search can connect a nearby concept without guaranteeing an answer to every practical question. If the actual question requires an unsupported material property, device measurement or domain-specific safety assessment, the honest response is that this library does not establish it.",
-					sources: ["newton", "energy", "viscosity", "fluid-lecture"]
+					sources: [
+						"newton",
+						"energy",
+						"viscosity",
+						"fluid-lecture"
+					]
 				}
 			]
 		}

@@ -37,9 +37,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The average retention benefit is robust. Optimal spacing, difficulty, feedback, transfer, and classroom implementation remain context dependent.",
 		sources: sources([
-			["systematic_review", "Retrieval Practice Consistently Benefits Student Learning: a Systematic Review of Applied Research in Schools and Classrooms", "Educational Psychology Review", 2021, "10.1007/s10648-021-09595-9", "Systematic review of classroom research finding consistent learning benefits across educational settings."],
-			["meta_analysis", "The effect of testing versus restudy on retention: a meta-analytic review of the testing effect", "Psychological Bulletin", 2014, "10.1037/a0037559", "Meta-analysis quantifying the delayed-retention advantage of retrieval over restudy and its moderators."],
-			["meta_analysis", "Rethinking the Use of Tests: A Meta-Analysis of Practice Testing", "Review of Educational Research", 2017, "10.3102/0034654316689306", "Broad synthesis of practice testing across learner, test, feedback, and outcome conditions."]
+			[
+				"systematic_review",
+				"Retrieval Practice Consistently Benefits Student Learning: a Systematic Review of Applied Research in Schools and Classrooms",
+				"Educational Psychology Review",
+				2021,
+				"10.1007/s10648-021-09595-9",
+				"Systematic review of classroom research finding consistent learning benefits across educational settings."
+			],
+			[
+				"meta_analysis",
+				"The effect of testing versus restudy on retention: a meta-analytic review of the testing effect",
+				"Psychological Bulletin",
+				2014,
+				"10.1037/a0037559",
+				"Meta-analysis quantifying the delayed-retention advantage of retrieval over restudy and its moderators."
+			],
+			[
+				"meta_analysis",
+				"Rethinking the Use of Tests: A Meta-Analysis of Practice Testing",
+				"Review of Educational Research",
+				2017,
+				"10.3102/0034654316689306",
+				"Broad synthesis of practice testing across learner, test, feedback, and outcome conditions."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -74,9 +95,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The directional effect is highly secure. Exact scheduling, transfer to complex performance, and implementation across courses remain active design questions.",
 		sources: sources([
-			["meta_analysis", "A Meta-Analytic Review of the Benefit of Spacing Out Retrieval Practice Episodes on Retention", "Educational Psychology Review", 2021, "10.1007/s10648-020-09572-8", "Classroom-relevant synthesis of spacing between retrieval episodes and later retention."],
-			["meta_analysis", "Distributed practice in verbal recall tasks: A review and quantitative synthesis", "Psychological Bulletin", 2006, "10.1037/0033-2909.132.3.354", "Large quantitative review establishing how study and test intervals shape the spacing advantage."],
-			["systematic_review", "Improving Students' Learning With Effective Learning Techniques: Promising Directions From Cognitive and Educational Psychology", "Psychological Science in the Public Interest", 2013, "10.1177/1529100612453266", "Evidence review rating distributed practice among the most broadly useful study techniques."]
+			[
+				"meta_analysis",
+				"A Meta-Analytic Review of the Benefit of Spacing Out Retrieval Practice Episodes on Retention",
+				"Educational Psychology Review",
+				2021,
+				"10.1007/s10648-020-09572-8",
+				"Classroom-relevant synthesis of spacing between retrieval episodes and later retention."
+			],
+			[
+				"meta_analysis",
+				"Distributed practice in verbal recall tasks: A review and quantitative synthesis",
+				"Psychological Bulletin",
+				2006,
+				"10.1037/0033-2909.132.3.354",
+				"Large quantitative review establishing how study and test intervals shape the spacing advantage."
+			],
+			[
+				"systematic_review",
+				"Improving Students' Learning With Effective Learning Techniques: Promising Directions From Cognitive and Educational Psychology",
+				"Psychological Science in the Public Interest",
+				2013,
+				"10.1177/1529100612453266",
+				"Evidence review rating distributed practice among the most broadly useful study techniques."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -111,9 +153,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence against the common matching hypothesis is strong. Research continues on more defensible interactions among prior knowledge, cognition, task, and instruction.",
 		sources: sources([
-			["systematic_review", "Learning Styles: Concepts and Evidence", "Psychological Science in the Public Interest", 2009, "10.1111/j.1539-6053.2009.01038.x", "Foundational review specifying the required test and finding inadequate evidence for learning-style matching."],
-			["landmark_study", "Another Nail in the Coffin for Learning Styles? Disparities among Undergraduate Anatomy Students' Study Strategies, Class Performance, and Reported VARK Attributes", "Anatomical Sciences Education", 2019, "10.1002/ase.1777", "Study finding no performance support for matching study strategies to reported VARK categories."],
-			["systematic_review", "How Common Is Belief in the Learning Styles Neuromyth, and Does It Matter? A Pragmatic Systematic Review", "Frontiers in Education", 2020, "10.3389/feduc.2020.602451", "Review documenting widespread continued belief and reported use despite the absence of a validated matching benefit."]
+			[
+				"systematic_review",
+				"Learning Styles: Concepts and Evidence",
+				"Psychological Science in the Public Interest",
+				2009,
+				"10.1111/j.1539-6053.2009.01038.x",
+				"Foundational review specifying the required test and finding inadequate evidence for learning-style matching."
+			],
+			[
+				"landmark_study",
+				"Another Nail in the Coffin for Learning Styles? Disparities among Undergraduate Anatomy Students' Study Strategies, Class Performance, and Reported VARK Attributes",
+				"Anatomical Sciences Education",
+				2019,
+				"10.1002/ase.1777",
+				"Study finding no performance support for matching study strategies to reported VARK categories."
+			],
+			[
+				"systematic_review",
+				"How Common Is Belief in the Learning Styles Neuromyth, and Does It Matter? A Pragmatic Systematic Review",
+				"Frontiers in Education",
+				2020,
+				"10.3389/feduc.2020.602451",
+				"Review documenting widespread continued belief and reported use despite the absence of a validated matching benefit."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -148,9 +211,31 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Meta-analyses disagree in emphasis because inclusion rules and bias adjustments differ. Large trials support small, uneven effects rather than universal transformation.",
 		sources: sources([
-			["meta_analysis", "Do Growth Mindset Interventions Impact Students' Academic Achievement? A Systematic Review and Meta-Analysis With Recommendations for Best Practices", "Psychological Bulletin", 2023, "10.1037/bul0000352", "Critical meta-analysis finding very small effects that shrink under higher-quality design and bias controls."],
-			["meta_analysis", "A systematic review and meta-analysis of growth mindset interventions: For whom, how, and why might such interventions work?", "Psychological Bulletin", 2023, "10.1037/bul0000368", "Synthesis reporting small average benefits with theoretically relevant moderators.", "debate"],
-			["landmark_study", "A national experiment reveals where a growth mindset improves achievement", "Nature", 2019, "10.1038/s41586-019-1466-y", "Large U.S. experiment finding a small average grade benefit concentrated in particular students and school contexts."]
+			[
+				"meta_analysis",
+				"Do Growth Mindset Interventions Impact Students' Academic Achievement? A Systematic Review and Meta-Analysis With Recommendations for Best Practices",
+				"Psychological Bulletin",
+				2023,
+				"10.1037/bul0000352",
+				"Critical meta-analysis finding very small effects that shrink under higher-quality design and bias controls."
+			],
+			[
+				"meta_analysis",
+				"A systematic review and meta-analysis of growth mindset interventions: For whom, how, and why might such interventions work?",
+				"Psychological Bulletin",
+				2023,
+				"10.1037/bul0000368",
+				"Synthesis reporting small average benefits with theoretically relevant moderators.",
+				"debate"
+			],
+			[
+				"landmark_study",
+				"A national experiment reveals where a growth mindset improves achievement",
+				"Nature",
+				2019,
+				"10.1038/s41586-019-1466-y",
+				"Large U.S. experiment finding a small average grade benefit concentrated in particular students and school contexts."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -185,9 +270,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Average effects are robust, but costs, staffing, fidelity, subject, tutor type, and student attendance produce substantial variation.",
 		sources: sources([
-			["meta_analysis", "The Promise of Tutoring for PreK–12 Learning: A Systematic Review and Meta-Analysis of the Experimental Evidence", "American Educational Research Journal", 2024, "10.3102/00028312231208687", "Large synthesis finding substantial average effects and identifying design features associated with stronger programs."],
-			["meta_analysis", "Academic Interventions for Elementary and Middle School Students With Low Socioeconomic Status: A Systematic Review and Meta-Analysis", "Review of Educational Research", 2017, "10.3102/0034654316687036", "Review finding tutoring and feedback-oriented approaches among effective supports for disadvantaged students."],
-			["landmark_study", "Not Too Late: Improving Academic Outcomes among Adolescents", "American Economic Review", 2023, "10.1257/aer.20210434", "Randomized evaluation showing intensive individualized instruction can improve adolescent mathematics outcomes."]
+			[
+				"meta_analysis",
+				"The Promise of Tutoring for PreK–12 Learning: A Systematic Review and Meta-Analysis of the Experimental Evidence",
+				"American Educational Research Journal",
+				2024,
+				"10.3102/00028312231208687",
+				"Large synthesis finding substantial average effects and identifying design features associated with stronger programs."
+			],
+			[
+				"meta_analysis",
+				"Academic Interventions for Elementary and Middle School Students With Low Socioeconomic Status: A Systematic Review and Meta-Analysis",
+				"Review of Educational Research",
+				2017,
+				"10.3102/0034654316687036",
+				"Review finding tutoring and feedback-oriented approaches among effective supports for disadvantaged students."
+			],
+			[
+				"landmark_study",
+				"Not Too Late: Improving Academic Outcomes among Adolescents",
+				"American Economic Review",
+				2023,
+				"10.1257/aer.20210434",
+				"Randomized evaluation showing intensive individualized instruction can improve adolescent mathematics outcomes."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -222,9 +328,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Positive average effects recur across reviews; heterogeneity, outcome reporting, long-term durability, and implementation at scale reduce certainty about any one program.",
 		sources: sources([
-			["meta_analysis", "The State of Evidence for Social and Emotional Learning: A Contemporary Meta-Analysis of Universal School-Based SEL Interventions", "Child Development", 2023, "10.1111/cdev.13968", "Contemporary synthesis of universal school-based programs across skills, behavior, well-being, and academic outcomes."],
-			["meta_analysis", "The Impact of Enhancing Students' Social and Emotional Learning: A Meta-Analysis of School-Based Universal Interventions", "Child Development", 2011, "10.1111/j.1467-8624.2010.01564.x", "Landmark review finding positive average student effects and the importance of sound program practices."],
-			["meta_analysis", "Promoting Positive Youth Development Through School-Based Social and Emotional Learning Interventions: A Meta-Analysis of Follow-Up Effects", "Child Development", 2017, "10.1111/cdev.12864", "Follow-up synthesis examining whether benefits persist beyond the immediate program period."]
+			[
+				"meta_analysis",
+				"The State of Evidence for Social and Emotional Learning: A Contemporary Meta-Analysis of Universal School-Based SEL Interventions",
+				"Child Development",
+				2023,
+				"10.1111/cdev.13968",
+				"Contemporary synthesis of universal school-based programs across skills, behavior, well-being, and academic outcomes."
+			],
+			[
+				"meta_analysis",
+				"The Impact of Enhancing Students' Social and Emotional Learning: A Meta-Analysis of School-Based Universal Interventions",
+				"Child Development",
+				2011,
+				"10.1111/j.1467-8624.2010.01564.x",
+				"Landmark review finding positive average student effects and the importance of sound program practices."
+			],
+			[
+				"meta_analysis",
+				"Promoting Positive Youth Development Through School-Based Social and Emotional Learning Interventions: A Meta-Analysis of Follow-Up Effects",
+				"Child Development",
+				2017,
+				"10.1111/cdev.12864",
+				"Follow-up synthesis examining whether benefits persist beyond the immediate program period."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -259,9 +386,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The average advantage in undergraduate STEM is robust. Practice quality, assessment alignment, instructor support, and institutional context determine magnitude.",
 		sources: sources([
-			["meta_analysis", "Active learning increases student performance in science, engineering, and mathematics", "Proceedings of the National Academy of Sciences", 2014, "10.1073/pnas.1319030111", "Large meta-analysis finding higher exam performance and lower failure under active learning."],
-			["meta_analysis", "Active learning narrows achievement gaps for underrepresented students in undergraduate science, technology, engineering, and math", "Proceedings of the National Academy of Sciences", 2020, "10.1073/pnas.1916903117", "Synthesis showing that high-intensity active learning can reduce achievement gaps."],
-			["landmark_study", "Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom", "Proceedings of the National Academy of Sciences", 2019, "10.1073/pnas.1821936116", "Controlled classroom study separating subjective fluency from measured learning."]
+			[
+				"meta_analysis",
+				"Active learning increases student performance in science, engineering, and mathematics",
+				"Proceedings of the National Academy of Sciences",
+				2014,
+				"10.1073/pnas.1319030111",
+				"Large meta-analysis finding higher exam performance and lower failure under active learning."
+			],
+			[
+				"meta_analysis",
+				"Active learning narrows achievement gaps for underrepresented students in undergraduate science, technology, engineering, and math",
+				"Proceedings of the National Academy of Sciences",
+				2020,
+				"10.1073/pnas.1916903117",
+				"Synthesis showing that high-intensity active learning can reduce achievement gaps."
+			],
+			[
+				"landmark_study",
+				"Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom",
+				"Proceedings of the National Academy of Sciences",
+				2019,
+				"10.1073/pnas.1821936116",
+				"Controlled classroom study separating subjective fluency from measured learning."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -296,9 +444,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Short-term readiness gains are clear; long-run magnitude and transfer vary with program, population, counterfactual care, later schools, and outcome.",
 		sources: sources([
-			["meta_analysis", "Impacts of Early Childhood Education on Medium- and Long-Term Educational Outcomes", "Educational Researcher", 2017, "10.3102/0013189X17737739", "Meta-analysis finding improved graduation and reduced grade retention and special-education placement."],
-			["meta_analysis", "Do children benefit from universal early childhood education and care? A meta-analysis of evidence from natural experiments", "Economics of Education Review", 2018, "10.1016/j.econedurev.2018.08.001", "Synthesis of population programs showing average benefits with variation by age, quality, and family background."],
-			["meta_analysis", "Meta-Analysis of the Effects of Early Education Interventions on Cognitive and Social Development", "Teachers College Record", 2010, "10.1177/016146811011200303", "Broad review of program features and cognitive and social outcomes across early-education interventions."]
+			[
+				"meta_analysis",
+				"Impacts of Early Childhood Education on Medium- and Long-Term Educational Outcomes",
+				"Educational Researcher",
+				2017,
+				"10.3102/0013189X17737739",
+				"Meta-analysis finding improved graduation and reduced grade retention and special-education placement."
+			],
+			[
+				"meta_analysis",
+				"Do children benefit from universal early childhood education and care? A meta-analysis of evidence from natural experiments",
+				"Economics of Education Review",
+				2018,
+				"10.1016/j.econedurev.2018.08.001",
+				"Synthesis of population programs showing average benefits with variation by age, quality, and family background."
+			],
+			[
+				"meta_analysis",
+				"Meta-Analysis of the Effects of Early Education Interventions on Cognitive and Social Development",
+				"Teachers College Record",
+				2010,
+				"10.1177/016146811011200303",
+				"Broad review of program features and cognitive and social outcomes across early-education interventions."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -333,9 +502,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Studies mix devices, software, subjects, ages, training, and access conditions. Selection and rapidly changing technology further limit one universal estimate.",
 		sources: sources([
-			["meta_analysis", "Learning in One-to-One Laptop Environments: A Meta-Analysis and Research Synthesis", "Review of Educational Research", 2016, "10.3102/0034654316628645", "Synthesis finding generally positive but heterogeneous outcomes and important implementation limits."],
-			["systematic_review", "One-to-One Technology in K–12 Classrooms: A Review of the Literature From 2004 Through 2014", "Journal of Research on Technology in Education", 2016, "10.1080/15391523.2016.1146564", "Review of uses and outcomes across a decade of one-to-one device programs."],
-			["systematic_review", "Upgrading Education with Technology: Insights from Experimental Research", "Journal of Economic Literature", 2020, "10.1257/jel.20191507", "Broad evidence review showing that access alone is less reliable than targeted, well-implemented educational uses."]
+			[
+				"meta_analysis",
+				"Learning in One-to-One Laptop Environments: A Meta-Analysis and Research Synthesis",
+				"Review of Educational Research",
+				2016,
+				"10.3102/0034654316628645",
+				"Synthesis finding generally positive but heterogeneous outcomes and important implementation limits."
+			],
+			[
+				"systematic_review",
+				"One-to-One Technology in K–12 Classrooms: A Review of the Literature From 2004 Through 2014",
+				"Journal of Research on Technology in Education",
+				2016,
+				"10.1080/15391523.2016.1146564",
+				"Review of uses and outcomes across a decade of one-to-one device programs."
+			],
+			[
+				"systematic_review",
+				"Upgrading Education with Technology: Insights from Experimental Research",
+				"Journal of Economic Literature",
+				2020,
+				"10.1257/jel.20191507",
+				"Broad evidence review showing that access alone is less reliable than targeted, well-implemented educational uses."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -370,9 +560,30 @@ export const august2026EducationFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The practical principle is well supported, while effect estimates vary because definitions, implementation, controls, and outcomes differ widely.",
 		sources: sources([
-			["meta_analysis", "The impact of formative assessment on K-12 learning: a meta-analysis", "Educational Research and Evaluation", 2024, "10.1080/13803611.2024.2363831", "Recent quantitative synthesis of formative-assessment effects and moderators across K–12 studies."],
-			["systematic_review", "Assessment and Classroom Learning", "Assessment in Education: Principles, Policy & Practice", 1998, "10.1080/0969595980050102", "Foundational review defining formative use and synthesizing classroom evidence."],
-			["meta_analysis", "Formative Assessment: A Meta-Analysis and a Call for Research", "Educational Measurement: Issues and Practice", 2011, "10.1111/j.1745-3992.2011.00220.x", "Meta-analysis reporting positive average effects while stressing definitional and design weaknesses."]
+			[
+				"meta_analysis",
+				"The impact of formative assessment on K-12 learning: a meta-analysis",
+				"Educational Research and Evaluation",
+				2024,
+				"10.1080/13803611.2024.2363831",
+				"Recent quantitative synthesis of formative-assessment effects and moderators across K–12 studies."
+			],
+			[
+				"systematic_review",
+				"Assessment and Classroom Learning",
+				"Assessment in Education: Principles, Policy & Practice",
+				1998,
+				"10.1080/0969595980050102",
+				"Foundational review defining formative use and synthesizing classroom evidence."
+			],
+			[
+				"meta_analysis",
+				"Formative Assessment: A Meta-Analysis and a Call for Research",
+				"Educational Measurement: Issues and Practice",
+				2011,
+				"10.1111/j.1745-3992.2011.00220.x",
+				"Meta-analysis reporting positive average effects while stressing definitional and design weaknesses."
+			]
 		])
 	})
 ];

@@ -37,7 +37,21 @@ describe("catalog editorial completion", () => {
 			const after = completeEditorialCopy(before);
 			oldTotal += estimatedReadingGrade(before.bottomLine)!;
 			newTotal += estimatedReadingGrade(after.bottomLine)!;
-			for (const field of ["consensusBand", "agreementLevel", "evidenceCertainty", "confidenceScore", "stableCore", "openQuestions", "uncertaintySummary", "uncertaintyDrivers", "whatWouldChangeMinds", "misconceptions", "searchCutoffAt", "lastRetractionCheckAt", "surveillanceSpec"] as const) assert.deepEqual(after[field], before[field], `${before.slug}: ${field}`);
+			for (const field of [
+				"consensusBand",
+				"agreementLevel",
+				"evidenceCertainty",
+				"confidenceScore",
+				"stableCore",
+				"openQuestions",
+				"uncertaintySummary",
+				"uncertaintyDrivers",
+				"whatWouldChangeMinds",
+				"misconceptions",
+				"searchCutoffAt",
+				"lastRetractionCheckAt",
+				"surveillanceSpec"
+			] as const) assert.deepEqual(after[field], before[field], `${before.slug}: ${field}`);
 			assert.deepEqual(after.changeLog.slice(0, before.changeLog.length), before.changeLog);
 		}
 		assert.ok(newTotal / 1001 < oldTotal / 1001 - 1);
@@ -55,7 +69,13 @@ describe("catalog editorial completion", () => {
 		for (const before of defaultClaims) {
 			const after = completeEditorialCopy(before);
 			if (after === before) continue;
-			const claim = new Claim({ ...seedClaimFields(after), ...seedReviewDates(after), topic: new mongoose.Types.ObjectId(), slug: after.slug, publishedAt: new Date("2026-10-01T00:00:00Z") });
+			const claim = new Claim({
+				...seedClaimFields(after),
+				...seedReviewDates(after),
+				topic: new mongoose.Types.ObjectId(),
+				slug: after.slug,
+				publishedAt: new Date("2026-10-01T00:00:00Z")
+			});
 			await claim.validate();
 			const sources = after.sources.map(source => new ClaimSource({ ...source, claim: claim._id }));
 			for (const source of sources) await source.validate();

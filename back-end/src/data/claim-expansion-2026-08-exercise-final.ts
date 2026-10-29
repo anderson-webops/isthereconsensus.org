@@ -37,9 +37,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Most evidence is observational and exposure definitions vary. Extreme competitive histories and injured subgroups remain less certain.",
 		sources: sources([
-			["meta_analysis", "The Association of Recreational and Competitive Running With Hip and Knee Osteoarthritis: A Systematic Review and Meta-analysis", "Journal of Orthopaedic & Sports Physical Therapy", 2017, "10.2519/jospt.2017.7137", "Synthesis finding lower osteoarthritis prevalence in recreational runners than competitive runners or sedentary controls."],
-			["meta_analysis", "Running and Knee Osteoarthritis: A Systematic Review and Meta-analysis", "The American Journal of Sports Medicine", 2017, "10.1177/0363546516657531", "Review finding no evidence that recreational running accelerates radiographic or symptomatic knee osteoarthritis."],
-			["landmark_study", "Is There an Association Between a History of Running and Symptomatic Knee Osteoarthritis? A Cross-Sectional Study From the Osteoarthritis Initiative", "Arthritis Care & Research", 2017, "10.1002/acr.22939", "Large cohort analysis finding no increased symptomatic knee-osteoarthritis risk among self-selected runners."]
+			[
+				"meta_analysis",
+				"The Association of Recreational and Competitive Running With Hip and Knee Osteoarthritis: A Systematic Review and Meta-analysis",
+				"Journal of Orthopaedic & Sports Physical Therapy",
+				2017,
+				"10.2519/jospt.2017.7137",
+				"Synthesis finding lower osteoarthritis prevalence in recreational runners than competitive runners or sedentary controls."
+			],
+			[
+				"meta_analysis",
+				"Running and Knee Osteoarthritis: A Systematic Review and Meta-analysis",
+				"The American Journal of Sports Medicine",
+				2017,
+				"10.1177/0363546516657531",
+				"Review finding no evidence that recreational running accelerates radiographic or symptomatic knee osteoarthritis."
+			],
+			[
+				"landmark_study",
+				"Is There an Association Between a History of Running and Symptomatic Knee Osteoarthritis? A Cross-Sectional Study From the Osteoarthritis Initiative",
+				"Arthritis Care & Research",
+				2017,
+				"10.1002/acr.22939",
+				"Large cohort analysis finding no increased symptomatic knee-osteoarthritis risk among self-selected runners."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -74,9 +95,31 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Long-term trials are small and short, but they converge against a large body-composition advantage from fasting alone.",
 		sources: sources([
-			["meta_analysis", "Effect of Overnight Fasted Exercise on Weight Loss and Body Composition: A Systematic Review and Meta-Analysis", "Journal of Functional Morphology and Kinesiology", 2017, "10.3390/jfmk2040043", "Review finding no clear long-term weight or body-composition advantage for fasted exercise."],
-			["landmark_study", "Body composition changes associated with fasted versus non-fasted aerobic exercise", "Journal of the International Society of Sports Nutrition", 2014, "10.1186/s12970-014-0054-7", "Small randomized intervention finding similar body-composition changes under a calorie-restricted diet."],
-			["landmark_study", "Exercising in the Fasted State Reduced 24-Hour Energy Intake in Active Male Adults", "Journal of Nutrition and Metabolism", 2016, "10.1155/2016/1984198", "Short-term study illustrating appetite and energy-intake responses without establishing long-term fat loss.", "context"]
+			[
+				"meta_analysis",
+				"Effect of Overnight Fasted Exercise on Weight Loss and Body Composition: A Systematic Review and Meta-Analysis",
+				"Journal of Functional Morphology and Kinesiology",
+				2017,
+				"10.3390/jfmk2040043",
+				"Review finding no clear long-term weight or body-composition advantage for fasted exercise."
+			],
+			[
+				"landmark_study",
+				"Body composition changes associated with fasted versus non-fasted aerobic exercise",
+				"Journal of the International Society of Sports Nutrition",
+				2014,
+				"10.1186/s12970-014-0054-7",
+				"Small randomized intervention finding similar body-composition changes under a calorie-restricted diet."
+			],
+			[
+				"landmark_study",
+				"Exercising in the Fasted State Reduced 24-Hour Energy Intake in Active Male Adults",
+				"Journal of Nutrition and Metabolism",
+				2016,
+				"10.1155/2016/1984198",
+				"Short-term study illustrating appetite and energy-intake responses without establishing long-term fat loss.",
+				"context"
+			]
 		])
 	}),
 	reviewedClaim({
@@ -111,9 +154,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence rejects an absolute failure requirement; optimal proximity and how it interacts with load and volume remain less precise.",
 		sources: sources([
-			["meta_analysis", "Effects of resistance training performed to repetition failure or non-failure on muscular strength and hypertrophy: A systematic review and meta-analysis", "Journal of Sport and Health Science", 2022, "10.1016/j.jshs.2021.01.007", "Synthesis finding no clear requirement for failure when key training variables are considered."],
-			["meta_analysis", "Effects of Resistance Training Performed to Failure or Not to Failure on Muscle Strength, Hypertrophy, and Power Output: A Systematic Review With Meta-Analysis", "Journal of Strength and Conditioning Research", 2021, "10.1519/JSC.0000000000003936", "Independent synthesis comparing strength, hypertrophy, and power outcomes."],
-			["systematic_review", "Towards an improved understanding of proximity-to-failure in resistance training and its influence on skeletal muscle hypertrophy, neuromuscular fatigue, muscle damage, and perceived discomfort: A scoping review", "Journal of Sports Sciences", 2022, "10.1080/02640414.2022.2080165", "Review clarifying the stimulus-fatigue tradeoffs and measurement limits around repetitions in reserve."]
+			[
+				"meta_analysis",
+				"Effects of resistance training performed to repetition failure or non-failure on muscular strength and hypertrophy: A systematic review and meta-analysis",
+				"Journal of Sport and Health Science",
+				2022,
+				"10.1016/j.jshs.2021.01.007",
+				"Synthesis finding no clear requirement for failure when key training variables are considered."
+			],
+			[
+				"meta_analysis",
+				"Effects of Resistance Training Performed to Failure or Not to Failure on Muscle Strength, Hypertrophy, and Power Output: A Systematic Review With Meta-Analysis",
+				"Journal of Strength and Conditioning Research",
+				2021,
+				"10.1519/JSC.0000000000003936",
+				"Independent synthesis comparing strength, hypertrophy, and power outcomes."
+			],
+			[
+				"systematic_review",
+				"Towards an improved understanding of proximity-to-failure in resistance training and its influence on skeletal muscle hypertrophy, neuromuscular fatigue, muscle damage, and perceived discomfort: A scoping review",
+				"Journal of Sports Sciences",
+				2022,
+				"10.1080/02640414.2022.2080165",
+				"Review clarifying the stimulus-fatigue tradeoffs and measurement limits around repetitions in reserve."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -148,9 +212,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Total intake clearly dominates; smaller timing effects are difficult to isolate and may differ by age, fasting, dose, and program.",
 		sources: sources([
-			["meta_analysis", "The effect of protein timing on muscle strength and hypertrophy: a meta-analysis", "Journal of the International Society of Sports Nutrition", 2013, "10.1186/1550-2783-10-53", "Meta-analysis finding that total protein explains much of the apparent timing advantage."],
-			["systematic_review", "Nutrient timing revisited: is there a post-exercise anabolic window?", "Journal of the International Society of Sports Nutrition", 2013, "10.1186/1550-2783-10-5", "Review replacing the narrow-window claim with a broader context-dependent timing model."],
-			["meta_analysis", "A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults", "British Journal of Sports Medicine", 2018, "10.1136/bjsports-2017-097608", "Large synthesis establishing the role and limits of adequate total protein during resistance training."]
+			[
+				"meta_analysis",
+				"The effect of protein timing on muscle strength and hypertrophy: a meta-analysis",
+				"Journal of the International Society of Sports Nutrition",
+				2013,
+				"10.1186/1550-2783-10-53",
+				"Meta-analysis finding that total protein explains much of the apparent timing advantage."
+			],
+			[
+				"systematic_review",
+				"Nutrient timing revisited: is there a post-exercise anabolic window?",
+				"Journal of the International Society of Sports Nutrition",
+				2013,
+				"10.1186/1550-2783-10-5",
+				"Review replacing the narrow-window claim with a broader context-dependent timing model."
+			],
+			[
+				"meta_analysis",
+				"A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults",
+				"British Journal of Sports Medicine",
+				2018,
+				"10.1136/bjsports-2017-097608",
+				"Large synthesis establishing the role and limits of adequate total protein during resistance training."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -185,9 +270,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Short supervised studies dominate, protocol definitions vary, and long-term adherence and clinical outcomes are less certain than fitness changes.",
 		sources: sources([
-			["meta_analysis", "High-intensity interval training and cardiorespiratory fitness in adults: An umbrella review of systematic reviews and meta-analyses", "Scandinavian Journal of Medicine & Science in Sports", 2024, "10.1111/sms.14652", "Umbrella review finding a cardiorespiratory-fitness advantage while documenting substantial protocol heterogeneity."],
-			["meta_analysis", "Effectiveness of High-Intensity Interval Training (HIT) and Continuous Endurance Training for VO2max Improvements: A Systematic Review and Meta-Analysis of Controlled Trials", "Sports Medicine", 2015, "10.1007/s40279-015-0365-0", "Comparison showing larger average fitness gains from intervals under controlled conditions."],
-			["meta_analysis", "Effects of high-intensity interval training on cardiometabolic health: a systematic review and meta-analysis of intervention studies", "British Journal of Sports Medicine", 2017, "10.1136/bjsports-2015-095841", "Synthesis of broader cardiometabolic outcomes and population-specific uncertainty."]
+			[
+				"meta_analysis",
+				"High-intensity interval training and cardiorespiratory fitness in adults: An umbrella review of systematic reviews and meta-analyses",
+				"Scandinavian Journal of Medicine & Science in Sports",
+				2024,
+				"10.1111/sms.14652",
+				"Umbrella review finding a cardiorespiratory-fitness advantage while documenting substantial protocol heterogeneity."
+			],
+			[
+				"meta_analysis",
+				"Effectiveness of High-Intensity Interval Training (HIT) and Continuous Endurance Training for VO2max Improvements: A Systematic Review and Meta-Analysis of Controlled Trials",
+				"Sports Medicine",
+				2015,
+				"10.1007/s40279-015-0365-0",
+				"Comparison showing larger average fitness gains from intervals under controlled conditions."
+			],
+			[
+				"meta_analysis",
+				"Effects of high-intensity interval training on cardiometabolic health: a systematic review and meta-analysis of intervention studies",
+				"British Journal of Sports Medicine",
+				2017,
+				"10.1136/bjsports-2015-095841",
+				"Synthesis of broader cardiometabolic outcomes and population-specific uncertainty."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -222,9 +328,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Average interference is smaller than once feared, but advanced athletes, high running volumes, power outcomes, and fiber-level changes remain more nuanced.",
 		sources: sources([
-			["meta_analysis", "Compatibility of Concurrent Aerobic and Strength Training for Skeletal Muscle Size and Function: An Updated Systematic Review and Meta-Analysis", "Sports Medicine", 2022, "10.1007/s40279-021-01587-7", "Updated synthesis finding no meaningful average loss of whole-muscle hypertrophy or maximal strength."],
-			["meta_analysis", "Concurrent training: a meta-analysis examining interference of aerobic and resistance exercises", "Journal of Strength and Conditioning Research", 2012, "10.1519/JSC.0b013e31823a3e2d", "Influential earlier synthesis identifying modality, frequency, and duration as possible moderators."],
-			["systematic_review", "Interference between Concurrent Resistance and Endurance Exercise: Molecular Bases and the Role of Individual Training Variables", "Sports Medicine", 2014, "10.1007/s40279-014-0162-1", "Mechanistic review explaining when acute signaling and program design may create tradeoffs."]
+			[
+				"meta_analysis",
+				"Compatibility of Concurrent Aerobic and Strength Training for Skeletal Muscle Size and Function: An Updated Systematic Review and Meta-Analysis",
+				"Sports Medicine",
+				2022,
+				"10.1007/s40279-021-01587-7",
+				"Updated synthesis finding no meaningful average loss of whole-muscle hypertrophy or maximal strength."
+			],
+			[
+				"meta_analysis",
+				"Concurrent training: a meta-analysis examining interference of aerobic and resistance exercises",
+				"Journal of Strength and Conditioning Research",
+				2012,
+				"10.1519/JSC.0b013e31823a3e2d",
+				"Influential earlier synthesis identifying modality, frequency, and duration as possible moderators."
+			],
+			[
+				"systematic_review",
+				"Interference between Concurrent Resistance and Endurance Exercise: Molecular Bases and the Role of Individual Training Variables",
+				"Sports Medicine",
+				2014,
+				"10.1007/s40279-014-0162-1",
+				"Mechanistic review explaining when acute signaling and program design may create tradeoffs."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -259,9 +386,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The direction is increasingly consistent, but studies are small and protocol-specific and the exact practical size remains imprecise.",
 		sources: sources([
-			["meta_analysis", "Throwing cold water on muscle growth: A systematic review with meta-analysis of the effects of postexercise cold water immersion on resistance training-induced hypertrophy", "European Journal of Sport Science", 2024, "10.1002/ejsc.12074", "Current synthesis finding attenuation of resistance-training-induced hypertrophy with regular immersion."],
-			["landmark_study", "Post-exercise cold water immersion attenuates acute anabolic signalling and long-term adaptations in muscle to strength training", "The Journal of Physiology", 2015, "10.1113/JP270570", "Training and mechanistic study linking repeated immersion with smaller strength-training adaptations."],
-			["systematic_review", "Strength Training Adaptations After Cold-Water Immersion", "Journal of Strength and Conditioning Research", 2014, "10.1519/JSC.0000000000000434", "Early synthesis distinguishing short-term recovery effects from possible long-term adaptation costs."]
+			[
+				"meta_analysis",
+				"Throwing cold water on muscle growth: A systematic review with meta-analysis of the effects of postexercise cold water immersion on resistance training-induced hypertrophy",
+				"European Journal of Sport Science",
+				2024,
+				"10.1002/ejsc.12074",
+				"Current synthesis finding attenuation of resistance-training-induced hypertrophy with regular immersion."
+			],
+			[
+				"landmark_study",
+				"Post-exercise cold water immersion attenuates acute anabolic signalling and long-term adaptations in muscle to strength training",
+				"The Journal of Physiology",
+				2015,
+				"10.1113/JP270570",
+				"Training and mechanistic study linking repeated immersion with smaller strength-training adaptations."
+			],
+			[
+				"systematic_review",
+				"Strength Training Adaptations After Cold-Water Immersion",
+				"Journal of Strength and Conditioning Research",
+				2014,
+				"10.1519/JSC.0000000000000434",
+				"Early synthesis distinguishing short-term recovery effects from possible long-term adaptation costs."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -296,9 +444,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Validity changes rapidly by product and update, but reviews consistently find energy expenditure less reliable than steps or heart rate.",
 		sources: sources([
-			["systematic_review", "Reliability and Validity of Commercially Available Wearable Devices for Measuring Steps, Energy Expenditure, and Heart Rate: Systematic Review", "JMIR mHealth and uHealth", 2020, "10.2196/18694", "Device review finding the weakest validity for energy expenditure and substantial model-specific variation."],
-			["landmark_study", "Accuracy in Wrist-Worn, Sensor-Based Measurements of Heart Rate and Energy Expenditure in a Diverse Cohort", "Journal of Personalized Medicine", 2017, "10.3390/jpm7020003", "Head-to-head validation finding acceptable heart-rate performance but poor energy-expenditure accuracy."],
-			["meta_analysis", "How well do activity monitors estimate energy expenditure? A systematic review and meta-analysis of the validity of current technologies", "British Journal of Sports Medicine", 2020, "10.1136/bjsports-2018-099643", "Synthesis documenting device-dependent validity and energy-expenditure errors too large for precise dietary compensation."]
+			[
+				"systematic_review",
+				"Reliability and Validity of Commercially Available Wearable Devices for Measuring Steps, Energy Expenditure, and Heart Rate: Systematic Review",
+				"JMIR mHealth and uHealth",
+				2020,
+				"10.2196/18694",
+				"Device review finding the weakest validity for energy expenditure and substantial model-specific variation."
+			],
+			[
+				"landmark_study",
+				"Accuracy in Wrist-Worn, Sensor-Based Measurements of Heart Rate and Energy Expenditure in a Diverse Cohort",
+				"Journal of Personalized Medicine",
+				2017,
+				"10.3390/jpm7020003",
+				"Head-to-head validation finding acceptable heart-rate performance but poor energy-expenditure accuracy."
+			],
+			[
+				"meta_analysis",
+				"How well do activity monitors estimate energy expenditure? A systematic review and meta-analysis of the validity of current technologies",
+				"British Journal of Sports Medicine",
+				2020,
+				"10.1136/bjsports-2018-099643",
+				"Synthesis documenting device-dependent validity and energy-expenditure errors too large for precise dietary compensation."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -333,9 +502,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The overall preventive effect is robust; exact size varies by injury definition, sport, sex, program, supervision, and adherence.",
 		sources: sources([
-			["meta_analysis", "Effectiveness of Warm-Up Intervention Programs to Prevent Sports Injuries among Children and Adolescents: A Systematic Review and Meta-Analysis", "International Journal of Environmental Research and Public Health", 2022, "10.3390/ijerph19106336", "Youth-specific synthesis finding fewer injuries with structured warm-up programs."],
-			["meta_analysis", "Neuromuscular training injury prevention strategies in youth sport: a systematic review and meta-analysis", "British Journal of Sports Medicine", 2015, "10.1136/bjsports-2015-094639", "Review quantifying injury reduction and the influence of age, dosage, and program design."],
-			["meta_analysis", "Neuromuscular Training for Sports Injury Prevention", "Medicine & Science in Sports & Exercise", 2010, "10.1249/MSS.0b013e3181b88d37", "Meta-analysis of controlled trials supporting multicomponent neuromuscular prevention programs."]
+			[
+				"meta_analysis",
+				"Effectiveness of Warm-Up Intervention Programs to Prevent Sports Injuries among Children and Adolescents: A Systematic Review and Meta-Analysis",
+				"International Journal of Environmental Research and Public Health",
+				2022,
+				"10.3390/ijerph19106336",
+				"Youth-specific synthesis finding fewer injuries with structured warm-up programs."
+			],
+			[
+				"meta_analysis",
+				"Neuromuscular training injury prevention strategies in youth sport: a systematic review and meta-analysis",
+				"British Journal of Sports Medicine",
+				2015,
+				"10.1136/bjsports-2015-094639",
+				"Review quantifying injury reduction and the influence of age, dosage, and program design."
+			],
+			[
+				"meta_analysis",
+				"Neuromuscular Training for Sports Injury Prevention",
+				"Medicine & Science in Sports & Exercise",
+				2010,
+				"10.1249/MSS.0b013e3181b88d37",
+				"Meta-analysis of controlled trials supporting multicomponent neuromuscular prevention programs."
+			]
 		])
 	}),
 	reviewedClaim({
@@ -370,9 +560,30 @@ export const august2026ExerciseFinalClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The hypertrophy equivalence is well supported across common load ranges, while very low loads, advanced trainees, and long-term programming need more evidence.",
 		sources: sources([
-			["meta_analysis", "Strength and Hypertrophy Adaptations Between Low- vs. High-Load Resistance Training: A Systematic Review and Meta-analysis", "Journal of Strength and Conditioning Research", 2017, "10.1519/JSC.0000000000002200", "Synthesis finding similar hypertrophy but greater maximal-strength improvement with heavier loading."],
-			["landmark_study", "Neither load nor systemic hormones determine resistance training-mediated hypertrophy or strength gains in resistance-trained young men", "Journal of Applied Physiology", 2016, "10.1152/japplphysiol.00154.2016", "Randomized trial finding comparable hypertrophy under low and high loads taken to volitional failure."],
-			["landmark_study", "Effects of different intensities of resistance training with equated volume load on muscle strength and hypertrophy", "European Journal of Sport Science", 2018, "10.1080/17461391.2018.1450898", "Controlled comparison clarifying where load-specific strength and broadly similar hypertrophy diverge."]
+			[
+				"meta_analysis",
+				"Strength and Hypertrophy Adaptations Between Low- vs. High-Load Resistance Training: A Systematic Review and Meta-analysis",
+				"Journal of Strength and Conditioning Research",
+				2017,
+				"10.1519/JSC.0000000000002200",
+				"Synthesis finding similar hypertrophy but greater maximal-strength improvement with heavier loading."
+			],
+			[
+				"landmark_study",
+				"Neither load nor systemic hormones determine resistance training-mediated hypertrophy or strength gains in resistance-trained young men",
+				"Journal of Applied Physiology",
+				2016,
+				"10.1152/japplphysiol.00154.2016",
+				"Randomized trial finding comparable hypertrophy under low and high loads taken to volitional failure."
+			],
+			[
+				"landmark_study",
+				"Effects of different intensities of resistance training with equated volume load on muscle strength and hypertrophy",
+				"European Journal of Sport Science",
+				2018,
+				"10.1080/17461391.2018.1450898",
+				"Controlled comparison clarifying where load-specific strength and broadly similar hypertrophy diverge."
+			]
 		])
 	})
 ];

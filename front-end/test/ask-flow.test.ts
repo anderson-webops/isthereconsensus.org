@@ -8,7 +8,7 @@ describe("analyzeAskQuery", () => {
 
 		assert.equal(analysis.looksLoaded, true);
 		assert.equal(analysis.recommendedDestination, "claim");
-		assert.ok(analysis.neutralReframes.some((entry) => /Is it true that/i.test(entry)));
+		assert.ok(analysis.neutralReframes.some(entry => /Is it true that/i.test(entry)));
 	});
 
 	it("detects definition-style questions and routes them to explainers", () => {

@@ -24,7 +24,13 @@ const readyClaim: Partial<IClaim> = {
 			limitations: ["This is a unit-test fixture."]
 		}
 	],
-	changeLog: [{ date: new Date("2026-04-11T12:00:00.000Z"), kind: "publication", summary: "Published." }],
+	changeLog: [
+		{
+			date: new Date("2026-04-11T12:00:00.000Z"),
+			kind: "publication",
+			summary: "Published."
+		}
+	],
 	lastReviewedAt: new Date("2026-04-11T12:00:00.000Z"),
 	publishedAt: new Date("2026-04-11T12:00:00.000Z")
 };
@@ -58,20 +64,19 @@ describe("public claim readiness", () => {
 	});
 
 	it("keeps incomplete published claims out of public routes", () => {
+		const unlinkedBackground = {
+			kind: "context",
+			title: "Unlinked background",
+			publisher: "Example",
+			stance: "context"
+		} as const;
 		const readiness = getPublicClaimReadiness(
 			{
 				...readyClaim,
 				uncertaintySummary: "",
 				lastReviewedAt: undefined
 			},
-			summarizeClaimSourceReadiness([
-				{
-					kind: "context",
-					title: "Unlinked background",
-					publisher: "Example",
-					stance: "context"
-				}
-			])
+			summarizeClaimSourceReadiness([unlinkedBackground])
 		);
 
 		assert.equal(readiness.isReady, false);

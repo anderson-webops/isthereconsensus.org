@@ -254,6 +254,9 @@ export function refreshDnaClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

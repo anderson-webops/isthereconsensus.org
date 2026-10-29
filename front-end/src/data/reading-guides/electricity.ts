@@ -53,7 +53,12 @@ export const electricityGuide: ReadingGuideContent = {
 				},
 				{
 					text: "Connections supply additional constraints. Two fixed 6 ohm resistors have a 12 ohm series equivalent but a 3 ohm parallel equivalent in an ideal model. Series elements share steady current, while branches spanning the same two ideal nodes share voltage. A series pair of 3 ohms and 9 ohms across a hypothetical ideal 12 V difference gives unequal 3 V and 9 V drops. The zero interior electric-field result likewise belongs to electrostatic equilibrium, not ordinary resistive current flow. A drawing, a theorem or a familiar word such as steady cannot replace the conditions that make its conclusion valid.",
-					sources: ["series", "kirchhoff", "electrostatic", "current"]
+					sources: [
+						"series",
+						"kirchhoff",
+						"electrostatic",
+						"current"
+					]
 				}
 			]
 		},

@@ -34,9 +34,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Causal direction is exceptionally well supported. Individual absolute benefit, optimal targets, treatment timing, competing risks, and residual risk vary substantially.",
 		sources: [
-			["consensus_statement", "Low-density lipoproteins cause atherosclerotic cardiovascular disease. 1. Evidence from genetic, epidemiologic, and clinical studies", "European Heart Journal", 2017, "10.1093/eurheartj/ehx144", "European Atherosclerosis Society consensus integrates genetic, observational, mechanistic, and randomized evidence for causality."],
-			["systematic_review", "The importance of LDL-C lowering in atherosclerotic cardiovascular disease prevention: Lower for longer is better", "American Journal of Preventive Cardiology", 2024, "10.1016/j.ajpc.2024.100649", "Current review connects cumulative LDL exposure with event reduction and distinguishes lifetime prevention from short trial horizons."],
-			["guideline", "ACC/AHA Issue Updated Guideline for Managing Lipids, Cholesterol", "American Heart Association", 2026, "https://newsroom.heart.org/news/accaha-issue-updated-guideline-for-managing-lipids-cholesterol", "Current professional guidance translates LDL evidence into risk-based testing and treatment decisions."]
+			[
+				"consensus_statement",
+				"Low-density lipoproteins cause atherosclerotic cardiovascular disease. 1. Evidence from genetic, epidemiologic, and clinical studies",
+				"European Heart Journal",
+				2017,
+				"10.1093/eurheartj/ehx144",
+				"European Atherosclerosis Society consensus integrates genetic, observational, mechanistic, and randomized evidence for causality."
+			],
+			[
+				"systematic_review",
+				"The importance of LDL-C lowering in atherosclerotic cardiovascular disease prevention: Lower for longer is better",
+				"American Journal of Preventive Cardiology",
+				2024,
+				"10.1016/j.ajpc.2024.100649",
+				"Current review connects cumulative LDL exposure with event reduction and distinguishes lifetime prevention from short trial horizons."
+			],
+			[
+				"guideline",
+				"ACC/AHA Issue Updated Guideline for Managing Lipids, Cholesterol",
+				"American Heart Association",
+				2026,
+				"https://newsroom.heart.org/news/accaha-issue-updated-guideline-for-managing-lipids-cholesterol",
+				"Current professional guidance translates LDL evidence into risk-based testing and treatment decisions."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence against HDL concentration as a routine drug target is high-confidence. HDL biology remains active research, and future function-specific therapies could differ from older HDL-raising drugs.",
 		sources: [
-			["meta_analysis", "Effect on cardiovascular risk of high density lipoprotein targeted drug treatments niacin, fibrates, and CETP inhibitors: meta-analysis of randomised controlled trials including 117 411 patients", "The BMJ", 2014, "10.1136/bmj.g4379", "Large randomized-trial synthesis found no general cardiovascular benefit from raising HDL in the statin era."],
-			["landmark_study", "Niacin in Patients with Low HDL Cholesterol Levels Receiving Intensive Statin Therapy", "The New England Journal of Medicine", 2011, "10.1056/NEJMoa1107579", "AIM-HIGH raised HDL and changed other lipids but did not reduce cardiovascular events when added to intensive statin therapy."],
-			["guideline", "Your Complete Guide to Understanding Cholesterol and Lipids", "American Heart Association", 2026, "https://www.heart.org/en/health-topics/cholesterol/your-complete-guide-to-understanding-cholesterol-and-lipids", "Professional patient guidance explains why lipid values are interpreted as part of overall cardiovascular risk rather than as isolated good and bad scores."]
+			[
+				"meta_analysis",
+				"Effect on cardiovascular risk of high density lipoprotein targeted drug treatments niacin, fibrates, and CETP inhibitors: meta-analysis of randomised controlled trials including 117 411 patients",
+				"The BMJ",
+				2014,
+				"10.1136/bmj.g4379",
+				"Large randomized-trial synthesis found no general cardiovascular benefit from raising HDL in the statin era."
+			],
+			[
+				"landmark_study",
+				"Niacin in Patients with Low HDL Cholesterol Levels Receiving Intensive Statin Therapy",
+				"The New England Journal of Medicine",
+				2011,
+				"10.1056/NEJMoa1107579",
+				"AIM-HIGH raised HDL and changed other lipids but did not reduce cardiovascular events when added to intensive statin therapy."
+			],
+			[
+				"guideline",
+				"Your Complete Guide to Understanding Cholesterol and Lipids",
+				"American Heart Association",
+				2026,
+				"https://www.heart.org/en/health-topics/cholesterol/your-complete-guide-to-understanding-cholesterol-and-lipids",
+				"Professional patient guidance explains why lipid values are interpreted as part of overall cardiovascular risk rather than as isolated good and bad scores."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Stroke reduction is high-confidence for guideline-eligible clinical atrial fibrillation. Greater uncertainty surrounds very short device-detected episodes, extreme frailty, unusual bleeding risks, and specific alternatives.",
 		sources: [
-			["guideline", "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation", "Circulation", 2024, "10.1161/CIR.0000000000001193", "Multisociety guideline recommends risk-based anticoagulation and defines major exceptions, alternatives, and reassessment needs."],
-			["meta_analysis", "Systematic review and network meta-analysis of stroke prevention treatments in patients with atrial fibrillation", "Clinical Pharmacology: Advances and Applications", 2016, "10.2147/CPAA.S105165", "Network synthesis compares anticoagulants and antiplatelet strategies across stroke, bleeding, and mortality outcomes."],
-			["meta_analysis", "Comparison of the efficacy and safety of new oral anticoagulants with warfarin in patients with atrial fibrillation: a meta-analysis of randomised trials", "The Lancet", 2014, "10.1016/S0140-6736(13)62343-0", "Pivotal trial synthesis found direct oral anticoagulants at least as effective as warfarin with a different bleeding profile."]
+			[
+				"guideline",
+				"2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+				"Circulation",
+				2024,
+				"10.1161/CIR.0000000000001193",
+				"Multisociety guideline recommends risk-based anticoagulation and defines major exceptions, alternatives, and reassessment needs."
+			],
+			[
+				"meta_analysis",
+				"Systematic review and network meta-analysis of stroke prevention treatments in patients with atrial fibrillation",
+				"Clinical Pharmacology: Advances and Applications",
+				2016,
+				"10.2147/CPAA.S105165",
+				"Network synthesis compares anticoagulants and antiplatelet strategies across stroke, bleeding, and mortality outcomes."
+			],
+			[
+				"meta_analysis",
+				"Comparison of the efficacy and safety of new oral anticoagulants with warfarin in patients with atrial fibrillation: a meta-analysis of randomised trials",
+				"The Lancet",
+				2014,
+				"10.1016/S0140-6736(13)62343-0",
+				"Pivotal trial synthesis found direct oral anticoagulants at least as effective as warfarin with a different bleeding profile."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Fitness, quality-of-life, and hospitalization benefits are robust. Exact mortality magnitude and the best delivery model vary with era, baseline care, program content, and participation.",
 		sources: [
-			["systematic_review", "Exercise-based cardiac rehabilitation for coronary heart disease", "Cochrane Database of Systematic Reviews", 2021, "10.1002/14651858.CD001800.pub3", "Updated randomized synthesis evaluates mortality, admissions, quality of life, and safety across contemporary rehabilitation programs."],
-			["meta_analysis", "Exercise-Based Cardiac Rehabilitation for Coronary Heart Disease: Cochrane Systematic Review and Meta-Analysis", "Journal of the American College of Cardiology", 2016, "10.1016/j.jacc.2015.10.044", "Major synthesis supports lower cardiovascular mortality and hospitalization with improved quality of life."],
-			["guideline", "Home-Based Cardiac Rehabilitation: Top Things to Know", "American Heart Association", 2019, "https://professional.heart.org/en/science-news/home-based-cardiac-rehabilitation/top-things-to-know", "Professional statement explains when structured home-based rehabilitation can extend access while preserving core clinical components."]
+			[
+				"systematic_review",
+				"Exercise-based cardiac rehabilitation for coronary heart disease",
+				"Cochrane Database of Systematic Reviews",
+				2021,
+				"10.1002/14651858.CD001800.pub3",
+				"Updated randomized synthesis evaluates mortality, admissions, quality of life, and safety across contemporary rehabilitation programs."
+			],
+			[
+				"meta_analysis",
+				"Exercise-Based Cardiac Rehabilitation for Coronary Heart Disease: Cochrane Systematic Review and Meta-Analysis",
+				"Journal of the American College of Cardiology",
+				2016,
+				"10.1016/j.jacc.2015.10.044",
+				"Major synthesis supports lower cardiovascular mortality and hospitalization with improved quality of life."
+			],
+			[
+				"guideline",
+				"Home-Based Cardiac Rehabilitation: Top Things to Know",
+				"American Heart Association",
+				2019,
+				"https://professional.heart.org/en/science-news/home-based-cardiac-rehabilitation/top-things-to-know",
+				"Professional statement explains when structured home-based rehabilitation can extend access while preserving core clinical components."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Average blood-pressure benefit is modest and varies with the accompanying support. Device validity, adherence, baseline control, treatment protocol, and access determine practical effectiveness.",
 		sources: [
-			["meta_analysis", "Self-measurement of blood pressure at home using a cuff device for change in blood pressure levels: systematic review and meta-analysis", "Hypertension Research", 2024, "10.1038/s41440-024-01981-4", "Current synthesis finds better blood-pressure control, with larger effects when monitoring is paired with clinical or behavioral support."],
-			["landmark_study", "Efficacy of self-monitored blood pressure, with or without telemonitoring, for titration of antihypertensive medication (TASMINH4): an unmasked randomised controlled trial", "The Lancet", 2018, "10.1016/S0140-6736(18)30309-X", "Pragmatic trial shows how self-monitoring linked to medication titration can improve clinic blood pressure."],
-			["guideline", "Home Blood Pressure Monitoring", "American Heart Association", 2026, "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings/monitoring-your-blood-pressure-at-home", "Patient guidance covers validated devices, cuff fit, technique, recording, and when readings require clinical attention."]
+			[
+				"meta_analysis",
+				"Self-measurement of blood pressure at home using a cuff device for change in blood pressure levels: systematic review and meta-analysis",
+				"Hypertension Research",
+				2024,
+				"10.1038/s41440-024-01981-4",
+				"Current synthesis finds better blood-pressure control, with larger effects when monitoring is paired with clinical or behavioral support."
+			],
+			[
+				"landmark_study",
+				"Efficacy of self-monitored blood pressure, with or without telemonitoring, for titration of antihypertensive medication (TASMINH4): an unmasked randomised controlled trial",
+				"The Lancet",
+				2018,
+				"10.1016/S0140-6736(18)30309-X",
+				"Pragmatic trial shows how self-monitoring linked to medication titration can improve clinic blood pressure."
+			],
+			[
+				"guideline",
+				"Home Blood Pressure Monitoring",
+				"American Heart Association",
+				2026,
+				"https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings/monitoring-your-blood-pressure-at-home",
+				"Patient guidance covers validated devices, cuff fit, technique, recording, and when readings require clinical attention."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Kidney protection is high-confidence in the populations represented by major trials and guidelines. Evidence is thinner for transplant, dialysis, type 1 diabetes, very low albuminuria, and some rare kidney diseases.",
 		sources: [
-			["guideline", "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease", "Kidney Disease: Improving Global Outcomes", 2024, "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf", "International guideline recommends SGLT2 inhibitors for defined chronic kidney disease groups regardless of diabetes and details initiation and safety boundaries."],
-			["meta_analysis", "SGLT2 inhibitors and kidney outcomes across the spectrum of kidney disease: a systematic review and meta-analysis", "Clinical Journal of the American Society of Nephrology", 2024, "10.2215/CJN.0000000000000568", "Broad synthesis finds kidney benefit across diabetes status and multiple baseline kidney-risk strata."],
-			["landmark_study", "Empagliflozin in Patients with Chronic Kidney Disease", "The New England Journal of Medicine", 2023, "10.1056/NEJMoa2204233", "EMPA-KIDNEY demonstrated fewer kidney-disease progression or cardiovascular-death events in a broad CKD population, including participants without diabetes."]
+			[
+				"guideline",
+				"KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease",
+				"Kidney Disease: Improving Global Outcomes",
+				2024,
+				"https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+				"International guideline recommends SGLT2 inhibitors for defined chronic kidney disease groups regardless of diabetes and details initiation and safety boundaries."
+			],
+			[
+				"meta_analysis",
+				"SGLT2 inhibitors and kidney outcomes across the spectrum of kidney disease: a systematic review and meta-analysis",
+				"Clinical Journal of the American Society of Nephrology",
+				2024,
+				"10.2215/CJN.0000000000000568",
+				"Broad synthesis finds kidney benefit across diabetes status and multiple baseline kidney-risk strata."
+			],
+			[
+				"landmark_study",
+				"Empagliflozin in Patients with Chronic Kidney Disease",
+				"The New England Journal of Medicine",
+				2023,
+				"10.1056/NEJMoa2204233",
+				"EMPA-KIDNEY demonstrated fewer kidney-disease progression or cardiovascular-death events in a broad CKD population, including participants without diabetes."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Remission over one to several years is well established, while lifetime durability and optimal maintenance are less certain. Results depend strongly on baseline duration, insulin reserve, intervention intensity, and maintained weight loss.",
 		sources: [
-			["guideline", "Achieving Type 2 Diabetes Remission through Weight Loss", "National Institute of Diabetes and Digestive and Kidney Diseases", 2025, "https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/achieving-type-2-diabetes-remission-through-weight-loss", "NIDDK explains remission definitions, evidence from intensive weight management, durability, recurrence, and the need for continued monitoring."],
-			["meta_analysis", "Impact of bodyweight loss on type 2 diabetes remission: a systematic review and meta-regression analysis of randomised controlled trials", "The Lancet Diabetes & Endocrinology", 2025, "10.1016/S2213-8587(24)00346-2", "Randomized-trial synthesis shows a dose-response relationship between weight loss and remission across interventions."],
-			["landmark_study", "Primary care-led weight management for remission of type 2 diabetes (DiRECT): an open-label, cluster-randomised trial", "The Lancet", 2018, "10.1016/S0140-6736(17)33102-1", "DiRECT established that an intensive primary-care weight-management program can produce medication-free remission in a substantial subset."]
+			[
+				"guideline",
+				"Achieving Type 2 Diabetes Remission through Weight Loss",
+				"National Institute of Diabetes and Digestive and Kidney Diseases",
+				2025,
+				"https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/achieving-type-2-diabetes-remission-through-weight-loss",
+				"NIDDK explains remission definitions, evidence from intensive weight management, durability, recurrence, and the need for continued monitoring."
+			],
+			[
+				"meta_analysis",
+				"Impact of bodyweight loss on type 2 diabetes remission: a systematic review and meta-regression analysis of randomised controlled trials",
+				"The Lancet Diabetes & Endocrinology",
+				2025,
+				"10.1016/S2213-8587(24)00346-2",
+				"Randomized-trial synthesis shows a dose-response relationship between weight loss and remission across interventions."
+			],
+			[
+				"landmark_study",
+				"Primary care-led weight management for remission of type 2 diabetes (DiRECT): an open-label, cluster-randomised trial",
+				"The Lancet",
+				2018,
+				"10.1016/S0140-6736(17)33102-1",
+				"DiRECT established that an intensive primary-care weight-management program can produce medication-free remission in a substantial subset."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Acute kidney risk in susceptible patients is high-confidence. The magnitude of chronic decline from intermittent or long-term use is harder to separate from the illnesses and pain conditions that prompt treatment.",
 		sources: [
-			["guideline", "Safe Medicine Use with Chronic Kidney Disease", "National Kidney Foundation", 2025, "https://www.kidney.org/kidney-topics/safe-medicine-use-chronic-kidney-disease", "Patient guidance explains why NSAIDs can harm kidneys, which risk factors matter, and why medicine review is needed in CKD."],
-			["meta_analysis", "Non-steroidal anti-inflammatory drug induced acute kidney injury in the community dwelling general population and people with chronic kidney disease: systematic review and meta-analysis", "BMC Nephrology", 2017, "10.1186/s12882-017-0673-8", "Synthesis quantifies higher acute kidney injury risk in general and chronic-kidney-disease populations."],
-			["systematic_review", "NSAIDs in CKD: Are They Safe?", "American Journal of Kidney Diseases", 2020, "10.1053/j.ajkd.2020.03.023", "Nephrology review weighs kidney, electrolyte, cardiovascular, and gastrointestinal harms against pain benefit and practical alternatives."]
+			[
+				"guideline",
+				"Safe Medicine Use with Chronic Kidney Disease",
+				"National Kidney Foundation",
+				2025,
+				"https://www.kidney.org/kidney-topics/safe-medicine-use-chronic-kidney-disease",
+				"Patient guidance explains why NSAIDs can harm kidneys, which risk factors matter, and why medicine review is needed in CKD."
+			],
+			[
+				"meta_analysis",
+				"Non-steroidal anti-inflammatory drug induced acute kidney injury in the community dwelling general population and people with chronic kidney disease: systematic review and meta-analysis",
+				"BMC Nephrology",
+				2017,
+				"10.1186/s12882-017-0673-8",
+				"Synthesis quantifies higher acute kidney injury risk in general and chronic-kidney-disease populations."
+			],
+			[
+				"systematic_review",
+				"NSAIDs in CKD: Are They Safe?",
+				"American Journal of Kidney Diseases",
+				2020,
+				"10.1053/j.ajkd.2020.03.023",
+				"Nephrology review weighs kidney, electrolyte, cardiovascular, and gastrointestinal harms against pain benefit and practical alternatives."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The risk gradient is exceptionally consistent across cohorts. Individual prediction still varies with age, cause of CKD, acute measurement changes, competing illness, and treatment.",
 		sources: [
-			["guideline", "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease", "Kidney Disease: Improving Global Outcomes", 2024, "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf", "International guideline classifies risk jointly by filtration and albuminuria and integrates cardiovascular prevention into CKD care."],
-			["meta_analysis", "Association of estimated glomerular filtration rate and albuminuria with all-cause and cardiovascular mortality: a collaborative meta-analysis of general population cohorts", "The Lancet", 2010, "10.1016/S0140-6736(10)60674-5", "Large collaborative analysis established independent, graded mortality associations for both filtration and albuminuria."],
-			["guideline", "Risk Factors for Chronic Kidney Disease", "National Kidney Foundation", 2026, "https://www.kidney.org/kidney-topics/risk-factors-chronic-kidney-disease?page=0", "Patient guidance explains the bidirectional relationship among kidney disease, diabetes, high blood pressure, and cardiovascular disease."]
+			[
+				"guideline",
+				"KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease",
+				"Kidney Disease: Improving Global Outcomes",
+				2024,
+				"https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+				"International guideline classifies risk jointly by filtration and albuminuria and integrates cardiovascular prevention into CKD care."
+			],
+			[
+				"meta_analysis",
+				"Association of estimated glomerular filtration rate and albuminuria with all-cause and cardiovascular mortality: a collaborative meta-analysis of general population cohorts",
+				"The Lancet",
+				2010,
+				"10.1016/S0140-6736(10)60674-5",
+				"Large collaborative analysis established independent, graded mortality associations for both filtration and albuminuria."
+			],
+			[
+				"guideline",
+				"Risk Factors for Chronic Kidney Disease",
+				"National Kidney Foundation",
+				2026,
+				"https://www.kidney.org/kidney-topics/risk-factors-chronic-kidney-disease?page=0",
+				"Patient guidance explains the bidirectional relationship among kidney disease, diabetes, high blood pressure, and cardiovascular disease."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026CardiometabolicKidneyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Ability to detect many episodes is well supported, but real-world predictive value varies by device, algorithm, age, rhythm burden, and recording quality. The treatment significance of very brief device-detected episodes remains unsettled.",
 		sources: [
-			["guideline", "Atrial Fibrillation Diagnosis", "American Heart Association", 2026, "https://www.heart.org/en/health-topics/atrial-fibrillation/treatment-and-prevention-of-atrial-fibrillation/afib-diagnosis", "Professional guidance explains ECG-based confirmation and the role of ambulatory and consumer rhythm records in a broader diagnostic evaluation."],
-			["meta_analysis", "Diagnostic Accuracy of Smartwatches for the Detection of Cardiac Arrhythmia: Systematic Review and Meta-analysis", "Journal of Medical Internet Research", 2021, "10.2196/28974", "Synthesis finds useful diagnostic performance while documenting heterogeneity, selected study populations, and the need for clinical confirmation."],
-			["landmark_study", "Large-Scale Assessment of a Smartwatch to Identify Atrial Fibrillation", "The New England Journal of Medicine", 2019, "10.1056/NEJMoa1901183", "Apple Heart Study shows scalable alerting and reasonable confirmation yield while also illustrating low alert rates, incomplete follow-up, and non-diagnostic notifications."]
+			[
+				"guideline",
+				"Atrial Fibrillation Diagnosis",
+				"American Heart Association",
+				2026,
+				"https://www.heart.org/en/health-topics/atrial-fibrillation/treatment-and-prevention-of-atrial-fibrillation/afib-diagnosis",
+				"Professional guidance explains ECG-based confirmation and the role of ambulatory and consumer rhythm records in a broader diagnostic evaluation."
+			],
+			[
+				"meta_analysis",
+				"Diagnostic Accuracy of Smartwatches for the Detection of Cardiac Arrhythmia: Systematic Review and Meta-analysis",
+				"Journal of Medical Internet Research",
+				2021,
+				"10.2196/28974",
+				"Synthesis finds useful diagnostic performance while documenting heterogeneity, selected study populations, and the need for clinical confirmation."
+			],
+			[
+				"landmark_study",
+				"Large-Scale Assessment of a Smartwatch to Identify Atrial Fibrillation",
+				"The New England Journal of Medicine",
+				2019,
+				"10.1056/NEJMoa1901183",
+				"Apple Heart Study shows scalable alerting and reasonable confirmation yield while also illustrating low alert rates, incomplete follow-up, and non-diagnostic notifications."
+			]
 		]
 	})
 ];

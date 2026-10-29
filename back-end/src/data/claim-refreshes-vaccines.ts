@@ -244,22 +244,42 @@ function retainedSources(seed: CompleteSeedClaim): Source[] {
 		else if (source.publisher === "World Health Organization") {
 			note = "Original release and GACVS statement inspected. WHO weighs evidence quality, rather than treating study counts as independent votes. Its assessment predates the July 2026 US MMR report.";
 		}
-		return { ...source, note, appraisal: "not_appraised", citationCheckedAt };
+		return {
+			...source,
+			note,
+			appraisal: "not_appraised",
+			citationCheckedAt
+		};
 	});
 }
 
 export function refreshVaccineClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
 	if (seed.topicSlug !== "health-and-medicine") return seed;
-	const refresh = seed.slug === childhoodSlug ? childhood : seed.slug === mmrSlug ? mmr : undefined;
+	const refresh = seed.slug === childhoodSlug
+		? childhood
+		: seed.slug === mmrSlug
+			? mmr
+			: undefined;
 	if (!refresh) return seed;
 	const additions = seed.slug === childhoodSlug
-		? [aluminiumReview, aluminiumCohort, { ...us2026, order: 6 }, { ...cdc, order: 7 }]
+		? [
+				aluminiumReview,
+				aluminiumCohort,
+				{ ...us2026, order: 6 },
+				{ ...cdc, order: 7 }
+			]
 		: [us2026, cdc];
 	return {
 		...seed,
 		...common,
 		...refresh,
-		sources: [...retainedSources(seed), ...additions],
-		changeLog: [...seed.changeLog, { date: checkedAt, kind: "update", summary: refresh.readerAnnouncement!.summary }]
+		sources: [
+			...retainedSources(seed),
+			...additions
+		],
+		changeLog: [
+			...seed.changeLog,
+			{ date: checkedAt, kind: "update", summary: refresh.readerAnnouncement!.summary }
+		]
 	};
 }

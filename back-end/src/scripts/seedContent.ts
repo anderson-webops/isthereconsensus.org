@@ -24,7 +24,9 @@ export async function runSeedContent() {
 	});
 	await seedTopics();
 	await seedClaims({ synchronizeExisting: mode === "sync" });
-	console.log(`Seed content mode: ${mode === "sync" ? "synchronize existing" : "insert only"}.`);
+	console.log(`Seed content mode: ${mode === "sync"
+		? "synchronize existing"
+		: "insert only"}.`);
 }
 
 runSeedContent()

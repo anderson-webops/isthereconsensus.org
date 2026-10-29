@@ -8,7 +8,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerAssessmentClaims.find(claim => claim.slug === readerAssessmentSlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 const rankBelow = (score: number, norm: number[]) => 100 * norm.filter(value => value < score).length / norm.length;
 
 describe("assessment interpretation expansion", () => {
@@ -123,18 +129,52 @@ describe("assessment interpretation expansion", () => {
 		assert.deepEqual(baselineVisible.map(collection => collection.slug), oldCollections);
 		assert.ok(baselineVisible.flatMap(collection => collection.claimSlugs).every(slug => !newSlugs.has(slug)));
 		const groups = {
-			"assessment-norms-and-equivalents": ["percentile", "rankIntervals", "rankGrowth", "gradeEquivalent"],
+			"assessment-norms-and-equivalents": [
+				"percentile",
+				"rankIntervals",
+				"rankGrowth",
+				"gradeEquivalent"
+			],
 			"assessment-score-comparability": ["rawForms", "scaledPercent", "sameRange"],
 			"assessment-measurement-precision": ["exactScore", "cutScore", "ceiling"],
-			"assessment-validity-and-administration": ["reliableValid", "validUses", "adaptiveQuestions", "accommodation"],
-			"population-assessment-interpretation": ["itemBias", "schoolCause", "naepIndividual", "proficientLabels"]
+			"assessment-validity-and-administration": [
+				"reliableValid",
+				"validUses",
+				"adaptiveQuestions",
+				"accommodation"
+			],
+			"population-assessment-interpretation": [
+				"itemBias",
+				"schoolCause",
+				"naepIndividual",
+				"proficientLabels"
+			]
 		};
 		assert.equal(Object.values(groups).flat().length, 18);
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("education-and-learning", readerAssessmentSlugs[key]!).map(collection => collection.slug), [group]);
 		}
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { percentile: "percentile questions correct", rankIntervals: "average percentile ranks", rankGrowth: "score rise percentile", gradeEquivalent: "grade equivalent curriculum", rawForms: "raw score test forms", scaledPercent: "scaled score percentage correct", sameRange: "different tests same score range", reliableValid: "reliable test valid interpretation", validUses: "validating test every use", exactScore: "reported test score exact", cutScore: "cut score uncertainty", ceiling: "unchanged maximum learning", itemBias: "item biased groups success rates", adaptiveQuestions: "computer adaptive questions", accommodation: "assessment accommodation measures", schoolCause: "school higher average caused learning", naepIndividual: "national assessment individual student", proficientLabels: "NAEP proficient state" };
+		const queries = {
+			percentile: "percentile questions correct",
+			rankIntervals: "average percentile ranks",
+			rankGrowth: "score rise percentile",
+			gradeEquivalent: "grade equivalent curriculum",
+			rawForms: "raw score test forms",
+			scaledPercent: "scaled score percentage correct",
+			sameRange: "different tests same score range",
+			reliableValid: "reliable test valid interpretation",
+			validUses: "validating test every use",
+			exactScore: "reported test score exact",
+			cutScore: "cut score uncertainty",
+			ceiling: "unchanged maximum learning",
+			itemBias: "item biased groups success rates",
+			adaptiveQuestions: "computer adaptive questions",
+			accommodation: "assessment accommodation measures",
+			schoolCause: "school higher average caused learning",
+			naepIndividual: "national assessment individual student",
+			proficientLabels: "NAEP proficient state"
+		};
 		for (const [key, query] of Object.entries(queries)) assert.ok(search(query).some(result => result.claim.slug === readerAssessmentSlugs[key]), query);
 	});
 });

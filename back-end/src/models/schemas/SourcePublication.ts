@@ -5,9 +5,17 @@ const sourcePublicationSchema = new Schema({
 	releaseId: { type: String, required: true },
 	contentHash: { type: String, required: true, match: /^[a-f\d]{64}$/ },
 	claimId: { type: Schema.Types.ObjectId, required: true },
-	sourceIds: { type: [Schema.Types.ObjectId], required: true },
+	sourceIds: {
+		type: [Schema.Types.ObjectId],
+		required: true
+	},
 	coverageId: { type: Schema.Types.ObjectId, required: true },
-	state: { type: String, enum: ["pending", "published"], default: "pending", required: true },
+	state: {
+		type: String,
+		enum: ["pending", "published"],
+		default: "pending",
+		required: true
+	},
 	publishedAt: { type: Date, default: null }
 }, { timestamps: true, strict: "throw" });
 

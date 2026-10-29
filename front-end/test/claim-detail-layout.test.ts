@@ -13,11 +13,11 @@ describe("claim detail layout", () => {
 		const scope = source.match(/<section\s+v-if="reviewScopeGroups\.length"[\s\S]*?<\/section>/)?.[0];
 		assert.ok(scope);
 		assert.match(scope, /aria-labelledby="review-scope-title"/);
-		assert.match(scope, /<h2 id="review-scope-title">Scope of this review<\/h2>/);
+		assert.match(scope, /<h2 id="review-scope-title">\s*Scope of this review\s*<\/h2>/);
 		assert.match(scope, /<h3>\{\{ group\.title \}\}<\/h3>/);
-		assert.match(scope, /<li v-for="\(item, index\) in group\.items" :key="index">\{\{ item \}\}<\/li>/);
+		assert.match(scope, /<li v-for="\(item, index\) in group\.items" :key="index">\s*\{\{ item \}\}\s*<\/li>/);
 		assert.doesNotMatch(scope, /canEditClaim|v-html|slice\(|substring\(/);
-		assert.ok(source.indexOf(scope) < source.indexOf('<section id="claim-certainty" class="uncertainty-strip">'));
+		assert.ok(source.indexOf(scope) < source.indexOf("<section id=\"claim-certainty\" class=\"uncertainty-strip\">"));
 		assert.match(source, /\.review-scope__group \{[\s\S]*overflow-wrap: anywhere;/);
 	});
 
@@ -88,9 +88,9 @@ describe("claim detail layout", () => {
 	});
 
 	it("puts substantive claim content before uncertainty and technical assessment", () => {
-		const stableCoreIndex = source.indexOf('key: "stable-core"');
-		const openQuestionsIndex = source.indexOf('key: "open-questions"');
-		const uncertaintyIndex = source.indexOf('<section id="claim-certainty" class="uncertainty-strip">');
+		const stableCoreIndex = source.indexOf("key: \"stable-core\"");
+		const openQuestionsIndex = source.indexOf("key: \"open-questions\"");
+		const uncertaintyIndex = source.indexOf("<section id=\"claim-certainty\" class=\"uncertainty-strip\">");
 		const assessmentIndex = source.indexOf("<EvidenceLandscapePanel");
 
 		assert.ok(stableCoreIndex >= 0 && stableCoreIndex < openQuestionsIndex);

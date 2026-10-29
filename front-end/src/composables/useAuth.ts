@@ -33,24 +33,30 @@ export function useAuth() {
 	const refreshing = useState<boolean>("auth-refreshing", () => false);
 
 	const currentAccount = computed(() => admin.value ?? user.value);
-	const role = computed(() => (admin.value ? "admin" : user.value ? "user" : null));
+	const role = computed(() => (admin.value
+		? "admin"
+		: user.value ? "user" : null));
 	const isLoggedIn = computed(() => !!currentAccount.value);
 
 	async function refreshAuth() {
 		if (refreshing.value) return;
 		refreshing.value = true;
 		try {
-			const headers = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const headers = import.meta.server
+				? useRequestHeaders(["cookie"])
+				: undefined;
 			const response = await $fetch<AuthResponse>(apiUrl("/auth/me"), {
 				credentials: "include",
 				headers
 			});
 			user.value = response.currentUser ?? null;
 			admin.value = response.currentAdmin ?? null;
-		} catch {
+		}
+		catch {
 			user.value = null;
 			admin.value = null;
-		} finally {
+		}
+		finally {
 			ready.value = true;
 			refreshing.value = false;
 		}

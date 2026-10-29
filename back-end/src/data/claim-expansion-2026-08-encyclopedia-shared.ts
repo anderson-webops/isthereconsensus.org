@@ -68,7 +68,9 @@ export function august2026EncyclopediaTrancheThreeSourcedClaim(
 	return august2026EncyclopediaTrancheThreeClaim({
 		...seed,
 		sources: seed.sources.map((source, index) => {
-			const primaryLink = source.url ?? (source.doi ? `https://doi.org/${source.doi}` : undefined);
+			const primaryLink = source.url ?? (source.doi
+				? `https://doi.org/${source.doi}`
+				: undefined);
 
 			return {
 				...source,
@@ -78,7 +80,9 @@ export function august2026EncyclopediaTrancheThreeSourcedClaim(
 				appraisal: source.appraisal ?? "high",
 				citationStatus: "current",
 				citationCheckedAt: august2026EncyclopediaTrancheThreeReviewTimestamp,
-				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
+				statusSources: primaryLink
+					? [primaryLink]
+					: ["Editorial identifier review"]
 			};
 		})
 	});
@@ -94,7 +98,9 @@ export function august2026EncyclopediaTrancheFourSourcedClaim(
 	return august2026EncyclopediaTrancheFourClaim({
 		...seed,
 		sources: seed.sources.map((source, index) => {
-			const primaryLink = source.url ?? (source.doi ? `https://doi.org/${source.doi}` : undefined);
+			const primaryLink = source.url ?? (source.doi
+				? `https://doi.org/${source.doi}`
+				: undefined);
 
 			return {
 				...source,
@@ -104,7 +110,9 @@ export function august2026EncyclopediaTrancheFourSourcedClaim(
 				appraisal: source.appraisal ?? "high",
 				citationStatus: "current",
 				citationCheckedAt: august2026EncyclopediaTrancheFourReviewTimestamp,
-				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
+				statusSources: primaryLink
+					? [primaryLink]
+					: ["Editorial identifier review"]
 			};
 		})
 	});
@@ -120,7 +128,9 @@ export function august2026EncyclopediaTrancheFiveSourcedClaim(
 	return august2026EncyclopediaTrancheFiveClaim({
 		...seed,
 		sources: seed.sources.map((source, index) => {
-			const primaryLink = source.url ?? (source.doi ? `https://doi.org/${source.doi}` : undefined);
+			const primaryLink = source.url ?? (source.doi
+				? `https://doi.org/${source.doi}`
+				: undefined);
 
 			return {
 				...source,
@@ -130,7 +140,9 @@ export function august2026EncyclopediaTrancheFiveSourcedClaim(
 				appraisal: source.appraisal ?? "high",
 				citationStatus: "current",
 				citationCheckedAt: august2026EncyclopediaTrancheFiveReviewTimestamp,
-				statusSources: primaryLink ? [primaryLink] : ["Editorial identifier review"]
+				statusSources: primaryLink
+					? [primaryLink]
+					: ["Editorial identifier review"]
 			};
 		})
 	});

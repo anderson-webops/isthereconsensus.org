@@ -76,7 +76,9 @@ async function main() {
 	const { uri: mongoUri } = await resolveMongoConfiguration();
 	await mongoose.connect(mongoUri);
 
-	const filter = { "evidenceLandscape.schemaVersion": { $exists: false } };
+	const filter = {
+		"evidenceLandscape.schemaVersion": { $exists: false }
+	};
 	const missingCount = await Claim.countDocuments(filter);
 	console.log(`Claims missing evidenceLandscape v${EVIDENCE_LANDSCAPE_SCHEMA_VERSION}: ${missingCount}`);
 

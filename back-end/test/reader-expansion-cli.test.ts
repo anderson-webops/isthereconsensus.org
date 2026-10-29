@@ -22,7 +22,12 @@ const git = (...args: string[]) => execFileSync("git", ["-C", root, ...args], { 
 
 describe("source proposal CLI guards", () => {
 	it("rejects credential/origin options and repeated arguments without echoing their values", () => {
-		for (const args of [[], ["--origin", "https://example.test"], ["--password", "do-not-echo"], ["--output", "one", "--output", "two"]]) {
+		for (const args of [
+			[],
+			["--origin", "https://example.test"],
+			["--password", "do-not-echo"],
+			["--output", "one", "--output", "two"]
+		]) {
 			const result = execute(args);
 			assert.equal(result.status, 2);
 			assert.equal(result.stdout, "");
@@ -94,7 +99,16 @@ describe("source proposal CLI guards", () => {
 				assert.equal(proposal.productionAuthorizationGranted, false);
 				assert.equal(statSync(output).mode & 0o777, 0o600);
 				assert.equal(summary.fileSha256, createHash("sha256").update(bytes).digest("hex"));
-				assert.deepEqual(Object.keys(summary).sort(), ["artifactKind", "fileSha256", "isPublicationReceipt", "longNarrativeItems", "proposalCitationCount", "proposalClaimCount", "proposalDataSha256", "sourceCommit"]);
+				assert.deepEqual(Object.keys(summary).sort(), [
+					"artifactKind",
+					"fileSha256",
+					"isPublicationReceipt",
+					"longNarrativeItems",
+					"proposalCitationCount",
+					"proposalClaimCount",
+					"proposalDataSha256",
+					"sourceCommit"
+				]);
 				assert.equal(execute(["--output", output]).status, 2);
 				assert.deepEqual(readFileSync(output), bytes);
 			}

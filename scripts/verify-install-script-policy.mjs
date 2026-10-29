@@ -119,6 +119,7 @@ try {
 	for (const name of ["package.json", "package-lock.json", ".npmrc"]) {
 		cpSync(fileURLToPath(new URL(`back-end/${name}`, repositoryRoot)), join(standaloneRoot, name));
 	}
+	cpSync(fileURLToPath(new URL("back-end/vendor/qs-6.17.2-webops.1.tgz", repositoryRoot)), join(standaloneRoot, "vendor/qs-6.17.2-webops.1.tgz"), { recursive: true });
 	runSelectedNpm(["ci", "--include=optional", "--strict-allow-scripts", "--dry-run"], standaloneRoot);
 }
 finally {

@@ -41,7 +41,7 @@ describe("selectRecentClaims", () => {
 		];
 
 		assert.deepEqual(
-			selectRecentClaims(claims, 3).map((entry) => entry._id),
+			selectRecentClaims(claims, 3).map(entry => entry._id),
 			["health-new", "climate", "nutrition"]
 		);
 	});
@@ -54,7 +54,7 @@ describe("selectRecentClaims", () => {
 		];
 
 		assert.deepEqual(
-			selectRecentClaims(claims, 3).map((entry) => entry._id),
+			selectRecentClaims(claims, 3).map(entry => entry._id),
 			["health-new", "climate", "health-older"]
 		);
 	});
@@ -68,8 +68,13 @@ describe("selectRecentClaims", () => {
 		];
 
 		assert.deepEqual(
-			selectRecentClaims(claims, 4).map((entry) => entry._id),
-			["a-title", "z-title", "lower-confidence", "low-sources"]
+			selectRecentClaims(claims, 4).map(entry => entry._id),
+			[
+				"a-title",
+				"z-title",
+				"lower-confidence",
+				"low-sources"
+			]
 		);
 	});
 

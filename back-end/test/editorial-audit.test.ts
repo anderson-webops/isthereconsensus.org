@@ -26,7 +26,12 @@ describe("bounded editorial catalog audit", () => {
 
 	it("does not invent source years or treat missing DOIs as evidence failure", () => {
 		const base = defaultClaims[0]!;
-		const row = editorialConcerns({ ...base, sources: [{ ...base.sources[0]!, year: undefined, doi: undefined }] }, 2026);
+		const row = editorialConcerns({
+			...base,
+			sources: [
+				{ ...base.sources[0]!, year: undefined, doi: undefined }
+			]
+		}, 2026);
 		assert.equal(row.newestSourceYear, null);
 		assert.ok(row.reasons.includes("source_years_not_recorded"));
 		assert.equal(row.reasons.some(reason => reason.includes("doi")), false);

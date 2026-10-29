@@ -444,15 +444,15 @@ function retainedSources(seed: CompleteSeedClaim): Source[] {
 	});
 }
 
+function foundationsRefresh(seed: CompleteSeedClaim) {
+	if (seed.topicSlug === "consensus-foundations" && seed.slug === formationSlug) return formation;
+	if (seed.topicSlug === "active-debates" && seed.slug === debateSlug) return debate;
+	if (seed.topicSlug === "media-misinformation" && seed.slug === studySlug) return study;
+	return undefined;
+}
+
 export function refreshFoundationsClaim(seed: CompleteSeedClaim): CompleteSeedClaim {
-	const refresh
-		= seed.topicSlug === "consensus-foundations" && seed.slug === formationSlug
-			? formation
-			: seed.topicSlug === "active-debates" && seed.slug === debateSlug
-				? debate
-				: seed.topicSlug === "media-misinformation" && seed.slug === studySlug
-					? study
-					: undefined;
+	const refresh = foundationsRefresh(seed);
 	if (!refresh) return seed;
 	const additions: Source[]
 		= seed.slug === formationSlug
@@ -507,7 +507,12 @@ export function refreshFoundationsClaim(seed: CompleteSeedClaim): CompleteSeedCl
 					}
 				]
 			: seed.slug === debateSlug
-				? [heterogeneity, certainty, interpretation, asaTaskForce]
+				? [
+						heterogeneity,
+						certainty,
+						interpretation,
+						asaTaskForce
+					]
 				: [interpretation, asa, nasem, osc];
 	return {
 		...seed,

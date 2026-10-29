@@ -22,8 +22,8 @@ describe("consensus directory metadata", () => {
 	});
 
 	it("puts search first without repeating library statistics", () => {
-		const searchIndex = source.indexOf('class="directory__controls"');
-		const topicIndex = source.indexOf('id="topic-directory"');
+		const searchIndex = source.indexOf("class=\"directory__controls\"");
+		const topicIndex = source.indexOf("id=\"topic-directory\"");
 
 		assert.ok(searchIndex >= 0);
 		assert.ok(topicIndex > searchIndex);
@@ -83,8 +83,8 @@ describe("consensus directory metadata", () => {
 	});
 
 	it("puts topics before the optional full claim directory", () => {
-		const claimDirectoryIndex = source.indexOf('id="reviewed-claims"');
-		const topicDirectoryIndex = source.indexOf('id="topic-directory"');
+		const claimDirectoryIndex = source.indexOf("id=\"reviewed-claims\"");
+		const topicDirectoryIndex = source.indexOf("id=\"topic-directory\"");
 
 		assert.ok(topicDirectoryIndex >= 0);
 		assert.ok(claimDirectoryIndex > topicDirectoryIndex);
@@ -96,10 +96,10 @@ describe("consensus directory metadata", () => {
 	});
 
 	it("keeps topic and claim cards focused on choosing a destination", () => {
-		const topicRowStart = source.indexOf('class="topic-row"');
+		const topicRowStart = source.indexOf("class=\"topic-row\"");
 		const topicRowEnd = source.indexOf("</NuxtLink>", topicRowStart);
 		const topicRow = source.slice(topicRowStart, topicRowEnd);
-		const claimCardStart = source.indexOf('class="claim-card"');
+		const claimCardStart = source.indexOf("class=\"claim-card\"");
 		const claimCardEnd = source.indexOf("</NuxtLink>", claimCardStart);
 		const claimCard = source.slice(claimCardStart, claimCardEnd);
 

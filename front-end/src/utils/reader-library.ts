@@ -30,7 +30,12 @@ interface LibraryPorts {
 }
 
 function emptySelection(): LibrarySelection {
-	return { savedReviewIds: [], followedTopicIds: [], savedComparisonSlugs: [], followedCoverageRequestIds: [] };
+	return {
+		savedReviewIds: [],
+		followedTopicIds: [],
+		savedComparisonSlugs: [],
+		followedCoverageRequestIds: []
+	};
 }
 
 export function validLibrarySelection(value: unknown): value is LibrarySelection {
@@ -43,17 +48,24 @@ export function validLibrarySelection(value: unknown): value is LibrarySelection
 		followedCoverageRequestIds: MAX_FOLLOWED_COVERAGE_REQUESTS
 	};
 	return (
-		["savedReviewIds", "followedTopicIds", "savedComparisonSlugs", "followedCoverageRequestIds"] as const
+		[
+			"savedReviewIds",
+			"followedTopicIds",
+			"savedComparisonSlugs",
+			"followedCoverageRequestIds"
+		] as const
 	).every((key) => {
-		const values = key === "followedCoverageRequestIds" && record[key] === undefined ? [] : record[key];
+		const values = key === "followedCoverageRequestIds" && record[key] === undefined
+			? []
+			: record[key];
 		return (
-			Array.isArray(values) &&
-			values.length <= limits[key] &&
-			new Set(values).size === values.length &&
-			values.every(
-				(id) =>
-					typeof id === "string" &&
-					(key === "savedComparisonSlugs"
+			Array.isArray(values)
+			&& values.length <= limits[key]
+			&& new Set(values).size === values.length
+			&& values.every(
+				id =>
+					typeof id === "string"
+					&& (key === "savedComparisonSlugs"
 						? id.length <= 100 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)
 						: /^[a-f\d]{24}$/.test(id))
 			)
@@ -71,8 +83,12 @@ export function decodeDeviceLibrary(raw: string | null): LibrarySelection {
 		throw new Error("Invalid legacy library");
 	if (value.version === 3 && value.followedCoverageRequestIds === undefined)
 		throw new Error("Invalid browser library");
-	const legacy = value.version === 1 ? { ...value, savedComparisonSlugs: [] } : value;
-	const normalized = value.version === 3 ? legacy : { ...legacy, followedCoverageRequestIds: [] };
+	const legacy = value.version === 1
+		? { ...value, savedComparisonSlugs: [] }
+		: value;
+	const normalized = value.version === 3
+		? legacy
+		: { ...legacy, followedCoverageRequestIds: [] };
 	if (!validLibrarySelection(normalized)) {
 		throw new Error("Invalid browser library");
 	}
@@ -86,9 +102,9 @@ export function decodeDeviceLibrary(raw: string | null): LibrarySelection {
 
 function validAccountLibrary(value: unknown): value is AccountLibrary {
 	return (
-		validLibrarySelection(value) &&
-		Number.isSafeInteger((value as AccountLibrary).revision) &&
-		(value as AccountLibrary).revision >= 0
+		validLibrarySelection(value)
+		&& Number.isSafeInteger((value as AccountLibrary).revision)
+		&& (value as AccountLibrary).revision >= 0
 	);
 }
 
@@ -118,7 +134,9 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		state.savedReviewIds = [...selection.savedReviewIds];
 		state.followedTopicIds = [...selection.followedTopicIds];
 		state.savedComparisonSlugs = [...selection.savedComparisonSlugs];
-		state.followedCoverageRequestIds = [...(selection.followedCoverageRequestIds ?? [])];
+		state.followedCoverageRequestIds = [
+			...(selection.followedCoverageRequestIds ?? [])
+		];
 	}
 
 	function beginContext() {
@@ -145,9 +163,10 @@ export function createReaderLibrary(ports: LibraryPorts) {
 			try {
 				assign(readDevice());
 				state.ready = true;
-			} catch {
-				state.error =
-					"This browser's library could not be read. Your stored selections have not been overwritten.";
+			}
+			catch {
+				state.error
+					= "This browser's library could not be read. Your stored selections have not been overwritten.";
 			}
 			return;
 		}
@@ -159,9 +178,11 @@ export function createReaderLibrary(ports: LibraryPorts) {
 			assign(result);
 			state.revision = result.revision;
 			state.ready = true;
-		} catch {
+		}
+		catch {
 			if (epoch === generation) state.error = "Your account library could not be loaded. Please retry.";
-		} finally {
+		}
+		finally {
 			if (epoch === generation) state.busy = false;
 		}
 	}
@@ -178,7 +199,8 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		state.scope = "device";
 		try {
 			if (owner && ports.storage().getItem(ACCOUNT_PREFERENCE_KEY) === owner) state.scope = "account";
-		} catch {
+		}
+		catch {
 			// A preference failure must never substitute the last account's data.
 		}
 		await reload();
@@ -188,11 +210,54 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		if (scope === "account" && !state.owner) return;
 		state.scope = scope;
 		try {
-			ports.storage().setItem(ACCOUNT_PREFERENCE_KEY, scope === "account" ? state.owner! : "");
-		} catch {
+			ports.storage().setItem(ACCOUNT_PREFERENCE_KEY, scope === "account"
+				? state.owner!
+				: "");
+		}
+		catch {
 			// Scope is still usable in memory when browser preferences are blocked.
 		}
 		await reload();
+	}
+
+	function transformedSelection(transform: (current: LibrarySelection) => LibrarySelection, current: LibrarySelection) {
+		const next = transform(current);
+		if (!validLibrarySelection(next)) throw new Error("Library limit");
+		return next;
+	}
+
+	async function saveAccountSelection(next: LibrarySelection, revision: number, epoch: number) {
+		const saved = await ports.saveAccount({ ...next, revision }, request.signal);
+		if (epoch !== generation) return false;
+		if (!validAccountLibrary(saved)) throw new Error("Invalid account library");
+		assign(saved);
+		state.revision = saved.revision;
+		return true;
+	}
+
+	async function mutateAccount(transform: (current: LibrarySelection) => LibrarySelection, clear: boolean, epoch: number) {
+		let current: AccountLibrary = {
+			savedReviewIds: [...state.savedReviewIds],
+			followedTopicIds: [...state.followedTopicIds],
+			savedComparisonSlugs: [...state.savedComparisonSlugs],
+			followedCoverageRequestIds: [...state.followedCoverageRequestIds],
+			revision: state.revision
+		};
+		for (let attempt = 0; attempt < 2; attempt += 1) {
+			if (epoch !== generation) return false;
+			const next = transformedSelection(transform, current);
+			try {
+				return await saveAccountSelection(next, current.revision, epoch);
+			}
+			catch (error) {
+				if (epoch !== generation) return false;
+				if (statusCode(error) !== 409 || attempt === 1 || clear) throw error;
+				current = await ports.loadAccount(request.signal);
+				if (!validAccountLibrary(current)) throw new Error("Invalid account library");
+				current = { ...current, followedCoverageRequestIds: current.followedCoverageRequestIds ?? [] };
+			}
+		}
+		return false;
 	}
 
 	async function mutate(transform: (current: LibrarySelection) => LibrarySelection, clear = false) {
@@ -203,59 +268,43 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		state.busy = true;
 		try {
 			if (state.scope === "device") {
-				const next = transform(readDevice());
-				if (!validLibrarySelection(next)) throw new Error("Library limit");
+				const next = transformedSelection(transform, readDevice());
 				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 3, ...next }));
 				assign(next);
-			} else {
-				let current: AccountLibrary = {
-					savedReviewIds: [...state.savedReviewIds],
-					followedTopicIds: [...state.followedTopicIds],
-					savedComparisonSlugs: [...state.savedComparisonSlugs],
-					followedCoverageRequestIds: [...state.followedCoverageRequestIds],
-					revision: state.revision
-				};
-				for (let attempt = 0; attempt < 2; attempt += 1) {
-					if (epoch !== generation) return false;
-					const next = transform(current);
-					if (!validLibrarySelection(next)) throw new Error("Library limit");
-					try {
-						const saved = await ports.saveAccount({ ...next, revision: current.revision }, request.signal);
-						if (epoch !== generation) return false;
-						if (!validAccountLibrary(saved)) throw new Error("Invalid account library");
-						assign(saved);
-						state.revision = saved.revision;
-						break;
-					} catch (error) {
-						if (epoch !== generation) return false;
-						if (statusCode(error) !== 409 || attempt === 1 || clear) throw error;
-						current = await ports.loadAccount(request.signal);
-						if (!validAccountLibrary(current)) throw new Error("Invalid account library");
-						current = { ...current, followedCoverageRequestIds: current.followedCoverageRequestIds ?? [] };
-					}
-				}
 			}
-			state.notice = state.scope === "account" ? "Saved to your account." : "Saved in this browser.";
+			else if (!await mutateAccount(transform, clear, epoch)) {
+				return false;
+			}
+			if (epoch !== generation) return false;
+			state.notice = state.scope === "account"
+				? "Saved to your account."
+				: "Saved in this browser.";
 			return true;
-		} catch (error) {
+		}
+		catch (error) {
 			if (epoch !== generation) return false;
 			state.needsReload = state.scope === "account";
-			state.error =
-				statusCode(error) === 422
+			state.error
+				= statusCode(error) === 422
 					? "A selected review, topic, comparison or requested question is no longer available. Reload your library before retrying."
 					: state.scope === "account"
 						? "Your changes were not confirmed saved. Reload your library before retrying."
 						: "Your changes could not be saved in this browser. Check browser storage and the library limits.";
 			return false;
-		} finally {
+		}
+		finally {
 			if (epoch === generation) state.busy = false;
 		}
 	}
 
 	function setSelected(key: keyof LibrarySelection, id: string, selected: boolean) {
-		return mutate((current) => ({
+		return mutate(current => ({
 			...current,
-			[key]: selected ? [...new Set([id, ...current[key]])] : current[key].filter((value) => value !== id)
+			[key]: selected
+				? [
+						...new Set([id, ...current[key]])
+					]
+				: current[key].filter(value => value !== id)
 		}));
 	}
 
@@ -267,16 +316,35 @@ export function createReaderLibrary(ports: LibraryPorts) {
 		let device: LibrarySelection;
 		try {
 			device = readDevice();
-		} catch {
+		}
+		catch {
 			state.error = "The browser library could not be read. Nothing was copied.";
 			return false;
 		}
-		return mutate((current) => ({
-			savedReviewIds: [...new Set([...device.savedReviewIds, ...current.savedReviewIds])],
-			followedTopicIds: [...new Set([...device.followedTopicIds, ...current.followedTopicIds])],
-			savedComparisonSlugs: [...new Set([...device.savedComparisonSlugs, ...current.savedComparisonSlugs])],
+		return mutate(current => ({
+			savedReviewIds: [
+				...new Set([
+					...device.savedReviewIds,
+					...current.savedReviewIds
+				])
+			],
+			followedTopicIds: [
+				...new Set([
+					...device.followedTopicIds,
+					...current.followedTopicIds
+				])
+			],
+			savedComparisonSlugs: [
+				...new Set([
+					...device.savedComparisonSlugs,
+					...current.savedComparisonSlugs
+				])
+			],
 			followedCoverageRequestIds: [
-				...new Set([...device.followedCoverageRequestIds, ...(current.followedCoverageRequestIds ?? [])])
+				...new Set([
+					...device.followedCoverageRequestIds,
+					...(current.followedCoverageRequestIds ?? [])
+				])
 			]
 		}));
 	}
@@ -284,11 +352,18 @@ export function createReaderLibrary(ports: LibraryPorts) {
 	async function clearLibrary() {
 		if (state.scope === "device" && !state.busy) {
 			try {
-				ports.storage().setItem(READER_LIBRARY_KEY, JSON.stringify({ version: 3, ...emptySelection() }));
+				ports.storage().setItem(
+					READER_LIBRARY_KEY,
+					JSON.stringify({
+						version: 3,
+						...emptySelection()
+					})
+				);
 				await reload();
 				state.notice = "Browser library cleared.";
 				return true;
-			} catch {
+			}
+			catch {
 				state.error = "The browser library could not be cleared. Check browser storage and retry.";
 				return false;
 			}

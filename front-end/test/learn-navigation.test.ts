@@ -10,7 +10,12 @@ const read = (file: string) => readFileSync(join(testDir, "..", file), "utf8");
 describe("learn navigation", () => {
 	it("links every learning section from one shared nav", () => {
 		const source = read("src/components/LearnNav.vue");
-		for (const path of ["/explainers", "/guides", "/compare", "/misconceptions"]) {
+		for (const path of [
+			"/explainers",
+			"/guides",
+			"/compare",
+			"/misconceptions"
+		]) {
 			assert.match(source, new RegExp(`to: "${path}"`));
 		}
 		assert.match(source, /aria-label="Learn sections"/);
@@ -33,13 +38,13 @@ describe("learn navigation", () => {
 	it("leads the explainers page with explainers instead of long guide lists", () => {
 		const source = read("src/pages/explainers/index.vue");
 		assert.doesNotMatch(source, /<ReadingGuideLinks|<ComparisonLinks/);
-		assert.ok(source.indexOf("<LearnNav />") < source.indexOf('class="explainer-grid"'));
+		assert.ok(source.indexOf("<LearnNav />") < source.indexOf("class=\"explainer-grid\""));
 	});
 
 	it("searches reviewed claims from the site header outside the home page", () => {
 		const source = read("src/layouts/default.vue");
 		assert.match(source, /<form class="site-search" role="search" @submit\.prevent="submitHeaderSearch">/);
-		assert.match(source, /navigateTo\(\{ path: "\/consensus", query: \{ q \} \}\)/);
+		assert.match(source, /navigateTo\(\{\s*path: "\/consensus",\s*query: \{\s*q\s*\}\s*\}\)/);
 		assert.doesNotMatch(read("src/layouts/home.vue"), /site-search/);
 	});
 });

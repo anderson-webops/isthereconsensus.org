@@ -80,7 +80,10 @@ describe("private reader feedback", () => {
 				false
 			);
 		}
-		for (const message of ["short", "x".repeat(1201)])
+		for (const message of [
+			"short",
+			"x".repeat(1201)
+		])
 			assert.equal(readerFeedbackSubmission.safeParse({ ...suggestion, message }).success, false);
 	});
 	it("rejects credentials and executable schemes in source links", () => {
@@ -170,15 +173,32 @@ describe("private reader feedback", () => {
 		assert.notEqual(key, feedbackSubmissionKey(secret, "192.0.2.2", experience, now));
 	});
 	it("stores bounded experience choices while leaving legacy documents valid", async () => {
-		const fields = { _id: "a".repeat(64), expiresAt: new Date("2028-10-06T00:00:00Z") };
-		await new ReaderFeedback({ ...fields, ...rating }).validate();
-		const row = new ReaderFeedback({ ...fields, ...experience });
+		const fields = {
+			_id: "a".repeat(64),
+			expiresAt: new Date("2028-10-06T00:00:00Z")
+		};
+		await new ReaderFeedback({
+			...fields,
+			...rating
+		}).validate();
+		const row = new ReaderFeedback({
+			...fields,
+			...experience
+		});
 		await row.validate();
 		assert.equal(row.clarity, "clear");
 		assert.equal(row.answerCoverage, "partly_answered");
-		await assert.rejects(new ReaderFeedback({ ...fields, ...experience, clarity: "agree" }).validate(), /clarity/);
+		await assert.rejects(new ReaderFeedback({
+			...fields,
+			...experience,
+			clarity: "agree"
+		}).validate(), /clarity/);
 		await assert.rejects(
-			new ReaderFeedback({ ...fields, ...experience, answerCoverage: "" }).validate(),
+			new ReaderFeedback({
+				...fields,
+				...experience,
+				answerCoverage: ""
+			}).validate(),
 			/answerCoverage/
 		);
 	});
@@ -196,7 +216,10 @@ describe("private reader feedback", () => {
 			{ ...comparison, claimId },
 			{ kind: "usefulness", helpful: true },
 			{ ...comparison, comparisonSlug: "../admin" },
-			{ ...comparison, comparisonSlug: "a".repeat(101) },
+			{
+				...comparison,
+				comparisonSlug: "a".repeat(101)
+			},
 			{ ...comparison, referenceTitle: "Spoofed title" },
 			{ ...comparison, targetUrl: "https://example.test" },
 			{
@@ -208,7 +231,9 @@ describe("private reader feedback", () => {
 		])
 			assert.equal(readerFeedbackSubmission.safeParse(body).success, false);
 		assert.ok(readerFeedbackQuery.safeParse({ comparisonSlug: comparison.comparisonSlug }).success);
-		assert.equal(readerFeedbackQuery.safeParse({ comparisonSlug: { $ne: null } }).success, false);
+		assert.equal(readerFeedbackQuery.safeParse({
+			comparisonSlug: { $ne: null }
+		}).success, false);
 		const now = new Date("2026-09-12T00:00:00Z");
 		const parsed = readerFeedbackSubmission.parse(comparison);
 		const key = feedbackSubmissionKey("test-secret", "192.0.2.1", parsed, now);
@@ -230,7 +255,9 @@ describe("private reader feedback", () => {
 			{ limit: 101 },
 			{ status: "publish" },
 			{ priority: 3 },
-			{ claimId: { $ne: null } },
+			{
+				claimId: { $ne: null }
+			},
 			{ query: "private raw search" }
 		])
 			assert.equal(readerFeedbackQuery.safeParse(query).success, false);
@@ -262,7 +289,15 @@ describe("private reader feedback", () => {
 		assert.notEqual(key, feedbackSubmissionKey("b".repeat(64), "192.0.2.1", rating, now));
 	});
 	it("model refuses secret and raw tracking fields, and defines expiry", () => {
-		for (const field of ["password", "captchaToken", "authorization", "sourceIp", "email", "session", "userAgent"])
+		for (const field of [
+			"password",
+			"captchaToken",
+			"authorization",
+			"sourceIp",
+			"email",
+			"session",
+			"userAgent"
+		])
 			assert.throws(() => new ReaderFeedback({ [field]: "private" }), /strict mode/);
 		assert.ok(
 			ReaderFeedback.schema.indexes().some(([key, opts]) => "expiresAt" in key && opts.expireAfterSeconds === 0)

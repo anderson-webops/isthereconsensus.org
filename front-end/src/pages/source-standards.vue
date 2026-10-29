@@ -11,7 +11,9 @@ const crossCuttingRules = [
 
 function openHashTarget() {
 	const targetId = window.location.hash.slice(1);
-	const target = targetId ? document.getElementById(targetId) : null;
+	const target = targetId
+		? document.getElementById(targetId)
+		: null;
 
 	if (target instanceof HTMLDetailsElement) {
 		target.open = true;
@@ -117,13 +119,17 @@ useStaticPageMeta({
 							<div class="topic-standard__block">
 								<h3>Avoid overweighting</h3>
 								<ul class="plain-list plain-list--compact">
-									<li v-for="item in standard.avoidOverweighting" :key="item">{{ item }}</li>
+									<li v-for="item in standard.avoidOverweighting" :key="item">
+										{{ item }}
+									</li>
 								</ul>
 							</div>
 							<div class="topic-standard__block">
 								<h3>Update triggers</h3>
 								<ul class="plain-list plain-list--compact">
-									<li v-for="item in standard.updateTriggers" :key="item">{{ item }}</li>
+									<li v-for="item in standard.updateTriggers" :key="item">
+										{{ item }}
+									</li>
 								</ul>
 							</div>
 						</section>
@@ -138,7 +144,9 @@ useStaticPageMeta({
 				<p>The baseline rules that apply before topic-specific evidence needs change the weighting.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in crossCuttingRules" :key="item">{{ item }}</li>
+				<li v-for="item in crossCuttingRules" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -156,7 +164,9 @@ useStaticPageMeta({
 
 		<section class="callout">
 			<div>
-				<p class="eyebrow">Shorter overview</p>
+				<p class="eyebrow">
+					Shorter overview
+				</p>
 				<h2>For the public version, start with How Reviews Work.</h2>
 				<p>
 					That page explains what reviewed claims show first. This reference is for readers who want the

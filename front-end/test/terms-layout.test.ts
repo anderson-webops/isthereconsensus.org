@@ -10,8 +10,10 @@ const termsSource = readFileSync(join(testDir, "..", "src/pages/terms.vue"), "ut
 function publicParagraphText(source: string) {
 	const template = source.match(/<template[\s\S]*<\/template>/)?.[0] || "";
 
-	return [...template.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
-		.map((match) =>
+	return [
+		...template.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)
+	]
+		.map(match =>
 			match[1]
 				.replace(/<[^>]+>/g, " ")
 				.replace(/\{\{[^}]+\}\}/g, " ")
@@ -59,7 +61,7 @@ describe("terms page layout", () => {
 	});
 
 	it("keeps public terms paragraphs short enough to scan", () => {
-		const longParagraphs = publicParagraphText(termsSource).filter((text) => text.length > 250);
+		const longParagraphs = publicParagraphText(termsSource).filter(text => text.length > 250);
 
 		assert.deepEqual(longParagraphs, []);
 		assert.doesNotMatch(termsSource, /The current complaint workflow is described/);

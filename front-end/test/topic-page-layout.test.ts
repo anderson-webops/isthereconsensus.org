@@ -9,12 +9,12 @@ const source = readFileSync(join(testDir, "..", "src/pages/consensus/[slug].vue"
 
 describe("topic page layout", () => {
 	it("puts claim titles before supporting metadata in topic cards", () => {
-		const claimRowStart = source.indexOf('class="claim-row"');
+		const claimRowStart = source.indexOf("class=\"claim-row\"");
 		const claimRowEnd = source.indexOf("</NuxtLink>", claimRowStart);
 		const claimRow = source.slice(claimRowStart, claimRowEnd);
 
 		const titleIndex = claimRow.indexOf("<h3>{{ claim.title }}</h3>");
-		const metaIndex = claimRow.indexOf('class="claim-row__meta"');
+		const metaIndex = claimRow.indexOf("class=\"claim-row__meta\"");
 
 		assert.ok(titleIndex >= 0, "topic claim cards should render the claim title");
 		assert.ok(metaIndex > titleIndex, "metadata should support the title instead of leading the card");
@@ -36,8 +36,8 @@ describe("topic page layout", () => {
 	});
 
 	it("offers curated starter claims before the full topic directory", () => {
-		const starterSection = source.indexOf('class="start-here"');
-		const directorySection = source.indexOf('class="claim-lane"');
+		const starterSection = source.indexOf("class=\"start-here\"");
+		const directorySection = source.indexOf("class=\"claim-lane\"");
 
 		assert.ok(starterSection >= 0, "topic pages should render the curated starter section");
 		assert.ok(directorySection > starterSection, "starter claims should appear before the full topic directory");

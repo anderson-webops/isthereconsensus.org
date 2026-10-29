@@ -24,7 +24,9 @@ export function shortAnswerLabel(bottomLine?: string) {
 }
 
 export function regulatoryContextLabel(title?: string) {
-	return /\bFDA[- ]approved\b/i.test(title ?? "") ? "United States: FDA approval" : null;
+	return /\bFDA[- ]approved\b/i.test(title ?? "")
+		? "United States: FDA approval"
+		: null;
 }
 
 export function selectReviewScopeGroups(claim?: Pick<Claim, "inclusionRules" | "exclusionRules"> | null) {
@@ -32,12 +34,15 @@ export function selectReviewScopeGroups(claim?: Pick<Claim, "inclusionRules" | "
 		{ key: "included", title: "Included evidence", items: claim?.inclusionRules ?? [] },
 		{ key: "excluded", title: "Excluded evidence", items: claim?.exclusionRules ?? [] }
 	]
-		.map((group) => ({ ...group, items: group.items.map((item) => item.trim()).filter(Boolean) }))
-		.filter((group) => group.items.length > 0);
+		.map(group => ({
+			...group,
+			items: group.items.map(item => item.trim()).filter(Boolean)
+		}))
+		.filter(group => group.items.length > 0);
 }
 
-const generatedFallbackPopulation =
-	"Public-facing summary built from the highest-weight evidence available for this claim.";
+const generatedFallbackPopulation
+	= "Public-facing summary built from the highest-weight evidence available for this claim.";
 
 const retiredFallbackLimits = new Set(
 	[
@@ -67,9 +72,9 @@ export function isGeneratedFallbackEvidenceSummary(
 ) {
 	const population = normalizeText(summary.population);
 	return (
-		population.startsWith(normalizeText(generatedFallbackPopulation)) &&
-		normalizeText(summary.question) === normalizeText(claimTitle) &&
-		normalizeText(summary.finding) === normalizeText(bottomLine)
+		population.startsWith(normalizeText(generatedFallbackPopulation))
+		&& normalizeText(summary.question) === normalizeText(claimTitle)
+		&& normalizeText(summary.finding) === normalizeText(bottomLine)
 	);
 }
 
@@ -78,7 +83,7 @@ export function selectVisibleEvidenceSummaries(
 	claimTitle?: string,
 	bottomLine?: string
 ) {
-	return summaries.filter((summary) => !isGeneratedFallbackEvidenceSummary(summary, claimTitle, bottomLine));
+	return summaries.filter(summary => !isGeneratedFallbackEvidenceSummary(summary, claimTitle, bottomLine));
 }
 
 interface SelectUncertaintyLimitsOptions {
@@ -98,18 +103,18 @@ export function selectDistinctUncertaintyLimits({
 	const seen = new Set<string>();
 	const limits: string[] = [];
 	const candidates = [
-		...drivers.map((driver) => driver.detail),
-		...evidenceSummaries.flatMap((summary) => summary.limitations ?? [])
+		...drivers.map(driver => driver.detail),
+		...evidenceSummaries.flatMap(summary => summary.limitations ?? [])
 	];
 
 	for (const candidate of candidates) {
 		const trimmed = candidate.trim();
 		const normalized = normalizeText(trimmed);
 		if (
-			!normalized ||
-			openQuestionSet.has(normalized) ||
-			retiredFallbackLimits.has(normalized) ||
-			seen.has(normalized)
+			!normalized
+			|| openQuestionSet.has(normalized)
+			|| retiredFallbackLimits.has(normalized)
+			|| seen.has(normalized)
 		) {
 			continue;
 		}

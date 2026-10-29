@@ -53,8 +53,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Direction of effect is well supported. Effect size varies with duration, intensity, baseline glycogen, fasting, dose, training status, protocol, and outcome.",
 		sources: [
 			sportsNutritionPosition,
-			["meta_analysis", "The ergogenic effects of acute carbohydrate feeding on endurance performance: a systematic review, meta-analysis and meta-regression", "Critical Reviews in Food Science and Nutrition", 2023, "10.1080/10408398.2023.2233633", "Meta-analysis estimates overall endurance-performance benefit while examining exercise duration, feeding, dose, and protocol as moderators."],
-			["meta_analysis", "A systematic review and meta-analysis of carbohydrate benefits associated with randomized controlled competition-based performance trials", "Journal of the International Society of Sports Nutrition", 2016, "10.1186/s12970-016-0139-6", "Competition-oriented synthesis supports a performance benefit while highlighting heterogeneity in events and feeding protocols."]
+			[
+				"meta_analysis",
+				"The ergogenic effects of acute carbohydrate feeding on endurance performance: a systematic review, meta-analysis and meta-regression",
+				"Critical Reviews in Food Science and Nutrition",
+				2023,
+				"10.1080/10408398.2023.2233633",
+				"Meta-analysis estimates overall endurance-performance benefit while examining exercise duration, feeding, dose, and protocol as moderators."
+			],
+			[
+				"meta_analysis",
+				"A systematic review and meta-analysis of carbohydrate benefits associated with randomized controlled competition-based performance trials",
+				"Journal of the International Society of Sports Nutrition",
+				2016,
+				"10.1186/s12970-016-0139-6",
+				"Competition-oriented synthesis supports a performance benefit while highlighting heterogeneity in events and feeding protocols."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -90,8 +104,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Glycogen supercompensation is well established, while performance gains vary with event demands, sex representation, training taper, habitual diet, loading protocol, and race-day fueling.",
 		sources: [
 			sportsNutritionPosition,
-			["meta_analysis", "Glycogen supercompensation in skeletal muscle after cycling or running followed by a high carbohydrate intake the following days: a systematic review and meta-analysis", "Frontiers in Physiology", 2025, "10.3389/fphys.2025.1620943", "Recent synthesis quantifies muscle-glycogen supercompensation after exercise and high-carbohydrate recovery protocols."],
-			["consensus_statement", "Carbohydrates for training and competition", "Journal of Sports Sciences", 2011, "10.1080/02640414.2011.585473", "Sports-nutrition review translates glycogen and fueling evidence into event-duration-specific preparation and competition guidance."]
+			[
+				"meta_analysis",
+				"Glycogen supercompensation in skeletal muscle after cycling or running followed by a high carbohydrate intake the following days: a systematic review and meta-analysis",
+				"Frontiers in Physiology",
+				2025,
+				"10.3389/fphys.2025.1620943",
+				"Recent synthesis quantifies muscle-glycogen supercompensation after exercise and high-carbohydrate recovery protocols."
+			],
+			[
+				"consensus_statement",
+				"Carbohydrates for training and competition",
+				"Journal of Sports Sciences",
+				2011,
+				"10.1080/02640414.2011.585473",
+				"Sports-nutrition review translates glycogen and fueling evidence into event-duration-specific preparation and competition guidance."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -126,8 +154,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"There is good support against a universal narrow cutoff. Exact optimal timing remains less certain because studies differ in age, training, baseline diet, dose, and whether total protein is matched.",
 		sources: [
-			["consensus_statement", "International Society of Sports Nutrition position stand: nutrient timing", "Journal of the International Society of Sports Nutrition", 2017, "10.1186/s12970-017-0189-4", "Position stand describes a wider exercise-related opportunity and emphasizes total intake, meal distribution, prior feeding, and training context."],
-			["meta_analysis", "The effect of protein timing on muscle strength and hypertrophy: a meta-analysis", "Journal of the International Society of Sports Nutrition", 2013, "10.1186/1550-2783-10-53", "Meta-analysis finds that apparent timing effects are strongly influenced by differences in total protein intake."],
+			[
+				"consensus_statement",
+				"International Society of Sports Nutrition position stand: nutrient timing",
+				"Journal of the International Society of Sports Nutrition",
+				2017,
+				"10.1186/s12970-017-0189-4",
+				"Position stand describes a wider exercise-related opportunity and emphasizes total intake, meal distribution, prior feeding, and training context."
+			],
+			[
+				"meta_analysis",
+				"The effect of protein timing on muscle strength and hypertrophy: a meta-analysis",
+				"Journal of the International Society of Sports Nutrition",
+				2013,
+				"10.1186/1550-2783-10-53",
+				"Meta-analysis finds that apparent timing effects are strongly influenced by differences in total protein intake."
+			],
 			sportsNutritionPosition
 		]
 	}),
@@ -164,8 +206,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Acute ergogenic effects are well established overall, but studies of habituation are fewer and use inconsistent definitions of habitual intake and withdrawal.",
 		sources: [
 			nihPerformanceSupplements,
-			["meta_analysis", "Can I Have My Coffee and Drink It? A Systematic Review and Meta-analysis to Determine Whether Habitual Caffeine Consumption Affects the Ergogenic Effect of Caffeine", "Sports Medicine", 2022, "10.1007/s40279-022-01685-0", "Meta-analysis directly examines whether regular caffeine exposure changes the acute ergogenic effect."],
-			["meta_analysis", "Wake up and smell the coffee: caffeine supplementation and exercise performance, an umbrella review of 21 published meta-analyses", "British Journal of Sports Medicine", 2019, "10.1136/bjsports-2018-100278", "Umbrella review finds mostly small-to-moderate benefits across exercise outcomes while documenting variable evidence quality and protocols."]
+			[
+				"meta_analysis",
+				"Can I Have My Coffee and Drink It? A Systematic Review and Meta-analysis to Determine Whether Habitual Caffeine Consumption Affects the Ergogenic Effect of Caffeine",
+				"Sports Medicine",
+				2022,
+				"10.1007/s40279-022-01685-0",
+				"Meta-analysis directly examines whether regular caffeine exposure changes the acute ergogenic effect."
+			],
+			[
+				"meta_analysis",
+				"Wake up and smell the coffee: caffeine supplementation and exercise performance, an umbrella review of 21 published meta-analyses",
+				"British Journal of Sports Medicine",
+				2019,
+				"10.1136/bjsports-2018-100278",
+				"Umbrella review finds mostly small-to-moderate benefits across exercise outcomes while documenting variable evidence quality and protocols."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -201,8 +257,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"The conclusion is strong for healthy people using standard protocols. Evidence is thinner for severe disease, unregulated mixtures, unusually high doses, and rare events.",
 		sources: [
 			nihPerformanceSupplements,
-			["systematic_review", "Part II. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?", "Journal of the International Society of Sports Nutrition", 2024, "10.1080/15502783.2024.2441760", "Evidence review addresses hydration, cramps, heat, kidney, hair, women, older adults, and other recurring safety claims."],
-			["systematic_review", "Putting the Myth of Creatine Supplementation Leading to Muscle Cramps and Dehydration to Rest", "British Journal of Sports Medicine", 2008, "10.1136/bjsm.2007.042473", "Systematic review and meta-analyses find no evidence that creatine impairs heat tolerance or hydration during exercise."]
+			[
+				"systematic_review",
+				"Part II. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?",
+				"Journal of the International Society of Sports Nutrition",
+				2024,
+				"10.1080/15502783.2024.2441760",
+				"Evidence review addresses hydration, cramps, heat, kidney, hair, women, older adults, and other recurring safety claims."
+			],
+			[
+				"systematic_review",
+				"Putting the Myth of Creatine Supplementation Leading to Muscle Cramps and Dehydration to Rest",
+				"British Journal of Sports Medicine",
+				2008,
+				"10.1136/bjsm.2007.042473",
+				"Systematic review and meta-analyses find no evidence that creatine impairs heat tolerance or hydration during exercise."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -238,8 +308,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Direct evidence is limited to a short trial with modest sample size. Long-term effects and genetically susceptible subgroups remain insufficiently studied.",
 		sources: [
 			nihPerformanceSupplements,
-			["landmark_study", "Does creatine cause hair loss? A 12-week randomized controlled trial", "Journal of the International Society of Sports Nutrition", 2025, "10.1080/15502783.2025.2495229", "Direct randomized assessment found no between-group difference in hair-growth or follicle-health measures after 12 weeks."],
-			["systematic_review", "Part II. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?", "Journal of the International Society of Sports Nutrition", 2024, "10.1080/15502783.2024.2441760", "Review explains the indirect origin of the hair-loss concern and the limits of inferring clinical hair loss from one hormone result."]
+			[
+				"landmark_study",
+				"Does creatine cause hair loss? A 12-week randomized controlled trial",
+				"Journal of the International Society of Sports Nutrition",
+				2025,
+				"10.1080/15502783.2025.2495229",
+				"Direct randomized assessment found no between-group difference in hair-growth or follicle-health measures after 12 weeks."
+			],
+			[
+				"systematic_review",
+				"Part II. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?",
+				"Journal of the International Society of Sports Nutrition",
+				2024,
+				"10.1080/15502783.2024.2441760",
+				"Review explains the indirect origin of the hair-loss concern and the limits of inferring clinical hair loss from one hormone result."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -275,8 +359,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Evidence is limited by small studies, acute protocols, publication bias risk, heterogeneous doses and formulations, and inconsistent outcome selection.",
 		sources: [
 			nihPerformanceSupplements,
-			["meta_analysis", "Acute Effects of Citrulline Supplementation on High-Intensity Strength and Power Performance: A Systematic Review and Meta-Analysis", "Sports Medicine", 2019, "10.1007/s40279-019-01091-z", "Meta-analysis reports a small aggregate benefit for high-intensity strength and power tasks while noting limited studies and variable protocols."],
-			["meta_analysis", "Effect of citrulline on post-exercise rating of perceived exertion, muscle soreness, and blood lactate levels: A systematic review and meta-analysis", "Journal of Sport and Health Science", 2020, "10.1016/j.jshs.2020.02.003", "Synthesis adds recovery and exertion context without establishing a large or universal strength benefit."]
+			[
+				"meta_analysis",
+				"Acute Effects of Citrulline Supplementation on High-Intensity Strength and Power Performance: A Systematic Review and Meta-Analysis",
+				"Sports Medicine",
+				2019,
+				"10.1007/s40279-019-01091-z",
+				"Meta-analysis reports a small aggregate benefit for high-intensity strength and power tasks while noting limited studies and variable protocols."
+			],
+			[
+				"meta_analysis",
+				"Effect of citrulline on post-exercise rating of perceived exertion, muscle soreness, and blood lactate levels: A systematic review and meta-analysis",
+				"Journal of Sport and Health Science",
+				2020,
+				"10.1016/j.jshs.2020.02.003",
+				"Synthesis adds recovery and exertion context without establishing a large or universal strength benefit."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -312,8 +410,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"The absence of a general ergogenic effect is reasonably consistent. Smaller subgroup, immune, gastrointestinal, and recovery effects are heterogeneous and less certain.",
 		sources: [
 			nihPerformanceSupplements,
-			["meta_analysis", "Glutamine supplementation and athletic performance, body composition, and immune function: a systematic review and a meta-analysis of clinical trials", "Clinical Nutrition", 2019, "10.1016/j.clnu.2018.05.001", "Meta-analysis finds no general improvement in aerobic performance, body composition, or immune outcomes, with limited context-specific signals."],
-			["systematic_review", "Glutamine as an Anti-Fatigue Amino Acid in Sports Nutrition", "Nutrients", 2019, "10.3390/nu11040863", "Review separates mechanistic and clinical rationales from inconsistent endurance, immunity, gastrointestinal, and recovery evidence in athletes."]
+			[
+				"meta_analysis",
+				"Glutamine supplementation and athletic performance, body composition, and immune function: a systematic review and a meta-analysis of clinical trials",
+				"Clinical Nutrition",
+				2019,
+				"10.1016/j.clnu.2018.05.001",
+				"Meta-analysis finds no general improvement in aerobic performance, body composition, or immune outcomes, with limited context-specific signals."
+			],
+			[
+				"systematic_review",
+				"Glutamine as an Anti-Fatigue Amino Acid in Sports Nutrition",
+				"Nutrients",
+				2019,
+				"10.3390/nu11040863",
+				"Review separates mechanistic and clinical rationales from inconsistent endurance, immunity, gastrointestinal, and recovery evidence in athletes."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -348,9 +460,30 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence is heterogeneous because baseline status, dose, formulation, age, training, and outcomes vary. Benefits may be more likely in deficiency than in replete populations.",
 		sources: [
-			["guideline", "Magnesium: Fact Sheet for Health Professionals", "NIH Office of Dietary Supplements", 2026, "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/", "Federal reference covers physiological roles, status assessment, intake, deficiency, upper limits, adverse effects, and medication interactions."],
-			["systematic_review", "The Role of Mineral and Trace Element Supplementation in Exercise and Athletic Performance: A Systematic Review", "Nutrients", 2019, "10.3390/nu11030696", "Systematic review finds that performance benefits are more plausible when a nutrient deficit exists and evidence is inconsistent in replete athletes."],
-			["meta_analysis", "The effect of magnesium supplementation on muscle fitness: a meta-analysis and systematic review", "Magnesium Research", 2017, "10.1684/mrh.2018.0430", "Synthesis finds inconsistent muscle-fitness effects, with baseline status and participant characteristics likely influencing results."]
+			[
+				"guideline",
+				"Magnesium: Fact Sheet for Health Professionals",
+				"NIH Office of Dietary Supplements",
+				2026,
+				"https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+				"Federal reference covers physiological roles, status assessment, intake, deficiency, upper limits, adverse effects, and medication interactions."
+			],
+			[
+				"systematic_review",
+				"The Role of Mineral and Trace Element Supplementation in Exercise and Athletic Performance: A Systematic Review",
+				"Nutrients",
+				2019,
+				"10.3390/nu11030696",
+				"Systematic review finds that performance benefits are more plausible when a nutrient deficit exists and evidence is inconsistent in replete athletes."
+			],
+			[
+				"meta_analysis",
+				"The effect of magnesium supplementation on muscle fitness: a meta-analysis and systematic review",
+				"Magnesium Research",
+				2017,
+				"10.1684/mrh.2018.0430",
+				"Synthesis finds inconsistent muscle-fitness effects, with baseline status and participant characteristics likely influencing results."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -386,8 +519,22 @@ export const september2026DemandDepthSportsNutritionClaims: SeedClaim[] = [
 			"Short-term efficacy evidence is formula-specific and often industry-funded. Long-term and rare-event safety evidence is inadequate, while formulation turnover limits generalization.",
 		sources: [
 			nihPerformanceSupplements,
-			["meta_analysis", "A Systematic Review and Meta-analysis of the Effect of Multi-ingredient Preworkout Supplementation on Strength, Exercise Volume, and Anaerobic Capacity in Healthy Resistance-Trained Individuals", "Strength and Conditioning Journal", 2020, "10.1519/SSC.0000000000000537", "Synthesis finds possible acute benefits from some formulas but emphasizes heterogeneous products, outcomes, and short study duration."],
-			["systematic_review", "Multi-ingredient pre-workout supplements, safety implications, and performance outcomes: a brief review", "Journal of the International Society of Sports Nutrition", 2018, "10.1186/s12970-018-0247-6", "Review summarizes short-term performance findings and warns that product-specific mixtures, proprietary blends, and sparse long-term data limit broad conclusions."]
+			[
+				"meta_analysis",
+				"A Systematic Review and Meta-analysis of the Effect of Multi-ingredient Preworkout Supplementation on Strength, Exercise Volume, and Anaerobic Capacity in Healthy Resistance-Trained Individuals",
+				"Strength and Conditioning Journal",
+				2020,
+				"10.1519/SSC.0000000000000537",
+				"Synthesis finds possible acute benefits from some formulas but emphasizes heterogeneous products, outcomes, and short study duration."
+			],
+			[
+				"systematic_review",
+				"Multi-ingredient pre-workout supplements, safety implications, and performance outcomes: a brief review",
+				"Journal of the International Society of Sports Nutrition",
+				2018,
+				"10.1186/s12970-018-0247-6",
+				"Review summarizes short-term performance findings and warns that product-specific mixtures, proprietary blends, and sparse long-term data limit broad conclusions."
+			]
 		]
 	})
 ];

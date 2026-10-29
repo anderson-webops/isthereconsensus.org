@@ -28,7 +28,12 @@ function vaultAddress() {
 	) {
 		throw new Error("VAULT_ADDR must contain only an HTTP or HTTPS scheme and host without credentials.");
 	}
-	const loopbackHosts = new Set(["127.0.0.1", "::1", "[::1]", "localhost"]);
+	const loopbackHosts = new Set([
+		"127.0.0.1",
+		"::1",
+		"[::1]",
+		"localhost"
+	]);
 	if (parsed.protocol !== "https:" && !loopbackHosts.has(parsed.hostname)) {
 		throw new Error("VAULT_ADDR must use HTTPS unless Vault is on the local host.");
 	}

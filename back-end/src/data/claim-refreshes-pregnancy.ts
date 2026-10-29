@@ -213,7 +213,12 @@ export function refreshPregnancyClaim(seed: CompleteSeedClaim): CompleteSeedClai
 		surveillanceSpec: {
 			focus: "Outcome-specific pregnancy and lactation safety and current vaccine benefit",
 			cadenceDays: 120,
-			watchTerms: ["COVID-19 vaccine pregnancy severe disease effectiveness", "first trimester vaccination congenital anomalies miscarriage", "booster postpartum hemorrhage", "lactation vaccination infant clinical outcomes"],
+			watchTerms: [
+				"COVID-19 vaccine pregnancy severe disease effectiveness",
+				"first trimester vaccination congenital anomalies miscarriage",
+				"booster postpartum hemorrhage",
+				"lactation vaccination infant clinical outcomes"
+			],
 			integrityMonitors: ["Crossref and Europe PMC notice metadata", "Original publisher notices"],
 			guidelineMonitors: ["CDC pregnancy and breastfeeding guidance", "ACOG maternal immunization guidance"],
 			triggerRules: ["Reassess a new comparative study, updated formulation, replicated safety signal or changed recommendation against its actual population and outcome."]
@@ -222,7 +227,9 @@ export function refreshPregnancyClaim(seed: CompleteSeedClaim): CompleteSeedClai
 			...seed.sources.map(source => ({
 				...source,
 				appraisal: "not_appraised" as const,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt : preparedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt
+					: preparedAt,
 				note: sourceNotes[source.doi?.toLowerCase() ?? source.url!] ?? source.note
 			})),
 			...additions.map(source => ({
@@ -233,6 +240,9 @@ export function refreshPregnancyClaim(seed: CompleteSeedClaim): CompleteSeedClai
 			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

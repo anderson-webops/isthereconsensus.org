@@ -2,10 +2,17 @@ import type { Topic } from "../types/board";
 import { formatCountLabel } from "./format-count";
 
 export function formatPublicCountLabel(count: number, kind: "review" | "topic") {
-	if (!Number.isSafeInteger(count) || count < 0)
-		return kind === "review" ? "Reviews unavailable" : "Topics unavailable";
-	const step = kind === "review" ? 1000 : 5;
-	return count >= step ? `${Math.floor(count / step) * step}+ ${kind}s` : formatCountLabel(count, kind);
+	if (!Number.isSafeInteger(count) || count < 0) {
+		return kind === "review"
+			? "Reviews unavailable"
+			: "Topics unavailable";
+	}
+	const step = kind === "review"
+		? 1000
+		: 5;
+	return count >= step
+		? `${Math.floor(count / step) * step}+ ${kind}s`
+		: formatCountLabel(count, kind);
 }
 
 export function formatPublicLibrarySummary(topics: readonly Pick<Topic, "slug" | "claimCount">[] | null | undefined) {
@@ -21,5 +28,7 @@ export function formatPublicLibrarySummary(topics: readonly Pick<Topic, "slug" |
 		total += topic.claimCount;
 		if (!Number.isSafeInteger(total)) return fallback;
 	}
-	return total >= 1000 ? `Browse ${Math.floor(total / 1000) * 1000}+ reviewed claims by topic` : fallback;
+	return total >= 1000
+		? `Browse ${Math.floor(total / 1000) * 1000}+ reviewed claims by topic`
+		: fallback;
 }

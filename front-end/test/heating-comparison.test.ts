@@ -57,7 +57,7 @@ describe("heat-pump upgrade comparison", () => {
 		assert.equal(selection.context.id, "with-envelope");
 		assert.deepEqual(
 			selection.options.map(
-				(option) => estimateForSelection(option, selection.outcome, selection.context)?.value
+				option => estimateForSelection(option, selection.outcome, selection.context)?.value
 			),
 			[28, 15]
 		);

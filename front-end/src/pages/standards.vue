@@ -55,7 +55,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'How reviews work' }]" />
 
 		<header class="standards-header">
-			<p class="eyebrow">How reviews work</p>
+			<p class="eyebrow">
+				How reviews work
+			</p>
 			<h1>How reviewed pages weigh evidence.</h1>
 			<p>
 				These standards explain what carries the answer, which trust signals stay visible, and how reviews
@@ -70,7 +72,9 @@ useStaticPageMeta({
 					<p>What carries the public answer.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in sourceStack" :key="item">{{ item }}</li>
+					<li v-for="item in sourceStack" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
@@ -80,7 +84,9 @@ useStaticPageMeta({
 					<p>The minimum public reading experience.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in publicationRules" :key="item">{{ item }}</li>
+					<li v-for="item in publicationRules" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
@@ -90,7 +96,9 @@ useStaticPageMeta({
 					<p>Pages move when the evidence or institutional baseline moves.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in updateTriggers" :key="item">{{ item }}</li>
+					<li v-for="item in updateTriggers" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
@@ -100,7 +108,9 @@ useStaticPageMeta({
 					<p>What matters most, and what stays as context.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in citationRules" :key="item">{{ item }}</li>
+					<li v-for="item in citationRules" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
@@ -110,7 +120,9 @@ useStaticPageMeta({
 					<p>Community activity and thin evidence do not get to impersonate certainty.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in disagreementRules" :key="item">{{ item }}</li>
+					<li v-for="item in disagreementRules" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 
@@ -120,7 +132,9 @@ useStaticPageMeta({
 					<p>The visible cues that make the page inspectable.</p>
 				</div>
 				<ul class="plain-list">
-					<li v-for="item in pageSignals" :key="item">{{ item }}</li>
+					<li v-for="item in pageSignals" :key="item">
+						{{ item }}
+					</li>
 				</ul>
 			</section>
 		</div>

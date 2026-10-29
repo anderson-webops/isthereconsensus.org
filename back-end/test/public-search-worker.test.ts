@@ -30,12 +30,19 @@ const publicClaim = {
 	password: "NOT_A_CREDENTIAL",
 	session: { marker: "PRIVATE_SESSION_MARKER" }
 };
-const draftClaim = { ...publicClaim, status: "draft", slug: "synthetic-draft", title: "PRIVATE_DRAFT_TITLE" };
+const draftClaim = {
+	...publicClaim,
+	status: "draft",
+	slug: "synthetic-draft",
+	title: "PRIVATE_DRAFT_TITLE"
+};
 type Payload = ReturnType<typeof publicSearchWorkerPayload>;
 type Handler = (payload: Payload, request: IncomingMessage, response: ServerResponse) => void;
 
 async function workerFixture(context: TestContext, handler: Handler) {
-	const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rank-XXXXXX", "worker.sock")) <= 100 ? tmpdir() : "/tmp";
+	const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rank-XXXXXX", "worker.sock")) <= 100
+		? tmpdir()
+		: "/tmp";
 	const directory = await mkdtemp(join(temporaryRoot, "consensus-rank-"));
 	const socketPath = join(directory, "worker.sock");
 	const server = createServer((request, response) => {
@@ -51,14 +58,23 @@ async function workerFixture(context: TestContext, handler: Handler) {
 	});
 	context.after(async () => {
 		server.closeAllConnections();
-		await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+		await new Promise<void>((resolve, reject) => server.close(error => error
+			? reject(error)
+			: resolve()));
 		await rm(directory, { recursive: true });
 	});
 	return socketPath;
 }
 
 function reply(payload: Payload, rows: unknown[]) {
-	return { protocol: 1, candidate: payload.candidate, corpusHash: payload.corpusHash, queryHash: payload.queryHash, referenceDate: payload.referenceDate, rows };
+	return {
+		protocol: 1,
+		candidate: payload.candidate,
+		corpusHash: payload.corpusHash,
+		queryHash: payload.queryHash,
+		referenceDate: payload.referenceDate,
+		rows
+	};
 }
 
 describe("isolated public search transport", () => {
@@ -77,7 +93,14 @@ describe("isolated public search transport", () => {
 			assert.doesNotMatch(JSON.stringify(payload), /PRIVATE_|password|session|privateEditorNote/u);
 			assert.equal(request.headers.cookie, undefined);
 			assert.equal(request.headers.authorization, undefined);
-			response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			response.end(JSON.stringify(reply(payload, [
+				{
+					slug: publicClaim.slug,
+					kind: "paragraph",
+					relevance: 0.9,
+					cosine: 0.7
+				}
+			])));
 		});
 		const results = await createPublicClaimSearch({ socketPath })([publicClaim, draftClaim], query, referenceDate);
 		assert.equal(results[0].claim, publicClaim);
@@ -101,15 +124,39 @@ describe("isolated public search transport", () => {
 		const initial = publicSearchWorkerPayload([publicClaim, draftClaim], query, referenceDate);
 		assert.equal(initial.query, query);
 		assert.notEqual(publicSearchWorkerPayload([publicClaim], query.toLowerCase(), referenceDate).queryHash, initial.queryHash);
-		assert.notEqual(publicSearchWorkerPayload([{ ...publicClaim, stableCore: ["A revised public paragraph."] }], query, referenceDate).corpusHash, initial.corpusHash);
+		assert.notEqual(publicSearchWorkerPayload([
+			{
+				...publicClaim,
+				stableCore: ["A revised public paragraph."]
+			}
+		], query, referenceDate).corpusHash, initial.corpusHash);
 		assert.notEqual(publicSearchWorkerPayload([], query, referenceDate).corpusHash, initial.corpusHash);
-		assert.equal(publicSearchWorkerPayload([{ ...publicClaim, privateEditorNote: "Different private state" }], query, referenceDate).corpusHash, initial.corpusHash);
+		assert.equal(publicSearchWorkerPayload([
+			{ ...publicClaim, privateEditorNote: "Different private state" }
+		], query, referenceDate).corpusHash, initial.corpusHash);
 	});
 
-	for (const corruption of ["unknown-slug", "draft-slug", "duplicate", "stale-corpus", "wrong-query", "wrong-reference-date", "wrong-candidate", "extra-field", "below-relevance", "below-cosine", "false-native"] as const) {
+	for (const corruption of [
+		"unknown-slug",
+		"draft-slug",
+		"duplicate",
+		"stale-corpus",
+		"wrong-query",
+		"wrong-reference-date",
+		"wrong-candidate",
+		"extra-field",
+		"below-relevance",
+		"below-cosine",
+		"false-native"
+	] as const) {
 		it(`rejects ${corruption} worker results without exposing stale or private objects`, async (context) => {
 			const socketPath = await workerFixture(context, (payload, request, response) => {
-				const row = { slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 };
+				const row = {
+					slug: publicClaim.slug,
+					kind: "paragraph",
+					relevance: 0.9,
+					cosine: 0.7
+				};
 				const value = reply(payload, [row]);
 				if (corruption === "unknown-slug") row.slug = "unknown-review";
 				if (corruption === "draft-slug") row.slug = draftClaim.slug;
@@ -121,7 +168,11 @@ describe("isolated public search transport", () => {
 				if (corruption === "extra-field") Object.assign(value, { privateEditorNote: "PRIVATE_RESPONSE_MARKER" });
 				if (corruption === "below-relevance") row.relevance = 0.79;
 				if (corruption === "below-cosine") row.cosine = 0.64;
-				if (corruption === "false-native") value.rows = [{ slug: publicClaim.slug, kind: "native" }];
+				if (corruption === "false-native") {
+					value.rows = [
+						{ slug: publicClaim.slug, kind: "native" }
+					];
+				}
 				response.end(JSON.stringify(value));
 			});
 			const search = createPublicClaimSearch({ socketPath });
@@ -129,7 +180,12 @@ describe("isolated public search transport", () => {
 		});
 	}
 
-	for (const failure of ["warming", "malformed", "oversized", "deadline"] as const) {
+	for (const failure of [
+		"warming",
+		"malformed",
+		"oversized",
+		"deadline"
+	] as const) {
 		it(`bounds ${failure} workers and keeps native search available`, async (context) => {
 			const socketPath = await workerFixture(context, (payload, request, response) => {
 				if (failure === "warming") {
@@ -144,7 +200,7 @@ describe("isolated public search transport", () => {
 	}
 
 	it("never creates an unbounded worker queue when reader requests overlap", async (context) => {
-		let release: () => void;
+		let release: (() => void) | undefined;
 		let received = 0;
 		let notify: () => void;
 		const firstReceived = new Promise<void>((resolve) => {
@@ -160,6 +216,7 @@ describe("isolated public search transport", () => {
 		await firstReceived;
 		assert.deepEqual(await search([publicClaim], "A second unfamiliar question", referenceDate), createClaimSearchIndex([publicClaim])("A second unfamiliar question", referenceDate));
 		assert.equal(received, 1);
+		assert.ok(release);
 		release();
 		await first;
 	});
@@ -189,7 +246,7 @@ describe("isolated public search transport", () => {
 		let refreshed = 0;
 		let notify: () => void;
 		let disconnected: () => void;
-		let lateReply: () => void;
+		let lateReply: (() => void) | undefined;
 		const entered = new Promise<void>((resolve) => {
 			notify = resolve;
 		});
@@ -204,7 +261,14 @@ describe("isolated public search transport", () => {
 				notify();
 			}
 			else {
-				response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+				response.end(JSON.stringify(reply(payload, [
+					{
+						slug: publicClaim.slug,
+						kind: "paragraph",
+						relevance: 0.9,
+						cosine: 0.7
+					}
+				])));
 			}
 		});
 		const search = createPublicClaimSearch({ socketPath });
@@ -226,11 +290,12 @@ describe("isolated public search transport", () => {
 		const results = await search([publicClaim], "Another unfamiliar inlet question", referenceDate);
 		assert.equal(received, 2);
 		assert.equal(results[0].claim, publicClaim);
+		assert.ok(lateReply);
 		lateReply();
 	});
 
 	it("does not let one reader's cancellation affect another in-flight search", async (context) => {
-		let release: () => void;
+		let release: (() => void) | undefined;
 		let notify: () => void;
 		let received = 0;
 		const entered = new Promise<void>((resolve) => {
@@ -238,7 +303,14 @@ describe("isolated public search transport", () => {
 		});
 		const socketPath = await workerFixture(context, (payload, request, response) => {
 			received++;
-			release = () => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			release = () => response.end(JSON.stringify(reply(payload, [
+				{
+					slug: publicClaim.slug,
+					kind: "paragraph",
+					relevance: 0.9,
+					cosine: 0.7
+				}
+			])));
 			notify();
 		});
 		const search = createPublicClaimSearch({ socketPath });
@@ -248,13 +320,14 @@ describe("isolated public search transport", () => {
 		controller.abort();
 		await assert.rejects(search([publicClaim], "A cancelled second question", referenceDate, undefined, controller.signal), PublicSearchCancelledError);
 		assert.equal(received, 1);
+		assert.ok(release);
 		release();
 		assert.equal((await first)[0].claim, publicClaim);
 	});
 
 	for (const fails of [false, true]) {
 		it(`discards a cancelled publication check even when it ${fails ? "fails" : "succeeds"}`, { timeout: 5_000 }, async (context) => {
-			let release: () => void;
+			let release: (() => void) | undefined;
 			let notify: () => void;
 			const entered = new Promise<void>((resolve) => {
 				notify = resolve;
@@ -263,7 +336,14 @@ describe("isolated public search transport", () => {
 				release = resolve;
 			});
 			const controller = new AbortController();
-			const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }]))));
+			const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [
+				{
+					slug: publicClaim.slug,
+					kind: "paragraph",
+					relevance: 0.9,
+					cosine: 0.7
+				}
+			]))));
 			const search = createPublicClaimSearch({ socketPath });
 			const first = search([publicClaim], query, referenceDate, async () => {
 				notify();
@@ -276,16 +356,17 @@ describe("isolated public search transport", () => {
 			controller.abort();
 			await rejected;
 			assert.equal((await search([publicClaim], query, referenceDate))[0].claim, publicClaim);
+			assert.ok(release);
 			release();
 			await checking;
 		});
 	}
 
 	it("does not let a late abandoned publication check unlock another reader's RPC", { timeout: 5_000 }, async (context) => {
-		let releaseRefresh: () => void;
+		let releaseRefresh: (() => void) | undefined;
 		let notifyRefresh: () => void;
 		let notifySecond: () => void;
-		let releaseSecond: () => void;
+		let releaseSecond: (() => void) | undefined;
 		let received = 0;
 		const refreshEntered = new Promise<void>((resolve) => {
 			notifyRefresh = resolve;
@@ -298,7 +379,14 @@ describe("isolated public search transport", () => {
 		});
 		const socketPath = await workerFixture(context, (payload, request, response) => {
 			received++;
-			const respond = () => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }])));
+			const respond = () => response.end(JSON.stringify(reply(payload, [
+				{
+					slug: publicClaim.slug,
+					kind: "paragraph",
+					relevance: 0.9,
+					cosine: 0.7
+				}
+			])));
 			if (received === 1) {
 				respond();
 			}
@@ -320,23 +408,45 @@ describe("isolated public search transport", () => {
 		await rejected;
 		const second = search([publicClaim], "A second unfamiliar question", referenceDate);
 		await secondEntered;
+		assert.ok(releaseRefresh);
 		releaseRefresh();
 		await refreshPending;
 		assert.deepEqual(await search([publicClaim], "A third unfamiliar question", referenceDate), createClaimSearchIndex([publicClaim])("A third unfamiliar question", referenceDate));
 		assert.equal(received, 2);
+		assert.ok(releaseSecond);
 		releaseSecond();
 		assert.equal((await second)[0].claim, publicClaim);
 	});
 
 	it("rechecks publication after an in-flight worker response instead of returning withdrawn content", async (context) => {
-		const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }]))));
+		const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [
+			{
+				slug: publicClaim.slug,
+				kind: "paragraph",
+				relevance: 0.9,
+				cosine: 0.7
+			}
+		]))));
 		const search = createPublicClaimSearch({ socketPath });
-		assert.deepEqual(await search([publicClaim], query, referenceDate, async () => [{ ...publicClaim, status: "draft" }]), []);
+		assert.deepEqual(await search([publicClaim], query, referenceDate, async () => [
+			{ ...publicClaim, status: "draft" }
+		]), []);
 	});
 
 	it("rejects stale paragraph predictions when public wording changes during scoring", async (context) => {
-		const revised = { ...publicClaim, title: "A different public question", stableCore: ["A revised public paragraph."] };
-		const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [{ slug: publicClaim.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 }]))));
+		const revised = {
+			...publicClaim,
+			title: "A different public question",
+			stableCore: ["A revised public paragraph."]
+		};
+		const socketPath = await workerFixture(context, (payload, request, response) => response.end(JSON.stringify(reply(payload, [
+			{
+				slug: publicClaim.slug,
+				kind: "paragraph",
+				relevance: 0.9,
+				cosine: 0.7
+			}
+		]))));
 		assert.deepEqual(await createPublicClaimSearch({ socketPath })([publicClaim], query, referenceDate, async () => [revised]), createClaimSearchIndex([revised])(query, referenceDate));
 	});
 

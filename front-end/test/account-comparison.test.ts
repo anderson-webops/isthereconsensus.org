@@ -19,11 +19,11 @@ describe("account-protection comparison", () => {
 				assert.equal(estimateForSelection(option, outcome, comparison.contexts[0]!), undefined);
 				const finding = findingForSelection(option, outcome, comparison.contexts[0]!)!;
 				assert.ok(finding);
-				for (const id of finding.sourceIds) assert.ok(comparison.sources.some((source) => source.id === id));
+				for (const id of finding.sourceIds) assert.ok(comparison.sources.some(source => source.id === id));
 			}
 		}
 		assert.match(
-			comparison.options.find((option) => option.id === "passkey")!.findingsByContext!.general!.access!
+			comparison.options.find(option => option.id === "passkey")!.findingsByContext!.general!.access!
 				.limitation,
 			/Backup eligibility does not establish a completed backup/
 		);
@@ -39,9 +39,14 @@ describe("account-protection comparison", () => {
 		}
 	});
 	it("supports discovery, shared selections and substantive update history", () => {
-		for (const query of ["account protection", "passkeys", "password manager", "SMS code"]) {
+		for (const query of [
+			"account protection",
+			"passkeys",
+			"password manager",
+			"SMS code"
+		]) {
 			assert.ok(
-				searchComparisons(query).some((result) => result.slug === comparison.slug),
+				searchComparisons(query).some(result => result.slug === comparison.slug),
 				query
 			);
 		}
@@ -52,7 +57,7 @@ describe("account-protection comparison", () => {
 		});
 		assert.equal(selected.outcome.id, "access");
 		assert.deepEqual(
-			selected.options.map((option) => option.id),
+			selected.options.map(option => option.id),
 			["manager", "passkey"]
 		);
 		assert.equal(comparisonHistory(comparison, new Date("2026-09-13T00:00:00Z")).length, 1);

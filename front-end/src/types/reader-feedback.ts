@@ -15,13 +15,13 @@ export const answerCoverageLabels = {
 	not_answered: "Did not answer my question",
 	just_browsing: "I was just browsing"
 } as const;
-export type ReaderRating =
-	| { kind: "usefulness"; helpful: boolean }
-	| {
+export type ReaderRating
+	= | { kind: "usefulness"; helpful: boolean }
+		| {
 			kind: "reader_experience";
 			clarity: keyof typeof explanationClarityLabels;
 			answerCoverage: keyof typeof answerCoverageLabels;
-	  };
+		};
 export const feedbackStatusLabels = {
 	new: "New",
 	reviewing: "Reviewing",

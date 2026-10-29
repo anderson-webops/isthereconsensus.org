@@ -70,7 +70,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Verified expert review program' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Verified expert review program</p>
+			<p class="eyebrow">
+				Verified expert review program
+			</p>
 			<h1>Expert reviewer verification.</h1>
 			<p>The verified-expert layer sits between community discussion and reviewed editorial publication.</p>
 		</header>
@@ -88,7 +90,9 @@ useStaticPageMeta({
 				<p>Verification is about useful review work, not status on its own.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in eligibility" :key="item">{{ item }}</li>
+				<li v-for="item in eligibility" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -98,7 +102,9 @@ useStaticPageMeta({
 				<p>The role is quality control, not personal promotion.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in responsibilities" :key="item">{{ item }}</li>
+				<li v-for="item in responsibilities" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -121,13 +127,17 @@ useStaticPageMeta({
 				<p>Verification can be revoked when the review role is abused.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in removalTriggers" :key="item">{{ item }}</li>
+				<li v-for="item in removalTriggers" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Apply with disclosures</p>
+				<p class="eyebrow">
+					Apply with disclosures
+				</p>
 				<h2>Expert review works only when assignment, disclosure, and trust stay aligned.</h2>
 				<p>
 					Applications include affiliation, evidence of expertise, and relevant funding or conflict notes so
@@ -136,9 +146,7 @@ useStaticPageMeta({
 			</div>
 			<div class="policy-callout__actions">
 				<NuxtLink class="button button--primary" to="/account">Open account workspace</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/conflicts-and-funding"
-					>Conflict and funding disclosure</NuxtLink
-				>
+				<NuxtLink class="button button--ghost" to="/conflicts-and-funding">Conflict and funding disclosure</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>

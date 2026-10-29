@@ -34,7 +34,10 @@ export const publicSearchWorkerRequestSchema = z.object({
 }).strict();
 export type PublicSearchWorkerRequest = z.infer<typeof publicSearchWorkerRequestSchema>;
 const rowSchema = z.discriminatedUnion("kind", [
-	z.object({ slug: z.string().min(1).max(240), kind: z.literal("native") }).strict(),
+	z.object({
+		slug: z.string().min(1).max(240),
+		kind: z.literal("native")
+	}).strict(),
 	z.object({
 		slug: z.string().min(1).max(240),
 		kind: z.literal("paragraph"),
@@ -137,8 +140,13 @@ async function workerReply(socketPath: string, body: string, timeoutMilliseconds
 			method: "POST",
 			path: "/rank",
 			agent: false,
-			signal: signal ? AbortSignal.any([controller.signal, signal]) : controller.signal,
-			headers: { "content-type": "application/json", "content-length": Buffer.byteLength(body) }
+			signal: signal
+				? AbortSignal.any([controller.signal, signal])
+				: controller.signal,
+			headers: {
+				"content-type": "application/json",
+				"content-length": Buffer.byteLength(body)
+			}
 		}, (response) => {
 			if (response.statusCode !== 200) {
 				response.destroy();
@@ -169,6 +177,39 @@ async function workerReply(socketPath: string, body: string, timeoutMilliseconds
 		operation.on("close", () => clearTimeout(deadline));
 		operation.end(body);
 	});
+}
+
+function validatedWorkerResults<ClaimType extends PublicSearchCorpusClaim>(
+	reply: PublicSearchWorkerResponse,
+	currentClaims: ClaimType[],
+	currentNative: ReturnType<ReturnType<typeof createClaimSearchIndex<ClaimType>>>
+) {
+	const bySlug = new Map(currentClaims.map(claim => [claim.slug, claim]));
+	const nativeBySlug = new Map(currentNative.map(row => [row.claim.slug, row]));
+	const seen = new Set<string>();
+	const results: typeof currentNative = [];
+	for (const row of reply.rows) {
+		const claim = bySlug.get(row.slug);
+		if (!claim || seen.has(row.slug)) return currentNative;
+		seen.add(row.slug);
+		if (row.kind === "native") {
+			const original = nativeBySlug.get(row.slug);
+			if (!original) return currentNative;
+			results.push(original);
+		}
+		else {
+			results.push({
+				claim,
+				rankingScore: row.relevance * 100,
+				match: {
+					matchStrength: "related",
+					matchScore: Math.round(row.relevance * 100),
+					matchReason: "Related public source paragraph; check the review's scope"
+				}
+			});
+		}
+	}
+	return results;
 }
 
 export function createPublicClaimSearch(options: PublicSearchWorkerOptions = {}) {
@@ -204,31 +245,14 @@ export function createPublicClaimSearch(options: PublicSearchWorkerOptions = {})
 				}
 			}
 			requireActiveSearch(signal);
-			const currentNative = refresh ? createClaimSearchIndex(currentClaims)(query, referenceDate) : native;
-			const currentPayload = refresh ? publicSearchWorkerPayload(currentClaims, query, referenceDate) : payload;
+			const currentNative = refresh
+				? createClaimSearchIndex(currentClaims)(query, referenceDate)
+				: native;
+			const currentPayload = refresh
+				? publicSearchWorkerPayload(currentClaims, query, referenceDate)
+				: payload;
 			if (!reply || reply.corpusHash !== payload.corpusHash || reply.queryHash !== payload.queryHash || reply.referenceDate !== payload.referenceDate || currentPayload.corpusHash !== payload.corpusHash) return currentNative;
-			const bySlug = new Map(currentClaims.map(claim => [claim.slug, claim]));
-			const nativeBySlug = new Map(currentNative.map(row => [row.claim.slug, row]));
-			const seen = new Set<string>();
-			const results: typeof native = [];
-			for (const row of reply.rows) {
-				const claim = bySlug.get(row.slug);
-				if (!claim || seen.has(row.slug)) return currentNative;
-				seen.add(row.slug);
-				if (row.kind === "native") {
-					const original = nativeBySlug.get(row.slug);
-					if (!original) return currentNative;
-					results.push(original);
-				}
-				else {
-					results.push({
-						claim,
-						rankingScore: row.relevance * 100,
-						match: { matchStrength: "related", matchScore: Math.round(row.relevance * 100), matchReason: "Related public source paragraph; check the review's scope" }
-					});
-				}
-			}
-			return results;
+			return validatedWorkerResults(reply, currentClaims, currentNative);
 		}
 		finally { active = false; }
 	};

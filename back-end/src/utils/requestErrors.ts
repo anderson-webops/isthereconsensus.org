@@ -5,7 +5,9 @@ interface PublicRequestError {
 
 function requestErrorType(error: unknown) {
 	if (typeof error !== "object" || !error || !("type" in error)) return "";
-	return typeof error.type === "string" ? error.type : "";
+	return typeof error.type === "string"
+		? error.type
+		: "";
 }
 
 export function classifyPublicRequestError(error: unknown): PublicRequestError | undefined {

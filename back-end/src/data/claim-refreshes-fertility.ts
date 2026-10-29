@@ -161,7 +161,9 @@ export function refreshFertilityClaim(seed: CompleteSeedClaim): CompleteSeedClai
 			...seed.sources.map(source => ({
 				...source,
 				appraisal: "not_appraised" as const,
-				citationCheckedAt: source.doi ? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt : source.citationCheckedAt,
+				citationCheckedAt: source.doi
+					? noticeChecks[source.doi.toLowerCase()] ?? source.citationCheckedAt
+					: source.citationCheckedAt,
 				note: source.doi === "10.1093/aje/kwac011"
 					? "Original recruitment, time-varying models, selected results, missing-data approach, limitations and disclosures read. Adjusted conception estimates, not lifelong infertility incidence. Full tables, visual figures and supplements not independently appraised."
 					: source.doi
@@ -170,9 +172,17 @@ export function refreshFertilityClaim(seed: CompleteSeedClaim): CompleteSeedClai
 							? "Original chapter scope, selected mechanistic discussion and product-specific conclusions read. Favors rejecting a female-infertility link for the two mRNA vaccines; inadequate evidence for Janssen and Novavax. Predates the 2025 cohorts. Full committee appraisal and disclosures not independently reassessed."
 							: "Original fertility and menstrual-change sections read through the web tool; direct retrieval returned 403. Page displays September 9, 2024. Retained as public-health context; its historical wording does not replace assessment of newer studies or establish current vaccine policy."
 			})),
-			...additions.map(source => ({ ...source, appraisal: "not_appraised" as const, citationStatus: "current" as const, citationCheckedAt: noticeChecks[source.doi!.toLowerCase()] }))
+			...additions.map(source => ({
+				...source,
+				appraisal: "not_appraised" as const,
+				citationStatus: "current" as const,
+				citationCheckedAt: noticeChecks[source.doi!.toLowerCase()]
+			}))
 		],
 		readerAnnouncement: announcement,
-		changeLog: [...seed.changeLog, { date: preparedAt, kind: "update", summary: announcement.summary }]
+		changeLog: [
+			...seed.changeLog,
+			{ date: preparedAt, kind: "update", summary: announcement.summary }
+		]
 	};
 }

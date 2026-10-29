@@ -50,9 +50,11 @@ async function refreshSentiment() {
 			confidence.value = response.currentVote.confidence;
 			note.value = response.currentVote.note || "";
 		}
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to load community sentiment right now.";
-	} finally {
+	}
+	finally {
 		loading.value = false;
 	}
 }
@@ -76,9 +78,11 @@ async function submitVote() {
 			}
 		});
 		await refreshSentiment();
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to save your vote right now.";
-	} finally {
+	}
+	finally {
 		saving.value = false;
 	}
 }
@@ -105,7 +109,9 @@ watch(
 			</div>
 		</div>
 
-		<div v-if="loading" class="muted">Loading sentiment...</div>
+		<div v-if="loading" class="muted">
+			Loading sentiment...
+		</div>
 		<div v-else class="sentiment__grid">
 			<article v-for="meta in stanceCards" :key="meta.key" class="sentiment-card">
 				<div class="sentiment-card__top">
@@ -135,7 +141,7 @@ watch(
 				</button>
 			</div>
 			<label class="field-label" for="sentiment-confidence">Confidence</label>
-			<input id="sentiment-confidence" v-model="confidence" type="range" min="1" max="5" />
+			<input id="sentiment-confidence" v-model="confidence" type="range" min="1" max="5">
 			<label class="field-label" for="sentiment-note">Optional note</label>
 			<textarea
 				id="sentiment-note"
@@ -143,7 +149,9 @@ watch(
 				rows="3"
 				placeholder="What public confusion pattern are you seeing?"
 			/>
-			<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+			<p v-if="errorMessage" class="error">
+				{{ errorMessage }}
+			</p>
 			<button class="button button--primary" type="button" :disabled="saving" @click="submitVote">
 				{{ saving ? "Saving..." : "Save sentiment vote" }}
 			</button>

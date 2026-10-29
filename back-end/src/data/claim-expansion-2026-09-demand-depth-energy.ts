@@ -44,8 +44,22 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 			"The low-carbon classification is robust. Numerical estimates vary with technology, geography, uranium assumptions, allocation, plant lifetime, and study quality.",
 		sources: [
 			ipccEnergyChapter,
-			["systematic_review", "Life Cycle Greenhouse Gas Emissions of Nuclear Electricity Generation: Systematic Review and Harmonization", "Journal of Industrial Ecology", 2012, "10.1111/j.1530-9290.2012.00472.x", "Systematic harmonization shows why inconsistent boundaries create wide raw estimates and places central nuclear values in the low-carbon range."],
-			["landmark_study", "The greenhouse gas emissions of nuclear energy - Life cycle assessment of a European pressurised reactor", "Applied Energy", 2021, "10.1016/j.apenergy.2021.116743", "Detailed contemporary reactor assessment quantifies nonzero fuel-cycle, construction, operating, and end-of-life emissions."]
+			[
+				"systematic_review",
+				"Life Cycle Greenhouse Gas Emissions of Nuclear Electricity Generation: Systematic Review and Harmonization",
+				"Journal of Industrial Ecology",
+				2012,
+				"10.1111/j.1530-9290.2012.00472.x",
+				"Systematic harmonization shows why inconsistent boundaries create wide raw estimates and places central nuclear values in the low-carbon range."
+			],
+			[
+				"landmark_study",
+				"The greenhouse gas emissions of nuclear energy - Life cycle assessment of a European pressurised reactor",
+				"Applied Energy",
+				2021,
+				"10.1016/j.apenergy.2021.116743",
+				"Detailed contemporary reactor assessment quantifies nonzero fuel-cycle, construction, operating, and end-of-life emissions."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -80,9 +94,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The broad technical judgment is stable, while site-specific performance over geological time is necessarily model-based and must be updated through staged evidence and monitoring.",
 		sources: [
-			["guideline", "Geological Disposal Facilities for Radioactive Waste", "International Atomic Energy Agency", 2011, "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1483_web.pdf", "IAEA safety guide defines passive isolation, multiple safety functions, staged development, and safety-case requirements for geological repositories."],
-			["consensus_statement", "The Environmental and Ethical Basis of Geological Disposal of Long-Lived Radioactive Wastes", "OECD Nuclear Energy Agency", 1995, "https://www.oecd-nea.org/rwm/reports/1995/geodisp/geological-disposal", "International expert statement explains the technical consensus and ethical basis for deep geological isolation while emphasizing staged implementation."],
-			["context", "Deep geological repositories - A review of design concepts, near-field evolution, and their implications for nuclear waste containment", "Journal of Environmental Radioactivity", 2025, "10.1016/j.jenvrad.2025.107750", "Current review evaluates repository concepts and the coupled thermal, hydrological, mechanical, chemical, and biological processes affecting containment."]
+			[
+				"guideline",
+				"Geological Disposal Facilities for Radioactive Waste",
+				"International Atomic Energy Agency",
+				2011,
+				"https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1483_web.pdf",
+				"IAEA safety guide defines passive isolation, multiple safety functions, staged development, and safety-case requirements for geological repositories."
+			],
+			[
+				"consensus_statement",
+				"The Environmental and Ethical Basis of Geological Disposal of Long-Lived Radioactive Wastes",
+				"OECD Nuclear Energy Agency",
+				1995,
+				"https://www.oecd-nea.org/rwm/reports/1995/geodisp/geological-disposal",
+				"International expert statement explains the technical consensus and ethical basis for deep geological isolation while emphasizing staged implementation."
+			],
+			[
+				"context",
+				"Deep geological repositories - A review of design concepts, near-field evolution, and their implications for nuclear waste containment",
+				"Journal of Environmental Radioactivity",
+				2025,
+				"10.1016/j.jenvrad.2025.107750",
+				"Current review evaluates repository concepts and the coupled thermal, hydrological, mechanical, chemical, and biological processes affecting containment."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -117,9 +152,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The direction is high-confidence. Exact payback depends strongly on manufacturing mix, solar resource, technology, boundaries, and assumed lifetime.",
 		sources: [
-			["consensus_statement", "Environmental Life Cycle Assessment of Electricity from PV Systems: 2022 update", "IEA Photovoltaic Power Systems Programme", 2022, "https://www.iea-pvps.org/wp-content/uploads/2022/11/Fact-Sheet-IEA-PVPS-T12-23-LCA-update-2022.pdf", "International PV lifecycle update reports nonrenewable energy payback well below expected system lifetime under contemporary European assumptions."],
-			["systematic_review", "Review on Life Cycle Assessment of Solar Photovoltaic Panels", "Energies", 2020, "10.3390/en13010252", "Review compares photovoltaic lifecycle methods, energy inputs, emissions hotspots, and the factors driving payback estimates."],
-			["landmark_study", "An Updated Life Cycle Assessment of Utility-Scale Solar Photovoltaic Systems Installed in the United States", "National Renewable Energy Laboratory", 2024, "10.2172/2331420", "Updated U.S. inventory quantifies current module, balance-of-system, operation, replacement, and end-of-life burdens across a 30-year system life."]
+			[
+				"consensus_statement",
+				"Environmental Life Cycle Assessment of Electricity from PV Systems: 2022 update",
+				"IEA Photovoltaic Power Systems Programme",
+				2022,
+				"https://www.iea-pvps.org/wp-content/uploads/2022/11/Fact-Sheet-IEA-PVPS-T12-23-LCA-update-2022.pdf",
+				"International PV lifecycle update reports nonrenewable energy payback well below expected system lifetime under contemporary European assumptions."
+			],
+			[
+				"systematic_review",
+				"Review on Life Cycle Assessment of Solar Photovoltaic Panels",
+				"Energies",
+				2020,
+				"10.3390/en13010252",
+				"Review compares photovoltaic lifecycle methods, energy inputs, emissions hotspots, and the factors driving payback estimates."
+			],
+			[
+				"landmark_study",
+				"An Updated Life Cycle Assessment of Utility-Scale Solar Photovoltaic Systems Installed in the United States",
+				"National Renewable Energy Laboratory",
+				2024,
+				"10.2172/2331420",
+				"Updated U.S. inventory quantifies current module, balance-of-system, operation, replacement, and end-of-life burdens across a 30-year system life."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -155,8 +211,22 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 			"Net lifetime energy production is robust. Numerical payback estimates differ between onshore and offshore projects and with resource quality, design, boundaries, and end-of-life credit.",
 		sources: [
 			ipccEnergyChapter,
-			["context", "Life cycle assessment of onshore and offshore wind energy-from theory to application", "Applied Energy", 2016, "10.1016/j.apenergy.2016.07.058", "Lifecycle comparison identifies manufacturing and infrastructure burdens while showing strong net energy and emissions performance for onshore and offshore wind."],
-			["context", "Life Cycle Assessment of Wind Farm: A review on Current Status and Future Knowledge", "Energy and Climate Change", 2025, "10.1016/j.egycc.2025.100206", "Current review synthesizes wind-farm lifecycle boundaries, material hotspots, recycling opportunities, and methodological gaps."]
+			[
+				"context",
+				"Life cycle assessment of onshore and offshore wind energy-from theory to application",
+				"Applied Energy",
+				2016,
+				"10.1016/j.apenergy.2016.07.058",
+				"Lifecycle comparison identifies manufacturing and infrastructure burdens while showing strong net energy and emissions performance for onshore and offshore wind."
+			],
+			[
+				"context",
+				"Life Cycle Assessment of Wind Farm: A review on Current Status and Future Knowledge",
+				"Energy and Climate Change",
+				2025,
+				"10.1016/j.egycc.2025.100206",
+				"Current review synthesizes wind-farm lifecycle boundaries, material hotspots, recycling opportunities, and methodological gaps."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -191,9 +261,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Confidence is moderate because controlled evidence is reassuring but relatively small, and many field studies are cross-sectional, self-reported, and vulnerable to exposure and selection bias.",
 		sources: [
-			["systematic_review", "Health effects of wind turbines on humans in residential settings: Results of a scoping review", "Environmental Research", 2019, "10.1016/j.envres.2018.11.032", "Systematic scoping review finds consistent annoyance evidence, mixed self-reported sleep and quality-of-life findings, and limited evidence for clinical disease outcomes."],
-			["landmark_study", "The Health Effects of 72 Hours of Simulated Wind Turbine Infrasound: A Double-Blind Randomized Crossover Study in Noise-Sensitive, Healthy Adults", "Environmental Health Perspectives", 2023, "10.1289/EHP10757", "Blinded 72-hour crossover exposure found no worsening of sleep, proposed syndrome symptoms, physiology, or neurobehavior versus sham infrasound."],
-			["systematic_review", "Health Effects Related to Wind Turbine Noise Exposure: A Systematic Review", "PLOS ONE", 2014, "10.1371/journal.pone.0114183", "Review finds annoyance and self-reported sleep associations but no conclusive evidence for the broader set of claimed health effects."]
+			[
+				"systematic_review",
+				"Health effects of wind turbines on humans in residential settings: Results of a scoping review",
+				"Environmental Research",
+				2019,
+				"10.1016/j.envres.2018.11.032",
+				"Systematic scoping review finds consistent annoyance evidence, mixed self-reported sleep and quality-of-life findings, and limited evidence for clinical disease outcomes."
+			],
+			[
+				"landmark_study",
+				"The Health Effects of 72 Hours of Simulated Wind Turbine Infrasound: A Double-Blind Randomized Crossover Study in Noise-Sensitive, Healthy Adults",
+				"Environmental Health Perspectives",
+				2023,
+				"10.1289/EHP10757",
+				"Blinded 72-hour crossover exposure found no worsening of sleep, proposed syndrome symptoms, physiology, or neurobehavior versus sham infrasound."
+			],
+			[
+				"systematic_review",
+				"Health Effects Related to Wind Turbine Noise Exposure: A Systematic Review",
+				"PLOS ONE",
+				2014,
+				"10.1371/journal.pone.0114183",
+				"Review finds annoyance and self-reported sleep associations but no conclusive evidence for the broader set of claimed health effects."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -228,9 +319,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The behavior of ordinary grid-tied systems is clear. Backup duration and usable loads vary with equipment, battery capacity, weather, controls, and local interconnection rules.",
 		sources: [
-			["guideline", "Solar and Resilience Basics", "U.S. Department of Energy", 2021, "https://www.energy.gov/cmei/systems/solar-and-resilience-basics", "DOE explains how solar-plus-storage can detect an outage, island safely, and maintain selected loads as part of a resilient system."],
-			["guideline", "Solar Integration: Inverters and Grid Services Basics", "U.S. Department of Energy", 2019, "https://www.energy.gov/cmei/systems/solar-integration-inverters-and-grid-services-basics", "DOE describes inverter ride-through and disconnection requirements during abnormal grid voltage or frequency."],
-			["guideline", "Islanding a Microgrid", "U.S. Department of Energy", 2021, "https://www.energy.gov/cmei/femp/articles/islanding-microgrid", "Federal microgrid example explains why a PV array shuts down on grid loss unless controls and storage establish safe island operation."]
+			[
+				"guideline",
+				"Solar and Resilience Basics",
+				"U.S. Department of Energy",
+				2021,
+				"https://www.energy.gov/cmei/systems/solar-and-resilience-basics",
+				"DOE explains how solar-plus-storage can detect an outage, island safely, and maintain selected loads as part of a resilient system."
+			],
+			[
+				"guideline",
+				"Solar Integration: Inverters and Grid Services Basics",
+				"U.S. Department of Energy",
+				2019,
+				"https://www.energy.gov/cmei/systems/solar-integration-inverters-and-grid-services-basics",
+				"DOE describes inverter ride-through and disconnection requirements during abnormal grid voltage or frequency."
+			],
+			[
+				"guideline",
+				"Islanding a Microgrid",
+				"U.S. Department of Energy",
+				2021,
+				"https://www.energy.gov/cmei/femp/articles/islanding-microgrid",
+				"Federal microgrid example explains why a PV array shuts down on grid loss unless controls and storage establish safe island operation."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -265,9 +377,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Field evidence supports real peak reduction, while magnitude and reliability vary widely across sectors, climates, program designs, baselines, and event conditions.",
 		sources: [
-			["systematic_review", "Demand response by residential and industrial customers: A rapid systematic review", "International Journal of Green Energy", 2024, "10.1080/15435075.2024.2413891", "Review finds highly variable measured load reductions and identifies where customer class, technology, and program design shape results."],
-			["systematic_review", "Demand response performance and uncertainty: A systematic literature review", "Energy Strategy Reviews", 2022, "10.1016/j.esr.2022.100857", "Systematic review evaluates delivery uncertainty, baselines, behavior, and methods for making demand response more dependable."],
-			["consensus_statement", "2024 Assessment of Demand Response and Advanced Metering", "Federal Energy Regulatory Commission", 2024, "https://www.ferc.gov/sites/default/files/2024-11/Annual%20Assessment%20of%20Demand%20Response_1119_1400.pdf", "FERC reports measured participation and capacity contributions, including demand response equal to about 6.5% of peak demand across U.S. wholesale markets in 2023."]
+			[
+				"systematic_review",
+				"Demand response by residential and industrial customers: A rapid systematic review",
+				"International Journal of Green Energy",
+				2024,
+				"10.1080/15435075.2024.2413891",
+				"Review finds highly variable measured load reductions and identifies where customer class, technology, and program design shape results."
+			],
+			[
+				"systematic_review",
+				"Demand response performance and uncertainty: A systematic literature review",
+				"Energy Strategy Reviews",
+				2022,
+				"10.1016/j.esr.2022.100857",
+				"Systematic review evaluates delivery uncertainty, baselines, behavior, and methods for making demand response more dependable."
+			],
+			[
+				"consensus_statement",
+				"2024 Assessment of Demand Response and Advanced Metering",
+				"Federal Energy Regulatory Commission",
+				2024,
+				"https://www.ferc.gov/sites/default/files/2024-11/Annual%20Assessment%20of%20Demand%20Response_1119_1400.pdf",
+				"FERC reports measured participation and capacity contributions, including demand response equal to about 6.5% of peak demand across U.S. wholesale markets in 2023."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -302,9 +435,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The pathway dependence is high-confidence. Numerical intensities vary with regional supply chains, marginal electricity, leakage, capture, allocation, and conversion assumptions.",
 		sources: [
-			["consensus_statement", "GHG emissions of hydrogen and its derivatives - Global Hydrogen Review 2024", "International Energy Agency", 2024, "https://www.iea.org/reports/global-hydrogen-review-2024/ghg-emissions-of-hydrogen-and-its-derivatives", "IEA quantifies wide pathway differences and reports that current production remains dominated by unabated natural gas and coal."],
-			["systematic_review", "A systematic review of life cycle greenhouse gas intensity values for hydrogen production pathways", "Renewable and Sustainable Energy Reviews", 2023, "10.1016/j.rser.2023.113588", "Systematic review shows that electricity source, fossil feedstock, methane, capture, and boundaries drive large differences in hydrogen intensity."],
-			["context", "Critical Review of Life Cycle Assessment of Hydrogen Production Pathways", "Environments", 2024, "10.3390/environments11060108", "Review compares lifecycle methods and environmental tradeoffs across fossil, renewable, nuclear, biomass, and waste-based production routes."]
+			[
+				"consensus_statement",
+				"GHG emissions of hydrogen and its derivatives - Global Hydrogen Review 2024",
+				"International Energy Agency",
+				2024,
+				"https://www.iea.org/reports/global-hydrogen-review-2024/ghg-emissions-of-hydrogen-and-its-derivatives",
+				"IEA quantifies wide pathway differences and reports that current production remains dominated by unabated natural gas and coal."
+			],
+			[
+				"systematic_review",
+				"A systematic review of life cycle greenhouse gas intensity values for hydrogen production pathways",
+				"Renewable and Sustainable Energy Reviews",
+				2023,
+				"10.1016/j.rser.2023.113588",
+				"Systematic review shows that electricity source, fossil feedstock, methane, capture, and boundaries drive large differences in hydrogen intensity."
+			],
+			[
+				"context",
+				"Critical Review of Life Cycle Assessment of Hydrogen Production Pathways",
+				"Environments",
+				2024,
+				"10.3390/environments11060108",
+				"Review compares lifecycle methods and environmental tradeoffs across fossil, renewable, nuclear, biomass, and waste-based production routes."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -339,9 +493,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Evidence certainty is low because most cost estimates are prospective and only a small number of relevant units operate. Designs, markets, financing, fuels, and regulatory settings differ substantially.",
 		sources: [
-			["consensus_statement", "The NEA Small Modular Reactor Dashboard: Third Edition", "OECD Nuclear Energy Agency", 2025, "https://www.oecd-nea.org/upload/docs/application/pdf/2025-09/web_-_smr_dashboard_-_third_edition.pdf", "NEA tracks licensing, siting, financing, supply chains, engagement, fuel, construction, and first-of-a-kind readiness rather than assuming technical design equals commercialization."],
-			["systematic_review", "Economics and finance of Small Modular Reactors: A systematic review and research agenda", "Renewable and Sustainable Energy Reviews", 2020, "10.1016/j.rser.2019.109519", "Systematic review finds economic conclusions depend on assumptions about modularization, learning, financing, deployment volume, operations, and decommissioning."],
-			["context", "Economic potential and barriers of small modular reactors in Europe", "Renewable and Sustainable Energy Reviews", 2024, "10.1016/j.rser.2024.114743", "Review examines the tension between lower absolute project risk, possible serial learning, and higher unit capital cost from lost scale economies."]
+			[
+				"consensus_statement",
+				"The NEA Small Modular Reactor Dashboard: Third Edition",
+				"OECD Nuclear Energy Agency",
+				2025,
+				"https://www.oecd-nea.org/upload/docs/application/pdf/2025-09/web_-_smr_dashboard_-_third_edition.pdf",
+				"NEA tracks licensing, siting, financing, supply chains, engagement, fuel, construction, and first-of-a-kind readiness rather than assuming technical design equals commercialization."
+			],
+			[
+				"systematic_review",
+				"Economics and finance of Small Modular Reactors: A systematic review and research agenda",
+				"Renewable and Sustainable Energy Reviews",
+				2020,
+				"10.1016/j.rser.2019.109519",
+				"Systematic review finds economic conclusions depend on assumptions about modularization, learning, financing, deployment volume, operations, and decommissioning."
+			],
+			[
+				"context",
+				"Economic potential and barriers of small modular reactors in Europe",
+				"Renewable and Sustainable Energy Reviews",
+				2024,
+				"10.1016/j.rser.2024.114743",
+				"Review examines the tension between lower absolute project risk, possible serial learning, and higher unit capital cost from lost scale economies."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -376,9 +551,30 @@ export const september2026DemandDepthEnergyClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The mechanisms are clear, while the magnitude is location-specific and depends on adoption, charger mix, behavior, climate, grid condition, rate design, and control participation.",
 		sources: [
-			["consensus_statement", "Impact of Electric Vehicles on the Grid", "U.S. Department of Energy", 2024, "https://www.energy.gov/sites/default/files/2024-10/Congressional%20Report%20EV%20Grid%20Impacts.pdf", "Federal assessment distinguishes bulk energy, peak, and local distribution effects and summarizes how managed charging can reduce or defer upgrades."],
-			["systematic_review", "A Systematic Review on power systems planning and operations management with grid integration of transportation electrification at scale", "Advances in Applied Energy", 2023, "10.1016/j.adapen.2023.100147", "Systematic review maps planning and operational barriers, methods, and mitigation options for transportation electrification at scale."],
-			["context", "Assessing the value of electric vehicle managed charging: a review of methodologies and results", "Energy & Environmental Science", 2022, "10.1039/D1EE02206G", "Review finds substantial potential value from coordinated charging while showing that results depend on behavioral, grid, market, and modeling assumptions."]
+			[
+				"consensus_statement",
+				"Impact of Electric Vehicles on the Grid",
+				"U.S. Department of Energy",
+				2024,
+				"https://www.energy.gov/sites/default/files/2024-10/Congressional%20Report%20EV%20Grid%20Impacts.pdf",
+				"Federal assessment distinguishes bulk energy, peak, and local distribution effects and summarizes how managed charging can reduce or defer upgrades."
+			],
+			[
+				"systematic_review",
+				"A Systematic Review on power systems planning and operations management with grid integration of transportation electrification at scale",
+				"Advances in Applied Energy",
+				2023,
+				"10.1016/j.adapen.2023.100147",
+				"Systematic review maps planning and operational barriers, methods, and mitigation options for transportation electrification at scale."
+			],
+			[
+				"context",
+				"Assessing the value of electric vehicle managed charging: a review of methodologies and results",
+				"Energy & Environmental Science",
+				2022,
+				"10.1039/D1EE02206G",
+				"Review finds substantial potential value from coordinated charging while showing that results depend on behavioral, grid, market, and modeling assumptions."
+			]
 		]
 	})
 ];

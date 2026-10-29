@@ -9,11 +9,30 @@ import { publicSearchWorkerResponseSchema } from "../../back-end/src/utils/publi
 import { publicPassages } from "./pipeline.js";
 
 const messageSchema = z.discriminatedUnion("kind", [
-	z.object({ kind: z.literal("boot") }).strict(),
-	z.object({ kind: z.literal("warm"), corpusHash: z.string(), vectors: z.array(z.object({ id: z.string(), slug: z.string(), vector: z.array(z.number().finite()).length(384) }).strict()).max(20_000) }).strict(),
-	z.object({ kind: z.literal("reply"), job: z.number().int().positive(), response: publicSearchWorkerResponseSchema }).strict(),
-	z.object({ kind: z.literal("scoring"), job: z.number().int().positive() }).strict(),
-	z.object({ kind: z.literal("fault") }).strict()
+	z.object({
+		kind: z.literal("boot")
+	}).strict(),
+	z.object({
+		kind: z.literal("warm"),
+		corpusHash: z.string(),
+		vectors: z.array(z.object({
+			id: z.string(),
+			slug: z.string(),
+			vector: z.array(z.number().finite()).length(384)
+		}).strict()).max(20_000)
+	}).strict(),
+	z.object({
+		kind: z.literal("reply"),
+		job: z.number().int().positive(),
+		response: publicSearchWorkerResponseSchema
+	}).strict(),
+	z.object({
+		kind: z.literal("scoring"),
+		job: z.number().int().positive()
+	}).strict(),
+	z.object({
+		kind: z.literal("fault")
+	}).strict()
 ]);
 
 export class SearchServiceUnavailableError extends Error {
@@ -59,7 +78,13 @@ export class SearchSupervisor extends EventEmitter {
 	constructor(private readonly options: SearchSupervisorOptions) { super(); }
 
 	get state() {
-		return { ready: this.ready, warming: Boolean(this.child && !this.ready), busy: Boolean(this.active), corpusHash: this.cache?.hash ?? null, ownedChildPid: this.child?.pid ?? null };
+		return {
+			ready: this.ready,
+			warming: Boolean(this.child && !this.ready),
+			busy: Boolean(this.active),
+			corpusHash: this.cache?.hash ?? null,
+			ownedChildPid: this.child?.pid ?? null
+		};
 	}
 
 	private complete(error?: Error, response?: PublicSearchWorkerResponse) {
@@ -107,6 +132,25 @@ export class SearchSupervisor extends EventEmitter {
 		});
 	}
 
+	private acceptWarm(message: Extract<z.infer<typeof messageSchema>, { kind: "warm" }>) {
+		assert.ok(this.cache && !this.ready);
+		assert.equal(message.corpusHash, this.cache.hash);
+		const passages = publicPassages(this.cache.corpus);
+		assert.equal(message.vectors.length, passages.length);
+		for (const [index, row] of message.vectors.entries()) {
+			assert.equal(row.id, passages[index].id);
+			assert.equal(row.slug, passages[index].slug);
+			assert.ok(Math.abs(Math.hypot(...row.vector) - 1) < 0.001);
+		}
+		this.cache.vectors = message.vectors;
+		this.ready = true;
+		this.failures = 0;
+		clearTimeout(this.warmDeadline);
+		this.warmDeadline = undefined;
+		this.emit("ready");
+		this.dispatch();
+	}
+
 	private message(child: ChildProcess, value: unknown) {
 		if (this.child !== child || this.stopped) return;
 		try {
@@ -114,27 +158,17 @@ export class SearchSupervisor extends EventEmitter {
 			if (message.kind === "fault") throw new SearchServiceUnavailableError();
 			if (message.kind === "boot") {
 				assert.ok(this.cache && !this.ready);
-				child.send({ kind: "warm", corpusHash: this.cache.hash, corpus: this.cache.corpus, vectors: this.cache.vectors }, (error) => {
+				child.send({
+					kind: "warm",
+					corpusHash: this.cache.hash,
+					corpus: this.cache.corpus,
+					vectors: this.cache.vectors
+				}, (error) => {
 					if (error && this.child === child) this.fault();
 				});
 			}
 			else if (message.kind === "warm") {
-				assert.ok(this.cache && !this.ready);
-				assert.equal(message.corpusHash, this.cache.hash);
-				const passages = publicPassages(this.cache.corpus);
-				assert.equal(message.vectors.length, passages.length);
-				for (const [index, row] of message.vectors.entries()) {
-					assert.equal(row.id, passages[index].id);
-					assert.equal(row.slug, passages[index].slug);
-					assert.ok(Math.abs(Math.hypot(...row.vector) - 1) < 0.001);
-				}
-				this.cache.vectors = message.vectors;
-				this.ready = true;
-				this.failures = 0;
-				clearTimeout(this.warmDeadline);
-				this.warmDeadline = undefined;
-				this.emit("ready");
-				this.dispatch();
+				this.acceptWarm(message);
 			}
 			else if (message.kind === "scoring") {
 				if (this.active?.sent && this.active.job === message.job) this.emit("scoring", { job: message.job, ownedChildPid: child.pid });
@@ -193,7 +227,16 @@ export class SearchSupervisor extends EventEmitter {
 					if (sent) void this.retire();
 				};
 				const deadline = setTimeout(abort, Math.max(1, Math.min(this.options.rankTimeoutMilliseconds ?? 7_500, 7_500)));
-				this.active = { job, payload, signal, resolve, reject, abort, deadline, sent: false };
+				this.active = {
+					job,
+					payload,
+					signal,
+					resolve,
+					reject,
+					abort,
+					deadline,
+					sent: false
+				};
 				signal.addEventListener("abort", abort, { once: true });
 				if (signal.aborted) abort();
 				else this.dispatch();

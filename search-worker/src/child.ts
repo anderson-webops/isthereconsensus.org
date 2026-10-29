@@ -6,8 +6,17 @@ import { verifyModelAssets } from "./assets.js";
 import { createPinnedRuntime } from "./runtime.js";
 
 const messageSchema = z.discriminatedUnion("kind", [
-	z.object({ kind: z.literal("warm"), corpusHash: z.string(), corpus: publicSearchWorkerRequestSchema.shape.corpus, vectors: z.unknown().optional() }).strict(),
-	z.object({ kind: z.literal("rank"), job: z.number().int().positive(), payload: publicSearchWorkerRequestSchema }).strict()
+	z.object({
+		kind: z.literal("warm"),
+		corpusHash: z.string(),
+		corpus: publicSearchWorkerRequestSchema.shape.corpus,
+		vectors: z.unknown().optional()
+	}).strict(),
+	z.object({
+		kind: z.literal("rank"),
+		job: z.number().int().positive(),
+		payload: publicSearchWorkerRequestSchema
+	}).strict()
 ]);
 
 async function main() {

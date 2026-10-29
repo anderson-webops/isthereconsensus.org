@@ -5,7 +5,9 @@ import { answerCoverageLabels, explanationClarityLabels } from "~/types/reader-f
 const props = defineProps<{ claimId?: string; comparisonSlug?: string }>();
 const hasEvidenceTarget = computed(() => Boolean(props.claimId || props.comparisonSlug));
 const evidenceTarget = computed(() =>
-	props.comparisonSlug ? { comparisonSlug: props.comparisonSlug } : { claimId: props.claimId }
+	props.comparisonSlug
+		? { comparisonSlug: props.comparisonSlug }
+		: { claimId: props.claimId }
 );
 const { apiUrl } = useApi();
 const config = useRuntimeConfig();
@@ -48,7 +50,10 @@ async function send(rating?: ReaderRating) {
 	controller = new AbortController();
 	try {
 		const body = rating
-			? { ...rating, ...evidenceTarget.value }
+			? {
+					...rating,
+					...evidenceTarget.value
+				}
 			: {
 					kind: hasEvidenceTarget.value ? "missing_evidence" : "content_gap",
 					...(hasEvidenceTarget.value
@@ -73,21 +78,25 @@ async function send(rating?: ReaderRating) {
 			: "Thank you. Your feedback is in the private editorial queue.";
 		if (rating?.kind === "usefulness") {
 			received.value = true;
-		} else if (rating?.kind === "reader_experience") {
+		}
+		else if (rating?.kind === "reader_experience") {
 			experienceReceived.value = true;
 			experienceExpanded.value = false;
-		} else {
+		}
+		else {
 			expanded.value = false;
 			title.value = "";
 			message.value = "";
 			sourceUrl.value = "";
 		}
-	} catch (error: unknown) {
+	}
+	catch (error: unknown) {
 		if (controller.signal.aborted) return;
 		const data = (error as { data?: { error?: string } }).data;
-		errorMessage.value =
-			data?.error || "Feedback was not confirmed received. Your input is still here; please retry.";
-	} finally {
+		errorMessage.value
+			= data?.error || "Feedback was not confirmed received. Your input is still here; please retry.";
+	}
+	finally {
 		busy.value = false;
 		if (!rating) {
 			captchaRef.value?.reset();
@@ -131,8 +140,7 @@ async function send(rating?: ReaderRating) {
 					These choices are private to admins. They do not record your question, account or search text, and
 					do not rate agreement with the science.
 				</p>
-				<label
-					>How easy was the explanation to follow?
+				<label>How easy was the explanation to follow?
 					<select v-model="clarity" name="feedback-clarity" required :disabled="busy">
 						<option disabled value="">Choose an answer</option>
 						<option v-for="(label, value) in explanationClarityLabels" :key="value" :value="value">
@@ -140,8 +148,7 @@ async function send(rating?: ReaderRating) {
 						</option>
 					</select>
 				</label>
-				<label
-					>Did it answer the question you came with?
+				<label>Did it answer the question you came with?
 					<select v-model="answerCoverage" name="feedback-answer-coverage" required :disabled="busy">
 						<option disabled value="">Choose an answer</option>
 						<option v-for="(label, value) in answerCoverageLabels" :key="value" :value="value">
@@ -170,8 +177,7 @@ async function send(rating?: ReaderRating) {
 				Only admins can read this feedback. Do not include names, contact details, personal health information
 				or private links. Your search text is not copied or saved automatically.
 			</p>
-			<label v-if="!hasEvidenceTarget"
-				>Question or topic
+			<label v-if="!hasEvidenceTarget">Question or topic
 				<input
 					v-model="title"
 					:disabled="busy"
@@ -180,10 +186,9 @@ async function send(rating?: ReaderRating) {
 					required
 					minlength="10"
 					maxlength="200"
-				/>
+				>
 			</label>
-			<label v-else
-				>What is missing?
+			<label v-else>What is missing?
 				<select v-model="area" :disabled="busy" name="feedback-area">
 					<option value="source">A source or newer evidence</option>
 					<option value="population">Who the evidence applies to</option>
@@ -192,8 +197,7 @@ async function send(rating?: ReaderRating) {
 					<option value="other">Something else</option>
 				</select>
 			</label>
-			<label
-				>What should we investigate? (20-1,200 characters)
+			<label>What should we investigate? (20-1,200 characters)
 				<textarea
 					v-model="message"
 					:disabled="busy"
@@ -205,8 +209,7 @@ async function send(rating?: ReaderRating) {
 					maxlength="1200"
 				/>
 			</label>
-			<label
-				>Public source link (optional)
+			<label>Public source link (optional)
 				<input
 					v-model="sourceUrl"
 					:disabled="busy"
@@ -214,7 +217,7 @@ async function send(rating?: ReaderRating) {
 					type="url"
 					autocomplete="off"
 					maxlength="500"
-				/>
+				>
 			</label>
 			<CaptchaWidget v-if="config.public.captchaSiteKey" ref="captchaRef" v-model="captchaToken" size="compact" />
 			<div>
@@ -223,8 +226,12 @@ async function send(rating?: ReaderRating) {
 				</button>
 			</div>
 		</form>
-		<p v-if="errorMessage" role="alert">{{ errorMessage }}</p>
-		<p role="status">{{ notice }}</p>
+		<p v-if="errorMessage" role="alert">
+			{{ errorMessage }}
+		</p>
+		<p role="status">
+			{{ notice }}
+		</p>
 	</section>
 </template>
 

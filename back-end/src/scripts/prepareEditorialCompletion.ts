@@ -7,4 +7,7 @@ import { createEditorialCompletionProposal } from "../utils/editorialCompletionP
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const git = (...args: string[]) => execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
 if (git("status", "--porcelain")) throw new Error("Commit the complete reviewed source before preparing the release proposal.");
-process.stdout.write(`${JSON.stringify(createEditorialCompletionProposal({ commit: git("rev-parse", "HEAD"), tree: git("rev-parse", "HEAD^{tree}") }), null, 2)}\n`);
+process.stdout.write(`${JSON.stringify(createEditorialCompletionProposal({
+	commit: git("rev-parse", "HEAD"),
+	tree: git("rev-parse", "HEAD^{tree}")
+}), null, 2)}\n`);

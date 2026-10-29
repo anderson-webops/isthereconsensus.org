@@ -52,7 +52,9 @@ export function refreshEditorialAuditClaim(seed: CompleteSeedClaim): CompleteSee
 				}
 			],
 			sources: [
-				...seed.sources.map(source => source.title.startsWith("NTP Monograph") ? { ...source, kind: "systematic_review" as const, note: "Systematic review of neurodevelopment and cognition. Higher-exposure associations do not establish effects at 0.7 mg/L; this review overlaps with the related 2025 meta-analysis." } : source),
+				...seed.sources.map(source => source.title.startsWith("NTP Monograph")
+					? { ...source, kind: "systematic_review" as const, note: "Systematic review of neurodevelopment and cognition. Higher-exposure associations do not establish effects at 0.7 mg/L; this review overlaps with the related 2025 meta-analysis." }
+					: source),
 				{
 					kind: "meta_analysis",
 					title: "Fluoride Exposure and Children's IQ Scores: A Systematic Review and Meta-Analysis",
@@ -99,7 +101,15 @@ export function refreshEditorialAuditClaim(seed: CompleteSeedClaim): CompleteSee
 			editorSummary: "Evidence for stopping smoking is stronger than evidence establishing long-term vaping safety.",
 			uncertaintySummary: "The cessation comparison has high-certainty evidence. Long-term safety, newer devices and outcomes outside adult smoking cessation remain separate uncertainties.",
 			sources: [
-				...seed.sources.map(source => source.kind === "systematic_review" ? { ...source, year: 2026, doi: "10.1002/14651858.CD010216.pub11", citationCheckedAt: undefined, note: "The August 2026 living review supports the cessation comparison. Its safety findings do not establish absence of long-term harm. The review's certainty assessment is not a separate GRADE assessment performed by this site." } : source),
+				...seed.sources.map(source => source.kind === "systematic_review"
+					? {
+							...source,
+							year: 2026,
+							doi: "10.1002/14651858.CD010216.pub11",
+							citationCheckedAt: undefined,
+							note: "The August 2026 living review supports the cessation comparison. Its safety findings do not establish absence of long-term harm. The review's certainty assessment is not a separate GRADE assessment performed by this site."
+						}
+					: source),
 				{
 					kind: "guideline",
 					title: "Vaping to quit smoking",
@@ -128,11 +138,14 @@ function rewordClaim(seed: CompleteSeedClaim, title: string, bottomLine: string)
 				? { ...summary, question: title, finding: bottomLine }
 				: summary
 		),
-		changeLog: [...seed.changeLog, {
-			date: editorialAuditPreparedAt,
-			kind: "update",
-			summary: "Clarified the question or lead answer without changing the source set or scientific conclusion."
-		}]
+		changeLog: [
+			...seed.changeLog,
+			{
+				date: editorialAuditPreparedAt,
+				kind: "update",
+				summary: "Clarified the question or lead answer without changing the source set or scientific conclusion."
+			}
+		]
 	};
 }
 
@@ -150,10 +163,13 @@ function preparationFields(seed: CompleteSeedClaim) {
 			cadenceDays: 90,
 			focus: "New evidence or guidance that changes the outcome-specific answer"
 		},
-		changeLog: [...seed.changeLog, {
-			date: editorialAuditPreparedAt,
-			kind: "update" as const,
-			summary: "Separated outcomes with different certainty, clarified the question, and added source and jurisdiction context. Preparation was AI-assisted, not independent expert review."
-		}]
+		changeLog: [
+			...seed.changeLog,
+			{
+				date: editorialAuditPreparedAt,
+				kind: "update" as const,
+				summary: "Separated outcomes with different certainty, clarified the question, and added source and jurisdiction context. Preparation was AI-assisted, not independent expert review."
+			}
+		]
 	};
 }

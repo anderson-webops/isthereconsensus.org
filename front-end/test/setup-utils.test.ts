@@ -25,7 +25,11 @@ describe("buildFrontendSetupChecks", () => {
 			siteUrl: "https://isthereconsensus.org",
 			apiBase: "http://127.0.0.1:3011",
 			frontend: { ok: true, detail: "Nuxt is serving this page." },
-			backendHealth: { ok: true, detail: "Backend /healthz responded successfully.", data: { ok: true } },
+			backendHealth: {
+				ok: true,
+				detail: "Backend /healthz responded successfully.",
+				data: { ok: true }
+			},
 			backendReady: {
 				ok: true,
 				detail: "Backend /readyz reports its dependencies are ready.",
@@ -35,7 +39,7 @@ describe("buildFrontendSetupChecks", () => {
 		};
 
 		const checks = buildFrontendSetupChecks(dashboard);
-		const originAlignment = checks.find((check) => check.id === "origin-alignment");
+		const originAlignment = checks.find(check => check.id === "origin-alignment");
 
 		assert.equal(originAlignment?.ok, false);
 		assert.match(originAlignment?.detail || "", /127\.0\.0\.1/);

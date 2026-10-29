@@ -46,25 +46,45 @@ export function seedSourceIdentity(source: Pick<SeedClaimSource, "title" | "publ
 	for (const field of ["doi", "pmid", "pmcid", "url"] as const) {
 		if (source[field]) return { [field]: source[field] };
 	}
-	return { title: source.title, ...(source.publisher ? { publisher: source.publisher } : {}), order: source.order };
+	return {
+		title: source.title,
+		...(source.publisher
+			? { publisher: source.publisher }
+			: {}),
+		order: source.order
+	};
 }
 
 export function canMatchSeedSourceByOrder(existing: ExistingClaimSourceForSeedSync, source: SeedClaimSource) {
 	for (const field of ["doi", "pmid", "pmcid"] as const) {
 		if (existing[field] && source[field] && existing[field] !== source[field]) return false;
 	}
-	return (![existing.url, existing.doi, existing.pmid, existing.pmcid].some(Boolean)) || (existing.title === source.title && existing.publisher === source.publisher);
+	return (![
+		existing.url,
+		existing.doi,
+		existing.pmid,
+		existing.pmcid
+	].some(Boolean)) || (existing.title === source.title && existing.publisher === source.publisher);
 }
 
 export async function seedClaimSources(claimId: Types.ObjectId, sources: SeedClaimSource[]) {
 	for (const source of sources) {
-		let existingSource = await ClaimSource.findOne({ claim: claimId, ...seedSourceIdentity(source) });
+		let existingSource = await ClaimSource.findOne({
+			claim: claimId,
+			...seedSourceIdentity(source)
+		});
 		if (!existingSource && typeof source.order === "number") {
 			const candidate = await ClaimSource.findOne({ claim: claimId, order: source.order });
 			if (candidate && canMatchSeedSourceByOrder(candidate, source)) existingSource = candidate;
 		}
 		if (!existingSource) {
-			await ClaimSource.create({ claim: claimId, ...source, citationCheckedAt: source.citationCheckedAt ? new Date(source.citationCheckedAt) : undefined });
+			await ClaimSource.create({
+				claim: claimId,
+				...source,
+				citationCheckedAt: source.citationCheckedAt
+					? new Date(source.citationCheckedAt)
+					: undefined
+			});
 			continue;
 		}
 		const sourceUpdate = buildSeedSourceUpdate(existingSource, source);
@@ -91,7 +111,13 @@ interface ExistingClaimSourceForSeedSync {
 	order?: number;
 }
 
-const optionalSeedStringFields = ["publisher", "url", "doi", "pmid", "pmcid"] as const;
+const optionalSeedStringFields = [
+	"publisher",
+	"url",
+	"doi",
+	"pmid",
+	"pmcid"
+] as const;
 
 export const retiredSeedClaims: RetiredSeedClaim[] = [
 	{
@@ -110,7 +136,9 @@ function toSeedDate(value: string) {
 
 function datesMatch(existingValue: Date | string | undefined, seedValue: Date) {
 	if (!existingValue) return false;
-	const existingDate = existingValue instanceof Date ? existingValue : new Date(existingValue);
+	const existingDate = existingValue instanceof Date
+		? existingValue
+		: new Date(existingValue);
 	return !Number.isNaN(existingDate.getTime()) && existingDate.getTime() === seedValue.getTime();
 }
 
@@ -177,7 +205,10 @@ function normalizeSeedValue(value: unknown): unknown {
 			Object.entries(value)
 				.filter(([key]) => key !== "_id")
 				.sort(([left], [right]) => left.localeCompare(right))
-				.map(([key, entryValue]) => [key, normalizeSeedValue(entryValue)])
+				.map(([key, entryValue]) => [
+					key,
+					normalizeSeedValue(entryValue)
+				])
 		);
 	}
 	return value;
@@ -196,7 +227,9 @@ export function buildSeedClaimUpdate(existingClaim: Record<string, unknown>, see
 		}
 	}
 
-	return Object.keys($set).length ? { $set } : {};
+	return Object.keys($set).length
+		? { $set }
+		: {};
 }
 
 export function buildRetiredSeedClaimUpdate(retired: RetiredSeedClaim): RetiredSeedClaimUpdate {
@@ -270,8 +303,12 @@ export function buildSeedSourceUpdate(
 	setIfChanged("order", source.order);
 
 	return {
-		...(Object.keys($set).length ? { $set } : {}),
-		...(Object.keys($unset).length ? { $unset } : {})
+		...(Object.keys($set).length
+			? { $set }
+			: {}),
+		...(Object.keys($unset).length
+			? { $unset }
+			: {})
 	};
 }
 
@@ -279,8 +316,10 @@ function seedKey(topicSlug: string, slug: string) {
 	return `${topicSlug}/${slug}`;
 }
 
-// Import time is publication infrastructure, not evidence of a new review.
-// Use only dated review/publication records; cosmetic updates do not refresh it.
+/**
+ * Import time is publication infrastructure, not evidence of a new review.
+ * Use only dated review/publication records; cosmetic updates do not refresh it.
+ */
 export function seedReviewDates(seed: Pick<SeedClaim, "changeLog">) {
 	const dates = seed.changeLog
 		.filter(entry => ["review", "publication"].includes(entry.kind))
@@ -322,43 +361,56 @@ async function archiveRetiredSeedClaims(activeSeedKeys: Set<string>) {
 	}
 }
 
+async function synchronizeSeedClaim(seed: SeedClaim, synchronizeExisting: boolean) {
+	const topic = await Topic.findOne({ slug: seed.topicSlug });
+	if (!topic) return;
+
+	const existingClaim = await Claim.findOne({ topic: topic._id, slug: seed.slug });
+	const claim
+		= existingClaim
+			?? (await Claim.create({
+				topic: topic._id,
+				slug: seed.slug,
+				...seedClaimFields(seed),
+				...seedReviewDates(seed),
+				publishedAt: seed.status === "published"
+					? new Date()
+					: undefined
+			}));
+
+	if (existingClaim && !synchronizeExisting) {
+		return;
+	}
+
+	const claimUpdate = buildSeedClaimUpdate({
+		...claim.toObject()
+	}, seed);
+	const missingFields: Record<string, unknown> = {
+		...(claimUpdate.$set ?? {})
+	};
+	if (!claim.agreementLevel) missingFields.agreementLevel = seed.agreementLevel;
+	if (!claim.evidenceCertainty) missingFields.evidenceCertainty = seed.evidenceCertainty;
+	if (!claim.reviewMode) missingFields.reviewMode = seed.reviewMode;
+	// Existing dates and schedules retain their provenance, including unknown
+	// provenance. A synchronization must not fabricate a completed review.
+	if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
+	if (hasSeedClaimUpdate({ $set: missingFields })) {
+		await Claim.updateOne({ _id: claim._id }, {
+			$set: missingFields,
+			$inc: { __v: 1 }
+		});
+	}
+
+	await seedClaimSources(claim._id, seed.sources);
+	await recordSeedReaderAnnouncement(claim._id, seed.readerAnnouncement);
+}
+
 export async function seedClaims(options: SeedClaimsOptions = {}) {
 	const synchronizeExisting = options.synchronizeExisting === true;
 	const activeSeedKeys = new Set(defaultClaims.map(seed => seedKey(seed.topicSlug, seed.slug)));
 
 	for (const seed of defaultClaims) {
-		const topic = await Topic.findOne({ slug: seed.topicSlug });
-		if (!topic) continue;
-
-		const existingClaim = await Claim.findOne({ topic: topic._id, slug: seed.slug });
-		const claim
-			= existingClaim
-				?? (await Claim.create({
-					topic: topic._id,
-					slug: seed.slug,
-					...seedClaimFields(seed),
-					...seedReviewDates(seed),
-					publishedAt: seed.status === "published" ? new Date() : undefined
-				}));
-
-		if (existingClaim && !synchronizeExisting) {
-			continue;
-		}
-
-		const claimUpdate = buildSeedClaimUpdate(claim as unknown as Record<string, unknown>, seed);
-		const missingFields: Record<string, unknown> = { ...(claimUpdate.$set ?? {}) };
-		if (!claim.agreementLevel) missingFields.agreementLevel = seed.agreementLevel;
-		if (!claim.evidenceCertainty) missingFields.evidenceCertainty = seed.evidenceCertainty;
-		if (!claim.reviewMode) missingFields.reviewMode = seed.reviewMode;
-		// Existing dates and schedules retain their provenance, including unknown
-		// provenance. A synchronization must not fabricate a completed review.
-		if (seed.status === "published" && !claim.publishedAt) missingFields.publishedAt = new Date();
-		if (hasSeedClaimUpdate({ $set: missingFields })) {
-			await Claim.updateOne({ _id: claim._id }, { $set: missingFields, $inc: { __v: 1 } });
-		}
-
-		await seedClaimSources(claim._id, seed.sources);
-		await recordSeedReaderAnnouncement(claim._id, seed.readerAnnouncement);
+		await synchronizeSeedClaim(seed, synchronizeExisting);
 	}
 
 	if (synchronizeExisting) {

@@ -34,8 +34,9 @@ describe("source-controlled reader announcements", () => {
 	});
 	it("keeps insert-only restarts unchanged and records only after source synchronization", () => {
 		const source = readFileSync(new URL("../src/data/seedClaims.ts", import.meta.url), "utf8");
-		assert.match(source, /existingClaim && !synchronizeExisting[\s\S]*continue;/);
-		assert.ok(source.indexOf("await recordSeedReaderAnnouncement") > source.indexOf("await ClaimSource.updateOne"));
-		assert.match(source, /\$set: missingFields, \$inc: \{ __v: 1 \}/);
+		assert.match(source, /async function synchronizeSeedClaim[\s\S]*?if \(existingClaim && !synchronizeExisting\) \{\s*return;\s*\}/);
+		assert.match(source, /for \(const seed of defaultClaims\) \{\s*await synchronizeSeedClaim\(seed, synchronizeExisting\);\s*\}/);
+		assert.ok(source.indexOf("await recordSeedReaderAnnouncement") > source.indexOf("await seedClaimSources(claim._id, seed.sources)"));
+		assert.match(source, /\$set:\s*missingFields,\s*\$inc:\s*\{\s*__v:\s*1\s*\}/);
 	});
 });

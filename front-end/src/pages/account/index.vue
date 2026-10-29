@@ -22,9 +22,20 @@ const roleCopy = computed(() => {
 const accountFacts = computed(() => {
 	if (!isLoggedIn.value || !currentAccount.value) return [];
 	return [
-		{ label: "Role", value: role.value === "admin" ? "Admin" : "Member" },
-		{ label: "Trust score", value: String(currentAccount.value.trustScore ?? 0) },
-		{ label: "Trust level", value: String(currentAccount.value.trustLevel ?? 0) },
+		{
+			label: "Role",
+			value: role.value === "admin"
+				? "Admin"
+				: "Member"
+		},
+		{
+			label: "Trust score",
+			value: String(currentAccount.value.trustScore ?? 0)
+		},
+		{
+			label: "Trust level",
+			value: String(currentAccount.value.trustLevel ?? 0)
+		},
 		{ label: "Expert status", value: currentAccount.value.expertiseStatus || "none" }
 	];
 });
@@ -36,7 +47,9 @@ const accountFacts = computed(() => {
 
 		<header class="account-header">
 			<div>
-				<p class="eyebrow">Account</p>
+				<p class="eyebrow">
+					Account
+				</p>
 				<h1>Manage your account and review access.</h1>
 				<p>{{ roleCopy }}</p>
 			</div>
@@ -60,7 +73,9 @@ const accountFacts = computed(() => {
 		<ExpertApplicationPanel />
 
 		<section v-if="canUseEditorial" class="next-step">
-			<p class="eyebrow">Editorial access</p>
+			<p class="eyebrow">
+				Editorial access
+			</p>
 			<h2>The editorial workspace handles intake routing and claim maintenance.</h2>
 			<p>
 				The public account page stays intentionally light. Draft claims, review queues, and moderation tools

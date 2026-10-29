@@ -74,7 +74,11 @@ export function decodeReaderUpdateCursor(value: string, now: Date) {
 }
 
 export function encodeReaderUpdateCursor(before: Date, id: string, asOf: Date) {
-	return Buffer.from(JSON.stringify({ before: before.toISOString(), id, asOf: asOf.toISOString() })).toString(
+	return Buffer.from(JSON.stringify({
+		before: before.toISOString(),
+		id,
+		asOf: asOf.toISOString()
+	})).toString(
 		"base64url"
 	);
 }

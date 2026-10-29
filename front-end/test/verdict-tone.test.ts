@@ -5,11 +5,24 @@ import { certaintyStep, verdictMix, verdictTone } from "../src/utils/verdict-ton
 describe("verdictTone", () => {
 	it("prefers the assessed evidence-landscape label", () => {
 		assert.equal(
-			verdictTone({ consensusBand: "strong", evidenceLandscape: { supportLabel: "active_expert_debate" } }),
+			verdictTone({
+				consensusBand: "strong",
+				evidenceLandscape: { supportLabel: "active_expert_debate" }
+			}),
 			"debate"
 		);
-		assert.equal(verdictTone({ evidenceLandscape: { supportLabel: "unsupported_fringe" } }), "against");
-		assert.equal(verdictTone({ evidenceLandscape: { supportLabel: "thin_evidence" } }), "unclear");
+		assert.equal(
+			verdictTone({
+				evidenceLandscape: { supportLabel: "unsupported_fringe" }
+			}),
+			"against"
+		);
+		assert.equal(
+			verdictTone({
+				evidenceLandscape: { supportLabel: "thin_evidence" }
+			}),
+			"unclear"
+		);
 	});
 
 	it("falls back to the consensus band", () => {
@@ -39,7 +52,9 @@ describe("verdictMix", () => {
 		const mix = verdictMix([
 			{ consensusBand: "mixed" },
 			{ consensusBand: "strong" },
-			{ evidenceLandscape: { supportLabel: "strong_consensus" } },
+			{
+				evidenceLandscape: { supportLabel: "strong_consensus" }
+			},
 			{ consensusBand: "unclear" }
 		]);
 		assert.deepEqual(

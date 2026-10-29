@@ -52,7 +52,7 @@ describe("research preparation and answer labels", () => {
 			new URL("../src/pages/consensus/[topicSlug]/[claimSlug].vue", import.meta.url),
 			"utf8"
 		);
-		assert.match(source, /author: \{\s*"@type": "Organization"/);
+		assert.match(source, /(?:"author"|author):\s*\{\s*"@type":\s*"Organization"/);
 		assert.doesNotMatch(source, /"@type": "Person"/);
 		assert.doesNotMatch(source, /claim\?\.editorSummary/);
 		assert.match(source, /Agreement: \{\{ claimMeta.verdict \}\}/);

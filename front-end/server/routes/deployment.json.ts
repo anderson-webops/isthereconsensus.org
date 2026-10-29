@@ -7,7 +7,9 @@ interface PublicDeploymentConfig {
 }
 
 function stringValue(value: unknown): string {
-	return typeof value === "string" ? value : "";
+	return typeof value === "string"
+		? value
+		: "";
 }
 
 export default defineEventHandler((event) => {

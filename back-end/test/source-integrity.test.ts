@@ -75,7 +75,9 @@ describe("source integrity observations", () => {
 	});
 
 	it("does not treat absent Crossref updates as proof of current status or clear an existing warning", () => {
-		const observation = parseCrossrefIntegrityResponse({ message: { items: [] } }, "10.1000/target");
+		const observation = parseCrossrefIntegrityResponse({
+			message: { items: [] }
+		}, "10.1000/target");
 		assert.equal(observation.outcome, "no_registered_update");
 		assert.equal(observation.suggestedStatus, undefined);
 		assert.equal(strongerCitationStatus("retracted", observation.suggestedStatus), "retracted");

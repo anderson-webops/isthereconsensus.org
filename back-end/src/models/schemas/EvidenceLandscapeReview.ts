@@ -36,7 +36,12 @@ export interface IEvidenceLandscapeReview {
 
 const evidenceLandscapeReviewSchema: Schema<IEvidenceLandscapeReview> = new Schema(
 	{
-		claimId: { type: Schema.Types.ObjectId, ref: "Claim", required: true, index: true },
+		claimId: {
+			type: Schema.Types.ObjectId,
+			ref: "Claim",
+			required: true,
+			index: true
+		},
 		action: {
 			type: String,
 			required: true,
@@ -57,10 +62,23 @@ const evidenceLandscapeReviewSchema: Schema<IEvidenceLandscapeReview> = new Sche
 		fromStatus: { type: String, default: "", trim: true },
 		toStatus: { type: String, default: "", trim: true },
 		actorId: { type: Schema.Types.ObjectId, required: true, index: true },
-		actorModel: { type: String, required: true, default: "User", enum: ["User", "Admin"] },
+		actorModel: {
+			type: String,
+			required: true,
+			default: "User",
+			enum: ["User", "Admin"]
+		},
 		reviewerId: { type: Schema.Types.ObjectId, ref: "User" },
-		notes: { type: String, default: "", trim: true, maxlength: 2000 },
-		changedFields: { type: [String], default: [] },
+		notes: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 2000
+		},
+		changedFields: {
+			type: [String],
+			default: []
+		},
 		snapshot: {
 			type: new Schema<IEvidenceLandscapeReview["snapshot"]>(
 				{

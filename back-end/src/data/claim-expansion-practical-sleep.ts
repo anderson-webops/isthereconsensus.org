@@ -186,8 +186,16 @@ function publication(
 	focus: string
 ): Pick<SeedClaim, "changeLog" | "readerAnnouncement" | "surveillanceSpec"> {
 	return {
-		changeLog: [{ date: checkedAt, kind: "publication", summary }],
-		readerAnnouncement: { id, date: checkedAt, kind: "new_review", bottomLineImpact: "new", summary },
+		changeLog: [
+			{ date: checkedAt, kind: "publication", summary }
+		],
+		readerAnnouncement: {
+			id,
+			date: checkedAt,
+			kind: "new_review",
+			bottomLineImpact: "new",
+			summary
+		},
 		surveillanceSpec: {
 			focus,
 			cadenceDays: 180,
@@ -270,7 +278,10 @@ export const sleepPracticalClaims: SeedClaim[] = [
 			"New review: brief behavioral insomnia care can help, but education-controlled trials do not establish equivalence to full CBT-I.",
 			"Brief behavioral insomnia therapy versus full CBT-I"
 		),
-		sources: [{ ...insomniaSources.guideline, isAnchor: true }, insomniaSources.brief]
+		sources: [
+			{ ...insomniaSources.guideline, isAnchor: true },
+			insomniaSources.brief
+		]
 	},
 	{
 		...reviewContext,
@@ -336,7 +347,10 @@ export const sleepPracticalClaims: SeedClaim[] = [
 			"New review: distinguish standalone stimulus control from its modeled contribution to a multicomponent insomnia treatment.",
 			"Stimulus control standalone insomnia randomized trials"
 		),
-		sources: [{ ...insomniaSources.guideline, isAnchor: true }, insomniaSources.components]
+		sources: [
+			{ ...insomniaSources.guideline, isAnchor: true },
+			insomniaSources.components
+		]
 	},
 	{
 		...reviewContext,

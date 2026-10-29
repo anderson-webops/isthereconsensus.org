@@ -18,7 +18,9 @@ import { verdictMix } from "~/utils/verdict-tone";
 const route = useRoute();
 const router = useRouter();
 const { apiUrl } = useApi();
-const search = ref(typeof route.query.q === "string" ? route.query.q : "");
+const search = ref(typeof route.query.q === "string"
+	? route.query.q
+	: "");
 const query = computed(() => search.value.trim().slice(0, 160));
 const requestedQuery = ref(query.value);
 const comparisonMatches = computed(() => searchComparisons(query.value));
@@ -38,7 +40,9 @@ const {
 	() => `claim-directory-${requestedQuery.value}`,
 	() => {
 		const request = directoryRequests.begin();
-		const searchSuffix = requestedQuery.value ? `&q=${encodeURIComponent(requestedQuery.value)}` : "";
+		const searchSuffix = requestedQuery.value
+			? `&q=${encodeURIComponent(requestedQuery.value)}`
+			: "";
 		return loadCompleteClaimDirectory((page, pageSize) =>
 			$fetch<ClaimsResponse>(apiUrl(`/claims?limit=${pageSize}&page=${page}${searchSuffix}`), {
 				signal: request.signal
@@ -84,11 +88,11 @@ const fallbackTopics = computed<Topic[]>(() =>
 	}))
 );
 const pageTitle = "Browse scientific consensus topics - Is There Consensus?";
-const pageDescription =
-	"Search the public topic directory for reviewed scientific claims, evidence summaries, uncertainty notes, and source trails.";
+const pageDescription
+	= "Search the public topic directory for reviewed scientific claims, evidence summaries, uncertainty notes, and source trails.";
 const pageUrl = `${siteUrl}/consensus`;
 const directoryTopics = computed<Topic[]>(() => {
-	const apiTopicsBySlug = new Map(topics.value.map((topic) => [topic.slug, topic]));
+	const apiTopicsBySlug = new Map(topics.value.map(topic => [topic.slug, topic]));
 	const seen = new Set<string>();
 	const mergedTopics = fallbackTopics.value.map((fallbackTopic) => {
 		seen.add(fallbackTopic.slug);
@@ -106,15 +110,19 @@ const directoryTopics = computed<Topic[]>(() => {
 });
 const enrichedTopics = computed(() =>
 	directoryTopics.value
-		.map((topic) => ({
+		.map(topic => ({
 			...topic,
 			guide: getTopicGuide(topic.slug)
 		}))
 		.sort((left, right) => {
 			const leftIndex = starterOrder.indexOf(left.slug);
 			const rightIndex = starterOrder.indexOf(right.slug);
-			const leftRank = leftIndex === -1 ? starterOrder.length : leftIndex;
-			const rightRank = rightIndex === -1 ? starterOrder.length : rightIndex;
+			const leftRank = leftIndex === -1
+				? starterOrder.length
+				: leftIndex;
+			const rightRank = rightIndex === -1
+				? starterOrder.length
+				: rightIndex;
 			return leftRank - rightRank || left.title.localeCompare(right.title);
 		})
 );
@@ -130,28 +138,28 @@ const claims = computed(() =>
 const directoryStructuredData = computed(() => ({
 	"@context": "https://schema.org",
 	"@type": "CollectionPage",
-	description: pageDescription,
-	isPartOf: {
+	"description": pageDescription,
+	"isPartOf": {
 		"@type": "WebSite",
-		name: appName,
-		url: siteUrl
+		"name": appName,
+		"url": siteUrl
 	},
-	mainEntity: {
+	"mainEntity": {
 		"@type": "ItemList",
-		itemListElement: enrichedTopics.value.map((topic, index) => ({
+		"itemListElement": enrichedTopics.value.map((topic, index) => ({
 			"@type": "ListItem",
-			position: index + 1,
-			name: topic.title,
-			url: `${pageUrl}/${topic.slug}`
+			"position": index + 1,
+			"name": topic.title,
+			"url": `${pageUrl}/${topic.slug}`
 		}))
 	},
-	name: "Scientific consensus topic directory",
-	publisher: {
+	"name": "Scientific consensus topic directory",
+	"publisher": {
 		"@type": "Organization",
-		name: appName,
-		url: siteUrl
+		"name": appName,
+		"url": siteUrl
 	},
-	url: pageUrl
+	"url": pageUrl
 }));
 
 useSeoMeta({
@@ -196,7 +204,9 @@ watchDebounced(
 		if (requestedQuery.value === value) void refreshClaims();
 		else requestedQuery.value = value;
 		router.replace({
-			query: value ? { q: value } : undefined
+			query: value
+				? { q: value }
+				: undefined
 		});
 	},
 	settledSearchWatchOptions
@@ -205,12 +215,14 @@ watchDebounced(
 watch(
 	() => route.query.q,
 	(value) => {
-		search.value = typeof value === "string" ? value : "";
+		search.value = typeof value === "string"
+			? value
+			: "";
 	}
 );
 const filteredTopics = computed(() =>
 	enrichedTopics.value.filter((topic) => {
-		if (!query.value || claims.value.some((claim) => claim.topic?.slug === topic.slug)) return true;
+		if (!query.value || claims.value.some(claim => claim.topic?.slug === topic.slug)) return true;
 		return matchesSearchQuery(query.value, [topic.title, topic.description]);
 	})
 );
@@ -219,12 +231,18 @@ const topicVerdictMixes = computed(() => {
 	for (const claim of claimsData.value?.claims ?? []) {
 		const slug = claim.topic?.slug;
 		if (!slug) continue;
-		claimsByTopic.set(slug, [...(claimsByTopic.get(slug) ?? []), claim]);
+		claimsByTopic.set(slug, [
+			...(claimsByTopic.get(slug) ?? []),
+			claim
+		]);
 	}
-	return new Map([...claimsByTopic].map(([slug, topicClaims]) => [slug, verdictMix(topicClaims)]));
+	return new Map([...claimsByTopic].map(([slug, topicClaims]) => [
+		slug,
+		verdictMix(topicClaims)
+	]));
 });
 const filteredClaims = computed(() =>
-	claims.value.filter((claim) => claimBand.value === "all" || claim.consensusBand === claimBand.value)
+	claims.value.filter(claim => claimBand.value === "all" || claim.consensusBand === claimBand.value)
 );
 const visibleClaims = computed(() => filteredClaims.value.slice(0, visibleClaimCount.value));
 const remainingClaimCount = computed(() => Math.max(filteredClaims.value.length - visibleClaims.value.length, 0));
@@ -290,9 +308,11 @@ watch([query, claimBand], () => {
 					type="search"
 					placeholder="Try caffeine, vaccines, climate, sleep..."
 					maxlength="160"
-				/>
+				>
 			</div>
-			<p class="results-count" aria-live="polite">{{ resultsCountLabel }}</p>
+			<p class="results-count" aria-live="polite">
+				{{ resultsCountLabel }}
+			</p>
 		</section>
 
 		<section v-if="!query" id="topic-directory" class="results-block topic-directory">
@@ -347,7 +367,9 @@ watch([query, claimBand], () => {
 		<details id="reviewed-claims" class="results-block claim-directory" :open="hasActiveDirectoryFilter">
 			<summary class="claim-directory__summary">
 				<div>
-					<p class="eyebrow">Reviewed claims</p>
+					<p class="eyebrow">
+						Reviewed claims
+					</p>
 					<h2>
 						{{
 							hasActiveDirectoryFilter
@@ -361,7 +383,9 @@ watch([query, claimBand], () => {
 
 			<div class="claim-directory__body">
 				<div class="claim-filter">
-					<p class="field-label">Filter claims by consensus</p>
+					<p class="field-label">
+						Filter claims by consensus
+					</p>
 					<div class="filter-stack" aria-label="Filter reviewed claims by consensus">
 						<button
 							type="button"
@@ -411,7 +435,9 @@ watch([query, claimBand], () => {
 				</div>
 				<div v-else-if="claimsFailed" class="empty-state" role="alert">
 					<p>Unable to load reviewed claims. Please try again.</p>
-					<button class="empty-state__action" type="button" @click="refreshClaims()">Try again</button>
+					<button class="empty-state__action" type="button" @click="refreshClaims()">
+						Try again
+					</button>
 				</div>
 				<div v-else-if="!filteredClaims.length" class="empty-state">
 					<p>No reviewed claims match that search and consensus filter.</p>

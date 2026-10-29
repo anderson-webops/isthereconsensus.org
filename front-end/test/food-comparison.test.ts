@@ -19,7 +19,7 @@ describe("food-storage comparison", () => {
 				assert.equal(estimateForSelection(option, outcome, comparison.contexts[0]!), undefined);
 				const finding = findingForSelection(option, outcome, comparison.contexts[0]!)!;
 				assert.ok(finding);
-				for (const id of finding.sourceIds) assert.ok(comparison.sources.some((source) => source.id === id));
+				for (const id of finding.sourceIds) assert.ok(comparison.sources.some(source => source.id === id));
 			}
 		}
 	});
@@ -34,16 +34,22 @@ describe("food-storage comparison", () => {
 		}
 	});
 	it("supports discovery, sharing and a substantive publication announcement", () => {
-		for (const query of ["food storage", "freezing", "reheating", "vacuum sealing", "smell"]) {
+		for (const query of [
+			"food storage",
+			"freezing",
+			"reheating",
+			"vacuum sealing",
+			"smell"
+		]) {
 			assert.ok(
-				searchComparisons(query).some((result) => result.slug === comparison.slug),
+				searchComparisons(query).some(result => result.slug === comparison.slug),
 				query
 			);
 		}
 		const selection = resolveComparisonSelection(comparison, { outcome: "limits", options: "freeze,reheat" });
 		assert.equal(selection.outcome.id, "limits");
 		assert.deepEqual(
-			selection.options.map((option) => option.id),
+			selection.options.map(option => option.id),
 			["freeze", "reheat"]
 		);
 		assert.equal(comparisonHistory(comparison, new Date("2026-09-13T00:00:00Z")).length, 1);

@@ -87,7 +87,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Community guidelines' }]" />
 
 		<header class="guidelines-header">
-			<p class="eyebrow">Community guidelines</p>
+			<p class="eyebrow">
+				Community guidelines
+			</p>
 			<h1>Rules for public discussion, flags, and moderation.</h1>
 			<p>
 				Public discussion is most useful when it clarifies a claim, surfaces credible sources, or identifies a
@@ -108,7 +110,9 @@ useStaticPageMeta({
 				<p>Good threads help the review process stay clear; poor threads add noise.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in conductRules" :key="item">{{ item }}</li>
+				<li v-for="item in conductRules" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -118,7 +122,9 @@ useStaticPageMeta({
 				<p>Choose the smallest accurate category so moderators can act quickly and consistently.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in flagReasons" :key="item">{{ item }}</li>
+				<li v-for="item in flagReasons" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -141,7 +147,9 @@ useStaticPageMeta({
 				<p>Some topics need narrower participation rules so discussion stays useful.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in highConflictControls" :key="item">{{ item }}</li>
+				<li v-for="item in highConflictControls" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -151,7 +159,9 @@ useStaticPageMeta({
 				<p>Conduct disputes and factual disputes need different workflows.</p>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in appeals" :key="item">{{ item }}</li>
+				<li v-for="item in appeals" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<p>
@@ -163,7 +173,9 @@ useStaticPageMeta({
 
 		<section class="guidelines-callout">
 			<div>
-				<p class="eyebrow">Related pages</p>
+				<p class="eyebrow">
+					Related pages
+				</p>
 				<h2>Choose the right path for the problem.</h2>
 				<p>
 					Send factual problems to corrections, enforcement questions to moderation, and publishing-standard

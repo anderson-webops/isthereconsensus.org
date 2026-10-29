@@ -23,7 +23,8 @@ export function readGitValue(repoRoot, args) {
 			encoding: "utf8",
 			stdio: ["ignore", "pipe", "ignore"]
 		}).trim();
-	} catch {
+	}
+	catch {
 		return "";
 	}
 }
@@ -34,8 +35,11 @@ export function readBuildId(outputDir) {
 
 	try {
 		const latestBuild = JSON.parse(readFileSync(latestBuildPath, "utf8"));
-		return typeof latestBuild?.id === "string" ? latestBuild.id : "";
-	} catch {
+		return typeof latestBuild?.id === "string"
+			? latestBuild.id
+			: "";
+	}
+	catch {
 		return "";
 	}
 }
@@ -51,19 +55,19 @@ export function buildDeploymentMetadata({
 		runtime: "nuxt-ssr",
 		buildId: readBuildId(outputDir),
 		commit:
-			env.SOURCE_COMMIT ||
-			env.SOURCE_VERSION ||
-			env.GITHUB_SHA ||
-			env.VERCEL_GIT_COMMIT_SHA ||
-			env.COMMIT_SHA ||
-			env.BUILD_SHA ||
-			readGitValue(repoRoot, ["rev-parse", "--short=12", "HEAD"]),
+			env.SOURCE_COMMIT
+			|| env.SOURCE_VERSION
+			|| env.GITHUB_SHA
+			|| env.VERCEL_GIT_COMMIT_SHA
+			|| env.COMMIT_SHA
+			|| env.BUILD_SHA
+			|| readGitValue(repoRoot, ["rev-parse", "--short=12", "HEAD"]),
 		ref:
-			env.SOURCE_TAG ||
-			env.RELEASE_VERSION ||
-			env.GITHUB_REF_NAME ||
-			env.BRANCH_NAME ||
-			readGitValue(repoRoot, ["describe", "--tags", "--exact-match"]),
+			env.SOURCE_TAG
+			|| env.RELEASE_VERSION
+			|| env.GITHUB_REF_NAME
+			|| env.BRANCH_NAME
+			|| readGitValue(repoRoot, ["describe", "--tags", "--exact-match"]),
 		siteUrl: env.PUBLIC_SITE_URL || "https://isthereconsensus.org"
 	};
 }

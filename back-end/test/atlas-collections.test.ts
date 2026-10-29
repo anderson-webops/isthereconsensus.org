@@ -12,8 +12,8 @@ import { defaultTopics } from "../src/data/topics.js";
 
 describe("evidence atlas collections", () => {
 	it("references real claims in the correct topic without orphaning configured topics", () => {
-		const topicSlugs = new Set(defaultTopics.map(topic => topic.slug));
-		const configuredTopicSlugs = new Set(atlasCollections.map(collection => collection.topicSlug));
+		const topicSlugs = new Set<string>(defaultTopics.map(topic => topic.slug));
+		const configuredTopicSlugs = new Set<string>(atlasCollections.map(collection => collection.topicSlug));
 		const collectionKeys = new Set<string>();
 		for (const topicSlug of [
 			"agriculture-and-food-systems",

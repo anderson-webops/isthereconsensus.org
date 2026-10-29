@@ -11,13 +11,19 @@ import { serializeJsonLd } from "~/utils/json-ld";
 
 // Remount when navigating between guides so body, source anchors, and metadata
 // move together, including browser back/forward and unknown slugs.
-definePageMeta({ key: (route) => route.path });
+definePageMeta({
+	key: route => route.path
+});
 const route = useRoute();
 const routeParams = route.params as Record<string, string | string[] | undefined>;
-const routeSlug = Array.isArray(routeParams.slug) ? routeParams.slug[0] : routeParams.slug;
+const routeSlug = Array.isArray(routeParams.slug)
+	? routeParams.slug[0]
+	: routeParams.slug;
 const slug = String(routeSlug || "");
-const summary = readingGuides.find((guide) => guide.slug === slug);
-const guide = summary ? await loadReadingGuide(slug) : undefined;
+const summary = readingGuides.find(guide => guide.slug === slug);
+const guide = summary
+	? await loadReadingGuide(slug)
+	: undefined;
 if (!summary || !guide) throw createError({ statusCode: 404, statusMessage: "Reading guide not found" });
 
 const { apiUrl } = useApi();
@@ -28,29 +34,33 @@ const {
 } = await useAsyncData(
 	`guide-review-availability:${slug}`,
 	() =>
-		loadGuideReviewAvailability(summary.reviews, (topic) =>
+		loadGuideReviewAvailability(summary.reviews, topic =>
 			$fetch<unknown>(apiUrl(`/topics/${topic}/claims`), { timeout: 5000, retry: 0 })
 		),
-	{ default: () => summary.reviews.map((review) => ({ ...review, availability: "unavailable" as const })) }
+	{
+		default: () => summary.reviews.map(review => ({ ...review, availability: "unavailable" as const }))
+	}
 );
-const fallbackReviews: AvailableGuideReview[] = summary.reviews.map((review) => ({
+const fallbackReviews: AvailableGuideReview[] = summary.reviews.map(review => ({
 	...review,
 	availability: "unavailable"
 }));
 const reviewsForDisplay = computed<AvailableGuideReview[]>(() =>
-	Array.isArray(connectedReviews.value) ? connectedReviews.value : fallbackReviews
+	Array.isArray(connectedReviews.value)
+		? connectedReviews.value
+		: fallbackReviews
 );
 const checkingReviews = computed(() => connectedStatus.value === "pending");
 const hasUnavailableReviews = computed(() =>
-	reviewsForDisplay.value.some((review) => review.availability === "unavailable")
+	reviewsForDisplay.value.some(review => review.availability === "unavailable")
 );
 const hasUnpublishedReviews = computed(() =>
-	reviewsForDisplay.value.some((review) => review.availability === "not_published")
+	reviewsForDisplay.value.some(review => review.availability === "not_published")
 );
 
 const guideText = guide.sections
-	.flatMap((section) => section.paragraphs)
-	.map((paragraph) => paragraph.text)
+	.flatMap(section => section.paragraphs)
+	.map(paragraph => paragraph.text)
 	.join(" ");
 const readingMinutes = Math.max(1, Math.ceil(guideText.split(/\s+/).length / 200));
 const checkedDate = new Date(`${summary.checkedAt}T12:00:00Z`).toLocaleDateString("en-US", {
@@ -60,7 +70,7 @@ const checkedDate = new Date(`${summary.checkedAt}T12:00:00Z`).toLocaleDateStrin
 	timeZone: "UTC"
 });
 const sourceNumbers = new Map(guide.sources.map((source, index) => [source.id, index + 1]));
-const sourceTitles = new Map(guide.sources.map((source) => [source.id, source.title]));
+const sourceTitles = new Map(guide.sources.map(source => [source.id, source.title]));
 
 useStaticPageMeta({
 	title: `${summary.title} - Is There Consensus?`,
@@ -75,12 +85,12 @@ useHead({
 			innerHTML: serializeJsonLd({
 				"@context": "https://schema.org",
 				"@type": "Article",
-				headline: summary.title,
-				description: summary.summary,
-				url: `${siteUrl}/guides/${slug}`,
-				dateModified: summary.checkedAt,
-				inLanguage: "en",
-				citation: guide.sources.map((source) => source.url)
+				"headline": summary.title,
+				"description": summary.summary,
+				"url": `${siteUrl}/guides/${slug}`,
+				"dateModified": summary.checkedAt,
+				"inLanguage": "en",
+				"citation": guide.sources.map(source => source.url)
 			})
 		}
 	]
@@ -93,16 +103,22 @@ useHead({
 			:items="[{ label: 'Home', to: '/' }, { label: 'Reading guides', to: '/guides' }, { label: summary.title }]"
 		/>
 		<header class="reading-guide__header">
-			<p class="eyebrow">Reading guide</p>
+			<p class="eyebrow">
+				Reading guide
+			</p>
 			<h1>{{ summary.title }}</h1>
-			<p class="reading-guide__description">{{ summary.summary }}</p>
+			<p class="reading-guide__description">
+				{{ summary.summary }}
+			</p>
 			<p class="reading-guide__meta">
 				{{ readingMinutes }} min read <span aria-hidden="true">·</span> Sources checked
 				<time :datetime="summary.checkedAt">{{ checkedDate }}</time>
 			</p>
 		</header>
 		<section class="guide-takeaway" aria-labelledby="guide-takeaway-title">
-			<h2 id="guide-takeaway-title">The short answer</h2>
+			<h2 id="guide-takeaway-title">
+				The short answer
+			</h2>
 			<p>{{ guide.takeaway }}</p>
 		</section>
 		<ComparisonLinks :comparisons="comparisonsForGuide(`/guides/${slug}`)" />
@@ -118,7 +134,9 @@ useHead({
 				</ol>
 			</nav>
 		</details>
-		<p class="guide-scope">{{ guide.scope }}</p>
+		<p class="guide-scope">
+			{{ guide.scope }}
+		</p>
 		<section
 			v-for="section in guide.sections"
 			:id="section.id"
@@ -126,7 +144,9 @@ useHead({
 			class="guide-section"
 			:aria-labelledby="`${section.id}-title`"
 		>
-			<h2 :id="`${section.id}-title`">{{ section.title }}</h2>
+			<h2 :id="`${section.id}-title`">
+				{{ section.title }}
+			</h2>
 			<p v-for="(paragraph, index) in section.paragraphs" :key="index">
 				{{ paragraph.text }}
 				<span v-if="paragraph.sources.length" class="guide-citations">
@@ -135,20 +155,27 @@ useHead({
 						:key="id"
 						:href="`#source-${id}`"
 						:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
-						>[{{ sourceNumbers.get(id) }}]</a
-					>
+					>[{{ sourceNumbers.get(id) }}]</a>
 				</span>
 			</p>
 		</section>
 		<section class="guide-section guide-questions" aria-labelledby="guide-questions-title">
-			<h2 id="guide-questions-title">Questions to take with you</h2>
+			<h2 id="guide-questions-title">
+				Questions to take with you
+			</h2>
 			<ul>
-				<li v-for="question in guide.questions" :key="question">{{ question }}</li>
+				<li v-for="question in guide.questions" :key="question">
+					{{ question }}
+				</li>
 			</ul>
 		</section>
 		<section id="connected-reviews" class="guide-section" aria-labelledby="connected-reviews-title">
-			<h2 id="connected-reviews-title">Read the individual claim reviews</h2>
-			<p v-if="checkingReviews" role="status">Checking connected review availability…</p>
+			<h2 id="connected-reviews-title">
+				Read the individual claim reviews
+			</h2>
+			<p v-if="checkingReviews" role="status">
+				Checking connected review availability…
+			</p>
 			<div v-else-if="hasUnavailableReviews || hasUnpublishedReviews" role="status">
 				<p v-if="hasUnavailableReviews">
 					Some connected review availability could not be verified. The guide and its sources remain
@@ -177,14 +204,15 @@ useHead({
 									: review.availability === "not_published"
 										? "Not currently published"
 										: "Availability not verified"
-							}}</span
-						>
+							}}</span>
 					</template>
 				</li>
 			</ul>
 		</section>
 		<section id="guide-sources" class="guide-section" aria-labelledby="guide-sources-title">
-			<h2 id="guide-sources-title">Sources and their limits</h2>
+			<h2 id="guide-sources-title">
+				Sources and their limits
+			</h2>
 			<p class="guide-scope">
 				Sources are linked beside the relevant explanations. Notes distinguish full guidance pages from research
 				abstracts; inclusion does not imply endorsement by the source's authors.
@@ -192,7 +220,9 @@ useHead({
 			<ol class="guide-source-list">
 				<li v-for="source in guide.sources" :id="`source-${source.id}`" :key="source.id">
 					<a :href="source.url" rel="noopener noreferrer">{{ source.title }}</a>
-					<p class="guide-source-kind">{{ source.kind }}</p>
+					<p class="guide-source-kind">
+						{{ source.kind }}
+					</p>
 					<p>{{ source.note }}</p>
 				</li>
 			</ol>

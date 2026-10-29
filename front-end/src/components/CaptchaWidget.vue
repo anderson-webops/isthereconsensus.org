@@ -1,9 +1,9 @@
 <script setup lang="ts">
 interface TurnstileOptions {
-	sitekey: string;
-	theme?: "light" | "dark";
-	size?: "normal" | "compact";
-	callback?: (token: string) => void;
+	"sitekey": string;
+	"theme"?: "light" | "dark";
+	"size"?: "normal" | "compact";
+	"callback"?: (token: string) => void;
 	"expired-callback"?: () => void;
 	"error-callback"?: () => void;
 }
@@ -36,7 +36,9 @@ const emit = defineEmits<{
 const config = useRuntimeConfig();
 const colorMode = useColorMode();
 const siteKey = config.public.captchaSiteKey as string;
-const resolvedTheme = computed<"light" | "dark">(() => props.theme || (colorMode.value === "dark" ? "dark" : "light"));
+const resolvedTheme = computed<"light" | "dark">(() => props.theme || (colorMode.value === "dark"
+	? "dark"
+	: "light"));
 
 const containerId = `turnstile-${Math.random().toString(36).slice(2, 10)}`;
 const widgetId = ref<string | null>(null);
@@ -68,10 +70,10 @@ function renderWidget() {
 	const container = document.getElementById(containerId);
 	if (!container) return;
 	widgetId.value = window.turnstile.render(container, {
-		sitekey: siteKey,
-		theme: resolvedTheme.value,
-		size: props.size,
-		callback: (token) => emit("update:modelValue", token),
+		"sitekey": siteKey,
+		"theme": resolvedTheme.value,
+		"size": props.size,
+		"callback": token => emit("update:modelValue", token),
 		"expired-callback": () => emit("update:modelValue", ""),
 		"error-callback": () => emit("update:modelValue", "")
 	});
@@ -95,7 +97,8 @@ onMounted(async () => {
 	try {
 		await loadScript();
 		renderWidget();
-	} catch {
+	}
+	catch {
 		isReady.value = true;
 	}
 });
@@ -118,10 +121,14 @@ watch(resolvedTheme, async (theme, previousTheme) => {
 
 <template>
 	<div class="captcha">
-		<div v-if="!hasSiteKey" class="captcha__note">Captcha is currently disabled.</div>
+		<div v-if="!hasSiteKey" class="captcha__note">
+			Captcha is currently disabled.
+		</div>
 		<div v-else>
 			<div :id="containerId" class="captcha__widget" />
-			<p v-if="!isReady" class="captcha__note">Loading captcha…</p>
+			<p v-if="!isReady" class="captcha__note">
+				Loading captcha…
+			</p>
 		</div>
 	</div>
 </template>

@@ -6,7 +6,7 @@ uses direct Node services behind the existing dual-stack edge.
 ## Source and artifact identity
 
 Stable releases come from clean annotated `v1.x.y` tags on reviewed main.
-The Linux ARM64/glibc build uses Node 24.18.1 and npm 12.0.2. The application
+The Linux ARM64/glibc build uses Node 24.22.1 and npm 12.2.1. The application
 host profile is declared separately in `deploy/host-contract.json`; it retains
 Node 24.22.1 and the `consensus-native` adapter boundary.
 

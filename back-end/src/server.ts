@@ -9,7 +9,7 @@ import type {
 	IClaimSurveillanceSpec,
 	IClaimUncertaintyDriver
 } from "./models/schemas/Claim.js";
-import type { ClaimSourceKind, ClaimSourceStance, IClaimSourceEvidenceProfile } from "./models/schemas/ClaimSource.js";
+import type { ClaimSourceKind, ClaimSourceStance, IClaimSource, IClaimSourceEvidenceProfile } from "./models/schemas/ClaimSource.js";
 import type { IExpertApplication } from "./models/schemas/ExpertApplication.js";
 import type { IQuestion } from "./models/schemas/Question.js";
 import type { ISourceIntegrityCheck } from "./models/schemas/SourceIntegrityCheck.js";
@@ -130,6 +130,25 @@ import "dotenv/config";
 const whitespacePattern = /\s+/;
 const normalizeQuestionPattern = /[^\p{L}\p{N}\s]/gu;
 
+function validatedSessionSecret(isProd: boolean, diagnosticsEnabled: boolean, internalDiagnosticsKey: string | undefined) {
+	const SESSION_SECRET = env.SESSION_SECRET;
+	if (!SESSION_SECRET) throw new Error("Missing SESSION_SECRET");
+	if (isProd && (SESSION_SECRET.length < 32 || /SECRET_VALUE_HERE|change.?me/i.test(SESSION_SECRET))) {
+		throw new Error("SESSION_SECRET must be a unique production secret of at least 32 characters.");
+	}
+	if (isProd && !env.CAPTCHA_SECRET) throw new Error("CAPTCHA_SECRET is required in production.");
+	if (isProd && diagnosticsEnabled && (!internalDiagnosticsKey || internalDiagnosticsKey.length < 32)) {
+		throw new Error("Enabled production diagnostics require INTERNAL_DIAGNOSTICS_KEY of at least 32 characters.");
+	}
+	assertDistinctProductionSecrets(isProd, {
+		CAPTCHA_SECRET: env.CAPTCHA_SECRET,
+		INTERNAL_DIAGNOSTICS_KEY: diagnosticsEnabled ? internalDiagnosticsKey : undefined,
+		SESSION_SECRET,
+		VAULT_SECRET_ID: env.VAULT_SECRET_ID
+	});
+	return SESSION_SECRET;
+}
+
 async function main() {
 	const app = express();
 	const searchPublicClaims = createPublicClaimSearch({ socketPath: env.SEARCH_WORKER_SOCKET });
@@ -138,7 +157,9 @@ async function main() {
 		const sourceCountMap = await loadClaimSourceReadinessCountMap(claims.map(claim => claim._id));
 		const searchableClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap)).map(claim => ({
 			...claim,
-			topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+			topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
+				? claim.topic.slug
+				: ""
 		}));
 		return { searchableClaims, sourceCountMap };
 	};
@@ -164,28 +185,14 @@ async function main() {
 			if (connection.readyState !== 1 || !connection.db) {
 				return false;
 			}
-			await connection.db.command({ ping: 1, maxTimeMS: 2_000 }, { signal: AbortSignal.timeout(2_000) });
+			await connection.db.command({ ping: 1, maxTimeMS: 2_000 }, {
+				signal: AbortSignal.timeout(2_000)
+			});
 			return true;
 		})
 	);
 
-	const SESSION_SECRET = env.SESSION_SECRET;
-	if (!SESSION_SECRET) throw new Error("Missing SESSION_SECRET");
-	if (isProd && (SESSION_SECRET.length < 32 || /SECRET_VALUE_HERE|change.?me/i.test(SESSION_SECRET))) {
-		throw new Error("SESSION_SECRET must be a unique production secret of at least 32 characters.");
-	}
-	if (isProd && !env.CAPTCHA_SECRET) {
-		throw new Error("CAPTCHA_SECRET is required in production.");
-	}
-	if (isProd && diagnosticsEnabled && (!internalDiagnosticsKey || internalDiagnosticsKey.length < 32)) {
-		throw new Error("Enabled production diagnostics require INTERNAL_DIAGNOSTICS_KEY of at least 32 characters.");
-	}
-	assertDistinctProductionSecrets(isProd, {
-		CAPTCHA_SECRET: env.CAPTCHA_SECRET,
-		INTERNAL_DIAGNOSTICS_KEY: diagnosticsEnabled ? internalDiagnosticsKey : undefined,
-		SESSION_SECRET,
-		VAULT_SECRET_ID: env.VAULT_SECRET_ID
-	});
+	const SESSION_SECRET = validatedSessionSecret(isProd, diagnosticsEnabled, internalDiagnosticsKey);
 
 	app.use(express.json({
 		inflate: false,
@@ -337,9 +344,16 @@ async function main() {
 		});
 		if (!allowed) {
 			res
-				.status(isProd && !diagnosticsEnabled ? 404 : 403)
+				.status(isProd && !diagnosticsEnabled
+					? 404
+					: 403)
 				.set("Cache-Control", "no-store")
-				.json({ ok: false, error: isProd && !diagnosticsEnabled ? "not_found" : "forbidden" });
+				.json({
+					ok: false,
+					error: isProd && !diagnosticsEnabled
+						? "not_found"
+						: "forbidden"
+				});
 		}
 		return allowed;
 	}
@@ -378,9 +392,15 @@ async function main() {
 		]);
 		await seedTopics();
 		await seedClaims({ synchronizeExisting: seedContentMode === "sync" });
-		console.log(`Seed content mode: ${seedContentMode === "sync" ? "synchronize existing" : "insert only"}.`);
+		console.log(`Seed content mode: ${seedContentMode === "sync"
+			? "synchronize existing"
+			: "insert only"}.`);
 	}
-	await Question.updateMany({ routingStatus: { $exists: false } }, { $set: { routingStatus: "unassigned" } });
+	await Question.updateMany({
+		routingStatus: { $exists: false }
+	}, {
+		$set: { routingStatus: "unassigned" }
+	});
 
 	const api = express.Router();
 	api.use("/library", createReaderLibraryRouter());
@@ -392,16 +412,22 @@ async function main() {
 		if (typeof value !== "string") return "";
 		const trimmed = value.trim();
 		if (!trimmed) return "";
-		return trimmed.length > maxLength ? trimmed.slice(0, maxLength).trim() : trimmed;
+		return trimmed.length > maxLength
+			? trimmed.slice(0, maxLength).trim()
+			: trimmed;
 	}
 
 	function normalizeList(value: unknown, maxItems: number, maxLength: number) {
 		if (!Array.isArray(value)) return [];
 		return value
-			.map(item => (typeof item === "string" ? item.trim() : ""))
+			.map(item => (typeof item === "string"
+				? item.trim()
+				: ""))
 			.filter(Boolean)
 			.slice(0, maxItems)
-			.map(item => (item.length > maxLength ? item.slice(0, maxLength).trim() : item));
+			.map(item => (item.length > maxLength
+				? item.slice(0, maxLength).trim()
+				: item));
 	}
 
 	function normalizeBoolean(value: unknown) {
@@ -442,7 +468,9 @@ async function main() {
 
 	function invalidateEvidenceLandscapeApproval(claim: Pick<IClaim, "evidenceLandscape">) {
 		const workflow = claim.evidenceLandscape.workflow;
-		workflow.status = workflow.status === "changes_requested" ? "changes_requested" : "draft";
+		workflow.status = workflow.status === "changes_requested"
+			? "changes_requested"
+			: "draft";
 		workflow.reviewedById = undefined;
 		workflow.approvedById = undefined;
 		workflow.publishedAt = undefined;
@@ -512,13 +540,17 @@ async function main() {
 	}
 
 	function normalizeReviewMode(value: unknown) {
-		return normalizeText(value, 24) === "living" ? "living" : "standard";
+		return normalizeText(value, 24) === "living"
+			? "living"
+			: "standard";
 	}
 
 	function normalizeDate(value: unknown) {
 		if (!value) return undefined;
 		const date = new Date(String(value));
-		return Number.isNaN(date.getTime()) ? undefined : date;
+		return Number.isNaN(date.getTime())
+			? undefined
+			: date;
 	}
 
 	function normalizeInteger(value: unknown, min: number, max: number, fallback: number) {
@@ -586,7 +618,9 @@ async function main() {
 		return value
 			.slice(0, 10)
 			.map((item) => {
-				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const record = typeof item === "object" && item
+					? (item as Record<string, unknown>)
+					: {};
 				const question = normalizeText(record.question, 240);
 				const finding = normalizeText(record.finding, 1200);
 				if (!question || !finding) return null;
@@ -596,7 +630,9 @@ async function main() {
 					finding,
 					effectDirection: normalizeEvidenceDirection(record.effectDirection),
 					magnitude: normalizeText(record.magnitude, 280),
-					certainty: record.certainty ? normalizeEvidenceCertainty(record.certainty) : undefined,
+					certainty: record.certainty
+						? normalizeEvidenceCertainty(record.certainty)
+						: undefined,
 					limitations: normalizeList(record.limitations, 6, 240)
 				};
 			})
@@ -608,7 +644,9 @@ async function main() {
 		return value
 			.slice(0, 6)
 			.map((item) => {
-				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const record = typeof item === "object" && item
+					? (item as Record<string, unknown>)
+					: {};
 				const detail = normalizeText(record.detail, 280);
 				if (!detail) return null;
 				return {
@@ -624,7 +662,9 @@ async function main() {
 		return value
 			.slice(0, 8)
 			.map((item) => {
-				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const record = typeof item === "object" && item
+					? (item as Record<string, unknown>)
+					: {};
 				const name = normalizeText(record.name, 160);
 				const role = normalizeText(record.role, 280);
 				if (!name || !role) return null;
@@ -634,7 +674,9 @@ async function main() {
 	}
 
 	function normalizeSurveillanceSpec(value: unknown): IClaimSurveillanceSpec {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		const cadenceCandidate = Number(record.cadenceDays);
 		return {
 			focus: normalizeText(record.focus, 1000),
@@ -655,11 +697,15 @@ async function main() {
 		fallback: T[number]
 	): T[number] {
 		const normalized = normalizeText(value, 80);
-		return (allowed as readonly string[]).includes(normalized) ? (normalized as T[number]) : fallback;
+		return (allowed as readonly string[]).includes(normalized)
+			? (normalized as T[number])
+			: fallback;
 	}
 
 	function normalizeEvidenceLandscapeBoolean(value: unknown, fallback: boolean) {
-		return value === undefined ? fallback : normalizeBoolean(value);
+		return value === undefined
+			? fallback
+			: normalizeBoolean(value);
 	}
 
 	function normalizeEvidenceLandscapeText(
@@ -668,23 +714,31 @@ async function main() {
 		maxLength: number,
 		fallback = ""
 	) {
-		return Object.hasOwn(record, key) ? normalizeText(record[key], maxLength) : fallback;
+		return Object.hasOwn(record, key)
+			? normalizeText(record[key], maxLength)
+			: fallback;
 	}
 
 	function normalizeOptionalObjectId(value: unknown, fallback?: mongoose.Types.ObjectId) {
 		const raw = normalizeText(value, 40);
-		return mongoose.Types.ObjectId.isValid(raw) ? new mongoose.Types.ObjectId(raw) : fallback;
+		return mongoose.Types.ObjectId.isValid(raw)
+			? new mongoose.Types.ObjectId(raw)
+			: fallback;
 	}
 
 	function normalizeLandscapeScore(value: unknown, fallback?: number | null) {
 		if (value === null) return null;
 		if (value === undefined) return fallback ?? null;
 		const numeric = Number(value);
-		return Number.isFinite(numeric) ? Math.min(Math.max(Math.round(numeric), 0), 100) : (fallback ?? null);
+		return Number.isFinite(numeric)
+			? Math.min(Math.max(Math.round(numeric), 0), 100)
+			: (fallback ?? null);
 	}
 
 	function normalizeLandscapeBucket(value: unknown, fallback?: { count?: number; weightedCount?: number }) {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		return {
 			count: normalizeInteger(record.count, 0, 100000, fallback?.count ?? 0),
 			weightedCount: normalizeInteger(record.weightedCount, 0, 100000, fallback?.weightedCount ?? 0)
@@ -692,7 +746,9 @@ async function main() {
 	}
 
 	function normalizeExcludedLandscapeBucket(value: unknown, fallback?: { count?: number }) {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		return {
 			count: normalizeInteger(record.count, 0, 100000, fallback?.count ?? 0)
 		};
@@ -702,7 +758,9 @@ async function main() {
 		value: unknown,
 		existing?: IClaimEvidenceLandscape["distribution"]
 	): IClaimEvidenceLandscape["distribution"] {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		return {
 			supportsClaim: normalizeLandscapeBucket(record.supportsClaim, existing?.supportsClaim),
 			supportsWithCaveats: normalizeLandscapeBucket(record.supportsWithCaveats, existing?.supportsWithCaveats),
@@ -719,7 +777,9 @@ async function main() {
 		value: unknown,
 		existing?: IClaimEvidenceLandscape["evidenceBaseSize"]
 	): IClaimEvidenceLandscape["evidenceBaseSize"] {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		return {
 			totalSources: normalizeInteger(record.totalSources, 0, 100000, existing?.totalSources ?? 0),
 			includedSources: normalizeInteger(record.includedSources, 0, 100000, existing?.includedSources ?? 0),
@@ -759,7 +819,9 @@ async function main() {
 		value: unknown,
 		existing?: IClaimEvidenceLandscape["applicability"]
 	): IClaimEvidenceLandscape["applicability"] {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		return {
 			population: normalizeEvidenceLandscapeText(record, "population", 280, existing?.population),
 			exposureOrIntervention: normalizeEvidenceLandscapeText(
@@ -769,7 +831,9 @@ async function main() {
 				existing?.exposureOrIntervention
 			),
 			comparator: normalizeEvidenceLandscapeText(record, "comparator", 280, existing?.comparator),
-			outcomes: Object.hasOwn(record, "outcomes") ? normalizeList(record.outcomes, 12, 180) : (existing?.outcomes ?? []),
+			outcomes: Object.hasOwn(record, "outcomes")
+				? normalizeList(record.outcomes, 12, 180)
+				: (existing?.outcomes ?? []),
 			setting: normalizeEvidenceLandscapeText(record, "setting", 280, existing?.setting),
 			timeframe: normalizeEvidenceLandscapeText(record, "timeframe", 280, existing?.timeframe)
 		};
@@ -783,7 +847,9 @@ async function main() {
 		return value
 			.slice(0, 12)
 			.map((item) => {
-				const record = typeof item === "object" && item ? (item as Record<string, unknown>) : {};
+				const record = typeof item === "object" && item
+					? (item as Record<string, unknown>)
+					: {};
 				const label = normalizeText(record.label, 180);
 				const explanation = normalizeText(record.explanation, 1000);
 				if (!label || !explanation) return null;
@@ -803,7 +869,9 @@ async function main() {
 	}
 
 	function normalizeEvidenceLandscape(value: unknown, existing?: IClaimEvidenceLandscape): IClaimEvidenceLandscape {
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		const flags = typeof record.publicFlags === "object" && record.publicFlags
 			? (record.publicFlags as Record<string, unknown>)
 			: {};
@@ -898,7 +966,9 @@ async function main() {
 				existing?.whatWouldChangeThis
 			),
 			boundaryConditions: normalizeBoundaryConditions(
-				Object.hasOwn(record, "boundaryConditions") ? record.boundaryConditions : undefined,
+				Object.hasOwn(record, "boundaryConditions")
+					? record.boundaryConditions
+					: undefined,
 				existing?.boundaryConditions
 			),
 			applicability: normalizeLandscapeApplicability(record.applicability, existing?.applicability),
@@ -997,7 +1067,9 @@ async function main() {
 		existing?: IClaimSourceEvidenceProfile
 	): IClaimSourceEvidenceProfile {
 		const defaults = defaultSourceEvidenceProfile(existing);
-		const record = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+		const record = typeof value === "object" && value
+			? (value as Record<string, unknown>)
+			: {};
 		const publicationIntegrity = typeof record.publicationIntegrity === "object" && record.publicationIntegrity
 			? (record.publicationIntegrity as Record<string, unknown>)
 			: {};
@@ -1163,8 +1235,10 @@ async function main() {
 
 	async function serializePublicQuestions(questions: Array<Partial<IQuestion>>) {
 		const claims = questions.map((question) => {
-			const claim = question.claim as unknown as (Partial<IClaim> & { _id?: unknown }) | null | undefined;
-			return claim && typeof claim === "object" && claim._id ? claim : null;
+			const claim = question.claim;
+			return claim && typeof claim === "object" && "status" in claim && claim._id
+				? claim
+				: null;
 		});
 		const claimIds = claims
 			.map(claim => claim?._id)
@@ -1175,7 +1249,9 @@ async function main() {
 		return questions.map((question, index) => {
 			const claim = claims[index];
 			return toPublicQuestion(question, {
-				claim: claim && publicClaimIsReady(claim, sourceCountMap) ? claim : null
+				claim: claim && publicClaimIsReady(claim, sourceCountMap)
+					? claim
+					: null
 			});
 		});
 	}
@@ -1196,7 +1272,10 @@ async function main() {
 			kind,
 			summary: normalizeText(summary, 240) || "Claim updated."
 		};
-		claim.changeLog = [entry, ...(claim.changeLog ?? [])].slice(0, 12);
+		claim.changeLog = [
+			entry,
+			...(claim.changeLog ?? [])
+		].slice(0, 12);
 	}
 
 	async function createClaimRevision(params: {
@@ -1330,7 +1409,9 @@ async function main() {
 			unresolved: 6,
 			unsupported_fringe: 12
 		}[landscape.supportLabel];
-		return landscape.publicFlags.medicalOrPublicHealthSensitive ? Math.min(baseMonths, 6) : baseMonths;
+		return landscape.publicFlags.medicalOrPublicHealthSensitive
+			? Math.min(baseMonths, 6)
+			: baseMonths;
 	}
 
 	function addMonths(date: Date, months: number) {
@@ -1434,7 +1515,9 @@ async function main() {
 			const topics = await Topic.find().sort({ order: 1, title: 1 }).lean();
 
 			if (!includeCounts && !includeClaims) {
-				return res.json({ topics: topics.map(toPublicTopic) });
+				return res.json({
+					topics: topics.map(toPublicTopic)
+				});
 			}
 
 			const counts = await Question.aggregate([
@@ -1444,7 +1527,12 @@ async function main() {
 						routingStatus: { $ne: "duplicate" }
 					}
 				},
-				{ $group: { _id: "$topic", count: { $sum: 1 } } }
+				{
+					$group: {
+						_id: "$topic",
+						count: { $sum: 1 }
+					}
+				}
 			]);
 			const countMap = new Map<string, number>();
 			for (const row of counts) {
@@ -1497,8 +1585,12 @@ async function main() {
 				return {
 					...toPublicTopic(topic),
 					questionCount: countMap.get(key) ?? 0,
-					claimCount: includeClaims ? (claimCountMap.get(key) ?? 0) : undefined,
-					featuredClaims: includeClaims ? (featuredClaimsMap.get(key) ?? []) : undefined
+					claimCount: includeClaims
+						? (claimCountMap.get(key) ?? 0)
+						: undefined,
+					featuredClaims: includeClaims
+						? (featuredClaimsMap.get(key) ?? [])
+						: undefined
 				};
 			});
 
@@ -1516,7 +1608,9 @@ async function main() {
 			if (!topic) return res.status(404).json({ error: "Topic not found." });
 
 			if (req.query.includeClaims !== "true") {
-				return res.json({ topic: toPublicTopic(topic) });
+				return res.json({
+					topic: toPublicTopic(topic)
+				});
 			}
 
 			const featuredClaims = await Claim.find({ topic: topic._id, status: "published" })
@@ -1596,7 +1690,9 @@ async function main() {
 			const publicReadyClaims = claims.filter(claim => publicClaimIsReady(claim, sourceCountMap));
 			const searchableClaims = publicReadyClaims.map(claim => ({
 				...claim,
-				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
+					? claim.topic.slug
+					: ""
 			}));
 			const searchResults = query
 				? await searchPublicClaims(searchableClaims, query, new Date(), async () => {
@@ -1611,7 +1707,9 @@ async function main() {
 			const rankedClaims = searchResults.map(({ claim, match }) => ({
 				claim,
 				match,
-				topic: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic : null
+				topic: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
+					? claim.topic
+					: null
 			}));
 			if (!query) {
 				rankedClaims.sort((left, right) =>
@@ -1777,7 +1875,11 @@ async function main() {
 				sources,
 				siteOrigin: publicSiteOrigin
 			});
-			const filename = `isthereconsensus-${claim.slug}.${format === "bibtex" ? "bib" : format === "markdown" ? "md" : format}`;
+			const filename = `isthereconsensus-${claim.slug}.${format === "bibtex"
+				? "bib"
+				: format === "markdown"
+					? "md"
+					: format}`;
 			res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
 			res.setHeader("X-Content-Type-Options", "nosniff");
 			if (format === "bibtex") return res.type("application/x-bibtex").send(bundle.bibtex);
@@ -1793,16 +1895,24 @@ async function main() {
 
 	api.get("/claims/:claimSlug/evidence-landscape/sources", async (req, res) => {
 		try {
-			const claimSlug = typeof req.params.claimSlug === "string" ? req.params.claimSlug : "";
+			const claimSlug = typeof req.params.claimSlug === "string"
+				? req.params.claimSlug
+				: "";
 			const claim = await Claim.findOne({ slug: claimSlug, status: "published" }).lean();
 			if (!claim || !toPublicEvidenceLandscape(claim)) {
 				return res.status(404).json({ error: "Evidence landscape not found." });
 			}
 
 			const includeExcluded = req.query.includeExcluded === "true";
-			const position = validEvidenceSourcePosition(req.query.position) ? req.query.position : "";
-			const tier = validEvidenceTier(req.query.tier) ? req.query.tier : "";
-			const studyDesign = validEvidenceStudyDesign(req.query.studyDesign) ? req.query.studyDesign : "";
+			const position = validEvidenceSourcePosition(req.query.position)
+				? req.query.position
+				: "";
+			const tier = validEvidenceTier(req.query.tier)
+				? req.query.tier
+				: "";
+			const studyDesign = validEvidenceStudyDesign(req.query.studyDesign)
+				? req.query.studyDesign
+				: "";
 			const sources = await loadClaimSources(claim._id);
 			const filteredSources = sources.filter((source) => {
 				if (position && source.evidenceProfile.positionRelativeToClaim !== position) return false;
@@ -1888,7 +1998,9 @@ async function main() {
 			const stance = normalizeText(req.body?.stance, 24) as "aligns" | "uncertain" | "skeptical";
 			const note = normalizeText(req.body?.note, 300);
 			const confidenceRaw = Number(req.body?.confidence ?? 3);
-			const confidence = Number.isFinite(confidenceRaw) ? Math.min(Math.max(confidenceRaw, 1), 5) : 3;
+			const confidence = Number.isFinite(confidenceRaw)
+				? Math.min(Math.max(confidenceRaw, 1), 5)
+				: 3;
 
 			if (!["aligns", "uncertain", "skeptical"].includes(stance)) {
 				return res.status(400).json({ error: "Invalid stance." });
@@ -1916,7 +2028,9 @@ async function main() {
 				}
 			).lean();
 
-			return res.json({ vote: toPublicTopicSentimentVote(vote) });
+			return res.json({
+				vote: toPublicTopicSentimentVote(vote)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -1936,7 +2050,9 @@ async function main() {
 			const description = normalizeText(req.body?.description, 240);
 			const accent = normalizeText(req.body?.accent, 24);
 			const orderValue = Number(req.body?.order);
-			const order = Number.isFinite(orderValue) ? orderValue : 0;
+			const order = Number.isFinite(orderValue)
+				? orderValue
+				: 0;
 
 			const topic = await Topic.create({ title, description, accent, order });
 			return res.status(201).json({ topic });
@@ -1973,7 +2089,9 @@ async function main() {
 
 			const searchableClaims = publicReadyClaims.map(claim => ({
 				...claim,
-				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic ? claim.topic.slug : ""
+				topicSlug: claim.topic && typeof claim.topic === "object" && "slug" in claim.topic
+					? claim.topic.slug
+					: ""
 			}));
 			const rankedClaims = (await searchPublicClaims(searchableClaims, query, new Date(), async () => (await loadPublicSearchCorpus({ status: "published" })).searchableClaims, cancellation.signal))
 				.slice(0, 6)
@@ -2001,7 +2119,9 @@ async function main() {
 				.map((topic) => {
 					const titleMatch = analyzeSearchMatch(query, topic.title);
 					const contextMatch = analyzeSearchMatch(query, [topic.description, topic.slug].join(" "));
-					const match = titleMatch.matchScore >= contextMatch.matchScore ? titleMatch : contextMatch;
+					const match = titleMatch.matchScore >= contextMatch.matchScore
+						? titleMatch
+						: contextMatch;
 					return { topic, match };
 				})
 				.filter(entry => searchMatchIsDisplayable(entry.match))
@@ -2024,7 +2144,9 @@ async function main() {
 						question.title,
 						question.body,
 						question.closestMatchLabel,
-						typeof question.topic === "object" && "title" in question.topic ? question.topic.title : ""
+						typeof question.topic === "object" && "title" in question.topic
+							? question.topic.title
+							: ""
 					]
 						.join(" ")
 						.trim();
@@ -2060,37 +2182,50 @@ async function main() {
 		finally { cancellation.dispose(); }
 	});
 
+	async function questionQueryFilter(topicSlug: string, claimSlug: string, routingStatus: string): Promise<
+		{ ok: true; filter: QueryFilter<IQuestion> } | { ok: false; error: string }
+	> {
+		const filter: QueryFilter<IQuestion> = {
+			status: { $ne: "archived" },
+			routingStatus: { $ne: "duplicate" }
+		};
+		if (topicSlug) {
+			const topic = await Topic.findOne({ slug: topicSlug });
+			if (!topic) return { ok: false, error: "Topic not found." };
+			filter.topic = topic._id;
+			if (claimSlug) {
+				const claim = await findPublicClaimForTopic(topic._id, claimSlug);
+				if (!claim) return { ok: false, error: "Claim not found." };
+				filter.claim = claim._id;
+				filter.routingStatus = "linked";
+			}
+			else if (!routingStatus) {
+				filter.routingStatus = "unassigned";
+			}
+		}
+		if (isQuestionRoutingStatus(routingStatus) && routingStatus !== "duplicate") filter.routingStatus = routingStatus;
+		return { ok: true, filter };
+	}
+
 	api.get("/questions", async (req, res) => {
 		try {
-			const topicSlug = typeof req.query.topic === "string" ? req.query.topic : "";
-			const claimSlug = typeof req.query.claim === "string" ? req.query.claim : "";
-			const routingStatus = typeof req.query.routingStatus === "string" ? req.query.routingStatus : "";
+			const topicSlug = typeof req.query.topic === "string"
+				? req.query.topic
+				: "";
+			const claimSlug = typeof req.query.claim === "string"
+				? req.query.claim
+				: "";
+			const routingStatus = typeof req.query.routingStatus === "string"
+				? req.query.routingStatus
+				: "";
 			const limitRaw = Number(req.query.limit ?? 30);
-			const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 100) : 30;
+			const limit = Number.isFinite(limitRaw)
+				? Math.min(Math.max(limitRaw, 1), 100)
+				: 30;
 
-			const filter: QueryFilter<IQuestion> = {
-				status: { $ne: "archived" },
-				routingStatus: { $ne: "duplicate" }
-			};
-			if (topicSlug) {
-				const topic = await Topic.findOne({ slug: topicSlug });
-				if (!topic) return res.status(404).json({ error: "Topic not found." });
-				filter.topic = topic._id;
-
-				if (claimSlug) {
-					const claim = await findPublicClaimForTopic(topic._id, claimSlug);
-					if (!claim) return res.status(404).json({ error: "Claim not found." });
-					filter.claim = claim._id;
-					filter.routingStatus = "linked";
-				}
-				else if (!routingStatus) {
-					filter.routingStatus = "unassigned";
-				}
-			}
-
-			if (isQuestionRoutingStatus(routingStatus) && routingStatus !== "duplicate") {
-				filter.routingStatus = routingStatus;
-			}
+			const selected = await questionQueryFilter(topicSlug, claimSlug, routingStatus);
+			if (!selected.ok) return res.status(404).json({ error: selected.error });
+			const filter = selected.filter;
 
 			const questions = await Question.find(filter)
 				.sort({ createdAt: -1 })
@@ -2127,6 +2262,15 @@ async function main() {
 		}
 	});
 
+	function questionLinkage(linked: boolean, actorId: string) {
+		if (!linked) return { routingStatus: "unassigned" as const, linkedBy: undefined, linkedAt: undefined };
+		return {
+			routingStatus: "linked" as const,
+			linkedBy: new mongoose.Types.ObjectId(actorId),
+			linkedAt: new Date()
+		};
+	}
+
 	api.post("/questions", requireAuth, async (req, res) => {
 		try {
 			const captcha = await verifyCaptcha(req.body?.captchaToken, req.ip);
@@ -2145,7 +2289,11 @@ async function main() {
 				sourceUrl = normalizeHttpUrl(req.body?.sourceUrl, 500);
 			}
 			catch (error) {
-				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
+				return res.status(400).json({
+					error: error instanceof Error
+						? error.message
+						: "Invalid source URL."
+				});
 			}
 			const sourceContextType = normalizeSourceContextType(req.body?.sourceContextType);
 			const displayName = normalizeText(req.body?.displayName, 80);
@@ -2191,9 +2339,7 @@ async function main() {
 				differenceNote,
 				loadedFrame,
 				multiQuestion,
-				routingStatus: claim ? "linked" : "unassigned",
-				linkedBy: claim ? new mongoose.Types.ObjectId(actor.id) : undefined,
-				linkedAt: claim ? new Date() : undefined
+				...questionLinkage(Boolean(claim), actor.id)
 			});
 
 			if (actor.model === "User") {
@@ -2204,7 +2350,9 @@ async function main() {
 			}
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			const [publicQuestion] = populated ? await serializePublicQuestions([populated]) : [null];
+			const [publicQuestion] = populated
+				? await serializePublicQuestions([populated])
+				: [null];
 			return res.status(201).json({ question: publicQuestion });
 		}
 		catch (error) {
@@ -2215,7 +2363,9 @@ async function main() {
 
 	api.delete("/questions/:id", requireAuth, async (req, res) => {
 		try {
-			const questionId = typeof req.params.id === "string" ? req.params.id : "";
+			const questionId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(questionId)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
@@ -2259,14 +2409,18 @@ async function main() {
 				action: "question.deleted",
 				actor: {
 					id: actor.id,
-					type: actor.model === "Admin" ? "admin" : "user"
+					type: actor.model === "Admin"
+						? "admin"
+						: "user"
 				},
 				target: {
 					id: question._id.toString(),
 					type: "question"
 				},
 				metadata: {
-					...(moderationReason ? { moderationReason } : {}),
+					...(moderationReason
+						? { moderationReason }
+						: {}),
 					ownerDelete: String(isOwner),
 					preservedModerationFlags: "true",
 					previousRoutingStatus,
@@ -2283,7 +2437,9 @@ async function main() {
 
 	api.post("/questions/:id/flags", requireAuth, async (req, res) => {
 		try {
-			const questionId = typeof req.params.id === "string" ? req.params.id : "";
+			const questionId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(questionId)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
@@ -2299,7 +2455,14 @@ async function main() {
 				| "needs-sources"
 				| "abusive";
 			const note = normalizeText(req.body?.note, 500);
-			if (!["off-topic", "duplicate", "misleading", "low-quality", "needs-sources", "abusive"].includes(reason)) {
+			if (![
+				"off-topic",
+				"duplicate",
+				"misleading",
+				"low-quality",
+				"needs-sources",
+				"abusive"
+			].includes(reason)) {
 				return res.status(400).json({ error: "Invalid flag reason." });
 			}
 
@@ -2328,10 +2491,14 @@ async function main() {
 			const flag = await QuestionFlag.findOne(flagIdentity).lean();
 
 			if (actor.model === "User" && upsertResult.upsertedCount === 1) {
-				await User.findByIdAndUpdate(actor.id, { $inc: { trustScore: 1 } });
+				await User.findByIdAndUpdate(actor.id, {
+					$inc: { trustScore: 1 }
+				});
 			}
 
-			return res.status(201).json({ flag: toReporterQuestionFlag(flag) });
+			return res.status(201).json({
+				flag: toReporterQuestionFlag(flag)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2346,7 +2513,9 @@ async function main() {
 				return res.json({ application: null });
 			}
 			const application = await ExpertApplication.findOne({ user: actor.id }).lean();
-			return res.json({ application: toApplicantExpertApplication(application) });
+			return res.json({
+				application: toApplicantExpertApplication(application)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2374,7 +2543,11 @@ async function main() {
 				evidenceLinks = normalizeHttpUrlList(req.body?.evidenceLinks, 8, 300);
 			}
 			catch (error) {
-				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid evidence URL." });
+				return res.status(400).json({
+					error: error instanceof Error
+						? error.message
+						: "Invalid evidence URL."
+				});
 			}
 			const user = await User.findById(actor.id);
 
@@ -2442,7 +2615,9 @@ async function main() {
 				}
 			});
 
-			return res.status(201).json({ application: toApplicantExpertApplication(application.toObject()) });
+			return res.status(201).json({
+				application: toApplicantExpertApplication(application.toObject())
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2452,8 +2627,12 @@ async function main() {
 
 	api.get("/evidence/search", evidenceSearchLimiter, async (req, res) => {
 		try {
-			const query = typeof req.query.q === "string" ? req.query.q : "";
-			const topicSlug = typeof req.query.topic === "string" ? req.query.topic : "";
+			const query = typeof req.query.q === "string"
+				? req.query.q
+				: "";
+			const topicSlug = typeof req.query.topic === "string"
+				? req.query.topic
+				: "";
 			let searchQuery = normalizeText(query, 180);
 
 			if (!searchQuery && topicSlug) {
@@ -2477,33 +2656,67 @@ async function main() {
 
 	api.get("/editorial/claims", requireEditorial, async (req, res) => {
 		try {
-			const status = typeof req.query.status === "string" ? req.query.status : "";
-			const filter: QueryFilter<IClaim> = isClaimStatus(status) ? { status } : {};
+			const status = typeof req.query.status === "string"
+				? req.query.status
+				: "";
+			const filter: QueryFilter<IClaim> = isClaimStatus(status)
+				? { status }
+				: {};
 			const claims = await Claim.find(filter).sort({ updatedAt: -1, createdAt: -1 }).populate("topic").lean();
 			const sourceCounts = await ClaimSource.aggregate([
-				{ $match: { claim: { $in: claims.map(claim => claim._id) } } },
+				{
+					$match: {
+						claim: {
+							$in: claims.map(claim => claim._id)
+						}
+					}
+				},
 				{
 					$group: {
 						_id: "$claim",
 						count: { $sum: 1 },
 						flaggedCount: {
 							$sum: {
-								$cond: [{ $ne: ["$citationStatus", "current"] }, 1, 0]
+								$cond: [
+									{
+										$ne: ["$citationStatus", "current"]
+									},
+									1,
+									0
+								]
 							}
 						},
 						retractedCount: {
 							$sum: {
-								$cond: [{ $eq: ["$citationStatus", "retracted"] }, 1, 0]
+								$cond: [
+									{
+										$eq: ["$citationStatus", "retracted"]
+									},
+									1,
+									0
+								]
 							}
 						},
 						correctedCount: {
 							$sum: {
-								$cond: [{ $eq: ["$citationStatus", "corrected"] }, 1, 0]
+								$cond: [
+									{
+										$eq: ["$citationStatus", "corrected"]
+									},
+									1,
+									0
+								]
 							}
 						},
 						concernCount: {
 							$sum: {
-								$cond: [{ $eq: ["$citationStatus", "expression_of_concern"] }, 1, 0]
+								$cond: [
+									{
+										$eq: ["$citationStatus", "expression_of_concern"]
+									},
+									1,
+									0
+								]
 							}
 						}
 					}
@@ -2551,7 +2764,9 @@ async function main() {
 
 	api.get("/editorial/claims/:id", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2559,7 +2774,9 @@ async function main() {
 			const claim = await Claim.findById(claimId).populate("topic").lean();
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 			const sources = await loadClaimSources(claim._id);
-			return res.json({ claim: toEditorialClaim({ ...claim, sources }) });
+			return res.json({
+				claim: toEditorialClaim({ ...claim, sources })
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2636,7 +2853,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.status(201).json({ claim: toEditorialClaim(populated) });
+			return res.status(201).json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			if (error instanceof ClaimNarrativeValidationError) return res.status(400).json({ error: error.message });
@@ -2645,9 +2864,109 @@ async function main() {
 		}
 	});
 
+	function applyClaimContentUpdate(claim: IClaim, body: Record<string, unknown> | undefined, narratives: ReturnType<typeof normalizeClaimNarratives>) {
+		if (body?.consensusBand !== undefined) {
+			claim.consensusBand = normalizeConsensusBand(body?.consensusBand);
+		}
+		if (body?.agreementLevel !== undefined) {
+			claim.agreementLevel = normalizeAgreementLevel(body?.agreementLevel) as typeof claim.agreementLevel;
+		}
+		if (body?.evidenceCertainty !== undefined) {
+			claim.evidenceCertainty = normalizeEvidenceCertainty(
+				body?.evidenceCertainty
+			) as typeof claim.evidenceCertainty;
+		}
+		if (body?.confidenceScore !== undefined) {
+			claim.confidenceScore = normalizeInteger(body?.confidenceScore, 0, 100, claim.confidenceScore);
+		}
+		if (body?.reviewMode !== undefined) {
+			claim.reviewMode = normalizeReviewMode(body?.reviewMode) as typeof claim.reviewMode;
+		}
+		if (body?.bottomLine !== undefined) claim.bottomLine = normalizeText(body?.bottomLine, 2000);
+		if (body?.stableCore !== undefined) claim.stableCore = narratives.stableCore;
+		if (body?.openQuestions !== undefined) {
+			claim.openQuestions = narratives.openQuestions;
+		}
+		if (body?.whatWouldChangeMinds !== undefined) {
+			claim.whatWouldChangeMinds = narratives.whatWouldChangeMinds;
+		}
+		if (body?.misconceptions !== undefined) {
+			claim.misconceptions = narratives.misconceptions;
+		}
+		if (body?.misconceptionTags !== undefined) {
+			claim.misconceptionTags = normalizeList(body?.misconceptionTags, 8, 64);
+		}
+		if (body?.editorSummary !== undefined) {
+			claim.editorSummary = normalizeText(body?.editorSummary, 4000);
+		}
+		if (body?.uncertaintySummary !== undefined) {
+			claim.uncertaintySummary = normalizeText(body?.uncertaintySummary, 1600);
+		}
+		if (body?.uncertaintyDrivers !== undefined) {
+			claim.uncertaintyDrivers = normalizeUncertaintyDrivers(body?.uncertaintyDrivers);
+		}
+	}
+
+	function applyClaimMethodsUpdate(claim: IClaim, body: Record<string, unknown> | undefined) {
+		if (body?.searchDatabases !== undefined) {
+			claim.searchDatabases = normalizeList(body?.searchDatabases, 8, 120);
+		}
+		if (body?.searchCutoffAt !== undefined) {
+			claim.searchCutoffAt = normalizeDate(body?.searchCutoffAt);
+		}
+		if (body?.inclusionRules !== undefined) {
+			claim.inclusionRules = normalizeList(body?.inclusionRules, 8, 240);
+		}
+		if (body?.exclusionRules !== undefined) {
+			claim.exclusionRules = normalizeList(body?.exclusionRules, 8, 240);
+		}
+		if (body?.surveillanceSpec !== undefined) {
+			claim.surveillanceSpec = normalizeSurveillanceSpec(body?.surveillanceSpec);
+		}
+		if (body?.appraisalTools !== undefined) {
+			claim.appraisalTools = normalizeList(body?.appraisalTools, 8, 180);
+		}
+		if (body?.evidenceSummaries !== undefined) {
+			claim.evidenceSummaries = normalizeEvidenceSummaries(body?.evidenceSummaries);
+		}
+		if (body?.evidenceLandscape !== undefined) {
+			claim.evidenceLandscape = normalizeEvidenceLandscape(body?.evidenceLandscape, claim.evidenceLandscape);
+		}
+		if (body?.institutionalAnchors !== undefined) {
+			claim.institutionalAnchors = normalizeInstitutionalAnchors(body?.institutionalAnchors);
+		}
+	}
+
+	function applyClaimCreditsAndDates(claim: IClaim, body: Record<string, unknown> | undefined) {
+		if (body?.authorLine !== undefined) {
+			claim.authorLine = normalizeText(body?.authorLine, 240);
+		}
+		if (body?.reviewerLine !== undefined) {
+			claim.reviewerLine = normalizeText(body?.reviewerLine, 240);
+		}
+		if (body?.coiSummary !== undefined) {
+			claim.coiSummary = normalizeText(body?.coiSummary, 1000);
+		}
+		if (body?.independenceSummary !== undefined) {
+			claim.independenceSummary = normalizeText(body?.independenceSummary, 1000);
+		}
+		if (body?.lastRetractionCheckAt !== undefined) {
+			claim.lastRetractionCheckAt = normalizeDate(body?.lastRetractionCheckAt);
+		}
+		if (body?.lastReviewedAt !== undefined) {
+			claim.lastReviewedAt = normalizeDate(body?.lastReviewedAt);
+			claim.reviewDateBasis = "unspecified";
+		}
+		if (body?.nextReviewAt !== undefined) {
+			claim.nextReviewAt = normalizeDate(body?.nextReviewAt);
+		}
+	}
+
 	api.patch("/editorial/claims/:id", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2685,95 +3004,9 @@ async function main() {
 				return res.status(409).json({ error: "A claim with that slug already exists in this topic." });
 			}
 
-			if (req.body?.consensusBand !== undefined) {
-				claim.consensusBand = normalizeConsensusBand(req.body?.consensusBand);
-			}
-			if (req.body?.agreementLevel !== undefined) {
-				claim.agreementLevel = normalizeAgreementLevel(req.body?.agreementLevel) as typeof claim.agreementLevel;
-			}
-			if (req.body?.evidenceCertainty !== undefined) {
-				claim.evidenceCertainty = normalizeEvidenceCertainty(
-					req.body?.evidenceCertainty
-				) as typeof claim.evidenceCertainty;
-			}
-			if (req.body?.confidenceScore !== undefined) {
-				claim.confidenceScore = normalizeInteger(req.body?.confidenceScore, 0, 100, claim.confidenceScore);
-			}
-			if (req.body?.reviewMode !== undefined) {
-				claim.reviewMode = normalizeReviewMode(req.body?.reviewMode) as typeof claim.reviewMode;
-			}
-			if (req.body?.bottomLine !== undefined) claim.bottomLine = normalizeText(req.body?.bottomLine, 2000);
-			if (req.body?.stableCore !== undefined) claim.stableCore = narratives.stableCore;
-			if (req.body?.openQuestions !== undefined) {
-				claim.openQuestions = narratives.openQuestions;
-			}
-			if (req.body?.whatWouldChangeMinds !== undefined) {
-				claim.whatWouldChangeMinds = narratives.whatWouldChangeMinds;
-			}
-			if (req.body?.misconceptions !== undefined) {
-				claim.misconceptions = narratives.misconceptions;
-			}
-			if (req.body?.misconceptionTags !== undefined) {
-				claim.misconceptionTags = normalizeList(req.body?.misconceptionTags, 8, 64);
-			}
-			if (req.body?.editorSummary !== undefined) {
-				claim.editorSummary = normalizeText(req.body?.editorSummary, 4000);
-			}
-			if (req.body?.uncertaintySummary !== undefined) {
-				claim.uncertaintySummary = normalizeText(req.body?.uncertaintySummary, 1600);
-			}
-			if (req.body?.uncertaintyDrivers !== undefined) {
-				claim.uncertaintyDrivers = normalizeUncertaintyDrivers(req.body?.uncertaintyDrivers);
-			}
-			if (req.body?.searchDatabases !== undefined) {
-				claim.searchDatabases = normalizeList(req.body?.searchDatabases, 8, 120);
-			}
-			if (req.body?.searchCutoffAt !== undefined) {
-				claim.searchCutoffAt = normalizeDate(req.body?.searchCutoffAt);
-			}
-			if (req.body?.inclusionRules !== undefined) {
-				claim.inclusionRules = normalizeList(req.body?.inclusionRules, 8, 240);
-			}
-			if (req.body?.exclusionRules !== undefined) {
-				claim.exclusionRules = normalizeList(req.body?.exclusionRules, 8, 240);
-			}
-			if (req.body?.surveillanceSpec !== undefined) {
-				claim.surveillanceSpec = normalizeSurveillanceSpec(req.body?.surveillanceSpec);
-			}
-			if (req.body?.appraisalTools !== undefined) {
-				claim.appraisalTools = normalizeList(req.body?.appraisalTools, 8, 180);
-			}
-			if (req.body?.evidenceSummaries !== undefined) {
-				claim.evidenceSummaries = normalizeEvidenceSummaries(req.body?.evidenceSummaries);
-			}
-			if (req.body?.evidenceLandscape !== undefined) {
-				claim.evidenceLandscape = normalizeEvidenceLandscape(req.body?.evidenceLandscape, claim.evidenceLandscape);
-			}
-			if (req.body?.institutionalAnchors !== undefined) {
-				claim.institutionalAnchors = normalizeInstitutionalAnchors(req.body?.institutionalAnchors);
-			}
-			if (req.body?.authorLine !== undefined) {
-				claim.authorLine = normalizeText(req.body?.authorLine, 240);
-			}
-			if (req.body?.reviewerLine !== undefined) {
-				claim.reviewerLine = normalizeText(req.body?.reviewerLine, 240);
-			}
-			if (req.body?.coiSummary !== undefined) {
-				claim.coiSummary = normalizeText(req.body?.coiSummary, 1000);
-			}
-			if (req.body?.independenceSummary !== undefined) {
-				claim.independenceSummary = normalizeText(req.body?.independenceSummary, 1000);
-			}
-			if (req.body?.lastRetractionCheckAt !== undefined) {
-				claim.lastRetractionCheckAt = normalizeDate(req.body?.lastRetractionCheckAt);
-			}
-			if (req.body?.lastReviewedAt !== undefined) {
-				claim.lastReviewedAt = normalizeDate(req.body?.lastReviewedAt);
-				claim.reviewDateBasis = "unspecified";
-			}
-			if (req.body?.nextReviewAt !== undefined) {
-				claim.nextReviewAt = normalizeDate(req.body?.nextReviewAt);
-			}
+			applyClaimContentUpdate(claim, req.body, narratives);
+			applyClaimMethodsUpdate(claim, req.body);
+			applyClaimCreditsAndDates(claim, req.body);
 
 			const revisionSummary = normalizeText(req.body?.revisionNote, 2000) || "Updated claim draft.";
 			appendClaimChangeLog(claim, "update", revisionSummary);
@@ -2790,7 +3023,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			if (error instanceof ClaimNarrativeValidationError) return res.status(400).json({ error: error.message });
@@ -2801,7 +3036,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/publish", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2854,7 +3091,10 @@ async function main() {
 			// Only this approved publication path creates reader-feed events.
 			// Save the event and publication atomically in the same claim document.
 			if (readerPublication.update) {
-				claim.readerUpdates = [readerPublication.update, ...(claim.readerUpdates ?? [])].slice(0, 100);
+				claim.readerUpdates = [
+					readerPublication.update,
+					...(claim.readerUpdates ?? [])
+				].slice(0, 100);
 			}
 			await claim.save();
 
@@ -2866,7 +3106,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2876,7 +3118,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/review", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2917,7 +3161,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2927,7 +3173,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/request-update", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2955,7 +3203,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -2965,7 +3215,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/restore-draft", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -2995,7 +3247,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3005,7 +3259,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/archive", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3033,7 +3289,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.json({ claim: toEditorialClaim(populated) });
+			return res.json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3043,7 +3301,9 @@ async function main() {
 
 	api.get("/editorial/claims/:id/revisions", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3060,7 +3320,9 @@ async function main() {
 
 	api.get("/editorial/claims/:id/evidence-landscape", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3090,7 +3352,9 @@ async function main() {
 
 	api.patch("/editorial/claims/:id/evidence-landscape", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3113,10 +3377,14 @@ async function main() {
 				fromStatus,
 				toStatus: claim.evidenceLandscape.workflow.status,
 				notes: normalizeText(req.body?.notes, 2000),
-				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
+				changedFields: Object.keys(typeof req.body === "object" && req.body
+					? req.body
+					: {})
 			});
 
-			return res.json({ claim: toEditorialClaim(claim.toObject()) });
+			return res.json({
+				claim: toEditorialClaim(claim.toObject())
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3126,7 +3394,9 @@ async function main() {
 
 	api.patch("/editorial/claim-sources/:sourceId/evidence-profile", requireEditorial, async (req, res) => {
 		try {
-			const sourceId = typeof req.params.sourceId === "string" ? req.params.sourceId : "";
+			const sourceId = typeof req.params.sourceId === "string"
+				? req.params.sourceId
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(sourceId)) {
 				return res.status(400).json({ error: "Invalid source id." });
 			}
@@ -3156,10 +3426,14 @@ async function main() {
 				actorModel: actor.model,
 				fromStatus,
 				toStatus: claim.evidenceLandscape.workflow.status,
-				changedFields: Object.keys(typeof req.body === "object" && req.body ? req.body : {})
+				changedFields: Object.keys(typeof req.body === "object" && req.body
+					? req.body
+					: {})
 			});
 
-			return res.json({ source: toEditorialClaimSource(source.toObject()) });
+			return res.json({
+				source: toEditorialClaimSource(source.toObject())
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3169,7 +3443,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/evidence-landscape/recompute", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3196,7 +3472,9 @@ async function main() {
 				changedFields: ["distribution", "evidenceBaseSize"]
 			});
 
-			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+			return res.json({
+				evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3206,7 +3484,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/evidence-landscape/submit-review", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3241,7 +3521,9 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+			return res.json({
+				evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3251,7 +3533,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/evidence-landscape/request-changes", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3290,7 +3574,9 @@ async function main() {
 				notes
 			});
 
-			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+			return res.json({
+				evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3300,7 +3586,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/evidence-landscape/approve", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3336,7 +3624,9 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+			return res.json({
+				evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3346,7 +3636,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/evidence-landscape/publish", requireAdmin, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3384,7 +3676,9 @@ async function main() {
 				notes: normalizeText(req.body?.notes, 2000)
 			});
 
-			return res.json({ evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape) });
+			return res.json({
+				evidenceLandscape: toEditorialEvidenceLandscape(claim.evidenceLandscape)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3394,12 +3688,16 @@ async function main() {
 
 	api.get("/editorial/claims/:id/sources", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
 			const sources = await loadClaimSources(new mongoose.Types.ObjectId(claimId));
-			return res.json({ sources: sources.map(toEditorialClaimSource).filter(Boolean) });
+			return res.json({
+				sources: sources.map(toEditorialClaimSource).filter(Boolean)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3409,7 +3707,9 @@ async function main() {
 
 	api.post("/editorial/claims/:id/sources", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid claim id." });
 			}
@@ -3424,7 +3724,11 @@ async function main() {
 				sourceUrl = normalizeHttpUrl(req.body?.url, 500);
 			}
 			catch (error) {
-				return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
+				return res.status(400).json({
+					error: error instanceof Error
+						? error.message
+						: "Invalid source URL."
+				});
 			}
 
 			let statusSources: string[];
@@ -3433,7 +3737,9 @@ async function main() {
 			}
 			catch (error) {
 				return res.status(400).json({
-					error: error instanceof Error ? error.message : "Invalid integrity signal URL."
+					error: error instanceof Error
+						? error.message
+						: "Invalid integrity signal URL."
 				});
 			}
 
@@ -3469,7 +3775,9 @@ async function main() {
 				summary: normalizeText(req.body?.revisionNote, 2000) || "Added claim source."
 			});
 
-			return res.status(201).json({ source: toEditorialClaimSource(source.toObject()) });
+			return res.status(201).json({
+				source: toEditorialClaimSource(source.toObject())
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3477,10 +3785,69 @@ async function main() {
 		}
 	});
 
+	function applySourceUrl(source: IClaimSource, url: unknown) {
+		if (url === undefined) return undefined;
+		try {
+			source.url = normalizeHttpUrl(url, 500);
+		}
+		catch (error) {
+			return error instanceof Error
+				? error.message
+				: "Invalid source URL.";
+		}
+		return undefined;
+	}
+
+	function applySourceIdentification(source: IClaimSource, body: Record<string, unknown> | undefined) {
+		if (body?.kind !== undefined) source.kind = normalizeClaimSourceKind(body.kind);
+		if (body?.title !== undefined) {
+			const title = normalizeText(body.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
+			if (!title) return "Source title is required.";
+			source.title = title;
+		}
+		if (body?.publisher !== undefined) source.publisher = normalizeText(body.publisher, 160);
+		if (body?.year !== undefined) {
+			source.year = body.year
+				? normalizeInteger(body.year, 0, 9999, 0)
+				: undefined;
+		}
+		const urlError = applySourceUrl(source, body?.url);
+		if (urlError !== undefined) return urlError;
+		if (body?.doi !== undefined) source.doi = normalizeText(body.doi, 200);
+		if (body?.pmid !== undefined) source.pmid = normalizeText(body.pmid, 40);
+		if (body?.pmcid !== undefined) source.pmcid = normalizeText(body.pmcid, 40);
+		return undefined;
+	}
+
+	function applySourceAppraisal(source: IClaimSource, body: Record<string, unknown> | undefined) {
+		if (body?.isAnchor !== undefined) source.isAnchor = normalizeBoolean(body.isAnchor);
+		if (body?.appraisal !== undefined) source.appraisal = normalizeSourceAppraisal(body.appraisal) as typeof source.appraisal;
+		if (body?.citationStatus !== undefined) source.citationStatus = normalizeCitationStatus(body.citationStatus) as typeof source.citationStatus;
+		if (body?.citationCheckedAt !== undefined) source.citationCheckedAt = normalizeDate(body.citationCheckedAt);
+		if (body?.statusSources !== undefined) {
+			try {
+				source.statusSources = normalizeCitationStatusSources(body.statusSources, source.statusSources ?? []);
+			}
+			catch (error) {
+				return error instanceof Error
+					? error.message
+					: "Invalid integrity signal URL.";
+			}
+		}
+		if (body?.stance !== undefined) source.stance = normalizeClaimSourceStance(body.stance);
+		if (body?.note !== undefined) source.note = normalizeText(body.note, 1000);
+		if (body?.order !== undefined) source.order = normalizeInteger(body.order, 0, 999, source.order || 0);
+		return undefined;
+	}
+
 	api.patch("/editorial/claims/:id/sources/:sourceId", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
-			const sourceId = typeof req.params.sourceId === "string" ? req.params.sourceId : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
+			const sourceId = typeof req.params.sourceId === "string"
+				? req.params.sourceId
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId) || !mongoose.Types.ObjectId.isValid(sourceId)) {
 				return res.status(400).json({ error: "Invalid source id." });
 			}
@@ -3491,54 +3858,10 @@ async function main() {
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 			if (!requireClaimMutationAccess(req, res, claim)) return;
 
-			if (req.body?.kind !== undefined) source.kind = normalizeClaimSourceKind(req.body?.kind);
-			if (req.body?.title !== undefined) {
-				const sourceTitle = normalizeText(req.body?.title, CLAIM_SOURCE_TITLE_MAX_LENGTH);
-				if (!sourceTitle) return res.status(400).json({ error: "Source title is required." });
-				source.title = sourceTitle;
-			}
-			if (req.body?.publisher !== undefined) source.publisher = normalizeText(req.body?.publisher, 160);
-			if (req.body?.year !== undefined) {
-				source.year = req.body?.year ? normalizeInteger(req.body?.year, 0, 9999, 0) : undefined;
-			}
-			if (req.body?.url !== undefined) {
-				try {
-					source.url = normalizeHttpUrl(req.body?.url, 500);
-				}
-				catch (error) {
-					return res.status(400).json({ error: error instanceof Error ? error.message : "Invalid source URL." });
-				}
-			}
-			if (req.body?.doi !== undefined) source.doi = normalizeText(req.body?.doi, 200);
-			if (req.body?.pmid !== undefined) source.pmid = normalizeText(req.body?.pmid, 40);
-			if (req.body?.pmcid !== undefined) source.pmcid = normalizeText(req.body?.pmcid, 40);
-			if (req.body?.isAnchor !== undefined) source.isAnchor = normalizeBoolean(req.body?.isAnchor);
-			if (req.body?.appraisal !== undefined) {
-				source.appraisal = normalizeSourceAppraisal(req.body?.appraisal) as typeof source.appraisal;
-			}
-			if (req.body?.citationStatus !== undefined) {
-				source.citationStatus = normalizeCitationStatus(
-					req.body?.citationStatus
-				) as typeof source.citationStatus;
-			}
-			if (req.body?.citationCheckedAt !== undefined) {
-				source.citationCheckedAt = normalizeDate(req.body?.citationCheckedAt);
-			}
-			if (req.body?.statusSources !== undefined) {
-				try {
-					source.statusSources = normalizeCitationStatusSources(req.body.statusSources, source.statusSources ?? []);
-				}
-				catch (error) {
-					return res.status(400).json({
-						error: error instanceof Error ? error.message : "Invalid integrity signal URL."
-					});
-				}
-			}
-			if (req.body?.stance !== undefined)
-				source.stance = normalizeClaimSourceStance(req.body?.stance);
-			if (req.body?.note !== undefined) source.note = normalizeText(req.body?.note, 1000);
-			if (req.body?.order !== undefined)
-				source.order = normalizeInteger(req.body?.order, 0, 999, source.order || 0);
+			const identificationError = applySourceIdentification(source, req.body);
+			if (identificationError !== undefined) return res.status(400).json({ error: identificationError });
+			const appraisalError = applySourceAppraisal(source, req.body);
+			if (appraisalError !== undefined) return res.status(400).json({ error: appraisalError });
 			source.evidenceProfile.reviewer.reviewedById = undefined;
 			source.evidenceProfile.reviewer.reviewedAt = undefined;
 			await source.save();
@@ -3553,7 +3876,9 @@ async function main() {
 				summary: normalizeText(req.body?.revisionNote, 2000) || "Updated claim source."
 			});
 
-			return res.json({ source: toEditorialClaimSource(source.toObject()) });
+			return res.json({
+				source: toEditorialClaimSource(source.toObject())
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3563,8 +3888,12 @@ async function main() {
 
 	api.delete("/editorial/claims/:id/sources/:sourceId", requireEditorial, async (req, res) => {
 		try {
-			const claimId = typeof req.params.id === "string" ? req.params.id : "";
-			const sourceId = typeof req.params.sourceId === "string" ? req.params.sourceId : "";
+			const claimId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
+			const sourceId = typeof req.params.sourceId === "string"
+				? req.params.sourceId
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(claimId) || !mongoose.Types.ObjectId.isValid(sourceId)) {
 				return res.status(400).json({ error: "Invalid source id." });
 			}
@@ -3595,7 +3924,9 @@ async function main() {
 
 	api.get("/editorial/questions", requireEditorial, async (req, res) => {
 		try {
-			const routingStatus = typeof req.query.routingStatus === "string" ? req.query.routingStatus : "";
+			const routingStatus = typeof req.query.routingStatus === "string"
+				? req.query.routingStatus
+				: "";
 			const filter: QueryFilter<IQuestion> = {
 				status: { $ne: "archived" }
 			};
@@ -3607,7 +3938,9 @@ async function main() {
 				.populate("topic")
 				.populate("claim")
 				.lean();
-			return res.json({ questions: questions.map(toEditorialQuestion) });
+			return res.json({
+				questions: questions.map(toEditorialQuestion)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3617,13 +3950,18 @@ async function main() {
 
 	api.post("/editorial/questions/:id/link-claim", requireEditorial, async (req, res) => {
 		try {
-			const questionId = typeof req.params.id === "string" ? req.params.id : "";
+			const questionId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			const claimId = normalizeText(req.body?.claimId, 40);
 			if (!mongoose.Types.ObjectId.isValid(questionId) || !mongoose.Types.ObjectId.isValid(claimId)) {
 				return res.status(400).json({ error: "Invalid question or claim id." });
 			}
 
-			const [question, claim] = await Promise.all([Question.findById(questionId), Claim.findById(claimId)]);
+			const [question, claim] = await Promise.all([
+				Question.findById(questionId),
+				Claim.findById(claimId)
+			]);
 			if (!question) return res.status(404).json({ error: "Question not found." });
 			if (!claim) return res.status(404).json({ error: "Claim not found." });
 			if (claim.status === "archived") {
@@ -3641,7 +3979,11 @@ async function main() {
 			await question.save();
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			return res.json({ question: populated ? toEditorialQuestion(populated) : null });
+			return res.json({
+				question: populated
+					? toEditorialQuestion(populated)
+					: null
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3651,7 +3993,9 @@ async function main() {
 
 	api.post("/editorial/questions/:id/create-claim", requireEditorial, async (req, res) => {
 		try {
-			const questionId = typeof req.params.id === "string" ? req.params.id : "";
+			const questionId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(questionId)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
@@ -3694,7 +4038,9 @@ async function main() {
 			});
 
 			const populated = await Claim.findById(claim._id).populate("topic").lean();
-			return res.status(201).json({ claim: toEditorialClaim(populated) });
+			return res.status(201).json({
+				claim: toEditorialClaim(populated)
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3704,7 +4050,9 @@ async function main() {
 
 	api.post("/editorial/questions/:id/mark-duplicate", requireAdmin, async (req, res) => {
 		try {
-			const questionId = typeof req.params.id === "string" ? req.params.id : "";
+			const questionId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(questionId)) {
 				return res.status(400).json({ error: "Invalid question id." });
 			}
@@ -3743,7 +4091,11 @@ async function main() {
 			});
 
 			const populated = await Question.findById(question._id).populate("topic").populate("claim").lean();
-			return res.json({ question: populated ? toEditorialQuestion(populated) : null });
+			return res.json({
+				question: populated
+					? toEditorialQuestion(populated)
+					: null
+			});
 		}
 		catch (error) {
 			logError("API request failed", error);
@@ -3801,15 +4153,25 @@ async function main() {
 					.lean(),
 				SourceIntegrityCheck.countDocuments(checkFilter).maxTimeMS(5000),
 				ClaimSource.countDocuments(doiSourceFilter).maxTimeMS(5000),
-				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $exists: false } }).maxTimeMS(5000),
-				ClaimSource.countDocuments({ ...doiSourceFilter, citationCheckedAt: { $lt: staleBefore } }).maxTimeMS(5000),
 				ClaimSource.countDocuments({
 					...doiSourceFilter,
-					citationStatus: { $in: ["corrected", "expression_of_concern", "retracted"] }
+					citationCheckedAt: { $exists: false }
+				}).maxTimeMS(5000),
+				ClaimSource.countDocuments({
+					...doiSourceFilter,
+					citationCheckedAt: { $lt: staleBefore }
+				}).maxTimeMS(5000),
+				ClaimSource.countDocuments({
+					...doiSourceFilter,
+					citationStatus: {
+						$in: ["corrected", "expression_of_concern", "retracted"]
+					}
 				}).maxTimeMS(5000),
 				SourceIntegrityCheck.countDocuments({
 					checkedAt: { $gte: staleBefore },
-					outcome: { $in: ["corrected", "expression_of_concern", "retracted"] }
+					outcome: {
+						$in: ["corrected", "expression_of_concern", "retracted"]
+					}
 				}).maxTimeMS(5000),
 				SourceIntegrityCheck.countDocuments({
 					checkedAt: { $gte: staleBefore },
@@ -3820,28 +4182,65 @@ async function main() {
 			const providerCoverage = await Promise.all(SOURCE_INTEGRITY_PROVIDERS.map(async (provider) => {
 				const path = `integrityMonitoring.${provider}`;
 				const [checked, due, notIndexed, errors] = await Promise.all([
-					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.checkedAt`]: { $exists: true }, $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000),
-					ClaimSource.countDocuments({ ...doiSourceFilter, ...integrityProviderDueFilter(provider, new Date(), staleDays) }).maxTimeMS(5000),
-					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.outcome`]: "not_indexed", $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000),
-					ClaimSource.countDocuments({ ...doiSourceFilter, [`${path}.outcome`]: "error", $expr: { $eq: [`$${path}.doi`, "$doi"] } }).maxTimeMS(5000)
+					ClaimSource.countDocuments({
+						...doiSourceFilter,
+						[`${path}.checkedAt`]: { $exists: true },
+						$expr: {
+							$eq: [`$${path}.doi`, "$doi"]
+						}
+					}).maxTimeMS(5000),
+					ClaimSource.countDocuments({
+						...doiSourceFilter,
+						...integrityProviderDueFilter(provider, new Date(), staleDays)
+					}).maxTimeMS(5000),
+					ClaimSource.countDocuments({
+						...doiSourceFilter,
+						[`${path}.outcome`]: "not_indexed",
+						$expr: {
+							$eq: [`$${path}.doi`, "$doi"]
+						}
+					}).maxTimeMS(5000),
+					ClaimSource.countDocuments({
+						...doiSourceFilter,
+						[`${path}.outcome`]: "error",
+						$expr: {
+							$eq: [`$${path}.doi`, "$doi"]
+						}
+					}).maxTimeMS(5000)
 				]);
-				return { provider, checked, due, notIndexed, errors };
+				return {
+					provider,
+					checked,
+					due,
+					notIndexed,
+					errors
+				};
 			}));
 			const sourceIds = checks.map(check => check.source);
 			const claimIds = checks.map(check => check.claim);
 			const [sources, claims] = await Promise.all([
-				ClaimSource.find({ _id: { $in: sourceIds } })
+				ClaimSource.find({
+					_id: { $in: sourceIds }
+				})
 					.select("title doi citationStatus")
 					.maxTimeMS(5000)
 					.lean(),
-				Claim.find({ _id: { $in: claimIds } })
+				Claim.find({
+					_id: { $in: claimIds }
+				})
 					.select("title slug topic status")
 					.populate("topic")
 					.maxTimeMS(5000)
 					.lean()
 			]);
-			const sourceMap = new Map(sources.map(source => [source._id.toString(), source]));
-			const claimMap = new Map(claims.map(claim => [claim._id.toString(), claim]));
+			const sourceMap = new Map(sources.map(source => [
+				source._id.toString(),
+				source
+			]));
+			const claimMap = new Map(claims.map(claim => [
+				claim._id.toString(),
+				claim
+			]));
 
 			return res.set("Cache-Control", "private, no-store").json({
 				providerCoverage,
@@ -3913,7 +4312,9 @@ async function main() {
 
 	api.get("/admin/expert-applications", requireAdmin, async (req, res) => {
 		try {
-			const status = typeof req.query.status === "string" ? req.query.status : "";
+			const status = typeof req.query.status === "string"
+				? req.query.status
+				: "";
 			const filter: QueryFilter<IExpertApplication>
 				= status === "pending" || status === "approved" || status === "rejected" || status === "needs-info"
 					? { status }
@@ -3929,7 +4330,9 @@ async function main() {
 
 	api.post("/admin/expert-applications/:id/review", requireAdmin, async (req, res) => {
 		try {
-			const applicationId = typeof req.params.id === "string" ? req.params.id : "";
+			const applicationId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(applicationId)) {
 				return res.status(400).json({ error: "Invalid application id." });
 			}
@@ -3959,7 +4362,11 @@ async function main() {
 			const previousStatus = user.expertiseStatus;
 			const previousTrustLevel = user.trustLevel || 0;
 			user.expertiseStatus
-				= decision === "approved" ? "verified" : decision === "needs-info" ? "pending" : "rejected";
+				= decision === "approved"
+					? "verified"
+					: decision === "needs-info"
+						? "pending"
+						: "rejected";
 			if (previousStatus !== user.expertiseStatus) {
 				user.sessionVersion = Number(user.sessionVersion || 0) + 1;
 			}
@@ -4027,7 +4434,9 @@ async function main() {
 
 	api.post("/admin/question-flags/:id/review", requireAdmin, async (req, res) => {
 		try {
-			const flagId = typeof req.params.id === "string" ? req.params.id : "";
+			const flagId = typeof req.params.id === "string"
+				? req.params.id
+				: "";
 			if (!mongoose.Types.ObjectId.isValid(flagId)) {
 				return res.status(400).json({ error: "Invalid flag id." });
 			}

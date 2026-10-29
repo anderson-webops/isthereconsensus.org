@@ -166,7 +166,9 @@ export interface IClaimEvidenceLandscape {
 }
 
 function defaultLandscapeBucket(weighted = true): IClaimLandscapeBucket {
-	return weighted ? { count: 0, weightedCount: 0 } : { count: 0 };
+	return weighted
+		? { count: 0, weightedCount: 0 }
+		: { count: 0 };
 }
 
 function defaultLandscapeDistribution(): IClaimLandscapeDistribution {
@@ -286,23 +288,59 @@ const boundaryConditionSchema = new Schema<IClaimBoundaryCondition>(
 			required: true,
 			enum: EVIDENCE_BOUNDARY_DIMENSIONS
 		},
-		label: { type: String, required: true, trim: true, maxlength: 180 },
-		explanation: { type: String, required: true, trim: true, maxlength: 1000 },
-		sourceIds: [{ type: Schema.Types.ObjectId, ref: "ClaimSource" }]
+		label: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 180
+		},
+		explanation: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 1000
+		},
+		sourceIds: [
+			{ type: Schema.Types.ObjectId, ref: "ClaimSource" }
+		]
 	},
 	{ _id: false }
 );
 
 const landscapeDistributionSchema = new Schema<IClaimLandscapeDistribution>(
 	{
-		supportsClaim: { type: landscapeBucketSchema, default: () => defaultLandscapeBucket() },
-		supportsWithCaveats: { type: landscapeBucketSchema, default: () => defaultLandscapeBucket() },
-		opposesClaim: { type: landscapeBucketSchema, default: () => defaultLandscapeBucket() },
-		inconclusiveOrMixed: { type: landscapeBucketSchema, default: () => defaultLandscapeBucket() },
-		backgroundContext: { type: landscapeBucketSchema, default: () => defaultLandscapeBucket() },
-		excludedLowQuality: { type: excludedLandscapeBucketSchema, default: () => defaultLandscapeBucket(false) },
-		excludedRetracted: { type: excludedLandscapeBucketSchema, default: () => defaultLandscapeBucket(false) },
-		excludedFringe: { type: excludedLandscapeBucketSchema, default: () => defaultLandscapeBucket(false) }
+		supportsClaim: {
+			type: landscapeBucketSchema,
+			default: () => defaultLandscapeBucket()
+		},
+		supportsWithCaveats: {
+			type: landscapeBucketSchema,
+			default: () => defaultLandscapeBucket()
+		},
+		opposesClaim: {
+			type: landscapeBucketSchema,
+			default: () => defaultLandscapeBucket()
+		},
+		inconclusiveOrMixed: {
+			type: landscapeBucketSchema,
+			default: () => defaultLandscapeBucket()
+		},
+		backgroundContext: {
+			type: landscapeBucketSchema,
+			default: () => defaultLandscapeBucket()
+		},
+		excludedLowQuality: {
+			type: excludedLandscapeBucketSchema,
+			default: () => defaultLandscapeBucket(false)
+		},
+		excludedRetracted: {
+			type: excludedLandscapeBucketSchema,
+			default: () => defaultLandscapeBucket(false)
+		},
+		excludedFringe: {
+			type: excludedLandscapeBucketSchema,
+			default: () => defaultLandscapeBucket(false)
+		}
 	},
 	{ _id: false }
 );
@@ -326,26 +364,74 @@ const evidenceBaseSizeSchema = new Schema<IClaimEvidenceBaseSize>(
 
 const applicabilitySchema = new Schema<IClaimApplicability>(
 	{
-		population: { type: String, default: "", trim: true, maxlength: 280 },
-		exposureOrIntervention: { type: String, default: "", trim: true, maxlength: 280 },
-		comparator: { type: String, default: "", trim: true, maxlength: 280 },
-		outcomes: { type: [String], default: [] },
-		setting: { type: String, default: "", trim: true, maxlength: 280 },
-		timeframe: { type: String, default: "", trim: true, maxlength: 280 }
+		population: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 280
+		},
+		exposureOrIntervention: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 280
+		},
+		comparator: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 280
+		},
+		outcomes: {
+			type: [String],
+			default: []
+		},
+		setting: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 280
+		},
+		timeframe: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 280
+		}
 	},
 	{ _id: false }
 );
 
 const claimSchema: Schema<IClaim> = new Schema(
 	{
-		topic: { type: Schema.Types.ObjectId, ref: "Topic", required: true, index: true },
-		title: { type: String, required: true, trim: true, maxlength: 220 },
-		slug: { type: String, required: true, trim: true, lowercase: true },
+		topic: {
+			type: Schema.Types.ObjectId,
+			ref: "Topic",
+			required: true,
+			index: true
+		},
+		title: {
+			type: String,
+			required: true,
+			trim: true,
+			maxlength: 220
+		},
+		slug: {
+			type: String,
+			required: true,
+			trim: true,
+			lowercase: true
+		},
 		status: {
 			type: String,
 			required: true,
 			default: "draft",
-			enum: ["draft", "published", "needs_update", "archived"],
+			enum: [
+				"draft",
+				"published",
+				"needs_update",
+				"archived"
+			],
 			index: true
 		},
 		consensusBand: {
@@ -358,7 +444,12 @@ const claimSchema: Schema<IClaim> = new Schema(
 			type: String,
 			required: true,
 			default: "frontier",
-			enum: ["strong", "broad_qualified", "divided", "frontier"]
+			enum: [
+				"strong",
+				"broad_qualified",
+				"divided",
+				"frontier"
+			]
 		},
 		evidenceCertainty: {
 			type: String,
@@ -366,21 +457,57 @@ const claimSchema: Schema<IClaim> = new Schema(
 			default: "low",
 			enum: ["high", "moderate", "low", "very_low"]
 		},
-		confidenceScore: { type: Number, required: true, default: 50, min: 0, max: 100 },
+		confidenceScore: {
+			type: Number,
+			required: true,
+			default: 50,
+			min: 0,
+			max: 100
+		},
 		reviewMode: {
 			type: String,
 			required: true,
 			default: "standard",
 			enum: ["standard", "living"]
 		},
-		bottomLine: { type: String, default: "", trim: true, maxlength: 2000 },
-		stableCore: { type: [String], default: [] },
-		openQuestions: { type: [String], default: [] },
-		whatWouldChangeMinds: { type: [String], default: [] },
-		misconceptions: { type: [String], default: [] },
-		misconceptionTags: { type: [String], default: [] },
-		editorSummary: { type: String, default: "", trim: true, maxlength: 4000 },
-		uncertaintySummary: { type: String, default: "", trim: true, maxlength: 1600 },
+		bottomLine: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 2000
+		},
+		stableCore: {
+			type: [String],
+			default: []
+		},
+		openQuestions: {
+			type: [String],
+			default: []
+		},
+		whatWouldChangeMinds: {
+			type: [String],
+			default: []
+		},
+		misconceptions: {
+			type: [String],
+			default: []
+		},
+		misconceptionTags: {
+			type: [String],
+			default: []
+		},
+		editorSummary: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 4000
+		},
+		uncertaintySummary: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1600
+		},
 		uncertaintyDrivers: {
 			type: [
 				new Schema<IClaimUncertaintyDriver>(
@@ -400,26 +527,57 @@ const claimSchema: Schema<IClaim> = new Schema(
 								"other"
 							]
 						},
-						detail: { type: String, required: true, trim: true, maxlength: 280 }
+						detail: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 280
+						}
 					},
 					{ _id: false }
 				)
 			],
 			default: []
 		},
-		searchDatabases: { type: [String], default: [] },
+		searchDatabases: {
+			type: [String],
+			default: []
+		},
 		searchCutoffAt: { type: Date },
-		inclusionRules: { type: [String], default: [] },
-		exclusionRules: { type: [String], default: [] },
+		inclusionRules: {
+			type: [String],
+			default: []
+		},
+		exclusionRules: {
+			type: [String],
+			default: []
+		},
 		surveillanceSpec: {
 			type: new Schema<IClaimSurveillanceSpec>(
 				{
-					focus: { type: String, default: "", trim: true, maxlength: 1000 },
+					focus: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1000
+					},
 					cadenceDays: { type: Number, min: 1, max: 3650 },
-					watchTerms: { type: [String], default: [] },
-					integrityMonitors: { type: [String], default: [] },
-					guidelineMonitors: { type: [String], default: [] },
-					triggerRules: { type: [String], default: [] }
+					watchTerms: {
+						type: [String],
+						default: []
+					},
+					integrityMonitors: {
+						type: [String],
+						default: []
+					},
+					guidelineMonitors: {
+						type: [String],
+						default: []
+					},
+					triggerRules: {
+						type: [String],
+						default: []
+					}
 				},
 				{ _id: false }
 			),
@@ -432,27 +590,53 @@ const claimSchema: Schema<IClaim> = new Schema(
 				triggerRules: []
 			})
 		},
-		appraisalTools: { type: [String], default: [] },
+		appraisalTools: {
+			type: [String],
+			default: []
+		},
 		evidenceSummaries: {
 			type: [
 				new Schema<IClaimEvidenceSummary>(
 					{
-						question: { type: String, required: true, trim: true, maxlength: 240 },
-						population: { type: String, default: "", trim: true, maxlength: 200 },
-						finding: { type: String, required: true, trim: true, maxlength: 1200 },
+						question: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 240
+						},
+						population: {
+							type: String,
+							default: "",
+							trim: true,
+							maxlength: 200
+						},
+						finding: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 1200
+						},
 						effectDirection: {
 							type: String,
 							required: true,
 							default: "unclear",
 							enum: ["supports", "mixed", "unclear"]
 						},
-						magnitude: { type: String, default: "", trim: true, maxlength: 280 },
+						magnitude: {
+							type: String,
+							default: "",
+							trim: true,
+							maxlength: 280
+						},
 						certainty: {
 							type: String,
 							default: undefined,
 							enum: ["high", "moderate", "low", "very_low"]
 						},
-						limitations: { type: [String], default: [] }
+						limitations: {
+							type: [String],
+							default: []
+						}
 					},
 					{ _id: false }
 				)
@@ -480,7 +664,12 @@ const claimSchema: Schema<IClaim> = new Schema(
 						default: "unresolved",
 						enum: EVIDENCE_LANDSCAPE_SUPPORT_LABELS
 					},
-					supportScore: { type: Number, default: null, min: 0, max: 100 },
+					supportScore: {
+						type: Number,
+						default: null,
+						min: 0,
+						max: 100
+					},
 					evidenceDirection: {
 						type: String,
 						required: true,
@@ -499,16 +688,62 @@ const claimSchema: Schema<IClaim> = new Schema(
 						default: "not_assessable",
 						enum: EVIDENCE_LANDSCAPE_EXPERT_AGREEMENT_LEVELS
 					},
-					plainLanguageAnswer: { type: String, default: "", trim: true, maxlength: 2000 },
-					oneSentenceSummary: { type: String, default: "", trim: true, maxlength: 280 },
-					confidenceStatement: { type: String, default: "", trim: true, maxlength: 800 },
-					caveatSummary: { type: String, default: "", trim: true, maxlength: 1600 },
-					disagreementSummary: { type: String, default: "", trim: true, maxlength: 1600 },
-					credibleMinorityViewSummary: { type: String, default: "", trim: true, maxlength: 1200 },
-					fringeOrUnsupportedViewSummary: { type: String, default: "", trim: true, maxlength: 1200 },
-					whatWouldChangeThis: { type: String, default: "", trim: true, maxlength: 1200 },
-					boundaryConditions: { type: [boundaryConditionSchema], default: [] },
-					applicability: { type: applicabilitySchema, default: () => defaultApplicability() },
+					plainLanguageAnswer: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 2000
+					},
+					oneSentenceSummary: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 280
+					},
+					confidenceStatement: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 800
+					},
+					caveatSummary: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1600
+					},
+					disagreementSummary: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1600
+					},
+					credibleMinorityViewSummary: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1200
+					},
+					fringeOrUnsupportedViewSummary: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1200
+					},
+					whatWouldChangeThis: {
+						type: String,
+						default: "",
+						trim: true,
+						maxlength: 1200
+					},
+					boundaryConditions: {
+						type: [boundaryConditionSchema],
+						default: []
+					},
+					applicability: {
+						type: applicabilitySchema,
+						default: () => defaultApplicability()
+					},
 					distribution: {
 						type: landscapeDistributionSchema,
 						default: () => defaultLandscapeDistribution()
@@ -553,7 +788,12 @@ const claimSchema: Schema<IClaim> = new Schema(
 								publishedAt: { type: Date },
 								supersededByClaimId: { type: Schema.Types.ObjectId, ref: "Claim" },
 								assessedBy: { type: Schema.Types.ObjectId },
-								editorialNotes: { type: String, default: "", trim: true, maxlength: 2000 }
+								editorialNotes: {
+									type: String,
+									default: "",
+									trim: true,
+									maxlength: 2000
+								}
 							},
 							{ _id: false }
 						),
@@ -618,18 +858,48 @@ const claimSchema: Schema<IClaim> = new Schema(
 			type: [
 				new Schema<IClaimInstitutionalAnchor>(
 					{
-						name: { type: String, required: true, trim: true, maxlength: 160 },
-						role: { type: String, required: true, trim: true, maxlength: 280 }
+						name: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 160
+						},
+						role: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 280
+						}
 					},
 					{ _id: false }
 				)
 			],
 			default: []
 		},
-		authorLine: { type: String, default: "", trim: true, maxlength: 240 },
-		reviewerLine: { type: String, default: "", trim: true, maxlength: 240 },
-		coiSummary: { type: String, default: "", trim: true, maxlength: 1000 },
-		independenceSummary: { type: String, default: "", trim: true, maxlength: 1000 },
+		authorLine: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 240
+		},
+		reviewerLine: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 240
+		},
+		coiSummary: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1000
+		},
+		independenceSummary: {
+			type: String,
+			default: "",
+			trim: true,
+			maxlength: 1000
+		},
 		lastRetractionCheckAt: { type: Date },
 		readerUpdates: {
 			type: [
@@ -637,12 +907,26 @@ const claimSchema: Schema<IClaim> = new Schema(
 					{
 						id: { type: String, required: true },
 						date: { type: Date, required: true },
-						kind: { type: String, required: true, enum: ["new_review", "evidence_update", "correction"] },
-						summary: { type: String, required: true, trim: true, maxlength: 2000 },
+						kind: {
+							type: String,
+							required: true,
+							enum: ["new_review", "evidence_update", "correction"]
+						},
+						summary: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 2000
+						},
 						bottomLineImpact: {
 							type: String,
 							required: true,
-							enum: ["new", "changed", "unchanged", "not_assessed"]
+							enum: [
+								"new",
+								"changed",
+								"unchanged",
+								"not_assessed"
+							]
 						}
 					},
 					{ _id: false }
@@ -659,9 +943,19 @@ const claimSchema: Schema<IClaim> = new Schema(
 						kind: {
 							type: String,
 							required: true,
-							enum: ["publication", "update", "correction", "review"]
+							enum: [
+								"publication",
+								"update",
+								"correction",
+								"review"
+							]
 						},
-						summary: { type: String, required: true, trim: true, maxlength: 240 }
+						summary: {
+							type: String,
+							required: true,
+							trim: true,
+							maxlength: 240
+						}
 					},
 					{ _id: false }
 				)
@@ -686,7 +980,12 @@ const claimSchema: Schema<IClaim> = new Schema(
 							adminId: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
 							previousAt: { type: Date, default: null },
 							nextAt: { type: Date, default: null },
-							note: { type: String, required: true, minlength: 20, maxlength: 1000 }
+							note: {
+								type: String,
+								required: true,
+								minlength: 20,
+								maxlength: 1000
+							}
 						}
 					]
 				},

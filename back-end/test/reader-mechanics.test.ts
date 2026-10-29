@@ -14,7 +14,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerMechanicsClaims.find(claim => claim.slug === readerMechanicsSlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 const near = (actual: number, expected: number) => assert.ok(Math.abs(actual - expected) < 1e-10, `${actual} differs from ${expected}`);
 
 describe("mechanical-model reader expansion", () => {
@@ -36,7 +42,15 @@ describe("mechanical-model reader expansion", () => {
 	});
 
 	it("preserves every previous expansion cohort's source-check dates", () => {
-		for (const [claims, checkedAt] of [[readerPrivacyClaims, privacyCheckedAt], [readerOriginsClaims, originsCheckedAt], [readerSpaceClaims, spaceCheckedAt], [readerWaterClaims, waterCheckedAt], [readerPhysicsClaims, physicsCheckedAt], [readerProbabilityClaims, probabilityCheckedAt], [readerElectricityClaims, electricityCheckedAt]] as const) {
+		for (const [claims, checkedAt] of [
+			[readerPrivacyClaims, privacyCheckedAt],
+			[readerOriginsClaims, originsCheckedAt],
+			[readerSpaceClaims, spaceCheckedAt],
+			[readerWaterClaims, waterCheckedAt],
+			[readerPhysicsClaims, physicsCheckedAt],
+			[readerProbabilityClaims, probabilityCheckedAt],
+			[readerElectricityClaims, electricityCheckedAt]
+		] as const) {
 			for (const claim of claims) assert.equal(claim.searchCutoffAt, checkedAt);
 		}
 	});
@@ -66,7 +80,50 @@ describe("mechanical-model reader expansion", () => {
 	});
 
 	it("places every new question in exactly one of seven intentional collections", () => {
-		const groups = { "motion-and-contact-forces": ["distance", "speed", "netForce", "massWeight", "thirdLaw", "normal", "staticFriction"], "curved-motion-and-linear-oscillation": ["circularSpeed", "centripetal", "springFrequency"], "mechanical-work-and-energy-balances": ["kineticScaling", "negativeWork", "closedPathWork", "staticWork", "mechanicalEnergy"], "momentum-and-collision-models": ["collisionEnergy", "elasticExchange", "impulse", "centerOfMass"], "torque-inertia-and-rotational-energy": ["torque", "torqueUnits", "inertia", "angularSpeed", "rollingEnergy"], "fluid-quantities-and-static-pressure": ["pressure", "hydrostatic", "hydraulic", "viscosity"], "buoyancy-and-flow-balances": ["buoyancy", "floating", "bernoulli", "continuity"] };
+		const groups = {
+			"motion-and-contact-forces": [
+				"distance",
+				"speed",
+				"netForce",
+				"massWeight",
+				"thirdLaw",
+				"normal",
+				"staticFriction"
+			],
+			"curved-motion-and-linear-oscillation": ["circularSpeed", "centripetal", "springFrequency"],
+			"mechanical-work-and-energy-balances": [
+				"kineticScaling",
+				"negativeWork",
+				"closedPathWork",
+				"staticWork",
+				"mechanicalEnergy"
+			],
+			"momentum-and-collision-models": [
+				"collisionEnergy",
+				"elasticExchange",
+				"impulse",
+				"centerOfMass"
+			],
+			"torque-inertia-and-rotational-energy": [
+				"torque",
+				"torqueUnits",
+				"inertia",
+				"angularSpeed",
+				"rollingEnergy"
+			],
+			"fluid-quantities-and-static-pressure": [
+				"pressure",
+				"hydrostatic",
+				"hydraulic",
+				"viscosity"
+			],
+			"buoyancy-and-flow-balances": [
+				"buoyancy",
+				"floating",
+				"bernoulli",
+				"continuity"
+			]
+		};
 		assert.equal(Object.values(groups).flat().length, 32);
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("physics-and-chemistry", readerMechanicsSlugs[key]!).map(collection => collection.slug), [group]);
@@ -77,7 +134,9 @@ describe("mechanical-model reader expansion", () => {
 		assert.equal(7 + 2, 9);
 		assert.equal(7 - 2, 5);
 		assert.equal((4 + 4) / 4, 2);
-		assert.equal((4 - 4) / 4, 0);
+		const outboundDistance = 4;
+		const returnDistance = 4;
+		assert.equal((outboundDistance - returnDistance) / 4, 0);
 		assert.match(textFor("distance"), /9 m traveled.*positive 5 m/);
 		assert.match(textFor("speed"), /average speed is 2 m\/s.*average velocity is zero/);
 		assert.match(textFor("speed"), /instantaneous speed.*magnitude of instantaneous velocity/);

@@ -11,7 +11,12 @@ export const spaceEvidenceGuide: ReadingGuideContent = {
 			paragraphs: [
 				{
 					text: "A floating astronaut is not a demonstration that gravity has disappeared. The person and spacecraft share a falling trajectory, leaving little local support force. A scale and an orbit therefore answer different questions. Similarly, a dark region on the Moon does not tell you which object, if any, cast a shadow. Ordinary phases are a changing view of lunar daylight; an eclipse involves Earth's shadow. Start with the measurement before choosing its cause.",
-					sources: ["orbit", "free-fall", "phases", "moon-questions"]
+					sources: [
+						"orbit",
+						"free-fall",
+						"phases",
+						"moon-questions"
+					]
 				},
 				{
 					text: "The same distinction helps with retrograde motion. A planet really can trace a backward segment against the stars on an Earth-based chart. That chart is a projection made from a moving observer, not a drawing of the planet reversing its path around the Sun. Earth's passing of Mars is an intuitive example. A physical reversal, an unusual spin direction and an apparent sky-coordinate reversal are separate propositions; sharing the word retrograde does not make them equivalent.",

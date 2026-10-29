@@ -14,11 +14,15 @@ import {
 } from "~/utils/evidence-comparison";
 import { serializeJsonLd } from "~/utils/json-ld";
 
-definePageMeta({ key: (route) => route.path });
+definePageMeta({
+	key: route => route.path
+});
 const route = useRoute();
 const router = useRouter();
 const routeParams = route.params as Record<string, string | string[] | undefined>;
-const routeSlug = Array.isArray(routeParams.slug) ? routeParams.slug[0] : routeParams.slug;
+const routeSlug = Array.isArray(routeParams.slug)
+	? routeParams.slug[0]
+	: routeParams.slug;
 const comparison = comparisonForSlug(String(routeSlug || ""));
 if (!comparison) throw createError({ statusCode: 404, statusMessage: "Evidence comparison not found" });
 const historyAsOf = useState("comparison-history-as-of", () => new Date().toISOString());
@@ -32,14 +36,14 @@ const impactLabels = {
 };
 const selection = computed(() => resolveComparisonSelection(comparison, route.query));
 const results = computed(() =>
-	selection.value.options.map((option) => ({
+	selection.value.options.map(option => ({
 		...option,
 		estimate: estimateForSelection(option, selection.value.outcome, selection.value.context),
 		finding: findingForSelection(option, selection.value.outcome, selection.value.context)
 	}))
 );
 const sourceNumbers = new Map(comparison.sources.map((source, index) => [source.id, index + 1]));
-const sourceTitles = new Map(comparison.sources.map((source) => [source.id, source.title]));
+const sourceTitles = new Map(comparison.sources.map(source => [source.id, source.title]));
 
 let disposed = false;
 onBeforeUnmount(() => {
@@ -48,7 +52,9 @@ onBeforeUnmount(() => {
 const updateSelection = createComparisonNavigation(
 	comparison,
 	() => router.currentRoute.value.query,
-	(query) => (disposed ? Promise.resolve() : router.push({ query }))
+	query => (disposed
+		? Promise.resolve()
+		: router.push({ query }))
 );
 function selectOutcome(event: Event) {
 	void updateSelection({ outcome: (event.target as HTMLSelectElement).value });
@@ -58,10 +64,12 @@ function selectContext(event: Event) {
 }
 function toggleOption(id: string) {
 	void updateSelection((current) => {
-		const ids = new Set(current.options.map((option) => option.id));
+		const ids = new Set(current.options.map(option => option.id));
 		if (ids.has(id)) ids.delete(id);
 		else ids.add(id);
-		return { options: [...ids].join(",") };
+		return {
+			options: [...ids].join(",")
+		};
 	});
 }
 function showAll() {
@@ -81,12 +89,12 @@ useHead({
 			innerHTML: serializeJsonLd({
 				"@context": "https://schema.org",
 				"@type": "Article",
-				headline: comparison.title,
-				description: comparison.description,
-				url: `${siteUrl}/compare/${comparison.slug}`,
-				dateModified: comparison.checkedAt,
-				inLanguage: "en",
-				citation: comparison.sources.map((source) => source.url)
+				"headline": comparison.title,
+				"description": comparison.description,
+				"url": `${siteUrl}/compare/${comparison.slug}`,
+				"dateModified": comparison.checkedAt,
+				"inLanguage": "en",
+				"citation": comparison.sources.map(source => source.url)
 			})
 		}
 	]
@@ -99,23 +107,25 @@ useHead({
 			:items="[{ label: 'Home', to: '/' }, { label: 'Comparisons', to: '/compare' }, { label: comparison.title }]"
 		/>
 		<header>
-			<p class="eyebrow">Evidence comparison</p>
+			<p class="eyebrow">
+				Evidence comparison
+			</p>
 			<h1>{{ comparison.title }}</h1>
-			<p class="comparison-intro">{{ comparison.description }}</p>
+			<p class="comparison-intro">
+				{{ comparison.description }}
+			</p>
 		</header>
 		<LibraryAction :id="comparison.slug" kind="comparison" />
 		<section class="comparison-controls" aria-label="Choose your comparison">
 			<div class="comparison-selects">
-				<label for="comparison-outcome"
-					>Outcome
+				<label for="comparison-outcome">Outcome
 					<select id="comparison-outcome" :value="selection.outcome.id" @change="selectOutcome">
 						<option v-for="outcome in comparison.outcomes" :key="outcome.id" :value="outcome.id">
 							{{ outcome.label }}
 						</option>
 					</select>
 				</label>
-				<label for="comparison-context"
-					>Context
+				<label for="comparison-context">Context
 					<select id="comparison-context" :value="selection.context.id" @change="selectContext">
 						<option v-for="context in comparison.contexts" :key="context.id" :value="context.id">
 							{{ context.label }}
@@ -131,21 +141,26 @@ useHead({
 							type="checkbox"
 							:checked="selection.options.some((item) => item.id === option.id)"
 							@change="toggleOption(option.id)"
-						/>
+						>
 						{{ option.label }}
 					</label>
 				</div>
 			</fieldset>
 		</section>
 		<section class="comparison-results" aria-labelledby="comparison-result-title">
-			<h2 id="comparison-result-title">{{ selection.outcome.label }}</h2>
+			<h2 id="comparison-result-title">
+				{{ selection.outcome.label }}
+			</h2>
 			<p>{{ selection.outcome.explanation }}</p>
-			<p class="comparison-context">{{ selection.context.explanation }}</p>
-			<p v-if="comparison.protocolNote" class="comparison-protocol">{{ comparison.protocolNote }}</p>
+			<p class="comparison-context">
+				{{ selection.context.explanation }}
+			</p>
+			<p v-if="comparison.protocolNote" class="comparison-protocol">
+				{{ comparison.protocolNote }}
+			</p>
 			<p class="comparison-basis">
 				{{ comparison.datasetLabel }}. Sources checked
-				<time :datetime="comparison.checkedAt">{{ comparison.checkedAt }}</time
-				>.
+				<time :datetime="comparison.checkedAt">{{ comparison.checkedAt }}</time>.
 			</p>
 			<p class="comparison-status" role="status">
 				{{ selection.options.length }} options selected for {{ selection.outcome.label.toLowerCase() }}.
@@ -160,8 +175,8 @@ useHead({
 				class="comparison-grid"
 				:class="{
 					'comparison-grid--detailed': results.some(
-						(option) => option.finding || option.estimate?.uncertainty
-					)
+						(option) => option.finding || option.estimate?.uncertainty,
+					),
 				}"
 			>
 				<section
@@ -170,12 +185,16 @@ useHead({
 					class="comparison-option"
 					:aria-labelledby="`option-${option.id}`"
 				>
-					<h3 :id="`option-${option.id}`">{{ option.label }}</h3>
+					<h3 :id="`option-${option.id}`">
+						{{ option.label }}
+					</h3>
 					<template v-if="option.estimate">
 						<p class="comparison-value">
 							{{ formatComparisonEstimate(option.estimate) }}
 						</p>
-						<p class="comparison-unit">{{ selection.outcome.unit }}</p>
+						<p class="comparison-unit">
+							{{ selection.outcome.unit }}
+						</p>
 						<p v-if="option.estimate.interpretation" class="comparison-interpretation">
 							{{ option.estimate.interpretation }}
 						</p>
@@ -186,12 +205,18 @@ useHead({
 								{{ comparisonIntervalLabel(option.estimate.uncertainty) }}
 								{{ option.estimate.uncertainty.lower }} to {{ option.estimate.uncertainty.upper }}.
 							</p>
-							<p v-if="option.estimate.pValue">Adjusted p {{ option.estimate.pValue }}.</p>
+							<p v-if="option.estimate.pValue">
+								Adjusted p {{ option.estimate.pValue }}.
+							</p>
 						</details>
-						<p class="comparison-option-scope">{{ option.scope }}</p>
+						<p class="comparison-option-scope">
+							{{ option.scope }}
+						</p>
 					</template>
 					<template v-else-if="option.finding">
-						<p class="comparison-finding">{{ option.finding.headline }}</p>
+						<p class="comparison-finding">
+							{{ option.finding.headline }}
+						</p>
 						<p>{{ option.finding.summary }}</p>
 						<details class="comparison-uncertainty comparison-evidence">
 							<summary>Evidence and limits</summary>
@@ -199,7 +224,9 @@ useHead({
 							<p>{{ option.finding.scope }}</p>
 							<p>{{ option.finding.limitation }}</p>
 						</details>
-						<p class="comparison-option-scope">{{ option.scope }}</p>
+						<p class="comparison-option-scope">
+							{{ option.scope }}
+						</p>
 					</template>
 					<p v-else class="comparison-unavailable">
 						{{
@@ -214,19 +241,24 @@ useHead({
 						class="comparison-source-link"
 						:href="`#comparison-source-${id}`"
 						:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
-						>Source {{ sourceNumbers.get(id) }}</a
-					>
+					>Source {{ sourceNumbers.get(id) }}</a>
 				</section>
 			</div>
 			<div v-else class="comparison-empty">
 				<p>Select options above to see the evidence.</p>
-				<button type="button" @click="showAll">Show all options</button>
+				<button type="button" @click="showAll">
+					Show all options
+				</button>
 			</div>
 		</section>
 		<section class="comparison-limits" aria-labelledby="comparison-limits-title">
-			<h2 id="comparison-limits-title">Read these findings with their limits</h2>
+			<h2 id="comparison-limits-title">
+				Read these findings with their limits
+			</h2>
 			<ul>
-				<li v-for="limit in comparison.limitations" :key="limit">{{ limit }}</li>
+				<li v-for="limit in comparison.limitations" :key="limit">
+					{{ limit }}
+				</li>
 			</ul>
 			<p>{{ comparison.measureNote }}</p>
 			<p v-if="comparison.guidance" class="comparison-guidance">
@@ -237,13 +269,14 @@ useHead({
 					:href="`#comparison-source-${id}`"
 					:aria-label="`Guidance source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
 					class="comparison-source-link"
-					>Source {{ sourceNumbers.get(id) }}</a
-				>
+				>Source {{ sourceNumbers.get(id) }}</a>
 			</p>
 			<NuxtLink :to="comparison.guidePath">Read the guide for the wider tradeoffs</NuxtLink>
 		</section>
 		<section aria-labelledby="comparison-reviews-title">
-			<h2 id="comparison-reviews-title">Connected claim reviews</h2>
+			<h2 id="comparison-reviews-title">
+				Connected claim reviews
+			</h2>
 			<ul>
 				<li v-for="review in comparison.reviews" :key="review.path">
 					<NuxtLink :to="review.path">{{ review.label }}</NuxtLink>
@@ -251,7 +284,9 @@ useHead({
 			</ul>
 		</section>
 		<section aria-labelledby="comparison-sources-title">
-			<h2 id="comparison-sources-title">Sources and scope</h2>
+			<h2 id="comparison-sources-title">
+				Sources and scope
+			</h2>
 			<ol class="comparison-sources">
 				<li v-for="source in comparison.sources" :id="`comparison-source-${source.id}`" :key="source.id">
 					<a :href="source.url" rel="noopener noreferrer">{{ source.title }}</a>
@@ -279,8 +314,7 @@ useHead({
 						class="comparison-source-link"
 						:href="`#comparison-source-${id}`"
 						:aria-label="`Source ${sourceNumbers.get(id)}: ${sourceTitles.get(id)}`"
-						>Source {{ sourceNumbers.get(id) }}</a
-					>
+					>Source {{ sourceNumbers.get(id) }}</a>
 				</li>
 			</ol>
 		</details>

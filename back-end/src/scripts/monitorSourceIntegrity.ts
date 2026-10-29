@@ -17,7 +17,9 @@ function integerArgument(name: string, fallback: number) {
 
 async function main() {
 	const providerIndex = process.argv.indexOf("--provider");
-	const requestedProvider = providerIndex < 0 ? "all" : process.argv[providerIndex + 1];
+	const requestedProvider = providerIndex < 0
+		? "all"
+		: process.argv[providerIndex + 1];
 	const providers = SOURCE_INTEGRITY_PROVIDERS.filter(provider => requestedProvider === "all" || provider === requestedProvider);
 	if (!providers.length) throw new Error("--provider requires crossref, europepmc or all.");
 	const options = {

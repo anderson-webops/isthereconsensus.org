@@ -16,13 +16,33 @@ const feedbackSchema = new Schema(
 		helpful: { type: Boolean },
 		clarity: { type: String, enum: explanationClarityRatings },
 		answerCoverage: { type: String, enum: answerCoverageRatings },
-		area: { type: String, enum: ["source", "population", "outcome", "explanation", "other"] },
+		area: {
+			type: String,
+			enum: [
+				"source",
+				"population",
+				"outcome",
+				"explanation",
+				"other"
+			]
+		},
 		title: { type: String, maxlength: 200 },
 		referenceTitle: { type: String, maxlength: 500 },
 		message: { type: String, maxlength: 1200 },
 		sourceUrl: { type: String, maxlength: 500 },
-		status: { type: String, enum: feedbackStatuses, default: "new", required: true },
-		priority: { type: Number, min: 0, max: 2, default: 1, required: true },
+		status: {
+			type: String,
+			enum: feedbackStatuses,
+			default: "new",
+			required: true
+		},
+		priority: {
+			type: Number,
+			min: 0,
+			max: 2,
+			default: 1,
+			required: true
+		},
 		revision: { type: Number, default: 0, required: true },
 		linkedClaimId: { type: Schema.Types.ObjectId, ref: "Claim" },
 		linkedTopicId: { type: Schema.Types.ObjectId, ref: "Topic" },
@@ -47,7 +67,12 @@ const feedbackSchema = new Schema(
 );
 
 feedbackSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-feedbackSchema.index({ status: 1, priority: -1, createdAt: -1, _id: -1 });
+feedbackSchema.index({
+	status: 1,
+	priority: -1,
+	createdAt: -1,
+	_id: -1
+});
 feedbackSchema.index({ claimId: 1, createdAt: -1 });
 feedbackSchema.index({ linkedClaimId: 1, status: 1, expiresAt: 1 });
 feedbackSchema.index({ comparisonSlug: 1, createdAt: -1 });

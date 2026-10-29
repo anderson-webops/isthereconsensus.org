@@ -34,9 +34,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Direction of benefit is supported, but magnitude is moderately uncertain because viruses, products, populations, and study designs change each season.",
 		sources: [
-			["meta_analysis", "Effectiveness of influenza vaccination to prevent severe disease: a systematic review and meta-analysis of test-negative design studies", "Clinical Microbiology and Infection", 2025, "10.1016/j.cmi.2025.09.023", "Recent synthesis evaluates influenza-confirmed severe outcomes within a design intended to reduce health-care-seeking bias."],
-			["meta_analysis", "Real-world effectiveness of seasonal influenza vaccination and age as effect modifier: A systematic review, meta-analysis and meta-regression of test-negative design studies", "Vaccine", 2024, "10.1016/j.vaccine.2024.02.059", "Large synthesis quantifies real-world effectiveness and how it varies with age."],
-			["meta_analysis", "Efficacy and effectiveness of influenza vaccines: a systematic review and meta-analysis", "The Lancet Infectious Diseases", 2011, "10.1016/S1473-3099(11)70295-X", "Influential review separates laboratory-confirmed efficacy from broader effectiveness and highlights evidence gaps."]
+			[
+				"meta_analysis",
+				"Effectiveness of influenza vaccination to prevent severe disease: a systematic review and meta-analysis of test-negative design studies",
+				"Clinical Microbiology and Infection",
+				2025,
+				"10.1016/j.cmi.2025.09.023",
+				"Recent synthesis evaluates influenza-confirmed severe outcomes within a design intended to reduce health-care-seeking bias."
+			],
+			[
+				"meta_analysis",
+				"Real-world effectiveness of seasonal influenza vaccination and age as effect modifier: A systematic review, meta-analysis and meta-regression of test-negative design studies",
+				"Vaccine",
+				2024,
+				"10.1016/j.vaccine.2024.02.059",
+				"Large synthesis quantifies real-world effectiveness and how it varies with age."
+			],
+			[
+				"meta_analysis",
+				"Efficacy and effectiveness of influenza vaccines: a systematic review and meta-analysis",
+				"The Lancet Infectious Diseases",
+				2011,
+				"10.1016/S1473-3099(11)70295-X",
+				"Influential review separates laboratory-confirmed efficacy from broader effectiveness and highlights evidence gaps."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -71,9 +92,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Indirect protection is high-confidence in appropriate settings. Thresholds and effect sizes are conditional and can shift with biology and behavior.",
 		sources: [
-			["systematic_review", "Systematic review and meta-analysis of indirect protection afforded by vaccinating children against seasonal influenza: implications for policy", "Clinical Infectious Diseases", 2017, "10.1093/cid/cix420", "Review finds evidence that vaccinating children can protect unvaccinated household and community members, with heterogeneous effect sizes."],
-			["systematic_review", "Indirect (herd) protection, following pneumococcal conjugated vaccines introduction: A systematic review of the literature", "Vaccine", 2017, "10.1016/j.vaccine.2017.04.032", "Population evidence documents reduced vaccine-type disease among age groups not directly targeted by childhood programs."],
-			["context", "Dissecting the indirect effects caused by vaccines into the basic elements", "Human Vaccines & Immunotherapeutics", 2015, "10.1080/21645515.2015.1052196", "Framework explains how study design, coverage, transmission, and interference shape estimates of indirect effects."]
+			[
+				"systematic_review",
+				"Systematic review and meta-analysis of indirect protection afforded by vaccinating children against seasonal influenza: implications for policy",
+				"Clinical Infectious Diseases",
+				2017,
+				"10.1093/cid/cix420",
+				"Review finds evidence that vaccinating children can protect unvaccinated household and community members, with heterogeneous effect sizes."
+			],
+			[
+				"systematic_review",
+				"Indirect (herd) protection, following pneumococcal conjugated vaccines introduction: A systematic review of the literature",
+				"Vaccine",
+				2017,
+				"10.1016/j.vaccine.2017.04.032",
+				"Population evidence documents reduced vaccine-type disease among age groups not directly targeted by childhood programs."
+			],
+			[
+				"context",
+				"Dissecting the indirect effects caused by vaccines into the basic elements",
+				"Human Vaccines & Immunotherapeutics",
+				2015,
+				"10.1080/21645515.2015.1052196",
+				"Framework explains how study design, coverage, transmission, and interference shape estimates of indirect effects."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -108,9 +150,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The biological conclusion is high-confidence. Symptom frequency and rare adverse events differ by product, age, and health status.",
 		sources: [
-			["systematic_review", "Influenza vaccines: Past, present and future", "Reviews in Medical Virology", 2021, "10.1002/rmv.2243", "Review describes inactivated, live attenuated, recombinant, and newer vaccine platforms and their biological limits."],
-			["systematic_review", "Influenza Vaccination Strategies: Comparing Inactivated and Live Attenuated Influenza Vaccines", "Vaccines", 2015, "10.3390/vaccines3020373", "Review distinguishes the live attenuated and inactivated products while assessing protection under strain match and mismatch."],
-			["systematic_review", "Influenza vaccines: Evaluation of the safety profile", "Human Vaccines & Immunotherapeutics", 2018, "10.1080/21645515.2017.1423153", "Safety review separates common transient reactions from influenza infection and uncommon serious events."]
+			[
+				"systematic_review",
+				"Influenza vaccines: Past, present and future",
+				"Reviews in Medical Virology",
+				2021,
+				"10.1002/rmv.2243",
+				"Review describes inactivated, live attenuated, recombinant, and newer vaccine platforms and their biological limits."
+			],
+			[
+				"systematic_review",
+				"Influenza Vaccination Strategies: Comparing Inactivated and Live Attenuated Influenza Vaccines",
+				"Vaccines",
+				2015,
+				"10.3390/vaccines3020373",
+				"Review distinguishes the live attenuated and inactivated products while assessing protection under strain match and mismatch."
+			],
+			[
+				"systematic_review",
+				"Influenza vaccines: Evaluation of the safety profile",
+				"Human Vaccines & Immunotherapeutics",
+				2018,
+				"10.1080/21645515.2017.1423153",
+				"Safety review separates common transient reactions from influenza infection and uncommon serious events."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -145,9 +208,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Existence is high-confidence; the current fraction and timing distribution are context-dependent and harder to estimate.",
 		sources: [
-			["systematic_review", "Occurrence and transmission potential of asymptomatic and presymptomatic SARS-CoV-2 infections: A living systematic review and meta-analysis", "PLOS Medicine", 2020, "10.1371/journal.pmed.1003346", "Living review separates asymptomatic from presymptomatic infection and synthesizes transmission evidence."],
-			["landmark_study", "SARS-CoV-2 infection and transmission in educational settings: a prospective, cross-sectional analysis of infection clusters and outbreaks in England", "The Lancet Infectious Diseases", 2020, "10.1016/S1473-3099(20)30882-3", "Large outbreak analysis provides real-world context for transmission around detected cases in educational settings."],
-			["systematic_review", "The role of asymptomatic and pre-symptomatic infection in SARS-CoV-2 transmission: a living systematic review", "Clinical Microbiology and Infection", 2021, "10.1016/j.cmi.2021.01.011", "Updated living review concludes that transmission can occur before symptom onset while quantification remains uncertain."]
+			[
+				"systematic_review",
+				"Occurrence and transmission potential of asymptomatic and presymptomatic SARS-CoV-2 infections: A living systematic review and meta-analysis",
+				"PLOS Medicine",
+				2020,
+				"10.1371/journal.pmed.1003346",
+				"Living review separates asymptomatic from presymptomatic infection and synthesizes transmission evidence."
+			],
+			[
+				"landmark_study",
+				"SARS-CoV-2 infection and transmission in educational settings: a prospective, cross-sectional analysis of infection clusters and outbreaks in England",
+				"The Lancet Infectious Diseases",
+				2020,
+				"10.1016/S1473-3099(20)30882-3",
+				"Large outbreak analysis provides real-world context for transmission around detected cases in educational settings."
+			],
+			[
+				"systematic_review",
+				"The role of asymptomatic and pre-symptomatic infection in SARS-CoV-2 transmission: a living systematic review",
+				"Clinical Microbiology and Infection",
+				2021,
+				"10.1016/j.cmi.2021.01.011",
+				"Updated living review concludes that transmission can occur before symptom onset while quantification remains uncertain."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -182,9 +266,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Safety is well supported for ordinary use in healthy populations. Evidence is thinner for some severe conditions, very prolonged wear, and extreme exertion.",
 		sources: [
-			["meta_analysis", "Effects of Wearing a Mask During Exercise on Physiological and Psychological Outcomes in Healthy Individuals: A Systematic Review and Meta-Analysis", "Sports Medicine", 2022, "10.1007/s40279-022-01746-4", "Exercise synthesis finds increased perceived exertion or discomfort without broadly dangerous cardiorespiratory impairment."],
-			["meta_analysis", "The Impact of Ubiquitous Face Masks and Filtering Face Piece Application During Rest, Work and Exercise on Gas Exchange, Pulmonary Function and Physical Performance: A Systematic Review with Meta-analysis", "Sports Medicine - Open", 2021, "10.1186/s40798-021-00388-6", "Review assesses oxygen and carbon-dioxide measures across health and exercise contexts."],
-			["meta_analysis", "The influence of N95 and surgical masks on carbon dioxide levels: A comprehensive systematic review and meta-analysis", "Heliyon", 2024, "10.1016/j.heliyon.2024.e36626", "Synthesis finds measurable increases in some settings while distinguishing them from hazardous exposure levels."]
+			[
+				"meta_analysis",
+				"Effects of Wearing a Mask During Exercise on Physiological and Psychological Outcomes in Healthy Individuals: A Systematic Review and Meta-Analysis",
+				"Sports Medicine",
+				2022,
+				"10.1007/s40279-022-01746-4",
+				"Exercise synthesis finds increased perceived exertion or discomfort without broadly dangerous cardiorespiratory impairment."
+			],
+			[
+				"meta_analysis",
+				"The Impact of Ubiquitous Face Masks and Filtering Face Piece Application During Rest, Work and Exercise on Gas Exchange, Pulmonary Function and Physical Performance: A Systematic Review with Meta-analysis",
+				"Sports Medicine - Open",
+				2021,
+				"10.1186/s40798-021-00388-6",
+				"Review assesses oxygen and carbon-dioxide measures across health and exercise contexts."
+			],
+			[
+				"meta_analysis",
+				"The influence of N95 and surgical masks on carbon dioxide levels: A comprehensive systematic review and meta-analysis",
+				"Heliyon",
+				2024,
+				"10.1016/j.heliyon.2024.e36626",
+				"Synthesis finds measurable increases in some settings while distinguishing them from hazardous exposure levels."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -219,9 +324,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The broad division of use is stable. Exact infection reductions vary with setting, compliance, product, outcome, and circulating pathogens.",
 		sources: [
-			["meta_analysis", "Soap versus sanitiser for preventing the transmission of acute respiratory infections in the community: a systematic review with meta-analysis and dose-response analysis", "BMJ Open", 2021, "10.1136/bmjopen-2020-046175", "Community synthesis compares soap and sanitizer interventions for acute respiratory infection outcomes."],
-			["systematic_review", "Efficacy and effectiveness of hand hygiene-related practices used in community settings for removal of organisms from hands: a systematic review", "BMJ Global Health", 2025, "10.1136/bmjgh-2025-018925", "Review prepared for WHO guidance evaluates benefits, implementation, and evidence limitations outside health-care facilities."],
-			["systematic_review", "Efficacy of instant hand sanitizers against foodborne pathogens compared with hand washing with soap and water in food preparation settings: a systematic review", "Journal of Food Protection", 2016, "10.4315/0362-028X.JFP-15-492", "Comparative review finds soap and water more reliable when soil and non-enveloped foodborne viruses limit sanitizer performance."]
+			[
+				"meta_analysis",
+				"Soap versus sanitiser for preventing the transmission of acute respiratory infections in the community: a systematic review with meta-analysis and dose-response analysis",
+				"BMJ Open",
+				2021,
+				"10.1136/bmjopen-2020-046175",
+				"Community synthesis compares soap and sanitizer interventions for acute respiratory infection outcomes."
+			],
+			[
+				"systematic_review",
+				"Efficacy and effectiveness of hand hygiene-related practices used in community settings for removal of organisms from hands: a systematic review",
+				"BMJ Global Health",
+				2025,
+				"10.1136/bmjgh-2025-018925",
+				"Review prepared for WHO guidance evaluates benefits, implementation, and evidence limitations outside health-care facilities."
+			],
+			[
+				"systematic_review",
+				"Efficacy of instant hand sanitizers against foodborne pathogens compared with hand washing with soap and water in food preparation settings: a systematic review",
+				"Journal of Food Protection",
+				2016,
+				"10.4315/0362-028X.JFP-15-492",
+				"Comparative review finds soap and water more reliable when soil and non-enveloped foodborne viruses limit sanitizer performance."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -256,9 +382,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Moderate-to-high confidence exists for defined infections and stable patients. Generalization to excluded high-risk groups or complicated disease remains uncertain.",
 		sources: [
-			["systematic_review", "The evidence base for the optimal antibiotic treatment duration of upper and lower respiratory tract infections: an umbrella review", "The Lancet Infectious Diseases", 2024, "10.1016/S1473-3099(24)00456-0", "Umbrella review evaluates where shorter respiratory regimens retain efficacy and reduce exposure."],
-			["meta_analysis", "Shorter Versus Longer Courses of Antibiotics for Infection in Hospitalized Patients: A Systematic Review and Meta-Analysis", "Journal of Hospital Medicine", 2018, "10.12788/jhm.2905", "Hospital-focused synthesis finds comparable outcomes for selected infections while emphasizing diagnosis-specific boundaries."],
-			["systematic_review", "Antibiotic duration for common bacterial infections: a systematic review", "JAC-Antimicrobial Resistance", 2024, "10.1093/jacamr/dlae215", "Recent review maps randomized evidence and remaining gaps across common bacterial infections."]
+			[
+				"systematic_review",
+				"The evidence base for the optimal antibiotic treatment duration of upper and lower respiratory tract infections: an umbrella review",
+				"The Lancet Infectious Diseases",
+				2024,
+				"10.1016/S1473-3099(24)00456-0",
+				"Umbrella review evaluates where shorter respiratory regimens retain efficacy and reduce exposure."
+			],
+			[
+				"meta_analysis",
+				"Shorter Versus Longer Courses of Antibiotics for Infection in Hospitalized Patients: A Systematic Review and Meta-Analysis",
+				"Journal of Hospital Medicine",
+				2018,
+				"10.12788/jhm.2905",
+				"Hospital-focused synthesis finds comparable outcomes for selected infections while emphasizing diagnosis-specific boundaries."
+			],
+			[
+				"systematic_review",
+				"Antibiotic duration for common bacterial infections: a systematic review",
+				"JAC-Antimicrobial Resistance",
+				2024,
+				"10.1093/jacamr/dlae215",
+				"Recent review maps randomized evidence and remaining gaps across common bacterial infections."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -293,9 +440,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"The broad natural history is well established. Individual progression prediction remains imprecise and depends strongly on time since infection and host factors.",
 		sources: [
-			["meta_analysis", "Absolute risk of tuberculosis among untreated populations with a positive tuberculin skin test or interferon-gamma release assay result: systematic review and meta-analysis", "BMJ", 2020, "10.1136/bmj.m549", "Large synthesis quantifies highly variable absolute risk across exposure and clinical groups."],
-			["systematic_review", "Screening for latent tuberculosis infection in adults: updated evidence report and systematic review for the US Preventive Services Task Force", "JAMA", 2023, "10.1001/jama.2023.3954", "Evidence review examines screening accuracy, preventive treatment, benefits, and harms."],
-			["landmark_study", "Time since infection and risks of future disease for individuals with Mycobacterium tuberculosis infection in the United States", "Epidemiology", 2020, "10.1097/EDE.0000000000001271", "Modeling anchored in epidemiologic data shows that progression risk falls substantially as time since infection increases."]
+			[
+				"meta_analysis",
+				"Absolute risk of tuberculosis among untreated populations with a positive tuberculin skin test or interferon-gamma release assay result: systematic review and meta-analysis",
+				"BMJ",
+				2020,
+				"10.1136/bmj.m549",
+				"Large synthesis quantifies highly variable absolute risk across exposure and clinical groups."
+			],
+			[
+				"systematic_review",
+				"Screening for latent tuberculosis infection in adults: updated evidence report and systematic review for the US Preventive Services Task Force",
+				"JAMA",
+				2023,
+				"10.1001/jama.2023.3954",
+				"Evidence review examines screening accuracy, preventive treatment, benefits, and harms."
+			],
+			[
+				"landmark_study",
+				"Time since infection and risks of future disease for individuals with Mycobacterium tuberculosis infection in the United States",
+				"Epidemiology",
+				2020,
+				"10.1097/EDE.0000000000001271",
+				"Modeling anchored in epidemiologic data shows that progression risk falls substantially as time since infection increases."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -330,9 +498,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Cross-sector movement is high-confidence. Route-specific shares, directionality, and intervention effects are much less certain and vary geographically.",
 		sources: [
-			["systematic_review", "State of Knowledge on the Acquisition, Diversity, Interspecies Attribution and Spread of Antimicrobial Resistance between Humans, Animals and the Environment: A Systematic Review", "Antibiotics", 2022, "10.3390/antibiotics12010073", "Systematic review synthesizes resistance pathways and evidence across human, animal, and environmental compartments."],
-			["systematic_review", "Quantifying drivers of antibiotic resistance in humans: a systematic review", "The Lancet Infectious Diseases", 2018, "10.1016/S1473-3099(18)30296-2", "Review maps antimicrobial use, transmission, sanitation, health systems, trade, and socioeconomic drivers."],
-			["context", "Antimicrobial resistance: One Health approach", "Veterinary World", 2022, "10.14202/vetworld.2022.743-749", "One Health review describes interconnected sources and the need for coordinated control."]
+			[
+				"systematic_review",
+				"State of Knowledge on the Acquisition, Diversity, Interspecies Attribution and Spread of Antimicrobial Resistance between Humans, Animals and the Environment: A Systematic Review",
+				"Antibiotics",
+				2022,
+				"10.3390/antibiotics12010073",
+				"Systematic review synthesizes resistance pathways and evidence across human, animal, and environmental compartments."
+			],
+			[
+				"systematic_review",
+				"Quantifying drivers of antibiotic resistance in humans: a systematic review",
+				"The Lancet Infectious Diseases",
+				2018,
+				"10.1016/S1473-3099(18)30296-2",
+				"Review maps antimicrobial use, transmission, sanitation, health systems, trade, and socioeconomic drivers."
+			],
+			[
+				"context",
+				"Antimicrobial resistance: One Health approach",
+				"Veterinary World",
+				2022,
+				"10.14202/vetworld.2022.743-749",
+				"One Health review describes interconnected sources and the need for coordinated control."
+			]
 		]
 	}),
 	reviewedClaim({
@@ -367,9 +556,30 @@ export const september2026InfectionImmunityClaims: SeedClaim[] = [
 		uncertaintySummary:
 			"Trend detection is well supported for several pathogens. Lead time, quantitative calibration, representativeness, and action thresholds remain system-specific.",
 		sources: [
-			["systematic_review", "Wastewater surveillance to infer COVID-19 transmission: A systematic review", "Science of the Total Environment", 2021, "10.1016/j.scitotenv.2021.150060", "Review synthesizes wastewater trend detection, variant tracking, and major sources of measurement variation."],
-			["systematic_review", "The potential of wastewater-based epidemiology as surveillance and early warning of infectious disease outbreaks", "Current Opinion in Environmental Science & Health", 2020, "10.1016/j.coesh.2020.04.006", "Early review describes the population-level early-warning rationale and implementation requirements."],
-			["context", "Building national wastewater surveillance for infectious diseases in the United States", "Emerging Infectious Diseases", 2026, "10.3201/eid3213.260301", "Current national-program account explains how wastewater complements clinical surveillance and where coverage and standardization still matter."]
+			[
+				"systematic_review",
+				"Wastewater surveillance to infer COVID-19 transmission: A systematic review",
+				"Science of the Total Environment",
+				2021,
+				"10.1016/j.scitotenv.2021.150060",
+				"Review synthesizes wastewater trend detection, variant tracking, and major sources of measurement variation."
+			],
+			[
+				"systematic_review",
+				"The potential of wastewater-based epidemiology as surveillance and early warning of infectious disease outbreaks",
+				"Current Opinion in Environmental Science & Health",
+				2020,
+				"10.1016/j.coesh.2020.04.006",
+				"Early review describes the population-level early-warning rationale and implementation requirements."
+			],
+			[
+				"context",
+				"Building national wastewater surveillance for infectious diseases in the United States",
+				"Emerging Infectious Diseases",
+				2026,
+				"10.3201/eid3213.260301",
+				"Current national-program account explains how wastewater complements clinical surveillance and where coverage and standardization still matter."
+			]
 		]
 	})
 ];

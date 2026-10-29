@@ -158,7 +158,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Privacy Policy' }]" />
 
 		<header class="privacy-header">
-			<p class="eyebrow">Privacy Policy</p>
+			<p class="eyebrow">
+				Privacy Policy
+			</p>
 			<h1>How we handle personal information.</h1>
 			<p>
 				Effective September 11, 2026. This policy explains what the site collects, how it uses that information,
@@ -174,7 +176,9 @@ useStaticPageMeta({
 		</section>
 
 		<section class="privacy-contents" aria-labelledby="privacy-contents-heading">
-			<h2 id="privacy-contents-heading">On this page</h2>
+			<h2 id="privacy-contents-heading">
+				On this page
+			</h2>
 			<nav class="privacy-contents__links" aria-label="Privacy policy sections">
 				<a v-for="item in privacySections" :key="item.id" :href="`#${item.id}`">{{ item.label }}</a>
 			</nav>
@@ -205,7 +209,9 @@ useStaticPageMeta({
 				<article v-for="group in collectionCategories" :key="group.title" class="category-card">
 					<h3>{{ group.title }}</h3>
 					<ul class="plain-list plain-list--tight">
-						<li v-for="item in group.items" :key="item">{{ item }}</li>
+						<li v-for="item in group.items" :key="item">
+							{{ item }}
+						</li>
 					</ul>
 				</article>
 			</div>
@@ -216,7 +222,9 @@ useStaticPageMeta({
 				<h2>3. How we use information</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in useCases" :key="item">{{ item }}</li>
+				<li v-for="item in useCases" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -288,7 +296,9 @@ useStaticPageMeta({
 				<h2>6. When we share or disclose information</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in sharingCategories" :key="item">{{ item }}</li>
+				<li v-for="item in sharingCategories" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<p>
@@ -307,7 +317,9 @@ useStaticPageMeta({
 					<h3>{{ item.title }}</h3>
 					<p>{{ item.body }}</p>
 					<ul v-if="item.details?.length" class="plain-list plain-list--tight">
-						<li v-for="detail in item.details" :key="detail">{{ detail }}</li>
+						<li v-for="detail in item.details" :key="detail">
+							{{ detail }}
+						</li>
 					</ul>
 				</article>
 			</div>
@@ -318,7 +330,9 @@ useStaticPageMeta({
 				<h2>8. Choices and rights</h2>
 			</div>
 			<ul class="plain-list">
-				<li v-for="item in rightsPoints" :key="item">{{ item }}</li>
+				<li v-for="item in rightsPoints" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 			<div class="prose">
 				<p>
@@ -393,7 +407,9 @@ useStaticPageMeta({
 
 		<section class="privacy-callout">
 			<div>
-				<p class="eyebrow">Questions or requests</p>
+				<p class="eyebrow">
+					Questions or requests
+				</p>
 				<h2>Contact the site operator</h2>
 				<p>
 					For privacy questions or rights requests, email
@@ -402,9 +418,7 @@ useStaticPageMeta({
 			</div>
 			<div class="privacy-callout__actions">
 				<NuxtLink class="button button--primary" to="/terms">Terms of service</NuxtLink>
-				<NuxtLink class="button button--ghost" to="/account-deletion-and-retention"
-					>Account deletion and retention</NuxtLink
-				>
+				<NuxtLink class="button button--ghost" to="/account-deletion-and-retention">Account deletion and retention</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/account">Account</NuxtLink>
 			</div>
 		</section>

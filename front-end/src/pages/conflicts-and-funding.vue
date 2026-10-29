@@ -71,7 +71,9 @@ useStaticPageMeta({
 		<PageBreadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Conflict and funding disclosure' }]" />
 
 		<header class="policy-header">
-			<p class="eyebrow">Conflict and funding disclosure</p>
+			<p class="eyebrow">
+				Conflict and funding disclosure
+			</p>
 			<h1>Influence, funding, and disclosures.</h1>
 			<p>
 				This policy covers interests disclosed by staff editors, verified experts, and anyone who can approve
@@ -92,7 +94,9 @@ useStaticPageMeta({
 				<p>The site uses a broad trust-centered definition rather than a narrow misconduct-only definition.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in conflictTypes" :key="item">{{ item }}</li>
+				<li v-for="item in conflictTypes" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -102,7 +106,9 @@ useStaticPageMeta({
 				<p>These fields are captured before assignment, not discovered after publication.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in disclosureFields" :key="item">{{ item }}</li>
+				<li v-for="item in disclosureFields" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
@@ -125,20 +131,22 @@ useStaticPageMeta({
 				<p>Relevant interests should be visible where they matter.</p>
 			</div>
 			<ul class="policy-list">
-				<li v-for="item in publicCommitments" :key="item">{{ item }}</li>
+				<li v-for="item in publicCommitments" :key="item">
+					{{ item }}
+				</li>
 			</ul>
 		</section>
 
 		<section class="policy-callout">
 			<div>
-				<p class="eyebrow">Related standards</p>
+				<p class="eyebrow">
+					Related standards
+				</p>
 				<h2>Disclosure matters when it changes assignments or reviews.</h2>
 				<p>The expert program covers reviewer standards; How Reviews Work covers the public publishing bar.</p>
 			</div>
 			<div class="policy-callout__actions">
-				<NuxtLink class="button button--primary" to="/expert-review-program"
-					>Verified expert review program</NuxtLink
-				>
+				<NuxtLink class="button button--primary" to="/expert-review-program">Verified expert review program</NuxtLink>
 				<NuxtLink class="button button--ghost" to="/standards">How reviews work</NuxtLink>
 			</div>
 		</section>

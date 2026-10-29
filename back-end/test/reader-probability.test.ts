@@ -12,7 +12,13 @@ import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 const claimFor = (key: string) => readerProbabilityClaims.find(claim => claim.slug === readerProbabilitySlugs[key])!;
-const textFor = (key: string) => [claimFor(key).bottomLine, ...claimFor(key).stableCore, claimFor(key).editorSummary].join(" ");
+function textFor(key: string) {
+	return [
+		claimFor(key).bottomLine,
+		...claimFor(key).stableCore,
+		claimFor(key).editorSummary
+	].join(" ");
+}
 const mean = (values: number[]) => values.reduce((total, value) => total + value, 0) / values.length;
 
 describe("probability and data-literacy expansion", () => {
@@ -33,7 +39,13 @@ describe("probability and data-literacy expansion", () => {
 	});
 
 	it("leaves all prior cohort research dates unchanged", () => {
-		for (const [claims, checkedAt] of [[readerPrivacyClaims, privacyCheckedAt], [readerOriginsClaims, originsCheckedAt], [readerSpaceClaims, spaceCheckedAt], [readerWaterClaims, waterCheckedAt], [readerPhysicsClaims, physicsCheckedAt]] as const) {
+		for (const [claims, checkedAt] of [
+			[readerPrivacyClaims, privacyCheckedAt],
+			[readerOriginsClaims, originsCheckedAt],
+			[readerSpaceClaims, spaceCheckedAt],
+			[readerWaterClaims, waterCheckedAt],
+			[readerPhysicsClaims, physicsCheckedAt]
+		] as const) {
 			for (const claim of claims) assert.equal(claim.searchCutoffAt, checkedAt);
 		}
 	});
@@ -63,10 +75,34 @@ describe("probability and data-literacy expansion", () => {
 
 	it("places each question in exactly one intentional collection", () => {
 		const groups = {
-			"averages-and-data-displays": ["median", "pooled", "simpson", "missing", "histogram"],
-			"percentages-and-conditioning": ["points", "reverse", "compound", "conditional", "overlap"],
-			"independence-and-probability-models": ["exclusive", "replacement", "zero", "density", "catchup"],
-			"expectation-spread-and-sampling-uncertainty": ["expected", "correlation", "variance", "error", "normal"]
+			"averages-and-data-displays": [
+				"median",
+				"pooled",
+				"simpson",
+				"missing",
+				"histogram"
+			],
+			"percentages-and-conditioning": [
+				"points",
+				"reverse",
+				"compound",
+				"conditional",
+				"overlap"
+			],
+			"independence-and-probability-models": [
+				"exclusive",
+				"replacement",
+				"zero",
+				"density",
+				"catchup"
+			],
+			"expectation-spread-and-sampling-uncertainty": [
+				"expected",
+				"correlation",
+				"variance",
+				"error",
+				"normal"
+			]
 		};
 		for (const [group, keys] of Object.entries(groups)) {
 			for (const key of keys) assert.deepEqual(getAtlasCollectionMemberships("consensus-foundations", readerProbabilitySlugs[key]!).map(collection => collection.slug), [group]);
@@ -81,7 +117,16 @@ describe("probability and data-literacy expansion", () => {
 		assert.equal((2 * 6 + 8 * 16) / 10, 14);
 		assert.equal(mean([6, 16]), 11);
 		assert.match(textFor("pooled"), /pooled mean of 14.*gives 11/);
-		const completed = { first: [[8, 10], [60, 100]], second: [[70, 100], [5, 10]] };
+		const completed = {
+			first: [
+				[8, 10],
+				[60, 100]
+			],
+			second: [
+				[70, 100],
+				[5, 10]
+			]
+		};
 		assert.ok(completed.first.every((row, index) => row[0]! / row[1]! > completed.second[index]![0]! / completed.second[index]![1]!));
 		assert.ok((8 + 60) / (10 + 100) < (70 + 5) / (100 + 10));
 		assert.match(textFor("simpson"), /68 of 110.*75 of 110/);
@@ -147,7 +192,28 @@ describe("probability and data-literacy expansion", () => {
 
 	it("finds all diagnostic questions without altering search ranking or held-out queries", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		const queries = { median: "mean median outlier", pooled: "average group averages sizes", simpson: "Simpson paradox aggregation", points: "percentage points percent increase", reverse: "percent increase decrease cancel", compound: "successive percent changes", conditional: "conditional probability reverse", exclusive: "mutually exclusive independent", overlap: "overlapping events probabilities", replacement: "sampling without replacement", zero: "zero probability impossible", density: "probability density above one", expected: "expected value possible outcome", catchup: "law large numbers streak", correlation: "zero Pearson correlation independent", variance: "variance standard deviation units", error: "standard error individual variation", normal: "68 95 99.7 rule", missing: "missing measurements zero", histogram: "histogram bin width" };
+		const queries = {
+			median: "mean median outlier",
+			pooled: "average group averages sizes",
+			simpson: "Simpson paradox aggregation",
+			points: "percentage points percent increase",
+			reverse: "percent increase decrease cancel",
+			compound: "successive percent changes",
+			conditional: "conditional probability reverse",
+			exclusive: "mutually exclusive independent",
+			overlap: "overlapping events probabilities",
+			replacement: "sampling without replacement",
+			zero: "zero probability impossible",
+			density: "probability density above one",
+			expected: "expected value possible outcome",
+			catchup: "law large numbers streak",
+			correlation: "zero Pearson correlation independent",
+			variance: "variance standard deviation units",
+			error: "standard error individual variation",
+			normal: "68 95 99.7 rule",
+			missing: "missing measurements zero",
+			histogram: "histogram bin width"
+		};
 		const missingQueries = Object.entries(queries).filter(([key, query]) => !search(query).some(result => result.claim.slug === readerProbabilitySlugs[key]));
 		assert.deepEqual(missingQueries, []);
 	});

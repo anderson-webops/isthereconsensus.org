@@ -32,10 +32,14 @@ const { currentAccount, isLoggedIn } = useAuth();
 
 const captchaRequired = computed(() => !!config.public.captchaSiteKey);
 
-const question = ref(typeof route.query.question === "string" ? route.query.question : "");
+const question = ref(typeof route.query.question === "string"
+	? route.query.question
+	: "");
 const context = ref("");
 const sourceUrl = ref("");
-const selectedTopic = ref(typeof route.query.topic === "string" ? route.query.topic : "");
+const selectedTopic = ref(typeof route.query.topic === "string"
+	? route.query.topic
+	: "");
 const questionKind = ref<QuestionAskKind>("discussion");
 const suggestions = ref<SuggestionResponse>({ claims: [], topics: [], questions: [] });
 const loadingSuggestions = ref(false);
@@ -168,10 +172,15 @@ watch(
 );
 
 watch(
-	() => [topics.value.length, selectedTopic.value, topClaimMatch.value?._id, topTopicMatch.value?._id],
+	() => [
+		topics.value.length,
+		selectedTopic.value,
+		topClaimMatch.value?._id,
+		topTopicMatch.value?._id
+	],
 	() => {
 		if (!topics.value.length) return;
-		if (topics.value.some((topic) => topic.slug === selectedTopic.value)) return;
+		if (topics.value.some(topic => topic.slug === selectedTopic.value)) return;
 		selectedTopic.value = topClaimMatch.value?.topic?.slug || topTopicMatch.value?.slug || topics.value[0].slug;
 	},
 	{ immediate: true }
@@ -195,11 +204,13 @@ async function loadSuggestions(value: string) {
 			}
 		);
 		if (request.isCurrent()) suggestions.value = result;
-	} catch {
+	}
+	catch {
 		if (!request.isCurrent()) return;
 		suggestionError.value = "Unable to load suggestions right now.";
 		suggestions.value = { claims: [], topics: [], questions: [] };
-	} finally {
+	}
+	finally {
 		if (request.isCurrent()) loadingSuggestions.value = false;
 	}
 }
@@ -255,9 +266,11 @@ async function submitQuestion() {
 			path: `/consensus/${selectedTopic.value}`,
 			query: { posted: "1" }
 		});
-	} catch {
+	}
+	catch {
 		errorMessage.value = "Unable to post right now. Please try again.";
-	} finally {
+	}
+	finally {
 		submitting.value = false;
 	}
 }
@@ -285,14 +298,22 @@ async function submitQuestion() {
 		<section v-if="searchReady" class="results-panel">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Closest reviewed pages</p>
+					<p class="eyebrow">
+						Closest reviewed pages
+					</p>
 					<h2>Does one of these answer it?</h2>
 				</div>
 			</div>
 
-			<div v-if="loadingSuggestions" class="empty-state">Checking reviewed pages...</div>
-			<div v-else-if="suggestionError" class="empty-state">{{ suggestionError }}</div>
-			<div v-else-if="!suggestions.claims.length" class="empty-state">No close reviewed claim found.</div>
+			<div v-if="loadingSuggestions" class="empty-state">
+				Checking reviewed pages...
+			</div>
+			<div v-else-if="suggestionError" class="empty-state">
+				{{ suggestionError }}
+			</div>
+			<div v-else-if="!suggestions.claims.length" class="empty-state">
+				No close reviewed claim found.
+			</div>
 			<div v-else class="match-list">
 				<article
 					v-for="claim in suggestions.claims"
@@ -311,7 +332,9 @@ async function submitQuestion() {
 						<p class="match-row__summary" :title="claimCardSummary(claim)">
 							{{ claimCardSummary(claim) }}
 						</p>
-						<p v-if="claim.matchReason" class="match-row__reason">{{ claim.matchReason }}</p>
+						<p v-if="claim.matchReason" class="match-row__reason">
+							{{ claim.matchReason }}
+						</p>
 					</div>
 					<div class="match-row__actions">
 						<button
@@ -326,7 +349,9 @@ async function submitQuestion() {
 			</div>
 
 			<div v-if="supportLinks.length" class="support-links">
-				<p class="field-label">Related topics and explainers</p>
+				<p class="field-label">
+					Related topics and explainers
+				</p>
 				<div class="support-links__list">
 					<NuxtLink v-for="link in supportLinks" :key="link.path" class="text-link" :to="link.path">
 						{{ link.label }}
@@ -352,11 +377,15 @@ async function submitQuestion() {
 		<section v-if="showPostingForm" ref="postingFormRef" class="posting-form">
 			<div class="posting-form__header">
 				<div>
-					<p class="eyebrow">Submit to the queue</p>
+					<p class="eyebrow">
+						Submit to the queue
+					</p>
 					<h2>Ask what is missing</h2>
 				</div>
 			</div>
-			<p class="posting-form__question">{{ query }}</p>
+			<p class="posting-form__question">
+				{{ query }}
+			</p>
 
 			<AuthPanel
 				v-if="!isLoggedIn"
@@ -364,7 +393,9 @@ async function submitQuestion() {
 				hint="Only logged-in members can add new community threads."
 				variant="inline"
 			/>
-			<p v-else class="muted">Signed in as {{ currentAccount?.name }}</p>
+			<p v-else class="muted">
+				Signed in as {{ currentAccount?.name }}
+			</p>
 
 			<div class="field-stack">
 				<label class="field-label" for="post-topic">Closest topic</label>
@@ -390,7 +421,7 @@ async function submitQuestion() {
 
 					<div class="field-stack">
 						<label class="field-label" for="post-source">Source URL</label>
-						<input id="post-source" v-model="sourceUrl" type="url" placeholder="Optional source URL" />
+						<input id="post-source" v-model="sourceUrl" type="url" placeholder="Optional source URL">
 					</div>
 				</div>
 			</details>
@@ -399,7 +430,9 @@ async function submitQuestion() {
 				<CaptchaWidget ref="captchaRef" v-model="captchaToken" />
 			</div>
 
-			<p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+			<p v-if="errorMessage" class="error">
+				{{ errorMessage }}
+			</p>
 			<div class="posting-form__actions">
 				<button
 					class="button button--primary"

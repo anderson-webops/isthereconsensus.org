@@ -3,14 +3,14 @@ import { misconceptionModules } from "../data/misconceptions";
 
 export type AskRouteDestination = "claim" | "topic" | "explainer" | "thread";
 export type AskKind = "claim" | "topic" | "concept" | "discussion";
-export type AskQueryPattern =
-	| "causality-claim"
-	| "fertility-fear"
-	| "safety-or-toxicity"
-	| "hoax-or-cover-up"
-	| "regulation-or-approval"
-	| "study-or-preprint"
-	| "risk-interpretation";
+export type AskQueryPattern
+	= | "causality-claim"
+		| "fertility-fear"
+		| "safety-or-toxicity"
+		| "hoax-or-cover-up"
+		| "regulation-or-approval"
+		| "study-or-preprint"
+		| "risk-interpretation";
 
 export interface AskQueryAnalysis {
 	normalized: string;
@@ -57,8 +57,8 @@ const safetyPatternRegex = /\b(?:safe|unsafe|dangerous|harmful|toxic|poison)\b/i
 const hoaxPatternRegex = /\b(?:hoax|scam|not real|fake|cover[- ]?up|hiding|lying|suppressed)\b/i;
 const regulationPatternRegex = /\b(?:approved|approval|regulated|regulation|legal|illegal|unregulated|fda)\b/i;
 const studyPatternRegex = /\b(?:new study|latest study|preprint|peer review|peer reviewed|headline|press release)\b/i;
-const riskPatternRegex =
-	/\b(?:relative risk|absolute risk|baseline risk|surrogate endpoint|composite endpoint|p-value|effect size)\b/i;
+const riskPatternRegex
+	= /\b(?:relative risk|absolute risk|baseline risk|surrogate endpoint|composite endpoint|p-value|effect size)\b/i;
 
 const definitionPatterns = [
 	/^\s*what is\b/i,
@@ -67,35 +67,194 @@ const definitionPatterns = [
 	/^\s*difference between\b/i,
 	/^\s*define\b/i
 ];
-const mechanismPatterns = [/^\s*how does\b/i, /^\s*how do\b/i, /^\s*how can\b/i, /^\s*why does\b/i];
+const mechanismPatterns = [
+	/^\s*how does\b/i,
+	/^\s*how do\b/i,
+	/^\s*how can\b/i,
+	/^\s*why does\b/i
+];
 
 const explainerKeywords: Record<string, string[]> = {
-	"how-consensus-forms": ["consensus", "agree", "agreement", "experts", "expert", "settled", "debate"],
-	"hierarchy-of-evidence": ["evidence", "study", "studies", "meta-analysis", "meta", "review", "literature"],
-	"correlation-vs-causation": ["cause", "causes", "linked", "link", "association", "correlation", "confounding"],
-	"relative-vs-absolute-risk": ["risk", "chance", "relative", "absolute", "side effect", "percentage", "odds"],
-	"replication-and-correction": ["replication", "replicate", "retraction", "corrected", "correction", "fraud"],
-	"falsifiability-and-mind-changes": ["prove wrong", "falsify", "changed minds", "change minds", "what would change"],
-	"preprints-press-releases-and-headlines": ["preprint", "headline", "press release", "peer review", "new study"],
-	"statistics-beyond-p-values": ["p-value", "significant", "confidence interval", "effect size", "underpowered"],
-	"hazard-vs-risk-and-exposure": ["hazard", "risk", "dose", "exposure", "toxin", "chemical", "safe level"],
-	"reading-science-news": ["headline", "news", "article", "source", "media", "viral", "screenshot"],
-	"uncertainty-and-trust": ["uncertainty", "confidence", "likely", "models", "trust", "how sure"]
+	"how-consensus-forms": [
+		"consensus",
+		"agree",
+		"agreement",
+		"experts",
+		"expert",
+		"settled",
+		"debate"
+	],
+	"hierarchy-of-evidence": [
+		"evidence",
+		"study",
+		"studies",
+		"meta-analysis",
+		"meta",
+		"review",
+		"literature"
+	],
+	"correlation-vs-causation": [
+		"cause",
+		"causes",
+		"linked",
+		"link",
+		"association",
+		"correlation",
+		"confounding"
+	],
+	"relative-vs-absolute-risk": [
+		"risk",
+		"chance",
+		"relative",
+		"absolute",
+		"side effect",
+		"percentage",
+		"odds"
+	],
+	"replication-and-correction": [
+		"replication",
+		"replicate",
+		"retraction",
+		"corrected",
+		"correction",
+		"fraud"
+	],
+	"falsifiability-and-mind-changes": [
+		"prove wrong",
+		"falsify",
+		"changed minds",
+		"change minds",
+		"what would change"
+	],
+	"preprints-press-releases-and-headlines": [
+		"preprint",
+		"headline",
+		"press release",
+		"peer review",
+		"new study"
+	],
+	"statistics-beyond-p-values": [
+		"p-value",
+		"significant",
+		"confidence interval",
+		"effect size",
+		"underpowered"
+	],
+	"hazard-vs-risk-and-exposure": [
+		"hazard",
+		"risk",
+		"dose",
+		"exposure",
+		"toxin",
+		"chemical",
+		"safe level"
+	],
+	"reading-science-news": [
+		"headline",
+		"news",
+		"article",
+		"source",
+		"media",
+		"viral",
+		"screenshot"
+	],
+	"uncertainty-and-trust": [
+		"uncertainty",
+		"confidence",
+		"likely",
+		"models",
+		"trust",
+		"how sure"
+	]
 };
 
 const misconceptionKeywords: Record<string, string[]> = {
-	"one-study-doesnt-overturn-evidence": ["single study", "one study", "new study", "paper", "latest study"],
-	"correlation-isnt-causation": ["cause", "causes", "linked", "association", "correlation", "confounding"],
-	"relative-risk-can-mislead": ["risk", "percent", "percentage", "double", "triples", "chance"],
-	"anecdotes-are-not-population-evidence": ["my friend", "i saw", "story", "anecdote", "reports", "vaers"],
-	"cherry-picking-distorts-the-evidence": ["cherry pick", "one graph", "one paper", "only study", "picked"],
-	"preprints-are-preliminary": ["preprint", "not peer reviewed", "early paper", "just published"],
-	"mechanism-is-not-real-world-effect": ["mechanism", "dna", "biomarker", "cells", "mice", "animal study"],
-	"scientists-changing-their-minds-is-normal": ["changed their minds", "flip flop", "used to say", "contradiction"],
-	"false-balance-misleads": ["both sides", "some scientists say", "experts disagree", "split"],
-	"uncertainty-isnt-ignorance": ["uncertain", "not sure", "models", "confidence", "nobody knows"],
-	"p-values-are-not-the-whole-story": ["significant", "p-value", "confidence interval", "statistically"],
-	"hazard-is-not-the-same-as-risk": ["hazard", "risk", "toxic", "toxin", "chemical", "exposure", "dose"]
+	"one-study-doesnt-overturn-evidence": [
+		"single study",
+		"one study",
+		"new study",
+		"paper",
+		"latest study"
+	],
+	"correlation-isnt-causation": [
+		"cause",
+		"causes",
+		"linked",
+		"association",
+		"correlation",
+		"confounding"
+	],
+	"relative-risk-can-mislead": [
+		"risk",
+		"percent",
+		"percentage",
+		"double",
+		"triples",
+		"chance"
+	],
+	"anecdotes-are-not-population-evidence": [
+		"my friend",
+		"i saw",
+		"story",
+		"anecdote",
+		"reports",
+		"vaers"
+	],
+	"cherry-picking-distorts-the-evidence": [
+		"cherry pick",
+		"one graph",
+		"one paper",
+		"only study",
+		"picked"
+	],
+	"preprints-are-preliminary": [
+		"preprint",
+		"not peer reviewed",
+		"early paper",
+		"just published"
+	],
+	"mechanism-is-not-real-world-effect": [
+		"mechanism",
+		"dna",
+		"biomarker",
+		"cells",
+		"mice",
+		"animal study"
+	],
+	"scientists-changing-their-minds-is-normal": [
+		"changed their minds",
+		"flip flop",
+		"used to say",
+		"contradiction"
+	],
+	"false-balance-misleads": [
+		"both sides",
+		"some scientists say",
+		"experts disagree",
+		"split"
+	],
+	"uncertainty-isnt-ignorance": [
+		"uncertain",
+		"not sure",
+		"models",
+		"confidence",
+		"nobody knows"
+	],
+	"p-values-are-not-the-whole-story": [
+		"significant",
+		"p-value",
+		"confidence interval",
+		"statistically"
+	],
+	"hazard-is-not-the-same-as-risk": [
+		"hazard",
+		"risk",
+		"toxic",
+		"toxin",
+		"chemical",
+		"exposure",
+		"dose"
+	]
 };
 
 const loadedTerms = [
@@ -127,7 +286,9 @@ function normalizeQuery(value: string) {
 }
 
 function unique<T>(values: T[]) {
-	return [...new Set(values)];
+	return [
+		...new Set(values)
+	];
 }
 
 function buildSegments(value: string) {
@@ -137,22 +298,24 @@ function buildSegments(value: string) {
 	const rawSegments = cleaned
 		.replace(punctuationQuestionRegex, "?")
 		.split(splitQuestionRegex)
-		.flatMap((segment) => segment.split(splitAlsoRegex))
-		.map((segment) => segment.trim())
+		.flatMap(segment => segment.split(splitAlsoRegex))
+		.map(segment => segment.trim())
 		.filter(Boolean);
 
 	if (rawSegments.length > 1) return rawSegments.slice(0, 4);
 
 	const clauseSegments = cleaned
 		.split(splitBundleRegex)
-		.map((segment) => segment.trim())
+		.map(segment => segment.trim())
 		.filter(Boolean);
 
-	return clauseSegments.length > 1 ? clauseSegments.slice(0, 4) : rawSegments;
+	return clauseSegments.length > 1
+		? clauseSegments.slice(0, 4)
+		: rawSegments;
 }
 
 function startsWithPattern(value: string, patterns: RegExp[]) {
-	return patterns.some((pattern) => pattern.test(value));
+	return patterns.some(pattern => pattern.test(value));
 }
 
 function stripTerminalPunctuation(value: string) {
@@ -244,40 +407,44 @@ function detectQueryPattern(value: string, normalized: string) {
 export function analyzeAskQuery(value: string): AskQueryAnalysis {
 	const normalized = normalizeQuery(value);
 	const segments = buildSegments(value);
-	const looksLoaded =
-		loadedTerms.some((term) => normalized.includes(term)) ||
-		(loadedLeadRegex.test(value) && loadedContentRegex.test(value));
+	const looksLoaded
+		= loadedTerms.some(term => normalized.includes(term))
+			|| (loadedLeadRegex.test(value) && loadedContentRegex.test(value));
 	const isDefinition = startsWithPattern(value, definitionPatterns);
 	const isMechanism = startsWithPattern(value, mechanismPatterns);
 	const isEvidenceSeeking = evidenceSeekingRegex.test(value);
 	const isPersonalAdvice = personalAdviceRegex.test(value);
 	const isRecencyEvent = recencyRegex.test(value);
 	const shortBroadQuery = normalized.split(whitespaceRegex).filter(Boolean).length <= 3;
-	const isTopicOverview = broadTopicTerms.some((term) => normalized.includes(term)) || shortBroadQuery;
+	const isTopicOverview = broadTopicTerms.some(term => normalized.includes(term)) || shortBroadQuery;
 	const hasMultipleQuestions = segments.length > 1;
 	const queryPattern = detectQueryPattern(value, normalized);
 
 	let recommendedDestination: AskRouteDestination = "claim";
 	if (isPersonalAdvice) {
 		recommendedDestination = "thread";
-	} else if (looksLoaded) {
+	}
+	else if (looksLoaded) {
 		recommendedDestination = "claim";
-	} else if (
-		queryPattern?.pattern === "fertility-fear" ||
-		queryPattern?.pattern === "causality-claim" ||
-		queryPattern?.pattern === "safety-or-toxicity" ||
-		queryPattern?.pattern === "hoax-or-cover-up" ||
-		queryPattern?.pattern === "regulation-or-approval"
+	}
+	else if (
+		queryPattern?.pattern === "fertility-fear"
+		|| queryPattern?.pattern === "causality-claim"
+		|| queryPattern?.pattern === "safety-or-toxicity"
+		|| queryPattern?.pattern === "hoax-or-cover-up"
+		|| queryPattern?.pattern === "regulation-or-approval"
 	) {
 		recommendedDestination = "claim";
-	} else if (
-		isDefinition ||
-		isMechanism ||
-		queryPattern?.pattern === "study-or-preprint" ||
-		queryPattern?.pattern === "risk-interpretation"
+	}
+	else if (
+		isDefinition
+		|| isMechanism
+		|| queryPattern?.pattern === "study-or-preprint"
+		|| queryPattern?.pattern === "risk-interpretation"
 	) {
 		recommendedDestination = "explainer";
-	} else if ((isTopicOverview && !looksLoaded && !isEvidenceSeeking) || (hasMultipleQuestions && !looksLoaded)) {
+	}
+	else if ((isTopicOverview && !looksLoaded && !isEvidenceSeeking) || (hasMultipleQuestions && !looksLoaded)) {
 		recommendedDestination = "topic";
 	}
 
@@ -305,9 +472,9 @@ function scoreMatch(query: string, title: string, summary: string, keywords: str
 	const normalizedTitle = normalizeQuery(title);
 	const normalizedSummary = normalizeQuery(summary);
 	const haystack = `${normalizedTitle} ${normalizedSummary}`;
-	const queryTokens = normalizedQuery.split(whitespaceRegex).filter((token) => token.length > 2);
-	const matchedKeywords = keywords.filter((keyword) => normalizedQuery.includes(keyword));
-	const matchedTokens = queryTokens.filter((token) => haystack.includes(token));
+	const queryTokens = normalizedQuery.split(whitespaceRegex).filter(token => token.length > 2);
+	const matchedKeywords = keywords.filter(keyword => normalizedQuery.includes(keyword));
+	const matchedTokens = queryTokens.filter(token => haystack.includes(token));
 
 	let score = 0;
 	if (!normalizedQuery) {
@@ -355,7 +522,7 @@ export function matchExplainers(query: string) {
 				title: item.title
 			};
 		})
-		.filter((item) => item.score > 0)
+		.filter(item => item.score > 0)
 		.sort((left, right) => right.score - left.score || left.title.localeCompare(right.title))
 		.slice(0, 4);
 }
@@ -378,7 +545,7 @@ export function matchMisconceptionModules(query: string) {
 				title: item.title
 			};
 		})
-		.filter((item) => item.score > 0)
+		.filter(item => item.score > 0)
 		.sort((left, right) => right.score - left.score || left.title.localeCompare(right.title))
 		.slice(0, 4);
 }

@@ -20,7 +20,9 @@ import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { APPROVED_READER_RELEASE } from "../back-end/dist/utils/approvedReaderPublication.js";
 import { PUBLIC_SEARCH_WORKER_REQUEST_LIMIT } from "../back-end/dist/utils/publicSearchWorker.js";
 
-const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rpc-XXXXXX", "worker.sock")) <= 100 ? tmpdir() : "/tmp";
+const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rpc-XXXXXX", "worker.sock")) <= 100
+	? tmpdir()
+	: "/tmp";
 const directory = mkdtempSync(join(temporaryRoot, "consensus-rpc-"));
 const socketPath = join(directory, "worker.sock");
 const databaseName = `search_worker_smoke_${randomUUID().replaceAll("-", "")}`;
@@ -37,7 +39,11 @@ let query;
 let base;
 
 function start(command, args, env) {
-	const child = spawn(command, args, { cwd: directory, env, stdio: ["ignore", "pipe", "pipe"] });
+	const child = spawn(command, args, {
+		cwd: directory,
+		env,
+		stdio: ["ignore", "pipe", "pipe"]
+	});
 	children.add(child);
 	child.on("error", () => processOutput.set(child, "spawn failed"));
 	for (const stream of [child.stdout, child.stderr]) {
@@ -80,7 +86,16 @@ async function waitFor(check, label, child) {
 		if (await check()) return;
 		await delay(100);
 	}
-	if (child) console.error(JSON.stringify({ phase: label, alive: child.exitCode === null && child.signalCode === null, connected: (processOutput.get(child) ?? "").includes("Connected to MongoDB using"), seeded: (processOutput.get(child) ?? "").includes("Seed content mode:"), listening: (processOutput.get(child) ?? "").includes("Server listening on"), startupFailed: (processOutput.get(child) ?? "").includes("Server startup failed:") }));
+	if (child) {
+		console.error(JSON.stringify({
+			phase: label,
+			alive: child.exitCode === null && child.signalCode === null,
+			connected: (processOutput.get(child) ?? "").includes("Connected to MongoDB using"),
+			seeded: (processOutput.get(child) ?? "").includes("Seed content mode:"),
+			listening: (processOutput.get(child) ?? "").includes("Server listening on"),
+			startupFailed: (processOutput.get(child) ?? "").includes("Server startup failed:")
+		}));
+	}
 	throw new Error(`Timed out: ${label}`);
 }
 
@@ -111,8 +126,20 @@ const worker = http.createServer((request, response) => {
 				response.writeHead(202).end();
 				return;
 			}
-			const row = { slug: target.slug, kind: "paragraph", relevance: 0.9, cosine: 0.7 };
-			const reply = { protocol: payload.protocol, candidate: payload.candidate, corpusHash: payload.corpusHash, queryHash: payload.queryHash, referenceDate: payload.referenceDate, rows: [row] };
+			const row = {
+				slug: target.slug,
+				kind: "paragraph",
+				relevance: 0.9,
+				cosine: 0.7
+			};
+			const reply = {
+				protocol: payload.protocol,
+				candidate: payload.candidate,
+				corpusHash: payload.corpusHash,
+				queryHash: payload.queryHash,
+				referenceDate: payload.referenceDate,
+				rows: [row]
+			};
 			if (mode === "stale") reply.corpusHash = "0".repeat(64);
 			if (mode === "private-slug") row.slug = "private-rpc-draft";
 			response.end(JSON.stringify(reply));
@@ -127,7 +154,12 @@ const worker = http.createServer((request, response) => {
 async function api(route, expectedCount, signal) {
 	const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, {
 		headers: { "Cookie": "smoke_fixture=PRIVATE_RPC_COOKIE", "Authorization": "Bearer PRIVATE_RPC_HEADER", "X-Request-Id": "PRIVATE_RPC_REQUEST" },
-		signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15_000)]) : AbortSignal.timeout(15_000)
+		signal: signal
+			? AbortSignal.any([
+					signal,
+					AbortSignal.timeout(15_000)
+				])
+			: AbortSignal.timeout(15_000)
 	});
 	assert.equal(response.status, 200);
 	const result = await response.json();
@@ -144,12 +176,24 @@ async function api(route, expectedCount, signal) {
 
 try {
 	assert.ok(Buffer.byteLength(socketPath) <= 100);
-	const mongoPort = process.env.SEARCH_WORKER_SMOKE_MONGO_PORT ? Number(process.env.SEARCH_WORKER_SMOKE_MONGO_PORT) : await freePort();
+	const mongoPort = process.env.SEARCH_WORKER_SMOKE_MONGO_PORT
+		? Number(process.env.SEARCH_WORKER_SMOKE_MONGO_PORT)
+		: await freePort();
 	assert.ok(Number.isInteger(mongoPort) && mongoPort > 0 && mongoPort <= 65535);
 	if (!process.env.SEARCH_WORKER_SMOKE_MONGO_PORT) {
 		const executable = [process.env.MONGOD_BINARY, "/opt/homebrew/bin/mongod", "/usr/bin/mongod"].find(filename => filename && existsSync(filename));
 		assert.ok(executable, "Local MongoDB or a disposable loopback test-service port is required.");
-		start(executable, ["--bind_ip", "127.0.0.1", "--port", String(mongoPort), "--dbpath", directory, "--wiredTigerCacheSizeGB", "0.25", "--quiet"], { PATH: process.env.PATH });
+		start(executable, [
+			"--bind_ip",
+			"127.0.0.1",
+			"--port",
+			String(mongoPort),
+			"--dbpath",
+			directory,
+			"--wiredTigerCacheSizeGB",
+			"0.25",
+			"--quiet"
+		], { PATH: process.env.PATH });
 	}
 	client = new mongoose.mongo.MongoClient(`mongodb://127.0.0.1:${mongoPort}/${databaseName}`, { serverSelectionTimeoutMS: 500 });
 	await waitFor(async () => {
@@ -167,7 +211,13 @@ try {
 	assert.ok(seed && seed.status === "published");
 	const topic = new Topic(defaultTopics.find(topic => topic.slug === seed.topicSlug));
 	await topic.validate();
-	const review = new Claim({ ...seedClaimFields(seed), ...seedReviewDates(seed), topic: topic._id, slug: seed.slug, publishedAt: new Date() });
+	const review = new Claim({
+		...seedClaimFields(seed),
+		...seedReviewDates(seed),
+		topic: topic._id,
+		slug: seed.slug,
+		publishedAt: new Date()
+	});
 	await review.validate();
 	await database.collection("topics").insertOne(topic.toObject());
 	await database.collection("claims").insertOne(review.toObject());
@@ -178,7 +228,9 @@ try {
 	}
 	await listen(worker, socketPath);
 	base = `http://127.0.0.1:${await freePort()}`;
-	const backend = start(process.execPath, [resolve("back-end/dist/server.js")], {
+	const backend = start(process.execPath, [
+		resolve("back-end/dist/server.js")
+	], {
 		PATH: process.env.PATH,
 		NODE_ENV: "production",
 		HOST: "127.0.0.1",
@@ -192,7 +244,9 @@ try {
 	});
 	await waitFor(async () => {
 		try {
-			return (await fetch(`${base}/readyz`, { signal: AbortSignal.timeout(1000) })).ok;
+			return (await fetch(`${base}/readyz`, {
+				signal: AbortSignal.timeout(1000)
+			})).ok;
 		}
 		catch {
 			return false;
@@ -203,17 +257,43 @@ try {
 	assert.equal(publications.length, readerExpansionClaims.length);
 	assert.ok(publications.every(publication => publication.state === "published"));
 	assert.ok(publications.every(publication => !publication.claimId.equals(review._id)), "Owned startup imports must not include the transport baseline.");
-	assert.equal((await database.collection("claimsources").deleteMany({ _id: { $in: publications.flatMap(publication => publication.sourceIds) } })).deletedCount, readerExpansionClaims.reduce((count, claim) => count + claim.sources.length, 0));
+	assert.equal((await database.collection("claimsources").deleteMany({
+		_id: {
+			$in: publications.flatMap(publication => publication.sourceIds)
+		}
+	})).deletedCount, readerExpansionClaims.reduce((count, claim) => count + claim.sources.length, 0));
 	const claims = database.collection("claims");
-	assert.equal((await claims.deleteMany({ _id: { $in: publications.map(publication => publication.claimId) } })).deletedCount, publications.length);
-	assert.equal((await database.collection("coveragerequests").deleteMany({ _id: { $in: publications.map(publication => publication.coverageId) } })).deletedCount, publications.length);
+	assert.equal((await claims.deleteMany({
+		_id: {
+			$in: publications.map(publication => publication.claimId)
+		}
+	})).deletedCount, publications.length);
+	assert.equal((await database.collection("coveragerequests").deleteMany({
+		_id: {
+			$in: publications.map(publication => publication.coverageId)
+		}
+	})).deletedCount, publications.length);
 	assert.equal(await claims.countDocuments({ status: "published" }), 1, "Transport comparisons require their original isolated synthetic corpus after startup publication finishes.");
 	target = await claims.findOne({ slug: "does-caffeine-become-less-effective-with-regular-daily-use", status: "published" });
 	assert.ok(target);
-	await claims.updateOne({ _id: target._id }, { $set: { "evidenceLandscape.workflow.editorialNotes": "PRIVATE_RPC_EDITORIAL" } });
+	await claims.updateOne({ _id: target._id }, {
+		$set: { "evidenceLandscape.workflow.editorialNotes": "PRIVATE_RPC_EDITORIAL" }
+	});
 	await claims.insertMany([
-		{ ...target, _id: new mongoose.Types.ObjectId(), slug: "private-rpc-draft", title: "PRIVATE_RPC_DRAFT", status: "draft" },
-		{ ...target, _id: new mongoose.Types.ObjectId(), slug: "private-rpc-unready", title: "PRIVATE_RPC_UNREADY", status: "published" }
+		{
+			...target,
+			_id: new mongoose.Types.ObjectId(),
+			slug: "private-rpc-draft",
+			title: "PRIVATE_RPC_DRAFT",
+			status: "draft"
+		},
+		{
+			...target,
+			_id: new mongoose.Types.ObjectId(),
+			slug: "private-rpc-unready",
+			title: "PRIVATE_RPC_UNREADY",
+			status: "published"
+		}
 	]);
 	query = `Zxqvlex ${randomUUID().replaceAll("-", "")} Vzqrloop`;
 	for (const route of ["claims", "search/suggestions"]) {
@@ -223,28 +303,47 @@ try {
 		for (mode of ["warming", "stale", "private-slug"]) await api(route, 0);
 		mode = "valid";
 		beforeReply = async () => {
-			await claims.updateOne({ _id: target._id }, { $set: { status: "draft" } });
+			await claims.updateOne({ _id: target._id }, {
+				$set: { status: "draft" }
+			});
 		};
 		await api(route, 0);
-		await claims.updateOne({ _id: target._id }, { $set: { status: "published" } });
+		await claims.updateOne({ _id: target._id }, {
+			$set: { status: "published" }
+		});
 		beforeReply = async () => {
-			await claims.updateOne({ _id: target._id }, { $set: { bottomLine: "Changed public wording during the synthetic transport test." } });
+			await claims.updateOne({ _id: target._id }, {
+				$set: { bottomLine: "Changed public wording during the synthetic transport test." }
+			});
 		};
 		await api(route, 0);
-		await claims.updateOne({ _id: target._id }, { $set: { bottomLine: target.bottomLine } });
+		await claims.updateOne({ _id: target._id }, {
+			$set: { bottomLine: target.bottomLine }
+		});
 		const sources = database.collection("claimsources");
 		const originals = await sources.find({ claim: target._id }).toArray();
 		assert.ok(originals.length >= 2);
 		const addedClaimId = new mongoose.Types.ObjectId();
 		beforeReply = async () => {
-			await sources.insertMany(originals.map(source => ({ ...source, _id: new mongoose.Types.ObjectId(), claim: addedClaimId })));
-			await claims.insertOne({ ...target, _id: addedClaimId, slug: "synthetic-rpc-concurrent-publication", title: "Synthetic concurrent publication fixture" });
+			await sources.insertMany(originals.map(source => ({
+				...source,
+				_id: new mongoose.Types.ObjectId(),
+				claim: addedClaimId
+			})));
+			await claims.insertOne({
+				...target,
+				_id: addedClaimId,
+				slug: "synthetic-rpc-concurrent-publication",
+				title: "Synthetic concurrent publication fixture"
+			});
 		};
 		await api(route, 0);
 		await claims.deleteOne({ _id: addedClaimId });
 		await sources.deleteMany({ claim: addedClaimId });
 		beforeReply = async () => {
-			await sources.updateMany({ claim: target._id }, { $set: { citationStatus: "retracted" } });
+			await sources.updateMany({ claim: target._id }, {
+				$set: { citationStatus: "retracted" }
+			});
 		};
 		await api(route, 0);
 		for (const original of originals) await sources.replaceOne({ _id: original._id }, original);
@@ -266,7 +365,10 @@ try {
 	assert.equal(received, count, "The two surfaces must not create separate worker queues.");
 	release();
 	await first;
-	for (const [cancelledRoute, nextRoute] of [["claims", "search/suggestions"], ["search/suggestions", "claims"]]) {
+	for (const [cancelledRoute, nextRoute] of [
+		["claims", "search/suggestions"],
+		["search/suggestions", "claims"]
+	]) {
 		let abandon;
 		let disconnected = false;
 		const initialCount = received;
@@ -289,18 +391,51 @@ try {
 		abandon();
 	}
 	const comparisonFixtures = [
-		{ slug: "synthetic-rpc-comparison", title: "Can an installation run steadily?", stableCore: ["Pressure describes a force per area; flow measures volume per time."] },
-		{ slug: "synthetic-rpc-incidental", title: "Can pressure affect a pump?", stableCore: ["Pressure affects pump flow, while installation conditions affect performance."] },
-		{ slug: "synthetic-rpc-energy", title: "How is energy measured?", stableCore: ["Energy is not measured without a convention."] },
-		{ slug: "synthetic-rpc-quantities", title: "Can an instrument distinguish quantities?", stableCore: ["Energy measures an amount, while power describes a rate."] },
-		{ slug: "synthetic-rpc-numerical", title: "Can an installation use another setting?", stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."] }
-	].map(fixture => ({ ...target, _id: new mongoose.Types.ObjectId(), bottomLine: "Synthetic test fixture, not published scientific evidence.", editorSummary: "Fixture used only for isolated transport testing.", misconceptions: [], misconceptionTags: [], ...fixture, stableCore: [...fixture.stableCore, "This fixture provides no scientific conclusion."] }));
+		{
+			slug: "synthetic-rpc-comparison",
+			title: "Can an installation run steadily?",
+			stableCore: ["Pressure describes a force per area; flow measures volume per time."]
+		},
+		{
+			slug: "synthetic-rpc-incidental",
+			title: "Can pressure affect a pump?",
+			stableCore: ["Pressure affects pump flow, while installation conditions affect performance."]
+		},
+		{
+			slug: "synthetic-rpc-energy",
+			title: "How is energy measured?",
+			stableCore: ["Energy is not measured without a convention."]
+		},
+		{
+			slug: "synthetic-rpc-quantities",
+			title: "Can an instrument distinguish quantities?",
+			stableCore: ["Energy measures an amount, while power describes a rate."]
+		},
+		{
+			slug: "synthetic-rpc-numerical",
+			title: "Can an installation use another setting?",
+			stableCore: ["A pump at 1000 revolutions differs from a pump at 10000 revolutions."]
+		}
+	].map(fixture => ({
+		...target,
+		_id: new mongoose.Types.ObjectId(),
+		bottomLine: "Synthetic test fixture, not published scientific evidence.",
+		editorSummary: "Fixture used only for isolated transport testing.",
+		misconceptions: [],
+		misconceptionTags: [],
+		...fixture,
+		stableCore: [...fixture.stableCore, "This fixture provides no scientific conclusion."]
+	}));
 	const retainedSources = await database.collection("claimsources").find({ claim: target._id }).toArray();
 	for (const fixture of comparisonFixtures) {
 		await new Claim(fixture).validate();
 	}
 	await claims.insertMany(comparisonFixtures);
-	await database.collection("claimsources").insertMany(comparisonFixtures.flatMap(fixture => retainedSources.map(source => ({ ...source, _id: new mongoose.Types.ObjectId(), claim: fixture._id }))));
+	await database.collection("claimsources").insertMany(comparisonFixtures.flatMap(fixture => retainedSources.map(source => ({
+		...source,
+		_id: new mongoose.Types.ObjectId(),
+		claim: fixture._id
+	}))));
 	mode = "warming";
 	for (const route of ["claims", "search/suggestions"]) {
 		for (const [question, expectedSlug] of [
@@ -314,10 +449,14 @@ try {
 			["Compare a pump at 1,001 revolutions with a pump at 10,000 revolutions", null]
 		]) {
 			query = question;
-			const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, { signal: AbortSignal.timeout(15_000) });
+			const response = await fetch(`${base}/api/${route}?q=${encodeURIComponent(query)}`, {
+				signal: AbortSignal.timeout(15_000)
+			});
 			assert.equal(response.status, 200);
 			const result = await response.json();
-			assert.deepEqual(result.claims.map(claim => claim.slug), expectedSlug ? [expectedSlug] : [], `${route}: ${question}`);
+			assert.deepEqual(result.claims.map(claim => claim.slug), expectedSlug
+				? [expectedSlug]
+				: [], `${route}: ${question}`);
 			assert.doesNotMatch(JSON.stringify(result), /PRIVATE_RPC_|editorialNotes|sessionVersion|passwordHash/u);
 			if (expectedSlug) assert.equal(result.claims[0].matchStrength, "related");
 		}

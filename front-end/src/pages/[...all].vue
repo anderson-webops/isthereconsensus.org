@@ -28,7 +28,9 @@ useHead({
 
 <template>
 	<section class="not-found">
-		<p class="eyebrow">Page not found</p>
+		<p class="eyebrow">
+			Page not found
+		</p>
 		<h1>That page is not part of the current consensus map.</h1>
 		<p>
 			Try the topic browser, return to the homepage, or go back to the previous page if you followed an old link.
@@ -37,7 +39,9 @@ useHead({
 		<div class="not-found__actions">
 			<NuxtLink class="button button--primary" to="/consensus">Browse topics</NuxtLink>
 			<NuxtLink class="button button--ghost" to="/">Go home</NuxtLink>
-			<button class="button button--ghost" type="button" @click="router.back()">Go back</button>
+			<button class="button button--ghost" type="button" @click="router.back()">
+				Go back
+			</button>
 		</div>
 	</section>
 </template>

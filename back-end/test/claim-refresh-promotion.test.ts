@@ -13,13 +13,23 @@ const fixtureRefreshes = registeredRefreshes.filter(entry => [
 assert.equal(fixtureRefreshes.length, 2);
 
 function fixture(index = 0, definition = fixtureRefreshes[index]!) {
-	const claim = new Claim({ ...seedClaimFields(definition.before), ...seedReviewDates(definition.before), slug: definition.before.slug, topic: new Types.ObjectId(), publishedAt: new Date("2026-04-11T12:00:00Z") });
+	const claim = new Claim({
+		...seedClaimFields(definition.before),
+		...seedReviewDates(definition.before),
+		slug: definition.before.slug,
+		topic: new Types.ObjectId(),
+		publishedAt: new Date("2026-04-11T12:00:00Z")
+	});
 	const snapshot = JSON.parse(canonicalRefreshJSON({
 		key: definition.key,
 		claim: claim.toObject(),
 		sources: definition.before.sources.map(source => new ClaimSource({ ...source, claim: claim._id }).toObject())
 	}));
-	return { definition, snapshot, plan: () => planClaimRefresh(snapshot, definition.before, definition.after) };
+	return {
+		definition,
+		snapshot,
+		plan: () => planClaimRefresh(snapshot, definition.before, definition.after)
+	};
 }
 
 describe("scoped evidence promotion planning", () => {
@@ -46,7 +56,17 @@ describe("scoped evidence promotion planning", () => {
 			assert.equal(canonicalRefreshJSON(snapshot), before);
 			assert.equal(result.sources.length, definition.after.sources.length);
 			assert.deepEqual(result.sources.filter(source => source.id).map(source => source.id), snapshot.sources.map((source: { _id: string }) => source._id));
-			for (const field of ["lastReviewedAt", "reviewDateBasis", "publishedAt", "reviewedBy", "nextReviewAt", "maintenance", "changeLog", "readerUpdates", "evidenceLandscape"]) assert.equal(Object.hasOwn(result.claimSet, field), false, field);
+			for (const field of [
+				"lastReviewedAt",
+				"reviewDateBasis",
+				"publishedAt",
+				"reviewedBy",
+				"nextReviewAt",
+				"maintenance",
+				"changeLog",
+				"readerUpdates",
+				"evidenceLandscape"
+			]) assert.equal(Object.hasOwn(result.claimSet, field), false, field);
 			assert.equal(result.historyAppend.length, 1);
 			assert.equal(result.announcement.kind, "evidence_update");
 		}
@@ -84,7 +104,14 @@ describe("scoped evidence promotion planning", () => {
 	it("preserves draft extraction but refuses active reviewed scientific coding", async () => {
 		const value = fixture();
 		value.snapshot.sources[0].evidenceProfile.extraction.keyFinding = "Existing coded finding.";
-		value.snapshot.sources[0].integrityMonitoring = { europepmc: { doi: value.snapshot.sources[0].doi, outcome: "corrected", attemptedAt: "2026-09-01T00:00:00Z", retryAt: "2026-10-01T00:00:00Z" } };
+		value.snapshot.sources[0].integrityMonitoring = {
+			europepmc: {
+				doi: value.snapshot.sources[0].doi,
+				outcome: "corrected",
+				attemptedAt: "2026-09-01T00:00:00Z",
+				retryAt: "2026-10-01T00:00:00Z"
+			}
+		};
 		assert.equal((await value.plan()).sources[0]!.set.evidenceProfile, undefined);
 		assert.equal((await value.plan()).sources[0]!.set.integrityMonitoring, undefined);
 		value.snapshot.sources[0].evidenceProfile.reviewer.reviewedAt = "2026-09-01T00:00:00Z";
@@ -94,9 +121,31 @@ describe("scoped evidence promotion planning", () => {
 		await assert.rejects(approved.plan, /active landscape review/);
 	});
 	it("fingerprints object IDs, private progress, revision changes and semantic content independently of key order", async () => {
-		const original = { _id: "a", __v: 1, integrityMonitoring: { crossref: { outcome: "checked" } }, text: "first" };
-		assert.equal(refreshDigest(original), refreshDigest({ text: "first", integrityMonitoring: original.integrityMonitoring, __v: 1, _id: "a" }));
-		for (const patch of [{ _id: "b" }, { __v: 2 }, { integrityMonitoring: {} }, { text: "second" }]) assert.notEqual(refreshDigest(original), refreshDigest({ ...original, ...patch }));
+		const original = {
+			_id: "a",
+			__v: 1,
+			integrityMonitoring: {
+				crossref: { outcome: "checked" }
+			},
+			text: "first"
+		};
+		assert.equal(refreshDigest(original), refreshDigest({
+			text: "first",
+			integrityMonitoring: original.integrityMonitoring,
+			__v: 1,
+			_id: "a"
+		}));
+		for (const patch of [
+			{ _id: "b" },
+			{ __v: 2 },
+			{ integrityMonitoring: {} },
+			{ text: "second" }
+		]) {
+			assert.notEqual(refreshDigest(original), refreshDigest({
+				...original,
+				...patch
+			}));
+		}
 	});
 	it("refuses hidden reviews and an announcement that already exists without a receipt", async () => {
 		const value = fixture();

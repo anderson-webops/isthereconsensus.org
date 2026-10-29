@@ -22,7 +22,9 @@ useStaticPageMeta({
 	path: `/roadmap/${requestId.value}`
 });
 useHead(() => ({
-	title: request.value ? `${request.value.title} - Is There Consensus?` : "Requested question - Is There Consensus?"
+	title: request.value
+		? `${request.value.title} - Is There Consensus?`
+		: "Requested question - Is There Consensus?"
 }));
 </script>
 
@@ -32,16 +34,20 @@ useHead(() => ({
 			:items="[
 				{ label: 'Home', to: '/' },
 				{ label: 'Coverage roadmap', to: '/roadmap' },
-				{ label: request?.title || 'Requested question' }
+				{ label: request?.title || 'Requested question' },
 			]"
 		/>
 		<div v-if="error" role="alert">
 			<p>This coverage request could not be loaded.</p>
-			<button class="button button--ghost" @click="refresh()">Try again</button>
+			<button class="button button--ghost" @click="refresh()">
+				Try again
+			</button>
 		</div>
 		<template v-else-if="request">
 			<header>
-				<p class="eyebrow">{{ coverageStatusLabels[request.status] }}</p>
+				<p class="eyebrow">
+					{{ coverageStatusLabels[request.status] }}
+				</p>
 				<h1>{{ request.title }}</h1>
 				<p>{{ request.summary }}</p>
 				<p class="muted">
@@ -54,13 +60,13 @@ useHead(() => ({
 				Follow approved progress and the eventual answer in your browser or account library. No email
 				notifications are sent.
 			</p>
-			<NuxtLink v-if="request.topic" :to="`/consensus/${request.topic.slug}`"
-				>Explore {{ request.topic.title }}</NuxtLink
-			>
+			<NuxtLink v-if="request.topic" :to="`/consensus/${request.topic.slug}`">Explore {{ request.topic.title }}</NuxtLink>
 			<section v-if="request.answer || request.answerUnavailable" class="coverage-request__panel">
 				<h2>Reviewed answer</h2>
 				<NuxtLink v-if="request.answer" :to="request.answer.path">{{ request.answer.title }}</NuxtLink>
-				<p v-else>The linked answer is currently unavailable. Check the reviewed library or return later.</p>
+				<p v-else>
+					The linked answer is currently unavailable. Check the reviewed library or return later.
+				</p>
 			</section>
 			<section class="coverage-request__panel">
 				<h2>Editorial progress</h2>

@@ -38,7 +38,9 @@ async function main() {
 	}
 
 	if (!nextEnabled) {
-		const enabledAdminCount = await Admin.countDocuments({ enabled: { $ne: false } });
+		const enabledAdminCount = await Admin.countDocuments({
+			enabled: { $ne: false }
+		});
 		if (enabledAdminCount <= 1) {
 			throw new Error("Refusing to disable the last enabled admin account.");
 		}
@@ -47,7 +49,9 @@ async function main() {
 	admin.enabled = nextEnabled;
 	admin.sessionVersion = Number(admin.sessionVersion || 0) + 1;
 	await admin.save();
-	if (!nextEnabled && await Admin.countDocuments({ enabled: { $ne: false } }) === 0) {
+	if (!nextEnabled && await Admin.countDocuments({
+		enabled: { $ne: false }
+	}) === 0) {
 		admin.enabled = true;
 		admin.sessionVersion = Number(admin.sessionVersion || 0) + 1;
 		await admin.save();

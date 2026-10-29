@@ -3,9 +3,9 @@
 	"type": "module",
 	"version": "1.0.0",
 	"private": true,
-	"packageManager": "npm@12.0.2",
+	"packageManager": "npm@12.2.1",
 	"engines": {
-		"node": ">=24.18.1 <25",
+		"node": ">=24.22.1 <25",
 		"npm": ">=11.19.0 <13"
 	},
 	"description": "Monorepo for isthereconsensus.org",
@@ -35,9 +35,9 @@
 		"serve": "npm run -w front-end serve",
 		"lint-server": "npm run -w back-end lint-fix && npm run -w back-end server",
 		"lint-serve": "npm run -w front-end lint-fix && npm run -w front-end serve",
-		"lint": "npm run -w front-end lint && npm run -w back-end lint && npm run -w search-worker lint && eslint scripts/pinned-search-acceptance.mjs scripts/lib/search-gate-evidence.mjs scripts/test-search-gate-evidence.mjs scripts/content-first-smoke.mjs scripts/public-search-worker-smoke.mjs scripts/editorial-audit-smoke.mjs scripts/editorial-completion-smoke.mjs",
+		"lint": "npm run -w front-end lint && npm run -w back-end lint && npm run -w search-worker lint && eslint scripts/pinned-search-acceptance.mjs scripts/lib/search-gate-evidence.mjs scripts/test-search-gate-evidence.mjs scripts/content-first-smoke.mjs scripts/public-search-worker-smoke.mjs scripts/editorial-audit-smoke.mjs scripts/editorial-completion-smoke.mjs scripts/package-vendored-qs.mjs scripts/test-qs-compat.mjs scripts/test-vendored-qs-packaging.mjs scripts/lib/approved-data-prose.mjs scripts/test-approved-data-prose.mjs scripts/isolated-browser-page.d.mts scripts/verify-platform-install.mjs scripts/search-worker-artifact-lib.mjs scripts/test-search-worker-artifact.mjs",
 		"lint-fix": "npm run -w front-end lint-fix && npm run -w back-end lint-fix",
-		"test": "npm run -w front-end test:unit && npm run -w back-end test && npm run -w search-worker test && node --test scripts/test-braces-compat.mjs scripts/test-listhen-compat.mjs scripts/test-search-worker-artifact.mjs scripts/test-search-gate-evidence.mjs scripts/test-runtime-release.mjs",
+		"test": "npm run check:qs-package && npm run -w front-end test:unit && npm run -w back-end test && npm run -w search-worker test && node --test scripts/test-braces-compat.mjs scripts/test-listhen-compat.mjs scripts/test-search-worker-artifact.mjs scripts/test-search-gate-evidence.mjs scripts/test-runtime-release.mjs && node --test scripts/test-deepmerge-compat.mjs scripts/test-dependency-security.mjs scripts/test-qs-compat.mjs scripts/test-vendored-qs-packaging.mjs && node --test scripts/test-approved-data-prose.mjs",
 		"typecheck": "npm run -w front-end typecheck && npm run -w back-end typecheck && npm run -w search-worker typecheck",
 		"smoke:live": "node scripts/live-site-smoke.mjs",
 		"smoke:backend-runtime": "node scripts/backend-runtime-smoke.mjs",
@@ -57,38 +57,43 @@
 		"verify:native-lock": "node scripts/verify-native-lock.mjs",
 		"verify:platform-install": "node scripts/verify-platform-install.mjs",
 		"up": "node ./scripts/up.mjs",
-		"a11y": "node scripts/a11y-smoke.mjs"
+		"a11y": "node scripts/a11y-smoke.mjs",
+		"package:qs": "node scripts/package-vendored-qs.mjs",
+		"check:qs-package": "node scripts/package-vendored-qs.mjs --check",
+		"audit:qs": "npm audit --prefix vendor/qs --workspaces=false --audit-level=low && npm audit --prefix vendor/qs --workspaces=false --omit=dev --audit-level=low"
 	},
 	"devDependencies": {
-		"@antfu/eslint-config": "^9.5.1",
-		"@typescript-eslint/eslint-plugin": "^8.70.1",
-		"@typescript-eslint/parser": "^8.70.1",
-		"@unocss/eslint-plugin": "^66.10.5",
-		"axe-core": "^4.13.0",
+		"@antfu/eslint-config": "^10.0.0",
+		"@typescript-eslint/eslint-plugin": "^8.72.1",
+		"@typescript-eslint/parser": "^8.72.1",
+		"@unocss/eslint-plugin": "^66.12.0",
+		"axe-core": "^4.14.0",
 		"braces": "file:vendor/braces",
-		"cac": "^6.7.14",
-		"commander": "^14.0.3",
+		"cac": "^7.1.0",
+		"commander": "^15.0.0",
 		"esbuild": "0.28.2",
-		"eslint": "^10.11.0",
-		"eslint-config-prettier": "^10.1.8",
+		"eslint": "^10.13.0",
 		"eslint-plugin-format": "^2.0.1",
-		"eslint-plugin-prettier": "^5.5.5",
-		"eslint-plugin-vue": "^10.8.0",
-		"globals": "^17.12.0",
+		"eslint-plugin-vue": "^10.12.0",
+		"globals": "^17.13.0",
 		"listhen": "file:vendor/listhen",
 		"minimatch": "10.2.6",
-		"mongoose": "^9.10.1",
-		"oxc-parser": "0.151.0",
-		"prettier": "^3.9.6",
+		"mongoose": "^9.11.4",
+		"oxc-parser": "0.156.0",
+		"prettier": "^3.9.10",
 		"puppeteer": "^25.16.0",
 		"simple-git": "file:vendor/simple-git",
-		"taze": "^21.1.0",
+		"taze": "^21.3.0",
 		"tsx": "^4.23.15",
 		"typescript": "^6.0.3",
-		"unplugin": "^3.4.0"
+		"unplugin": "^3.7.0",
+		"deepmerge": "file:vendor/deepmerge",
+		"eslint-plugin-slop": "^0.1.3",
+		"eslint-plugin-sonarjs": "^4.2.2",
+		"qs": "file:back-end/vendor/qs-6.17.2-webops.1.tgz"
 	},
 	"overrides": {
-		"nuxt@4.6.2": {
+		"nuxt@4.6.3": {
 			"unimport": "7.0.1"
 		},
 		"@bomb.sh/tab": "0.0.22",
@@ -96,9 +101,9 @@
 		"@modelcontextprotocol/server": "2.3.0",
 		"esbuild": "0.28.2",
 		"vite": {
-			".": "8.3.3",
+			".": "8.3.5",
 			"esbuild": "0.28.2",
-			"rolldown": "1.2.11"
+			"rolldown": "1.2.15"
 		},
 		"defu": "6.1.6",
 		"devalue": "5.9.4",
@@ -114,15 +119,15 @@
 		"listhen": "$listhen",
 		"path-to-regexp": "8.4.2",
 		"picomatch": "4.0.7",
-		"qs": "6.16.0",
+		"qs": "$qs",
 		"readdirp": {
 			"picomatch": "2.3.2"
 		},
-		"rolldown": "1.2.11",
+		"rolldown": "1.2.15",
 		"serialize-javascript": "7.1.4",
 		"@cypress/request": {
 			"uuid": "14.0.0",
-			"qs": "6.16.0"
+			"qs": "$qs"
 		},
 		"nitropack": "2.13.4",
 		"simple-git": {
@@ -141,6 +146,7 @@
 		"svgo": "4.1.0",
 		"tar": "7.5.22",
 		"tinypool": "2.1.2",
-		"valibot": "1.4.2"
+		"valibot": "1.4.2",
+		"deepmerge": "$deepmerge"
 	}
 }

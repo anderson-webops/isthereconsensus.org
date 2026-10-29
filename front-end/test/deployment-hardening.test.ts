@@ -29,8 +29,8 @@ const systemdUnits = [
 describe("deployment hardening", () => {
 	it("pins runtime npm while admitting the Dependabot resolver", () => {
 		for (const manifest of [rootPackage, backendPackage]) {
-			assert.equal(manifest.packageManager, "npm@12.0.2");
-			assert.equal(manifest.engines.node, ">=24.18.1 <25");
+			assert.equal(manifest.packageManager, "npm@12.2.1");
+			assert.equal(manifest.engines.node, ">=24.22.1 <25");
 			assert.equal(manifest.engines.npm, ">=11.19.0 <13");
 		}
 	});
@@ -46,7 +46,12 @@ describe("deployment hardening", () => {
 			assert.doesNotMatch(source, /npm ci|systemctl|install -o|activate_target|seal_runtime_artifact/);
 			const result = spawnSync(
 				"/bin/bash",
-				[join(repositoryRoot, "deploy/systemd", filename), "/nonexistent", "0".repeat(40), "--dry-run"],
+				[
+					join(repositoryRoot, "deploy/systemd", filename),
+					"/nonexistent",
+					"0".repeat(40),
+					"--dry-run"
+				],
 				{ encoding: "utf8" }
 			);
 			assert.equal(result.status, 78, result.stderr);
@@ -64,7 +69,7 @@ describe("deployment hardening", () => {
 			schema_version: 1,
 			site: "isthereconsensus.org",
 			adapter: { id: "consensus-native", minimum_version: 1 },
-			runtime: { node: "24.22.1", npm: "12.0.2", architecture: "arm64" },
+			runtime: { node: "24.22.1", npm: "12.2.1", architecture: "arm64" },
 			artifact_format: "ci-attested-tar-v1",
 			requires: ["artifact:ci-attested", "rollback:retained-artifact", "acceptance:origin-dual-stack"],
 			database: { change: "review-required" },

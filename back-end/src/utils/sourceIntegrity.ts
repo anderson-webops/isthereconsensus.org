@@ -78,7 +78,12 @@ const correctedUpdateTypes = new Set([
 	"new_edition",
 	"new_version"
 ]);
-const retractedUpdateTypes = new Set(["partial_retraction", "removal", "retraction", "withdrawal"]);
+const retractedUpdateTypes = new Set([
+	"partial_retraction",
+	"removal",
+	"retraction",
+	"withdrawal"
+]);
 
 function cleanText(value: unknown, maxLength = 500) {
 	if (typeof value !== "string") return "";
@@ -92,7 +97,9 @@ export function normalizeDoi(value: unknown) {
 		.replace(/^https?:\/\/(?:dx\.)?doi\.org\//u, "")
 		.replace(/^doi:\s*/u, "")
 		.trim();
-	return /^10\.\d{4,9}\/[^\s"\\]+$/u.test(normalized) ? normalized : "";
+	return /^10\.\d{4,9}\/[^\s"\\]+$/u.test(normalized)
+		? normalized
+		: "";
 }
 
 export function strongerCitationStatus(
@@ -100,7 +107,9 @@ export function strongerCitationStatus(
 	observed?: ClaimSourceCitationStatus
 ) {
 	if (!observed) return current;
-	return statusRank[observed] > statusRank[current] ? observed : current;
+	return statusRank[observed] > statusRank[current]
+		? observed
+		: current;
 }
 
 export function statusForUpdateType(type: string): ClaimSourceCitationStatus | undefined {
@@ -111,11 +120,15 @@ export function statusForUpdateType(type: string): ClaimSourceCitationStatus | u
 }
 
 function safeNoticeUrl(doi: string) {
-	return doi ? `https://doi.org/${doi}` : undefined;
+	return doi
+		? `https://doi.org/${doi}`
+		: undefined;
 }
 
 function uniqueStrings(values: Array<string | undefined>, limit = 100) {
-	return [...new Set(values.filter((value): value is string => Boolean(value)))].slice(0, limit);
+	return [
+		...new Set(values.filter((value): value is string => Boolean(value)))
+	].slice(0, limit);
 }
 
 export function crossrefIntegrityUrl(doi: string, mailto = "") {
@@ -128,9 +141,7 @@ export function crossrefIntegrityUrl(doi: string, mailto = "") {
 	return url;
 }
 
-export function parseCrossrefIntegrityResponse(payload: unknown, targetDoi: string): SourceIntegrityObservation {
-	const doi = normalizeDoi(targetDoi);
-	if (!doi) throw new Error("A valid DOI is required for a Crossref integrity check.");
+function crossrefItems(payload: unknown) {
 	const response = payload as CrossrefResponse;
 	if ((response?.status !== undefined && response.status !== "ok")
 		|| !Array.isArray(response?.message?.items)
@@ -141,19 +152,30 @@ export function parseCrossrefIntegrityResponse(payload: unknown, targetDoi: stri
 				|| Number(response.message["total-results"]) !== response.message.items.length))) {
 		throw new IntegrityProviderError("invalid_or_truncated_response");
 	}
-	const items = response.message.items as CrossrefUpdateWork[];
+	return response.message.items as CrossrefUpdateWork[];
+}
+
+function crossrefUpdateRelations(item: CrossrefUpdateWork, doi: string) {
+	if (!Array.isArray(item["update-to"]) || !item["update-to"].length
+		|| item["update-to"].some(relation => !relation || typeof relation !== "object")
+		|| !normalizeDoi(item.DOI)) {
+		throw new IntegrityProviderError("invalid_notice_record");
+	}
+	const updateRelations = item["update-to"] as CrossrefUpdateRelation[];
+	if (!updateRelations.some(relation => normalizeDoi(relation.DOI) === doi)) {
+		throw new IntegrityProviderError("identity_mismatch");
+	}
+	return updateRelations;
+}
+
+export function parseCrossrefIntegrityResponse(payload: unknown, targetDoi: string): SourceIntegrityObservation {
+	const doi = normalizeDoi(targetDoi);
+	if (!doi) throw new Error("A valid DOI is required for a Crossref integrity check.");
+	const items = crossrefItems(payload);
 	const signals: SourceIntegritySignal[] = [];
 
 	for (const item of items) {
-		if (!Array.isArray(item["update-to"]) || !item["update-to"].length
-			|| item["update-to"].some(relation => !relation || typeof relation !== "object")
-			|| !normalizeDoi(item.DOI)) {
-			throw new IntegrityProviderError("invalid_notice_record");
-		}
-		const updateRelations = item["update-to"] as CrossrefUpdateRelation[];
-		if (!updateRelations.some(relation => normalizeDoi(relation.DOI) === doi)) {
-			throw new IntegrityProviderError("identity_mismatch");
-		}
+		const updateRelations = crossrefUpdateRelations(item, doi);
 		for (const relation of updateRelations) {
 			if (normalizeDoi(relation.DOI) !== doi) continue;
 			const type = cleanText(relation.type, 64).toLowerCase().replaceAll(/[\s-]+/g, "_");
@@ -178,12 +200,14 @@ export function parseCrossrefIntegrityResponse(payload: unknown, targetDoi: stri
 	const outcome = suggestedStatus ?? "no_registered_update";
 	if (signals.length > 100) throw new IntegrityProviderError("too_many_notices");
 	const queryUrl = crossrefIntegrityUrl(doi).toString();
-	const compactSignals = [...new Map(
-		signals.map(signal => [
-			[signal.type, signal.noticeDoi, signal.source].join("\u0000"),
-			signal
-		])
-	).values()]
+	const compactSignals = [
+		...new Map(
+			signals.map(signal => [
+				[signal.type, signal.noticeDoi, signal.source].join("\u0000"),
+				signal
+			])
+		).values()
+	]
 		.sort((left, right) => {
 			const leftRank = statusRank[statusForUpdateType(left.type) ?? "current"];
 			const rightRank = statusRank[statusForUpdateType(right.type) ?? "current"];
@@ -228,7 +252,7 @@ export async function fetchCrossrefIntegrityObservation(
 	return parseCrossrefIntegrityResponse(data, doi);
 }
 
-// Fixed diagnostic codes only; provider bodies may contain arbitrary untrusted text.
+/** Fixed diagnostic codes only; provider bodies may contain arbitrary untrusted text. */
 export class IntegrityProviderError extends Error {
 	constructor(public code: string, public retryAfterMs = 0) {
 		super(code);
@@ -238,8 +262,12 @@ export class IntegrityProviderError extends Error {
 
 export function retryAfterMilliseconds(value: string | null, now = Date.now()) {
 	if (!value) return 0;
-	const milliseconds = /^\d+$/u.test(value) ? Number(value) * 1000 : Date.parse(value) - now;
-	return Number.isFinite(milliseconds) ? Math.max(0, Math.min(milliseconds, 24 * 60 * 60 * 1000)) : 0;
+	const milliseconds = /^\d+$/u.test(value)
+		? Number(value) * 1000
+		: Date.parse(value) - now;
+	return Number.isFinite(milliseconds)
+		? Math.max(0, Math.min(milliseconds, 24 * 60 * 60 * 1000))
+		: 0;
 }
 
 export function requireIntegrityResponse(response: Response) {

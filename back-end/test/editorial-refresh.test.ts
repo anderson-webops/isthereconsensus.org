@@ -10,7 +10,10 @@ import { createEditorialAuditProposal } from "../src/utils/editorialAuditProposa
 
 describe("source-prepared editorial audit corrections", () => {
 	it("produces a source-bound proposal without impersonating production or an authenticated reviewer", () => {
-		const proposal = createEditorialAuditProposal({ commit: "a".repeat(40), tree: "b".repeat(40) });
+		const proposal = createEditorialAuditProposal({
+			commit: "a".repeat(40),
+			tree: "b".repeat(40)
+		});
 		assert.equal(proposal.targets.length, 5);
 		assert.equal(proposal.publicationStatus, "not_published");
 		assert.equal(proposal.kind, "source-only-editorial-proposal");
@@ -61,8 +64,17 @@ describe("source-prepared editorial audit corrections", () => {
 		for (const before of claimsBeforeIntegrityCorrections) {
 			const after = refreshEditorialAuditClaim(before);
 			if (after === before) continue;
-			await new Claim({ ...seedClaimFields(after), topic: new mongoose.Types.ObjectId(), slug: after.slug }).validate();
-			for (const source of after.sources) await new ClaimSource({ ...source, claim: new mongoose.Types.ObjectId() }).validate();
+			await new Claim({
+				...seedClaimFields(after),
+				topic: new mongoose.Types.ObjectId(),
+				slug: after.slug
+			}).validate();
+			for (const source of after.sources) {
+				await new ClaimSource({
+					...source,
+					claim: new mongoose.Types.ObjectId()
+				}).validate();
+			}
 			assert.equal(after.readerAnnouncement, before.readerAnnouncement);
 		}
 	});

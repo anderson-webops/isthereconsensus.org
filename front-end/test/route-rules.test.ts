@@ -4,7 +4,13 @@ import { describe, it } from "node:test";
 const { default: config } = await import("../nuxt.config.ts");
 const routeRules = config.routeRules ?? {};
 
-const privateRoutes = ["/account", "/account/**", "/api/**", "/setup", "/setup/**"];
+const privateRoutes = [
+	"/account",
+	"/account/**",
+	"/api/**",
+	"/setup",
+	"/setup/**"
+];
 const legacyRedirects: Record<string, string> = {
 	"/claim-roadmap": "/account/editorial#canonical-backlog",
 	"/evidence-ops": "/standards",

@@ -11,16 +11,31 @@ import { SearchServiceUnavailableError, SearchSupervisor } from "../src/supervis
 
 const fixture = new URL("./fixtures/model-peer.mjs", import.meta.url);
 const referenceDate = new Date("2026-10-07T00:00:00Z");
-const claim = { title: "Can a pump supply a steady feed?", slug: "synthetic-feed", status: "published", bottomLine: "The pump can supply a steady feed in this installation.", stableCore: [] };
+const claim = {
+	title: "Can a pump supply a steady feed?",
+	slug: "synthetic-feed",
+	status: "published",
+	bottomLine: "The pump can supply a steady feed in this installation.",
+	stableCore: []
+};
 const payload = (query = "How does the feed stay steady?") => publicSearchWorkerRequestSchema.parse(publicSearchWorkerPayload([claim], query, referenceDate));
 
 function supervisorFixture(context: TestContext, extra: Partial<ConstructorParameters<typeof SearchSupervisor>[0]> = {}) {
 	const children: ChildProcess[] = [];
-	const supervisor = new SearchSupervisor({ modelDirectory: "/unused-test-models", createChild: () => {
-		const child = fork(fixture, [], { execArgv: [], serialization: "advanced", stdio: ["ignore", "ignore", "ignore", "ipc"], env: {} });
-		children.push(child);
-		return child;
-	}, ...extra });
+	const supervisor = new SearchSupervisor({
+		modelDirectory: "/unused-test-models",
+		createChild: () => {
+			const child = fork(fixture, [], {
+				execArgv: [],
+				serialization: "advanced",
+				stdio: ["ignore", "ignore", "ignore", "ipc"],
+				env: {}
+			});
+			children.push(child);
+			return child;
+		},
+		...extra
+	});
 	context.after(() => supervisor.close());
 	return { supervisor, children };
 }
@@ -105,7 +120,9 @@ describe("independent model process lifetime", () => {
 	it("rebuilds rather than serving a previous corpus fingerprint", async (context) => {
 		const { supervisor, children } = supervisorFixture(context);
 		await warm(supervisor);
-		const changed = publicSearchWorkerRequestSchema.parse(publicSearchWorkerPayload([{ ...claim, bottomLine: "The reviewed wording has changed." }], "How does the feed stay steady?", referenceDate));
+		const changed = publicSearchWorkerRequestSchema.parse(publicSearchWorkerPayload([
+			{ ...claim, bottomLine: "The reviewed wording has changed." }
+		], "How does the feed stay steady?", referenceDate));
 		const ready = once(supervisor, "ready");
 		await assert.rejects(supervisor.rank(changed, new AbortController().signal), SearchServiceUnavailableError);
 		await ready;

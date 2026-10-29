@@ -42,7 +42,14 @@ describe("practical home-heating reviews", () => {
 	});
 	it("finds each new question through the canonical search", () => {
 		const search = createClaimSearchIndex(defaultClaims.map(claim => ({ ...claim, _id: claim.slug })));
-		for (const [key, query] of Object.entries({ ratings: "heat pump efficiency ratings", radiators: "heat pump underfloor heating", insulation: "older home insulation standards", sizing: "bigger heat pump", backup: "resistance backup heat pump", cost: "heat pump total cost" })) {
+		for (const [key, query] of Object.entries({
+			ratings: "heat pump efficiency ratings",
+			radiators: "heat pump underfloor heating",
+			insulation: "older home insulation standards",
+			sizing: "bigger heat pump",
+			backup: "resistance backup heat pump",
+			cost: "heat pump total cost"
+		})) {
 			assert.ok(search(query).some(result => result.claim.slug === heatingSlugs[key as keyof typeof heatingSlugs]), query);
 		}
 	});

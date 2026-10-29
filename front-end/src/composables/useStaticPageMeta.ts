@@ -37,6 +37,10 @@ export function useStaticPageMeta({ description, path, robots, title }: StaticPa
 				rel: "canonical"
 			}
 		],
-		meta: robots ? [{ name: "robots", content: robots }] : []
+		meta: robots
+			? [
+					{ name: "robots", content: robots }
+				]
+			: []
 	});
 }

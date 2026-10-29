@@ -28,22 +28,22 @@ export type ClaimLandscapeExpertAgreement = EvidenceLandscapeExpertAgreement;
 export type ClaimLandscapeWorkflowStatus = EvidenceLandscapeWorkflowStatus;
 export type QuestionRoutingStatus = "unassigned" | "linked" | "duplicate";
 export type ClaimEvidenceDirection = "supports" | "mixed" | "unclear";
-export type ClaimUncertaintyType =
-	| "bias"
-	| "indirectness"
-	| "imprecision"
-	| "inconsistency"
-	| "generalizability"
-	| "mechanism"
-	| "timing"
-	| "implementation"
-	| "other";
+export type ClaimUncertaintyType
+	= | "bias"
+		| "indirectness"
+		| "imprecision"
+		| "inconsistency"
+		| "generalizability"
+		| "mechanism"
+		| "timing"
+		| "implementation"
+		| "other";
 export type ClaimSourceAppraisal = "high" | "moderate" | "low" | "not_appraised";
 export type ClaimSourceCitationStatus = "current" | "corrected" | "retracted" | "expression_of_concern";
 export type QuestionAskKind = "claim" | "topic" | "concept" | "discussion";
 export type QuestionClosestMatchType = "claim" | "topic" | "explainer" | "question" | "none";
-export type QuestionSourceContextType =
-	"article" | "social" | "video" | "podcast" | "conversation" | "classroom" | "other";
+export type QuestionSourceContextType
+	= "article" | "social" | "video" | "podcast" | "conversation" | "classroom" | "other";
 
 export interface ClaimChangeLogEntry {
 	date: string;
