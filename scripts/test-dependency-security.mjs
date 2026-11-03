@@ -11,6 +11,15 @@ const backendRequire = createRequire(new URL('../back-end/package.json', import.
 const frontendRequire = createRequire(new URL('../front-end/package.json', import.meta.url))
 const qs = backendRequire('qs')
 
+test('standalone backend and workspace matcher policies remain aligned', () => {
+  const root = frontendRequire('../package.json')
+  const backend = backendRequire('./package.json')
+  const rootLock = frontendRequire('../package-lock.json')
+  const backendLock = backendRequire('./package-lock.json')
+  assert.equal(backend.overrides.minimatch, root.devDependencies.minimatch)
+  assert.equal(backendLock.packages['node_modules/minimatch'].version, rootLock.packages['node_modules/minimatch'].version)
+})
+
 test('minimatch limits optimization amplification while preserving ordinary matching', () => {
   const { Minimatch, minimatch } = frontendRequire('minimatch')
   const matcher = new Minimatch(`${'a/**/../b/'.repeat(10)}end`, {
