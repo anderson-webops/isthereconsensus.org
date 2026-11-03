@@ -11,6 +11,8 @@ const evidenceTarget = computed(() =>
 );
 const { apiUrl } = useApi();
 const config = useRuntimeConfig();
+const feedbackId = useId();
+const helpful = ref<boolean | null>(null);
 const expanded = ref(false);
 const busy = ref(false);
 const received = ref(false);
@@ -29,6 +31,11 @@ const captchaRef = ref<{ reset: () => void } | null>(null);
 let controller: AbortController | undefined;
 
 onBeforeUnmount(() => controller?.abort());
+
+async function sendUsefulness() {
+	if (helpful.value === null) return;
+	await send({ kind: "usefulness", helpful: helpful.value });
+}
 
 async function sendExperience() {
 	if (!clarity.value || !answerCoverage.value) {
@@ -75,7 +82,7 @@ async function send(rating?: ReaderRating) {
 		}
 		notice.value = response.duplicate
 			? "This feedback has already been received today."
-			: "Thank you. Your feedback is in the private editorial queue.";
+			: "Feedback received.";
 		if (rating?.kind === "usefulness") {
 			received.value = true;
 		}
@@ -108,22 +115,38 @@ async function send(rating?: ReaderRating) {
 
 <template>
 	<section class="reader-feedback" aria-label="Reader feedback">
-		<div v-if="hasEvidenceTarget" class="reader-feedback__row">
-			<h2>Was this {{ comparisonSlug ? "comparison" : "review" }} useful?</h2>
-			<button type="button" :disabled="busy || received" @click="send({ kind: 'usefulness', helpful: true })">
-				Yes, useful
-			</button>
-			<button type="button" :disabled="busy || received" @click="send({ kind: 'usefulness', helpful: false })">
-				Not yet
-			</button>
-		</div>
-		<p v-if="hasEvidenceTarget" class="reader-feedback__hint">
-			This rates the explanation, not whether you agree with the science.
-		</p>
-		<div v-if="hasEvidenceTarget" class="reader-feedback__experience">
+		<form
+			v-if="hasEvidenceTarget"
+			class="reader-feedback__rating"
+			:aria-labelledby="`${feedbackId}-title`"
+			@submit.prevent="sendUsefulness()"
+		>
+			<h2 :id="`${feedbackId}-title`">
+				Was this {{ comparisonSlug ? "comparison" : "review" }} useful?
+			</h2>
+			<p class="reader-feedback__hint">
+				This rates the explanation, not whether you agree with the science.
+			</p>
+			<div class="reader-feedback__choices">
+				<label class="reader-feedback__choice">
+					<input v-model="helpful" type="radio" :name="feedbackId" :value="true" :disabled="busy || received">
+					Yes, useful
+				</label>
+				<label class="reader-feedback__choice">
+					<input v-model="helpful" type="radio" :name="feedbackId" :value="false" :disabled="busy || received">
+					Not yet
+				</label>
+				<button class="button button--primary" type="submit" :disabled="busy || received || helpful === null">
+					{{ received ? "Feedback sent" : busy ? "Sending…" : "Send feedback" }}
+				</button>
+			</div>
+		</form>
+		<div class="reader-feedback__actions" :class="{ 'reader-feedback__actions--separated': hasEvidenceTarget }">
 			<button
+				v-if="hasEvidenceTarget"
 				type="button"
 				:aria-expanded="experienceExpanded"
+				:aria-controls="experienceExpanded ? `${feedbackId}-experience` : undefined"
 				:disabled="busy || experienceReceived"
 				@click="experienceExpanded = !experienceExpanded"
 			>
@@ -135,44 +158,50 @@ async function send(rating?: ReaderRating) {
 							: "Tell us what worked (optional)"
 				}}
 			</button>
-			<form v-if="experienceExpanded" class="reader-feedback__form" @submit.prevent="sendExperience()">
-				<p>
-					These choices are private to admins. They do not record your question, account or search text, and
-					do not rate agreement with the science.
-				</p>
-				<label>How easy was the explanation to follow?
-					<select v-model="clarity" name="feedback-clarity" required :disabled="busy">
-						<option disabled value="">Choose an answer</option>
-						<option v-for="(label, value) in explanationClarityLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-					</select>
-				</label>
-				<label>Did it answer the question you came with?
-					<select v-model="answerCoverage" name="feedback-answer-coverage" required :disabled="busy">
-						<option disabled value="">Choose an answer</option>
-						<option v-for="(label, value) in answerCoverageLabels" :key="value" :value="value">
-							{{ label }}
-						</option>
-					</select>
-				</label>
-				<div>
-					<button type="submit" :disabled="busy">
-						{{ busy ? "Sending…" : "Send private answer feedback" }}
-					</button>
-				</div>
-			</form>
+			<button
+				type="button"
+				:aria-expanded="expanded"
+				:aria-controls="expanded ? `${feedbackId}-suggestion` : undefined"
+				:disabled="busy"
+				@click="expanded = !expanded"
+			>
+				{{
+					expanded
+						? "Close feedback form"
+						: hasEvidenceTarget
+							? "Suggest missing evidence"
+							: "Suggest a missing topic privately"
+				}}
+			</button>
 		</div>
-		<button type="button" :aria-expanded="expanded" :disabled="busy" @click="expanded = !expanded">
-			{{
-				expanded
-					? "Close feedback form"
-					: hasEvidenceTarget
-						? "Suggest missing evidence"
-						: "Suggest a missing topic privately"
-			}}
-		</button>
-		<form v-if="expanded" class="reader-feedback__form" @submit.prevent="send()">
+		<form v-if="experienceExpanded" :id="`${feedbackId}-experience`" class="reader-feedback__form" @submit.prevent="sendExperience()">
+			<p>
+				These choices are private to admins. They do not record your question, account or search text, and
+				do not rate agreement with the science.
+			</p>
+			<label>How easy was the explanation to follow?
+				<select v-model="clarity" name="feedback-clarity" required :disabled="busy">
+					<option disabled value="">Choose an answer</option>
+					<option v-for="(label, value) in explanationClarityLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+				</select>
+			</label>
+			<label>Did it answer the question you came with?
+				<select v-model="answerCoverage" name="feedback-answer-coverage" required :disabled="busy">
+					<option disabled value="">Choose an answer</option>
+					<option v-for="(label, value) in answerCoverageLabels" :key="value" :value="value">
+						{{ label }}
+					</option>
+				</select>
+			</label>
+			<div>
+				<button type="submit" :disabled="busy">
+					{{ busy ? "Sending…" : "Send private answer feedback" }}
+				</button>
+			</div>
+		</form>
+		<form v-if="expanded" :id="`${feedbackId}-suggestion`" class="reader-feedback__form" @submit.prevent="send()">
 			<p>
 				Only admins can read this feedback. Do not include names, contact details, personal health information
 				or private links. Your search text is not copied or saved automatically.
@@ -226,10 +255,10 @@ async function send(rating?: ReaderRating) {
 				</button>
 			</div>
 		</form>
-		<p v-if="errorMessage" role="alert">
+		<p v-if="errorMessage" class="reader-feedback__error" role="alert">
 			{{ errorMessage }}
 		</p>
-		<p role="status">
+		<p class="reader-feedback__notice" role="status">
 			{{ notice }}
 		</p>
 	</section>
@@ -237,38 +266,79 @@ async function send(rating?: ReaderRating) {
 
 <style scoped>
 .reader-feedback {
-	padding: 1.25rem;
+	padding: clamp(1rem, 3vw, 1.5rem);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 1rem;
 	background: var(--consensus-surface);
 	font-size: 1rem;
 }
-.reader-feedback__row {
+.reader-feedback__choices,
+.reader-feedback__actions {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.65rem;
+	gap: 0.75rem;
 	align-items: center;
 }
 .reader-feedback h2 {
 	font-size: 1.125rem;
-	margin: 0 0.5rem 0 0;
+	margin: 0;
 }
 .reader-feedback__hint {
+	margin: 0.35rem 0 1rem;
 	color: var(--consensus-muted);
 	font-size: 0.875rem;
 }
-.reader-feedback__experience {
-	margin-block: 0.75rem;
+.reader-feedback__actions--separated {
+	margin-top: 1.25rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--consensus-soft-line);
 }
-.reader-feedback button {
+.reader-feedback button,
+.reader-feedback__choice {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
 	min-height: 2.75rem;
+	max-width: 100%;
 	padding: 0.6rem 0.9rem;
 	border-radius: 0.6rem;
 	border: 1px solid var(--consensus-line);
+	background: var(--consensus-field-surface);
+	overflow-wrap: anywhere;
+	cursor: pointer;
 }
-.reader-feedback button:disabled {
+.reader-feedback button:not(:disabled):hover,
+.reader-feedback__choice:not(:has(input:disabled)):hover {
+	border-color: var(--consensus-ink);
+}
+.reader-feedback__choice:has(input:checked) {
+	border-color: var(--consensus-ink);
+	box-shadow: inset 0 0 0 1px var(--consensus-ink);
+}
+.reader-feedback button:disabled,
+.reader-feedback__choice:has(input:disabled) {
 	opacity: 0.65;
 	cursor: default;
+}
+.reader-feedback__choice input {
+	width: 1rem;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	accent-color: var(--consensus-ink);
+	cursor: inherit;
+}
+.reader-feedback button.button--primary {
+	background: var(--consensus-ink);
+	color: var(--consensus-surface);
+}
+.reader-feedback__notice,
+.reader-feedback__error {
+	margin: 1rem 0 0;
+}
+.reader-feedback__notice:empty {
+	margin: 0;
 }
 .reader-feedback__form {
 	display: grid;
@@ -276,13 +346,13 @@ async function send(rating?: ReaderRating) {
 	max-width: 48rem;
 	margin-top: 1rem;
 }
-.reader-feedback label {
+.reader-feedback__form label {
 	display: grid;
 	gap: 0.4rem;
 }
-.reader-feedback input,
-.reader-feedback select,
-.reader-feedback textarea {
+.reader-feedback__form input,
+.reader-feedback__form select,
+.reader-feedback__form textarea {
 	min-width: 0;
 	width: 100%;
 	min-height: 2.75rem;

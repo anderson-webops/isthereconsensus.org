@@ -11,6 +11,24 @@ import {
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
 describe("reader feedback contract", () => {
+	it("requires an explicit submit after choosing a usefulness rating", () => {
+		const form = read("../src/components/ReaderFeedback.vue");
+		assert.match(form, /const helpful = ref<boolean \| null>\(null\)/);
+		assert.match(form, /@submit\.prevent="sendUsefulness\(\)"/);
+		assert.match(form, /if \(helpful\.value === null\) return/);
+		assert.match(form, /await send\(\{ kind: "usefulness", helpful: helpful.value \}\)/);
+		assert.equal((form.match(/v-model="helpful" type="radio"/g) ?? []).length, 2);
+		assert.doesNotMatch(form, /@click="send\(/);
+		assert.match(form, /:disabled="busy \|\| received \|\| helpful === null"/);
+	});
+	it("groups secondary actions and makes active controls visibly interactive", () => {
+		const form = read("../src/components/ReaderFeedback.vue");
+		assert.match(form, /class="reader-feedback__actions"/);
+		assert.match(form, /cursor: pointer/);
+		assert.match(form, /button:not\(:disabled\):hover/);
+		assert.match(form, /reader-feedback__choice:has\(input:checked\)/);
+		assert.match(form, /reader-feedback__notice:empty\s*\{\s*margin: 0/);
+	});
 	it("distinguishes explanation feedback from scientific agreement", () => {
 		assert.match(
 			read("../src/components/ReaderFeedback.vue"),
