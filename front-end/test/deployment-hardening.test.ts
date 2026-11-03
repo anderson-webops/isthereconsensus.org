@@ -117,7 +117,9 @@ describe("deployment hardening", () => {
 	it("keeps the release identity alias uncached without losing security headers", () => {
 		const alias = nginxConfig.match(/location = \/release\.json \{([^}]+)\}/)?.[1] || "";
 		assert.match(alias, /return 307 \/deployment\.json;/);
-		assert.match(alias, /add_header Cache-Control "no-store" always;/);
+		assert.doesNotMatch(alias, /add_header/);
+		assert.match(nginxConfig, /map \$uri \$isthereconsensus_release_cache_control \{\s+default "";\s+\/release\.json "no-store";/);
+		assert.match(nginxConfig, /add_header Cache-Control \$isthereconsensus_release_cache_control always;/);
 		for (const header of [
 			"Referrer-Policy",
 			"Strict-Transport-Security",
@@ -126,7 +128,7 @@ describe("deployment hardening", () => {
 		]) {
 			const declaration = nginxConfig.match(new RegExp(`add_header ${header} [^;]+;`))?.[0];
 			assert.ok(declaration);
-			assert.ok(alias.includes(declaration));
+			assert.equal(nginxConfig.split(declaration).length, 2);
 		}
 		assert.match(nuxtConfig, /"\/deployment\.json": \{\s+cache: false,\s+headers: \{ "Cache-Control": "no-store" \}/);
 		assert.match(nuxtConfig, /"\/release\.json": \{\s+cache: false,\s+headers: \{ "Cache-Control": "no-store" \},\s+redirect: \{ to: "\/deployment\.json", statusCode: 307 \}/);
