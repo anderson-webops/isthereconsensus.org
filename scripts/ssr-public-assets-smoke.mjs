@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import net from "node:net";
@@ -289,6 +290,14 @@ await runWithServer(baseUrl, port, async () => {
 	const robots = await fetchAsset(baseUrl, "/robots.txt");
 	const manifest = await fetchAsset(baseUrl, "/site.webmanifest");
 	const deployment = await fetchAsset(baseUrl, "/deployment.json");
+	const alias = await fetch(`${baseUrl}/release.json`, { redirect: "manual", signal: AbortSignal.timeout(8_000) });
+	assert.equal(alias.status, 307);
+	assert.equal(alias.headers.get("cache-control"), "no-store");
+	assert.equal(new URL(alias.headers.get("location"), baseUrl).pathname, "/deployment.json");
+	const release = await fetch(`${baseUrl}/release.json`, { signal: AbortSignal.timeout(8_000) });
+	assert.equal(release.status, 200);
+	assert.equal(release.headers.get("cache-control"), "no-store");
+	assert.deepEqual(await release.json(), JSON.parse(deployment.body));
 
 	await assertSecurityTxt(baseUrl);
 	assertDeploymentMetadata(deployment);

@@ -48,6 +48,15 @@ test("public metadata writer emits static deployment and security assets", () =>
 		assert.equal(deployment.commit, "abc123");
 		assert.equal(deployment.ref, "v1.0.0");
 		assert.equal(deployment.buildId, "build-123");
+		assert.deepEqual(Object.keys(deployment).sort(), [
+			"ok",
+			"service",
+			"runtime",
+			"buildId",
+			"commit",
+			"ref",
+			"siteUrl"
+		].sort());
 		assert.equal(standardSecurity, securityTxtBody);
 		assert.equal(fallbackSecurity, securityTxtBody);
 	});

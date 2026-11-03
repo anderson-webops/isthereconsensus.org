@@ -177,8 +177,8 @@ if (
 ) {
 	throw new Error("Runtime artifact frontend identity does not match its source manifest.");
 }
-if ("nodeEnv" in deployment) {
-	throw new Error("Public deployment metadata must not expose process environment details.");
+if (JSON.stringify(Object.keys(deployment).sort()) !== JSON.stringify(["ok", "service", "runtime", "buildId", "commit", "ref", "siteUrl"].sort())) {
+	throw new Error("Public deployment metadata must contain only the public build identity fields.");
 }
 
 process.stdout.write(`Verified runtime artifact with ${actualFiles.length} hashed entries.\n`);

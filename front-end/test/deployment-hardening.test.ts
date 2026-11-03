@@ -114,6 +114,24 @@ describe("deployment hardening", () => {
 		assert.match(poweredByPlugin, /delete response\.headers\["X-Powered-By"\]/);
 	});
 
+	it("keeps the release identity alias uncached without losing security headers", () => {
+		const alias = nginxConfig.match(/location = \/release\.json \{([^}]+)\}/)?.[1] || "";
+		assert.match(alias, /return 307 \/deployment\.json;/);
+		assert.match(alias, /add_header Cache-Control "no-store" always;/);
+		for (const header of [
+			"Referrer-Policy",
+			"Strict-Transport-Security",
+			"X-Content-Type-Options",
+			"X-Frame-Options"
+		]) {
+			const declaration = nginxConfig.match(new RegExp(`add_header ${header} [^;]+;`))?.[0];
+			assert.ok(declaration);
+			assert.ok(alias.includes(declaration));
+		}
+		assert.match(nuxtConfig, /"\/deployment\.json": \{\s+cache: false,\s+headers: \{ "Cache-Control": "no-store" \}/);
+		assert.match(nuxtConfig, /"\/release\.json": \{\s+cache: false,\s+headers: \{ "Cache-Control": "no-store" \},\s+redirect: \{ to: "\/deployment\.json", statusCode: 307 \}/);
+	});
+
 	it("keeps backend secrets out of frontend build artifacts", () => {
 		assert.doesNotMatch(nuxtConfig, /back-end\/\.env/);
 		assert.doesNotMatch(nuxtConfig, /from "dotenv"/);

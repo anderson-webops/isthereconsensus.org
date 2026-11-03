@@ -129,6 +129,33 @@ async function assertProbe(baseUrl, route) {
 	assert.equal(await headResponse.text(), "");
 }
 
+async function assertReleaseIdentity(baseUrl, expectedIdentity) {
+	assert.deepEqual(Object.keys(expectedIdentity).sort(), ["ok", "service", "runtime", "buildId", "commit", "ref", "siteUrl"].sort());
+	for (const method of ["GET", "HEAD"]) {
+		const redirect = await fetch(`${baseUrl}/release.json?commit=untrusted&ref=untrusted`, {
+			method,
+			redirect: "manual",
+			signal: AbortSignal.timeout(5_000)
+		});
+		assert.equal(redirect.status, 307);
+		assert.equal(redirect.headers.get("cache-control"), "no-store");
+		assert.equal(redirect.headers.get("set-cookie"), null);
+		const destination = new URL(redirect.headers.get("location"), baseUrl);
+		assert.equal(destination.origin, baseUrl);
+		assert.equal(destination.pathname, "/deployment.json");
+		const response = await fetch(destination, { method, signal: AbortSignal.timeout(5_000) });
+		assert.equal(response.status, 200);
+		assert.match(response.headers.get("content-type"), /application\/json/u);
+		assert.equal(response.headers.get("cache-control"), "no-store");
+		assert.equal(response.headers.get("set-cookie"), null);
+		if (method === "GET") assert.deepEqual(await response.json(), expectedIdentity);
+		else {
+			assert.equal(await redirect.text(), "");
+			assert.equal(await response.text(), "");
+		}
+	}
+}
+
 const acceptanceRoot = await mkdtemp(path.join(os.tmpdir(), "isthereconsensus-runtime-acceptance-"));
 const artifactRoot = path.join(acceptanceRoot, "artifact");
 const emptyEnvironment = path.join(acceptanceRoot, "empty.env");
@@ -259,6 +286,7 @@ try {
 		assert.match(await homepage.text(), /Is There Consensus/u);
 		await assertProbe(webBaseUrl, "/healthz");
 		await assertProbe(webBaseUrl, "/readyz");
+		await assertReleaseIdentity(webBaseUrl, JSON.parse(await readFile(path.join(artifactRoot, "front-end/.output/public/deployment.json"), "utf8")));
 	}
 	finally {
 		await stopService(web);

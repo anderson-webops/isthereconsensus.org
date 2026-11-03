@@ -212,6 +212,15 @@ export default defineNuxtConfig({
 		"/**": {
 			headers: securityHeaders
 		},
+		"/deployment.json": {
+			cache: false,
+			headers: { "Cache-Control": "no-store" }
+		},
+		"/release.json": {
+			cache: false,
+			headers: { "Cache-Control": "no-store" },
+			redirect: { to: "/deployment.json", statusCode: 307 }
+		},
 		"/account": {
 			headers: privateNoindexHeaders
 		},
