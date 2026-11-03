@@ -135,7 +135,9 @@ export async function checkReaderFeedback({
 	);
 
 	let fail = false;
+	let submissions = 0;
 	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (url.pathname === "/api/reader-feedback" && request.method() === "POST") submissions++;
 		if (!fail || url.pathname !== "/api/reader-feedback") return false;
 		void request
 			.respond({
@@ -149,8 +151,12 @@ export async function checkReaderFeedback({
 	const errors = [];
 	page.on("pageerror", (error) => errors.push(error.message));
 	await page.goto(`${base}/consensus/${review.topic.slug}/${review.slug}`, { waitUntil: "networkidle0" });
-	await clickText(page, "Not yet");
+	assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), true);
+	await page.click(".reader-feedback__choice:last-of-type");
+	assert.equal(submissions, 0, "Selecting a usefulness rating must not submit it.");
+	await clickText(page, "Send feedback");
 	await browserText(page, "This feedback has already been received today.");
+	assert.equal(submissions, 1);
 	await clickText(page, "Suggest missing evidence");
 	await page.type('[name="feedback-message"]', "Please explain whether the evidence applies to older adults.");
 	await page.type('[name="feedback-source"]', "https://example.org/public-review");
@@ -160,7 +166,7 @@ export async function checkReaderFeedback({
 	assert.match(await page.$eval('[name="feedback-message"]', (el) => el.value), /older adults/);
 	fail = false;
 	await clickText(page, "Send private suggestion");
-	await browserText(page, "Thank you. Your feedback is in the private editorial queue.");
+	await browserText(page, "Feedback received.");
 	await page.goto(`${base}/ask?q=private-query-must-not-be-copied`, { waitUntil: "networkidle0" });
 	await clickText(page, "Suggest a missing topic privately");
 	assert.equal(await page.$eval('[name="feedback-title"]', (el) => el.value), "");
@@ -181,7 +187,7 @@ export async function checkReaderFeedback({
 		[]
 	);
 	await clickText(page, "Send private suggestion");
-	await browserText(page, "Thank you. Your feedback is in the private editorial queue.");
+	await browserText(page, "Feedback received.");
 	assert.doesNotMatch(JSON.stringify(await ReaderFeedback.find().lean()), /private-query-must-not-be-copied/);
 	const adminPath = `${base}/account/editorial/reader-feedback`;
 	const html = await fetch(adminPath);
@@ -528,7 +534,9 @@ async function checkComparisonFeedback({
 	assert.equal(row.claimId, undefined);
 	assert.equal(row.topicId, undefined);
 	let fail = false;
+	let submissions = 0;
 	const page = await createIsolatedBrowserPage(browser, base, (request, url) => {
+		if (url.pathname === "/api/reader-feedback" && request.method() === "POST") submissions++;
 		if (!fail || url.pathname !== "/api/reader-feedback") return false;
 		void request
 			.respond({
@@ -546,8 +554,12 @@ async function checkComparisonFeedback({
 		waitUntil: "networkidle0"
 	});
 	await browserText(page, "Was this comparison useful?");
-	await clickText(page, "Not yet");
+	assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), true);
+	await page.click(".reader-feedback__choice:last-of-type");
+	assert.equal(submissions, 0, "Selecting a comparison rating must not submit it.");
+	await clickText(page, "Send feedback");
 	await browserText(page, "This feedback has already been received today.");
+	assert.equal(submissions, 1);
 	await page.click(".comparison-history summary");
 	assert.equal(await page.$$eval(".comparison-history li", (nodes) => nodes.length), comparison.readerUpdates.length);
 	assert.ok(await page.$('.comparison-history a[href="#comparison-source-nrel-2021"]'));
@@ -594,7 +606,7 @@ async function checkComparisonFeedback({
 			await page.$(".reader-feedback")
 		).screenshot({ path: join(process.env.READER_FEEDBACK_SCREENSHOT_DIR, "comparison-feedback-mobile.png") });
 	await clickText(page, "Send private suggestion");
-	await browserText(page, "Thank you. Your feedback is in the private editorial queue.");
+	await browserText(page, "Feedback received.");
 	const queue = (await api(`${path}&limit=1`, { cookie: adminCookie })).data;
 	assert.equal(queue.pagination.total, 2);
 	assert.equal(queue.pagination.hasMore, true);
