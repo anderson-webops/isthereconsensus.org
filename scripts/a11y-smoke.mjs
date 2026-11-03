@@ -282,7 +282,7 @@ function responseFor(url) {
 				editorSummary: "This update replaces an internal editorial note that must not appear below the answer.",
 				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
 				uncertaintySummary: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting.",
-				uncertaintyDrivers: [
+				uncertaintyDrivers: scopeSlug === "a11y-scope-legacy" ? [] : [
 					{ type: "generalizability", detail: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting." },
 					{ type: "other", detail: `An uninterrupted reference label must wrap without widening the expanded panel: ${"measurement".repeat(40)}.` }
 				],
@@ -541,6 +541,11 @@ async function analyzePage(browser, route, scheme) {
 	await page.waitForNetworkIdle({ idleTime: 500, timeout: 8_000 }).catch(() => {});
 	if (route.startsWith("/consensus/a11y-topic/")) {
 		const { claim } = responseFor(new URL(`/topics/a11y-topic/claims/${route.split("/").at(-1)}`, apiUrl));
+		if (claim.uncertaintyDrivers.length === 0) {
+			const summaryWidth = await page.$eval("#claim-certainty", section => ({ available: section.clientWidth, actual: section.firstElementChild.getBoundingClientRect().width, disclosure: Boolean(section.querySelector("details")) }));
+			assert.equal(summaryWidth.disclosure, false);
+			assert.ok(Math.abs(summaryWidth.actual - summaryWidth.available) <= 1, `${route}: empty limits column narrowed the summary`);
+		}
 		assert.equal(await page.$eval("#review-status", element => element.open), false);
 		assert.equal(await page.$(".claim-preparation"), null);
 		const preparation = await page.$eval("#review-status .review-status__body", element => element.textContent);

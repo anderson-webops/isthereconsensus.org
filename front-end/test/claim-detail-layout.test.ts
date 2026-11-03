@@ -72,6 +72,10 @@ describe("claim detail layout", () => {
 		assert.match(disclosure, /overflow-wrap: anywhere;/);
 	});
 
+	it("keeps the summary full width when no limits disclosure is present", () => {
+		assert.match(source, /\.uncertainty-strip > div:only-child \{\s*grid-column: 1 \/ -1;/);
+	});
+
 	it("keeps the mobile claim answer visible without hiding trust cues", () => {
 		assert.match(source, /@media \(max-width: 860px\) \{[\s\S]*\.claim-page \{[\s\S]*gap: 14px;/);
 		assert.match(source, /\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/);

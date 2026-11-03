@@ -1300,6 +1300,10 @@ function formatDate(value?: string, fallback = "Not available yet") {
 	max-width: 68ch;
 }
 
+.uncertainty-strip > div:only-child {
+	grid-column: 1 / -1;
+}
+
 .uncertainty-strip__title {
 	display: flex;
 	align-items: center;
