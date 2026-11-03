@@ -283,8 +283,8 @@ function responseFor(url) {
 				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
 				uncertaintySummary: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting.",
 				uncertaintyDrivers: [
-					{ type: "scope", detail: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting." },
-					{ type: "scope", detail: `An uninterrupted reference label must wrap without widening the expanded panel: ${"measurement".repeat(40)}.` }
+					{ type: "generalizability", detail: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting." },
+					{ type: "other", detail: `An uninterrupted reference label must wrap without widening the expanded panel: ${"measurement".repeat(40)}.` }
 				],
 				stableCore: ["The review can be copied or exported in standard citation formats."],
 				inclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : [scopeSlug === "a11y-scope-long" ? longScopeCriterion : "Public review pages with keyboard-accessible citation controls in this synthetic fixture."],
