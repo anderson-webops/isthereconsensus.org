@@ -413,7 +413,7 @@ function startFrontend() {
 			NUXT_PUBLIC_APP_URL: baseUrl,
 			NUXT_PUBLIC_SITE_URL: baseUrl,
 			NUXT_API_INTERNAL_BASE: apiUrl,
-			NUXT_PUBLIC_API_BASE: apiUrl,
+			NUXT_PUBLIC_API_BASE: "/api",
 			NUXT_PUBLIC_API_BASE_URL: apiUrl,
 			PUBLIC_API_BASE: apiUrl,
 			INTERNAL_API_BASE: apiUrl,
@@ -528,6 +528,125 @@ async function verifyUncertaintyExpansion(page, route, scheme) {
 	await page.setViewport({ width: 1280, height: 1000, deviceScaleFactor: 1 });
 }
 
+async function verifyReaderFeedback(page, route, scheme) {
+	const target = route === "/ask" ? null : route.startsWith("/compare/") ? "comparisonSlug" : "claimId";
+	const posts = [];
+	const runtimeErrors = [];
+	const onError = error => runtimeErrors.push(error.message);
+	const onConsole = message => {
+		if (["error", "warn"].includes(message.type())) runtimeErrors.push(message.text());
+	};
+	page.on("pageerror", onError);
+	page.on("console", onConsole);
+	let pending;
+	const intercept = request => {
+		if (request.method() !== "POST" || !new URL(request.url()).pathname.endsWith("/reader-feedback")) {
+			void request.continue();
+			return;
+		}
+		posts.push(JSON.parse(request.postData()));
+		pending = request;
+	};
+	await page.setRequestInterception(true);
+	page.on("request", intercept);
+	const respond = async (received = true, duplicate = false) => {
+		await pending.respond({ status: 200, contentType: "application/json", body: JSON.stringify({ received, duplicate }) });
+		pending = undefined;
+	};
+	const waitForPost = async count => {
+		for (let attempt = 0; attempt < 100 && posts.length < count; attempt++) {
+			await new Promise(resolveWait => setTimeout(resolveWait, 20));
+		}
+		if (posts.length !== count) {
+			const state = await page.$eval(".reader-feedback", panel => ({
+				text: panel.textContent,
+				buttons: Array.from(panel.querySelectorAll("button"), button => ({ text: button.textContent, disabled: button.disabled }))
+			}));
+			assert.equal(posts.length, count, `${route}: explicit feedback submission ${JSON.stringify({ state, runtimeErrors })}`);
+		}
+	};
+	try {
+		for (const [width, scale] of [[1440, 100], [390, 100], [320, 200]]) {
+			await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+			await page.evaluate(value => { document.documentElement.style.fontSize = `${value}%`; }, scale);
+			const controls = await page.$eval(".reader-feedback", panel => {
+				const box = panel.getBoundingClientRect();
+				return {
+					overflow: panel.scrollWidth > panel.clientWidth + 1,
+					escaped: Array.from(panel.querySelectorAll("button, label")).some(element => element.getBoundingClientRect().right > box.right + 1),
+					cursors: Array.from(panel.querySelectorAll("button:not(:disabled), input[type=radio]:not(:disabled), .reader-feedback__choice"), element => getComputedStyle(element).cursor)
+				};
+			});
+			assert.equal(controls.overflow, false, `${route}: feedback overflow at ${width}px/${scale}%`);
+			assert.equal(controls.escaped, false, `${route}: feedback controls escaped their panel`);
+			assert.ok(controls.cursors.every(cursor => cursor === "pointer"), `${route}: feedback cursor affordance`);
+			if (process.env.A11Y_SCREENSHOT_DIR && [1440, 390].includes(width) && target === "claimId") {
+				await (await page.$(".reader-feedback")).screenshot({ path: resolve(process.env.A11Y_SCREENSHOT_DIR, `feedback-${scheme}-${width}.png`) });
+			}
+		}
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+		await page.setViewport({ width: 1280, height: 1000, deviceScaleFactor: 1 });
+		if (target) {
+			assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), true);
+			await page.click(".reader-feedback__choice");
+			assert.equal(posts.length, 0, `${route}: clicking a rating must not send it`);
+			await page.focus(".reader-feedback__choice input");
+			await page.keyboard.press("ArrowRight");
+			assert.equal(await page.$eval('.reader-feedback__choice:last-of-type input', input => getComputedStyle(input).outlineStyle !== "none"), true);
+			assert.equal(await page.$eval('.reader-feedback__choice:last-of-type input', input => input.checked), true);
+			assert.equal(posts.length, 0, `${route}: choosing a rating must not send it`);
+			await page.focus(".reader-feedback__rating button");
+			await page.keyboard.press("Enter");
+			await waitForPost(1);
+			assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), true);
+			assert.deepEqual(Object.keys(posts[0]).sort(), [target, "helpful", "kind"].sort());
+			assert.equal(posts[0].kind, "usefulness");
+			assert.equal(posts[0].helpful, false);
+			await respond(false);
+			await page.waitForSelector(".reader-feedback [role=alert]");
+			assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), false);
+			assert.equal(await page.$eval('.reader-feedback__choice:last-of-type input', input => input.checked), true);
+			await page.click(".reader-feedback__rating button");
+			await waitForPost(2);
+			await respond();
+			await page.waitForFunction(() => document.querySelector(".reader-feedback__rating button").textContent.includes("Feedback sent"));
+			assert.equal(await page.$eval(".reader-feedback__rating button", button => button.disabled), true);
+			if (process.env.A11Y_SCREENSHOT_DIR && target === "claimId") {
+				await (await page.$(".reader-feedback")).screenshot({ path: resolve(process.env.A11Y_SCREENSHOT_DIR, `feedback-${scheme}-sent.png`) });
+			}
+			await page.click(".reader-feedback__actions button:first-child");
+			await page.select('[name="feedback-clarity"]', "clear");
+			await page.select('[name="feedback-answer-coverage"]', "answered");
+			assert.equal(posts.length, 2);
+			await page.click('.reader-feedback__form button[type="submit"]');
+			await waitForPost(3);
+			assert.equal(posts[2].kind, "reader_experience");
+			await respond();
+			await page.waitForFunction(() => !document.querySelector('[name="feedback-clarity"]'));
+		} else {
+			assert.equal(await page.$(".reader-feedback__rating"), null);
+		}
+		await page.click(".reader-feedback__actions button:last-child");
+		if (!target) await page.type('[name="feedback-title"]', "Synthetic feedback topic for accessibility testing");
+		await page.type('[name="feedback-message"]', "Synthetic feedback for an isolated accessibility fixture.");
+		assert.equal(posts.length, target ? 3 : 0, `${route}: opening and filling feedback must not submit it`);
+		await page.click('.reader-feedback__form button[type="submit"]');
+		await waitForPost(target ? 4 : 1);
+		assert.equal(posts.at(-1).kind, target ? "missing_evidence" : "content_gap");
+		await respond(true, true);
+		await page.waitForFunction(() => document.querySelector(".reader-feedback [role=status]").textContent.includes("already been received"));
+		assert.equal(await page.$('[name="feedback-message"]'), null);
+		assert.deepEqual(runtimeErrors, [], `${route}: feedback runtime errors`);
+	} finally {
+		if (pending) await pending.abort();
+		page.off("request", intercept);
+		page.off("pageerror", onError);
+		page.off("console", onConsole);
+		await page.setRequestInterception(false);
+		await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	}
+}
+
 async function analyzePage(browser, route, scheme) {
 	const url = `${baseUrl}${route}`;
 	const page = await browser.newPage();
@@ -585,6 +704,9 @@ async function analyzePage(browser, route, scheme) {
 		assert.equal(await page.evaluate(() => globalThis.scopeInjected), undefined);
 	}
 	if (route.endsWith("a11y-citation-review")) await verifyUncertaintyExpansion(page, route, scheme);
+	if (route.endsWith("a11y-citation-review") || route === "/compare/electricity-emissions" || route === "/ask") {
+		await verifyReaderFeedback(page, route, scheme);
+	}
 	await page.addScriptTag({ path: axeSourcePath });
 	const result = await page.evaluate(async () => {
 		return await globalThis.axe.run(document, {
