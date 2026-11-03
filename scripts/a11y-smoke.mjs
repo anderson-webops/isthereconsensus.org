@@ -281,6 +281,11 @@ function responseFor(url) {
 				reviewerLine: "Reviewed for evidence quality, scope, and plain-language accuracy.",
 				editorSummary: "This update replaces an internal editorial note that must not appear below the answer.",
 				bottomLine: "Yes. The fixture exposes the citation controls to the built-app accessibility check.",
+				uncertaintySummary: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting.",
+				uncertaintyDrivers: [
+					{ type: "scope", detail: "The estimate applies to the populations and reference periods represented in the cited evidence, not every possible setting." },
+					{ type: "scope", detail: `An uninterrupted reference label must wrap without widening the expanded panel: ${"measurement".repeat(40)}.` }
+				],
 				stableCore: ["The review can be copied or exported in standard citation formats."],
 				inclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : [scopeSlug === "a11y-scope-long" ? longScopeCriterion : "Public review pages with keyboard-accessible citation controls in this synthetic fixture."],
 				exclusionRules: scopeSlug === "a11y-scope-legacy" ? undefined : ["Private account data and unreviewed submissions are outside this fixture's scope."],
@@ -485,6 +490,44 @@ async function stopProcessTree(child) {
 	await waitForProcessExit(child, 2_000);
 }
 
+async function verifyUncertaintyExpansion(page, route, scheme) {
+	for (const [width, textScale] of [[1440, 100], [1080, 100], [861, 100], [390, 100], [320, 200]]) {
+		await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+		await page.evaluate(scale => { document.documentElement.style.fontSize = `${scale}%`; }, textScale);
+		const measure = () => page.$eval("#claim-certainty", section => {
+			const box = element => {
+				const rect = element.getBoundingClientRect();
+				return { width: rect.width, right: rect.right, left: rect.left, top: rect.top, bottom: rect.bottom };
+			};
+			return {
+				main: box(section.firstElementChild),
+				disclosure: box(section.querySelector("details")),
+				open: section.querySelector("details").open,
+				overflow: document.documentElement.scrollWidth > innerWidth + 1,
+				panelOverflow: section.querySelector("details").scrollWidth > section.querySelector("details").clientWidth + 1
+			};
+		});
+		const closed = await measure();
+		assert.equal(closed.open, false);
+		await page.focus(".uncertainty-strip__limits > summary");
+		await page.keyboard.press("Enter");
+		const opened = await measure();
+		assert.equal(opened.open, true);
+		assert.ok(Math.abs(opened.main.width - closed.main.width) <= 1, `${route}: limits narrowed the summary at ${width}px/${textScale}%`);
+		assert.equal(opened.overflow, false, `${route}: expanded uncertainty overflow at ${width}px/${textScale}%`);
+		assert.equal(opened.panelOverflow, false, `${route}: expanded limit text escaped its panel`);
+		if (width > 860) assert.ok(opened.main.right <= opened.disclosure.left + 1, `${route}: uncertainty columns overlap`);
+		else assert.ok(opened.main.bottom <= opened.disclosure.top + 1, `${route}: mobile uncertainty sections overlap`);
+		if (process.env.A11Y_SCREENSHOT_DIR && [1440, 390].includes(width)) {
+			await (await page.$("#claim-certainty")).screenshot({ path: resolve(process.env.A11Y_SCREENSHOT_DIR, `limits-${scheme}-${width}-open.png`) });
+		}
+		await page.keyboard.press("Enter");
+		assert.equal((await measure()).open, false);
+	}
+	await page.evaluate(() => { document.documentElement.style.fontSize = ""; });
+	await page.setViewport({ width: 1280, height: 1000, deviceScaleFactor: 1 });
+}
+
 async function analyzePage(browser, route, scheme) {
 	const url = `${baseUrl}${route}`;
 	const page = await browser.newPage();
@@ -536,6 +579,7 @@ async function analyzePage(browser, route, scheme) {
 		assert.deepEqual(actual, expected, `${route}: hydrated scope differs`);
 		assert.equal(await page.evaluate(() => globalThis.scopeInjected), undefined);
 	}
+	if (route.endsWith("a11y-citation-review")) await verifyUncertaintyExpansion(page, route, scheme);
 	await page.addScriptTag({ path: axeSourcePath });
 	const result = await page.evaluate(async () => {
 		return await globalThis.axe.run(document, {

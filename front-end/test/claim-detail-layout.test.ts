@@ -62,6 +62,16 @@ describe("claim detail layout", () => {
 		assert.match(source, /max-width: 68ch;/);
 	});
 
+	it("bounds the limits column independently of expanded text", () => {
+		const grid = source.match(/\.uncertainty-strip \{([^}]+)\}/)?.[1];
+		assert.ok(grid);
+		assert.match(grid, /grid-template-columns: minmax\(0, 1fr\) minmax\(0, 360px\);/);
+		const disclosure = source.match(/\.uncertainty-strip__limits \{([^}]+)\}/)?.[1];
+		assert.ok(disclosure);
+		assert.match(disclosure, /min-width: 0;/);
+		assert.match(disclosure, /overflow-wrap: anywhere;/);
+	});
+
 	it("keeps the mobile claim answer visible without hiding trust cues", () => {
 		assert.match(source, /@media \(max-width: 860px\) \{[\s\S]*\.claim-page \{[\s\S]*gap: 14px;/);
 		assert.match(source, /\.claim-page__header,[\s\S]*\.bottom-line,[\s\S]*\.queue-note \{[\s\S]*padding: 14px;/);

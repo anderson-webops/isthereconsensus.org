@@ -1151,7 +1151,7 @@ function formatDate(value?: string, fallback = "Not available yet") {
 
 .uncertainty-strip {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
 	gap: 18px;
 	align-items: start;
 	padding: 18px 0;
@@ -1319,9 +1319,11 @@ function formatDate(value?: string, fallback = "Not available yet") {
 }
 
 .uncertainty-strip__limits {
+	min-width: 0;
 	width: min(100%, 360px);
 	border: 1px solid var(--consensus-soft-line);
 	border-radius: 8px;
+	overflow-wrap: anywhere;
 }
 
 .uncertainty-strip__limits > summary {
