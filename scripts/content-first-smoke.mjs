@@ -254,29 +254,42 @@ try {
 		$set: { status: "draft", bottomLine: "Human-controlled unpublished draft." }
 	});
 	const foreignBefore = await Claim.findById(foreign.claimId).lean();
-	const addition = identities.find(row => row.releaseId === catalogExpansionReleases[0].id);
-	await Claim.updateOne({ _id: addition.claimId }, {
-		$set: { status: "archived", bottomLine: "New review withdrawn by human moderation." }
-	});
-	await CoverageRequest.updateOne({ _id: addition.coverageId }, {
-		$set: { visibility: "withdrawn" }
-	});
-	const additionBefore = await Claim.findById(addition.claimId).lean();
-	const foreignAddition = identities.find(row => row.releaseId === catalogExpansionReleases[0].id && !row._id.equals(addition._id));
-	await SourcePublication.deleteOne({ _id: foreignAddition._id });
-	await Claim.updateOne({ _id: foreignAddition.claimId }, {
-		$set: { status: "draft", bottomLine: "Human-controlled new unpublished draft." }
-	});
-	const foreignAdditionBefore = await Claim.findById(foreignAddition.claimId).lean();
+	const heldAdditions = [];
+	for (const release of catalogExpansionReleases) {
+		const addition = identities.find(row => row.releaseId === release.id);
+		assert.ok(addition);
+		await Claim.updateOne({ _id: addition.claimId }, {
+			$set: { status: "archived", bottomLine: "New review withdrawn by human moderation." }
+		});
+		await CoverageRequest.updateOne({ _id: addition.coverageId }, {
+			$set: { visibility: "withdrawn" }
+		});
+		const additionBefore = await Claim.findById(addition.claimId).lean();
+		const foreignAddition = identities.find(row => row.releaseId === release.id && !row._id.equals(addition._id));
+		assert.ok(foreignAddition);
+		await SourcePublication.deleteOne({ _id: foreignAddition._id });
+		await Claim.updateOne({ _id: foreignAddition.claimId }, {
+			$set: { status: "draft", bottomLine: "Human-controlled new unpublished draft." }
+		});
+		const foreignAdditionBefore = await Claim.findById(foreignAddition.claimId).lean();
+		heldAdditions.push({
+			addition,
+			additionBefore,
+			foreignAddition,
+			foreignAdditionBefore
+		});
+	}
 	await boot();
 	assert.deepEqual(await Claim.findById(partial._id).lean(), moderatedBefore);
 	assert.deepEqual(await Claim.findById(foreign.claimId).lean(), foreignBefore);
-	assert.deepEqual(await Claim.findById(addition.claimId).lean(), additionBefore);
-	assert.deepEqual(await Claim.findById(foreignAddition.claimId).lean(), foreignAdditionBefore);
-	assert.equal(await SourcePublication.countDocuments(), publicationClaims.length - 2);
-	assert.equal(await CoverageRequest.countDocuments({ visibility: "public" }), publicationClaims.length - 2);
+	for (const held of heldAdditions) {
+		assert.deepEqual(await Claim.findById(held.addition.claimId).lean(), held.additionBefore);
+		assert.deepEqual(await Claim.findById(held.foreignAddition.claimId).lean(), held.foreignAdditionBefore);
+	}
+	assert.equal(await SourcePublication.countDocuments(), publicationClaims.length - 1 - heldAdditions.length);
+	assert.equal(await CoverageRequest.countDocuments({ visibility: "public" }), publicationClaims.length - 1 - heldAdditions.length);
 	assert.deepEqual(await privateCollection.findOne({ _id: privateId }), privateBefore);
-	console.log(`content-first smoke ok: production startup publishes all ${publicationClaims.length} exact reviews, resumes owned partials, preserves citation identities and human withdrawals in both cohorts, and keeps private state unchanged`);
+	console.log(`content-first smoke ok: production startup publishes all ${publicationClaims.length} exact reviews, resumes owned partials, preserves citation identities and human withdrawals across all ${1 + heldAdditions.length} cohorts, and keeps private state unchanged`);
 }
 finally {
 	await stop(backend);

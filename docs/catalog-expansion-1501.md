@@ -18,8 +18,28 @@ topics, drafts and alternate URLs do not increase that count.
 - Peer assessment
 
 The source catalog contains 1,009 reviews after this addition, leaving 492
-further reviews to reach the objective. Publication is verified separately
+further reviews to reach the objective before the urban cohort below. Publication is verified separately
 against the public APIs; a source definition is not a publication receipt.
+
+## Urban heat and stormwater cohort
+
+`catalog-1501-urban-2026-11-06` adds ten reviews and 25 citations covering street
+trees, parks, reflective roofs, green-roof energy use, pedestrian comfort around
+cool pavements, green-roof runoff, permeable paving, pavement maintenance,
+rain-garden pollution removal and catchment-scale flood risk.
+
+This brings the source catalog to 1,019 distinct reviews, 482 short of the
+1,501-entry objective. Public availability remains a separate measurement.
+The ten reviews use 18 distinct
+DOIs, all checked against Crossref on November 6 with no registered updates.
+
+The urban cohort has its own fixed research-check time. The learning cohort's
+original time and seal remain unchanged. Narrative reviews and building models
+are identified as technical references, with their actual limitations. The
+reflective-roof review uses its 2022 journal year, rather than the 2021 year
+embedded in its DOI. The pedestrian-comfort review preserves the disagreement
+between field results; stormwater reviews distinguish concentrations from total
+pollutant loads and site retention from neighborhood flood protection.
 
 ## Self-review record
 
@@ -54,7 +74,7 @@ identity. Replays preserve published rows, human withdrawals, unowned drafts,
 source identities and private state. Failed validation leaves existing services
 available. Publication and review dates retain their separate meanings.
 
-The isolated production-startup rehearsal covers all 209 new and previously
+The isolated production-startup rehearsal covers all 219 new and previously
 approved reviews, exact public article and citation payloads, restart stability,
-and human moderation in both cohorts. The end goal remains open until the live
+and human moderation across cohorts. The end goal remains open until the live
 catalog contains 1,501 distinct self-reviewed canonical reviews.

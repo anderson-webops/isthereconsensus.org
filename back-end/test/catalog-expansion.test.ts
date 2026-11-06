@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberResearchCheckedAt } from "../src/data/claim-expansion-2026-11-shared.js";
+import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
 import { SourcePublication } from "../src/models/schemas/SourcePublication.js";
 import { validateApprovedReaderRelease } from "../src/utils/approvedReaderPublication.js";
@@ -9,32 +11,46 @@ import { publishCatalogExpansion, validateCatalogExpansion } from "../src/utils/
 import { readerExpansionValueHash } from "../src/utils/readerExpansionProposal.js";
 
 describe("self-reviewed expansion toward 1501 canonical reviews", () => {
-	it("adds eight distinct learning reviews and retains the complete legacy catalog", async () => {
+	it("adds distinct reviewed cohorts and retains the complete legacy catalog", async () => {
 		assert.equal(CATALOG_ENTRY_GOAL, 1501);
 		assert.equal(legacyDefaultClaims.length, 1001);
-		assert.equal(catalogExpansionClaims.length, 8);
-		assert.equal(defaultClaims.length, 1009);
+		assert.equal(novemberLearningClaims.length, 8);
+		assert.equal(novemberUrbanClaims.length, 10);
+		assert.equal(catalogExpansionClaims.length, 18);
+		assert.equal(defaultClaims.length, 1019);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 8,
-			citations: 20,
-			catalog: 1009,
+			entries: 18,
+			citations: 45,
+			catalog: 1019,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
 	});
+	it("keeps the learning seal unchanged while recording a separately dated urban review", () => {
+		assert.equal(readerExpansionValueHash(novemberLearningClaims), "4ee54e7752ad58b5f24cbb97631a90c59f61e1c377871bf9793670894172bfb1");
+		assert.equal(readerExpansionValueHash(novemberUrbanClaims), "4d6522389f71888a8d64978cf0432b1be8a8868af293e7a781f3a67557f55b48");
+		for (const claim of novemberLearningClaims) {
+			assert.equal(claim.topicSlug, "education-and-learning");
+			assert.equal(claim.searchCutoffAt, novemberResearchCheckedAt);
+		}
+		for (const claim of novemberUrbanClaims) {
+			assert.ok(["climate-and-environment", "energy-and-infrastructure"].includes(claim.topicSlug));
+			assert.equal(claim.searchCutoffAt, novemberUrbanResearchCheckedAt);
+		}
+		assert.notEqual(novemberUrbanResearchCheckedAt, novemberResearchCheckedAt);
+	});
 	it("records scoped evidence and honest review provenance on every new article", () => {
 		for (const claim of catalogExpansionClaims) {
-			assert.equal(claim.topicSlug, "education-and-learning");
 			assert.equal(claim.status, "draft");
 			assert.match(claim.reviewerLine!, /independent expert review not completed/u);
 			assert.match(claim.appraisalTools!.join(" "), /no formal GRADE/u);
 			assert.ok(claim.stableCore.length >= 2 && claim.openQuestions.length >= 2);
 			assert.ok(claim.evidenceSummaries!.length && claim.inclusionRules!.length);
-			assert.equal(claim.searchCutoffAt, novemberResearchCheckedAt);
+			assert.ok(claim.searchCutoffAt && Number.isFinite(Date.parse(claim.searchCutoffAt)));
 			assert.ok(claim.changeLog);
 			assert.equal(claim.changeLog.some(entry => entry.kind === "publication"), false);
-			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised" && source.citationCheckedAt === novemberResearchCheckedAt));
+			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised" && source.citationCheckedAt === claim.searchCutoffAt));
 			assert.equal(new Set(claim.sources.map(source => source.doi || source.url)).size, claim.sources.length);
 		}
 		assert.ok(catalogExpansionClaims.some(claim => claim.consensusBand === "mixed"));
@@ -46,7 +62,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 			const report = await validateCatalogExpansion();
 			assert.equal(report.catalog, CATALOG_ENTRY_GOAL + 1);
 			assert.equal(report.target, 1501);
-			assert.equal(report.entries, 8);
+			assert.equal(report.entries, catalogExpansionClaims.length);
 		}
 		finally {
 			defaultClaims.splice(originalLength);
