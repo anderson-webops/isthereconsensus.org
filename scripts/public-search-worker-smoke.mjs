@@ -10,6 +10,7 @@ import { join, resolve } from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
+import { catalogExpansionReleases } from "../back-end/dist/data/catalogExpansion.js";
 import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
 import { defaultClaims } from "../back-end/dist/data/claims.js";
 import { seedClaimFields, seedReviewDates } from "../back-end/dist/data/seedClaims.js";
@@ -253,15 +254,25 @@ try {
 		}
 	}, "compiled backend readiness", backend);
 	await waitFor(async () => (processOutput.get(backend) ?? "").includes("Approved assistant-screened content release:"), "approved startup publication completion", backend);
-	const publications = await database.collection("sourcepublications").find({ releaseId: APPROVED_READER_RELEASE }).toArray();
-	assert.equal(publications.length, readerExpansionClaims.length);
+	await waitFor(async () => (processOutput.get(backend) ?? "").includes("Self-reviewed catalog expansion:"), "catalog startup publication completion", backend);
+	const startupReleases = [
+		{ id: APPROVED_READER_RELEASE, claims: readerExpansionClaims },
+		...catalogExpansionReleases
+	];
+	const publications = await database.collection("sourcepublications").find({
+		releaseId: {
+			$in: startupReleases.map(release => release.id)
+		}
+	}).toArray();
+	for (const release of startupReleases) assert.equal(publications.filter(publication => publication.releaseId === release.id).length, release.claims.length);
+	assert.equal(publications.length, startupReleases.reduce((count, release) => count + release.claims.length, 0));
 	assert.ok(publications.every(publication => publication.state === "published"));
 	assert.ok(publications.every(publication => !publication.claimId.equals(review._id)), "Owned startup imports must not include the transport baseline.");
 	assert.equal((await database.collection("claimsources").deleteMany({
 		_id: {
 			$in: publications.flatMap(publication => publication.sourceIds)
 		}
-	})).deletedCount, readerExpansionClaims.reduce((count, claim) => count + claim.sources.length, 0));
+	})).deletedCount, startupReleases.reduce((count, release) => count + release.claims.reduce((total, claim) => total + claim.sources.length, 0), 0));
 	const claims = database.collection("claims");
 	assert.equal((await claims.deleteMany({
 		_id: {
