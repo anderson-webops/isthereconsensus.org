@@ -6,12 +6,12 @@ import { auditClaimCatalog, editorialConcerns, estimatedReadingGrade } from "../
 describe("bounded editorial catalog audit", () => {
 	it("reports the whole source catalog without calling flags defects or inventing reader demand", () => {
 		const report = auditClaimCatalog(defaultClaims, 2026);
-		assert.equal(report.claims, 1001);
-		assert.equal(report.rows.length, 1001);
-		assert.equal(new Set(report.rows.map(row => row.key)).size, 1001);
+		assert.equal(report.claims, defaultClaims.length);
+		assert.equal(report.rows.length, defaultClaims.length);
+		assert.equal(new Set(report.rows.map(row => row.key)).size, defaultClaims.length);
 		assert.match(report.basis, /not a live database inventory or expert review/);
 		assert.match(report.interpretation, /not automatic defects/);
-		assert.equal(Object.values(report.topics).reduce((total, count) => total + count, 0), 1001);
+		assert.equal(Object.values(report.topics).reduce((total, count) => total + count, 0), defaultClaims.length);
 		assert.throws(() => auditClaimCatalog([], Number.NaN));
 	});
 

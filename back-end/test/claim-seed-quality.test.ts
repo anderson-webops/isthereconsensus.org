@@ -10,7 +10,7 @@ import { september2026VisitorDepthClaims } from "../src/data/claim-expansion-202
 import { september2026TrafficClaims } from "../src/data/claim-expansion-2026-09.js";
 import { practicalEvidenceClaims } from "../src/data/claim-expansion-practical-evidence.js";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
 import { Claim } from "../src/models/schemas/Claim.js";
@@ -2518,7 +2518,7 @@ describe("default claim seed quality", () => {
 		};
 
 		assert.equal(september2026AtlasBreadthClaims.length, 70);
-		assert.equal(defaultClaims.length - practicalEvidenceClaims.length - readerExpansionClaims.length, 750, "The pre-comparison baseline remains 750 claims");
+		assert.equal(legacyDefaultClaims.length - practicalEvidenceClaims.length - readerExpansionClaims.length, 750, "The pre-comparison baseline remains 750 claims");
 		assert.ok(defaultTopics.length >= 35, "The directory should retain at least 35 active topics");
 		assert.deepEqual(
 			Object.fromEntries(

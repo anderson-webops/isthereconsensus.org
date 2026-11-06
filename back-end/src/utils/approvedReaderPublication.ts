@@ -99,7 +99,7 @@ export async function validateApprovedReaderRelease(now = new Date()) {
 	};
 }
 
-async function prepareApprovedReaderSeed(seed: typeof readerExpansionClaims[number]) {
+async function prepareApprovedReaderSeed(seed: SeedClaim, releaseId: string) {
 	const key = `${seed.topicSlug}/${seed.slug}`;
 	let journal = await SourcePublication.findOne({ key }).maxTimeMS(5000);
 	if (journal?.state === "published") {
@@ -120,7 +120,7 @@ async function prepareApprovedReaderSeed(seed: typeof readerExpansionClaims[numb
 		journal = await SourcePublication.findOneAndUpdate({ key }, {
 			$setOnInsert: {
 				key,
-				releaseId: APPROVED_READER_RELEASE,
+				releaseId,
 				contentHash,
 				claimId: new mongoose.Types.ObjectId(),
 				sourceIds: seed.sources.map(() => new mongoose.Types.ObjectId()),
@@ -129,7 +129,7 @@ async function prepareApprovedReaderSeed(seed: typeof readerExpansionClaims[numb
 			}
 		}, { upsert: true, returnDocument: "after", runValidators: true }).maxTimeMS(5000);
 	}
-	if (!journal || journal.releaseId !== APPROVED_READER_RELEASE || journal.contentHash !== contentHash || journal.sourceIds.length !== seed.sources.length) {
+	if (!journal || journal.releaseId !== releaseId || journal.contentHash !== contentHash || journal.sourceIds.length !== seed.sources.length) {
 		return { disposition: "conflicts" as const };
 	}
 	const claim = existing ?? await Claim.findOneAndUpdate({ _id: journal.claimId }, { $setOnInsert: fields }, { upsert: true, returnDocument: "after", runValidators: true }).maxTimeMS(5000);
@@ -148,8 +148,8 @@ async function prepareApprovedReaderSeed(seed: typeof readerExpansionClaims[numb
 	return { journal, topic, claim };
 }
 
-async function publishApprovedReaderSeed(seed: typeof readerExpansionClaims[number]) {
-	const prepared = await prepareApprovedReaderSeed(seed);
+export async function publishApprovedSourceClaim(seed: SeedClaim, releaseId = APPROVED_READER_RELEASE) {
+	const prepared = await prepareApprovedReaderSeed(seed, releaseId);
 	if (prepared.disposition !== undefined) return prepared.disposition;
 	const { journal, topic, claim } = prepared;
 	if (claim.status === "draft") {
@@ -190,7 +190,9 @@ async function publishApprovedReaderSeed(seed: typeof readerExpansionClaims[numb
 	await CoverageRequest.findOneAndUpdate({ _id: journal.coverageId }, {
 		$setOnInsert: {
 			title: seed.title,
-			summary: "Selected through the site's coverage audit, not submitted as a reader request. This assistant-screened evidence summary is available now and remains open to human moderation and corrections.",
+			summary: releaseId === APPROVED_READER_RELEASE
+				? "Selected through the site's coverage audit, not submitted as a reader request. This assistant-screened evidence summary is available now and remains open to human moderation and corrections."
+				: claim.editorSummary,
 			status: "published",
 			visibility: "public",
 			topicId: topic!._id,
@@ -228,7 +230,7 @@ export async function publishApprovedReaderContent(signal?: AbortSignal) {
 	for (const seed of readerExpansionClaims) {
 		if (signal?.aborted) break;
 		try {
-			result[await publishApprovedReaderSeed(seed)]++;
+			result[await publishApprovedSourceClaim(seed)]++;
 		}
 		catch {
 			result.failed++;

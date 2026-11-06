@@ -4,7 +4,7 @@ import { getAtlasCollectionMemberships } from "../src/data/atlasCollections.js";
 import { originsCheckedAt, readerOriginsClaims, readerOriginsGaps, readerOriginsSlugs, readerOriginsSources } from "../src/data/claim-expansion-reader-origins.js";
 import { privacyCheckedAt, readerPrivacyClaims } from "../src/data/claim-expansion-reader-privacy.js";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { legacyDefaultClaims as defaultClaims } from "../src/data/claims.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
 describe("human-origins reader expansion", () => {

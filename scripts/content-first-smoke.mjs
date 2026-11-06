@@ -9,6 +9,7 @@ import { join, resolve } from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import mongoose from "mongoose";
+import { catalogExpansionClaims, catalogExpansionReleases } from "../back-end/dist/data/catalogExpansion.js";
 import { readerExpansionClaims } from "../back-end/dist/data/claim-expansion-reader.js";
 import { seedClaims } from "../back-end/dist/data/seedClaims.js";
 import { seedTopics } from "../back-end/dist/data/seedTopics.js";
@@ -24,6 +25,11 @@ const directory = mkdtempSync(join(tmpdir(), "consensus-content-first-"));
 const databaseName = `content_first_${randomUUID().replaceAll("-", "")}`;
 const children = new Set();
 const logs = new Map();
+const publicationClaims = [
+	...readerExpansionClaims,
+	...catalogExpansionClaims
+];
+const publishedTotal = 800 + publicationClaims.length;
 let backend;
 let owned = false;
 async function port() {
@@ -110,10 +116,10 @@ try {
 	await seedClaims();
 	const expansion = await Claim.find({
 		slug: {
-			$in: readerExpansionClaims.map(seed => seed.slug)
+			$in: publicationClaims.map(seed => seed.slug)
 		}
 	});
-	assert.equal(expansion.length, 201);
+	assert.equal(expansion.length, publicationClaims.length);
 	await ClaimSource.deleteMany({
 		claim: {
 			$in: expansion.map(claim => claim._id)
@@ -181,16 +187,19 @@ try {
 			}
 		}, backend);
 		await wait(() => logs.get(backend).includes("Approved assistant-screened content release:"), backend);
+		await wait(() => logs.get(backend).includes("Self-reviewed catalog expansion:"), backend);
 	}
 	await boot();
-	assert.equal(await Claim.countDocuments({ status: "published" }), 1001, logs.get(backend));
-	assert.equal(await SourcePublication.countDocuments({ state: "published" }), 201);
-	assert.equal(await CoverageRequest.countDocuments({ visibility: "public", status: "published" }), 201);
+	assert.equal(await Claim.countDocuments({ status: "published" }), publishedTotal, logs.get(backend));
+	assert.equal(await SourcePublication.countDocuments({ state: "published", releaseId: APPROVED_READER_RELEASE }), 201);
+	for (const release of catalogExpansionReleases) assert.equal(await SourcePublication.countDocuments({ state: "published", releaseId: release.id }), release.claims.length);
+	assert.equal(await SourcePublication.countDocuments({ state: "published" }), publicationClaims.length);
+	assert.equal(await CoverageRequest.countDocuments({ visibility: "public", status: "published" }), publicationClaims.length);
 	assert.deepEqual(await Claim.findById(baseline._id).lean(), baselineBefore);
 	assert.deepEqual(await privateCollection.findOne({ _id: privateId }), privateBefore);
 	assert.equal((await Claim.findById(partial._id)).status, "published");
 	const identities = await SourcePublication.find().sort({ key: 1 }).lean();
-	for (const definition of readerExpansionClaims) {
+	for (const definition of publicationClaims) {
 		const response = await fetch(`${base}/api/topics/${definition.topicSlug}/claims/${definition.slug}`, {
 			redirect: "error",
 			signal: AbortSignal.timeout(10000)
@@ -203,6 +212,7 @@ try {
 		delete expected.surveillanceSpec;
 		assert.equal(approvedReaderContentMatches({ ...claim, topic: claim.topic._id }, expected), true, definition.slug);
 		assert.equal(claim.sources.length, definition.sources.length);
+		if (catalogExpansionClaims.includes(definition)) assert.equal((await CoverageRequest.findOne({ claimId: claim._id })).summary, claim.editorSummary);
 		for (const [index, source] of definition.sources.entries()) assert.equal(approvedReaderContentMatches(claim.sources[index], source), true, `${definition.slug}: citation ${index + 1}`);
 		assert.equal(JSON.stringify(claim).includes("Must not enter public content"), false);
 		assert.match(claim.reviewerLine, /independent expert review not completed/u);
@@ -238,19 +248,35 @@ try {
 		$set: { visibility: "withdrawn" }
 	});
 	const moderatedBefore = await Claim.findById(partial._id).lean();
-	const foreign = identities.find(row => !row.claimId.equals(partial._id));
+	const foreign = identities.find(row => row.releaseId === APPROVED_READER_RELEASE && !row.claimId.equals(partial._id));
 	await SourcePublication.deleteOne({ _id: foreign._id });
 	await Claim.updateOne({ _id: foreign.claimId }, {
 		$set: { status: "draft", bottomLine: "Human-controlled unpublished draft." }
 	});
 	const foreignBefore = await Claim.findById(foreign.claimId).lean();
+	const addition = identities.find(row => row.releaseId === catalogExpansionReleases[0].id);
+	await Claim.updateOne({ _id: addition.claimId }, {
+		$set: { status: "archived", bottomLine: "New review withdrawn by human moderation." }
+	});
+	await CoverageRequest.updateOne({ _id: addition.coverageId }, {
+		$set: { visibility: "withdrawn" }
+	});
+	const additionBefore = await Claim.findById(addition.claimId).lean();
+	const foreignAddition = identities.find(row => row.releaseId === catalogExpansionReleases[0].id && !row._id.equals(addition._id));
+	await SourcePublication.deleteOne({ _id: foreignAddition._id });
+	await Claim.updateOne({ _id: foreignAddition.claimId }, {
+		$set: { status: "draft", bottomLine: "Human-controlled new unpublished draft." }
+	});
+	const foreignAdditionBefore = await Claim.findById(foreignAddition.claimId).lean();
 	await boot();
 	assert.deepEqual(await Claim.findById(partial._id).lean(), moderatedBefore);
 	assert.deepEqual(await Claim.findById(foreign.claimId).lean(), foreignBefore);
-	assert.equal(await SourcePublication.countDocuments(), 200);
-	assert.equal(await CoverageRequest.countDocuments({ visibility: "public" }), 200);
+	assert.deepEqual(await Claim.findById(addition.claimId).lean(), additionBefore);
+	assert.deepEqual(await Claim.findById(foreignAddition.claimId).lean(), foreignAdditionBefore);
+	assert.equal(await SourcePublication.countDocuments(), publicationClaims.length - 2);
+	assert.equal(await CoverageRequest.countDocuments({ visibility: "public" }), publicationClaims.length - 2);
 	assert.deepEqual(await privateCollection.findOne({ _id: privateId }), privateBefore);
-	console.log("content-first smoke ok: production startup publishes all 201 exact reviews, resumes owned partials, preserves 461 citation identities and human withdrawals, and keeps private state unchanged");
+	console.log(`content-first smoke ok: production startup publishes all ${publicationClaims.length} exact reviews, resumes owned partials, preserves citation identities and human withdrawals in both cohorts, and keeps private state unchanged`);
 }
 finally {
 	await stop(backend);
