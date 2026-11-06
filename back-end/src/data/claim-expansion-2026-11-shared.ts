@@ -47,6 +47,7 @@ interface ReviewedEntry {
 	editorSummary: string;
 	population: string;
 	scope: string;
+	excludedEvidence?: string[];
 	uncertainty: string;
 	sources: SeedClaim["sources"];
 	band?: ClaimConsensusBand;
@@ -64,11 +65,15 @@ export function reviewedEntry(entry: ReviewedEntry, checkedAt = novemberResearch
 		consensusBand: band,
 		agreementLevel: band === "mixed"
 			? "divided"
-			: "broad_qualified",
+			: band === "unclear"
+				? "frontier"
+				: "broad_qualified",
 		evidenceCertainty: certainty,
 		confidenceScore: band === "mixed"
 			? 58
-			: 76,
+			: band === "unclear"
+				? 35
+				: 76,
 		reviewMode: "living",
 		bottomLine: entry.bottomLine,
 		stableCore: entry.stableCore,
@@ -84,7 +89,7 @@ export function reviewedEntry(entry: ReviewedEntry, checkedAt = novemberResearch
 		searchDatabases: ["Consensus.app targeted paper search", "Publisher and institutional article records"],
 		searchCutoffAt: checkedAt,
 		inclusionRules: [entry.scope, `Population and setting: ${entry.population}`],
-		exclusionRules: ["Do not interpret average group differences as guaranteed individual results or as a measured percentage of expert agreement."],
+		exclusionRules: entry.excludedEvidence ?? ["Do not interpret average group differences as guaranteed individual results or as a measured percentage of expert agreement."],
 		appraisalTools: ["Source-design and scope screening, with Crossref registered-update checks for cited DOIs; no formal GRADE assessment or comprehensive systematic search completed"],
 		evidenceSummaries: [
 			{
@@ -93,7 +98,9 @@ export function reviewedEntry(entry: ReviewedEntry, checkedAt = novemberResearch
 				finding: entry.bottomLine,
 				effectDirection: band === "mixed"
 					? "mixed"
-					: "supports",
+					: band === "unclear"
+						? "unclear"
+						: "supports",
 				certainty,
 				limitations: [entry.uncertainty]
 			}

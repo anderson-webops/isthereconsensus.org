@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberResearchCheckedAt } from "../src/data/claim-expansion-2026-11-shared.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
@@ -16,13 +17,14 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(legacyDefaultClaims.length, 1001);
 		assert.equal(novemberLearningClaims.length, 8);
 		assert.equal(novemberUrbanClaims.length, 10);
-		assert.equal(catalogExpansionClaims.length, 18);
-		assert.equal(defaultClaims.length, 1019);
+		assert.equal(novemberLearningHabitsWorkClaims.length, 24);
+		assert.equal(catalogExpansionClaims.length, 42);
+		assert.equal(defaultClaims.length, 1043);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 18,
-			citations: 45,
-			catalog: 1019,
+			entries: 42,
+			citations: 95,
+			catalog: 1043,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
@@ -39,6 +41,50 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 			assert.equal(claim.searchCutoffAt, novemberUrbanResearchCheckedAt);
 		}
 		assert.notEqual(novemberUrbanResearchCheckedAt, novemberResearchCheckedAt);
+	});
+	it("seals the learning, habits and work cohort with its own source-check date", () => {
+		assert.equal(readerExpansionValueHash(novemberLearningHabitsWorkClaims), "f420839700734714998cb591385fc97ddc6c8e02f4f24805722a9724ee889130");
+		assert.notEqual(novemberLearningHabitsWorkResearchCheckedAt, novemberResearchCheckedAt);
+		assert.notEqual(novemberLearningHabitsWorkResearchCheckedAt, novemberUrbanResearchCheckedAt);
+		const topicCounts = new Map<string, number>();
+		for (const claim of novemberLearningHabitsWorkClaims) {
+			assert.equal(claim.searchCutoffAt, novemberLearningHabitsWorkResearchCheckedAt);
+			topicCounts.set(claim.topicSlug, (topicCounts.get(claim.topicSlug) ?? 0) + 1);
+		}
+		assert.equal(topicCounts.get("education-and-learning"), 13);
+		assert.equal(topicCounts.get("neuroscience-and-psychology"), 7);
+		assert.equal(topicCounts.get("economics-and-social-policy"), 4);
+		const citations = novemberLearningHabitsWorkClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 50);
+		assert.equal(new Set(citations.map(source => source.doi)).size, 50);
+		assert.equal(new Set(novemberLearningHabitsWorkClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 24);
+		assert.ok(novemberLearningHabitsWorkClaims.every(claim => claim.exclusionRules?.length === 1 && !claim.exclusionRules[0].includes("percentage of expert agreement")));
+		assert.equal(citations.find(source => source.doi === "10.1037/0033-2909.125.6.627")?.year, 1999);
+		assert.equal(citations.find(source => source.doi === "10.1007/bf03392017")?.year, 2001);
+		assert.ok(citations.some(source => source.doi === "10.1037/tmb0000123"));
+		assert.equal(citations.some(source => source.doi?.endsWith(".supp")), false);
+		assert.equal(citations.some(source => source.doi?.startsWith("10.2139/ssrn")), false);
+	});
+	it("preserves conflicting findings and distinguishes uncertain training effects from agreement", () => {
+		for (const slug of [
+			"does-background-music-help-people-study",
+			"does-a-nearby-unused-smartphone-impair-thinking",
+			"does-faster-video-playback-affect-learning",
+			"how-do-rewards-affect-intrinsic-motivation",
+			"how-does-hybrid-work-affect-employee-performance"
+		]) {
+			const claim = novemberLearningHabitsWorkClaims.find(entry => entry.slug === slug)!;
+			assert.equal(claim.consensusBand, "mixed");
+			assert.equal(claim.agreementLevel, "divided");
+			assert.equal(claim.evidenceSummaries![0].effectDirection, "mixed");
+			assert.ok(claim.sources.some(source => source.stance === "debate"));
+		}
+		const training = novemberLearningHabitsWorkClaims.find(claim => claim.slug === "does-time-management-training-improve-employee-wellbeing")!;
+		assert.equal(training.consensusBand, "unclear");
+		assert.equal(training.agreementLevel, "frontier");
+		assert.equal(training.evidenceCertainty, "low");
+		assert.equal(training.evidenceSummaries![0].effectDirection, "unclear");
+		assert.ok(training.confidenceScore < 50);
 	});
 	it("records scoped evidence and honest review provenance on every new article", () => {
 		for (const claim of catalogExpansionClaims) {

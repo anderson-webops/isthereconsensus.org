@@ -41,7 +41,42 @@ embedded in its DOI. The pedestrian-comfort review preserves the disagreement
 between field results; stormwater reviews distinguish concentrations from total
 pollutant loads and site retention from neighborhood flood protection.
 
-## Self-review record
+## Learning, habits and work cohort
+
+`catalog-1501-learning-habits-work-2026-11-06` adds 24 reviews and 50 distinct
+DOI-linked sources. This brings the source catalog to 1,043 reviews, leaving
+458 further reviews to reach the objective. Public availability is measured
+separately.
+
+Thirteen education reviews cover feedback, paper and screen reading, listening
+and reading comprehension, highlighting, background music, media multitasking,
+instructional video, captions, playback speed, project-based learning,
+cooperative learning, preparing to teach and drawing to learn.
+
+Seven psychology reviews cover unused smartphone presence, reward conditions,
+goal setting, if-then planning, progress monitoring, habit formation and
+gratitude exercises. Four work reviews cover micro-breaks, hybrid work,
+reduced working hours and time-management training.
+
+The cohort includes eight mixed-evidence answers and one unclear answer.
+The training review distinguishes association from intervention efficacy;
+its agreement and evidence-direction fields remain uncertain. The music,
+phone-presence, playback, reward and hybrid-work reviews retain conflicting
+findings. Workplace studies preserve their country, job, schedule and
+non-randomized-design limits. Breaks distinguish fatigue from output, and
+reduced-hours studies distinguish retained pay from compressed schedules.
+Each review records its own scope exclusions, rather than presenting a shared
+inference warning as an article-specific evidence-selection rule.
+
+All 50 selected DOIs have Crossref metadata and registered-update checks as of
+November 6, 2026, with no registered updates returned. Citation years use the
+journal version where available, including the 1999 reward review rather than
+its discovery record's later year. The phone-presence citation uses the primary
+article DOI rather than its supplemental-material DOI. An identified SSRN
+preprint is excluded. Source notes distinguish syntheses, individual trials,
+observational studies and methodological critiques.
+
+## Learning cohort self-review
 
 The cohort was screened for overlap with existing questions. Research discovery
 used Consensus, followed by fetched paper records and publisher or institutional
@@ -74,7 +109,7 @@ identity. Replays preserve published rows, human withdrawals, unowned drafts,
 source identities and private state. Failed validation leaves existing services
 available. Publication and review dates retain their separate meanings.
 
-The isolated production-startup rehearsal covers all 219 new and previously
+The isolated production-startup rehearsal covers all 243 new and previously
 approved reviews, exact public article and citation payloads, restart stability,
 and human moderation across cohorts. The end goal remains open until the live
 catalog contains 1,501 distinct self-reviewed canonical reviews.
