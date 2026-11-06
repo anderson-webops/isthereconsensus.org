@@ -10,20 +10,27 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 import puppeteer from "puppeteer";
+import { catalogExpansionClaims } from "../back-end/src/data/catalogExpansion.ts";
 import { defaultClaims } from "../back-end/src/data/claims.ts";
 import { defaultTopics } from "../back-end/src/data/topics.ts";
+import { validateCatalogExpansion } from "../back-end/src/utils/catalogExpansionPublication.ts";
 import { createClaimSearchIndex } from "../back-end/src/utils/claimSearch.ts";
 import { readingGuides } from "../front-end/src/data/reading-guides/index.ts";
 import { loadReadingGuide } from "../front-end/src/data/reading-guides/load.ts";
 import { checkComparisons } from "./lib/check-comparisons.mjs";
 import { checkReviewStatus } from "./lib/check-review-status.mjs";
 
+await validateCatalogExpansion();
+const reviewedExpansionKeys = new Set(catalogExpansionClaims.map(claim => `${claim.topicSlug}/${claim.slug}`));
+const publishedFixtureClaims = defaultClaims
+	.filter(claim => claim.status === "published" || reviewedExpansionKeys.has(`${claim.topicSlug}/${claim.slug}`))
+	.map(claim => ({ ...claim, status: "published" }));
 const topics = defaultTopics.map((topic) => ({
 	...topic,
 	_id: topic.slug,
-	claimCount: defaultClaims.filter((claim) => claim.topicSlug === topic.slug).length
+	claimCount: publishedFixtureClaims.filter((claim) => claim.topicSlug === topic.slug).length
 }));
-const catalog = defaultClaims.map((claim) => ({
+const catalog = publishedFixtureClaims.map((claim) => ({
 	...claim,
 	_id: claim.slug,
 	topic: topics.find((topic) => topic.slug === claim.topicSlug)
@@ -646,6 +653,14 @@ try {
 			path: resolve(process.env.SEARCH_SMOKE_SCREENSHOT_DIR, "search-mobile.png"),
 			fullPage: true
 		});
+	await page.setViewport({ width: 1280, height: 900 });
+	for (const claim of catalogExpansionClaims) {
+		await open(`/consensus/${claim.topicSlug}/${claim.slug}`);
+		assert.equal(await page.$eval("h1", element => element.textContent), claim.title);
+		const renderedAnswer = await page.$$eval(".bottom-line__text--lead, .bottom-line__context", paragraphs => paragraphs.map(paragraph => paragraph.textContent.trim()).join(" "));
+		assert.equal(renderedAnswer, claim.bottomLine, claim.slug);
+	}
+	console.log(`PASS all ${catalogExpansionClaims.length} self-reviewed expansion pages render their complete answers`);
 	// Stop navigation/prefetch before checking the intercepted requests. Keep
 	// the fixture alive until every handler settles, including delayed responses.
 	delays.set("cleanup-probe", 500);
