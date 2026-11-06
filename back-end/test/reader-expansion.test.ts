@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { getAtlasCollectionMemberships } from "../src/data/atlasCollections.js";
 import { readerPrivacyClaims, readerPrivacySlugs, readerPrivacySources } from "../src/data/claim-expansion-reader-privacy.js";
 import { readerExpansionClaims, readerExpansionGaps } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { legacyDefaultClaims as defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate, seedReviewDates } from "../src/data/seedClaims.js";
 import { Claim } from "../src/models/schemas/Claim.js";
 import { ClaimSource } from "../src/models/schemas/ClaimSource.js";

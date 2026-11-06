@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { practicalEvidenceClaims, practicalEvidenceGaps } from "../src/data/claim-expansion-practical-evidence.js";
 import { strengthPracticalClaims } from "../src/data/claim-expansion-practical-strength.js";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { legacyDefaultClaims as defaultClaims } from "../src/data/claims.js";
 import { buildSeedClaimUpdate } from "../src/data/seedClaims.js";
 import { defaultTopics } from "../src/data/topics.js";
 import { Claim } from "../src/models/schemas/Claim.js";

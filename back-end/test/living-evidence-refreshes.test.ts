@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { legacyDefaultClaims as defaultClaims } from "../src/data/claims.js";
 import { seedReviewDates } from "../src/data/seedClaims.js";
 import { seedReaderAnnouncementSchema } from "../src/utils/seedReaderAnnouncement.js";
 

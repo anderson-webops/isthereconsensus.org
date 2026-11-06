@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import mongoose from "mongoose";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
 import { CLAIM_NARRATIVE_FIELDS } from "../src/utils/claimNarratives.js";
 import { createReaderExpansionSourceProposal, readerExpansionValueHash } from "../src/utils/readerExpansionProposal.js";
 
@@ -19,8 +19,8 @@ describe("read-only complete reader expansion proposal", () => {
 		const proposal = build();
 		assert.equal(proposal.proposalClaimCount, 201);
 		assert.equal(proposal.proposalCitationCount, 461);
-		assert.equal(proposal.sourceCatalogCount, 1001);
-		assert.equal(proposal.sourceBaselineCount, 800);
+		assert.equal(proposal.sourceCatalogCount, defaultClaims.length);
+		assert.equal(proposal.sourceBaselineCount, defaultClaims.length - readerExpansionClaims.length);
 		assert.equal(proposal.publicAcceptanceMinimum, 1001);
 		assert.equal(proposal.longNarrativeItems, 277);
 		assert.equal(proposal.isPublicationReceipt, false);
@@ -128,7 +128,8 @@ describe("read-only complete reader expansion proposal", () => {
 
 	it("rejects incomplete, duplicated, absent or divergent source cohorts", () => {
 		assert.throws(() => build(readerExpansionClaims.slice(1)));
-		assert.throws(() => build(readerExpansionClaims, defaultClaims.slice(1)));
+		assert.throws(() => build(readerExpansionClaims, legacyDefaultClaims.slice(1)));
+		assert.throws(() => build(readerExpansionClaims, defaultClaims.filter(claim => claim.slug !== readerExpansionClaims[0].slug || claim.topicSlug !== readerExpansionClaims[0].topicSlug)));
 		const duplicate = structuredClone(readerExpansionClaims);
 		duplicate[0] = duplicate[1];
 		assert.throws(() => build(duplicate));

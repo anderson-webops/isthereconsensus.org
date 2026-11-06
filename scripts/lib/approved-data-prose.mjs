@@ -32,7 +32,7 @@ export const approvedScientificDataSha256 = Object.freeze({
 	"back-end/src/data/claim-expansion-2026-08-science-communication.ts": "ea09c5ddec94c8bdbe650ddeabe89e1b3643a2be7354163468177984e295801a",
 	"back-end/src/data/claim-expansion-2026-08-sleep-final.ts": "81bae07164767b19c4f7223dca5d1ad44ec79a26a89349b6dda9da2dbdcf1505",
 	"back-end/src/data/claim-expansion-2026-08-sleep.ts": "788f06c43659196d020b2a6eab278c7cdd886cfc2f59c4fecc72b6ec3159ea89",
-	"back-end/src/data/claims.ts": "1085bfba564eb6054ee7404a35256971023df107ac56ba14b490fca54b67e194"
+	"back-end/src/data/claims.ts": "e09081d6a2a84e7b6654d6463165d35fc80bd4dc6bef1753de75c9cd4e3737ff"
 });
 
 export function preserveApprovedScientificProse(rule) {

@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { getAtlasCollectionMemberships } from "../src/data/atlasCollections.js";
 import { readerWeatherClaims, readerWeatherGaps, readerWeatherSlugs, readerWeatherSources, weatherCheckedAt } from "../src/data/claim-expansion-reader-weather.js";
 import { readerExpansionClaims } from "../src/data/claim-expansion-reader.js";
-import { defaultClaims } from "../src/data/claims.js";
+import { legacyDefaultClaims as defaultClaims } from "../src/data/claims.js";
 import { ClaimSource } from "../src/models/schemas/ClaimSource.js";
 import { createClaimSearchIndex } from "../src/utils/claimSearch.js";
 
