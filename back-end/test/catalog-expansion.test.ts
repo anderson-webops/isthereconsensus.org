@@ -4,6 +4,7 @@ import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } 
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberResearchCheckedAt } from "../src/data/claim-expansion-2026-11-shared.js";
+import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
 import { SourcePublication } from "../src/models/schemas/SourcePublication.js";
@@ -18,13 +19,14 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLearningClaims.length, 8);
 		assert.equal(novemberUrbanClaims.length, 10);
 		assert.equal(novemberLearningHabitsWorkClaims.length, 24);
-		assert.equal(catalogExpansionClaims.length, 42);
-		assert.equal(defaultClaims.length, 1043);
+		assert.equal(novemberTransportHousingClaims.length, 18);
+		assert.equal(catalogExpansionClaims.length, 60);
+		assert.equal(defaultClaims.length, 1061);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 42,
-			citations: 95,
-			catalog: 1043,
+			entries: 60,
+			citations: 135,
+			catalog: 1061,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
@@ -86,6 +88,34 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(training.evidenceSummaries![0].effectDirection, "unclear");
 		assert.ok(training.confidenceScore < 50);
 	});
+	it("seals the distinct transport and housing cohort without changing earlier releases", () => {
+		assert.equal(readerExpansionValueHash(novemberTransportHousingClaims), "248067ebe457b26784ea1cf3102aba60f43faf383cbd5dc65bd462cfcadcaaa6");
+		assert.notEqual(novemberTransportHousingResearchCheckedAt, novemberLearningHabitsWorkResearchCheckedAt);
+		const citations = novemberTransportHousingClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 40);
+		assert.equal(new Set(citations.map(source => source.doi)).size, 40);
+		assert.equal(new Set(novemberTransportHousingClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 18);
+		assert.ok(novemberTransportHousingClaims.every(claim => claim.searchCutoffAt === novemberTransportHousingResearchCheckedAt));
+		assert.equal(novemberTransportHousingClaims.filter(claim => claim.consensusBand === "mixed").length, 5);
+		assert.equal(citations.some(source => source.doi?.startsWith("10.48550/arxiv")), false);
+		assert.equal(citations.find(source => source.doi === "10.1016/j.jue.2021.103356")?.year, 2021);
+		assert.equal(citations.find(source => source.doi === "10.1177/0739456x21990728")?.year, 2024);
+		assert.equal(citations.find(source => source.doi === "10.1080/01944363.2025.2563532")?.year, 2026);
+		assert.equal(citations.find(source => source.doi === "10.1016/j.cstp.2023.101124")?.year, 2024);
+		assert.equal(citations.find(source => source.doi === "10.1016/j.cstp.2024.101340")?.year, 2025);
+	});
+	it("retains the Tallinn erratum and avoids treating hypothetical travel choices as observed effects", () => {
+		const fare = novemberTransportHousingClaims.find(claim => claim.slug === "does-fare-free-public-transport-reduce-car-use")!;
+		const corrected = fare.sources.find(source => source.doi === "10.1007/s11116-016-9695-5")!;
+		assert.equal(corrected.citationStatus, "corrected");
+		assert.ok(corrected.statusSources?.includes("https://doi.org/10.1007/s11116-017-9785-z"));
+		assert.match(corrected.note!, /Table 2/u);
+		assert.equal(fare.consensusBand, "mixed");
+		const cashout = novemberTransportHousingClaims.find(claim => claim.slug === "does-cashing-out-workplace-parking-reduce-solo-driving")!;
+		assert.equal(cashout.evidenceCertainty, "low");
+		assert.match(cashout.sources.find(source => source.doi === "10.1016/j.tra.2018.04.025")!.note!, /stated-choice.*hypothetical/u);
+		assert.match(cashout.stableCore.join(" "), /not measured behavior/u);
+	});
 	it("records scoped evidence and honest review provenance on every new article", () => {
 		for (const claim of catalogExpansionClaims) {
 			assert.equal(claim.status, "draft");
@@ -100,6 +130,14 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 			assert.equal(new Set(claim.sources.map(source => source.doi || source.url)).size, claim.sources.length);
 		}
 		assert.ok(catalogExpansionClaims.some(claim => claim.consensusBand === "mixed"));
+	});
+	it("keeps numerical travel and housing findings tied to their actual comparisons", () => {
+		const core = (slug: string) => novemberTransportHousingClaims.find(claim => claim.slug === slug)!.stableCore.join(" ");
+		assert.match(core("do-electric-bikes-replace-car-trips"), /controlled comparisons.*2\.4 fewer car kilometers.*follow-up/u);
+		assert.match(core("do-short-term-rentals-raise-local-housing-rents"), /Barcelona.*1\.9%.*average neighborhood/u);
+		assert.match(core("do-more-walkable-neighborhoods-encourage-walking"), /25th.*75th.*1,100.*three months/u);
+		assert.match(core("does-cashing-out-workplace-parking-reduce-solo-driving"), /1,694.*17%.*relative change/u);
+		assert.match(core("how-do-low-emission-zones-affect-urban-air-pollution"), /2019 ULEZ.*less than 3%.*no clear overall effect/u);
 	});
 	it("keeps the publication target separate from source inventory and moderation headroom", async () => {
 		const originalLength = defaultClaims.length;

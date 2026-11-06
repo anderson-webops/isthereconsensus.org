@@ -76,6 +76,45 @@ article DOI rather than its supplemental-material DOI. An identified SSRN
 preprint is excluded. Source notes distinguish syntheses, individual trials,
 observational studies and methodological critiques.
 
+## Transport and housing cohort
+
+`catalog-1501-transport-housing-2026-11-06` adds 18 reviews and 40 distinct
+DOI-linked citations. The source catalog now contains 1,061 reviews, leaving
+440 further source entries to reach the objective. Public availability is
+measured separately.
+
+Twelve transport reviews cover posted speed limits, separated cycling lanes,
+cycling uptake, fare-free travel, e-bikes, urban rail, bus frequency, remote-work
+travel, compact neighborhoods, walkability, parking cash-out and boundary-road
+traffic. Five housing reviews cover parking requirements, upzoning, California
+accessory dwellings, short-term rentals and inclusionary zoning. One additional
+environment review covers low-emission zones and air pollutants.
+
+The cohort preserves five mixed-evidence answers. All 40 cited DOIs have
+canonical metadata and registered-update checks as of November 6. The Tallinn
+fare-free source has a registered erratum to its modal-split table; its corrected
+status and notice URL remain part of the citation. The other 39 selected papers
+returned no registered update. An Alexandria arXiv record is excluded as a
+peer-reviewed anchor. A current 2026 transport review supplements local fare-free
+studies and is identified as a broad synthesis including grey literature.
+
+Self-review keeps facility use distinct from new cycling, transit ridership
+from avoided car journeys, commute savings from total travel, and driving trip
+counts from distance. Hypothetical cash-out preferences are distinguished from
+observed commutes. Housing capacity, permits, completed homes and affordability
+are separate outcomes. Local and pandemic-era estimates retain their scope.
+Selected numerical findings retain their actual comparisons: e-bike groups at
+follow-up, Barcelona neighborhood rents, U.S. city-to-city relocations, a
+relative change in California solo commuters and the initial 2019 central-London
+ULEZ. They are not expert-agreement percentages or universal effect sizes.
+
+Citation years use the journal version where available, including the 2021 Los
+Angeles short-term rental article, 2024 Portland and boundary-road studies, 2025
+low-emission-zone review and 2026 California densification comparison. Discovery
+key takeaways are checked against fetched abstracts and primary records rather
+than adopted as conclusions. Each article has its own scope exclusions, and
+the earlier published cohort seals remain unchanged.
+
 ## Learning cohort self-review
 
 The cohort was screened for overlap with existing questions. Research discovery
@@ -109,7 +148,7 @@ identity. Replays preserve published rows, human withdrawals, unowned drafts,
 source identities and private state. Failed validation leaves existing services
 available. Publication and review dates retain their separate meanings.
 
-The isolated production-startup rehearsal covers all 243 new and previously
+The isolated production-startup rehearsal covers all 261 new and previously
 approved reviews, exact public article and citation payloads, restart stability,
 and human moderation across cohorts. The end goal remains open until the live
 catalog contains 1,501 distinct self-reviewed canonical reviews.

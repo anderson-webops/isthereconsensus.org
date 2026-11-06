@@ -1,5 +1,6 @@
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
+import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
 
 export const CATALOG_ENTRY_GOAL = 1501;
@@ -18,6 +19,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-learning-habits-work-2026-11-06",
 		claims: novemberLearningHabitsWorkClaims,
 		dataSha256: "f420839700734714998cb591385fc97ddc6c8e02f4f24805722a9724ee889130"
+	},
+	{
+		id: "catalog-1501-transport-housing-2026-11-06",
+		claims: novemberTransportHousingClaims,
+		dataSha256: "248067ebe457b26784ea1cf3102aba60f43faf383cbd5dc65bd462cfcadcaaa6"
 	}
 ];
 
