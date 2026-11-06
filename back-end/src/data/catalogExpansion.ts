@@ -23,7 +23,7 @@ export const catalogExpansionReleases = [
 	{
 		id: "catalog-1501-transport-housing-2026-11-06",
 		claims: novemberTransportHousingClaims,
-		dataSha256: "248067ebe457b26784ea1cf3102aba60f43faf383cbd5dc65bd462cfcadcaaa6"
+		dataSha256: "416a2f3253e2fa38b0dc905571142433c9bffb2473a0037f9725be186ec121bd"
 	}
 ];
 

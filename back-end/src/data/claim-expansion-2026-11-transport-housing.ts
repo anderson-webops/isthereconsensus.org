@@ -143,7 +143,7 @@ export const novemberTransportHousingClaims = [
 		stableCore: ["A review of rail-opening studies finds higher rail use and some substitution from other modes, including cars.", "Households near the Los Angeles Expo Line reduced driving relative to comparison households farther away, but proximity was not randomly assigned."],
 		openQuestions: ["How much does a new line change total citywide driving rather than travel among nearby households?", "How do frequency, station access, connected buses and surrounding housing affect car substitution?"],
 		whatWouldChangeMinds: ["Comparable projects with strong control groups consistently finding no reduction in car distance.", "Longer-term evaluations combining household travel, road counts and changes in residential location."],
-		misconceptions: ["Every extra rail boarding is not an avoided car trip."],
+		misconceptions: ["New rail passengers can include former bus riders as well as former drivers."],
 		editorSummary: "Useful rail access can change household travel; citywide driving reductions require separate measurement.",
 		population: "Urban rail natural experiments, including households around the Los Angeles Expo Line",
 		scope: "New urban rail service and changes in car mode share or driving distance, distinguishing local and citywide effects.",

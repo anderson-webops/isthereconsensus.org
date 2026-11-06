@@ -89,7 +89,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.ok(training.confidenceScore < 50);
 	});
 	it("seals the distinct transport and housing cohort without changing earlier releases", () => {
-		assert.equal(readerExpansionValueHash(novemberTransportHousingClaims), "248067ebe457b26784ea1cf3102aba60f43faf383cbd5dc65bd462cfcadcaaa6");
+		assert.equal(readerExpansionValueHash(novemberTransportHousingClaims), "416a2f3253e2fa38b0dc905571142433c9bffb2473a0037f9725be186ec121bd");
 		assert.notEqual(novemberTransportHousingResearchCheckedAt, novemberLearningHabitsWorkResearchCheckedAt);
 		const citations = novemberTransportHousingClaims.flatMap(claim => claim.sources);
 		assert.equal(citations.length, 40);
@@ -138,6 +138,8 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(core("do-more-walkable-neighborhoods-encourage-walking"), /25th.*75th.*1,100.*three months/u);
 		assert.match(core("does-cashing-out-workplace-parking-reduce-solo-driving"), /1,694.*17%.*relative change/u);
 		assert.match(core("how-do-low-emission-zones-affect-urban-air-pollution"), /2019 ULEZ.*less than 3%.*no clear overall effect/u);
+		const rail = novemberTransportHousingClaims.find(claim => claim.slug === "does-opening-urban-rail-reduce-driving")!;
+		assert.match(rail.misconceptions.join(" "), /can include former bus riders as well as former drivers/u);
 	});
 	it("keeps the publication target separate from source inventory and moderation headroom", async () => {
 		const originalLength = defaultClaims.length;
