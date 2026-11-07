@@ -362,6 +362,37 @@ beekeeping associations do not become universal causal claims. Independent
 expert review, comprehensive systematic searching and formal GRADE are not
 claimed.
 
+## River and landscape restoration cohort
+
+`catalog-1501-river-landscape-2026-11-07` adds eight distinct reviews and
+24 DOI-linked citations. The source catalog reaches 1,173 definitions, leaving
+328 further source entries toward the unchanged 1,501-public-review objective.
+Four answers retain mixed evidence. Public availability is verified separately.
+
+The reviews cover beaver dams, dam removal, artificial reefs, hedgerows,
+rewilding, riparian buffers, native vegetation after invasive-plant control,
+and coral restoration. Existing wetland, corridor, farming, fisheries,
+eutrophication and coral-warming questions retain their separate scopes.
+
+Research includes eight actual Consensus searches, 24 fetched records and
+24 canonical metadata/update observations. Nine complete publisher, institutional
+or PubMed abstracts supplement incomplete discovery records. The coral analysis
+retains its inspected 2025 open-access licensing correction and notice;
+the notice does not report a scientific-result correction. The historical
+artificial-reef DOI and its provenance links use ordinary canonical URL encoding,
+with existing URL validators unchanged.
+
+Self-review keeps local flow attenuation distinct from property protection,
+fish access from complete population recovery, local reef density from additional
+regional production, and plant control from returning native communities.
+Rewilding's measured carbon and species trade-offs, negative hedgerow responses
+among specialists, buffer bypass and plot-scale limits remain explicit.
+The revegetation synthesis compares against removal-only plots, not unmanaged
+sites. Coral carbonate-budget gains, full ecosystem recovery and future
+bleaching risk remain separate. Related observations and syntheses can overlap.
+Independent expert review, comprehensive systematic searching and formal GRADE
+assessment are not claimed.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed

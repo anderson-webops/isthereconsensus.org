@@ -6,6 +6,7 @@ import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-househo
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
+import { novemberRiverLandscapeClaims } from "./claim-expansion-2026-11-river-landscape.js";
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
@@ -72,6 +73,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-ecology-conservation-2026-11-07",
 		claims: novemberEcologyConservationClaims,
 		dataSha256: "b5439504065657568da318099a3cd4bd1bb96fcbda896f86d54cc171675c87f4"
+	},
+	{
+		id: "catalog-1501-river-landscape-2026-11-07",
+		claims: novemberRiverLandscapeClaims,
+		dataSha256: "aa45716f29f50b9ba3d61d3a4a740bb8024c73bd6a274fbf4e632437cbc9bd19"
 	}
 ];
 

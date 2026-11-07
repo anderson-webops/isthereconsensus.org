@@ -9,6 +9,7 @@ import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberRecoveryPreventionClaims, novemberRecoveryPreventionResearchCheckedAt } from "../src/data/claim-expansion-2026-11-recovery-prevention.js";
+import { novemberRiverLandscapeClaims, novemberRiverLandscapeResearchCheckedAt } from "../src/data/claim-expansion-2026-11-river-landscape.js";
 import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
 import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
@@ -36,16 +37,74 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberRecoveryPreventionClaims.length, 7);
 		assert.equal(novemberWomensHealthSupportClaims.length, 13);
 		assert.equal(novemberEcologyConservationClaims.length, 11);
-		assert.equal(catalogExpansionClaims.length, 164);
-		assert.equal(defaultClaims.length, 1165);
+		assert.equal(novemberRiverLandscapeClaims.length, 8);
+		assert.equal(catalogExpansionClaims.length, 172);
+		assert.equal(defaultClaims.length, 1173);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 164,
-			citations: 428,
-			catalog: 1165,
+			entries: 172,
+			citations: 452,
+			catalog: 1173,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals eight distinct river and landscape reviews with their actual research cutoff", () => {
+		assert.equal(readerExpansionValueHash(novemberRiverLandscapeClaims), "aa45716f29f50b9ba3d61d3a4a740bb8024c73bd6a274fbf4e632437cbc9bd19");
+		assert.equal(novemberRiverLandscapeResearchCheckedAt, "2026-11-07T11:52:51.000Z");
+		assert.ok(novemberRiverLandscapeClaims.every(claim => claim.searchCutoffAt === novemberRiverLandscapeResearchCheckedAt));
+		assert.ok(novemberRiverLandscapeClaims.every(claim => claim.sources.length === 3));
+		assert.equal(new Set(novemberRiverLandscapeClaims.flatMap(claim => claim.sources.map(source => source.doi?.toLowerCase()))).size, 24);
+		assert.equal(new Set(novemberRiverLandscapeClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 8);
+		assert.equal(novemberRiverLandscapeClaims.filter(claim => claim.consensusBand === "mixed").length, 4);
+	});
+	it("preserves canonical URLs for legacy DOI characters and the coral licensing notice", () => {
+		const citations = novemberRiverLandscapeClaims.flatMap(claim => claim.sources);
+		const historical = citations.find(source => source.doi === "10.1577/1548-8446(1997)022<0017:darirf>2.0.co;2")!;
+		assert.equal(historical.url, "https://doi.org/10.1577/1548-8446(1997)022%3C0017:darirf%3E2.0.co;2");
+		assert.ok(historical.statusSources?.includes(historical.url));
+		assert.equal(decodeURIComponent(new URL(historical.url!).pathname.slice(1)), historical.doi);
+		const corrected = citations.filter(source => source.citationStatus === "corrected");
+		assert.equal(corrected.length, 1);
+		assert.equal(corrected[0].doi, "10.1038/s41559-025-02667-x");
+		assert.ok(corrected[0].statusSources?.includes("https://doi.org/10.1038/s41559-025-02758-9"));
+		assert.match(corrected[0].note!, /licensing to open access.*does not report a scientific-result correction/u);
+		assert.equal(citations.find(source => source.doi === "10.1002/hyp.14017")!.year, 2021);
+		assert.equal(citations.find(source => source.doi === "10.1111/1365-2664.70396")!.year, 2026);
+	});
+	it("separates beaver flow attenuation from flood protection and fish access from complete recovery", () => {
+		const beaver = novemberRiverLandscapeClaims.find(claim => claim.slug === "do-beaver-dams-slow-flood-flows")!;
+		assert.match(beaver.bottomLine!, /raising water levels locally/u);
+		assert.match(beaver.sources.find(source => source.doi === "10.1002/hyp.14735")!.note!, /could not confidently detect.*most extreme rainfall/u);
+		assert.match(beaver.exclusionRules!.join(" "), /overlapping publications.*independent landscapes/u);
+		const fish = novemberRiverLandscapeClaims.find(claim => claim.slug === "does-dam-removal-help-migratory-fish")!;
+		assert.match(fish.stableCore.join(" "), /does not guarantee that every population fully recovers/u);
+		assert.match(fish.sources.find(source => source.doi === "10.1002/mcf2.10227")!.note!, /combined dam removal with passage improvements/u);
+	});
+	it("retains production, species and ecological-function trade-offs in restoration answers", () => {
+		const reefs = novemberRiverLandscapeClaims.find(claim => claim.slug === "do-artificial-reefs-increase-fish-populations")!;
+		assert.equal(reefs.consensusBand, "mixed");
+		assert.match(reefs.exclusionRules!.join(" "), /not a direct measure of net regional production/u);
+		const hedges = novemberRiverLandscapeClaims.find(claim => claim.slug === "do-hedgerows-help-farmland-wildlife")!;
+		assert.match(hedges.sources.find(source => source.doi === "10.1002/eap.2959")!.note!, /negative associations.*open-grassland.*intact-forest/u);
+		const rewilding = novemberRiverLandscapeClaims.find(claim => claim.slug === "does-rewilding-improve-biodiversity")!;
+		assert.match(rewilding.sources.find(source => source.doi === "10.1016/j.biocon.2023.110005")!.note!, /lower woody-plant diversity and carbon.*more ground-dwelling arthropod/u);
+		assert.match(rewilding.sources.find(source => source.doi === "10.1016/j.jenvman.2025.124360")!.note!, /neither the share of independent projects.*expert agreement/u);
+	});
+	it("preserves buffer-scale limits and the invasive-revegetation comparator", () => {
+		const buffers = novemberRiverLandscapeClaims.find(claim => claim.slug === "do-river-buffer-strips-reduce-farm-runoff-pollution")!;
+		assert.match(buffers.bottomLine!, /Water that bypasses the strip/u);
+		assert.match(buffers.sources.find(source => source.doi === "10.1002/hyp.14733")!.note!, /establishment-phase.*not mature buffers/u);
+		const plants = novemberRiverLandscapeClaims.find(claim => claim.slug === "does-removing-invasive-plants-restore-native-vegetation")!;
+		assert.match(plants.sources.find(source => source.doi === "10.1111/1365-2664.70396")!.note!, /comparator already received invasive removal/u);
+		assert.match(plants.sources.find(source => source.doi === "10.1016/j.jenvman.2024.120216")!.note!, /Diversity within plots rose while diversity across plots/u);
+	});
+	it("keeps local coral function recovery separate from complete recovery and forecast risk", () => {
+		const coral = novemberRiverLandscapeClaims.find(claim => claim.slug === "can-coral-restoration-rebuild-damaged-reefs")!;
+		assert.equal(coral.consensusBand, "mixed");
+		assert.match(coral.sources.find(source => source.doi === "10.1016/j.cub.2024.02.009")!.note!, /communities differed from healthy reference reefs/u);
+		assert.match(coral.exclusionRules!.join(" "), /Projected bleaching risk is distinct from observed future failure/u);
+		assert.match(coral.sources.find(source => source.doi === "10.1371/journal.pone.0226631")!.note!, /grey literature and practitioner reports/u);
 	});
 	it("seals eleven distinct conservation reviews with their actual research cutoff", () => {
 		assert.equal(readerExpansionValueHash(novemberEcologyConservationClaims), "b5439504065657568da318099a3cd4bd1bb96fcbda896f86d54cc171675c87f4");
