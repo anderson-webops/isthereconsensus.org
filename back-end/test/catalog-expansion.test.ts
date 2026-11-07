@@ -5,6 +5,7 @@ import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } fro
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
 import { novemberEcologyConservationClaims, novemberEcologyConservationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
+import { novemberExerciseRecoveryClaims, novemberExerciseRecoveryResearchCheckedAt } from "../src/data/claim-expansion-2026-11-exercise-recovery.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
@@ -38,16 +39,74 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberWomensHealthSupportClaims.length, 13);
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 172);
-		assert.equal(defaultClaims.length, 1173);
+		assert.equal(novemberExerciseRecoveryClaims.length, 8);
+		assert.equal(catalogExpansionClaims.length, 180);
+		assert.equal(defaultClaims.length, 1181);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 172,
-			citations: 452,
-			catalog: 1173,
+			entries: 180,
+			citations: 477,
+			catalog: 1181,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals eight exercise and recovery questions with distinct scopes and retained uncertainty", () => {
+		assert.equal(readerExpansionValueHash(novemberExerciseRecoveryClaims), "9bdeec46b4bfa637b843f6d8d006a55e95b5fb9f7b4ef5589c51b9e882802c3a");
+		assert.equal(novemberExerciseRecoveryResearchCheckedAt, "2026-11-07T12:37:29.000Z");
+		assert.ok(novemberExerciseRecoveryClaims.every(claim => claim.searchCutoffAt === novemberExerciseRecoveryResearchCheckedAt));
+		const citations = novemberExerciseRecoveryClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 25);
+		assert.equal(new Set(citations.map(source => source.doi?.toLowerCase())).size, 25);
+		assert.equal(new Set(novemberExerciseRecoveryClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 8);
+		assert.equal(novemberExerciseRecoveryClaims.filter(claim => claim.consensusBand === "mixed").length, 6);
+		assert.equal(novemberExerciseRecoveryClaims.filter(claim => claim.evidenceCertainty === "low").length, 5);
+	});
+	it("preserves the massage figure correction and completed Cochrane version", () => {
+		const citations = novemberExerciseRecoveryClaims.flatMap(claim => claim.sources);
+		const massage = citations.find(source => source.doi === "10.1136/bmjsem-2019-000614")!;
+		assert.equal(massage.citationStatus, "corrected");
+		assert.ok(massage.statusSources?.includes("https://doi.org/10.1136/bmjsem-2019-000614corr1"));
+		assert.match(massage.note!, /correction replaces Figure 3/u);
+		assert.equal(citations.find(source => source.doi === "10.1002/14651858.cd004577.pub3")!.year, 2011);
+		assert.equal(citations.find(source => source.doi === "10.1007/s40279-019-01205-7")!.year, 2020);
+		assert.equal(citations.find(source => source.doi === "10.1002/msc.1667")!.year, 2023);
+		assert.equal(citations.find(source => source.doi === "10.1080/15438627.2021.1989432")!.year, 2023);
+	});
+	it("retains conflicting recovery evidence without treating symptom changes as muscle repair", () => {
+		const foam = novemberExerciseRecoveryClaims.find(claim => claim.slug === "does-foam-rolling-improve-recovery-after-exercise")!;
+		assert.equal(foam.sources.length, 4);
+		assert.ok(foam.sources.some(source => source.doi === "10.1016/j.jbmt.2023.04.016" && source.stance === "debate"));
+		assert.ok(foam.sources.some(source => source.doi === "10.1016/j.jbmt.2024.10.009" && source.stance === "supports"));
+		assert.match(foam.exclusionRules!.join(" "), /not proof of tissue repair/u);
+		const compression = novemberExerciseRecoveryClaims.find(claim => claim.slug === "do-compression-garments-speed-recovery-after-exercise")!;
+		assert.match(compression.sources.find(source => source.doi === "10.3389/fphys.2026.1908148")!.note!, /crossed the null.*very low/u);
+		assert.ok(compression.sources.some(source => source.doi === "10.1007/s40279-022-01681-4" && source.stance === "debate"));
+	});
+	it("keeps clinical importance, follow-up and Pilates quality-of-life outcomes separate", () => {
+		const pilates = novemberExerciseRecoveryClaims.find(claim => claim.slug === "is-pilates-better-than-other-exercise-for-chronic-low-back-pain")!;
+		const trial = pilates.sources.find(source => source.doi === "10.1177/02692155241277041")!;
+		assert.match(trial.note!, /pain and disability.*not clinically relevant/u);
+		assert.match(trial.note!, /quality-of-life utility benefit was clinically relevant/u);
+		assert.match(pilates.exclusionRules!.join(" "), /acute, structural or neurological cause/u);
+		const stretching = novemberExerciseRecoveryClaims.find(claim => claim.slug === "does-stretching-after-exercise-prevent-muscle-soreness")!;
+		assert.match(stretching.exclusionRules!.join(" "), /does not establish exact equivalence/u);
+	});
+	it("separates measured falls and active cool-down from proxy and subgroup claims", () => {
+		const taiChi = novemberExerciseRecoveryClaims.find(claim => claim.slug === "can-tai-chi-help-prevent-falls-in-older-adults")!;
+		assert.match(taiChi.sources.find(source => source.doi === "10.1001/jamainternmed.2018.3915")!.note!, /670.*Repeated falls differ from the number of people/u);
+		assert.match(taiChi.inclusionRules!.join(" "), /separately from balance proxies and general multicomponent/u);
+		const active = novemberExerciseRecoveryClaims.find(claim => claim.slug === "is-an-active-cool-down-better-than-resting-after-exercise")!;
+		assert.match(active.exclusionRules!.join(" "), /Blood-lactate clearance is not a direct measure/u);
+		assert.match(active.sources.find(source => source.doi === "10.3390/sports13100343")!.note!, /not 41 trials of active cool-down/u);
+	});
+	it("distinguishes sham-controlled tape effects from adjunct care and overlapping reviews", () => {
+		const tape = novemberExerciseRecoveryClaims.find(claim => claim.slug === "does-kinesiology-tape-relieve-musculoskeletal-pain")!;
+		assert.equal(tape.evidenceCertainty, "low");
+		assert.match(tape.bottomLine!, /Skin irritation/u);
+		assert.match(tape.exclusionRules!.join(" "), /review registrations are not completed independent trials/u);
+		assert.match(tape.sources.find(source => source.doi === "10.1016/j.physio.2019.04.001")!.note!, /tape alone with sham tape/u);
+		assert.match(tape.sources.find(source => source.doi === "10.1136/bmjebm-2025-114067")!.note!, /very-low-certainty/u);
 	});
 	it("seals eight distinct river and landscape reviews with their actual research cutoff", () => {
 		assert.equal(readerExpansionValueHash(novemberRiverLandscapeClaims), "aa45716f29f50b9ba3d61d3a4a740bb8024c73bd6a274fbf4e632437cbc9bd19");

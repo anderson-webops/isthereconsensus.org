@@ -393,6 +393,37 @@ bleaching risk remain separate. Related observations and syntheses can overlap.
 Independent expert review, comprehensive systematic searching and formal GRADE
 assessment are not claimed.
 
+## Exercise and recovery cohort
+
+`catalog-1501-exercise-recovery-2026-11-07` adds eight reviews and 25 distinct
+DOI-linked citations. Together the river and exercise cohorts bring the source
+catalog to 1,181 definitions, leaving 320 further source entries toward the unchanged
+1,501-public-review objective. Six exercise answers retain mixed evidence,
+and five retain low certainty. Public availability remains a separate gate.
+
+The questions cover manual massage, foam rolling, compression garments,
+post-exercise stretching, Pilates versus other exercise for chronic low-back
+pain, tai chi for measured falls, active cool-down and elastic kinesiology tape.
+Existing pre-exercise injury, spinal manipulation, general multicomponent falls
+and supplement-recovery questions keep their distinct scopes.
+
+Research retains ten actual Consensus searches, 32 fetched candidates and 32
+canonical metadata/update observations, including one duplicate discovery DOI.
+Three complete primary abstracts supplement short discovery records. The
+massage synthesis retains its actual 2021 figure correction and notice. The
+completed 2011 Cochrane version replaces a mismatched earlier abstract. Journal
+issue years remain distinct from online-first and discovery years.
+
+Self-review distinguishes symptoms and blood markers from tissue repair or
+performance, clinical importance from statistical significance, fall events
+from people who fall, and standalone sham-controlled tape from adjunct care.
+The Pilates trial's clinically relevant utility outcome remains separate from
+its small pain/disability differences. Conflicting foam-rolling and compression
+results, uncertain clinical relevance, study overlap and skin irritation remain
+explicit. Narrative reviews and broad multi-intervention syntheses retain their
+actual designs. No individual treatment protocol, independent expert review,
+comprehensive systematic search or formal site-performed GRADE is claimed.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed
