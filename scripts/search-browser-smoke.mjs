@@ -459,9 +459,9 @@ try {
 	for (const guide of readingGuides) {
 		const exampleReview = guide.reviews[0];
 		await open(exampleReview.path);
-		await page.click(`.guide-links a[href="/guides/${guide.slug}"]`);
+		await page.locator(`.guide-links a[href="/guides/${guide.slug}"]`).click();
 		await page.waitForFunction((title) => document.querySelector("h1")?.textContent === title, {}, guide.title);
-		await page.click(`.guide-review-links a[href="${exampleReview.path}"]`);
+		await page.locator(`.guide-review-links a[href="${exampleReview.path}"]`).click();
 		await page.waitForFunction(
 			(path) => location.pathname === path && Boolean(document.querySelector(".claim-page h1")),
 			{ timeout: 45_000 },

@@ -731,7 +731,9 @@ async function checkInsomniaComparison({ page, open, sitemap }) {
 	await page.keyboard.press("Space");
 	await page.waitForFunction(() => document.querySelectorAll(".comparison-option").length === 5);
 	await open(path);
-	for (const disclosure of await page.$$(".comparison-evidence summary")) await disclosure.click();
+	for (const disclosure of await page.$$(".comparison-evidence summary")) {
+		await disclosure.asLocator().click();
+	}
 	const details = await page.$$eval(".comparison-evidence[open]", nodes => nodes.map(node => node.textContent));
 	assert.match(details[1], /55%.*13%.*four weeks/s);
 	assert.match(details[1], /SD to SE/);
@@ -796,7 +798,9 @@ async function checkStrengthComparison({ page, open, sitemap }) {
 	await page.waitForSelector(".comparison-empty");
 	await page.click(".comparison-empty button");
 	await page.waitForFunction(() => document.querySelectorAll(".comparison-finding").length === 3);
-	for (const disclosure of await page.$$(".comparison-evidence summary")) await disclosure.click();
+	for (const disclosure of await page.$$(".comparison-evidence summary")) {
+		await disclosure.asLocator().click();
+	}
 	const details = await page.$$eval(".comparison-evidence[open]", nodes => nodes.map(node => node.textContent));
 	assert.match(details[0], /7\.2 mm².*0\.20 to 14\.30 mm²/s);
 	assert.match(details[1], /Bayesian credible interval −0\.02 to 0\.25/);
@@ -877,7 +881,9 @@ async function checkCaffeineComparison({ page, open, sitemap }) {
 	await page.click(".comparison-option a[href=\"#comparison-source-gardiner-trial\"]");
 	await page.waitForFunction(() => location.hash === "#comparison-source-gardiner-trial");
 	assert.ok(await page.$("#comparison-source-gardiner-trial a"));
-	for (const disclosure of await page.$$(".comparison-uncertainty summary")) await disclosure.click();
+	for (const disclosure of await page.$$(".comparison-uncertainty summary")) {
+		await disclosure.asLocator().click();
+	}
 	assert.equal((await page.$$(".comparison-uncertainty[open]")).length, 2);
 	for (const width of [1280, 390, 320]) {
 		await page.setViewport({ width, height: 900 });
