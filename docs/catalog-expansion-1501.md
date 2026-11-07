@@ -1,5 +1,32 @@
 # Catalog expansion to 1,501 reviews
 
+## Food-pattern cohort
+
+`catalog-1501-food-patterns-2026-11-07` adds twelve distinct reviews with 41
+references: 39 DOI-linked papers/guidelines and two official safety references.
+The source catalog contains 1,193 definitions, leaving 308 further source entries
+toward 1,501. Public availability is verified separately.
+
+The questions cover earlier eating, meal frequency, eating speed, plant versus
+animal protein during training, probiotics for IBS, within-meal food ordering,
+low-GI diets for diabetes, oat beta-glucan and LDL, nuts and weight, fiber for
+constipation, actual portion sizes and menu calorie labels. Four answers retain
+mixed evidence and six have low certainty. Each has its own scope exclusions.
+
+The BMJ low-GI synthesis retains corrected status and its inspected
+`10.1136/bmj.n2114` notice. Its 29 overall comparisons are distinguished from the 22
+comparisons supplying the HbA1c estimate, which is a percentage-point change.
+Source years use journal records rather than online-first discovery dates.
+Two official safety pages have no invented publication year.
+
+The cohort distinguishes short intake experiments from lasting weight change,
+leucine matching from equal protein amounts, particular probiotic products from
+a class effect, dated US/UK guidance, glucose or lipid markers from clinical
+events, actual portions from plate size, and food selection from consumption.
+Possible eating-disorder harms and product-specific safety limits are retained.
+No independent expert review, formal site-performed GRADE assessment or
+comprehensive systematic search is claimed.
+
 The November 6, 2026 baseline contains 1,001 published canonical reviews in
 36 topics. The objective is 1,501 distinct, self-reviewed reviews. Guides,
 topics, drafts and alternate URLs do not increase that count.

@@ -6,6 +6,7 @@ import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } fro
 import { novemberEcologyConservationClaims, novemberEcologyConservationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberExerciseRecoveryClaims, novemberExerciseRecoveryResearchCheckedAt } from "../src/data/claim-expansion-2026-11-exercise-recovery.js";
+import { novemberFoodPatternsClaims, novemberFoodPatternsResearchCheckedAt } from "../src/data/claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
@@ -40,16 +41,110 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 180);
-		assert.equal(defaultClaims.length, 1181);
+		assert.equal(catalogExpansionClaims.length, 192);
+		assert.equal(defaultClaims.length, 1193);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 180,
-			citations: 477,
-			catalog: 1181,
+			entries: 192,
+			citations: 518,
+			catalog: 1193,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twelve food-pattern questions without changing prior source cohorts", () => {
+		assert.equal(readerExpansionValueHash(novemberFoodPatternsClaims), "57870b77a71ee56f062812257b3e7230457a1655e3f8c7028a1a418ef8d48bdc");
+		assert.equal(novemberFoodPatternsResearchCheckedAt, "2026-11-07T15:13:31.158Z");
+		assert.ok(novemberFoodPatternsClaims.every(claim => claim.searchCutoffAt === novemberFoodPatternsResearchCheckedAt));
+		assert.equal(novemberFoodPatternsClaims.length, 12);
+		const citations = novemberFoodPatternsClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 41);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi!.toLowerCase())).size, 39);
+		assert.equal(citations.filter(source => !source.doi).length, 2);
+		assert.equal(new Set(novemberFoodPatternsClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 12);
+		assert.equal(novemberFoodPatternsClaims.filter(claim => claim.consensusBand === "mixed").length, 4);
+		assert.equal(novemberFoodPatternsClaims.filter(claim => claim.evidenceCertainty === "low").length, 6);
+	});
+	it("uses food-source journal years and leaves undated safety references undated", () => {
+		const citations = novemberFoodPatternsClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1111/obr.13537", 2023],
+			["10.1016/j.ajcnut.2025.11.012", 2026],
+			["10.1080/27697061.2022.2161664", 2023],
+			["10.1016/j.clnesp.2022.12.019", 2023],
+			["10.1093/advances/nmaa113", 2021],
+			["10.1080/10408398.2018.1514486", 2020],
+			["10.1017/s0007114522000903", 2023],
+			["10.1093/advances/nmab112", 2022],
+			["10.14309/ajg.0000000000001036", 2021]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		for (const source of citations.filter(source => !source.doi)) {
+			assert.equal(Object.hasOwn(source, "year"), false);
+			assert.equal(source.citationCheckedAt, novemberFoodPatternsResearchCheckedAt);
+		}
+	});
+	it("retains the inspected low-GI correction and endpoint-specific comparison count", () => {
+		const claim = novemberFoodPatternsClaims.find(claim => claim.slug === "do-low-glycemic-index-diets-improve-diabetes-control")!;
+		const source = claim.sources.find(source => source.doi === "10.1136/bmj.n1651")!;
+		assert.equal(source.citationStatus, "corrected");
+		assert.ok(source.statusSources?.includes("https://doi.org/10.1136/bmj.n2114"));
+		assert.match(source.note!, /22 comparisons and 1,502 participants/u);
+		assert.match(source.note!, /blood-pressure dose-response wording and a GRADE figure label/u);
+		assert.match(claim.bottomLine, /average blood sugar, measured by HbA1c/u);
+		assert.match(claim.stableCore.join(" "), /twenty-two trial comparisons.*0\.31 percentage points/u);
+	});
+	it("separates earlier timing, eating windows and meal-frequency energy comparisons", () => {
+		const timing = novemberFoodPatternsClaims.find(claim => claim.slug === "does-eating-earlier-in-the-day-help-with-weight-control")!;
+		assert.equal(timing.consensusBand, "mixed");
+		assert.match(timing.exclusionRules!.join(" "), /isolated clock-time.*long-term fat loss/u);
+		assert.match(timing.sources.find(source => source.doi === "10.1016/j.numecd.2026.104878")!.note!, /seven lasted two to twelve weeks.*crossed the null/u);
+		const frequency = novemberFoodPatternsClaims.find(claim => claim.slug === "does-meal-frequency-affect-weight-loss")!;
+		assert.match(frequency.sources.find(source => source.doi === "10.1039/d1fo00484k")!.note!, /within-group.*not evidence of a between-group/u);
+		assert.match(frequency.exclusionRules!.join(" "), /breakfast omission.*total calories/u);
+	});
+	it("distinguishes slow-eating instructions, food texture and lasting weight outcomes", () => {
+		const claim = novemberFoodPatternsClaims.find(claim => claim.slug === "does-eating-more-slowly-reduce-how-much-people-eat")!;
+		assert.match(claim.sources.find(source => source.doi === "10.1016/j.ajcnut.2025.11.012")!.note!, /41 completers.*Body weight did not differ/u);
+		assert.match(claim.sources.find(source => source.doi === "10.1016/j.eatbeh.2023.101701")!.note!, /not described here as randomized/u);
+		assert.match(claim.bottomLine, /not yet shown dependable long-term weight loss/u);
+	});
+	it("keeps leucine matching and particular plant proteins distinct from equal protein doses", () => {
+		const claim = novemberFoodPatternsClaims.find(claim => claim.slug === "can-plant-protein-support-muscle-gains-as-well-as-animal-protein")!;
+		assert.equal(claim.consensusBand, "mixed");
+		assert.match(claim.sources.find(source => source.doi === "10.3390/ijerph17113871")!.note!, /leucine, not for grams of protein.*soy group received more protein/u);
+		assert.match(claim.sources.find(source => source.doi === "10.1093/nutrit/nuae200")!.note!, /no trial tested sarcopenia/u);
+		assert.match(claim.exclusionRules!.join(" "), /equal grams of protein.*long-term strength gains/u);
+	});
+	it("retains dated US and UK probiotic positions and material vulnerability warnings", () => {
+		const claim = novemberFoodPatternsClaims.find(claim => claim.slug === "do-probiotics-improve-irritable-bowel-syndrome-symptoms")!;
+		assert.equal(claim.sources.length, 5);
+		assert.ok(claim.sources.some(source => source.doi === "10.14309/ajg.0000000000001036" && source.stance === "debate"));
+		assert.ok(claim.sources.some(source => source.doi === "10.1136/gutjnl-2021-324598" && source.year === 2021));
+		assert.ok(claim.sources.some(source => source.url === "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety"));
+		assert.equal(claim.sources.some(source => source.doi === "10.1053/j.gastro.2023.07.018"), false);
+		assert.match(claim.uncertaintySummary!, /severe illness or impaired immunity/u);
+		assert.match(claim.exclusionRules!.join(" "), /antibiotic-associated diarrhea.*No product preparation or dosing protocol/u);
+	});
+	it("preserves food tolerability, safety references and the actual-portion distinction", () => {
+		const fiber = novemberFoodPatternsClaims.find(claim => claim.slug === "does-fiber-supplementation-help-chronic-constipation")!;
+		assert.equal(fiber.evidenceCertainty, "low");
+		assert.ok(fiber.sources.some(source => source.url === "https://medlineplus.gov/druginfo/meds/a601104.html"));
+		assert.match(fiber.uncertaintySummary!, /Swallowing difficulty, possible obstruction/u);
+		const nuts = novemberFoodPatternsClaims.find(claim => claim.slug === "does-eating-nuts-cause-weight-gain")!;
+		assert.match(nuts.uncertaintySummary!, /relevant allergy/u);
+		const portion = novemberFoodPatternsClaims.find(claim => claim.slug === "do-smaller-served-portions-reduce-daily-food-intake")!;
+		assert.match(portion.sources.find(source => source.doi === "10.3390/nu13061978")!.note!, /smaller plates alone had little clear effect/u);
+	});
+	it("separates calorie selection, consumption and eating-disorder causal claims", () => {
+		const claim = novemberFoodPatternsClaims.find(claim => claim.slug === "do-menu-calorie-labels-change-what-people-order")!;
+		assert.match(claim.bottomLine, /selected or purchased.*actually eat are less certain/u);
+		assert.match(claim.sources.find(source => source.doi === "10.1002/14651858.cd014845.pub2")!.note!, /2023 update was not fully integrated/u);
+		assert.match(claim.sources.find(source => source.doi === "10.3390/dietetics4010004")!.note!, /does not establish that labeling caused population/u);
+		assert.match(claim.exclusionRules!.join(" "), /alcoholic drinks.*hypothetical orders.*every country's law/u);
+	});
+	it("keeps private food-research revision commentary out of public source notes", () => {
+		const citations = novemberFoodPatternsClaims.flatMap(claim => claim.sources);
+		assert.ok(citations.every(source => !/discovery record|earlier draft|this update|this page|not reproduced|adopted here/iu.test(source.note!)));
 	});
 	it("seals eight exercise and recovery questions with distinct scopes and retained uncertainty", () => {
 		assert.equal(readerExpansionValueHash(novemberExerciseRecoveryClaims), "9bdeec46b4bfa637b843f6d8d006a55e95b5fb9f7b4ef5589c51b9e882802c3a");
