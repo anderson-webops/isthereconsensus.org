@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
 import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } from "../src/data/claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
+import { novemberEcologyConservationClaims, novemberEcologyConservationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
@@ -34,17 +35,78 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberCareLearningClaims.length, 20);
 		assert.equal(novemberRecoveryPreventionClaims.length, 7);
 		assert.equal(novemberWomensHealthSupportClaims.length, 13);
-		assert.equal(catalogExpansionClaims.length, 153);
-		assert.equal(defaultClaims.length, 1154);
+		assert.equal(novemberEcologyConservationClaims.length, 11);
+		assert.equal(catalogExpansionClaims.length, 164);
+		assert.equal(defaultClaims.length, 1165);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 153,
-			citations: 395,
-			catalog: 1154,
+			entries: 164,
+			citations: 428,
+			catalog: 1165,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
 	});
+	it("seals eleven distinct conservation reviews with their actual research cutoff", () => {
+		assert.equal(readerExpansionValueHash(novemberEcologyConservationClaims), "b5439504065657568da318099a3cd4bd1bb96fcbda896f86d54cc171675c87f4");
+		assert.equal(novemberEcologyConservationResearchCheckedAt, "2026-11-07T10:15:00.579Z");
+		assert.ok(novemberEcologyConservationClaims.every(claim => claim.searchCutoffAt === novemberEcologyConservationResearchCheckedAt));
+		assert.ok(novemberEcologyConservationClaims.every(claim => claim.sources.length === 3));
+		assert.equal(new Set(novemberEcologyConservationClaims.flatMap(claim => claim.sources.map(source => source.doi?.toLowerCase()))).size, 33);
+		assert.equal(new Set(novemberEcologyConservationClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 11);
+		assert.equal(novemberEcologyConservationClaims.filter(claim => claim.consensusBand === "mixed").length, 5);
+	});
+
+	it("preserves the seagrass data-accessibility correction and canonical publication years", () => {
+		const claim = novemberEcologyConservationClaims.find(claim => claim.slug === "can-seagrass-restoration-rebuild-lost-meadows")!;
+		const source = claim.sources.find(source => source.doi === "10.1111/1365-2664.12562")!;
+		assert.equal(source.citationStatus, "corrected");
+		assert.equal(source.year, 2016);
+		assert.ok(source.statusSources?.includes("https://doi.org/10.1111/1365-2664.13428"));
+		assert.match(source.note!, /2019 corrigendum corrects the data-accessibility DOI/u);
+		const whale = novemberEcologyConservationClaims.find(claim => claim.slug === "does-slowing-ships-reduce-whale-strike-risk")!;
+		assert.equal(whale.sources.find(source => source.doi === "10.3389/fmars.2024.1467387")!.year, 2025);
+	});
+
+	it("retains lower bee richness and the inconclusive formal bird-window comparison", () => {
+		const mowing = novemberEcologyConservationClaims.find(claim => claim.slug === "does-mowing-less-help-pollinators")!;
+		assert.equal(mowing.consensusBand, "mixed");
+		assert.match(mowing.sources.find(source => source.doi === "10.1016/j.biocon.2018.01.025")!.note!, /most bees but the lowest bee richness/u);
+		assert.match(mowing.sources.find(source => source.doi === "10.1111/icad.70148")!.note!, /followed by losses/u);
+		const windows = novemberEcologyConservationClaims.find(claim => claim.slug === "can-window-treatments-reduce-bird-collisions")!;
+		assert.match(windows.sources.find(source => source.doi === "10.1093/ornithapp/duag047")!.note!, /formal treatment-by-period interaction was not significant/u);
+		assert.match(windows.exclusionRules!.join(" "), /nonsignificant formal treatment comparison/u);
+	});
+
+	it("distinguishes passage use from roadkill and modeled whale risk from observed deaths", () => {
+		const crossing = novemberEcologyConservationClaims.find(claim => claim.slug === "do-wildlife-crossings-reduce-roadkill")!;
+		assert.match(crossing.bottomLine!, /effective fencing/u);
+		assert.match(crossing.sources.find(source => source.doi === "10.1016/j.pecon.2026.02.012")!.note!, /roadkill persisted/u);
+		assert.match(crossing.inclusionRules!.join(" "), /separately from movement through general habitat corridors/u);
+		const whale = novemberEcologyConservationClaims.find(claim => claim.slug === "does-slowing-ships-reduce-whale-strike-risk")!;
+		assert.match(whale.sources.find(source => source.doi === "10.1890/es13-00004.1")!.note!, /modeled, not counts of observed deaths/u);
+		assert.match(whale.sources.find(source => source.doi === "10.3354/esr01056")!.note!, /predictions, not directly counted/u);
+	});
+
+	it("retains peatland counterfactuals and separate coastal-protection outcomes", () => {
+		const peat = novemberEcologyConservationClaims.find(claim => claim.slug === "does-rewetting-peatland-help-the-climate")!;
+		assert.equal(peat.consensusBand, "mixed");
+		assert.match(peat.sources.find(source => source.doi === "10.1007/s13280-025-02225-6")!.note!, /warmed the climate relative to continued forestry/u);
+		assert.match(peat.exclusionRules!.join(" "), /actual warming path/u);
+		const oyster = novemberEcologyConservationClaims.find(claim => claim.slug === "can-oyster-reefs-protect-shorelines-from-erosion")!;
+		assert.match(oyster.sources.find(source => source.doi === "10.1002/eap.2382")!.note!, /Wave height and energy are different/u);
+		assert.match(oyster.exclusionRules!.join(" "), /hurricanes or long-term property loss/u);
+	});
+
+	it("preserves ecological study populations and separates proxies from recovery", () => {
+		const claim = (slug: string) => novemberEcologyConservationClaims.find(claim => claim.slug === slug)!;
+		assert.match(claim("do-native-garden-plants-support-more-wildlife").sources.find(source => source.doi === "10.1073/pnas.1809259115")!.note!, /not a universal rule/u);
+		assert.match(claim("do-fish-survive-catch-and-release-fishing").exclusionRules!.join(" "), /transfer and tank holding/u);
+		assert.match(claim("does-urban-beekeeping-help-wild-bees").uncertaintySummary!, /observational/u);
+		assert.match(claim("does-nighttime-lighting-harm-wild-insects").misconceptions!.join(" "), /Warm-colored light/u);
+		assert.match(claim("can-seagrass-restoration-rebuild-lost-meadows").sources.find(source => source.doi === "10.1016/j.jenvman.2026.130094")!.note!, /Most studied Z\. marina/u);
+	});
+
 	it("seals the recovery and reproductive-health cohorts without changing prior evidence", () => {
 		assert.equal(readerExpansionValueHash(novemberRecoveryPreventionClaims), "d77fc79c111ed1e33a90546ed2628e9122dd29f00a091745d371d0eaa5e73373");
 		assert.equal(readerExpansionValueHash(novemberWomensHealthSupportClaims), "9631a3d296ce3c94fa4f6927b9c0495ef4d64f7c5de1126454a2a352279d1b0b");

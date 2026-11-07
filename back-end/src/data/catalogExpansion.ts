@@ -1,5 +1,6 @@
 import { novemberCareLearningClaims } from "./claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
+import { novemberEcologyConservationClaims } from "./claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
@@ -66,6 +67,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-womens-health-support-2026-11-07",
 		claims: novemberWomensHealthSupportClaims,
 		dataSha256: "9631a3d296ce3c94fa4f6927b9c0495ef4d64f7c5de1126454a2a352279d1b0b"
+	},
+	{
+		id: "catalog-1501-ecology-conservation-2026-11-07",
+		claims: novemberEcologyConservationClaims,
+		dataSha256: "b5439504065657568da318099a3cd4bd1bb96fcbda896f86d54cc171675c87f4"
 	}
 ];
 

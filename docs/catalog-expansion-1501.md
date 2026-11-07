@@ -331,6 +331,37 @@ rare-event safety data, study overlap and jurisdiction or care-setting limits
 remain visible. Neither cohort claims formal GRADE assessment, a comprehensive
 systematic search or independent expert review.
 
+## Ecology and conservation cohort
+
+`catalog-1501-ecology-conservation-2026-11-07` adds eleven distinct reviews and
+33 DOI-linked citations. The source catalog reaches 1,165 definitions, leaving
+336 further source entries toward the unchanged 1,501-public-review objective.
+Five answers retain mixed evidence. Source delivery and usable public
+availability remain separate acceptance requirements.
+
+The reviews cover road crossings, native garden plants, mowing and pollinators,
+peatland rewetting, nighttime lighting and insects, bird-window collisions,
+ship speeds and whale strikes, catch-and-release survival, oyster shorelines,
+seagrass restoration and urban beekeeping. Existing habitat-corridor,
+blue-carbon, wildlife-feeding, domestic-cat and farming questions are retained.
+
+Research includes fifteen actual Consensus searches, 35 fetched candidates,
+35 DOI metadata/update observations and a separately verified correction notice.
+Seven complete publisher, author-institution or PubMed abstracts supplement
+short or truncated discovery records. The seagrass review retains its 2019
+data-accessibility corrigendum and corrected status. Publication years follow
+canonical records rather than dates embedded in DOIs.
+
+Self-review retains negative and inconclusive findings, including persistent
+Brazilian roadkill, lower bee richness under an intermediate mowing schedule,
+later losses in unmown refuges, and the nonsignificant formal window-treatment
+comparison. Predicted whale deaths avoided remain modeled outcomes. Peatland
+counterfactuals, wave height versus energy, delayed fish mortality and
+species-specific restoration limits remain explicit. Observational garden and
+beekeeping associations do not become universal causal claims. Independent
+expert review, comprehensive systematic searching and formal GRADE are not
+claimed.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed
