@@ -7,10 +7,12 @@ import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironm
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
+import { novemberRecoveryPreventionClaims, novemberRecoveryPreventionResearchCheckedAt } from "../src/data/claim-expansion-2026-11-recovery-prevention.js";
 import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
 import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
+import { novemberWomensHealthSupportClaims, novemberWomensHealthSupportResearchCheckedAt } from "../src/data/claim-expansion-2026-11-womens-health-support.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
 import { SourcePublication } from "../src/models/schemas/SourcePublication.js";
 import { validateApprovedReaderRelease } from "../src/utils/approvedReaderPublication.js";
@@ -30,16 +32,104 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEverydayHealthEnvironmentClaims.length, 14);
 		assert.equal(novemberSocialPolicyClaims.length, 10);
 		assert.equal(novemberCareLearningClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 133);
-		assert.equal(defaultClaims.length, 1134);
+		assert.equal(novemberRecoveryPreventionClaims.length, 7);
+		assert.equal(novemberWomensHealthSupportClaims.length, 13);
+		assert.equal(catalogExpansionClaims.length, 153);
+		assert.equal(defaultClaims.length, 1154);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 133,
-			citations: 337,
-			catalog: 1134,
+			entries: 153,
+			citations: 395,
+			catalog: 1154,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals the recovery and reproductive-health cohorts without changing prior evidence", () => {
+		assert.equal(readerExpansionValueHash(novemberRecoveryPreventionClaims), "d77fc79c111ed1e33a90546ed2628e9122dd29f00a091745d371d0eaa5e73373");
+		assert.equal(readerExpansionValueHash(novemberWomensHealthSupportClaims), "9631a3d296ce3c94fa4f6927b9c0495ef4d64f7c5de1126454a2a352279d1b0b");
+		assert.notEqual(novemberRecoveryPreventionResearchCheckedAt, novemberWomensHealthSupportResearchCheckedAt);
+		assert.ok(novemberRecoveryPreventionClaims.every(claim => claim.searchCutoffAt === novemberRecoveryPreventionResearchCheckedAt));
+		assert.ok(novemberWomensHealthSupportClaims.every(claim => claim.searchCutoffAt === novemberWomensHealthSupportResearchCheckedAt));
+		assert.equal(new Set(novemberRecoveryPreventionClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 7);
+		assert.equal(new Set(novemberWomensHealthSupportClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 13);
+		const citations = [
+			...novemberRecoveryPreventionClaims,
+			...novemberWomensHealthSupportClaims
+		].flatMap(claim => claim.sources);
+		assert.equal(citations.length, 58);
+		assert.equal(new Set(citations.map(source => source.doi?.toLowerCase())).size, 58);
+	});
+	it("uses completed canonical versions and actual journal years rather than discovery labels", () => {
+		const sources = [
+			...novemberRecoveryPreventionClaims,
+			...novemberWomensHealthSupportClaims
+		].flatMap(claim => claim.sources);
+		const source = (doi: string) => sources.find(entry => entry.doi?.toLowerCase() === doi)!;
+		for (const [doi, year] of [
+			["10.1002/14651858.cd012880.pub2", 2020],
+			["10.1002/14651858.cd000249.pub2", 2018],
+			["10.1002/14651858.cd007407.pub4", 2020],
+			["10.1002/14651858.cd003766.pub6", 2017],
+			["10.1002/14651858.cd013258.pub2", 2023],
+			["10.1111/1471-0528.15153", 2019],
+			["10.1111/1471-0528.17304", 2023],
+			["10.1016/j.dsx.2020.12.030", 2021],
+			["10.1016/j.ejogrb.2024.11.040", 2025]
+		] as const) assert.equal(source(doi).year, year);
+		for (const excluded of [
+			"10.1002/14651858.cd013258",
+			"10.1002/14651858.cd003766.pub5",
+			"10.1002/14651858.cd007407.pub3",
+			"10.1002/14651858.cd004307.pub6",
+			"10.12688/f1000research.52313.1"
+		]) {
+			assert.equal(sources.some(entry => entry.doi?.toLowerCase() === excluded), false);
+		}
+		assert.ok(source("10.3310/hta25460"));
+	});
+	it("retains the publisher's inline menopause correction even without a registered notice", () => {
+		const claim = novemberWomensHealthSupportClaims.find(claim => claim.slug === "can-cbt-make-menopausal-hot-flashes-less-disruptive")!;
+		const source = claim.sources.find(source => source.doi === "10.1111/1471-0528.15153")!;
+		assert.equal(source.citationStatus, "corrected");
+		assert.ok(source.statusSources?.includes("https://obgyn.onlinelibrary.wiley.com/doi/10.1111/1471-0528.15153"));
+		assert.match(source.note!, /July 2018 inline correction/u);
+		assert.match(claim.bottomLine, /does not necessarily mean.*how often/u);
+	});
+	it("preserves conflicting trials and separates fall rates from first-fall outcomes", () => {
+		const claim = novemberWomensHealthSupportClaims.find(claim => claim.slug === "do-home-hazard-reduction-programs-prevent-falls")!;
+		assert.equal(claim.consensusBand, "mixed");
+		assert.match(claim.bottomLine, /Fewer repeated falls.*first fall/u);
+		assert.match(claim.sources.find(source => source.doi === "10.1001/jamanetworkopen.2021.22044")!.note!, /primary first-fall hazard.*inconclusive.*secondary total-fall rate/u);
+		assert.match(claim.sources.find(source => source.doi === "10.3310/hta25460")!.note!, /1,331.*no reduction/u);
+		const laser = novemberWomensHealthSupportClaims.find(claim => claim.slug === "does-vaginal-laser-treatment-help-menopause-symptoms")!;
+		assert.equal(laser.consensusBand, "mixed");
+		assert.ok(laser.sources.some(source => source.stance === "supports"));
+		assert.ok(laser.sources.some(source => source.stance === "debate"));
+	});
+	it("separates clinical process measures, structured treatment and absolute outcomes", () => {
+		const claim = (slug: string) => novemberWomensHealthSupportClaims.find(claim => claim.slug === slug)!;
+		const diabetes = claim("does-diabetes-self-management-education-improve-blood-sugar");
+		assert.match(diabetes.sources.find(source => source.doi === "10.1016/j.dsx.2020.12.030")!.note!, /standardized mean difference.*not an absolute percentage-point/u);
+		assert.match(diabetes.sources.find(source => source.doi === "10.1371/journal.pone.0297328")!.note!, /quasi-experimental confidence interval crossed no effect/u);
+		const facilitation = claim("does-twelve-step-facilitation-help-alcohol-abstinence");
+		assert.match(facilitation.stableCore.join(" "), /Voluntary attendance alone is not the same/u);
+		assert.match(facilitation.exclusionRules!.join(" "), /adds no independent trial population/u);
+		const pulmonary = claim("does-pulmonary-rehabilitation-help-people-with-copd");
+		assert.match(pulmonary.sources.find(source => source.doi === "10.1164/rccm.202306-1066st")!.note!, /pulmonary-hypertension recommendation is conditional, not strong/u);
+		assert.match(pulmonary.bottomLine, /does not reverse the disease/u);
+		assert.match(claim("does-acupuncture-improve-ivf-live-birth-rates").stableCore.join(" "), /clinical pregnancy is not the same as a live birth/u);
+	});
+	it("retains clinical eligibility and uncertainty without turning subgroup rankings into prescriptions", () => {
+		const prenatal = novemberWomensHealthSupportClaims.find(claim => claim.slug === "does-prenatal-exercise-reduce-gestational-diabetes-risk")!;
+		assert.match(prenatal.evidenceSummaries![0].population!, /contraindications/u);
+		assert.match(prenatal.exclusionRules!.join(" "), /dose-response curve.*does not prescribe/u);
+		const period = novemberWomensHealthSupportClaims.find(claim => claim.slug === "does-exercise-ease-period-pain")!;
+		assert.equal(period.evidenceCertainty, "low");
+		assert.match(period.exclusionRules!.join(" "), /secondary period pain/u);
+		assert.match(period.sources.find(source => source.doi === "10.1186/s40798-024-00718-4")!.note!, /dropout estimate includes no difference/u);
+		const bleeding = novemberWomensHealthSupportClaims.find(claim => claim.slug === "does-tranexamic-acid-reduce-heavy-menstrual-bleeding")!;
+		assert.match(bleeding.exclusionRules!.join(" "), /personal medication regimen/u);
 	});
 	it("seals the policy and care cohorts with distinct source-check dates and scopes", () => {
 		assert.equal(readerExpansionValueHash(novemberSocialPolicyClaims), "15c9290f7da18174a586c80174c36d46f893d1ee8dd8e82b94d3914d735b4896");

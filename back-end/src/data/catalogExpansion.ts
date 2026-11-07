@@ -4,9 +4,11 @@ import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
+import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
+import { novemberWomensHealthSupportClaims } from "./claim-expansion-2026-11-womens-health-support.js";
 
 export const CATALOG_ENTRY_GOAL = 1501;
 export const catalogExpansionReleases = [
@@ -54,6 +56,16 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-care-learning-2026-11-07",
 		claims: novemberCareLearningClaims,
 		dataSha256: "c46db54ebd176e61558c182e7705e11e82105ed0eb5355a0aef8b26235c8743c"
+	},
+	{
+		id: "catalog-1501-recovery-prevention-2026-11-07",
+		claims: novemberRecoveryPreventionClaims,
+		dataSha256: "d77fc79c111ed1e33a90546ed2628e9122dd29f00a091745d371d0eaa5e73373"
+	},
+	{
+		id: "catalog-1501-womens-health-support-2026-11-07",
+		claims: novemberWomensHealthSupportClaims,
+		dataSha256: "9631a3d296ce3c94fa4f6927b9c0495ef4d64f7c5de1126454a2a352279d1b0b"
 	}
 ];
 

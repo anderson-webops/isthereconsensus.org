@@ -276,6 +276,61 @@ suitability limits without individual treatment instructions. Neither cohort
 claims independent expert review, a comprehensive systematic search or formal
 GRADE assessment.
 
+## Recovery and prevention cohort
+
+`catalog-1501-recovery-prevention-2026-11-07` adds seven distinct reviews and
+20 DOI-linked citations: gambling CBT, motivational interviewing, brief alcohol
+interventions, peer recovery services, smoking incentives, pelvic-floor training
+and atrial-fibrillation screening. Four answers retain mixed evidence.
+
+All selected sources have actual fetched records and canonical metadata/update
+checks. Full official PubMed abstracts supplement short discovery summaries.
+The completed 2018 alcohol review replaces a mislabeled older abstract; the
+2025 incentive review replaces its superseded version. The postmenopausal
+pelvic-floor review uses its 2025 journal year rather than 2024 discovery data.
+
+Self-review distinguishes treatment engagement from abstinence or mortality,
+short-term gambling outcomes from lasting recovery, active controls from no
+intervention, and a composite screening result from its individual outcomes.
+Standardized and distribution-based effects do not become personal cure rates.
+Existing stimulant contingency-management, alcohol-medication, smartwatch
+diagnosis and anticoagulation reviews retain their distinct questions.
+
+## Reproductive health and care-support cohort
+
+`catalog-1501-womens-health-support-2026-11-07` adds 13 reviews and 38 distinct
+DOI-linked citations. Together the new cohorts bring the source catalog to
+1,154 reviews, leaving 347 further source entries toward the 1,501 objective.
+Public availability is measured independently.
+
+Eight reproductive-health reviews cover menopause-focused CBT, exercise for
+period pain, prenatal exercise and gestational diabetes, acupuncture alongside
+IVF, bed rest and preterm birth, vaginal laser treatment, continuous labour
+support and tranexamic acid for heavy menstrual bleeding. Five care-support
+reviews cover twelve-step facilitation, CBT for chronic pain, diabetes education,
+COPD rehabilitation and home fall-hazard reduction. Four answers retain mixed
+evidence; low certainty is also retained where agreement concerns the lack of
+demonstrated routine benefit rather than a precise causal effect.
+
+The research records 21 actual Consensus searches, 47 fetched candidates and
+49 canonical DOI/update observations, including two direct official-source
+records. Full primary PubMed abstracts and publisher text supplement discovery
+records. The menopause synthesis retains its actual July 2018 inline correction,
+despite no separately registered Crossref notice. Completed Cochrane versions
+replace protocols and superseded records. The peer-reviewed final NIHR OTIS
+report replaces its awaiting-peer-review version.
+
+Self-review keeps symptom bother distinct from physiological frequency, clinical
+pregnancy from live birth, weekly exercise subgroup estimates from prescriptions,
+structured facilitation from voluntary attendance, and HbA1c effects from remission
+or major complications. COPD symptom and function gains do not establish disease
+reversal or lower mortality. The negative OTIS trial and the first-fall versus
+total-fall distinction remain explicit. Older and newer laser findings retain
+their conflicting results and low certainty. Clinical eligibility, sparse
+rare-event safety data, study overlap and jurisdiction or care-setting limits
+remain visible. Neither cohort claims formal GRADE assessment, a comprehensive
+systematic search or independent expert review.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed
