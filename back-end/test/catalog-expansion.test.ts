@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
+import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
@@ -24,16 +25,62 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberTransportHousingClaims.length, 18);
 		assert.equal(novemberHouseholdEnergyClaims.length, 13);
 		assert.equal(novemberCommonReaderClaims.length, 16);
-		assert.equal(catalogExpansionClaims.length, 89);
-		assert.equal(defaultClaims.length, 1090);
+		assert.equal(novemberEverydayHealthEnvironmentClaims.length, 14);
+		assert.equal(catalogExpansionClaims.length, 103);
+		assert.equal(defaultClaims.length, 1104);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 89,
-			citations: 211,
-			catalog: 1090,
+			entries: 103,
+			citations: 244,
+			catalog: 1104,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals distinct everyday health and environment questions and their checked sources", () => {
+		assert.equal(readerExpansionValueHash(novemberEverydayHealthEnvironmentClaims), "1466a07509ff63a35b6810870fd7ce4e8e09eb17a67d6d2f20ae9d248fe20aa3");
+		assert.notEqual(novemberEverydayHealthEnvironmentResearchCheckedAt, novemberCommonReaderResearchCheckedAt);
+		assert.ok(novemberEverydayHealthEnvironmentClaims.every(claim => claim.searchCutoffAt === novemberEverydayHealthEnvironmentResearchCheckedAt));
+		assert.equal(new Set(novemberEverydayHealthEnvironmentClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 14);
+		const citations = novemberEverydayHealthEnvironmentClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 33);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi)).size, 32);
+		assert.equal(citations.some(source => source.doi === "10.1016/j.buildenv.2021.107750"), false);
+		assert.equal(citations.some(source => source.doi === "10.1093/nutrit/nuac111"), false);
+		assert.equal(citations.some(source => source.doi === "10.1093/nutrit/nuac108"), false);
+	});
+	it("retains creatine's correction and separate statistical criticism", () => {
+		const claim = novemberEverydayHealthEnvironmentClaims.find(claim => claim.slug === "does-creatine-improve-memory-and-thinking")!;
+		const synthesis = claim.sources.find(source => source.doi === "10.3389/fnut.2024.1424972")!;
+		assert.equal(synthesis.citationStatus, "corrected");
+		assert.ok(synthesis.statusSources?.includes("https://doi.org/10.3389/fnut.2025.1570800"));
+		assert.match(synthesis.note!, /scores from completion times/u);
+		assert.match(claim.stableCore.join(" "), /independent/u);
+		assert.ok(claim.sources.some(source => source.doi === "10.2903/j.efsa.2024.9100"));
+		assert.equal(claim.consensusBand, "mixed");
+	});
+	it("separates COSMOS samples and cognitive scores from dementia prevention", () => {
+		const claim = novemberEverydayHealthEnvironmentClaims.find(claim => claim.slug === "do-multivitamins-improve-memory-in-older-adults")!;
+		assert.match(claim.sources.find(source => source.doi === "10.1016/j.ajcnut.2023.12.011")!.note!, /5,203 nonoverlapping/u);
+		assert.match(claim.sources.find(source => source.doi === "10.1016/j.ajcnut.2023.05.011")!.note!, /3,562/u);
+		assert.match(claim.bottomLine, /do not establish.*prevent dementia/u);
+		assert.match(claim.stableCore.join(" "), /same parent trial/u);
+	});
+	it("preserves intervention, subgroup and individual-agreement limits", () => {
+		const claim = (slug: string) => novemberEverydayHealthEnvironmentClaims.find(claim => claim.slug === slug)!;
+		assert.match(claim("do-standing-desks-reduce-lower-back-pain").stableCore.join(" "), /no significant time-by-group interaction/u);
+		assert.match(claim("do-earplugs-and-eye-masks-improve-sleep-in-intensive-care").bottomLine, /earplugs alone is less clear/u);
+		assert.match(claim("how-accurately-do-smart-scales-measure-body-fat").misconceptions.join(" "), /correlation/u);
+		assert.match(claim("do-collagen-supplements-improve-aging-skin").stableCore.join(" "), /higher-quality and non-industry-funded/u);
+		assert.match(claim("does-tart-cherry-help-people-sleep-better").sources[0].note!, /two small trials/u);
+		assert.match(claim("do-omega-3-supplements-help-with-depression").bottomLine, /not reliably prevented new depression/u);
+	});
+	it("keeps official ionizer guidance dated by its check instead of inventing publication metadata", () => {
+		const claim = novemberEverydayHealthEnvironmentClaims.find(claim => claim.slug === "can-ionizing-air-cleaners-produce-harmful-byproducts")!;
+		const official = claim.sources.find(source => source.publisher === "US Environmental Protection Agency")!;
+		assert.equal(Object.hasOwn(official, "year"), false);
+		assert.equal(official.citationCheckedAt, novemberEverydayHealthEnvironmentResearchCheckedAt);
+		assert.equal(official.url, "https://www.epa.gov/indoor-air-quality-iaq/air-cleaners-hvac-filters-and-respiratory-viruses");
 	});
 	it("keeps the learning seal unchanged while recording a separately dated urban review", () => {
 		assert.equal(readerExpansionValueHash(novemberLearningClaims), "4ee54e7752ad58b5f24cbb97631a90c59f61e1c377871bf9793670894172bfb1");

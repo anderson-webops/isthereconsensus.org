@@ -1,4 +1,5 @@
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
+import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
@@ -36,6 +37,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-common-reader-2026-11-07",
 		claims: novemberCommonReaderClaims,
 		dataSha256: "72fd21a53492d7693eec00ac1112cd997099b07fbaa0f437ef05effb65440e3d"
+	},
+	{
+		id: "catalog-1501-everyday-health-environment-2026-11-07",
+		claims: novemberEverydayHealthEnvironmentClaims,
+		dataSha256: "1466a07509ff63a35b6810870fd7ce4e8e09eb17a67d6d2f20ae9d248fe20aa3"
 	}
 ];
 

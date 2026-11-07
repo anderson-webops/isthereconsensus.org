@@ -194,6 +194,27 @@ check date. The shared source factory supports that omission without changing
 earlier cohort values or seals. Formal GRADE assessment, a comprehensive
 systematic search and independent expert review are not claimed.
 
+## Everyday health and environment cohort
+
+`catalog-1501-everyday-health-environment-2026-11-07` adds 14 distinct reviews
+and 33 citations, including 32 distinct DOIs and an official EPA technical page.
+The source catalog reaches 1,104 reviews, leaving 397 further source entries
+toward 1,501. Source totals remain separate from verified usable public entries.
+
+The cohort covers passive houseplants, ionizer byproducts, indoor CO2 readings,
+traffic noise and heart disease, ICU sleep aids, sit-stand desks, back pain,
+body-fat scales, posture, multivitamins and memory, creatine and cognition,
+collagen and skin, tart cherry and sleep, and omega-3 supplements for depression.
+Existing exercise, hearing-protection and supplement-mortality reviews retain
+their separate questions and source sets.
+
+Creatine's translation correction and independent statistical criticism remain
+explicit. COSMOS sample overlap, related parent-trial structure, within-group
+versus between-group desk results, individual agreement of body-fat estimates,
+collagen funding subgroups and overlapping reviews are distinguished. The
+ionizer study whose full correction was unavailable is excluded. Official EPA
+guidance has a citation-check date without an invented publication year.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed

@@ -59,11 +59,18 @@ describe("reader search benchmark", () => {
 	it("does not offer incidental matches for additional uncovered evidence and personal-dosing questions", () => {
 		for (const query of [
 			"coffee prevents dementia",
-			"does creatine improve memory",
+			"does creatine prevent dementia",
 			"does tea lower blood pressure",
 			"how much magnesium should my child take",
 			"does caffeine help asthma",
 			"can solar panels work underwater"
 		]) assert.deepEqual(search(query, referenceDate), [], query);
+	});
+	it("finds the new creatine cognition review without substituting exercise evidence", () => {
+		const query = "does creatine improve memory";
+		const slug = "does-creatine-improve-memory-and-thinking";
+		assert.equal(search(query, referenceDate)[0]?.claim.slug, slug);
+		const previousCatalog = createClaimSearchIndex(defaultClaims.filter(claim => claim.slug !== slug));
+		assert.deepEqual(previousCatalog(query, referenceDate), []);
 	});
 });
