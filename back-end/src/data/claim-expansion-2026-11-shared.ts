@@ -6,7 +6,7 @@ export const novemberResearchCheckedAt = "2026-11-06T16:02:04.000Z";
 export function researchSource(
 	title: string,
 	publisher: string,
-	year: number,
+	year: number | undefined,
 	url: string,
 	doi: string,
 	note: string,
@@ -17,7 +17,9 @@ export function researchSource(
 	return {
 		title,
 		publisher,
-		year,
+		...(year !== undefined
+			? { year }
+			: {}),
 		url,
 		...(doi
 			? { doi }

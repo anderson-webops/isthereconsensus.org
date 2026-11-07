@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
-import { novemberResearchCheckedAt } from "../src/data/claim-expansion-2026-11-shared.js";
+import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
@@ -22,13 +23,14 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLearningHabitsWorkClaims.length, 24);
 		assert.equal(novemberTransportHousingClaims.length, 18);
 		assert.equal(novemberHouseholdEnergyClaims.length, 13);
-		assert.equal(catalogExpansionClaims.length, 73);
-		assert.equal(defaultClaims.length, 1074);
+		assert.equal(novemberCommonReaderClaims.length, 16);
+		assert.equal(catalogExpansionClaims.length, 89);
+		assert.equal(defaultClaims.length, 1090);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 73,
-			citations: 165,
-			catalog: 1074,
+			entries: 89,
+			citations: 211,
+			catalog: 1090,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
@@ -261,6 +263,70 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 			canonical.sources[0].statusSources = canonicalSources;
 			release.dataSha256 = originalHash;
 		}
+	});
+	it("seals distinct common-reader questions, scopes and evidence directions", () => {
+		assert.equal(readerExpansionValueHash(novemberCommonReaderClaims), "72fd21a53492d7693eec00ac1112cd997099b07fbaa0f437ef05effb65440e3d");
+		assert.notEqual(novemberCommonReaderResearchCheckedAt, novemberHouseholdEnergyResearchCheckedAt);
+		assert.ok(novemberCommonReaderClaims.every(claim => claim.searchCutoffAt === novemberCommonReaderResearchCheckedAt));
+		assert.equal(new Set(novemberCommonReaderClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 16);
+		assert.equal(novemberCommonReaderClaims.filter(claim => claim.consensusBand === "mixed").length, 7);
+		assert.equal(novemberCommonReaderClaims.filter(claim => claim.consensusBand === "unclear").length, 1);
+		assert.equal(novemberCommonReaderClaims.some(claim => /smaller classes|school uniforms/u.test(claim.title)), false);
+		const citations = novemberCommonReaderClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 46);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi)).size, 40);
+		assert.ok(citations.every(source => !/fetched discovery|earlier draft|this update|this page/u.test(source.note!)));
+	});
+	it("retains correction notices and canonical journal metadata", () => {
+		const citations = novemberCommonReaderClaims.flatMap(claim => claim.sources);
+		const coffee = citations.find(source => source.doi === "10.1136/bmj.j5024")!;
+		assert.equal(coffee.citationStatus, "corrected");
+		assert.ok(coffee.statusSources?.includes("https://doi.org/10.1136/bmj.k194"));
+		assert.match(coffee.note!, /0\.79-0\.88/u);
+		for (const [doi, year] of [
+			["10.1001/jamapediatrics.2014.1893", 2015],
+			["10.1037/amp0000364", 2019],
+			["10.1177/21677026231186625", 2024],
+			["10.1257/aeri.20190536", 2021]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		assert.equal(citations.some(source => source.doi === "10.3386/w26396"), false);
+		assert.equal(citations.find(source => source.doi === "10.1037/a0032734")?.title, "Predicting ethnic and racial discrimination: A meta-analysis of IAT criterion studies.");
+		assert.match(citations.find(source => source.doi === "10.1016/j.rser.2026.117333")!.note!, /August 12, 2026/u);
+	});
+	it("omits unknown publication years without changing dated sources", () => {
+		const source = researchSource("Undated reference", "Reference publisher", undefined, "https://example.test/reference", "", "Reference context.");
+		assert.equal(Object.hasOwn(source, "year"), false);
+		const safety = novemberCommonReaderClaims.flatMap(claim => claim.sources).find(source => source.publisher === "British Heart Foundation")!;
+		assert.equal(Object.hasOwn(safety, "year"), false);
+		assert.equal(safety.citationCheckedAt, novemberCommonReaderResearchCheckedAt);
+		assert.equal(readerExpansionValueHash(novemberHouseholdEnergyClaims), "07fa9ed9bd72d5c312d84f51a5154d72094bd481c504230deb2dcd1b1afe8352");
+	});
+	it("separates family comparisons, surveillance samples and agency positions", () => {
+		const pregnancy = novemberCommonReaderClaims.find(claim => claim.slug === "does-acetaminophen-use-during-pregnancy-cause-autism")!;
+		const sibling = pregnancy.sources.find(source => source.doi === "10.1001/jamainternmed.2026.2215")!;
+		assert.equal(sibling.kind, "landmark_study");
+		assert.match(sibling.note!, /124,333.*97,285/u);
+		assert.match(pregnancy.exclusionRules!.join(" "), /overlapping reviews/u);
+		assert.ok(pregnancy.sources.some(source => source.doi === "10.1186/s12940-025-01208-0" && source.stance === "debate"));
+		assert.ok(pregnancy.sources.some(source => source.publisher === "U.S. Food and Drug Administration" && source.stance === "debate"));
+		assert.ok(pregnancy.sources.some(source => source.publisher === "European Medicines Agency" && source.year === 2026));
+		const prevalence = novemberCommonReaderClaims.find(claim => claim.slug === "why-are-more-children-being-identified-as-autistic")!;
+		assert.match(prevalence.stableCore.join(" "), /2022 records.*not nationally representative/u);
+		assert.match(prevalence.sources.find(source => source.doi === "10.1001/jamapediatrics.2014.1893")!.note!, /33%-87%/u);
+	});
+	it("distinguishes endpoints, exposure measurement and individual predictions", () => {
+		const sauna = novemberCommonReaderClaims.find(claim => claim.slug === "does-regular-sauna-use-prevent-heart-related-deaths")!;
+		assert.match(sauna.sources[0].note!, /not sauna alone/u);
+		assert.match(sauna.exclusionRules!.join(" "), /short-term blood-pressure.*sauna alone/u);
+		const screen = novemberCommonReaderClaims.find(claim => claim.slug === "how-does-childhood-screen-use-relate-to-language-development")!;
+		assert.match(screen.sources.find(source => source.doi === "10.1001/jamapediatrics.2024.2620")!.note!, /64 observational.*not a language-only sample/u);
+		const sitting = novemberCommonReaderClaims.find(claim => claim.slug === "is-more-sitting-linked-to-a-higher-risk-of-early-death")!;
+		assert.match(sitting.exclusionRules!.join(" "), /hip-device inactivity.*exact sitting posture/u);
+		const iat = novemberCommonReaderClaims.find(claim => claim.slug === "can-an-implicit-association-test-predict-individual-behavior")!;
+		assert.match(iat.sources[0].note!, /regression coefficient.*not the overall correlation/u);
+		const cold = novemberCommonReaderClaims.find(claim => claim.slug === "do-cold-plunges-improve-mental-wellbeing")!;
+		assert.equal(cold.evidenceSummaries![0].effectDirection, "unclear");
+		assert.match(cold.stableCore.join(" "), /cold shock/u);
 	});
 	it("honors shutdown before validation or database work", async () => {
 		const controller = new AbortController();

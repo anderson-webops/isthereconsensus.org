@@ -159,6 +159,41 @@ different outcomes. Daytime cooling measurements are not relabeled as measured
 night temperatures; boiling results are not generalized to every cooking task.
 Formal GRADE assessment and independent expert review are not claimed.
 
+## Common reader questions cohort
+
+`catalog-1501-common-reader-2026-11-07` adds 16 distinct reviews and 46 citations,
+including 40 distinct DOIs and six agency or clinical-information sources.
+The source catalog reaches 1,090 reviews, leaving 411 further source entries
+before the 1,501-entry objective. Public availability remains separate.
+
+Questions cover coffee and longevity, BMI, sedentary time, multivitamins,
+blue-light glasses, sauna, cold plunges, childhood screen use, autism
+identification, prenatal acetaminophen, forest offsets, wind and birds,
+contrails, tariffs, content warnings and implicit-association tests. The fresh
+overlap check excluded class size because an existing review already covers it.
+Seven answers retain mixed evidence and one remains unclear. Each review has
+its own scope exclusion.
+
+All 40 selected DOIs have canonical metadata and registered-update checks dated
+November 7. The coffee umbrella review retains its 2018 correction and notice
+URL. The tariff source uses the peer-reviewed 2021 journal DOI rather than
+counting its older working version as another study. Journal years are kept
+distinct from discovery and online-first dates. The wind review's December
+issue was publicly discussed by its authors' university in August 2026.
+
+Self-review distinguishes association from causation, mortality from short-term
+markers, device inactivity from sitting posture, and group correlations from
+individual prediction. The autism surveillance figure retains its 2022 record
+year and selected-community scope. Sibling-analysis denominators, overlapping
+reviews, the countervailing acetaminophen synthesis and actual U.S./EU regulatory
+positions remain explicit. Clinical information supplies necessary safety
+context without an individual treatment or immersion protocol.
+
+Undated information retains an absent publication year, with a separate citation
+check date. The shared source factory supports that omission without changing
+earlier cohort values or seals. Formal GRADE assessment, a comprehensive
+systematic search and independent expert review are not claimed.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed
