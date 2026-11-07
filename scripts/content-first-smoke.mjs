@@ -20,6 +20,7 @@ import { SourcePublication } from "../back-end/dist/models/schemas/SourcePublica
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { APPROVED_READER_RELEASE, approvedReaderContentMatches, approvedReaderDraft } from "../back-end/dist/utils/approvedReaderPublication.js";
 import { readerExpansionValueHash } from "../back-end/dist/utils/readerExpansionProposal.js";
+import { fetchWithReadLimit } from "./lib/read-limit-retry.mjs";
 
 const directory = mkdtempSync(join(tmpdir(), "consensus-content-first-"));
 const databaseName = `content_first_${randomUUID().replaceAll("-", "")}`;
@@ -200,10 +201,10 @@ try {
 	assert.equal((await Claim.findById(partial._id)).status, "published");
 	const identities = await SourcePublication.find().sort({ key: 1 }).lean();
 	for (const definition of publicationClaims) {
-		const response = await fetch(`${base}/api/topics/${definition.topicSlug}/claims/${definition.slug}`, {
+		const response = await fetchWithReadLimit(() => fetch(`${base}/api/topics/${definition.topicSlug}/claims/${definition.slug}`, {
 			redirect: "error",
 			signal: AbortSignal.timeout(10000)
-		});
+		}));
 		assert.equal(response.status, 200);
 		const { claim } = await response.json();
 		const expected = approvedReaderDraft(definition, claim.topic._id);
