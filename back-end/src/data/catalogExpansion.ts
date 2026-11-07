@@ -1,3 +1,4 @@
+import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
@@ -24,6 +25,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-transport-housing-2026-11-06",
 		claims: novemberTransportHousingClaims,
 		dataSha256: "416a2f3253e2fa38b0dc905571142433c9bffb2473a0037f9725be186ec121bd"
+	},
+	{
+		id: "catalog-1501-household-energy-2026-11-07",
+		claims: novemberHouseholdEnergyClaims,
+		dataSha256: "07fa9ed9bd72d5c312d84f51a5154d72094bd481c504230deb2dcd1b1afe8352"
 	}
 ];
 

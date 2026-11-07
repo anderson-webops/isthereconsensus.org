@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberResearchCheckedAt } from "../src/data/claim-expansion-2026-11-shared.js";
@@ -20,13 +21,14 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberUrbanClaims.length, 10);
 		assert.equal(novemberLearningHabitsWorkClaims.length, 24);
 		assert.equal(novemberTransportHousingClaims.length, 18);
-		assert.equal(catalogExpansionClaims.length, 60);
-		assert.equal(defaultClaims.length, 1061);
+		assert.equal(novemberHouseholdEnergyClaims.length, 13);
+		assert.equal(catalogExpansionClaims.length, 73);
+		assert.equal(defaultClaims.length, 1074);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 60,
-			citations: 135,
-			catalog: 1061,
+			entries: 73,
+			citations: 165,
+			catalog: 1074,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
@@ -115,6 +117,57 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(cashout.evidenceCertainty, "low");
 		assert.match(cashout.sources.find(source => source.doi === "10.1016/j.tra.2018.04.025")!.note!, /stated-choice.*hypothetical/u);
 		assert.match(cashout.stableCore.join(" "), /not measured behavior/u);
+	});
+	it("seals the household-energy cohort with specific scopes and verified journal dates", () => {
+		assert.equal(readerExpansionValueHash(novemberHouseholdEnergyClaims), "07fa9ed9bd72d5c312d84f51a5154d72094bd481c504230deb2dcd1b1afe8352");
+		assert.notEqual(novemberHouseholdEnergyResearchCheckedAt, novemberTransportHousingResearchCheckedAt);
+		assert.ok(novemberHouseholdEnergyClaims.every(claim => claim.topicSlug === "energy-and-infrastructure" && claim.searchCutoffAt === novemberHouseholdEnergyResearchCheckedAt));
+		assert.equal(new Set(novemberHouseholdEnergyClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 13);
+		const citations = novemberHouseholdEnergyClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 30);
+		assert.equal(new Set(citations.map(source => source.doi)).size, 27);
+		for (const [doi, year] of [
+			["10.1111/sjoe.12422", 2021],
+			["10.1016/j.enbuild.2024.115161", 2025],
+			["10.1016/j.enbuild.2021.111572", 2022],
+			["10.1016/j.jeem.2023.102901", 2024],
+			["10.1111/jiec.13344", 2023]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		for (const doi of ["10.3386/w14429", "10.1016/j.rineng.2026.112105", "10.11648/j.ajee.20210901.11"]) {
+			assert.equal(citations.some(source => source.doi === doi), false);
+		}
+		assert.ok(citations.every(source => !/automated takeaway|this page|earlier draft/u.test(source.note!)));
+	});
+	it("distinguishes monitor offers, installation-adjusted effects and matched heating comparisons", () => {
+		const feedback = novemberHouseholdEnergyClaims.find(claim => claim.slug === "do-home-energy-feedback-displays-reduce-energy-use")!;
+		assert.match(feedback.stableCore.join(" "), /4\.7%.*offering.*5\.8%/u);
+		assert.match(feedback.sources[0].note!, /prevented fully randomized assignment/u);
+		assert.match(feedback.exclusionRules!.join(" "), /offer effects.*installation-adjusted/u);
+		const zonal = novemberHouseholdEnergyClaims.find(claim => claim.slug === "do-room-by-room-heating-controls-save-energy")!;
+		assert.match(zonal.stableCore.join(" "), /68 homes.*37.*3\.5%.*matched/u);
+		assert.match(zonal.misconceptions.join(" "), /across the intervention group.*not.*two-thirds/u);
+		const social = novemberHouseholdEnergyClaims.find(claim => claim.slug === "do-neighbor-comparisons-reduce-household-electricity-use")!;
+		assert.match(social.stableCore.join(" "), /6\.7%.*not persistent.*no overall reduction in water/u);
+	});
+	it("preserves energy denominators and measurement limits in engineering findings", () => {
+		const core = (slug: string) => novemberHouseholdEnergyClaims.find(claim => claim.slug === slug)!.stableCore.join(" ");
+		assert.match(core("do-solar-panels-lose-output-as-they-age"), /median rates around 0\.5%-0\.6%.*mean rates around 0\.8%-0\.9%/u);
+		assert.match(core("does-daylight-saving-time-reduce-electricity-use"), /0\.34%.*during days/u);
+		assert.match(core("do-time-of-use-electricity-prices-reduce-peak-demand"), /9%.*1%-2%.*conservative/u);
+		assert.match(core("does-home-battery-storage-reduce-greenhouse-gas-emissions"), /modeled 162 households/u);
+		assert.match(core("can-shading-and-night-ventilation-reduce-home-overheating"), /daytime conditions over 20 days.*does not directly establish overnight/u);
+		assert.match(core("do-led-bulbs-use-less-electricity-than-incandescent-bulbs"), /8\.5 W.*800 lumens.*60 W.*840 lumens/u);
+		assert.match(core("does-induction-cooking-use-less-energy-than-other-cooktops"), /ten percentage points.*simmering.*unclear/iu);
+	});
+	it("keeps heterogeneous household-energy answers qualified", () => {
+		const mixed = novemberHouseholdEnergyClaims.filter(claim => claim.consensusBand === "mixed");
+		assert.equal(mixed.length, 5);
+		for (const claim of mixed) {
+			assert.equal(claim.agreementLevel, "divided");
+			assert.equal(claim.evidenceSummaries![0].effectDirection, "mixed");
+			assert.ok(claim.uncertaintySummary && claim.exclusionRules?.length === 1);
+		}
+		assert.ok(novemberHouseholdEnergyClaims.every(claim => !/this update|earlier page|seeded|prototype/iu.test(claim.editorSummary!)));
 	});
 	it("records scoped evidence and honest review provenance on every new article", () => {
 		for (const claim of catalogExpansionClaims) {

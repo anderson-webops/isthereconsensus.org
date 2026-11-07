@@ -130,6 +130,35 @@ comparator and population limits, and describe variation across studies. Related
 reviews can contain overlapping experiments. No comprehensive systematic search,
 formal GRADE appraisal or independent expert review is claimed.
 
+## Household-energy cohort
+
+`catalog-1501-household-energy-2026-11-07` adds 13 reviews and 30 citations,
+covering 27 distinct DOIs. The source catalog reaches 1,074 reviews, leaving
+427 further source entries before the 1,501-entry objective. Public availability
+is measured separately; the fresh public count at this milestone's start was
+1,001.
+
+The reviews cover retrofit performance, feedback displays, neighbor comparisons,
+smart thermostats, room-by-room heating controls, time-of-use prices, daylight
+saving time, heat-pump water heaters, panel aging, home-battery emissions,
+passive overheating measures, LED lighting and induction cooking. Five answers
+retain mixed evidence, and each review has its own scope exclusion.
+
+All 27 selected DOIs have fresh canonical metadata and registered-update checks
+as of November 7, 2026, with no registered updates returned. Journal years are
+kept distinct from online and discovery dates. The Indiana working version,
+the future-issue cooling map and an unselected cooking overview remain outside
+the citation cohort.
+
+The feedback review distinguishes the Dutch monitor-offer estimate from the
+installation-adjusted estimate and records imperfect randomization. The
+zonal-heating review preserves its matched design and full-group denominator.
+Solar-panel rates distinguish median from mean and measurements from studies.
+Storage emissions, peak demand, total energy and household bills remain
+different outcomes. Daytime cooling measurements are not relabeled as measured
+night temperatures; boiling results are not generalized to every cooking task.
+Formal GRADE assessment and independent expert review are not claimed.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed
@@ -148,7 +177,7 @@ identity. Replays preserve published rows, human withdrawals, unowned drafts,
 source identities and private state. Failed validation leaves existing services
 available. Publication and review dates retain their separate meanings.
 
-The isolated production-startup rehearsal covers all 261 new and previously
-approved reviews, exact public article and citation payloads, restart stability,
+The isolated production-startup rehearsal covers every registered cohort,
+exact public article and citation payloads, restart stability,
 and human moderation across cohorts. The end goal remains open until the live
 catalog contains 1,501 distinct self-reviewed canonical reviews.
