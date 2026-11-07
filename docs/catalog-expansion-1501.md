@@ -215,6 +215,67 @@ collagen funding subgroups and overlapping reviews are distinguished. The
 ionizer study whose full correction was unavailable is excluded. Official EPA
 guidance has a citation-check date without an invented publication year.
 
+## Social-policy cohort
+
+`catalog-1501-social-policy-2026-11-07` adds ten reviews and 34 distinct
+DOI-linked citations. Questions cover ranked-choice voting, voter identification,
+school meals, childhood neighborhood exposure, financial education, retirement
+enrollment, payday credit, Oregon decriminalization, procedural-justice training
+and compulsory voting. Six answers retain mixed evidence.
+
+The selected sources have canonical metadata and registered-update checks dated
+November 7. Actual publisher corrections remain attached to the ranked-choice
+and Oregon articles, including the Oregon notice missing from the provider's
+registered-update response. Historical policy findings retain their jurisdiction
+and period. The 2026 NBER analysis remains a working paper. Citation years use
+the journal issue where available, including the 2019 UK payday-credit study.
+
+Self-review distinguishes voter-election observations from people, net turnout
+from identification burden, participation from meal or health outcomes, voucher
+offers from actual moves, knowledge from financial behavior, and contributions
+from lifetime savings. Follow-ups, methodological replies and related review
+versions remain parts of their underlying evidence rather than independent
+experiments. Conflicting Oregon results and policing legitimacy results remain
+explicit.
+
+## Care, learning and work cohort
+
+`catalog-1501-care-learning-2026-11-07` adds 20 reviews and 59 distinct DOI-linked
+citations. Together the two new cohorts bring the source catalog to 1,134
+distinct reviews, leaving 367 further source entries toward the 1,501 objective.
+Public availability is measured separately.
+
+Twelve care reviews cover cognitive stimulation for diagnosed dementia, the MIND
+diet, scalp cooling, cancer-pain cannabinoids, decision aids, loneliness,
+blood-pressure treatment and cognition, workplace burnout, music therapy,
+expressive writing, online CBT and behavioral activation. Eight learning and
+work reviews cover attainment grouping, summer programs, early-college high
+schools, performance pay, open-plan offices, teacher incentives, movement breaks
+and school suspensions. Eleven answers retain mixed evidence.
+
+All selected DOIs have canonical metadata and registered-update checks dated
+November 7. The completed 2023 Cochrane cancer-pain review replaces its protocol
+in discovery metadata. The SPRINT follow-up retains its actual correction to the
+composite-outcome axis. Two candidate syntheses with unavailable correction or
+methodological-comment text remain excluded. Journal issue years remain distinct
+from online-first dates.
+
+Fresh semantic review excluded hearing-aid cognition and hybrid-work performance
+drafts because existing reviews already cover those questions. Cognitive
+stimulation for diagnosed dementia and office layout provide distinct questions
+in their place. The retained six fetched records from the excluded drafts do
+not increase the entry count.
+
+Self-review distinguishes treatment from prevention, symptom scores from cure,
+composite cognitive outcomes from dementia alone, offer effects from attendance
+effects, direct comparisons from subgroup averages, and observational links from
+causal effects. National early-college follow-ups remain one lottery cohort,
+separate from the North Carolina study. Random teacher/pupil assignment does
+not become random assignment of merit pay. Clinical summaries retain necessary
+suitability limits without individual treatment instructions. Neither cohort
+claims independent expert review, a comprehensive systematic search or formal
+GRADE assessment.
+
 ## Publication invariants
 
 `catalogExpansion.ts` records an immutable content seal for each self-reviewed

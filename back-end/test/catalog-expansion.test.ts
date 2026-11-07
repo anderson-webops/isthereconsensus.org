@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } from "../src/data/claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
 import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
+import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
@@ -26,16 +28,98 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberHouseholdEnergyClaims.length, 13);
 		assert.equal(novemberCommonReaderClaims.length, 16);
 		assert.equal(novemberEverydayHealthEnvironmentClaims.length, 14);
-		assert.equal(catalogExpansionClaims.length, 103);
-		assert.equal(defaultClaims.length, 1104);
+		assert.equal(novemberSocialPolicyClaims.length, 10);
+		assert.equal(novemberCareLearningClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 133);
+		assert.equal(defaultClaims.length, 1134);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 103,
-			citations: 244,
-			catalog: 1104,
+			entries: 133,
+			citations: 337,
+			catalog: 1134,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals the policy and care cohorts with distinct source-check dates and scopes", () => {
+		assert.equal(readerExpansionValueHash(novemberSocialPolicyClaims), "15c9290f7da18174a586c80174c36d46f893d1ee8dd8e82b94d3914d735b4896");
+		assert.equal(readerExpansionValueHash(novemberCareLearningClaims), "c46db54ebd176e61558c182e7705e11e82105ed0eb5355a0aef8b26235c8743c");
+		assert.notEqual(novemberSocialPolicyResearchCheckedAt, novemberCareLearningResearchCheckedAt);
+		for (const [claims, checkedAt, citationCount, mixedCount] of [
+			[
+				novemberSocialPolicyClaims,
+				novemberSocialPolicyResearchCheckedAt,
+				34,
+				6
+			],
+			[
+				novemberCareLearningClaims,
+				novemberCareLearningResearchCheckedAt,
+				59,
+				11
+			]
+		] as const) {
+			assert.ok(claims.every(claim => claim.searchCutoffAt === checkedAt));
+			assert.equal(new Set(claims.map(claim => JSON.stringify(claim.exclusionRules))).size, claims.length);
+			const citations = claims.flatMap(claim => claim.sources);
+			assert.equal(citations.length, citationCount);
+			assert.equal(new Set(citations.map(source => source.doi)).size, citationCount);
+			assert.equal(claims.filter(claim => claim.consensusBand === "mixed").length, mixedCount);
+		}
+	});
+	it("retains primary correction notices beyond the provider's registered-update results", () => {
+		for (const [claims, doi, correction] of [
+			[novemberSocialPolicyClaims, "10.1111/ssqu.70025", "10.1111/ssqu.70044"],
+			[novemberSocialPolicyClaims, "10.1001/jamanetworkopen.2024.31612", "10.1001/jamanetworkopen.2024.43755"],
+			[novemberCareLearningClaims, "10.1212/wnl.0000000000213334", "10.1212/wnl.0000000000213686"]
+		] as const) {
+			const source = claims.flatMap(claim => claim.sources).find(source => source.doi === doi)!;
+			assert.equal(source.citationStatus, "corrected");
+			assert.ok(source.statusSources?.includes(`https://doi.org/${correction}`));
+		}
+		const oregon = novemberSocialPolicyClaims.find(claim => claim.slug === "did-oregons-drug-decriminalization-increase-overdose-deaths")!;
+		assert.equal(oregon.consensusBand, "mixed");
+		assert.match(oregon.sources.find(source => source.doi === "10.1001/jamanetworkopen.2024.31612")!.note!, /rates are deaths per population, not percentages/u);
+		assert.match(oregon.sources.find(source => source.doi === "10.3386/w35427")!.note!, /working paper/u);
+		const pressure = novemberCareLearningClaims.find(claim => claim.slug === "can-treating-high-blood-pressure-lower-dementia-risk")!;
+		assert.match(pressure.sources.find(source => source.doi === "10.1212/wnl.0000000000213334")!.note!, /Figure 3.*composite endpoint/u);
+		assert.match(pressure.stableCore.join(" "), /mild cognitive impairment than for dementia alone/u);
+	});
+	it("cites completed research versions and excludes unreviewed correction candidates", () => {
+		const careSources = novemberCareLearningClaims.flatMap(claim => claim.sources);
+		assert.equal(careSources.find(source => source.doi === "10.1002/14651858.CD014915.pub2")?.year, 2023);
+		assert.ok(careSources.some(source => source.doi === "10.1200/jco.23.02596" && source.kind === "guideline"));
+		for (const excluded of ["10.1002/14651858.cd014915", "10.1007/s00520-023-07662-1", "10.1016/j.ijnurstu.2022.104181"]) {
+			assert.equal(careSources.some(source => source.doi?.toLowerCase() === excluded), false);
+		}
+		assert.equal(careSources.find(source => source.doi === "10.1007/s10549-025-07858-5")?.year, 2026);
+		assert.equal(careSources.find(source => source.doi === "10.1016/j.buildenv.2020.107426")?.year, 2021);
+		const policySources = novemberSocialPolicyClaims.flatMap(claim => claim.sources);
+		assert.equal(policySources.find(source => source.doi === "10.1093/rfs/hhy090")?.year, 2019);
+		assert.equal(policySources.find(source => source.doi === "10.1016/j.jpubeco.2016.10.002")?.year, 2017);
+		assert.equal(policySources.find(source => source.doi === "10.1080/17457289.2021.1994579")?.year, 2023);
+	});
+	it("adds distinct dementia treatment and office-layout questions without duplicating existing reviews", () => {
+		for (const slug of ["is-hearing-loss-linked-to-higher-dementia-risk-and-can-hearing-aids-help", "how-does-hybrid-work-affect-employee-performance"]) {
+			assert.equal(defaultClaims.filter(claim => claim.slug === slug).length, 1);
+			assert.equal(novemberCareLearningClaims.some(claim => claim.slug === slug), false);
+		}
+		const stimulation = novemberCareLearningClaims.find(claim => claim.slug === "does-cognitive-stimulation-therapy-help-people-with-dementia")!;
+		assert.equal(stimulation.sources.length, 2);
+		assert.match(stimulation.exclusionRules!.join(" "), /do not establish prevention in cognitively healthy adults/u);
+		const office = novemberCareLearningClaims.find(claim => claim.slug === "how-do-open-plan-offices-affect-collaboration")!;
+		assert.equal(office.consensusBand, "mixed");
+		assert.match(office.sources[0].note!, /not randomized.*not total collaboration quality/u);
+	});
+	it("keeps observation units, follow-ups and intervention comparisons explicit", () => {
+		const identification = novemberSocialPolicyClaims.find(claim => claim.slug === "do-strict-voter-id-laws-reduce-turnout")!;
+		assert.match(identification.sources.find(source => source.doi === "10.1093/qje/qjab019")!.note!, /1\.6 billion voter-election observations.*not 1\.6 billion distinct people/u);
+		assert.match(identification.sources.find(source => source.doi === "10.1111/jels.12283")!.note!, /not an estimate of turnout loss under a strict/u);
+		const college = novemberCareLearningClaims.find(claim => claim.slug === "do-early-college-high-schools-increase-degree-completion")!;
+		assert.match(college.exclusionRules!.join(" "), /follow-ups of one experiment/u);
+		assert.match(college.sources[0].note!, /no longer significant/u);
+		const teacher = novemberCareLearningClaims.find(claim => claim.slug === "does-teacher-merit-pay-improve-student-achievement")!;
+		assert.match(teacher.sources.find(source => source.doi === "10.1002/pam.20022")!.note!, /not random assignment of teachers to receive merit pay/u);
 	});
 	it("seals distinct everyday health and environment questions and their checked sources", () => {
 		assert.equal(readerExpansionValueHash(novemberEverydayHealthEnvironmentClaims), "1466a07509ff63a35b6810870fd7ce4e8e09eb17a67d6d2f20ae9d248fe20aa3");
