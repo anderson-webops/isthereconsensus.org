@@ -8,6 +8,16 @@ describe("topic guide starter claims", () => {
 	it("provides one guide for every seeded topic", () => {
 		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map(topic => topic.slug)));
 	});
+	it("offers workplace entry points without inventing a topic-wide numerical consensus", () => {
+		const guide = topicGuides["work-and-organizations"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"does-workplace-coaching-improve-performance",
+			"does-employee-monitoring-improve-work-performance",
+			"do-anonymous-applications-reduce-hiring-discrimination"
+		]);
+		assert.match(guide.consensusLabel, /depend on the intervention/u);
+	});
 	it("offers animal-welfare entry points without inventing a topic-wide numerical consensus", () => {
 		const guide = topicGuides["animal-behavior-and-welfare"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

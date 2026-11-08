@@ -50,6 +50,41 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"work-and-organizations": {
+		slug: "work-and-organizations",
+		consensusLabel: "Effects depend on the intervention",
+		snapshot: "Structured training can help, while many productivity claims have weaker support. The job, program and outcome matter: performance ratings, useful output and worker well-being measure different things.",
+		stableCore: [
+			"Controlled studies support some training and coaching programs, with varied benefits.",
+			"A correlation with performance does not establish that changing a survey score will improve work.",
+			"Better screening, higher productivity, more profit and better worker experience are separate outcomes."
+		],
+		openQuestions: [
+			"Which interventions produce lasting benefits in independently measured work outcomes?",
+			"How do costs, access, job demands and local conditions alter the results?"
+		],
+		whatWouldChangeMinds: [
+			"Independent workplace evaluations with credible comparisons, long follow-up and full cost reporting.",
+			"Replications that distinguish useful output, worker well-being and unintended effects."
+		],
+		commonMisreads: [
+			"A performance correlation is not a percentage productivity gain or a prediction about an individual worker."
+		],
+		starterQuestions: [
+			"Does workplace coaching improve performance?",
+			"Does employee monitoring improve work performance?",
+			"Do anonymous applications reduce hiring discrimination?"
+		],
+		starterClaimSlugs: [
+			"does-workplace-coaching-improve-performance",
+			"does-employee-monitoring-improve-work-performance",
+			"do-anonymous-applications-reduce-hiring-discrimination"
+		],
+		evidenceTrail: [
+			{ title: "Controlled intervention studies", note: "Compare a defined program with a credible alternative and measure what changes afterward." },
+			{ title: "Longitudinal and field evidence", note: "Shows how work outcomes vary over time, with selection and local conditions still important." }
+		]
+	},
 	"animal-behavior-and-welfare": {
 		slug: "animal-behavior-and-welfare",
 		consensusLabel: "Established behavioral needs, uneven evidence about experience",

@@ -1,5 +1,39 @@
 # Catalog expansion to 1,501 reviews
 
+## Work and organizations cohort
+
+`catalog-1501-workplace-2026-11-08` adds twenty distinct reviews in the new
+Work & organizations topic, with 66 distinct DOI-linked references. The source
+catalog reaches 1,278 definitions across 38 topics, leaving 223 further source
+entries toward 1,501. Public availability remains a separate result.
+
+Questions cover employee monitoring, structured interviews, leadership and
+teamwork training, coaching, psychological safety, diversity, mentoring,
+brainstorming, conflict, job crafting, multisource feedback, engagement,
+autonomy, detachment, commuting, office plants, employee ownership, business
+training and anonymous applications. Ten answers retain mixed evidence and
+three retain low certainty. Existing pay-for-performance, personality,
+hybrid-work, shorter-week, burnout and general goal-setting reviews keep their
+separate scopes rather than being counted again.
+
+Research retains 33 actual Consensus searches, 71 DOI-bearing fetched records,
+one additional unusable monitoring record and one independently verified current
+World of Labor overview. All 72 DOI metadata/update and PubMed query outcomes
+completed. Primary and complete indexed abstracts replace generated takeaways.
+The overview's version 3 is dated January 2025 by its publisher, while Crossref
+lists 2024; the citation preserves the observed publisher version date and
+discloses the difference. The incomplete version-2 record is not cited.
+
+Self-review separates correlations from intervention effects, interview validity
+from hiring accuracy, course ratings from leadership behavior, nominal from
+interacting groups, constructive challenge from conflict, rating changes from
+causal gains, and screening invitations from final offers. It retains null
+crafting and plant results, feedback attrition and active comparisons, weak
+ownership associations, compensation costs and the adverse French anonymization
+result. Team findings do not support individual hiring judgments or claims of
+innate group ability. Independent expert review, comprehensive systematic
+searching and formal site-performed GRADE are not claimed.
+
 ## Human-wildlife and pollution cohort
 
 `catalog-1501-human-wildlife-2026-11-08` adds twenty distinct reviews with

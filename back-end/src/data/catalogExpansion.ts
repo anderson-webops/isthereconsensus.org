@@ -16,6 +16,7 @@ import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-pol
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
 import { novemberWomensHealthSupportClaims } from "./claim-expansion-2026-11-womens-health-support.js";
+import { novemberWorkplaceClaims } from "./claim-expansion-2026-11-workplace.js";
 
 export const CATALOG_ENTRY_GOAL = 1501;
 export const catalogExpansionReleases = [
@@ -108,6 +109,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-human-wildlife-2026-11-08",
 		claims: novemberHumanWildlifeClaims,
 		dataSha256: "a100d8423eec9267a6c5a9b0ea8370854bd322d1adc628ecbdf8f2724eb28921"
+	},
+	{
+		id: "catalog-1501-workplace-2026-11-08",
+		claims: novemberWorkplaceClaims,
+		dataSha256: "d02a2fc62365c0f052e40799910af4277c3c5fae4718eb8702a104a6220c587c"
 	}
 ];
 

@@ -20,7 +20,9 @@ import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } fro
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
 import { novemberWomensHealthSupportClaims, novemberWomensHealthSupportResearchCheckedAt } from "../src/data/claim-expansion-2026-11-womens-health-support.js";
+import { novemberWorkplaceClaims, novemberWorkplaceResearchCheckedAt } from "../src/data/claim-expansion-2026-11-workplace.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
+import { defaultTopics } from "../src/data/topics.js";
 import { SourcePublication } from "../src/models/schemas/SourcePublication.js";
 import { validateApprovedReaderRelease } from "../src/utils/approvedReaderPublication.js";
 import { publishCatalogExpansion, validateCatalogExpansion } from "../src/utils/catalogExpansionPublication.js";
@@ -44,16 +46,93 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 257);
-		assert.equal(defaultClaims.length, 1258);
+		assert.equal(novemberWorkplaceClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 277);
+		assert.equal(defaultClaims.length, 1278);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 257,
-			citations: 732,
-			catalog: 1258,
+			entries: 277,
+			citations: 798,
+			catalog: 1278,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty workplace questions with distinct scopes and source evidence", () => {
+		assert.equal(readerExpansionValueHash(novemberWorkplaceClaims), "d02a2fc62365c0f052e40799910af4277c3c5fae4718eb8702a104a6220c587c");
+		assert.equal(novemberWorkplaceResearchCheckedAt, "2026-11-08T09:52:13.789Z");
+		assert.ok(novemberWorkplaceClaims.every(claim => claim.searchCutoffAt === novemberWorkplaceResearchCheckedAt));
+		const citations = novemberWorkplaceClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 66);
+		assert.equal(new Set(citations.map(source => source.doi!.toLowerCase())).size, 66);
+		assert.ok(citations.every(source => source.citationCheckedAt === novemberWorkplaceResearchCheckedAt && source.citationStatus === "current"));
+		assert.equal(new Set(novemberWorkplaceClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		assert.equal(novemberWorkplaceClaims.filter(claim => claim.consensusBand === "mixed").length, 10);
+		assert.equal(novemberWorkplaceClaims.filter(claim => claim.evidenceCertainty === "low").length, 3);
+	});
+	it("registers the workplace topic without replacing existing topics or unrelated questions", () => {
+		assert.equal(defaultTopics.filter(topic => topic.slug === "work-and-organizations").length, 1);
+		assert.equal(defaultTopics.find(topic => topic.slug === "work-and-organizations")!.order, 38);
+		assert.ok(defaultTopics.some(topic => topic.slug === "animal-behavior-and-welfare"));
+		assert.ok(novemberWorkplaceClaims.every(claim => claim.topicSlug === "work-and-organizations"));
+		assert.ok(defaultClaims.some(claim => claim.slug === "does-performance-related-pay-improve-job-performance"));
+		assert.equal(novemberWorkplaceClaims.some(claim => /performance-related-pay|personality-traits-predict/iu.test(claim.slug)), false);
+	});
+	it("uses workplace issue years and the observed publisher version date", () => {
+		const citations = novemberWorkplaceClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1146/annurev-orgpsych-110622-060758", 2025],
+			["10.1111/ijsa.12494", 2025],
+			["10.1146/annurev-orgpsych-020924-072127", 2026],
+			["10.1111/puar.13356", 2022],
+			["10.1177/0894845320957737", 2022],
+			["10.1037/apl0001315", 2026],
+			["10.1080/1359432x.2021.1953989", 2022],
+			["10.1080/1359432x.2021.1972973", 2022],
+			["10.1016/j.jbusres.2016.08.014", 2017],
+			["10.1111/corg.12585", 2025],
+			["10.1257/app.20180340", 2021],
+			["10.1086/714592", 2022],
+			["10.15185/izawol.48.v3", 2025]
+		] as const) assert.equal(citations.find(source => source.doi === doi)!.year, year, doi);
+	});
+	it("retains important workplace units, selection and active-comparator limits", () => {
+		const citations = novemberWorkplaceClaims.flatMap(claim => claim.sources);
+		assert.match(citations.find(source => source.doi === "10.1111/ijsa.12494")!.note!, /4,449 after one large study/u);
+		assert.match(citations.find(source => source.doi === "10.1037/apl0000241")!.note!, /not randomized causal tests/u);
+		assert.match(citations.find(source => source.doi === "10.1002/hrm.3930320210")!.note!, /48 of 198/u);
+		assert.match(citations.find(source => source.doi === "10.1002/joe.22299")!.note!, /not constitute 360-degree feedback versus no feedback/u);
+		assert.match(citations.find(source => source.doi === "10.1016/j.jesp.2016.11.002")!.note!, /not an independent comprehensive meta-analysis/u);
+		assert.match(citations.find(source => source.doi === "10.1086/714592")!.note!, /not 21% gains/u);
+	});
+	it("keeps conflicting workplace evidence visible", () => {
+		const crafting = novemberWorkplaceClaims.find(claim => claim.slug === "can-job-crafting-improve-work-engagement")!;
+		assert.ok(crafting.sources.some(source => source.doi === "10.1037/str0000391" && source.stance === "debate"));
+		assert.match(crafting.bottomLine, /without a clear improvement/u);
+		const plants = novemberWorkplaceClaims.find(claim => claim.slug === "do-office-plants-make-people-more-productive")!;
+		assert.match(plants.sources.find(source => source.doi === "10.3390/environments13080457")!.note!, /unchanged productivity/u);
+		const ownership = novemberWorkplaceClaims.find(claim => claim.slug === "does-employee-ownership-improve-company-performance")!;
+		assert.match(ownership.sources.find(source => source.doi === "10.1016/j.jbusres.2016.08.014")!.note!, /not statistically clear/u);
+		const anonymous = novemberWorkplaceClaims.find(claim => claim.slug === "do-anonymous-applications-reduce-hiring-discrimination")!;
+		assert.ok(anonymous.sources.some(source => source.doi === "10.1257/app.20140185" && source.stance === "debate"));
+		assert.match(anonymous.stableCore.join(" "), /less likely to be interviewed or hired/u);
+	});
+	it("preserves the commuting synthesis and current anonymous-application overview", () => {
+		const citations = novemberWorkplaceClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.find(source => source.doi === "10.1177/20413866221131404")!.kind, "meta_analysis");
+		const overview = citations.find(source => source.doi === "10.15185/izawol.48.v3")!;
+		assert.equal(overview.kind, "technical_reference");
+		assert.match(overview.note!, /January 2025.*Crossref lists 2024/u);
+		assert.ok(overview.statusSources!.includes("https://doi.org/10.15185/izawol.48.v3"));
+		assert.equal(citations.some(source => source.doi === "10.15185/izawol.48.v2"), false);
+	});
+	it("retains honest workplace provenance without hiring or investment promises", () => {
+		assert.ok(novemberWorkplaceClaims.every(claim => /independent expert review not completed/u.test(claim.reviewerLine!)));
+		assert.ok(novemberWorkplaceClaims.every(claim => claim.appraisalTools!.some(tool => /no formal GRADE assessment/u.test(tool))));
+		const diversity = novemberWorkplaceClaims.find(claim => claim.slug === "how-does-team-diversity-relate-to-performance")!;
+		assert.match(diversity.exclusionRules!.join(" "), /individual hiring decisions/u);
+		const ownership = novemberWorkplaceClaims.find(claim => claim.slug === "does-employee-ownership-improve-company-performance")!;
+		assert.match(ownership.exclusionRules!.join(" "), /personal investment advice/u);
 	});
 	it("seals twenty human-wildlife questions with distinct scopes and verified sources", () => {
 		assert.equal(readerExpansionValueHash(novemberHumanWildlifeClaims), "a100d8423eec9267a6c5a9b0ea8370854bd322d1adc628ecbdf8f2724eb28921");

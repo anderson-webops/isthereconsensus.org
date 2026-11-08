@@ -257,5 +257,12 @@ export const defaultTopics = [
 		description: "Learning, social behavior, housing and welfare in companion, farmed and zoo animals, including evidence about sentience.",
 		order: 37,
 		accent: "#58735a"
+	},
+	{
+		title: "Work & organizations",
+		slug: "work-and-organizations",
+		description: "Hiring, workplace training, teamwork, employee well-being and business practices.",
+		order: 38,
+		accent: "#8c6546"
 	}
 ];
