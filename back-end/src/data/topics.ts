@@ -264,5 +264,12 @@ export const defaultTopics = [
 		description: "Hiring, workplace training, teamwork, employee well-being and business practices.",
 		order: 38,
 		accent: "#8c6546"
+	},
+	{
+		title: "Consumer choices",
+		slug: "consumer-choices",
+		description: "Prices, advertising, product labels, reviews and shopping behavior.",
+		order: 39,
+		accent: "#7b6744"
 	}
 ];

@@ -1,6 +1,7 @@
 import { novemberAnimalWelfareClaims } from "./claim-expansion-2026-11-animal-welfare.js";
 import { novemberCareLearningClaims } from "./claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
+import { novemberConsumerChoicesClaims } from "./claim-expansion-2026-11-consumer-choices.js";
 import { novemberEcologyConservationClaims } from "./claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberExerciseRecoveryClaims } from "./claim-expansion-2026-11-exercise-recovery.js";
@@ -120,6 +121,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-social-connection-2026-11-08",
 		claims: novemberSocialConnectionClaims,
 		dataSha256: "af42013c72ec5d1db2cca1db531f5b2a59e35159923d63f3c6b8fe624365d4cf"
+	},
+	{
+		id: "catalog-1501-consumer-choices-2026-11-08",
+		claims: novemberConsumerChoicesClaims,
+		dataSha256: "9d18d42069a103b09d9bd537d6782abcaed26df9b16bb214cba3b8d98a0c3957"
 	}
 ];
 

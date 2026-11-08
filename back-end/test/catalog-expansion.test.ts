@@ -4,6 +4,7 @@ import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } 
 import { novemberAnimalWelfareClaims, novemberAnimalWelfareResearchCheckedAt } from "../src/data/claim-expansion-2026-11-animal-welfare.js";
 import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } from "../src/data/claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
+import { novemberConsumerChoicesClaims, novemberConsumerChoicesResearchCheckedAt } from "../src/data/claim-expansion-2026-11-consumer-choices.js";
 import { novemberEcologyConservationClaims, novemberEcologyConservationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberExerciseRecoveryClaims, novemberExerciseRecoveryResearchCheckedAt } from "../src/data/claim-expansion-2026-11-exercise-recovery.js";
@@ -49,16 +50,93 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
 		assert.equal(novemberWorkplaceClaims.length, 20);
 		assert.equal(novemberSocialConnectionClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 297);
-		assert.equal(defaultClaims.length, 1298);
+		assert.equal(novemberConsumerChoicesClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 317);
+		assert.equal(defaultClaims.length, 1318);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 297,
-			citations: 864,
-			catalog: 1298,
+			entries: 317,
+			citations: 925,
+			catalog: 1318,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty consumer questions with distinct scopes and sixty-one papers", () => {
+		assert.equal(readerExpansionValueHash(novemberConsumerChoicesClaims), "9d18d42069a103b09d9bd537d6782abcaed26df9b16bb214cba3b8d98a0c3957");
+		assert.equal(novemberConsumerChoicesResearchCheckedAt, "2026-11-08T13:06:14.080Z");
+		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.searchCutoffAt === novemberConsumerChoicesResearchCheckedAt));
+		assert.equal(new Set(novemberConsumerChoicesClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		const citations = novemberConsumerChoicesClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 61);
+		assert.equal(new Set(citations.map(source => source.doi!.toLowerCase())).size, 61);
+		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.consensusBand === "mixed").length, 8);
+		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.evidenceCertainty === "low").length, 8);
+	});
+	it("adds a consumer topic while preserving distinct existing decision questions", () => {
+		assert.equal(defaultTopics.length, 39);
+		assert.equal(defaultTopics.filter(topic => topic.slug === "consumer-choices").length, 1);
+		assert.equal(defaultTopics.find(topic => topic.slug === "consumer-choices")!.order, 39);
+		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.topicSlug === "consumer-choices"));
+		assert.ok(defaultClaims.some(claim => claim.title === "Do past irrecoverable costs influence current decisions?"));
+		assert.ok(defaultClaims.some(claim => claim.title === "Does having more choice make decisions harder?"));
+		assert.equal(novemberConsumerChoicesClaims.some(claim => /sunk|loss-aversion|default-options|choice-overload|numerical-anchoring/u.test(claim.slug)), false);
+	});
+	it("retains all three consumer citation corrections with valid notice links", () => {
+		const citations = novemberConsumerChoicesClaims.flatMap(claim => claim.sources);
+		assert.ok(citations.every(source => source.citationCheckedAt === novemberConsumerChoicesResearchCheckedAt));
+		assert.equal(citations.filter(source => source.citationStatus === "corrected").length, 3);
+		for (const [article, notice] of [
+			["10.1038/s41539-025-00341-2", "10.1038/s41539-025-00387-2"],
+			["10.1177/0956797617736386", "10.1177/0956797618815623"],
+			["10.1080/15252019.2024.2417422", "10.1080/15252019.2025.2506340"]
+		]) {
+			const source = citations.find(source => source.doi === article)!;
+			assert.equal(source.citationStatus, "corrected");
+			assert.ok(source.statusSources!.includes(`https://doi.org/${notice}`));
+		}
+		assert.equal(citations.some(source => source.doi === "10.1111/obr.12445"), false);
+		assert.ok(citations.every(source => source.statusSources!.every(value => URL.canParse(value))));
+	});
+	it("uses observed consumer journal issue dates instead of discovery-index years", () => {
+		const citations = novemberConsumerChoicesClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1093/jcr/ucaa047", 2021],
+			["10.1002/cb.2418", 2025],
+			["10.1007/s10796-021-10170-4", 2022],
+			["10.1007/s11747-021-00804-z", 2022],
+			["10.1002/jcpy.1353", 2024],
+			["10.1057/s41270-025-00415-5", 2026],
+			["10.1509/jmr.10.0355", 2014],
+			["10.1111/poms.13640", 2022],
+			["10.1002/joom.1346", 2025]
+		] as const) assert.equal(citations.find(source => source.doi === doi)!.year, year, doi);
+	});
+	it("preserves null findings, comparison groups and outcome units in consumer evidence", () => {
+		const labels = novemberConsumerChoicesClaims.find(claim => claim.slug === "do-front-of-pack-nutrition-labels-improve-food-choices")!;
+		assert.match(labels.misconceptions.join(" "), /positive-only labels, not.*unlabeled/u);
+		assert.match(labels.sources.find(source => source.doi === "10.1007/s11747-020-00723-5")!.note!, /2.5%.*score, not calories or disease/u);
+		const prices = novemberConsumerChoicesClaims.find(claim => claim.slug === "do-prices-ending-in-99-change-buying-decisions")!;
+		assert.match(prices.sources.find(source => source.doi === "10.3389/frbhe.2026.1828446")!.note!, /N=729.*do not reliably change/u);
+		const eco = novemberConsumerChoicesClaims.find(claim => claim.slug === "do-environmental-food-labels-change-what-shoppers-choose")!;
+		assert.match(eco.exclusionRules!.join(" "), /modeled score.*measured emissions/u);
+		const reviews = novemberConsumerChoicesClaims.find(claim => claim.slug === "do-online-customer-reviews-influence-buying")!;
+		assert.match(reviews.misconceptions.join(" "), /0.091.*not a 9.1% sales increase/u);
+	});
+	it("retains corrected hypotheses and separates randomized and observational components", () => {
+		const personalized = novemberConsumerChoicesClaims.find(claim => claim.slug === "are-personalized-ads-more-persuasive-than-generic-ads")!;
+		assert.match(personalized.sources.find(source => source.doi === "10.1080/15252019.2024.2417422")!.note!, /Hypothesis 6.*not supported/u);
+		assert.match(personalized.exclusionRules!.join(" "), /privacy-policy change randomized/u);
+		const ownership = novemberConsumerChoicesClaims.find(claim => claim.slug === "does-owning-something-change-how-much-you-value-it")!;
+		assert.match(ownership.exclusionRules!.join(" "), /reused original data.*independent replication/u);
+		const scarcity = novemberConsumerChoicesClaims.find(claim => claim.slug === "do-scarcity-messages-make-products-more-appealing")!;
+		assert.match(scarcity.exclusionRules!.join(" "), /intention.*actual booking/u);
+	});
+	it("keeps consumer review provenance qualified and article scope specific", () => {
+		assert.ok(novemberConsumerChoicesClaims.every(claim => /independent expert review not completed/u.test(claim.reviewerLine!)));
+		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.appraisalTools!.some(tool => /no formal GRADE assessment/u.test(tool))));
+		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.sources.every(source => source.appraisal === "not_appraised")));
+		assert.ok(novemberConsumerChoicesClaims.every(claim => !/earlier page|this update|seeded claim/u.test(claim.editorSummary!)));
 	});
 	it("seals twenty social-connection reviews with question-specific scope", () => {
 		assert.equal(readerExpansionValueHash(novemberSocialConnectionClaims), "af42013c72ec5d1db2cca1db531f5b2a59e35159923d63f3c6b8fe624365d4cf");
@@ -124,7 +202,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
 	});
 	it("preserves existing social topics and related reviews without counting them again", () => {
-		assert.equal(defaultTopics.length, 38);
+		assert.equal(defaultTopics.length, 39);
 		const existingTopics = new Set([
 			"neuroscience-and-psychology",
 			"mental-health-and-treatment",

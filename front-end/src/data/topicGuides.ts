@@ -50,6 +50,40 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"consumer-choices": {
+		slug: "consumer-choices",
+		consensusLabel: "Effects depend on the decision",
+		snapshot: "Prices, reviews, labels and advertising can influence choices. Effects on expectations and stated intentions are often clearer than changes in actual purchases.",
+		stableCore: [
+			"The same product or saving can be judged differently when its presentation changes.",
+			"A stronger intention to buy does not establish a completed purchase.",
+			"Retail transaction studies capture real behavior, while customer selection complicates causal claims."
+		],
+		openQuestions: [
+			"Which experimental effects persist in ordinary shopping with real budgets?",
+			"How do costs, privacy expectations and product knowledge change the results?"
+		],
+		whatWouldChangeMinds: [
+			"Independent field experiments measuring purchases after returns and all charges.",
+			"Preregistered replications across markets, products and shopper groups."
+		],
+		commonMisreads: [
+			"A persuasive label or endorsement does not independently verify quality, value or health benefit."
+		],
+		starterQuestions: [
+			"Does a higher price make a product seem better?",
+			"Do prices ending in .99 change buying decisions?",
+			"Do front-of-pack nutrition labels improve food choices?"
+		],
+		starterClaimSlugs: [
+			"does-a-higher-price-make-a-product-seem-better",
+			"do-prices-ending-in-99-change-buying-decisions",
+			"do-front-of-pack-nutrition-labels-improve-food-choices"
+		],
+		evidenceTrail: [
+			{ title: "Experimental and field evidence", note: "Randomized comparisons, survey associations and transaction records answer different causal questions." }
+		]
+	},
 	"work-and-organizations": {
 		slug: "work-and-organizations",
 		consensusLabel: "Effects depend on the intervention",

@@ -1,5 +1,42 @@
 # Catalog expansion to 1,501 reviews
 
+## Consumer choices cohort
+
+`catalog-1501-consumer-choices-2026-11-08` adds twenty reviews in the new
+Consumer choices topic, with 61 distinct DOI-linked references. The source
+catalog reaches 1,318 definitions across 39 topics, leaving 183 further source
+entries toward 1,501. Public availability remains separately verified.
+
+Questions cover price and quality, online reviews, scarcity, nutrition labels,
+cashless payments, food advertising, store music, returns, ownership, decoys,
+experiential purchases, impulse buying, environmental labels, loyalty programs,
+discount frames, price endings, health halos, celebrity endorsements,
+personalized advertising and shipping. Eight answers retain mixed evidence
+and eight low certainty. Existing sunk-cost, loss-aversion, default, choice
+overload, anchoring and restaurant-menu questions retain their separate scopes.
+
+Twenty-nine targeted Consensus searches produced 66 fetched candidate records.
+All have canonical metadata/update and PubMed-query outcomes. The manuscript
+uses 14 official PubMed abstracts, 22 publisher abstracts, 12 usable fetched
+abstracts and 13 complete indexed abstracts. Five unused candidates are retained,
+including an incomplete low-income-payment record and a corrected older food
+review whose notice text was unavailable. Neither supplies manuscript evidence.
+
+Three cited corrections remain linked and marked corrected. The decoy paper's
+notice fixes figure-legend assignment. The experiential-purchase notice removes
+a mismatched manipulation-check scale and updates another check. The personalized
+advertising notice changes hypothesis wording and reports that the predicted
+negative surveillance relationship was unsupported. Its older abstract does not
+override the corrected result. Observed journal issue years replace mismatched
+discovery-index years without changing DOI identities.
+
+Self-review separates expectations from product quality, intentions from buying,
+correlations from experiments, repeated datasets from independent samples and
+nutrient or environmental scores from measured health or emissions. It retains
+null replications, publication bias, selection, comparator definitions and
+return-adjusted purchases. Independent expert review, comprehensive systematic
+searching and formal site-performed GRADE assessment are not claimed.
+
 ## Social connection and well-being cohort
 
 `catalog-1501-social-connection-2026-11-08` adds twenty reviews with 66
