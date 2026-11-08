@@ -278,5 +278,12 @@ export const defaultTopics = [
 		description: "Language learning, literacy, teaching and spoken communication.",
 		order: 40,
 		accent: "#586d85"
+	},
+	{
+		title: "Arts & creativity",
+		slug: "arts-and-creativity",
+		description: "Music, fiction, art appreciation and creative thinking.",
+		order: 41,
+		accent: "#7b5e71"
 	}
 ];

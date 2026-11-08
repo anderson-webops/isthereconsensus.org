@@ -155,6 +155,7 @@ try {
 	assert.ok(absentTopicSlugs.includes("work-and-organizations"));
 	assert.ok(absentTopicSlugs.includes("consumer-choices"));
 	assert.ok(absentTopicSlugs.includes("language-and-communication"));
+	assert.ok(absentTopicSlugs.includes("arts-and-creativity"));
 	assert.equal(await Claim.countDocuments({ status: "published" }), 800);
 	const baseline = await Claim.findOne({ status: "published" });
 	baseline.editorSummary = "Preserved human correction in an existing review.";

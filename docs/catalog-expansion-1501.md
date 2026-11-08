@@ -1,5 +1,42 @@
 # Catalog expansion to 1,501 reviews
 
+## Arts and creativity cohort
+
+`catalog-1501-arts-creativity-2026-11-08` adds twenty self-reviewed reviews
+with 61 references representing 60 distinct DOI-linked papers. Twelve reviews
+introduce Arts & creativity; eight extend existing education, exercise, sleep
+and health topics. The source catalog reaches 1,358 definitions across
+41 topics, leaving 143 further source entries toward 1,501. Public availability
+remains separately verified.
+
+Questions cover cognitive music transfer, fiction and empathy, creativity
+training, incubation, constraints, rewards, walking, arts and school attainment,
+exercise music, sleep, Mozart, pain, anxiety, reading, adult absolute pitch,
+violin comparisons, art expertise, museum visits, drama and chess transfer.
+Ten answers retain mixed evidence and fifteen low certainty. Three new topic
+entry points link to canonical reviews.
+
+Research retains 29 targeted Consensus searches and 61 fetched candidates,
+complete canonical metadata/update and PubMed-query outcomes, and 36 official
+XML abstracts. One truncated older chess abstract remains unused. An existing
+photo-memory question was excluded from the expansion after overlap review.
+A pain-review erratum was found through PubMed despite the Crossref registered
+update check returning no notice. The publisher's supplementary-material
+correction and reciprocal PubMed linkage are retained, with corrected status
+and notice URL in the citation.
+
+Self-review preserves conflicting music-transfer estimates, publication-bias
+adjustments, mixed fiction replications, null convergent-thinking and
+physiological outcomes, weak reading-fluency transfer, variable pitch learning,
+and contradictory violin preferences. Related museum publications and the
+field-trip paper's use in two questions remain distinct from independent
+replication counts. Small uncontrolled drama and chess reports retain their
+design limitations. Integrative and conceptual papers remain contextual;
+pivotal primary examples retain low or bounded certainty without a formal
+quality appraisal. Canonical issue years retain online-date distinctions.
+No independent expert review, comprehensive systematic search or formal
+site-performed GRADE assessment is claimed.
+
 ## Language and communication cohort
 
 `catalog-1501-language-communication-2026-11-08` adds twenty self-reviewed

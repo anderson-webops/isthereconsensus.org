@@ -50,6 +50,40 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"arts-and-creativity": {
+		slug: "arts-and-creativity",
+		consensusLabel: "Benefits depend on the activity and outcome",
+		snapshot: "Arts and creative activities can affect tested skills and experiences. Lasting transfer to unrelated abilities is often less certain.",
+		stableCore: [
+			"Creative-task scores, academic achievement and everyday behavior measure different outcomes.",
+			"Active comparison activities and starting differences change many transfer estimates.",
+			"Preferences vary across people, cultures, artworks and instruments."
+		],
+		openQuestions: [
+			"Which gains last and transfer beyond the activity being practiced?",
+			"How do programs compare with equally engaging alternatives?"
+		],
+		whatWouldChangeMinds: [
+			"Preregistered trials with active controls and meaningful delayed outcomes.",
+			"Independent replications with broader samples and complete reporting."
+		],
+		commonMisreads: [
+			"A laboratory score or average preference does not establish a universal benefit or ranking."
+		],
+		starterQuestions: [
+			"Do music lessons improve general thinking skills?",
+			"Does reading fiction improve empathy?",
+			"Can creativity be improved through training?"
+		],
+		starterClaimSlugs: [
+			"do-music-lessons-improve-general-thinking-skills",
+			"does-reading-fiction-improve-empathy",
+			"can-creativity-be-improved-through-training"
+		],
+		evidenceTrail: [
+			{ title: "Controlled comparisons and syntheses", note: "Active controls, replication and source overlap shape conclusions about transfer." }
+		]
+	},
 	"language-and-communication": {
 		slug: "language-and-communication",
 		consensusLabel: "Results depend on the skill and setting",

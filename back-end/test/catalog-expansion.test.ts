@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
 import { novemberAnimalWelfareClaims, novemberAnimalWelfareResearchCheckedAt } from "../src/data/claim-expansion-2026-11-animal-welfare.js";
+import { novemberArtsCreativityClaims, novemberArtsCreativityResearchCheckedAt } from "../src/data/claim-expansion-2026-11-arts-creativity.js";
 import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } from "../src/data/claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
 import { novemberConsumerChoicesClaims, novemberConsumerChoicesResearchCheckedAt } from "../src/data/claim-expansion-2026-11-consumer-choices.js";
@@ -53,16 +54,90 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberSocialConnectionClaims.length, 20);
 		assert.equal(novemberConsumerChoicesClaims.length, 20);
 		assert.equal(novemberLanguageCommunicationClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 337);
-		assert.equal(defaultClaims.length, 1338);
+		assert.equal(novemberArtsCreativityClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 357);
+		assert.equal(defaultClaims.length, 1358);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 337,
-			citations: 986,
-			catalog: 1338,
+			entries: 357,
+			citations: 1047,
+			catalog: 1358,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty arts questions with distinct scopes and qualified certainty", () => {
+		assert.equal(readerExpansionValueHash(novemberArtsCreativityClaims), "4f58f6ea14ac14a87407dd0f57ae132d9dd2882e0fd5d166af895d8a44aed1c0");
+		assert.equal(novemberArtsCreativityResearchCheckedAt, "2026-11-08T16:13:44.746Z");
+		assert.ok(novemberArtsCreativityClaims.every(claim => claim.searchCutoffAt === novemberArtsCreativityResearchCheckedAt));
+		assert.equal(new Set(novemberArtsCreativityClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		const citations = novemberArtsCreativityClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 61);
+		assert.equal(new Set(citations.map(source => source.doi!.toLowerCase())).size, 60);
+		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.consensusBand === "mixed").length, 10);
+		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.evidenceCertainty === "low").length, 15);
+	});
+	it("adds an arts topic and preserves separately scoped existing questions", () => {
+		assert.equal(defaultTopics.length, 41);
+		assert.equal(defaultTopics.filter(topic => topic.slug === "arts-and-creativity").length, 1);
+		assert.equal(defaultTopics.find(topic => topic.slug === "arts-and-creativity")!.order, 41);
+		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.topicSlug === "arts-and-creativity").length, 12);
+		assert.ok(defaultClaims.some(claim => claim.title === "Does taking photos change what people remember?"));
+		assert.ok(defaultClaims.some(claim => claim.title === "Does background music help people study?"));
+		assert.ok(defaultClaims.some(claim => claim.title === "How do rewards affect intrinsic motivation?"));
+		assert.equal(novemberArtsCreativityClaims.some(claim => /photo|background-music|intrinsic-motivation/u.test(claim.slug)), false);
+	});
+	it("retains the PubMed-linked pain correction without inventing a clean status", () => {
+		const pain = novemberArtsCreativityClaims.find(claim => claim.slug === "can-music-help-reduce-pain")!;
+		const source = pain.sources.find(citation => citation.doi === "10.1093/jmt/thw012")!;
+		assert.equal(source.citationStatus, "corrected");
+		assert.ok(source.statusSources!.includes("https://doi.org/10.1093/jmt/thab012"));
+		assert.match(source.note!, /2021.*supplementary material/u);
+		assert.match(pain.stableCore.join(" "), /2021 publisher erratum/u);
+	});
+	it("keeps clinical outcomes and author-performed certainty assessments distinct", () => {
+		const claim = (slug: string) => novemberArtsCreativityClaims.find(entry => entry.slug === slug)!;
+		assert.match(claim("does-listening-to-music-improve-sleep-quality").misconceptions.join(" "), /questionnaire score.*hours slept/u);
+		assert.match(claim("can-music-help-reduce-anxiety").stableCore.join(" "), /physiological outcomes did not show a clear benefit/u);
+		assert.match(claim("can-music-help-reduce-pain").stableCore.join(" "), /no clear anxiety or quality-of-life benefit/u);
+		const walking = claim("does-walking-help-people-generate-creative-ideas");
+		assert.match(walking.sources[0].note!, /Authors rate.*using GRADE; this site has not independently performed GRADE/u);
+		assert.match(walking.misconceptions.join(" "), /81% of participants.*81% improvement/u);
+	});
+	it("preserves null transfer findings and small-study limitations", () => {
+		const claim = (slug: string) => novemberArtsCreativityClaims.find(entry => entry.slug === slug)!;
+		assert.match(claim("does-music-training-help-children-learn-to-read").stableCore.join(" "), /no significant overall transfer to reading fluency/u);
+		assert.match(claim("does-school-chess-instruction-improve-academic-achievement").stableCore.join(" "), /adjustment for multiple tests/u);
+		assert.match(claim("do-drama-programs-improve-social-skills").stableCore.join(" "), /losing significance after removal/u);
+		const violins = claim("do-old-italian-violins-sound-better-in-blind-tests");
+		assert.match(violins.stableCore.join(" "), /favored one Stradivari/u);
+		assert.match(claim("can-adults-learn-absolute-pitch").sources[0].note!, /13.9% to 31.7%/u);
+	});
+	it("uses observed arts issue years and retains nonindependent evidence scopes", () => {
+		const citations = novemberArtsCreativityClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1037/bul0000216", 2020],
+			["10.1177/1948550618775410", 2019],
+			["10.1002/pam.22449", 2023],
+			["10.1177/10298649211046979", 2023],
+			["10.1371/journal.pone.0223047", 2019],
+			["10.1177/02762374241262606", 2025],
+			["10.3368/jhr.1020-11242r1", 2024],
+			["10.1080/17533015.2022.2130947", 2023],
+			["10.1016/j.jdeveco.2020.102615", 2021]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		assert.equal(citations.filter(source => source.doi === "10.3368/jhr.1020-11242r1").length, 2);
+		assert.equal(citations.find(source => source.doi === "10.1177/0149206318805832")!.kind, "context");
+		assert.equal(citations.find(source => source.doi === "10.1177/10892680211060027")!.kind, "context");
+	});
+	it("keeps arts review provenance and public copy accurate", () => {
+		for (const claim of novemberArtsCreativityClaims) {
+			assert.match(claim.reviewerLine!, /independent expert review not completed/u);
+			assert.match(claim.appraisalTools!.join(" "), /no formal GRADE assessment/u);
+			assert.doesNotMatch(claim.editorSummary, /this update|earlier page|seeded claim|previous draft/iu);
+			assert.doesNotMatch(claim.exclusionRules!.join(" "), /truncated.*abstract|fetching|draft helper/iu);
+			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		}
 	});
 	it("seals twenty language questions with distinct scopes and qualified certainty", () => {
 		assert.equal(readerExpansionValueHash(novemberLanguageCommunicationClaims), "e935831e8f4039d26c94e58f03107005343dff9a18068b54504cd10396d4165e");
@@ -77,7 +152,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
 	});
 	it("adds a language topic with distinct existing educational scopes preserved", () => {
-		assert.equal(defaultTopics.length, 40);
+		assert.equal(defaultTopics.length, 41);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "language-and-communication").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "language-and-communication")!.order, 40);
 		assert.ok(novemberLanguageCommunicationClaims.every(claim => claim.topicSlug === "language-and-communication"));
@@ -151,7 +226,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.evidenceCertainty === "low").length, 8);
 	});
 	it("adds a consumer topic while preserving distinct existing decision questions", () => {
-		assert.equal(defaultTopics.length, 40);
+		assert.equal(defaultTopics.length, 41);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "consumer-choices").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "consumer-choices")!.order, 39);
 		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.topicSlug === "consumer-choices"));
@@ -279,7 +354,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
 	});
 	it("preserves existing social topics and related reviews without counting them again", () => {
-		assert.equal(defaultTopics.length, 40);
+		assert.equal(defaultTopics.length, 41);
 		const existingTopics = new Set([
 			"neuroscience-and-psychology",
 			"mental-health-and-treatment",

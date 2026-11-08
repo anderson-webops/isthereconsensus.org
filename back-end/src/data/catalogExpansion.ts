@@ -1,4 +1,5 @@
 import { novemberAnimalWelfareClaims } from "./claim-expansion-2026-11-animal-welfare.js";
+import { novemberArtsCreativityClaims } from "./claim-expansion-2026-11-arts-creativity.js";
 import { novemberCareLearningClaims } from "./claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
 import { novemberConsumerChoicesClaims } from "./claim-expansion-2026-11-consumer-choices.js";
@@ -132,6 +133,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-language-communication-2026-11-08",
 		claims: novemberLanguageCommunicationClaims,
 		dataSha256: "e935831e8f4039d26c94e58f03107005343dff9a18068b54504cd10396d4165e"
+	},
+	{
+		id: "catalog-1501-arts-creativity-2026-11-08",
+		claims: novemberArtsCreativityClaims,
+		dataSha256: "4f58f6ea14ac14a87407dd0f57ae132d9dd2882e0fd5d166af895d8a44aed1c0"
 	}
 ];
 

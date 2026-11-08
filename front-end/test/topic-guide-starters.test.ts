@@ -8,6 +8,16 @@ describe("topic guide starter claims", () => {
 	it("provides one guide for every seeded topic", () => {
 		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map(topic => topic.slug)));
 	});
+	it("offers arts entry points without inventing topic-wide numerical agreement", () => {
+		const guide = topicGuides["arts-and-creativity"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"do-music-lessons-improve-general-thinking-skills",
+			"does-reading-fiction-improve-empathy",
+			"can-creativity-be-improved-through-training"
+		]);
+		assert.match(guide.consensusLabel, /activity and outcome/u);
+	});
 	it("offers language entry points without inventing topic-wide numerical agreement", () => {
 		const guide = topicGuides["language-and-communication"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
