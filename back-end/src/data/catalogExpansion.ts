@@ -12,6 +12,7 @@ import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims } from "./claim-expansion-2026-11-memory-judgment.js";
 import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims } from "./claim-expansion-2026-11-river-landscape.js";
+import { novemberSocialConnectionClaims } from "./claim-expansion-2026-11-social-connection.js";
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
@@ -114,6 +115,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-workplace-2026-11-08",
 		claims: novemberWorkplaceClaims,
 		dataSha256: "d02a2fc62365c0f052e40799910af4277c3c5fae4718eb8702a104a6220c587c"
+	},
+	{
+		id: "catalog-1501-social-connection-2026-11-08",
+		claims: novemberSocialConnectionClaims,
+		dataSha256: "af42013c72ec5d1db2cca1db531f5b2a59e35159923d63f3c6b8fe624365d4cf"
 	}
 ];
 

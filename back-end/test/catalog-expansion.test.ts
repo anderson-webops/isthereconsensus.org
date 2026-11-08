@@ -16,6 +16,7 @@ import { novemberMemoryJudgmentClaims, novemberMemoryJudgmentResearchCheckedAt }
 import { novemberRecoveryPreventionClaims, novemberRecoveryPreventionResearchCheckedAt } from "../src/data/claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims, novemberRiverLandscapeResearchCheckedAt } from "../src/data/claim-expansion-2026-11-river-landscape.js";
 import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
+import { novemberSocialConnectionClaims, novemberSocialConnectionResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-connection.js";
 import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
@@ -47,16 +48,99 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
 		assert.equal(novemberWorkplaceClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 277);
-		assert.equal(defaultClaims.length, 1278);
+		assert.equal(novemberSocialConnectionClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 297);
+		assert.equal(defaultClaims.length, 1298);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 277,
-			citations: 798,
-			catalog: 1278,
+			entries: 297,
+			citations: 864,
+			catalog: 1298,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty social-connection reviews with question-specific scope", () => {
+		assert.equal(readerExpansionValueHash(novemberSocialConnectionClaims), "af42013c72ec5d1db2cca1db531f5b2a59e35159923d63f3c6b8fe624365d4cf");
+		assert.equal(novemberSocialConnectionResearchCheckedAt, "2026-11-08T11:39:16.388Z");
+		assert.ok(novemberSocialConnectionClaims.every(claim => claim.searchCutoffAt === novemberSocialConnectionResearchCheckedAt));
+		assert.equal(new Set(novemberSocialConnectionClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		assert.equal(novemberSocialConnectionClaims.filter(claim => claim.consensusBand === "mixed").length, 11);
+		assert.equal(novemberSocialConnectionClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
+	});
+	it("retains published social citations and all three observed correction notices", () => {
+		const citations = novemberSocialConnectionClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 66);
+		assert.equal(new Set(citations.map(source => source.doi!.toLowerCase())).size, 65);
+		assert.ok(citations.every(source => source.citationCheckedAt === novemberSocialConnectionResearchCheckedAt));
+		const corrected = citations.filter(source => source.citationStatus === "corrected");
+		assert.equal(corrected.length, 3);
+		for (const [article, notice] of [
+			["10.1126/science.1150952", "10.1126/science.324_1143a"],
+			["10.1037/cou0000093", "10.1037/cou0000130"],
+			["10.1177/09567976221150617", "10.1177/09567976251362783"]
+		]) assert.ok(corrected.find(source => source.doi === article)!.statusSources!.includes(`https://doi.org/${notice}`));
+		assert.equal(citations.some(source => source.doi === "10.31234/osf.io/mye3g"), false);
+		assert.ok(citations.some(source => source.doi === "10.1037/pspa0000191"));
+	});
+	it("retains the PubMed-linked spending correction and its affected component", () => {
+		const spending = novemberSocialConnectionClaims.find(claim => claim.slug === "does-spending-money-on-others-increase-happiness")!;
+		const original = spending.sources.find(source => source.doi === "10.1126/science.1150952")!;
+		assert.equal(original.citationStatus, "corrected");
+		assert.ok(original.statusSources!.includes("https://doi.org/10.1126/science.324_1143a"));
+		assert.match(original.note!, /16-person.*0.81.*0.55/u);
+		assert.match(spending.stableCore.join(" "), /2009 correction.*16-person.*other studies were unaffected/u);
+	});
+	it("uses observed journal issue years for social-connection research", () => {
+		const citations = novemberSocialConnectionClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1007/s11266-023-00573-z", 2024],
+			["10.1080/13607863.2021.1884845", 2022],
+			["10.1007/s40520-019-01241-3", 2020],
+			["10.1037/cou0000093", 2016],
+			["10.1111/ajps.12657", 2023],
+			["10.1037/pspp0000236", 2020],
+			["10.1037/emo0001137", 2023],
+			["10.1016/j.econlet.2024.111730", 2024],
+			["10.1037/a0025948", 2012],
+			["10.1162/opmi_a_00067", 2022]
+		]) assert.equal(citations.find(source => source.doi === doi)!.year, year, String(doi));
+	});
+	it("keeps social studies' units and selected follow-up samples visible", () => {
+		const claim = (slug: string) => novemberSocialConnectionClaims.find(entry => entry.slug === slug)!;
+		assert.match(claim("does-volunteering-improve-wellbeing-in-older-adults").stableCore.join(" "), /445.*73.*112/u);
+		assert.match(claim("does-spending-money-on-others-increase-happiness").stableCore.join(" "), /712.*1,950.*5,199/u);
+		assert.match(claim("does-relationship-education-improve-couple-satisfaction").stableCore.join(" "), /1,034.*larger randomized/u);
+		assert.match(claim("does-nostalgia-improve-wellbeing").stableCore.join(" "), /90 effect estimates.*not 90 independent/u);
+		assert.match(claim("how-is-income-related-to-happiness").stableCore.join(" "), /33,391.*same.*not represent three independent/u);
+		assert.match(claim("does-becoming-a-parent-make-people-happier").stableCore.join(" "), /152 samples.*not 152 randomized/u);
+	});
+	it("retains null and active-comparator social findings", () => {
+		const claim = (slug: string) => novemberSocialConnectionClaims.find(entry => entry.slug === slug)!;
+		assert.match(claim("does-spending-money-on-others-increase-happiness").stableCore.join(" "), /did not find a significant difference.*additional analysis/u);
+		assert.match(claim("does-contact-between-groups-reduce-prejudice").stableCore.join(" "), /no change in prejudice.*discrimination increased/u);
+		assert.match(claim("does-group-singing-improve-wellbeing").stableCore.join(" "), /active health-education.*did not demonstrate/u);
+		assert.match(claim("does-social-support-reduce-stress-responses").stableCore.join(" "), /no significant relationship/u);
+		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
+	});
+	it("preserves existing social topics and related reviews without counting them again", () => {
+		assert.equal(defaultTopics.length, 38);
+		const existingTopics = new Set([
+			"neuroscience-and-psychology",
+			"mental-health-and-treatment",
+			"aging-and-longevity",
+			"work-and-organizations"
+		]);
+		assert.ok(novemberSocialConnectionClaims.every(claim => existingTopics.has(claim.topicSlug)));
+		assert.equal(novemberSocialConnectionClaims.some(claim => /gratitude|loneliness-in-older-adults|gdp-per-capita/u.test(claim.slug)), false);
+		assert.equal(defaultClaims.filter(claim => claim.slug === "do-gratitude-exercises-improve-wellbeing").length, 1);
+	});
+	it("keeps social provenance and consequential limits accurate", () => {
+		assert.ok(novemberSocialConnectionClaims.every(claim => /independent expert review not completed/u.test(claim.reviewerLine!)));
+		assert.ok(novemberSocialConnectionClaims.every(claim => claim.appraisalTools!.some(tool => /no formal GRADE assessment/u.test(tool))));
+		assert.match(novemberSocialConnectionClaims.find(claim => claim.slug === "can-forgiveness-interventions-improve-wellbeing")!.bottomLine!, /voluntary.*unsafe/u);
+		assert.match(novemberSocialConnectionClaims.find(claim => claim.slug === "does-group-singing-improve-wellbeing")!.misconceptions.join(" "), /does not by itself prove.*equivalent/u);
+		assert.match(novemberSocialConnectionClaims.find(claim => claim.slug === "does-becoming-a-parent-make-people-happier")!.stableCore.join(" "), /children in the household as a proxy/u);
 	});
 	it("seals twenty workplace questions with distinct scopes and source evidence", () => {
 		assert.equal(readerExpansionValueHash(novemberWorkplaceClaims), "d02a2fc62365c0f052e40799910af4277c3c5fae4718eb8702a104a6220c587c");

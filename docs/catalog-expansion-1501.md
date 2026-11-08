@@ -1,5 +1,43 @@
 # Catalog expansion to 1,501 reviews
 
+## Social connection and well-being cohort
+
+`catalog-1501-social-connection-2026-11-08` adds twenty reviews with 66
+references representing 65 distinct DOI-linked papers. The source catalog
+reaches 1,298 definitions across the existing 38 topics, leaving 203 further
+source entries toward 1,501. Public availability remains a separate result.
+
+Questions cover volunteering, generous spending, intergroup contact, brief
+conversations, kindness, self-compassion, empathy, perspective taking, diversity
+training, emotional skills, forgiveness, relationship education, apologies,
+social support, pet ownership, singing, nostalgia, income, parenthood and
+synchronized movement. Eleven answers retain mixed evidence and nine retain
+low certainty. Existing gratitude, older-adult loneliness, GDP measurement and
+team-diversity reviews retain their separate scopes.
+
+Thirty targeted Consensus searches produced 67 fetched candidate records.
+Metadata/update and PubMed query outcomes are retained for all 67, including
+46 official XML abstracts. Two unused candidate records remain outside the
+manuscript. The published spending replication is bound to its official DOI
+and PubMed identity rather than counted again as its indexed preprint.
+
+Three corrected sources retain their notices. PubMed links the original spending
+paper to a 2009 erratum that Crossref's update query did not return. The notice
+weakens the reported association in a 16-person longitudinal component while
+leaving the other studies unaffected. Its publisher DOI and the reproduced
+publisher erratum are retained. The empathy review's correction
+concerns an author's running-head name. The police-training correction fixes
+education-level coding and reanalysis; its notice specifies the main-text
+change. Source status and linked notices remain visible rather than being
+silently normalized to current.
+
+Self-review preserves selected follow-up samples, repeated participant
+datasets, null replication analyses, active comparisons, outcome definitions
+and short follow-up. It distinguishes voluntary forgiveness from reconciliation,
+pet companionship from a causal treatment, and consumer nostalgia outcomes from
+clinical benefit. Independent expert review, comprehensive systematic searching
+and formal site-performed GRADE assessment are not claimed.
+
 ## Work and organizations cohort
 
 `catalog-1501-workplace-2026-11-08` adds twenty distinct reviews in the new
