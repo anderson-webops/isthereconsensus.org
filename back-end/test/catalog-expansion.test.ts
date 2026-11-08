@@ -11,6 +11,7 @@ import { novemberExerciseRecoveryClaims, novemberExerciseRecoveryResearchChecked
 import { novemberFoodPatternsClaims, novemberFoodPatternsResearchCheckedAt } from "../src/data/claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberHumanWildlifeClaims, novemberHumanWildlifeResearchCheckedAt } from "../src/data/claim-expansion-2026-11-human-wildlife.js";
+import { novemberLanguageCommunicationClaims, novemberLanguageCommunicationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-language-communication.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims, novemberMemoryJudgmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-memory-judgment.js";
@@ -51,16 +52,92 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberWorkplaceClaims.length, 20);
 		assert.equal(novemberSocialConnectionClaims.length, 20);
 		assert.equal(novemberConsumerChoicesClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 317);
-		assert.equal(defaultClaims.length, 1318);
+		assert.equal(novemberLanguageCommunicationClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 337);
+		assert.equal(defaultClaims.length, 1338);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 317,
-			citations: 925,
-			catalog: 1318,
+			entries: 337,
+			citations: 986,
+			catalog: 1338,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty language questions with distinct scopes and qualified certainty", () => {
+		assert.equal(readerExpansionValueHash(novemberLanguageCommunicationClaims), "e935831e8f4039d26c94e58f03107005343dff9a18068b54504cd10396d4165e");
+		assert.equal(novemberLanguageCommunicationResearchCheckedAt, "2026-11-08T14:46:05.179Z");
+		assert.ok(novemberLanguageCommunicationClaims.every(claim => claim.searchCutoffAt === novemberLanguageCommunicationResearchCheckedAt));
+		assert.equal(new Set(novemberLanguageCommunicationClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		const citations = novemberLanguageCommunicationClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 61);
+		assert.equal(new Set(citations.map(source => source.doi!.toLowerCase())).size, 61);
+		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.consensusBand === "mixed").length, 6);
+		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.consensusBand === "unclear").length, 1);
+		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
+	});
+	it("adds a language topic with distinct existing educational scopes preserved", () => {
+		assert.equal(defaultTopics.length, 40);
+		assert.equal(defaultTopics.filter(topic => topic.slug === "language-and-communication").length, 1);
+		assert.equal(defaultTopics.find(topic => topic.slug === "language-and-communication")!.order, 40);
+		assert.ok(novemberLanguageCommunicationClaims.every(claim => claim.topicSlug === "language-and-communication"));
+		for (const slug of [
+			"do-captions-help-people-learn-second-language-vocabulary",
+			"does-systematic-phonics-instruction-help-children-learn-to-read",
+			"does-being-bilingual-improve-attention-and-mental-control"
+		]) assert.ok(defaultClaims.some(claim => claim.slug === slug));
+	});
+	it("retains observed language journal issue years and online-date distinctions", () => {
+		const citations = novemberLanguageCommunicationClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1080/09571736.2022.2097298", 2024],
+			["10.1177/13621688221106832", 2025],
+			["10.1177/13621688221131127", 2025],
+			["10.1177/1362168820988423", 2024],
+			["10.1080/03054985.2024.2413109", 2026],
+			["10.1111/cdev.13225", 2020],
+			["10.1080/13803611.2020.1814820", 2019],
+			["10.1177/00222194251364836", 2026],
+			["10.1007/s11145-024-10539-2", 2025],
+			["10.1177/13621688221147374", 2026]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		assert.match(citations.find(source => source.doi === "10.1080/13803611.2020.1814820")!.note!, /2019.*October 8, 2020/u);
+	});
+	it("preserves null language findings and separates reported confidence from performance", () => {
+		const claim = (slug: string) => novemberLanguageCommunicationClaims.find(entry => entry.slug === slug)!;
+		const chatbot = claim("do-ai-chatbots-help-people-learn-a-language");
+		assert.match(chatbot.stableCore.join(" "), /speaking-test gains did not differ significantly/u);
+		const shadowing = claim("does-shadowing-help-language-learners");
+		assert.match(shadowing.stableCore.join(" "), /without a statistically detectable advantage/u);
+		const signs = claim("does-baby-sign-improve-spoken-vocabulary");
+		assert.equal(signs.consensusBand, "unclear");
+		assert.match(signs.exclusionRules!.join(" "), /deaf or hard-of-hearing/u);
+		const sharing = claim("does-shared-book-reading-improve-childrens-language");
+		assert.match(sharing.stableCore.join(" "), /without improving language beyond an active reading comparison/u);
+		assert.match(sharing.stableCore.join(" "), /one of two/u);
+	});
+	it("keeps language reanalyses and dependent evidence pools distinct", () => {
+		const citations = novemberLanguageCommunicationClaims.flatMap(claim => claim.sources);
+		assert.match(citations.find(source => source.doi === "10.1177/13621688221131127")!.note!, /Reuses the original evidence base/u);
+		assert.match(citations.find(source => source.doi === "10.1007/s11145-024-10539-2")!.note!, /reused data, not independent replication/u);
+		assert.match(citations.find(source => source.doi === "10.1075/sibil.48.18goo")!.note!, /book chapter.*34 unique samples/u);
+		assert.match(citations.find(source => source.doi === "10.1037/bul0000202")!.note!, /not listener-only/u);
+	});
+	it("retains language study designs, comparison conditions and outcome units", () => {
+		const citations = novemberLanguageCommunicationClaims.flatMap(claim => claim.sources);
+		assert.match(citations.find(source => source.doi === "10.1002/rrq.152")!.note!, /four intact.*replaced intensive reading/u);
+		assert.match(citations.find(source => source.doi === "10.3102/0002831216634463")!.note!, /intent-to-treat.*not percentage score gains/u);
+		assert.match(citations.find(source => source.doi === "10.1080/03054985.2024.2413109")!.note!, /all quasi-experimental/u);
+		assert.match(citations.find(source => source.doi === "10.5334/pb.1146")!.note!, /low quality.*high risk of bias/u);
+		assert.match(citations.find(source => source.doi === "10.1177/00222194251364836")!.note!, /39 group designs and 20 single-case/u);
+	});
+	it("keeps language provenance and scope disclosure accurate", () => {
+		for (const claim of novemberLanguageCommunicationClaims) {
+			assert.match(claim.reviewerLine!, /independent expert review not completed/u);
+			assert.match(claim.appraisalTools!.join(" "), /no formal GRADE assessment/u);
+			assert.doesNotMatch(claim.editorSummary, /this update|earlier page|seeded claim|previous draft/iu);
+			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		}
 	});
 	it("seals twenty consumer questions with distinct scopes and sixty-one papers", () => {
 		assert.equal(readerExpansionValueHash(novemberConsumerChoicesClaims), "9d18d42069a103b09d9bd537d6782abcaed26df9b16bb214cba3b8d98a0c3957");
@@ -74,7 +151,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.evidenceCertainty === "low").length, 8);
 	});
 	it("adds a consumer topic while preserving distinct existing decision questions", () => {
-		assert.equal(defaultTopics.length, 39);
+		assert.equal(defaultTopics.length, 40);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "consumer-choices").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "consumer-choices")!.order, 39);
 		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.topicSlug === "consumer-choices"));
@@ -202,7 +279,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
 	});
 	it("preserves existing social topics and related reviews without counting them again", () => {
-		assert.equal(defaultTopics.length, 39);
+		assert.equal(defaultTopics.length, 40);
 		const existingTopics = new Set([
 			"neuroscience-and-psychology",
 			"mental-health-and-treatment",

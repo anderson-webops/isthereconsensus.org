@@ -50,6 +50,40 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"language-and-communication": {
+		slug: "language-and-communication",
+		consensusLabel: "Results depend on the skill and setting",
+		snapshot: "Structured instruction and practice can improve language skills. Test scores, spontaneous communication and lasting learning are different outcomes.",
+		stableCore: [
+			"Explicit teaching supports targeted grammar, pronunciation, spelling and writing.",
+			"Age influences learning, without establishing one deadline for useful progress.",
+			"Positive attitudes toward a tool do not establish improved language performance."
+		],
+		openQuestions: [
+			"Which gains persist and transfer to conversations or writing without support?",
+			"How do programs work across languages, ages and access needs?"
+		],
+		whatWouldChangeMinds: [
+			"Independent comparisons with equal practice time and delayed performance tests.",
+			"Replications that separate trained tasks from unfamiliar real-world communication."
+		],
+		commonMisreads: [
+			"Confidence, test performance and everyday proficiency measure different things."
+		],
+		starterQuestions: [
+			"Does explicit grammar instruction help second-language learning?",
+			"How does age affect learning a second language?",
+			"Does pronunciation instruction help language learners?"
+		],
+		starterClaimSlugs: [
+			"does-explicit-grammar-instruction-help-second-language-learning",
+			"how-does-age-affect-learning-a-second-language",
+			"does-pronunciation-instruction-help-language-learners"
+		],
+		evidenceTrail: [
+			{ title: "Instruction and communication studies", note: "Controlled trials, observational comparisons and research syntheses measure different aspects of learning." }
+		]
+	},
 	"consumer-choices": {
 		slug: "consumer-choices",
 		consensusLabel: "Effects depend on the decision",

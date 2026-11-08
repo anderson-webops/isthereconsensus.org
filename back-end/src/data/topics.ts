@@ -271,5 +271,12 @@ export const defaultTopics = [
 		description: "Prices, advertising, product labels, reviews and shopping behavior.",
 		order: 39,
 		accent: "#7b6744"
+	},
+	{
+		title: "Language & communication",
+		slug: "language-and-communication",
+		description: "Language learning, literacy, teaching and spoken communication.",
+		order: 40,
+		accent: "#586d85"
 	}
 ];

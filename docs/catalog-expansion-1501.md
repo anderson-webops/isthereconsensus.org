@@ -1,5 +1,41 @@
 # Catalog expansion to 1,501 reviews
 
+## Language and communication cohort
+
+`catalog-1501-language-communication-2026-11-08` adds twenty self-reviewed
+reviews with 61 distinct DOI-linked references and a new Language &
+communication topic. The source catalog reaches 1,338 definitions across
+40 topics, leaving 163 further source entries toward 1,501. Public availability
+remains separately verified.
+
+Questions cover grammar, oral and written feedback, age, gestures,
+pronunciation, extensive reading, incidental vocabulary, task-based lessons,
+study abroad, apps, games, translation, dual-language schooling, shared reading,
+spelling, writing strategies, chatbots, shadowing and optional baby-sign
+programs. Six answers retain mixed evidence, one unclear evidence and nine low
+certainty. Three topic entry points link to canonical articles.
+
+Research retains 24 targeted Consensus searches, 63 fetched candidates and
+complete canonical metadata/update and PubMed-query outcomes. Ten official
+XML abstracts supplement publisher, fetched and complete indexed abstracts.
+Two unused older candidates remain outside the manuscript. Registered-update
+checks returned no notices for these selected records; that is provider-scoped
+evidence rather than proof that no notice exists. Journal issue years remain
+distinct from first-online dates, including a publisher-confirmed 2019
+shared-reading issue first published online in 2020.
+
+Self-review preserves the task-based technical challenge, overlapping review
+pools, the writing reanalysis's reused data, null active-control reading results,
+null chatbot speaking-test differences, null shadowing comparisons and the
+limited baby-sign evidence. Modeled age effects are not learning deadlines;
+confidence and assisted text quality are not unaided proficiency. Lottery
+offers, intact classes, observational surveys and controlled experiments keep
+their actual designs. Existing captions, phonics, bilingual-attention and
+general learning questions retain their distinct scopes. Optional baby-sign
+programs remain separate from deaf children's access to natural sign languages.
+No independent expert review, comprehensive systematic search or formal
+site-performed GRADE assessment is claimed.
+
 ## Consumer choices cohort
 
 `catalog-1501-consumer-choices-2026-11-08` adds twenty reviews in the new
