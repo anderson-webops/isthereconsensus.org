@@ -1,5 +1,38 @@
 # Catalog expansion to 1,501 reviews
 
+## Memory and judgment cohort
+
+`catalog-1501-memory-judgment-2026-11-08` adds twenty distinct reviews with
+70 references: 69 distinct DOI-linked papers and one author-written APA summary.
+The source catalog reaches 1,238 definitions across 37 topics, leaving 263 further
+source entries toward 1,501. Live public availability remains separately verified.
+Ten answers retain mixed evidence and six retain low certainty.
+
+Questions cover lie judgments, bilingual executive function, anger venting,
+deliberate personality change, birth order, facial feedback and emotion inference,
+photography and recall, stress at retrieval, misinformation, sunk costs, loss
+aversion, defaults, choice overload, numerical anchoring, self-assessment,
+power poses, open-label placebos, subliminal advertising and job performance.
+Existing eyewitness-confidence, polygraph, brain-training, study-practice and
+animal-cue questions retain their separate scopes.
+
+Research retains 23 actual Consensus searches, 69 fetched candidate records and
+69 canonical metadata/update observations. Two additional published syntheses
+were retrieved and verified independently of their preprint discovery records.
+The APA source is explicitly an author-written summary; it is neither the
+original paper's full text nor an independent replication. The facial-expression
+review retains its inspected figure-attribution, Action Unit and image correction.
+Two historical memory DOI aliases were reconciled individually. The older
+subliminal-advertising DOI uses normal URL encoding without changing validators.
+
+Self-review distinguishes experimental base rates from everyday lie detection,
+short-term self-reports from objective outcomes, family size from within-family
+comparisons, model coefficients from pain ratios, correlations from accuracy,
+default registration from participation and high-versus-low posture from neutral
+controls. Replication failures, publication bias, overlapping trials, attrition,
+mixed findings and clinical limitations remain explicit. No independent expert
+review, comprehensive systematic search or formal site-performed GRADE is claimed.
+
 ## Animal behavior and welfare cohort
 
 `catalog-1501-animal-welfare-2026-11-08` adds 25 distinct reviews in the new

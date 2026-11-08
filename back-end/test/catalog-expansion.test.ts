@@ -11,6 +11,7 @@ import { novemberFoodPatternsClaims, novemberFoodPatternsResearchCheckedAt } fro
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
+import { novemberMemoryJudgmentClaims, novemberMemoryJudgmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-memory-judgment.js";
 import { novemberRecoveryPreventionClaims, novemberRecoveryPreventionResearchCheckedAt } from "../src/data/claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims, novemberRiverLandscapeResearchCheckedAt } from "../src/data/claim-expansion-2026-11-river-landscape.js";
 import { novemberResearchCheckedAt, researchSource } from "../src/data/claim-expansion-2026-11-shared.js";
@@ -42,16 +43,84 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 217);
-		assert.equal(defaultClaims.length, 1218);
+		assert.equal(catalogExpansionClaims.length, 237);
+		assert.equal(defaultClaims.length, 1238);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 217,
-			citations: 596,
-			catalog: 1218,
+			entries: 237,
+			citations: 666,
+			catalog: 1238,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty memory and judgment questions with distinct scopes", () => {
+		assert.equal(readerExpansionValueHash(novemberMemoryJudgmentClaims), "ca5fcf990fd2a4631d681294c1d0bc6f6c0ac9e5e9e211565115d7629d34b919");
+		assert.equal(novemberMemoryJudgmentResearchCheckedAt, "2026-11-08T07:00:32.090Z");
+		assert.equal(novemberMemoryJudgmentClaims.length, 20);
+		assert.ok(novemberMemoryJudgmentClaims.every(claim => claim.searchCutoffAt === novemberMemoryJudgmentResearchCheckedAt));
+		const citations = novemberMemoryJudgmentClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 70);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi!.toLowerCase())).size, 69);
+		assert.equal(citations.filter(source => !source.doi).length, 1);
+		assert.equal(new Set(novemberMemoryJudgmentClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+	});
+	it("retains the facial-expression correction and verified historical memory identifiers", () => {
+		const citations = novemberMemoryJudgmentClaims.flatMap(claim => claim.sources);
+		const corrected = citations.find(source => source.doi === "10.1177/1529100619832930")!;
+		assert.equal(corrected.citationStatus, "corrected");
+		assert.ok(corrected.statusSources?.includes("https://doi.org/10.1177/1529100619889954"));
+		assert.match(corrected.note!, /image attribution, Action Unit labels and replacement images/u);
+		assert.ok(citations.some(source => source.doi === "10.1037/h0101798"));
+		assert.ok(citations.some(source => source.doi === "10.1037/0096-3445.114.1.1"));
+		assert.equal(citations.some(source => source.doi === "10.1016/j.jarmac.2014.03.005"), false);
+		const historical = citations.find(source => source.doi?.includes("517::aid-mar5"))!;
+		assert.ok(historical.url?.includes("%3C517::aid-mar5%3E"));
+		assert.ok(historical.statusSources?.every(url => !/[<>]/u.test(url)));
+	});
+	it("uses journal years and separates published syntheses from preprints or author summaries", () => {
+		const citations = novemberMemoryJudgmentClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1111/jopy.12898", 2024],
+			["10.1073/pnas.2416709121", 2025],
+			["10.1016/j.neubiorev.2021.10.038", 2022],
+			["10.1017/bpp.2022.24", 2025],
+			["10.1016/j.socec.2020.101629", 2021],
+			["10.1177/1745691620919358", 2022],
+			["10.1111/jopy.12683", 2022],
+			["10.1257/jel.20221698", 2024],
+			["10.1017/bpp.2018.43", 2019]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		const summary = citations.find(source => !source.doi)!;
+		assert.equal(summary.kind, "technical_reference");
+		assert.equal(summary.url, "https://www.apa.org/pubs/highlights/spotlight/issue-239");
+		assert.match(summary.note!, /Author-written APA summary.*not an independent new study/u);
+		assert.equal(citations.some(source => source.doi === "10.1037/bul0000356"), false);
+	});
+	it("preserves replication limits, shared samples and the distinction between coefficients and accuracy", () => {
+		const citations = novemberMemoryJudgmentClaims.flatMap(claim => claim.sources);
+		assert.match(citations.find(source => source.doi === "10.1111/jopy.12898")!.note!, /same digital-intervention cohort, not an independent trial.*157 at one year/u);
+		assert.match(citations.find(source => source.doi === "10.1002/jcpy.1156")!.note!, /Primary research.*rather than a meta-analysis/u);
+		assert.match(citations.find(source => source.doi === "10.1257/jel.20221698")!.note!, /not a universal ratio of emotional pain/u);
+		assert.match(citations.find(source => source.doi === "10.5334/spo.101")!.note!, /does not establish a stress-by-practice interaction/u);
+		assert.match(citations.find(source => source.doi === "10.1111/jopy.12683")!.note!, /total sample is not job-only/u);
+		const selfAssessment = novemberMemoryJudgmentClaims.find(claim => claim.slug === "how-accurate-are-peoples-self-assessments-of-their-abilities")!;
+		assert.match(selfAssessment.stableCore.join(" "), /not a claim that people are 29% accurate/u);
+	});
+	it("keeps symptom ratings, neutral controls and actual outcomes distinct", () => {
+		const placebo = novemberMemoryJudgmentClaims.find(claim => claim.slug === "can-openly-labeled-placebos-improve-symptoms")!;
+		assert.equal(placebo.consensusBand, "mixed");
+		assert.equal(placebo.evidenceCertainty, "low");
+		assert.match(placebo.stableCore.join(" "), /search ended in November 2023.*high risk of bias/u);
+		assert.match(placebo.bottomLine, /replace effective care/u);
+		const posture = novemberMemoryJudgmentClaims.find(claim => claim.slug === "can-a-power-pose-increase-confidence")!;
+		assert.equal(posture.consensusBand, "mixed");
+		assert.match(posture.bottomLine, /beyond a neutral posture is weaker/u);
+		const defaults = novemberMemoryJudgmentClaims.find(claim => claim.slug === "do-default-options-change-peoples-choices")!;
+		assert.match(defaults.stableCore.join(" "), /registration.*without a significant increase in actual test-taking/u);
+		const advertising = novemberMemoryJudgmentClaims.find(claim => claim.slug === "can-subliminal-advertising-influence-peoples-choices")!;
+		assert.equal(advertising.evidenceCertainty, "low");
+		assert.match(advertising.exclusionRules!.join(" "), /Brief presentation alone does not demonstrate lack of awareness/u);
 	});
 	it("seals twenty-five animal-welfare questions with distinct scopes and source designs", () => {
 		assert.equal(readerExpansionValueHash(novemberAnimalWelfareClaims), "8b68c8b2b45969145dcbca85bd60e9f4ce131a394ab0b4ef23ae89eb058aa23b");

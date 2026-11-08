@@ -8,6 +8,7 @@ import { novemberFoodPatternsClaims } from "./claim-expansion-2026-11-food-patte
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
+import { novemberMemoryJudgmentClaims } from "./claim-expansion-2026-11-memory-judgment.js";
 import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims } from "./claim-expansion-2026-11-river-landscape.js";
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
@@ -96,6 +97,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-animal-welfare-2026-11-08",
 		claims: novemberAnimalWelfareClaims,
 		dataSha256: "8b68c8b2b45969145dcbca85bd60e9f4ce131a394ab0b4ef23ae89eb058aa23b"
+	},
+	{
+		id: "catalog-1501-memory-judgment-2026-11-08",
+		claims: novemberMemoryJudgmentClaims,
+		dataSha256: "ca5fcf990fd2a4631d681294c1d0bc6f6c0ac9e5e9e211565115d7629d34b919"
 	}
 ];
 
