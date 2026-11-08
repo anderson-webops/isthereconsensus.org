@@ -9,6 +9,7 @@ import { novemberEverydayHealthEnvironmentClaims, novemberEverydayHealthEnvironm
 import { novemberExerciseRecoveryClaims, novemberExerciseRecoveryResearchCheckedAt } from "../src/data/claim-expansion-2026-11-exercise-recovery.js";
 import { novemberFoodPatternsClaims, novemberFoodPatternsResearchCheckedAt } from "../src/data/claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims, novemberHouseholdEnergyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-household-energy.js";
+import { novemberHumanWildlifeClaims, novemberHumanWildlifeResearchCheckedAt } from "../src/data/claim-expansion-2026-11-human-wildlife.js";
 import { novemberLearningHabitsWorkClaims, novemberLearningHabitsWorkResearchCheckedAt } from "../src/data/claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "../src/data/claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims, novemberMemoryJudgmentResearchCheckedAt } from "../src/data/claim-expansion-2026-11-memory-judgment.js";
@@ -43,16 +44,86 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 237);
-		assert.equal(defaultClaims.length, 1238);
+		assert.equal(catalogExpansionClaims.length, 257);
+		assert.equal(defaultClaims.length, 1258);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 237,
-			citations: 666,
-			catalog: 1238,
+			entries: 257,
+			citations: 732,
+			catalog: 1258,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty human-wildlife questions with distinct scopes and verified sources", () => {
+		assert.equal(readerExpansionValueHash(novemberHumanWildlifeClaims), "a100d8423eec9267a6c5a9b0ea8370854bd322d1adc628ecbdf8f2724eb28921");
+		assert.equal(novemberHumanWildlifeResearchCheckedAt, "2026-11-08T08:23:39.889Z");
+		assert.equal(novemberHumanWildlifeClaims.length, 20);
+		assert.ok(novemberHumanWildlifeClaims.every(claim => claim.searchCutoffAt === novemberHumanWildlifeResearchCheckedAt));
+		const citations = novemberHumanWildlifeClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 66);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi!.toLowerCase())).size, 65);
+		assert.equal(citations.filter(source => !source.doi).length, 1);
+		assert.equal(new Set(novemberHumanWildlifeClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		assert.equal(novemberHumanWildlifeClaims.filter(claim => claim.consensusBand === "mixed").length, 6);
+	});
+	it("uses human-wildlife journal years and an honestly undated official reference", () => {
+		const citations = novemberHumanWildlifeClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1002/fee.2809", 2025],
+			["10.1111/ibi.13137", 2023],
+			["10.1007/s10531-024-02969-9", 2025],
+			["10.1016/j.scitotenv.2021.150289", 2022],
+			["10.1002/wat2.1629", 2023]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+		const official = citations.find(source => !source.doi)!;
+		assert.equal(Object.hasOwn(official, "year"), false);
+		assert.equal(official.kind, "technical_reference");
+		assert.equal(official.url, "https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-devices");
+		assert.equal(citations.some(source => source.doi === "10.1039/d5va00416k"), false);
+		assert.equal(citations.some(source => source.doi === "10.3390/d14050316"), false);
+	});
+	it("separates camera-model validation and photo identification from population inference", () => {
+		const camera = novemberHumanWildlifeClaims.find(claim => claim.slug === "can-camera-traps-estimate-wildlife-population-sizes")!;
+		assert.match(camera.stableCore.join(" "), /rare jaguars.*implausible estimates/u);
+		assert.match(camera.sources.find(source => source.doi === "10.1111/cobi.13517")!.note!, /method prevalence, not five-percent counting accuracy/u);
+		const citizen = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-reliable-are-citizen-science-wildlife-records")!;
+		assert.match(citizen.bottomLine, /Correct identification alone.*representative population survey/u);
+		assert.match(citizen.stableCore.join(" "), /biases in both academic and citizen records/u);
+	});
+	it("retains solar counter-evidence and keeps maps distinct from independent experiments", () => {
+		const solar = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-do-solar-farms-affect-local-biodiversity")!;
+		assert.equal(solar.consensusBand, "mixed");
+		const negative = solar.sources.find(source => source.doi === "10.1007/s10531-026-03411-y")!;
+		assert.equal(negative.stance, "debate");
+		assert.match(negative.note!, /817 quantitative results from 56 publications/u);
+		const noise = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-does-human-made-noise-affect-land-animals")!;
+		assert.match(noise.sources.find(source => source.doi === "10.1186/s13750-025-00368-3")!.note!, /not 863 independent experiments/u);
+		const ranges = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-are-species-ranges-shifting-as-the-climate-warms")!;
+		assert.match(ranges.exclusionRules!.join(" "), /medians and means.*cannot establish acceleration or slowing/u);
+	});
+	it("preserves fish passage denominators and net-fishery counterfactuals", () => {
+		const passage = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-effective-are-fish-passages-around-dams")!;
+		assert.match(passage.exclusionRules!.join(" "), /Attraction and passage have different denominators/u);
+		const reserve = novemberHumanWildlifeClaims.find(claim => claim.slug === "do-marine-reserves-benefit-nearby-fisheries")!;
+		assert.equal(reserve.consensusBand, "mixed");
+		assert.match(reserve.stableCore.join(" "), /greater catch and effort.*no corresponding improvement in catch per unit effort/u);
+		assert.equal(reserve.sources.find(source => source.doi === "10.1007/s12080-024-00596-2")?.kind, "technical_reference");
+	});
+	it("distinguishes plastic particle sizes and capture from destruction", () => {
+		const turf = novemberHumanWildlifeClaims.find(claim => claim.slug === "does-artificial-turf-add-plastic-pollution-to-the-environment")!;
+		assert.match(turf.exclusionRules!.join(" "), /mesoplastics and macroplastics.*not global microplastic shares/u);
+		const wastewater = novemberHumanWildlifeClaims.find(claim => claim.slug === "do-wastewater-plants-remove-microplastics")!;
+		assert.match(wastewater.bottomLine, /Capture is also different from destruction/u);
+		assert.match(wastewater.exclusionRules!.join(" "), /Pooled concentrations.*paired removal rate/u);
+	});
+	it("keeps historical offsets, modeled credits and limited turtle encounters qualified", () => {
+		const offsets = novemberHumanWildlifeClaims.find(claim => claim.slug === "how-well-do-biodiversity-offsets-compensate-for-habitat-loss")!;
+		assert.equal(offsets.evidenceCertainty, "low");
+		assert.match(offsets.sources.find(source => source.doi === "10.1038/s41893-022-00850-7")!.note!, /Historical 2022.*116 model specifications.*not independent projects/u);
+		const turtle = novemberHumanWildlifeClaims.find(claim => claim.slug === "do-turtle-excluder-devices-reduce-accidental-turtle-catches")!;
+		assert.match(turtle.exclusionRules!.join(" "), /Combined-device.*does not prove zero mortality/u);
+		assert.match(turtle.sources.find(source => source.doi === "10.1002/aqc.70244")!.note!, /sixteen potentially alive/u);
 	});
 	it("seals twenty memory and judgment questions with distinct scopes", () => {
 		assert.equal(readerExpansionValueHash(novemberMemoryJudgmentClaims), "ca5fcf990fd2a4631d681294c1d0bc6f6c0ac9e5e9e211565115d7629d34b919");

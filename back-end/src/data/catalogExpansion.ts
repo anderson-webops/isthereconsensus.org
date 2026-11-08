@@ -6,6 +6,7 @@ import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-
 import { novemberExerciseRecoveryClaims } from "./claim-expansion-2026-11-exercise-recovery.js";
 import { novemberFoodPatternsClaims } from "./claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
+import { novemberHumanWildlifeClaims } from "./claim-expansion-2026-11-human-wildlife.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims } from "./claim-expansion-2026-11-memory-judgment.js";
@@ -102,6 +103,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-memory-judgment-2026-11-08",
 		claims: novemberMemoryJudgmentClaims,
 		dataSha256: "ca5fcf990fd2a4631d681294c1d0bc6f6c0ac9e5e9e211565115d7629d34b919"
+	},
+	{
+		id: "catalog-1501-human-wildlife-2026-11-08",
+		claims: novemberHumanWildlifeClaims,
+		dataSha256: "a100d8423eec9267a6c5a9b0ea8370854bd322d1adc628ecbdf8f2724eb28921"
 	}
 ];
 

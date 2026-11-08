@@ -1,5 +1,38 @@
 # Catalog expansion to 1,501 reviews
 
+## Human-wildlife and pollution cohort
+
+`catalog-1501-human-wildlife-2026-11-08` adds twenty distinct reviews with
+66 references: 65 DOI-linked papers and one official NOAA technical summary.
+The source catalog reaches 1,258 definitions across 37 topics, leaving 243 further
+source entries toward 1,501. Public availability remains a separate result.
+
+The questions cover citizen-science records, camera-based population estimates,
+migrating birds and light, recreation, drones, airborne noise, green-roof habitat,
+solar-farm biodiversity, fish passages, reserve spillover, plant timing, species
+ranges, road salt, turf particles, biodiversity offsets, invasive plants and fire,
+prescribed burning, turtle exclusion, managed flows and wastewater microplastics.
+Six answers retain mixed evidence. Offset compensation retains low certainty.
+
+Research retains 26 actual Consensus searches, 68 fetched candidates and 68
+canonical metadata/update and PubMed query outcomes. Complete primary or indexed
+abstracts replace generated takeaways. Three candidates remain uncited: an
+insufficiently documented location-error case, an older methods critique replaced
+by current validation, and an inaccessible paper with only a one-sentence abstract.
+The NOAA page is identified as an official technical reference without an invented
+publication year. All seventeen earlier cohort seals remain unchanged.
+
+Self-review distinguishes identification from sampling bias, photographs from
+animals, maps from pooled estimates, behavior from population decline, local
+habitat from climate benefits, attraction from passage, spillover from net yield,
+means from medians, particle sizes from emission shares and capture from plastic
+destruction. It retains the negative solar synthesis, uncertain offset equivalence,
+historical forest-area proxy, small turtle encounters and fishery catch trade-offs.
+Experimental benchmarks are not presented as current legal standards. No operating
+flight, burning, release or wildlife-handling instructions are provided.
+Independent expert review, formal site-performed GRADE and comprehensive
+systematic searching are not claimed.
+
 ## Memory and judgment cohort
 
 `catalog-1501-memory-judgment-2026-11-08` adds twenty distinct reviews with
