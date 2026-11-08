@@ -299,5 +299,12 @@ export const defaultTopics = [
 		description: "Parenting, care and children's development.",
 		order: 43,
 		accent: "#786755"
+	},
+	{
+		title: "Vision & hearing",
+		slug: "vision-and-hearing",
+		description: "Eye health, hearing and balance.",
+		order: 44,
+		accent: "#68787c"
 	}
 ];

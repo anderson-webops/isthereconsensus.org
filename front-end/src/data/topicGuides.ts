@@ -50,6 +50,38 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"vision-and-hearing": {
+		slug: "vision-and-hearing",
+		consensusLabel: "Benefits depend on the condition and treatment",
+		snapshot: "Vision preservation, clearer hearing and symptom relief are different outcomes.",
+		stableCore: [
+			"Several eye and hearing treatments improve function without restoring typical sight or hearing.",
+			"Device design, diagnosis and follow-up affect which findings apply."
+		],
+		openQuestions: [
+			"Which benefits last and which people need a different approach?"
+		],
+		whatWouldChangeMinds: [
+			"Independent long-term comparisons measuring daily function and treatment harms."
+		],
+		commonMisreads: [
+			"A better test result does not guarantee symptom relief or the same benefit for every person."
+		],
+		starterQuestions: [
+			"Does outdoor time help prevent childhood nearsightedness?",
+			"Do hearing aids improve everyday communication?",
+			"Do omega-3 supplements help dry eyes?"
+		],
+		starterClaimSlugs: [
+			"does-outdoor-time-help-prevent-childhood-nearsightedness",
+			"do-hearing-aids-improve-everyday-communication",
+			"do-omega-3-supplements-help-dry-eyes"
+		],
+		evidenceTrail: [
+			{ title: "Clinical trials and reviews", note: "Compare functional benefits, symptoms and harms." },
+			{ title: "Clinical guidance", note: "Clarifies diagnosis, treatment suitability and safety limits." }
+		]
+	},
 	"family-and-child-development": {
 		slug: "family-and-child-development",
 		consensusLabel: "Evidence differs by question and family context",

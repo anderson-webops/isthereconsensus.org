@@ -158,6 +158,7 @@ try {
 	assert.ok(absentTopicSlugs.includes("arts-and-creativity"));
 	assert.ok(absentTopicSlugs.includes("weather-and-forecasting"));
 	assert.ok(absentTopicSlugs.includes("family-and-child-development"));
+	assert.ok(absentTopicSlugs.includes("vision-and-hearing"));
 	assert.equal(await Claim.countDocuments({ status: "published" }), 800);
 	const baseline = await Claim.findOne({ status: "published" });
 	baseline.editorSummary = "Preserved human correction in an existing review.";

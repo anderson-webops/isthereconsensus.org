@@ -28,6 +28,16 @@ describe("topic guide starter claims", () => {
 		]);
 		assert.match(guide.consensusLabel, /family context/u);
 	});
+	it("offers vision and hearing entry points without inventing numerical agreement", () => {
+		const guide = topicGuides["vision-and-hearing"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"does-outdoor-time-help-prevent-childhood-nearsightedness",
+			"do-hearing-aids-improve-everyday-communication",
+			"do-omega-3-supplements-help-dry-eyes"
+		]);
+		assert.match(guide.consensusLabel, /condition and treatment/u);
+	});
 	it("offers arts entry points without inventing topic-wide numerical agreement", () => {
 		const guide = topicGuides["arts-and-creativity"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

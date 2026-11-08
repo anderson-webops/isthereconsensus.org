@@ -18,13 +18,13 @@ describe("schools and family catalog", () => {
 		assert.equal(novemberSchoolsFamilyClaims.length, 20);
 		assert.equal(readerExpansionValueHash(novemberSchoolsFamilyClaims), "7c21e6675cf129043572e177aa6af71b367ee3de82d55a25aa78d64407f62b69");
 		assert.equal(novemberSchoolsFamilyResearchCheckedAt, "2026-11-08T19:14:17.253Z");
-		assert.equal(catalogExpansionReleases.at(-1)?.id, "catalog-1501-schools-family-2026-11-08");
+		assert.equal(catalogExpansionReleases.find(release => release.claims === novemberSchoolsFamilyClaims)?.id, "catalog-1501-schools-family-2026-11-08");
 		assert.equal(readerExpansionValueHash(novemberWeatherForecastingClaims), "95f35883a45414bdcd8ceb81e50409bba462355c892f56d57be30a3e0c92415d");
-		assert.equal(defaultClaims.filter(entry => !novemberSchoolsFamilyClaims.some(candidate => candidate.slug === entry.slug && candidate.topicSlug === entry.topicSlug)).length, 1378);
+		assert.equal(defaultClaims.slice(0, 1398).filter(entry => !novemberSchoolsFamilyClaims.some(candidate => candidate.slug === entry.slug && candidate.topicSlug === entry.topicSlug)).length, 1378);
 		assert.equal(new Set(novemberSchoolsFamilyClaims.map(entry => JSON.stringify(entry.exclusionRules))).size, 20);
 	});
 	it("uses the new family topic and preserves the other subject boundaries", () => {
-		assert.equal(defaultTopics.length, 43);
+		assert.equal(defaultTopics.length, 44);
 		assert.equal(defaultTopics.find(topic => topic.slug === "family-and-child-development")?.order, 43);
 		assert.equal(novemberSchoolsFamilyClaims.filter(entry => entry.topicSlug === "family-and-child-development").length, 9);
 		assert.equal(novemberSchoolsFamilyClaims.filter(entry => entry.topicSlug === "education-and-learning").length, 8);

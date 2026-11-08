@@ -1,5 +1,38 @@
 # Catalog expansion to 1,501 reviews
 
+## Vision and hearing cohort
+
+`catalog-1501-vision-hearing-2026-11-08` adds twenty self-reviewed reviews,
+72 references, 65 distinct DOI-linked papers and seven institutional sources.
+Vision & hearing has three canonical starter links. The source catalog reaches
+1,418 definitions across 44 topics, leaving 83 further source definitions before
+1,501. Public publication and the final distinct-canonical count remain separate.
+
+Questions cover outdoor time, screens, myopia-control glasses, blue-light lenses,
+dry eye, glaucoma, AREDS2, amblyopia, cataract surgery, LASIK, contact-lens sleep,
+multifocal implants, hearing aids, self-fitting devices, cochlear implants,
+tinnitus CBT and sound therapy, positional vertigo, earwax and middle-ear
+antibiotics. Four answers retain mixed evidence, one unclear evidence and six
+low certainty.
+
+Research uses targeted PubMed discovery, official abstract records and publisher
+or institutional pages. No Consensus searches were used for this cohort.
+Seventy-five distinct DOI candidates have metadata and update checks; 73 current
+abstracts were read. Two superseded reviews and eight further candidates remain
+unused, including two glaucoma reports with unresolved notice scope. Three used
+corrected papers retain verified notice URLs and the correction's relevance.
+
+Self-review preserves overlapping studies, manufacturer and patent disclosures,
+stage-specific benefit, symptom-free denominators, observational confounding,
+device-specific comparisons and limitations of small or uncontrolled studies.
+Antibiotic pain benefits and adverse effects retain distinct denominators;
+within-period sound-therapy p values remain distinct from between-treatment
+comparisons. US over-the-counter eligibility is explicitly scoped. No personal
+treatment schedule, independent expert review, exhaustive systematic search or
+site-performed GRADE is claimed. All 25 prior cohort seals, the 1,398-definition
+baseline and its 43 topics remain unchanged. Startup preserves retained state;
+the explicit bounded publisher remains separate from normal service startup.
+
 ## Schools and family cohort
 
 `catalog-1501-schools-family-2026-11-08` adds twenty self-reviewed reviews
