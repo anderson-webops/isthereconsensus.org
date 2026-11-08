@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATALOG_ENTRY_GOAL, catalogExpansionClaims, catalogExpansionReleases } from "../src/data/catalogExpansion.js";
+import { novemberAnimalWelfareClaims, novemberAnimalWelfareResearchCheckedAt } from "../src/data/claim-expansion-2026-11-animal-welfare.js";
 import { novemberCareLearningClaims, novemberCareLearningResearchCheckedAt } from "../src/data/claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims, novemberCommonReaderResearchCheckedAt } from "../src/data/claim-expansion-2026-11-common-reader.js";
 import { novemberEcologyConservationClaims, novemberEcologyConservationResearchCheckedAt } from "../src/data/claim-expansion-2026-11-ecology-conservation.js";
@@ -41,16 +42,91 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberEcologyConservationClaims.length, 11);
 		assert.equal(novemberRiverLandscapeClaims.length, 8);
 		assert.equal(novemberExerciseRecoveryClaims.length, 8);
-		assert.equal(catalogExpansionClaims.length, 192);
-		assert.equal(defaultClaims.length, 1193);
+		assert.equal(catalogExpansionClaims.length, 217);
+		assert.equal(defaultClaims.length, 1218);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 192,
-			citations: 518,
-			catalog: 1193,
+			entries: 217,
+			citations: 596,
+			catalog: 1218,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty-five animal-welfare questions with distinct scopes and source designs", () => {
+		assert.equal(readerExpansionValueHash(novemberAnimalWelfareClaims), "8b68c8b2b45969145dcbca85bd60e9f4ce131a394ab0b4ef23ae89eb058aa23b");
+		assert.equal(novemberAnimalWelfareResearchCheckedAt, "2026-11-08T05:26:26.126Z");
+		assert.equal(novemberAnimalWelfareClaims.length, 25);
+		assert.ok(novemberAnimalWelfareClaims.every(claim => claim.searchCutoffAt === novemberAnimalWelfareResearchCheckedAt));
+		assert.equal(new Set(novemberAnimalWelfareClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 25);
+		assert.equal(novemberAnimalWelfareClaims.filter(claim => claim.consensusBand === "mixed").length, 7);
+		assert.equal(novemberAnimalWelfareClaims.filter(claim => claim.consensusBand === "unclear").length, 1);
+		assert.equal(novemberAnimalWelfareClaims.filter(claim => claim.evidenceCertainty === "low").length, 11);
+		const citations = novemberAnimalWelfareClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 78);
+		assert.equal(new Set(citations.filter(source => source.doi).map(source => source.doi!.toLowerCase())).size, 73);
+		assert.equal(new Set(citations.filter(source => !source.doi).map(source => source.url)).size, 2);
+		assert.ok(citations.every(source => source.appraisal === "not_appraised"));
+		assert.ok(citations.every(source => !/discovery record|earlier draft|this update|this page|generated takeaway/iu.test(source.note!)));
+	});
+	it("retains the substantive puppy and cattle corrections and fish attribution notice", () => {
+		const citations = novemberAnimalWelfareClaims.flatMap(claim => claim.sources);
+		for (const [doi, notice] of [
+			["10.3390/ani12212895", "10.3390/ani13010081"],
+			["10.3389/fvets.2025.1610084", "10.3389/fvets.2025.1743906"],
+			["10.3389/fvets.2022.788289", "10.3389/fvets.2022.948567"]
+		] as const) {
+			const source = citations.find(citation => citation.doi === doi)!;
+			assert.equal(source.citationStatus, "corrected");
+			assert.ok(source.statusSources?.includes(`https://doi.org/${notice}`));
+		}
+		const puppy = novemberAnimalWelfareClaims.find(claim => claim.slug === "can-puppy-socialization-prevent-later-aggression")!;
+		assert.equal(puppy.consensusBand, "mixed");
+		assert.match(puppy.stableCore.join(" "), /no protective advantage.*later first exposure.*does not establish that delaying/u);
+		const cattle = novemberAnimalWelfareClaims.find(claim => claim.slug === "how-does-prolonged-cow-calf-contact-affect-welfare")!;
+		assert.match(cattle.stableCore.join(" "), /overall heifer difference was not statistically established/u);
+		assert.match(citations.find(source => source.doi === "10.3389/fvets.2022.788289")!.note!, /attribution.*research leadership/u);
+	});
+	it("keeps animal journal years distinct from DOI and online-first years", () => {
+		const citations = novemberAnimalWelfareClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1016/j.beproc.2014.12.010", 2015],
+			["10.1007/s10071-021-01557-6", 2022],
+			["10.1098/rsbl.2015.0883", 2016],
+			["10.1177/1098612x211013741", 2022],
+			["10.3389/fvets.2020.599284", 2021],
+			["10.1177/1098612x17705044", 2018],
+			["10.3168/jds.2024-25159", 2025],
+			["10.3168/jds.2020-19968", 2021],
+			["10.1016/j.psj.2020.11.041", 2021],
+			["10.1186/s13028-023-00716-8", 2024],
+			["10.1111/faf.12010", 2014],
+			["10.1016/j.applanim.2006.05.041", 2007]
+		] as const) assert.equal(citations.find(source => source.doi === doi)?.year, year);
+	});
+	it("distinguishes animal experiments from protocols, clustered units and repeated samples", () => {
+		const citations = novemberAnimalWelfareClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.some(source => source.doi === "10.1371/journal.pone.0247321"), false);
+		assert.equal(citations.some(source => source.doi === "10.1093/cz/zoab045"), false);
+		assert.match(citations.find(source => source.doi === "10.3389/fvets.2020.00508")!.note!, /same 63 dogs.*not independent replications/u);
+		assert.match(citations.find(source => source.doi === "10.1073/pnas.2421752122")!.note!, /not wholly independent replication/u);
+		const litter = citations.find(source => source.doi === "10.1016/j.psj.2026.106907")!;
+		assert.match(litter.note!, /two rooms, one per condition.*confounding room with treatment/u);
+		assert.match(citations.find(source => source.doi === "10.1038/s41598-025-16288-8")!.note!, /not eight independent randomized/u);
+	});
+	it("retains competing attachment and housing evidence without collapsing welfare outcomes", () => {
+		const attachment = novemberAnimalWelfareClaims.find(claim => claim.slug === "do-cats-form-attachment-bonds-with-people")!;
+		assert.equal(attachment.consensusBand, "mixed");
+		assert.equal(attachment.sources.filter(source => source.stance === "debate").length, 2);
+		const hiding = novemberAnimalWelfareClaims.find(claim => claim.slug === "do-hiding-places-reduce-stress-in-shelter-cats")!;
+		assert.match(hiding.stableCore.join(" "), /did not prevent weight loss/u);
+		const horse = novemberAnimalWelfareClaims.find(claim => claim.slug === "does-social-contact-improve-horse-welfare")!;
+		assert.match(horse.stableCore.join(" "), /more superficial injuries.*no major overall advantage/u);
+		const octopus = novemberAnimalWelfareClaims.find(claim => claim.slug === "is-there-evidence-that-octopuses-are-sentient")!;
+		assert.match(octopus.exclusionRules!.join(" "), /not a 75% probability/u);
+		const declaration = octopus.sources.find(source => !source.doi)!;
+		assert.equal(declaration.kind, "consensus_statement");
+		assert.match(declaration.note!, /personally rather than for their institutions.*neither a prevalence survey/u);
 	});
 	it("seals twelve food-pattern questions without changing prior source cohorts", () => {
 		assert.equal(readerExpansionValueHash(novemberFoodPatternsClaims), "57870b77a71ee56f062812257b3e7230457a1655e3f8c7028a1a418ef8d48bdc");

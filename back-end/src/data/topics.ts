@@ -250,5 +250,12 @@ export const defaultTopics = [
 		description: "Authentication, data protection and digital privacy examined through standards, real-world behavior and explicit threat models.",
 		order: 36,
 		accent: "#416b80"
+	},
+	{
+		title: "Animal behavior & welfare",
+		slug: "animal-behavior-and-welfare",
+		description: "Learning, social behavior, housing and welfare in companion, farmed and zoo animals, including evidence about sentience.",
+		order: 37,
+		accent: "#58735a"
 	}
 ];

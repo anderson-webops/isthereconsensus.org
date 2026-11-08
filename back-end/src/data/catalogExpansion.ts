@@ -1,3 +1,4 @@
+import { novemberAnimalWelfareClaims } from "./claim-expansion-2026-11-animal-welfare.js";
 import { novemberCareLearningClaims } from "./claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
 import { novemberEcologyConservationClaims } from "./claim-expansion-2026-11-ecology-conservation.js";
@@ -90,6 +91,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-food-patterns-2026-11-07",
 		claims: novemberFoodPatternsClaims,
 		dataSha256: "57870b77a71ee56f062812257b3e7230457a1655e3f8c7028a1a418ef8d48bdc"
+	},
+	{
+		id: "catalog-1501-animal-welfare-2026-11-08",
+		claims: novemberAnimalWelfareClaims,
+		dataSha256: "8b68c8b2b45969145dcbca85bd60e9f4ce131a394ab0b4ef23ae89eb058aa23b"
 	}
 ];
 

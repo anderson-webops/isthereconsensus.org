@@ -1,11 +1,39 @@
 # Catalog expansion to 1,501 reviews
 
+## Animal behavior and welfare cohort
+
+`catalog-1501-animal-welfare-2026-11-08` adds 25 distinct reviews in the new
+Animal behavior & welfare topic. The 78 references comprise 73 distinct
+DOI-linked papers and two official statements, with several references shared
+between questions. The source catalog contains 1,218 definitions, leaving 283
+further source entries toward 1,501. Public availability remains a separate
+acceptance result.
+
+Questions cover dog learning and social cues, puppy experience, breed prediction,
+neutering, airway welfare, cat attachment and housing, dairy calves and maternal
+contact, laying hens, pig enrichment, horse companionship, aquatic-animal
+sentience and zoo enrichment. Seven answers retain mixed evidence, one remains
+unclear and eleven have low certainty. Every review has its own scope exclusions.
+
+The puppy-socialization review retains the correction reversing an interpretation
+of early public exposure. The cow-calf comparison retains corrected tables and
+the absence of a statistically established overall heifer difference. The fish
+methods paper retains its corrected attribution. Notice URLs and substantive
+limitations accompany all three corrected citations.
+
+Journal years, shared dog samples, room-level assignment in the hen study,
+retrospective customer surveys, osteoarthritis subgroups and welfare trade-offs
+are explicit. The dog-training protocol is excluded from completed evidence.
+Declaration signatures and framework criteria are not counted as expert votes or
+numerical probabilities of consciousness. No independent expert review, formal
+site-performed GRADE assessment or comprehensive systematic search is claimed.
+
 ## Food-pattern cohort
 
 `catalog-1501-food-patterns-2026-11-07` adds twelve distinct reviews with 41
 references: 39 DOI-linked papers/guidelines and two official safety references.
-The source catalog contains 1,193 definitions, leaving 308 further source entries
-toward 1,501. Public availability is verified separately.
+After this cohort, the source catalog contained 1,193 definitions, leaving 308
+further source entries toward 1,501. Public availability is verified separately.
 
 The questions cover earlier eating, meal frequency, eating speed, plant versus
 animal protein during training, probiotics for IBS, within-meal food ordering,

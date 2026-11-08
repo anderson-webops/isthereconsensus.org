@@ -50,6 +50,47 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"animal-behavior-and-welfare": {
+		slug: "animal-behavior-and-welfare",
+		consensusLabel: "Established behavioral needs, uneven evidence about experience",
+		snapshot: "Social contact, choice and suitable surroundings can support animal welfare. Effects vary with species, individual history and setting; quiet behavior alone does not establish wellbeing.",
+		stableCore: [
+			"Behavior, health and opportunities for positive experiences describe different parts of welfare.",
+			"An average response does not identify the best arrangement for every individual animal.",
+			"Evidence about felt experience draws on several behavioral and nervous-system findings rather than one reflex."
+		],
+		openQuestions: [
+			"Which short-term behavioral improvements predict lasting welfare benefits?",
+			"Which tests best distinguish subjective experience from nonconscious responses?"
+		],
+		whatWouldChangeMinds: [
+			"Independent studies combining behavior, health and positive-welfare measures across representative settings.",
+			"Converging evidence that distinguishes competing explanations for sentience-related behavior."
+		],
+		commonMisreads: [
+			"Less barking, pacing or movement is not by itself proof of better welfare."
+		],
+		starterQuestions: [
+			"How do reward-based and aversive dog-training methods compare?",
+			"Do hiding places reduce stress in shelter cats?",
+			"Is there evidence that octopuses are sentient?"
+		],
+		starterClaimSlugs: [
+			"how-do-reward-based-and-aversive-dog-training-compare",
+			"do-hiding-places-reduce-stress-in-shelter-cats",
+			"is-there-evidence-that-octopuses-are-sentient"
+		],
+		evidenceTrail: [
+			{
+				title: "Behavior and housing studies",
+				note: "Compare measured outcomes while accounting for selection, shared environments and individual differences."
+			},
+			{
+				title: "Welfare assessments and sentience reviews",
+				note: "Combine different measures, with species coverage and the assumptions behind each inference made explicit."
+			}
+		]
+	},
 	"digital-security-and-privacy": {
 		slug: "digital-security-and-privacy",
 		consensusLabel: "Established technical properties, context-dependent outcomes",
