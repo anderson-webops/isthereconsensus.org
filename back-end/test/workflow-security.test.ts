@@ -23,6 +23,7 @@ const expertApplicationSubmissionSource = serverSource.slice(
 );
 const seedSource = readFileSync(join(backendRoot, "src", "data", "seedClaims.ts"), "utf8");
 const seedRunnerSource = readFileSync(join(backendRoot, "src", "scripts", "seedContent.ts"), "utf8");
+const workflowSource = readFileSync(join(backendRoot, "..", ".github", "workflows", "ci.yml"), "utf8");
 
 function restoreEnvironment(name: keyof typeof process.env, value: string | undefined) {
 	if (value === undefined) delete process.env[name];
@@ -124,6 +125,12 @@ describe("workflow security", () => {
 		assert.equal((serverSource.match(/Question\.updateMany\(/gu) || []).length, 1);
 		assert.doesNotMatch(serverSource, /publishApprovedReaderContent|publishCatalogExpansion|publishOwnerEditorialCorrections|publishEditorialCompletion|publicationController/u);
 		assert.match(seedRunnerSource, /mongoose\.modelNames\(\)\.map\(name => mongoose\.model\(name\)\.init\(\)\)/u);
+	});
+
+	it("checks direct-delivery candidates while limiting native publication to release tags", () => {
+		assert.match(workflowSource, /push:\s+branches: \[ main, 'codex\/\*\*' \]/u);
+		assert.match(workflowSource, /native-runtime:\s+if: startsWith\(github.ref, 'refs\/tags\/'\)/u);
+		assert.match(workflowSource, /publish-runtime:\s+if: startsWith\(github.ref, 'refs\/tags\/'\)/u);
 	});
 
 	it("requires protected notes for evidence demotion and public reasons for claim demotion", () => {
