@@ -143,6 +143,15 @@ try {
 			$in: expansion.map(claim => claim._id)
 		}
 	});
+	const absentTopicSlugs = [];
+	for (const topicId of new Set(expansion.map(claim => String(claim.topic)))) {
+		if (await Claim.countDocuments({ topic: topicId })) continue;
+		const topic = await Topic.findById(topicId);
+		assert.ok(topic);
+		absentTopicSlugs.push(topic.slug);
+		await Topic.deleteOne({ _id: topic._id });
+	}
+	assert.ok(absentTopicSlugs.includes("animal-behavior-and-welfare"));
 	assert.equal(await Claim.countDocuments({ status: "published" }), 800);
 	const baseline = await Claim.findOne({ status: "published" });
 	baseline.editorSummary = "Preserved human correction in an existing review.";
@@ -252,6 +261,7 @@ try {
 	await stop(backend);
 	await publishReviewedContent();
 	await boot();
+	for (const slug of absentTopicSlugs) assert.equal(await Topic.countDocuments({ slug }), 1);
 	assert.equal(await Claim.countDocuments({ status: "published" }), publishedTotal, logs.get(backend));
 	assert.equal(await SourcePublication.countDocuments({ state: "published", releaseId: APPROVED_READER_RELEASE }), 201);
 	for (const release of catalogExpansionReleases) assert.equal(await SourcePublication.countDocuments({ state: "published", releaseId: release.id }), release.claims.length);
