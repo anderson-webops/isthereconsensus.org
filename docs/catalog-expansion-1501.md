@@ -1,5 +1,41 @@
 # Catalog expansion to 1,501 reviews
 
+## Weather and forecasting cohort
+
+`catalog-1501-weather-forecasting-2026-11-08` adds twenty self-reviewed
+reviews with 83 references: 80 distinct DOI-linked papers and three official
+guidance pages. Weather & forecasting has three canonical starter links.
+The source catalog reaches 1,378 definitions across 42 topics, leaving
+123 further source entries before 1,501. Public availability remains separately
+verified.
+
+Questions cover cloud seeding, AI and ensemble forecasts, seasonal outlooks,
+ENSO, tornado warnings and trends, cyclone intensity and frequency, Saharan
+dust, heat and flood warnings, fire-generated storms, pollution and lightning,
+urban rain, forest moisture recycling, irrigation, sirens, Arctic winter links
+and clear-air turbulence. Seven answers retain mixed evidence, one unclear
+evidence and nine low certainty.
+
+Research retains 23 targeted Consensus searches and 87 fetched candidates,
+complete canonical metadata/update and PubMed-query outcomes, and 28 official
+XML abstracts. Official WMO, ECMWF and US National Weather Service pages have
+verified content identities. Three registered correction notices remain in the
+research evidence; their full scopes could not be verified, so those candidates
+remain unused. Four lightning-hardware candidates also remain unused pending
+source adequacy review. These exclusions are evidence-access and scope decisions,
+not claims that corrected research is invalid. Existing probability-of-rain
+reviews were preserved without counting them again.
+
+Self-review distinguishes benchmark wins from event accuracy, model ensembles
+from expert votes, diagnostic turbulence from flight outcomes, total storm
+counts from other hazards, warning-only effects from broader prevention plans,
+and rain frequency from intensity. Regional and seasonal sign changes, null
+outcomes, observational confounding and overlapping research programs remain
+explicit. Canonical issue years retain first-online distinctions; undated
+official guidance stays undated. All 23 prior cohort seals and the complete
+1,358-review/41-topic baseline remain unchanged. Independent expert review,
+comprehensive systematic searching and site-performed GRADE are not claimed.
+
 ## Arts and creativity cohort
 
 `catalog-1501-arts-creativity-2026-11-08` adds twenty self-reviewed reviews

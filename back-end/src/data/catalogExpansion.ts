@@ -19,6 +19,7 @@ import { novemberSocialConnectionClaims } from "./claim-expansion-2026-11-social
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims } from "./claim-expansion-2026-11-urban.js";
+import { novemberWeatherForecastingClaims } from "./claim-expansion-2026-11-weather-forecasting.js";
 import { novemberWomensHealthSupportClaims } from "./claim-expansion-2026-11-womens-health-support.js";
 import { novemberWorkplaceClaims } from "./claim-expansion-2026-11-workplace.js";
 
@@ -138,6 +139,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-arts-creativity-2026-11-08",
 		claims: novemberArtsCreativityClaims,
 		dataSha256: "4f58f6ea14ac14a87407dd0f57ae132d9dd2882e0fd5d166af895d8a44aed1c0"
+	},
+	{
+		id: "catalog-1501-weather-forecasting-2026-11-08",
+		claims: novemberWeatherForecastingClaims,
+		dataSha256: "95f35883a45414bdcd8ceb81e50409bba462355c892f56d57be30a3e0c92415d"
 	}
 ];
 

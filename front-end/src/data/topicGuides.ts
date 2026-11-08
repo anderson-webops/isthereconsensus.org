@@ -50,6 +50,40 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"weather-and-forecasting": {
+		slug: "weather-and-forecasting",
+		consensusLabel: "Skill and weather effects vary by setting",
+		snapshot: "Forecast probabilities, storm behavior and rainfall changes depend on the region, timescale and outcome.",
+		stableCore: [
+			"A forecast of risk differs from a detailed prediction of one event.",
+			"Rainfall frequency, total amount and extreme intensity can change in different directions.",
+			"Warnings work through communication and feasible protective action."
+		],
+		openQuestions: [
+			"Which forecast improvements transfer to unprecedented and local extremes?",
+			"How can human influences be separated from large natural weather swings?"
+		],
+		whatWouldChangeMinds: [
+			"Independent real-time verification with matched targets and meaningful outcomes.",
+			"Consistent observations and physically credible models across regions."
+		],
+		commonMisreads: [
+			"A benchmark win, regional average or model percentage is not a guarantee for every event."
+		],
+		starterQuestions: [
+			"Can cloud seeding increase precipitation?",
+			"Are AI weather forecasts more accurate than traditional models?",
+			"How reliable are seasonal weather forecasts?"
+		],
+		starterClaimSlugs: [
+			"can-cloud-seeding-increase-precipitation",
+			"are-ai-weather-forecasts-more-accurate-than-traditional-models",
+			"how-reliable-are-seasonal-weather-forecasts"
+		],
+		evidenceTrail: [
+			{ title: "Observations, forecasts and model tests", note: "Real-time verification, bias correction and regional context shape weather evidence." }
+		]
+	},
 	"arts-and-creativity": {
 		slug: "arts-and-creativity",
 		consensusLabel: "Benefits depend on the activity and outcome",

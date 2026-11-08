@@ -8,6 +8,16 @@ describe("topic guide starter claims", () => {
 	it("provides one guide for every seeded topic", () => {
 		assert.deepEqual(new Set(Object.keys(topicGuides)), new Set(defaultTopics.map(topic => topic.slug)));
 	});
+	it("offers weather entry points without inventing a numerical topic consensus", () => {
+		const guide = topicGuides["weather-and-forecasting"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"can-cloud-seeding-increase-precipitation",
+			"are-ai-weather-forecasts-more-accurate-than-traditional-models",
+			"how-reliable-are-seasonal-weather-forecasts"
+		]);
+		assert.match(guide.consensusLabel, /vary by setting/u);
+	});
 	it("offers arts entry points without inventing topic-wide numerical agreement", () => {
 		const guide = topicGuides["arts-and-creativity"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

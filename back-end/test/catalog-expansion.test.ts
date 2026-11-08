@@ -23,6 +23,7 @@ import { novemberSocialConnectionClaims, novemberSocialConnectionResearchChecked
 import { novemberSocialPolicyClaims, novemberSocialPolicyResearchCheckedAt } from "../src/data/claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims, novemberTransportHousingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-transport-housing.js";
 import { novemberUrbanClaims, novemberUrbanResearchCheckedAt } from "../src/data/claim-expansion-2026-11-urban.js";
+import { novemberWeatherForecastingClaims, novemberWeatherForecastingResearchCheckedAt } from "../src/data/claim-expansion-2026-11-weather-forecasting.js";
 import { novemberWomensHealthSupportClaims, novemberWomensHealthSupportResearchCheckedAt } from "../src/data/claim-expansion-2026-11-womens-health-support.js";
 import { novemberWorkplaceClaims, novemberWorkplaceResearchCheckedAt } from "../src/data/claim-expansion-2026-11-workplace.js";
 import { defaultClaims, legacyDefaultClaims } from "../src/data/claims.js";
@@ -55,16 +56,103 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberConsumerChoicesClaims.length, 20);
 		assert.equal(novemberLanguageCommunicationClaims.length, 20);
 		assert.equal(novemberArtsCreativityClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 357);
-		assert.equal(defaultClaims.length, 1358);
+		assert.equal(novemberWeatherForecastingClaims.length, 20);
+		assert.equal(catalogExpansionClaims.length, 377);
+		assert.equal(defaultClaims.length, 1378);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 357,
-			citations: 1047,
-			catalog: 1358,
+			entries: 377,
+			citations: 1130,
+			catalog: 1378,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
+	});
+	it("seals twenty weather reviews with qualified certainty and distinct scopes", () => {
+		assert.equal(readerExpansionValueHash(novemberWeatherForecastingClaims), "95f35883a45414bdcd8ceb81e50409bba462355c892f56d57be30a3e0c92415d");
+		assert.equal(novemberWeatherForecastingResearchCheckedAt, "2026-11-08T17:48:07.165Z");
+		assert.ok(novemberWeatherForecastingClaims.every(claim => claim.searchCutoffAt === novemberWeatherForecastingResearchCheckedAt));
+		assert.equal(new Set(novemberWeatherForecastingClaims.map(claim => JSON.stringify(claim.exclusionRules))).size, 20);
+		const citations = novemberWeatherForecastingClaims.flatMap(claim => claim.sources);
+		assert.equal(citations.length, 83);
+		assert.equal(new Set(citations.flatMap(source => source.doi
+			? [source.doi]
+			: [])).size, 80);
+		assert.ok(novemberWeatherForecastingClaims.every(claim => claim.sources.length >= 4));
+		assert.equal(novemberWeatherForecastingClaims.filter(claim => claim.consensusBand === "mixed").length, 7);
+		assert.equal(novemberWeatherForecastingClaims.filter(claim => claim.consensusBand === "unclear").length, 1);
+		assert.equal(novemberWeatherForecastingClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
+	});
+	it("adds weather without recounting existing rainfall and irrigation questions", () => {
+		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.filter(topic => topic.slug === "weather-and-forecasting").length, 1);
+		assert.equal(defaultTopics.find(topic => topic.slug === "weather-and-forecasting")!.order, 42);
+		assert.ok(novemberWeatherForecastingClaims.every(claim => claim.topicSlug === "weather-and-forecasting"));
+		assert.ok(defaultClaims.some(claim => claim.slug === "does-a-40-percent-chance-of-rain-mean-rain-for-40-percent-of-the-day"));
+		assert.ok(defaultClaims.some(claim => claim.slug === "does-irrigation-only-increase-crop-production-without-serious-long-term-costs"));
+		assert.equal(novemberWeatherForecastingClaims.some(claim => /chance-of-rain|crop-production/u.test(claim.slug)), false);
+	});
+	it("retains official guidance identities and an honestly undated source", () => {
+		const guidance = novemberWeatherForecastingClaims.flatMap(claim => claim.sources).filter(source => !source.doi);
+		assert.equal(guidance.length, 3);
+		const hosts = guidance.map((source) => {
+			assert.ok(source.url);
+			return new URL(source.url).hostname;
+		});
+		assert.deepEqual(new Set(hosts), new Set(["public.wmo.int", "confluence.ecmwf.int", "www.weather.gov"]));
+		for (const source of guidance) assert.deepEqual(source.statusSources, [source.url]);
+		const weatherService = guidance.find(source => source.url === "https://www.weather.gov/dvn/sirenFAQ")!;
+		assert.equal(weatherService.year, undefined);
+		assert.match(weatherService.note!, /vary locally/u);
+		assert.match(guidance.find(source => source.publisher === "World Meteorological Organization")!.note!, /June 2024/u);
+	});
+	it("distinguishes forecast benchmarks and turbulence indicators from event outcomes", () => {
+		const claim = (slug: string) => novemberWeatherForecastingClaims.find(entry => entry.slug === slug)!;
+		const forecasts = claim("are-ai-weather-forecasts-more-accurate-than-traditional-models");
+		assert.match(forecasts.sources.find(source => source.doi === "10.1126/science.adi2336")!.note!, /not a 90% probability/u);
+		assert.match(claim("is-climate-change-increasing-clear-air-turbulence").misconceptions.join(" "), /worldwide change in accidents/u);
+		assert.match(claim("can-el-nino-be-predicted-months-in-advance").misconceptions.join(" "), /does not guarantee/u);
+		assert.match(claim("can-forecasters-predict-rapid-hurricane-intensification").misconceptions.join(" "), /thresholds/u);
+	});
+	it("preserves warning and regional sign-change limitations", () => {
+		const claim = (slug: string) => novemberWeatherForecastingClaims.find(entry => entry.slug === slug)!;
+		assert.match(claim("do-heat-health-warnings-reduce-deaths").stableCore.join(" "), /combine alerts with actions/u);
+		assert.match(claim("do-flood-warnings-reduce-property-damage").exclusionRules!.join(" "), /mortality or evacuation/u);
+		assert.match(claim("do-forests-support-regional-rainfall").stableCore.join(" "), /wet-season rain/u);
+		assert.match(claim("does-irrigation-change-regional-rainfall").stableCore.join(" "), /reverse the modeled sign/u);
+		assert.match(claim("is-arctic-warming-making-midlatitude-winters-more-extreme").exclusionRules!.join(" "), /overlapping coordinated-model/u);
+	});
+	it("uses canonical weather issue years rather than indexed online years", () => {
+		const sources = novemberWeatherForecastingClaims.flatMap(claim => claim.sources);
+		for (const [doi, year] of [
+			["10.1038/s41586-024-08252-9", 2025],
+			["10.1002/qj.70186", 2026],
+			["10.1002/wea.70015", 2026],
+			["10.1038/s41558-019-0662-y", 2020],
+			["10.1126/sciadv.aay2880", 2020],
+			["10.1175/waf-d-26-0037.1", 2026]
+		] as const) assert.equal(sources.find(source => source.doi === doi)?.year, year);
+	});
+	it("keeps unresolved correction scopes outside this weather manuscript", () => {
+		const used = new Set(novemberWeatherForecastingClaims.flatMap(claim => claim.sources).map(source => source.doi));
+		for (const doi of [
+			"10.1007/s00382-023-06800-z",
+			"10.1002/joc.70274",
+			"10.1038/s43247-023-01008-9",
+			"10.1098/rspa.2005.1625"
+		]) assert.equal(used.has(doi), false);
+		assert.ok(used.has("10.1175/waf-d-19-0168.1"));
+		assert.ok(used.has("10.1002/met.2170"));
+		assert.ok(used.has("10.1126/sciadv.aay2880"));
+	});
+	it("keeps weather provenance accurate and public copy free of revision notes", () => {
+		for (const claim of novemberWeatherForecastingClaims) {
+			assert.match(claim.reviewerLine!, /independent expert review not completed/u);
+			assert.match(claim.appraisalTools!.join(" "), /no formal GRADE assessment/u);
+			assert.doesNotMatch(claim.editorSummary, /this update|earlier page|seeded claim|previous draft/iu);
+			assert.doesNotMatch(claim.exclusionRules!.join(" "), /truncated.*abstract|fetching|draft helper/iu);
+			assert.ok(claim.sources.every(source => source.appraisal === "not_appraised"));
+		}
 	});
 	it("seals twenty arts questions with distinct scopes and qualified certainty", () => {
 		assert.equal(readerExpansionValueHash(novemberArtsCreativityClaims), "4f58f6ea14ac14a87407dd0f57ae132d9dd2882e0fd5d166af895d8a44aed1c0");
@@ -78,7 +166,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.evidenceCertainty === "low").length, 15);
 	});
 	it("adds an arts topic and preserves separately scoped existing questions", () => {
-		assert.equal(defaultTopics.length, 41);
+		assert.equal(defaultTopics.length, 42);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "arts-and-creativity").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "arts-and-creativity")!.order, 41);
 		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.topicSlug === "arts-and-creativity").length, 12);
@@ -152,7 +240,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
 	});
 	it("adds a language topic with distinct existing educational scopes preserved", () => {
-		assert.equal(defaultTopics.length, 41);
+		assert.equal(defaultTopics.length, 42);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "language-and-communication").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "language-and-communication")!.order, 40);
 		assert.ok(novemberLanguageCommunicationClaims.every(claim => claim.topicSlug === "language-and-communication"));
@@ -226,7 +314,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.evidenceCertainty === "low").length, 8);
 	});
 	it("adds a consumer topic while preserving distinct existing decision questions", () => {
-		assert.equal(defaultTopics.length, 41);
+		assert.equal(defaultTopics.length, 42);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "consumer-choices").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "consumer-choices")!.order, 39);
 		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.topicSlug === "consumer-choices"));
@@ -354,7 +442,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
 	});
 	it("preserves existing social topics and related reviews without counting them again", () => {
-		assert.equal(defaultTopics.length, 41);
+		assert.equal(defaultTopics.length, 42);
 		const existingTopics = new Set([
 			"neuroscience-and-psychology",
 			"mental-health-and-treatment",

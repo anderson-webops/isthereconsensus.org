@@ -285,5 +285,12 @@ export const defaultTopics = [
 		description: "Music, fiction, art appreciation and creative thinking.",
 		order: 41,
 		accent: "#7b5e71"
+	},
+	{
+		title: "Weather & forecasting",
+		slug: "weather-and-forecasting",
+		description: "Forecasts, storms, rainfall and weather risks.",
+		order: 42,
+		accent: "#5b6f79"
 	}
 ];
