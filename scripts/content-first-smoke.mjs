@@ -18,9 +18,11 @@ import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { CoverageRequest } from "../back-end/dist/models/schemas/CoverageRequest.js";
 import { SourcePublication } from "../back-end/dist/models/schemas/SourcePublication.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
-import { APPROVED_READER_RELEASE, approvedReaderContentMatches, approvedReaderDraft } from "../back-end/dist/utils/approvedReaderPublication.js";
+import { APPROVED_READER_RELEASE, approvedReaderContentMatches, approvedReaderDraft, publishApprovedReaderContent } from "../back-end/dist/utils/approvedReaderPublication.js";
+import { publishCatalogExpansion } from "../back-end/dist/utils/catalogExpansionPublication.js";
 import { readerExpansionValueHash } from "../back-end/dist/utils/readerExpansionProposal.js";
 import { fetchWithReadLimit } from "./lib/read-limit-retry.mjs";
+import { snapshotRetainedDatabase } from "./lib/retained-database-snapshot.mjs";
 
 const directory = mkdtempSync(join(tmpdir(), "consensus-content-first-"));
 const databaseName = `content_first_${randomUUID().replaceAll("-", "")}`;
@@ -75,6 +77,15 @@ async function wait(check, child) {
 		? logs.get(child)
 		: "local disposable database"}`);
 }
+async function databaseSnapshot() {
+	return snapshotRetainedDatabase(mongoose.connection.db, mongoose.mongo.BSON.EJSON.serialize);
+}
+async function publishReviewedContent() {
+	const approved = await publishApprovedReaderContent();
+	const expansion = await publishCatalogExpansion();
+	assert.equal(approved.failed, 0);
+	assert.equal(expansion.failed, 0);
+}
 try {
 	const configuredPort = process.env.READER_SMOKE_MONGO_PORT;
 	assert.ok(!configuredPort || (/^[1-9]\d{0,4}$/u.test(configuredPort) && Number(configuredPort) <= 65535));
@@ -113,6 +124,7 @@ try {
 	assert.equal(mongoose.connection.name, databaseName);
 	owned = true;
 	await SourcePublication.init();
+	await Promise.all(mongoose.modelNames().map(name => mongoose.model(name).init()));
 	await seedTopics();
 	await seedClaims();
 	const expansion = await Claim.find({
@@ -146,6 +158,50 @@ try {
 		privateNote: "Must not enter public content"
 	});
 	const privateBefore = await privateCollection.findOne({ _id: privateId });
+	await mongoose.connection.db.collection("questions").insertOne({
+		_id: new mongoose.Types.ObjectId(),
+		title: "Retained legacy question without a routing migration",
+		privateNote: "Synthetic routing state must remain unchanged"
+	});
+	const retained = await mongoose.connection.db.createCollection("retained_private_fixture", {
+		validator: {
+			$jsonSchema: {
+				bsonType: "object",
+				required: ["marker"],
+				properties: {
+					marker: { bsonType: "string" }
+				}
+			}
+		},
+		validationLevel: "strict",
+		validationAction: "error"
+	});
+	await retained.createIndex({ marker: 1 }, { name: "retained_unique_marker", unique: true });
+	await retained.insertOne({
+		marker: "protected",
+		payload: {
+			visibility: "private",
+			value: new mongoose.Types.ObjectId()
+		}
+	});
+	const preservedFixture = await databaseSnapshot();
+	await retained.updateOne({ marker: "protected" }, {
+		$set: { changed: true }
+	});
+	assert.notDeepEqual(await databaseSnapshot(), preservedFixture, "Snapshot must detect document mutations.");
+	await retained.updateOne({ marker: "protected" }, {
+		$unset: { changed: "" }
+	});
+	await retained.createIndex({ "payload.visibility": 1 }, { name: "synthetic_changed_index" });
+	assert.notDeepEqual(await databaseSnapshot(), preservedFixture, "Snapshot must detect index mutations.");
+	await retained.dropIndex("synthetic_changed_index");
+	await mongoose.connection.db.command({ collMod: "retained_private_fixture", validationLevel: "moderate" });
+	assert.notDeepEqual(await databaseSnapshot(), preservedFixture, "Snapshot must detect collection-option mutations.");
+	await mongoose.connection.db.command({ collMod: "retained_private_fixture", validationLevel: "strict" });
+	await mongoose.connection.db.createCollection("synthetic_added_collection");
+	assert.notDeepEqual(await databaseSnapshot(), preservedFixture, "Snapshot must detect new collections.");
+	await mongoose.connection.db.dropCollection("synthetic_added_collection");
+	assert.deepEqual(await databaseSnapshot(), preservedFixture, "Negative controls must restore the exact retained fixture.");
 	const seed = readerExpansionClaims[0];
 	const topic = await Topic.findOne({ slug: seed.topicSlug });
 	const fields = approvedReaderDraft(seed, topic._id);
@@ -174,6 +230,7 @@ try {
 		DOTENV_CONFIG_PATH: join(directory, "no-env-file")
 	};
 	async function boot() {
+		const retainedState = await databaseSnapshot();
 		backend = start(process.execPath, [
 			resolve("back-end/dist/server.js")
 		], environment);
@@ -187,9 +244,13 @@ try {
 				return false;
 			}
 		}, backend);
-		await wait(() => logs.get(backend).includes("Approved assistant-screened content release:"), backend);
-		await wait(() => logs.get(backend).includes("Self-reviewed catalog expansion:"), backend);
+		assert.equal((await fetch(`${base}/readyz`)).status, 200);
+		await delay(1500);
+		assert.deepEqual(await databaseSnapshot(), retainedState, "Production startup must preserve every retained document, collection option and index.");
 	}
+	await boot();
+	await stop(backend);
+	await publishReviewedContent();
 	await boot();
 	assert.equal(await Claim.countDocuments({ status: "published" }), publishedTotal, logs.get(backend));
 	assert.equal(await SourcePublication.countDocuments({ state: "published", releaseId: APPROVED_READER_RELEASE }), 201);
@@ -229,6 +290,7 @@ try {
 			$in: identities.map(row => row.claimId)
 		}
 	}).sort({ _id: 1 }).lean();
+	await publishReviewedContent();
 	await boot();
 	assert.deepEqual(await SourcePublication.find().sort({ key: 1 }).lean(), identities);
 	assert.deepEqual(await Claim.find({
@@ -280,6 +342,7 @@ try {
 			foreignAdditionBefore
 		});
 	}
+	await publishReviewedContent();
 	await boot();
 	assert.deepEqual(await Claim.findById(partial._id).lean(), moderatedBefore);
 	assert.deepEqual(await Claim.findById(foreign.claimId).lean(), foreignBefore);
@@ -290,7 +353,7 @@ try {
 	assert.equal(await SourcePublication.countDocuments(), publicationClaims.length - 1 - heldAdditions.length);
 	assert.equal(await CoverageRequest.countDocuments({ visibility: "public" }), publicationClaims.length - 1 - heldAdditions.length);
 	assert.deepEqual(await privateCollection.findOne({ _id: privateId }), privateBefore);
-	console.log(`content-first smoke ok: production startup publishes all ${publicationClaims.length} exact reviews, resumes owned partials, preserves citation identities and human withdrawals across all ${1 + heldAdditions.length} cohorts, and keeps private state unchanged`);
+	console.log(`content-first smoke ok: explicit publication handles all ${publicationClaims.length} exact reviews and ${1 + heldAdditions.length} cohorts; production startup and restarts preserve every collection, document, option and index; citation identities, human withdrawals and private state remain intact`);
 }
 finally {
 	await stop(backend);

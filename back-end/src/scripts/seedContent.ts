@@ -22,6 +22,7 @@ export async function runSeedContent() {
 		serverSelectionTimeoutMS: 10_000,
 		connectTimeoutMS: 10_000
 	});
+	await Promise.all(mongoose.modelNames().map(name => mongoose.model(name).init()));
 	await seedTopics();
 	await seedClaims({ synchronizeExisting: mode === "sync" });
 	console.log(`Seed content mode: ${mode === "sync"

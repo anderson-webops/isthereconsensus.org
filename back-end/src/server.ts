@@ -329,6 +329,8 @@ async function main() {
 	const { source: mongoSource, uri: mongoUri } = await resolveMongoConfiguration();
 
 	await mongoose.connect(mongoUri, {
+		autoCreate: !isProd,
+		autoIndex: !isProd,
 		serverSelectionTimeoutMS: 10_000,
 		connectTimeoutMS: 10_000
 	});
@@ -392,15 +394,15 @@ async function main() {
 		]);
 		await seedTopics();
 		await seedClaims({ synchronizeExisting: seedContentMode === "sync" });
+		await Question.updateMany({
+			routingStatus: { $exists: false }
+		}, {
+			$set: { routingStatus: "unassigned" }
+		});
 		console.log(`Seed content mode: ${seedContentMode === "sync"
 			? "synchronize existing"
 			: "insert only"}.`);
 	}
-	await Question.updateMany({
-		routingStatus: { $exists: false }
-	}, {
-		$set: { routingStatus: "unassigned" }
-	});
 
 	const api = express.Router();
 	api.use("/library", createReaderLibraryRouter());
@@ -4512,29 +4514,11 @@ async function main() {
 	if (!Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65_535) {
 		throw new Error("PORT must be an integer between 1 and 65535.");
 	}
-	const publicationController = new AbortController();
 	const server = app.listen(
 		parsedPort,
 		runtimeHost,
 		() => {
 			console.log(`Server listening on ${runtimeHost}:${parsedPort}.`);
-			if (isProd) {
-				void import("./utils/approvedReaderPublication.js")
-					.then(({ publishApprovedReaderContent }) => publishApprovedReaderContent(publicationController.signal))
-					.then(result => console.log("Approved assistant-screened content release:", result))
-					.catch(error => logError("Approved content release deferred; existing services remain available", error));
-				void import("./utils/catalogExpansionPublication.js")
-					.then(({ publishCatalogExpansion }) => publishCatalogExpansion(publicationController.signal))
-					.then(result => console.log("Self-reviewed catalog expansion:", result))
-					.catch(error => logError("Catalog expansion deferred; existing services remain available", error));
-				void import("./utils/ownerContentRelease.js")
-					.then(({ publishOwnerEditorialCorrections }) => publishOwnerEditorialCorrections(publicationController.signal))
-					.then(result => console.log("Owner-approved editorial content corrections:", result))
-					.then(() => import("./utils/editorialCompletionRelease.js"))
-					.then(({ publishEditorialCompletion }) => publishEditorialCompletion(publicationController.signal))
-					.then(result => console.log("Owner-approved editorial completion:", result))
-					.catch(error => logError("Owner content corrections deferred; existing services remain available", error));
-			}
 		}
 	);
 	server.requestTimeout = 15_000;
@@ -4549,7 +4533,6 @@ async function main() {
 		}
 
 		isShuttingDown = true;
-		publicationController.abort();
 		console.log(`${signal} received, shutting down gracefully...`);
 
 		try {

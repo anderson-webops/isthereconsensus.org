@@ -16,7 +16,7 @@ import { ContentRelease } from "../back-end/dist/models/schemas/ContentRelease.j
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
 import { createEditorialAuditProposal } from "../back-end/dist/utils/editorialAuditProposal.js";
 import { createEditorialCompletionProposal } from "../back-end/dist/utils/editorialCompletionProposal.js";
-import { EDITORIAL_COMPLETION_RELEASE } from "../back-end/dist/utils/editorialCompletionRelease.js";
+import { EDITORIAL_COMPLETION_RELEASE, publishEditorialCompletion } from "../back-end/dist/utils/editorialCompletionRelease.js";
 import { ownerCorrectionMatches, publishOwnerEditorialCorrections } from "../back-end/dist/utils/ownerContentRelease.js";
 
 const root = resolve(import.meta.dirname, "..");
@@ -197,6 +197,23 @@ try {
 	}
 	assert.equal(JSON.stringify({ claim: await Claim.findById(rollbackId).lean(), sources: await ClaimSource.find({ claim: rollbackId }).sort({ order: 1, _id: 1 }).lean() }), rollbackBaseline, "Late failure must roll back both article and citation writes.");
 	assert.equal(await ContentRelease.countDocuments({ key: fixtures[0].target.key }), 0);
+	const ownerPublication = await publishOwnerEditorialCorrections();
+	assert.deepEqual(ownerPublication, {
+		published: 1,
+		preserved: fixtures.length - 1,
+		conflicts: 0,
+		failed: 0
+	});
+	const completionProposal = createEditorialCompletionProposal({
+		commit: "a".repeat(40),
+		tree: "b".repeat(40)
+	});
+	const completionKeys = completionProposal.targets.map(target => target.key).filter(key => fixtures.some(fixture => fixture.target.key === key));
+	const completionPublication = await publishEditorialCompletion();
+	assert.equal(completionPublication.failed, 0);
+	assert.equal(completionPublication.published, completionKeys.length);
+	assert.equal(completionPublication.preserved, 0);
+	assert.equal(completionPublication.conflicts, completionProposal.targets.length - completionKeys.length);
 	const port = await freePort();
 	const base = `http://127.0.0.1:${port}/api`;
 	api = start(process.execPath, ["back-end/dist/server.js"], {
@@ -217,15 +234,11 @@ try {
 		}
 		catch { return false; }
 	}, "isolated backend");
-	await waitFor(async () => await ContentRelease.countDocuments({ releaseId: "owner-content-first-editorial-2026-10-21" }) === fixtures.length, "automatic owner content release");
-	const completionKeys = createEditorialCompletionProposal({
-		commit: "a".repeat(40),
-		tree: "b".repeat(40)
-	}).targets.map(target => target.key).filter(key => fixtures.some(fixture => fixture.target.key === key));
-	await waitFor(async () => await ContentRelease.countDocuments({
+	assert.equal(await ContentRelease.countDocuments({ releaseId: "owner-content-first-editorial-2026-10-21" }), fixtures.length);
+	assert.equal(await ContentRelease.countDocuments({
 		releaseId: EDITORIAL_COMPLETION_RELEASE,
 		key: { $in: completionKeys }
-	}) === completionKeys.length, "later immutable completion release");
+	}), completionKeys.length);
 	const headers = { "content-type": "application/json", "origin": "https://editorial-fixture.invalid", "x-forwarded-proto": "https" };
 	assert.equal((await fetch(`${base}/editorial/claims/${fixtures[0].claim._id}`, { headers })).status, 403);
 	const login = await fetch(`${base}/auth/login`, {
@@ -290,7 +303,7 @@ try {
 	console.log(JSON.stringify({
 		accepted: true,
 		fixtureOnly: true,
-		automaticallyPublished: fixtures.length,
+		explicitlyPublished: fixtures.length,
 		legacyCitationsPreserved: fixtures.reduce((sum, fixture) => sum + fixture.sources.length, 0),
 		addedCitations: 2,
 		editProtectionsPreserved: true,

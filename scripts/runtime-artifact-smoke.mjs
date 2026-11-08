@@ -6,6 +6,8 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
+import { createRequire } from "node:module";
+import { snapshotRetainedDatabase } from "./lib/retained-database-snapshot.mjs";
 
 const root = process.cwd();
 const sourceArtifact = path.resolve(process.argv[2] || path.join(root, ".runtime-artifact"));
@@ -313,33 +315,46 @@ try {
 		assert.equal(seed.status, 0, seed.output);
 		assert.doesNotMatch(seed.output, /ERR_MODULE_NOT_FOUND/u);
 
-		const apiPort = await ephemeralPort();
-		const apiBaseUrl = `http://127.0.0.1:${apiPort}`;
-		const api = startService(
-			path.join(artifactRoot, "back-end/dist/server.js"),
-			artifactRoot,
-			cleanEnvironment({
-				CAPTCHA_SECRET: "artifact-captcha-secret-0000000000000000",
-				DOTENV_CONFIG_PATH: emptyEnvironment,
-				HOST: "127.0.0.1",
-				MONGODB_URI: mongoUri,
-				NODE_ENV: "production",
-				PORT: String(apiPort),
-				PUBLIC_CAPTCHA_SITEKEY: "artifact-public-key",
-				PUBLIC_SITE_URL: "https://example.test",
-				SESSION_SECRET: "artifact-session-secret-0000000000000000",
-				TRUST_PROXY_IPS: "127.0.0.1,::1"
-			})
-		);
+		const packagedMongoose = createRequire(path.join(artifactRoot, "back-end/package.json"))("mongoose");
+		const inspector = new packagedMongoose.mongo.MongoClient(mongoUri);
 		try {
-			await waitForResponse(api, `${apiBaseUrl}/readyz`);
-			await assertProbe(apiBaseUrl, "/healthz");
-			await assertProbe(apiBaseUrl, "/readyz");
+			await inspector.connect();
+			const snapshot = () => snapshotRetainedDatabase(inspector.db(), packagedMongoose.mongo.BSON.EJSON.serialize);
+			const retainedState = await snapshot();
+			const apiPort = await ephemeralPort();
+			const apiBaseUrl = `http://127.0.0.1:${apiPort}`;
+			const api = startService(
+				path.join(artifactRoot, "back-end/dist/server.js"),
+				artifactRoot,
+				cleanEnvironment({
+					CAPTCHA_SECRET: "artifact-captcha-secret-0000000000000000",
+					DOTENV_CONFIG_PATH: emptyEnvironment,
+					HOST: "127.0.0.1",
+					MONGODB_URI: mongoUri,
+					NODE_ENV: "production",
+					PORT: String(apiPort),
+					PUBLIC_CAPTCHA_SITEKEY: "artifact-public-key",
+					PUBLIC_SITE_URL: "https://example.test",
+					SESSION_SECRET: "artifact-session-secret-0000000000000000",
+					TRUST_PROXY_IPS: "127.0.0.1,::1"
+				})
+			);
+			try {
+				await waitForResponse(api, `${apiBaseUrl}/readyz`);
+				await assertProbe(apiBaseUrl, "/healthz");
+				await assertProbe(apiBaseUrl, "/readyz");
+				await new Promise(resolve => setTimeout(resolve, 1500));
+				assert.deepEqual(await snapshot(), retainedState, "Unpacked production startup changed retained documents, schema or indexes.");
+			}
+			finally {
+				await stopService(api);
+			}
+			assert.equal(api.child.exitCode, 0, `API service did not shut down cleanly.\n${api.output()}`);
+			assert.deepEqual(await snapshot(), retainedState, "Unpacked production shutdown changed retained database state.");
 		}
 		finally {
-			await stopService(api);
+			await inspector.close();
 		}
-		assert.equal(api.child.exitCode, 0, `API service did not shut down cleanly.\n${api.output()}`);
 	}
 	else {
 		process.stdout.write("Synthetic MongoDB URI not supplied; isolated dependency-ready API acceptance is deferred to CI.\n");

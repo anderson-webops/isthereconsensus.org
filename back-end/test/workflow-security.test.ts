@@ -117,6 +117,15 @@ describe("workflow security", () => {
 		assert.match(seedRunnerSource, /seedClaims\(\{ synchronizeExisting: mode === "sync" \}\)/);
 	});
 
+	it("preserves retained production documents and schema during startup", () => {
+		assert.match(serverSource, /mongoose\.connect\(mongoUri, \{\s+autoCreate: !isProd,\s+autoIndex: !isProd/u);
+		const developmentPreparation = serverSource.slice(serverSource.indexOf("if (!isProd) {"), serverSource.indexOf("const api = express.Router()"));
+		assert.match(developmentPreparation, /Question\.updateMany\(/u);
+		assert.equal((serverSource.match(/Question\.updateMany\(/gu) || []).length, 1);
+		assert.doesNotMatch(serverSource, /publishApprovedReaderContent|publishCatalogExpansion|publishOwnerEditorialCorrections|publishEditorialCompletion|publicationController/u);
+		assert.match(seedRunnerSource, /mongoose\.modelNames\(\)\.map\(name => mongoose\.model\(name\)\.init\(\)\)/u);
+	});
+
 	it("requires protected notes for evidence demotion and public reasons for claim demotion", () => {
 		assert.match(
 			serverSource,

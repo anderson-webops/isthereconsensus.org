@@ -7,12 +7,78 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { test } from "node:test";
+import { snapshotRetainedDatabase } from "./lib/retained-database-snapshot.mjs";
 import { attestationArguments, verifyReleaseAssets } from "./verify-runtime-release.mjs";
 
 const commit = "a".repeat(40);
 const tag = "v1.38.33";
 const archive = `isthereconsensus-${commit.slice(0, 12)}-linux-arm64-runtime.tar.gz`;
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
+
+function retainedDatabaseFixture() {
+	const state = [{
+		metadata: { name: "retained", type: "collection", options: { validationLevel: "strict" } },
+		indexes: [{ name: "_id_", key: { _id: 1 } }],
+		documents: [{ _id: "row", privateNote: "Retained synthetic private payload" }]
+	}];
+	const database = {
+		listCollections: (_filter, options) => {
+			assert.equal(options.nameOnly, false);
+			return { toArray: async () => structuredClone(state.map(collection => collection.metadata)) };
+		},
+		collection: name => {
+			const collection = state.find(collection => collection.metadata.name === name);
+			return {
+				indexes: async () => {
+					assert.notEqual(collection.metadata.type, "view");
+					return structuredClone(collection.indexes);
+				},
+				find: () => {
+					assert.notEqual(collection.metadata.type, "view");
+					return { sort: () => ({ toArray: async () => structuredClone(collection.documents) }) };
+				}
+			};
+		}
+	};
+	return { database, state };
+}
+
+test("retained database fingerprints cover documents, indexes, collection options and namespaces", async () => {
+	const { database, state } = retainedDatabaseFixture();
+	const baseline = await snapshotRetainedDatabase(database, value => value);
+	state[0].documents[0].privateNote = "Changed payload";
+	assert.notDeepEqual(await snapshotRetainedDatabase(database, value => value), baseline);
+	state[0].documents[0].privateNote = "Retained synthetic private payload";
+	state[0].indexes.push({ name: "added", key: { privateNote: 1 } });
+	assert.notDeepEqual(await snapshotRetainedDatabase(database, value => value), baseline);
+	state[0].indexes.pop();
+	state[0].metadata.options.validationLevel = "moderate";
+	assert.notDeepEqual(await snapshotRetainedDatabase(database, value => value), baseline);
+	state[0].metadata.options.validationLevel = "strict";
+	state.push({ metadata: { name: "added", type: "collection", options: {} }, indexes: [], documents: [] });
+	assert.notDeepEqual(await snapshotRetainedDatabase(database, value => value), baseline);
+	state.pop();
+	assert.deepEqual(await snapshotRetainedDatabase(database, value => value), baseline);
+});
+
+test("retained database fingerprints expose hashes and counts rather than private document values", async () => {
+	const { database } = retainedDatabaseFixture();
+	const snapshot = await snapshotRetainedDatabase(database, (value, options) => {
+		assert.equal(options.relaxed, false);
+		return value;
+	});
+	assert.equal(snapshot[0].count, 1);
+	assert.match(snapshot[0].documents, /^[a-f0-9]{64}$/u);
+	assert.equal(JSON.stringify(snapshot).includes("Retained synthetic private payload"), false);
+});
+
+test("retained database fingerprints retain view definitions without querying unsupported view indexes", async () => {
+	const { database, state } = retainedDatabaseFixture();
+	state.push({ metadata: { name: "private_view", type: "view", options: { viewOn: "retained", pipeline: [] } }, indexes: [], documents: [] });
+	const snapshot = await snapshotRetainedDatabase(database, value => value);
+	assert.deepEqual(snapshot.map(collection => collection.name), ["private_view", "retained"]);
+	assert.equal(snapshot[0].indexes, digest("[]"));
+});
 
 async function withFixture(run) {
 	const directory = await mkdtemp(path.join(os.tmpdir(), "consensus-release-metadata-"));
