@@ -292,5 +292,12 @@ export const defaultTopics = [
 		description: "Forecasts, storms, rainfall and weather risks.",
 		order: 42,
 		accent: "#5b6f79"
+	},
+	{
+		title: "Family & child development",
+		slug: "family-and-child-development",
+		description: "Parenting, care and children's development.",
+		order: 43,
+		accent: "#786755"
 	}
 ];

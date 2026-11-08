@@ -50,6 +50,37 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"family-and-child-development": {
+		slug: "family-and-child-development",
+		consensusLabel: "Evidence differs by question and family context",
+		snapshot: "Programs can improve behavior; family comparisons rarely isolate a single cause.",
+		stableCore: [
+			"Children's age, relationships, resources and care settings shape developmental comparisons.",
+			"Growth, learning and emotional wellbeing can follow different paths."
+		],
+		openQuestions: [
+			"Which benefits persist and which families need different support?"
+		],
+		whatWouldChangeMinds: [
+			"Independent long-term studies with clear family histories, care comparisons and child outcomes."
+		],
+		commonMisreads: [
+			"A population average cannot predict one child's experience or establish a safe care arrangement."
+		],
+		starterQuestions: [
+			"How does parental phone use relate to child development?",
+			"Are only children less socially skilled?",
+			"Do parenting programs reduce disruptive child behavior?"
+		],
+		starterClaimSlugs: [
+			"how-does-parental-phone-use-relate-to-child-development",
+			"are-only-children-less-socially-skilled",
+			"do-parenting-programs-reduce-disruptive-child-behavior"
+		],
+		evidenceTrail: [
+			{ title: "Trials, family comparisons and follow-up", note: "Program effects, observational associations and lasting developmental changes require different comparisons." }
+		]
+	},
 	"weather-and-forecasting": {
 		slug: "weather-and-forecasting",
 		consensusLabel: "Skill and weather effects vary by setting",

@@ -52,6 +52,7 @@ interface ReviewedEntry {
 	excludedEvidence?: string[];
 	uncertainty: string;
 	sources: SeedClaim["sources"];
+	searchDatabases?: string[];
 	band?: ClaimConsensusBand;
 	certainty?: ClaimEvidenceCertainty;
 }
@@ -88,7 +89,7 @@ export function reviewedEntry(entry: ReviewedEntry, checkedAt = novemberResearch
 			{ type: "generalizability", detail: entry.scope },
 			{ type: "inconsistency", detail: entry.uncertainty }
 		],
-		searchDatabases: ["Consensus.app targeted paper search", "Publisher and institutional article records"],
+		searchDatabases: entry.searchDatabases ?? ["Consensus.app targeted paper search", "Publisher and institutional article records"],
 		searchCutoffAt: checkedAt,
 		inclusionRules: [entry.scope, `Population and setting: ${entry.population}`],
 		exclusionRules: entry.excludedEvidence ?? ["Do not interpret average group differences as guaranteed individual results or as a measured percentage of expert agreement."],

@@ -1,5 +1,44 @@
 # Catalog expansion to 1,501 reviews
 
+## Schools and family cohort
+
+`catalog-1501-schools-family-2026-11-08` adds twenty self-reviewed reviews
+with 76 distinct DOI-linked references. Nine introduce Family & child development;
+eight extend education, two nutrition and one mental health. Three canonical
+starter links introduce the new topic. Source: 1,398 definitions across 43 topics,
+with 103 further definitions before 1,501. Public availability remains separately
+verified.
+
+Questions cover Montessori, school phone bans, parental phone use, shared care,
+only children, vouchers, year-round calendars, four-day weeks, single-sex schools,
+home education, classroom mindfulness, recess, school gardens, breakfast,
+nature play, childcare hours, same-sex parents, adoption/foster-care catch-up,
+parenting programs and praise. Ten answers retain mixed evidence, one remains
+unclear and ten retain low certainty.
+
+Research retains 19 successful Consensus searches and 57 fetched candidates,
+plus targeted PubMed discovery and 24 additional primary-source records. All
+78 qualified DOI records have canonical metadata/update observations; 54 have
+official XML abstracts. All 78 qualified abstracts, the nature-play report's relevant
+results and the calendar corrigendum were read. Five candidates remain unused:
+three chapter/precursor records and two studies outside the final question scope.
+Four quota-limited Consensus searches supplied no papers and are excluded from
+successful-search counts. Six articles record primary-only research provenance;
+the shared helper supports explicit discovery records without changing defaults.
+
+The calendar review retains its corrected status and notice URL, including the
+limits on causal and subgroup interpretation. Self-review preserves conflicting
+results, overlapping cohorts, observational family selection, small studies,
+preregistered versus exploratory praise findings, outcome-specific cognition,
+care comparisons and disclosed cereal-industry funding. Post-treatment
+maintenance is distinct from the original treatment effect. No independent
+expert review, exhaustive systematic search or site-performed GRADE is claimed.
+
+The production startup remains state-preserving. Content publication continues
+through the explicit bounded publisher, with human moderation and private state
+preserved. All 24 prior cohort seals and the 1,378-definition baseline remain
+unchanged.
+
 ## Weather and forecasting cohort
 
 `catalog-1501-weather-forecasting-2026-11-08` adds twenty self-reviewed

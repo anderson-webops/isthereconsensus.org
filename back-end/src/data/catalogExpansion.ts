@@ -15,6 +15,7 @@ import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims } from "./claim-expansion-2026-11-memory-judgment.js";
 import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims } from "./claim-expansion-2026-11-river-landscape.js";
+import { novemberSchoolsFamilyClaims } from "./claim-expansion-2026-11-schools-family.js";
 import { novemberSocialConnectionClaims } from "./claim-expansion-2026-11-social-connection.js";
 import { novemberSocialPolicyClaims } from "./claim-expansion-2026-11-social-policy.js";
 import { novemberTransportHousingClaims } from "./claim-expansion-2026-11-transport-housing.js";
@@ -144,6 +145,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-weather-forecasting-2026-11-08",
 		claims: novemberWeatherForecastingClaims,
 		dataSha256: "95f35883a45414bdcd8ceb81e50409bba462355c892f56d57be30a3e0c92415d"
+	},
+	{
+		id: "catalog-1501-schools-family-2026-11-08",
+		claims: novemberSchoolsFamilyClaims,
+		dataSha256: "7c21e6675cf129043572e177aa6af71b367ee3de82d55a25aa78d64407f62b69"
 	}
 ];
 

@@ -18,6 +18,16 @@ describe("topic guide starter claims", () => {
 		]);
 		assert.match(guide.consensusLabel, /vary by setting/u);
 	});
+	it("offers family entry points without inventing numerical agreement", () => {
+		const guide = topicGuides["family-and-child-development"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"how-does-parental-phone-use-relate-to-child-development",
+			"are-only-children-less-socially-skilled",
+			"do-parenting-programs-reduce-disruptive-child-behavior"
+		]);
+		assert.match(guide.consensusLabel, /family context/u);
+	});
 	it("offers arts entry points without inventing topic-wide numerical agreement", () => {
 		const guide = topicGuides["arts-and-creativity"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

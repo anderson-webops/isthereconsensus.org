@@ -57,13 +57,13 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLanguageCommunicationClaims.length, 20);
 		assert.equal(novemberArtsCreativityClaims.length, 20);
 		assert.equal(novemberWeatherForecastingClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 377);
-		assert.equal(defaultClaims.length, 1378);
+		assert.equal(catalogExpansionClaims.length, 397);
+		assert.equal(defaultClaims.length, 1398);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 377,
-			citations: 1130,
-			catalog: 1378,
+			entries: 397,
+			citations: 1206,
+			catalog: 1398,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });
@@ -84,7 +84,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberWeatherForecastingClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
 	});
 	it("adds weather without recounting existing rainfall and irrigation questions", () => {
-		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.length, 43);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "weather-and-forecasting").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "weather-and-forecasting")!.order, 42);
 		assert.ok(novemberWeatherForecastingClaims.every(claim => claim.topicSlug === "weather-and-forecasting"));
@@ -166,7 +166,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.evidenceCertainty === "low").length, 15);
 	});
 	it("adds an arts topic and preserves separately scoped existing questions", () => {
-		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.length, 43);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "arts-and-creativity").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "arts-and-creativity")!.order, 41);
 		assert.equal(novemberArtsCreativityClaims.filter(claim => claim.topicSlug === "arts-and-creativity").length, 12);
@@ -240,7 +240,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLanguageCommunicationClaims.filter(claim => claim.evidenceCertainty === "low").length, 9);
 	});
 	it("adds a language topic with distinct existing educational scopes preserved", () => {
-		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.length, 43);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "language-and-communication").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "language-and-communication")!.order, 40);
 		assert.ok(novemberLanguageCommunicationClaims.every(claim => claim.topicSlug === "language-and-communication"));
@@ -314,7 +314,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberConsumerChoicesClaims.filter(claim => claim.evidenceCertainty === "low").length, 8);
 	});
 	it("adds a consumer topic while preserving distinct existing decision questions", () => {
-		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.length, 43);
 		assert.equal(defaultTopics.filter(topic => topic.slug === "consumer-choices").length, 1);
 		assert.equal(defaultTopics.find(topic => topic.slug === "consumer-choices")!.order, 39);
 		assert.ok(novemberConsumerChoicesClaims.every(claim => claim.topicSlug === "consumer-choices"));
@@ -442,7 +442,7 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.match(claim("does-moving-in-time-with-others-increase-cooperation").stableCore.join(" "), /did not find the original effects/u);
 	});
 	it("preserves existing social topics and related reviews without counting them again", () => {
-		assert.equal(defaultTopics.length, 42);
+		assert.equal(defaultTopics.length, 43);
 		const existingTopics = new Set([
 			"neuroscience-and-psychology",
 			"mental-health-and-treatment",
