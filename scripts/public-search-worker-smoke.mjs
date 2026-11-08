@@ -18,8 +18,10 @@ import { defaultTopics } from "../back-end/dist/data/topics.js";
 import { Claim } from "../back-end/dist/models/schemas/Claim.js";
 import { ClaimSource } from "../back-end/dist/models/schemas/ClaimSource.js";
 import { Topic } from "../back-end/dist/models/schemas/Topic.js";
-import { APPROVED_READER_RELEASE } from "../back-end/dist/utils/approvedReaderPublication.js";
+import { APPROVED_READER_RELEASE, publishApprovedReaderContent } from "../back-end/dist/utils/approvedReaderPublication.js";
+import { publishCatalogExpansion } from "../back-end/dist/utils/catalogExpansionPublication.js";
 import { PUBLIC_SEARCH_WORKER_REQUEST_LIMIT } from "../back-end/dist/utils/publicSearchWorker.js";
+import { snapshotRetainedDatabase } from "./lib/retained-database-snapshot.mjs";
 
 const temporaryRoot = Buffer.byteLength(join(tmpdir(), "consensus-rpc-XXXXXX", "worker.sock")) <= 100
 	? tmpdir()
@@ -227,6 +229,13 @@ try {
 		await source.validate();
 		await database.collection("claimsources").insertOne(source.toObject());
 	}
+	await mongoose.connect(`mongodb://127.0.0.1:${mongoPort}/${databaseName}`);
+	await Promise.all(mongoose.modelNames().map(name => mongoose.model(name).init()));
+	assert.equal((await publishApprovedReaderContent()).failed, 0);
+	assert.equal((await publishCatalogExpansion()).failed, 0);
+	await mongoose.disconnect();
+	const snapshot = () => snapshotRetainedDatabase(database, mongoose.mongo.BSON.EJSON.serialize);
+	const retainedState = await snapshot();
 	await listen(worker, socketPath);
 	base = `http://127.0.0.1:${await freePort()}`;
 	const backend = start(process.execPath, [
@@ -253,26 +262,26 @@ try {
 			return false;
 		}
 	}, "compiled backend readiness", backend);
-	await waitFor(async () => (processOutput.get(backend) ?? "").includes("Approved assistant-screened content release:"), "approved startup publication completion", backend);
-	await waitFor(async () => (processOutput.get(backend) ?? "").includes("Self-reviewed catalog expansion:"), "catalog startup publication completion", backend);
-	const startupReleases = [
+	await delay(1500);
+	assert.deepEqual(await snapshot(), retainedState, "Search transport startup must preserve retained documents, collection options and indexes.");
+	const fixtureReleases = [
 		{ id: APPROVED_READER_RELEASE, claims: readerExpansionClaims },
 		...catalogExpansionReleases
 	];
 	const publications = await database.collection("sourcepublications").find({
 		releaseId: {
-			$in: startupReleases.map(release => release.id)
+			$in: fixtureReleases.map(release => release.id)
 		}
 	}).toArray();
-	for (const release of startupReleases) assert.equal(publications.filter(publication => publication.releaseId === release.id).length, release.claims.length);
-	assert.equal(publications.length, startupReleases.reduce((count, release) => count + release.claims.length, 0));
+	for (const release of fixtureReleases) assert.equal(publications.filter(publication => publication.releaseId === release.id).length, release.claims.length);
+	assert.equal(publications.length, fixtureReleases.reduce((count, release) => count + release.claims.length, 0));
 	assert.ok(publications.every(publication => publication.state === "published"));
-	assert.ok(publications.every(publication => !publication.claimId.equals(review._id)), "Owned startup imports must not include the transport baseline.");
+	assert.ok(publications.every(publication => !publication.claimId.equals(review._id)), "Explicit fixture publication must preserve the transport baseline.");
 	assert.equal((await database.collection("claimsources").deleteMany({
 		_id: {
 			$in: publications.flatMap(publication => publication.sourceIds)
 		}
-	})).deletedCount, startupReleases.reduce((count, release) => count + release.claims.reduce((total, claim) => total + claim.sources.length, 0), 0));
+	})).deletedCount, fixtureReleases.reduce((count, release) => count + release.claims.reduce((total, claim) => total + claim.sources.length, 0), 0));
 	const claims = database.collection("claims");
 	assert.equal((await claims.deleteMany({
 		_id: {
@@ -284,7 +293,7 @@ try {
 			$in: publications.map(publication => publication.coverageId)
 		}
 	})).deletedCount, publications.length);
-	assert.equal(await claims.countDocuments({ status: "published" }), 1, "Transport comparisons require their original isolated synthetic corpus after startup publication finishes.");
+	assert.equal(await claims.countDocuments({ status: "published" }), 1, "Transport comparisons require their original isolated synthetic corpus after explicit publication finishes.");
 	target = await claims.findOne({ slug: "does-caffeine-become-less-effective-with-regular-daily-use", status: "published" });
 	assert.ok(target);
 	await claims.updateOne({ _id: target._id }, {
@@ -473,13 +482,14 @@ try {
 		}
 	}
 	assert.equal(process.exitCode, undefined);
-	console.log("public search transport smoke passed: completed startup publication, both compiled API routes, case preservation, public-only hydration, concurrent-publication/stale/withdrawn/unready rejection, coherent native comparisons, distinct quantities, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
+	console.log("public search transport smoke passed: explicit fixture publication and state-preserving startup, both compiled API routes, case preservation, public-only hydration, concurrent-publication/stale/withdrawn/unready rejection, coherent native comparisons, distinct quantities, native fallback, reader cancellation and one shared bounded queue. Synthetic RPC fixture, not model-quality or public-site acceptance.");
 }
 finally {
 	await Promise.all([...children].filter(child => !child.spawnargs.includes("--dbpath")).map(stop));
 	worker.closeAllConnections();
 	if (worker.listening) await new Promise(resolve => worker.close(resolve));
 	try {
+		if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
 		if (databaseOwned && client) {
 			assert.match(databaseName, /^search_worker_smoke_[a-f\d]{32}$/u);
 			await client.db(databaseName).dropDatabase();

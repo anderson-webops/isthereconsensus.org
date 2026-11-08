@@ -464,12 +464,12 @@ catalog import and aggregation exports change in `claims.ts`; its exact-byte
 prose-preservation pin is renewed for those mechanical changes. The existing
 editorial-completion and reader-expansion content seals remain unchanged.
 
-Production startup uses the existing publication journal with a separate cohort
-identity. Replays preserve published rows, human withdrawals, unowned drafts,
-source identities and private state. Failed validation leaves existing services
-available. Publication and review dates retain their separate meanings.
+Explicit publication uses the existing journal with a separate cohort identity.
+Replays preserve published rows, human withdrawals, unowned drafts, source
+identities and private state. Production startup preserves retained data and
+schema. Publication and review dates retain their separate meanings.
 
-The isolated production-startup rehearsal covers every registered cohort,
-exact public article and citation payloads, restart stability,
-and human moderation across cohorts. The end goal remains open until the live
+The isolated rehearsal explicitly publishes every registered cohort, checks
+exact public article and citation payloads, and verifies state-preserving startup,
+restart stability and human moderation. The end goal remains open until the live
 catalog contains 1,501 distinct self-reviewed canonical reviews.

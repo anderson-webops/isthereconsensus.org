@@ -38,6 +38,9 @@ then retains complete article/citation, partial-journal recovery, replay stabili
 human-withdrawal and private-state checks. This preserves publication coverage
 without making publication an implicit consequence of runtime health checks.
 
+The public search-worker rehearsal also publishes its fixtures explicitly and
+verifies the complete retained database before exercising production API transport.
+
 `scripts/runtime-artifact-smoke.mjs` independently fingerprints the synthetic
 database around the actual unpacked backend entrypoint, health/readiness probes
 and graceful shutdown, using the packaged database driver. Fingerprints expose

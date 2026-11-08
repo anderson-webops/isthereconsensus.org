@@ -129,8 +129,8 @@ raw messages. A per-question novelty/source record will precede content batches.
 
 The owner subsequently accepted the prepared material as is and requested release
 after assistant screening, with human moderation afterward. The fixed 201-review
-batch now has an insert-only, resumable startup publisher for the protected next
-deployment; it never overwrites existing editorial records or resurrects withdrawals.
+batch retains an insert-only, resumable publisher for explicit publication,
+separate from runtime startup. It preserves existing editorial records and withdrawals.
 Assistant authorship, source-record dates and the absence of independent expert
 review remain explicit. Public roadmap examples identify coverage-audit selection
 rather than claiming submitted reader demand. Private feedback stays private.

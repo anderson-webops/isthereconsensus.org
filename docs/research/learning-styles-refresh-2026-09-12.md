@@ -83,6 +83,7 @@ review and publication dates, editorial state and source warnings must be
 preserved by the [controlled promotion procedure](../claim-refresh-promotion.md).
 
 Eleven baseline reviews are now source-prepared. None has completed controlled
-public content promotion. Ordinary startup seeding remains insert-only. The
+public content promotion. Development and explicit seeding remain insert-only;
+production startup preserves retained data. The
 catalog remains at 800 claims; a source release alone does not count as public
 completion of this refresh.
