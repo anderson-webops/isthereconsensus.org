@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { Buffer } from "node:buffer";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmod, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { chmod, cp, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
@@ -14,6 +14,39 @@ const commit = "a".repeat(40);
 const tag = "v1.38.33";
 const archive = `isthereconsensus-${commit.slice(0, 12)}-linux-arm64-runtime.tar.gz`;
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
+
+test("CI publisher verification retains its reports outside the release checkout", async () => {
+	const workflow = await readFile(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+	const commands = workflow.split(/\r?\n/u).map(line => line.trim()).filter(line => line.endsWith("npm run verify:unimport-source"));
+	const expected = "UNIMPORT_VERIFICATION_OUTPUT=\"$RUNNER_TEMP/consensus-unimport-source-verification\" npm run verify:unimport-source";
+	assert.deepEqual(commands, [expected, expected]);
+});
+
+test("maintained publisher bytes survive a CRLF-configured fresh checkout", async () => {
+	const directory = await mkdtemp(path.join(os.tmpdir(), "consensus-publisher-checkout-"));
+	try {
+		await writeFile(path.join(directory, ".gitattributes"), await readFile(new URL("../.gitattributes", import.meta.url)));
+		await cp(new URL("../vendor/unimport", import.meta.url), path.join(directory, "vendor/unimport"), { recursive: true });
+		const git = args => execFileSync("git", ["-c", "core.autocrlf=true", ...args], { cwd: directory, stdio: "pipe" });
+		git(["init", "--quiet"]);
+		git(["add", ".gitattributes", "vendor/unimport"]);
+		git(["checkout-index", "--force", "--all"]);
+		const inventory = JSON.parse(await readFile(new URL("../vendor/unimport/UPSTREAM.json", import.meta.url), "utf8"));
+		for (const filename of [
+			...Object.keys(inventory.maintainedFiles),
+			"UPSTREAM.json",
+			"UPSTREAM.md"
+		]) {
+			assert.ok(
+				(await readFile(path.join(directory, "vendor/unimport", filename))).equals(await readFile(new URL(`../vendor/unimport/${filename}`, import.meta.url))),
+				`Publisher payload changed during checkout: ${filename}`
+			);
+		}
+	}
+	finally {
+		await rm(directory, { recursive: true, force: true });
+	}
+});
 
 function retainedDatabaseFixture() {
 	const state = [{

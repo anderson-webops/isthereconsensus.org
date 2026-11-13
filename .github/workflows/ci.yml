@@ -163,7 +163,7 @@ jobs:
           npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
           npm run audit:qs
           npm audit signatures
-          npm run verify:unimport-source
+          UNIMPORT_VERIFICATION_OUTPUT="$RUNNER_TEMP/consensus-unimport-source-verification" npm run verify:unimport-source
           npm run test:unimport
           npm run verify:native-lock
 
@@ -349,7 +349,7 @@ jobs:
           npm audit --prefix search-worker/runtime --workspaces=false --omit=dev
           npm run audit:qs
           npm audit signatures
-          npm run verify:unimport-source
+          UNIMPORT_VERIFICATION_OUTPUT="$RUNNER_TEMP/consensus-unimport-source-verification" npm run verify:unimport-source
           npm run test:unimport
           npm run verify:native-lock
           npm run lint

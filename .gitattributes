@@ -11,3 +11,4 @@
 *.vue text eol=lf
 *.yml text eol=lf
 vendor/qs/** text eol=lf
+vendor/unimport/** text eol=lf
