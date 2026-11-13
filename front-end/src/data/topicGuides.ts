@@ -50,6 +50,32 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"oral-and-dental-health": {
+		slug: "oral-and-dental-health",
+		consensusLabel: "Established prevention and uncertain product comparisons",
+		snapshot: "Prevention, gum treatment and cosmetic whitening have different evidence.",
+		stableCore: [
+			"Several tools improve plaque or gum scores without proven long-term tooth-loss benefits.",
+			"Age, diagnosis and starting dental risk affect treatment suitability and follow-up."
+		],
+		openQuestions: ["Which added treatments provide lasting benefits that outweigh cost, discomfort and other harms?"],
+		whatWouldChangeMinds: ["Independent long-term comparisons measuring cavities, tooth retention, symptoms and treatment harms."],
+		commonMisreads: ["A change in plaque, tooth color or a laboratory marker does not establish prevention of every dental disease."],
+		starterQuestions: [
+			"Do electric toothbrushes improve gum health more than manual brushing?",
+			"Do xylitol products help prevent cavities?",
+			"Do all adults need a dental checkup every six months?"
+		],
+		starterClaimSlugs: [
+			"do-electric-toothbrushes-improve-gum-health-more-than-manual-brushing",
+			"do-xylitol-products-help-prevent-cavities",
+			"do-all-adults-need-a-dental-checkup-every-six-months"
+		],
+		evidenceTrail: [
+			{ title: "Clinical trials and research syntheses", note: "Separate clinical benefit from short-term scores and laboratory findings." },
+			{ title: "Dental guidance", note: "Clarifies age, dental-risk and care-setting limits." }
+		]
+	},
 	"kidney-and-urinary-health": {
 		slug: "kidney-and-urinary-health",
 		consensusLabel: "Benefits depend on the condition and outcome",

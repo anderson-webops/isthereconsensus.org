@@ -1,5 +1,45 @@
 # Catalog expansion to 1,501 reviews
 
+## Oral and dental health cohort
+
+`catalog-1501-oral-health-2026-11-13` adds twenty self-reviewed articles,
+75 citation instances, 55 distinct DOI papers and nine official institutional
+pages. Oral & dental health has three canonical starter links. The source
+catalog reaches 1,458 definitions across 46 topics, leaving 43 further source
+definitions before 1,501. Distinct public-canonical availability remains a
+separate acceptance requirement.
+
+Questions cover electric brushes, floss, interdental brushes, water flossers,
+chlorhexidine, varnish, fluoride rinses, xylitol, oil pulling, charcoal,
+bleaching, whitening toothpaste, tongue cleaning, routine cleaning, periodontal
+treatment in diabetes, disease-free wisdom teeth, aligners, retainers, risk-based
+checkups and silver diamine fluoride. Five answers retain mixed evidence,
+three remain unclear and twelve retain low certainty.
+
+Primary-only research retains 61 original author abstracts, canonical metadata,
+indexed disclosure and notice relations, and official institutional information.
+The earlier Consensus quota refusal supplied no papers; this cohort makes no
+additional provider request or use claim. Three corrected candidates remain
+unused because notice scope is unresolved. Two xylitol syntheses with inconsistent
+indexed statistics and one unnecessary narrow trial are also unused. One further
+chlorhexidine candidate remains canonical-metadata pending after a registry404;
+this is separate from a study-quality or retraction finding.
+
+Self-review distinguishes laboratory teeth from patients, markers from clinical
+outcomes, surface stains from bleaching, prevention from cavity arrest, lesions
+from children, HbA1c percentage points from relative percentages, null results
+from equivalence, selected recall strata from universal schedules and combined
+care packages from isolated treatment effects. Funding, editorial involvement,
+trial overlap, adverse effects and uncertainty remain visible in source notes.
+The scoping review and ordinary primary trials use contextual classification
+with their actual study designs in the notes, without a pivotal-study claim.
+ADA topic pages retain their informational scope. U.S. recommendations and
+U.K. patient guidance retain their jurisdiction and age limits; the SDF guideline
+is dated 2017 alongside the newer 2024 synthesis. No independent expert review,
+comprehensive search, formal site-performed GRADE or personal treatment protocol
+is claimed. Production startup, journaled publication, retained moderation and
+private-state recovery invariants remain unchanged.
+
 ## Kidney and urinary health cohort
 
 `catalog-1501-kidney-urinary-2026-11-13` adds twenty self-reviewed articles,

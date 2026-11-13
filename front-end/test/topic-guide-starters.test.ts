@@ -28,6 +28,16 @@ describe("topic guide starter claims", () => {
 		]);
 		assert.match(guide.consensusLabel, /family context/u);
 	});
+	it("offers oral-health entry points without inventing numerical agreement", () => {
+		const guide = topicGuides["oral-and-dental-health"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"do-electric-toothbrushes-improve-gum-health-more-than-manual-brushing",
+			"do-xylitol-products-help-prevent-cavities",
+			"do-all-adults-need-a-dental-checkup-every-six-months"
+		]);
+		assert.match(guide.consensusLabel, /uncertain product comparisons/u);
+	});
 	it("offers kidney and urinary entry points with qualified evidence", () => {
 		const guide = topicGuides["kidney-and-urinary-health"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

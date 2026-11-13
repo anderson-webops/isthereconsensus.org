@@ -313,5 +313,12 @@ export const defaultTopics = [
 		description: "Kidney stones, bladder symptoms and kidney disease.",
 		order: 45,
 		accent: "#687968"
+	},
+	{
+		title: "Oral & dental health",
+		slug: "oral-and-dental-health",
+		description: "Brushing, gum disease, tooth decay and orthodontic care.",
+		order: 46,
+		accent: "#75765d"
 	}
 ];

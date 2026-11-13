@@ -14,6 +14,7 @@ import { novemberLanguageCommunicationClaims } from "./claim-expansion-2026-11-l
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
 import { novemberMemoryJudgmentClaims } from "./claim-expansion-2026-11-memory-judgment.js";
+import { novemberOralHealthClaims } from "./claim-expansion-2026-11-oral-health.js";
 import { novemberRecoveryPreventionClaims } from "./claim-expansion-2026-11-recovery-prevention.js";
 import { novemberRiverLandscapeClaims } from "./claim-expansion-2026-11-river-landscape.js";
 import { novemberSchoolsFamilyClaims } from "./claim-expansion-2026-11-schools-family.js";
@@ -162,6 +163,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-kidney-urinary-2026-11-13",
 		claims: novemberKidneyUrinaryClaims,
 		dataSha256: "cbfd023b68d2eff72e67f662b913dfdb8a0d27341c4daa186d5b1ea15447544b"
+	},
+	{
+		id: "catalog-1501-oral-health-2026-11-13",
+		claims: novemberOralHealthClaims,
+		dataSha256: "55668c54e8d6035624e1d8f6281616fb631a57acfbc76aa16f909dda0d1cdcb6"
 	}
 ];
 

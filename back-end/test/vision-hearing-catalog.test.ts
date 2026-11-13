@@ -20,8 +20,8 @@ describe("vision and hearing catalog", () => {
 		assert.equal(novemberVisionHearingResearchCheckedAt, "2026-11-08T20:46:31.833Z");
 		assert.equal(catalogExpansionReleases.find(release => release.claims === novemberVisionHearingClaims)?.id, "catalog-1501-vision-hearing-2026-11-08");
 		assert.equal(readerExpansionValueHash(novemberSchoolsFamilyClaims), "7c21e6675cf129043572e177aa6af71b367ee3de82d55a25aa78d64407f62b69");
-		assert.equal(defaultClaims.length, 1438);
-		assert.equal(defaultTopics.length, 45);
+		assert.equal(defaultClaims.length, 1458);
+		assert.equal(defaultTopics.length, 46);
 		assert.equal(defaultTopics.find(topic => topic.slug === "vision-and-hearing")?.order, 44);
 		assert.ok(novemberVisionHearingClaims.every(entry => entry.topicSlug === "vision-and-hearing"));
 		assert.equal(new Set(novemberVisionHearingClaims.map(entry => JSON.stringify(entry.exclusionRules))).size, 20);
