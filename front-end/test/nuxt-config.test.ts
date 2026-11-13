@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 // noinspection ES6PreferShortImport
 import { appDescription, appName } from "../src/constants";
 
@@ -17,6 +19,10 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	const { default: config } = await import("../nuxt.config.ts");
 
 	assert.equal(config.srcDir, "src");
+	const workspaceRoot = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
+	assert.equal(config.workspaceDir, workspaceRoot);
+	assert.deepEqual(config.vite?.server?.fs?.allow, [workspaceRoot]);
+	assert.notEqual(config.workspaceDir, path.dirname(workspaceRoot));
 	assert.deepEqual(
 		config.modules?.sort(),
 		[

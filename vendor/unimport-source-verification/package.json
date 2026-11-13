@@ -1,0 +1,7 @@
+{
+  "name": "consensus-unimport-source-verification",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Publisher-authenticated source input verification for the maintained Unimport distribution.",
+  "dependencies": { "unimport": "7.0.1" }
+}

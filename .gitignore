@@ -3,6 +3,8 @@ node_modules
 *.log
 *.tsbuildinfo
 dist
+!vendor/unimport/dist/
+!vendor/unimport/dist/**
 !vendor/deepmerge/dist/
 !vendor/deepmerge/dist/cjs.js
 !vendor/deepmerge/dist/umd.js

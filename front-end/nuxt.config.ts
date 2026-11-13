@@ -142,6 +142,8 @@ const securityHeaders = {
 };
 
 export default defineNuxtConfig({
+	workspaceDir: path.resolve(__dirname, ".."),
+
 	alias: {
 		"~": srcAlias,
 		"@": srcAlias
@@ -361,7 +363,7 @@ export default defineNuxtConfig({
 		server: {
 			fs: {
 				allow: [
-					path.resolve(__dirname, "..", "..")
+					path.resolve(__dirname, "..")
 				]
 			}
 		}

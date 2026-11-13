@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "name": "unimport",
+  "version": "7.0.2+webops.1",
+  "distribution": "maintained-local-distribution",
+  "base": {
+    "name": "unimport",
+    "version": "7.0.1",
+    "tarball": "https://registry.npmjs.org/unimport/-/unimport-7.0.1.tgz",
+    "integrity": "sha512-HcHDoFaz6xiViJNRGWEGYleYl7KVxU8XVHSPJnkuozaQrCUVrA8aRv/vd+e8XP28y26n3L2VRAudCuF5+ek59w==",
+    "publisherAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/unimport@7.0.1",
+    "sourceCommit": "fdf98b5aef3c2f6d5a6519d5dbb69631347b62fb"
+  },
+  "officialFix": {
+    "commit": "525ea7c5b6c39a2d1d6835f2b5ed7c4702b588a3",
+    "url": "https://github.com/unjs/unimport/commit/525ea7c5b6c39a2d1d6835f2b5ed7c4702b588a3"
+  },
+  "officialRelease": {
+    "commit": "bbd07768ddb4919205bcb5a3cbc06c3a2791981a",
+    "signedTagObject": "636f6dd4afa0c74469195f21d29c144ed1697efd"
+  },
+  "originalFiles": {
+    "LICENSE": "5af3c68995307360b313da9bc2d0933a06b20eed028316013492bd9e09eae7e9",
+    "README.md": "f9853d50bed0050f59961aa95c01922a4b361498a09ce62a823192fb7f3b6128",
+    "dist/addons.d.mts": "95a324f131001425c90e20b91dcbd85eab9247014c0b74742bc5f898363690e2",
+    "dist/addons.mjs": "e637523d5e7990c0a78e13cd8c8bdcaf3cb358c3d5b87dccc179ea08aa2a6b9b",
+    "dist/chunks/detect-acorn.mjs": "8e968b53c2a88808d629679b23fc7b426a9d1040347612b5ac72f683bb9e795c",
+    "dist/chunks/detect-oxc.mjs": "5c32876b5485b5c5fb341ff5ef12794f23626abc8e0fa06defa99268adab2d0c",
+    "dist/index.d.mts": "d9194ec92d5146f4318324e1bf02b4e3991c68c788444e07a4d711def8e77686",
+    "dist/index.mjs": "e69327642223b53c071ccf0291f6608e5b6130aaa3588e9726114e3abe75a10e",
+    "dist/shared/unimport.B4o9Mg_h.mjs": "e3bff59433b7922402f6d966a167995566d49cce5cf8474590961da2d06f735e",
+    "dist/shared/unimport.DosIKnCA.d.mts": "646243183d44e2c1f0431042730d53a876a346188de1629b23486d0d760a4b93",
+    "dist/shared/unimport.DyX9I00Q.mjs": "9f91dbde6e39e68268f1932bf9539f066ae52d1624a6c22edac502e1d8130edd",
+    "dist/shared/unimport.L1_nuc0h.d.mts": "83f442513455eff4b67741589d3f100f4aefea94737cd52b86192b094810b11e",
+    "dist/shared/unimport.Xs9j9wHK.mjs": "cb9a8f767e6643d7bc9634aa3358a70f694004fedda5193240e087f17bda8d0e",
+    "dist/unplugin.d.mts": "728ab4025bb11dfbd5637d151e5216502928773bcf2a603fce2e3f5e56243b59",
+    "dist/unplugin.mjs": "3d79d5ccc21c8002f1e1a0cd67b2aaea7f34592bc0fde2322e890083ab895768",
+    "package.json": "17a5b98e04eb682835fec3baeb239e49e972c6a3e68d20666d599f1d3e12d046"
+  },
+  "changedFiles": {
+    "dist/chunks/detect-acorn.mjs": {
+      "originalSha256": "8e968b53c2a88808d629679b23fc7b426a9d1040347612b5ac72f683bb9e795c",
+      "maintainedSha256": "12338cc938a09bf19abae7a3c170865f33493f10a90f7b7712b6d5eb771b1d90"
+    },
+    "dist/shared/unimport.Xs9j9wHK.mjs": {
+      "originalSha256": "cb9a8f767e6643d7bc9634aa3358a70f694004fedda5193240e087f17bda8d0e",
+      "maintainedSha256": "c2ea315d336453a0ee96554742b6c5150e3121a10b9fb7bf28fa762e95aee5c7"
+    },
+    "package.json": {
+      "originalSha256": "17a5b98e04eb682835fec3baeb239e49e972c6a3e68d20666d599f1d3e12d046",
+      "maintainedSha256": "e7feabe75a86aa96bdbe695549191d9366782440ff098a7d68530f7c77cda6f0"
+    }
+  },
+  "maintainedFiles": {
+    "LICENSE": "5af3c68995307360b313da9bc2d0933a06b20eed028316013492bd9e09eae7e9",
+    "README.md": "f9853d50bed0050f59961aa95c01922a4b361498a09ce62a823192fb7f3b6128",
+    "dist/addons.d.mts": "95a324f131001425c90e20b91dcbd85eab9247014c0b74742bc5f898363690e2",
+    "dist/addons.mjs": "e637523d5e7990c0a78e13cd8c8bdcaf3cb358c3d5b87dccc179ea08aa2a6b9b",
+    "dist/chunks/detect-acorn.mjs": "12338cc938a09bf19abae7a3c170865f33493f10a90f7b7712b6d5eb771b1d90",
+    "dist/chunks/detect-oxc.mjs": "5c32876b5485b5c5fb341ff5ef12794f23626abc8e0fa06defa99268adab2d0c",
+    "dist/index.d.mts": "d9194ec92d5146f4318324e1bf02b4e3991c68c788444e07a4d711def8e77686",
+    "dist/index.mjs": "e69327642223b53c071ccf0291f6608e5b6130aaa3588e9726114e3abe75a10e",
+    "dist/shared/unimport.B4o9Mg_h.mjs": "e3bff59433b7922402f6d966a167995566d49cce5cf8474590961da2d06f735e",
+    "dist/shared/unimport.DosIKnCA.d.mts": "646243183d44e2c1f0431042730d53a876a346188de1629b23486d0d760a4b93",
+    "dist/shared/unimport.DyX9I00Q.mjs": "9f91dbde6e39e68268f1932bf9539f066ae52d1624a6c22edac502e1d8130edd",
+    "dist/shared/unimport.L1_nuc0h.d.mts": "83f442513455eff4b67741589d3f100f4aefea94737cd52b86192b094810b11e",
+    "dist/shared/unimport.Xs9j9wHK.mjs": "c2ea315d336453a0ee96554742b6c5150e3121a10b9fb7bf28fa762e95aee5c7",
+    "dist/unplugin.d.mts": "728ab4025bb11dfbd5637d151e5216502928773bcf2a603fce2e3f5e56243b59",
+    "dist/unplugin.mjs": "3d79d5ccc21c8002f1e1a0cd67b2aaea7f34592bc0fde2322e890083ab895768",
+    "package.json": "e7feabe75a86aa96bdbe695549191d9366782440ff098a7d68530f7c77cda6f0"
+  }
+}
