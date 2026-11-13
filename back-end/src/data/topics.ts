@@ -306,5 +306,12 @@ export const defaultTopics = [
 		description: "Eye health, hearing and balance.",
 		order: 44,
 		accent: "#68787c"
+	},
+	{
+		title: "Kidney & urinary health",
+		slug: "kidney-and-urinary-health",
+		description: "Kidney stones, bladder symptoms and kidney disease.",
+		order: 45,
+		accent: "#687968"
 	}
 ];

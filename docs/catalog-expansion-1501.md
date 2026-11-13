@@ -1,5 +1,44 @@
 # Catalog expansion to 1,501 reviews
 
+## Kidney and urinary health cohort
+
+`catalog-1501-kidney-urinary-2026-11-13` adds twenty self-reviewed articles,
+76 citations, 58 distinct DOI-linked papers and five institutional sources.
+Kidney & urinary health has three canonical starter links. The source catalog
+reaches 1,438 definitions across 45 topics, leaving 63 further definitions before
+1,501. Public availability and distinct-canonical publication acceptance remain
+separate from source delivery.
+
+Questions cover stone prevention and passage, cranberry, D-mannose,
+methenamine, hydration, asymptomatic bacteriuria, vaginal estrogen, bladder
+training, caffeine reduction, bladder medicines, saw palmetto, prostate
+medicines, salt reduction and exercise in CKD. Three answers retain mixed
+evidence, one remains unclear, and seven retain low certainty.
+
+Research uses targeted PubMed discovery, official author abstracts, publisher
+records and institutional guidance. The attempted Consensus search returned its
+monthly quota limit and supplied no papers. None of these articles claims
+Consensus discovery, a Deep Review, independent expert review, a comprehensive
+systematic search or site-performed GRADE. All 61 selected DOI records retain
+canonical metadata and registered-update observations. Sixty author abstracts
+and one full research body were read. Three selected records remain unused:
+one has ambiguous comparator wording and two have unresolved erratum scope.
+A further abstract-free commentary is excluded because its publisher's public
+XML omits the article body. The used alpha-blocker synthesis retains its verified
+figure-legend correction and notice URL. One 2026 journal-issue year is verified
+against PubMed where Crossref's print year differs.
+
+Self-review separates randomized effects from observational associations,
+clinical recurrence from urine markers, symptoms from retention or surgery,
+noninferiority from identical efficacy, prevention from active infection
+treatment, and local from systemic estrogen. Product-specific extracts,
+overlapping reviews, disclosed industry relationships, treatment harms and
+population limits remain explicit. Conflicting thiazide and saw-palmetto
+guidance is retained. Inconsistent abstract statistics and a guideline sentence
+contradicting NOSTONE are not repeated as findings. All 26 prior cohort seals,
+1,418 prior definitions and 44 prior topics remain unchanged. Ordinary startup
+preserves retained state; bounded explicit publication remains separate.
+
 ## Vision and hearing cohort
 
 `catalog-1501-vision-hearing-2026-11-08` adds twenty self-reviewed reviews,

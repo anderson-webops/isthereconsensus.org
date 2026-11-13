@@ -24,7 +24,7 @@ describe("schools and family catalog", () => {
 		assert.equal(new Set(novemberSchoolsFamilyClaims.map(entry => JSON.stringify(entry.exclusionRules))).size, 20);
 	});
 	it("uses the new family topic and preserves the other subject boundaries", () => {
-		assert.equal(defaultTopics.length, 44);
+		assert.equal(defaultTopics.length, 45);
 		assert.equal(defaultTopics.find(topic => topic.slug === "family-and-child-development")?.order, 43);
 		assert.equal(novemberSchoolsFamilyClaims.filter(entry => entry.topicSlug === "family-and-child-development").length, 9);
 		assert.equal(novemberSchoolsFamilyClaims.filter(entry => entry.topicSlug === "education-and-learning").length, 8);

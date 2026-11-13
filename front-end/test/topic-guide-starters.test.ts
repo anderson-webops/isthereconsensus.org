@@ -28,6 +28,16 @@ describe("topic guide starter claims", () => {
 		]);
 		assert.match(guide.consensusLabel, /family context/u);
 	});
+	it("offers kidney and urinary entry points with qualified evidence", () => {
+		const guide = topicGuides["kidney-and-urinary-health"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"do-cranberry-products-prevent-recurrent-urinary-tract-infections",
+			"do-thiazide-medicines-prevent-repeat-calcium-kidney-stones",
+			"does-reducing-salt-lower-blood-pressure-in-chronic-kidney-disease"
+		]);
+		assert.match(guide.consensusLabel, /condition and outcome/u);
+	});
 	it("offers vision and hearing entry points without inventing numerical agreement", () => {
 		const guide = topicGuides["vision-and-hearing"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

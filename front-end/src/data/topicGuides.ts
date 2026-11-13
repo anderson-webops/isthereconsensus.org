@@ -50,6 +50,32 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"kidney-and-urinary-health": {
+		slug: "kidney-and-urinary-health",
+		consensusLabel: "Benefits depend on the condition and outcome",
+		snapshot: "Stone prevention, infection prevention and symptom relief have different evidence.",
+		stableCore: [
+			"Several treatments improve symptoms without preventing long-term disease progression.",
+			"Kidney function, stone chemistry and the cause of urinary symptoms affect treatment suitability."
+		],
+		openQuestions: ["Which preventive benefits persist, and which patient groups gain enough to outweigh harms?"],
+		whatWouldChangeMinds: ["Independent long-term trials measuring infections, painful stones, daily function and treatment harms."],
+		commonMisreads: ["A better urine test does not automatically mean fewer infections, painful stones or kidney-failure events."],
+		starterQuestions: [
+			"Do cranberry products prevent recurrent urinary tract infections?",
+			"Do thiazide medicines prevent repeat calcium kidney stones?",
+			"Does reducing salt lower blood pressure in chronic kidney disease?"
+		],
+		starterClaimSlugs: [
+			"do-cranberry-products-prevent-recurrent-urinary-tract-infections",
+			"do-thiazide-medicines-prevent-repeat-calcium-kidney-stones",
+			"does-reducing-salt-lower-blood-pressure-in-chronic-kidney-disease"
+		],
+		evidenceTrail: [
+			{ title: "Trials and research syntheses", note: "Separate symptoms, recurrence and long-term clinical outcomes." },
+			{ title: "Clinical guidance and safety notices", note: "Clarify population limits, treatment suitability and known harms." }
+		]
+	},
 	"vision-and-hearing": {
 		slug: "vision-and-hearing",
 		consensusLabel: "Benefits depend on the condition and treatment",

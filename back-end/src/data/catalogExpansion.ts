@@ -9,6 +9,7 @@ import { novemberExerciseRecoveryClaims } from "./claim-expansion-2026-11-exerci
 import { novemberFoodPatternsClaims } from "./claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberHumanWildlifeClaims } from "./claim-expansion-2026-11-human-wildlife.js";
+import { novemberKidneyUrinaryClaims } from "./claim-expansion-2026-11-kidney-urinary.js";
 import { novemberLanguageCommunicationClaims } from "./claim-expansion-2026-11-language-communication.js";
 import { novemberLearningHabitsWorkClaims } from "./claim-expansion-2026-11-learning-habits-work.js";
 import { novemberLearningClaims } from "./claim-expansion-2026-11-learning.js";
@@ -156,6 +157,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-vision-hearing-2026-11-08",
 		claims: novemberVisionHearingClaims,
 		dataSha256: "0d212302027866d630bc6e1ae874bd7d3b617e91ee9ad22ad26a9fa792a5b7f6"
+	},
+	{
+		id: "catalog-1501-kidney-urinary-2026-11-13",
+		claims: novemberKidneyUrinaryClaims,
+		dataSha256: "cbfd023b68d2eff72e67f662b913dfdb8a0d27341c4daa186d5b1ea15447544b"
 	}
 ];
 
