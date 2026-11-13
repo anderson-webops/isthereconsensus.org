@@ -3,6 +3,7 @@ import { novemberArtsCreativityClaims } from "./claim-expansion-2026-11-arts-cre
 import { novemberCareLearningClaims } from "./claim-expansion-2026-11-care-learning.js";
 import { novemberCommonReaderClaims } from "./claim-expansion-2026-11-common-reader.js";
 import { novemberConsumerChoicesClaims } from "./claim-expansion-2026-11-consumer-choices.js";
+import { novemberDigestiveHealthClaims } from "./claim-expansion-2026-11-digestive-health.js";
 import { novemberEcologyConservationClaims } from "./claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberExerciseRecoveryClaims } from "./claim-expansion-2026-11-exercise-recovery.js";
@@ -168,6 +169,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-oral-health-2026-11-13",
 		claims: novemberOralHealthClaims,
 		dataSha256: "55668c54e8d6035624e1d8f6281616fb631a57acfbc76aa16f909dda0d1cdcb6"
+	},
+	{
+		id: "catalog-1501-digestive-health-2026-11-13",
+		claims: novemberDigestiveHealthClaims,
+		dataSha256: "34c287fb221326474cd6007a32ab9bf1ea6a7851ce213878fde10d507bf1c8a7"
 	}
 ];
 

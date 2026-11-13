@@ -28,6 +28,16 @@ describe("topic guide starter claims", () => {
 		]);
 		assert.match(guide.consensusLabel, /family context/u);
 	});
+	it("offers digestive-health entry points with canonical treatment questions", () => {
+		const guide = topicGuides["digestive-health"];
+		assert.equal(Object.hasOwn(guide, "consensusScore"), false);
+		assert.deepEqual(guide.starterClaimSlugs, [
+			"do-proton-pump-inhibitors-relieve-reflux-symptoms",
+			"does-a-low-fodmap-diet-improve-irritable-bowel-syndrome-symptoms",
+			"does-polyethylene-glycol-help-chronic-constipation-in-adults"
+		]);
+		assert.match(guide.consensusLabel, /diagnosis and treatment/u);
+	});
 	it("offers oral-health entry points without inventing numerical agreement", () => {
 		const guide = topicGuides["oral-and-dental-health"];
 		assert.equal(Object.hasOwn(guide, "consensusScore"), false);

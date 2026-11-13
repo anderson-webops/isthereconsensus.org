@@ -1,5 +1,40 @@
 # Catalog expansion to 1,501 reviews
 
+## Digestive health cohort
+
+`catalog-1501-digestive-health-2026-11-13` adds twenty self-reviewed articles,
+71 citation instances, 54 distinct DOI papers and two dated official patient
+information pages. Digestive health has three canonical starter links. Source
+totals reach 1,478 definitions across 47 topics, leaving 23 further source
+definitions before 1,501. Distinct public-canonical availability remains a
+separate acceptance requirement.
+
+Coverage includes reflux medicines and lifestyle measures, five IBS treatments,
+PEG, senna, probiotics for constipation, lactose tolerance, celiac treatment,
+fiber for hemorrhoids, selected diverticulitis and appendicitis care, exercise
+for constipation and follow-up after positive stool screening. Four answers
+retain mixed evidence and ten have low certainty. Existing general screening,
+fiber for constipation, probiotics for IBS and non-celiac gluten questions remain
+distinct and unchanged.
+
+Primary-only research retains 63 original author abstracts, canonical metadata,
+indexed notice and disclosure checks, selected full guideline sections and
+official patient guidance with its actual 2020/2018 review dates. Nine selected
+records remain unused, including two unresolved corrections, one malformed
+indexed interval and a bundled exercise trial with unqualified commentary.
+The JAMA screening terminology correction is qualified but not needed for this
+cohort. The deferred FIT-versus-colonoscopy comparison receives no entry credit;
+the separate follow-up-delay question uses its own observational sources.
+
+Self-review preserves null primary endpoints, imprecise hypnosis findings,
+guideline scope and jurisdiction differences, active versus placebo comparisons,
+observational confounding, later surgery versus recurrence, and disease-specific
+dietary benefits. Source notes retain funding, author interests, trial overlap
+and recommendation-versus-certainty distinctions. Independent expert review,
+comprehensive searching and formal site-performed GRADE remain uncompleted.
+Runtime startup, protected private state and journaled publication behavior are
+unchanged in this content-only milestone.
+
 ## Oral and dental health cohort
 
 `catalog-1501-oral-health-2026-11-13` adds twenty self-reviewed articles,

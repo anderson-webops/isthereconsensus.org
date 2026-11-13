@@ -50,6 +50,38 @@ const fallbackGuide: TopicGuide = {
 };
 
 export const topicGuides: Record<string, TopicGuide> = {
+	"digestive-health": {
+		slug: "digestive-health",
+		consensusLabel: "Benefits depend on diagnosis and treatment",
+		snapshot:
+			"Reflux medicines and PEG have clearer short-term benefits than many supplements and lifestyle measures.",
+		stableCore: [
+			"Celiac disease, IBS and chronic constipation are different conditions with different treatment evidence.",
+			"Short-term symptom relief does not establish lasting prevention or a cure."
+		],
+		openQuestions: ["Which treatments provide lasting benefits with acceptable harms in different patient groups?"],
+		whatWouldChangeMinds: [
+			"Independent comparisons with clear diagnoses, patient-important outcomes and longer follow-up."
+		],
+		commonMisreads: ["Guideline recommendations can differ by medicine, country, patient group and outcome."],
+		starterQuestions: [
+			"Do proton pump inhibitors relieve reflux symptoms?",
+			"Does a low-FODMAP diet improve irritable bowel syndrome symptoms?",
+			"Does polyethylene glycol help chronic constipation in adults?"
+		],
+		starterClaimSlugs: [
+			"do-proton-pump-inhibitors-relieve-reflux-symptoms",
+			"does-a-low-fodmap-diet-improve-irritable-bowel-syndrome-symptoms",
+			"does-polyethylene-glycol-help-chronic-constipation-in-adults"
+		],
+		evidenceTrail: [
+			{
+				title: "Clinical trials and syntheses",
+				note: "Effects vary with the outcome, comparator and length of follow-up."
+			},
+			{ title: "Clinical guidance", note: "Recommendations retain diagnosis, age and care-setting limits." }
+		]
+	},
 	"oral-and-dental-health": {
 		slug: "oral-and-dental-health",
 		consensusLabel: "Established prevention and uncertain product comparisons",

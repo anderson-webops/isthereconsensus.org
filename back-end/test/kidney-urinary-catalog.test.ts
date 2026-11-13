@@ -20,8 +20,8 @@ describe("kidney and urinary catalog", () => {
 		assert.equal(novemberKidneyUrinaryResearchCheckedAt, "2026-11-13T16:11:24.949Z");
 		assert.equal(readerExpansionValueHash(novemberVisionHearingClaims), "0d212302027866d630bc6e1ae874bd7d3b617e91ee9ad22ad26a9fa792a5b7f6");
 		assert.equal(catalogExpansionReleases.find(release => release.claims === novemberKidneyUrinaryClaims)?.id, "catalog-1501-kidney-urinary-2026-11-13");
-		assert.equal(defaultClaims.length, 1458);
-		assert.equal(defaultTopics.length, 46);
+		assert.equal(defaultClaims.length, 1478);
+		assert.equal(defaultTopics.length, 47);
 		assert.equal(defaultTopics.find(topic => topic.slug === "kidney-and-urinary-health")?.order, 45);
 		assert.equal(new Set(novemberKidneyUrinaryClaims.map(entry => entry.slug)).size, 20);
 		assert.equal(new Set(novemberKidneyUrinaryClaims.map(entry => JSON.stringify(entry.exclusionRules))).size, 20);

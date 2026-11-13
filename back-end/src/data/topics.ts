@@ -320,5 +320,12 @@ export const defaultTopics = [
 		description: "Brushing, gum disease, tooth decay and orthodontic care.",
 		order: 46,
 		accent: "#75765d"
+	},
+	{
+		title: "Digestive health",
+		slug: "digestive-health",
+		description: "Reflux, bowel symptoms, celiac disease and digestive care.",
+		order: 47,
+		accent: "#7d735c"
 	}
 ];
