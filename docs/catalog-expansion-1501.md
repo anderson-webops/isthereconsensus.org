@@ -1,5 +1,37 @@
 # Catalog expansion to 1,501 reviews
 
+## Family, creative practice and learning cohort
+
+`catalog-1501-family-creative-learning-2026-11-13` adds 23 self-reviewed
+articles, 61 citation instances, 58 distinct DOI papers and one dated agency
+evidence review. The source catalog reaches 1,501 definitions across 47 topics.
+All earlier 1,478 definitions and 29 cohort seals remain unchanged. Source
+inventory, release delivery, protected activation and distinct public-canonical
+availability remain separate acceptance outcomes.
+
+Coverage includes family relationships, parenting, meals, sleep routines,
+care and employment, food insecurity, AI-assisted creative work, art judgments,
+musical listening, dance balance, television pacing, pretend play and teaching
+time. Definitions retain their existing canonical topic paths. The
+marshmallow-test and cooperative-game drafts
+remain deferred, with no entry credit: their direct source sets did not establish
+the qualified synthesis required for publication.
+
+Primary-only research retains 73 original author abstracts, canonical metadata,
+indexed disclosures and notice relations, selected full publisher sections and
+the Education Endowment Foundation's May 2025 evidence review. Fifteen retained
+paper candidates are unused. The cited childcare-quality meta-analysis carries
+its qualified funding correction and notice link. Bedtime and video-feedback
+articles retain the actual disclosed industry, study-author and editorial
+relationships. Independent expert review, comprehensive searching and formal
+site-performed GRADE remain uncompleted.
+
+Self-review preserves contrary auditory findings, task-specific AI detection,
+assisted output versus unaided learning, art versus therapy, balance proxies
+versus falls, parenting responsiveness versus child outcomes, observational
+bidirectionality, review overlap and jurisdiction limits. Runtime startup,
+protected private state and journaled publication behavior remain unchanged.
+
 ## Digestive health cohort
 
 `catalog-1501-digestive-health-2026-11-13` adds twenty self-reviewed articles,

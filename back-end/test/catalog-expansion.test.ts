@@ -57,13 +57,13 @@ describe("self-reviewed expansion toward 1501 canonical reviews", () => {
 		assert.equal(novemberLanguageCommunicationClaims.length, 20);
 		assert.equal(novemberArtsCreativityClaims.length, 20);
 		assert.equal(novemberWeatherForecastingClaims.length, 20);
-		assert.equal(catalogExpansionClaims.length, 477);
-		assert.equal(defaultClaims.length, 1478);
+		assert.equal(catalogExpansionClaims.length, 500);
+		assert.equal(defaultClaims.length, 1501);
 		assert.deepEqual(defaultClaims.slice(0, legacyDefaultClaims.length), legacyDefaultClaims);
 		assert.deepEqual(await validateCatalogExpansion(), {
-			entries: 477,
-			citations: 1500,
-			catalog: 1478,
+			entries: 500,
+			citations: 1561,
+			catalog: 1501,
 			target: 1501
 		});
 		assert.deepEqual(await validateApprovedReaderRelease(), { reviews: 201, citations: 461 });

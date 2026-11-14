@@ -7,6 +7,7 @@ import { novemberDigestiveHealthClaims } from "./claim-expansion-2026-11-digesti
 import { novemberEcologyConservationClaims } from "./claim-expansion-2026-11-ecology-conservation.js";
 import { novemberEverydayHealthEnvironmentClaims } from "./claim-expansion-2026-11-everyday-health-environment.js";
 import { novemberExerciseRecoveryClaims } from "./claim-expansion-2026-11-exercise-recovery.js";
+import { novemberFamilyCreativeLearningClaims } from "./claim-expansion-2026-11-family-creative-learning.js";
 import { novemberFoodPatternsClaims } from "./claim-expansion-2026-11-food-patterns.js";
 import { novemberHouseholdEnergyClaims } from "./claim-expansion-2026-11-household-energy.js";
 import { novemberHumanWildlifeClaims } from "./claim-expansion-2026-11-human-wildlife.js";
@@ -174,6 +175,11 @@ export const catalogExpansionReleases = [
 		id: "catalog-1501-digestive-health-2026-11-13",
 		claims: novemberDigestiveHealthClaims,
 		dataSha256: "34c287fb221326474cd6007a32ab9bf1ea6a7851ce213878fde10d507bf1c8a7"
+	},
+	{
+		id: "catalog-1501-family-creative-learning-2026-11-13",
+		claims: novemberFamilyCreativeLearningClaims,
+		dataSha256: "810f7a60a9ee93dd1cb99fa8a5a81d2211eb9df3528a21bd2a9ace0ee92c656c"
 	}
 ];
 

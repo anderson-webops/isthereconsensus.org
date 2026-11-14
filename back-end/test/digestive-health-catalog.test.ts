@@ -32,7 +32,7 @@ describe("digestive health catalog", () => {
 			catalogExpansionReleases.find(release => release.claims === novemberDigestiveHealthClaims)?.id,
 			"catalog-1501-digestive-health-2026-11-13"
 		);
-		assert.equal(defaultClaims.length, 1478);
+		assert.equal(defaultClaims.length, 1501);
 		assert.equal(defaultTopics.length, 47);
 		assert.equal(defaultTopics.find(topic => topic.slug === "digestive-health")?.order, 47);
 		assert.equal(new Set(novemberDigestiveHealthClaims.map(entry => entry.slug)).size, 20);
