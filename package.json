@@ -80,7 +80,7 @@
 		"globals": "^17.13.0",
 		"listhen": "file:vendor/listhen",
 		"minimatch": "11.0.3",
-		"mongoose": "^9.11.4",
+		"mongoose": "^9.12.1",
 		"oxc-parser": "0.156.0",
 		"prettier": "^3.9.10",
 		"puppeteer": "^25.16.0",
