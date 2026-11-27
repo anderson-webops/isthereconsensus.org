@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import type { AdminCoverageRequest, CoverageResponse } from "~/types/coverage-roadmap";
+import { computed, onScopeDispose, ref, watch } from "vue";
+import { useRoute } from "#app";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { coverageStatusLabels, coverageVisibilityLabels } from "~/types/coverage-roadmap";
 
 definePageMeta({ layout: "home" });
@@ -70,7 +78,7 @@ async function request<Result>(path: string, method: "GET" | "POST" | "PATCH" = 
 	controller?.abort();
 	controller = new AbortController();
 	try {
-		return await $fetch<Result>(apiUrl(path), {
+		return await $fetch<Result, string, typeof method>(apiUrl(path), {
 			method,
 			body,
 			credentials: "include",

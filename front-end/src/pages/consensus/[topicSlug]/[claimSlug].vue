@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import type { Claim, ClaimResponse, ClaimSource } from "~/types/board";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useAsyncData, useHead, useRoute, useRuntimeConfig, useSeoMeta, useState } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import ClaimReviewStatus from "~/components/ClaimReviewStatus.vue";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import EvidenceLandscapePanel from "~/components/consensus/evidence-landscape/EvidenceLandscapePanel.vue";
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReaderFeedback from "~/components/ReaderFeedback.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 import { comparisonsForReview } from "~/data/comparisons";
 import { guidesForReview } from "~/data/reading-guides";
 import { buildApiUrl } from "~/utils/api";
@@ -20,7 +27,7 @@ import { claimReviewStatus, formatReviewDate } from "~/utils/claim-review-status
 import { doiResolverUrl, pubMedCentralUrl, pubMedUrl, safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 import { serializeJsonLd } from "~/utils/json-ld";
-import { certaintyStep, verdictTone } from "~/utils/verdict-tone";
+import { CERTAINTY_STEP_COUNT, certaintyStep, verdictTone } from "~/utils/verdict-tone";
 
 interface ClaimRouteParams {
 	topicSlug?: string | string[];

@@ -12,8 +12,9 @@
 		"paths": {
 			"~/*": ["./src/*"],
 			"@/*": ["./src/*"],
-			"#app": ["../node_modules/nuxt/dist/app"],
-			"#app/*": ["../node_modules/nuxt/dist/app/*"],
+			"#app": ["./node_modules/nuxt/dist/app", "../node_modules/nuxt/dist/app"],
+			"#app/*": ["./node_modules/nuxt/dist/app/*", "../node_modules/nuxt/dist/app/*"],
+			"#components": ["./.nuxt/components.d.ts"],
 			"#imports": ["./.nuxt/imports"],
 			"#build": ["./.nuxt"],
 			"#build/*": ["./.nuxt/*"]

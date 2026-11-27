@@ -20,8 +20,14 @@ import type {
 	Topic,
 	TopicResponse
 } from "~/types/board";
+import { computed, reactive, ref, watch } from "vue";
+import { useHead, useRoute, useRouter } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 import {
 	EVIDENCE_CLAIM_TYPES,
 	EVIDENCE_CONSISTENCY_LEVELS,

@@ -31,11 +31,13 @@ test("maintained publisher bytes survive a CRLF-configured fresh checkout", asyn
 		git(["init", "--quiet"]);
 		git(["add", ".gitattributes", "vendor/unimport"]);
 		git(["checkout-index", "--force", "--all"]);
-		const inventory = JSON.parse(await readFile(new URL("../vendor/unimport/UPSTREAM.json", import.meta.url), "utf8"));
 		for (const filename of [
-			...Object.keys(inventory.maintainedFiles),
+			"commit.git",
+			"tag.git",
+			"signer.gpg",
+			"source.tgz",
 			"UPSTREAM.json",
-			"UPSTREAM.md"
+			"QUALIFIED.json"
 		]) {
 			assert.ok(
 				(await readFile(path.join(directory, "vendor/unimport", filename))).equals(await readFile(new URL(`../vendor/unimport/${filename}`, import.meta.url))),

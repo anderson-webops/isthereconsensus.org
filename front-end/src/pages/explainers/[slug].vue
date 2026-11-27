@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { createError, useRoute, useSeoMeta } from "#app";
+import { NuxtLink } from "#components";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import { getExplainer } from "~/data/explainers";
 import { getMisconceptionModulesBySlugs } from "~/data/misconceptions";

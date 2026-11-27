@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import type { NoticeRow, PriorityDetail, PriorityResponse } from "~/types/review-priority";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { priorityReasonLabels } from "~/types/review-priority";
 import { safeExternalHttpUrl } from "~/utils/external-links";
 
@@ -59,7 +66,7 @@ async function request<T>(path: string, body?: Record<string, unknown>) {
 	controller?.abort();
 	controller = new AbortController();
 	try {
-		return await $fetch<T>(apiUrl(path), {
+		return await $fetch<T, string, "GET" | "PATCH">(apiUrl(path), {
 			method: body ? "PATCH" : "GET",
 			body,
 			credentials: "include",

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { ReaderLibraryController } from "~/utils/reader-library";
+import { computed } from "vue";
+import { useNuxtApp } from "#app";
+import { ClientOnly, NuxtLink } from "#components";
 
 const props = defineProps<{ kind: "review" | "topic" | "comparison"; id: string }>();
 const library = useNuxtApp().$readerLibrary as ReaderLibraryController;

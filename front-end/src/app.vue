@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useHead, useRoute, useSeoMeta } from "#app";
+import { NuxtLayout, NuxtPage } from "#components";
 import { appDescription, appName, siteUrl, socialImageUrl } from "~/constants";
 import { serializeJsonLd } from "~/utils/json-ld";
 

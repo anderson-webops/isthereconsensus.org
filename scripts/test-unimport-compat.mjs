@@ -15,7 +15,7 @@ const { createUnimport, dedupeDtsExports, scanDirExports, version } = await impo
 
 test("Nuxt uses the exact maintained payload bound to the workspace lock", async () => {
 	const installed = path.resolve(path.dirname(packagePath), "..");
-	const maintained = path.join(root, "vendor/unimport");
+	const provenance = JSON.parse(await readFile(path.join(installed, "WEBOPS-SOURCE.json"), "utf8"));
 	async function files(directory) {
 		const result = [];
 		for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -33,14 +33,17 @@ test("Nuxt uses the exact maintained payload bound to the workspace lock", async
 		}
 		return result.sort();
 	}
-	assert.deepEqual(await files(installed), await files(maintained));
-	for (const name of await files(maintained))
-		assert.ok((await readFile(path.join(installed, name))).equals(await readFile(path.join(maintained, name))), `Installed Unimport differs: ${name}`);
+	assert.deepEqual(await files(installed), [
+		...Object.keys(provenance.outputSha256),
+		"WEBOPS-SOURCE.json"
+	].sort());
+	for (const [name, expected] of Object.entries(provenance.outputSha256))
+		assert.equal(createHash("sha256").update(await readFile(path.join(installed, name))).digest("hex"), expected, `Installed Unimport differs: ${name}`);
 	const lock = JSON.parse(await readFile(path.join(root, "package-lock.json"), "utf8"));
 	const location = path.relative(root, installed).split(path.sep).join("/");
-	assert.equal(lock.packages[location].version, "7.0.2+webops.1");
-	assert.equal(lock.packages[location].resolved, "file:vendor/unimport-7.0.2+webops.1.tgz");
-	const archive = await readFile(path.join(root, "vendor/unimport-7.0.2+webops.1.tgz"));
+	assert.equal(lock.packages[location].version, "7.0.3+webops.2");
+	assert.equal(lock.packages[location].resolved, "file:vendor/unimport-7.0.3-webops.2.tgz");
+	const archive = await readFile(path.join(root, "vendor/unimport-7.0.3-webops.2.tgz"));
 	assert.equal(lock.packages[location].integrity, `sha512-${createHash("sha512").update(archive).digest("base64")}`);
 });
 
@@ -126,9 +129,8 @@ test("actual auto-import injection and generated declarations preserve the publi
 	assert.match(await unimport.generateTypeDeclarations(), /ref:\s*typeof import\('vue'\)\.ref/u);
 });
 
-test("package exports identify the maintained distribution", () => {
-	if (process.env.UNIMPORT_EXPECT_BASE === "1")
-		assert.equal(version, "7.0.1");
-	else
-		assert.equal(version, "7.0.2+webops.1");
+test("runtime exports the upstream version and package metadata identifies the maintained distribution", async () => {
+	const manifest = JSON.parse(await readFile(path.resolve(path.dirname(packagePath), "../package.json"), "utf8"));
+	assert.equal(version, "7.0.3");
+	assert.equal(manifest.version, "7.0.3+webops.2");
 });

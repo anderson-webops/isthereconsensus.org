@@ -12,3 +12,7 @@
 *.yml text eol=lf
 vendor/qs/** text eol=lf
 vendor/unimport/** text eol=lf
+vendor/unimport/tag.git binary
+vendor/unimport/commit.git binary
+vendor/unimport/signer.gpg binary
+vendor/unimport/source.tgz binary

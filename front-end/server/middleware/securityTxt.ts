@@ -1,3 +1,4 @@
+import { defineEventHandler, getRequestURL, setHeader } from "h3";
 import { securityTxtBody, securityTxtRoutes } from "../utils/securityTxt";
 
 export default defineEventHandler((event) => {

@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import type { FeedbackResponse, FeedbackRow } from "~/types/reader-feedback";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { useRoute } from "#app";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { comparisonForSlug, evidenceComparisons } from "~/data/comparisons";
 import {
 	answerCoverageLabels,
@@ -56,7 +64,7 @@ async function request<T>(path: string, body?: Record<string, unknown>) {
 	controller?.abort();
 	controller = new AbortController();
 	try {
-		return await $fetch<T>(apiUrl(path), {
+		return await $fetch<T, string, "GET" | "PATCH">(apiUrl(path), {
 			method: body ? "PATCH" : "GET",
 			body,
 			signal: controller.signal,

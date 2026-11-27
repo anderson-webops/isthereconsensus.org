@@ -1,3 +1,5 @@
+import { defineEventHandler, getRequestURL, setResponseHeader } from "h3";
+
 export default defineEventHandler((event) => {
 	if (
 		!["/account/editorial/review-priority", "/account/editorial/source-integrity"].includes(

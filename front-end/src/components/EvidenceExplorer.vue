@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { EvidenceSearchResponse } from "~/types/platform";
+import { ref, watch } from "vue";
+import { $fetch } from "#build/fetch";
+import { useApi } from "~/composables/useApi";
 import { safeExternalHttpUrl } from "~/utils/external-links";
 
 const props = defineProps<{

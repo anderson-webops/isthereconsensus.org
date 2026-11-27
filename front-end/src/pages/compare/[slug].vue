@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { computed, onBeforeUnmount } from "vue";
+import { createError, useHead, useRoute, useRouter, useState } from "#app";
+import { definePageMeta } from "#app/composables/pages";
+import { NuxtLink } from "#components";
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReaderFeedback from "~/components/ReaderFeedback.vue";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { siteUrl } from "~/constants";
 import { comparisonForSlug, comparisonHistory } from "~/data/comparisons";
 import {

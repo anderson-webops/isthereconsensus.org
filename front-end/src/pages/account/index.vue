@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { NuxtLink } from "#components";
 import AuthPanel from "~/components/AuthPanel.vue";
 import ExpertApplicationPanel from "~/components/ExpertApplicationPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useAuth } from "~/composables/useAuth";
 
 const { currentAccount, isLoggedIn, role } = useAuth();
 

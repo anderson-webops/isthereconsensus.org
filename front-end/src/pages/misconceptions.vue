@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { NuxtLink } from "#components";
 import LearnNav from "~/components/LearnNav.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { getExplainer } from "~/data/explainers";
 import { misconceptionModules } from "~/data/misconceptions";
 

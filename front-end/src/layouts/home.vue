@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "#app";
+import { ClientOnly, NuxtLink } from "#components";
 import PaletteSwitcher from "~/components/PaletteSwitcher.vue";
 import ThemeToggle from "~/components/ThemeToggle.vue";
+import { useAuth } from "~/composables/useAuth";
 
 const { currentAccount, role } = useAuth();
 

@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { computed, ref } from "vue";
+import { useRuntimeConfig } from "#app";
+import { NuxtLink } from "#components";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import { useAuth } from "~/composables/useAuth";
 
 const props = withDefaults(
 	defineProps<{

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useRuntimeConfig } from "#app";
+import { useColorMode } from "#imports";
+
 interface TurnstileOptions {
 	"sitekey": string;
 	"theme"?: "light" | "dark";

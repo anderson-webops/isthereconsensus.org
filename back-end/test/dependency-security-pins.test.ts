@@ -30,8 +30,7 @@ describe("reviewed dependency security pins", () => {
 			"source-map-js",
 			"tinypool",
 			"@modelcontextprotocol/client",
-			"@modelcontextprotocol/server",
-			"launch-editor"
+			"@modelcontextprotocol/server"
 		]) {
 			const expected = manifest.overrides[packageName];
 			assert.equal(typeof expected, "string", `${packageName}: missing reviewed override`);
@@ -48,11 +47,18 @@ describe("reviewed dependency security pins", () => {
 			devDependencies: Record<string, string>;
 			optionalDependencies: Record<string, string>;
 		}>("../../front-end/package.json");
-		const expected = (root.overrides.vite as Record<string, string>)["."];
-		assert.equal(expected, "8.3.8");
+		const viteOverride = root.overrides.vite as Record<string, string>;
+		const expected = viteOverride["."];
+		assert.equal(expected, "8.4.0");
 		assert.equal(frontend.devDependencies.vite, `^${expected}`);
 		assert.equal(backend.overrides.vite, expected);
 		const rootLock = readJson<Lockfile>("../../package-lock.json");
+		const nuxtRolldown = frontend.devDependencies.rolldown;
+		const viteRolldown = viteOverride.rolldown;
+		const nuxtModules = "front-end/node_modules";
+		const viteModules = `${nuxtModules}/vite/node_modules`;
+		assert.equal(rootLock.packages[`${nuxtModules}/rolldown`]?.version, nuxtRolldown);
+		assert.equal(rootLock.packages[`${viteModules}/rolldown`]?.version, viteRolldown);
 		assert.ok(lockedVersions(rootLock, "vite").length);
 		for (const path of ["../../package-lock.json", "../package-lock.json"]) {
 			assert.ok(
@@ -63,11 +69,9 @@ describe("reviewed dependency security pins", () => {
 		for (const [packageName, version] of Object.entries(frontend.optionalDependencies).filter(([packageName]) =>
 			packageName.startsWith("@rolldown/")
 		)) {
-			const versions = lockedVersions(rootLock, packageName);
-			assert.ok(
-				versions.length && versions.every(locked => locked === version),
-				`${packageName}: native binding drift`
-			);
+			assert.equal(version, nuxtRolldown, `${packageName}: Nuxt binding declaration drift`);
+			assert.equal(rootLock.packages[`${nuxtModules}/${packageName}`]?.version, nuxtRolldown);
+			assert.equal(rootLock.packages[`${viteModules}/${packageName}`]?.version, viteRolldown);
 		}
 	});
 
@@ -79,7 +83,6 @@ describe("reviewed dependency security pins", () => {
 		assert.equal(typeof server.createMcpHandler, "function");
 		assert.equal(typeof frontendRequire("@modelcontextprotocol/client/stdio").StdioClientTransport, "function");
 		assert.equal(typeof frontendRequire("@modelcontextprotocol/server/stdio").StdioServerTransport, "function");
-		assert.equal(typeof frontendRequire("launch-editor"), "function");
 		for (const status of [307, 308, 202]) {
 			const requests: RequestInit[] = [];
 			const transport = new StreamableHTTPClientTransport(new URL("https://mcp.example.test/tools"), {

@@ -1,3 +1,5 @@
+import { defineEventHandler, getRequestURL, setHeader } from "h3";
+import { useRuntimeConfig } from "nitropack/runtime";
 import { evidenceComparisons } from "../../src/data/comparisons";
 import { readingGuides } from "../../src/data/reading-guides";
 import { buildApiUrl } from "../../src/utils/api";

@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import type { ClaimsResponse, ClaimSummary, SingleTopicResponse } from "~/types/board";
+import { computed, onMounted, ref, watch } from "vue";
+import { useAsyncData, useHead, useRoute, useSeoMeta } from "#app";
+import { $fetch } from "#build/fetch";
+import { ClientOnly, NuxtLink } from "#components";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import LibraryAction from "~/components/LibraryAction.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
 import ReadingGuideLinks from "~/components/ReadingGuideLinks.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { comparisonsForTopic } from "~/data/comparisons";
 import { guidesForTopic } from "~/data/reading-guides";

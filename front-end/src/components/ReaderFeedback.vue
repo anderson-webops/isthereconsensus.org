@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { ReaderRating } from "~/types/reader-feedback";
+import { computed, onBeforeUnmount, ref, useId } from "vue";
+import { useRuntimeConfig } from "#app";
+import { $fetch } from "#build/fetch";
+import CaptchaWidget from "~/components/CaptchaWidget.vue";
+import { useApi } from "~/composables/useApi";
 import { answerCoverageLabels, explanationClarityLabels } from "~/types/reader-feedback";
 
 const props = defineProps<{ claimId?: string; comparisonSlug?: string }>();

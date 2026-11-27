@@ -9,10 +9,18 @@ import type {
 	TopicResponse
 } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
+import { computed, nextTick, onMounted, onScopeDispose, ref, watch } from "vue";
+import { useAsyncData, useRoute, useRouter, useRuntimeConfig } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import AuthPanel from "~/components/AuthPanel.vue";
 import CaptchaWidget from "~/components/CaptchaWidget.vue";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import ReaderFeedback from "~/components/ReaderFeedback.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { formatLandscapeCertaintyLabel, formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { analyzeAskQuery, defaultAskKind, matchExplainers, matchStrengthLabel } from "~/utils/ask-flow";
 import { searchComparisons } from "~/utils/comparison-search";

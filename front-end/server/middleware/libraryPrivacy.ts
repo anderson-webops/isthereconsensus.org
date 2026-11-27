@@ -1,3 +1,5 @@
+import { defineEventHandler, getRequestURL, setResponseHeader } from "h3";
+
 export default defineEventHandler((event) => {
 	if (getRequestURL(event).pathname.replace(/\/$/, "") !== "/library") return;
 	setResponseHeader(event, "Cache-Control", "private, no-store");

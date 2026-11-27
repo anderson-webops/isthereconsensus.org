@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NuxtLink } from "#components";
+
 interface BreadcrumbItem {
 	label: string;
 	to?: string;

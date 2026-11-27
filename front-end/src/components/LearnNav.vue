@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useRoute } from "#app";
+import { NuxtLink } from "#components";
+
 const route = useRoute();
 
 const sections = [

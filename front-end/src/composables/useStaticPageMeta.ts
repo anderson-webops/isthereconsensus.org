@@ -1,3 +1,4 @@
+import { useHead, useSeoMeta } from "#app";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 
 interface StaticPageMetaOptions {

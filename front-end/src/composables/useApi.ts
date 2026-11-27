@@ -1,3 +1,4 @@
+import { useRuntimeConfig } from "#app";
 import { buildApiUrl } from "~/utils/api";
 
 export function useApi() {

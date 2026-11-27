@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import type { SetupCheck, SetupDashboardResponse, SetupPromptResponse } from "~/types/setup";
+import { useClipboard } from "@vueuse/core";
+import { computed } from "vue";
+import { createError, useAsyncData } from "#app";
+import { $fetch } from "#build/fetch";
 import { buildFrontendSetupChecks } from "~/utils/setup";
 
 const { copy, copied } = useClipboard();

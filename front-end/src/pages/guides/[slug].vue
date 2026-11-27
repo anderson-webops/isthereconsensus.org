@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import type { AvailableGuideReview } from "~/utils/guide-review-availability";
+import { computed } from "vue";
+import { createError, useAsyncData, useHead, useRoute } from "#app";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { siteUrl } from "~/constants";
 import { comparisonsForGuide } from "~/data/comparisons";
 import { readingGuides } from "~/data/reading-guides";

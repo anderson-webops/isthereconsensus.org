@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { ClaimSummary, SuggestionResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
+import { computed, onScopeDispose, ref, watch } from "vue";
+import { useAsyncData, useHead, useRouter, useSeoMeta } from "#app";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
 import { appDescription, appName, socialImageUrl } from "~/constants";
 import { formatLandscapeSupportLabel } from "~/constants/evidenceLandscape";
 import { getTopicGuide } from "~/data/topicGuides";
