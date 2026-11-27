@@ -29,8 +29,8 @@ const systemdUnits = [
 describe("deployment hardening", () => {
 	it("pins runtime npm while admitting the Dependabot resolver", () => {
 		for (const manifest of [rootPackage, backendPackage]) {
-			assert.equal(manifest.packageManager, "npm@12.2.1");
-			assert.equal(manifest.engines.node, ">=24.22.1 <25");
+			assert.equal(manifest.packageManager, "npm@12.2.3");
+			assert.equal(manifest.engines.node, ">=26.13.1 <27");
 			assert.equal(manifest.engines.npm, ">=11.19.0 <13");
 		}
 	});
@@ -69,7 +69,7 @@ describe("deployment hardening", () => {
 			schema_version: 1,
 			site: "isthereconsensus.org",
 			adapter: { id: "consensus-native", minimum_version: 1 },
-			runtime: { node: "24.22.1", npm: "12.2.1", architecture: "arm64" },
+			runtime: { node: "26.13.1", npm: "12.2.3", architecture: "arm64" },
 			artifact_format: "ci-attested-tar-v1",
 			requires: ["artifact:ci-attested", "rollback:retained-artifact", "acceptance:origin-dual-stack"],
 			database: { change: "review-required" },

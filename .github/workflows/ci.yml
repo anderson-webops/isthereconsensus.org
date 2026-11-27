@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 24.22.1
-  NPM_VERSION: 12.2.1
+  NODE_VERSION: 26.13.1
+  NPM_VERSION: 12.2.3
 
 permissions:
   contents: read
@@ -103,7 +103,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 24.22.1 ]
+        node-version: [ 26.13.1 ]
         os: [ ubuntu-latest ]
 
     steps:

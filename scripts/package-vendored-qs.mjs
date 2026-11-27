@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { chmod, cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { gunzipSync } from "node:zlib";
 
 const require = createRequire(import.meta.url);
 const { build } = require("esbuild");
@@ -156,7 +158,19 @@ try {
 	const archive = await readFile(path.join(temporary, archiveName));
 	const filename = path.join(destination, archiveName);
 	if (check) {
-		assert.ok((await readFile(filename)).equals(archive), "Vendored qs archive must match reviewed source");
+		const current = await readFile(filename);
+		const integrity = `sha512-${createHash("sha512").update(current).digest("base64")}`;
+		const mismatch = "Vendored qs archive must match reviewed source and lockfile integrity";
+		for (const [lockfile, relative] of [
+			["package-lock.json", `back-end/vendor/${archiveName}`],
+			["back-end/package-lock.json", `vendor/${archiveName}`],
+		]) {
+			const lock = JSON.parse(await readFile(path.join(root, lockfile), "utf8"));
+			const entry = lock.packages?.["node_modules/qs"];
+			assert.ok(entry?.resolved === `file:${relative}` && entry.integrity === integrity, mismatch);
+		}
+		const options = { maxOutputLength: 8 * 1024 * 1024 };
+		assert.ok(gunzipSync(current, options).equals(gunzipSync(archive, options)), mismatch);
 	}
 	else {
 		await mkdir(destination, { recursive: true });

@@ -4,7 +4,7 @@
 	"protocol": 1,
 	"candidate": "paragraph-source-scope-v4",
 	"entrypoint": "dist/search-worker/src/server.js",
-	"runtime": { "node": ">=24.18.1 <25", "productionPlatform": "linux", "productionArchitecture": "arm64", "productionLibc": "glibc" },
+	"runtime": { "node": ">=26.13.1 <27", "productionPlatform": "linux", "productionArchitecture": "arm64", "productionLibc": "glibc" },
 	"minimumAdapterCapabilities": ["optional-independent-search-worker-v1", "pinned-offline-models-v1", "private-unix-socket-v1", "owned-child-reaping-v1", "artifact-digest-verification-v1"],
 	"hostOwnedConfiguration": ["SEARCH_WORKER_SOCKET", "SEARCH_MODEL_DIR", "runtime user and group", "service and model memory budgets", "CPU allocation", "socket directory permissions"],
 	"readiness": { "liveness": "GET /healthz", "corpusReady": "GET /readyz", "transport": "private-unix-socket", "coldWarmMaximumMilliseconds": 600000, "rankMaximumMilliseconds": 7500 },
