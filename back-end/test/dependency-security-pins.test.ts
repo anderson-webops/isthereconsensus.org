@@ -49,7 +49,7 @@ describe("reviewed dependency security pins", () => {
 			optionalDependencies: Record<string, string>;
 		}>("../../front-end/package.json");
 		const expected = (root.overrides.vite as Record<string, string>)["."];
-		assert.equal(expected, "8.3.5");
+		assert.equal(expected, "8.3.8");
 		assert.equal(frontend.devDependencies.vite, `^${expected}`);
 		assert.equal(backend.overrides.vite, expected);
 		const rootLock = readJson<Lockfile>("../../package-lock.json");
