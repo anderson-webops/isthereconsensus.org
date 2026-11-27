@@ -5,6 +5,14 @@ import type {
 	AccountActivityResponse,
 	AccountActivityTargetType
 } from "~/types/platform";
+import { computed, onMounted, ref, watch } from "vue";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 
 definePageMeta({
 	layout: "home"

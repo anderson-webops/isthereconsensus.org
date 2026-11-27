@@ -6,6 +6,11 @@ import type {
 	ExpertApplication,
 	QuestionFlag
 } from "~/types/platform";
+import { computed, ref, watch } from "vue";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 
 const { apiUrl } = useApi();
 const { role } = useAuth();

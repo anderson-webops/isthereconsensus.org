@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { useColorMode } from "#imports";
+
 const colorMode = useColorMode();
 const hydrated = ref(false);
 

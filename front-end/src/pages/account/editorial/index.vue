@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import type { ClaimSummary, Question, QuestionsResponse } from "~/types/board";
+import { computed, ref, watch } from "vue";
+import { useHead, useRouter } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import AdminReviewPanel from "~/components/AdminReviewPanel.vue";
 import AuthPanel from "~/components/AuthPanel.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 import { backlogClaims, firstWaveClaims, holdClaims, secondWaveClaims } from "~/data/claimRoadmap";
 import { futureRoadmapPreview } from "~/data/futureRoadmap";
 import { measurementLoop, patternPreview, publishingPlan, publishingPlanPreview } from "~/data/searchDemand";

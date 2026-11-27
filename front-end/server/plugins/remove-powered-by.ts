@@ -1,3 +1,5 @@
+import { defineNitroPlugin } from "nitropack/runtime";
+
 export default defineNitroPlugin((nitroApp) => {
 	nitroApp.hooks.hook("render:response", (response) => {
 		if (!response.headers) return;

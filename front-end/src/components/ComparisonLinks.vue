@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { EvidenceComparison } from "~/data/comparisons/types";
+import { NuxtLink } from "#components";
 
 defineProps<{ comparisons: EvidenceComparison[] }>();
 </script>

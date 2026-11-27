@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ReadingGuideSummary } from "~/data/reading-guides/types";
+import { NuxtLink } from "#components";
 
 defineProps<{ guides: ReadingGuideSummary[] }>();
 </script>

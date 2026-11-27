@@ -1,5 +1,7 @@
 import type { SetupDashboardResponse, SetupProbe, SetupStatusResponse } from "~/types/setup";
 import process from "node:process";
+import { createError, defineEventHandler, getHeader, getRequestURL } from "h3";
+import { useRuntimeConfig } from "nitropack/runtime";
 import { buildApiUrl, joinBaseUrl } from "~/utils/api";
 import { canReadDiagnostics } from "~/utils/diagnostics";
 

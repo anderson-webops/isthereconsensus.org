@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { Claim } from "~/types/board";
+import { computed } from "vue";
+import { useState } from "#app";
+import { NuxtLink } from "#components";
 import { selectResearchPreparation } from "~/utils/claim-presentation";
 import { claimReviewStatus, formatReviewDate, reviewStatusLabels } from "~/utils/claim-review-status";
 

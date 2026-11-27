@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import type { ClaimConsensusBand, ClaimsResponse, Topic, TopicResponse } from "~/types/board";
 import { watchDebounced } from "@vueuse/core";
+import { computed, onScopeDispose, ref, watch } from "vue";
+import { useAsyncData, useHead, useRoute, useRouter, useSeoMeta } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import ComparisonLinks from "~/components/ComparisonLinks.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
 import { appName, siteUrl, socialImageUrl } from "~/constants";
 import { getTopicGuide, topicGuides } from "~/data/topicGuides";
 import { interleaveClaimsByTopic, loadCompleteClaimDirectory } from "~/utils/claim-directory";

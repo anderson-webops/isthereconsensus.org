@@ -21,22 +21,35 @@ function harness(response: unknown, server = false) {
 			"import.meta.server": String(server)
 		}
 	});
+	const dependencies = {
+		"vue": { computed },
+		"#app": {
+			useState: (key: string, init: () => unknown) => {
+				if (!states.has(key)) states.set(key, ref(init()));
+				return states.get(key);
+			},
+			onNuxtReady: (callback: () => void) => mounted.push(callback),
+			useRequestHeaders: () => ({})
+		},
+		"#build/fetch": {
+			$fetch: async (url: string) => {
+				calls.push(url);
+				if (response instanceof Error) throw response;
+				return response;
+			}
+		},
+		"~/composables/useApi": {
+			useApi: () => ({
+				apiUrl: (path: string) => `/api${path}`
+			})
+		}
+	};
 	runInNewContext(code, {
 		module,
 		exports: module.exports,
-		computed,
-		useApi: () => ({
-			apiUrl: (path: string) => `/api${path}`
-		}),
-		useState: (key: string, init: () => unknown) => {
-			if (!states.has(key)) states.set(key, ref(init()));
-			return states.get(key);
-		},
-		onNuxtReady: (callback: () => void) => mounted.push(callback),
-		$fetch: async (url: string) => {
-			calls.push(url);
-			if (response instanceof Error) throw response;
-			return response;
+		require(name: keyof typeof dependencies) {
+			assert.ok(Object.hasOwn(dependencies, name), `Unexpected composable import: ${name}`);
+			return dependencies[name];
 		}
 	});
 	return { useAuth: module.exports.useAuth, mounted, calls };

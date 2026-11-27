@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import type { TopicSentimentResponse } from "~/types/platform";
+import { ref, watch } from "vue";
+import { $fetch } from "#build/fetch";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 
 const props = defineProps<{
 	topicSlug: string;

@@ -1,21 +1,21 @@
 # Dependency acceptance
 
-Nuxt 4.6.3 temporarily uses `unimport@7.0.1` through a version-scoped override.
-The npm registry advertises provenance for 7.0.2 but its attestation endpoint
-returns 404; 7.0.1 provides retrievable provenance. Nuxt's security fixes remain
-at 4.6.3, and the full vulnerability and package-signature gates remain required.
+Nuxt 4.7 and the explicit-import module use the reviewed signed-source
+Unimport 7.0.3 build. The gate verifies the source and compiler recipe, rebuilds
+the compiler, audits both independent graphs, and checks all installed Unimport
+7 consumers against the exact archive. The separate Unimport 6 consumer stays
+on its compatible line.
 
-The upstream 7.0.1-to-7.0.2 change fixes duplicate declaration-file class exports
-and an unused TypeScript parameter. Validate the existing Nuxt auto-imports with
-clean installation, typechecking, tests and the production build. Reevaluate the
-scoped override when a compatible successor has verifiable registry provenance.
+Nuxt and Vite require different Rolldown lines. Preserve each consumer's
+compatible locked Rolldown and native bindings, and keep the frontend's
+strict import, component, and server checks enabled.
 
 Build and source validation use Node 26.13.1 and npm 12.2.3. The
 `consensus-native` host must admit the exact candidate runtime independently.
 Retain the prior release's Node 24 runtime for its verified rollback, with
 protected migration and activation gates preserved.
 
-TypeScript remains on maintained 6.0.3. The current `vue-tsc@3.3.13` requires
+TypeScript remains on maintained 6.0.3. The current `vue-tsc@3.3.14` requires
 `typescript/lib/tsc`, which TypeScript 7 no longer exports; the current
 typescript-eslint integration also declares support below 6.1. Reevaluate the
 compiler major when both integrations support it, preserving typechecking.
@@ -36,6 +36,24 @@ audits apply independently to the root, backend, worker-runtime and vendored gra
 Backend typechecking covers both production source and test fixtures. Synthetic
 fixtures retain runtime presence checks and explicit request boundaries rather
 than weakening strict types or substituting unchecked values.
+
+## Vitesse Nuxt upstream integration
+
+Review covers upstream `29c1296`, `bca9f86`, and
+`a5bb2968ff3562be8d7a01921572a2021c122852` from the shared base
+`a8c8345f75cc45f522c15a13e1b1b7397fd970f2`. The default branch
+requires linear history.
+
+- Apply upstream's explicit-import module and strict checks to Consensus's own
+  frontend and server. Preserve the site's routes, layouts, and components
+  rather than importing the template's demo pages and page-view endpoint.
+- Use the reviewed workspace lock for the corresponding dependency upgrades.
+  Preserve npm, strict install-script admission, and the existing site-specific
+  CI. Its pinned checkout and Node setup actions already use upstream's major
+  versions. Upstream's pnpm catalog and lock are specific to the template.
+- Keep the enabled anti-slop rules and their existing approved-source boundary.
+  The template's PWA dependencies are outside the application; keep the stable
+  Nuxt DevTools metadata instead of adopting the template's prerelease.
 
 ## Preserved scientific prose
 

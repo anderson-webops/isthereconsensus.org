@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import type { CoverageResponse } from "~/types/coverage-roadmap";
+import { computed } from "vue";
+import { useAsyncData, useRoute, useRouter } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import CoverageFollowButton from "~/components/CoverageFollowButton.vue";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { coverageStatusLabels } from "~/types/coverage-roadmap";
 
 useStaticPageMeta({

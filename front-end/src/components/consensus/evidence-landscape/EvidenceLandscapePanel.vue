@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ClaimEvidenceLandscape } from "~/types/board";
+import { computed } from "vue";
 import {
 	formatLandscapeCertaintyLabel,
 	formatLandscapeDirectionLabel,

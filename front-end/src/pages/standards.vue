@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { NuxtLink } from "#components";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 
 const sourceStack = [
 	"Start with current guidelines, consensus statements, regulator reviews, and major assessments.",

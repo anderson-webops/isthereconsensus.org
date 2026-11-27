@@ -30,7 +30,8 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 			"@nuxtjs/color-mode",
 			"@pinia/nuxt",
 			"@unocss/nuxt",
-			"@vueuse/nuxt"
+			"@vueuse/nuxt",
+			"nuxt-explicit-imports"
 		].sort()
 	);
 	assert.equal(config.colorMode?.preference, "system");
@@ -47,7 +48,9 @@ test("nuxt config points to src/ and keeps the public app shell metadata", async
 	const applicationName = headMeta.find(meta => meta?.name === "application-name");
 	assert.equal(applicationName?.content, appName);
 
-	const publicConfig = config.runtimeConfig?.public;
+	const runtimeConfig = config.runtimeConfig;
+	assert.ok(runtimeConfig && "public" in runtimeConfig);
+	const publicConfig = runtimeConfig.public as { deployment?: { commit?: unknown; ref?: unknown } };
 	assert.equal(typeof publicConfig?.deployment?.commit, "string");
 	assert.equal(typeof publicConfig?.deployment?.ref, "string");
 	assert.deepEqual(config.nitro?.prerender?.routes, []);

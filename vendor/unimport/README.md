@@ -1,464 +1,69 @@
-# unimport
-
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![Codecov][codecov-src]][codecov-href]
-
-> Unified utils for auto importing APIs in modules, used in [nuxt](https://github.com/nuxt/nuxt) and [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import)
-
-## Features
-
-- Auto import register APIs for Vite, Webpack or esbuild powered by [unplugin](https://github.com/unjs/unplugin)
-- TypeScript declaration file generation
-- Auto import for custom APIs defined under specific directories
-- Auto import for Vue template
-
-## Install
-
-```sh
-# npm
-npm install unimport
-
-# yarn
-yarn add unimport
-
-# pnpm
-pnpm install unimport
-```
-
-## Usage
-
-### Plugin Usage
-
-Powered by [unplugin](https://github.com/unjs/unplugin), `unimport` provides a plugin interface for bundlers.
-
-#### Vite / Rollup
-
-```ts
-// vite.config.js / rollup.config.js
-import Unimport from 'unimport/unplugin'
-
-export default {
-  plugins: [
-    Unimport.vite({ /* plugin options */ })
-  ]
-}
-```
-
-#### Webpack
-
-```ts
-// webpack.config.js
-import Unimport from 'unimport/unplugin'
-
-module.exports = {
-  plugins: [
-    Unimport.webpack({ /* plugin options */ })
-  ]
-}
-```
-
-### Programmatic Usage
-
-<!-- eslint-skip -->
-
-```js
-// ESM
-import { createUnimport } from 'unimport'
-
-// CommonJS
-const { createUnimport } = require('unimport')
-```
-
-```js
-const { injectImports } = createUnimport({
-  imports: [{ name: 'fooBar', from: 'test-id' }]
-})
-
-// { code: "import { fooBar } from 'test-id';console.log(fooBar())" }
-console.log(injectImports('console.log(fooBar())'))
-```
-
-## Configurations
-
-### Imports Item
-
-#### Named import
-
-```ts
-imports: [
-  { name: 'ref', from: 'vue' },
-  { name: 'useState', as: 'useSignal', from: 'react' },
-]
-```
-
-Will be injected as:
-
-```ts
-import { useState as useSignal } from 'react'
-import { ref } from 'vue'
-```
-
-#### Default import
-
-```ts
-imports: [
-  { name: 'default', as: '_', from: 'lodash' }
-]
-```
-
-Will be injected as:
-
-```ts
-import _ from 'lodash'
-```
-
-#### Namespace import
-
-```ts
-imports: [
-  { name: '*', as: '_', from: 'lodash' }
-]
-```
-
-Will be injected as:
-
-```ts
-import * as _ from 'lodash'
-```
-
-#### Export assignment import
-
-This is a special case for libraries authored with [TypeScript's `export =` syntax](https://www.typescriptlang.org/docs/handbook/modules/reference.html#export--and-import--require). You don't need it the most of the time.
-
-```ts
-imports: [
-  { name: '=', as: 'browser', from: 'webextension-polyfill' }
-]
-```
-
-Will be injected as:
-
-```ts
-import browser from 'webextension-polyfill'
-```
-
-And the type declaration will be added as:
-
-```ts
-const browser: typeof import('webextension-polyfill')
-```
-
-#### Custom Presets
-
-Presets are provided as a shorthand for declaring imports from the same package:
-
-```ts
-presets: [
-  {
-    from: 'vue',
-    imports: [
-      'ref',
-      'reactive',
-      // ...
-    ]
-  }
-]
-```
-
-Will be equivalent as:
-
-```ts
-imports: [
-  { name: 'ref', from: 'vue' },
-  { name: 'reactive', from: 'vue' },
-  // ...
-]
-```
-
-#### Built-in Presets
-
-`unimport` also provides some built-in presets for common libraries:
-
-```ts
-presets: [
-  'vue',
-  'pinia',
-  'vue-i18n',
-  // ...
-]
-```
-
-You can check out [`src/presets`](./src/presets/) for all the options available or refer to the type declaration.
-
-#### Exports Auto Scan
-
-Since `unimport` v0.7.0, we also support auto scanning the examples from a local installed package, for example:
-
-```ts
-presets: [
-  {
-    package: 'h3',
-    ignore: ['isStream', /^[A-Z]/, /^[a-z]*$/, r => r.length > 8]
-  }
-]
-```
-
-This will be expanded into:
-
-```ts
-imports: [
-  {
-    from: 'h3',
-    name: 'appendHeader',
-  },
-  {
-    from: 'h3',
-    name: 'appendHeaders',
-  },
-  {
-    from: 'h3',
-    name: 'appendResponseHeader',
-  },
-  // ...
-]
-```
-
-The `ignore` option is used to filter out the exports, it can be a string, regex or a function that returns a boolean.
-
-By default, the result is strongly cached by the version of the package. You can disable this by setting `cache: false`.
-
-### Type Declarations
-
-```ts
-Unimport.vite({
-  dts: true // or a path to generated file
-})
-```
-
-### Directory Auto Import
-
-```ts
-Unimport.vite({
-  dirs: [
-    './composables/*',
-  ]
-})
-```
-
-Scan for modules under `./composables` and auto-import the named exports.
-
-#### Nested Directories
-
-```ts
-Unimport.vite({
-  dirs: [
-    './composables/**/*',
-    {
-      glob: './composables/nested/**/*',
-      types: false // disable scan the type declarations
-    }
-  ]
-})
-```
-
-Named exports for modules under `./composables/**/*` will be registered for auto imports, and filter out the types in `./composables/nested/**/*`.
-
-#### Directory Scan Options
-
-You can also provide custom options for directory scan, for example:
-
-```ts
-Unimport.vite({
-  dirsScanOptions: {
-    filePatterns: ['*.ts'], // optional, default `['*.{ts,js,mjs,cjs,mts,cts}']`, glob patterns for matching files
-    fileFilter: file => file.endsWith('.ts'), // optional, default `() => true`, filter files
-    types: true, // optional, default `true`, enable/disable scan the type declarations
-    cwd: process.cwd(), // optional, default `process.cwd()`, custom cwd for directory scan
-  },
-  dirs: [
-    './composables/**/*',
-    {
-      glob: './composables/nested/**/*',
-      types: false
-    }
-  ]
-})
-```
-
-### Opt-out Auto Import
-
-You can opt-out auto-import for specific modules by adding a comment:
-
-```ts
-// @unimport-disable
-```
-
-It can be customized by setting `commentsDisable`:
-
-```ts
-Unimport.vite({
-  commentsDisable: [
-    '@unimport-disable',
-    '@custom-imports-disable',
-  ]
-})
-```
-
-### Parser
-
-By default, `unimport` uses RegExp to detect unimport entries. In some cases, RegExp might not be able to detect all the entries (false positive & false negative).
-
-For a more accurate result, you can switch to an AST-based parser:
-
-- `acorn` — powered by [acorn](https://github.com/acornjs/acorn). Assumes the input is valid vanilla JavaScript, so it should usually be used after transformations and transpilation. Requires installing `acorn` as an optional peer dependency.
-- `oxc` — powered by [oxc-parser](https://github.com/oxc-project/oxc). Much faster than `acorn` and accepts TypeScript and JSX. Requires installing either `rolldown` or `oxc-parser` as an optional peer dependency. (If both are installed, `rolldown` is preferred.)
-
-```ts
-Unimport.vite({
-  parser: 'oxc' // or 'acorn' or 'regex' (default)
-})
-```
-
-To use the `oxc` parser, install `rolldown` or `oxc-parser` alongside `unimport`:
-
-```sh
-npm install rolldown
-# or
-npm install oxc-parser
-```
-
-To use the `acorn` parser, install `acorn` alongside `unimport`:
-
-```sh
-npm install acorn
-```
-
-### Vue Template Auto Import
-
-In Vue's template, the usage of API is in a different context than plain modules. Thus some custom transformations are required. To enable it, set `addons.vueTemplate` to `true`:
-
-```ts
-Unimport.vite({
-  addons: {
-    vueTemplate: true
-  }
-})
-```
-
-#### Caveats
-
-When auto-import a ref, inline operations won't be auto-unwrapped.
-
-```ts
-export const counter = ref(0)
-```
-
-```html
-<template>
-  <!-- this is ok -->
-  <div>{{ counter }}</div>
-
-  <!-- counter here is a ref, this won't work, volar will throw -->
-  <div>{{ counter + 1 }}</div>
-
-  <!-- use this instead -->
-  <div>{{ counter.value + 1 }}</div>
-</template>
-```
-
-We recommend using [Volar](https://github.com/johnsoncodehk/volar) for type checking, which will help you to identify the misusage.
-
-### Vue Directives Auto Import and TypeScript Declaration Generation
-
-In Vue's template, the usage of directives is in a different context than plain modules. Thus some custom transformations are required. To enable it, set `addons.vueDirectives` to `true`:
-
-```ts
-Unimport.vite({
-  addons: {
-    vueDirectives: true
-  }
-})
-```
-
-#### Library Authors
-
-When including directives in your presets, you should:
-- provide the corresponding imports with `meta.vueDirective` set to `true`, otherwise, `unimport` will not be able to detect your directives.
-- use named exports for your directives, or use default export and use `as` in the Import.
-- set `dtsDisabled` to `true` if you provide a type declaration for your directives.
-
-```ts
-import type { InlinePreset } from 'unimport'
-import { defineUnimportPreset } from 'unimport'
-
-export const composables = defineUnimportPreset({
-  from: 'my-unimport-library/composables',
-  /* imports and other options */
-})
-
-export const directives = defineUnimportPreset({
-  from: 'my-unimport-library/directives',
-  // disable dts generation globally
-  dtsEnabled: false,
-  // you can declare the vue directive globally
-  meta: {
-    vueDirective: true
-  },
-  imports: [{
-    name: 'ClickOutside',
-    // disable dts generation per import
-    dtsEnabled: false,
-    // you can declare the vue directive per import
-    meta: {
-      vueDirective: true
-    }
-  }, {
-    name: 'default',
-    // you should declare `as` for default exports
-    as: 'Focus'
-  }]
-})
-```
-
-#### Using Directory Scan and Local Directives
-
-If you add a directory scan for your local directives in the project, you need to:
-- provide `isDirective` in the `vueDirectives`: `unimport` will use it to detect them (will never be called for imports with `meta.vueDirective` set to `true`).
-- use always named exports for your directives.
-
-```ts
-Unimport.vite({
-  dirs: ['./directives/**'],
-  addons: {
-    vueDirectives: {
-      isDirective: (normalizedImportFrom, _importEntry) => {
-        return normalizedImportFrom.includes('/directives/')
-      }
-    }
-  }
-})
-```
-
-## 💻 Development
-
-- Clone this repository
-- Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable` (use `npm i -g corepack` for Node.js < 16.10)
-- Install dependencies using `pnpm install`
-- Run interactive tests using `pnpm dev`
-
-## License
-
-Made with 💛
-
-Published under [MIT License](./LICENSE).
-
-<!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/unimport?style=flat-square
-[npm-version-href]: https://npmjs.com/package/unimport
-
-[npm-downloads-src]: https://img.shields.io/npm/dm/unimport?style=flat-square
-[npm-downloads-href]: https://npmjs.com/package/Unimport
-
-[codecov-src]: https://img.shields.io/codecov/c/gh/unjs/unimport/main?style=flat-square
-[codecov-href]: https://codecov.io/gh/unjs/unimport
+# Signed-source auto-import compiler
+
+The maintained `unimport-7.0.3-webops.2.tgz` is compiled from upstream's complete
+signed v7.0.3 source tree. Its package version `7.0.3+webops.2` preserves the
+upstream API version and identifies this independently built derivative.
+The original npm package's registry signatures and exact-version SLSA subject
+were independently verified. `UPSTREAM.json` records that separate reference;
+the maintained archive is authenticated and reproduced from signed source.
+
+`check-unimport-source.py` checks both original Git object identities, verifies
+the tag and commit with a pinned public signer, and reconstructs the entire
+226-file Git tree from `source.tgz`. It uses an isolated public-only keyring;
+GnuPG's `gpgv` is required. No private signing material is involved.
+`commit.git` and `tag.git` use Git's compressed loose-object format so their
+signed original bytes, including mandatory signature-header whitespace, remain
+intact across checkout and ordinary source whitespace checks.
+
+The independent `build/` lock selects Node 26, TypeScript 6 and tsdown 0.23.7.
+Unbuild 3.6.1's TypeScript peer range excludes TypeScript 6, so this build uses
+tsdown's supported TypeScript 6 declaration generator instead of overriding
+that incompatible peer. Original source, tests, declarations and license inputs
+remain available in the verified archive. H3 1.15.11 is the original upstream
+test fixture, matching the signed lock, rather than an application runtime.
+
+The reviewed source patch anchors implicit package export scanning to the
+working project's package URL. Upstream's implicit resolution can otherwise
+select a parent's dependency before the project's own package. Explicit caller
+URLs retain their original meaning. Local-pkg 2 and Magic-string 1 are exercised
+by the complete upstream suite and compiled consumer fixtures.
+Acorn availability and loading use the compiler module's actual resolution
+context. VueUse metadata uses the working project's explicit package URL.
+Both retain their legitimate installed providers when parent directories are
+unreadable or contain a different version.
+
+`build-unimport-source.py` produces byte-identical archives from two fresh source
+directories. `npm run test:unimport-source` requests `--validate-upstream` once
+per full qualification, running the complete upstream tests, native type and
+lint checks. Preparation and archive verification retain both independent
+rebuilds without repeating that same upstream suite at each dispatch point.
+The archive records the signed source identity, applied source patch, compiler
+configuration, independent build lock and every output hash. `--check --installed`
+also verifies each actual unscoped consumer's locked and installed bytes.
+Registry signature and full/production vulnerability audits remain required
+for both the application and all independent tooling graphs.
+
+The independent `runtime/` lock installs only declared production dependencies
+and the optional Acorn peer. The copied compiled artifact runs under Node's
+read restrictions with the source checkout and development tools denied. A
+required runtime-module deletion must fail; restoring that exact module must
+recover in a fresh process. The earlier `.1` archive remains a historical
+comparison artifact and is absent from the current consuming locks.
+
+The compiler graph selects the reviewed local Picomatch archive. The emitted
+package declares its exact maintained version without embedding that local
+path. Consuming application and runtime graphs supply that same archive;
+source checks bind its digest and reject unexpected local runtime dependencies.
+
+Compiled core and addon declarations receive strict NodeNext consumer checks
+with `skipLibCheck: false`. The unplugin entrypoint retains its upstream
+cross-framework type contract and receives upstream and native Nuxt project
+checks. Standalone strict checking of that cross-framework entrypoint still
+requires its optional framework declarations. Complete all-framework type
+qualification remains separate outstanding work; it is not established by the
+core consumer fixture.
+
+CI and both direct-release preparation paths verify the signed source rebuild
+before loading the application, then install the complete independent compiler
+fixtures before project validation. Source qualification, native artifact
+acceptance, publication and protected activation remain separate gates.

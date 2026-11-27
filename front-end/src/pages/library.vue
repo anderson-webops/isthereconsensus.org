@@ -2,7 +2,12 @@
 import type { ClaimSummary, Topic } from "~/types/board";
 import type { CoverageRequest } from "~/types/coverage-roadmap";
 import type { ReaderLibraryController } from "~/utils/reader-library";
+import { computed, ref, watch } from "vue";
+import { useNuxtApp, useSeoMeta } from "#app";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
 import { coverageStatusLabels } from "~/types/coverage-roadmap";
 
 interface LibraryContent {

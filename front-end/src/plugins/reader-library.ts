@@ -1,4 +1,9 @@
 import type { AccountLibrary } from "~/utils/reader-library";
+import { watch } from "vue";
+import { defineNuxtPlugin } from "#app";
+import { $fetch } from "#build/fetch";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 import { createReaderLibrary } from "~/utils/reader-library";
 
 export default defineNuxtPlugin((nuxtApp) => {

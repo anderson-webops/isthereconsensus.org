@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { setResponseStatus, useHead, useRouter, useSeoMeta } from "#app";
+import { NuxtLink } from "#components";
 import { siteUrl } from "~/constants";
 
 const router = useRouter();

@@ -1,5 +1,7 @@
 import type { SetupPromptResponse } from "~/types/setup";
 import process from "node:process";
+import { createError, defineEventHandler, getHeader, getRequestURL } from "h3";
+import { useRuntimeConfig } from "nitropack/runtime";
 import { canReadDiagnostics } from "~/utils/diagnostics";
 import { buildServerAgentPrompt, launchValidationTasks, serverPreparationTasks } from "../utils/setupPrompt";
 

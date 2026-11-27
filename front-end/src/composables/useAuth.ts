@@ -1,4 +1,8 @@
 import type { AuthResponse, AuthUser } from "~/types/auth";
+import { computed } from "vue";
+import { onNuxtReady, useRequestHeaders, useState } from "#app";
+import { $fetch } from "#build/fetch";
+import { useApi } from "~/composables/useApi";
 
 interface LoginPayload {
 	email: string;

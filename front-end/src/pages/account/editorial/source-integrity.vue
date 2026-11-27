@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { SourceIntegrityOutcome, SourceIntegrityResponse } from "~/types/platform";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { definePageMeta } from "#app/composables/pages";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
 import PageBreadcrumbs from "~/components/PageBreadcrumbs.vue";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
+import { useStaticPageMeta } from "~/composables/useStaticPageMeta";
 import { safeExternalHttpUrl } from "~/utils/external-links";
 import { formatCountLabel } from "~/utils/format-count";
 

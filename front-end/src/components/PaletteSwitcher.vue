@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
+
 type PaletteValue = "green" | "blue" | "warm";
 
 const storageKey = "consensus-palette";

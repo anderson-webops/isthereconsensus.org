@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { ExpertApplication } from "~/types/platform";
+import { computed, ref, watch } from "vue";
+import { $fetch } from "#build/fetch";
+import { NuxtLink } from "#components";
+import { useApi } from "~/composables/useApi";
+import { useAuth } from "~/composables/useAuth";
 
 const { apiUrl } = useApi();
 const { currentAccount, role, isLoggedIn, refreshAuth } = useAuth();
