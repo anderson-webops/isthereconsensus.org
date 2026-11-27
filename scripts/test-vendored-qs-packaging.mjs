@@ -7,6 +7,7 @@ import path from "node:path";
 import process from "node:process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { gunzipSync, gzipSync } from "node:zlib";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const require = createRequire(import.meta.url);
@@ -39,6 +40,9 @@ async function fixture() {
 	});
 	await cp(path.join(root, "scripts/package-vendored-qs.mjs"), path.join(directory, "scripts/package-vendored-qs.mjs"));
 	await cp(path.join(root, archivePath), path.join(directory, archivePath));
+	for (const lockfile of ["package-lock.json", "back-end/package-lock.json"]) {
+		await cp(path.join(root, lockfile), path.join(directory, lockfile));
+	}
 	await writeFile(path.join(directory, "package.json"), JSON.stringify({
 		name: "qs-package-regression",
 		private: true,
@@ -89,11 +93,13 @@ test("private checkout modes reproduce the canonical archive without changing so
 	}
 });
 
-test("a mismatched archive fails with a bounded diagnostic instead of a binary diff", async () => {
+test("recompressed archive bytes must still match the locked integrity", async () => {
 	const directory = await fixture();
 	try {
 		const archive = await readFile(path.join(directory, archivePath));
-		await writeFile(path.join(directory, archivePath), archive.map(value => value ^ 0x55));
+		const recompressed = gzipSync(gunzipSync(archive), { level: 1 });
+		assert.ok(!recompressed.equals(archive));
+		await writeFile(path.join(directory, archivePath), recompressed);
 		const result = check(directory);
 		assert.equal(result.status, 1, result.stderr);
 		assert.equal(result.signal, null);

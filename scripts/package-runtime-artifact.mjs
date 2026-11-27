@@ -41,7 +41,7 @@ if (
 ) {
 	throw new Error("Runtime release assets require an annotated v1 tag at the artifact source commit.");
 }
-if (manifest.toolchain?.node !== "v24.22.1" || manifest.toolchain?.npm !== "12.2.1") {
+if (manifest.toolchain?.node !== "v26.13.1" || manifest.toolchain?.npm !== "12.2.3") {
 	throw new Error("Runtime artifact toolchain does not match the reviewed release contract.");
 }
 git(["merge-base", "--is-ancestor", commit, "refs/remotes/origin/main"]);

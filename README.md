@@ -31,7 +31,7 @@ The site is deliberately not a truth oracle, medical-advice tool, or automated c
 
 ## Getting started
 
-Use Node `24.22.1` and npm `12.2.1`; `.node-version`, `.nvmrc`, `packageManager`, CI, and the direct systemd deployment pin that production toolchain. The npm engine range also admits GitHub Dependabot's current npm `11.19.0` resolver so its `engine-strict` update jobs can prepare proposals; local validation, CI, artifacts, and deployment remain pinned to npm `12.2.1`.
+Use Node `26.13.1` and npm `12.2.3`; `.node-version`, `.nvmrc`, `packageManager`, CI, and the direct systemd deployment pin that production toolchain. The npm engine range also admits GitHub Dependabot's current npm `11.19.0` resolver so its `engine-strict` update jobs can prepare proposals; local validation, CI, artifacts, and deployment remain pinned to npm `12.2.3`.
 
 ```bash
 npm ci --include=optional --strict-allow-scripts
@@ -103,7 +103,7 @@ npm audit signatures
 ```
 
 For an annotated `v1.x.y` release, build the exact clean tag on Linux ARM64
-glibc with Node 24.22.1 and npm 12.2.1. After the gates above pass, package the
+glibc with Node 26.13.1 and npm 12.2.3. After the gates above pass, package the
 same `.runtime-artifact` without rebuilding it:
 
 ```bash
