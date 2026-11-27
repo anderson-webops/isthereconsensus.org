@@ -20,13 +20,12 @@ test('standalone backend and workspace matcher policies remain aligned', () => {
   assert.equal(backendLock.packages['node_modules/minimatch'].version, rootLock.packages['node_modules/minimatch'].version)
 })
 
-test('minimatch limits optimization amplification while preserving ordinary matching', () => {
+test('minimatch rejects excessive optimization work while preserving ordinary matching', () => {
   const { Minimatch, minimatch } = frontendRequire('minimatch')
-  const matcher = new Minimatch(`${'a/**/../b/'.repeat(10)}end`, {
+  assert.throws(() => new Minimatch(`${'a/**/../b/'.repeat(10)}end`, {
     optimizationLevel: 2,
     braceExpandMax: 16,
-  })
-  assert.ok(matcher.globParts.length <= 16)
+  }), RangeError)
   assert.equal(minimatch('src/nested/page.vue', 'src/**/*.{ts,vue}'), true)
   assert.equal(minimatch('src/nested/page.js', 'src/**/*.{ts,vue}'), false)
   assert.equal(new Minimatch('**/*.ts', { dot: true }).match('.hidden/page.ts'), true)
