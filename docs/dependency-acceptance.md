@@ -10,9 +10,10 @@ and an unused TypeScript parameter. Validate the existing Nuxt auto-imports with
 clean installation, typechecking, tests and the production build. Reevaluate the
 scoped override when a compatible successor has verifiable registry provenance.
 
-Build and source validation use Node 24.22.1 and npm 12.2.1. Runtime host policy
-remains independent; the declared `consensus-native` Node runtime remains
-24.22.1, with protected migration, rollback and activation gates preserved.
+Build and source validation use Node 26.13.1 and npm 12.2.3. The
+`consensus-native` host must admit the exact candidate runtime independently.
+Retain the prior release's Node 24 runtime for its verified rollback, with
+protected migration and activation gates preserved.
 
 TypeScript remains on maintained 6.0.3. The current `vue-tsc@3.3.13` requires
 `typescript/lib/tsc`, which TypeScript 7 no longer exports; the current

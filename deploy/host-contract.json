@@ -6,8 +6,8 @@
 		"minimum_version": 1
 	},
 	"runtime": {
-		"node": "24.22.1",
-		"npm": "12.2.1",
+		"node": "26.13.1",
+		"npm": "12.2.3",
 		"architecture": "arm64"
 	},
 	"artifact_format": "ci-attested-tar-v1",

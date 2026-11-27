@@ -14,8 +14,8 @@ const output = process.env.UNIMPORT_VERIFICATION_OUTPUT || path.join(root, ".ai-
 const originalArchive = path.join(root, "vendor/unimport-upstream/unimport-7.0.1.tgz");
 const npmCli = realpathSync(process.env.npm_execpath || process.env.NPM_CLI || path.join(path.dirname(process.execPath), "npm"));
 const npm = createRequire(path.resolve(path.dirname(npmCli), "../package.json"));
-assert.equal(npm("./package.json").version, "12.2.1");
-assert.equal(process.versions.node, "24.22.1");
+assert.equal(npm("./package.json").version, "12.2.3");
+assert.equal(process.versions.node, "26.13.1");
 const originalIntegrity = "sha512-HcHDoFaz6xiViJNRGWEGYleYl7KVxU8XVHSPJnkuozaQrCUVrA8aRv/vd+e8XP28y26n3L2VRAudCuF5+ek59w==";
 const originalDigest = createHash("sha512").update(readFileSync(originalArchive)).digest();
 assert.equal(`sha512-${originalDigest.toString("base64")}`, originalIntegrity);

@@ -14,14 +14,14 @@ describe("CI workflow", () => {
 		assert.match(workflowSource, /cancel-in-progress: true/);
 	});
 
-	it("uses GitHub JavaScript actions that target the Node 24 runtime", () => {
+	it("uses pinned GitHub actions and the reviewed application toolchain", () => {
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v4/);
 		assert.doesNotMatch(workflowSource, /FORCE_JAVASCRIPT_ACTIONS_TO_NODE24/);
 		assert.match(workflowSource, /actions\/checkout@[0-9a-f]{40} # v7/);
 		assert.match(workflowSource, /actions\/setup-node@[0-9a-f]{40} # v7/);
 		assert.doesNotMatch(workflowSource, /actions\/(?:checkout|setup-node)@v\d/);
-		assert.match(workflowSource, /NODE_VERSION: 24\.22\.1/);
-		assert.match(workflowSource, /NPM_VERSION: 12\.2\.1/);
+		assert.match(workflowSource, /NODE_VERSION: 26\.13\.1/);
+		assert.match(workflowSource, /NPM_VERSION: 12\.2\.3/);
 		assert.match(workflowSource, /run: npm install --global "?npm@\$\{NPM_VERSION\}"?/);
 	});
 
