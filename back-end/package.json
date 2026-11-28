@@ -15,13 +15,13 @@
 		"server:once": "tsx -r dotenv/config src/server.ts",
 		"test": "node --test --import tsx test/*.test.ts",
 		"start": "node dist/server.js",
-		"build": "rm -rf dist && tsc -p tsconfig.json",
-		"watch": "tsc -w",
+		"build": "rm -rf dist && node scripts/run-native-typescript.mjs -p tsconfig.json",
+		"watch": "node scripts/run-native-typescript.mjs -w",
 		"dev": "tsx watch -r dotenv/config src/server.ts",
 		"up": "taze major -I",
 		"lint": "eslint \"{src,test}/**/*.{js,ts}\"",
 		"lint-fix": "eslint \"{src,test}/**/*.{js,ts}\" --fix",
-		"typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.eslint.json",
+		"typecheck": "node scripts/run-native-typescript.mjs --noEmit -p tsconfig.json && node scripts/run-native-typescript.mjs --noEmit -p tsconfig.eslint.json",
 		"create-admin": "node dist/create-admin-user.js",
 		"create-admin-ts": "tsx -r dotenv/config src/create-admin-user.ts",
 		"set-admin-status": "node dist/set-admin-status.js",
@@ -55,7 +55,8 @@
 		"@types/readline-sync": "^1.4.8",
 		"tsx": "^4.23.15",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.74.0"
+		"typescript-eslint": "^8.74.0",
+		"typescript-native": "npm:typescript@7.0.2"
 	},
 	"overrides": {
 		"brace-expansion": "5.0.12",
