@@ -10,10 +10,10 @@
 	},
 	"main": "dist/search-worker/src/server.js",
 	"scripts": {
-		"build": "rm -rf dist && tsc -p tsconfig.json",
+		"build": "rm -rf dist && node ../back-end/scripts/run-native-typescript.mjs -p tsconfig.json",
 		"start": "node dist/search-worker/src/server.js",
 		"lint": "eslint \"{src,test}/**/*.{ts,mjs}\"",
-		"typecheck": "tsc --noEmit -p tsconfig.eslint.json",
+		"typecheck": "node ../back-end/scripts/run-native-typescript.mjs --noEmit -p tsconfig.eslint.json",
 		"test": "node --test --import tsx test/*.test.ts"
 	},
 	"dependencies": {
@@ -27,6 +27,7 @@
 	"devDependencies": {
 		"@types/node": "26.6.11",
 		"tsx": "^4.23.15",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"typescript-native": "npm:typescript@7.0.2"
 	}
 }
