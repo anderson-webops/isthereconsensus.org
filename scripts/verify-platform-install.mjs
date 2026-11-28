@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { cp, lstat, mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 import process from "node:process";
 import { workerRuntimeVersions } from "./search-worker-artifact-lib.mjs";
@@ -7,6 +8,46 @@ import { workerRuntimeVersions } from "./search-worker-artifact-lib.mjs";
 const root = process.cwd();
 const scratchRoot = path.join(root, ".ai-work", "runs");
 const frontendManifest = JSON.parse(await readFile(path.join(root, "front-end/package.json"), "utf8"));
+const lock = JSON.parse(await readFile(path.join(root, "package-lock.json"), "utf8"));
+
+async function readResolvedBinding(temporaryRoot, wrapper, dependency) {
+	const require = createRequire(wrapper);
+	for (const directory of require.resolve.paths(dependency) ?? []) {
+		if (!directory.startsWith(`${temporaryRoot}${path.sep}`)) continue;
+		try {
+			return JSON.parse(await readFile(path.join(directory, dependency, "package.json"), "utf8"));
+		}
+		catch (error) {
+			if (error.code !== "ENOENT") throw error;
+		}
+	}
+}
+
+async function verifyWrapperBindings(temporaryRoot, libc) {
+	const variant = libc === "musl"
+		? "musl"
+		: "gnu";
+	const found = new Set();
+	let checked = 0;
+	for (const [location, metadata] of Object.entries(lock.packages)) {
+		const name = /(?:^|\/)node_modules\/(oxc-parser|oxfmt)$/.exec(location)?.[1];
+		if (!name) continue;
+		const dependency = `@${name}/binding-linux-arm64-${variant}`;
+		const expected = metadata.optionalDependencies?.[dependency];
+		if (!expected) throw new Error(`Missing ${dependency} for ${location} in the lockfile.`);
+		const wrapper = path.join(temporaryRoot, location, "package.json");
+		const manifest = JSON.parse(await readFile(wrapper, "utf8"));
+		if (manifest.version !== metadata.version) throw new Error(`Unexpected installed wrapper version for ${location}.`);
+		const installed = await readResolvedBinding(temporaryRoot, wrapper, dependency);
+		if (installed?.version !== expected) {
+			throw new Error(`${location} resolved ${dependency}@${installed?.version ?? "missing"}; expected ${expected}.`);
+		}
+		found.add(name);
+		checked++;
+	}
+	if (found.size !== 2) throw new Error("Expected parser and formatter bindings in the native install.");
+	process.stdout.write(`Verified ${checked} Linux ARM64 ${libc} parser and formatter bindings from their wrapper locations.\n`);
+}
 
 function run(command, args, cwd) {
 	return new Promise((resolve, reject) => {
@@ -48,6 +89,10 @@ async function verifyTarget(libc) {
 	if (!npmExecPath) throw new Error("Run verify:platform-install through npm so the selected npm executable is known.");
 	await mkdir(scratchRoot, { recursive: true });
 	const temporaryRoot = await mkdtemp(path.join(scratchRoot, `isthereconsensus-linux-arm64-${libc}-`));
+	const vendorCopy = {
+		recursive: true,
+		filter: source => path.basename(source) !== "node_modules"
+	};
 	try {
 		await Promise.all([
 			mkdir(path.join(temporaryRoot, "back-end"), { recursive: true }),
@@ -58,8 +103,8 @@ async function verifyTarget(libc) {
 			cp(path.join(root, "package.json"), path.join(temporaryRoot, "package.json")),
 			cp(path.join(root, "package-lock.json"), path.join(temporaryRoot, "package-lock.json")),
 			cp(path.join(root, ".npmrc"), path.join(temporaryRoot, ".npmrc")),
-			cp(path.join(root, "vendor"), path.join(temporaryRoot, "vendor"), { recursive: true }),
-			cp(path.join(root, "back-end/vendor"), path.join(temporaryRoot, "back-end/vendor"), { recursive: true }),
+			cp(path.join(root, "vendor"), path.join(temporaryRoot, "vendor"), vendorCopy),
+			cp(path.join(root, "back-end/vendor"), path.join(temporaryRoot, "back-end/vendor"), vendorCopy),
 			cp(path.join(root, "back-end/package.json"), path.join(temporaryRoot, "back-end/package.json"), {
 				recursive: true
 			}),
@@ -115,6 +160,7 @@ async function verifyTarget(libc) {
 		if (missing.length) {
 			throw new Error(`Linux ARM64 ${libc} install omitted native packages: ${missing.join(", ")}`);
 		}
+		await verifyWrapperBindings(temporaryRoot, libc);
 		if (libc === "glibc") {
 			await verifyWorkerNativeRuntime(temporaryRoot);
 		}
